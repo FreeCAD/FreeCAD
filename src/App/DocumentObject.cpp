@@ -357,6 +357,12 @@ const char* DocumentObject::getDagKey() const
     return pcNameInDocument->c_str();
 }
 
+const char* DocumentObject::getLabelOrName() const
+{
+    const char* label = Label.getValue();
+    return Base::Tools::isNullOrEmpty(label) ? getNameInDocument() : label;
+}
+
 const char* DocumentObject::getNameInDocument() const
 {
     // Note: It can happen that we query the internal name of an object even if it is not

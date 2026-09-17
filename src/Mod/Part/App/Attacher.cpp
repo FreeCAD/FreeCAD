@@ -143,40 +143,59 @@ PlanarFaceInfo getPlanarFaceInfo(const TopoShape& shape, double precision)
     return result;
 }
 
-gp_Dir getMidPlaneNormal(const PlanarFaceInfo& firstFace, const PlanarFaceInfo& secondFace)
+// Plane as normal . X = offset, with a normal that is not normalized.
+struct BisectorPlane
+{
+    gp_Vec normal;
+    double offset;
+
+    bool isDegenerate() const
+    {
+        return normal.SquareMagnitude() < Precision::SquareConfusion();
+    }
+
+    gp_Pnt project(const gp_Pnt& point) const
+    {
+        const gp_Vec vector(point.XYZ());
+        return gp_Pnt(
+            (vector + normal * ((offset - normal.Dot(vector)) / normal.SquareMagnitude())).XYZ()
+        );
+    }
+};
+
+// The dihedral bisectors of the two faces, from n1.(X-c1) = +/- n2.(X-c2). Both contain the
+// faces' intersection line.
+BisectorPlane getMidPlane(const PlanarFaceInfo& firstFace, const PlanarFaceInfo& secondFace)
 {
     const gp_Vec firstNormal(firstFace.normal);
     const gp_Vec secondNormal(secondFace.normal);
-    const gp_Vec normalSum = firstNormal.Added(secondNormal);
-    const gp_Vec normalDifference = firstNormal.Subtracted(secondNormal);
+    const double firstOffset = firstNormal.Dot(gp_Vec(firstFace.center.XYZ()));
+    const double secondOffset = secondNormal.Dot(gp_Vec(secondFace.center.XYZ()));
 
-    // The sum and difference are the normals of the two dihedral bisector planes. Select the
-    // one that separates the face centers, so the plane lies between the selected faces.
+    const BisectorPlane sum {firstNormal + secondNormal, firstOffset + secondOffset};
+    const BisectorPlane difference {firstNormal - secondNormal, firstOffset - secondOffset};
+
+    // Parallel faces degenerate one of the two, and never both.
+    if (sum.isDegenerate()) {
+        return difference;
+    }
+    if (difference.isDegenerate()) {
+        return sum;
+    }
+
+    // The centers sit at -n2.d and n1.d from the sum bisector and at n2.d and n1.d from the
+    // difference one, so this sign picks the bisector that has them on opposite sides.
     const gp_Vec centerDirection(firstFace.center, secondFace.center);
-    const auto alignment = [&centerDirection](const gp_Vec& normal) {
-        const double dotProduct = centerDirection.Dot(normal);
-        return dotProduct * dotProduct / normal.SquareMagnitude();
-    };
-
-    if (normalSum.SquareMagnitude() < Precision::SquareConfusion()) {
-        return gp_Dir(normalDifference);
+    const double separation = centerDirection.Dot(firstNormal) * centerDirection.Dot(secondNormal);
+    if (separation > 0.0) {
+        return sum;
     }
-    if (normalDifference.SquareMagnitude() < Precision::SquareConfusion()) {
-        return gp_Dir(normalSum);
-    }
-    const double sumAlignment = alignment(normalSum);
-    const double differenceAlignment = alignment(normalDifference);
-    if (sumAlignment > differenceAlignment) {
-        return gp_Dir(normalSum);
-    }
-    if (differenceAlignment > sumAlignment) {
-        return gp_Dir(normalDifference);
+    if (separation < 0.0) {
+        return difference;
     }
 
-    // The center direction does not distinguish the two planes. Keep the acute-angle bisector.
-    return gp_Dir(
-        normalSum.SquareMagnitude() >= normalDifference.SquareMagnitude() ? normalSum : normalDifference
-    );
+    // A center lies on the other face's plane, so neither separates them.
+    return sum.normal.SquareMagnitude() >= difference.normal.SquareMagnitude() ? sum : difference;
 }
 }  // namespace
 
@@ -1654,12 +1673,13 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
             const PlanarFaceInfo firstFace = getPlanarFaceInfo(*shapes[0], precision);
             const PlanarFaceInfo secondFace = getPlanarFaceInfo(*shapes[1], precision);
 
-            SketchNormal = getMidPlaneNormal(firstFace, secondFace);
-            SketchBasePoint = gp_Pnt(
-                (firstFace.center.X() + secondFace.center.X()) * 0.5,
-                (firstFace.center.Y() + secondFace.center.Y()) * 0.5,
-                (firstFace.center.Z() + secondFace.center.Z()) * 0.5
+            const BisectorPlane midPlane = getMidPlane(firstFace, secondFace);
+            const gp_Pnt centersMidPoint(
+                gp_Vec(firstFace.center.XYZ()).Added(secondFace.center.XYZ()).Multiplied(0.5).XYZ()
             );
+
+            SketchNormal = gp_Dir(midPlane.normal);
+            SketchBasePoint = midPlane.project(centersMidPoint);
         } break;
         case mmTangentPlane: {
             if (shapes.size() < 2) {

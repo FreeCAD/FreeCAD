@@ -2892,12 +2892,12 @@ that "MAXGS" needs to be increased.</source>
       <translation>초당 회전수</translation>
     </message>
     <message>
-      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
       <location filename="../ui/MeshRegion.ui" line="26"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
-      <location filename="../ui/ConstraintTie.ui" line="26"/>
+      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
       <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
+      <location filename="../ui/ConstraintTie.ui" line="26"/>
       <source>Parameter</source>
       <translation>매개 변수</translation>
     </message>
@@ -3021,16 +3021,6 @@ Note: has no effect if a solid was selected</source>
       <translation>경계 조건이 상수 전위를 정의하는지 여부</translation>
     </message>
     <message>
-      <location filename="../ui/Electromagnetic.ui" line="348"/>
-      <source>Far field approximation assuming spherical symmetry</source>
-      <translation>구형 대칭을 가정하는 원거리 근사</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="351"/>
-      <source>Far field</source>
-      <translation>원거리</translation>
-    </message>
-    <message>
       <location filename="../ui/Electromagnetic.ui" line="361"/>
       <source>Potential constant</source>
       <translation>전위 상수</translation>
@@ -3044,6 +3034,59 @@ Note: has no effect if a solid was selected</source>
       <location filename="../ui/Electromagnetic.ui" line="388"/>
       <source>Normal component of electric displacement field</source>
       <translation>전기 변위장의 법선 성분</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="608"/>
+      <source>Capacitance</source>
+      <translation>정전용량</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="39"/>
+      <source>Dirichlet</source>
+      <translation>디리클레</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="81"/>
+      <source>To define scalar potential and magnetic vector potential</source>
+      <translation>스칼라 전위와 자기 벡터 전위를 정의합니다</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="113"/>
+      <location filename="../ui/Electromagnetic.ui" line="432"/>
+      <location filename="../ui/Magnetization.ui" line="39"/>
+      <location filename="../ui/CurrentDensity.ui" line="61"/>
+      <location filename="../ui/CurrentDensity.ui" line="246"/>
+      <source>Real</source>
+      <translation>실수부</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="123"/>
+      <location filename="../ui/Electromagnetic.ui" line="442"/>
+      <location filename="../ui/Magnetization.ui" line="49"/>
+      <location filename="../ui/CurrentDensity.ui" line="71"/>
+      <location filename="../ui/CurrentDensity.ui" line="256"/>
+      <source>Imaginary</source>
+      <translation>허수부</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="130"/>
+      <source>Scalar</source>
+      <translation>스칼라</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="162"/>
+      <source>Imaginary part of scalar potential</source>
+      <translation>스칼라 전위의 허수부</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="348"/>
+      <source>Far field approximation assuming spherical symmetry</source>
+      <translation>구형 대칭을 가정하는 원거리 근사</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="351"/>
+      <source>Far field</source>
+      <translation>원거리</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="400"/>
@@ -3084,49 +3127,6 @@ Note: has no effect if a solid was selected</source>
       <location filename="../ui/Electromagnetic.ui" line="583"/>
       <source>Imaginary part of magnetic flux density z-component</source>
       <translation>자속 밀도 z성분의 허수부</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="608"/>
-      <source>Capacitance</source>
-      <translation>정전용량</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="39"/>
-      <source>Dirichlet</source>
-      <translation>디리클레</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="81"/>
-      <source>To define scalar potential and magnetic vector potential</source>
-      <translation>스칼라 전위와 자기 벡터 전위를 정의합니다</translation>
-    </message>
-    <message>
-      <location filename="../ui/Magnetization.ui" line="39"/>
-      <location filename="../ui/CurrentDensity.ui" line="61"/>
-      <location filename="../ui/CurrentDensity.ui" line="246"/>
-      <location filename="../ui/Electromagnetic.ui" line="113"/>
-      <location filename="../ui/Electromagnetic.ui" line="432"/>
-      <source>Real</source>
-      <translation>실수부</translation>
-    </message>
-    <message>
-      <location filename="../ui/Magnetization.ui" line="49"/>
-      <location filename="../ui/CurrentDensity.ui" line="71"/>
-      <location filename="../ui/CurrentDensity.ui" line="256"/>
-      <location filename="../ui/Electromagnetic.ui" line="123"/>
-      <location filename="../ui/Electromagnetic.ui" line="442"/>
-      <source>Imaginary</source>
-      <translation>허수부</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="130"/>
-      <source>Scalar</source>
-      <translation>스칼라</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="162"/>
-      <source>Imaginary part of scalar potential</source>
-      <translation>스칼라 전위의 허수부</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="624"/>
@@ -3194,8 +3194,8 @@ Note: has no effect if a solid was selected</source>
       <translation>빔 단면 매개변수</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <location filename="../ui/ElementRotation1D.ui" line="20"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <source>Cross-Section Parameter</source>
       <translation>단면 매개변수</translation>
     </message>
@@ -3207,13 +3207,13 @@ Note: has no effect if a solid was selected</source>
     </message>
     <message>
       <location filename="../ui/MeshRegion.ui" line="44"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
       <location filename="../ui/ElementGeometry2D.ui" line="44"/>
       <location filename="../ui/ElementGeometry1D.ui" line="48"/>
       <location filename="../ui/ElementGeometry1D.ui" line="74"/>
       <location filename="../ui/ElementGeometry1D.ui" line="111"/>
       <location filename="../ui/ElementGeometry1D.ui" line="148"/>
       <location filename="../ui/ElementGeometry1D.ui" line="174"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -3362,13 +3362,13 @@ Note: has no effect if a solid was selected</source>
       <translation>경계에 대한 법선방향</translation>
     </message>
     <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
-      <location filename="../ui/Magnetization.ui" line="14"/>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
-      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
-      <location filename="../ui/CurrentDensity.ui" line="14"/>
       <location filename="../ui/Electromagnetic.ui" line="14"/>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
+      <location filename="../ui/Magnetization.ui" line="14"/>
+      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
       <location filename="../ui/FlowVelocity.ui" line="14"/>
+      <location filename="../ui/CurrentDensity.ui" line="14"/>
       <location filename="../ui/InitialPressure.ui" line="14"/>
       <source>Analysis Feature Properties</source>
       <translation>해석 기능 속성</translation>
@@ -3469,11 +3469,194 @@ with harmonic/oscillating driving current</source>
       <translation>벡터 전류 밀도를 활성화하려면 사용자 지정 모드를 선택하십시오</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="56"/>
-      <location filename="../ui/CurrentDensity.ui" line="78"/>
+      <location filename="../ui/MeshManipulate.ui" line="43"/>
+      <location filename="../ui/MeshAdvanced.ui" line="121"/>
+      <location filename="../ui/MeshAdvanced.ui" line="526"/>
+      <location filename="../ui/MeshAdvanced.ui" line="646"/>
+      <location filename="../ui/MeshAdvanced.ui" line="682"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="147"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="150"/>
+      <source>Icon</source>
+      <translation>아이콘</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="56"/>
+      <source>Drag the refinement that should be altered into the Manipulate object in the document tree</source>
+      <translation>변경할 세분화를 문서 트리의 조작 객체로 드래그하십시오</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="70"/>
+      <location filename="../ui/MeshAdvanced.ui" line="34"/>
+      <source>Type</source>
+      <translation>유형</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="84"/>
+      <source>Restrict</source>
+      <translation>제한</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="89"/>
+      <source>Threshold</source>
+      <translation>임계값</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="94"/>
+      <location filename="../ui/MeshManipulate.ui" line="609"/>
+      <source>Mean</source>
+      <translation>평균</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="99"/>
+      <source>Gradient</source>
+      <translation>구배</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="104"/>
+      <source>Curvature</source>
+      <translation>곡률</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="109"/>
+      <source>Laplacian</source>
+      <translation>라플라시안</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="138"/>
+      <source>Restrict the application of the child refinement to the selected reference elements.</source>
+      <translation>하위 세분화의 적용을 선택한 참조 요소로 제한합니다.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="160"/>
+      <location filename="../ui/MeshManipulate.ui" line="173"/>
+      <source>Include the boundary of the selected reference elements</source>
+      <translation>선택한 참조 요소의 경계를 포함합니다</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="163"/>
+      <source>Include boundary</source>
+      <translation>경계 포함</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="209"/>
+      <source>Apply a threshold to the child refinements value</source>
+      <translation>하위 세분화 값에 임계값을 적용합니다</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="236"/>
+      <location filename="../ui/MeshAdvanced.ui" line="210"/>
+      <location filename="../ui/MeshAdvanced.ui" line="399"/>
+      <location filename="../ui/MeshDistance.ui" line="68"/>
+      <source>Mesh size when distance = DistanceMaximum</source>
+      <translation>거리 = 최대거리일 때의 메시 크기</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="283"/>
+      <location filename="../ui/MeshAdvanced.ui" line="179"/>
+      <location filename="../ui/MeshDistance.ui" line="115"/>
+      <source>Distance at which the mesh size will be SizeMaximum</source>
+      <translation>메시 크기가 최대 크기가 되는 거리</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="308"/>
+      <source>Output size</source>
+      <translation>출력 크기</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="346"/>
+      <location filename="../ui/MeshAdvanced.ui" line="337"/>
+      <location filename="../ui/MeshAdvanced.ui" line="430"/>
+      <location filename="../ui/MeshDistance.ui" line="178"/>
+      <source>Mesh size when distance &lt; DistanceMinimum</source>
+      <translation>거리 &lt; 최소거리일 때의 메시 크기</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="365"/>
+      <source>Input value</source>
+      <translation>입력 값</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="387"/>
+      <location filename="../ui/MeshAdvanced.ui" line="368"/>
+      <location filename="../ui/MeshDistance.ui" line="219"/>
+      <source>Distance up to which the mesh size will be SizeMinimum</source>
+      <translation>메시 크기가 최소 크기가 되는 최대 거리</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="434"/>
+      <location filename="../ui/MeshAdvanced.ui" line="257"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="59"/>
+      <location filename="../ui/MeshDistance.ui" line="266"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="185"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="91"/>
+      <source>Diagram</source>
+      <translation>다이어그램</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="452"/>
+      <source>Linear interpolation</source>
+      <translation>선형 보간</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="462"/>
+      <location filename="../ui/MeshDistance.ui" line="326"/>
+      <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
+      <translation>최소 크기와 최대 크기 사이의 메시 크기 보간을 선형 함수 또는 시그모이드 함수로 정의할지 결정합니다</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="472"/>
+      <source>Stop at max input</source>
+      <translation>최대 입력에서 정지</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="493"/>
+      <source>Calculates the mean value of child refinement G:
+
+F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
+</source>
+      <translation>하위 세분화 G의 평균값을 계산합니다: 
+
+F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
+</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="508"/>
+      <location filename="../ui/MeshManipulate.ui" line="617"/>
+      <location filename="../ui/MeshManipulate.ui" line="689"/>
+      <location filename="../ui/MeshManipulate.ui" line="761"/>
+      <source>Delta</source>
+      <translation>델타</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="527"/>
+      <location filename="../ui/MeshManipulate.ui" line="636"/>
+      <location filename="../ui/MeshManipulate.ui" line="708"/>
+      <location filename="../ui/MeshManipulate.ui" line="780"/>
+      <source>Delta in the aforementioned equation</source>
+      <translation>앞서 언급한 수식의 델타 값</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="565"/>
+      <source>Compute the finite difference gradient of child refinement G:
+
+F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
+</source>
+      <translation>하위 세분화 G의 유한 차분 구배를 계산합니다: 
+
+F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
+</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="580"/>
+      <source>Kind</source>
+      <translation>종류</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="594"/>
       <location filename="../ui/Electromagnetic.ui" line="181"/>
       <location filename="../ui/Electromagnetic.ui" line="449"/>
-      <location filename="../ui/MeshManipulate.ui" line="594"/>
+      <location filename="../ui/Magnetization.ui" line="56"/>
+      <location filename="../ui/CurrentDensity.ui" line="78"/>
       <source>X</source>
       <translation>X</translation>
     </message>
@@ -3488,11 +3671,11 @@ with harmonic/oscillating driving current</source>
       <translation>전류 밀도 x성분의 허수부</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="107"/>
-      <location filename="../ui/CurrentDensity.ui" line="129"/>
+      <location filename="../ui/MeshManipulate.ui" line="599"/>
       <location filename="../ui/Electromagnetic.ui" line="234"/>
       <location filename="../ui/Electromagnetic.ui" line="500"/>
-      <location filename="../ui/MeshManipulate.ui" line="599"/>
+      <location filename="../ui/Magnetization.ui" line="107"/>
+      <location filename="../ui/CurrentDensity.ui" line="129"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
@@ -3507,11 +3690,11 @@ with harmonic/oscillating driving current</source>
       <translation>전류 밀도 y성분의 허수부</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="158"/>
-      <location filename="../ui/CurrentDensity.ui" line="180"/>
+      <location filename="../ui/MeshManipulate.ui" line="604"/>
       <location filename="../ui/Electromagnetic.ui" line="287"/>
       <location filename="../ui/Electromagnetic.ui" line="551"/>
-      <location filename="../ui/MeshManipulate.ui" line="604"/>
+      <location filename="../ui/Magnetization.ui" line="158"/>
+      <location filename="../ui/CurrentDensity.ui" line="180"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
@@ -3552,18 +3735,18 @@ with harmonic/oscillating driving current</source>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
-      <location filename="../ui/MeshAdvanced.ui" line="14"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="14"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="14"/>
-      <location filename="../ui/MeshPreview.ui" line="14"/>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
-      <location filename="../ui/MeshShape.ui" line="14"/>
-      <location filename="../ui/MeshPreviewSettings.ui" line="14"/>
       <location filename="../ui/MeshManipulate.ui" line="14"/>
+      <location filename="../ui/MeshShape.ui" line="14"/>
+      <location filename="../ui/MeshAdvanced.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="14"/>
       <location filename="../ui/MeshDistance.ui" line="14"/>
+      <location filename="../ui/MeshPreviewSettings.ui" line="14"/>
+      <location filename="../ui/MeshPreview.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="14"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="14"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
       <source>Form</source>
       <translation>양식</translation>
     </message>
@@ -3586,8 +3769,8 @@ with harmonic/oscillating driving current</source>
       <translation>각 프레임마다 하나의 필드</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
       <source>Index</source>
       <translation>인덱스</translation>
     </message>
@@ -3606,12 +3789,6 @@ with harmonic/oscillating driving current</source>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="93"/>
       <source>One Y field for each frame</source>
       <translation>각 프레임마다 하나의 Y 필드</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="34"/>
-      <location filename="../ui/MeshManipulate.ui" line="70"/>
-      <source>Type</source>
-      <translation>유형</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="48"/>
@@ -3647,66 +3824,15 @@ with harmonic/oscillating driving current</source>
       <translation>선택한 참조 모서리까지의 거리를 계산하고 가장 가까운 곡선에 수직 및 평행한 방향으로 메시 크기를 독립적으로 지정합니다. 효율을 위해 각 곡선은 실제 거리가 계산되는 샘플링 점 집합으로 대체됩니다.</translation>
     </message>
     <message>
-      <location filename="../ui/MeshAdvanced.ui" line="121"/>
-      <location filename="../ui/MeshAdvanced.ui" line="526"/>
-      <location filename="../ui/MeshAdvanced.ui" line="646"/>
-      <location filename="../ui/MeshAdvanced.ui" line="682"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="147"/>
-      <location filename="../ui/MeshManipulate.ui" line="43"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="150"/>
-      <source>Icon</source>
-      <translation>아이콘</translation>
-    </message>
-    <message>
       <location filename="../ui/MeshAdvanced.ui" line="134"/>
       <location filename="../ui/MeshAdvanced.ui" line="695"/>
       <source>Anisotropic mesh refinements work only with the BAMG (2D) and MMG3D (3D) algorithms</source>
       <translation>비등방성 메시 세분화는 BAMG(2D) 및 MMG3D(3D) 알고리즘에서만 작동합니다</translation>
     </message>
     <message>
-      <location filename="../ui/MeshAdvanced.ui" line="179"/>
-      <location filename="../ui/MeshManipulate.ui" line="283"/>
-      <location filename="../ui/MeshDistance.ui" line="115"/>
-      <source>Distance at which the mesh size will be SizeMaximum</source>
-      <translation>메시 크기가 최대 크기가 되는 거리</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="210"/>
-      <location filename="../ui/MeshAdvanced.ui" line="399"/>
-      <location filename="../ui/MeshManipulate.ui" line="236"/>
-      <location filename="../ui/MeshDistance.ui" line="68"/>
-      <source>Mesh size when distance = DistanceMaximum</source>
-      <translation>거리 = 최대거리일 때의 메시 크기</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="257"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="185"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="59"/>
-      <location filename="../ui/MeshManipulate.ui" line="434"/>
-      <location filename="../ui/MeshDistance.ui" line="266"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="91"/>
-      <source>Diagram</source>
-      <translation>다이어그램</translation>
-    </message>
-    <message>
       <location filename="../ui/MeshAdvanced.ui" line="315"/>
       <source>Size Tangent</source>
       <translation>접선 크기</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="337"/>
-      <location filename="../ui/MeshAdvanced.ui" line="430"/>
-      <location filename="../ui/MeshManipulate.ui" line="346"/>
-      <location filename="../ui/MeshDistance.ui" line="178"/>
-      <source>Mesh size when distance &lt; DistanceMinimum</source>
-      <translation>거리 &lt; 최소거리일 때의 메시 크기</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="368"/>
-      <location filename="../ui/MeshManipulate.ui" line="387"/>
-      <location filename="../ui/MeshDistance.ui" line="219"/>
-      <source>Distance up to which the mesh size will be SizeMinimum</source>
-      <translation>메시 크기가 최소 크기가 되는 최대 거리</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="449"/>
@@ -3824,59 +3950,6 @@ Example: "F2 + Sin(z)"</source>
       <translation>FEM 후처리 파이프라인의 데이터 필드를 메시 크기로 사용합니다. 이를 통해 결과의 물리적 거동에 따라 메시를 조정할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="41"/>
-      <source>Create a defined number of mesh nodes on edges with a structured algorithm.</source>
-      <translation>구조화된 알고리즘으로 모서리에 지정된 수의 메시 노드를 만듭니다.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="89"/>
-      <source>Number of nodes on the edge</source>
-      <translation>모서리의 노드 수</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
-      <source>Progression</source>
-      <translation>등비</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="124"/>
-      <source>Invert</source>
-      <translation>반전</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="137"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="245"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="222"/>
-      <source>Nodes</source>
-      <translation>노드</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="150"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="273"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="250"/>
-      <source>Bump</source>
-      <translation>범프</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="163"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="268"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
-      <source>Constant</source>
-      <translation>상수</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="195"/>
-      <source>Coefficient</source>
-      <translation>계수</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="217"/>
-      <source>Coefficient for bump/progression growth rate</source>
-      <translation>범프/등비 성장 비율의 계수</translation>
-    </message>
-    <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="95"/>
       <source>Select multiple faces with 3 or 4 edges, optionally with corner vertices of 3-sided faces.</source>
       <translation>3개 또는 4개 모서리를 가진 여러 면을 선택하세요. 3변 면의 꼭짓점을 선택할 수도 있습니다.</translation>
@@ -3942,10 +4015,31 @@ Notes:
       <translation>초한 곡선 자동 적용</translation>
     </message>
     <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="245"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="137"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="222"/>
+      <source>Nodes</source>
+      <translation>노드</translation>
+    </message>
+    <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="252"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
       <source>Distribution</source>
       <translation>분포</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="268"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="163"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
+      <source>Constant</source>
+      <translation>상수</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="273"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="150"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="250"/>
+      <source>Bump</source>
+      <translation>범프</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="278"/>
@@ -3954,10 +4048,73 @@ Notes:
       <translation>반전된 범프</translation>
     </message>
     <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
+      <source>Progression</source>
+      <translation>등비</translation>
+    </message>
+    <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="288"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="265"/>
       <source>Progression Inverted</source>
       <translation>반전된 등비</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="41"/>
+      <source>Define mesh element size based on the distance to the chosen reference geometries.</source>
+      <translation>선택한 참조 형상까지의 거리를 기반으로 메시 요소 크기를 정의합니다.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="140"/>
+      <source>Size</source>
+      <translation>크기</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="284"/>
+      <source>Interpolation</source>
+      <translation>보간</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="291"/>
+      <source>Sampling size</source>
+      <translation>샘플링 크기</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="304"/>
+      <source>Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</source>
+      <translation>곡선 및 면을 이산화하는 데 사용되는 샘플링 점 수입니다. 면의 경우 방향당 샘플링 크기입니다.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="329"/>
+      <source>Linear</source>
+      <translation>선형</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="26"/>
+      <source>Global refinement preview settings</source>
+      <translation type="unfinished">Global refinement preview settings</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="35"/>
+      <location filename="../ui/MeshPreviewSettings.ui" line="51"/>
+      <source>Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</source>
+      <translation>세분화 작업 대화 상자를 열 때 세분화 메시 크기의 시각화를 자동으로 활성화합니다.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="54"/>
+      <source>Auto enable on open</source>
+      <translation>열 때 자동 활성화</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="80"/>
+      <source>Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</source>
+      <translation>미리보기 메시의 세밀도를 결정합니다. 값이 클수록 더 미세한 메시(작은 메시 요소)가 됩니다</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="83"/>
+      <source>Preview mesh fineness</source>
+      <translation>미리보기 메시 세밀도</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="96"/>
@@ -4007,186 +4164,29 @@ Notes:
       <translation>…</translation>
     </message>
     <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="26"/>
-      <source>Global refinement preview settings</source>
-      <translation type="unfinished">Global refinement preview settings</translation>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="41"/>
+      <source>Create a defined number of mesh nodes on edges with a structured algorithm.</source>
+      <translation>구조화된 알고리즘으로 모서리에 지정된 수의 메시 노드를 만듭니다.</translation>
     </message>
     <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="35"/>
-      <location filename="../ui/MeshPreviewSettings.ui" line="51"/>
-      <source>Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</source>
-      <translation>세분화 작업 대화 상자를 열 때 세분화 메시 크기의 시각화를 자동으로 활성화합니다.</translation>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="89"/>
+      <source>Number of nodes on the edge</source>
+      <translation>모서리의 노드 수</translation>
     </message>
     <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="54"/>
-      <source>Auto enable on open</source>
-      <translation>열 때 자동 활성화</translation>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="124"/>
+      <source>Invert</source>
+      <translation>반전</translation>
     </message>
     <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="80"/>
-      <source>Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</source>
-      <translation>미리보기 메시의 세밀도를 결정합니다. 값이 클수록 더 미세한 메시(작은 메시 요소)가 됩니다</translation>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="195"/>
+      <source>Coefficient</source>
+      <translation>계수</translation>
     </message>
     <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="83"/>
-      <source>Preview mesh fineness</source>
-      <translation>미리보기 메시 세밀도</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="56"/>
-      <source>Drag the refinement that should be altered into the Manipulate object in the document tree</source>
-      <translation>변경할 세분화를 문서 트리의 조작 객체로 드래그하십시오</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="84"/>
-      <source>Restrict</source>
-      <translation>제한</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="89"/>
-      <source>Threshold</source>
-      <translation>임계값</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="94"/>
-      <location filename="../ui/MeshManipulate.ui" line="609"/>
-      <source>Mean</source>
-      <translation>평균</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="99"/>
-      <source>Gradient</source>
-      <translation>구배</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="104"/>
-      <source>Curvature</source>
-      <translation>곡률</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="109"/>
-      <source>Laplacian</source>
-      <translation>라플라시안</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="138"/>
-      <source>Restrict the application of the child refinement to the selected reference elements.</source>
-      <translation>하위 세분화의 적용을 선택한 참조 요소로 제한합니다.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="160"/>
-      <location filename="../ui/MeshManipulate.ui" line="173"/>
-      <source>Include the boundary of the selected reference elements</source>
-      <translation>선택한 참조 요소의 경계를 포함합니다</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="163"/>
-      <source>Include boundary</source>
-      <translation>경계 포함</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="209"/>
-      <source>Apply a threshold to the child refinements value</source>
-      <translation>하위 세분화 값에 임계값을 적용합니다</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="308"/>
-      <source>Output size</source>
-      <translation>출력 크기</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="365"/>
-      <source>Input value</source>
-      <translation>입력 값</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="452"/>
-      <source>Linear interpolation</source>
-      <translation>선형 보간</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="462"/>
-      <location filename="../ui/MeshDistance.ui" line="326"/>
-      <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
-      <translation>최소 크기와 최대 크기 사이의 메시 크기 보간을 선형 함수 또는 시그모이드 함수로 정의할지 결정합니다</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="472"/>
-      <source>Stop at max input</source>
-      <translation>최대 입력에서 정지</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="493"/>
-      <source>Calculates the mean value of child refinement G:
-
-F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
-</source>
-      <translation>하위 세분화 G의 평균값을 계산합니다: 
-
-F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
-</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="508"/>
-      <location filename="../ui/MeshManipulate.ui" line="617"/>
-      <location filename="../ui/MeshManipulate.ui" line="689"/>
-      <location filename="../ui/MeshManipulate.ui" line="761"/>
-      <source>Delta</source>
-      <translation>델타</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="527"/>
-      <location filename="../ui/MeshManipulate.ui" line="636"/>
-      <location filename="../ui/MeshManipulate.ui" line="708"/>
-      <location filename="../ui/MeshManipulate.ui" line="780"/>
-      <source>Delta in the aforementioned equation</source>
-      <translation>앞서 언급한 수식의 델타 값</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="565"/>
-      <source>Compute the finite difference gradient of child refinement G:
-
-F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
-</source>
-      <translation>하위 세분화 G의 유한 차분 구배를 계산합니다: 
-
-F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
-</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="580"/>
-      <source>Kind</source>
-      <translation>종류</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="41"/>
-      <source>Define mesh element size based on the distance to the chosen reference geometries.</source>
-      <translation>선택한 참조 형상까지의 거리를 기반으로 메시 요소 크기를 정의합니다.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="140"/>
-      <source>Size</source>
-      <translation>크기</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="284"/>
-      <source>Interpolation</source>
-      <translation>보간</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="291"/>
-      <source>Sampling size</source>
-      <translation>샘플링 크기</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="304"/>
-      <source>Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</source>
-      <translation>곡선 및 면을 이산화하는 데 사용되는 샘플링 점 수입니다. 면의 경우 방향당 샘플링 크기입니다.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="329"/>
-      <source>Linear</source>
-      <translation>선형</translation>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="217"/>
+      <source>Coefficient for bump/progression growth rate</source>
+      <translation>범프/등비 성장 비율의 계수</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
@@ -4352,14 +4352,14 @@ Notes:
       <translation>해석을 만들거나 활성화해야 합니다</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="155"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="899"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="155"/>
       <source>A dialog is already open in the task panel</source>
       <translation>테스크 패널에 이미 다이얼로그가 열려있습니다</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="156"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="900"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="156"/>
       <source>Do you want to close this dialog?</source>
       <translation>다이얼로그를 닫으시겠습니까?</translation>
     </message>
@@ -6717,14 +6717,14 @@ No matching module was found in the current Python path.</source>
       <translation>{} 편집</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="56"/>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
+      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="56"/>
       <source>Show Plot</source>
       <translation>플롯 표시</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="59"/>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
+      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="59"/>
       <source>Show Data</source>
       <translation>데이터 표시</translation>
     </message>
@@ -6877,6 +6877,11 @@ No matching module was found in the current Python path.</source>
       <location filename="../../../femviewprovider/view_post_table.py" line="209"/>
       <source>default</source>
       <translation>기본값</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/base_femlogtaskpanel.py" line="243"/>
+      <source>Run</source>
+      <translation>실행</translation>
     </message>
   </context>
   <context>
@@ -7398,11 +7403,11 @@ No matching module was found in the current Python path.</source>
       <translation>요소 지우기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1479"/>
       <location filename="../../TaskCreateElementSet.cpp" line="244"/>
       <location filename="../../TaskCreateElementSet.cpp" line="255"/>
       <location filename="../../TaskCreateElementSet.cpp" line="515"/>
       <location filename="../../TaskCreateElementSet.cpp" line="612"/>
+      <location filename="../../Command.cpp" line="1479"/>
       <source>Wrong selection</source>
       <translation>잘못된 선택</translation>
     </message>
@@ -7811,8 +7816,8 @@ Leave blank to use default Python executable</source>
   <context>
     <name>TaskPostGlyph</name>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <location filename="../ui/TaskPostHistogram.ui" line="37"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <location filename="../ui/TaskPostGlyph.ui" line="22"/>
       <location filename="../ui/TaskPostGlyph.ui" line="38"/>
       <source>The form of the glyph</source>
@@ -7854,10 +7859,10 @@ Leave blank to use default Python executable</source>
       <translation>구</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="81"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="97"/>
       <location filename="../ui/TaskPostHistogram.ui" line="66"/>
       <location filename="../ui/TaskPostHistogram.ui" line="82"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="81"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="97"/>
       <location filename="../ui/TaskPostGlyph.ui" line="75"/>
       <location filename="../ui/TaskPostGlyph.ui" line="91"/>
       <source>Which vector field is used to orient the glyphs</source>
@@ -7869,8 +7874,8 @@ Leave blank to use default Python executable</source>
       <translation>방향</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <location filename="../ui/TaskPostHistogram.ui" line="86"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <location filename="../ui/TaskPostGlyph.ui" line="95"/>
       <location filename="../ui/TaskPostGlyph.ui" line="148"/>
       <source>None</source>
@@ -7893,8 +7898,8 @@ Leave blank to use default Python executable</source>
       <translation>자료</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <location filename="../ui/TaskPostHistogram.ui" line="176"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <location filename="../ui/TaskPostGlyph.ui" line="158"/>
       <location filename="../ui/TaskPostGlyph.ui" line="176"/>
       <source>A constant multiplier the glyphs are scaled with</source>
@@ -7911,8 +7916,8 @@ Leave blank to use default Python executable</source>
       <translation>설정된 배율의 ±50%만큼 배율을 변경합니다</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="145"/>
       <location filename="../ui/TaskPostHistogram.ui" line="166"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="145"/>
       <location filename="../ui/TaskPostGlyph.ui" line="226"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
       <translation>스케일 데이터가 벡터인 경우 이 속성은 글리프를 벡터 크기로 스케일할지 개별 구성 요소별로 스케일할지 결정합니다</translation>
@@ -8005,27 +8010,27 @@ Leave blank to use default Python executable</source>
       <translation>누적</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="64"/>
       <location filename="../ui/TaskPostHistogram.ui" line="103"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="64"/>
       <source>Legend</source>
       <translation>범례</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <location filename="../ui/TaskPostLineplot.ui" line="47"/>
       <location filename="../ui/TaskPostLineplot.ui" line="57"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <source>Show</source>
       <translation>표시</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="117"/>
       <location filename="../ui/TaskPostHistogram.ui" line="138"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="117"/>
       <source>Labels</source>
       <translation>레이블</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="135"/>
       <location filename="../ui/TaskPostHistogram.ui" line="156"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="135"/>
       <source>Y-axis</source>
       <translation>Y축</translation>
     </message>
@@ -8035,8 +8040,8 @@ Leave blank to use default Python executable</source>
       <translation>X축</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="158"/>
       <location filename="../ui/TaskPostHistogram.ui" line="179"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="158"/>
       <source>Title</source>
       <translation>제목</translation>
     </message>
@@ -8501,34 +8506,34 @@ Leave blank to use default Python executable</source>
     <name>PostHistogramEdit</name>
     <message>
       <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
       <source>Form</source>
       <translation>양식</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="40"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="75"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="40"/>
       <source>Outline draw style (None does not draw outlines)</source>
       <translation>윤곽선 그리기 스타일(None은 윤곽선을 그리지 않음)</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="44"/>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="81"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="51"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="79"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="44"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="81"/>
       <source>None</source>
       <translation>없음</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="58"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="129"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="58"/>
       <source>Width of all lines (outline and hatch)</source>
       <translation>모든 선의 너비(윤곽선 및 해칭)</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="77"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="47"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="77"/>
       <source>Hatch pattern</source>
       <translation>해칭 패턴</translation>
     </message>
@@ -8548,8 +8553,8 @@ Leave blank to use default Python executable</source>
       <translation>막대</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="122"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="62"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="122"/>
       <source>Legend</source>
       <translation>범례</translation>
     </message>
@@ -8559,8 +8564,8 @@ Leave blank to use default Python executable</source>
       <translation>모든 선의 색상(막대 윤곽 및 해칭)</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="148"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="100"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="148"/>
       <source>Color of the bars in histogram</source>
       <translation>히스토그램 막대의 색상</translation>
     </message>
@@ -8720,141 +8725,6 @@ Leave blank to use default Python executable</source>
     </message>
   </context>
   <context>
-    <name>self.sel_master</name>
-    <message>
-      <location filename="../../../femtaskpanels/task_constraint_tie.py" line="79"/>
-      <source>Master Geometry Reference Selector</source>
-      <translation type="unfinished">Master Geometry Reference Selector</translation>
-    </message>
-  </context>
-  <context>
-    <name>self.sel_slave</name>
-    <message>
-      <location filename="../../../femtaskpanels/task_constraint_tie.py" line="84"/>
-      <source>Slave Geometry Reference Selector</source>
-      <translation type="unfinished">Slave Geometry Reference Selector</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemToolsCcx</name>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="421"/>
-      <source>No or wrong CalculiX binary ccx</source>
-      <translation>CalculiX 바이너리 ccx가 없거나 잘못되었습니다</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="455"/>
-      <source>FEM: wrong ccx binary</source>
-      <translation>FEM: 잘못된 ccx 바이너리</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="468"/>
-      <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
-      <translation>FEM: CalculiX 바이너리 ccx '{}'을 찾을 수 없습니다. FEM 환경설정의 CalculiX 탭에서 CalculiX 바이너리 ccx 경로를 지정하세요.</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="480"/>
-      <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
-      <translation>FEM: CalculiX ccx '{}' 출력 '{}'에 예상 문구 '{}'가 포함되어 있지 않습니다. ccx 바이너리 실행 중 문제가 있습니다. FreeCAD 없이 ccx가 단독으로 실행되는지 확인하세요.</translation>
-    </message>
-  </context>
-  <context>
-    <name>SolverElmer</name>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="14"/>
-      <source>Solver Elmer Control</source>
-      <translation>Elmer 솔버 제어</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="20"/>
-      <source>Working directory</source>
-      <translation>작업 디렉터리</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="35"/>
-      <source>Write</source>
-      <translation>쓰기</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="45"/>
-      <source>Edit</source>
-      <translation>편집</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="56"/>
-      <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation>작업 디렉터리 경로입니다. 비워두면 사용자 환경설정을 사용합니다</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="74"/>
-      <source>Solver Parameters</source>
-      <translation>솔버 매개변수</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="82"/>
-      <source>Simulation type</source>
-      <translation>시뮬레이션 유형</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="122"/>
-      <source>Time</source>
-      <translation>시간</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="129"/>
-      <source>Solver Version</source>
-      <translation>솔버 버전</translation>
-    </message>
-  </context>
-  <context>
-    <name>SolverZ88</name>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="14"/>
-      <source>Solver Z88 Control</source>
-      <translation>솔버 Z88 제어</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="20"/>
-      <source>Working directory</source>
-      <translation>작업 디렉터리</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="35"/>
-      <source>Write</source>
-      <translation>쓰기</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="45"/>
-      <source>Edit</source>
-      <translation>편집</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="56"/>
-      <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation>작업 디렉터리 경로입니다. 비워두면 사용자 환경설정을 사용합니다</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="74"/>
-      <source>Solver Parameters</source>
-      <translation>솔버 매개변수</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="82"/>
-      <source>Solver type</source>
-      <translation>솔버 유형</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="122"/>
-      <source>Time</source>
-      <translation>시간</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="129"/>
-      <source>Solver Version</source>
-      <translation>솔버 버전</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_ConstraintElectromagnetic</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="268"/>
@@ -9001,25 +8871,176 @@ Leave blank to use default Python executable</source>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintContact</name>
+    <name>self.sel_master</name>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="643"/>
-      <source>Input Error</source>
-      <translation>입력 오류</translation>
+      <location filename="../../../femtaskpanels/task_constraint_tie.py" line="79"/>
+      <source>Master Geometry Reference Selector</source>
+      <translation type="unfinished">Master Geometry Reference Selector</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintTemperature</name>
+    <name>self.sel_slave</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="406"/>
-      <source>Input Error</source>
-      <translation>입력 오류</translation>
+      <location filename="../../../femtaskpanels/task_constraint_tie.py" line="84"/>
+      <source>Slave Geometry Reference Selector</source>
+      <translation type="unfinished">Slave Geometry Reference Selector</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemToolsCcx</name>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="421"/>
+      <source>No or wrong CalculiX binary ccx</source>
+      <translation>CalculiX 바이너리 ccx가 없거나 잘못되었습니다</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="455"/>
+      <source>FEM: wrong ccx binary</source>
+      <translation>FEM: 잘못된 ccx 바이너리</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="468"/>
+      <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
+      <translation>FEM: CalculiX 바이너리 ccx '{}'을 찾을 수 없습니다. FEM 환경설정의 CalculiX 탭에서 CalculiX 바이너리 ccx 경로를 지정하세요.</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="480"/>
+      <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
+      <translation>FEM: CalculiX ccx '{}' 출력 '{}'에 예상 문구 '{}'가 포함되어 있지 않습니다. ccx 바이너리 실행 중 문제가 있습니다. FreeCAD 없이 ccx가 단독으로 실행되는지 확인하세요.</translation>
+    </message>
+  </context>
+  <context>
+    <name>SolverElmer</name>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="14"/>
+      <source>Solver Elmer Control</source>
+      <translation>Elmer 솔버 제어</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="20"/>
+      <source>Working directory</source>
+      <translation>작업 디렉터리</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="35"/>
+      <source>Write</source>
+      <translation>쓰기</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="45"/>
+      <source>Edit</source>
+      <translation>편집</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="56"/>
+      <source>Path to working directory. Leave blank to use user preferences</source>
+      <translation>작업 디렉터리 경로입니다. 비워두면 사용자 환경설정을 사용합니다</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="74"/>
+      <source>Solver Parameters</source>
+      <translation>솔버 매개변수</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="82"/>
+      <source>Simulation type</source>
+      <translation>시뮬레이션 유형</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="122"/>
+      <source>Time</source>
+      <translation>시간</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="129"/>
+      <source>Solver Version</source>
+      <translation>솔버 버전</translation>
+    </message>
+  </context>
+  <context>
+    <name>SolverZ88</name>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="14"/>
+      <source>Solver Z88 Control</source>
+      <translation>솔버 Z88 제어</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="20"/>
+      <source>Working directory</source>
+      <translation>작업 디렉터리</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="35"/>
+      <source>Write</source>
+      <translation>쓰기</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="45"/>
+      <source>Edit</source>
+      <translation>편집</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="56"/>
+      <source>Path to working directory. Leave blank to use user preferences</source>
+      <translation>작업 디렉터리 경로입니다. 비워두면 사용자 환경설정을 사용합니다</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="74"/>
+      <source>Solver Parameters</source>
+      <translation>솔버 매개변수</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="82"/>
+      <source>Solver type</source>
+      <translation>솔버 유형</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="122"/>
+      <source>Time</source>
+      <translation>시간</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="129"/>
+      <source>Solver Version</source>
+      <translation>솔버 버전</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskDlgFemConstraintInitialTemperature</name>
     <message>
       <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="121"/>
+      <source>Input Error</source>
+      <translation>입력 오류</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintPulley</name>
+    <message>
+      <location filename="../../TaskFemConstraintPulley.cpp" line="229"/>
+      <source>Input Error</source>
+      <translation>입력 오류</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintGear</name>
+    <message>
+      <location filename="../../TaskFemConstraintGear.cpp" line="355"/>
+      <source>Input Error</source>
+      <translation>입력 오류</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintTransform</name>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="649"/>
+      <source>Input Error</source>
+      <translation>입력 오류</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintDisplacement</name>
+    <message>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="632"/>
       <source>Input Error</source>
       <translation>입력 오류</translation>
     </message>
@@ -9038,73 +9059,9 @@ Leave blank to use default Python executable</source>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintTransform</name>
-    <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="649"/>
-      <source>Input Error</source>
-      <translation>입력 오류</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintForce</name>
-    <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="469"/>
-      <source>Input Error</source>
-      <translation>입력 오류</translation>
-    </message>
-  </context>
-  <context>
     <name>FemGui::TaskDlgFemConstraintSpring</name>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="334"/>
-      <source>Input Error</source>
-      <translation>입력 오류</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintRigidBody</name>
-    <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="809"/>
-      <source>Input Error</source>
-      <translation>입력 오류</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintDisplacement</name>
-    <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="632"/>
-      <source>Input Error</source>
-      <translation>입력 오류</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
-    <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1159"/>
-      <source>Input Error</source>
-      <translation>입력 오류</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintGear</name>
-    <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="355"/>
-      <source>Input Error</source>
-      <translation>입력 오류</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintPulley</name>
-    <message>
-      <location filename="../../TaskFemConstraintPulley.cpp" line="229"/>
-      <source>Input Error</source>
-      <translation>입력 오류</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintBearing</name>
-    <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="392"/>
       <source>Input Error</source>
       <translation>입력 오류</translation>
     </message>
@@ -9118,9 +9075,33 @@ Leave blank to use default Python executable</source>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgPost</name>
+    <name>FemGui::TaskDlgFemConstraintBearing</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="403"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="392"/>
+      <source>Input Error</source>
+      <translation>입력 오류</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintTemperature</name>
+    <message>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="406"/>
+      <source>Input Error</source>
+      <translation>입력 오류</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintForce</name>
+    <message>
+      <location filename="../../TaskFemConstraintForce.cpp" line="469"/>
+      <source>Input Error</source>
+      <translation>입력 오류</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintRigidBody</name>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="809"/>
       <source>Input Error</source>
       <translation>입력 오류</translation>
     </message>
@@ -9129,6 +9110,30 @@ Leave blank to use default Python executable</source>
     <name>FemGui::TaskDlgFemConstraintPressure</name>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="321"/>
+      <source>Input Error</source>
+      <translation>입력 오류</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintContact</name>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="643"/>
+      <source>Input Error</source>
+      <translation>입력 오류</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgPost</name>
+    <message>
+      <location filename="../../TaskPostBoxes.cpp" line="403"/>
+      <source>Input Error</source>
+      <translation>입력 오류</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
+    <message>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1159"/>
       <source>Input Error</source>
       <translation>입력 오류</translation>
     </message>

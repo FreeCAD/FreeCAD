@@ -595,8 +595,10 @@ class TaskPanelPage(object):
     def tcComboChanged(self, newIndex):
         if self.obj is not None and self.tcEditor:
             if newIndex == self.combo.count() - 1:
-                # Special entry: new tool controller. Show the tool dock and reset combo
-                dock = ToolBitLibraryDock(self.job, True)
+                # Special entry: new tool controller. Show the tool dock and reset combo.
+                # One toolbit at a time: the operation adopts the controller that gets
+                # added, and it can only use one.
+                dock = ToolBitLibraryDock(self.job, True, askToolNumber=True, singleSelection=True)
                 dock.open()
                 self.resetTCCombo()
             elif newIndex == self.combo.count() - 2:

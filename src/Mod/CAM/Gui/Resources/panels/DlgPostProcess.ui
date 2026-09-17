@@ -229,7 +229,35 @@
          </property>
          <column>
           <property name="text">
+           <string>#</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
            <string>Operation</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Tool</string>
+          </property>
+          <property name="textAlignment">
+           <set>AlignCenter</set>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Tool Controller</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Coolant</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Time</string>
           </property>
          </column>
         </widget>

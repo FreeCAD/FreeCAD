@@ -63,87 +63,87 @@
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="217"/>
+      <location filename="../../StartView.cpp" line="226"/>
       <source>Open File</source>
       <translation>ເປີດໄຟລ໌</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="227"/>
+      <location filename="../../StartView.cpp" line="236"/>
       <source>Assembly</source>
       <translation>ການປະກອບຊິ້ນສ່ວນ</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="232"/>
+      <location filename="../../StartView.cpp" line="241"/>
       <source>2D Draft</source>
       <translation>ຮ່າງ 2D</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="232"/>
+      <location filename="../../StartView.cpp" line="241"/>
       <source>Creates a 2D Draft document</source>
       <translation>ສ້າງເອກະສານຮ່າງ 2D</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="235"/>
+      <location filename="../../StartView.cpp" line="244"/>
       <source>BIM/Architecture</source>
       <translation>BIM/ສະຖາປັດຕະຍະກຳ</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="212"/>
+      <location filename="../../StartView.cpp" line="221"/>
       <source>Empty File</source>
       <translation>ໄຟລ໌ວ່າງ</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="213"/>
+      <location filename="../../StartView.cpp" line="222"/>
       <source>Creates a new empty FreeCAD file</source>
       <translation>ສ້າງໄຟລ໌ FreeCAD ໃໝ່ທີ່ວ່າງເປົ່າ</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="218"/>
+      <location filename="../../StartView.cpp" line="227"/>
       <source>Opens an existing CAD file or 3D model</source>
       <translation>ເປີດໄຟລ໌ CAD ຫຼື ແບບຈຳລອງ 3D ທີ່ມີຢູ່ແລ້ວ</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="222"/>
+      <location filename="../../StartView.cpp" line="231"/>
       <source>Parametric Body</source>
       <translation>ວັດຖຸພາຣາເມທຣິກ</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="223"/>
+      <location filename="../../StartView.cpp" line="232"/>
       <source>Creates a body with the Part Design workbench</source>
       <translation>ສ້າງວັດຖຸດ້ວຍໜ້າວຽກການອອກແບບຊິ້ນສ່ວນ (Part Design)</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="228"/>
+      <location filename="../../StartView.cpp" line="237"/>
       <source>Creates an assembly project</source>
       <translation>ສ້າງໂຄງການປະກອບຊິ້ນສ່ວນ</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="236"/>
+      <location filename="../../StartView.cpp" line="245"/>
       <source>Creates an architectural project</source>
       <translation>ສ້າງໂຄງການສະຖາປັດຕະຍະກຳ</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="520"/>
+      <location filename="../../StartView.cpp" line="529"/>
       <source>New File</source>
       <translation>ໄຟລ໌ໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="522"/>
+      <location filename="../../StartView.cpp" line="531"/>
       <source>Examples</source>
       <translation>ຕົວຢ່າງ</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="524"/>
+      <location filename="../../StartView.cpp" line="533"/>
       <source>Recent Files</source>
       <translation>ໄຟລ໌ທີ່ໃຊ້ຫວ່າງແລ້ວນີ້</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="539"/>
+      <location filename="../../StartView.cpp" line="548"/>
       <source>Open First Start Setup</source>
       <translation>ເປີດການຕັ້ງຄ່າການເລີ່ມຕົ້ນຄັ້ງທຳອິດ</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="540"/>
+      <location filename="../../StartView.cpp" line="549"/>
       <source>Do not show this Start page again (start with blank screen)</source>
       <translation>ບໍ່ຕ້ອງສະແດງໜ້າເລີ່ມຕົ້ນນີ້ອີກ (ເລີ່ມດ້ວຍໜ້າຈໍວ່າງ)</translation>
     </message>
@@ -151,7 +151,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="514"/>
+      <location filename="../../StartView.cpp" line="523"/>
       <source>Start</source>
       <translation>ເລີ່ມຕົ້ນ</translation>
     </message>
@@ -261,7 +261,7 @@ Multiple folders can be added using ";;" to separate paths.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppStartGui.cpp" line="139"/>
+      <location filename="../../AppStartGui.cpp" line="140"/>
       <source>Start</source>
       <translation>ເລີ່ມຕົ້ນ</translation>
     </message>

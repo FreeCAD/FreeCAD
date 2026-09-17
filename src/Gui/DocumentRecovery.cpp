@@ -43,6 +43,7 @@
 #include <QTreeWidgetItem>
 #include <QXmlStreamReader>
 #include <QVector>
+#include <memory>
 #include <sstream>
 
 #include <FCConfig.h>
@@ -494,7 +495,7 @@ bool zipDataIsValid(const QString& fcstdFile)
         auto entries = zf.entries();
         int n = 0;
         for (auto it = entries.begin(); it != entries.end(); ++it) {
-            auto s = zf.getInputStream(*it);
+            std::unique_ptr<std::istream> s(zf.getInputStream(*it));
             if (!s || !(*s)) {
                 return false;
             }
@@ -530,7 +531,7 @@ bool xmlFilesAreValid(const QString& fcstdFile)
             return false;
         }
         {
-            auto s = zf.getInputStream(doc);
+            std::unique_ptr<std::istream> s(zf.getInputStream(doc));
             QByteArray bytes;
             bytes.resize(0);
             std::string tmp((std::istreambuf_iterator<char>(*s)), std::istreambuf_iterator<char>());
@@ -545,7 +546,7 @@ bool xmlFilesAreValid(const QString& fcstdFile)
 
         // GuiDocument.xml is optional, but if it's present it must be well-formed
         if (auto gui = findEntry(zf, "GuiDocument.xml")) {
-            auto s = zf.getInputStream(gui);
+            std::unique_ptr<std::istream> s(zf.getInputStream(gui));
             std::string tmp((std::istreambuf_iterator<char>(*s)), std::istreambuf_iterator<char>());
             QXmlStreamReader xr(QByteArray(tmp.data(), int(tmp.size())));
             while (!xr.atEnd()) {

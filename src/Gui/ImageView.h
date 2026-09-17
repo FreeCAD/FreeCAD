@@ -37,6 +37,7 @@ namespace Gui
 class GuiExport ImageView: public MDIView
 {
     Q_OBJECT
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();  // NOLINT
 
 public:
     explicit ImageView(QWidget* parent);

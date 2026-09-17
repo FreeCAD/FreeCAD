@@ -55,13 +55,14 @@ class TestToolLengthOffset(unittest.TestCase):
         processor.values["OUTPUT_DUPLICATE_COMMANDS"] = True
         processor.values["FILTER_INEFFICIENT_MOVES"] = False
         processor.values["OUTPUT_LINE_NUMBERS"] = False
+        processor.values["IGNORED_COMMANDS"] = ""
 
         # Create a simple path with G43 command
         commands = [Path.Command("G43", {"H": 1})]
         sections = [("test", [processor._make_postable("g43", commands, {"optimizable": True})])]
 
         # Convert G43 command
-        processor._expand_tool_length_offset(sections)
+        processor._expand_tool_change(sections)
         result = processor._convert_job_sections(sections)[0][1]
 
         extant_g43 = [l for l in result.split("\n") if l.startswith("G43")]
@@ -86,13 +87,14 @@ class TestToolLengthOffset(unittest.TestCase):
         processor.values["OUTPUT_DUPLICATE_COMMANDS"] = True
         processor.values["FILTER_INEFFICIENT_MOVES"] = False
         processor.values["OUTPUT_LINE_NUMBERS"] = False
+        processor.values["IGNORED_COMMANDS"] = ""
 
         # Create a simple path with G43 command
         commands = [Path.Command("G43", {"H": 1})]
         sections = [("test", [processor._make_postable("g43", commands, {"optimizable": True})])]
 
         # Convert G43 command
-        processor._expand_tool_length_offset(sections)
+        processor._expand_tool_change(sections)
         result = processor._convert_job_sections(sections)[0][1]
 
         extant_g43 = [l for l in result.split("\n") if l.startswith("G43")]
@@ -136,6 +138,7 @@ class TestToolProcessing(unittest.TestCase):
         # Create tool controller
         self.tc1 = PathToolController.Create("TC_Test_Tool1", tool1, 1)
         self.tc1.Label = "TC: 6mm Endmill"
+        self.tc1.SpindleSpeed = 1000.0
 
         # Create job
         self.job = PathJob.Create("TestJob", [base_obj], None)
@@ -433,7 +436,10 @@ class TestToolProcessing(unittest.TestCase):
         machine_config = self._get_full_machine_config()
         # Add pre/post tool change blocks to postprocessor properties
         machine_config["postprocessor"]["properties"]["pre_tool_change"] = "(pretoolchange)"
-        machine_config["postprocessor"]["properties"]["post_tool_change"] = "(posttoolchange)"
+        machine_config["postprocessor"]["properties"][
+            "post_tool_change"
+        ] = "(posttoolchange)\n(ptc2)"
+        machine_config["postprocessor"]["properties"]["tool_return"] = "(toolreturn)"
         machine = Machine.from_dict(machine_config)
 
         # Add a second tool controller to trigger tool changes
@@ -502,6 +508,25 @@ class TestToolProcessing(unittest.TestCase):
                     pre_idx,
                     post_idx,
                     f"Pre-tool-change should come before post-tool-change in---\n{all_output}\n--",
+                )
+
+            # POST_TOOL_CHANGE immediately after M6
+            m6_indices = [i for i, line in enumerate(lines) if line.startswith("M6")]
+            for pre_idx, post_idx in zip(m6_indices, posttool_indices):
+                self.assertEqual(
+                    post_idx - pre_idx,
+                    1,
+                    f"M6 immediately before post-tool-change in---\n{all_output}\n--",
+                )
+
+            # TOOL_RETURN after G43
+            m3_indices = [i for i, line in enumerate(lines) if line.startswith("M3")]
+            toolreturn_indices = [i for i, line in enumerate(lines) if "(toolreturn)" in line]
+            for pre_idx, post_idx in zip(m3_indices, toolreturn_indices):
+                self.assertEqual(
+                    post_idx - pre_idx,
+                    1,
+                    f"toolreturn immediately after G43 in---\n{all_output}\n--",
                 )
 
             # Verify tool change commands (M6) are present

@@ -26,6 +26,7 @@
 import unittest
 import FreeCAD
 from Path.Tool.docobject import DetachedDocumentObject
+from Path.Tool.toolbit.util import setToolBitSchema
 from Path.Tool.docobject.ui.property import (
     BasePropertyEditorWidget,
     QuantityPropertyEditorWidget,
@@ -116,6 +117,33 @@ class TestQuantityPropertyEditorWidget(unittest.TestCase):
         updated_value = self.obj.getPropertyByName("Length")
         self.assertIsInstance(updated_value, FreeCAD.Units.Quantity)
         self.assertEqual(updated_value, FreeCAD.Units.Quantity("15.5 in"))
+
+    def test_update_property_keeps_full_precision(self):
+        """A 3.175mm endmill stays 3.175mm: forum.freecad.org/viewtopic.php?t=79854"""
+        self.editor.lineEdit().setText("3.175")
+        self.widget.updateProperty()
+        self.assertEqual(self.obj.Length.Value, 3.175)
+
+    def test_fields_show_tool_precision(self):
+        """Loading a tool must not round it to the display default either."""
+        self.obj.Length = FreeCAD.Units.Quantity("3.175 mm")
+        self.widget.updateWidget()
+        self.assertEqual(self.editor.property("decimals"), 3)
+        self.assertEqual(self.editor.property("value").Value, 3.175)
+        self.assertIn("3.175", self.editor.lineEdit().text())
+
+    def test_fields_show_tool_precision_in_imperial(self):
+        """An inch needs the extra digit to say the same thing."""
+        original = FreeCAD.Units.getSchema()
+        try:
+            self.obj.Length = FreeCAD.Units.Quantity("0.375 in")
+            setToolBitSchema("Imperial")  # what the editor does on load
+            widget = QuantityPropertyEditorWidget(self.obj, "Length")
+            self.assertEqual(widget._editor_widget.property("decimals"), 4)
+            self.assertIn("0.3750", widget._editor_widget.lineEdit().text())
+            self.assertAlmostEqual(widget._editor_widget.property("value").Value, 9.525, places=6)
+        finally:
+            FreeCAD.Units.setSchema(original)
 
 
 class TestBoolPropertyEditorWidget(unittest.TestCase):

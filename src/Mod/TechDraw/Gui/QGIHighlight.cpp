@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -167,10 +169,15 @@ void QGIHighlight::setFont(QFont f, double fsize)
 }
 
 
-//obs?
+
 QColor QGIHighlight::getHighlightColor()
 {
-    return PreferencesGui::sectionLineQColor();
+    return m_pen.color();
+}
+
+void QGIHighlight::setHighlightColor(QColor newColor)
+{
+    m_pen.setColor(newColor);
 }
 
 int QGIHighlight::getHoleStyle()

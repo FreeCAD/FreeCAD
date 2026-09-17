@@ -33,6 +33,7 @@
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderExtension.h"
 #include "ViewProviderFeaturePython.h"
+#include "ViewProviderSuppressibleExtension.h"
 
 
 class SoBase;
@@ -287,6 +288,7 @@ public:
 
     ViewProvider* startEditing(int ModNum) override;
     bool doubleClicked() override;
+    std::optional<bool> doubleClickedOccurrence(const App::SubObjectT& reference) override;
 
     PyObject* getPyObject() override;
     PyObject* getPyLinkView();
@@ -423,6 +425,7 @@ protected:
 
 private:
     SoPickStyle* pcPickStyle {nullptr};
+    Gui::ViewProviderSuppressibleExtension suppressibleExt;
 };
 
 using ViewProviderLinkPython = ViewProviderFeaturePythonT<ViewProviderLink>;

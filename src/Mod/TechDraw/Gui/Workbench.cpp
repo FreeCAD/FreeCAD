@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
@@ -205,6 +207,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *pages << "Separator";
     *pages << "TechDraw_ExportPageSVG";
     *pages << "TechDraw_ExportPageDXF";
+    *pages << "TechDraw_ExportPagePDF";
 
     // views
     Gui::MenuItem* views = new Gui::MenuItem;
@@ -303,6 +306,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *views << "TechDraw_SectionGroup";
     *views << "TechDraw_DetailView";
     *views << "TechDraw_DraftView";
+    *views << "TechDraw_SpreadsheetView";
     *views << "TechDraw_ClipGroup";
 
     Gui::ToolBarItem* stacking = new Gui::ToolBarItem(root);

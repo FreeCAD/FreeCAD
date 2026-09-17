@@ -2707,6 +2707,59 @@ Gui--Dialog--DocumentRecovery QTreeView {
 }
 
 /*==================================================================================================
+In-view spreadsheet editor
+==================================================================================================*/
+QTableWidget#spreadsheetViewEditor {
+  background-color: transparent;
+  alternate-background-color: transparent;
+  selection-background-color: transparent;
+  border: none;
+}
+
+QTableWidget#spreadsheetViewEditor::item,
+QTableWidget#spreadsheetViewEditor::item:selected {
+  background-color: transparent;
+}
+
+QTableWidget#spreadsheetViewEditor QHeaderView::section,
+QTableWidget#spreadsheetViewEditor QTableCornerButton::section {
+  background-color: rgb(235, 235, 235);
+  color: black;
+  border: 1px solid black;
+}
+
+QTableWidget#spreadsheetViewEditor QHeaderView::section:checked {
+  background-color: rgb(205, 220, 235);
+}
+
+QTableWidget#spreadsheetViewEditor QLineEdit {
+  background-color: white;
+  color: black;
+  selection-background-color: rgb(190, 215, 240);
+  selection-color: black;
+  border: 1px solid black;
+  padding: 0;
+}
+
+/*==================================================================================================
+Overlay controls
+==================================================================================================*/
+QToolButton#overlayButton {
+  background-color: rgba(255, 255, 255, 215);
+  border: 1px solid rgba(40, 40, 40, 120);
+  border-radius: 11px;
+  padding: 2px;
+}
+
+QToolButton#overlayButton:hover {
+  background-color: rgba(255, 255, 255, 245);
+}
+
+QToolButton#overlayButton:pressed {
+  background-color: rgba(232, 232, 232, 245);
+}
+
+/*==================================================================================================
 Input validation
 ==================================================================================================*/
 QLineEdit[validationState="error"],

@@ -217,6 +217,7 @@ void SketcherSettings::loadSettings()
     ui->checkBoxHorVerAuto->onRestore();
     setProperty("checkBoxHorVerAuto", ui->checkBoxHorVerAuto->isChecked());
     ui->checkBoxLineGroup->onRestore();
+    setProperty("checkBoxLineGroup", ui->checkBoxLineGroup->isChecked());
     ui->checkBoxAddExtGeo->onRestore();
     ui->checkBoxMakeInternals->onRestore();
 
@@ -689,6 +690,8 @@ SketcherSettingsAppearance::SketcherSettingsAppearance(QWidget* parent)
     ui->InformationPattern->setItemDelegate(lineStyleDelegate);
     ui->DimensionalConstraintLinePattern->setIconSize(LineIconSize);
     ui->DimensionalConstraintLinePattern->setItemDelegate(lineStyleDelegate);
+    ui->AxisLinePattern->setIconSize(LineIconSize);
+    ui->AxisLinePattern->setItemDelegate(lineStyleDelegate);
 
     for (auto style : PenStyles) {
         ui->EdgePattern->addItem(QString(), QVariant(style.pattern));
@@ -698,6 +701,7 @@ SketcherSettingsAppearance::SketcherSettingsAppearance(QWidget* parent)
         ui->ExternalDefiningPattern->addItem(QString(), QVariant(style.pattern));
         ui->InformationPattern->addItem(QString(), QVariant(style.pattern));
         ui->DimensionalConstraintLinePattern->addItem(QString(), QVariant(style.pattern));
+        ui->AxisLinePattern->addItem(QString(), QVariant(style.pattern));
     }
 }
 
@@ -731,6 +735,7 @@ bool SketcherSettingsAppearance::event(QEvent* event)
             ui->ExternalDefiningPattern->setItemIcon(i, icon);
             ui->InformationPattern->setItemIcon(i, icon);
             ui->DimensionalConstraintLinePattern->setItemIcon(i, icon);
+            ui->AxisLinePattern->setItemIcon(i, icon);
         }
         return true;
     }
@@ -772,6 +777,7 @@ void SketcherSettingsAppearance::saveSettings()
     ui->ExternalDefiningWidth->onSave();
     ui->InformationWidth->onSave();
     ui->DimensionalConstraintLineWidth->onSave();
+    ui->AxisLineWidth->onSave();
 
     ui->InternalFaceColor->onSave();
 
@@ -807,6 +813,10 @@ void SketcherSettingsAppearance::saveSettings()
     );
     pattern = data.toInt();
     hGrp->SetInt("DimensionalConstraintLinePattern", pattern);
+
+    data = ui->AxisLinePattern->itemData(ui->AxisLinePattern->currentIndex());
+    pattern = data.toInt();
+    hGrp->SetInt("AxisLinePattern", pattern);
 }
 
 void SketcherSettingsAppearance::loadSettings()
@@ -844,6 +854,7 @@ void SketcherSettingsAppearance::loadSettings()
     ui->ExternalDefiningWidth->onRestore();
     ui->InformationWidth->onRestore();
     ui->DimensionalConstraintLineWidth->onRestore();
+    ui->AxisLineWidth->onRestore();
 
     ui->InternalFaceColor->setAllowTransparency(true);
     ui->InternalFaceColor->onRestore();
@@ -899,6 +910,13 @@ void SketcherSettingsAppearance::loadSettings()
         index = 0;
     }
     ui->DimensionalConstraintLinePattern->setCurrentIndex(index);
+
+    pattern = hGrp->GetInt("AxisLinePattern", 0b1111111111111111);
+    index = ui->AxisLinePattern->findData(QVariant(pattern));
+    if (index < 0) {
+        index = 0;
+    }
+    ui->AxisLinePattern->setCurrentIndex(index);
 }
 
 /**

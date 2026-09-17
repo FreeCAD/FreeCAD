@@ -33,6 +33,7 @@ import Path
 import Path.Post.Command as PathCommand
 from Path.Post import PostList
 import Path.Post.Utils as PostUtils
+from Path.Post.CAMErrors import CAMValueError
 import Path.Main.Job as PathJob
 import Path.Tool.Controller as PathToolController
 from Machine.models.machine import Machine, OutputUnits, Toolhead, ToolheadType
@@ -438,7 +439,7 @@ class TestExport2Integration(unittest.TestCase):
         cls.job.OrderOutputBy = "Operation"
         cls.job.Fixtures = ["G54"]
 
-        cls.job.Machine = "Millstone"
+        cls.job.Machine = "linuxcnc"
 
         from Path.Tool.toolbit import ToolBit
 
@@ -730,15 +731,15 @@ class TestExport2Integration(unittest.TestCase):
                     "safetyblock": "(safety)",
                     "pre_operation": "(preoperation)",
                     "post_operation": "(postoperation)",
-                    "pre_tool_change": "(pretoolchange)",
-                    "post_tool_change": "(posttoolchange)",
                     "pre_job": "(prejob)",
                     "post_job": "(postjob)",
                     "pre_fixture_change": "(prefixture)",
                     "post_fixture_change": "(postfixture)",
                     "pre_rotary_move": "(prerotary)",
                     "post_rotary_move": "(Postrotary)",
-                    "tool_return": "(toolreturn)",
+                    "pre_tool_change": "(pretoolchange)",
+                    "post_tool_change": "(posttoolchange)",  # immediate after m6
+                    "tool_return": "(toolreturn)",  # at end of tool-change item
                 },
             },
             "processing": {
@@ -788,6 +789,23 @@ class TestExport2Integration(unittest.TestCase):
         cmd = Path.Command("G0 X1 F0")
         gcode = post.convert_command_to_gcode(cmd)
         self.assertNotIn(" F", gcode)
+
+    def test004_unsupported_convert(self):
+        """Test if throws on unsupported"""
+
+        machine = self._create_machine()
+        post = self._create_postprocessor(machine)
+
+        # Basic unsupported
+        cmd = Path.Command("G9999")
+        with self.assertRaisesRegex(CAMValueError, "Unsupported command") as cm:
+            gcode = post.convert_command_to_gcode(cmd)
+        self.assertIn("Unsupported command: G9999", str(cm.exception))
+
+        # But, allow ANNOT_ALLOW_UNSUPPORTED
+        cmd = Path.Command("G9999", {}, {Constants.ANNOT_ALLOW_UNSUPPORTED: "True"})
+        gcode = post.convert_command_to_gcode(cmd)
+        self.assertIn("G9999", gcode)
 
     # ===== 010-019: Basic smoke tests =====
 
@@ -1143,6 +1161,60 @@ class TestExport2Integration(unittest.TestCase):
                 g1_count, 4, f"Should have at least 4 G1 commands, found {g1_count}"
             )
 
+    def test080_translate_no_engagement(self):
+        """
+        Test that _expand_translate_rapids converts G0 to G1
+        when TRANSLATE_NO_ENGAGEMENT_FEED && ANNOT_NO_ENGAGEMENT_FEED
+        """
+        config = self._get_full_machine_config()
+        machine = Machine.from_dict(config)
+
+        # Do G0->G1
+        machine.postprocessor_properties["translate_no_engagement_feed"] = True
+        with self._modify_operation_path(
+            [
+                Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}),  # not translated
+                Path.Command(
+                    "G0",
+                    {"X": 10.0, "Y": 10.0, "F": 100.0},  # should replace F
+                    {Constants.ANNOT_NO_ENGAGEMENT_FEED: "500"},
+                ),  # translated
+                Path.Command("G1", {"X": 20.0, "Y": 10.0, "F": 100.0}),
+            ]
+        ):
+            results = self._run_export2(machine)[0][1]
+            _, interested = results.split("(preoperation)\n")
+            interested, _ = interested.split("(postoperation)")
+            expected = """G0 X0.000 Y0.000 Z5.000
+G1 X10.000 Y10.000 F30000.000
+G1 X20.000 Y10.000 F6000.000
+"""
+
+            self.assertEqual(expected, interested)
+
+        # Don't G0->G1
+        machine.postprocessor_properties["translate_no_engagement_feed"] = False
+        with self._modify_operation_path(
+            [
+                Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}),
+                # not translated, and F is dropped ("f_for_rapid_moves")
+                Path.Command(
+                    "G0",
+                    {"X": 10.0, "Y": 10.0, "F": 500.0},
+                    {Constants.ANNOT_NO_ENGAGEMENT_FEED: "True"},
+                ),  # not translated
+                Path.Command("G1", {"X": 20.0, "Y": 10.0, "F": 100.0}),
+            ]
+        ):
+            results = self._run_export2(machine)[0][1]
+            _, interested = results.split("(preoperation)\n")
+            interested, _ = interested.split("(postoperation)")
+            expected = """G0 X0.000 Y0.000 Z5.000
+G0 X10.000 Y10.000
+G1 X20.000 Y10.000 F6000.000
+"""
+            self.assertEqual(interested, expected)
+
     # ===== 090-099: _expand_xy_before_z tests =====
 
     def test090_xy_before_z_after_tool_change(self):
@@ -1274,11 +1346,11 @@ class TestExport2Integration(unittest.TestCase):
                         lines[i + 2], "(Block-enable: 1)", "Block should be followed by enable: 1"
                     )
 
-    # ===== 110-119: _expand_tool_length_offset tests =====
+    # ===== 110-119: _expand_tool_change tests =====
 
     def test110_tool_length_offset_enabled(self):
         """
-        Test that _expand_tool_length_offset adds G43 after M6 in a tool controller path.
+        Test that _expand_tool_change adds G43 after M6 in a tool controller path.
 
         G43 (tool length offset) must be injected immediately after M6 in the tool
         controller postable's path.  M6 belongs in the tool_controller postable — not
@@ -1287,7 +1359,7 @@ class TestExport2Integration(unittest.TestCase):
 
         Given:  A tool_controller postable whose path is [M6 T1]
                 followed by an operation postable [G0 ...]
-        When:   _expand_tool_length_offset is called with output_tool_length_offset=True
+        When:   _expand_tool_change is called with output_tool_length_offset=True
         Then:   The tool_controller path becomes [M6 T1, G43 H1]
 
         Example:
@@ -1321,16 +1393,16 @@ class TestExport2Integration(unittest.TestCase):
         )
         postables = [("allitems", [tc_item, op_item])]
 
-        post._expand_tool_length_offset(postables)
+        post._expand_tool_change(postables)
 
         tc_commands = [cmd.Name for cmd in tc_item.path.Commands]
         self.assertIn("G43", tc_commands, "G43 should be injected into TC path after M6")
 
         m6_idx = tc_commands.index("M6")
+        g43_cmd = tc_item.path.Commands[m6_idx + 2]
         self.assertEqual(
-            tc_commands[m6_idx + 1], "G43", "G43 must immediately follow M6 in TC path"
+            g43_cmd.Name, "G43", "G43 must immediately follow M6\n(posttoolchange) in TC path"
         )
-        g43_cmd = tc_item.path.Commands[m6_idx + 1]
         self.assertIn("H", g43_cmd.Parameters, "G43 should carry an H (tool number) parameter")
         self.assertEqual(g43_cmd.Parameters["H"], 1, "G43 H value must match the T number in M6")
 
@@ -1700,6 +1772,122 @@ class TestExport2Integration(unittest.TestCase):
                 f"Bare G0 with no parameters should be suppressed, found: {bare_g0}",
             )
 
+    def test129b_modal_commands_and_axes_together(self):
+        """
+        Test that modal G-code words and modal axes both apply to the same run
+        of moves.
+
+        Modal axis has to run on the original command so that the running axis
+        state is accumulated under the command's real name.  Deriving it from
+        the name-stripped command made every other move compare unequal to its
+        predecessor, so the G-code word came back on alternating lines, and the
+        stripped lines kept a leading separator from the empty command name:
+
+            BEFORE: G0 Z7.000
+                    G1 X3.750 Y2.625
+                    " X3.753 Y2.621"     <- leading space, G1 wrongly dropped/restored
+                    G1 X3.756 Y2.617     <- G1 re-emitted
+                    " X3.758 Y2.612"
+                    G1 Y2.598
+
+            AFTER:  G0 Z7.000
+                    G1 X3.750 Y2.625
+                    X3.753 Y2.621
+                    X3.756 Y2.617
+                    X3.758 Y2.612
+                    Y2.598               <- X unchanged, so only Y is emitted
+        """
+        machine = self._create_machine(
+            commands=False,
+            parameters=False,
+            axis_precision=3,
+            line_numbers=False,
+            comments_enabled=False,
+            output_header=False,
+        )
+
+        with self._modify_operation_path(
+            [
+                Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 7.0}),
+                Path.Command("G1", {"X": 3.750, "Y": 2.625}),
+                Path.Command("G1", {"X": 3.753, "Y": 2.621}),
+                Path.Command("G1", {"X": 3.756, "Y": 2.617}),
+                Path.Command("G1", {"X": 3.758, "Y": 2.612}),
+                Path.Command("G1", {"X": 3.758, "Y": 2.598}),
+            ]
+        ):
+            results = self._run_export2(machine)
+            gcode = self._get_first_section_gcode(results)
+
+            # NB: deliberately not stripped, a stripped line hides the leading
+            # separator that an empty command name used to leave behind.
+            lines = gcode.split("\n")
+
+            expected = [
+                "G1 X3.750 Y2.625",
+                "X3.753 Y2.621",
+                "X3.756 Y2.617",
+                "X3.758 Y2.612",
+                "Y2.598",
+            ]
+
+            self.assertIn(
+                expected[0],
+                lines,
+                f"First cut should carry its G1, in\n{gcode}",
+            )
+            start = lines.index(expected[0])
+            self.assertEqual(
+                lines[start : start + len(expected)],
+                expected,
+                f"Modal moves should keep the G1 only on the first line, in\n{gcode}",
+            )
+
+    def test129c_modal_commands_without_modal_axes(self):
+        """
+        Test that modal G-code words alone (duplicates.parameters=True) still
+        drop only the command word, keeping every parameter.
+
+        Expected:
+            G1 X3.750 Y2.625
+            X3.753 Y2.621
+            X3.758 Y2.625     <- Y is a duplicate, but axis modal is off
+        """
+        machine = self._create_machine(
+            commands=False,
+            parameters=True,
+            axis_precision=3,
+            line_numbers=False,
+            comments_enabled=False,
+            output_header=False,
+        )
+
+        with self._modify_operation_path(
+            [
+                Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 7.0}),
+                Path.Command("G1", {"X": 3.750, "Y": 2.625}),
+                Path.Command("G1", {"X": 3.753, "Y": 2.621}),
+                Path.Command("G1", {"X": 3.758, "Y": 2.625}),
+            ]
+        ):
+            results = self._run_export2(machine)
+            gcode = self._get_first_section_gcode(results)
+            lines = gcode.split("\n")
+
+            expected = [
+                "G1 X3.750 Y2.625",
+                "X3.753 Y2.621",
+                "X3.758 Y2.625",
+            ]
+
+            self.assertIn(expected[0], lines, f"First cut should carry its G1, in\n{gcode}")
+            start = lines.index(expected[0])
+            self.assertEqual(
+                lines[start : start + len(expected)],
+                expected,
+                f"Only the G1 word should be dropped, in\n{gcode}",
+            )
+
     def test130_modal_state_reset_after_tool_change(self):
         """
         Test that modal state resets after tool change so parameters are not
@@ -1762,9 +1950,9 @@ class TestExport2Integration(unittest.TestCase):
 
     # ===== 140-149: G-code blocks insertion tests =====
 
-    def test140_gcode_blocks_insertion(self):
+    def test140_blocks_insertion(self):
         """
-        Test that all G-code blocks from machine config are properly inserted.
+        Test that all blocks from machine config are properly inserted.
 
         Expected: safety, preamble, prejob, preoperation, postoperation,
                   postjob, and postamble all appear in output.
@@ -2012,4 +2200,46 @@ class TestExport2Integration(unittest.TestCase):
                 machine.postprocessor_properties["file_extension"],
                 "nc",
                 "Existing property should not be overwritten",
+            )
+
+    def test080_dwell_not_scaled_in_imperial(self):
+        """
+        Test that a dwell time survives imperial output unscaled.
+
+        P on G4 and on a canned cycle is a time in seconds, not a distance.
+        Scaling it as an axis value divides it by 25.4, so a 0.1 second dwell
+        posts as P0.004.
+        """
+        config = self._get_full_machine_config()
+        machine = Machine.from_dict(config)
+        machine.output.units = OutputUnits.IMPERIAL
+
+        with self._modify_operation_path(
+            [
+                Path.Command("G4", {"P": 0.5}),
+                Path.Command(
+                    "G82", {"X": 0.0, "Y": 0.0, "Z": -10.0, "R": 2.0, "F": 100.0, "P": 0.1}
+                ),
+            ]
+        ):
+            results = self._run_export2(machine)
+            gcode = self._get_first_section_gcode(results)
+            lines = [line.strip() for line in gcode.split("\n") if line.strip()]
+
+            def p_value(line):
+                for word in line.split():
+                    if word.startswith("P"):
+                        return float(word[1:])
+                return None
+
+            g4 = next((l for l in lines if l.startswith("G4")), None)
+            self.assertIsNotNone(g4, "expected a G4 dwell in the output")
+            self.assertAlmostEqual(
+                p_value(g4), 0.5, places=4, msg=f"G4 dwell must not be unit-scaled: {g4}"
+            )
+
+            g82 = next((l for l in lines if l.startswith("G82")), None)
+            self.assertIsNotNone(g82, "expected a G82 cycle in the output")
+            self.assertAlmostEqual(
+                p_value(g82), 0.1, places=4, msg=f"cycle dwell must not be unit-scaled: {g82}"
             )

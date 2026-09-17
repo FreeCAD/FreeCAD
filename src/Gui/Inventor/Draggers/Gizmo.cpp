@@ -25,6 +25,7 @@
 
 #include <cmath>
 #include <utility>
+#include <numbers>
 #include <QApplication>
 
 #include <Inventor/nodes/SoOrthographicCamera.h>
@@ -94,6 +95,34 @@ double snapToStep(double value, double step)
     }
 
     return std::round(value / step) * step;
+}
+
+double getRotationPeriod(double multFactor)
+{
+    const double factor = std::abs(multFactor);
+    if (factor <= Base::Precision::Confusion()) {
+        return 360.0;
+    }
+
+    return 2.0 * std::numbers::pi / factor;
+}
+
+double getClosestEquivalentAngle(double angle, double reference, double period)
+{
+    if (period <= Base::Precision::Confusion()) {
+        return angle;
+    }
+
+    return angle + std::round((reference - angle) / period) * period;
+}
+
+double clampDragAngle(double value, double min, double max, double period)
+{
+    if (max - min >= period - Base::Precision::Confusion()) {
+        return std::clamp(value, min, max);
+    }
+
+    return Base::clampAngle(value, min, max, Base::Precision::Confusion());
 }
 }  // namespace
 
@@ -498,6 +527,8 @@ SoRotationDraggerContainer* RotationGizmo::getDraggerContainer()
 void RotationGizmo::draggingStarted()
 {
     initialValue = property->value().getValue();
+    lastDragOffset = 0.0;
+    hasDragged = false;
     dragger->rotationIncrementCount.setValue(0);
 
     if (isDelayedUpdateEnabled()) {
@@ -512,13 +543,21 @@ void RotationGizmo::draggingFinished()
         property->valueChanged(property->value().getValue());
     }
 
+    if (!hasDragged && clickCallback) {
+        clickCallback();
+    }
+
     property->setFocus();
     property->selectAll();
 }
 
 void RotationGizmo::draggingContinued()
 {
-    double value = initialValue + getRotAngle();
+    hasDragged = true;
+    const double period = getRotationPeriod(multFactor);
+    double dragOffset = getClosestEquivalentAngle(getRotAngle(), lastDragOffset, period);
+    lastDragOffset = dragOffset;
+    double value = initialValue + dragOffset;
 
     auto fineModifier = GizmoContainer::getFineSnapModifier();
     auto modifiers = QApplication::queryKeyboardModifiers();
@@ -530,12 +569,7 @@ void RotationGizmo::draggingContinued()
         value = snapToStep(value, getCoarseRotationSnapMultiplier());
     }
 
-    value = Base::clampAngle(
-        value,
-        property->minimum(),
-        property->maximum(),
-        Base::Precision::Confusion()
-    );
+    value = clampDragAngle(value, property->minimum(), property->maximum(), period);
 
     property->setValue(value);
     setRotAngle(value);
@@ -594,6 +628,11 @@ void RotationGizmo::setAddFactor(const double val)
 {
     addFactor = val;
     setRotAngle(property->value().getValue());
+}
+
+void RotationGizmo::setClickCallback(ClickCallback callback)
+{
+    clickCallback = std::move(callback);
 }
 
 void RotationGizmo::setVisibility(bool visible)

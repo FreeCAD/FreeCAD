@@ -74,10 +74,12 @@
 
 #include <App/MaterialPy.h>
 #include <App/MetadataPy.h>
-// FreeCAD Base header
+// FreeCAD Base headers
 #include <Base/AxisPy.h>
 #include <Base/BaseClass.h>
 #include <Base/BoundBoxPy.h>
+#include <Base/CrashReporter/Manager.h>
+#include <Base/CrashReporter/Writer.h>
 #include <Base/ConsoleObserver.h>
 #include <Base/ServiceProvider.h>
 #include <Base/CoordinateSystemPy.h>
@@ -85,8 +87,11 @@
 #include <Base/ExceptionFactory.h>
 #include <Base/FileInfo.h>
 #include <Base/GeometryPyCXX.h>
+#include <Base/CrashReporter/CrashFramePy.h>
+#include <Base/CrashReporter/CrashReportPy.h>
 #include <Base/Interpreter.h>
 #include <Base/MatrixPy.h>
+#include <Base/NumericFormatting.h>
 #include <Base/QuantityPy.h>
 #include <Base/ParameterPy.h>
 #include <Base/Persistence.h>
@@ -456,6 +461,8 @@ void Application::setupPythonTypes()
     Base::InterpreterSingleton::addType(&Base::PlacementPy::Type, pAppModule, "Placement");
     Base::InterpreterSingleton::addType(&Base::RotationPy::Type, pAppModule, "Rotation");
     Base::InterpreterSingleton::addType(&Base::AxisPy::Type, pAppModule, "Axis");
+    Base::InterpreterSingleton::addType(&Base::CrashReportPy::Type, pAppModule, "CrashReport");
+    Base::InterpreterSingleton::addType(&Base::CrashFramePy::Type, pAppModule, "CrashFrame");
 
     // Note: Create an own module 'Base' which should provide the python
     // binding classes from the base module. At a later stage we should
@@ -2115,12 +2122,22 @@ void initExceptions()
 void Application::init(int argc, char ** argv)
 {
     try {
+        // Establish the initial Base snapshot before application or GUI preferences can override it.
+        Base::publishNumericLocaleContext(
+            Base::createNumericLocaleContext()
+        );
+
         Base::SystemHandler::installNewHandler();
         Base::SystemHandler::installSegfaultHandler();
 
         initTypes();
 
         initConfig(argc,argv);
+
+        // Set up our crash reporting AFTER the call to initConfig, but BEFORE we start doing
+        // things that might crash...
+        initCrashReporter();
+
         initApplication();
         initExceptions();
     }
@@ -2163,6 +2180,7 @@ void Application::initTypes()
     App::PropertyPercent            ::init();
     App::PropertyEnumeration        ::init();
     App::PropertyIntegerList        ::init();
+    App::PropertyIntPairList        ::init();
     App::PropertyIntegerSet         ::init();
     App::PropertyMap                ::init();
     App::PropertyString             ::init();
@@ -2662,7 +2680,7 @@ void processProgramOptions(const boost::program_options::variables_map& vm, std:
         std::vector<std::string> testCases;
         bool runAll = false;
         bool printAll = false;
-        for (const std::string& key : {"run-open", "run-test"}) {
+        for (const char* key : {"run-open", "run-test"}) {
             if (vm.contains(key)) {
                 auto v = vm[key].as<std::vector<std::string>>();
                 for (const auto& s : v) {
@@ -2994,6 +3012,26 @@ void Application::SaveEnv(const char* s)
     }
 }
 
+void Application::initCrashReporter()
+{
+    // Make sure anything that escapes doesn't abort startup: this is non-fatal
+    try {
+        const std::string crashReportsDirectory {getUserAppDataDir() + "CrashReports"};
+        Base::CrashReporter::Writer::prewarm();
+        Base::CrashReporter::Writer::install(crashReportsDirectory);
+        Base::CrashReporter::Manager::scan(
+            crashReportsDirectory,
+            {},
+            App::ProgramInformation::prettyProductInfoWrapper());
+    } catch (Base::Exception &e) {
+        Base::Console().warning("Crash reporting failed during startup:\n%s\n", e.getMessage());
+    } catch (std::exception &e) {
+        Base::Console().warning("Crash reporting failed during startup:\n%s\n", e.what());
+    } catch (...) {
+        Base::Console().warning("Crash reporting failed during startup\n");
+    }
+}
+
 void Application::initApplication()
 {
     // interpreter and Init script ==========================================================
@@ -3287,17 +3325,9 @@ void Application::LoadParameters()
         if (_pcUserParamMngr->LoadOrCreateDocument() && mConfig["Verbose"] != "Strict") {
             // The user parameter file doesn't exist. When an alternative parameter file is offered
             // this will be used.
-            const auto it = mConfig.find("UserParameterTemplate");
-            if (it != mConfig.end()) {
-                QString path = QString::fromUtf8(it->second.c_str());
-                if (QDir(path).isRelative()) {
-                    const QString home = QString::fromUtf8(mConfig["AppHomePath"].c_str());
-                    path = QFileInfo(QDir(home), path).absoluteFilePath();
-                }
-                const QFileInfo fi(path);
-                if (fi.exists()) {
-                    _pcUserParamMngr->LoadDocument(path.toUtf8().constData());
-                }
+            const char* userParamPath = getUserParameterTemplatePath();
+            if (userParamPath) {
+                _pcUserParamMngr->LoadDocument(userParamPath);
             }
 
             // Configuration file optional when using as Python module
@@ -3316,6 +3346,24 @@ void Application::LoadParameters()
                               e.what(), mConfig["UserParameter"].c_str());
         _pcUserParamMngr->CreateDocument();
     }
+}
+
+const char* Application::getUserParameterTemplatePath()
+{
+    const auto it = mConfig.find("UserParameterTemplate");
+    if (it != mConfig.end()) {
+        QString path = QString::fromUtf8(it->second.c_str());
+        if (QDir(path).isRelative()) {
+            const QString home = QString::fromUtf8(mConfig["AppHomePath"].c_str());
+            path = QFileInfo(QDir(home), path).absoluteFilePath();
+        }
+        const QFileInfo fi(path);
+        if (fi.exists()) {
+            const char* templatePath = path.toUtf8().constData();
+            return templatePath;
+        }
+    }
+    return nullptr;
 }
 
 #if defined(_MSC_VER) && BOOST_VERSION < 108200

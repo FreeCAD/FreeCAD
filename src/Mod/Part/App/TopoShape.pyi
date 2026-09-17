@@ -15,6 +15,7 @@ from typing import Final, List, Tuple, Union, overload
     FatherInclude="App/ComplexGeoDataPy.h",
     FatherNamespace="Data",
     Constructor=True,
+    Hash=True,
 )
 class TopoShape(ComplexGeoData):
     """
@@ -31,31 +32,31 @@ class TopoShape(ComplexGeoData):
     Orientation: str = ""
     """Returns the orientation of the shape."""
 
-    Faces: Final[List] = []
+    Faces: Final[List["Face"]] = []
     """List of faces in this shape."""
 
-    Vertexes: Final[List] = []
+    Vertexes: Final[List["Vertex"]] = []
     """List of vertexes in this shape."""
 
-    Shells: Final[List] = []
+    Shells: Final[List["Shell"]] = []
     """List of subsequent shapes in this shape."""
 
-    Solids: Final[List] = []
+    Solids: Final[List["Solid"]] = []
     """List of subsequent shapes in this shape."""
 
-    CompSolids: Final[List] = []
-    """List of subsequent shapes in this shape."""
+    CompSolids: Final[List["CompSolid"]] = []
+    """List of compound solids in this shape."""
 
-    Edges: Final[List] = []
+    Edges: Final[List["Edge"]] = []
     """List of Edges in this shape."""
 
-    Wires: Final[List] = []
+    Wires: Final[List["Wire"]] = []
     """List of wires in this shape."""
 
-    Compounds: Final[List] = []
+    Compounds: Final[List["Compound"]] = []
     """List of compounds in this shape."""
 
-    SubShapes: Final[List] = []
+    SubShapes: Final[List["TopoShape"]] = []
     """List of sub-shapes in this shape."""
 
     Length: Final[float] = 0.0
