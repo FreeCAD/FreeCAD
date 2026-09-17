@@ -5,7 +5,9 @@ from __future__ import annotations
 from Base.Metadata import export
 from Base.Persistence import Persistence
 from Base.Vector import Vector
-from typing import Final, Tuple
+from Part.App.Geometry import Geometry
+from Sketcher.App.Constraint import Constraint
+from typing import Final, List, Tuple, Union
 
 @export(
     Include="Mod/Sketcher/App/Sketch.h",
@@ -41,13 +43,17 @@ class Sketch(Persistence):
         """
         ...
 
-    def addGeometry(self) -> None:
+    def addGeometry(
+        self, geometry: Union[Geometry, List[Geometry]], /
+    ) -> Union[int, Tuple[int, ...]]:
         """
         Add a geometric object to the sketch
         """
         ...
 
-    def addConstraint(self) -> None:
+    def addConstraint(
+        self, constraint: Union[Constraint, List[Constraint]], /
+    ) -> Union[int, Tuple[int, ...]]:
         """
         Add an constraint object to the sketch
         """
@@ -60,8 +66,8 @@ class Sketch(Persistence):
         ...
 
     def moveGeometry(
-        self, GeoIndex: int, PointPos: Vector, Vector: Vector, relative: bool = False, /
-    ) -> None:
+        self, geo_index: int, point_pos: int, vector: Vector, relative: bool = False, /
+    ) -> int:
         """
         Move a given point (or curve).
         to another location.
