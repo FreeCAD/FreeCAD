@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from Metadata import export
 from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
+from Part.TopoShapeShell import TopoShapeShell
 
 @export(
     PythonName="Part.ShapeFix.Shell",
@@ -27,7 +28,7 @@ class ShapeFix_Shell(ShapeFix_Root):
     FixFaceMode: bool = ...
     """Mode for applying fixes using ShapeFix_Face"""
 
-    def init(self) -> None:
+    def init(self, shell: TopoShapeShell, /) -> None:
         """
         Initializes by shell
         """
@@ -69,7 +70,9 @@ class ShapeFix_Shell(ShapeFix_Root):
         """
         ...
 
-    def fixFaceOrientation(self) -> None:
+    def fixFaceOrientation(
+        self, shell: TopoShapeShell, multi_conex: bool = ..., non_manifold: bool = ..., /
+    ) -> bool:
         """
         Fixes orientation of faces in shell.
         Changes orientation of face in the shell, if it is oriented opposite
@@ -88,7 +91,7 @@ class ShapeFix_Shell(ShapeFix_Root):
         """
         ...
 
-    def setNonManifoldFlag(self) -> None:
+    def setNonManifoldFlag(self, non_manifold: bool, /) -> None:
         """
         Sets NonManifold flag
         """
