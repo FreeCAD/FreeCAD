@@ -4,6 +4,9 @@ from __future__ import annotations
 
 from Base.Metadata import export, constmethod
 from Base.PyObjectBase import PyObjectBase
+from Part.GeometrySurface import GeometrySurface
+from Part.GeomPlate.CurveConstraint import CurveConstraint
+from Part.GeomPlate.PointConstraint import PointConstraint
 from typing import List
 
 @export(
@@ -28,13 +31,13 @@ class BuildPlateSurface(PyObjectBase):
         """
         ...
 
-    def setNbBounds(self) -> None:
+    def setNbBounds(self, count: int, /) -> None:
         """
         Sets the number of bounds
         """
         ...
 
-    def loadInitSurface(self) -> None:
+    def loadInitSurface(self, surface: GeometrySurface, /) -> None:
         """
         Loads the initial surface
         """
@@ -54,7 +57,7 @@ class BuildPlateSurface(PyObjectBase):
         """
         ...
 
-    def add(self) -> None:
+    def add(self, constraint: PointConstraint | CurveConstraint, /) -> None:
         """
         Adds a linear or point constraint
         """
@@ -96,26 +99,26 @@ class BuildPlateSurface(PyObjectBase):
         ...
 
     @constmethod
-    def curveConstraint(self) -> object:
+    def curveConstraint(self, index: int, /) -> CurveConstraint:
         """
         Returns the curve constraint of order
         """
         ...
 
     @constmethod
-    def pointConstraint(self) -> object:
+    def pointConstraint(self, index: int, /) -> PointConstraint:
         """
         Returns the point constraint of order
         """
         ...
 
-    def disc2dContour(self) -> object:
+    def disc2dContour(self, index: int, /) -> list:
         """
         Returns the 2D contour of the plate surface
         """
         ...
 
-    def disc3dContour(self) -> object:
+    def disc3dContour(self, index: int, order: int, /) -> list:
         """
         Returns the 3D contour of the plate surface
         """
