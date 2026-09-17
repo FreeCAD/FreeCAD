@@ -29,7 +29,6 @@ import FreeCAD as App
 from FreeCAD import Vector
 import Arch
 import Part
-import Sketcher
 from bimtests import TestArchBase
 
 
