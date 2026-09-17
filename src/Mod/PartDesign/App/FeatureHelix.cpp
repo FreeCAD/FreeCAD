@@ -50,10 +50,8 @@
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Tools.h>
-#include <App/Document.h>
 
 #include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/TopoShapeOpCode.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
 
 #include "FeatureHelix.h"
@@ -517,20 +515,26 @@ App::DocumentObjectExecReturn* Helix::execute()
 
         base.move(invObjLoc);
 
-        auto makeHelixSide = [&](const HelixSideParameters& side) {
-            const bool isConstantRadius = std::fabs(side.angle) < Precision::Confusion()
-                && std::fabs(side.growth) < Precision::Confusion();
-            const bool splitAtTurns = isConstantRadius && helixSides.size() == 1;
-            const double breakAtTurn = splitAtTurns ? 1.0 : 1000.0;
-
-            TopoDS_Shape path = generateHelixPath(
-                side.turns,
-                side.height,
-                side.angle,
-                side.growth,
-                side.reversed,
-                breakAtTurn
-            );
+        TopoDS_Shape result;
+        std::vector<TopoShape> sideShapes;
+        for (const auto& side : helixSides) {
+            // generate the helix path
+            TopoDS_Shape path;
+            if (side.angle == 0.) {
+                // breaking the path at each turn prevents an OCC issue
+                path = generateHelixPath(side.turns, side.height, side.angle, side.growth, side.reversed);
+            }
+            else {
+                // don't break the path or the generated solid is invalid
+                path = generateHelixPath(
+                    side.turns,
+                    side.height,
+                    side.angle,
+                    side.growth,
+                    side.reversed,
+                    1000.
+                );
+            }
 
             TopoDS_Shape face = sketchshape;
             face.Move(invObjLoc);
@@ -539,12 +543,14 @@ App::DocumentObjectExecReturn* Helix::execute()
             BRepBndLib::Add(path, bounds);
             double size = sqrt(bounds.SquareExtent());
             ShapeFix_ShapeTolerance fix;
-            fix.LimitTolerance(path, Precision::Confusion() * 1e-6 * size);
+            fix.LimitTolerance(path, Precision::Confusion() * 1e-6 * size);  // needed to produce
+                                                                             // valid Pipe for very
+                                                                             // big parts
             // We introduce final part tolerance with the second call to LimitTolerance below,
-            // however OCCT has a bug where the side-walls of the Pipe disappear with very large
-            // (km range) pieces. Increasing a tiny bit of extra tolerance to the path fixes this.
-            // This will in any case be less than the tolerance lower limit below, but sufficient to
-            // avoid the bug.
+            // however OCCT has a bug where the side-walls of the Pipe disappear with very large (km
+            // range) pieces increasing a tiny bit of extra tolerance to the path fixes this. This
+            // will in any case be less than the tolerance lower limit below, but sufficient to
+            // avoid the bug
 
             BRepOffsetAPI_MakePipe mkPS(
                 TopoDS::Wire(path),
@@ -552,67 +558,33 @@ App::DocumentObjectExecReturn* Helix::execute()
                 GeomFill_Trihedron::GeomFill_IsFrenet,
                 Standard_False
             );
-            TopoDS_Shape sideResult = mkPS.Shape();
+            result = mkPS.Shape();
 
-            BRepClass3d_SolidClassifier SC(sideResult);
+            BRepClass3d_SolidClassifier SC(result);
             SC.PerformInfinitePoint(Precision::Confusion());
             if (SC.State() == TopAbs_IN) {
-                sideResult.Reverse();
+                result.Reverse();
             }
 
-            fix.LimitTolerance(sideResult, Precision::Confusion() * size * Tolerance.getValue());
-            // Significant precision reduction due to helical approximation - needed to allow
-            // fusion to succeed.
+            fix.LimitTolerance(
+                result,
+                Precision::Confusion() * size * Tolerance.getValue()
+            );  // significant precision reduction due to helical approximation - needed to allow
+                // fusion to succeed
 
             // try to auto-fix possible invalid result
             ShapeFix_Solid fixer;
-            fixer.Init(TopoDS::Solid(sideResult));
+            fixer.Init(TopoDS::Solid(result));
             if (fixer.Perform()) {
-                sideResult = fixer.Solid();
+                result = fixer.Solid();
             }
-
-            return sideResult;
-        };
-
-        std::vector<TopoShape> sideShapes;
-        sideShapes.reserve(helixSides.size());
-        for (const auto& side : helixSides) {
-            TopoDS_Shape sideShape = makeHelixSide(side);
-            sideShapes.emplace_back(sideShape, 0, getDocument()->getStringHasher());
+            sideShapes.emplace_back(result, 0, getDocument()->getStringHasher());
         }
 
-        TopoDS_Shape result;
-        if (sideShapes.empty()) {
-            return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Error: No helix geometry was generated!")
-            );
-        }
-        else if (sideShapes.size() == 1) {
-            result = sideShapes.front().getShape();
-        }
-        else {
-            try {
-                const auto fuseSubSolids = [](TopoShape& shape) {
-                    if (shape.hasSubShape(TopAbs_SOLID) && shape.countSubShapes(TopAbs_SOLID) > 1) {
-                        shape.makeElementFuse(shape.getSubTopoShapes(TopAbs_SOLID), Part::OpCodes::Fuse);
-                    }
-                };
-
-                TopoShape combined(0, getDocument()->getStringHasher());
-                combined.makeElementFuse(sideShapes, Part::OpCodes::Sweep);
-                fuseSubSolids(combined);
-                if (combined.hasSubShape(TopAbs_SOLID) && combined.countSubShapes(TopAbs_SOLID) > 1) {
-                    combined.makeElementXor(sideShapes, Part::OpCodes::Sweep);
-                    fuseSubSolids(combined);
-                }
-                result = combined.getShape();
-            }
-            catch (const Base::Exception& e) {
-                return new App::DocumentObjectExecReturn(e.what());
-            }
-            catch (const Standard_Failure& e) {
-                return new App::DocumentObjectExecReturn(e.GetMessageString());
-            }
+        if (sideShapes.size() > 1) {
+            TopoShape combined(0, getDocument()->getStringHasher());
+            combined.makeElementFuse(sideShapes, Part::OpCodes::Sweep);
+            result = combined.getShape();
         }
 
         AddSubShape.setValue(result);
