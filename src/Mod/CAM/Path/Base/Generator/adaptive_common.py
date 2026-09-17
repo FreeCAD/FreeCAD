@@ -398,7 +398,7 @@ def _results_to_commands(
                         continue
 
                     # Standard micro-lift transit
-                    z = z_target + float(lift_distance)
+                    z = z_target + lift_distance
                     if z != lz:
                         commands.append(Path.Command("G0", {"Z": z, "F": v_rapid}))
                     commands.append(Path.Command("G0", {"X": x, "Y": y, "F": h_rapid}))
@@ -452,6 +452,8 @@ def generate(
         adaptive_params (dict): Dict with keys: op_type, adaptive_accuracy, stock_to_leave,
                                 force_insideout, finishing_profile, lift_distance,
                                 keep_tool_down, helix_angle, helix_diameter, helix_min_diameter.
+                                'helix_diameter and helix_min_diameter are percentages of the
+                                tool diameter (e.g. 75.0 and 10.0), not millimeters.'
         feed_params (dict):     Feed/rapid rates.
         radius (float):         Tool radius in mm.
         step_over (float):      Stepover distance in mm.
@@ -482,18 +484,18 @@ def generate(
         return []
 
     # -- Unpack parameters --
-    tool_diam = radius * 2.0
-    op_type = adaptive_params.get("op_type", "ClearingInside")
-    adaptive_accuracy = adaptive_params.get("adaptive_accuracy", 0.1)
-    stock_to_leave = adaptive_params.get("stock_to_leave", 0.0)
-    force_insideout = adaptive_params.get("force_insideout", True)
-    finishing_profile = adaptive_params.get("finishing_profile", True)
-    lift_distance = adaptive_params.get("lift_distance", 0.05)
-    keep_tool_down = adaptive_params.get("keep_tool_down", 3.0)
-    helix_angle = adaptive_params.get("helix_angle", 3.0)
-    helix_cone_angle = adaptive_params.get("helix_cone_angle", 0.0)
-    helix_diam_pct = adaptive_params.get("helix_diameter", 75.0)
-    helix_min_diam_pct = adaptive_params.get("helix_min_diameter", 10.0)
+    tool_diam = float(radius) * 2.0
+    op_type = str(adaptive_params.get("op_type", "ClearingInside"))
+    adaptive_accuracy = max(float(adaptive_params.get("adaptive_accuracy", 0.1)), 0.01)  # Adaptive2d minimum
+    stock_to_leave = float(adaptive_params.get("stock_to_leave", 0.0))
+    force_insideout = bool(adaptive_params.get("force_insideout", True))
+    finishing_profile = bool(adaptive_params.get("finishing_profile", True))
+    lift_distance = float(adaptive_params.get("lift_distance", 0.05))
+    keep_tool_down = float(adaptive_params.get("keep_tool_down", 3.0))
+    helix_angle = float(adaptive_params.get("helix_angle", 3.0))
+    helix_cone_angle = float(adaptive_params.get("helix_cone_angle", 0.0))
+    helix_diam_pct = float(adaptive_params.get("helix_diameter", 75.0))
+    helix_min_diam_pct = float(adaptive_params.get("helix_min_diameter", 10.0))
 
     helix_diameter = tool_diam * helix_diam_pct / 100.0
     helix_min_diameter = tool_diam * helix_min_diam_pct / 100.0
@@ -534,16 +536,16 @@ def generate(
 
     # -- Configure Adaptive2d --
     a2d = _area.Adaptive2d()
-    a2d.toolDiameter = float(tool_diam)
+    a2d.toolDiameter = tool_diam
     a2d.stepOverFactor = min(step_over / tool_diam, 1.0)
-    a2d.stockToLeave = float(stock_to_leave)
-    a2d.tolerance = float(max(float(adaptive_accuracy), 0.01))  # Adaptive2d minimum
-    a2d.forceInsideOut = bool(force_insideout)
-    a2d.finishingProfile = bool(finishing_profile)
+    a2d.stockToLeave = stock_to_leave
+    a2d.tolerance = adaptive_accuracy
+    a2d.forceInsideOut = force_insideout
+    a2d.finishingProfile = finishing_profile
     a2d.opType = op_type_map.get(op_type, _area.AdaptiveOperationType.ClearingInside)
-    a2d.helixRampTargetDiameter = float(helix_diameter)
-    a2d.helixRampMinDiameter = float(helix_min_diameter)
-    a2d.keepToolDownDistRatio = float(keep_tool_down)
+    a2d.helixRampTargetDiameter = helix_diameter
+    a2d.helixRampMinDiameter = helix_min_diameter
+    a2d.keepToolDownDistRatio = keep_tool_down
 
     # -- Execute --
     try:
