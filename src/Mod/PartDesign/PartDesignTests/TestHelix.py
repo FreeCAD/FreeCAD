@@ -22,7 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-from math import pi
+from math import pi, radians, tan
 from pathlib import Path
 import tempfile
 import unittest
@@ -220,13 +220,15 @@ class TestHelix(unittest.TestCase):
         self.assertEqual(len(helix.AddSubShape.Faces), 14)
 
     def checkTwoSidedHelixAtScale(self, operation):
-        """Extend the AIRCAP tolerance regressions to both new direction modes."""
+        """Extend AIRCAP's scale regressions to both directions and signed-height trimming."""
         occVersion = tuple(int(v) for v in Part.OCC_VERSION.split(".")[:2])
         # Retain the smaller boolean-test scale used below for OCCT 7.3 and older.
         largestExponent = 6 if occVersion > (7, 3) else 5
-        for sideType in ("Two sides", "Symmetric"):
+        for sideType, height2 in (("Two sides", 3), ("Symmetric", 3), ("Two sides", -1)):
             for exponent in (-1, 0, 3, largestExponent):
-                with self.subTest(operation=operation, sideType=sideType, exponent=exponent):
+                with self.subTest(
+                    operation=operation, sideType=sideType, height2=height2, exponent=exponent
+                ):
                     scale = 10**exponent
                     body = self.Doc.addObject("PartDesign::Body", "ScaledBody")
                     sketch = body.newObject("Sketcher::SketchObject", "Sketch")
@@ -251,7 +253,7 @@ class TestHelix(unittest.TestCase):
                     helix.SideType = sideType
                     helix.Pitch = 2 * scale
                     helix.Height = 5 * scale
-                    helix.Height2 = 3 * scale
+                    helix.Height2 = height2 * scale
                     helix.Angle = 0
                     helix.Mode = 0
                     helix.Tolerance = 0.12 if operation == "add" else 0.1
@@ -261,7 +263,7 @@ class TestHelix(unittest.TestCase):
                     self.assertTrue(helix.Shape.isValid())
                     self.assertEqual(len(helix.Shape.Solids), 1)
                     # Annular area times profile height times the total turn count.
-                    totalTurns = 4 if sideType == "Two sides" else 2.5
+                    totalTurns = (5 + height2) / 2 if sideType == "Two sides" else 2.5
                     expected = pi * (11**2 - 10**2) * totalTurns
                     if operation == "add":
                         expected = pi * 10**2 * 20 + expected
@@ -272,7 +274,7 @@ class TestHelix(unittest.TestCase):
                         helix.Shape.Volume / scale**3, expected, delta=expected * 1e-5
                     )
                     if operation == "standalone":
-                        zMin = -3 if sideType == "Two sides" else -2.5
+                        zMin = -height2 if sideType == "Two sides" else -2.5
                         zMax = 6 if sideType == "Two sides" else 3.5
                     else:
                         zMin, zMax = -10, 10
@@ -289,18 +291,104 @@ class TestHelix(unittest.TestCase):
         self.checkTwoSidedHelixAtScale("cut")
 
     def testTwoSidedOverlappingHeights(self):
-        """Signed heights pointing the same way must produce a union."""
-        helix = self.createRectangleHelix("OverlappingBody")
-        helix.SideType = "Two sides"
-        helix.Height = 150
-        helix.Height2 = -100
-        self.Doc.recompute()
+        """Opposite-signed heights bound the remaining segment, e.g. 50 - 10 = 40."""
+        for mode in (0, 2, 3):
+            for height, height2 in (
+                (50, -10),
+                (10, -50),
+                (-50, 10),
+                (-10, 50),
+                (150, -100),
+                (-150, 100),
+            ):
+                for reversed in (False, True):
+                    for leftHanded in (False, True):
+                        with self.subTest(
+                            mode=mode,
+                            height=height,
+                            height2=height2,
+                            reversed=reversed,
+                            leftHanded=leftHanded,
+                        ):
+                            helix = self.createRectangleHelix("OverlappingBody")
+                            helix.SideType = "Two sides"
+                            helix.Mode = mode
+                            helix.Height = height
+                            helix.Height2 = height2
+                            remainingTurns = abs(height + height2) / 50
+                            helix.Turns = remainingTurns
+                            helix.Growth = 0
+                            helix.Reversed = reversed
+                            helix.LeftHanded = leftHanded
+                            self.Doc.recompute()
 
-        self.assertNotIn("Invalid", helix.State)
-        self.assertEqual(len(helix.Shape.Solids), 1)
-        self.assertAlmostEqual(helix.Shape.Volume, pi * 25 * 5 * 3, delta=0.01)
-        self.assertAlmostEqual(helix.Shape.BoundBox.YMin, 0, places=5)
-        self.assertAlmostEqual(helix.Shape.BoundBox.YMax, 155, places=5)
+                            self.assertNotIn("Invalid", helix.State)
+                            self.assertEqual(len(helix.Shape.Solids), 1)
+                            self.assertAlmostEqual(helix.Pitch.Value, 50)
+                            self.assertAlmostEqual(
+                                helix.Shape.Volume, pi * 25 * 5 * remainingTurns, delta=0.01
+                            )
+                            direction = -1 if reversed else 1
+                            endpoints = (direction * height, -direction * height2)
+                            self.assertAlmostEqual(
+                                helix.Shape.BoundBox.YMin, min(endpoints), places=5
+                            )
+                            # The profile adds 5 mm to the upper bound of the path.
+                            self.assertAlmostEqual(
+                                helix.Shape.BoundBox.YMax, max(endpoints) + 5, places=5
+                            )
+
+    def testTwoSidedOverlappingHeightsWithTaper(self):
+        """Trim along the same cone or spiral instead of leaving a different taper."""
+        for mode in (0, 2, 3):
+            for taperSign in (-1, 1):
+                for direction in (-1, 1):
+                    with self.subTest(mode=mode, taperSign=taperSign, direction=direction):
+                        body = self.Doc.addObject("PartDesign::Body", "TaperedBody")
+                        sketch = body.newObject("Sketcher::SketchObject", "Sketch")
+                        TestSketcherApp.CreateRectangleSketch(sketch, (10, 0), (1, 1))
+                        sketch.AttachmentSupport = body.Origin.OriginFeatures[4]
+                        sketch.MapMode = "FlatFace"
+                        self.Doc.recompute()
+                        helix = body.newObject("PartDesign::AdditiveHelix", "Helix")
+                        helix.Profile = sketch
+                        helix.ReferenceAxis = (sketch, "V_Axis")
+                        helix.SideType = "Two sides"
+                        helix.Mode = mode
+                        helix.Pitch = 2
+                        helix.Height = direction * 5
+                        helix.Height2 = -direction
+                        helix.Turns = 2
+                        helix.Angle = taperSign * 15
+                        helix.Growth = taperSign * 0.2
+                        self.Doc.recompute()
+
+                        self.assertNotIn("Invalid", helix.State)
+                        self.assertTrue(helix.Shape.isValid())
+                        self.assertEqual(len(helix.Shape.Solids), 1)
+                        self.assertAlmostEqual(helix.Pitch.Value, 2)
+                        growth = taperSign * (0.2 if mode == 3 else 2 * tan(radians(15)))
+                        # Integrate the annular area between turn 0.5 and turn 2.5.
+                        expected = pi * ((11**2 - 10**2) * 2 + growth * (2.5**2 - 0.5**2))
+                        self.assertAlmostEqual(helix.Shape.Volume, expected, delta=0.01)
+                        self.assertAlmostEqual(
+                            helix.Shape.BoundBox.ZMin, 1 if direction == 1 else -5, places=5
+                        )
+                        self.assertAlmostEqual(
+                            helix.Shape.BoundBox.ZMax, 6 if direction == 1 else 0, places=5
+                        )
+
+    def testTwoSidedHeightsCancel(self):
+        """Equal opposite-signed heights must not leave the original full helix."""
+        for mode in (0, 2, 3):
+            with self.subTest(mode=mode):
+                helix = self.createRectangleHelix("CancelledBody")
+                helix.SideType = "Two sides"
+                helix.Mode = mode
+                helix.Height = 50
+                helix.Height2 = -50
+                self.Doc.recompute()
+                self.assertIn("Invalid", helix.State)
 
     def testTwoSidedSaveRestore(self):
         """Retain direction, signed heights and recomputation after reopening."""
