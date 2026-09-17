@@ -322,9 +322,12 @@ void CDxfWrite::makeDimstyleTable()
     (*m_ssDimstyle) << "    1" << endl;  // Number of styles in table
 
     // --- Define the "STANDARD" style ---
+    // Full AcDbDimStyleTableRecord field set, matching AutoCAD's own defaults,
+    // so the table is complete and spec-compliant.
     (*m_ssDimstyle) << "  0" << endl;
     (*m_ssDimstyle) << "DIMSTYLE" << endl;
-    (*m_ssDimstyle) << "  5" << endl;
+    (*m_ssDimstyle) << "105"
+                    << endl;  // avoids clashing with DIMBLK's own group code 5 in this record
     (*m_ssDimstyle) << getHandle() << endl;  // Handle for this style entry
     if (m_version > 12) {
         (*m_ssDimstyle) << "330" << endl;
@@ -337,9 +340,12 @@ void CDxfWrite::makeDimstyleTable()
     (*m_ssDimstyle) << "  2" << endl;
     (*m_ssDimstyle) << "STANDARD" << endl;  // The style name referenced by DIMENSION entities
     (*m_ssDimstyle) << " 70" << endl;
-    (*m_ssDimstyle) << "     0" << endl;  // Flags
-
-    // --- Key style variables ---
+    (*m_ssDimstyle) << "     0" << endl;       // Flags
+    (*m_ssDimstyle) << "  3" << endl << endl;  // DIMPOST
+    (*m_ssDimstyle) << "  4" << endl << endl;  // DIMAPOST
+    (*m_ssDimstyle) << "  5" << endl << endl;  // DIMBLK (obsolete)
+    (*m_ssDimstyle) << "  6" << endl << endl;  // DIMBLK1
+    (*m_ssDimstyle) << "  7" << endl << endl;  // DIMBLK2
 
     // $DIMSCALE (Overall scale factor)
     // Set to 1.0 because the exporter generates pre-scaled geometry.
@@ -352,10 +358,13 @@ void CDxfWrite::makeDimstyleTable()
     (*m_ssDimstyle) << " 41" << endl;
     (*m_ssDimstyle) << "1.0" << endl;
 
-    // $DIMTAD (Text Above Dimension line)
-    // Set to 1 to place text above the line, matching geometry generation.
-    (*m_ssDimstyle) << " 77" << endl;
-    (*m_ssDimstyle) << "     1" << endl;
+    (*m_ssDimstyle) << " 42" << endl << "0.625" << endl;  // DIMEXO
+    (*m_ssDimstyle) << " 43" << endl << "3.75" << endl;   // DIMDLI
+    (*m_ssDimstyle) << " 44" << endl << "1.25" << endl;   // DIMEXE
+    (*m_ssDimstyle) << " 45" << endl << "0.0" << endl;    // DIMRND
+    (*m_ssDimstyle) << " 46" << endl << "0.0" << endl;    // DIMDLE
+    (*m_ssDimstyle) << " 47" << endl << "0.0" << endl;    // DIMTP
+    (*m_ssDimstyle) << " 48" << endl << "0.0" << endl;    // DIMTM
 
     // $DIMTXT (Text height)
     // Set to a sensible default. This will be overridden by XDATA on a
@@ -363,16 +372,62 @@ void CDxfWrite::makeDimstyleTable()
     (*m_ssDimstyle) << "140" << endl;  // Use group code 140 for DIMTXT in a DIMSTYLE table
     (*m_ssDimstyle) << "3.5" << endl;
 
+    (*m_ssDimstyle) << "141" << endl << "2.5" << endl;               // DIMCEN
+    (*m_ssDimstyle) << "142" << endl << "0.0" << endl;               // DIMTSZ
+    (*m_ssDimstyle) << "143" << endl << "0.03937007874016" << endl;  // DIMALTF
+    (*m_ssDimstyle) << "144" << endl << "1.0" << endl;               // DIMLFAC
+    (*m_ssDimstyle) << "145" << endl << "0.0" << endl;               // DIMTVP
+    (*m_ssDimstyle) << "146" << endl << "1.0" << endl;               // DIMTFAC
+    (*m_ssDimstyle) << "147" << endl << "0.625" << endl;             // DIMGAP
+    (*m_ssDimstyle) << " 71" << endl << "     0" << endl;            // DIMTOL
+    (*m_ssDimstyle) << " 72" << endl << "     0" << endl;            // DIMLIM
+    (*m_ssDimstyle) << " 73" << endl << "     0" << endl;            // DIMTIH
+    (*m_ssDimstyle) << " 74" << endl << "     0" << endl;            // DIMTOH
+    (*m_ssDimstyle) << " 75" << endl << "     0" << endl;            // DIMSE1
+    (*m_ssDimstyle) << " 76" << endl << "     0" << endl;            // DIMSE2
+
+    // $DIMTAD (Text Above Dimension line)
+    // Set to 1 to place text above the line, matching geometry generation.
+    (*m_ssDimstyle) << " 77" << endl;
+    (*m_ssDimstyle) << "     1" << endl;
+
+    (*m_ssDimstyle) << " 78" << endl << "     8" << endl;  // DIMZIN
+    (*m_ssDimstyle) << "170" << endl << "     0" << endl;  // DIMALT
+    (*m_ssDimstyle) << "171" << endl << "     3" << endl;  // DIMALTD
+    (*m_ssDimstyle) << "172" << endl << "     1" << endl;  // DIMTOFL
+
     // $DIMSAH (Separate Arrowheads)
     // Set to 1 (On) to allow for user-defined arrowhead blocks (or none).
-    // This is required to suppress the viewer's default arrows.
-    if (m_version > 12) {
-        (*m_ssDimstyle) << "171" << endl;
-        (*m_ssDimstyle) << "     1" << endl;
-    }
+    // This is required to suppress the viewer's default arrows. Group code
+    // 173 is DIMSAH.
+    (*m_ssDimstyle) << "173" << endl;
+    (*m_ssDimstyle) << "     1" << endl;
     // By enabling separate arrowheads but NOT defining $DIMBLK1 and $DIMBLK2,
     // we effectively tell the viewer to draw no arrows, which is correct
     // because we have already drawn them as SOLID entities in the dimension block.
+
+    (*m_ssDimstyle) << "174" << endl << "     0" << endl;  // DIMTIX
+    (*m_ssDimstyle) << "175" << endl << "     0" << endl;  // DIMSOXD
+    (*m_ssDimstyle) << "176" << endl << "     0" << endl;  // DIMCLRD
+    (*m_ssDimstyle) << "177" << endl << "     0" << endl;  // DIMCLRE
+    (*m_ssDimstyle) << "178" << endl << "     0" << endl;  // DIMCLRT
+    (*m_ssDimstyle) << "270" << endl << "     2" << endl;  // DIMALTU (legacy position)
+    (*m_ssDimstyle) << "271" << endl << "     2" << endl;  // DIMDEC
+    (*m_ssDimstyle) << "272" << endl << "     2" << endl;  // DIMTDEC
+    (*m_ssDimstyle) << "273" << endl << "     2" << endl;  // DIMALTU
+    (*m_ssDimstyle) << "274" << endl << "     3" << endl;  // DIMALTTD
+    (*m_ssDimstyle) << "340" << endl
+                    << "71" << endl;  // DIMTXSTY: handle of the STANDARD text style (tables214.rub)
+    (*m_ssDimstyle) << "275" << endl << "     0" << endl;  // DIMAUNIT
+    (*m_ssDimstyle) << "280" << endl << "     0" << endl;  // DIMJUST
+    (*m_ssDimstyle) << "281" << endl << "     0" << endl;  // DIMSD1
+    (*m_ssDimstyle) << "282" << endl << "     0" << endl;  // DIMSD2
+    (*m_ssDimstyle) << "283" << endl << "     0" << endl;  // DIMTOLJ
+    (*m_ssDimstyle) << "284" << endl << "     8" << endl;  // DIMTZIN
+    (*m_ssDimstyle) << "285" << endl << "     0" << endl;  // DIMALTZ
+    (*m_ssDimstyle) << "286" << endl << "     0" << endl;  // DIMALTTZ
+    (*m_ssDimstyle) << "287" << endl << "     3" << endl;  // DIMFIT/DIMATFIT (legacy position)
+    (*m_ssDimstyle) << "288" << endl << "     0" << endl;  // DIMUPT
 
     (*m_ssDimstyle) << "  0" << endl;
     (*m_ssDimstyle) << "ENDTAB" << endl;
