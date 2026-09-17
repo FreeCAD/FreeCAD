@@ -99,7 +99,7 @@ class ModelLoader
 {
 public:
     ModelLoader(std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> modelMap,
-                std::shared_ptr<std::list<std::shared_ptr<ModelLibraryLocal>>> libraryList);
+                std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> libraryList);
     virtual ~ModelLoader() = default;
 
     static const QString getUUIDFromPath(const QString& path);
@@ -127,7 +127,7 @@ private:
 
     static std::unique_ptr<std::map<QString, std::shared_ptr<ModelEntry>>> _modelEntryMap;
     std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> _modelMap;
-    std::shared_ptr<std::list<std::shared_ptr<ModelLibraryLocal>>> _libraryList;
+    std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> _libraryList;
 };
 
 }  // namespace Materials
