@@ -4,8 +4,9 @@ from __future__ import annotations
 
 from Base.Metadata import export
 from Part.TopoShapePy import TopoShape
+from Part.HLRBRep_Algo import HLRBRep_Algo
 from Base.PyObjectBase import PyObjectBase
-from typing import Optional
+from typing import Optional, overload
 
 @export(
     PythonName="Part.HLRToShapePy",
@@ -45,6 +46,8 @@ class HLRToShape(PyObjectBase):
     class.
     """
 
+    @overload
+    def __init__(self, algo: HLRBRep_Algo, /) -> None: ...
     def vCompound(self, shape: TopoShape = ..., /) -> TopoShape:
         """
         vCompound(shape=None) -> TopoShape

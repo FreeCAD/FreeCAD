@@ -4,7 +4,8 @@ from __future__ import annotations
 
 from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
-from typing import Tuple
+from Base.Vector import Vector
+from typing import Tuple, overload
 
 @export(
     PythonName="Part.GeomPlate.PointConstraintPy",
@@ -22,6 +23,8 @@ class PointConstraint(PyObjectBase):
     Licence: LGPL
     """
 
+    @overload
+    def __init__(self, Point: Vector, Order: int = ..., TolDist: float = ...) -> None: ...
     def setOrder(self, order: int, /) -> None:
         """
         Allows you to set the order of continuity required for
