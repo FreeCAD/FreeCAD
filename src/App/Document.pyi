@@ -483,7 +483,7 @@ class Document(PropertyContainer):
         """
         ...
 
-    def getDependentDocuments(self, sort: bool = True, /) -> list[DocumentObject]:
+    def getDependentDocuments(self, sort: bool = True, /) -> list[Document]:
         """
         Returns a list of documents that this document directly or indirectly links to including itself.
 
