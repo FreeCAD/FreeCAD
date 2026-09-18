@@ -144,24 +144,38 @@ public:
         std::string* subname = nullptr
     ) const
     {
-        return ActiveObjects.getObject<_T>(name, parent, subname);
+        if (ActiveObjects) {
+            return ActiveObjects->getObject<_T>(name, parent, subname);
+        }
+        return nullptr;
     }
     void setActiveObject(App::DocumentObject* o, const char* n, const char* subname = nullptr)
     {
-        ActiveObjects.setObject(o, n, subname);
+        if (ActiveObjects) {
+            ActiveObjects->setObject(o, n, subname);
+        }
     }
     bool hasActiveObject(const char* n) const
     {
-        return ActiveObjects.hasObject(n);
+        if (ActiveObjects) {
+            return ActiveObjects->hasObject(n);
+        }
+        return false;
     }
     bool isActiveObject(App::DocumentObject* o, const char* n, const char* subname = nullptr) const
     {
-        return ActiveObjects.hasObject(o, n, subname);
+        if (ActiveObjects) {
+            return ActiveObjects->hasObject(o, n, subname);
+        }
+        return false;
     }
 
     App::DocumentObject* getActiveObjectWithExtension(const Base::Type extensionTypeId) const
     {
-        return ActiveObjects.getObjectWithExtension(extensionTypeId);
+        if (ActiveObjects) {
+            return ActiveObjects->getObjectWithExtension(extensionTypeId);
+        }
+        return nullptr;
     }
 
     /*!
@@ -205,7 +219,7 @@ private:
     ViewMode currentMode;
     Qt::WindowStates wstate;
     // list of active objects of this view
-    ActiveObjectList ActiveObjects;
+    std::unique_ptr<ActiveObjectList> ActiveObjects;
     using Connection = fastsignals::connection;
     Connection connectDelObject;  // remove active object upon delete.
 
