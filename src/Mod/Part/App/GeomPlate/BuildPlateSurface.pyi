@@ -99,14 +99,14 @@ class BuildPlateSurface(PyObjectBase):
         ...
 
     @constmethod
-    def curveConstraint(self, index: int, /) -> CurveConstraint:
+    def curveConstraint(self, index: int, /) -> CurveConstraint | None:
         """
         Returns the curve constraint of order
         """
         ...
 
     @constmethod
-    def pointConstraint(self, index: int, /) -> PointConstraint:
+    def pointConstraint(self, index: int, /) -> PointConstraint | None:
         """
         Returns the point constraint of order
         """

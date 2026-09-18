@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Any
-
 from Base.Metadata import export
 from App.DocumentObject import DocumentObject
 

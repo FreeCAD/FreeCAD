@@ -2,13 +2,15 @@
 
 from __future__ import annotations
 
-from typing import Any, Final
+from typing import Any, Final, TypeAlias
 
 from Base.Metadata import constmethod, export, class_declarations
 from Base.Vector import Vector
 from Base.Matrix import Matrix
 
 from App.ComplexGeoData import ComplexGeoData
+
+_VectorInput: TypeAlias = Vector | tuple[float, float, float]
 
 @export(
     Twin="MeshObject",
@@ -77,7 +79,11 @@ class Mesh(ComplexGeoData):
 
     @constmethod
     def crossSections(
-        self, planes: list[tuple[Vector, Vector]], min_eps: float = ..., poly: bool = ..., /
+        self,
+        planes: list[tuple[_VectorInput, _VectorInput]],
+        min_eps: float = ...,
+        poly: bool = ...,
+        /,
     ) -> list:
         """Get cross-sections of the mesh through several planes"""
         ...
@@ -399,18 +405,20 @@ class Mesh(ComplexGeoData):
         ...
 
     @constmethod
-    def foraminate(self, point: Vector, direction: Vector, max_angle: float = ..., /) -> dict:
+    def foraminate(
+        self, point: _VectorInput, direction: _VectorInput, max_angle: float = ..., /
+    ) -> dict:
         """Get a list of facet indices and intersection points"""
         ...
 
-    def cut(self, polygon: list[Vector], mode: int, /) -> None:
+    def cut(self, polygon: list[_VectorInput], mode: int, /) -> None:
         """Cuts the mesh with a given closed polygon
         cut(list, int) -> None
         The argument list is an array of points, a polygon
         The argument int is the mode: 0=inner, 1=outer"""
         ...
 
-    def trim(self, polygon: list[Vector], mode: int, /) -> None:
+    def trim(self, polygon: list[_VectorInput], mode: int, /) -> None:
         """Trims the mesh with a given closed polygon
         trim(list, int) -> None
         The argument list is an array of points, a polygon
@@ -471,7 +479,7 @@ class Mesh(ComplexGeoData):
 
     @constmethod
     def nearestFacetOnRay(
-        self, point: Vector, direction: Vector, max_angle: float = ..., /
+        self, point: _VectorInput, direction: _VectorInput, max_angle: float = ..., /
     ) -> dict:
         """nearestFacetOnRay(tuple, tuple) -> dict
         Get the index and intersection point of the nearest facet to a ray.

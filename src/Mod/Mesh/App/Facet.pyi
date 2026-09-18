@@ -6,6 +6,7 @@ from typing import Final
 
 from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
+from Base.Vector import Vector
 from Edge import Edge
 
 @export(
@@ -63,7 +64,7 @@ class Facet(PyObjectBase):
     Bound: Final[bool]
     """Bound state of the facet"""
 
-    Normal: Final[Any]
+    Normal: Final[Vector]
     """Normal vector of the facet."""
 
     Points: Final[list]

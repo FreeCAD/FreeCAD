@@ -70,7 +70,7 @@ class GeometryFacade(BaseClass):
         """
         ...
 
-    def scale(self, center: Vector, factor: float, /) -> None:
+    def scale(self, center: Vector | tuple[float, float, float], factor: float, /) -> None:
         """
         Applies a scaling transformation on this geometric object with a center and scaling factor
         """
@@ -82,7 +82,7 @@ class GeometryFacade(BaseClass):
         """
         ...
 
-    def translate(self, offset: Vector, /) -> None:
+    def translate(self, offset: Vector | tuple[float, float, float], /) -> None:
         """
         Translates this geometric object
         """

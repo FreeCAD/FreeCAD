@@ -41,7 +41,9 @@ class ViewProviderFemMesh(ViewProviderGeometryObject):
         """Sets mesh node colors using element list and value list."""
         ...
 
-    def setNodeDisplacementByVectors(self, node_ids: list[int], vectors: list[Vector], /) -> None:
+    def setNodeDisplacementByVectors(
+        self, node_ids: list[int], vectors: list[Vector | tuple[float, float, float]], /
+    ) -> None:
         """"""
         ...
     NodeColor: dict

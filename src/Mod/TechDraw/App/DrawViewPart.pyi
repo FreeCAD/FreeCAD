@@ -55,23 +55,23 @@ class DrawViewPart(DrawView):
         """
         ...
 
-    def makeCosmeticVertex(self, point: Vector, /) -> str:
+    def makeCosmeticVertex(self, point: Vector, /) -> str | None:
         """id = makeCosmeticVertex(p1) - add a CosmeticVertex at p1 (View coordinates). Returns unique id vertex."""
         ...
 
-    def makeCosmeticVertex3d(self, point: Vector, /) -> str:
+    def makeCosmeticVertex3d(self, point: Vector, /) -> str | None:
         """id = makeCosmeticVertex3d(p1) - add a CosmeticVertex at p1 (3d model coordinates). Returns unique id vertex."""
         ...
 
-    def getCosmeticVertex(self, tag: str, /) -> CosmeticVertex:
+    def getCosmeticVertex(self, tag: str, /) -> CosmeticVertex | None:
         """cv = getCosmeticVertex(id) - returns CosmeticVertex with unique id."""
         ...
 
-    def getCosmeticVertexBySelection(self, selection_name: str, /) -> CosmeticVertex:
+    def getCosmeticVertexBySelection(self, selection_name: str, /) -> CosmeticVertex | None:
         """cv = getCosmeticVertexBySelection(name) - returns CosmeticVertex with name (Vertex6).  Used in selections."""
         ...
 
-    def removeCosmeticVertex(self) -> Any:
+    def removeCosmeticVertex(self, cv: str | CosmeticVertex | list[CosmeticVertex], /) -> None:
         """removeCosmeticVertex(cv) - remove CosmeticVertex from View. Returns None."""
         ...
 
@@ -87,7 +87,7 @@ class DrawViewPart(DrawView):
         weight: float = ...,
         color: tuple = ...,
         /,
-    ) -> str:
+    ) -> str | None:
         """tag = makeCosmeticLine(p1, p2) - add a CosmeticEdge from p1 to p2(View coordinates). Returns tag of new CosmeticEdge."""
         ...
 
@@ -99,7 +99,7 @@ class DrawViewPart(DrawView):
         weight: float = ...,
         color: tuple = ...,
         /,
-    ) -> str:
+    ) -> str | None:
         """tag = makeCosmeticLine3D(p1, p2) - add a CosmeticEdge from p1 to p2(3D coordinates). Returns tag of new CosmeticEdge."""
         ...
 
@@ -111,7 +111,7 @@ class DrawViewPart(DrawView):
         weight: float = ...,
         color: tuple = ...,
         /,
-    ) -> str:
+    ) -> str | None:
         """tag = makeCosmeticCircle(center, radius) - add a CosmeticEdge at center with radius radius(View coordinates). Returns tag of new CosmeticEdge."""
         ...
 
@@ -125,7 +125,7 @@ class DrawViewPart(DrawView):
         weight: float = ...,
         color: tuple = ...,
         /,
-    ) -> str:
+    ) -> str | None:
         """tag = makeCosmeticCircleArc(center, radius, start, end) - add a CosmeticEdge at center with radius radius(View coordinates) from start angle to end angle. Returns tag of new CosmeticEdge."""
         ...
 
@@ -137,7 +137,7 @@ class DrawViewPart(DrawView):
         weight: float = ...,
         color: tuple = ...,
         /,
-    ) -> str:
+    ) -> str | None:
         """tag = makeCosmeticCircle3d(center, radius) - add a CosmeticEdge at center (3d point) with radius. Returns tag of new CosmeticEdge."""
         ...
 
@@ -151,7 +151,7 @@ class DrawViewPart(DrawView):
         weight: float = ...,
         color: tuple = ...,
         /,
-    ) -> str:
+    ) -> str | None:
         """tag = makeCosmeticCircleArc3d(center, radius, start, end) - add a CosmeticEdge at center (3d point) with radius from start angle to end angle. Returns tag of new CosmeticEdge."""
         ...
 
@@ -167,7 +167,7 @@ class DrawViewPart(DrawView):
         """removeCosmeticEdge(ce) - remove CosmeticEdge ce from View. Returns None."""
         ...
 
-    def makeCenterLine(self, sub_elements: list[str], mode: int, /) -> str:
+    def makeCenterLine(self, sub_elements: list[str], mode: int, /) -> str | None:
         """makeCenterLine(subNames, mode) - draw a center line on this viewPart. SubNames is a list of n Faces, 2 Edges or 2 Vertices (ex [Face1,Face2,Face3]. Returns unique tag of added CenterLine."""
         ...
 

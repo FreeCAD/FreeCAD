@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Any
-
 from Base.Metadata import export
 from DrawTemplate import DrawTemplate
 
@@ -21,7 +19,7 @@ class DrawSVGTemplate(DrawTemplate):
     License: LGPL-2.1-or-later
     """
 
-    def getEditFieldContent(self, edit_field_name: str, /) -> str:
+    def getEditFieldContent(self, edit_field_name: str, /) -> str | None:
         """getEditFieldContent(EditFieldName) - returns the content of a specific Editable Text Field"""
         ...
 

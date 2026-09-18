@@ -2685,7 +2685,7 @@ PyObject* SketchObjectPy::getGeometryId(PyObject* args)
         std::stringstream str;
         str << "Not able to get geometry Id of a geometry with the given index: " << Index;
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
-        Py_Return;
+        return nullptr;
     }
 
     return Py::new_reference_to(Py::Long(Id));

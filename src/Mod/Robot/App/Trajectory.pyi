@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Final
+from typing import Final
 
 from Base.Metadata import export
 from Base.Persistence import Persistence
