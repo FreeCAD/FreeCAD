@@ -220,10 +220,41 @@ void ToolBar::updateCustomGripVisibility()
     }
 }
 
+void ToolBar::mousePressEvent(QMouseEvent* event)
+{
+    if (event->button() == Qt::LeftButton) {
+        movedByLeftButtonDrag = false;
+    }
+
+    QToolBar::mousePressEvent(event);
+}
+
+void ToolBar::mouseMoveEvent(QMouseEvent* event)
+{
+    if ((event->buttons() & Qt::LeftButton) != 0) {
+        movedByLeftButtonDrag = true;
+    }
+
+    QToolBar::mouseMoveEvent(event);
+}
+
+void ToolBar::mouseReleaseEvent(QMouseEvent* event)
+{
+    const bool moved = event->button() == Qt::LeftButton && movedByLeftButtonDrag;
+    movedByLeftButtonDrag = false;
+
+    QToolBar::mouseReleaseEvent(event);
+
+    if (moved) {
+        Q_EMIT movedByUser();
+    }
+}
+
 void Gui::ToolBar::setupConnections()
 {
     connect(this, &QToolBar::topLevelChanged, this, &ToolBar::updateCustomGripVisibility);
     connect(this, &QToolBar::movableChanged, this, &ToolBar::updateCustomGripVisibility);
+    connect(this, &ToolBar::movedByUser, []() { getMainWindow()->saveWindowSettings(true); });
 }
 
 // -----------------------------------------------------------
@@ -1172,9 +1203,11 @@ bool ToolBarManager::eventFilter(QObject* source, QEvent* ev)
             }
         }
         // fall through
-        case QEvent::MouseMove:
-            res = addToolBarToArea(source, static_cast<QMouseEvent*>(ev));
+        case QEvent::MouseMove: {
+            auto mev = static_cast<QMouseEvent*>(ev);
+            res = addToolBarToArea(source, mev);
             break;
+        }
         case QEvent::ParentChange:
             if (auto toolbar = qobject_cast<QToolBar*>(source)) {
                 resizingToolbars[toolbar] = toolbar;
