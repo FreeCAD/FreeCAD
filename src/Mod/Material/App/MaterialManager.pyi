@@ -53,7 +53,15 @@ class MaterialManager(BaseClass):
         """
         ...
 
-    def save(self, **kwargs) -> None:
+    def save(
+        self,
+        library: str,
+        material: Material,
+        path: str,
+        overwrite: bool = False,
+        saveAsCopy: bool = False,
+        saveInherited: bool = False,
+    ) -> None:
         """
         Save the material in the specified library
         """

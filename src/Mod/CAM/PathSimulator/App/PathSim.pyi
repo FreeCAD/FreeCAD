@@ -48,7 +48,7 @@ class PathSim(BaseClass):
         """
         ...
 
-    def ApplyCommand(self, placement: Placement, command: Command) -> Placement:
+    def ApplyCommand(self, position: Placement, command: Command) -> Placement:
         """
         Apply a single path command on the stock starting from placement.
         """

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from Quantity import Quantity
 from Vector import Vector
 from Metadata import export, constmethod, class_declarations, no_args
 from PyObjectBase import PyObjectBase
@@ -270,7 +271,7 @@ class Matrix(PyObjectBase):
         """
         ...
 
-    def rotateX(self, angle: float, /) -> None:
+    def rotateX(self, angle: float | Quantity, /) -> None:
         """
         Rotate around X axis.
 
@@ -279,7 +280,7 @@ class Matrix(PyObjectBase):
         """
         ...
 
-    def rotateY(self, angle: float, /) -> None:
+    def rotateY(self, angle: float | Quantity, /) -> None:
         """
         Rotate around Y axis.
 
@@ -288,7 +289,7 @@ class Matrix(PyObjectBase):
         """
         ...
 
-    def rotateZ(self, angle: float, /) -> None:
+    def rotateZ(self, angle: float | Quantity, /) -> None:
         """
         Rotate around Z axis.
 

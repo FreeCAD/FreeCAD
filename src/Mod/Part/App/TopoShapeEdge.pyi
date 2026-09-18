@@ -492,9 +492,9 @@ class TopoShapeEdge(TopoShape):
         self,
         Angular: float,
         Curvature: float,
-        Minimum: int = ...,
         First: float = ...,
         Last: float = ...,
+        Minimum: int = ...,
     ) -> List[Vector]: ...
     @constmethod
     def discretize(self, **kwargs) -> List[Vector]:

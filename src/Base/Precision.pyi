@@ -48,7 +48,7 @@ class Precision(PyObjectBase):
         ...
 
     @staticmethod
-    def parametric() -> float:
+    def parametric(p: float, t: float = ..., /) -> float:
         """
         Convert a real space precision to a parametric space precision
         """
