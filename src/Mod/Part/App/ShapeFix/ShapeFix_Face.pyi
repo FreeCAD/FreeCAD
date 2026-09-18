@@ -4,10 +4,11 @@ from __future__ import annotations
 
 from Base.Metadata import export
 from Part.ShapeFix_Root import ShapeFix_Root
+from Part.GeometrySurface import GeometrySurface
 from Part.TopoShapeFace import TopoShapeFace
 from Part.TopoShapeShell import TopoShapeShell
 from Part.TopoShapeWire import TopoShapeWire
-from typing import Union
+from typing import Union, overload
 
 @export(
     PythonName="Part.ShapeFix.Face",
@@ -63,7 +64,11 @@ class ShapeFix_Face(ShapeFix_Root):
     FixPeriodicDegeneratedMode: bool = ...
     """Mode for applying periodic degeneration"""
 
-    def init(self) -> None:
+    @overload
+    def init(self, face: TopoShapeFace, /) -> None: ...
+    @overload
+    def init(self, surface: GeometrySurface, prec: float, fwd: bool = True, /) -> None: ...
+    def init(self, *args) -> None:
         """
         Initializes by face
         """
@@ -130,26 +135,26 @@ class ShapeFix_Face(ShapeFix_Root):
         """
         ...
 
-    def fixLoopWire(self) -> None:
+    def fixLoopWire(self) -> tuple[bool, list]:
         """
         Detects if wire has a loop and fixes this situation by splitting on the few parts.
         """
         ...
 
-    def fixIntersectingWires(self) -> None:
+    def fixIntersectingWires(self) -> bool:
         """
         Detects and fixes the special case when face has more than one wire
         and this wires have intersection point
         """
         ...
 
-    def fixWiresTwoCoincidentEdges(self) -> None:
+    def fixWiresTwoCoincidentEdges(self) -> bool:
         """
         If wire contains two coincidence edges it must be removed
         """
         ...
 
-    def fixPeriodicDegenerated(self) -> None:
+    def fixPeriodicDegenerated(self) -> bool:
         """
         Fixes topology for a specific case when face is composed
         by a single wire belting a periodic surface. In that case
@@ -159,7 +164,7 @@ class ShapeFix_Face(ShapeFix_Root):
         """
         ...
 
-    def perform(self) -> None:
+    def perform(self) -> bool:
         """
         Iterates on subshapes and performs fixes
         """

@@ -37,7 +37,7 @@ class Sketch(Persistence):
     Shape: Final[object] = None
     """Resulting shape from the sketch geometry"""
 
-    def solve(self) -> None:
+    def solve(self) -> int:
         """
         Solve the actual set of geometry and constraints
         """

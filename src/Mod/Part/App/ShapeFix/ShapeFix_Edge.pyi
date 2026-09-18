@@ -4,6 +4,9 @@ from __future__ import annotations
 
 from Base.Metadata import export, class_declarations
 from Base.PyObjectBase import PyObjectBase
+from typing import overload
+from Base.Placement import Placement
+from Part.GeometrySurface import GeometrySurface
 from Part.TopoShapeEdge import TopoShapeEdge
 from Part.TopoShapeFace import TopoShapeFace
 
@@ -30,7 +33,13 @@ class ShapeFix_Edge(PyObjectBase):
     Licence: LGPL
     """
 
-    def fixRemovePCurve(self) -> bool:
+    @overload
+    def fixRemovePCurve(self, edge: TopoShapeEdge, face: TopoShapeFace, /) -> bool: ...
+    @overload
+    def fixRemovePCurve(
+        self, edge: TopoShapeEdge, surface: GeometrySurface, placement: Placement, /
+    ) -> bool: ...
+    def fixRemovePCurve(self, *args) -> bool:
         """
         Removes the pcurve(s) of the edge if it does not match the
         vertices
@@ -52,7 +61,21 @@ class ShapeFix_Edge(PyObjectBase):
         """
         ...
 
-    def fixAddPCurve(self) -> bool:
+    @overload
+    def fixAddPCurve(
+        self, edge: TopoShapeEdge, face: TopoShapeFace, seam: bool, prec: float = 0.0, /
+    ) -> bool: ...
+    @overload
+    def fixAddPCurve(
+        self,
+        edge: TopoShapeEdge,
+        surface: GeometrySurface,
+        placement: Placement,
+        seam: bool,
+        prec: float = 0.0,
+        /,
+    ) -> bool: ...
+    def fixAddPCurve(self, *args) -> bool:
         """
         Adds pcurve(s) of the edge if missing (by projecting 3d curve)
         Parameter isSeam indicates if the edge is a seam.
@@ -100,7 +123,13 @@ class ShapeFix_Edge(PyObjectBase):
         """
         ...
 
-    def fixReversed2d(self) -> bool:
+    @overload
+    def fixReversed2d(self, edge: TopoShapeEdge, face: TopoShapeFace, /) -> bool: ...
+    @overload
+    def fixReversed2d(
+        self, edge: TopoShapeEdge, surface: GeometrySurface, placement: Placement, /
+    ) -> bool: ...
+    def fixReversed2d(self, *args) -> bool:
         """
         Fixes edge if pcurve is directed opposite to 3d curve
         Check is done by call to the function
@@ -116,7 +145,13 @@ class ShapeFix_Edge(PyObjectBase):
         """
         ...
 
-    def fixSameParameter(self) -> bool:
+    @overload
+    def fixSameParameter(self, edge: TopoShapeEdge, tolerance: float = 0.0, /) -> bool: ...
+    @overload
+    def fixSameParameter(
+        self, edge: TopoShapeEdge, face: TopoShapeFace, tolerance: float = 0.0, /
+    ) -> bool: ...
+    def fixSameParameter(self, *args) -> bool:
         """
         Tries to make edge SameParameter and sets corresponding
         tolerance and SameParameter flag.

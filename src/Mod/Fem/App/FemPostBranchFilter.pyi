@@ -31,7 +31,7 @@ class FemPostBranchFilter(FemPostFilter):
         """Recomputes all children of the pipeline"""
         ...
 
-    def getLastPostObject(self) -> Any:
+    def getLastPostObject(self) -> FemPostObject | None:
         """Get the last post-processing object"""
         ...
 

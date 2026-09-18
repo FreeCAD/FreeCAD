@@ -22,7 +22,13 @@ class UnifySameDomain(PyObjectBase):
     Licence: LGPL
     """
 
-    def initialize(self, **kwargs) -> None:
+    def initialize(
+        self,
+        Shape: TopoShape,
+        UnifyEdges: bool = True,
+        UnifyFaces: bool = True,
+        ConcatBSplines: bool = False,
+    ) -> None:
         """
         Initializes with a shape and necessary flags
         """
@@ -77,7 +83,7 @@ class UnifySameDomain(PyObjectBase):
         ...
 
     @constmethod
-    def shape(self) -> None:
+    def shape(self) -> TopoShape:
         """
         Gives the resulting shape
         """

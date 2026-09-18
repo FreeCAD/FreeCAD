@@ -151,12 +151,11 @@ class TopoShapeWire(TopoShape):
     def makeEvolved(
         self,
         Profile: TopoShape,
-        Join: int,
-        *,
-        AxeProf: bool,
-        Solid: bool,
-        ProfOnSpine: bool,
-        Tolerance: float,
+        Join: int = ...,
+        AxeProf: bool = True,
+        Solid: bool = False,
+        ProfOnSpine: bool = False,
+        Tolerance: float = 1e-07,
     ) -> TopoShape:
         """
         Profile along the spine
@@ -179,7 +178,7 @@ class TopoShapeWire(TopoShape):
 
     @overload
     @constmethod
-    def discretize(self, Number: int) -> List[object]:
+    def discretize(self, Number: int, First: float = None, Last: float = None) -> List[object]:
         """
         discretize(Number=n) -> list
         """
@@ -187,7 +186,7 @@ class TopoShapeWire(TopoShape):
 
     @overload
     @constmethod
-    def discretize(self, QuasiNumber: int) -> List[object]:
+    def discretize(self, QuasiNumber: int, First: float = None, Last: float = None) -> List[object]:
         """
         discretize(QuasiNumber=n) -> list
         """
@@ -195,7 +194,7 @@ class TopoShapeWire(TopoShape):
 
     @overload
     @constmethod
-    def discretize(self, Distance: float) -> List[object]:
+    def discretize(self, Distance: float, First: float = None, Last: float = None) -> List[object]:
         """
         discretize(Distance=d) -> list
         """
@@ -203,7 +202,9 @@ class TopoShapeWire(TopoShape):
 
     @overload
     @constmethod
-    def discretize(self, Deflection: float) -> List[object]:
+    def discretize(
+        self, Deflection: float, First: float = None, Last: float = None
+    ) -> List[object]:
         """
         discretize(Deflection=d) -> list
         """
@@ -211,7 +212,9 @@ class TopoShapeWire(TopoShape):
 
     @overload
     @constmethod
-    def discretize(self, QuasiDeflection: float) -> List[object]:
+    def discretize(
+        self, QuasiDeflection: float, First: float = None, Last: float = None
+    ) -> List[object]:
         """
         discretize(QuasiDeflection=d) -> list
         """
@@ -219,7 +222,14 @@ class TopoShapeWire(TopoShape):
 
     @overload
     @constmethod
-    def discretize(self, Angular: float, Curvature: float, Minimum: int = 2) -> List[object]:
+    def discretize(
+        self,
+        Angular: float,
+        Curvature: float,
+        First: float = None,
+        Last: float = None,
+        Minimum: int = 2,
+    ) -> List[object]:
         """
         discretize(Angular=a,Curvature=c,[Minimum=m]) -> list
         """

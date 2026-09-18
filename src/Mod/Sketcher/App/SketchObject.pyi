@@ -414,7 +414,12 @@ class SketchObject(Part2DObject):
         ...
 
     def setTextAndFont(
-        self, constraint: int, text: str, font: str, isheight: bool, isConstruction: bool
+        self,
+        constraint: int,
+        text: str,
+        font: str,
+        isheight: bool = True,
+        isConstruction: bool = False,
     ) -> None:
         """
         Set the text and font of a Text constraint.
@@ -891,7 +896,7 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def changeConstraintsLocking(self, b_lock: bool, /) -> None:
+    def changeConstraintsLocking(self, b_lock: int, /) -> int:
         """
         changeConstraintsLocking(bLock) - locks or unlocks all tangent and
         perpendicular constraints. (Constraint locking prevents it from
@@ -914,53 +919,61 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def autoconstraint(self) -> None:
+    def autoconstraint(
+        self,
+        precision: float = ...,
+        angle_precision: float = ...,
+        include_construction: bool = True,
+        /,
+    ) -> None:
         """
         Automatic sketch constraining algorithm.
         """
         ...
 
-    def detectMissingPointOnPointConstraints(self) -> None:
+    def detectMissingPointOnPointConstraints(
+        self, precision: float = ..., include_construction: bool = True, /
+    ) -> None:
         """
         Detects missing Point On Point Constraints. The detect step just identifies possible missing constraints.
         The result may be retrieved or applied using the corresponding Get / Make methods.
         """
         ...
 
-    def analyseMissingPointOnPointCoincident(self) -> None:
+    def analyseMissingPointOnPointCoincident(self, angle_precision: float = ..., /) -> None:
         """
         Analyses the already detected missing Point On Point Constraints to detect endpoint tangency/perpendicular.
         The result may be retrieved or applied using the corresponding Get / Make methods.
         """
         ...
 
-    def detectMissingVerticalHorizontalConstraints(self) -> None:
+    def detectMissingVerticalHorizontalConstraints(self, angle_precision: float = ..., /) -> None:
         """
         Detects missing Horizontal/Vertical Constraints. The detect step just identifies possible missing constraints.
         The result may be retrieved or applied using the corresponding Get / Make methods.
         """
         ...
 
-    def detectMissingEqualityConstraints(self) -> None:
+    def detectMissingEqualityConstraints(self, precision: float = ..., /) -> None:
         """
         Detects missing Equality Constraints. The detect step just identifies possible missing constraints.
         The result may be retrieved or applied using the corresponding Get / Make methods.
         """
         ...
 
-    def makeMissingPointOnPointCoincident(self, arg: bool, /) -> None:
+    def makeMissingPointOnPointCoincident(self, one_by_one: bool = False, /) -> None:
         """
         Applies the detected / set Point On Point coincident constraints. If the argument is True, then solving and redundant removal is done after each individual addition.
         """
         ...
 
-    def makeMissingVerticalHorizontal(self, arg: bool, /) -> None:
+    def makeMissingVerticalHorizontal(self, one_by_one: bool = False, /) -> None:
         """
         Applies the detected / set Vertical/Horizontal constraints. If the argument is True, then solving and redundant removal is done after each individual addition.
         """
         ...
 
-    def makeMissingEquality(self, arg: bool, /) -> None:
+    def makeMissingEquality(self, one_by_one: bool = True, /) -> None:
         """
         Applies the detected / set Equality constraints. If the argument is True, then solving and redundant removal is done after each individual addition.
         """
@@ -981,13 +994,13 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def autoRemoveRedundants(self, arg: bool, /) -> None:
+    def autoRemoveRedundants(self, update_geometry: bool = True, /) -> None:
         """
         Removes constraints currently detected as redundant by the solver. If the argument is True, then the geometry is updated after solving.
         """
         ...
 
-    def toPythonCommands(self) -> None:
+    def toPythonCommands(self) -> tuple[str, ...]:
         """
         Prints the commands that should be executed to recreate the Geometry and Constraints of the present sketch (excluding any External Geometry).
         """

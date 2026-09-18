@@ -29,13 +29,13 @@ class ShapeFix_FixSmallSolid(ShapeFix_Root):
         """
         ...
 
-    def setVolumeThreshold(self) -> None:
+    def setVolumeThreshold(self, value: float = -1.0, /) -> None:
         """
         Set or clear volume threshold for small solids
         """
         ...
 
-    def setWidthFactorThreshold(self) -> None:
+    def setWidthFactorThreshold(self, value: float = -1.0, /) -> None:
         """
         Set or clear width factor threshold for small solids
         """

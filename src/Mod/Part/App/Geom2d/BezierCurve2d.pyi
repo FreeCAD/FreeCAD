@@ -91,7 +91,7 @@ class BezierCurve2d(Curve2d):
         """
         ...
 
-    def setPole(self, index: int, pole: object, /) -> None:
+    def setPole(self, index: int, pole: object, weight: float = ..., /) -> None:
         """
         Set a pole of the Bezier curve.
         """

@@ -13,7 +13,6 @@ from TechDraw.CosmeticEdge import CosmeticEdge
 from TechDraw.CosmeticVertex import CosmeticVertex
 from TechDraw.rawView import DrawView
 
-
 @export(
     Include="Mod/TechDraw/App/DrawViewPart.h",
     Namespace="TechDraw",
@@ -27,28 +26,28 @@ class DrawViewPart(DrawView):
     License: LGPL-2.1-or-later
     """
 
-    def getVisibleEdges(self) -> Any:
+    def getVisibleEdges(self, conventional_coords: bool = False, /) -> Any:
         """
         getVisibleEdges([conventionalCoords]) - get the visible edges in the View as Part::TopoShapeEdges. Edges are returned
         in conventional coordinates if conventionalCoords is True.  The default is to return Qt inverted Y coordinates.
         """
         ...
 
-    def getVisibleVertexes(self) -> Any:
+    def getVisibleVertexes(self, conventional_coords: bool = False, /) -> Any:
         """
         getVisibleVertexes() - get the visible vertexes as App.Vector in the View's coordinate system.  App.Vectors are returned
         in conventional coordinates if conventionalCoords is True.  The default is to return Qt inverted Y coordinates.
         """
         ...
 
-    def getHiddenEdges(self) -> Any:
+    def getHiddenEdges(self, conventional_coords: bool = False, /) -> Any:
         """
         getHiddenEdges([conventionalCoords]) - get the hidden edges in the View as Part::TopoShapeEdges.  Edges are returned
         in conventional coordinates if conventionalCoords is True.  The default is to return Qt inverted Y coordinates.
         """
         ...
 
-    def getHiddenVertexes(self) -> Any:
+    def getHiddenVertexes(self, conventional_coords: bool = False, /) -> Any:
         """
         getHiddenVertexes() - get the hidden vertexes as App.Vector in the View's coordinate system.  App.Vectors are returned
         in conventional coordinates if conventionalCoords is True.  The default is to return Qt inverted Y coordinates.

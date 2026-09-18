@@ -47,7 +47,7 @@ class ShapeFix_Shape(ShapeFix_Root):
         """
         ...
 
-    def perform(self) -> None:
+    def perform(self) -> bool:
         """
         Iterates on sub- shape and performs fixes
         """

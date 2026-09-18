@@ -4,8 +4,12 @@ from __future__ import annotations
 
 from Base.Metadata import export, constmethod
 from Base.PyObjectBase import PyObjectBase
+from Base.Vector import Vector
+from Part.GeometryCurve import GeometryCurve
 from Part.TopoShape import TopoShape
-from typing import List
+from Part.TopoShapeEdge import TopoShapeEdge
+from Part.TopoShapeFace import TopoShapeFace
+from typing import List, overload
 
 @export(
     PythonName="Part.BRepFeat.MakePrism",
@@ -23,7 +27,15 @@ class MakePrism(PyObjectBase):
     Licence: LGPL
     """
 
-    def init(self, **kwargs) -> None:
+    def init(
+        self,
+        Sbase: TopoShape,
+        Pbase: TopoShape,
+        Skface: TopoShapeFace,
+        Direction: Vector,
+        Fuse: int,
+        Modify: bool,
+    ) -> None:
         """
         Initializes this algorithm for building prisms along surfaces.
         A face Pbase is selected in the shape Sbase
@@ -39,7 +51,7 @@ class MakePrism(PyObjectBase):
         """
         ...
 
-    def add(self, **kwargs) -> None:
+    def add(self, Edge: TopoShapeEdge, Face: TopoShapeFace) -> None:
         """
         Indicates that the edge will slide on the face.
         Raises ConstructionError if the  face does not belong to the
@@ -47,7 +59,13 @@ class MakePrism(PyObjectBase):
         """
         ...
 
-    def perform(self, **kwargs) -> None:
+    @overload
+    def perform(self, From: TopoShape, Until: TopoShape) -> None: ...
+    @overload
+    def perform(self, Until: TopoShape) -> None: ...
+    @overload
+    def perform(self, Length: float) -> None: ...
+    def perform(self, *args) -> None:
         """
         Assigns one of the following semantics.
         1. to a height Length
@@ -90,7 +108,7 @@ class MakePrism(PyObjectBase):
         ...
 
     @constmethod
-    def barycCurve(self) -> object:
+    def barycCurve(self) -> GeometryCurve | None:
         """
         Generates a curve along the center of mass of the primitive.
         """

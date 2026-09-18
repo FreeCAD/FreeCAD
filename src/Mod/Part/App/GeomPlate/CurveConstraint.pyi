@@ -56,7 +56,7 @@ class CurveConstraint(PyObjectBase):
         """
         ...
 
-    def order(self) -> None:
+    def order(self) -> int:
         """
         Returns the order of constraint, one of G0, G1 or G2
         """

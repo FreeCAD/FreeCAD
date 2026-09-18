@@ -187,7 +187,7 @@ class Sheet(DocumentObject):
         """
         ...
 
-    def getUsedRange(self) -> tuple[str, str]:
+    def getUsedRange(self) -> tuple[str, str] | None:
         """
         Get a the total range of the used cells in a sheet, as a pair of strings
         representing the lowest row and column that are used, and the highest row and

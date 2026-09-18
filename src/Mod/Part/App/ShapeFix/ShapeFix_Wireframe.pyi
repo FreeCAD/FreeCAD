@@ -40,16 +40,16 @@ class ShapeFix_Wireframe(ShapeFix_Root):
         """
         ...
 
-    def fixWireGaps(self) -> None:
+    def fixWireGaps(self) -> bool:
         """
         Fixes gaps between ends of curves of adjacent edges
         """
         ...
 
-    def fixSmallEdges(self) -> None:
+    def fixSmallEdges(self) -> bool:
         """
         Fixes small edges in shape by merging adjacent edges
         """
         ...
 
-    def shape(self) -> None: ...
+    def shape(self) -> TopoShape: ...

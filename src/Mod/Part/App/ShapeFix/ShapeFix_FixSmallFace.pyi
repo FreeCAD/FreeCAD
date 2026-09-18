@@ -33,7 +33,7 @@ class ShapeFix_FixSmallFace(ShapeFix_Root):
         """
         ...
 
-    def fixSpotFace(self) -> None:
+    def fixSpotFace(self) -> TopoShape:
         """
         Fixing case of spot face, if tol = -1 used local tolerance
         """
@@ -51,7 +51,7 @@ class ShapeFix_FixSmallFace(ShapeFix_Root):
         """
         ...
 
-    def fixStripFace(self) -> None:
+    def fixStripFace(self, wasdone: bool = False, /) -> TopoShape:
         """
         Fixing case of strip face, if tol = -1 used local tolerance
         """
@@ -76,7 +76,7 @@ class ShapeFix_FixSmallFace(ShapeFix_Root):
         """
         ...
 
-    def fixShape(self) -> None:
+    def fixShape(self) -> TopoShape:
         """
         Fixes issues in the overall geometric shape.
         This function likely encapsulates higher-level fixes that involve multiple faces or elements.

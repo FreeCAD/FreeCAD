@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from Base.Metadata import export
 from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
+from Part.App.ShapeFix.ShapeFix_Shell import ShapeFix_Shell
 from Part.TopoShape import TopoShape
 from Part.TopoShapeShell import TopoShapeShell
 from Part.TopoShapeSolid import TopoShapeSolid
@@ -42,7 +43,7 @@ class ShapeFix_Solid(ShapeFix_Root):
         """
         ...
 
-    def perform(self) -> None:
+    def perform(self) -> bool:
         """
         Iterates on subshapes and performs fixes
         """
@@ -54,20 +55,20 @@ class ShapeFix_Solid(ShapeFix_Root):
         """
         ...
 
-    def solid(self) -> None:
+    def solid(self) -> TopoShape:
         """
         Returns resulting solid
         """
         ...
 
-    def shape(self) -> None:
+    def shape(self) -> TopoShape:
         """
         In case of multiconnexity returns compound of fixed solids
         else returns one solid
         """
         ...
 
-    def fixShellTool(self) -> None:
+    def fixShellTool(self) -> ShapeFix_Shell:
         """
         Returns tool for fixing shells
         """

@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
-from typing import Any, Final, TypeAlias
+from typing import Any, Final, TypeAlias, overload
 
 from Base.Metadata import constmethod, export, class_declarations
 from Base.Vector import Vector
 from Base.Matrix import Matrix
+from Facet import Facet
 
 from App.ComplexGeoData import ComplexGeoData
 
@@ -46,21 +47,41 @@ class Mesh(ComplexGeoData):
     License: LGPL-2.1-or-later
     """
 
-    def read(self, **kwargs) -> Any:
+    @overload
+    def read(self, Filename: str) -> None: ...
+    @overload
+    def read(self, Stream: object, Format: str = ...) -> None: ...
+    def read(self, **kwargs) -> None:
         """Read in a mesh object from file.
         mesh.read(Filename='mymesh.stl')
         mesh.read(Stream=file,Format='STL')"""
         ...
 
     @constmethod
-    def write(self, **kwargs) -> Any:
+    @overload
+    def write(
+        self,
+        Filename: str,
+        Format: str = ...,
+        Name: str = ...,
+        Material: dict = ...,
+    ) -> None: ...
+    @overload
+    def write(
+        self,
+        Stream: object,
+        Format: str = ...,
+        Name: str = ...,
+        Material: dict = ...,
+    ) -> None: ...
+    def write(self, **kwargs) -> None:
         """Write the mesh object into file.
         mesh.write(Filename='mymesh.stl',[Format='STL',Name='Object name',Material=colors])
         mesh.write(Stream=file,Format='STL',[Name='Object name',Material=colors])"""
         ...
 
     @constmethod
-    def writeInventor(self) -> Any:
+    def writeInventor(self, creaseangle: float = 0.0, /) -> str:
         """Write the mesh in OpenInventor format to a string."""
         ...
 
@@ -114,7 +135,7 @@ class Mesh(ComplexGeoData):
         ...
 
     @constmethod
-    def section(self, **kwargs) -> Any:
+    def section(self, Mesh: Mesh, ConnectLines: bool = True, MinDist: float = 0.0001) -> list:
         """Get the section curves of this and the given mesh object.
         lines = mesh.section(mesh2, [ConnectLines=True, MinDist=0.0001])"""
         ...
@@ -140,11 +161,33 @@ class Mesh(ComplexGeoData):
         """Get Eigen base of the mesh"""
         ...
 
-    def addFacet(self) -> Any:
+    @overload
+    def addFacet(
+        self,
+        x1: float,
+        y1: float,
+        z1: float,
+        x2: float,
+        y2: float,
+        z2: float,
+        x3: float,
+        y3: float,
+        z3: float,
+        /,
+    ) -> None: ...
+    @overload
+    def addFacet(self, v1: Vector, v2: Vector, v3: Vector, /) -> None: ...
+    @overload
+    def addFacet(self, facet: Facet, /) -> None: ...
+    def addFacet(self, *args) -> None:
         """Add a facet to the mesh"""
         ...
 
-    def addFacets(self) -> Any:
+    @overload
+    def addFacets(self, facets: list, /) -> None: ...
+    @overload
+    def addFacets(self, mesh: tuple[list, list], check: bool = True, /) -> None: ...
+    def addFacets(self, *args) -> None:
         """Add a list of facets to the mesh"""
         ...
 
@@ -178,7 +221,11 @@ class Mesh(ComplexGeoData):
         Sets the point at index."""
         ...
 
-    def movePoint(self) -> Any:
+    @overload
+    def movePoint(self, index: int, x: float, y: float, z: float, /) -> None: ...
+    @overload
+    def movePoint(self, index: int, vector: Vector, /) -> None: ...
+    def movePoint(self, *args) -> None:
         """movePoint(int, Vector)
         This method moves the point in the mesh along the
         given vector. This affects the geometry of the mesh.
@@ -299,7 +346,7 @@ class Mesh(ComplexGeoData):
         """Check if points lie on edges"""
         ...
 
-    def removePointsOnEdge(self, **kwargs) -> Any:
+    def removePointsOnEdge(self, FillBoundary: bool = False) -> None:
         """removePointsOnEdge(FillBoundary=False)
         Remove points that lie on edges.
         If FillBoundary is True then the holes by removing the affected facets
@@ -339,7 +386,7 @@ class Mesh(ComplexGeoData):
         """Repair any invalid indices"""
         ...
 
-    def fixCaps(self) -> Any:
+    def fixCaps(self, max_angle: float = ..., split_factor: float = ..., /) -> None:
         """Repair caps by swapping the edge"""
         ...
 
@@ -347,7 +394,7 @@ class Mesh(ComplexGeoData):
         """Repair deformed facets"""
         ...
 
-    def fixDegenerations(self) -> Any:
+    def fixDegenerations(self, epsilon: float = ..., /) -> None:
         """Remove degenerated facets"""
         ...
 
@@ -448,12 +495,24 @@ class Mesh(ComplexGeoData):
         ...
 
     @constmethod
-    def smooth(self, **kwargs) -> Any:
+    def smooth(
+        self,
+        Method: str = "Laplace",
+        Iteration: int = 1,
+        Lambda: float = 0,
+        Micro: float = 0,
+        Maximum: float = 1000,
+        Weight: int = 1,
+    ) -> None:
         """Smooth the mesh
         smooth([iteration=1,maxError=FLT_MAX])"""
         ...
 
-    def decimate(self) -> Any:
+    @overload
+    def decimate(self, tolerance: float, reduction: float, /) -> None: ...
+    @overload
+    def decimate(self, target_size: int, /) -> None: ...
+    def decimate(self, *args) -> None:
         """Decimate the mesh
         decimate(tolerance(Float), reduction(Float))
         tolerance: maximum error
@@ -468,7 +527,7 @@ class Mesh(ComplexGeoData):
         ...
 
     @constmethod
-    def optimizeTopology(self) -> Any:
+    def optimizeTopology(self, max_angle: float = ..., /) -> None:
         """Optimize the edges to get nicer facets"""
         ...
 

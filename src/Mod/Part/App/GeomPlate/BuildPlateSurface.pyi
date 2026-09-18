@@ -44,14 +44,14 @@ class BuildPlateSurface(PyObjectBase):
         ...
 
     @constmethod
-    def surfInit(self) -> object:
+    def surfInit(self) -> GeometrySurface | None:
         """
         Returns the initial surface
         """
         ...
 
     @constmethod
-    def surface(self) -> object:
+    def surface(self) -> GeometrySurface | None:
         """
         Returns the plate surface
         """
@@ -125,21 +125,21 @@ class BuildPlateSurface(PyObjectBase):
         ...
 
     @constmethod
-    def G0Error(self) -> float:
+    def G0Error(self, index: int = 0, /) -> float:
         """
         Returns the max distance between the result and the constraints
         """
         ...
 
     @constmethod
-    def G1Error(self) -> float:
+    def G1Error(self, index: int = 0, /) -> float:
         """
         Returns the max angle between the result and the constraints
         """
         ...
 
     @constmethod
-    def G2Error(self) -> float:
+    def G2Error(self, index: int = 0, /) -> float:
         """
         Returns the max difference of curvature between the result and the constraints
         """
