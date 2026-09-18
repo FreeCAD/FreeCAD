@@ -56,14 +56,13 @@ ViewProviderTextDocument::ViewProviderTextDocument()
 
     QFont font;
     font.setFamily(
-        QString::fromLatin1(
+        QString::fromStdString(
             App::GetApplication()
                 .GetUserParameter()
                 .GetGroup("BaseApp")
                 ->GetGroup("Preferences")
                 ->GetGroup("Editor")
-                ->GetASCII("Font", font.family().toLatin1())
-                .c_str()
+                ->getString("Font", font.family().toStdString())
         )
     );
     font.setPointSize(

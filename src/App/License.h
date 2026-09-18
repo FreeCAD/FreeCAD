@@ -26,7 +26,8 @@
 
 #include <array>
 #include <cstring>
-#include <string>
+#include <string_view>
+
 #include <Base/Tools.h>
 
 namespace App
@@ -37,7 +38,7 @@ namespace App
  * See also https://spdx.org/licenses/
  */
 constexpr int colsInArray = 3;
-using TLicenseArr = std::array<const char*, colsInArray>;
+using TLicenseArr = std::array<std::string_view, colsInArray>;
 constexpr int posnOfIdentifier = 0;
 constexpr int posnOfFullName = 1;
 constexpr int posnOfUrl = 2;
@@ -72,7 +73,7 @@ int constexpr findLicense(const char* identifier)
         return -1;
     }
     for (int i = 0; i < countOfLicenses; i++) {
-        if (strcmp(licenseItems.at(i).at(posnOfIdentifier), identifier) == 0) {
+        if (licenseItems.at(i).at(posnOfIdentifier) == identifier) {
             return i;
         }
     }

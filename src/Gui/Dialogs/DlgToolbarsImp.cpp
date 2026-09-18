@@ -213,7 +213,7 @@ void DlgCustomToolbars::importCustomToolbars(const QByteArray& name)
         toplevel->setCheckState(0, (active ? Qt::Checked : Qt::Unchecked));
 
         // get the elements of the subgroups
-        std::vector<std::pair<std::string, std::string>> items = hGrp->GetASCIIMap();
+        std::vector<std::pair<std::string, std::string>> items = hGrp->getAllStringsMap();
         for (const auto& it2 : items) {
             // since we have stored the separators to the user parameters as (key, pair) we had to
             // make sure to use a unique key because otherwise we cannot store more than
@@ -225,7 +225,7 @@ void DlgCustomToolbars::importCustomToolbars(const QByteArray& name)
                 item->setSizeHint(0, QSize(32, 32));
             }
             else if (it2.first == "Name") {
-                QString toolbarName = QString::fromUtf8(it2.second.c_str());
+                QString toolbarName = QString::fromStdString(it2.second);
                 toplevel->setText(0, toolbarName);
             }
             else {
@@ -266,9 +266,9 @@ void DlgCustomToolbars::exportCustomToolbars(const QByteArray& workbench)
     for (int i = 0; i < ui->toolbarTreeWidget->topLevelItemCount(); i++) {
         QTreeWidgetItem* toplevel = ui->toolbarTreeWidget->topLevelItem(i);
         QString groupName = QStringLiteral("Custom_%1").arg(i + 1);
-        QByteArray toolbarName = toplevel->text(0).toUtf8();
+        auto toolbarName = toplevel->text(0).toStdString();
         ParameterGrp::handle hToolGrp = hGrp->GetGroup(groupName.toLatin1());
-        hToolGrp->SetASCII("Name", toolbarName.constData());
+        hToolGrp->setString("Name", toolbarName);
         hToolGrp->SetBool("Active", toplevel->checkState(0) == Qt::Checked);
 
         // since we store the separators to the user parameters as (key, pair) we must
@@ -281,16 +281,20 @@ void DlgCustomToolbars::exportCustomToolbars(const QByteArray& workbench)
             if (commandName == "Separator") {
                 QByteArray key = commandName + QByteArray::number(suffixSeparator);
                 suffixSeparator++;
-                hToolGrp->SetASCII(key, commandName);
+                hToolGrp->setString(key.toStdString(), commandName.toStdString());
             }
             else {
                 Command* pCmd = rMgr.getCommandByName(commandName);
                 if (pCmd) {
-                    hToolGrp->SetASCII(pCmd->getName(), pCmd->getAppModuleName());
+                    // TODO: make name & appModuleName be std::strings and remove these conversions
+                    hToolGrp->setString(
+                        std::string_view {pCmd->getName()},
+                        std::string_view {pCmd->getAppModuleName() ? pCmd->getAppModuleName() : ""}
+                    );
                 }
                 else {
                     QByteArray moduleName = child->data(0, Qt::WhatsThisPropertyRole).toByteArray();
-                    hToolGrp->SetASCII(commandName, moduleName);
+                    hToolGrp->setString(commandName.toStdString(), moduleName.toStdString());
                 }
             }
         }

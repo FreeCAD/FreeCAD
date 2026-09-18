@@ -82,7 +82,7 @@ static QString getF3dPath()
     const ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start"
     );
-    return QString::fromUtf8(hGrp->GetASCII("f3d", "f3d").c_str());
+    return QString::fromStdString(hGrp->getString("f3d", "f3d"));
 }
 
 static QStringList getF3DOptions(const QString& f3dPath)

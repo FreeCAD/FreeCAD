@@ -291,9 +291,15 @@ void TaskSketcherSolverAdvanced::updateDefaultMethodParameters()
             ui->lineEditSolverParam1->setEnabled(true);
             ui->lineEditSolverParam2->setEnabled(true);
             ui->lineEditSolverParam3->setEnabled(true);
-            double eps = ::atof(hGrp->GetASCII("LM_eps", QString::number(LM_EPS).toUtf8()).c_str());
-            double eps1 = ::atof(hGrp->GetASCII("LM_eps1", QString::number(LM_EPS1).toUtf8()).c_str());
-            double tau = ::atof(hGrp->GetASCII("LM_tau", QString::number(LM_TAU).toUtf8()).c_str());
+            double eps = ::atof(
+                hGrp->getString("LM_eps", QString::number(LM_EPS).toStdString()).c_str()
+            );
+            double eps1 = ::atof(
+                hGrp->getString("LM_eps1", QString::number(LM_EPS1).toStdString()).c_str()
+            );
+            double tau = ::atof(
+                hGrp->getString("LM_tau", QString::number(LM_TAU).toStdString()).c_str()
+            );
             ui->lineEditSolverParam1->setText(
                 QString::number(eps).remove(
                     QStringLiteral("+").replace(QStringLiteral("e0"), QStringLiteral("E")).toUpper()
@@ -330,9 +336,15 @@ void TaskSketcherSolverAdvanced::updateDefaultMethodParameters()
             ui->lineEditSolverParam1->setEnabled(true);
             ui->lineEditSolverParam2->setEnabled(true);
             ui->lineEditSolverParam3->setEnabled(true);
-            double tolg = ::atof(hGrp->GetASCII("DL_tolg", QString::number(DL_TOLG).toUtf8()).c_str());
-            double tolx = ::atof(hGrp->GetASCII("DL_tolx", QString::number(DL_TOLX).toUtf8()).c_str());
-            double tolf = ::atof(hGrp->GetASCII("DL_tolf", QString::number(DL_TOLF).toUtf8()).c_str());
+            double tolg = ::atof(
+                hGrp->getString("DL_tolg", QString::number(DL_TOLG).toStdString()).c_str()
+            );
+            double tolx = ::atof(
+                hGrp->getString("DL_tolx", QString::number(DL_TOLX).toStdString()).c_str()
+            );
+            double tolf = ::atof(
+                hGrp->getString("DL_tolf", QString::number(DL_TOLF).toStdString()).c_str()
+            );
             ui->lineEditSolverParam1->setText(
                 QString::number(tolg).remove(
                     QStringLiteral("+").replace(QStringLiteral("e0"), QStringLiteral("E")).toUpper()
@@ -396,13 +408,13 @@ void TaskSketcherSolverAdvanced::updateRedundantMethodParameters()
             ui->lineEditRedundantSolverParam2->setEnabled(true);
             ui->lineEditRedundantSolverParam3->setEnabled(true);
             double eps = ::atof(
-                hGrp->GetASCII("Redundant_LM_eps", QString::number(LM_EPS).toUtf8()).c_str()
+                hGrp->getString("Redundant_LM_eps", QString::number(LM_EPS).toStdString()).c_str()
             );
             double eps1 = ::atof(
-                hGrp->GetASCII("Redundant_LM_eps1", QString::number(LM_EPS1).toUtf8()).c_str()
+                hGrp->getString("Redundant_LM_eps1", QString::number(LM_EPS1).toStdString()).c_str()
             );
             double tau = ::atof(
-                hGrp->GetASCII("Redundant_LM_tau", QString::number(LM_TAU).toUtf8()).c_str()
+                hGrp->getString("Redundant_LM_tau", QString::number(LM_TAU).toStdString()).c_str()
             );
             ui->lineEditRedundantSolverParam1->setText(
                 QString::number(eps).remove(
@@ -436,13 +448,13 @@ void TaskSketcherSolverAdvanced::updateRedundantMethodParameters()
             ui->lineEditRedundantSolverParam2->setEnabled(true);
             ui->lineEditRedundantSolverParam3->setEnabled(true);
             double tolg = ::atof(
-                hGrp->GetASCII("Redundant_DL_tolg", QString::number(DL_TOLG).toUtf8()).c_str()
+                hGrp->getString("Redundant_DL_tolg", QString::number(DL_TOLG).toStdString()).c_str()
             );
             double tolx = ::atof(
-                hGrp->GetASCII("Redundant_DL_tolx", QString::number(DL_TOLX).toUtf8()).c_str()
+                hGrp->getString("Redundant_DL_tolx", QString::number(DL_TOLX).toStdString()).c_str()
             );
             double tolf = ::atof(
-                hGrp->GetASCII("Redundant_DL_tolf", QString::number(DL_TOLF).toUtf8()).c_str()
+                hGrp->getString("Redundant_DL_tolf", QString::number(DL_TOLF).toStdString()).c_str()
             );
             ui->lineEditRedundantSolverParam1->setText(
                 QString::number(tolg).remove(
@@ -809,18 +821,18 @@ void TaskSketcherSolverAdvanced::onPushButtonDefaultsClicked(bool checked /* = f
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/SolverAdvanced"
     );
-    hGrp->SetASCII("LM_eps", QString::number(LM_EPS).toUtf8());
-    hGrp->SetASCII("LM_eps1", QString::number(LM_EPS1).toUtf8());
-    hGrp->SetASCII("LM_tau", QString::number(LM_TAU).toUtf8());
-    hGrp->SetASCII("DL_tolg", QString::number(DL_TOLG).toUtf8());
-    hGrp->SetASCII("DL_tolx", QString::number(DL_TOLX).toUtf8());
-    hGrp->SetASCII("DL_tolf", QString::number(DL_TOLF).toUtf8());
-    hGrp->SetASCII("Redundant_LM_eps", QString::number(LM_EPS).toUtf8());
-    hGrp->SetASCII("Redundant_LM_eps1", QString::number(LM_EPS1).toUtf8());
-    hGrp->SetASCII("Redundant_LM_tau", QString::number(LM_TAU).toUtf8());
-    hGrp->SetASCII("Redundant_DL_tolg", QString::number(DL_TOLG).toUtf8());
-    hGrp->SetASCII("Redundant_DL_tolx", QString::number(DL_TOLX).toUtf8());
-    hGrp->SetASCII("Redundant_DL_tolf", QString::number(DL_TOLF).toUtf8());
+    hGrp->setString("LM_eps", QString::number(LM_EPS).toStdString());
+    hGrp->setString("LM_eps1", QString::number(LM_EPS1).toStdString());
+    hGrp->setString("LM_tau", QString::number(LM_TAU).toStdString());
+    hGrp->setString("DL_tolg", QString::number(DL_TOLG).toStdString());
+    hGrp->setString("DL_tolx", QString::number(DL_TOLX).toStdString());
+    hGrp->setString("DL_tolf", QString::number(DL_TOLF).toStdString());
+    hGrp->setString("Redundant_LM_eps", QString::number(LM_EPS).toStdString());
+    hGrp->setString("Redundant_LM_eps1", QString::number(LM_EPS1).toStdString());
+    hGrp->setString("Redundant_LM_tau", QString::number(LM_TAU).toStdString());
+    hGrp->setString("Redundant_DL_tolg", QString::number(DL_TOLG).toStdString());
+    hGrp->setString("Redundant_DL_tolx", QString::number(DL_TOLX).toStdString());
+    hGrp->setString("Redundant_DL_tolf", QString::number(DL_TOLF).toStdString());
     // Set other settings
     hGrp->SetInt("DefaultSolver", DEFAULT_SOLVER);
     hGrp->SetInt("DogLegGaussStep", DEFAULT_DOGLEG_GAUSS_STEP);
@@ -830,10 +842,10 @@ void TaskSketcherSolverAdvanced::onPushButtonDefaultsClicked(bool checked /* = f
     hGrp->SetInt("RedundantSolverMaxIterations", MAX_ITER);
     hGrp->SetBool("SketchSizeMultiplier", MAX_ITER_MULTIPLIER);
     hGrp->SetBool("RedundantSketchSizeMultiplier", MAX_ITER_MULTIPLIER);
-    hGrp->SetASCII("Convergence", QString::number(CONVERGENCE).toUtf8());
-    hGrp->SetASCII("RedundantConvergence", QString::number(CONVERGENCE).toUtf8());
+    hGrp->setString("Convergence", QString::number(CONVERGENCE).toStdString());
+    hGrp->setString("RedundantConvergence", QString::number(CONVERGENCE).toStdString());
     hGrp->SetInt("QRMethod", DEFAULT_QRSOLVER);
-    hGrp->SetASCII("QRPivotThreshold", QString::number(QR_PIVOT_THRESHOLD).toUtf8());
+    hGrp->setString("QRPivotThreshold", QString::number(QR_PIVOT_THRESHOLD).toStdString());
     hGrp->SetInt("DebugMode", DEFAULT_SOLVER_DEBUG);
 
     ui->comboBoxDefaultSolver->onRestore();

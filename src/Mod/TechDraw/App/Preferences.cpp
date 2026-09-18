@@ -53,7 +53,7 @@ Base::Reference<ParameterGrp> Preferences::getPreferenceGroup(const char* Name)
 
 std::string Preferences::labelFont()
 {
-    return getPreferenceGroup("Labels")->GetASCII("LabelFont", "osifont");
+    return getPreferenceGroup("Labels")->getString("LabelFont", "osifont");
 }
 
 QString Preferences::labelFontQString()
@@ -198,7 +198,7 @@ QString Preferences::defaultTemplate()
 {
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Templates/";
     std::string defaultFileName = defaultDir + "Default_Template_A4_Landscape.svg";
-    std::string prefFileName = getPreferenceGroup("Files")->GetASCII("TemplateFile", defaultFileName.c_str());
+    std::string prefFileName = getPreferenceGroup("Files")->getString("TemplateFile", defaultFileName);
     if (prefFileName.empty()) {
         prefFileName = defaultFileName;
     }
@@ -214,7 +214,7 @@ QString Preferences::defaultTemplate()
 QString Preferences::defaultTemplateDir()
 {
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Templates";
-    std::string prefTemplateDir = getPreferenceGroup("Files")->GetASCII("TemplateDir", defaultDir.c_str());
+    std::string prefTemplateDir = getPreferenceGroup("Files")->getString("TemplateDir", defaultDir);
     if (prefTemplateDir.empty()) {
         prefTemplateDir = defaultDir;
     }
@@ -232,7 +232,7 @@ std::string Preferences::lineGroupFile()
 {
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/LineGroup/";
     std::string defaultFileName = defaultDir + "LineGroup.csv";
-    std::string lgFileName = getPreferenceGroup("Files")->GetASCII("LineGroupFile", defaultFileName.c_str());
+    std::string lgFileName = getPreferenceGroup("Files")->getString("LineGroupFile", defaultFileName);
     if (lgFileName.empty()) {
         lgFileName = defaultFileName;
     }
@@ -246,7 +246,7 @@ std::string Preferences::lineGroupFile()
 
 std::string Preferences::formatSpec()
 {
-    return getPreferenceGroup("Dimensions")->GetASCII("formatSpec", "%.2w");
+    return getPreferenceGroup("Dimensions")->getString("formatSpec", "%.2w");
 }
 
 int Preferences::altDecimals()
@@ -273,7 +273,7 @@ bool Preferences::showDetailHighlight()
 QString Preferences::defaultSymbolDir()
 {
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Symbols";
-    std::string prefSymbolDir = getPreferenceGroup("Files")->GetASCII("DirSymbol", defaultDir.c_str());
+    std::string prefSymbolDir = getPreferenceGroup("Files")->getString("DirSymbol", defaultDir);
     if (prefSymbolDir.empty()) {
         prefSymbolDir = defaultDir;
     }
@@ -291,7 +291,7 @@ std::string Preferences::svgFile()
 {
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Patterns/";
     std::string defaultFileName = defaultDir + "simple.svg";
-    std::string prefHatchFile = getPreferenceGroup("Files")->GetASCII("FileHatch", defaultFileName.c_str());
+    std::string prefHatchFile = getPreferenceGroup("Files")->getString("FileHatch", defaultFileName);
     if (prefHatchFile.empty()) {
         prefHatchFile = defaultFileName;
     }
@@ -307,7 +307,7 @@ std::string Preferences::patFile()
 {
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/PAT/";
     std::string defaultFileName = defaultDir + "FCPAT.pat";
-    std::string prefHatchFile = getPreferenceGroup("PAT")->GetASCII("FilePattern", defaultFileName.c_str());
+    std::string prefHatchFile = getPreferenceGroup("PAT")->getString("FilePattern", defaultFileName);
     if (prefHatchFile.empty()) {
         prefHatchFile = defaultFileName;
     }
@@ -324,7 +324,7 @@ std::string Preferences::bitmapFill()
 {
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Patterns/";
     std::string defaultFileName = defaultDir + "default.png";
-    std::string prefBitmapFile = getPreferenceGroup("Files")->GetASCII("BitmapFill", defaultFileName.c_str());
+    std::string prefBitmapFile = getPreferenceGroup("Files")->getString("BitmapFill", defaultFileName);
     if (prefBitmapFile.empty()) {
         prefBitmapFile = defaultFileName;
     }
@@ -483,14 +483,14 @@ void Preferences::setLineStandard(int index)
 std::string Preferences::lineDefinitionLocation()
 {
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/LineGroup/";
-    std::string prefDir = getPreferenceGroup("Files")->GetASCII("LineDefLocation", defaultDir.c_str());
+    std::string prefDir = getPreferenceGroup("Files")->getString("LineDefLocation", defaultDir);
     return prefDir;
 }
 
 std::string Preferences::lineElementsLocation()
 {
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/LineGroup/";
-    std::string prefDir = getPreferenceGroup("Files")->GetASCII("LineElementLocation", defaultDir.c_str());
+    std::string prefDir = getPreferenceGroup("Files")->getString("LineElementLocation", defaultDir);
     return prefDir;
 }
 
