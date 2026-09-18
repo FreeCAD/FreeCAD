@@ -1060,24 +1060,24 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         self.assertEqual(repr(Part.Vertex()), "<Part.Vertex()>")
 
     def testTopoShapeDifferentTypesNotEqual(self):
-        v = Part.Vertex(1,2,3)
-        v2 = Part.Vertex(3,2,1)
-        e = Part.Edge(v,v2)
+        v = Part.Vertex(1, 2, 3)
+        v2 = Part.Vertex(3, 2, 1)
+        e = Part.Edge(v, v2)
 
-        self.assertNotEqual(v,e)
-        self.assertNotEqual(v2,e)
-        self.assertNotEqual(Part.Vertex(),e)
+        self.assertNotEqual(v, e)
+        self.assertNotEqual(v2, e)
+        self.assertNotEqual(Part.Vertex(), e)
 
     def testTopoShapesHashable(self):
-        v = Part.Vertex(1,2,3)
-        v2 = Part.Vertex(3,2,1)
-        e = Part.Edge(v,v2)
+        v = Part.Vertex(1, 2, 3)
+        v2 = Part.Vertex(3, 2, 1)
+        e = Part.Edge(v, v2)
 
-        d={}
+        d = {}
         d[v] = 1
-        d[v2]=2
-        d[e]=3
+        d[v2] = 2
+        d[e] = 3
 
-        self.assertEqual(d[v],1)
-        self.assertEqual(d[v2],2)
-        self.assertEqual(d[e],3)
+        self.assertEqual(d[v], 1)
+        self.assertEqual(d[v2], 2)
+        self.assertEqual(d[e], 3)
