@@ -28,6 +28,7 @@
 import math
 import os
 import re
+import shutil
 import tempfile
 import xml.etree.ElementTree as ET
 
@@ -37,6 +38,7 @@ import FreeCAD as App
 import FreeCADGui as Gui
 from FreeCAD import Vector
 
+from drafttests import auxiliary as aux
 from drafttests import test_base
 
 
@@ -381,3 +383,37 @@ class DraftGuiDimension(test_base.DraftTestCaseDoc):
             if original_name in App.listDocuments():
                 self.doc = App.getDocument(original_name)
             os.unlink(temp_file.name)
+
+    def test_export_dxf_dimension_blocks_are_unique(self):
+        """Dimensions on the same layer must not share a DXF block name."""
+        dimension1 = Draft.make_linear_dimension(
+            Vector(0, 0, 0), Vector(100, 0, 0), Vector(50, -20, 0)
+        )
+        dimension2 = Draft.make_linear_dimension(
+            Vector(0, 50, 0), Vector(80, 50, 0), Vector(40, 30, 0)
+        )
+        self.doc.recompute()
+
+        out_dir = tempfile.mkdtemp()
+        try:
+            path = os.path.join(out_dir, "dimensions.dxf")
+            aux.export_dxf([dimension1, dimension2], path)
+            pairs = aux.dxf_group_pairs(path)
+        finally:
+            shutil.rmtree(out_dir, ignore_errors=True)
+
+        blocks = [
+            pairs[k + 1][1]
+            for k, pair in enumerate(pairs[:-1])
+            if pair == ("100", "AcDbBlockBegin")
+        ]
+        dimension_blocks = [name for name in blocks if name not in ("*MODEL_SPACE", "*PAPER_SPACE")]
+        references = [
+            pairs[k + 1][1] for k, pair in enumerate(pairs[:-1]) if pair == ("100", "AcDbDimension")
+        ]
+
+        self.assertEqual(len(dimension_blocks), 2)
+        self.assertEqual(
+            len(set(dimension_blocks)), 2, f"duplicate block names: {dimension_blocks}"
+        )
+        self.assertCountEqual(references, dimension_blocks)
