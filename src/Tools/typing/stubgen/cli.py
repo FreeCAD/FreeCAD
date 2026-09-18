@@ -21,6 +21,7 @@ import subprocess
 import sys
 
 from .doc_lint import lint_curated_stub_docs
+from python_api_model.diagnostics import MergeDiagnostics
 from .discovery import collect_methods, collect_type_registrations
 from .generator import (
     markdown_report,
@@ -140,6 +141,11 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
 
     parser = argparse.ArgumentParser(description=DESCRIPTION)
     add_generation_args(parser)
+    parser.add_argument(
+        "--log-dir",
+        type=Path,
+        help="Optional directory for generator diagnostics and summary logs.",
+    )
     parser.set_defaults(command="generate")
     return parser.parse_args(argv)
 
@@ -197,7 +203,7 @@ def run_generate(args: argparse.Namespace) -> int:
 
     if args.out_dir:
         out_dir = args.out_dir if args.out_dir.is_absolute() else root / args.out_dir
-        generation_result = write_outputs(
+        result = write_outputs(
             out_dir,
             root,
             source_dir,
@@ -207,10 +213,20 @@ def run_generate(args: argparse.Namespace) -> int:
             stub_signature_overrides,
             overlay_dir,
         )
+        if result.diagnostics:
+            diagnostic_output = MergeDiagnostics(result.diagnostics).render() + "\n"
+            print_stderr(diagnostic_output)
+            if getattr(args, "log_dir", None):
+                write_log(
+                    args.log_dir.resolve() / "python-stubs-diagnostics.log",
+                    diagnostic_output,
+                )
+        if result.errors:
+            return 1
         summary = (
             f"Wrote {len(methods)} registrations and {len(classes)} class bindings to {out_dir} "
-            f"({generation_result.overlay_count} overlay stub files applied)\n"
-            f"{generation_result.cpp_property_report.summary()}"
+            f"({result.overlay_count} overlay stub files applied)\n"
+            f"{result.cpp_property_report.summary()}"
         )
         print(summary)
         if getattr(args, "log_dir", None):
