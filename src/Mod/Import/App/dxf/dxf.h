@@ -380,6 +380,14 @@ public:
     {
         return m_fail;
     }
+    void setExportTime(double seconds)
+    {
+        m_stats.exportTimeSeconds = seconds;
+    }
+    void setTotalObjectsProcessed(int count)
+    {
+        m_stats.totalObjectsProcessed = count;
+    }
     //    void setOptions(void);
     //    bool isVersionValid(int vers);
     std::string getLayerName()

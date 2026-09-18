@@ -239,6 +239,20 @@ static PyObject* DxfWriterProxy_writeLinearDim(DxfWriterProxy* self, PyObject* a
     Py_RETURN_NONE;
 }
 
+static PyObject* DxfWriterProxy_recordSkipped(DxfWriterProxy* self, PyObject* args)
+{
+    const char* obj_type;
+    const char* obj_name;
+    const char* reason;
+    if (!PyArg_ParseTuple(args, "sss", &obj_type, &obj_name, &reason)) {
+        return nullptr;
+    }
+    if (self->writer_inst) {
+        self->writer_inst->recordSkipped(obj_type, obj_name, reason);
+    }
+    Py_RETURN_NONE;
+}
+
 // Method table
 static PyMethodDef DxfWriterProxy_methods[] = {
     {"writeBlock",
@@ -258,6 +272,10 @@ static PyMethodDef DxfWriterProxy_methods[] = {
      (PyCFunction)DxfWriterProxy_writeLinearDim,
      METH_VARARGS,
      "Writes a DIMENSION entity."},
+    {"recordSkipped",
+     (PyCFunction)DxfWriterProxy_recordSkipped,
+     METH_VARARGS,
+     "recordSkipped(objType, objName, reason)"},
     {nullptr, nullptr, 0, nullptr} /* Sentinel */
 };
 
@@ -887,23 +905,30 @@ private:
             throw Py::Exception();
         }
 
+        Py::Object statsResult = Py::None();
         try {  // NOLINT(bugprone-throw-keyword-missing)
             ImpExpDxfWrite writer(utf8_filename);
             writer.setOptions();
             writer.setVersion(version);
             writer.setPolyOverride(use_lwpolyline == Py_True);
+            writer.setTotalObjectsProcessed(static_cast<int>(PyList_Size(objectList)));
 
             writer.init();
+            auto startTime = std::chrono::high_resolution_clock::now();
             Import::executeDxfExport(objectList, writer, helperModule);
+            auto endTime = std::chrono::high_resolution_clock::now();
+            std::chrono::duration<double> elapsed = endTime - startTime;
+            writer.setExportTime(elapsed.count());
 
             writer.endRun();
+            statsResult = writer.getStatsAsPyObject();
         }
         catch (const Base::Exception& e) {
             e.setPyException();
             throw Py::Exception();
         }
 
-        return Py::None();
+        return statsResult;
     }
 };
 

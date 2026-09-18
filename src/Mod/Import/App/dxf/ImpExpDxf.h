@@ -585,6 +585,10 @@ public:
     ~ImpExpDxfWrite();
 
     void exportShape(TopoDS_Shape input);
+
+    Py::Object getStatsAsPyObject();
+    void recordSkipped(const std::string& objType, const std::string& objName, const std::string& reason);
+
     std::string getOptionSource()
     {
         return m_optionSource;
