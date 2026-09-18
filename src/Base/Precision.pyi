@@ -55,21 +55,21 @@ class Precision(PyObjectBase):
         ...
 
     @staticmethod
-    def isInfinite() -> bool:
+    def isInfinite(value: float, /) -> bool:
         """
         Returns True if R may be considered as an infinite number
         """
         ...
 
     @staticmethod
-    def isPositiveInfinite() -> bool:
+    def isPositiveInfinite(value: float, /) -> bool:
         """
         Returns True if R may  be considered as a positive infinite number
         """
         ...
 
     @staticmethod
-    def isNegativeInfinite() -> bool:
+    def isNegativeInfinite(value: float, /) -> bool:
         """
         Returns True if R may  be considered as a negative infinite number
         """

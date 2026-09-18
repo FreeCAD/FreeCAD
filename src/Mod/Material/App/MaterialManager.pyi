@@ -5,6 +5,7 @@ from __future__ import annotations
 from Base.Metadata import export
 from Base.BaseClass import BaseClass
 from Material import Material
+from MaterialFilter import MaterialFilter
 from typing import Final, List, Dict
 
 
@@ -67,7 +68,7 @@ class MaterialManager(BaseClass):
         """
         ...
 
-    def filterMaterials(self, **kwargs) -> None:
+    def filterMaterials(self, filter: MaterialFilter, includeLegacy: bool = False) -> list:
         """
         Returns a filtered material list
         """

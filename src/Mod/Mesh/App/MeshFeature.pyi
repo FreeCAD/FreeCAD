@@ -38,7 +38,7 @@ class MeshFeature(GeoFeature):
         """Adjust wrong oriented facets"""
         ...
 
-    def smooth(self) -> Any:
+    def smooth(self, iteration: int = 1, max_error: float = ..., /) -> None:
         """Smooth the mesh data"""
         ...
 
@@ -75,7 +75,7 @@ class MeshFeature(GeoFeature):
         """Repair any invalid indices"""
         ...
 
-    def fixDegenerations(self) -> Any:
+    def fixDegenerations(self, epsilon: float = ..., /) -> None:
         """Remove degenerated facets"""
         ...
 

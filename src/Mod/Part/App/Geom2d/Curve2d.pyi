@@ -209,7 +209,7 @@ class Curve2d(Geometry2d):
         ...
 
     @constmethod
-    def intersectCC(self, other: "Curve2d", /) -> List[Vector]:
+    def intersectCC(self, other: "Curve2d", tolerance: float = ..., /) -> List[Vector]:
         """
         Returns all intersection points between this curve and the given curve.
         """
@@ -218,7 +218,7 @@ class Curve2d(Geometry2d):
     @overload
     def toBSpline(self, /) -> BSplineCurve: ...
     @overload
-    def toBSpline(self, First: float, Last: float, /) -> BSplineCurve: ...
+    def toBSpline(self, First: float = ..., Last: float = ..., /) -> BSplineCurve: ...
     def toBSpline(self, *args: float) -> BSplineCurve:
         """
         Converts a curve of any type (only part from First to Last)

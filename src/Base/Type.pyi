@@ -112,7 +112,7 @@ class Type(PyObjectBase):
         ...
 
     @staticmethod
-    def createInstanceByName(name: str, load: bool = False, /) -> object:
+    def createInstanceByName(name: str, load: bool = False, /) -> object | None:
         """
         Creates an instance of the named type id.
 
