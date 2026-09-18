@@ -1030,8 +1030,11 @@ QMap<QString, QString> SketcherGui::findAvailableFontFiles()
     fontPaths << QString::fromUtf8("/System/Library/Fonts") << QString::fromUtf8("/Library/Fonts")
               << QDir::homePath() + QString::fromUtf8("/Library/Fonts");
 #else  // Linux and other Unix-like systems
-    // Follows the XDG spec: $XDG_DATA_HOME/fonts (usually ~/.local/share/fonts), the legacy ~/.fonts, and <dir>/fonts for each entry in $XDG_DATA_DIRS.
-    fontPaths << QStandardPaths::standardLocations(QStandardPaths::FontsLocation); // Fallbacks in case XDG_DATA_DIRS has been overridden.
+    // Follows the XDG spec: $XDG_DATA_HOME/fonts (usually ~/.local/share/fonts), the legacy
+    // ~/.fonts, and <dir>/fonts for each entry in $XDG_DATA_DIRS.
+    fontPaths << QStandardPaths::standardLocations(
+        QStandardPaths::FontsLocation
+    );  // Fallbacks in case XDG_DATA_DIRS has been overridden.
     fontPaths << QString::fromUtf8("/usr/share/fonts") << QString::fromUtf8("/usr/local/share/fonts");
 #endif
     fontPaths.removeDuplicates();
