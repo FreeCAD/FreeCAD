@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
- *                                                                          *
- *   Copyright (c) 2025 Alfredo Monclus <alfredomonclus@gmail.com>          *
+ *   Copyright (c) 2026 Boyer Pierre-Louis <pierrelouis.boyer@gmail.com>    *
  *                                                                          *
  *   This file is part of FreeCAD.                                          *
  *                                                                          *
@@ -23,35 +23,25 @@
 
 #pragma once
 
-#include <QLabel>
-#include <QString>
-#include <QPushButton>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
+#include <QIcon>
 
-#include <App/Application.h>
+#include <Gui/ViewProviderLink.h>
+#include <Mod/Part/PartGlobal.h>
 
-namespace StartGui
+namespace PartGui
 {
 
-class NewFileButton: public QPushButton
+class PartGuiExport ViewProviderLinkArray: public Gui::ViewProviderLink
 {
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderLinkArray);
+
 public:
-    explicit NewFileButton(QWidget* parent, const QString& iconPath);
+    ViewProviderLinkArray();
+    ~ViewProviderLinkArray() override;
 
-    void setHeadingText(const QString&);
-    void setDescriptionText(const QString&);
-
-private:
-    int iconSize;
-    int labelWidth;
-    QHBoxLayout* mainLayout;
-    QVBoxLayout* textLayout;
-    QLabel* headingLabel;
-    QLabel* descriptionLabel;
-
-protected:
-    QSize minimumSizeHint() const override;
+    bool doubleClicked() override;
+    std::optional<bool> doubleClickedOccurrence(const App::SubObjectT& reference) override;
+    QIcon getIcon() const override;
 };
 
-}  // namespace StartGui
+}  // namespace PartGui

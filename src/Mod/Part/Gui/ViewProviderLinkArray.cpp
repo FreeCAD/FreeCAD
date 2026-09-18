@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
- *                                                                          *
- *   Copyright (c) 2025 Alfredo Monclus <alfredomonclus@gmail.com>          *
+ *   Copyright (c) 2026 Boyer Pierre-Louis <pierrelouis.boyer@gmail.com>    *
  *                                                                          *
  *   This file is part of FreeCAD.                                          *
  *                                                                          *
@@ -21,37 +21,49 @@
  *                                                                          *
  ***************************************************************************/
 
-#pragma once
+#include "ViewProviderLinkArray.h"
 
-#include <QLabel>
-#include <QString>
-#include <QPushButton>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
+#include <App/DocumentObject.h>
+#include <Gui/BitmapFactory.h>
+#include <Mod/Part/App/LinkArrayCircular.h>
+#include <Mod/Part/App/LinkArrayPath.h>
+#include <Mod/Part/App/LinkArrayPoint.h>
+#include <Mod/Part/App/LinkArrayPolar.h>
 
-#include <App/Application.h>
+#include "TaskLinkArrayParameters.h"
 
-namespace StartGui
+using namespace PartGui;
+
+PROPERTY_SOURCE(PartGui::ViewProviderLinkArray, Gui::ViewProviderLink)
+
+ViewProviderLinkArray::ViewProviderLinkArray() = default;
+
+ViewProviderLinkArray::~ViewProviderLinkArray() = default;
+
+bool ViewProviderLinkArray::doubleClicked()
 {
+    return doubleClickedObject(getDefaultEditReference());
+}
 
-class NewFileButton: public QPushButton
+std::optional<bool> ViewProviderLinkArray::doubleClickedOccurrence(const App::SubObjectT& reference)
 {
-public:
-    explicit NewFileButton(QWidget* parent, const QString& iconPath);
+    PartGui::showLinkArrayTask(getObject(), reference);
+    return true;
+}
 
-    void setHeadingText(const QString&);
-    void setDescriptionText(const QString&);
-
-private:
-    int iconSize;
-    int labelWidth;
-    QHBoxLayout* mainLayout;
-    QVBoxLayout* textLayout;
-    QLabel* headingLabel;
-    QLabel* descriptionLabel;
-
-protected:
-    QSize minimumSizeHint() const override;
-};
-
-}  // namespace StartGui
+QIcon ViewProviderLinkArray::getIcon() const
+{
+    if (getObject()->isDerivedFrom<Part::LinkArrayCircular>()) {
+        return Gui::BitmapFactory().pixmap("Part_CircularLinkArray");
+    }
+    if (getObject()->isDerivedFrom<Part::LinkArrayPath>()) {
+        return Gui::BitmapFactory().pixmap("Part_PathLinkArray");
+    }
+    if (getObject()->isDerivedFrom<Part::LinkArrayPoint>()) {
+        return Gui::BitmapFactory().pixmap("Part_PointLinkArray");
+    }
+    if (getObject()->isDerivedFrom<Part::LinkArrayPolar>()) {
+        return Gui::BitmapFactory().pixmap("Part_PolarLinkArray");
+    }
+    return Gui::BitmapFactory().pixmap("LinkArray");
+}
