@@ -15,6 +15,7 @@ from Path.Tool.assets.asset import Asset
 from Path.Tool.assets.serializer import AssetSerializer
 from Path.Tool.assets.uri import AssetUri
 from Path.Tool.shape import ToolBitShapeEndmill
+from Path.Tool.toolbit.util import setToolBitSchema
 from typing import Mapping
 
 
@@ -29,6 +30,8 @@ class _BaseToolBitSerializerTestCase(PathTestWithAssets):
     def setUp(self):
         """Create a tool bit for each test."""
         super().setUp()
+        # Some tests switch the schema to check a bit stores its own units.
+        self._entry_schema = FreeCAD.Units.getSchema()
         if self.serializer_class is None or not issubclass(self.serializer_class, AssetSerializer):
             raise NotImplementedError("Subclasses must define a valid serializer_class")
 
@@ -36,6 +39,10 @@ class _BaseToolBitSerializerTestCase(PathTestWithAssets):
         self.test_tool_bit.label = "Test Tool"
         self.test_tool_bit.set_diameter(FreeCAD.Units.Quantity("4.12 mm"))
         self.test_tool_bit.set_length(FreeCAD.Units.Quantity("15.0 mm"))
+
+    def tearDown(self):
+        FreeCAD.Units.setSchema(self._entry_schema)
+        super().tearDown()
 
     def test_serialize(self):
         """Test serialization of a toolbit."""
@@ -112,6 +119,32 @@ class TestFCTBSerializer(_BaseToolBitSerializerTestCase):
             FreeCAD.Units.Quantity(15.0, FreeCAD.Units.Length),
         )
 
+    def test_serialize_uses_the_bits_own_units(self):
+        """A bit stores itself in the units it is specified in, not the ones on screen."""
+        self.test_tool_bit.obj.Units = "Imperial"
+        self.test_tool_bit.set_diameter(FreeCAD.Units.Quantity("0.375 in"))
+
+        for active in ("Metric", "Imperial"):
+            setToolBitSchema(active)
+            data = json.loads(self.serializer_class.serialize(self.test_tool_bit).decode("utf-8"))
+            diameter = data["parameter"]["Diameter"]
+            self.assertEqual(diameter, "0.3750 in", f"with the {active} schema active")
+
+    def test_serialize_keeps_tool_precision(self):
+        """Two decimals would save a 0.375" tap as 0.37" - 0.127mm out."""
+        cases = (("Metric", "9.525 mm"), ("Imperial", "0.3750 in"))
+        for units, expected in cases:
+            self.test_tool_bit.obj.Units = units
+            self.test_tool_bit.set_diameter(FreeCAD.Units.Quantity("0.375 in"))
+            data = json.loads(self.serializer_class.serialize(self.test_tool_bit).decode("utf-8"))
+            stored = data["parameter"]["Diameter"]
+            self.assertEqual(stored, expected)
+            self.assertAlmostEqual(
+                FreeCAD.Units.Quantity(stored).Value,
+                self.test_tool_bit.obj.Diameter.Value,
+                places=6,
+            )
+
     def test_extract_dependencies(self):
         """Test dependency extraction for FCTB."""
         fctb_data = (
@@ -150,6 +183,27 @@ class TestFCTBSerializer(_BaseToolBitSerializerTestCase):
         self.assertEqual(
             deserialized_bit.get_length(), FreeCAD.Units.Quantity(15.0, FreeCAD.Units.Length)
         )
+
+    def test_unknown_keys_preserved_on_roundtrip(self):
+        """Unknown top-level keys must survive deserialize -> serialize."""
+        fctb_data = (
+            b'{"name": "Test Tool", "pocket": null, "my_ext": {"foo": 1}, '
+            b'"shape": "endmill", '
+            b'"parameter": {"Diameter": "4.12 mm", "Length": "15.0 mm"}, "attribute": {}}'
+        )
+        shape = ToolBitShapeEndmill("endmill")
+        dependencies: Mapping[AssetUri, Asset] = {AssetUri.build("toolbitshape", "endmill"): shape}
+
+        toolbit = self.serializer_class.deserialize(
+            fctb_data, id="test_id", dependencies=dependencies
+        )
+        serialized = self.serializer_class.serialize(toolbit)
+        data = json.loads(serialized.decode("utf-8"))
+
+        self.assertIn("pocket", data)
+        self.assertIsNone(data["pocket"])
+        self.assertIn("my_ext", data)
+        self.assertEqual(data["my_ext"], {"foo": 1})
 
 
 class TestYamlToolBitSerializer(_BaseToolBitSerializerTestCase):

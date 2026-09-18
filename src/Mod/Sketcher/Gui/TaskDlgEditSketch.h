@@ -58,6 +58,8 @@ public:
 public:
     /// is called the TaskView when the dialog is opened
     void open() override;
+    /// is called by the framework when the dialog is closed
+    void closed() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
     void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
@@ -68,6 +70,7 @@ public:
     {
         return false;
     }
+    void autoClosedOnResetEdit() override;
     void autoClosedOnClosedView() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override;
@@ -85,6 +88,7 @@ protected:
 
 private:
     void slotToolChanged(const std::string& toolname);
+    void saveDialogState() const;
 
 protected:
     ViewProviderSketch* sketchView;
@@ -96,6 +100,7 @@ protected:
 
 private:
     Connection connectionToolSettings;
+    bool isEscapeAction {false};
 };
 
 

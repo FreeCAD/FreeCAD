@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jan Rheinländer                                    *
  *                                   <jrheinlaender@users.sourceforge.net> *
@@ -52,6 +54,8 @@ public:
     App::PropertyStiffnessDensity StickSlope;
     App::PropertyBool EnableThermalContact;
     App::PropertyStringList ThermalContactConductance;
+    App::PropertyBoolList ReversedMaster;
+    App::PropertyBoolList ReversedSlave;
     App::PropertyEnumeration SurfaceBehavior;
 
     // etc

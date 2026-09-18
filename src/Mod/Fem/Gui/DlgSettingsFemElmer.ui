@@ -132,6 +132,56 @@
         </property>
        </widget>
       </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="l_mpi_binary_path">
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>MPI path</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::PrefFileChooser" name="fc_mpi_binary_path" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="sizeIncrement">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="baseSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Leave blank to use default MPI binary file</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>mpiBinaryPath</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Fem/Elmer</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

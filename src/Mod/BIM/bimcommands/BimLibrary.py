@@ -226,7 +226,7 @@ class BIM_Library_TaskPanel:
         else:
             path = self.filemodel.itemFromIndex(index).toolTip()
         if path.startswith(":github"):
-            path = RAWURL + "/" + path[7:]
+            path = RAWURL + path[7:]
         thumb = self.getThumbnail(path)
         if thumb:
             px = QtGui.QPixmap(thumb)
@@ -267,10 +267,10 @@ class BIM_Library_TaskPanel:
                         FreeCAD.newDocument(self.previewDocName)
                         FreeCAD.setActiveDocument(self.previewDocName)
                         Part.show(Part.read(self.path))
-                        FreeCADGui.SendMsgToActiveView("ViewFit")
+                        FreeCADGui.ActiveDocument.ActiveView.sendMessage("ViewFit")
                     elif self.path.lower().endswith(".fcstd"):
                         openedDoc = FreeCAD.openDocument(self.path)
-                        FreeCADGui.SendMsgToActiveView("ViewFit")
+                        FreeCADGui.ActiveDocument.ActiveView.sendMessage("ViewFit")
                         self.previewDocName = FreeCAD.ActiveDocument.Name
                         thumbnailSave = PARAMS.GetBool("SaveThumbnails", False)
                         if thumbnailSave == True:
@@ -387,10 +387,10 @@ class BIM_Library_TaskPanel:
 
         from PySide import QtGui
 
-        def add_line(f, dp):
+        def add_line(f, dp, sep):
             if self.isAllowed(f) and (text.lower() in f.lower()):
                 it = QtGui.QStandardItem(f)
-                it.setToolTip(os.path.join(dp, f))
+                it.setToolTip(dp.rstrip(sep) + sep + f.lstrip(sep))
                 self.filemodel.appendRow(it)
                 if f.lower().endswith(".fcstd"):
                     it.setIcon(QtGui.QIcon(":icons/freecad-doc.png"))
@@ -404,13 +404,13 @@ class BIM_Library_TaskPanel:
         if self.form.checkOnline.isChecked():
             res = self.getOfflineLib(structured=True)
             for i in range(len(res[0])):
-                add_line(res[0][i], res[2][i])
+                add_line(res[0][i], res[2][i], "/")
         else:
             res = os.walk(self.librarypath)
             for dp, dn, fn in res:
                 for f in fn:
                     if not os.path.isdir(os.path.join(dp, f)):
-                        add_line(f, dp)
+                        add_line(f, dp, os.path.sep)
         self.modelmode = 0
 
     def getFilters(self):
@@ -616,7 +616,7 @@ class BIM_Library_TaskPanel:
         for o in FreeCAD.ActiveDocument.Objects:
             if not o in before:
                 FreeCADGui.Selection.addSelection(o)
-        FreeCADGui.SendMsgToActiveView("ViewSelection")
+        FreeCADGui.ActiveDocument.ActiveView.sendMessage("ViewSelection")
 
     def download(self, url):
 
@@ -663,9 +663,25 @@ class BIM_Library_TaskPanel:
                 movecallback=self.mouseMove,
                 callback=self.mouseClick,
                 extradlg=self.origin,
+                hints=self.get_hints(),
             )
         else:
             Part.show(self.shape)
+
+    def get_hints(self):
+        "returns status bar input hints for the current tool state"
+        from draftguitools import gui_tool_utils
+
+        return (
+            [
+                FreeCADGui.InputHint(
+                    translate("BIM", "%1 pick insertion point"), FreeCADGui.UserInput.MouseLeft
+                )
+            ]
+            + gui_tool_utils._get_hint_xyz_constrain()
+            + gui_tool_utils._get_hint_mod_constrain()
+            + gui_tool_utils._get_hint_mod_snap()
+        )
 
     def makeOriginWidget(self):
 

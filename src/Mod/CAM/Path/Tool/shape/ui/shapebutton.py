@@ -36,7 +36,7 @@ class ShapeButton(QtGui.QToolButton):
         self.vbox.setContentsMargins(0, 0, 0, 0)
         self.vbox.setSpacing(0)
 
-        self.icon_widget = ShapeWidget(self.shape, QtCore.QSize(71, 70))
+        self.icon_widget = ShapeWidget(self.shape, QtCore.QSize(71, 70), dimensions=False)
 
         self.label_widget = QtGui.QLabel(shape.label)
         self.label_widget.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)

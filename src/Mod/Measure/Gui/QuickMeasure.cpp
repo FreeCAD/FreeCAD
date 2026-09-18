@@ -232,7 +232,7 @@ void QuickMeasure::printResult()
         print(tr("Area: %1, Radius: %2")
                   .arg(areaStr(measurement->area()), lengthStr(measurement->radius())));
     }
-    else if (mtype == MeasureType::Cylinder) {
+    else if (mtype == MeasureType::Cylinder || mtype == MeasureType::Disc) {
         print(tr("Area: %1, Diameter: %2")
                   .arg(areaStr(measurement->area()), lengthStr(measurement->diameter())));
     }

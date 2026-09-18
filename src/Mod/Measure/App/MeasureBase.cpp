@@ -27,6 +27,12 @@
 #include <Base/PlacementPy.h>
 #include <App/FeaturePythonPyImp.h>
 #include <App/DocumentObjectPy.h>
+#include <Base/UnitsApi.h>
+#include <Base/Quantity.h>
+#include <App/Datums.h>
+#include <Mod/Part/App/DatumFeature.h>
+
+#include <fmt/format.h>
 
 #include "MeasureBase.h"
 // Generated from MeasureBasePy.xml
@@ -45,6 +51,13 @@ MeasureBase::MeasureBase()
         nullptr,
         App::PropertyType(App::Prop_ReadOnly | App::Prop_Output | App::Prop_NoRecompute),
         "Visual placement of the measurement"
+    );
+    ADD_PROPERTY_TYPE(
+        DisplayUnit,
+        (""),
+        nullptr,
+        App::PropertyType(App::Prop_NoRecompute),
+        "User selected display unit override. Empty uses the global schema."
     );
 }
 
@@ -154,13 +167,36 @@ std::vector<std::string> MeasureBase::getInputProps()
 }
 
 
-QString MeasureBase::getResultString()
+std::string MeasureBase::formatQuantity(const Base::Quantity& qty) const
 {
-    Py::Object proxy = getProxyObject();
+    const std::string displayUnitstr = DisplayUnit.getStrValue();
+
+    if (displayUnitstr.empty()) {
+        return qty.getUserString();
+    }
+
+    Base::Quantity displayQty(1, displayUnitstr);
+    if (qty.getUnit() != displayQty.getUnit()) {
+        return qty.getUserString();
+    }
+
+    const double convertedValue = qty.getValueAs(displayQty);
+    const Base::QuantityFormat format(
+        (std::abs(convertedValue) < 1.0 && convertedValue != 0.0) ? Base::QuantityFormat::Default
+                                                                  : Base::QuantityFormat::Fixed
+    );
+
+    displayQty.setValue(convertedValue);
+    return fmt::format("{} {}", displayQty.toNumber(format), displayUnitstr);
+}
+
+
+std::string MeasureBase::getResultString()
+{
     Base::PyGILStateLocker lock;
+    Py::Object proxy = getProxyObject();
 
     if (!proxy.isNone()) {
-
         // Pass the feature object to the proxy
         Py::Tuple args(1);
         args.setItem(0, Py::Object(const_cast<MeasureBase*>(this)->getPyObject()));
@@ -172,30 +208,31 @@ QString MeasureBase::getResultString()
         catch (Py::Exception&) {
             Base::PyException e;
             e.reportException();
-            return QString();
+            return {};
         }
-        return QString::fromStdString(ret.as_string());
+        return ret.as_string();
     }
 
     App::Property* prop = getResultProp();
-    if (prop == nullptr) {
-        return QString();
+    if (prop && prop->isDerivedFrom<App::PropertyQuantity>()) {
+        return formatQuantity(static_cast<App::PropertyQuantity*>(prop)->getQuantityValue());
     }
 
-    if (prop->isDerivedFrom<App::PropertyQuantity>()) {
-        return QString::fromStdString(
-            static_cast<App::PropertyQuantity*>(prop)->getQuantityValue().getUserString()
-        );
-    }
-
-
-    return QString();
+    return {};
 }
 
 void MeasureBase::onDocumentRestored()
 {
     // Force recompute the measurement
     recompute();
+}
+
+bool Measure::isDatum(const App::DocumentObject& ob)
+{
+    if (!ob.isValid()) {
+        return false;
+    }
+    return ob.isDerivedFrom<App::DatumElement>() || ob.isDerivedFrom<Part::Datum>();
 }
 
 // Python Drawing feature ---------------------------------------------------------
@@ -207,18 +244,6 @@ PROPERTY_SOURCE_TEMPLATE(Measure::MeasurePython, Measure::MeasureBase)
 template<>
 const char* Measure::MeasurePython::getViewProviderName(void) const
 {
-    std::string objName = this->getNameInDocument();
-
-    // check object's name, this is brute-forceish way to determine
-    // VP name for COM, but at this point python assignments haven't
-    // been run, so we have no way to determine that easily
-    if (objName.starts_with("Center_of_mass")
-
-        || objName.find("CenterOfMass") != std::string::npos
-        || objName.find("centerofmass") != std::string::npos) {
-        return "MeasureGui::ViewProviderMeasureCOM";
-    }
-
     return "MeasureGui::ViewProviderMeasure";
 }
 template<>

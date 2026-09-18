@@ -209,7 +209,7 @@ void DlgCustomActionsImp::onActionListWidgetItemActivated(QTreeWidgetItem* item)
         if (!bFound) {
             QMessageBox::critical(
                 this,
-                tr("Macro not found"),
+                tr("Macro Not Found"),
                 tr("Could not find macro file '%1'").arg(scriptName)
             );
         }
@@ -236,12 +236,12 @@ void DlgCustomActionsImp::onActionListWidgetItemActivated(QTreeWidgetItem* item)
 void DlgCustomActionsImp::onButtonAddActionClicked()
 {
     if (ui->actionMacros->currentText().isEmpty()) {
-        QMessageBox::warning(this, tr("Empty macro"), tr("Specify the macro first"));
+        QMessageBox::warning(this, tr("Empty Macro"), tr("Specify the macro first"));
         return;
     }
 
     if (ui->actionMenu->text().isEmpty()) {
-        QMessageBox::warning(this, tr("Empty text"), tr("Specify the menu text first"));
+        QMessageBox::warning(this, tr("Empty Text"), tr("Specify the menu text first"));
         return;
     }
 
@@ -306,12 +306,12 @@ void DlgCustomActionsImp::onButtonReplaceActionClicked()
 {
     QTreeWidgetItem* item = ui->actionListWidget->currentItem();
     if (!item) {
-        QMessageBox::warning(this, tr("No item selected"), tr("Select a macro item first"));
+        QMessageBox::warning(this, tr("No Item Selected"), tr("Select a macro item first"));
         return;
     }
 
     if (ui->actionMenu->text().isEmpty()) {
-        QMessageBox::warning(this, tr("Empty text"), tr("Specify the menu text first"));
+        QMessageBox::warning(this, tr("Empty Text"), tr("Specify the menu text first"));
         return;
     }
 
@@ -597,7 +597,7 @@ void IconFolders::addFolder()
             if (countHidden == 0) {
                 QString dir = QFileDialog::getExistingDirectory(
                     this,
-                    IconDialog::tr("Add icon folder"),
+                    IconDialog::tr("Add Icon Folder"),
                     QString()
                 );
                 if (!dir.isEmpty() && paths.indexOf(dir) < 0) {
@@ -625,7 +625,7 @@ void IconFolders::removeFolder()
         restart = true;
         QMessageBox::information(
             this,
-            tr("Remove folder"),
+            tr("Remove Folder"),
             tr("Removing a folder only takes effect after an application restart")
         );
     }

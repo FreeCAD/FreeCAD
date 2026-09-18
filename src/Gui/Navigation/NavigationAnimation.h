@@ -39,6 +39,8 @@ public:
     using QVariantAnimation::state;
 
 Q_SIGNALS:
+    // QVariantAnimation::finished is intentionally hidden by protected inheritance.
+    void completed();
     void interrupted();
 
 protected:

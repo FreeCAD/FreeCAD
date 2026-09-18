@@ -24,6 +24,7 @@
 #pragma once
 
 #include <QAbstractListModel>
+#include <QMutex>
 #include <Base/Parameter.h>
 
 #include "../StartGlobal.h"
@@ -49,6 +50,7 @@ using FileStats = std::map<DisplayedFilesModelRoles, std::string>;
 
 /// A model for displaying a list of files including a thumbnail or icon, plus various file
 /// statistics.
+/// Manipulation operations are thread-safe.
 class StartExport DisplayedFilesModel: public QAbstractListModel
 {
     Q_OBJECT
@@ -60,6 +62,7 @@ public:
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
 
     void addFile(const QString& filePath);
+    void modifiedFile(const QString& filePath);
 
     void clear();
 
@@ -68,10 +71,16 @@ protected:
     /// DisplayedFilesModelRoles enumeration
     QHash<int, QByteArray> roleNames() const override;
 
+    /// Process incoming metadata & thumbnail about an FCStd file
+    void processNewFcstdInfo(const QString& filePath, const FileStats& stats, const QByteArray& thumbnail);
+
     /// Process a new thumbnail produces by some sort of worker thread
     void processNewThumbnail(const QString& file, const QByteArray& thumbnail);
 
 private:
+    void updateFcstdInfo(const QString& filePath);
+
+    mutable QMutex _mutex;
     std::vector<FileStats> _fileInfoCache;
     QMap<QString, QByteArray> _imageCache;
 };

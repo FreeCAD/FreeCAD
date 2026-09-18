@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2020 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -146,6 +148,11 @@ public:
 
     static bool SnapViews();
     static double SnapLimitFactor();
+
+    static bool SnapDimensions();
+    static double SnapDimensionsTextFactor();
+    static double SnapDimensionsChainFactor();
+
 
     static Qt::KeyboardModifiers multiselectModifiers();
 

@@ -35,7 +35,29 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "CAM thread milling operation."
 
-# math.sqrt(3)/2 ... 60deg triangle height
+# Tool shape assumptions:
+#
+# This module expects a thread mill tool with the following properties:
+#
+#   Diameter     - The cutting diameter: the maximum physical width across the
+#                  cutting profile (body diameter).  This is NOT the theoretical
+#                  sharp-point diameter.  It matches the "Cutting Diameter"
+#                  specification from tooling manufacturers (e.g. SmiCut, Harvey
+#                  Tool, Sandvik).  For internal threads the helix radius is
+#                  computed as (thread_dia - Diameter) / 2; for external threads
+#                  it is (thread_dia + Diameter) / 2.
+#
+#   Crest        - The width of the flat at the tool tip where the V-profile is
+#                  truncated.  Used to compute the radial distance from the crest
+#                  flat to the theoretical sharp point of the cutting edge:
+#                    compensation = Crest / (2 * tan(cuttingAngle / 2))
+#                  A larger crest reduces the effective radial reach of the tool.
+#
+#   cuttingAngle - The included angle of the V-profile (e.g. 60° for ISO/UTS,
+#                  55° for BSW/Whitworth, 29° for Acme).  Defaults to 60° if
+#                  not present on the tool.
+
+# math.sqrt(3)/2 ... 60deg triangle height (kept for reference / back-compat)
 SQRT_3_DIVIDED_BY_2 = 0.8660254037844386
 
 if False:
@@ -149,9 +171,9 @@ def threadSetup(obj):
         return threadSetupExternal(obj, zTop, zBottom)
 
 
-def threadRadii(internal, majorDia, minorDia, toolDia, toolCrest):
-    """threadRadii(majorDia, minorDia, toolDia, toolCrest) ... returns the minimum and maximum radius for thread."""
-    Path.Log.track(internal, majorDia, minorDia, toolDia, toolCrest)
+def threadRadii(internal, majorDia, minorDia, toolDia, toolCrest, cuttingAngle=60.0):
+    """threadRadii(majorDia, minorDia, toolDia, toolCrest, cuttingAngle) ... returns the minimum and maximum radius for thread."""
+    Path.Log.track(internal, majorDia, minorDia, toolDia, toolCrest, cuttingAngle)
     if toolCrest is None:
         toolCrest = 0.0
     # As it turns out metric and imperial standard threads follow the same rules.
@@ -161,24 +183,29 @@ def threadRadii(internal, majorDia, minorDia, toolDia, toolCrest):
     # Since we already have the outer diameter it's simpler to just add 1/8 * H
     # to get the outer tip of the thread.
     H = ((majorDia - minorDia) / 2.0) * 1.6  # (D - d)/2 = 5/8 * H
+    # Crest compensation: radial distance from the tool's crest flat to the
+    # theoretical sharp point.  For a V-profile with included angle theta:
+    #   crestFactor = 1 / (2 * tan(theta/2))
+    # For 60° (ISO/UTS) this equals sqrt(3)/2 ≈ 0.8660.
+    crestFactor = 1.0 / (2.0 * math.tan(math.radians(cuttingAngle / 2.0)))
     if internal:
         # mill inside out
         outerTip = majorDia / 2.0 + H / 8.0
         # Compensate for the crest of the tool
-        toolTip = outerTip - toolCrest * SQRT_3_DIVIDED_BY_2
+        toolTip = outerTip - toolCrest * crestFactor
         radii = ((minorDia - toolDia) / 2.0, toolTip - toolDia / 2.0)
     else:
         # mill outside in
         innerTip = minorDia / 2.0 - H / 4.0
         # Compensate for the crest of the tool
-        toolTip = innerTip - toolCrest * SQRT_3_DIVIDED_BY_2
+        toolTip = innerTip + toolCrest * crestFactor
         radii = ((majorDia + toolDia) / 2.0, toolTip + toolDia / 2.0)
     Path.Log.track(radii)
     return radii
 
 
-def threadPasses(count, radii, internal, majorDia, minorDia, toolDia, toolCrest):
-    Path.Log.track(count, radii, internal, majorDia, minorDia, toolDia, toolCrest)
+def threadPasses(count, radii, internal, majorDia, minorDia, toolDia, toolCrest, cuttingAngle=60.0):
+    Path.Log.track(count, radii, internal, majorDia, minorDia, toolDia, toolCrest, cuttingAngle)
     # the logic goes as follows, total area to be removed:
     #   A = H * W  ... where H is the depth and W is half the width of a thread
     #     H = k * sin(30) = k * 1/2  -> k = 2 * H
@@ -192,7 +219,7 @@ def threadPasses(count, radii, internal, majorDia, minorDia, toolDia, toolCrest)
     #   Ai = (i + 1) * An = (i + 1) * sqrt(3) * Hi^2 = sqrt(3) * H^2 / count
     #   Hi = sqrt(H^2 * (i + 1) / count)
     #   Hi = H * sqrt((i + 1) / count)
-    minor, major = radii(internal, majorDia, minorDia, toolDia, toolCrest)
+    minor, major = radii(internal, majorDia, minorDia, toolDia, toolCrest, cuttingAngle)
     H = float(major - minor)
     Hi = [H * math.sqrt((i + 1) / count) for i in range(count)]
 
@@ -427,6 +454,8 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         move2clearance = Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
         self.commandlist.append(move2clearance)
 
+        cuttingAngle = float(self.tool.cuttingAngle) if hasattr(self.tool, "cuttingAngle") else 60.0
+
         start = None
         for radius in threadPasses(
             obj.Passes,
@@ -436,6 +465,7 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
             obj.MinorDiameter.Value,
             float(self.tool.Diameter),
             float(self.tool.Crest),
+            cuttingAngle,
         ):
             if not start is None:
                 # and not _isThreadInternal(obj):

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
@@ -43,6 +45,7 @@ class FemMigrateApp:
             "femsolver.elmer.equations.fluxsolver",
             "femsolver.elmer.solver",
             "femsolver.calculix.solver",
+            "femsolver.z88.solver",
             "femobjects",
             "femobjects._FemConstraintBodyHeatSource",
             "femobjects._FemConstraintElectrostaticPotential",
@@ -143,6 +146,15 @@ class FemMigrateApp:
                 from femviewprovider.view_solver_calculix import VPSolverCalculiX
 
                 module.ViewProxy = VPSolverCalculiX
+
+        if module.__name__ == "femsolver.z88.solver":
+            from femobjects.solver_z88 import SolverZ88
+
+            module.Proxy = SolverZ88
+            if FreeCAD.GuiUp:
+                from femviewprovider.view_solver_z88 import VPSolverZ88
+
+                module.ViewProxy = VPSolverZ88
 
         if module.__name__ == "femobjects":
             module.__path__ = "femobjects"

@@ -26,6 +26,7 @@ import CAMTests.PathTestUtils as PathTestUtils
 from Machine.models.machine import (
     Machine,
     Toolhead,
+    ToolheadType,
     OutputOptions,
     ProcessingOptions,
     MachineFactory,
@@ -309,6 +310,22 @@ class TestToolhead(PathTestUtils.PathTestBase):
         self.assertEqual(restored.max_power_kw, toolhead.max_power_kw)
         self.assertEqual(restored.toolhead_wait, toolhead.toolhead_wait)
 
+    def test_toolhead_wire_edm_from_dict(self):
+        """Regression: wire_edm must deserialize to a valid toolhead type"""
+        toolhead = Toolhead.from_dict({"name": "EDM Head", "toolhead_type": "wire_edm"})
+
+        self.assertEqual(toolhead.toolhead_type, ToolheadType.WIRE_EDM)
+        self.assertTrue(toolhead.is_wire_edm())
+        self.assertTrue(toolhead.capabilities.has_pulse_control)
+        self.assertTrue(toolhead.capabilities.uses_water)
+        self.assertFalse(toolhead.capabilities.can_rotate)
+
+    def test_toolhead_type_display_names(self):
+        """Display names should be properly capitalized, including abbreviations"""
+        self.assertEqual(ToolheadType.WIRE_EDM.display_name, "Wire EDM")
+        for toolhead_type in ToolheadType:
+            self.assertNotIn("_", toolhead_type.display_name)
+
 
 class TestMachineFactory(PathTestUtils.PathTestBase):
     """Test MachineFactory class for loading/saving configurations"""
@@ -516,7 +533,9 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
             self.assertEqual(len(MachineFactory._addon_machine_dirs), before + 1)
             MachineFactory.register_addon_machine_dir(p)  # second call — no duplicate
             self.assertEqual(len(MachineFactory._addon_machine_dirs), before + 1)
-            MachineFactory._addon_machine_dirs.remove(p)
+            MachineFactory._addon_machine_dirs[:] = [
+                (ns, d) for ns, d in MachineFactory._addon_machine_dirs if d != p
+            ]
 
     def test_list_addon_templates(self):
         """list_addon_templates() returns machines from registered addon dirs.
@@ -535,7 +554,9 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
             templates = MachineFactory.list_addon_templates()
             names = [dn for _ns, dn, _path in templates]
             self.assertIn("Addon Machine", names)
-            MachineFactory._addon_machine_dirs.remove(p)
+            MachineFactory._addon_machine_dirs[:] = [
+                (ns, d) for ns, d in MachineFactory._addon_machine_dirs if d != p
+            ]
 
     def test_get_machine_from_addon(self):
         """get_machine() can load a machine from a registered addon directory.
@@ -555,7 +576,9 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
             loaded = MachineFactory.get_machine("Addon Test Machine")
             self.assertIsInstance(loaded, Machine)
             self.assertEqual(loaded.name, "Addon Test Machine")
-            MachineFactory._addon_machine_dirs.remove(p)
+            MachineFactory._addon_machine_dirs[:] = [
+                (ns, d) for ns, d in MachineFactory._addon_machine_dirs if d != p
+            ]
 
     def test_list_configurations_includes_addon(self):
         """list_configurations() includes addon machine names.
@@ -573,4 +596,6 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
             MachineFactory.register_addon_machine_dir(p)
             configs = MachineFactory.list_configurations()
             self.assertIn("Community Mill", configs)
-            MachineFactory._addon_machine_dirs.remove(p)
+            MachineFactory._addon_machine_dirs[:] = [
+                (ns, d) for ns, d in MachineFactory._addon_machine_dirs if d != p
+            ]

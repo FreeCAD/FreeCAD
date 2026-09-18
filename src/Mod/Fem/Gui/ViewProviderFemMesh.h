@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
@@ -140,6 +142,11 @@ public:
     const std::vector<unsigned long>& getVisibleElementFaces() const
     {
         return vFaceElementIdx;
+    }
+
+    const std::vector<unsigned long>& getVisibleNodes() const
+    {
+        return vNodeElementIdx;
     }
 
     PyObject* getPyObject() override;

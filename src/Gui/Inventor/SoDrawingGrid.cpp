@@ -1,46 +1,38 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2010 Werner Mayer <wmayer[at]users.sourceforge.net>
+// SPDX-FileCopyrightText: 2026 Joao Matos
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2010 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the     *
+ *   License, or (at your option) any later version.                          *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful, but           *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of               *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+ *   GNU Lesser General Public License for more details.                      *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD.  If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                         *
+ *                                                                            *
+ ******************************************************************************/
 
-#include <FCConfig.h>
-
+#include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoProjectionMatrixElement.h>
-#include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 
-#if defined(FC_OS_WIN32)
-# include <windows.h>
-#endif
+#include <Inventor/nodes/SoBaseColor.h>
+#include <Inventor/nodes/SoLineSet.h>
+#include <Inventor/nodes/SoVertexProperty.h>
 
-#ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
-#else
-# include <GL/gl.h>
-#endif
+#include <algorithm>
+#include <cstdint>
+#include <vector>
 
 #include "SoDrawingGrid.h"
 
@@ -57,100 +49,93 @@ SO_NODE_SOURCE(SoDrawingGrid)
 
 void SoDrawingGrid::initClass()
 {
-    SO_NODE_INIT_CLASS(SoDrawingGrid, SoShape, "Shape");
+    SO_NODE_INIT_CLASS(SoDrawingGrid, SoFCScreenSpaceGroup, "SoFCScreenSpaceGroup");
 }
 
 SoDrawingGrid::SoDrawingGrid()
 {
     SO_NODE_CONSTRUCTOR(SoDrawingGrid);
+
+    setCoordinateSpace(CoordinateSpace::ClipSpace);
+    setBaseColorLightModel(true);
+    setTexturesEnabled(false);
+    setMultiTexturesEnabled(false);
+    setDepthBuffer(false, false, SoDepthBufferElement::ALWAYS);
+
+    constexpr float gridChannel = 10.0f / 255.0f;
+    auto* color = new SoBaseColor;
+    color->rgb.setValue(gridChannel, gridChannel, gridChannel);
+    addChild(color);
+
+    m_VertexProperty = new SoVertexProperty;
+    m_LineSet = new SoLineSet;
+    m_LineSet->vertexProperty.setValue(m_VertexProperty);
+    addChild(m_LineSet);
 }
 
-void SoDrawingGrid::renderGrid(SoGLRenderAction* action)
+SoDrawingGrid::~SoDrawingGrid()
 {
-    if (!shouldGLRender(action)) {
+    m_VertexProperty = nullptr;
+    m_LineSet = nullptr;
+}
+
+void SoDrawingGrid::ensureGeometry(SoState* state)
+{
+    if (!state || !m_VertexProperty || !m_LineSet) {
         return;
     }
 
-    SoState* state = action->getState();
-    state->push();
-    SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-
-    const SbMatrix& mat = SoModelMatrixElement::get(state);
-    // const SbViewVolume & vv = SoViewVolumeElement::get(state);
-    // const SbMatrix & projmatrix = (mat * SoViewingMatrixElement::get(state) *
-    //                                SoProjectionMatrixElement::get(state));
     const SbViewportRegion& vp = SoViewportRegionElement::get(state);
-    // SbVec2s vpsize = vp.getViewportSizePixels();
-    float fRatio = vp.getViewportAspectRatio();
+    const SbVec2s viewportSize = vp.getViewportSizePixels();
+    if (viewportSize[0] <= 0 || viewportSize[1] <= 0) {
+        return;
+    }
+    if (viewportSize == m_CachedViewportSize && m_VertexProperty->vertex.getNum() > 0) {
+        return;
+    }
 
-    // float width = vv.getWidth();
-    // float height = vv.getHeight();
-    SbVec3f worldcenter(0, 0, 0);
-    mat.multVecMatrix(worldcenter, worldcenter);
+    m_CachedViewportSize = viewportSize;
 
-    // float dist = (vv.getProjectionPoint() - worldcenter).length();
+    constexpr int numX = 20;
+    const float aspectRatio = static_cast<float>(viewportSize[0])
+        / static_cast<float>(viewportSize[1]);
+    int numY = static_cast<int>(static_cast<float>(numX) / aspectRatio);
+    numY = std::max(1, numY);
 
-    SoModelMatrixElement::set(state, this, SbMatrix::identity());
-    SoViewingMatrixElement::set(state, this, SbMatrix::identity());
-    SoProjectionMatrixElement::set(state, this, SbMatrix::identity());
+    const int verticalLineCount = 2 * numX;
+    const int horizontalLineCount = 2 * numY;
+    const int lineCount = verticalLineCount + horizontalLineCount;
 
-    glColor3f(1.0f, 0.0f, 0.0f);
-    glBegin(GL_LINES);
-    float p[3];
-    p[2] = 0.0f;
+    std::vector<SbVec3f> vertices;
+    vertices.reserve(lineCount * 2);
 
-    int numX = 20;
     for (int i = -numX; i < numX; i++) {
-        p[0] = (float)i / numX;
-        p[1] = -1.0f;
-        glVertex3fv(p);
-        p[1] = 1.0f;
-        glVertex3fv(p);
+        const float x = static_cast<float>(i) / static_cast<float>(numX);
+        vertices.emplace_back(x, -1.0f, 0.0f);
+        vertices.emplace_back(x, 1.0f, 0.0f);
     }
-    int numY = numX / fRatio;
+
     for (int i = -numY; i < numY; i++) {
-        p[0] = -1.0f;
-        p[1] = (float)i / numY;
-        glVertex3fv(p);
-        p[0] = 1.0;
-        glVertex3fv(p);
+        const float y = static_cast<float>(i) / static_cast<float>(numY);
+        vertices.emplace_back(-1.0f, y, 0.0f);
+        vertices.emplace_back(1.0f, y, 0.0f);
     }
-    glEnd();
 
-    state->pop();
-}
+    m_VertexProperty->vertex.setValues(0, static_cast<int>(vertices.size()), vertices.data());
 
-void SoDrawingGrid::GLRender(SoGLRenderAction* action)
-{
-    // renderGrid(action);
-    // return;
-    switch (action->getCurPathCode()) {
-        case SoAction::NO_PATH:
-        case SoAction::BELOW_PATH:
-            this->GLRenderBelowPath(action);
-            break;
-        case SoAction::OFF_PATH:
-            // do nothing. Separator will reset state.
-            break;
-        case SoAction::IN_PATH:
-            this->GLRenderInPath(action);
-            break;
-    }
+    std::vector<int32_t> numVertices;
+    numVertices.assign(lineCount, 2);
+    m_LineSet->numVertices.setValues(0, static_cast<int>(numVertices.size()), numVertices.data());
 }
 
 void SoDrawingGrid::GLRenderBelowPath(SoGLRenderAction* action)
 {
-    // inherited::GLRenderBelowPath(action);
-    // return;
+    if (!action) {
+        return;
+    }
+
     if (action->isRenderingDelayedPaths()) {
-        SbBool zbenabled = glIsEnabled(GL_DEPTH_TEST);
-        if (zbenabled) {
-            glDisable(GL_DEPTH_TEST);
-        }
-        renderGrid(action);
-        if (zbenabled) {
-            glEnable(GL_DEPTH_TEST);
-        }
+        inherited::GLRenderBelowPath(action);
     }
     else {
         SoCacheElement::invalidate(action->getState());
@@ -160,17 +145,12 @@ void SoDrawingGrid::GLRenderBelowPath(SoGLRenderAction* action)
 
 void SoDrawingGrid::GLRenderInPath(SoGLRenderAction* action)
 {
-    // inherited::GLRenderInPath(action);
-    // return;
+    if (!action) {
+        return;
+    }
+
     if (action->isRenderingDelayedPaths()) {
-        SbBool zbenabled = glIsEnabled(GL_DEPTH_TEST);
-        if (zbenabled) {
-            glDisable(GL_DEPTH_TEST);
-        }
-        renderGrid(action);
-        if (zbenabled) {
-            glEnable(GL_DEPTH_TEST);
-        }
+        inherited::GLRenderInPath(action);
     }
     else {
         SoCacheElement::invalidate(action->getState());
@@ -178,18 +158,12 @@ void SoDrawingGrid::GLRenderInPath(SoGLRenderAction* action)
     }
 }
 
-void SoDrawingGrid::GLRenderOffPath(SoGLRenderAction*)
-{}
-
-void SoDrawingGrid::generatePrimitives(SoAction* action)
+void SoDrawingGrid::prepareScreenSpaceGeometry(SoAction* action)
 {
-    (void)action;
-}
+    SoState* state = action ? action->getState() : nullptr;
+    if (!state || !state->isElementEnabled(SoViewportRegionElement::getClassStackIndex())) {
+        return;
+    }
 
-void SoDrawingGrid::computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center)
-{
-    (void)action;
-    (void)box;
-    (void)center;
-    // SoState*  state = action->getState();
+    ensureGeometry(state);
 }

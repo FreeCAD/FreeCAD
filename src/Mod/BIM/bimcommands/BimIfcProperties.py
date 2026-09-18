@@ -407,11 +407,12 @@ class BIM_IfcProperties:
                     elif not hasattr(obj, "IfcProperties"):
                         obj.addProperty(
                             "App::PropertyMap",
-                            "IfcPRoperties",
+                            "IfcProperties",
                             "IFC",
                             QT_TRANSLATE_NOOP("App::Property", "IFC properties of this object"),
                             locked=True,
                         )
+                        obj.setPropertyStatus("IfcProperties", "Hidden")
                     if hasattr(obj, "IfcProperties"):
                         obj.IfcProperties = values[1]
         if changed:

@@ -83,15 +83,13 @@ bool FeaturePythonImp::execute()
             }
             return true;
         }
-        else {
-            Py::Tuple args(1);
-            args.setItem(0, Py::Object(object->getPyObject(), true));
-            Py::Object res = Base::pyCall(py_execute.ptr(), args.ptr());
-            if (res.isBoolean() && !res.isTrue()) {
-                return false;
-            }
-            return true;
+        Py::Tuple args(1);
+        args.setItem(0, Py::Object(object->getPyObject(), true));
+        Py::Object res = Base::pyCall(py_execute.ptr(), args.ptr());
+        if (res.isBoolean() && !res.isTrue()) {
+            return false;
         }
+        return true;
     }
     catch (Py::Exception&) {
         if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
@@ -113,12 +111,10 @@ bool FeaturePythonImp::mustExecute() const
             Py::Object res(Base::pyCall(py_mustExecute.ptr()));
             return res.isTrue();
         }
-        else {
-            Py::Tuple args(1);
-            args.setItem(0, Py::Object(object->getPyObject(), true));
-            Py::Object res(Base::pyCall(py_mustExecute.ptr(), args.ptr()));
-            return res.isTrue();
-        }
+        Py::Tuple args(1);
+        args.setItem(0, Py::Object(object->getPyObject(), true));
+        Py::Object res(Base::pyCall(py_mustExecute.ptr(), args.ptr()));
+        return res.isTrue();
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
@@ -578,6 +574,27 @@ int FeaturePythonImp::canLoadPartial() const
         Base::PyException e;  // extract the Python error text
         e.reportException();
         return 0;
+    }
+}
+
+FeaturePythonImp::ValueT FeaturePythonImp::supportsAsyncRecompute() const
+{
+    _FC_PY_CALL_CHECK(supportsAsyncRecompute, return (NotImplemented));
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Tuple args(1);
+        args.setItem(0, Py::Object(object->getPyObject(), true));
+        Py::Boolean ok(Base::pyCall(py_supportsAsyncRecompute.ptr(), args.ptr()));
+        return ok ? Accepted : Rejected;
+    }
+    catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return NotImplemented;
+        }
+        Base::PyException e;  // extract the Python error text
+        e.reportException();
+        return Rejected;
     }
 }
 

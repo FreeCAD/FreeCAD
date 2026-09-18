@@ -1,36 +1,37 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2022 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2022 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """Document observer to act on documents containing NativeIFC objects"""
 
 import FreeCAD
+from . import has_ifcopenshell
 
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
 
 
 def add_observer():
     """Adds this observer to the running FreeCAD instance"""
+
+    if not has_ifcopenshell(report=True):
+        return
 
     FreeCAD.BIMobserver = ifc_observer()
     FreeCAD.addDocumentObserver(FreeCAD.BIMobserver)
@@ -55,6 +56,8 @@ class ifc_observer:
 
     def slotStartSaveDocument(self, doc, value):
         """Save all IFC documents in this doc"""
+        if not has_ifcopenshell():
+            return
 
         from PySide import QtCore  # lazy loading
 
@@ -66,6 +69,8 @@ class ifc_observer:
 
     def slotDeletedObject(self, obj):
         """Deletes the corresponding object in the IFC document"""
+        if not has_ifcopenshell():
+            return
 
         from . import ifc_tools  # lazy loading
 
@@ -80,6 +85,8 @@ class ifc_observer:
 
     def slotChangedDocument(self, doc, prop):
         """Watch document IFC properties"""
+        if not has_ifcopenshell():
+            return
 
         # only look at locked IFC documents
         if "IfcFilePath" not in doc.PropertiesList:
@@ -107,6 +114,8 @@ class ifc_observer:
 
     def slotCreatedObject(self, obj):
         """If this is an IFC document, turn the object into IFC"""
+        if not has_ifcopenshell():
+            return
 
         doc = getattr(obj, "Document", None)
         if doc:
@@ -120,12 +129,16 @@ class ifc_observer:
 
     def slotActivateDocument(self, doc):
         """Check if we need to lock"""
+        if not has_ifcopenshell():
+            return
 
         from . import ifc_status
 
         ifc_status.on_activate()
 
     def slotRemoveDynamicProperty(self, obj, prop):
+        if not has_ifcopenshell():
+            return
 
         from . import ifc_psets
 
@@ -139,10 +152,12 @@ class ifc_observer:
         if FreeCAD.GuiUp:
             import FreeCADGui
 
-            FreeCADGui.SendMsgToActiveView("ViewFit")
+            FreeCADGui.ActiveDocument.ActiveView.sendMessage("ViewFit")
 
     def save(self):
         """Saves all IFC documents contained in self.docname Document"""
+        if not has_ifcopenshell():
+            return
 
         if not hasattr(self, "docname"):
             return
@@ -185,6 +200,8 @@ class ifc_observer:
 
     def convert(self):
         """Converts an object to IFC"""
+        if not has_ifcopenshell():
+            return
 
         if not hasattr(self, "objname") or not hasattr(self, "docname"):
             return

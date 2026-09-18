@@ -2308,7 +2308,7 @@ class ReportStatement:
 
         if error == "INCOMPLETE":
             self._validation_status = "INCOMPLETE"
-            self._validation_message = translate("Arch", "Typing...")
+            self._validation_message = translate("Arch", "Typing…")
             self._validation_count = -1
         elif error:
             self._validation_status = "ERROR"

@@ -3,36 +3,32 @@
 // SPDX-License-Identifier: BSD-3-Clause
 
 
-#include "PreCompiled.h"
+#include <vtkArrayDispatch.h>
+#include <vtkArrayDispatchArrayList.h>
+#include <vtkBitArray.h>
+#include <vtkCell.h>
+#include <vtkCellData.h>
+#include <vtkCellSizeFilter.h>
+#include <vtkCellTypes.h>
+#include <vtkCollection.h>
+#include <vtkDataArrayRange.h>
+#include <vtkDataSet.h>
+#include <vtkDoubleArray.h>
+#include <vtkIncrementalPointLocator.h>
+#include <vtkInformation.h>
+#include <vtkInformationVector.h>
+#include <vtkIntArray.h>
+#include <vtkMergePoints.h>
+#include <vtkObjectFactory.h>
+#include <vtkPointData.h>
+#include <vtkPointSet.h>
+#include <vtkPoints.h>
+#include <vtkRectilinearGrid.h>
+#include <vtkSMPThreadLocalObject.h>
+#include <vtkStringArray.h>
+#include <vtkUnstructuredGrid.h>
 
-#ifndef _PreComp_
-# include <vtkArrayDispatch.h>
-# include <vtkArrayDispatchArrayList.h>
-# include <vtkBitArray.h>
-# include <vtkCell.h>
-# include <vtkCellData.h>
-# include <vtkCellSizeFilter.h>
-# include <vtkCellTypes.h>
-# include <vtkCollection.h>
-# include <vtkDataArrayRange.h>
-# include <vtkDataSet.h>
-# include <vtkDoubleArray.h>
-# include <vtkIncrementalPointLocator.h>
-# include <vtkInformation.h>
-# include <vtkInformationVector.h>
-# include <vtkIntArray.h>
-# include <vtkMergePoints.h>
-# include <vtkObjectFactory.h>
-# include <vtkPointData.h>
-# include <vtkPointSet.h>
-# include <vtkPoints.h>
-# include <vtkRectilinearGrid.h>
-# include <vtkSMPThreadLocalObject.h>
-# include <vtkStringArray.h>
-# include <vtkUnstructuredGrid.h>
-
-# include <unordered_set>
-#endif
+#include <unordered_set>
 
 #include "vtkCleanUnstructuredGrid.h"
 #include "vtkSMPTools.h"

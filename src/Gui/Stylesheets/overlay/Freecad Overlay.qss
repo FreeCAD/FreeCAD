@@ -45,19 +45,11 @@ Gui--PropertyEditor--PropertyEditor {
   qproperty-itemBackground: @TextEditFieldBackgroundColor;
 }
 
-Gui--OverlayTabWidget[transparent="false"]  Gui--TreePanel QTreeView::item {
+Gui--OverlayTabWidget Gui--TreePanel QTreeView::item {
   color: @TextForegroundColor;
 }
 
-Gui--OverlayTabWidget[transparent="false"]  Gui--TreePanel QTreeView::item:disabled {
-  color: @TextDisabledColor;
-}
-
-Gui--OverlayTabWidget[transparent="true"] Gui--TreePanel QTreeView::item {
-  color: @TextForegroundColor;
-}
-
-Gui--OverlayTabWidget[transparent="true"] Gui--TreePanel QTreeView::item:disabled {
+Gui--OverlayTabWidget Gui--TreePanel QTreeView::item:disabled {
   color: @TextDisabledColor;
 }
 

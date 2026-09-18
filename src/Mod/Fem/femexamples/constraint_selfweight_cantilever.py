@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com>   *
 # *                                                                         *
@@ -121,12 +123,12 @@ def setup(doc=None, solvertype="ccxtools", test_mode=False):
     analysis.addObject(material_obj)
 
     # constraint fixed
-    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "Fixed")
     con_fixed.References = [(geom_obj, "Face1")]
     analysis.addObject(con_fixed)
 
     # constraint selfweight
-    con_selfweight = ObjectsFem.makeConstraintSelfWeight(doc, "ConstraintSelfWeight")
+    con_selfweight = ObjectsFem.makeConstraintSelfWeight(doc, "Gravity")
     con_selfweight.GravityDirection = (0, 0, -1)
     analysis.addObject(con_selfweight)
 

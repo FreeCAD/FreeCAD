@@ -52,15 +52,20 @@ class ArchWallGuiTools(GuiTools):
         pass
 
     def get_edit_points(self, obj):
-        """Return the list of edipoints for the given Arch Wall object.
+        """Return the list of editpoints for the given Arch Wall object.
 
         0 : height of the wall
-        1-to end : base object editpoints, in place with the wall
+        1-2 : endpoints if wall does not have a base
         """
 
         editpoints = []
         # height of the wall
         editpoints.append(App.Vector(0, 0, obj.Height))
+        # endpoints of base-less wall
+        if obj.Base is None:
+            editpoints.extend(
+                [obj.Placement.inverse().multVec(pt) for pt in obj.Proxy.calc_endpoints(obj)]
+            )
         return editpoints
 
     def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
@@ -75,6 +80,10 @@ class ArchWallGuiTools(GuiTools):
             vz = DraftVecUtils.project(v, App.Vector(0, 0, 1))
             if vz.Length > 0:
                 obj.Height = vz.Length
+        elif obj.Base is None and node_idx > 0:
+            pts = obj.Proxy.calc_endpoints(obj)
+            pts[node_idx - 1] = obj.Placement.multVec(v)
+            obj.Proxy.set_from_endpoints(obj, pts)
 
 
 class ArchWindowGuiTools(GuiTools):

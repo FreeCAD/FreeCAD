@@ -321,15 +321,13 @@ PyObject* ComplexGeoDataPy::getElementName(PyObject* args) const
     if (direction == 1) {
         return Py::new_reference_to(Py::String(res.name.appendToBuffer(s)));
     }
-    else if (direction == 0) {
+    if (direction == 0) {
         return Py::new_reference_to(Py::String(res.index.appendToStringBuffer(s)));
     }
-    else if (Data::IndexedName(input)) {
+    if (Data::IndexedName(input)) {
         return Py::new_reference_to(Py::String(res.name.appendToBuffer(s)));
     }
-    else {
-        return Py::new_reference_to(Py::String(res.index.appendToStringBuffer(s)));
-    }
+    return Py::new_reference_to(Py::String(res.index.appendToStringBuffer(s)));
 }
 
 PyObject* ComplexGeoDataPy::getElementIndexedName(PyObject* args) const
@@ -393,7 +391,7 @@ PyObject* ComplexGeoDataPy::setElementName(PyObject* args, PyObject* kwds)
         {"element", "name", "postfix", "overwrite", "sid", "tag", nullptr};
     if (!Wrapped_ParseTupleAndKeywords(args,
                                        kwds,
-                                       "s|sssOOi",
+                                       "s|ssOOi",
                                        kwlist,
                                        &element,
                                        &name,
@@ -401,7 +399,7 @@ PyObject* ComplexGeoDataPy::setElementName(PyObject* args, PyObject* kwds)
                                        &overwrite,
                                        &pySid,
                                        &tag)) {
-        return NULL;
+        return nullptr;
     }
     ElementIDRefs sids;
     if (pySid != Py_None) {
@@ -430,6 +428,10 @@ PyObject* ComplexGeoDataPy::setElementName(PyObject* args, PyObject* kwds)
         Data::MappedName mapped = Data::MappedName::fromRawData(name);
         std::ostringstream ss;
         ElementMapPtr map = getComplexGeoDataPtr()->resetElementMap();
+        if (!map) {
+            throw Py::RuntimeError("no element map");
+        }
+
         map->encodeElementName(getComplexGeoDataPtr()->elementType(index),
                                mapped,
                                ss,
@@ -603,11 +605,9 @@ int ComplexGeoDataPy::setCustomAttributes(const char* attr, PyObject* obj)
             getComplexGeoDataPtr()->setTransform(mat);
             return 1;
         }
-        else {
-            std::string error = std::string("type must be 'Matrix', not ");
-            error += obj->ob_type->tp_name;
-            throw Py::TypeError(error);
-        }
+        std::string error = std::string("type must be 'Matrix', not ");
+        error += obj->ob_type->tp_name;
+        throw Py::TypeError(error);
     }
     return 0;
 }

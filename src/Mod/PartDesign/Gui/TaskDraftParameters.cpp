@@ -319,6 +319,7 @@ void TaskDraftParameters::setupGizmos(ViewProvider* vp)
     gizmoContainer = GizmoContainer::create({angleGizmo}, vp);
 
     setGizmoPositions();
+    showDraggerHints();
 }
 
 void TaskDraftParameters::setGizmoPositions()

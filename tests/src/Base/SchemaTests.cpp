@@ -28,37 +28,24 @@
 #include "Base/UnitsApi.h"
 #include "Base/UnitsSchemasData.h"
 #include "Base/UnitsSchemas.h"
+#include <src/LocaleTestHelpers.h>
 #include "TranslationTestHelpers.h"
 
 #include <array>
 #include <string>
 
-#include <unicode/locid.h>
-#include <unicode/utypes.h>
-
 using Base::Quantity;
 using Base::QuantityFormat;
 using Base::RuntimeError;
-using Base::Tools;
 using Base::Unit;
 using Base::UnitsApi;
 using Base::UnitsSchema;
 using Base::UnitsSchemas;
+namespace Tools = Base::Tools;
 
 class SchemaTest: public testing::Test
 {
 protected:
-    void SetUp() override
-    {
-        // Ensure deterministic decimal separator for tests.
-        UErrorCode status = U_ZERO_ERROR;
-        icu::Locale::setDefault(icu::Locale("en_US_POSIX"), status);
-        ASSERT_TRUE(U_SUCCESS(status));
-    }
-
-    void TearDown() override
-    {}
-
     static std::string set(const std::string& schemaName, const Unit unit, const double value)  // NOLINT
     {
         UnitsApi::setSchema(schemaName);
@@ -112,6 +99,9 @@ protected:
         }
     }
 
+    tests::ScopedLocaleEnvironment localeState {
+        {.formattingLocale = "en_US_POSIX", .icuLocale = "en_US_POSIX"}
+    };
     std::unique_ptr<UnitsSchemas> schemas;  // NOLINT
 };
 
@@ -550,13 +540,12 @@ TEST_F(SchemaTest, imperial_building_special_function_high_precision_rounding)
 
 TEST_F(SchemaTest, imperial_building_special_function_length)
 {
-    GTEST_SKIP() << "QuantityParser::yyparse() is crashing on the >>1' 2\" + 1/4\"<< input, "
-                    "so disable this test";
     constexpr auto val {360.6};
     const auto result = set("ImperialBuilding", Unit::Length, val);
     const auto expect = Tools::escapeQuotesFromString("1' 2\" + 1/4\"");
 
     EXPECT_EQ(result, expect);
+    EXPECT_EQ(Quantity::parse("1' 2\" + 1/4\""), Quantity::parse("1' 2\" 1/4\""));
 }
 
 TEST_F(SchemaTest, imperial_building_special_function_length_neg)
@@ -1328,6 +1317,42 @@ TEST_F(SchemaTest, sweep_imperial_building)
         {"1 sqft", "10 sqft", "100 sqft"},
         {"1 cft", "10 cft", "100 cft"},
     });
+}
+
+TEST_F(SchemaTest, imperial_building_density_uses_lb_ft3)
+{
+    const auto result = setWithPrecision(
+        "ImperialBuilding",
+        Quantity::parse("1 lb/ft^3").getValue(),
+        Unit::Density,
+        6
+    );
+
+    EXPECT_EQ(result, "1.000000 lb/ft^3");
+}
+
+TEST_F(SchemaTest, imperial_building_stress_uses_psi)
+{
+    const auto result
+        = setWithPrecision("ImperialBuilding", Quantity::parse("1 psi").getValue(), Unit::Stress, 6);
+
+    EXPECT_EQ(result, "1.000000 psi");
+}
+
+TEST_F(SchemaTest, imperial_density_uses_lb_in3)
+{
+    const auto result
+        = setWithPrecision("Imperial", Quantity::parse("1 lb/in^3").getValue(), Unit::Density, 6);
+
+    EXPECT_EQ(result, "1.000000 lb/in^3");
+}
+
+TEST_F(SchemaTest, imperial_civil_density_uses_lb_ft3)
+{
+    const auto result
+        = setWithPrecision("ImperialCivil", Quantity::parse("1 lb/ft^3").getValue(), Unit::Density, 6);
+
+    EXPECT_EQ(result, "1.000000 lb/ft^3");
 }
 
 TEST_F(SchemaTest, sweep_imperial_civil)

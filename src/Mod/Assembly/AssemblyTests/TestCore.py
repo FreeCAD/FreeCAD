@@ -34,7 +34,7 @@ def _msg(text, end="\n"):
     App.Console.PrintMessage(text + end)
 
 
-class TestCore(unittest.TestCase):
+class AssemblyTestBase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """setUpClass()...
@@ -84,6 +84,97 @@ class TestCore(unittest.TestCase):
         Such cleanup instructions will likely undo those in the setUp() method.
         """
         App.closeDocument(self.doc.Name)
+
+
+class TestCore(AssemblyTestBase):
+    def test_component_count_for_link_array(self):
+        source = self.doc.addObject("Part::Box", "ArraySource")
+        array = self.assembly.newObject("App::Link", "Array")
+        array.LinkedObject = source
+        array.ElementCount = 3
+        array.ShowElement = False
+        self.doc.recompute()
+        self.assertEqual(len(array.ElementList), 0)
+        self.assertEqual(UtilsAssembly.number_of_components_in(self.assembly), 3)
+
+        array.ShowElement = True
+        self.doc.recompute()
+        self.assertEqual(UtilsAssembly.number_of_components_in(self.assembly), 3)
+        array.ElementList[1].Suppressed = True
+        self.doc.recompute()
+        self.assertEqual(UtilsAssembly.number_of_components_in(self.assembly), 2)
+        array.ElementList[1].Suppressed = False
+        self.doc.recompute()
+        self.assertEqual(UtilsAssembly.number_of_components_in(self.assembly), 3)
+
+    def test_generated_array_is_one_component(self):
+        source = self.doc.addObject("Part::Box", "ArraySource")
+        array = self.assembly.newObject("Part::LinkArrayLinear", "Array")
+        array.LinkedObject = source
+        array.Occurrences = 3
+        self.doc.recompute()
+        self.assertEqual(UtilsAssembly.number_of_components_in(self.assembly), 1)
+        self.assertEqual(UtilsAssembly.getSubMovingParts(array, False), [array])
+        self.assertEqual(UtilsAssembly.getObject((array, ["1.Face1"])), array)
+
+    def test_suppressed_link_elements_are_not_movable(self):
+        source = self.doc.addObject("Part::Box", "ArraySource")
+        array = self.assembly.newObject("App::Link", "Array")
+        array.LinkedObject = source
+        array.ElementCount = 3
+        self.doc.recompute()
+        element = array.ElementList[1]
+        element.Suppressed = True
+        self.doc.recompute()
+        self.assertNotIn(element, UtilsAssembly.getMovablePartsWithin(array))
+        element.Suppressed = False
+        self.doc.recompute()
+        self.assertIn(element, UtilsAssembly.getMovablePartsWithin(array))
+
+    def test_assembly_link_synchronizes_element_suppression(self):
+        source = self.doc.addObject("Part::Box", "ArraySource")
+        array = self.assembly.newObject("App::Link", "Array")
+        array.LinkedObject = source
+        array.ElementCount = 3
+        array.ElementList[1].Suppressed = True
+        parent = self.doc.addObject("Assembly::AssemblyObject", "ParentAssembly")
+        instance = parent.newObject("Assembly::AssemblyLink", "Instance")
+        instance.LinkedObject = self.assembly
+        self.doc.recompute()
+        local_array = next(obj for obj in instance.Group if obj.TypeId == "App::Link")
+        self.assertTrue(local_array.ElementList[1].Suppressed)
+        array.ElementList[1].Suppressed = False
+        instance.touch()
+        self.doc.recompute()
+        self.assertFalse(local_array.ElementList[1].Suppressed)
+
+    def test_assembly_link_maps_generated_array_joint(self):
+        self._check_generated_array_joint("Face1")
+
+    def test_assembly_link_maps_generated_array_whole_element_joint(self):
+        self._check_generated_array_joint("")
+
+    def _check_generated_array_joint(self, sub):
+        source = self.doc.addObject("Part::Box", "ArraySource")
+        array = self.assembly.newObject("Part::LinkArrayLinear", "Array")
+        array.LinkedObject = source
+        array.Occurrences = 3
+        array.ShowElement = True
+        self.doc.recompute()
+        joint = self.jointgroup.newObject("App::FeaturePython", "Joint")
+        JointObject.Joint(joint, 0)
+        joint.Reference1 = (array.ElementList[1], [sub])
+        joint.Reference2 = (array.ElementList[2], ["Face1"])
+        parent = self.doc.addObject("Assembly::AssemblyObject", "ParentAssembly")
+        instance = parent.newObject("Assembly::AssemblyLink", "Instance")
+        instance.LinkedObject = self.assembly
+        instance.Rigid = False
+        self.doc.recompute()
+        local_array = next(obj for obj in instance.Group if obj.TypeId == "App::Link")
+        local_group = next(obj for obj in instance.Group if obj.TypeId == "Assembly::JointGroup")
+        local_joint = local_group.Group[0]
+        self.assertEqual(local_joint.Reference1, (local_array, ["1." + sub]))
+        self.assertIsNotNone(local_array.getSubObject("1." + sub))
 
     def test_create_assembly(self):
         """Create an assembly."""

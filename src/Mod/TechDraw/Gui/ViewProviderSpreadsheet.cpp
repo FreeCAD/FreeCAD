@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -22,6 +24,8 @@
 
 
 #include <App/DocumentObject.h>
+#include <Gui/Control.h>
+#include "TaskSpreadsheetView.h"
 #include "ViewProviderSpreadsheet.h"
 
 using namespace TechDrawGui;
@@ -60,4 +64,38 @@ std::vector<App::DocumentObject*> ViewProviderSpreadsheet::claimChildren() const
     }
 
     return temp;
+}
+
+bool ViewProviderSpreadsheet::setEdit(int ModNum)
+{
+    if (ModNum != Gui::ViewProvider::Default) {
+        return Gui::ViewProviderDocumentObject::setEdit(ModNum);
+    }
+    if (auto* activeDialog = Gui::Control().activeDialog(getViewObject()->getDocument())) {
+        // The creation command opens the task dialog before registering the newly-created
+        // view as the document's edit object. In that case the correct dialog is already open.
+        auto* spreadsheetDialog = qobject_cast<TaskDlgSpreadsheetView*>(activeDialog);
+        return spreadsheetDialog && spreadsheetDialog->getViewObject() == getViewObject();
+    }
+
+    Gui::Control().showDialog(
+        new TaskDlgSpreadsheetView(getViewObject()->findParentPage(), getViewObject()),
+        getViewObject()->getDocument());
+    return true;
+}
+
+void ViewProviderSpreadsheet::unsetEdit(int ModNum)
+{
+    if (ModNum == Gui::ViewProvider::Default) {
+        Gui::Control().closeDialog(getViewObject()->getDocument());
+    }
+    else {
+        Gui::ViewProviderDocumentObject::unsetEdit(ModNum);
+    }
+}
+
+bool ViewProviderSpreadsheet::doubleClicked()
+{
+    startDefaultEditMode();
+    return true;
 }

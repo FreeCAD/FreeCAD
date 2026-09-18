@@ -47,7 +47,6 @@ class AdvancedPreferencesPage:
             self.form.WarningSuppressRapidSpeeds.isChecked(),
             self.form.WarningSuppressSelectionMode.isChecked(),
             self.form.WarningSuppressOpenCamLib.isChecked(),
-            self.form.WarningSuppressVelocity.isChecked(),
         )
 
     def loadSettings(self):
@@ -63,7 +62,6 @@ class AdvancedPreferencesPage:
             Path.Preferences.advancedOCLFeaturesEnabled()
         )
         self.form.WarningSuppressOpenCamLib.setChecked(Path.Preferences.suppressOpenCamLibWarning())
-        self.form.WarningSuppressVelocity.setChecked(Path.Preferences.suppressVelocity())
         self.updateSelection()
 
     def updateSelection(self, state=None):

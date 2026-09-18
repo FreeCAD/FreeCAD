@@ -159,27 +159,27 @@ This only applies if Markdown is selected above.</source>
   <context>
     <name>Help</name>
     <message>
-      <location filename="../../Help.py" line="75"/>
+      <location filename="../../Help.py" line="74"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</source>
       <translation>இந்தப் பக்கத்திற்கான உள்ளடக்கங்களை மீட்டெடுக்க முடியவில்லை. பட்டியலில் உள்ள அமைப்புகளைச் சரிபார்க்கவும் திருத்து → விருப்பத்தேர்வுகள் → பொது → உதவி</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="79"/>
+      <location filename="../../Help.py" line="78"/>
       <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
       <translation>உதவிக் கோப்புகளின் இருப்பிடத்தைக் கண்டறிய முடியவில்லை. பட்டியலில் உள்ள அமைப்புகளைச் சரிபார்க்கவும் திருத்து → விருப்பத்தேர்வுகள் → பொது → உதவி</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="83"/>
+      <location filename="../../Help.py" line="82"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
       <translation>PySide QtWebEngineWidgets தொகுதி கிடைக்கவில்லை. கணினி உலாவியில் உதவி வழங்குதல் செய்யப்படுகிறது</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="87"/>
+      <location filename="../../Help.py" line="86"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
       <translation>உங்கள் கணினியில் மார்க் பேரூர் ரெண்டரர் எதுவும் நிறுவப்படவில்லை, எனவே இந்த உதவிப் பக்கம் அப்படியே வழங்கப்படுகிறது. இந்தப் பக்கத்தின் ரெண்டரிங்கை மேம்படுத்த Markdown அல்லது Pandoc பைதான் தொகுதிகளை நிறுவவும்.</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="119"/>
+      <location filename="../../Help.py" line="118"/>
       <source>Help</source>
       <translation>உதவி</translation>
     </message>
@@ -187,7 +187,7 @@ This only applies if Markdown is selected above.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="435"/>
+      <location filename="../../Help.py" line="434"/>
       <source>General</source>
       <translation>பொது</translation>
     </message>

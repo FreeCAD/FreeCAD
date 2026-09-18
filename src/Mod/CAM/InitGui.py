@@ -109,11 +109,11 @@ class CAMWorkbench(Workbench):
         from packaging.version import Version, parse
 
         FreeCADGui.addPreferencePage(
-            PathPreferencesPathJob.JobPreferencesPage,
+            AssetPreferences.AssetPreferencesPage,
             QT_TRANSLATE_NOOP("QObject", "CAM"),
         )
         FreeCADGui.addPreferencePage(
-            AssetPreferences.AssetPreferencesPage,
+            PathPreferencesPathJob.JobPreferencesPage,
             QT_TRANSLATE_NOOP("QObject", "CAM"),
         )
         FreeCADGui.addPreferencePage(
@@ -159,6 +159,8 @@ class CAMWorkbench(Workbench):
             "CAM_DressupDogbone",
             "CAM_DressupDragKnife",
             "CAM_DressupLeadInOut",
+            "CAM_DressupMirror",
+            "CAM_DressupPlungeMilling",
             "CAM_DressupRampEntry",
             "CAM_DressupTag",
             "CAM_DressupZCorrect",
@@ -215,9 +217,9 @@ class CAMWorkbench(Workbench):
         )
         threedcmdgroup = threedopcmdlist
         if Path.Preferences.experimentalFeaturesEnabled():
-            prepcmdlist.append("CAM_PathShapeTC")
+            prepcmdlist.append("CAM_PathShape")
             extracmdlist.extend(["CAM_Area", "CAM_Area_Workplane"])
-            twodopcmdlist.append("CAM_Slot")
+            engravecmdlist.append("CAM_Flute")
 
         if Path.Preferences.advancedOCLFeaturesEnabled():
             try:
@@ -246,6 +248,14 @@ class CAMWorkbench(Workbench):
                 from Path.Op.Gui import Waterline
 
                 threedopcmdlist.extend(["CAM_Surface", "CAM_Waterline"])
+
+                if Path.Preferences.experimentalFeaturesEnabled():
+                    # Planar Surface and Rotary Surface are companion operations
+                    # and ship together behind the experimental-features flag.
+                    from Path.Op.Gui import PlanarSurface  # noqa: F401
+                    from Path.Op.Gui import RotarySurface  # noqa: F401
+
+                    threedopcmdlist.extend(["CAM_PlanarSurface", "CAM_RotarySurface"])
                 threedcmdgroup = ["CAM_3dTools"]
                 FreeCADGui.addCommand(
                     "CAM_3dTools",
@@ -287,6 +297,7 @@ class CAMWorkbench(Workbench):
             + ["Separator"]
             + twodopcmdlist
             + drillingcmdlist
+            + ["Separator"]
             + engravecmdlist
             + ["Separator"]
             + threedopcmdlist

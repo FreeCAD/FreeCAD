@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from Base.Metadata import export, constmethod
 from TopoShape import TopoShape
+from typing import Sequence, overload
 
 @export(
     Twin="TopoShape",
@@ -20,6 +21,10 @@ class TopoShapeCompound(TopoShape):
     Licence: LGPL
     """
 
+    @overload
+    def __init__(self) -> None: ...
+    @overload
+    def __init__(self, shapes: TopoShape | Sequence[TopoShape], /) -> None: ...
     def add(self, shape: TopoShape, /) -> None:
         """
         Add a shape to the compound.

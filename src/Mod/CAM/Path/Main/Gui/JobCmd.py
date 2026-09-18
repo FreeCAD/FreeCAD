@@ -148,6 +148,14 @@ class CommandJobTemplateExport:
     def Execute(cls, job, path, dialog=None):
         attrs = job.Proxy.templateAttrs(job)
 
+        # description: override (or remove) using the dialog's edited value
+        if dialog:
+            desc = dialog.description()
+            if desc:
+                attrs[PathJob.JobTemplate.Description] = desc
+            else:
+                attrs.pop(PathJob.JobTemplate.Description, None)
+
         # post processor settings
         if dialog and not dialog.includePostProcessing():
             attrs.pop(PathJob.JobTemplate.PostProcessor, None)

@@ -154,7 +154,9 @@ fs::path ApplicationDirectories::findPath(const fs::path& stdHome, const fs::pat
         try {
             fs::create_directories(appData);
         } catch (const fs::filesystem_error& e) {
-            throw Base::FileSystemError("Could not create directories. Failed with: " + e.code().message());
+            THROWM(Base::FileSystemError,
+                   "Could not create directories in " + appData.string() + ". "
+                   "Failed with: " + e.code().message());
         }
     }
 

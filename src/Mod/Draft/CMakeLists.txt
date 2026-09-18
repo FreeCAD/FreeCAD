@@ -3,7 +3,11 @@
 add_subdirectory(App)
 
 IF (BUILD_GUI)
-    PYSIDE_WRAP_RC(Draft_QRC_SRCS Resources/Draft.qrc)
+    PYSIDE_WRAP_RC(
+        RELATIVE Draft_QRC_SRCS_REL
+        ABSOLUTE Draft_QRC_SRCS
+        RESOURCES Resources/Draft.qrc
+    )
 ENDIF (BUILD_GUI)
 
 SET(Draft_SRCS_base
@@ -58,12 +62,16 @@ SET(Draft_tests
     drafttests/test_array.py
     drafttests/test_base.py
     drafttests/test_creation.py
+    drafttests/test_dimension_gui.py
     drafttests/test_draftgeomutils.py
     drafttests/test_dwg.py
     drafttests/test_dxf.py
+    drafttests/test_grid_settings.py
     drafttests/test_import.py
     drafttests/test_import_gui.py
     drafttests/test_import_tools.py
+    drafttests/test_lines_gui.py
+    drafttests/test_manual_input_gui.py
     drafttests/test_modification.py
     drafttests/test_oca.py
     drafttests/test_pivy.py
@@ -257,6 +265,7 @@ SET(Draft_GUI_tools
     draftguitools/gui_annotationstyleeditor.py
     draftguitools/gui_base.py
     draftguitools/gui_base_original.py
+    draftguitools/gui_field_locks.py
     draftguitools/gui_tool_utils.py
     draftguitools/gui_planeproxy.py
     draftguitools/gui_selectplane.py
@@ -320,7 +329,8 @@ SET(DraftGuiIcon_SVG
 )
 
 ADD_CUSTOM_TARGET(Draft ALL
-    SOURCES ${Draft_SRCS_all} ${Draft_QRC_SRCS} ${DraftGuiIcon_SVG}
+    DEPENDS ${Draft_QRC_SRCS}
+    SOURCES ${Draft_SRCS_all} ${DraftGuiIcon_SVG}
 )
 
 fc_copy_sources(Draft "${CMAKE_BINARY_DIR}/Mod/Draft" ${Draft_SRCS_all})
@@ -331,7 +341,7 @@ IF (BUILD_GUI)
     fc_target_copy_resource(Draft
         "${CMAKE_CURRENT_BINARY_DIR}"
         "${CMAKE_BINARY_DIR}/Mod/Draft"
-        Draft_rc.py)
+        ${Draft_QRC_SRCS_REL})
 ENDIF (BUILD_GUI)
 
 INSTALL(

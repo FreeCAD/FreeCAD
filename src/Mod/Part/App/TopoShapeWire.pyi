@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export, constmethod
+from Base.Metadata import deprecated, export, constmethod
 from TopoShape import TopoShape
-from typing import Dict, List, Final, overload, Optional
+from typing import Dict, List, Final, overload, Optional, Sequence
 
 @export(
+    PythonName="Part.Wire",
     Twin="TopoShape",
     TwinPointer="TopoShape",
     FatherInclude="Mod/Part/App/TopoShapePy.h",
@@ -21,6 +22,13 @@ class TopoShapeWire(TopoShape):
     Licence: LGPL
     DeveloperDocu: TopoShapeWire is the OpenCasCade topological wire wrapper
     """
+
+    @overload
+    def __init__(self) -> None: ...
+    @overload
+    def __init__(self, shape: TopoShape, /) -> None: ...
+    @overload
+    def __init__(self, shapes: Sequence[TopoShape], /) -> None: ...
 
     Mass: Final[object] = ...
     """Returns the mass of the current system."""
@@ -83,6 +91,7 @@ class TopoShapeWire(TopoShape):
     """List of ordered vertexes in this shape."""
 
     @constmethod
+    @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="makeOffset2D")
     def makeOffset(self) -> object:
         """
         Offset the shape by a given amount. DEPRECATED - use makeOffset2D instead.

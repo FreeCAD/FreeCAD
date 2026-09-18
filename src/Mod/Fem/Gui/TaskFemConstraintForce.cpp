@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jan Rheinländer                                    *
  *                                   <jrheinlaender@users.sourceforge.net> *
@@ -37,6 +39,7 @@
 #include <Mod/Fem/App/FemConstraintForce.h>
 #include <Mod/Fem/App/FemTools.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/DatumFeature.h>
 
 #include "TaskFemConstraintForce.h"
 #include "ui_TaskFemConstraintForce.h"
@@ -122,7 +125,7 @@ void TaskFemConstraintForce::addToSelection()
     std::vector<Gui::SelectionObject> selection
         = Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        QMessageBox::warning(this, tr("Selection Error"), tr("Nothing selected!"));
         return;
     }
     Fem::ConstraintForce* pcConstraint = ConstraintView->getObject<Fem::ConstraintForce>();
@@ -131,7 +134,7 @@ void TaskFemConstraintForce::addToSelection()
 
     for (auto& it : selection) {  // for every selected object
         if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+            QMessageBox::warning(this, tr("Selection Error"), tr("Selected object is not a part!"));
             return;
         }
 
@@ -139,7 +142,7 @@ void TaskFemConstraintForce::addToSelection()
         if (obj->getDocument() != pcConstraint->getDocument()) {
             QMessageBox::warning(
                 this,
-                tr("Selection error"),
+                tr("Selection Error"),
                 tr("External object selection is not supported")
             );
             return;
@@ -181,7 +184,7 @@ void TaskFemConstraintForce::addToSelection()
                         "Only one type of selection (vertex, face or edge) per "
                         "analysis feature allowed!"
                     );
-                    QMessageBox::warning(this, tr("Selection error"), msg);
+                    QMessageBox::warning(this, tr("Selection Error"), msg);
                     addMe = false;
                     break;
                 }
@@ -204,7 +207,7 @@ void TaskFemConstraintForce::removeFromSelection()
     std::vector<Gui::SelectionObject> selection
         = Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        QMessageBox::warning(this, tr("Selection Error"), tr("Nothing selected!"));
         return;
     }
     Fem::ConstraintForce* pcConstraint = ConstraintView->getObject<Fem::ConstraintForce>();
@@ -213,7 +216,7 @@ void TaskFemConstraintForce::removeFromSelection()
     std::vector<size_t> itemsToDel;
     for (const auto& it : selection) {  // for every selected object
         if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+            QMessageBox::warning(this, tr("Selection Error"), tr("Selected object is not a part!"));
             return;
         }
         const std::vector<std::string>& subNames = it.getSubNames();
@@ -273,17 +276,9 @@ std::pair<App::DocumentObject*, std::string> TaskFemConstraintForce::getDirectio
     Gui::SelectionObject selectionElement = selection.at(0);
 
     // Line or Plane
-    Base::Type line = Base::Type::fromName("PartDesign::Line");
-    Base::Type plane = Base::Type::fromName("PartDesign::Plane");
-    if (selectionElement.isObjectTypeOf(App::Line::getClassTypeId())
-        || selectionElement.isObjectTypeOf(App::Plane::getClassTypeId())) {
-        link = std::make_pair(selectionElement.getObject(), std::string());
-    }
-    else if (selectionElement.isObjectTypeOf(line)) {
-        link = std::make_pair(selectionElement.getObject(), std::string("Edge1"));
-    }
-    else if (selectionElement.isObjectTypeOf(plane)) {
-        link = std::make_pair(selectionElement.getObject(), std::string("Face1"));
+    const auto selObj = selectionElement.getObject();
+    if (selObj->isDerivedFrom<App::DatumElement>() || selObj->isDerivedFrom<Part::Datum>()) {
+        link = std::make_pair(selObj, std::string());
     }
     // Sub-element of Part object
     else if (selectionElement.isObjectTypeOf(Part::Feature::getClassTypeId())) {
@@ -321,7 +316,7 @@ void TaskFemConstraintForce::onButtonDirection(const bool pressed)
 
     auto link = getDirection(Gui::Selection().getSelectionEx());
     if (!link.first) {
-        QMessageBox::warning(this, tr("Wrong selection"), tr("Select an edge or a face."));
+        QMessageBox::warning(this, tr("Wrong Selection"), tr("Select an edge or a face."));
         return;
     }
 
@@ -336,7 +331,7 @@ void TaskFemConstraintForce::onButtonDirection(const bool pressed)
         updateUI();
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(this, tr("Wrong selection"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(this, tr("Wrong Selection"), QString::fromLatin1(e.what()));
     }
 }
 
@@ -473,7 +468,7 @@ bool TaskDlgFemConstraintForce::accept()
         );
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(parameter, tr("Input Error"), QString::fromLatin1(e.what()));
         return false;
     }
 

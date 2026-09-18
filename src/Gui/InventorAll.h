@@ -256,8 +256,6 @@
 #include <Inventor/sensors/SoSensor.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 
-#include <Inventor/system/inttypes.h>
-
 #include <Inventor/threads/SbStorage.h>
 
 #include <Inventor/VRMLnodes/SoVRMLGroup.h>

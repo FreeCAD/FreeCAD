@@ -30,6 +30,7 @@
 #include "Model.h"
 #include "ModelLibrary.h"
 
+#include <QDir>
 
 using namespace Materials;
 

@@ -83,6 +83,27 @@ private:
     using inherited = SoLinearGeometryKit;
 };
 
+class GuiExport SoSphereGeometry: public SoLinearGeometryKit
+{
+    SO_KIT_HEADER(SoSphereGeometry);
+    SO_KIT_CATALOG_ENTRY_HEADER(separator);
+    SO_KIT_CATALOG_ENTRY_HEADER(lightModel);
+    SO_KIT_CATALOG_ENTRY_HEADER(pickStyle);
+    SO_KIT_CATALOG_ENTRY_HEADER(sphere);
+
+public:
+    static void initClass();
+    SoSphereGeometry();
+
+    SoSFFloat radius;
+
+protected:
+    ~SoSphereGeometry() override = default;
+
+private:
+    using inherited = SoLinearGeometryKit;
+};
+
 class GuiExport SoLinearGeometryBaseKit: public SoBaseKit
 {
     SO_KIT_HEADER(SoLinearGeometryBaseKit);

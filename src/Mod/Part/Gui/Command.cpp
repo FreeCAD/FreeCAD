@@ -31,6 +31,7 @@
 #include <TopoDS_Shape.hxx>
 
 
+#include <App/Application.h>
 #include <App/Document.h>
 #include <App/GeoFeature.h>
 #include <App/DocumentObjectGroup.h>
@@ -38,6 +39,7 @@
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 #include <App/Link.h>
+#include <Gui/ActiveObjectList.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -74,6 +76,8 @@
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+#include "TaskLinkArrayParameters.h"
 
 //===========================================================================
 // Part_PickCurveNet
@@ -330,7 +334,7 @@ void CmdPartCut::activated(int iMsg)
     if (Sel.size() != 2) {
         QMessageBox::warning(
             Gui::getMainWindow(),
-            QObject::tr("Wrong selection"),
+            QObject::tr("Wrong Selection"),
             QObject::tr("Select 2 shapes")
         );
         return;
@@ -407,7 +411,7 @@ void CmdPartCommon::activated(int iMsg)
     if (Sel.empty()) {
         QMessageBox::warning(
             Gui::getMainWindow(),
-            QObject::tr("Wrong selection"),
+            QObject::tr("Wrong Selection"),
             QObject::tr("Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to compute the intersection between.")
         );
         return;
@@ -507,7 +511,7 @@ void CmdPartFuse::activated(int iMsg)
     if (numShapes < 2) {
         QMessageBox::warning(
             Gui::getMainWindow(),
-            QObject::tr("Wrong selection"),
+            QObject::tr("Wrong Selection"),
             QObject::tr("Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to be fused.")
         );
         return;
@@ -949,7 +953,7 @@ void CmdPartCompound::activated(int iMsg)
     if (n < 1) {
         QMessageBox::warning(
             Gui::getMainWindow(),
-            QObject::tr("Wrong selection"),
+            QObject::tr("Wrong Selection"),
             QObject::tr("Select at least one shape")
         );
         return;
@@ -1012,7 +1016,7 @@ void CmdPartSection::activated(int iMsg)
     if (Sel.size() != 2) {
         QMessageBox::warning(
             Gui::getMainWindow(),
-            QObject::tr("Wrong selection"),
+            QObject::tr("Wrong Selection"),
             QObject::tr("Select 2 shapes")
         );
         return;
@@ -1075,21 +1079,17 @@ CmdPartImport::CmdPartImport()
 void CmdPartImport::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    QStringList filter;
-    filter << QStringLiteral("STEP (*.stp *.step)");
-    filter << QStringLiteral("STEP with colors (*.stp *.step)");
-    filter << QStringLiteral("IGES (*.igs *.iges)");
-    filter << QStringLiteral("IGES with colors (*.igs *.iges)");
-    filter << QStringLiteral("BREP (*.brp *.brep)");
+    const Gui::FileDialog::FilterList filter {
+        {QStringLiteral("STEP"), {"*.stp", "*.step"}},
+        {QObject::tr("STEP with colors"), {"*.stp", "*.step"}},
+        {QStringLiteral("IGES"), {"*.igs", "*.iges"}},
+        {QObject::tr("IGES with colors"), {"*.igs", "*.iges"}},
+        {QStringLiteral("BREP"), {"*.brp", "*.brep"}},
+    };
 
-    QString select;
-    QString fn = Gui::FileDialog::getOpenFileName(
-        Gui::getMainWindow(),
-        QString(),
-        QString(),
-        filter.join(QLatin1String(";;")),
-        &select
-    );
+    qsizetype select = -1;
+    QString fn
+        = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter, &select);
     if (!fn.isEmpty()) {
         Gui::WaitCursor wc;
         App::Document* pDoc = getDocument();
@@ -1099,7 +1099,7 @@ void CmdPartImport::activated(int iMsg)
 
         const std::string fnEscapedUtf8 = Base::Tools::escapeEncodeFilename(fn.toUtf8().constData());
         openCommand(QT_TRANSLATE_NOOP("Command", "Import Part"));
-        if (select == filter[1] || select == filter[3]) {
+        if (select == 1 || select == 3) {
             doCommand(Doc, "import ImportGui");
             doCommand(Doc, "ImportGui.insert(\"%s\",\"%s\")", fnEscapedUtf8.c_str(), pDoc->getName());
         }
@@ -1149,27 +1149,23 @@ CmdPartExport::CmdPartExport()
 void CmdPartExport::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    QStringList filter;
-    filter << QStringLiteral("STEP (*.stp *.step)");
-    filter << QStringLiteral("STEP with colors (*.stp *.step)");
-    filter << QStringLiteral("IGES (*.igs *.iges)");
-    filter << QStringLiteral("IGES with colors (*.igs *.iges)");
-    filter << QStringLiteral("BREP (*.brp *.brep)");
+    const Gui::FileDialog::FilterList filter {
+        {QStringLiteral("STEP"), {"*.stp", "*.step"}},
+        {QObject::tr("STEP with colors"), {"*.stp", "*.step"}},
+        {QStringLiteral("IGES"), {"*.igs", "*.iges"}},
+        {QObject::tr("IGES with colors"), {"*.igs", "*.iges"}},
+        {QStringLiteral("BREP"), {"*.brp", "*.brep"}},
+    };
 
-    QString select;
-    QString fn = Gui::FileDialog::getSaveFileName(
-        Gui::getMainWindow(),
-        QString(),
-        QString(),
-        filter.join(QLatin1String(";;")),
-        &select
-    );
+    qsizetype select = -1;
+    QString fn
+        = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QString(), QString(), filter, &select);
     if (!fn.isEmpty()) {
         App::Document* pDoc = getDocument();
         if (!pDoc) {  // no document
             return;
         }
-        if (select == filter[1] || select == filter[3]) {
+        if (select == 1 || select == 3) {
             Gui::Application::Instance->exportTo((const char*)fn.toUtf8(), pDoc->getName(), "ImportGui");
         }
         else {
@@ -1205,30 +1201,23 @@ CmdPartImportCurveNet::CmdPartImportCurveNet()
 void CmdPartImportCurveNet::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    QStringList filter;
-    filter << QStringLiteral("%1 (*.stp *.step *.igs *.iges *.brp *.brep)")
-                  .arg(QObject::tr("All CAD Files"));
-    filter << QStringLiteral("STEP (*.stp *.step)");
-    filter << QStringLiteral("IGES (*.igs *.iges)");
-    filter << QStringLiteral("BREP (*.brp *.brep)");
-    filter << QStringLiteral("%1 (*.*)").arg(QObject::tr("All Files"));
+    const Gui::FileDialog::FilterList filter {
+        {QObject::tr("All CAD Files"), {"*.stp", "*.step", "*.igs", "*.iges", "*.brp", "*.brep"}},
+        {QStringLiteral("STEP"), {"*.stp", "*.step"}},
+        {QStringLiteral("IGES"), {"*.igs", "*.iges"}},
+        {QStringLiteral("BREP"), {"*.brp", "*.brep"}},
+        Gui::FileDialog::Filter::AllFiles(),
+    };
 
-    QString fn = Gui::FileDialog::getOpenFileName(
-        Gui::getMainWindow(),
-        QString(),
-        QString(),
-        filter.join(QLatin1String(";;"))
-    );
+    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter);
     if (!fn.isEmpty()) {
         QFileInfo fi;
         fi.setFile(fn);
+        const std::string baseName = Base::Tools::escapeEncodeFilename(fi.baseName().toStdString());
+        const std::string fileName = Base::Tools::escapeEncodeFilename(fn.toStdString());
         openCommand(QT_TRANSLATE_NOOP("Command", "Import Curve Net"));
-        doCommand(
-            Doc,
-            "f = App.activeDocument().addObject(\"Part::CurveNet\",\"%s\")",
-            (const char*)fi.baseName().toLatin1()
-        );
-        doCommand(Doc, "f.FileName = \"%s\"", (const char*)fn.toLatin1());
+        doCommand(Doc, "f = App.activeDocument().addObject(\"Part::CurveNet\",\"%s\")", baseName.c_str());
+        doCommand(Doc, "f.FileName = \"%s\"", fileName.c_str());
         commitCommand();
         updateActive();
     }
@@ -1269,7 +1258,8 @@ void CmdPartMakeSolid::activated(int iMsg)
         nullptr,
         Gui::ResolveMode::FollowLink
     );
-    runCommand(Doc, "import Part");
+    addModule(Doc, "Part");
+    openCommand("Make solid");
     for (auto it : objs) {
         const TopoDS_Shape& shape = Part::Feature::getShape(
             it,
@@ -1278,6 +1268,9 @@ void CmdPartMakeSolid::activated(int iMsg)
         if (!shape.IsNull()) {
             TopAbs_ShapeEnum type = shape.ShapeType();
             QString str;
+            QString name = QString::fromLatin1(it->getNameInDocument());
+            std::string label = it->Label.getValue();
+            label = Base::Tools::escapeEncodeString(label);
             if (type == TopAbs_SOLID) {
                 Base::Console().message(
                     "%s is ignored because it is already a solid.\n",
@@ -1293,10 +1286,7 @@ void CmdPartMakeSolid::activated(int iMsg)
                           "__o__.Shape=__s__\n"
                           "del __s__, __o__"
                 )
-                          .arg(
-                              QLatin1String(it->getNameInDocument()),
-                              QLatin1String(it->Label.getValue())
-                          );
+                          .arg(name, QString::fromUtf8(label.c_str()));
             }
             else if (type == TopAbs_SHELL) {
                 str = QStringLiteral(
@@ -1307,10 +1297,7 @@ void CmdPartMakeSolid::activated(int iMsg)
                           "__o__.Shape=__s__\n"
                           "del __s__, __o__"
                 )
-                          .arg(
-                              QLatin1String(it->getNameInDocument()),
-                              QLatin1String(it->Label.getValue())
-                          );
+                          .arg(name, QString::fromUtf8(label.c_str()));
             }
             else {
                 Base::Console().message(
@@ -1321,7 +1308,7 @@ void CmdPartMakeSolid::activated(int iMsg)
 
             try {
                 if (!str.isEmpty()) {
-                    runCommand(Doc, str.toLatin1());
+                    runCommand(Doc, str.toUtf8());
                 }
             }
             catch (const Base::Exception& e) {
@@ -1329,6 +1316,8 @@ void CmdPartMakeSolid::activated(int iMsg)
             }
         }
     }
+
+    commitCommand();
 }
 
 bool CmdPartMakeSolid::isActive()
@@ -1371,6 +1360,8 @@ void CmdPartReverseShape::activated(int iMsg)
             name += "_rev";
             name = getUniqueObjectName(name.c_str());
 
+            std::string label = it->Label.getValue();
+            label = Base::Tools::escapeEncodeString(label);
             QString str = QStringLiteral(
                               "__o__=App.ActiveDocument.addObject(\"Part::Reverse\",\"%1\")\n"
                               "__o__.Source=App.ActiveDocument.%2\n"
@@ -1380,11 +1371,11 @@ void CmdPartReverseShape::activated(int iMsg)
                               .arg(
                                   QString::fromLatin1(name.c_str()),
                                   QString::fromLatin1(it->getNameInDocument()),
-                                  QString::fromLatin1(it->Label.getValue())
+                                  QString::fromUtf8(label.c_str())
                               );
 
             try {
-                runCommand(Doc, str.toLatin1());
+                runCommand(Doc, str.toUtf8());
                 copyVisual(name.c_str(), "ShapeAppearance", it->getNameInDocument());
                 copyVisual(name.c_str(), "LineColor", it->getNameInDocument());
                 copyVisual(name.c_str(), "PointColor", it->getNameInDocument());
@@ -1415,7 +1406,7 @@ CmdPartBoolean::CmdPartBoolean()
     sAppModule = "Part";
     sGroup = QT_TR_NOOP("Part");
     sMenuText = QT_TR_NOOP("Boolean Operation");
-    sToolTipText = QT_TR_NOOP("Applies a boolean operations with the selected shapes");
+    sToolTipText = QT_TR_NOOP("Applies a boolean operation with the selected shapes");
     sWhatsThis = "Part_Boolean";
     sStatusTip = sToolTipText;
     sPixmap = "Part_Booleans";
@@ -2287,7 +2278,7 @@ void CmdPartRuledSurface::activated(int iMsg)
     if (!ok) {
         QMessageBox::warning(
             Gui::getMainWindow(),
-            QObject::tr("Wrong selection"),
+            QObject::tr("Wrong Selection"),
             QObject::tr("Select either 2 edges or 2 wires.")
         );
         return;
@@ -2527,7 +2518,286 @@ QString getAutoGroupCommandStr()
 
     return QStringLiteral("# Object created at document root.");
 }
+
+QString getAutoAssemblyOrPartGroupCommandStr()
+// Helper function to add the newly created object to the active Assembly or Part if present.
+// Link arrays are App::Link objects and are not valid children of PartDesign Bodies.
+{
+    return QStringLiteral(R"PY(activePart = Gui.activeView().getActiveObject('%1')
+activeAsm = Gui.activeView().getActiveObject('%2')
+if activePart and not activeAsm:
+    activePart.addObject(obj)
+elif not activePart and activeAsm:
+    activeAsm.addObject(obj)
+elif activePart and activeAsm:
+    if activePart.hasObject(activeAsm, True):
+        activeAsm.addObject(obj)
+    elif activeAsm.hasObject(activePart, True):
+        activePart.addObject(obj)
+)PY")
+        .arg(PARTKEY, ASSEMBLYKEY);
+}
+
+void activateLinkArrayCommand(
+    Gui::Command& command,
+    const char* transactionName,
+    const char* objectType,
+    const char* objectName
+)
+{
+    auto selection = Gui::Command::getSelection().getSelectionEx();
+    if (selection.size() > 1) {
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            QObject::tr("Wrong Selection"),
+            QObject::tr("Select at most one object to array.")
+        );
+        return;
+    }
+
+    App::DocumentObject* source = selection.empty() ? nullptr : selection.front().getObject();
+    if (source && source->getDocument() != App::GetApplication().getActiveDocument()) {
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            QObject::tr("Wrong Selection"),
+            QObject::tr("Select one object from the active document.")
+        );
+        return;
+    }
+
+    if (Gui::Control().activeDialog(command.getDocument())) {
+        return;
+    }
+
+    command.openCommand(transactionName);
+    Gui::Command::_doCommand(
+        __FILE__,
+        __LINE__,
+        Gui::Command::Doc,
+        "obj = App.activeDocument().addObject('%s', '%s')",
+        objectType,
+        objectName
+    );
+    if (source) {
+        Gui::Command::_doCommand(
+            __FILE__,
+            __LINE__,
+            Gui::Command::Doc,
+            "obj.LinkedObject = %s",
+            Gui::Command::getObjectCmd(source).c_str()
+        );
+    }
+    Gui::Command::_doCommand(
+        __FILE__,
+        __LINE__,
+        Gui::Command::Gui,
+        getAutoAssemblyOrPartGroupCommandStr().toUtf8()
+    );
+
+    App::DocumentObject* array = App::GetApplication().getActiveDocument()->getActiveObject();
+    if (!array) {
+        command.abortCommand();
+        return;
+    }
+
+    if (source && array->getDocument()->recomputeFeature(array)) {
+        array->purgeTouched();
+    }
+
+    App::SubObjectT reference(array);
+    if (auto* view = Gui::Application::Instance->activeView()) {
+        for (const char* key : {ASSEMBLYKEY, PARTKEY}) {
+            App::DocumentObject* root = nullptr;
+            std::string subname;
+            if (!view->getActiveObject<App::DocumentObject*>(key, &root, &subname)) {
+                continue;
+            }
+            subname += std::string(array->getNameInDocument()) + '.';
+            // Use the active container occurrence that actually received the new array.
+            if (root && root->getSubObject(subname.c_str()) == array) {
+                reference = App::SubObjectT(root, subname.c_str());
+                break;
+            }
+        }
+    }
+    PartGui::showLinkArrayTask(array, reference);
+}
 }  // namespace
+
+//===========================================================================
+// Part_LinkArrayCircular
+//===========================================================================
+DEF_STD_CMD_A(CmdPartLinkArrayCircular)
+
+CmdPartLinkArrayCircular::CmdPartLinkArrayCircular()
+    : Command("Part_LinkArrayCircular")
+{
+    sAppModule = "Part";
+    sGroup = QT_TR_NOOP("Part");
+    sMenuText = QT_TR_NOOP("Circular Link Array");
+    sToolTipText = QT_TR_NOOP("Creates a concentric circular array of linked objects");
+    sWhatsThis = "Part_LinkArrayCircular";
+    sStatusTip = sToolTipText;
+    sPixmap = "Part_CircularLinkArray";
+    eType = ForEdit;
+}
+
+void CmdPartLinkArrayCircular::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    activateLinkArrayCommand(
+        *this,
+        QT_TRANSLATE_NOOP("Command", "Circular Link Array"),
+        "Part::LinkArrayCircular",
+        "CircularLinkArray"
+    );
+}
+
+bool CmdPartLinkArrayCircular::isActive()
+{
+    return hasActiveDocument() && !Gui::Control().activeDialog(getDocument());
+}
+
+//===========================================================================
+// Part_LinkArrayPath
+//===========================================================================
+DEF_STD_CMD_A(CmdPartLinkArrayPath)
+
+CmdPartLinkArrayPath::CmdPartLinkArrayPath()
+    : Command("Part_LinkArrayPath")
+{
+    sAppModule = "Part";
+    sGroup = QT_TR_NOOP("Part");
+    sMenuText = QT_TR_NOOP("Path Link Array");
+    sToolTipText = QT_TR_NOOP("Creates an array of linked objects along a path");
+    sWhatsThis = "Part_LinkArrayPath";
+    sStatusTip = sToolTipText;
+    sPixmap = "Part_PathLinkArray";
+    eType = ForEdit;
+}
+
+void CmdPartLinkArrayPath::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    activateLinkArrayCommand(
+        *this,
+        QT_TRANSLATE_NOOP("Command", "Path Link Array"),
+        "Part::LinkArrayPath",
+        "PathLinkArray"
+    );
+}
+
+bool CmdPartLinkArrayPath::isActive()
+{
+    return hasActiveDocument() && !Gui::Control().activeDialog(getDocument());
+}
+
+//===========================================================================
+// Part_LinkArrayPoint
+//===========================================================================
+DEF_STD_CMD_A(CmdPartLinkArrayPoint)
+
+CmdPartLinkArrayPoint::CmdPartLinkArrayPoint()
+    : Command("Part_LinkArrayPoint")
+{
+    sAppModule = "Part";
+    sGroup = QT_TR_NOOP("Part");
+    sMenuText = QT_TR_NOOP("Point Link Array");
+    sToolTipText = QT_TR_NOOP("Creates an array of linked objects at each point of a sketch or shape");
+    sWhatsThis = "Part_LinkArrayPoint";
+    sStatusTip = sToolTipText;
+    sPixmap = "Part_PointLinkArray";
+    eType = ForEdit;
+}
+
+void CmdPartLinkArrayPoint::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    activateLinkArrayCommand(
+        *this,
+        QT_TRANSLATE_NOOP("Command", "Point Link Array"),
+        "Part::LinkArrayPoint",
+        "PointLinkArray"
+    );
+}
+
+bool CmdPartLinkArrayPoint::isActive()
+{
+    return hasActiveDocument() && !Gui::Control().activeDialog(getDocument());
+}
+
+//===========================================================================
+// Part_LinkArrayLinear
+//===========================================================================
+DEF_STD_CMD_A(CmdPartLinkArrayLinear)
+
+CmdPartLinkArrayLinear::CmdPartLinkArrayLinear()
+    : Command("Part_LinkArrayLinear")
+{
+    sAppModule = "Part";
+    sGroup = QT_TR_NOOP("Part");
+    sMenuText = QT_TR_NOOP("Linear Link Array");
+    sToolTipText = QT_TR_NOOP("Creates a linear array of linked objects");
+    sWhatsThis = "Part_LinkArrayLinear";
+    sStatusTip = sToolTipText;
+    sPixmap = "LinkArray";
+    eType = ForEdit;
+}
+
+void CmdPartLinkArrayLinear::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    activateLinkArrayCommand(
+        *this,
+        QT_TRANSLATE_NOOP("Command", "Linear Link Array"),
+        "Part::LinkArrayLinear",
+        "LinearLinkArray"
+    );
+}
+
+bool CmdPartLinkArrayLinear::isActive()
+{
+    return hasActiveDocument() && !Gui::Control().activeDialog(getDocument());
+}
+
+//===========================================================================
+// Part_LinkArrayPolar
+//===========================================================================
+DEF_STD_CMD_A(CmdPartLinkArrayPolar)
+
+CmdPartLinkArrayPolar::CmdPartLinkArrayPolar()
+    : Command("Part_LinkArrayPolar")
+{
+    sAppModule = "Part";
+    sGroup = QT_TR_NOOP("Part");
+    sMenuText = QT_TR_NOOP("Polar Link Array");
+    sToolTipText = QT_TR_NOOP("Creates a polar array of linked objects");
+    sWhatsThis = "Part_LinkArrayPolar";
+    sStatusTip = sToolTipText;
+    sPixmap = "Part_PolarLinkArray";
+    eType = ForEdit;
+}
+
+void CmdPartLinkArrayPolar::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    activateLinkArrayCommand(
+        *this,
+        QT_TRANSLATE_NOOP("Command", "Polar Link Array"),
+        "Part::LinkArrayPolar",
+        "PolarLinkArray"
+    );
+}
+
+bool CmdPartLinkArrayPolar::isActive()
+{
+    return hasActiveDocument() && !Gui::Control().activeDialog(getDocument());
+}
 
 DEF_STD_CMD_A(CmdPartCoordinateSystem)
 
@@ -2554,6 +2824,7 @@ void CmdPartCoordinateSystem::activated(int iMsg)
         "obj = App.activeDocument().addObject('Part::LocalCoordinateSystem','%s')",
         name.c_str()
     );
+    doCommand(Doc, "obj.Label = 'LCS'");
     doCommand(Doc, getAutoGroupCommandStr().toUtf8());
     doCommand(Doc, "obj.Visibility = True");
     doCommand(Doc, "obj.ViewObject.doubleClicked()");
@@ -2588,6 +2859,7 @@ void CmdPartDatumPlane::activated(int iMsg)
 
     std::string name = getUniqueObjectName("DatumPlane");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumPlane','%s')", name.c_str());
+    doCommand(Doc, "obj.Label = 'DatumPlane'");
     doCommand(Doc, getAutoGroupCommandStr().toUtf8());
     doCommand(Doc, "obj.ViewObject.doubleClicked()");
 }
@@ -2621,6 +2893,7 @@ void CmdPartDatumLine::activated(int iMsg)
 
     std::string name = getUniqueObjectName("DatumLine");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumLine','%s')", name.c_str());
+    doCommand(Doc, "obj.Label = 'DatumLine'");
     doCommand(Doc, getAutoGroupCommandStr().toUtf8());
     doCommand(Doc, "obj.ViewObject.doubleClicked()");
 }
@@ -2654,6 +2927,7 @@ void CmdPartDatumPoint::activated(int iMsg)
 
     std::string name = getUniqueObjectName("DatumPoint");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumPoint','%s')", name.c_str());
+    doCommand(Doc, "obj.Label = 'DatumPoint'");
     doCommand(Doc, getAutoGroupCommandStr().toUtf8());
     doCommand(Doc, "obj.ViewObject.doubleClicked()");
 }
@@ -2663,6 +2937,41 @@ bool CmdPartDatumPoint::isActive()
     return hasActiveDocument();
 }
 
+//===========================================================================
+// Part_LinkArrays
+//===========================================================================
+class CmdPartLinkArrays: public Gui::GroupCommand
+{
+public:
+    CmdPartLinkArrays()
+        : GroupCommand("Part_LinkArrays")
+    {
+        sGroup = QT_TR_NOOP("Part");
+        sMenuText = QT_TR_NOOP("Link Arrays");
+        sToolTipText = QT_TR_NOOP("Creates link arrays");
+        sWhatsThis = "Part_LinkArrays";
+        sStatusTip = sToolTipText;
+        sPixmap = "LinkArray";
+
+        setCheckable(false);
+
+        addCommand("Part_LinkArrayCircular");
+        addCommand("Part_LinkArrayLinear");
+        addCommand("Part_LinkArrayPath");
+        addCommand("Part_LinkArrayPoint");
+        addCommand("Part_LinkArrayPolar");
+    }
+
+    const char* className() const override
+    {
+        return "CmdPartLinkArrays";
+    }
+
+    bool isActive() override
+    {
+        return hasActiveDocument() && !Gui::Control().activeDialog(getDocument());
+    }
+};
 
 //===========================================================================
 // Part_Datums
@@ -2743,6 +3052,12 @@ void CreatePartCommands()
     rcCmdMgr.addCommand(new CmdBoxSelection());
     rcCmdMgr.addCommand(new CmdPartProjectionOnSurface());
     rcCmdMgr.addCommand(new CmdPartSectionCut());
+    rcCmdMgr.addCommand(new CmdPartLinkArrayCircular());
+    rcCmdMgr.addCommand(new CmdPartLinkArrayLinear());
+    rcCmdMgr.addCommand(new CmdPartLinkArrayPath());
+    rcCmdMgr.addCommand(new CmdPartLinkArrayPoint());
+    rcCmdMgr.addCommand(new CmdPartLinkArrayPolar());
+    rcCmdMgr.addCommand(new CmdPartLinkArrays());
 
     rcCmdMgr.addCommand(new CmdPartCoordinateSystem());
     rcCmdMgr.addCommand(new CmdPartDatumPlane());

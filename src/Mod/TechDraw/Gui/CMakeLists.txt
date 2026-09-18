@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 if(MSVC)
     add_compile_options(/utf-8)
 endif(MSVC)
@@ -24,7 +26,11 @@ set (TechDraw_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/TechDraw_translation.
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
     ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
 qt_create_resource_file(${TechDraw_TR_QRC} ${QM_SRCS})
-qt_add_resources(TechDrawGui_SRCS Resources/TechDraw.qrc ${TechDraw_TR_QRC})
+qt_add_resources(TechDrawGui_SRCS
+    Resources/TechDraw.qrc
+    ${TechDraw_TR_QRC}
+    OPTIONS ${FREECAD_RCC_OPTIONS}
+)
 
 set(TechDrawGui_UIC_SRCS
     DlgPageChooser.ui
@@ -55,6 +61,7 @@ set(TechDrawGui_UIC_SRCS
     TaskRestoreLines.ui
     TaskRichAnno.ui
     TaskSectionView.ui
+    TaskSpreadsheetView.ui
     TaskWeldingSymbol.ui
     TaskSurfaceFinishSymbols.ui
     SymbolChooser.ui
@@ -131,6 +138,9 @@ SET(TechDrawGui_SRCS
     TaskSectionView.ui
     TaskSectionView.cpp
     TaskSectionView.h
+    TaskSpreadsheetView.ui
+    TaskSpreadsheetView.cpp
+    TaskSpreadsheetView.h
     TaskBalloon.ui
     TaskBalloon.cpp
     TaskBalloon.h
@@ -410,6 +420,7 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskProjGroup.ui
     TaskLinkDim.ui
     TaskSectionView.ui
+    TaskSpreadsheetView.ui
     TaskGeomHatch.ui
     TaskHatch.ui
     TaskLeaderLine.ui
@@ -487,9 +498,7 @@ if (MSVC)
     target_compile_definitions(TechDrawGui PRIVATE WIN32_LEAN_AND_MEAN)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(TechDrawGui)
-endif()
+target_compile_warn_error(TechDrawGui)
 
 fc_copy_sources(TechDrawGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/" ${TechDrawGuiIcon_SVG})
 INSTALL(FILES ${TechDrawGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Resources/icons")
@@ -497,7 +506,7 @@ INSTALL(FILES ${TechDrawGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/T
 fc_copy_sources(TechDrawGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw" ${TechDrawGuiFonts})
 INSTALL(FILES ${TechDrawGuiFonts} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Resources/fonts")
 
-SET_BIN_DIR(TechDrawGui TechDrawGui /Mod/TechDraw)
+SET_BIN_DIR(TechDrawGui)
 SET_PYTHON_PREFIX_SUFFIX(TechDrawGui)
 
 INSTALL(TARGETS TechDrawGui DESTINATION ${CMAKE_INSTALL_LIBDIR})

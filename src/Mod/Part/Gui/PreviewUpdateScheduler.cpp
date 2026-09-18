@@ -36,7 +36,7 @@ QtPreviewUpdateScheduler::QtPreviewUpdateScheduler(QObject* parent)
     : QObject(parent)
 {}
 
-inline void QtPreviewUpdateScheduler::schedulePreviewRecompute(App::DocumentObject* object)
+void QtPreviewUpdateScheduler::schedulePreviewRecompute(App::DocumentObject* object)
 {
     if (!object) {
         return;
@@ -48,6 +48,8 @@ inline void QtPreviewUpdateScheduler::schedulePreviewRecompute(App::DocumentObje
     if (scheduled) {
         return;
     }
+
+    scheduled = true;
 
     QMetaObject::invokeMethod(this, &QtPreviewUpdateScheduler::flush, Qt::QueuedConnection);
 }

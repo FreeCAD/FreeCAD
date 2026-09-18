@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+disable_occt8_deprecation_warnings()
+
 add_subdirectory(App)
 if(BUILD_GUI)
     add_subdirectory(Gui)
@@ -48,9 +50,13 @@ set(PartDesign_TestScripts
     PartDesignTests/TestPrimitive.py
     PartDesignTests/TestMirrored.py
     PartDesignTests/TestLinearPattern.py
+    PartDesignTests/TestCircularPattern.py
+    PartDesignTests/TestPathPattern.py
+    PartDesignTests/TestPointPattern.py
     PartDesignTests/TestPolarPattern.py
     PartDesignTests/TestMultiTransform.py
     PartDesignTests/TestBoolean.py
+    PartDesignTests/TestBaseFeature.py
     PartDesignTests/TestFillet.py
     PartDesignTests/TestChamfer.py
     PartDesignTests/TestDraft.py
@@ -63,6 +69,7 @@ set(PartDesign_TestScripts
 if(BUILD_GUI)
     list(APPEND PartDesign_TestScripts
         PartDesignTests/TestMaterial.py
+        PartDesignTests/TestSuppressed.py
     )
 endif(BUILD_GUI)
 

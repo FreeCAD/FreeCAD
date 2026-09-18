@@ -28,6 +28,7 @@
 #include <unordered_set>
 
 #include "IndexedName.h"
+#include "ByteArray.h"
 
 using namespace Data;
 
@@ -65,6 +66,13 @@ std::pair<int, int> getIntegerSuffix(const char* name, int nameLength)
     return std::make_pair(suffix, suffixPosition);
 }
 
+IndexedName::IndexedName(const QByteArray& data)
+    : type("")
+    , index(0)
+{
+    set(data.constData(), data.size());
+}
+
 void IndexedName::set(const char* name,
                       int length,
                       const std::vector<const char*>& allowedNames,
@@ -88,6 +96,7 @@ void IndexedName::set(const char* name,
     // NOLINTNEXTLINE cppcoreguidelines-pro-bounds-pointer-arithmetic
     if (std::any_of(name, name + suffixPosition, isInvalidChar)) {
         this->type = "";
+        this->index = 0;
         return;
     }
 

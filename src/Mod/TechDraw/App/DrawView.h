@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -67,6 +69,7 @@ public:
     App::DocumentObjectExecReturn* recompute() override;
     /// recalculate the Feature
     App::DocumentObjectExecReturn *execute() override;
+    bool canRecomputeOnWorker() const override { return false; }
     void onDocumentRestored() override;
     short mustExecute() const override;
     //@}

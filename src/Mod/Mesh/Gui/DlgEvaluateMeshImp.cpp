@@ -924,7 +924,7 @@ void DlgEvaluateMeshImp::onRepairDuplicatedFacesButtonClicked()
             );
         }
         catch (const Base::Exception& e) {
-            QMessageBox::warning(this, tr("Duplicated faces"), QString::fromLatin1(e.what()));
+            QMessageBox::warning(this, tr("Duplicated Faces"), QString::fromLatin1(e.what()));
         }
 
         doc->commitCommand();
@@ -966,7 +966,7 @@ void DlgEvaluateMeshImp::onAnalyzeDuplicatedPointsButtonClicked()
             removeViewProvider("MeshGui::ViewProviderMeshDuplicatedPoints");
         }
         else {
-            d->ui.checkDuplicatedPointsButton->setText(tr("Duplicated points"));
+            d->ui.checkDuplicatedPointsButton->setText(tr("Duplicated Points"));
             d->ui.checkDuplicatedPointsButton->setChecked(true);
             d->ui.repairDuplicatedPointsButton->setEnabled(true);
             d->ui.repairAllTogether->setEnabled(true);
@@ -994,7 +994,7 @@ void DlgEvaluateMeshImp::onRepairDuplicatedPointsButtonClicked()
             );
         }
         catch (const Base::Exception& e) {
-            QMessageBox::warning(this, tr("Duplicated points"), QString::fromLatin1(e.what()));
+            QMessageBox::warning(this, tr("Duplicated Points"), QString::fromLatin1(e.what()));
         }
 
         doc->commitCommand();
@@ -1292,10 +1292,10 @@ void DlgEvaluateMeshImp::onRepairAllTogetherClicked()
             } while(d->ui.checkRepeatButton->isChecked() && run && (--max_iter > 0));
         }
         catch (const Base::Exception& e) {
-            QMessageBox::warning(this, tr("Mesh repair"), QString::fromLatin1(e.what()));
+            QMessageBox::warning(this, tr("Mesh Repair"), QString::fromLatin1(e.what()));
         }
         catch (...) {
-            QMessageBox::warning(this, tr("Mesh repair"), QStringLiteral("Unknown error occurred."));
+            QMessageBox::warning(this, tr("Mesh Repair"), QStringLiteral("Unknown error occurred."));
         }
 
         doc->commitCommand();

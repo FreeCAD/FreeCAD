@@ -23,8 +23,10 @@
 
 import FreeCAD
 import Path
+import ast
 import glob
 import importlib.util
+import json
 import os
 import pathlib
 from collections import defaultdict
@@ -53,10 +55,16 @@ PostProcessorOutputFile = "PostProcessorOutputFile"
 PostProcessorOutputPolicy = "PostProcessorOutputPolicy"
 PostProcessorShowEditor = "PostProcessorShowEditor"
 
+ToolBitDimensionColorLight = "ToolBitDimensionColorLight"
+ToolBitDimensionColorDark = "ToolBitDimensionColorDark"
+ToolBitDimensionHighlightColor = "ToolBitDimensionHighlightColor"
+ToolBitArtworkBrightness = "ToolBitArtworkBrightness"
+
 ToolGroup = PreferencesGroup + "/Tools"
 ToolPath = "ToolPath"
 LastToolLibrary = "LastToolLibrary"
 LastToolLibrarySortKey = "LastToolLibrarySortKey"
+ToolUpdateOnLoad = "ToolUpdateOnLoad"
 
 # Linear tolerance to use when generating Paths, eg when tessellating geometry
 GeometryTolerance = "GeometryTolerance"
@@ -66,7 +74,6 @@ WarningSuppressRapidSpeeds = "WarningSuppressRapidSpeeds"
 WarningSuppressAllSpeeds = "WarningSuppressAllSpeeds"
 WarningSuppressSelectionMode = "WarningSuppressSelectionMode"
 WarningSuppressOpenCamLib = "WarningSuppressOpenCamLib"
-WarningSuppressVelocity = "WarningSuppressVelocity"
 EnableExperimentalFeatures = "EnableExperimentalFeatures"
 EnableAdvancedOCLFeatures = "EnableAdvancedOCLFeatures"
 
@@ -88,12 +95,53 @@ def preferences():
     return FreeCAD.ParamGet(PreferencesGroup)
 
 
+def _color_as_hex(name, default):
+    """Read a color preference, returning it as an "#rrggbb" string.
+
+    Color preferences are stored packed as ((R * 256 + G) * 256 + B) * 256 + A.
+    """
+    red, green, blue = (int(default[i : i + 2], 16) for i in (1, 3, 5))
+    packed = preferences().GetUnsigned(name, ((red * 256 + green) * 256 + blue) * 256 + 255)
+    return "#%02x%02x%02x" % ((packed >> 24) & 0xFF, (packed >> 16) & 0xFF, (packed >> 8) & 0xFF)
+
+
+def toolBitDimensionColor(dark: bool) -> str:
+    """Color of the dimensioning in the tool bit shape drawings."""
+    if dark:
+        return _color_as_hex(ToolBitDimensionColorDark, "#23818d")
+    return _color_as_hex(ToolBitDimensionColorLight, "#111111")
+
+
+def toolBitDimensionHighlightColor() -> str:
+    """Color of the one dimension the user is pointing at."""
+    return _color_as_hex(ToolBitDimensionHighlightColor, "#ff8c00")
+
+
+def toolBitArtworkBrightness() -> float:
+    """
+    How brightly to draw the tool artwork on a dark theme, as a factor of its
+    drawn-for-white-paper colors. Stored as a percentage.
+    """
+    return min(max(preferences().GetInt(ToolBitArtworkBrightness, 85), 10), 100) / 100.0
+
+
 def tool_preferences():
     return FreeCAD.ParamGet(ToolGroup)
 
 
 def addToolPreferenceObserver(callback):
     _add_group_observer(ToolGroup, callback)
+
+
+def tool_update_on_load_enabled() -> bool:
+    """Whether opening a document should check for and offer to apply
+    tool preset updates from the library. Defaults to True (current
+    behavior); the CAM preferences Assets tab exposes this as a checkbox."""
+    return tool_preferences().GetBool(ToolUpdateOnLoad, True)
+
+
+def set_tool_update_on_load_enabled(enabled: bool) -> None:
+    tool_preferences().SetBool(ToolUpdateOnLoad, enabled)
 
 
 def pathPostSourcePath():
@@ -224,6 +272,7 @@ def allEnabledPostProcessors(include=None):
 _post_type_cache = {}
 _post_type_cache_keys = None
 _extra_post_paths: list = []
+_addon_post_dirs_scanned = False
 
 
 def classifyPostProcessor(name):
@@ -343,7 +392,59 @@ def searchPaths():
     return paths
 
 
+def _scan_addon_post_dirs() -> None:
+    """Scan FreeCAD Mod directories for post-processor addons via package.xml content.
+
+    Finds every installed addon whose package.xml declares a ``<Postprocessor>``
+    content element inside ``<content>`` and registers the corresponding
+    subdirectory.
+
+    Called once on first access; duplicate registrations are ignored.
+
+    Sentinel files:
+      - ``Mod/ALL_ADDONS_DISABLED`` — skip the entire Mod tree.
+      - ``<addon>/ADDON_DISABLED``  — skip a single addon.
+    """
+    global _addon_post_dirs_scanned
+    if _addon_post_dirs_scanned:
+        return
+    _addon_post_dirs_scanned = True
+
+    for get_dir in (FreeCAD.getUserAppDataDir, FreeCAD.getHomePath):
+        try:
+            mod_root = pathlib.Path(get_dir()) / "Mod"
+            if not mod_root.is_dir():
+                continue
+            if (mod_root / "ALL_ADDONS_DISABLED").exists():
+                continue
+            for entry in sorted(mod_root.iterdir(), key=lambda e: e.name.lower()):
+                if not entry.is_dir():
+                    continue
+                if (entry / "ADDON_DISABLED").exists():
+                    continue
+                pkg_xml = entry / "package.xml"
+                if not pkg_xml.exists():
+                    continue
+                try:
+                    meta = FreeCAD.Metadata(str(pkg_xml))
+                except Exception:
+                    # Skip addons with malformed or unreadable package.xml
+                    continue
+
+                content = meta.Content
+                if "Postprocessor" in content:
+                    for item in content["Postprocessor"]:
+                        subdir = item.Subdirectory or item.Name
+                        posts_dir = entry / subdir
+                        if posts_dir.is_dir():
+                            addAddonPostPath(str(posts_dir))
+        except Exception:
+            # Skip entire Mod root if directory listing fails
+            pass
+
+
 def searchPathsPost():
+    _scan_addon_post_dirs()
     paths = []
     p = defaultFilePath()
     if p:
@@ -399,9 +500,12 @@ def addAddonAssetPath(addon_dir: str) -> None:
 
 def defaultJobTemplate():
     template = preferences().GetString(DefaultJobTemplate)
-    if "xml" not in template:
-        return template
-    return ""
+
+    # before b4d0428 .xml files were used as templates, ignore very old settings
+    if os.path.splitext(template)[1] == ".xml":
+        return ""
+
+    return template
 
 
 def setJobDefaults(jobTemplate, geometryTolerance, curveAccuracy):
@@ -417,14 +521,27 @@ def postProcessorBlacklist():
     blacklist = pref.GetString(PostProcessorBlacklist, "")
     if not blacklist:
         return []
-    return eval(blacklist)
+    try:
+        parsed = json.loads(blacklist)
+    except ValueError:
+        # Migrate the legacy format, which stored the list as a Python repr
+        # (for example "['GRBL', 'linuxcnc']") that json cannot parse. Use
+        # ast.literal_eval, which only evaluates literals and cannot execute
+        # arbitrary code, unlike the eval() that was previously used here.
+        try:
+            parsed = ast.literal_eval(blacklist)
+        except (ValueError, SyntaxError):
+            return []
+    if not isinstance(parsed, list):
+        return []
+    return [str(item) for item in parsed]
 
 
 def setPostProcessorDefaults(processor, args, blacklist):
     pref = preferences()
     pref.SetString(PostProcessorDefault, processor)
     pref.SetString(PostProcessorDefaultArgs, args)
-    pref.SetString(PostProcessorBlacklist, "%s" % (blacklist))
+    pref.SetString(PostProcessorBlacklist, json.dumps(blacklist))
 
 
 def setOutputFileDefaults(fileName, policy):
@@ -505,14 +622,9 @@ def suppressOpenCamLibWarning():
     return preferences().GetBool(WarningSuppressOpenCamLib, True)
 
 
-def suppressVelocity():
-    return preferences().GetBool(WarningSuppressVelocity, False)
-
-
-def setPreferencesAdvanced(ocl, warnSpeeds, warnRapids, warnModes, warnOCL, warnVelocity):
+def setPreferencesAdvanced(ocl, warnSpeeds, warnRapids, warnModes, warnOCL):
     preferences().SetBool(EnableAdvancedOCLFeatures, ocl)
     preferences().SetBool(WarningSuppressAllSpeeds, warnSpeeds)
     preferences().SetBool(WarningSuppressRapidSpeeds, warnRapids)
     preferences().SetBool(WarningSuppressSelectionMode, warnModes)
     preferences().SetBool(WarningSuppressOpenCamLib, warnOCL)
-    preferences().SetBool(WarningSuppressVelocity, warnVelocity)

@@ -237,8 +237,8 @@
       <translation>Ubicación</translation>
     </message>
     <message>
+      <location filename="../../FitBSplineCurve.cpp" line="152"/>
       <location filename="../../FitBSplineSurface.cpp" line="242"/>
-      <location filename="../../FitBSplineCurve.cpp" line="138"/>
       <source>Fit B-spline</source>
       <translation>Ajustar B-Spline</translation>
     </message>
@@ -338,8 +338,8 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="171"/>
       <location filename="../../FitBSplineSurface.cpp" line="249"/>
-      <source>Input error</source>
-      <translation>Error de entrada</translation>
+      <source>Input Error</source>
+      <translation>Error de Entrada</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="215"/>
@@ -381,8 +381,8 @@
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="94"/>
-      <source>Input error</source>
-      <translation>Error de entrada</translation>
+      <source>Input Error</source>
+      <translation>Error de Entrada</translation>
     </message>
   </context>
   <context>
@@ -590,6 +590,26 @@
       <source>Reverse Engineering</source>
       <translation>Ingeniería Inversa</translation>
     </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="36"/>
+      <source>&amp;Reverse Engineering</source>
+      <translation>Ingenie&amp;ría inversa</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="37"/>
+      <source>Surface Reconstruction</source>
+      <translation>Reconstrucción de superficie</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="38"/>
+      <source>Segmentation</source>
+      <translation>Segmentación</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="39"/>
+      <source>Approximation</source>
+      <translation>Aproximación</translation>
+    </message>
   </context>
   <context>
     <name>ReenGui::FitBSplineCurve</name>
@@ -620,8 +640,8 @@
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="47"/>
-      <source>Iso-Parametric</source>
-      <translation>Iso-Paramétrico</translation>
+      <source>Equidistant</source>
+      <translation>Equidistante</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="55"/>
@@ -720,9 +740,9 @@
   <context>
     <name>ReenGui::FitBSplineCurveWidget</name>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="89"/>
-      <source>Input error</source>
-      <translation>Error de entrada</translation>
+      <location filename="../../FitBSplineCurve.cpp" line="103"/>
+      <source>Input Error</source>
+      <translation>Error de Entrada</translation>
     </message>
   </context>
 </TS>

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2015 Przemo Firszt <przemo@firszt.eu>                   *
 # *   Copyright (c) 2015 Bernd Hahnebach <bernd@bimstatik.org>              *
@@ -249,7 +251,7 @@ class TestCcxTools(unittest.TestCase):
     def test_constraint_sectionprint(self):
         from femexamples.constraint_section_print import setup
 
-        setup(self.document, "ccxtools")
+        setup(self.document, "ccxtools", test_mode=True)
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************

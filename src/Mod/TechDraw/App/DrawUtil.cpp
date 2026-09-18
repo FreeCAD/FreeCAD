@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -38,7 +40,6 @@
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <BRepLProp_CLProps.hxx>
-#include <BRepLProp_CurveTool.hxx>
 #include <BRepLProp_SLProps.hxx>
 #include <BRepTools.hxx>
 #include <BRep_Builder.hxx>
@@ -1172,8 +1173,8 @@ bool DrawUtil::isCrazy(TopoDS_Edge e)
         return true;
     }
 
-    double start = BRepLProp_CurveTool::FirstParameter(adapt);
-    double end = BRepLProp_CurveTool::LastParameter(adapt);
+    double start = adapt.FirstParameter();
+    double end = adapt.LastParameter();
     BRepLProp_CLProps propStart(adapt, start, 0, Precision::Confusion());
     const gp_Pnt& vStart = propStart.Value();
     BRepLProp_CLProps propEnd(adapt, end, 0, Precision::Confusion());
@@ -1934,8 +1935,8 @@ void DrawUtil::dump1Vertex(const char* text, const TopoDS_Vertex& v)
 void DrawUtil::dumpEdge(const char* label, int i, TopoDS_Edge e)
 {
     BRepAdaptor_Curve adapt(e);
-    double start = BRepLProp_CurveTool::FirstParameter(adapt);
-    double end = BRepLProp_CurveTool::LastParameter(adapt);
+    double start = adapt.FirstParameter();
+    double end = adapt.LastParameter();
     BRepLProp_CLProps propStart(adapt, start, 0, Precision::Confusion());
     const gp_Pnt& vStart = propStart.Value();
     BRepLProp_CLProps propEnd(adapt, end, 0, Precision::Confusion());

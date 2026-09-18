@@ -671,6 +671,8 @@ inline const UnitsSchemaSpec s8
         { "Angle"    , {{ 0   , "°"               , 1.0            }}},
         { "Area"     , {{ 0   , "sqft"            , ft * ft        }}},
         { "Volume"   , {{ 0   , "cft"             , ft * ft * ft   }}},
+        { "Density"  , {{ 0   , "lb/ft^3"         , lb / (ft * ft * ft) }}},
+        { "Pressure" , {{ 0   , "psi"             , psi            }}},
         { "Velocity" , {{ 0   , "in/min"          , in / 60        }}}
     }
 };

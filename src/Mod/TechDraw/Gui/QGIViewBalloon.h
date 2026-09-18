@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *   Copyright (c) 2019 Franck Jullien <franck.jullien@gmail.com>          *
@@ -183,6 +185,8 @@ public:
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
                QWidget* widget = nullptr) override;
 
+    QPainterPath shape() const override;
+
     QString getLabelText();
     void placeBalloon(QPointF pos);
     void setPrettyPre();
@@ -200,6 +204,8 @@ public:
     QColor prefNormalColor();
     TechDraw::ArrowType prefDefaultArrow() const;
     bool prefOrthoPyramid() const;
+
+    void updatePositionFromFeatureXY() override;
 
     TechDraw::DrawViewBalloon* getBalloonFeat()
     {
@@ -231,6 +237,8 @@ protected:
                           bool isDragging,
                           Base::Vector3d& labelPos,
                           Base::Vector3d& arrowPos);
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
 
 
 private:

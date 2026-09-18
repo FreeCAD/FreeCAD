@@ -135,7 +135,6 @@ void DlgSettingsDocumentImp::saveSettings()
     ui->prefCheckNewDoc->onSave();
     ui->prefCompression->onSave();
 
-    ui->prefUndoRedo->onSave();
     ui->prefUndoRedoSize->onSave();
     ui->prefSaveTransaction->onSave();
     ui->prefDiscardTransaction->onSave();
@@ -146,6 +145,7 @@ void DlgSettingsDocumentImp::saveSettings()
     ui->prefCountBackupFiles->onSave();
     ui->prefSaveBackupExtension->onSave();
     ui->prefSaveBackupDateFormat->onSave();
+    ui->prefDisableVersionCheckOnSave->onSave();
     ui->prefDuplicateLabel->onSave();
     ui->prefPartialLoading->onSave();
     ui->prefLicenseType->onSave();
@@ -157,6 +157,7 @@ void DlgSettingsDocumentImp::saveSettings()
     ui->prefAutoSaveEnabled->onSave();
     ui->prefAutoSaveTimeout->onSave();
     ui->prefCanAbortRecompute->onSave();
+    ui->prefEnableAsyncRecompute->onSave();
 
     int timeout = ui->prefAutoSaveTimeout->value();
     if (!ui->prefAutoSaveEnabled->isChecked()) {
@@ -170,7 +171,6 @@ void DlgSettingsDocumentImp::loadSettings()
     ui->prefCheckNewDoc->onRestore();
     ui->prefCompression->onRestore();
 
-    ui->prefUndoRedo->onRestore();
     ui->prefUndoRedoSize->onRestore();
     ui->prefSaveTransaction->onRestore();
     ui->prefDiscardTransaction->onRestore();
@@ -181,6 +181,7 @@ void DlgSettingsDocumentImp::loadSettings()
     ui->prefCountBackupFiles->onRestore();
     ui->prefSaveBackupExtension->onRestore();
     ui->prefSaveBackupDateFormat->onRestore();
+    ui->prefDisableVersionCheckOnSave->onRestore();
     ui->prefDuplicateLabel->onRestore();
     ui->prefPartialLoading->onRestore();
     ui->prefLicenseType->onRestore();
@@ -192,6 +193,7 @@ void DlgSettingsDocumentImp::loadSettings()
     ui->prefAutoSaveEnabled->onRestore();
     ui->prefAutoSaveTimeout->onRestore();
     ui->prefCanAbortRecompute->onRestore();
+    ui->prefEnableAsyncRecompute->onRestore();
 }
 
 /**

@@ -120,17 +120,15 @@ Extension* ExtensionContainer::getExtension(Base::Type t, bool derived, bool no_
         throw Base::TypeError(
             "ExtensionContainer::getExtension: No extension of given type available");
     }
-    else if (result != _extensions.end()) {
+    if (result != _extensions.end()) {
         return result->second;
     }
-    else {
-        if (no_except) {
-            return nullptr;
-        }
-        // if we arrive here we don't have anything matching
-        throw Base::TypeError(
-            "ExtensionContainer::getExtension: No extension of given type available");
+    if (no_except) {
+        return nullptr;
     }
+    // if we arrive here we don't have anything matching
+    throw Base::TypeError(
+        "ExtensionContainer::getExtension: No extension of given type available");
 }
 
 bool ExtensionContainer::hasExtensions() const
@@ -459,7 +457,7 @@ void ExtensionContainer::restoreExtensions(Base::XMLReader& reader)
 
                 ext->initExtension(this);
             }
-            if (ext && strcmp(ext->getExtensionTypeId().getName(), Type) == 0) {
+            if (ext && ext->getExtensionTypeId().getName() == Type) {
                 ext->extensionRestore(reader);
             }
         }

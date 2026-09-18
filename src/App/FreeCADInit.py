@@ -51,6 +51,7 @@ try:
     import os
     import traceback
     import inspect
+    from collections.abc import Callable
     from enum import IntEnum  # Leak to globals (backwards compat)
     from datetime import datetime  # Leak to globals (backwards compat)
     from pathlib import Path  # Removed manually
@@ -164,10 +165,12 @@ class FCADLogger:
     noUpdateUI: bool
     timing: bool
     lineno: bool
-    parent: "FCADLogger"
+    parent: "FCADLogger | None"
     title: str
+    tag: str
+    laststamp: datetime
 
-    def __init__(self, tag: str, **kwargs) -> None:
+    def __init__(self, tag: str, **kwargs: object) -> None:
         """
         Construct a logger instance.
 
@@ -324,7 +327,7 @@ class FCADLogger:
             * kwargs: dictionary of keyword arguments to be passed to func.
             """
 
-        def catch_fn(self, msg: str, func: callable, *args, **kwargs) -> object | None:
+        def catch_fn(self, msg: str, func: Callable[..., object], *args, **kwargs) -> object | None:
             return self._catch(level, msg, func, args, kwargs)
 
         catch_fn.__doc__ = docstring
@@ -335,7 +338,7 @@ class FCADLogger:
             self,
             level: int,
             msg: str,
-            func: callable,
+            func: Callable[..., object],
             args: tuple = (),
             kwargs: dict | None = None,
         ) -> object | None:
@@ -362,7 +365,13 @@ class FCADLogger:
                 self._log(level, f"{msg}\n{traceback.format_exc()}", frame=2)
         return None
 
-    def report(self, msg: str, func: callable, *args, **kwargs) -> object | None:
+    def report(
+        self,
+        msg: str,
+        func: Callable[..., object],
+        *args: object,
+        **kwargs: object,
+    ) -> object | None:
         """
         Catch any exception report it with a message box.
 
@@ -425,221 +434,208 @@ App.addImportType("FreeCAD document (*.FCStd)", "FreeCAD")
 # set to no gui, is overwritten by InitGui
 App.GuiUp = 0
 
-# fmt: off
-# fill up unit definitions
+# Structured declarations for the Python-defined FreeCAD Units API.
 
-App.Units.NanoMetre     = App.Units.Quantity('nm')
-App.Units.MicroMetre    = App.Units.Quantity('um')
-App.Units.MilliMetre    = App.Units.Quantity('mm')
-App.Units.CentiMetre    = App.Units.Quantity('cm')
-App.Units.DeciMetre     = App.Units.Quantity('dm')
-App.Units.Metre         = App.Units.Quantity('m')
-App.Units.KiloMetre     = App.Units.Quantity('km')
+@dataclasses.dataclass(frozen=True)
+class QuantityConstant:
+    """A named quantity constant installed on ``FreeCAD.Units``."""
 
-App.Units.MilliLiter    = App.Units.Quantity('ml')
-App.Units.Liter         = App.Units.Quantity('l')
-
-App.Units.Hertz         = App.Units.Quantity('Hz')
-App.Units.KiloHertz     = App.Units.Quantity('kHz')
-App.Units.MegaHertz     = App.Units.Quantity('MHz')
-App.Units.GigaHertz     = App.Units.Quantity('GHz')
-App.Units.TeraHertz     = App.Units.Quantity('THz')
-
-App.Units.MicroGram     = App.Units.Quantity('ug')
-App.Units.MilliGram     = App.Units.Quantity('mg')
-App.Units.Gram          = App.Units.Quantity('g')
-App.Units.KiloGram      = App.Units.Quantity('kg')
-App.Units.Ton           = App.Units.Quantity('t')
-
-App.Units.Second        = App.Units.Quantity('s')
-App.Units.Minute        = App.Units.Quantity('min')
-App.Units.Hour          = App.Units.Quantity('h')
-
-App.Units.Ampere        = App.Units.Quantity('A')
-App.Units.NanoAmpere    = App.Units.Quantity('nA')
-App.Units.MicroAmpere   = App.Units.Quantity('uA')
-App.Units.MilliAmpere   = App.Units.Quantity('mA')
-App.Units.KiloAmpere    = App.Units.Quantity('kA')
-App.Units.MegaAmpere    = App.Units.Quantity('MA')
-
-App.Units.Kelvin        = App.Units.Quantity('K')
-App.Units.MilliKelvin   = App.Units.Quantity('mK')
-App.Units.MicroKelvin   = App.Units.Quantity('uK')
-
-App.Units.Mole          = App.Units.Quantity('mol')
-App.Units.NanoMole      = App.Units.Quantity('nmol')
-App.Units.MicroMole     = App.Units.Quantity('umol')
-App.Units.MilliMole     = App.Units.Quantity('mmol')
-
-App.Units.Candela       = App.Units.Quantity('cd')
-
-App.Units.Inch          = App.Units.Quantity('in')
-App.Units.Foot          = App.Units.Quantity('ft')
-App.Units.Thou          = App.Units.Quantity('thou')
-App.Units.Yard          = App.Units.Quantity('yd')
-App.Units.Mile          = App.Units.Quantity('mi')
-
-App.Units.SquareFoot    = App.Units.Quantity('sqft')
-App.Units.CubicFoot     = App.Units.Quantity('cft')
-
-App.Units.Pound         = App.Units.Quantity('lb')
-App.Units.Ounce         = App.Units.Quantity('oz')
-App.Units.Stone         = App.Units.Quantity('st')
-App.Units.Hundredweights= App.Units.Quantity('cwt')
-
-App.Units.Newton        = App.Units.Quantity('N')
-App.Units.MilliNewton   = App.Units.Quantity('mN')
-App.Units.KiloNewton    = App.Units.Quantity('kN')
-App.Units.MegaNewton    = App.Units.Quantity('MN')
-
-App.Units.NewtonPerMeter        = App.Units.Quantity('N/m')
-App.Units.MilliNewtonPerMeter   = App.Units.Quantity('mN/m')
-App.Units.KiloNewtonPerMeter    = App.Units.Quantity('kN/m')
-App.Units.MegaNewtonPerMeter    = App.Units.Quantity('MN/m')
-
-App.Units.Pascal        = App.Units.Quantity('Pa')
-App.Units.KiloPascal    = App.Units.Quantity('kPa')
-App.Units.MegaPascal    = App.Units.Quantity('MPa')
-App.Units.GigaPascal    = App.Units.Quantity('GPa')
-
-App.Units.MilliBar      = App.Units.Quantity('mbar')
-App.Units.Bar           = App.Units.Quantity('bar')
-
-App.Units.PoundForce    = App.Units.Quantity('lbf')
-App.Units.Torr          = App.Units.Quantity('Torr')
-App.Units.mTorr         = App.Units.Quantity('mTorr')
-App.Units.yTorr         = App.Units.Quantity('uTorr')
-
-App.Units.PSI           = App.Units.Quantity('psi')
-App.Units.KSI           = App.Units.Quantity('ksi')
-App.Units.MPSI          = App.Units.Quantity('Mpsi')
-
-App.Units.Watt          = App.Units.Quantity('W')
-App.Units.NanoWatt      = App.Units.Quantity('nW')
-App.Units.MicroWatt     = App.Units.Quantity('uW')
-App.Units.MilliWatt     = App.Units.Quantity('mW')
-App.Units.KiloWatt      = App.Units.Quantity('kW')
-App.Units.VoltAmpere    = App.Units.Quantity('VA')
-
-App.Units.Volt          = App.Units.Quantity('V')
-App.Units.MilliVolt     = App.Units.Quantity('mV')
-App.Units.KiloVolt      = App.Units.Quantity('kV')
-
-App.Units.MegaSiemens   = App.Units.Quantity('MS')
-App.Units.KiloSiemens   = App.Units.Quantity('kS')
-App.Units.Siemens       = App.Units.Quantity('S')
-App.Units.MilliSiemens  = App.Units.Quantity('mS')
-App.Units.MicroSiemens  = App.Units.Quantity('uS')
-
-App.Units.Ohm          = App.Units.Quantity('Ohm')
-App.Units.KiloOhm      = App.Units.Quantity('kOhm')
-App.Units.MegaOhm      = App.Units.Quantity('MOhm')
-
-App.Units.Coulomb       = App.Units.Quantity('C')
-
-App.Units.Tesla         = App.Units.Quantity('T')
-App.Units.Gauss         = App.Units.Quantity('G')
-
-App.Units.Weber         = App.Units.Quantity('Wb')
-
-# disable Oersted because people need to input e.g. a field strength of
-# 1 ampere per meter -> 1 A/m and not get the recalculation to Oersted
-# App.Units.Oersted       = App.Units.Quantity('Oe')
-
-App.Units.PicoFarad     = App.Units.Quantity('pF')
-App.Units.NanoFarad     = App.Units.Quantity('nF')
-App.Units.MicroFarad    = App.Units.Quantity('uF')
-App.Units.MilliFarad    = App.Units.Quantity('mF')
-App.Units.Farad         = App.Units.Quantity('F')
-
-App.Units.NanoHenry     = App.Units.Quantity('nH')
-App.Units.MicroHenry    = App.Units.Quantity('uH')
-App.Units.MilliHenry    = App.Units.Quantity('mH')
-App.Units.Henry         = App.Units.Quantity('H')
-
-App.Units.Joule         = App.Units.Quantity('J')
-App.Units.MilliJoule    = App.Units.Quantity('mJ')
-App.Units.KiloJoule     = App.Units.Quantity('kJ')
-App.Units.NewtonMeter   = App.Units.Quantity('Nm')
-App.Units.VoltAmpereSecond   = App.Units.Quantity('VAs')
-App.Units.WattSecond    = App.Units.Quantity('Ws')
-App.Units.KiloWattHour  = App.Units.Quantity('kWh')
-App.Units.ElectronVolt  = App.Units.Quantity('eV')
-App.Units.KiloElectronVolt = App.Units.Quantity('keV')
-App.Units.MegaElectronVolt = App.Units.Quantity('MeV')
-App.Units.Calorie       = App.Units.Quantity('cal')
-App.Units.KiloCalorie   = App.Units.Quantity('kcal')
-
-App.Units.MPH           = App.Units.Quantity('mi/h')
-App.Units.KMH           = App.Units.Quantity('km/h')
-
-App.Units.Degree        = App.Units.Quantity('deg')
-App.Units.Radian        = App.Units.Quantity('rad')
-App.Units.Gon           = App.Units.Quantity('gon')
-App.Units.AngularMinute = App.Units.Quantity().AngularMinute
-App.Units.AngularSecond = App.Units.Quantity().AngularSecond
+    expression: str
+    doc: str = ""
 
 
-# SI base units
-# (length, weight, time, current, temperature, amount of substance, luminous intensity, angle)
-App.Units.AmountOfSubstance           = App.Units.Unit(0,0,0,0,0,1)
-App.Units.ElectricCurrent             = App.Units.Unit(0,0,0,1)
-App.Units.Length                      = App.Units.Unit(1)
-App.Units.LuminousIntensity           = App.Units.Unit(0,0,0,0,0,0,1)
-App.Units.Mass                        = App.Units.Unit(0,1)
-App.Units.Temperature                 = App.Units.Unit(0,0,0,0,1)
-App.Units.TimeSpan                    = App.Units.Unit(0,0,1)
+@dataclasses.dataclass(frozen=True)
+class UnitConstant:
+    """A named dimensional unit constant installed on ``FreeCAD.Units``."""
 
-# all other combined units
-App.Units.Acceleration                = App.Units.Unit(1,0,-2)
-App.Units.Angle                       = App.Units.Unit(0,0,0,0,0,0,0,1)
-App.Units.AngleOfFriction             = App.Units.Unit(0,0,0,0,0,0,0,1)
-App.Units.Area                        = App.Units.Unit(2)
-App.Units.CompressiveStrength         = App.Units.Unit(-1,1,-2)
-App.Units.CurrentDensity              = App.Units.Unit(-2,0,0,1)
-App.Units.Density                     = App.Units.Unit(-3,1)
-App.Units.DissipationRate             = App.Units.Unit(2,0,-3)
-App.Units.DynamicViscosity            = App.Units.Unit(-1,1,-1)
-App.Units.Frequency                   = App.Units.Unit(0,0,-1)
-App.Units.MagneticFluxDensity         = App.Units.Unit(0,1,-2,-1)
-App.Units.Magnetization               = App.Units.Unit(-1,0,0,1)
-App.Units.ElectricalCapacitance       = App.Units.Unit(-2,-1,4,2)
-App.Units.ElectricalConductance       = App.Units.Unit(-2,-1,3,2)
-App.Units.ElectricalConductivity      = App.Units.Unit(-3,-1,3,2)
-App.Units.ElectricalInductance        = App.Units.Unit(2,1,-2,-2)
-App.Units.ElectricalResistance        = App.Units.Unit(2,1,-3,-2)
-App.Units.ElectricCharge              = App.Units.Unit(0,0,1,1)
-App.Units.ElectricPotential           = App.Units.Unit(2,1,-3,-1)
-App.Units.Force                       = App.Units.Unit(1,1,-2)
-App.Units.HeatFlux                    = App.Units.Unit(0,1,-3,0,0)
-App.Units.InverseArea                 = App.Units.Unit(-2)
-App.Units.InverseLength               = App.Units.Unit(-1)
-App.Units.InverseVolume               = App.Units.Unit(-3)
-App.Units.KinematicViscosity          = App.Units.Unit(2,0,-1)
-App.Units.Pressure                    = App.Units.Unit(-1,1,-2)
-App.Units.Power                       = App.Units.Unit(2,1,-3)
-App.Units.ShearModulus                = App.Units.Unit(-1,1,-2)
-App.Units.SpecificEnergy              = App.Units.Unit(2,0,-2)
-App.Units.SpecificHeat                = App.Units.Unit(2,0,-2,0,-1)
-App.Units.Stiffness                   = App.Units.Unit(0,1,-2)
-App.Units.Stress                      = App.Units.Unit(-1,1,-2)
-App.Units.ThermalConductivity         = App.Units.Unit(1,1,-3,0,-1)
-App.Units.ThermalExpansionCoefficient = App.Units.Unit(0,0,0,0,-1)
-App.Units.ThermalTransferCoefficient  = App.Units.Unit(0,1,-3,0,-1)
-App.Units.UltimateTensileStrength     = App.Units.Unit(-1,1,-2)
-App.Units.Velocity                    = App.Units.Unit(1,0,-1)
-App.Units.VacuumPermittivity          = App.Units.Unit(-3,-1,4,2)
-App.Units.Volume                      = App.Units.Unit(3)
-App.Units.VolumeFlowRate              = App.Units.Unit(3,0,-1)
-App.Units.VolumetricThermalExpansionCoefficient = App.Units.Unit(0,0,0,0,-1)
-App.Units.Work                        = App.Units.Unit(2,1,-2)
-App.Units.YieldStrength               = App.Units.Unit(-1,1,-2)
-App.Units.YoungsModulus               = App.Units.Unit(-1,1,-2)
-# fmt: on
+    signature: tuple[int, ...]
+    doc: str = ""
+
+
+QUANTITY_CONSTANTS: tuple[tuple[str, QuantityConstant], ...] = (
+    ("NanoMetre", QuantityConstant("nm")),
+    ("MicroMetre", QuantityConstant("um")),
+    ("MilliMetre", QuantityConstant("mm")),
+    ("CentiMetre", QuantityConstant("cm")),
+    ("DeciMetre", QuantityConstant("dm")),
+    ("Metre", QuantityConstant("m")),
+    ("KiloMetre", QuantityConstant("km")),
+    ("MilliLiter", QuantityConstant("ml")),
+    ("Liter", QuantityConstant("l")),
+    ("Hertz", QuantityConstant("Hz")),
+    ("KiloHertz", QuantityConstant("kHz")),
+    ("MegaHertz", QuantityConstant("MHz")),
+    ("GigaHertz", QuantityConstant("GHz")),
+    ("TeraHertz", QuantityConstant("THz")),
+    ("MicroGram", QuantityConstant("ug")),
+    ("MilliGram", QuantityConstant("mg")),
+    ("Gram", QuantityConstant("g")),
+    ("KiloGram", QuantityConstant("kg")),
+    ("Ton", QuantityConstant("t")),
+    ("Second", QuantityConstant("s")),
+    ("Minute", QuantityConstant("min")),
+    ("Hour", QuantityConstant("h")),
+    ("Ampere", QuantityConstant("A")),
+    ("NanoAmpere", QuantityConstant("nA")),
+    ("MicroAmpere", QuantityConstant("uA")),
+    ("MilliAmpere", QuantityConstant("mA")),
+    ("KiloAmpere", QuantityConstant("kA")),
+    ("MegaAmpere", QuantityConstant("MA")),
+    ("Kelvin", QuantityConstant("K")),
+    ("MilliKelvin", QuantityConstant("mK")),
+    ("MicroKelvin", QuantityConstant("uK")),
+    ("Mole", QuantityConstant("mol")),
+    ("NanoMole", QuantityConstant("nmol")),
+    ("MicroMole", QuantityConstant("umol")),
+    ("MilliMole", QuantityConstant("mmol")),
+    ("Candela", QuantityConstant("cd")),
+    ("Inch", QuantityConstant("in")),
+    ("Foot", QuantityConstant("ft")),
+    ("Thou", QuantityConstant("thou")),
+    ("Yard", QuantityConstant("yd")),
+    ("Mile", QuantityConstant("mi")),
+    ("SquareFoot", QuantityConstant("sqft")),
+    ("CubicFoot", QuantityConstant("cft")),
+    ("Pound", QuantityConstant("lb")),
+    ("Ounce", QuantityConstant("oz")),
+    ("Stone", QuantityConstant("st")),
+    ("Hundredweights", QuantityConstant("cwt")),
+    ("Newton", QuantityConstant("N")),
+    ("MilliNewton", QuantityConstant("mN")),
+    ("KiloNewton", QuantityConstant("kN")),
+    ("MegaNewton", QuantityConstant("MN")),
+    ("NewtonPerMeter", QuantityConstant("N/m")),
+    ("MilliNewtonPerMeter", QuantityConstant("mN/m")),
+    ("KiloNewtonPerMeter", QuantityConstant("kN/m")),
+    ("MegaNewtonPerMeter", QuantityConstant("MN/m")),
+    ("Pascal", QuantityConstant("Pa")),
+    ("KiloPascal", QuantityConstant("kPa")),
+    ("MegaPascal", QuantityConstant("MPa")),
+    ("GigaPascal", QuantityConstant("GPa")),
+    ("MilliBar", QuantityConstant("mbar")),
+    ("Bar", QuantityConstant("bar")),
+    ("PoundForce", QuantityConstant("lbf")),
+    ("Torr", QuantityConstant("Torr")),
+    ("mTorr", QuantityConstant("mTorr")),
+    ("yTorr", QuantityConstant("uTorr")),
+    ("PSI", QuantityConstant("psi")),
+    ("KSI", QuantityConstant("ksi")),
+    ("MPSI", QuantityConstant("Mpsi")),
+    ("Watt", QuantityConstant("W")),
+    ("NanoWatt", QuantityConstant("nW")),
+    ("MicroWatt", QuantityConstant("uW")),
+    ("MilliWatt", QuantityConstant("mW")),
+    ("KiloWatt", QuantityConstant("kW")),
+    ("VoltAmpere", QuantityConstant("VA")),
+    ("Volt", QuantityConstant("V")),
+    ("MilliVolt", QuantityConstant("mV")),
+    ("KiloVolt", QuantityConstant("kV")),
+    ("MegaSiemens", QuantityConstant("MS")),
+    ("KiloSiemens", QuantityConstant("kS")),
+    ("Siemens", QuantityConstant("S")),
+    ("MilliSiemens", QuantityConstant("mS")),
+    ("MicroSiemens", QuantityConstant("uS")),
+    ("Ohm", QuantityConstant("Ohm")),
+    ("KiloOhm", QuantityConstant("kOhm")),
+    ("MegaOhm", QuantityConstant("MOhm")),
+    ("Coulomb", QuantityConstant("C")),
+    ("Tesla", QuantityConstant("T")),
+    ("Gauss", QuantityConstant("G")),
+    ("Weber", QuantityConstant("Wb")),
+    # Oersted intentionally remains unavailable: exposing it reformats field
+    # strengths such as 1 ampere per meter as Oersted.
+    ("PicoFarad", QuantityConstant("pF")),
+    ("NanoFarad", QuantityConstant("nF")),
+    ("MicroFarad", QuantityConstant("uF")),
+    ("MilliFarad", QuantityConstant("mF")),
+    ("Farad", QuantityConstant("F")),
+    ("NanoHenry", QuantityConstant("nH")),
+    ("MicroHenry", QuantityConstant("uH")),
+    ("MilliHenry", QuantityConstant("mH")),
+    ("Henry", QuantityConstant("H")),
+    ("Joule", QuantityConstant("J")),
+    ("MilliJoule", QuantityConstant("mJ")),
+    ("KiloJoule", QuantityConstant("kJ")),
+    ("NewtonMeter", QuantityConstant("Nm")),
+    ("VoltAmpereSecond", QuantityConstant("VAs")),
+    ("WattSecond", QuantityConstant("Ws")),
+    ("KiloWattHour", QuantityConstant("kWh")),
+    ("ElectronVolt", QuantityConstant("eV")),
+    ("KiloElectronVolt", QuantityConstant("keV")),
+    ("MegaElectronVolt", QuantityConstant("MeV")),
+    ("Calorie", QuantityConstant("cal")),
+    ("KiloCalorie", QuantityConstant("kcal")),
+    ("MPH", QuantityConstant("mi/h")),
+    ("KMH", QuantityConstant("km/h")),
+    ("Degree", QuantityConstant("deg")),
+    ("Radian", QuantityConstant("rad")),
+    ("Gon", QuantityConstant("gon")),
+    ("AngularMinute", QuantityConstant("<angular-minute>")),
+    ("AngularSecond", QuantityConstant("<angular-second>")),
+)
+
+
+UNIT_CONSTANTS: tuple[tuple[str, UnitConstant], ...] = (
+    # SI base units.
+    ("AmountOfSubstance", UnitConstant((0, 0, 0, 0, 0, 1,))),
+    ("ElectricCurrent", UnitConstant((0, 0, 0, 1,))),
+    ("Length", UnitConstant((1,))),
+    ("LuminousIntensity", UnitConstant((0, 0, 0, 0, 0, 0, 1,))),
+    ("Mass", UnitConstant((0, 1,))),
+    ("Temperature", UnitConstant((0, 0, 0, 0, 1,))),
+    ("TimeSpan", UnitConstant((0, 0, 1,))),
+    # Derived and combined units.
+    ("Acceleration", UnitConstant((1, 0, -2,))),
+    ("Angle", UnitConstant((0, 0, 0, 0, 0, 0, 0, 1,))),
+    ("AngleOfFriction", UnitConstant((0, 0, 0, 0, 0, 0, 0, 1,))),
+    ("Area", UnitConstant((2,))),
+    ("CompressiveStrength", UnitConstant((-1, 1, -2,))),
+    ("CurrentDensity", UnitConstant((-2, 0, 0, 1,))),
+    ("Density", UnitConstant((-3, 1,))),
+    ("DissipationRate", UnitConstant((2, 0, -3,))),
+    ("DynamicViscosity", UnitConstant((-1, 1, -1,))),
+    ("Frequency", UnitConstant((0, 0, -1,))),
+    ("MagneticFluxDensity", UnitConstant((0, 1, -2, -1,))),
+    ("Magnetization", UnitConstant((-1, 0, 0, 1,))),
+    ("ElectricalCapacitance", UnitConstant((-2, -1, 4, 2,))),
+    ("ElectricalConductance", UnitConstant((-2, -1, 3, 2,))),
+    ("ElectricalConductivity", UnitConstant((-3, -1, 3, 2,))),
+    ("ElectricalInductance", UnitConstant((2, 1, -2, -2,))),
+    ("ElectricalResistance", UnitConstant((2, 1, -3, -2,))),
+    ("ElectricCharge", UnitConstant((0, 0, 1, 1,))),
+    ("ElectricPotential", UnitConstant((2, 1, -3, -1,))),
+    ("Force", UnitConstant((1, 1, -2,))),
+    ("HeatFlux", UnitConstant((0, 1, -3, 0, 0,))),
+    ("InverseArea", UnitConstant((-2,))),
+    ("InverseLength", UnitConstant((-1,))),
+    ("InverseVolume", UnitConstant((-3,))),
+    ("KinematicViscosity", UnitConstant((2, 0, -1,))),
+    ("Pressure", UnitConstant((-1, 1, -2,))),
+    ("Power", UnitConstant((2, 1, -3,))),
+    ("ShearModulus", UnitConstant((-1, 1, -2,))),
+    ("SpecificEnergy", UnitConstant((2, 0, -2,))),
+    ("SpecificHeat", UnitConstant((2, 0, -2, 0, -1,))),
+    ("Stiffness", UnitConstant((0, 1, -2,))),
+    ("Stress", UnitConstant((-1, 1, -2,))),
+    ("ThermalConductivity", UnitConstant((1, 1, -3, 0, -1,))),
+    ("ThermalExpansionCoefficient", UnitConstant((0, 0, 0, 0, -1,))),
+    ("ThermalTransferCoefficient", UnitConstant((0, 1, -3, 0, -1,))),
+    ("UltimateTensileStrength", UnitConstant((-1, 1, -2,))),
+    ("Velocity", UnitConstant((1, 0, -1,))),
+    ("VacuumPermittivity", UnitConstant((-3, -1, 4, 2,))),
+    ("Volume", UnitConstant((3,))),
+    ("VolumeFlowRate", UnitConstant((3, 0, -1,))),
+    ("VolumetricThermalExpansionCoefficient", UnitConstant((0, 0, 0, 0, -1,))),
+    ("Work", UnitConstant((2, 1, -2,))),
+    ("YieldStrength", UnitConstant((-1, 1, -2,))),
+    ("YoungsModulus", UnitConstant((-1, 1, -2,))),
+)
 
 # The values must match with that of the
 # C++ enum class UnitSystem
 class Scheme(IntEnum):
+    """Unit display scheme selected by the FreeCAD preferences."""
+
     Internal = 0
     MKS = 1
     Imperial = 2
@@ -651,16 +647,40 @@ class Scheme(IntEnum):
     FEM = 8
     MeterDecimal = 9
 
-App.Units.Scheme = Scheme
 
 class NumberFormat(IntEnum):
+    """Number-format preference used when displaying quantities."""
+
     Default = 0
     Fixed = 1
     Scientific = 2
 
-App.Units.NumberFormat = NumberFormat
+
+def install_units(app: types.ModuleType) -> None:
+    """Install the declared quantities, units, and unit-format enums."""
+    units = app.Units
+
+    for name, spec in QUANTITY_CONSTANTS:
+        if spec.expression == "<angular-minute>":
+            value = units.Quantity().AngularMinute
+        elif spec.expression == "<angular-second>":
+            value = units.Quantity().AngularSecond
+        else:
+            value = units.Quantity(spec.expression)
+        setattr(units, name, value)
+
+    for name, spec in UNIT_CONSTANTS:
+        setattr(units, name, units.Unit(*spec.signature))
+
+    units.Scheme = Scheme
+    units.NumberFormat = NumberFormat
+
+
+install_units(App)
 
 class ScaleType(IntEnum):
+    """Scaling mode used by application-level geometry operations."""
+
     Other = -1
     NoScaling = 0
     NonUniformRight = 1
@@ -670,6 +690,8 @@ class ScaleType(IntEnum):
 App.ScaleType = ScaleType
 
 class PropertyType(IntEnum):
+    """Flags describing the behavior of a FreeCAD property."""
+
     Prop_None = 0
     Prop_ReadOnly = 1
     Prop_Transient = 2
@@ -677,10 +699,13 @@ class PropertyType(IntEnum):
     Prop_Output = 8
     Prop_NoRecompute = 16
     Prop_NoPersist = 32
+    Prop_Input = 64
 
 App.PropertyType = PropertyType
 
 class ReturnType(IntEnum):
+    """Return-shape selector used by FreeCAD Python callbacks."""
+
     PyObject = 0
     DocObject = 1
     DocAndPyObject = 2
@@ -701,7 +726,15 @@ class Transient:
     Mark the symbol for removal from global scope on cleanup.
     """
 
-    names = ["Path"]
+    names = [
+        "Path",
+        "Callable",
+        "QuantityConstant",
+        "UnitConstant",
+        "QUANTITY_CONSTANTS",
+        "UNIT_CONSTANTS",
+        "install_units",
+    ]
 
     def __call__(self, target):
         Transient.names.append(target.__name__)
@@ -725,6 +758,10 @@ class Transient:
 
 transient = Transient()
 
+@transient
+@functools.cache
+def resolve_path(path: Path) -> Path:
+    return path.resolve()
 
 @transient
 def call_in_place(fn):
@@ -1277,7 +1314,7 @@ class DirModScanner:
         """
         Scan in base with higher priority.
         """
-        if (key := str(base.resolve())) in self.visited:
+        if (key := str(resolve_path(base))) in self.visited:
             return
 
         self.visited.add(key)
@@ -1291,6 +1328,9 @@ class DirModScanner:
             Wrn(warning)
 
         if flat:
+            resolved = resolve_path(base)
+            if any(resolve_path(mod.path) == resolved for mod in self.mods.values()):
+                return
             self.mods[str(base)] = DirMod(base)
             return
 
@@ -1340,6 +1380,56 @@ class InitPipeline:
         paths.add(vendor_path)
         paths.add(packages)
         return paths
+
+    def check_bundled_pivy(self) -> None:
+        """
+        Verify that bundled builds resolve the bundled Pivy package.
+        """
+        if App.ConfigGet("PIVY_SOURCE") != "bundled":
+            return
+
+        expected = (self.std_home / "Mod" / "pivy").resolve()
+
+        def block_system_pivy(message: str) -> None:
+            for name in list(sys.modules):
+                if name == "pivy" or name.startswith("pivy."):
+                    del sys.modules[name]
+            sys.modules["pivy"] = None
+            raise RuntimeError(message)
+
+        def path_from_import_origin(origin: str) -> Path:
+            path = Path(origin).resolve()
+            return path.parent if path.name == "__init__.py" else path
+
+        def find_pivy_path() -> Path:
+            module = sys.modules.get("pivy")
+            module_file = getattr(module, "__file__", None) if module else None
+            if module_file:
+                return path_from_import_origin(module_file)
+
+            spec = importlib.util.find_spec("pivy")
+            if spec is None:
+                block_system_pivy(
+                    f"Bundled Pivy is enabled, but pivy was not found. "
+                    f"Expected bundled Pivy at {expected!s}."
+                )
+            if spec.submodule_search_locations:
+                return Path(next(iter(spec.submodule_search_locations))).resolve()
+            if spec.origin:
+                return path_from_import_origin(spec.origin)
+            block_system_pivy(
+                f"Bundled Pivy is enabled, but pivy has no import location. "
+                f"Expected bundled Pivy at {expected!s}."
+            )
+
+        resolved = find_pivy_path()
+        if resolved != expected:
+            block_system_pivy(
+                f"Bundled Pivy is enabled, but Python resolves pivy from {resolved!s}. "
+                f"Expected bundled Pivy at {expected!s}."
+            )
+
+        Log(f"Init:   Using bundled Pivy from {expected!s}")
 
     def scan(self) -> None:
         """
@@ -1442,6 +1532,7 @@ class InitPipeline:
         # Update search paths to make Mods visible to import system.
         search_paths = self.search_paths
         search_paths.commit()
+        self.check_bundled_pivy()
 
         # Dir Mods first
         for mod in self.dir_mod_scanner.iter():
@@ -1487,6 +1578,7 @@ class InitPipeline:
             sys_path=PathPriority.FallbackLast,
         )
         self.search_paths.commit()
+        App.__MacroDirs__ = list({str(user_macro), str(user_macro_default), str(std_macro)})
 
     def post(self) -> None:
         """

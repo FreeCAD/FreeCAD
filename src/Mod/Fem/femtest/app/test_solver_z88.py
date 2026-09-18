@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2018 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com>   *
@@ -33,7 +35,7 @@ from os.path import isfile
 
 import FreeCAD
 
-import femsolver.run
+from femsolver.z88 import z88tools
 from . import support_utils as testtools
 from .support_utils import fcc_print
 from .support_utils import get_namefromdef
@@ -72,14 +74,11 @@ class TestSolverZ88(unittest.TestCase):
     def test_ccx_cantilever_ele_hexa20(self):
         from femexamples.ccx_cantilever_ele_hexa20 import setup
 
-        setup(self.document, "z88")
+        setup(self.document, "z88", test_mode=True)
         self.inputfile_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
     def test_ccx_cantilever_ele_tria6(self):
-        # TODO does pass on my local machine, but not on ci
-        return
-
         from femexamples.ccx_cantilever_ele_tria6 import setup
 
         setup(self.document, "z88")
@@ -113,12 +112,9 @@ class TestSolverZ88(unittest.TestCase):
         self.document.saveAs(save_fc_file)
 
         # write input file
-        machine = self.document.SolverZ88.Proxy.createMachine(
-            self.document.SolverZ88, working_dir, True  # set testmode to True
-        )
-        machine.target = femsolver.run.PREPARE
-        machine.start()
-        machine.join()  # wait for the machine to finish
+        self.document.SolverZ88.WorkingDirectory = working_dir
+        tool = z88tools.Z88Tools(self.document.SolverZ88)
+        tool.prepare()
 
         # compare created input files with the given input files
         test_path = join(testtools.get_fem_test_home_dir(), "z88", base_name)

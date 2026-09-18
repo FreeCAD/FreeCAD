@@ -56,6 +56,10 @@ class ViewProviderDraftLink(ViewProviderDraft):
         elif tp == "PointArray":
             return ":/icons/Draft_PointLinkArray.svg"
 
+    def updateData(self, obj, prop):
+        if prop == "Base":
+            obj.ViewObject.update()
+
     def claimChildren(self):
         obj = self.Object
         if hasattr(obj, "ExpandArray"):

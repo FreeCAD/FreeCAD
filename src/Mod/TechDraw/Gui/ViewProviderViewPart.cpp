@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -46,6 +48,7 @@
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawViewMulti.h>
 #include <Mod/TechDraw/App/DrawBrokenView.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/LineGroup.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
 #include <Mod/TechDraw/App/CenterLine.h>
@@ -135,6 +138,8 @@ ViewProviderViewPart::ViewProviderViewPart()
                         "Adjusts the type of break line depiction on broken views");
     ADD_PROPERTY_TYPE(BreakLineStyle, (Preferences::BreakLineStyle()), bvgroup, App::Prop_None,
                         "Set break line style if applicable");
+    ADD_PROPERTY_TYPE(BreakLineColor, (PreferencesGui::breaklineColor()), bvgroup, App::Prop_None,
+                      "Set break line  color if applicable");
 
     ADD_PROPERTY_TYPE(ShowAllEdges ,(false),dgroup, App::Prop_None, "Temporarily show invisible lines");
 
@@ -197,6 +202,7 @@ void ViewProviderViewPart::onChanged(const App::Property* prop)
         prop == &(FaceColor) ||
         prop == &(FaceTransparency)  ||
         prop == &(BreakLineType)   ||
+        prop == &(BreakLineColor)   ||
         prop == &(BreakLineStyle) ) {
         // redraw QGIVP
         QGIView* qgiv = getQView();
@@ -218,6 +224,14 @@ void ViewProviderViewPart::attach(App::DocumentObject *pcFeat)
         sPixmap = "TechDraw_TreeMulti";
     } else if (dvd) {
         sPixmap = "actions/TechDraw_DetailView";
+        KeepLabel.setValue(true);
+        // these properties apply to the base view, not the detail
+        HighlightLineStyle.setStatus(App::Property::ReadOnly, true);
+        HighlightLineStyle.setStatus(App::Property::Hidden, true);
+        HighlightLineColor.setStatus(App::Property::ReadOnly, true);
+        HighlightLineColor.setStatus(App::Property::Hidden, true);
+        HighlightAdjust.setStatus(App::Property::ReadOnly, true);
+        HighlightAdjust.setStatus(App::Property::Hidden, true);
     }
 
     ViewProviderDrawingView::attach(pcFeat);
@@ -361,10 +375,23 @@ void ViewProviderViewPart::handleChangedPropertyType(Base::XMLReader &reader, co
     }
 }
 
-bool ViewProviderViewPart::onDelete(const std::vector<std::string> & subNames)
+bool ViewProviderViewPart::onDelete(const std::vector<std::string>& subNames)
 {
+    // If cosmetic sub-elements (edges, vertices, centerlines) are selected,
+    // delete only those and veto the object deletion.  This mirrors the
+    // behaviour of the normal (non-safe) mode and fixes issue #28574 where
+    // pressing Del in safe mode deleted the whole view instead of the
+    // selected cosmetic element.
+    if (!subNames.empty()) {
+        if (TechDraw::DrawViewPart* dvp = getViewObject()) {
+            dvp->deleteCosmeticElements(subNames);
+            dvp->refreshAllCosmetic();
+            dvp->requestPaint();
+            return false;  // veto deletion of the object itself
+        }
+    }
+
     // we cannot delete if the view has a section or detail view
-    (void) subNames;
     QString bodyMessage;
     QTextStream bodyMessageStream(&bodyMessage);
 
@@ -425,6 +452,7 @@ int ViewProviderViewPart::prefHighlightStyle()
 {
     return Preferences::getPreferenceGroup("Decorations")->GetInt("HighlightStyle", 2);
 }
+
 
 // it can happen that Dimensions/Balloons/etc can lose their parent item if the
 // the parent is deleted, then undo is invoked.  The linkages on the App side are

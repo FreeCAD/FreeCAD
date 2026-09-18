@@ -30,9 +30,9 @@
 
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4ApprPolyFit3.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4ApprQuadraticFit3.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4ApprSphereFit3.h>
+#include <Wm4ApprPolyFit3.h>
+#include <Wm4ApprQuadraticFit3.h>
+#include <Wm4ApprSphereFit3.h>
 #include <boost/math/special_functions/fpclassify.hpp>
 
 // #define FC_USE_EIGEN

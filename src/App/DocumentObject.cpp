@@ -204,6 +204,15 @@ bool DocumentObject::recomputeFeature(bool recursive)
     return isValid();
 }
 
+void DocumentObject::setTouched(const char* name)
+{
+    // This function is not a replacement for touch(), it is only
+    // used internally for fine-grained document recompute and replaces
+    // the coarse grained equivalent of StatusBits.set(ObjectStatus::Touch);
+    touchedProps.insert(name);
+    StatusBits.set(ObjectStatus::Touch);
+}
+
 void DocumentObject::touch(bool noRecompute)
 {
     if (!noRecompute) {
@@ -259,6 +268,12 @@ bool DocumentObject::isTouched() const
     return ExpressionEngine.isTouched() || StatusBits.test(ObjectStatus::Touch);
 }
 
+void DocumentObject::enforceRecompute(const std::string& propName)
+{
+    touch(false);
+    touchedProps.insert(propName);
+}
+
 void DocumentObject::enforceRecompute()
 {
     touch(false);
@@ -300,15 +315,13 @@ const char* DocumentObject::getStatusString() const
         const char* text = getDocument()->getErrorDescription(this);
         return text ? text : "Error";
     }
-    else if (isFreezed()){
+    if (isFreezed()){
         return "Freezed";
     }
-    else if (isTouched()) {
+    if (isTouched()) {
         return "Touched";
     }
-    else {
-        return "Valid";
-    }
+    return "Valid";
 }
 
 std::string DocumentObject::getFullName() const
@@ -340,6 +353,12 @@ const char* DocumentObject::getDagKey() const
         return nullptr;
     }
     return pcNameInDocument->c_str();
+}
+
+const char* DocumentObject::getLabelOrName() const
+{
+    const char* label = Label.getValue();
+    return Base::Tools::isNullOrEmpty(label) ? getNameInDocument() : label;
 }
 
 const char* DocumentObject::getNameInDocument() const
@@ -390,6 +409,72 @@ const char* DocumentObject::detachFromDocument()
     const std::string* name = pcNameInDocument;
     pcNameInDocument = nullptr;
     return name ? name->c_str() : nullptr;
+}
+
+// Fully mimics getOutList()
+const std::vector<DepEdge>& DocumentObject::getOutListProp()
+{
+    if (!_outListCachedProp) {
+        _outListProp.clear();
+        getOutListProp(0, _outListProp);
+        _outListCachedProp = true;
+    }
+    return _outListProp;
+}
+
+// Fully mimics getOutList(int options)
+std::vector<DepEdge>
+DocumentObject::getOutListProp(int options)
+{
+    std::vector<DepEdge> res;
+    getOutListProp(options, res);
+    return res;
+}
+
+// Mimics getOutList(int options, std::vector<DocumentObject*>& res) except for
+// an extra filter for ExpressionEngine that is handled in a later case.
+void DocumentObject::getOutListProp(int options, std::vector<DepEdge>& res)
+{
+    if (_outListCachedProp && !options) {
+        res.insert(res.end(), _outListProp.begin(), _outListProp.end());
+        return;
+    }
+    std::vector<Property*> props;
+    getPropertyList(props);
+    bool noHidden = !!(options & OutListNoHidden);
+    std::size_t size = res.size();
+    for (auto prop : props) {
+        std::vector<DocumentObject*> objs;
+        auto* linkProp = freecad_cast<PropertyLinkBase*>(prop);
+        // Filter for ExpressionEngine, because it is handled in the next if
+        // outside of this for loop.
+        if (linkProp && linkProp != &ExpressionEngine) {
+            linkProp->getLinks(objs, noHidden);
+        }
+        for (auto* obj : objs) {
+            res.emplace_back(this, prop->getName(), obj, "");
+        }
+    }
+
+    if (!(options & OutListNoExpression)) {
+        std::vector<std::pair<std::string, DocumentObject*>> linksProp;
+        ExpressionEngine.getLinksProp(linksProp);
+        for (auto& [propObj, obj] : linksProp) {
+            res.emplace_back(this, "ExpressionEngine", obj, propObj);
+        }
+    }
+
+    if (options & OutListNoXLinked) {
+        for (auto it = res.begin() + size; it != res.end();) {
+            auto& [objFrom, propFrom, objTo, propTo] = *it;
+            if (objTo && objTo->getDocument() != getDocument()) {
+                it = res.erase(it);
+            }
+            else {
+                ++it;
+            }
+        }
+    }
 }
 
 const std::vector<DocumentObject*>& DocumentObject::getOutList() const
@@ -461,6 +546,12 @@ const std::vector<App::DocumentObject*>& DocumentObject::getInList() const
     return _inList;
 }
 
+// Fully mimics getInList()
+const std::vector<DepEdge>& DocumentObject::getInListProp() const
+{
+    return _inListProp;
+}
+
 // The original algorithm is highly inefficient in some special case.
 // Considering an object is linked by every other objects. After excluding this
 // object, there is another object linked by every other of the remaining
@@ -509,12 +600,48 @@ void DocumentObject::getInListEx(std::set<App::DocumentObject*>& inSet,
     }
 }
 
+// Fully mimics getInListExProp(std::set<App::DocumentObject*>& inSet, bool
+// recursive, std::vector<App::DocumentObject*>*) except for the extra vector
+// parameter that is not needed here.
+void DocumentObject::getInListExProp(
+    std::set<DepEdge>& inSet,
+    bool recursive) const
+{
+    if (!recursive) {
+        inSet.insert(_inListProp.begin(), _inListProp.end());
+        return;
+    }
+
+    std::stack<DocumentObject*> pendings;
+    pendings.push(const_cast<DocumentObject*>(this));
+    while (!pendings.empty()) {
+        auto obj = pendings.top();
+        pendings.pop();
+        for (const auto& edge : obj->getInListProp()) {
+            if (edge.fromObj && edge.fromObj->isAttachedToDocument()
+                && inSet.insert(edge).second) {
+                pendings.push(edge.fromObj);
+            }
+        }
+    }
+}
+
 std::set<App::DocumentObject*> DocumentObject::getInListEx(bool recursive) const
 {
     std::set<App::DocumentObject*> ret;
     getInListEx(ret, recursive);
     return ret;
 }
+
+// Fully mimics getInListEx(bool recursive)
+std::set<DepEdge>
+DocumentObject::getInListExProp(bool recursive) const
+{
+    std::set<DepEdge> ret;
+    getInListExProp(ret, recursive);
+    return ret;
+}
+
 
 void _getOutListRecursive(std::set<DocumentObject*>& objSet,
                           const DocumentObject* obj,
@@ -578,12 +705,7 @@ bool DocumentObject::isInInListRecursive(DocumentObject* linkTo) const
 
 bool DocumentObject::isInInList(DocumentObject* linkTo) const
 {
-    if (std::ranges::find(_inList, linkTo) != _inList.end()) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    return std::ranges::find(_inList, linkTo) != _inList.end();
 }
 
 // helper for isInOutListRecursive()
@@ -655,6 +777,34 @@ bool DocumentObject::testIfLinkDAGCompatible(PropertyLinkSub& linkTo) const
     linkTo_in_vector.reserve(1);
     linkTo_in_vector.push_back(linkTo.getValue());
     return this->testIfLinkDAGCompatible(linkTo_in_vector);
+}
+
+bool DocumentObject::isInputProperty(const std::string& propName) const
+{
+    Property* prop = getPropertyByName(propName.c_str());
+    if (!prop) {
+        return false;
+    }
+    return isInputProperty(prop);
+}
+
+bool DocumentObject::isInputProperty(const Property* prop) const
+{
+    return (prop->getType() & Prop_Input) || prop->testStatus(Property::Input);
+}
+
+bool DocumentObject::isOutputProperty(const std::string& propName) const
+{
+    Property* prop = getPropertyByName(propName.c_str());
+    if (!prop) {
+        return false;
+    }
+    return isOutputProperty(prop);
+}
+
+bool DocumentObject::isOutputProperty(const Property* prop) const
+{
+    return (prop->getType() & Prop_Output) || prop->testStatus(Property::Output);
 }
 
 void DocumentObject::onLostLinkToObject(DocumentObject*)
@@ -737,13 +887,146 @@ bool DocumentObject::renameDynamicProperty(Property* prop, const char* name)
     return renamed;
 }
 
-App::Property* DocumentObject::addDynamicProperty(const char* type,
-                                                  const char* name,
-                                                  const char* group,
-                                                  const char* doc,
-                                                  short attr,
-                                                  bool ro,
-                                                  bool hidden)
+void DocumentObject::moveExpressionTargetingProp(Property* prop,
+                                                 Property* newProp,
+                                                 DocumentObject* targetObj)
+{
+    ObjectIdentifier propId = ObjectIdentifier(*prop);
+    ObjectIdentifier newPropId = ObjectIdentifier(*newProp);
+
+    boost::any pathValue = ExpressionEngine.getPathValue(propId);
+    if (pathValue.empty()) {
+        return;
+    }
+
+    auto info = boost::any_cast<PropertyExpressionEngine::ExpressionInfo>(pathValue);
+    std::shared_ptr<Expression> expression = info.expression;
+
+    setExpression(propId, std::shared_ptr<Expression>());
+    targetObj->setExpression(newPropId, expression);
+
+    // force identifiers in the expression to use the document name
+    std::map<ObjectIdentifier, ObjectIdentifier> paths;
+    std::map<ObjectIdentifier, bool> ids = expression->getIdentifiers();
+    for (const auto& [id, _] : ids) {
+        ObjectIdentifier newOne = ObjectIdentifier(id);
+        newOne.setDocumentObjectName(this, true);
+        paths.emplace(id, newOne);
+    }
+    targetObj->ExpressionEngine.renameObjectIdentifiers(paths);
+}
+
+void DocumentObject::arrangeMoveProperty(Property* toBeMovedProp,
+                                         Property* newProp,
+                                         DocumentObject* targetObj)
+{
+    // register the move in the document for transactions
+    auto* objOfToBeMovedProp = freecad_cast<DocumentObject*>(toBeMovedProp->getContainer());
+    if (_pDoc) {
+        _pDoc->arrangeMovePropertyOfObject(this, toBeMovedProp, targetObj, newProp);
+    }
+    if  (targetObj->getDocument() != objOfToBeMovedProp->getDocument()) {
+        // register the move in the target document as well
+        targetObj->_pDoc->arrangeMovePropertyOfObject(targetObj, toBeMovedProp, targetObj, newProp);
+    }
+
+    // Phase 2: Move an expression that targets the current property
+    moveExpressionTargetingProp(toBeMovedProp, newProp, targetObj);
+
+    // do not record the following changes since we are defining a transaction
+    auto guard = targetObj->_pDoc->setDefiningTransaction();
+
+    // Phase 3: Paste the property
+    newProp->Paste(*toBeMovedProp);
+
+    // Phase 4: Rewrite expressions that reference the property to be moved
+    GetApplication().signalMoveDynamicProperty(*toBeMovedProp, *targetObj);
+
+    // The guard goes out of scope which enables recording changes in the
+    // transaction again.
+}
+
+Property* DocumentObject::moveDynamicProperty(Property* prop,
+                                              DocumentObject* targetObj)
+{
+    if (prop == nullptr) {
+        FC_THROWM(Base::RuntimeError, "The property does not exist");
+    }
+
+    const char* propertyName = prop->getName();
+
+    if (targetObj == nullptr) {
+        FC_THROWM(Base::RuntimeError, "The target container does not exist");
+    }
+
+    if (targetObj == this) {
+        FC_THROWM(Base::RuntimeError,
+                  "Cannot move property " << propertyName << " to its own container");
+    }
+
+    if (targetObj->getPropertyByName(propertyName) != nullptr) {
+        FC_THROWM(Base::NameError,
+                  "Property " << targetObj->getFullName() << '.' << propertyName << " already exists");
+    }
+
+    if (!prop->testStatus(App::Property::PropDynamic)) {
+        FC_THROWM(Base::RuntimeError,
+                  "Property " << propertyName << " is not dynamic");
+    }
+
+    if (prop->testStatus(App::Property::LockDynamic)) {
+        FC_THROWM(Base::RuntimeError,
+                 "Property " << propertyName << " is locked");
+    }
+
+    if (!_pDoc || testStatus(ObjectStatus::Destroy)) {
+        FC_THROWM(Base::RuntimeError,
+                  "Object " << getFullName() << " is being destroyed");;
+    }
+
+    if (prop->isDerivedFrom<PropertyLinkBase>()) {
+        clearOutListCache();
+    }
+
+    // Phase 1: Add a new property to the target object
+    Property* newProp =
+        targetObj->dynamicProps.addDynamicProperty(*targetObj,
+                                                   prop->getTypeId().getName(),
+                                                   propertyName,
+                                                   prop->getGroup(),
+                                                   prop->getDocumentation(),
+                                                   prop->getType(),
+                                                   prop->isReadOnly(),
+                                                   prop->testStatus(Property::Hidden));
+
+    if (newProp == nullptr) {
+        FC_THROWM(Base::RuntimeError,
+                  "Failed to move property " << propertyName << " to container "
+                                             << targetObj->getFullName());
+    }
+
+    // Phases 2, 3, and 4
+    arrangeMoveProperty(prop, newProp, targetObj);
+
+    // Phase 5 remove the property from the source object
+    if (!dynamicProps.removeDynamicProperty(propertyName)) {
+        FC_THROWM(Base::RuntimeError,
+                  "Failed to remove property " << propertyName << " from container "
+                                                << prop->getContainer()->getFullName());
+    }
+
+    return newProp;
+}
+
+App::Property* DocumentObject::addDynamicProperty(
+    std::string_view type,
+    const char* name,
+    const char* group,
+    const char* doc,
+    short attr,
+    bool ro,
+    bool hidden
+)
 {
     auto prop = TransactionalObject::addDynamicProperty(type, name, group, doc, attr, ro, hidden);
     if (prop && _pDoc) {
@@ -778,7 +1061,7 @@ DocumentObject::onProposedLabelChange(std::string& newLabel)
 
     // We re only called if the new label differs from the old one, and our code to check duplicates
     // may not work if this is not the case.
-    std::string oldLabel = Label.getStrValue();
+    std::string_view oldLabel = Label.getStrValue();
     assert(newLabel != oldLabel);
     if (!isAttachedToDocument()) {
         return {};
@@ -796,7 +1079,7 @@ DocumentObject::onProposedLabelChange(std::string& newLabel)
     if (doc && !newLabel.empty() && !_hPGrp->GetBool("DuplicateLabels") && !allowDuplicateLabel()
         && doc->containsLabel(newLabel)) {
         // The label already exists but settings are such that duplicate labels should not be assigned.
-        std::string objName = getNameInDocument();
+        std::string_view objName = getNameInDocument();
         if (!doc->containsLabel(objName) && doc->haveSameBaseName(objName, newLabel)) {
             // The object name is not already a Label and the base name of the proposed label
             // equals the base name of the object Name, so we use the object Name as the replacement Label.
@@ -829,6 +1112,10 @@ DocumentObject::onProposedLabelChange(std::string& newLabel)
         // See PropertyLinkBase::restoreLabelReference() for more details.
         return {};
     }
+
+    // Remove the old label to free it up for future use.
+    doc->unregisterLabel(oldLabel);
+    
     return PropertyLinkBase::updateLabelReferences(this, newLabel.c_str());
 }
 
@@ -888,18 +1175,43 @@ void DocumentObject::onChanged(const Property* prop)
 
     if (prop == &Label && _pDoc && oldLabel != Label.getStrValue()) {
         _pDoc->signalRelabelObject(*this);
+        oldLabel = Label.getStrValue();
     }
 
-    // set object touched if it is an input property
-    if (!testStatus(ObjectStatus::NoTouch) && !(prop->getType() & Prop_Output)
-        && !prop->testStatus(Property::Output)) {
-        if (!StatusBits.test(ObjectStatus::Touch)) {
-            FC_TRACE("touch '" << getFullName() << "' on change of '" << prop->getName() << "'");
-            StatusBits.set(ObjectStatus::Touch);
+    bool fineGrained = GetApplication().isFineGrainedRecomputeEnabled();
+
+    auto outputHasDeps = [this](const Property* prop) {
+        return std::ranges::any_of(getInListProp(), [this, prop](const DepEdge& edge) {
+            return edge.toObj == this && edge.toProp == prop->getName();
+        });
+    };
+
+    if (fineGrained) {
+        // set object touched if it is not an output property unless it has dependencies
+        if (!testStatus(ObjectStatus::NoTouch)
+            && ((isOutputProperty(prop) && outputHasDeps(prop)) ||
+                !isOutputProperty(prop))) {
+            FC_TRACE("touch '" << getFullName() << "' on change of '" << prop->getName()
+                     << "'");
+            setTouched(prop->getName());
+            // must execute on document recompute
+            if (!(prop->getType() & Prop_NoRecompute)) {
+                StatusBits.set(ObjectStatus::Enforce);
+            }
         }
-        // must execute on document recompute
-        if (!(prop->getType() & Prop_NoRecompute)) {
-            StatusBits.set(ObjectStatus::Enforce);
+    }
+    else {
+        // set object touched if it is not an output property
+        if (!testStatus(ObjectStatus::NoTouch) && !(prop->getType() & Prop_Output)
+            && !prop->testStatus(Property::Output)) {
+            if (!StatusBits.test(ObjectStatus::Touch)) {
+                FC_TRACE("touch '" << getFullName() << "' on change of '" << prop->getName() << "'");
+                StatusBits.set(ObjectStatus::Touch);
+            }
+            // must execute on document recompute
+            if (!(prop->getType() & Prop_NoRecompute)) {
+                StatusBits.set(ObjectStatus::Enforce);
+            }
         }
     }
 
@@ -919,6 +1231,9 @@ void DocumentObject::clearOutListCache() const
     _outList.clear();
     _outListMap.clear();
     _outListCached = false;
+
+    _outListProp.clear();
+    _outListCachedProp = false;
 }
 
 PyObject* DocumentObject::getPyObject()
@@ -1192,9 +1507,7 @@ DocumentObject::getExpression(const ObjectIdentifier& path) const
     if (value.type() == typeid(PropertyExpressionEngine::ExpressionInfo)) {
         return boost::any_cast<PropertyExpressionEngine::ExpressionInfo>(value);
     }
-    else {
-        return PropertyExpressionEngine::ExpressionInfo();
-    }
+    return PropertyExpressionEngine::ExpressionInfo();
 }
 
 void DocumentObject::renameObjectIdentifiers(
@@ -1276,6 +1589,22 @@ void App::DocumentObject::_addBackLink(DocumentObject* newObj)
     // only once this removal would clear the object from the inlist, even though there may be other
     // link properties from this object that link to us.
     _inList.push_back(newObj);
+}
+
+// Fully mimics _removeBackLink()
+void App::DocumentObject::_removeBackLinkProp(const char* objProp, DocumentObject* obj, const char* myProp)
+{
+    DepEdge key(obj, objProp, this, myProp ? myProp : "");
+    auto it = std::ranges::find(_inListProp, key);
+    if (it != _inListProp.end()) {
+        _inListProp.erase(it);
+    }
+}
+
+// Fully mimics _addBackLink()
+void App::DocumentObject::_addBackLinkProp(const char* objProp, DocumentObject* obj, const char* myProp)
+{
+    _inListProp.emplace_back(obj, objProp, this, myProp ? myProp : "");
 }
 
 int DocumentObject::setElementVisible(const char* element, bool visible)
@@ -1370,9 +1699,7 @@ DocumentObject* DocumentObject::resolve(const char* subname,
                     if (dot == subname) {
                         break;
                     }
-                    else {
-                        continue;
-                    }
+                    continue;
                 }
             }
             if (dot == subname) {
@@ -1608,4 +1935,64 @@ App::PropertyPlacement* DocumentObject::getPlacementProperty() const
     return getPropertyByName<App::PropertyPlacement>("Placement");
 }
 
+bool DocumentObject::canPropBeReferenced(const App::Property* prop)
+{
+    if (!prop) {
+        return false;
+    }
 
+    App::PropertyContainer* container = prop->getContainer();
+    if (!container) {
+        return false;
+    }
+
+    auto* obj = freecad_cast<App::DocumentObject*>(container);
+    return obj && obj->isAttachedToDocument();
+}
+
+static void getPropertyUsesObj(std::set<ObjectIdentifier>& uses,
+                               App::DocumentObject* obj,
+                               const App::Property* prop)
+{
+    if (!obj || !obj->isAttachedToDocument()) {
+        return;
+    }
+
+    auto idIsProp = [prop](const std::pair<App::ObjectIdentifier, bool>& idPair) {
+        return idPair.first.getProperty() == prop;
+    };
+
+    auto referencesProperty = [&idIsProp](const App::Expression* expr) {
+        if (!expr) {
+            return false;
+        }
+
+        return std::ranges::any_of(expr->getIdentifiers(), idIsProp);
+    };
+
+    std::map<App::ObjectIdentifier, const App::Expression*> exprs =
+        obj->ExpressionEngine.getExpressions();
+
+    for (const auto& [id, expr] : exprs) {
+        if (referencesProperty(expr)) {
+            uses.insert(id);
+        }
+    }
+}
+
+std::set<ObjectIdentifier> DocumentObject::getPropertyUses(const App::Property *prop)
+{
+    std::set<ObjectIdentifier> uses;
+    if (!canPropBeReferenced(prop)) {
+        return uses;
+    }
+
+    auto* objProp = freecad_cast<DocumentObject*>(prop->getContainer());
+    std::vector<App::DocumentObject*> inList = objProp->getInList();
+
+    for (auto* obj : inList) {
+        getPropertyUsesObj(uses, obj, prop);
+    }
+
+    return uses;
+}

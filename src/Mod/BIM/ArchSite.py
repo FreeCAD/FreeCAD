@@ -1600,17 +1600,8 @@ class _ViewProviderSite:
         menu.addAction(actionToggleSubcomponents)
 
         # The default Part::FeaturePython context menu contains a `Set colors`
-        # option. This option does not work well for Site objects. We therefore
-        # override this menu and have to add our own `Transform` item.
+        # option. This option does not work well for Site objects.
         # To override the default menu this function must return `True`.
-        actionTransform = QtGui.QAction(
-            FreeCADGui.getIcon("Std_TransformManip.svg"),
-            translate("Command", "Transform"),  # Context `Command` instead of `Arch`.
-            menu,
-        )
-        QtCore.QObject.connect(actionTransform, QtCore.SIGNAL("triggered()"), self.transform)
-        menu.addAction(actionTransform)
-
         return True
 
     def edit(self):
@@ -1618,9 +1609,6 @@ class _ViewProviderSite:
 
     def toggleSubcomponents(self):
         FreeCADGui.runCommand("Arch_ToggleSubs")
-
-    def transform(self):
-        FreeCADGui.ActiveDocument.setEdit(self.Object, 1)
 
     def attach(self, vobj):
         """Adds the solar diagram and compass to the coin scenegraph, but does
@@ -1769,9 +1757,7 @@ class _ViewProviderSite:
 
         if not hasattr(self, "terrain_switches"):
             if vobj.RootNode.getNumChildren():
-                main_switch = gui_utils.find_coin_node(
-                    vobj.RootNode, coin.SoSwitch
-                )  # The display mode switch.
+                main_switch = vobj.SwitchNode  # The display mode switch.
                 if (
                     main_switch is not None and main_switch.getNumChildren() == 4
                 ):  # Check if all display modes are available.
@@ -2114,7 +2100,11 @@ class _ViewProviderSite:
 
     def updateSunPosition(self, vobj):
         """Calculates sun position and updates the sphere, path arc, and ray object."""
-        if not hasattr(vobj, "ShowSunPosition"):
+        try:
+            vobj.ShowSunPosition
+        except (ReferenceError, AttributeError):
+            # ReferenceError: vobj no longer exists
+            # see https://github.com/FreeCAD/FreeCAD/issues/24543
             return
 
         import math

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2012 Luke Parry <l.parry@warwick.ac.uk>                 *
@@ -141,6 +143,10 @@ public:
     void fixSceneDependencies();
 
     void redrawPage() const;
+
+    // Called by MDIViewPage::closeEvent() instead of hide() to avoid re-entrantly
+    // calling removeWindow() on a QMdiSubWindow that is mid-closeEvent.
+    void onMDIViewClosed();
 
 protected:
     bool setEdit(int ModNum) override;

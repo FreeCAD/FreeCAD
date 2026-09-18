@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="277"/>
       <source>Cross-Sections</source>
-      <translation type="unfinished">Cross-Sections</translation>
+      <translation>Průřezy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="278"/>
       <source>Applies cross-sections to the mesh</source>
-      <translation type="unfinished">Applies cross-sections to the mesh</translation>
+      <translation>Na síť aplikuje příčné řezy</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="313"/>
       <source>Curve on Mesh</source>
-      <translation type="unfinished">Curve on Mesh</translation>
+      <translation>Křivka na síti</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="314"/>
       <source>Creates an approximated curve on top of a mesh object</source>
-      <translation type="unfinished">Creates an approximated curve on top of a mesh object</translation>
+      <translation>Vytvoří aproximovanou křivku na povrchu objektu sítě</translation>
     </message>
   </context>
   <context>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="59"/>
       <source>Mesh From Shape</source>
-      <translation type="unfinished">Mesh From Shape</translation>
+      <translation>Síť z tvaru</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="61"/>
@@ -65,7 +65,7 @@
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Creates a section from a mesh and plane</source>
-      <translation type="unfinished">Creates a section from a mesh and plane</translation>
+      <translation>Vytvoří řez ze sítě a roviny</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="191"/>
@@ -83,7 +83,7 @@
     <message>
       <location filename="../../Command.cpp" line="85"/>
       <source>Trim Mesh</source>
-      <translation type="unfinished">Trim Mesh</translation>
+      <translation>Oříznout síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="86"/>
@@ -109,12 +109,12 @@
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
       <source>Cross Sections</source>
-      <translation type="unfinished">Cross Sections</translation>
+      <translation>Příčné řezy</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
       <source>Guiding Plane</source>
-      <translation type="unfinished">Guiding Plane</translation>
+      <translation>Řídící rovina</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="26"/>
@@ -134,7 +134,7 @@
     <message>
       <location filename="../../CrossSections.ui" line="52"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Pozice</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="109"/>
@@ -197,12 +197,12 @@
     <message>
       <location filename="../../CurveOnMesh.cpp" line="615"/>
       <source>Wrong mesh selected</source>
-      <translation type="unfinished">Wrong mesh selected</translation>
+      <translation>Byla vybrána nesprávná síť</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="655"/>
       <source>No point was selected</source>
-      <translation type="unfinished">No point was selected</translation>
+      <translation>Nebyl vybrán žádný bod</translation>
     </message>
   </context>
   <context>
@@ -210,16 +210,16 @@
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="14"/>
       <source>Curve on Mesh</source>
-      <translation type="unfinished">Curve on Mesh</translation>
+      <translation>Křivka na síti</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="23"/>
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
 This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</source>
-      <translation type="unfinished">Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+      <translation>Stiskněte tlačítko „Start“ a poté vyberte body na síti; jakmile nastavíte dostatečný počet bodů, klikněte pravým tlačítkem myši a vyberte možnost 'Vytvořit'. Tento postup opakujte, chcete-li vytvořit další spline. Uzavřením tohoto panelu úkolů operaci dokončíte.
 
-This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</translation>
+Tento příkaz funguje pouze s objektem typu Síť, nikoli s běžnou plochou nebo povrchem. Chcete-li objekt převést na síť, použijte nástroje pracovního prostředí Mesh.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -239,12 +239,12 @@ This command only works with a Mesh object, not a regular face or surface. To co
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="61"/>
       <source>Split threshold</source>
-      <translation>Práhová hodnota pro rozdělení</translation>
+      <translation>Prahová hodnota pro rozdělení</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="87"/>
       <source>Spline Approximation</source>
-      <translation>Aproximace splajnu</translation>
+      <translation>Aproximace spline</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="96"/>
@@ -282,7 +282,7 @@ This command only works with a Mesh object, not a regular face or surface. To co
     <message>
       <location filename="../../Tessellation.ui" line="33"/>
       <source>Use the standard mesher</source>
-      <translation>Použijte standardní síťku</translation>
+      <translation>Použije standardní generátor sítě</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="48"/>
@@ -292,7 +292,7 @@ This command only works with a Mesh object, not a regular face or surface. To co
     <message>
       <location filename="../../Tessellation.ui" line="74"/>
       <source>Maximal angular deflection of a mesh section to the next section</source>
-      <translation>Maximální úhlové vychýlení části sítě do další části</translation>
+      <translation>Maximální úhlové vychýlení části sítě do další sekce</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="102"/>
@@ -302,7 +302,7 @@ This command only works with a Mesh object, not a regular face or surface. To co
     <message>
       <location filename="../../Tessellation.ui" line="109"/>
       <source>Mesh will get face colors of the object</source>
-      <translation>Síť získá obličejové barvy objektu</translation>
+      <translation>Síť získá barvy plochy objektu</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="112"/>
@@ -331,34 +331,34 @@ tuto funkci (např. formát OBJ).</translation>
     <message>
       <location filename="../../Tessellation.ui" line="148"/>
       <source>Use the Mefisto mesher</source>
-      <translation>Použijte síťku Mefisto</translation>
+      <translation>Použije generátor sítě Mefisto</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="20"/>
       <source>Meshing Options</source>
-      <translation type="unfinished">Meshing Options</translation>
+      <translation>Možnosti vytváření sítí</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="41"/>
       <source>Surface deviation</source>
-      <translation type="unfinished">Surface deviation</translation>
+      <translation>Odchylka povrchu</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="67"/>
       <source>Angular deviation</source>
-      <translation type="unfinished">Angular deviation</translation>
+      <translation>Úhlová odchylka</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="98"/>
       <source>The maximal linear deviation of a mesh segment will be the specified
 surface deviation multiplied by the length of the current mesh segment (edge)</source>
-      <translation type="unfinished">The maximal linear deviation of a mesh segment will be the specified
-surface deviation multiplied by the length of the current mesh segment (edge)</translation>
+      <translation>Maximální lineární odchylka segmentu sítě bude rovna zadané
+odchylce povrchu vynásobené délkou aktuálního segmentu sítě (hrany)</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="156"/>
       <source>Maximum edge length</source>
-      <translation type="unfinished">Maximum edge length</translation>
+      <translation>Maximální délka hrany</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="162"/>
@@ -380,17 +380,12 @@ Nejmenší hodnota je 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="209"/>
       <source>Use the Netgen mesher</source>
-      <translation>Použijte síťovou síť Netgen</translation>
-    </message>
-    <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>Jemnost:</translation>
+      <translation>generátor sítě Netgen</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
-      <translation>Vlemi hrubé</translation>
+      <translation>Velmi hrubá</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="239"/>
@@ -410,7 +405,7 @@ Nejmenší hodnota je 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="254"/>
       <source>Very fine</source>
-      <translation>Velmi jemné</translation>
+      <translation>Velmi jemná</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="259"/>
@@ -420,17 +415,17 @@ Nejmenší hodnota je 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="269"/>
       <source>Mesh size grading</source>
-      <translation type="unfinished">Mesh size grading</translation>
+      <translation>Stupeň velikosti sítě</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="302"/>
       <source>Elements per edge</source>
-      <translation type="unfinished">Elements per edge</translation>
+      <translation>Počet prvků na hranu</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="335"/>
       <source>Elements per curvature radius</source>
-      <translation type="unfinished">Elements per curvature radius</translation>
+      <translation>Počet prvků na poloměr zakřivení</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="279"/>
@@ -438,6 +433,11 @@ Nejmenší hodnota je 0.</translation>
 A value in the range of 0.1-1.</source>
       <translation>Pokud je tento parametr menší, síť bude jemnější.
 Hodnota v rozsahu 0,1-1.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>Jemnost</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>
@@ -490,22 +490,22 @@ Hodnota v rozmezí 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.cpp" line="240"/>
       <location filename="../../Tessellation.cpp" line="246"/>
-      <source>No active document</source>
+      <source>No Active Document</source>
       <translation>Žádný aktivní dokument</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="280"/>
       <source>Error: body without a tip selected.
 Either set the tip of the body or select a different shape.</source>
-      <translation type="unfinished">Error: body without a tip selected.
-Either set the tip of the body or select a different shape.</translation>
+      <translation>Chyba: bylo vybráno tělo bez tipu.
+Nastavte tip tělesa nebo vyberte jiný tvar.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="288"/>
       <source>Error: shape without faces selected.
 Select a different shape.</source>
-      <translation type="unfinished">Error: shape without faces selected.
-Select a different shape.</translation>
+      <translation>Chyba: byl vybrán tvar bez ploch.
+Vyberte jiný tvar.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="293"/>
@@ -523,7 +523,7 @@ Select a different shape.</translation>
     <message>
       <location filename="../../Command.cpp" line="205"/>
       <source>Select a plane to section the mesh with.</source>
-      <translation type="unfinished">Select a plane to section the mesh with.</translation>
+      <translation>Vyberte rovinu, kterou chcete síť rozříznout.</translation>
     </message>
   </context>
   <context>
@@ -536,17 +536,17 @@ Select a different shape.</translation>
     <message>
       <location filename="../../Command.cpp" line="98"/>
       <source>Select a plane to trim the mesh with.</source>
-      <translation type="unfinished">Select a plane to trim the mesh with.</translation>
+      <translation>Vyberte rovinu, podle které se má síť oříznout.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>Trim With Plane</source>
-      <translation type="unfinished">Trim With Plane</translation>
+      <translation>Ořezání rovinou</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Select the side to keep</source>
-      <translation type="unfinished">Select the side to keep</translation>
+      <translation>Vyberte stranu, kterou chcete zachovat</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="108"/>
@@ -569,7 +569,7 @@ Select a different shape.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>MeshPart</source>
-      <translation>Síťový díl</translation>
+      <translation>Díl sítě</translation>
     </message>
   </context>
   <context>
@@ -577,12 +577,12 @@ Select a different shape.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="51"/>
       <source>Unwrap Mesh</source>
-      <translation type="unfinished">Unwrap Mesh</translation>
+      <translation>Rozbalit síť</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="54"/>
       <source>Finds a flat representation of a mesh</source>
-      <translation type="unfinished">Finds a flat representation of a mesh</translation>
+      <translation>Vyhledá plošnou reprezentaci sítě</translation>
     </message>
   </context>
   <context>
@@ -590,12 +590,12 @@ Select a different shape.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="90"/>
       <source>Unwrap Face</source>
-      <translation type="unfinished">Unwrap Face</translation>
+      <translation>Rozbalit plochu</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="93"/>
       <source>Finds a flat representation of a face</source>
-      <translation type="unfinished">Finds a flat representation of a face</translation>
+      <translation>Vyhledá plošnou reprezentaci stěny</translation>
     </message>
   </context>
 </TS>

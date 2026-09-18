@@ -48,7 +48,14 @@ class TestCamoticsLibrarySerializer(TestPathToolLibrarySerializerBase):
 
     def test_camotics_serialize(self):
         serializer = CamoticsLibrarySerializer
-        serialized_data = serializer.serialize(self.test_library)
+        # serialize() follows the active schema, so pin a metric one.  Without
+        # this the fixed expectations below fail on an imperial profile.
+        original = FreeCAD.Units.getSchema()
+        try:
+            FreeCAD.Units.setSchema(0)  # Internal (mm)
+            serialized_data = serializer.serialize(self.test_library)
+        finally:
+            FreeCAD.Units.setSchema(original)
         self.assertIsInstance(serialized_data, bytes)
 
         # Verify the content structure (basic check)
@@ -134,21 +141,110 @@ class TestCamoticsLibrarySerializer(TestPathToolLibrarySerializerBase):
             tool_20._tool_bit_shape.get_parameter("Length"), FreeCAD.Units.Quantity("30 mm")
         )
 
+    def test_camotics_imperial_label_matches_value(self):
+        """The emitted unit label must agree with the emitted number.
+
+        getUserPreferred() names the unit by magnitude, so a small length on a
+        U.S. Customary schema comes back as thou rather than in.  Camotics only
+        understands mm and inch, so the value has to be written in one of those.
+        """
+        serializer = CamoticsLibrarySerializer
+        # serialize() rounds to the user's Decimals preference, so round the
+        # expected value the same way rather than assuming a fixed precision.
+        decimals = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt(
+            "Decimals", 2
+        )
+        schemas = FreeCAD.Units.listSchemas()
+        original = FreeCAD.Units.getSchema()
+        try:
+            for schema in range(len(schemas)):
+                FreeCAD.Units.setSchema(schema)
+                # Decide the expected label from the schema itself, not from
+                # what the serializer emitted, or a misclassified schema would
+                # agree with its own wrong answer and pass.
+                expected_units = "imperial" if schemas[schema].startswith("Imperial") else "metric"
+                data = json.loads(serializer.serialize(self.test_library).decode("utf-8"))
+                for tool_no, item in data.items():
+                    self.assertEqual(
+                        item["units"],
+                        expected_units,
+                        msg=f"schema {schemas[schema]} tool {tool_no}: "
+                        f'labelled {item["units"]}',
+                    )
+                    expected = 6.0 if tool_no == "1" else (3.0 if tool_no == "2" else 5.0)
+                    if expected_units == "imperial":
+                        expected /= 25.4
+                    self.assertAlmostEqual(
+                        item["diameter"],
+                        round(expected, decimals),
+                        places=6,
+                        msg=f"schema {schemas[schema]} tool {tool_no}: "
+                        f'{item["diameter"]} does not match label {item["units"]}',
+                    )
+        finally:
+            FreeCAD.Units.setSchema(original)
+
+    def test_camotics_deserialize_honours_units(self):
+        """An imperial library must not be read as millimetres."""
+        serializer = CamoticsLibrarySerializer
+        data = {
+            "1": {
+                "units": "imperial",
+                "shape": "Cylindrical",
+                "length": 1.5,
+                "diameter": 0.25,
+                "description": "1/4 Endmill",
+            }
+        }
+        library = serializer.deserialize(json.dumps(data).encode("utf-8"), "imp", {})
+        bit = library._bit_nos[1]
+        self.assertAlmostEqual(
+            bit._tool_bit_shape.get_parameter("Diameter").getValueAs("mm").Value, 6.35, places=3
+        )
+
 
 class TestLinuxCNCLibrarySerializer(TestPathToolLibrarySerializerBase):
     """Tests for the LinuxCNCLibrarySerializer."""
 
     def test_linuxcnc_serialize(self):
+        # TODO: this test uses the user-preferences for the tester's installed version of FreeCAD
+        # i.e., it depends on what the developer happened to set last.
+        # it probably shouldn't: set the pref, and or test several unit-systems
         serializer = LinuxCNCSerializer
         serialized_data = serializer.serialize(self.test_library)
         self.assertIsInstance(serialized_data, bytes)
 
+        decimals = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt(
+            "Decimals", 2
+        )
+
+        def format_D(v):
+            # Convert and format to userPreferred
+            # It is important to get the units for userPreferred from the actual `v`,
+            # because the units are dependent on the order-of-magnitude of v
+            # for some user-preference unit-systems.
+            # E.g. U.S. Customary will give `thous` for 1mm, `"` (inch) for 6mm, etc.
+            as_quantity = FreeCAD.Units.Quantity(v)
+            units = as_quantity.getUserPreferred()[2]
+            in_user_units = as_quantity.getValueAs(units).Value
+            return f"{in_user_units:.{decimals}f}"
+
         # Verify the content format (basic check)
         lines = serialized_data.decode("ascii", "ignore").strip().split("\n")
         self.assertEqual(len(lines), 3)
-        self.assertEqual(lines[0], "T1 P0 X0 Y0 Z0 A0 B0 C0 U0 V0 W0 D6.00 I0 J0 Q0 ;Endmill 6mm")
-        self.assertEqual(lines[1], "T2 P0 X0 Y0 Z0 A0 B0 C0 U0 V0 W0 D3.00 I0 J0 Q0 ;Endmill 3mm")
-        self.assertEqual(lines[2], "T3 P0 X0 Y0 Z0 A0 B0 C0 U0 V0 W0 D5.00 I0 J0 Q0 ;Ballend 5mm")
+
+        # D values from setUp()
+        # TODO: this will fail when Tool/library/serializers/linuxcnc.py serialize() uses MBPP, as noted in its TODO
+        # and the test will have to use MBPP in place of the userPreferred stuff above
+        self.assertEqual(
+            lines[0], f"T1 P0 X0 Y0 Z0 A0 B0 C0 U0 V0 W0 D{format_D('6mm')} I0 J0 Q0 ;Endmill 6mm"
+        )
+        self.assertEqual(
+            lines[1], f"T2 P0 X0 Y0 Z0 A0 B0 C0 U0 V0 W0 D{format_D('3mm')} I0 J0 Q0 ;Endmill 3mm"
+        )
+        self.assertEqual(
+            lines[2], f"T3 P0 X0 Y0 Z0 A0 B0 C0 U0 V0 W0 D{format_D('5mm')} I0 J0 Q0 ;Ballend 5mm"
+        )
 
     def test_linuxcnc_deserialize_not_implemented(self):
         serializer = LinuxCNCSerializer

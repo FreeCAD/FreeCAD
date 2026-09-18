@@ -160,27 +160,27 @@ Ní bhaineann sé seo ach amháin má tá Markdown roghnaithe thuas.</translatio
   <context>
     <name>Help</name>
     <message>
-      <location filename="../../Help.py" line="75"/>
+      <location filename="../../Help.py" line="74"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</source>
       <translation>Níorbh fhéidir ábhar an leathanaigh seo a aisghabháil. Seiceáil na socruithe faoin roghchlár Eagar → Sainroghanna → Ginearálta → Cabhair le do thoil</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="79"/>
+      <location filename="../../Help.py" line="78"/>
       <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
       <translation>Níorbh fhéidir suíomh na gcomhad cabhrach a chinneadh. Seiceáil na socruithe faoin roghchlár Eagar → Roghanna → Ginearálta → Cabhair</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="83"/>
+      <location filename="../../Help.py" line="82"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
       <translation>Níl modúl PySide QtWebEngineWidgets ar fáil. Déantar rindreáil chabhrach leis an mbrabhsálaí córais</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="87"/>
+      <location filename="../../Help.py" line="86"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
       <translation>Níl aon rindreálaí Markdown suiteáilte ar do chóras, mar sin rindreáiltear an leathanach cabhrach seo mar atá. Suiteáil na modúil Markdown nó Pandoc Python le do thoil chun rindreáil an leathanaigh seo a fheabhsú.</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="119"/>
+      <location filename="../../Help.py" line="118"/>
       <source>Help</source>
       <translation>Cabhair</translation>
     </message>
@@ -188,7 +188,7 @@ Ní bhaineann sé seo ach amháin má tá Markdown roghnaithe thuas.</translatio
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="435"/>
+      <location filename="../../Help.py" line="434"/>
       <source>General</source>
       <translation>Ginearálta</translation>
     </message>

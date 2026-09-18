@@ -26,15 +26,19 @@
 #include <Base/GeometryPyCXX.h>
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
+#include <Base/Console.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/ServiceProvider.h>
 
+#include "DepEdge.h"
+#include "DepEdgePy.h"
 #include "DocumentObject.h"
 #include "Document.h"
 #include "ExpressionParser.h"
 #include "GeoFeature.h"
 #include "GeoFeatureGroupExtension.h"
 #include "GroupExtension.h"
+#include "MainThreadSignal.h"
 #include "Services.h"
 
 
@@ -72,12 +76,7 @@ Py::Object DocumentObjectPy::getDocument() const
 {
     DocumentObject* object = this->getDocumentObjectPtr();
     Document* doc = object->getDocument();
-    if (!doc) {
-        return Py::None();
-    }
-    else {
-        return Py::Object(doc->getPyObject(), true);
-    }
+    return doc ? Py::Object(doc->getPyObject(), true) : Py::None();
 }
 
 PyObject* DocumentObjectPy::isAttachedToDocument(PyObject* args) const
@@ -170,7 +169,7 @@ PyObject* DocumentObjectPy::supportedProperties(PyObject* args)
         Base::BaseClass* data = static_cast<Base::BaseClass*>(it.createInstance());
         if (data) {
             delete data;
-            res.append(Py::String(it.getName()));
+            res.append(Base::toPyString(it.getName()));
         }
     }
     return Py::new_reference_to(res);
@@ -277,6 +276,16 @@ Py::Object DocumentObjectPy::getViewObject() const
             // document methods)
             return Py::None();
         }
+        if (!App::MainThreadSignalConfig::isMainThread()) {
+            Base::Console().error(
+                "GUI API 'App::DocumentObjectPy::getViewObject' may only be used from the main "
+                "thread.\n"
+            );
+            throw Py::RuntimeError(
+                "GUI API 'App::DocumentObjectPy::getViewObject' may only be used from the main "
+                "thread"
+            );
+        }
         if (!getDocumentObjectPtr()->getDocument()) {
             throw Py::RuntimeError("Object has no document");
         }
@@ -333,6 +342,21 @@ Py::List DocumentObjectPy::getInListRecursive() const
     return ret;
 }
 
+Py::List DocumentObjectPy::getInListProp() const
+{
+    Py::List ret;
+    std::vector<DepEdge> list = getDocumentObjectPtr()->getInListProp();
+
+    for (const auto& edge : list) {
+        // copy will be deleted by DepEdgePy
+        auto* copy = new DepEdge(edge);
+        auto* depEdgePy = new DepEdgePy(copy);
+        ret.append(Py::Object(depEdgePy, true));
+    }
+
+    return ret;
+}
+
 Py::List DocumentObjectPy::getOutList() const
 {
     Py::List ret;
@@ -358,6 +382,21 @@ Py::List DocumentObjectPy::getOutListRecursive() const
     }
     catch (const Base::Exception& e) {
         throw Py::IndexError(e.what());
+    }
+
+    return ret;
+}
+
+Py::List DocumentObjectPy::getOutListProp() const
+{
+    Py::List ret;
+    std::vector<DepEdge> list = getDocumentObjectPtr()->getOutListProp();
+
+    for (const auto& edge : list) {
+        // copy will be deleted by DepEdgePy
+        auto* copy = new DepEdge(edge);
+        auto* depEdgePy = new DepEdgePy(copy);
+        ret.append(Py::Object(depEdgePy, true));
     }
 
     return ret;
@@ -604,37 +643,33 @@ PyObject* DocumentObjectPy::getSubObject(PyObject* args, PyObject* keywds)
             if (retEnum == ReturnType::PyObject) {
                 return ret.pyObj;
             }
-            else if (retEnum == ReturnType::DocObject && !pyMat) {
+            if (retEnum == ReturnType::DocObject && !pyMat) {
                 return ret.obj;
             }
-            else if (!ret.sobj) {
+            if (!ret.sobj) {
                 return Py::None();
             }
-            else if (retEnum == ReturnType::Placement) {
+            if (retEnum == ReturnType::Placement) {
                 return Py::Placement(Base::Placement(ret.mat));
             }
-            else if (retEnum == ReturnType::Matrix) {
+            if (retEnum == ReturnType::Matrix) {
                 return Py::Matrix(ret.mat);
             }
-            else if (retEnum == ReturnType::LinkAndPlacement
-                     || retEnum == ReturnType::LinkAndMatrix) {
+            if (retEnum == ReturnType::LinkAndPlacement
+                || retEnum == ReturnType::LinkAndMatrix) {
                 ret.sobj->getLinkedObject(true, &ret.mat, false);
                 if (retEnum == ReturnType::LinkAndPlacement) {
                     return Py::Placement(Base::Placement(ret.mat));
                 }
-                else {
-                    return Py::Matrix(ret.mat);
-                }
+                return Py::Matrix(ret.mat);
             }
-            else {
-                Py::Tuple rret(retEnum == ReturnType::DocObject ? 2 : 3);
-                rret.setItem(0, ret.obj);
-                rret.setItem(1, Py::asObject(new Base::MatrixPy(ret.mat)));
-                if (retEnum != ReturnType::DocObject) {
-                    rret.setItem(2, ret.pyObj);
-                }
-                return rret;
+            Py::Tuple rret(retEnum == ReturnType::DocObject ? 2 : 3);
+            rret.setItem(0, ret.obj);
+            rret.setItem(1, Py::asObject(new Base::MatrixPy(ret.mat)));
+            if (retEnum != ReturnType::DocObject) {
+                rret.setItem(2, ret.pyObj);
             }
+            return rret;
         };
 
         if (single) {
@@ -1048,4 +1083,24 @@ PyObject* DocumentObjectPy::getPlacementOf(PyObject* args)
         return new Base::PlacementPy(new Base::Placement(p));
     }
     PY_CATCH
+}
+
+PyObject* DocumentObjectPy::moveProperty(PyObject* args) const
+{
+    char* name {};
+    PyObject* targetObjObj {};
+    if (PyArg_ParseTuple(args, "sO", &name, &targetObjObj) == 0) {
+        return nullptr;
+    }
+
+    try {
+        DocumentObject* targetObj =
+            static_cast<DocumentObjectPy*>(targetObjObj)->getDocumentObjectPtr();
+        Property* prop = getDocumentObjectPtr()->getDynamicPropertyByName(name);
+        getDocumentObjectPtr()->moveDynamicProperty(prop, targetObj);
+        Py_Return;
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
 }

@@ -26,6 +26,7 @@ import Part
 import Path
 import Path.Base.Generator.helix as generator
 import CAMTests.PathTestUtils as PathTestUtils
+import math
 
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
@@ -47,6 +48,7 @@ def _resetArgs():
         "retract_height": 23,
         "direction": "CW",
         "startAt": "Inside",
+        "ramp_angle_rad": math.radians(3),
     }
 
 
@@ -55,9 +57,11 @@ class TestPathHelixGenerator(PathTestUtils.PathTestBase):
     expectedHelixGCode = "G0 Z23.000000\
 G0 X7.500000 Y5.000000\
 G1 Z20.000000\
-G2 I-2.500000 J0.000000 X2.500000 Y5.000000 Z19.500000\
-G2 I2.500000 J0.000000 X7.500000 Y5.000000 Z19.000000\
-G2 I-2.500000 J0.000000 X2.500000 Y5.000000 Z18.500000\
+G2 I-2.500000 J0.000000 X2.500000 Y5.000000 Z19.666667\
+G2 I2.500000 J0.000000 X7.500000 Y5.000000 Z19.333333\
+G2 I-2.500000 J0.000000 X2.500000 Y5.000000 Z19.000000\
+G2 I2.500000 J0.000000 X7.500000 Y5.000000 Z18.666667\
+G2 I-2.500000 J0.000000 X2.500000 Y5.000000 Z18.333333\
 G2 I2.500000 J0.000000 X7.500000 Y5.000000 Z18.000000\
 G2 I-2.500000 J0.000000 X2.500000 Y5.000000 Z18.000000\
 G2 I2.500000 J0.000000 X7.500000 Y5.000000 Z18.000000\
@@ -117,6 +121,16 @@ G0 X11.250000 Y5.000000 Z23.000000"
         args["pitch"] = -1
         self.assertRaises(ValueError, generator.generate, **args)
 
+        args = _resetArgs()
+        args["ramp_angle_rad"] = "0.1"
+        self.assertRaises(TypeError, generator.generate, **args)
+        args["ramp_angle_rad"] = 0
+        self.assertRaises(ValueError, generator.generate, **args)
+        args["ramp_angle_rad"] = -0.1
+        self.assertRaises(ValueError, generator.generate, **args)
+        args["ramp_angle_rad"] = math.radians(90.1)
+        self.assertRaises(ValueError, generator.generate, **args)
+
         # step is a length and can not be negative
         args = _resetArgs()
         args["step"] = -50
@@ -158,16 +172,6 @@ G0 X11.250000 Y5.000000 Z23.000000"
         v2 = FreeCAD.Vector(20, 5, 5)
         edg = Part.makeLine(v1, v2)
         args["edge"] = edg
-        self.assertRaises(ValueError, generator.generate, **args)
-
-    def test09(self):
-        """Test Helix Generator with inverted vertical edge"""
-        args = _resetArgs()
-        v1 = FreeCAD.Vector(5, 5, 18)
-        v2 = FreeCAD.Vector(5, 5, 20)
-        edg = Part.makeLine(v1, v2)
-        args["edge"] = edg
-
         self.assertRaises(ValueError, generator.generate, **args)
 
     def test10(self):

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jan Rheinländer                                    *
  *                                   <jrheinlaender@users.sourceforge.net> *
@@ -60,6 +62,7 @@ protected:
         App::Property* prop
     ) override;
     void onChanged(const App::Property* prop) override;
+    void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop) override;
 
 private:
     Base::Vector3d naturalDirectionVector;

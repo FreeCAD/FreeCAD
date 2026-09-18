@@ -46,7 +46,7 @@ def make_block(objectslist):
 
     Parameters
     ----------
-    objectlist : list
+    objectslist : list
         Major radius of the ellipse.
 
     """

@@ -21,8 +21,6 @@
 #                                                                           *
 # **************************************************************************/
 
-import Assembly_rc
-
 
 class AssemblyCommandGroup:
     def __init__(self, cmdlist, menu, tooltip=None):
@@ -64,7 +62,16 @@ class AssemblyWorkbench(Workbench):
         import AssemblyGui
         from PySide import QtCore, QtGui
         from PySide.QtCore import QT_TRANSLATE_NOOP
-        import CommandCreateAssembly, CommandInsertLink, CommandInsertNewPart, CommandCreateJoint, CommandSolveAssembly, CommandExportASMT, CommandCreateView, CommandCreateSimulation, CommandCreateBom
+        import CommandCreateAssembly
+        import CommandInsertLink
+        import CommandInsertNewPart
+        import CommandCreateJoint
+        import CommandSolveAssembly
+        import CommandExportASMT
+        import CommandCreateView
+        import CommandCreateSimulation
+        import CommandCreateSnapshot
+        import CommandCreateBom
         import Preferences
 
         FreeCADGui.addLanguagePath(":/translations")
@@ -78,8 +85,10 @@ class AssemblyWorkbench(Workbench):
         cmdList = [
             "Assembly_CreateAssembly",
             "Assembly_Insert",
+            "Part_LinkArrays",
             "Assembly_SolveAssembly",
             "Assembly_CreateView",
+            "Assembly_CreateSnapshot",
             "Assembly_CreateSimulation",
             "Assembly_CreateBom",
         ]
@@ -92,6 +101,7 @@ class AssemblyWorkbench(Workbench):
 
         cmdListJoints = [
             "Assembly_ToggleGrounded",
+            "Assembly_CreateJointRigidGroup",
             "Separator",
             "Assembly_CreateJointFixed",
             "Assembly_CreateJointRevolute",
