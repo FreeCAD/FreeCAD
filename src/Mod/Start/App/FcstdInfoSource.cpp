@@ -29,9 +29,12 @@
 # include <ostream>
 #endif
 
+#include <exception>
+
 #include <QFile>
 
 #include <Base/Console.h>
+#include <Base/Exception.h>
 #include <Base/Stream.h>
 
 #include <App/ProjectFile.h>
@@ -128,9 +131,20 @@ FcstdInfoSource::FcstdInfoSource(QString filePath)
 
 void FcstdInfoSource::run()
 {
-    const std::string stdFilePath(_filePath.toStdString());
-    App::ProjectFile proj(stdFilePath);
-    auto fileStats = getProjectFileInfo(proj);
-    auto thumbnail = loadFCStdThumbnail(proj, _filePath);
-    Q_EMIT _signals.infoAvailable(_filePath, fileStats, thumbnail);
+    try {
+        const std::string stdFilePath(_filePath.toStdString());
+        App::ProjectFile proj(stdFilePath);
+        auto fileStats = getProjectFileInfo(proj);
+        auto thumbnail = loadFCStdThumbnail(proj, _filePath);
+        Q_EMIT _signals.infoAvailable(_filePath, fileStats, thumbnail);
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().warning("Could not read %s: %s\n", _filePath.toStdString(), e.what());
+    }
+    catch (const std::exception& e) {
+        Base::Console().warning("Could not read %s: %s\n", _filePath.toStdString(), e.what());
+    }
+    catch (...) {
+        Base::Console().warning("Could not read %s\n", _filePath.toStdString());
+    }
 }
