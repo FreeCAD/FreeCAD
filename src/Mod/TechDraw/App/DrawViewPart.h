@@ -26,6 +26,8 @@
 
 #pragma once
 
+#include <cstddef>
+
 #include <QFuture>
 #include <QFutureWatcher>
 
@@ -277,6 +279,8 @@ protected:
 
     TopoDS_Shape m_saveShape;     //TODO: make this a Property.  Part::TopoShapeProperty??
     Base::Vector3d m_saveCentroid;//centroid before centering shape in origin
+    std::size_t m_viewHash{0}; // view hash to check if the view has changed
+    bool m_hlrBlocked{false};
 
     std::vector<TechDraw::VertexPtr> m_referenceVerts;
 
@@ -291,7 +295,6 @@ private:
     QMetaObject::Connection connectFaceWatcher;
     QFutureWatcher<void> m_faceWatcher;
     QFuture<void> m_faceFuture;
-
 };
 
 using DrawViewPartPython = App::FeaturePythonT<DrawViewPart>;
