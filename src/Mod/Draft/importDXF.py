@@ -5519,11 +5519,12 @@ def _export_object(obj, writer_proxy):
     try:
         if obj_type in ("Text", "DraftText", "Annotation"):
             _write_text_entities(obj, writer_proxy)
-        elif obj_type in ("Dimension", "LinearDimension", "AngularDimension"):
-            # TODO: This currently only handles linear dimensions. A full implementation
-            # would need to inspect obj_type again here and dispatch to a specific
-            # writer function (e.g., _write_angular_dimension_entity).
+        elif obj_type == "LinearDimension":
             _write_dimension_entity(obj, writer_proxy)
+        elif obj_type == "AngularDimension":
+            FreeCAD.Console.PrintWarning(
+                f"DXF export: angular dimensions are not yet supported, skipping '{obj.Name}'.\n"
+            )
         elif obj_type == "AxisSystem":
             _write_arch_axis_entities(obj, writer_proxy)
         elif obj_type == "Space":
