@@ -39,6 +39,7 @@ import Path.Main.Sanity.ImageBuilder as ImageBuilder
 import Path.Main.Sanity.ReportGenerator as ReportGenerator
 import os
 import Path.Dressup.Utils as PathDressup
+from PathScripts.PathUtils import getOperations
 
 translate = FreeCAD.Qt.translate
 
@@ -217,7 +218,7 @@ class CAMSanity:
             fname = obj.PostProcessorOutputFile
             data["outputfilename"] = os.path.splitext(os.path.basename(fname))[0]
 
-        for op in obj.Operations.Group:
+        for op in getOperations(obj):
             if "Stop" in op.Name and hasattr(op, "Stop") and op.Stop is True:
                 data["optionalstops"] = "True"
 
@@ -270,7 +271,7 @@ class CAMSanity:
         data["jobDescription"] = obj.Description
 
         data["operations"] = []
-        for op in obj.Operations.Group:
+        for op in getOperations(obj):
             oplabel = op.Label
             Path.Log.debug(oplabel)
             ctime = op.CycleTime if hasattr(op, "CycleTime") else "00:00:00"
@@ -467,7 +468,7 @@ class CAMSanity:
                 )
 
             used = False
-            for op in obj.Operations.Group:
+            for op in getOperations(obj):
                 base_op = PathDressup.baseOp(op)
                 if hasattr(base_op, "ToolController") and base_op.ToolController is TC:
                     used = True
@@ -646,7 +647,7 @@ class CAMSanity:
         job_squawks = []
 
         # Check if job has operations
-        if not hasattr(self.job, "Operations") or not self.job.Operations:
+        if not hasattr(self.job, "Operations") or not getOperations(self.job):
             job_squawks.append(
                 self.squawk(
                     "CAMSanity",
