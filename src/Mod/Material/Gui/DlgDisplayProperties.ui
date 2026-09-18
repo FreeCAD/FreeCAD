@@ -339,23 +339,14 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="1" column="0">
-       <layout class="QHBoxLayout">
-        <property name="spacing">
-         <number>6</number>
+       <widget class="QCheckBox" name="replaceFaceAppearances">
+        <property name="toolTip">
+         <string>When selecting a material, replace all face appearances instead of preserving explicit face appearances</string>
         </property>
-        <property name="leftMargin">
-         <number>0</number>
+        <property name="text">
+         <string>Replace face appearances</string>
         </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-       </layout>
+       </widget>
       </item>
       <item row="2" column="0">
        <layout class="QGridLayout" name="gridLayout">

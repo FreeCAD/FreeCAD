@@ -79,3 +79,29 @@ class TaskFaceAppearancesGuiTest(unittest.TestCase):
 
         # 3. Close the Task Panel gracefully
         FreeCADGui.Control.closeDialog()
+
+    def test_face_material_marks_only_selected_faces_as_overrides(self):
+        if not FreeCAD.GuiUp:
+            self.skipTest("This test requires a graphical user interface (GUI).")
+
+        FreeCADGui.Selection.addSelection(self.doc.Name, "Box")
+        FreeCADGui.runCommand("Part_ColorPerFace")
+
+        main_window = FreeCADGui.getMainWindow()
+        widget_material = main_window.findChild(QtWidgets.QWidget, "widgetMaterial")
+        self.assertIsNotNone(widget_material, "Material widget not found in the UI.")
+
+        FreeCADGui.Selection.addSelection(self.doc.Name, "Box", "Face1")
+
+        import MatGui
+
+        material_tree = MatGui.MaterialTreeWidget(widget_material)
+        material_tree.UUID = "d1f317f0-5ffa-4798-8ab3-af2ff0b5182c"
+        QtWidgets.QApplication.processEvents()
+
+        self.assertEqual(
+            self.box.ViewObject.FaceAppearanceOverrides,
+            (True, False, False, False, False, False),
+        )
+
+        FreeCADGui.Control.closeDialog()
