@@ -57,9 +57,17 @@ if(MEDFile_FOUND)
             "Imported MEDFile (${_medfile_find_mode} mode) but no medC target exists")
     endif()
 
+    # Target medC might not have an INCLUDE_DIRECTORIES allowing for #include <med.h>,
+    # guard against this by finding the header ourselves and appending the include dir
+    # if necessary.
+    get_target_property(_medc_includes medC INTERFACE_INCLUDE_DIRECTORIES)
+    if(NOT _medc_includes)
+        set(_medc_includes "")
+    endif()
+
     # only accept med.h if it is reachable through the target's own include dirs.
     # without NO_DEFAULT_PATH find_file() also searches CMAKE_PREFIX_PATH and
-    # system paths, and world "find" med.h even when medC exposes no include
+    # system paths, and would "find" med.h even when medC exposes no include
     # dirs at all
     set(_med_h "")
     if(_medc_includes)
@@ -68,15 +76,45 @@ if(MEDFile_FOUND)
 
     if(NOT _med_h)
         # look next to the package that was found first. MEDFile_DIR is
-        # <prefix>/share/cmake/medfile-X or <prefix>/lib/cmake/medfile-X
+        # <prefix>/share/cmake/medfile-X, <prefix>/lib/cmake/medfile-X,
+        # <prefix>/lib64/..., <prefix>/share/cmake
         set(_med_hints "")
-        if(MEDFile_DIR)
-            get_filename_component(_medfile_prefix "${MEDFile_DIR}/../../.." ABSOLUTE)
-            list(APPEND _med_hints "${_medfile_prefix}/include")
+
+        # medC's library location, ie. <prefix>/lib/libmedC.so
+        get_target_property(_medc_loc medC IMPORTED_LOCATION)
+        if(NOT _medc_loc)
+            get_target_property(_medc_cfgs medC IMPORTED_CONFIGURATIONS)
+            if(_medc_cfgs)
+                foreach(_cfg IN LISTS _medc_cfgs)
+                    get_target_property(_medc_loc medC IMPORTED_LOCATION_${_cfg})
+                    if(_medc_loc)
+                        break()
+                    endif()
+                endforeach()
+            endif()
         endif()
-        find_path(_med_h_dir med.h HINTS ${_med_hints} PATH_SUFFIXES med NO_CACHE)
+        if(_medc_loc)
+            get_filename_component(_med_libdir "${_medc_loc}" DIRECTORY)
+            list(APPEND _med_hints "${_med_libdir}/..")
+        endif()
+
+        # walk up from wherever the package was found, make no assumption
+        # about deeply nested config file within the prefix
+        if(MEDFile_DIR)
+            set(_dir "${MEDFile_DIR}")
+            foreach(_i RANGE 4)
+                list(APPEND _med_hints "${_dir}")
+                get_filename_component(_dir "${_dir}/.." ABSOLUTE)
+            endforeach()
+        endif()
+
+        find_path(_med_h_dir NAMES med.h
+                  HINTS ${_med_hints}
+                  PATH_SUFFIXES include include/med med
+                  NO_CACHE)
+
         if(NOT _med_h_dir)
-            message(FATAL_ERROR "Imported MEDFILE (${_medfile_find_mode} mode) but med.h could not be located")
+            message(FATAL_ERROR "Imported MEDFile (${_medfile_find_mode} mode) but med.h could not be located")
         endif()
         list(APPEND _medc_includes "${_med_h_dir}")
         set_target_properties(medC PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${_medc_includes}")
@@ -93,20 +131,20 @@ endif()
 
 # ------
 
-MESSAGE(STATUS "Check for medfile (libmed and libmedc) ...")
+message(STATUS "Check for medfile (libmed and libmedc) ...")
 
 # ------
 
-SET(MEDFILE_ROOT_DIR $ENV{MEDFILE_ROOT_DIR} CACHE PATH "Path to the MEDFile.")
-IF(MEDFILE_ROOT_DIR)
-  LIST(APPEND CMAKE_PREFIX_PATH "${MEDFILE_ROOT_DIR}")
-ENDIF(MEDFILE_ROOT_DIR)
+set(MEDFILE_ROOT_DIR $ENV{MEDFILE_ROOT_DIR} CACHE PATH "Path to the MEDFile.")
+if(MEDFILE_ROOT_DIR)
+  list(APPEND CMAKE_PREFIX_PATH "${MEDFILE_ROOT_DIR}")
+endif()
 
-FIND_PATH(MEDFILE_INCLUDE_DIRS med.h PATH_SUFFIXES med)
-FIND_FILE(meddotH med.h PATHS ${MEDFILE_INCLUDE_DIRS} NO_DEFAULT_PATH)
-IF(NOT meddotH)
-	MESSAGE(FATAL_ERROR "med.h not found, please install development header-files for libmedc")
-ENDIF(NOT meddotH)
+find_path(MEDFILE_INCLUDE_DIRS med.h PATH_SUFFIXES med)
+find_file(meddotH med.h PATHS ${MEDFILE_INCLUDE_DIRS} NO_DEFAULT_PATH)
+if(NOT meddotH)
+	message(FATAL_ERROR "med.h not found, please install development header-files for libmedc")
+endif()
 
 function(medfile_extract_med_h_data)
     file(READ ${meddotH} _med_h)
@@ -169,5 +207,5 @@ if(NOT MSVC AND MEDFILE_HAVE_MPI)
     target_link_libraries(medC INTERFACE "${OPENMPI_LIBRARIES}")
 endif()
 
-INCLUDE(FindPackageHandleStandardArgs)
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(MEDFile REQUIRED_VARS MEDFILE_INCLUDE_DIRS MEDFILE_LIBRARIES)
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(MEDFile REQUIRED_VARS MEDFILE_INCLUDE_DIRS MEDFILE_LIBRARIES)
