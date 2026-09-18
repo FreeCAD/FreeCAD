@@ -509,9 +509,12 @@ void PropertyPartShape::Restore(Base::XMLReader& reader)
                     }
                     owner->getDocument()->addRecomputeObject(owner);
 
-                    // sometimes objects will not update _Ver properly,
-                    // so lets do it here to avoid unnecessary remigration
-                    _Ver = ver;
+                    // Keep _Ver as the old version so that GeoFeature::onDocumentRestored()
+                    // initialises _ElementMapVersion to the old version string.  When the
+                    // recompute rebuilds the shape with the new element-map version the
+                    // mismatch is detected, reset=true is set, and reverse=true is propagated
+                    // into _updateElementReference — enabling the indexed-name fallback that
+                    // recovers missing edge references after version migration.
                 }
             }
         }
