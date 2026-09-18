@@ -399,12 +399,13 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
         # Validate that SafeHeight doesn't exceed ClearanceHeight
         safe_height = obj.SafeHeight.Value
-        if safe_height > obj.ClearanceHeight.Value:
+        clear_height = obj.ClearanceHeight.Value
+        if safe_height > clear_height:
             Path.Log.warning(
-                f"SafeHeight ({safe_height}) is above ClearanceHeight ({obj.ClearanceHeight.Value}). "
+                f"SafeHeight ({safe_height}) is above ClearanceHeight ({clear_height}). "
                 f"Using ClearanceHeight instead."
             )
-            safe_height = obj.ClearanceHeight.Value
+            safe_height = clear_height
 
         # PeckRetract (R) only applies to peck cycles; a non-peck cycle just retracts
         # to SafeHeight like it did before PeckRetract existed. An R at or below the
@@ -439,14 +440,14 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         linkingArgs = {
             "start_position": None,
             "target_position": None,
-            "heights_clearance": (safe_height, obj.ClearanceHeight.Value),
+            "heights_clearance": (safe_height, clear_height),
             "solids": None,
             "tool_shape": None,
             "tool_diameter": None,
             "collision_clearance": obj.CollisionClearance.Value,
         }
         if obj.CollisionAvoidanceStrategy == "Clearance Height":
-            linkingArgs["heights_clearance"] = obj.ClearanceHeight.Value
+            linkingArgs["heights_clearance"] = clear_height
         elif obj.CollisionAvoidanceStrategy == "Retract Height":
             pass
         elif obj.CollisionAvoidanceStrategy == "Line of Sight":
@@ -457,6 +458,12 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         elif obj.CollisionAvoidanceStrategy == "Tool Shape":
             linkingArgs["solids"] = solids
             linkingArgs["tool_shape"] = obj.ToolController.Tool.BitBody.Shape
+
+        if (
+            obj.CollisionAvoidanceStrategy in ("Line of Sight", "Tool Diameter", "Tool Shape")
+            and obj.KeepToolDown
+        ):
+            linkingArgs["heights_clearance"] = (peck_retract, safe_height, clear_height)
 
         # http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g98-g99
 
@@ -469,7 +476,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         self.commandlist.append(Path.Command("(Begin Drilling)"))
 
         # Make sure tool is at a clearance height
-        command = Path.Command("G0", {"Z": obj.ClearanceHeight.Value})
+        command = Path.Command("G0", {"Z": clear_height})
         machinestate.addCommand(command)
 
         # machine.addCommand(command)
@@ -494,38 +501,19 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 firstMove = False
 
             else:  # Check if we need linking moves
+                # For G99 mode, tool is at StartDepth (R-plane) after previous hole
+                # Check if direct move at retract plane would collide with model
                 current_pos = machinestate.getPosition()
+                target_z = peck_retract if obj.KeepToolDown else safe_height
+                target = FreeCAD.Vector(startPoint.x, startPoint.y, target_z)
+                linkingArgs["start_position"] = current_pos
+                linkingArgs["target_position"] = target
+                linking_moves = linking.get_linking_moves(**linkingArgs)
 
-                # Without solids nothing can collide, so every traverse reads as clear
-                # and a low R can't be validated -- climb to SafeHeight instead.
-                geometry_checked = bool(linkingArgs["solids"])
-                if (
-                    not geometry_checked
-                    and current_pos.z < safe_height
-                    and not Path.Geom.isRoughly(current_pos.z, safe_height)
-                ):
-                    command = Path.Command("G0", {"Z": safe_height})
-                    self.commandlist.append(command)
-                    machinestate.addCommand(command)
-                    current_pos = machinestate.getPosition()
-
-                # Check the traverse at the height the tool is actually at -- under G99
-                # that's R, which is where the modal cycle will carry it.
-                target_position = FreeCAD.Vector(startPoint.x, startPoint.y, current_pos.z)
-
-                if linking.check_collision(
-                    current_pos,
-                    target_position,
-                    solids=linkingArgs["solids"],
-                    tool_shape=linkingArgs["tool_shape"],
-                    tool_diameter=linkingArgs["tool_diameter"],
-                    collision_clearance=linkingArgs["collision_clearance"],
-                ):
-                    # Not clear: retract, traverse, come back down. The explicit moves
-                    # also break the modal group, which the post closes with G80.
-                    linkingArgs["start_position"] = current_pos
-                    linkingArgs["target_position"] = target_position
-                    linking_moves = linking.get_linking_moves(**linkingArgs)
+                # linking_moves should be skipped, if first move not vertical
+                if not Path.Geom.isRoughly(linking_moves[0].z, current_pos.z):
+                    # Cannot traverse at retract plane - need to break cycle group
+                    # Retract to safe height, traverse, then plunge to safe height for new cycle
                     self.commandlist.extend(linking_moves)
                     machinestate.addCommands(linking_moves)
                 # else: clear -- the modal cycle continues, tool stays put
@@ -592,12 +580,13 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
         # Validate that SafeHeight doesn't exceed ClearanceHeight
         safe_height = obj.SafeHeight.Value
-        if safe_height > obj.ClearanceHeight.Value:
+        clear_height = obj.ClearanceHeight.Value
+        if safe_height > clear_height:
             Path.Log.warning(
-                f"SafeHeight ({safe_height}) is above ClearanceHeight ({obj.ClearanceHeight.Value}). "
+                f"SafeHeight ({safe_height}) is above ClearanceHeight ({clear_height}). "
                 f"Using ClearanceHeight instead."
             )
-            safe_height = obj.ClearanceHeight.Value
+            safe_height = clear_height
 
         # Calculate offsets to add to target edge
         endoffset = 0.0
@@ -615,7 +604,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
         # Start computing the Path
         # Make sure tool is at clearance height
-        command = Path.Command("G0", {"Z": obj.ClearanceHeight.Value})
+        command = Path.Command("G0", {"Z": clear_height})
         machinestate.addCommand(command)
         self.commandlist.append(command)
 
