@@ -228,24 +228,24 @@ class GeometrySurface(Geometry):
     @overload
     def toBSpline(
         self,
-        tolerance: float = 1e-7,
-        continuity_u: Literal["C0", "G0", "G1", "C1", "G2", "C3", "CN"] = "C1",
-        continuity_v: Literal["C0", "G0", "G1", "C1", "G2", "C3", "CN"] = "C1",
-        max_degree_u: int = 25,
-        max_degree_v: int = 25,
-        max_segments: int = 1000,
-        precision_code: int = 0,
+        Tol3d: float = 1e-7,
+        UContinuity: Literal["C0", "G0", "G1", "C1", "G2", "C3", "CN"] = "C1",
+        VContinuity: Literal["C0", "G0", "G1", "C1", "G2", "C3", "CN"] = "C1",
+        MaxDegreeU: int = 25,
+        MaxDegreeV: int = 25,
+        MaxSegments: int = 1000,
+        PrecisCode: int = 0,
     ) -> Any: ...
     @constmethod
     def toBSpline(
         self,
-        tolerance: float = 1e-7,
-        continuity_u: str = "C1",
-        continuity_v: str = "C1",
-        max_degree_u: int = 25,
-        max_degree_v: int = 25,
-        max_segments: int = 1000,
-        precision_code: int = 0,
+        Tol3d: float = 1e-7,
+        UContinuity: str = "C1",
+        VContinuity: str = "C1",
+        MaxDegreeU: int = 25,
+        MaxDegreeV: int = 25,
+        MaxSegments: int = 1000,
+        PrecisCode: int = 0,
     ) -> Any:
         """
         Returns a B-Spline representation of this surface.

@@ -50,7 +50,7 @@ class GeometryCurve(Geometry):
     @overload
     @constmethod
     def discretize(
-        self, Number: int, *, First: Optional[float] = None, Last: Optional[float] = None
+        self, Number: int, First: Optional[float] = None, Last: Optional[float] = None
     ) -> List[Vector]:
         """
         Discretizes the curve and returns a list of points.
@@ -60,7 +60,7 @@ class GeometryCurve(Geometry):
     @overload
     @constmethod
     def discretize(
-        self, QuasiNumber: int, *, First: Optional[float] = None, Last: Optional[float] = None
+        self, QuasiNumber: int, First: Optional[float] = None, Last: Optional[float] = None
     ) -> List[Vector]:
         """
         Discretizes the curve and returns a list of quasi equidistant points.
@@ -70,7 +70,7 @@ class GeometryCurve(Geometry):
     @overload
     @constmethod
     def discretize(
-        self, Distance: float, *, First: Optional[float] = None, Last: Optional[float] = None
+        self, Distance: float, First: Optional[float] = None, Last: Optional[float] = None
     ) -> List[Vector]:
         """
         Discretizes the curve and returns a list of equidistant points with distance 'd'.
@@ -80,7 +80,7 @@ class GeometryCurve(Geometry):
     @overload
     @constmethod
     def discretize(
-        self, Deflection: float, *, First: Optional[float] = None, Last: Optional[float] = None
+        self, Deflection: float, First: Optional[float] = None, Last: Optional[float] = None
     ) -> List[Vector]:
         """
         Discretizes the curve and returns a list of points with a maximum deflection 'd' to the curve.
@@ -90,7 +90,7 @@ class GeometryCurve(Geometry):
     @overload
     @constmethod
     def discretize(
-        self, QuasiDeflection: float, *, First: Optional[float] = None, Last: Optional[float] = None
+        self, QuasiDeflection: float, First: Optional[float] = None, Last: Optional[float] = None
     ) -> List[Vector]:
         """
         Discretizes the curve and returns a list of points with a maximum deflection 'd' to the curve (faster).
@@ -103,10 +103,9 @@ class GeometryCurve(Geometry):
         self,
         Angular: float,
         Curvature: float,
-        Minimum: int = 2,
-        *,
         First: Optional[float] = None,
         Last: Optional[float] = None,
+        Minimum: int = 2,
     ) -> List[Vector]:
         """
         Discretizes the curve and returns a list of points with an angular deflection of 'a' and a curvature deflection of 'c'.

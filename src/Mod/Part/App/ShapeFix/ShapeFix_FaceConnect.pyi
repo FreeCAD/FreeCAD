@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
+from Part.TopoShape import TopoShape
 from Part.TopoShapeFace import TopoShapeFace
 from Part.TopoShapeShell import TopoShapeShell
 
@@ -27,7 +28,9 @@ class ShapeFix_FaceConnect(PyObjectBase):
         """
         ...
 
-    def build(self, shell: TopoShapeShell, sewtolerance: float, fixtolerance: float, /) -> None:
+    def build(
+        self, shell: TopoShapeShell, sewtolerance: float, fixtolerance: float, /
+    ) -> TopoShape:
         """
         build(shell, sewtolerance, fixtolerance)
         """

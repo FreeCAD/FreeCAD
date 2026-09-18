@@ -134,7 +134,7 @@ class LinkView(BaseClass):
         """
         ...
 
-    def getElementPicked(self, pickPoint: Any, /) -> Any:
+    def getElementPicked(self, pickPoint: Any, /) -> str | None:
         """
         get the element under a 3d pick point.
         """
@@ -147,7 +147,7 @@ class LinkView(BaseClass):
         ...
 
     @constmethod
-    def getChildren(self) -> Any:
+    def getChildren(self) -> Tuple[ViewProviderDocumentObject, ...] | None:
         """
         Get children view objects
         """

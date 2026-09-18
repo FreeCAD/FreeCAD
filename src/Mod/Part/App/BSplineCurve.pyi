@@ -341,16 +341,24 @@ class BSplineCurve(BoundedCurve):
     @overload
     def approximate(
         self,
-        Points: List[Vector],
-        DegMin: int = 3,
-        DegMax: int = 8,
-        Tolerance: float = 1e-3,
+        MaxDegree: int,
+        MaxSegments: int = 8,
         Continuity: str = "C2",
+        Tolerance: float = 1e-3,
+    ) -> None: ...
+    @overload
+    def approximate(
+        self,
+        Points: List[Vector],
+        DegMax: int = 8,
+        Continuity: str = "C2",
+        Tolerance: float = 1e-3,
+        DegMin: int = 3,
+        ParamType: str = "ChordLength",
+        Parameters: List[float] = None,
         LengthWeight: float = 0.0,
         CurvatureWeight: float = 0.0,
         TorsionWeight: float = 0.0,
-        Parameters: List[float] = None,
-        ParamType: str = "Uniform",
     ) -> None: ...
     def approximate(self, **kwargs) -> None:
         """
@@ -388,7 +396,12 @@ class BSplineCurve(BoundedCurve):
 
     @overload
     @constmethod
-    def getCardinalSplineTangents(self, **kwargs) -> List[Vector]: ...
+    def getCardinalSplineTangents(self, Points: List[Vector], Parameter: float) -> List[Vector]: ...
+    @overload
+    @constmethod
+    def getCardinalSplineTangents(
+        self, Points: List[Vector], Parameters: List[float]
+    ) -> List[Vector]: ...
     @constmethod
     def getCardinalSplineTangents(self, **kwargs) -> List[Vector]:
         """
@@ -402,11 +415,12 @@ class BSplineCurve(BoundedCurve):
         Points: List[Vector],
         PeriodicFlag: bool = False,
         Tolerance: float = 1e-6,
-        Parameters: List[float] = None,
         InitialTangent: Vector = None,
         FinalTangent: Vector = None,
         Tangents: List[Vector] = None,
         TangentFlags: List[bool] = None,
+        Parameters: List[float] = None,
+        Scale: bool = True,
     ) -> None: ...
     def interpolate(self, **kwargs) -> None:
         """
@@ -478,10 +492,10 @@ class BSplineCurve(BoundedCurve):
     def buildFromPolesMultsKnots(
         self,
         poles: List[Vector],
-        mults: List[int],
-        knots: List[float],
-        periodic: bool,
-        degree: int,
+        mults: List[int] = None,
+        knots: List[float] = None,
+        periodic: bool = False,
+        degree: int = 3,
         weights: List[float] = None,
         CheckRational: bool = False,
     ) -> None: ...
@@ -528,7 +542,7 @@ class BSplineCurve(BoundedCurve):
         """
         ...
 
-    def join(self, other: "BSplineCurve", /) -> None:
+    def join(self, other: "BSplineCurve", /) -> bool:
         """
         Build a new spline by joining this and a second spline.
         """

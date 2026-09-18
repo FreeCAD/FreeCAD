@@ -5,8 +5,10 @@ from __future__ import annotations
 from Base.Metadata import deprecated, export, constmethod
 from Base.Vector import Vector
 from Base.Matrix import Matrix
+from Part.App.Plane import Plane
 from Base.BoundBox import BoundBox
 from App.ComplexGeoData import ComplexGeoData
+from App.StringHasher import StringHasher
 from typing import Final, List, Tuple, Union, overload
 
 @export(
@@ -119,8 +121,14 @@ class TopoShape(ComplexGeoData):
         """
         ...
 
+    @overload
     @constmethod
-    def exportBrep(self, filename: str, /) -> None:
+    def exportBrep(self, filename: str, /) -> None: ...
+    @overload
+    @constmethod
+    def exportBrep(self, stream: object, /) -> None: ...
+    @constmethod
+    def exportBrep(self, *args) -> None:
         """
         Export the content of this shape to an BREP file.
         exportBrep(filename)
@@ -156,14 +164,18 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def exportStl(self, filename: str, /) -> None:
+    def exportStl(self, filename: str, deflection: float = 0.01, /) -> None:
         """
         Export the content of this shape to an STL mesh file.
-        exportStl(filename)
+        exportStl(filename, deflection=0.01)
         """
         ...
 
-    def importBrep(self, filename: str, /) -> None:
+    @overload
+    def importBrep(self, filename: str, /) -> None: ...
+    @overload
+    def importBrep(self, stream: object, /) -> None: ...
+    def importBrep(self, *args) -> None:
         """
         Load the shape from a file in BREP format.
         importBrep(filename)
@@ -405,10 +417,10 @@ class TopoShape(ComplexGeoData):
         """
         ...
 
-    def sewShape(self) -> None:
+    def sewShape(self, tolerance: float = 1e-06, /) -> None:
         """
         Sew the shape if there is a gap.
-        sewShape()
+        sewShape(tolerance=1e-06)
         """
         ...
 
@@ -452,10 +464,15 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def transformGeometry(self, matrix: Matrix, /) -> TopoShape:
+    def transformGeometry(
+        self,
+        matrix: Matrix,
+        copy: bool = False,
+        /,
+    ) -> TopoShape:
         """
         Apply geometric transformation on this or a copy the shape.
-        transformGeometry(matrix) -> Shape
+        transformGeometry(matrix, copy=False) -> Shape
         --
         This method returns a new shape.
         The transformation to be applied is defined as a 4x4 matrix.
@@ -503,7 +520,7 @@ class TopoShape(ComplexGeoData):
         """
         ...
 
-    def translate(self, vector: Vector, /) -> None:
+    def translate(self, vector: Vector | tuple[float, float, float], /) -> TopoShape:
         """
         Apply the translation to the current location of this shape.
         translate(vector)
@@ -518,7 +535,13 @@ class TopoShape(ComplexGeoData):
         """
         ...
 
-    def rotate(self, base: Vector, dir: Vector, degree: float, /) -> None:
+    def rotate(
+        self,
+        base: Vector | tuple[float, float, float],
+        dir: Vector | tuple[float, float, float],
+        degree: float,
+        /,
+    ) -> TopoShape:
         """
         Apply the rotation (base, dir, degree) to the current location of this shape
         rotate(base, dir, degree)
@@ -535,7 +558,7 @@ class TopoShape(ComplexGeoData):
         """
         ...
 
-    def scale(self, factor: float, base: Vector = None, /) -> None:
+    def scale(self, factor: float, base: Vector = None, /) -> TopoShape:
         """
         Apply scaling with point and factor to this shape.
         scale(factor, [base=App.Vector(0,0,0)])
@@ -583,10 +606,21 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def makeThickness(self, faces: List, offset: float, tolerance: float, /) -> TopoShape:
+    def makeThickness(
+        self,
+        faces: List,
+        offset: float,
+        tolerance: float,
+        inter: bool = False,
+        self_inter: bool = False,
+        offset_mode: int = 0,
+        join: int = 0,
+        /,
+    ) -> TopoShape:
         """
         Hollow a solid according to given thickness and faces.
-        makeThickness(List of faces, Offset (Float), Tolerance (Float)) -> Shape
+        makeThickness(List of faces, Offset (Float), Tolerance (Float),
+                      Inter (Bool), SelfInter (Bool), OffsetMode (Int), Join (Int)) -> Shape
         --
         A hollowed solid is built from an initial solid and a set of faces on this solid,
         which are to be removed. The remaining faces of the solid become the walls of
@@ -808,7 +842,7 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def findPlane(self, tol: float = None, /) -> TopoShape:
+    def findPlane(self, tol: float = None, /) -> Plane | None:
         """
         Returns a plane if the shape is planar
         findPlane(tol=None) -> Shape
@@ -827,10 +861,10 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def hashCode(self) -> int:
+    def hashCode(self, upper: int = ..., /) -> int:
         """
         This value is computed from the value of the underlying shape reference and the location.
-        hashCode() -> int
+        hashCode(upper) -> int
         --
         Orientation is not taken into account.
         """
@@ -925,6 +959,25 @@ class TopoShape(ComplexGeoData):
         """
         ...
 
+    @overload
+    @constmethod
+    def copy(
+        self,
+        copyGeom: bool = True,
+        copyMesh: bool = False,
+        *,
+        noElementMap: bool = False,
+    ) -> TopoShape: ...
+    @overload
+    @constmethod
+    def copy(
+        self,
+        op: str,
+        hasher: StringHasher,
+        copyGeom: bool = True,
+        copyMesh: bool = False,
+        /,
+    ) -> TopoShape: ...
     @constmethod
     def copy(
         self,
@@ -1046,7 +1099,7 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def getElement(self, elementName: str, silent: bool = False, /) -> TopoShape:
+    def getElement(self, elementName: str, silent: bool = False, /) -> TopoShape | None:
         """
         Returns a SubElement
         getElement(elementName, [silent = False]) -> Face | Edge | Vertex
@@ -1066,7 +1119,7 @@ class TopoShape(ComplexGeoData):
 
     def mapSubElement(
         self, shape: Union[TopoShape, Tuple[TopoShape, ...]], op: str = "", /
-    ) -> None:
+    ) -> TopoShape:
         """
         mapSubElement(shape|[shape...], op='') - maps the sub element of other shape
 
@@ -1206,7 +1259,7 @@ class TopoShape(ComplexGeoData):
         """
         ...
 
-    def clearCache(self) -> None:
+    def clearCache(self) -> TopoShape:
         """
         Clear internal sub-shape cache
         """
@@ -1231,6 +1284,7 @@ class TopoShape(ComplexGeoData):
         checkGeometry: bool = True,
         tol: float = 1e-7,
         atol: float = 1e-12,
+        singleResult: bool = False,
     ) -> Union[List[Tuple[str, TopoShape]], List[TopoShape]]:
         """
         findSubShapesWithSharedVertex(shape, needName=False, checkGeometry=True, tol=1e-7, atol=1e-12) -> Shape

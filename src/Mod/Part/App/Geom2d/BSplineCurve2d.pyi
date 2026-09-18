@@ -147,7 +147,7 @@ class BSplineCurve2d(Curve2d):
         """
         ...
 
-    def removeKnot(self, index: int, mult: int, tol: float, /) -> None:
+    def removeKnot(self, index: int, mult: int, tol: float, /) -> bool:
         """
         removeKnot(index, mult, tol)
 
@@ -294,6 +294,20 @@ class BSplineCurve2d(Curve2d):
         """
         ...
 
+    @overload
+    def approximate(
+        self,
+        Points: list[Vector],
+        DegMax: int = 8,
+        Continuity: str = "C2",
+        Tolerance: float = 1e-3,
+        DegMin: int = 3,
+        ParamType: str = "ChordLength",
+        Parameters: list[float] = None,
+        LengthWeight: float = 0.0,
+        CurvatureWeight: float = 0.0,
+        TorsionWeight: float = 0.0,
+    ) -> None: ...
     def approximate(self, **kwargs) -> None:
         """
         Replaces this B-Spline curve by approximating a set of points.
@@ -327,12 +341,30 @@ class BSplineCurve2d(Curve2d):
         """
         ...
 
-    def getCardinalSplineTangents(self, **kwargs) -> None:
+    @overload
+    def getCardinalSplineTangents(self, Points: list[Vector], Parameter: float) -> list[Vector]: ...
+    @overload
+    def getCardinalSplineTangents(
+        self, Points: list[Vector], Parameters: list[float]
+    ) -> list[Vector]: ...
+    def getCardinalSplineTangents(self, **kwargs) -> list[Vector]:
         """
         Compute the tangents for a Cardinal spline
         """
         ...
 
+    @overload
+    def interpolate(
+        self,
+        Points: list[Vector],
+        PeriodicFlag: bool = False,
+        Tolerance: float = 1e-6,
+        InitialTangent: Vector = None,
+        FinalTangent: Vector = None,
+        Tangents: list[Vector] = None,
+        TangentFlags: list[bool] = None,
+        Parameters: list[float] = None,
+    ) -> None: ...
     def interpolate(self, **kwargs) -> None:
         """
         Replaces this B-Spline curve by interpolating a set of points.
@@ -385,21 +417,11 @@ class BSplineCurve2d(Curve2d):
     def buildFromPolesMultsKnots(
         self,
         poles: list[Vector],
-        mults: tuple[int, ...],
-        knots: tuple[float, ...],
-        periodic: bool,
-        degree: int,
-    ) -> None: ...
-    @overload
-    def buildFromPolesMultsKnots(
-        self,
-        poles: list[Vector],
-        mults: tuple[int, ...],
-        knots: tuple[float, ...],
-        periodic: bool,
-        degree: int,
-        weights: tuple[float, ...],
-        CheckRational: bool,
+        mults: tuple[int, ...] = None,
+        knots: tuple[float, ...] = None,
+        periodic: bool = False,
+        degree: int = 3,
+        weights: tuple[float, ...] = None,
     ) -> None: ...
     def buildFromPolesMultsKnots(self, **kwargs) -> None:
         """

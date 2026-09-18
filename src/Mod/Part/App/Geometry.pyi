@@ -8,7 +8,7 @@ from App.Extension import Extension
 from Base.Vector import Vector
 from Base.Matrix import Matrix
 from Base.Placement import Placement
-from typing import Final, List, Optional, Union
+from typing import Final, List, Union
 
 @export(
     Include="Mod/Part/App/Geometry.h",
@@ -95,14 +95,14 @@ class Geometry(Persistence):
         ...
 
     @constmethod
-    def getExtensionOfType(self, type_name: str, /) -> Optional[Extension]:
+    def getExtensionOfType(self, type_name: str, /) -> Extension:
         """
         Gets the first geometry extension of the type indicated by the string.
         """
         ...
 
     @constmethod
-    def getExtensionOfName(self, name: str, /) -> Optional[Extension]:
+    def getExtensionOfName(self, name: str, /) -> Extension:
         """
         Gets the first geometry extension of the name indicated by the string.
         """

@@ -219,7 +219,7 @@ class BSplineSurface(GeometrySurface):
         ...
 
     def insertUKnots(
-        self, u: List[float], mult: List[float], tol: float, add: bool = ..., /
+        self, u: List[float], mult: List[float], tol: float = 0.0, add: bool = True, /
     ) -> None:
         """
         insertUKnots(u, mult, tol[, add]) - Inserts knots.
@@ -233,7 +233,7 @@ class BSplineSurface(GeometrySurface):
         ...
 
     def insertVKnots(
-        self, v: List[float], mult: List[float], tol: float, add: bool = ..., /
+        self, v: List[float], mult: List[float], tol: float = 0.0, add: bool = True, /
     ) -> None:
         """
         insertVKnots(v, mult, tol[, add]) - Inserts knots.
@@ -647,7 +647,7 @@ class BSplineSurface(GeometrySurface):
     def approximate(
         self,
         *,
-        Points: Any = ...,
+        Points: Any,
         DegMin: int = ...,
         DegMax: int = ...,
         Continuity: int = ...,
