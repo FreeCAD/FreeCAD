@@ -195,6 +195,18 @@ struct DxfImportStats
     int totalEntitiesCreated = 0;
 };
 
+// Statistics reporting structure for the exporter
+struct DxfExportStats
+{
+    double exportTimeSeconds = 0.0;
+    std::string dxfVersion;
+    std::map<std::string, int> entityCounts;
+    std::map<std::string, std::vector<std::string>> skippedObjects;
+    int layerCount = 0;
+    int blockCount = 0;
+    int totalObjectsProcessed = 0;
+};
+
 
 // "using" for enums is not supported by all platforms
 // https://stackoverflow.com/questions/41167119/how-to-fix-a-wsubobject-linkage-warning
@@ -349,6 +361,9 @@ protected:
     std::vector<std::string> m_blockList;
     std::vector<std::string> m_blkRecordList;
     // NOLINTEND(cppcoreguidelines-non-private-member-variables-in-classes)
+
+protected:
+    DxfExportStats m_stats;
 
 public:
     explicit CDxfWrite(const char* filepath);

@@ -151,6 +151,7 @@ void CDxfWrite::init()
 //! assemble pieces into output file
 void CDxfWrite::endRun()
 {
+    m_stats.dxfVersion = std::to_string(m_version);
     makeLayerTable();
     makeDimstyleTable();
     makeBlockRecordTableBody();
@@ -264,6 +265,7 @@ void CDxfWrite::makeLayerTable()
     }
     (*m_ssLayer) << " 70" << endl;
     (*m_ssLayer) << uniqueLayers.size() + 1 << endl;
+    m_stats.layerCount = static_cast<int>(uniqueLayers.size()) + 1;
 
     (*m_ssLayer) << "  0" << endl;
     (*m_ssLayer) << "LAYER" << endl;
@@ -469,6 +471,7 @@ void CDxfWrite::makeBlockRecordTableHead()
     // 2 fixed entries (*MODEL_SPACE, *PAPER_SPACE) below, plus one per
     // m_blockList entry written later in makeBlockRecordTableBody().
     (*m_ssBlkRecord) << (m_blockList.size() + 2) << endl;
+    m_stats.blockCount = static_cast<int>(m_blockList.size());
 
     m_saveModelSpaceHandle = getBlkRecordHandle();
     (*m_ssBlkRecord) << "  0" << endl;
@@ -706,6 +709,7 @@ void CDxfWrite::writeInsert(
     double rotation
 )
 {
+    m_stats.entityCounts["INSERT"]++;
     (*m_ssEntity) << "  0\n";
     (*m_ssEntity) << "INSERT\n";
     (*m_ssEntity) << "  5\n";
@@ -826,6 +830,7 @@ void CDxfWrite::setLayerName(std::string name)
 
 void CDxfWrite::writeLine(const double* start, const double* end)
 {
+    m_stats.entityCounts["LINE"]++;
     putLine(toVector3d(start), toVector3d(end), m_ssEntity, getEntityHandle(), m_saveModelSpaceHandle);
 }
 
@@ -875,6 +880,7 @@ void CDxfWrite::putLine(
 // added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
 void CDxfWrite::writeLWPolyLine(const LWPolyDataOut& pd)
 {
+    m_stats.entityCounts["LWPOLYLINE"]++;
     (*m_ssEntity) << "  0" << endl;
     (*m_ssEntity) << "LWPOLYLINE" << endl;
     (*m_ssEntity) << "  5" << endl;
@@ -933,6 +939,7 @@ void CDxfWrite::writeLWPolyLine(const LWPolyDataOut& pd)
 // added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
 void CDxfWrite::writePolyline(const LWPolyDataOut& pd)
 {
+    m_stats.entityCounts["POLYLINE"]++;
     (*m_ssEntity) << "  0" << endl;
     (*m_ssEntity) << "POLYLINE" << endl;
     (*m_ssEntity) << "  5" << endl;
@@ -986,6 +993,7 @@ void CDxfWrite::writePolyFace(
     const std::vector<std::vector<int>>& faces
 )
 {
+    m_stats.entityCounts["POLYFACE_MESH"]++;
     // A Polyface Mesh is a POLYLINE entity with bit 6 (64) set in its flags (group 70).
     (*m_ssEntity) << "  0\n";
     (*m_ssEntity) << "POLYLINE\n";
@@ -1098,6 +1106,7 @@ void CDxfWrite::writePolyFace(
 
 void CDxfWrite::writePoint(const double* point)
 {
+    m_stats.entityCounts["POINT"]++;
     (*m_ssEntity) << "  0" << endl;
     (*m_ssEntity) << "POINT" << endl;
     (*m_ssEntity) << "  5" << endl;
@@ -1127,6 +1136,7 @@ void CDxfWrite::writePoint(const double* point)
 void CDxfWrite::writeArc(const double* start, const double* end, const double* center, bool dir)
 
 {
+    m_stats.entityCounts["ARC"]++;
     double ax = start[0] - center[0];
     double ay = start[1] - center[1];
     double bx = end[0] - center[0];
@@ -1179,6 +1189,7 @@ void CDxfWrite::writeArc(const double* start, const double* end, const double* c
 
 void CDxfWrite::writeCircle(const double* center, double radius)
 {
+    m_stats.entityCounts["CIRCLE"]++;
     (*m_ssEntity) << "  0" << endl;
     (*m_ssEntity) << "CIRCLE" << endl;
     (*m_ssEntity) << "  5" << endl;
@@ -1215,6 +1226,7 @@ void CDxfWrite::writeEllipse(
     bool endIsCW
 )
 {
+    m_stats.entityCounts["ELLIPSE"]++;
     Base::Vector3d m(major_radius * sin(rotation), major_radius * cos(rotation), 0);
     double ratio = minor_radius / major_radius;
 
@@ -1270,6 +1282,7 @@ void CDxfWrite::writeEllipse(
 // added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
 void CDxfWrite::writeSpline(const SplineDataOut& sd)
 {
+    m_stats.entityCounts["SPLINE"]++;
     (*m_ssEntity) << "  0" << endl;
     (*m_ssEntity) << "SPLINE" << endl;
     (*m_ssEntity) << "  5" << endl;
@@ -1384,6 +1397,7 @@ void CDxfWrite::writeText(
     const int horizJust
 )
 {
+    m_stats.entityCounts["TEXT"]++;
     putText(
         text,
         toVector3d(location1),
@@ -1544,6 +1558,7 @@ void CDxfWrite::writeLinearDim(
     double fontSize
 )
 {
+    m_stats.entityCounts["DIMENSION_LINEAR"]++;
     (*m_ssEntity) << "  0" << endl;
     (*m_ssEntity) << "DIMENSION" << endl;
     (*m_ssEntity) << "  5" << endl;
@@ -1636,6 +1651,7 @@ void CDxfWrite::writeAngularDim(
     const char* dimText
 )
 {
+    m_stats.entityCounts["DIMENSION_ANGULAR"]++;
     (*m_ssEntity) << "  0" << endl;
     (*m_ssEntity) << "DIMENSION" << endl;
     (*m_ssEntity) << "  5" << endl;
@@ -1725,6 +1741,7 @@ void CDxfWrite::writeRadialDim(
     const char* dimText
 )
 {
+    m_stats.entityCounts["DIMENSION_RADIAL"]++;
     (*m_ssEntity) << "  0" << endl;
     (*m_ssEntity) << "DIMENSION" << endl;
     (*m_ssEntity) << "  5" << endl;
@@ -1792,6 +1809,7 @@ void CDxfWrite::writeDiametricDim(
     const char* dimText
 )
 {
+    m_stats.entityCounts["DIMENSION_DIAMETRIC"]++;
     (*m_ssEntity) << "  0" << endl;
     (*m_ssEntity) << "DIMENSION" << endl;
     (*m_ssEntity) << "  5" << endl;
