@@ -5592,9 +5592,9 @@ def _export_object(obj, writer_proxy):
         elif obj_type == "LinearDimension":
             _write_dimension_entity(obj, writer_proxy)
         elif obj_type == "AngularDimension":
-            FreeCAD.Console.PrintWarning(
-                f"DXF export: angular dimensions are not yet supported, skipping '{obj.Name}'.\n"
-            )
+            reason = "angular dimensions are not yet supported"
+            FreeCAD.Console.PrintWarning(f"DXF export: {reason}, skipping '{obj.Name}'.\n")
+            writer_proxy.recordSkipped(obj_type, obj.Name, reason)
         elif obj_type == "AxisSystem":
             _write_arch_axis_entities(obj, writer_proxy)
         elif obj_type == "Space":
@@ -5612,6 +5612,7 @@ def _export_object(obj, writer_proxy):
 
     except Exception as e:
         FreeCAD.Console.PrintError(f"Error exporting object {obj.Name} of type {obj_type}: {e}\n")
+        writer_proxy.recordSkipped(str(obj_type), obj.Name, str(e))
 
 
 def _ensure_helpers_initialized():
