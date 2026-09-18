@@ -474,7 +474,7 @@ void PropertyEnumeration::setPyObject(PyObject* value)
         }
         return;
     }
-    else if (PyUnicode_Check(value)) {
+    if (PyUnicode_Check(value)) {
         std::string str = PyUnicode_AsUTF8(value);
         if (_enum.contains(str.c_str())) {
             aboutToSetValue();
@@ -487,7 +487,7 @@ void PropertyEnumeration::setPyObject(PyObject* value)
         }
         return;
     }
-    else if (PySequence_Check(value)) {
+    if (PySequence_Check(value)) {
 
         try {
             std::vector<std::string> values;
@@ -588,13 +588,11 @@ const boost::any PropertyEnumeration::getPathValue(const ObjectIdentifier& path)
         getPyPathValue(path, res);
         return pyObjectToAny(res, false);
     }
-    else if (p == ".String") {
+    if (p == ".String") {
         auto v = getValueAsString();
         return std::string(v ? v : "");
     }
-    else {
-        return getValue();
-    }
+    return getValue();
 }
 
 bool PropertyEnumeration::getPyPathValue(const ObjectIdentifier& path, Py::Object& r) const
@@ -1510,14 +1508,12 @@ double PropertyFloatList::getPyValue(PyObject* item) const
     if (PyFloat_Check(item)) {
         return PyFloat_AsDouble(item);
     }
-    else if (PyLong_Check(item)) {
+    if (PyLong_Check(item)) {
         return static_cast<double>(PyLong_AsLong(item));
     }
-    else {
-        std::string error = std::string("type in list must be float, not ");
-        error += item->ob_type->tp_name;
-        throw Base::TypeError(error);
-    }
+    std::string error = std::string("type in list must be float, not ");
+    error += item->ob_type->tp_name;
+    throw Base::TypeError(error);
 }
 
 void PropertyFloatList::Save(Base::Writer& writer) const
@@ -2475,14 +2471,12 @@ bool PropertyBoolList::getPyValue(PyObject* item) const
     if (PyBool_Check(item)) {
         return Base::asBoolean(item);
     }
-    else if (PyLong_Check(item)) {
+    if (PyLong_Check(item)) {
         return (PyLong_AsLong(item) ? true : false);
     }
-    else {
-        std::string error = std::string("type in list must be bool or int, not ");
-        error += item->ob_type->tp_name;
-        throw Base::TypeError(error);
-    }
+    std::string error = std::string("type in list must be bool or int, not ");
+    error += item->ob_type->tp_name;
+    throw Base::TypeError(error);
 }
 
 void PropertyBoolList::Save(Base::Writer& writer) const
@@ -3555,11 +3549,9 @@ Material PropertyMaterialList::getPyValue(PyObject* value) const
     if (PyObject_TypeCheck(value, &(MaterialPy::Type))) {
         return *static_cast<MaterialPy*>(value)->getMaterialPtr();
     }
-    else {
-        std::string error = std::string("type must be 'Material', not ");
-        error += value->ob_type->tp_name;
-        throw Base::TypeError(error);
-    }
+    std::string error = std::string("type must be 'Material', not ");
+    error += value->ob_type->tp_name;
+    throw Base::TypeError(error);
 }
 
 void PropertyMaterialList::Save(Base::Writer& writer) const

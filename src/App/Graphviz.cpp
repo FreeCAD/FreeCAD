@@ -87,7 +87,7 @@ static PropType getPropType(DocumentObject* obj, const std::string& propName)
     if (obj->isInputProperty(propName)) {
         return PropType::PROP_INPUT;
     }
-    else if (obj->isOutputProperty(propName)) {
+    if (obj->isOutputProperty(propName)) {
         return PropType::PROP_OUTPUT;
     }
     return PropType::PROP_REGULAR;
