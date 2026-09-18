@@ -727,11 +727,13 @@ private:
             throw Py::Exception();
         }
 
+        Py::Object statsResult = Py::None();
         try {
             Import::ImpExpDxfWrite writer(utf8_filename);
             writer.setOptions();
             writer.setVersion(version);
             writer.setPolyOverride(use_lwpolyline == Py_True);
+            writer.setTotalObjectsProcessed(static_cast<int>(PyList_Size(objectList)));
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
                 "User parameter:BaseApp/Preferences/Mod/Draft"
@@ -752,9 +754,14 @@ private:
 
             writer.init();
 
+            auto startTime = std::chrono::high_resolution_clock::now();
             Import::executeDxfExport(objectList, writer, helperModule);
+            auto endTime = std::chrono::high_resolution_clock::now();
+            std::chrono::duration<double> elapsed = endTime - startTime;
+            writer.setExportTime(elapsed.count());
 
             writer.endRun();
+            statsResult = writer.getStatsAsPyObject();
         }
         catch (const Base::Exception& e) {
             e.setPyException();
@@ -764,7 +771,7 @@ private:
             throw Py::Exception(Base::PyExc_FC_GeneralError, e.GetMessageString());
         }
 
-        return Py::None();
+        return statsResult;
     }
 
     Py::Object getDXFAci(const Py::Tuple& args)

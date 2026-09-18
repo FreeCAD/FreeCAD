@@ -3767,9 +3767,15 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
         else:
             import Import as DxfExporterModule
 
-        DxfExporterModule.exportDxf(
+        start_time = time.perf_counter()
+        stats = DxfExporterModule.exportDxf(
             obj=objectslist, name=filename, version=version, lwPoly=lwPoly, helpers=helpers
         )
+        end_time = time.perf_counter()
+
+        if stats:
+            reporter = DxfExportReporter(filename, stats, end_time - start_time)
+            reporter.report_to_console()
         return
 
     getDXFlibs()
@@ -4567,6 +4573,70 @@ class DxfImportReporter:
                     lines.append(f"  - {key}: {count} time(s). Examples: {details_str}, ...")
                 else:
                     lines.append(f"  - {key}: {count} time(s) at {details_str}")
+        else:
+            lines.append("  (none)")
+
+        lines.append("--- End of summary ---\n")
+        return "\n".join(lines)
+
+    def report_to_console(self):
+        """
+        Prints the formatted statistics string to the FreeCAD console.
+        """
+        output_string = self.to_console_string()
+        FCC.PrintMessage(output_string)
+
+
+class DxfExportReporter:
+    """Formats and reports statistics from a DXF export process."""
+
+    def __init__(self, filename, stats_dict, total_time=0.0):
+        self.filename = filename
+        self.stats = stats_dict
+        self.total_time = total_time
+
+    def to_console_string(self):
+        """
+        Formats the statistics into a human-readable string for console output.
+        """
+        if not self.stats:
+            return "DXF Export: no statistics were returned from the exporter.\n"
+
+        lines = ["\n--- DXF export summary ---"]
+        lines.append(f"Export of file: '{self.filename}'\n")
+
+        lines.append(f"DXF version: {self.stats.get('dxfVersion', 'Unknown')}")
+        lines.append(f"Objects processed: {self.stats.get('totalObjectsProcessed', 0)}")
+        lines.append(f"Layers written: {self.stats.get('layerCount', 0)}")
+        lines.append(f"Blocks written: {self.stats.get('blockCount', 0)}")
+        lines.append("")
+
+        lines.append("Performance:")
+        cpp_time = self.stats.get("exportTimeSeconds", 0.0)
+        lines.append(f"  - C++ export time: {cpp_time:.4f} seconds")
+        lines.append(f"  - Total export time: {self.total_time:.4f} seconds")
+        lines.append("")
+
+        lines.append("Entity counts:")
+        entities = self.stats.get("entityCounts", {})
+        total_written = 0
+        if entities:
+            for key, value in sorted(entities.items()):
+                lines.append(f"  - {key}: {value}")
+                total_written += value
+            lines.append("----------------------------")
+            lines.append(f"  Total entities written: {total_written}")
+        else:
+            lines.append("  (No entities recorded)")
+        lines.append("")
+
+        lines.append("Skipped objects:")
+        skipped = self.stats.get("skippedObjects", {})
+        if skipped:
+            for key, reasons in sorted(skipped.items()):
+                lines.append(f"  - {key}: {len(reasons)} time(s)")
+                for reason in reasons:
+                    lines.append(f"      {reason}")
         else:
             lines.append("  (none)")
 
