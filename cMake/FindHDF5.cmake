@@ -32,9 +32,11 @@ if(FREECAD_LIBPACK_USE AND (FREECAD_LIBPACK_VERSION VERSION_LESS "3.5.0"))
     message(FATAL_ERROR "HDF5 packaging is broken on LibPack versions before 3.5.0, please upgrade.")
 endif()
 
-# Try CMake config/NO_MODULE first, and then legacy FindHDF5.cmake failing that.
-set(_hdf5_find_mode "config")
-find_package(HDF5 ${_args} NO_MODULE)
+# Try legacy FindHDF5.cmake first.
+# Some HDF5 distributions only define the full set of hdf5:: namespaced targets there,
+# and the config/NO_MODULE files don't provide everything. Importing the latter first
+# can cause other packages like VTK to also get the incomplete/incorrect target set
+# as a result, and the import isn't retried because by then HDF5_FOUND is already set.
 if(NOT HDF5_FOUND)
     set(_cmake_module_path "${CMAKE_MODULE_PATH}")
     list(REMOVE_ITEM CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cMake")
@@ -42,11 +44,20 @@ if(NOT HDF5_FOUND)
     find_package(HDF5 ${_args})
     set(CMAKE_MODULE_PATH "${_cmake_module_path}")
 endif()
+if(NOT HDF5_FOUND)
+    set(_hdf5_find_mode "config")
+    find_package(HDF5 ${_args} NO_MODULE)
+endif()
 
 if(NOT HDF5_FOUND)
     return()
 endif()
 
+# Try and get a unique HDF5 target name irrespective of how it actually was packaged.
+# Strategy is to prefer shared library linkage, and only use static if that's not available.
+if((NOT TARGET hdf5::hdf5) AND (TARGET hdf5-shared))
+    add_library(hdf5::hdf5 ALIAS hdf5-shared)
+endif()
 if((NOT TARGET hdf5::hdf5) AND (DEFINED HDF5_INCLUDE_DIR))
     # FindHDF5 is old and doesn't create the modern CMake target, do it
     # ourselves to avoid having to handle this different case down the line.
@@ -59,6 +70,9 @@ if((NOT TARGET hdf5::hdf5) AND (DEFINED HDF5_INCLUDE_DIR))
         target_include_directories(hdf5::hdf5 INTERFACE ${HDF5_INCLUDE_DIR})
         target_link_libraries(hdf5::hdf5 INTERFACE ${${_hdf5_lib_var}})
     endif()
+endif()
+if((NOT TARGET hdf5::hdf5) AND (TARGET hdf5-static))
+    add_library(hdf5::hdf5 ALIAS hdf5-static)
 endif()
 if(NOT TARGET hdf5::hdf5)
     message(FATAL_ERROR "Imported HDF5 (${_hdf5_find_mode}) but no hdf5::hdf5 target exists")

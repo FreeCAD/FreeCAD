@@ -445,6 +445,13 @@ endfunction()
 function(debug_clean_fortify_source)
     foreach(_target IN LISTS ARGN)
         if(TARGET "${_target}")
+            # Resolve alias targets in case our FindHDF5.cmake found a packaged target whose
+            # name wasn't hdf5::hdf5 from the get go.
+            get_target_property(_hdf5_alias_target "${_target}" ALIASED_TARGET)
+            # Variable value will be "_hdf5_alias_target-NOTFOUND" if not an alias, which `if` considers falsy
+            if(_hdf5_alias_target)
+                set(_target "${_hdf5_alias_target}")
+            endif()
             get_target_property(_hdf5_compile_defs "${_target}" INTERFACE_COMPILE_DEFINITIONS)
             list(REMOVE_ITEM _hdf5_compile_defs "_FORTIFY_SOURCE=1" "_FORTIFY_SOURCE=2" "_FORTIFY_SOURCE=3")
             set_target_properties("${_target}" PROPERTIES INTERFACE_COMPILE_DEFINITIONS "${_hdf5_compile_defs}")
