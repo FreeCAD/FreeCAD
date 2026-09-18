@@ -356,6 +356,8 @@ protected:
     std::string m_saveBlockRecordTableHandle;
     std::string m_saveBlkRecordHandle;
     std::string m_currentBlock;
+    std::string m_currentDimBlockName;
+    int m_dimBlockCounter = 0;
     std::string m_dataDir;
     std::vector<std::string> m_layerList;
     std::vector<std::string> m_blockList;
@@ -516,6 +518,7 @@ public:
     void makeBlockRecordTableBody();
     void makeBlockSectionHead();
     void makeDimstyleTable();
+    void assignDimBlockName();
     void setColor(int aci)
     {
         m_currentColor = aci;
