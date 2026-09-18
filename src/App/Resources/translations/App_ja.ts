@@ -21,7 +21,7 @@
     <message>
       <location filename="../../Expression.cpp" line="587"/>
       <source>Null</source>
-      <translation type="unfinished">Null</translation>
+      <translation>Null</translation>
     </message>
   </context>
   <context>

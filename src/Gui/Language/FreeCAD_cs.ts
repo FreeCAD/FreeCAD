@@ -26,8 +26,8 @@
       <translation>Poloha</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3019"/>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3019"/>
       <source>Enum</source>
       <translation>Výčet</translation>
     </message>
@@ -134,9 +134,9 @@
     </message>
     <message>
       <location filename="../Transform.cpp" line="108"/>
-      <location filename="../ViewProviderAnnotation.cpp" line="514"/>
       <location filename="../TaskTransform.cpp" line="152"/>
       <location filename="../TaskTransform.cpp" line="1069"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="514"/>
       <source>Transform</source>
       <translation>Transformace</translation>
     </message>
@@ -146,8 +146,8 @@
       <translation>Přepnout prvky pole</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
       <location filename="../TaskView/TaskImage.cpp" line="342"/>
+      <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
       <source>Edit image</source>
       <translation>Upravit obrázek</translation>
     </message>
@@ -167,7 +167,7 @@
       <translation>Přepnout potlačení</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="426"/>
+      <location filename="../CommandFeat.cpp" line="390"/>
       <source>Skip recomputes</source>
       <translation>Přeskočit přepočítání</translation>
     </message>
@@ -8885,8 +8885,8 @@ Zvolte 'Přerušit' pro zrušení</translation>
       <translation>Přetažení se nezdařilo</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3025"/>
       <location filename="../MainWindow.cpp" line="1015"/>
+      <location filename="../ViewProviderLink.cpp" line="3025"/>
       <source>Apply to all</source>
       <translation>Použít na všechny</translation>
     </message>
@@ -9189,14 +9189,14 @@ na aktuální kopii budou ztraceny.
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="301"/>
-      <source>All Files</source>
-      <translation>Všechny soubory</translation>
-    </message>
-    <message>
       <location filename="../ViewProviderImagePlane.cpp" line="171"/>
       <source>Edit Image Plane</source>
       <translation>Upravit rovinu obrazu</translation>
+    </message>
+    <message>
+      <location filename="../FileDialog.cpp" line="301"/>
+      <source>All Files</source>
+      <translation>Všechny soubory</translation>
     </message>
   </context>
   <context>
@@ -9686,7 +9686,7 @@ na aktuální kopii budou ztraceny.
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="300"/>
-      <source>Sends the selected object to the Python console</source>
+      <source>Sends the selected objects to the Python console</source>
       <translation>Odelat vybraný objekt do konzoly Pythonu</translation>
     </message>
   </context>
@@ -13231,12 +13231,12 @@ Pokračovat?</translation>
   <context>
     <name>StdCmdToggleSkipRecompute</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="399"/>
+      <location filename="../CommandFeat.cpp" line="363"/>
       <source>Skip Recomputes</source>
       <translation>Přeskočit přepočítání</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="401"/>
+      <location filename="../CommandFeat.cpp" line="365"/>
       <source>Enables or disables the recomputations of the document</source>
       <translation>Povolí nebo zakáže přepočítání dokumentu</translation>
     </message>
@@ -14720,14 +14720,6 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     </message>
   </context>
   <context>
-    <name>Gui::TaskCommandLinkDialog</name>
-    <message>
-      <location filename="../TaskCommandLink.ui" line="14"/>
-      <source>Insert</source>
-      <translation>Vložit</translation>
-    </message>
-  </context>
-  <context>
     <name>FileFormat</name>
     <message>
       <location filename="../FreeCADGuiInit.py" line="567"/>
@@ -14736,46 +14728,11 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgDocumentObject</name>
+    <name>Gui::TaskCommandLinkDialog</name>
     <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="14"/>
-      <source>Object</source>
-      <translation>Objekt</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="46"/>
-      <source>Filter by type</source>
-      <translation>Filtrovat podle typu</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="53"/>
-      <source>Synchronizes the 3D view selection with the full object hierarchy</source>
-      <translation>Synchronizuje zobrazení 3D pohledu s plnou hierarchií objektů</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="56"/>
-      <source>Sync sub-object selection</source>
-      <translation>Synchronizovat výběr podobjektů</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="88"/>
-      <source>Search</source>
-      <translation>Hledat</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="95"/>
-      <source>A search pattern to filter the results above</source>
-      <translation>Vyhledávací vzor pro filtrování výsledků výše</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.cpp" line="118"/>
-      <source>Reset</source>
-      <translation>Reset</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.cpp" line="119"/>
-      <source>Clear</source>
-      <translation>Vyčistit</translation>
+      <location filename="../TaskCommandLink.ui" line="14"/>
+      <source>Insert</source>
+      <translation>Vložit</translation>
     </message>
   </context>
   <context>
@@ -14881,6 +14838,75 @@ prodleva, bude považováno za sekvenci klávesové zkratky 'F, F'.</translation
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgDocumentObject</name>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="14"/>
+      <source>Object</source>
+      <translation>Objekt</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="46"/>
+      <source>Filter by type</source>
+      <translation>Filtrovat podle typu</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="53"/>
+      <source>Synchronizes the 3D view selection with the full object hierarchy</source>
+      <translation>Synchronizuje zobrazení 3D pohledu s plnou hierarchií objektů</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="56"/>
+      <source>Sync sub-object selection</source>
+      <translation>Synchronizovat výběr podobjektů</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="88"/>
+      <source>Search</source>
+      <translation>Hledat</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="95"/>
+      <source>A search pattern to filter the results above</source>
+      <translation>Vyhledávací vzor pro filtrování výsledků výše</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.cpp" line="118"/>
+      <source>Reset</source>
+      <translation>Reset</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.cpp" line="119"/>
+      <source>Clear</source>
+      <translation>Vyčistit</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleBottomPanels</name>
+    <message>
+      <location filename="../CommandView.cpp" line="3861"/>
+      <source>Toggle Bottom Panels</source>
+      <translation>Přepnout spodní panely</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="3862"/>
+      <source>Toggles the bottom dock panels</source>
+      <translation>Přepne spodní dokované panely</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleSuppress</name>
+    <message>
+      <location filename="../CommandFeat.cpp" line="240"/>
+      <source>Toggle Suppressed</source>
+      <translation>Přepnout potlačení</translation>
+    </message>
+    <message>
+      <location filename="../CommandFeat.cpp" line="242"/>
+      <source>Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</source>
+      <translation>Přepíná stav potlačení vybraných objektů. Potlačený objekt se chová, jako by byl smazán.</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdHelpGroup</name>
     <message>
       <location filename="../CommandStd.cpp" line="322"/>
@@ -14909,46 +14935,6 @@ prodleva, bude považováno za sekvenci klávesové zkratky 'F, F'.</translation
       <location filename="../CommandStd.cpp" line="1026"/>
       <source>Creates a new annotation label at the picked location in the 3D view</source>
       <translation>Vytvoří nový popisek poznámky na vybraném místě ve 3D pohledu</translation>
-    </message>
-  </context>
-  <context>
-    <name>FileDialog</name>
-    <message>
-      <location filename="../FileDialog.cpp" line="578"/>
-      <source>Save As</source>
-      <translation>Uložit jako</translation>
-    </message>
-    <message>
-      <location filename="../FileDialog.cpp" line="713"/>
-      <location filename="../FileDialog.cpp" line="808"/>
-      <source>Open</source>
-      <translation>Otevřít</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdToggleBottomPanels</name>
-    <message>
-      <location filename="../CommandView.cpp" line="3861"/>
-      <source>Toggle Bottom Panels</source>
-      <translation>Přepnout spodní panely</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="3862"/>
-      <source>Toggles the bottom dock panels</source>
-      <translation>Přepne spodní dokované panely</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdToggleSuppress</name>
-    <message>
-      <location filename="../CommandFeat.cpp" line="240"/>
-      <source>Toggle Suppressed</source>
-      <translation>Přepnout potlačení</translation>
-    </message>
-    <message>
-      <location filename="../CommandFeat.cpp" line="242"/>
-      <source>Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</source>
-      <translation>Přepíná stav potlačení vybraných objektů. Potlačený objekt se chová, jako by byl smazán.</translation>
     </message>
   </context>
   <context>
@@ -14988,6 +14974,28 @@ prodleva, bude považováno za sekvenci klávesové zkratky 'F, F'.</translation
       <location filename="../Widgets.cpp" line="1913"/>
       <source>Value</source>
       <translation>Hodnota</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileDialog</name>
+    <message>
+      <location filename="../FileDialog.cpp" line="578"/>
+      <source>Save As</source>
+      <translation>Uložit jako</translation>
+    </message>
+    <message>
+      <location filename="../FileDialog.cpp" line="713"/>
+      <location filename="../FileDialog.cpp" line="808"/>
+      <source>Open</source>
+      <translation>Otevřít</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui</name>
+    <message>
+      <location filename="../Dialogs/DlgThemeEditor.cpp" line="284"/>
+      <source>New parameter…</source>
+      <translation>Nový parametr…</translation>
     </message>
   </context>
   <context>
@@ -15062,14 +15070,6 @@ prodleva, bude považováno za sekvenci klávesové zkratky 'F, F'.</translation
       <location filename="../propertyeditor/PropertyItem.cpp" line="4933"/>
       <source>Map</source>
       <translation>Mapa</translation>
-    </message>
-  </context>
-  <context>
-    <name>Gui</name>
-    <message>
-      <location filename="../Dialogs/DlgThemeEditor.cpp" line="284"/>
-      <source>New parameter…</source>
-      <translation>Nový parametr…</translation>
     </message>
   </context>
 </TS>

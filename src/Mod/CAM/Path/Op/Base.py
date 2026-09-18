@@ -442,13 +442,17 @@ class ObjectOp(object):
         self.commandlist = None
         self.horizFeed = None
         self.horizRapid = None
+        self.vertFeed = None
+        self.vertRapid = None
+        self.leadInFeed = None
+        self.leadOutFeed = None
+        self.rampFeed = None
+        self.noEngagementFeed = None
         self.job = None
         self.model = None
         self.radius = None
         self.stock = None
         self.tool = None
-        self.vertFeed = None
-        self.vertRapid = None
         self.addNewProps = None
         self.isBaseValid = True
 
@@ -1126,6 +1130,10 @@ class ObjectOp(object):
                 self.horizFeed = tc.HorizFeed.Value
                 self.vertRapid = tc.VertRapid.Value
                 self.horizRapid = tc.HorizRapid.Value
+                self.leadInFeed = tc.LeadInFeed.Value
+                self.leadOutFeed = tc.LeadOutFeed.Value
+                self.rampFeed = tc.RampFeed.Value
+                self.noEngagementFeed = tc.NoEngagementFeed.Value
                 tool = tc.Proxy.getTool(tc)
                 if not tool or float(tool.Diameter) == 0:
                     Path.Log.error(
@@ -1184,7 +1192,7 @@ class ObjectOp(object):
                 self.stock = transform_shape(self.stock)
 
         try:
-            result = self.opExecute(obj)
+            self.opExecute(obj)
         finally:
             # Always restore originals, even if opExecute raises
             self.model = saved_model
@@ -1245,7 +1253,6 @@ class ObjectOp(object):
         obj.Path = path
         obj.CycleTime = getCycleTimeEstimate(obj)
         self.job.Proxy.getCycleTime()
-        return result
 
     def addBase(self, obj, base, sub):
         Path.Log.track(obj, base, sub)

@@ -181,6 +181,7 @@ SET(Document_CPP_SRCS
     DocumentSettings.cpp
     DocumentSettingsPyImp.cpp
     Expression.cpp
+    QuantityInput.cpp
     ExpressionTokenizer.cpp
     FeaturePython.cpp
     FeatureTest.cpp
@@ -231,6 +232,7 @@ SET(Document_HPP_SRCS
     DocumentSettings.h
     Expression.h
     ExpressionParser.h
+    QuantityInput.h
     ExpressionTokenizer.h
     ExpressionVisitors.h
     FeatureCustom.h
@@ -404,7 +406,7 @@ target_compile_warn_error(FreeCADApp)
 
 add_dependencies(FreeCADApp fc_version)
 
-SET_BIN_DIR(FreeCADApp FreeCADApp)
+SET_BIN_DIR(FreeCADApp)
 
 if(WIN32)
     INSTALL(TARGETS FreeCADApp

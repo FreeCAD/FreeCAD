@@ -4,44 +4,44 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="82"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="84"/>
       <source>The center point of the helix' start; derived from the reference axis.</source>
       <translation>எலிக்ச் தொடக்கத்தின் மையப் புள்ளி; குறிப்பு அச்சில் இருந்து பெறப்பட்டது.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="92"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="94"/>
       <source>The helix' direction; derived from the reference axis.</source>
       <translation>எலிக்ச் திசை; குறிப்பு அச்சில் இருந்து பெறப்பட்டது.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="99"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="101"/>
       <source>The reference axis of the helix.</source>
       <translation>எலிக்சின் குறிப்பு அச்சு.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="106"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="108"/>
       <source>The helix input mode specifies which properties are set by the user.
 Dependent properties are then calculated.</source>
       <translation>எலிக்ச் உள்ளீட்டு பயன்முறையானது பயனரால் அமைக்கப்படும் பண்புகளைக் குறிப்பிடுகிறது. 
 சார்பு பண்புகள் பின்னர் கணக்கிடப்படுகின்றன.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="118"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="120"/>
       <source>The axial distance between two turns.</source>
       <translation>இரண்டு திருப்பங்களுக்கு இடையிலான அச்சு தூரம்.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="125"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="127"/>
       <source>The height of the helix' path, not accounting for the extent of the profile.</source>
       <translation>எலிக்ச் பாதையின் உயரம், சுயவிவரத்தின் அளவைக் கணக்கிடவில்லை.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="135"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="137"/>
       <source>The number of turns in the helix.</source>
       <translation>எலிக்சில் திருப்பங்களின் எண்ணிக்கை.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="143"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="145"/>
       <source>The angle of the cone that forms a hull around the helix.
 Non-zero values turn the helix into a conical spiral.
 Positive values make the radius grow, negative shrinks.</source>
@@ -50,38 +50,38 @@ Positive values make the radius grow, negative shrinks.</source>
 நேர்மறை மதிப்புகள் ஆரம் வளர செய்கிறது, எதிர்மறை சுருங்குகிறது.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="156"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="158"/>
       <source>The growth of the helix' radius per turn.
 Non-zero values turn the helix into a conical spiral.</source>
       <translation>ஒரு முறைக்கு எலிக்ச் ஆரம் வளர்ச்சி. 
 பூச்சியமற்ற மதிப்புகள் எலிக்சை ஒரு கூம்பு சுழலாக மாற்றும்.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="167"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="169"/>
       <source>Sets the turning direction to left handed,
 i.e. counter-clockwise when moving along its axis.</source>
       <translation>திரும்பும் திசையை இடது கைக்கு அமைக்கிறது, 
 அதாவது அதன் அச்சில் நகரும் போது எதிரெதிர் திசையில்.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="178"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="180"/>
       <source>Determines whether the helix points in the opposite direction of the axis.</source>
       <translation>எலிக்ச் அச்சின் எதிர் திசையில் சுட்டிக்காட்டுகிறதா என்பதை தீர்மானிக்கிறது.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="188"/>
-      <source>If set, the result will be the intersection of the profile and the preexisting body.</source>
-      <translation>அமைக்கப்பட்டால், இதன் விளைவாக சுயவிவரம் மற்றும் ஏற்கனவே இருக்கும் உடலின் குறுக்குவெட்டு இருக்கும்.</translation>
+      <location filename="../../../App/FeatureHelix.cpp" line="210"/>
+      <source>deprecated, do not use</source>
+      <translation type="unfinished">deprecated, do not use</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="198"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="190"/>
       <source>If false, the tool will propose an initial value for the pitch based on the profile bounding box,
 so that self intersection is avoided.</source>
       <translation>தவறு எனில், சுயவிவர எல்லைப் பெட்டியின் அடிப்படையில் சுருதிக்கான ஆரம்ப மதிப்பை கருவி முன்மொழியும், 
 அதனால் தன்வய குறுக்குவெட்டு தவிர்க்கப்படுகிறது.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="210"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="202"/>
       <source>Fusion Tolerance for the Helix, increase if helical shape does not merge nicely with part.</source>
       <translation>எலிக்சிற்கான ஃப்யூசன் சகிப்புத்தன்மை, எலிகல் வடிவம் பகுதியுடன் நன்றாக ஒன்றிணைக்கவில்லை என்றால் அதிகரிக்கும்.</translation>
     </message>
@@ -134,17 +134,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignAdditiveHelix</name>
     <message>
-      <location filename="../../Command.cpp" line="1699"/>
+      <location filename="../../Command.cpp" line="1700"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1700"/>
+      <location filename="../../Command.cpp" line="1701"/>
       <source>Additive Helix</source>
       <translation>சேர்க்கை எலிக்ச்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1701"/>
+      <location filename="../../Command.cpp" line="1702"/>
       <source>Sweeps the selected sketch or profile along a helix and adds it to the body</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட ச்கெட்ச் அல்லது சுயவிவரத்தை ஒரு எலிக்ச் மூலம் ச்வீப் செய்து உடலில் சேர்க்கிறது</translation>
     </message>
@@ -152,17 +152,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1601"/>
+      <location filename="../../Command.cpp" line="1602"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1602"/>
+      <location filename="../../Command.cpp" line="1603"/>
       <source>Additive Loft</source>
       <translation>சேர்க்கை மாடி</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1603"/>
+      <location filename="../../Command.cpp" line="1604"/>
       <source>Lofts the selected sketch or profile through one or more sections and adds it to the body</source>
       <translation type="unfinished">Lofts the selected sketch or profile through one or more sections and adds it to the body</translation>
     </message>
@@ -170,17 +170,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignAdditivePipe</name>
     <message>
-      <location filename="../../Command.cpp" line="1501"/>
+      <location filename="../../Command.cpp" line="1502"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../Command.cpp" line="1503"/>
       <source>Additive Pipe</source>
       <translation>சேர்க்கை குழாய்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1503"/>
+      <location filename="../../Command.cpp" line="1504"/>
       <source>Sweeps the selected sketch or profile along a path and adds it to the body</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட ச்கெட்ச் அல்லது சுயவிவரத்தை ஒரு பாதையில் துடைத்து, அதை உடலில் சேர்க்கிறது</translation>
     </message>
@@ -206,17 +206,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2621"/>
+      <location filename="../../Command.cpp" line="2710"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2622"/>
+      <location filename="../../Command.cpp" line="2711"/>
       <source>Boolean Operation</source>
       <translation>பூலியன் ஆபரேசன்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2623"/>
+      <location filename="../../Command.cpp" line="2712"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருள்கள் மற்றும் செயலில் உள்ள உடலுடன் பூலியன் செயல்பாடுகளைப் பயன்படுத்துகிறது</translation>
     </message>
@@ -224,17 +224,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignCS</name>
     <message>
-      <location filename="../../Command.cpp" line="305"/>
+      <location filename="../../Command.cpp" line="306"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="306"/>
+      <location filename="../../Command.cpp" line="307"/>
       <source>Local Coordinate System</source>
       <translation>உள்ளக ஒருங்கிணைப்பு அமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="307"/>
+      <location filename="../../Command.cpp" line="308"/>
       <source>Creates a new local coordinate system</source>
       <translation>புதிய உள்ளக ஒருங்கிணைப்பு அமைப்பை உருவாக்குகிறது</translation>
     </message>
@@ -242,17 +242,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="2027"/>
+      <location filename="../../Command.cpp" line="2028"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2028"/>
+      <location filename="../../Command.cpp" line="2029"/>
       <source>Chamfer</source>
       <translation>முளைமுழுக்கல்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2029"/>
+      <location filename="../../Command.cpp" line="2030"/>
       <source>Applies a chamfer to the selected edges or faces</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட விளிம்புகள் அல்லது முகங்களுக்கு சேம்பரைப் பயன்படுத்துகிறது</translation>
     </message>
@@ -260,17 +260,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignClone</name>
     <message>
-      <location filename="../../Command.cpp" line="515"/>
+      <location filename="../../Command.cpp" line="516"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="516"/>
+      <location filename="../../Command.cpp" line="517"/>
       <source>Clone</source>
       <translation>நகலி</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="517"/>
+      <location filename="../../Command.cpp" line="518"/>
       <source>Copies a solid object parametrically as the base feature of a new body</source>
       <translation>ஒரு புதிய உடலின் அடிப்படை அம்சமாக ஒரு திடமான பொருளை அளவுருவாக நகலெடுக்கிறது</translation>
     </message>
@@ -278,17 +278,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignDraft</name>
     <message>
-      <location filename="../../Command.cpp" line="2056"/>
+      <location filename="../../Command.cpp" line="2145"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2057"/>
+      <location filename="../../Command.cpp" line="2146"/>
       <source>Draft</source>
       <translation>வரைவு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2058"/>
+      <location filename="../../Command.cpp" line="2147"/>
       <source>Applies a draft to the selected faces</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட முகங்களுக்கு வரைவைப் பயன்படுத்துகிறது</translation>
     </message>
@@ -314,17 +314,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="1999"/>
+      <location filename="../../Command.cpp" line="2000"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2000"/>
+      <location filename="../../Command.cpp" line="2001"/>
       <source>Fillet</source>
       <translation>ஃபில்லட்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2001"/>
+      <location filename="../../Command.cpp" line="2002"/>
       <source>Applies a fillet to the selected edges or faces</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட விளிம்புகள் அல்லது முகங்களுக்கு ஃபில்லட்டைப் பயன்படுத்துகிறது</translation>
     </message>
@@ -332,17 +332,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignGroove</name>
     <message>
-      <location filename="../../Command.cpp" line="1431"/>
+      <location filename="../../Command.cpp" line="1432"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1432"/>
+      <location filename="../../Command.cpp" line="1433"/>
       <source>Groove</source>
       <translation>பள்ளம்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1433"/>
+      <location filename="../../Command.cpp" line="1434"/>
       <source>Revolves the sketch or profile around a line or axis and removes it from the body</source>
       <translation>ஒரு கோடு அல்லது அச்சில் ச்கெட்ச் அல்லது சுயவிவரத்தை சுழற்றுகிறது மற்றும் அதை உடலில் இருந்து நீக்குகிறது</translation>
     </message>
@@ -350,17 +350,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignHole</name>
     <message>
-      <location filename="../../Command.cpp" line="1324"/>
+      <location filename="../../Command.cpp" line="1325"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1325"/>
+      <location filename="../../Command.cpp" line="1326"/>
       <source>Hole</source>
       <translation>துளை</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1327"/>
+      <location filename="../../Command.cpp" line="1328"/>
       <source>Creates holes in the active body at the center points of circles or arcs of the selected sketch or profile</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட ச்கெட்ச் அல்லது சுயவிவரத்தின் வட்டங்கள் அல்லது வளைவுகளின் மையப் புள்ளிகளில் செயலில் உள்ள உடலில் துளைகளை உருவாக்குகிறது</translation>
     </message>
@@ -368,17 +368,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignLine</name>
     <message>
-      <location filename="../../Command.cpp" line="245"/>
+      <location filename="../../Command.cpp" line="246"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="246"/>
+      <location filename="../../Command.cpp" line="247"/>
       <source>Datum Line</source>
       <translation>டேட்டம் லைன்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="247"/>
+      <location filename="../../Command.cpp" line="248"/>
       <source>Creates a new datum line</source>
       <translation>புதிய டேட்டம் லைனை உருவாக்குகிறது</translation>
     </message>
@@ -386,17 +386,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2311"/>
+      <location filename="../../Command.cpp" line="2400"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2312"/>
+      <location filename="../../Command.cpp" line="2401"/>
       <source>Linear Pattern</source>
       <translation>நேரியல் முறை</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2313"/>
+      <location filename="../../Command.cpp" line="2402"/>
       <source>Duplicates the selected features or the active body in a linear pattern</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட நற்பொருத்தங்கள் அல்லது செயலில் உள்ள உடலை நேரியல் வடிவத்தில் நகலெடுக்கிறது</translation>
     </message>
@@ -422,17 +422,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignMirrored</name>
     <message>
-      <location filename="../../Command.cpp" line="2254"/>
+      <location filename="../../Command.cpp" line="2343"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2255"/>
+      <location filename="../../Command.cpp" line="2344"/>
       <source>Mirror</source>
       <translation>கண்ணாடி</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2256"/>
+      <location filename="../../Command.cpp" line="2345"/>
       <source>Mirrors the selected features or active body</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட நற்பொருத்தங்கள் அல்லது செயலில் உள்ள உடலைப் பிரதிபலிக்கிறது</translation>
     </message>
@@ -494,17 +494,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2490"/>
+      <location filename="../../Command.cpp" line="2579"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2491"/>
+      <location filename="../../Command.cpp" line="2580"/>
       <source>Multi-Transform</source>
       <translation>பல உருமாற்றம்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2492"/>
+      <location filename="../../Command.cpp" line="2581"/>
       <source>Applies multiple transformations to the selected features or active body</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட நற்பொருத்தங்கள் அல்லது செயலில் உள்ள உடலுக்கு பல மாற்றங்களைப் பயன்படுத்துகிறது</translation>
     </message>
@@ -512,17 +512,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="596"/>
+      <location filename="../../Command.cpp" line="597"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="597"/>
+      <location filename="../../Command.cpp" line="598"/>
       <source>New Sketch</source>
       <translation>புதிய ச்கெட்ச்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="598"/>
+      <location filename="../../Command.cpp" line="599"/>
       <source>Creates a new sketch</source>
       <translation>புதிய ஓவியத்தை உருவாக்குகிறது</translation>
     </message>
@@ -530,17 +530,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignPad</name>
     <message>
-      <location filename="../../Command.cpp" line="1266"/>
+      <location filename="../../Command.cpp" line="1267"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1267"/>
+      <location filename="../../Command.cpp" line="1268"/>
       <source>Pad</source>
       <translation>நிரப்பிடம்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1268"/>
+      <location filename="../../Command.cpp" line="1269"/>
       <source>Extrudes the selected sketch or profile and adds it to the body</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட ச்கெட்ச் அல்லது சுயவிவரத்தை நீட்டி, அதை உடலில் சேர்க்கிறது</translation>
     </message>
@@ -548,17 +548,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="215"/>
+      <location filename="../../Command.cpp" line="216"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="216"/>
+      <location filename="../../Command.cpp" line="217"/>
       <source>Datum Plane</source>
       <translation>டேட்டம் வானூர்தி</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="217"/>
+      <location filename="../../Command.cpp" line="218"/>
       <source>Creates a new datum plane</source>
       <translation>புதிய டேட்டம் விமானத்தை உருவாக்குகிறது</translation>
     </message>
@@ -566,17 +566,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
-      <location filename="../../Command.cpp" line="1295"/>
+      <location filename="../../Command.cpp" line="1296"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1296"/>
+      <location filename="../../Command.cpp" line="1297"/>
       <source>Pocket</source>
       <translation>பாக்கெட்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1297"/>
+      <location filename="../../Command.cpp" line="1298"/>
       <source>Extrudes the selected sketch or profile and removes it from the body</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட ச்கெட்ச் அல்லது சுயவிவரத்தை வெளியேற்றி, அதை உடலில் இருந்து நீக்குகிறது</translation>
     </message>
@@ -584,17 +584,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignPoint</name>
     <message>
-      <location filename="../../Command.cpp" line="275"/>
+      <location filename="../../Command.cpp" line="276"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="276"/>
+      <location filename="../../Command.cpp" line="277"/>
       <source>Datum Point</source>
       <translation>டேட்டம் பாயிண்ட்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="277"/>
+      <location filename="../../Command.cpp" line="278"/>
       <source>Creates a new datum point</source>
       <translation>புதிய தரவு புள்ளியை உருவாக்குகிறது</translation>
     </message>
@@ -602,17 +602,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2385"/>
+      <location filename="../../Command.cpp" line="2474"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2386"/>
+      <location filename="../../Command.cpp" line="2475"/>
       <source>Polar Pattern</source>
       <translation>போலார் பேட்டர்ன்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2387"/>
+      <location filename="../../Command.cpp" line="2476"/>
       <source>Duplicates the selected features or the active body in a circular pattern</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட அம்சங்களை அல்லது செயலில் உள்ள உடலை வட்ட வடிவில் நகலெடுக்கிறது</translation>
     </message>
@@ -620,17 +620,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignRevolution</name>
     <message>
-      <location filename="../../Command.cpp" line="1369"/>
+      <location filename="../../Command.cpp" line="1370"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1370"/>
+      <location filename="../../Command.cpp" line="1371"/>
       <source>Revolve</source>
       <translation>சுழலும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1371"/>
+      <location filename="../../Command.cpp" line="1372"/>
       <source>Revolves the selected sketch or profile around a line or axis and adds it to the body</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட ச்கெட்ச் அல்லது சுயவிவரத்தை ஒரு கோடு அல்லது அச்சில் சுழற்றி அதை உடலில் சேர்க்கிறது</translation>
     </message>
@@ -638,17 +638,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2447"/>
+      <location filename="../../Command.cpp" line="2536"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2448"/>
+      <location filename="../../Command.cpp" line="2537"/>
       <source>Scale</source>
       <translation>அளவுகோல்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2449"/>
+      <location filename="../../Command.cpp" line="2538"/>
       <source>Scales the selected features or the active body</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட அம்சங்களை அல்லது செயலில் உள்ள உடலை அளவிடுகிறது</translation>
     </message>
@@ -656,17 +656,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignShapeBinder</name>
     <message>
-      <location filename="../../Command.cpp" line="339"/>
+      <location filename="../../Command.cpp" line="340"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="340"/>
+      <location filename="../../Command.cpp" line="341"/>
       <source>Shape Binder</source>
       <translation>வடிவ பைண்டர்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="341"/>
+      <location filename="../../Command.cpp" line="342"/>
       <source>Creates a new shape binder</source>
       <translation>புதிய வடிவ பைண்டரை உருவாக்குகிறது</translation>
     </message>
@@ -674,17 +674,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignSubShapeBinder</name>
     <message>
-      <location filename="../../Command.cpp" line="409"/>
+      <location filename="../../Command.cpp" line="410"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="410"/>
+      <location filename="../../Command.cpp" line="411"/>
       <source>Sub-Shape Binder</source>
       <translation>துணை வடிவ பைண்டர்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="411"/>
+      <location filename="../../Command.cpp" line="412"/>
       <source>Creates a reference to geometry from one or more objects, allowing it to be used inside or outside a body. It tracks relative placements, supports multiple geometry types (solids, faces, edges, vertices), and can work with objects in the same or external documents.</source>
       <translation>ஒன்று அல்லது அதற்கு மேற்பட்ட பொருட்களிலிருந்து வடிவவியலுக்கு ஒரு குறிப்பை உருவாக்குகிறது, இது உடலின் உள்ளே அல்லது வெளியே பயன்படுத்த அனுமதிக்கிறது. இது தொடர்புடைய இடங்களை கண்காணிக்கிறது, பல வடிவியல் வகைகளை (திடங்கள், முகங்கள், விளிம்புகள், செங்குத்துகள்) ஆதரிக்கிறது மற்றும் அதே அல்லது வெளிப்புற ஆவணங்களில் உள்ள பொருட்களுடன் வேலை செய்ய முடியும்.</translation>
     </message>
@@ -692,17 +692,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignSubtractiveHelix</name>
     <message>
-      <location filename="../../Command.cpp" line="1783"/>
+      <location filename="../../Command.cpp" line="1784"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1784"/>
+      <location filename="../../Command.cpp" line="1785"/>
       <source>Subtractive Helix</source>
       <translation>கழித்தல் எலிக்ச்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1785"/>
+      <location filename="../../Command.cpp" line="1786"/>
       <source>Sweeps the selected sketch or profile along a helix and removes it from the body</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட ச்கெட்ச் அல்லது சுயவிவரத்தை ஒரு எலிக்ச் மூலம் துடைத்து உடலில் இருந்து அகற்றும்</translation>
     </message>
@@ -710,17 +710,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1651"/>
+      <location filename="../../Command.cpp" line="1652"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1652"/>
+      <location filename="../../Command.cpp" line="1653"/>
       <source>Subtractive Loft</source>
       <translation>கழித்தல் மாடி</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1654"/>
+      <location filename="../../Command.cpp" line="1655"/>
       <source>Lofts the selected sketch or profile through one or more sections and removes it from the body</source>
       <translation type="unfinished">Lofts the selected sketch or profile through one or more sections and removes it from the body</translation>
     </message>
@@ -728,17 +728,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignSubtractivePipe</name>
     <message>
-      <location filename="../../Command.cpp" line="1551"/>
+      <location filename="../../Command.cpp" line="1552"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1552"/>
+      <location filename="../../Command.cpp" line="1553"/>
       <source>Subtractive Pipe</source>
       <translation>கழித்தல் குழாய்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1553"/>
+      <location filename="../../Command.cpp" line="1554"/>
       <source>Sweeps the selected sketch or profile along a path and removes it from the body</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட ச்கெட்ச் அல்லது சுயவிவரத்தை ஒரு பாதையில் துடைத்து உடலில் இருந்து அகற்றும்</translation>
     </message>
@@ -746,17 +746,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="2126"/>
+      <location filename="../../Command.cpp" line="2215"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2127"/>
+      <location filename="../../Command.cpp" line="2216"/>
       <source>Thickness</source>
       <translation>தடிமன்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2128"/>
+      <location filename="../../Command.cpp" line="2217"/>
       <source>Applies thickness and removes the selected faces</source>
       <translation>தடிமனைப் பயன்படுத்துகிறது மற்றும் தேர்ந்தெடுக்கப்பட்ட முகங்களை நீக்குகிறது</translation>
     </message>
@@ -880,32 +880,32 @@ so that self intersection is avoided.</source>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="361"/>
+      <location filename="../../Command.cpp" line="362"/>
       <source>Edit Shape Binder</source>
       <translation>வடிவ பைண்டரைத் திருத்து</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="372"/>
+      <location filename="../../Command.cpp" line="373"/>
       <source>Create Shape Binder</source>
       <translation>வடிவ பைண்டரை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="465"/>
+      <location filename="../../Command.cpp" line="466"/>
       <source>Create Sub-Shape Binder</source>
       <translation>துணை வடிவ பைண்டரை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="535"/>
+      <location filename="../../Command.cpp" line="536"/>
       <source>Create Clone</source>
       <translation>நகலியை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1150"/>
+      <location filename="../../Command.cpp" line="1151"/>
       <source>Make Copy</source>
       <translation>நகலெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2545"/>
+      <location filename="../../Command.cpp" line="2634"/>
       <source>Convert to Multi-Transform feature</source>
       <translation>மல்டி-ட்ரான்ச்ஃபார்ம் அம்சத்திற்கு மாற்றவும்</translation>
     </message>
@@ -926,13 +926,13 @@ so that self intersection is avoided.</source>
       <translation>புதிய ச்கெட்ச்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2642"/>
+      <location filename="../../Command.cpp" line="2731"/>
       <source>Create Boolean</source>
       <translation>பூலியன் உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <location filename="../../CommandBody.cpp" line="225"/>
+      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <source>Add a Body</source>
       <translation>ஒரு உடலைச் சேர்க்கவும்</translation>
     </message>
@@ -3388,14 +3388,14 @@ measured along the specified direction</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="173"/>
+      <location filename="../../Command.cpp" line="174"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருட்களுக்கு ஏற்ற இணைப்பு முறைகள் எதுவும் இல்லை. வேறு எதையாவது தேர்ந்தெடுக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="186"/>
-      <location filename="../../Command.cpp" line="194"/>
-      <location filename="../../Command.cpp" line="201"/>
+      <location filename="../../Command.cpp" line="187"/>
+      <location filename="../../Command.cpp" line="195"/>
+      <location filename="../../Command.cpp" line="202"/>
       <source>Error</source>
       <translation>பிழை</translation>
     </message>
@@ -3441,106 +3441,138 @@ measured along the specified direction</source>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../Command.cpp" line="1179"/>
       <location filename="../../ViewProvider.cpp" line="137"/>
-      <location filename="../../SketchWorkflow.cpp" line="763"/>
-      <location filename="../../Command.cpp" line="1178"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
+      <location filename="../../SketchWorkflow.cpp" line="763"/>
       <source>A dialog is already open in the task panel</source>
       <translation>பணிப் பலகத்தில் ஏற்கனவே ஒரு உரையாடல் திறக்கப்பட்டுள்ளது</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1032"/>
+      <location filename="../../Command.cpp" line="1033"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
       <translation>இதிலிருந்து கழிக்க திடம் இல்லாததால் இந்தக் கட்டளையைப் பயன்படுத்த முடியாது.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1035"/>
+      <location filename="../../Command.cpp" line="1036"/>
       <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
       <translation>கழித்தல் கட்டளையை முயற்சிக்கும் முன் உடலில் ஒரு நற்பொருத்தம் இருப்பதை உறுதிசெய்யவும்.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1059"/>
+      <location filename="../../Command.cpp" line="1060"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருளைப் பயன்படுத்த முடியாது. தேர்ந்தெடுக்கப்பட்ட பொருள் செயலில் உள்ள உடலுக்கு சொந்தமானதாக இருக்க வேண்டும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="187"/>
+      <location filename="../../Command.cpp" line="188"/>
       <source>There is no active body. Please activate a body before inserting a datum entity.</source>
       <translation>சுறுசுறுப்பான உடல் இல்லை. டேட்டம் உட்பொருளைச் செருகுவதற்கு முன், உடலைச் செயல்படுத்தவும்.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="172"/>
+      <location filename="../../Command.cpp" line="173"/>
       <source>Invalid Selection</source>
       <translation type="unfinished">Invalid Selection</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="493"/>
+      <location filename="../../Command.cpp" line="494"/>
       <source>Sub-shape binder</source>
       <translation>துணை வடிவ பைண்டர்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1091"/>
+      <location filename="../../Command.cpp" line="1092"/>
       <source>No sketch to work on</source>
       <translation>வேலை செய்ய ச்கெட்ச் இல்லை</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1092"/>
+      <location filename="../../Command.cpp" line="1093"/>
       <source>No sketch is available in the document</source>
       <translation>ஆவணத்தில் ச்கெட்ச் எதுவும் இல்லை</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2232"/>
+      <location filename="../../Command.cpp" line="2070"/>
+      <location filename="../../Command.cpp" line="2098"/>
+      <source>Wrong Selection</source>
+      <translation>தவறான தேர்வு</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2071"/>
+      <source>Select faces from a single body</source>
+      <translation type="unfinished">Select faces from a single body</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2078"/>
+      <source>Selection Outside Active Body</source>
+      <translation type="unfinished">Selection Outside Active Body</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2079"/>
+      <source>Select faces from the active body</source>
+      <translation type="unfinished">Select faces from the active body</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2087"/>
+      <source>Wrong Object Type</source>
+      <translation type="unfinished">Wrong Object Type</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2088"/>
+      <location filename="../../Command.cpp" line="2099"/>
+      <source>Defeaturing works only on faces</source>
+      <translation type="unfinished">Defeaturing works only on faces</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2321"/>
       <source>Select only one feature in an active body.</source>
       <translation type="unfinished">Select only one feature in an active body.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../Command.cpp" line="1180"/>
       <location filename="../../ViewProvider.cpp" line="138"/>
-      <location filename="../../SketchWorkflow.cpp" line="764"/>
-      <location filename="../../Command.cpp" line="1179"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
+      <location filename="../../SketchWorkflow.cpp" line="764"/>
       <source>Close this dialog?</source>
       <translation>இந்த உரையாடலை மூடவா?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1860"/>
-      <location filename="../../Command.cpp" line="1895"/>
+      <location filename="../../Command.cpp" line="1861"/>
+      <location filename="../../Command.cpp" line="1896"/>
       <source>Wrong selection</source>
       <translation>தவறான தேர்வு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1861"/>
+      <location filename="../../Command.cpp" line="1862"/>
       <source>Select an edge, face, or body from a single body.</source>
       <translation>ஒற்றை உடலிலிருந்து விளிம்பு, முகம் அல்லது உடலைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1868"/>
-      <location filename="../../Command.cpp" line="2231"/>
+      <location filename="../../Command.cpp" line="1869"/>
+      <location filename="../../Command.cpp" line="2320"/>
       <source>Selection is not in the active body</source>
       <translation>தேர்வு செயலில் உள்ள உடலில் இல்லை</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1896"/>
+      <location filename="../../Command.cpp" line="1897"/>
       <source>Shape of the selected part is empty</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பகுதியின் வடிவம் காலியாக உள்ளது</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1869"/>
+      <location filename="../../Command.cpp" line="1870"/>
       <source>Select an edge, face, or body from an active body.</source>
       <translation>செயலில் உள்ள உடலிலிருந்து விளிம்பு, முகம் அல்லது உடலைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1062"/>
+      <location filename="../../Command.cpp" line="1063"/>
       <source>Consider using a shape binder or a base feature to reference external geometry in a body</source>
       <translation>ஒரு உடலில் வெளிப்புற வடிவவியலைக் குறிப்பிட, வடிவ பைண்டர் அல்லது அடிப்படை அம்சத்தைப் பயன்படுத்துவதைக் கவனியுங்கள்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1882"/>
+      <location filename="../../Command.cpp" line="1883"/>
       <source>Wrong object type</source>
       <translation>தவறான பொருள் வகை</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1883"/>
+      <location filename="../../Command.cpp" line="1884"/>
       <source>%1 works only on parts.</source>
       <translation>% 1 பாகங்களில் மட்டுமே வேலை செய்கிறது.</translation>
     </message>
@@ -3786,10 +3818,10 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>இந்த அம்சத்தைப் பயன்படுத்த, அது ஆவணத்தில் உள்ள ஒரு பகுதிப் பொருளுக்குச் சொந்தமானதாக இருக்க வேண்டும்.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTransformed.cpp" line="67"/>
       <location filename="../../ViewProviderDressUp.cpp" line="64"/>
       <location filename="../../ViewProvider.cpp" line="94"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="228"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="67"/>
       <source>Edit %1</source>
       <translation>திருத்த % 1</translation>
     </message>
@@ -3981,6 +4013,11 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
       <location filename="../../ViewProviderThickness.cpp" line="42"/>
       <source>Edit Thickness</source>
       <translation>தடிமன் திருத்தவும்</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderDefeaturing.cpp" line="39"/>
+      <source>Edit Defeaturing</source>
+      <translation type="unfinished">Edit Defeaturing</translation>
     </message>
   </context>
   <context>
@@ -4759,23 +4796,23 @@ over 90: larger hole radius at the bottom</source>
       <translation>தவறான அடிப்படை வடிவத்துடன் பூலியன் செயல்பாட்டைச் செய்ய முடியாது</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureRevolved.cpp" line="535"/>
       <location filename="../../../App/FeatureFillet.cpp" line="142"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="266"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="822"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="838"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="851"/>
       <location filename="../../../App/FeatureLoft.cpp" line="334"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="378"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="420"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="442"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="488"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="537"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="571"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="600"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="369"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2142"/>
       <location filename="../../../App/FeatureDraft.cpp" line="335"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2149"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="535"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="419"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="435"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="453"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="537"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="562"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="580"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="819"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="835"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="848"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>முடிவு பல திடப்பொருட்களைக் கொண்டுள்ளது: செயலில் உள்ள உடலில் 'கலவையை இசைவு' என்பதை இயக்கவும்.</translation>
     </message>
@@ -4810,10 +4847,11 @@ over 90: larger hole radius at the bottom</source>
       <translation>இதன் விளைவாக இணைந்த வெளியேற்றம் பூச்யமானது.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="813"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="371"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="592"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="362"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="132"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="445"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="572"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="810"/>
       <source>Resulting shape is not a solid</source>
       <translation>விளைந்த வடிவம் திடமானது அல்ல</translation>
     </message>
@@ -4890,8 +4928,8 @@ over 90: larger hole radius at the bottom</source>
       <translation>ச்கெட்சின் இயல்பான வெக்டருக்கு திசை ஆர்த்தோகனலாக இருப்பதால் உருவாக்கம் தோல்வியடைந்தது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="518"/>
       <location filename="../../../App/FeatureRevolved.cpp" line="298"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="518"/>
       <source>Creating a face from sketch failed</source>
       <translation>ச்கெட்சிலிருந்து முகத்தை உருவாக்குவது தோல்வியடைந்தது</translation>
     </message>
@@ -4918,77 +4956,60 @@ Intersecting sketch entities in a sketch are not allowed.</source>
 ச்கெட்ச்சில் குறுக்கிடும் ச்கெட்ச் உறுப்புகள் அனுமதிக்கப்படாது.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="237"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="236"/>
       <source>Error: Pitch too small!</source>
       <translation>பிழை: சுருதி மிகவும் சிறியது!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="242"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="265"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="241"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="264"/>
       <source>Error: height too small!</source>
       <translation>பிழை: உயரம் மிகவும் சிறியது!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="251"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="250"/>
       <source>Error: pitch too small!</source>
       <translation>பிழை: சுருதி மிகவும் சிறியது!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="256"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="270"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="279"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="255"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="269"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="278"/>
       <source>Error: turns too small!</source>
       <translation>பிழை: மிகவும் சிறியதாக மாறுகிறது!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="285"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="284"/>
       <source>Error: either height or growth must not be zero!</source>
       <translation>பிழை: உயரம் அல்லது வளர்ச்சி பூச்சியமாக இருக்கக்கூடாது!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="303"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="302"/>
       <source>Error: unsupported mode</source>
       <translation>பிழை: ஆதரிக்கப்படாத பயன்முறை</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="317"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="316"/>
       <source>Error: No valid sketch or face</source>
       <translation>பிழை: சரியான ச்கெட்ச் அல்லது முகம் இல்லை</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="330"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="329"/>
       <source>Error: Face must be planar</source>
       <translation>பிழை: முகம் சீராக இருக்க வேண்டும்</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="454"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="499"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2512"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2505"/>
       <source>Error: Result is not a solid</source>
       <translation>பிழை: முடிவு உறுதியானது அல்ல</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="415"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="414"/>
       <source>Error: There is nothing to subtract</source>
       <translation>பிழை: கழிப்பதற்கு எதுவும் இல்லை</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="437"/>
-      <source>Error: Adding the helix failed</source>
-      <translation>பிழை: எலிக்சைச் சேர்ப்பதில் தோல்வி</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="472"/>
-      <source>Error: Intersecting the helix failed</source>
-      <translation>பிழை: எலிக்சை வெட்டுவது தோல்வியடைந்தது</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="481"/>
-      <source>Error: Subtracting the helix failed</source>
-      <translation>பிழை: எலிக்சைக் கழிப்பதில் தோல்வி</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="515"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="466"/>
       <source>Error: Could not create face from sketch</source>
       <translation>பிழை: ச்கெட்சிலிருந்து முகத்தை உருவாக்க முடியவில்லை</translation>
     </message>
@@ -5063,13 +5084,13 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>துளை பிழை: அச்சைக் கண்டறிவதில் தோல்வி</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2121"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2129"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2114"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2122"/>
       <source>Boolean operation failed on profile Edge</source>
       <translation>சுயவிவர எட்சில் பூலியன் செயல்பாடு தோல்வியடைந்தது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2136"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2129"/>
       <source>Boolean operation produced non-solid on profile Edge</source>
       <translation>பூலியன் செயல்பாடு சுயவிவர விளிம்பில் திடமற்றது</translation>
     </message>
@@ -5079,24 +5100,24 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>பூலியன் செயல்பாடு தோல்வியடைந்தது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2162"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2155"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>ச்கெட்சிலிருந்து முகத்தை உருவாக்க முடியவில்லை. 
 குறுக்குவெட்டு ச்கெட்ச் உறுப்புகள் அல்லது ச்கெட்ச்சில் பல முகங்கள் ஒரு முகம் வரை பாக்கெட்டை உருவாக்க அனுமதிக்கப்படாது.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2335"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2328"/>
       <source>Thread type out of range</source>
       <translation>நூல் வகை வரம்பிற்கு வெளியே உள்ளது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2338"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2331"/>
       <source>Thread size out of range</source>
       <translation>நூல் அளவு வரம்பிற்கு வெளியே உள்ளது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2486"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2479"/>
       <source>Error: Thread could not be built</source>
       <translation>பிழை: நூலை உருவாக்க முடியவில்லை</translation>
     </message>
@@ -5106,7 +5127,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation>மாடி: குறைந்தது ஒரு பகுதி தேவை</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="395"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="386"/>
       <source>Loft: A fatal error occurred when making the loft</source>
       <translation>மாடி: மாடியை உருவாக்கும் போது ஒரு அபாயகரமான பிழை ஏற்பட்டது</translation>
     </message>
@@ -5122,7 +5143,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation>மாடி: செல் உருவாக்க முடியவில்லை</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="866"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="863"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>ச்கெட்சிலிருந்து முகத்தை உருவாக்க முடியவில்லை. 
@@ -5189,32 +5210,27 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>குழாய்: கழிப்பதற்கு எதுவும் இல்லை</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="584"/>
-      <source>Pipe: Invalid Boolean Type</source>
-      <translation type="unfinished">Pipe: Invalid Boolean Type</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="614"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="594"/>
       <source>A fatal error occurred when making the pipe</source>
       <translation>குழாய் செய்யும் போது ஒரு அபாயகரமான பிழை ஏற்பட்டது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="741"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="721"/>
       <source>Invalid element in spine.</source>
       <translation>முதுகெலும்பில் தவறான உறுப்பு.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="746"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="726"/>
       <source>Element in spine is neither an edge nor a wire.</source>
       <translation>முதுகெலும்பில் உள்ள உறுப்பு ஒரு விளிம்பு அல்லது கம்பி அல்ல.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="759"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="739"/>
       <source>Spine is neither an edge nor a wire.</source>
       <translation>முதுகெலும்பு ஒரு விளிம்பு அல்லது கம்பி அல்ல.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="764"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="744"/>
       <source>Invalid spine.</source>
       <translation>தவறான முதுகெலும்பு.</translation>
     </message>
@@ -5224,112 +5240,106 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>அடிப்படை நற்பொருத்தம் இல்லாமல் பழமையான அம்சத்தைக் கழிக்க முடியாது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="356"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
-      <source>Unknown operation type</source>
-      <translation>அறியப்படாத செயல்பாட்டு வகை</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="364"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="355"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="124"/>
       <source>Failed to perform boolean operation</source>
       <translation>பூலியன் செயல்பாட்டைச் செய்ய முடியவில்லை</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="217"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="208"/>
       <source>Length of box too small</source>
       <translation>பெட்டியின் நீளம் மிகவும் சிறியது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="222"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="213"/>
       <source>Width of box too small</source>
       <translation>பெட்டியின் அகலம் மிகவும் சிறியது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="227"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="218"/>
       <source>Height of box too small</source>
       <translation>பெட்டியின் உயரம் மிகவும் சிறியது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="275"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="266"/>
       <source>Radius of cylinder too small</source>
       <translation>சிலிண்டரின் ஆரம் மிகவும் சிறியது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="280"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="271"/>
       <source>Height of cylinder too small</source>
       <translation>சிலிண்டரின் உயரம் மிகவும் சிறியது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="285"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="276"/>
       <source>Rotation angle of cylinder too small</source>
       <translation>சிலிண்டரின் சுழற்சி கோணம் மிகவும் சிறியது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="342"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="333"/>
       <source>Radius of sphere too small</source>
       <translation>கோளத்தின் ஆரம் மிகவும் சிறியது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="394"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="399"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="385"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="390"/>
       <source>Radius of cone cannot be negative</source>
       <translation>கூம்பின் ஆரம் எதிர்மறையாக இருக்க முடியாது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="404"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="395"/>
       <source>Height of cone too small</source>
       <translation>கூம்பின் உயரம் மிகவும் சிறியது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="484"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="489"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="475"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="480"/>
       <source>Radius of ellipsoid too small</source>
       <translation>நீள்வட்டத்தின் ஆரம் மிகவும் சிறியது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="583"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="588"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="574"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="579"/>
       <source>Radius of torus too small</source>
       <translation>டோரசின் ஆரம் மிகவும் சிறியது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="673"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="664"/>
       <source>Polygon of prism is invalid, must have 3 or more sides</source>
       <translation>ப்ரிசத்தின் பலகோணம் தவறானது, 3 அல்லது அதற்கு மேற்பட்ட பக்கங்களைக் கொண்டிருக்க வேண்டும்</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="678"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="669"/>
       <source>Circumradius of the polygon, of the prism, is too small</source>
       <translation>ப்ரிசத்தின் பலகோணத்தின் சுற்றளவு மிகவும் சிறியது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="683"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="674"/>
       <source>Height of prism is too small</source>
       <translation>ப்ரிசத்தின் உயரம் மிகவும் சிறியது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="770"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="761"/>
       <source>delta x of wedge too small</source>
       <translation>டெல்டா ஃச் ஆப்பு மிகவும் சிறியது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="776"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="767"/>
       <source>delta y of wedge too small</source>
       <translation>டெல்டா ஒய் ஆப்பு மிகவும் சிறியது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="782"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="773"/>
       <source>delta z of wedge too small</source>
       <translation>குடைமிளகின் டெல்டா சட் மிகவும் சிறியது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="788"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="779"/>
       <source>delta z2 of wedge is negative</source>
       <translation>குடைமிளகின் டெல்டா z2 எதிர்மறையானது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="794"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="785"/>
       <source>delta x2 of wedge is negative</source>
       <translation>குடைமிளகின் டெல்டா x2 எதிர்மறையானது</translation>
     </message>
@@ -5350,7 +5360,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>குறிப்பு அச்சு தவறானது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="805"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="802"/>
       <source>Fusion with base feature failed</source>
       <translation>அடிப்படை அம்சத்துடன் இணைதல் தோல்வியடைந்தது</translation>
     </message>
@@ -5390,9 +5400,19 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>சேர்க்கை மற்றும் கழித்தல் அம்சங்களை மட்டுமே மாற்ற முடியும்</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureThickness.cpp" line="109"/>
+      <location filename="../../../App/FeatureThickness.cpp" line="108"/>
       <source>Invalid face reference</source>
       <translation>தவறான முகக் குறிப்பு</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureDefeaturing.cpp" line="75"/>
+      <source>Defeaturing failed: result is null</source>
+      <translation type="unfinished">Defeaturing failed: result is null</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureDefeaturing.cpp" line="84"/>
+      <source>Defeaturing did not produce a single solid</source>
+      <translation type="unfinished">Defeaturing did not produce a single solid</translation>
     </message>
   </context>
   <context>
@@ -5455,12 +5475,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>PartDesign::FeatureAddSub</name>
     <message>
-      <location filename="../../../App/FeatureAddSub.cpp" line="87"/>
+      <location filename="../../../App/FeatureAddSub.cpp" line="140"/>
       <source>Failure while computing removed volume preview: %1</source>
       <translation>நீக்கப்பட்ட தொகுதி முன்னோட்டத்தை கணக்கிடுவதில் தோல்வி: % 1</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureAddSub.cpp" line="125"/>
+      <location filename="../../../App/FeatureAddSub.cpp" line="178"/>
       <source>Resulting shape is empty. That may indicate that no material will be removed or a problem with the model.</source>
       <translation>முடிவு வடிவம் காலியாக உள்ளது. இது எந்தப் பொருளும் அகற்றப்படாது அல்லது மாதிரியில் ஒரு சிக்கலைக் குறிக்கலாம்.</translation>
     </message>
@@ -5468,12 +5488,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2689"/>
+      <location filename="../../Command.cpp" line="2778"/>
       <source>Create Datum</source>
       <translation>டேட்டமை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2690"/>
+      <location filename="../../Command.cpp" line="2779"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>தரவு பொருள் அல்லது உள்ளக ஒருங்கிணைப்பு அமைப்பை உருவாக்குகிறது</translation>
     </message>
@@ -5481,12 +5501,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2724"/>
+      <location filename="../../Command.cpp" line="2813"/>
       <source>Create Datum</source>
       <translation>டேட்டமை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2725"/>
+      <location filename="../../Command.cpp" line="2814"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>தரவு பொருள் அல்லது உள்ளக ஒருங்கிணைப்பு அமைப்பை உருவாக்குகிறது</translation>
     </message>
@@ -5720,22 +5740,71 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>திசை 2</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="267"/>
+      <location filename="../../TaskPatternParameters.cpp" line="272"/>
       <source>Select a direction reference (edge, face, datum line)</source>
       <translation>திசைக் குறிப்பைத் தேர்ந்தெடுக்கவும் (விளிம்பு, முகம், தரவுக் கோடு)</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="355"/>
+      <location filename="../../TaskPatternParameters.cpp" line="360"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>தவறான தேர்வு. விளிம்பு, சமதள முகம் அல்லது டேட்டம் லைனைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
   </context>
   <context>
-    <name>BooleanToolSelection</name>
+    <name>PartDesignGui::TaskDefeaturingParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="83"/>
-      <source>The result Body cannot be used as a Boolean tool.</source>
-      <translation type="unfinished">The result Body cannot be used as a Boolean tool.</translation>
+      <location filename="../../TaskDefeaturingParameters.ui" line="20"/>
+      <source>Toggles selection mode</source>
+      <translation type="unfinished">Toggles selection mode</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDefeaturingParameters.ui" line="23"/>
+      <source>Select</source>
+      <translation>தேர்ந்தெடு</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDefeaturingParameters.ui" line="33"/>
+      <source>Select an item in the 3D view to highlight it</source>
+      <translation type="unfinished">Select an item in the 3D view to highlight it</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDefeaturingParameters.cpp" line="118"/>
+      <source>Empty defeaturing created</source>
+      <translation type="unfinished">Empty defeaturing created</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderDefeaturing</name>
+    <message>
+      <location filename="../../ViewProviderDefeaturing.h" line="40"/>
+      <source>Defeaturing Parameters</source>
+      <translation type="unfinished">Defeaturing Parameters</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="443"/>
+      <source>Input Error</source>
+      <translation>உள்ளீடு பிழை</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartDesignDefeaturing</name>
+    <message>
+      <location filename="../../Command.cpp" line="2117"/>
+      <source>PartDesign</source>
+      <translation>பகுதி வடிவமைப்பு</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2118"/>
+      <source>Defeaturing</source>
+      <translation>தோற்கடிக்கிறது</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2119"/>
+      <source>Removes selected faces from a solid</source>
+      <translation type="unfinished">Removes selected faces from a solid</translation>
     </message>
   </context>
   <context>
@@ -5764,11 +5833,11 @@ Adjust the parameters and try again.</translation>
     </message>
   </context>
   <context>
-    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <name>BooleanToolSelection</name>
     <message>
-      <location filename="../../TaskShapeBinder.cpp" line="443"/>
-      <source>Input Error</source>
-      <translation>உள்ளீடு பிழை</translation>
+      <location filename="../../TaskBooleanParameters.cpp" line="83"/>
+      <source>The result Body cannot be used as a Boolean tool.</source>
+      <translation type="unfinished">The result Body cannot be used as a Boolean tool.</translation>
     </message>
   </context>
 </TS>

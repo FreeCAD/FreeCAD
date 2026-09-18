@@ -129,6 +129,7 @@ protected:
 private:
     bool syncValueFromSpinBox(bool emitParameterUnset = true);
     void handleSpinBoxValueChanged();
+    void handleSpinBoxInputCleared();
     void positionSpinbox();
     SbVec3f getTextCenterPoint() const;
     void initColors();

@@ -376,6 +376,34 @@
     </widget>
    </item>
    <item>
+    <layout class="QHBoxLayout" name="operationLayout">
+     <item>
+      <widget class="QLabel" name="labelOperation">
+       <property name="text">
+        <string>Operation</string>
+       </property>
+       <property name="buddy">
+        <cstring>comboOperation</cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboOperation">
+       <item>
+        <property name="text">
+         <string>Subtraction</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Common</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <widget class="Line" name="line">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -420,6 +448,7 @@
   <tabstop>revolveAngle2</tabstop>
   <tabstop>lineFaceName2</tabstop>
   <tabstop>checkBoxReversed</tabstop>
+  <tabstop>comboOperation</tabstop>
   <tabstop>checkBoxUpdateView</tabstop>
  </tabstops>
  <resources/>

@@ -24,6 +24,7 @@ macro(InitializeFreeCADBuildOptions)
     option(BUILD_TRACY_FRAME_PROFILER "If ON then enables support for the Tracy frame profiler" OFF)
 
     option(INSTALL_TO_SITEPACKAGES "If ON the freecad root namespace (python) is installed into python's site-packages" ON)
+    option(RELATIVE_RPATH "If ON the install RPATH is relative to the binary ($ORIGIN or @loader_path) instead of absolute" OFF)
     option(INSTALL_PREFER_SYMLINKS "If ON then fc_copy_sources macro will create symlinks instead of copying files" OFF)
     option(OCCT_CMAKE_FALLBACK "disable usage of occt-config files" OFF)
     option(FREECAD_USE_QT_DIALOGS "Use Qt's dialogs instead of the native one." OFF)

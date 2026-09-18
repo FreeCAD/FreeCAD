@@ -382,6 +382,11 @@
       <translation>Ukloni pozadinsku boju</translation>
     </message>
     <message>
+      <location filename="../../SheetTableView.cpp" line="226"/>
+      <source>Recompute Cells</source>
+      <translation>Preračunaj ćelije</translation>
+    </message>
+    <message>
       <location filename="../../SheetTableView.cpp" line="327"/>
       <source>Insert Rows</source>
       <translation>Umetni redrove</translation>
@@ -392,35 +397,20 @@
       <translation>Ukloni redove</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="340"/>
-      <source>Insert Columns</source>
-      <translation>Umetni stupce</translation>
-    </message>
-    <message>
-      <location filename="../../SheetTableView.cpp" line="226"/>
-      <source>Recompute Cells</source>
-      <translation>Preračunaj ćelije</translation>
-    </message>
-    <message>
       <location filename="../../SheetTableView.cpp" line="367"/>
       <source>Remove Columns</source>
       <translation>Ukloni stupce</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="582"/>
+      <location filename="../../SheetTableView.cpp" line="340"/>
+      <source>Insert Columns</source>
+      <translation>Umetni stupce</translation>
+    </message>
+    <message>
       <location filename="../../SpreadsheetView.cpp" line="179"/>
+      <location filename="../../SheetTableView.cpp" line="582"/>
       <source>Clear Cells</source>
       <translation>Obriši ćelije</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.cpp" line="243"/>
-      <source>Bind cells</source>
-      <translation>Poveži ćelije</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.cpp" line="297"/>
-      <source>Unbind cells</source>
-      <translation>Poništite povezivanje ćelija</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="228"/>
@@ -431,6 +421,16 @@
       <location filename="../../DlgSheetConf.cpp" line="391"/>
       <source>Unsetup conf table</source>
       <translation>Rastavi konfiguracijsku tablicu</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.cpp" line="243"/>
+      <source>Bind cells</source>
+      <translation>Poveži ćelije</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.cpp" line="297"/>
+      <source>Unbind cells</source>
+      <translation>Poništite povezivanje ćelija</translation>
     </message>
   </context>
   <context>

@@ -26,8 +26,8 @@
       <translation>位置</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3019"/>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3019"/>
       <source>Enum</source>
       <translation>枚举</translation>
     </message>
@@ -134,9 +134,9 @@
     </message>
     <message>
       <location filename="../Transform.cpp" line="108"/>
-      <location filename="../ViewProviderAnnotation.cpp" line="514"/>
       <location filename="../TaskTransform.cpp" line="152"/>
       <location filename="../TaskTransform.cpp" line="1069"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="514"/>
       <source>Transform</source>
       <translation>变换</translation>
     </message>
@@ -146,8 +146,8 @@
       <translation>切换阵列元素</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
       <location filename="../TaskView/TaskImage.cpp" line="342"/>
+      <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
       <source>Edit image</source>
       <translation>编辑图像</translation>
     </message>
@@ -167,7 +167,7 @@
       <translation>切换隐藏</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="426"/>
+      <location filename="../CommandFeat.cpp" line="390"/>
       <source>Skip recomputes</source>
       <translation>略过重新计算</translation>
     </message>
@@ -8873,8 +8873,8 @@ Choose 'Abort' to abort</source>
       <translation>拖放失败</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3025"/>
       <location filename="../MainWindow.cpp" line="1015"/>
+      <location filename="../ViewProviderLink.cpp" line="3025"/>
       <source>Apply to all</source>
       <translation>应用到全部</translation>
     </message>
@@ -9176,14 +9176,14 @@ the current copy will be lost.
       <translation>零件</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="301"/>
-      <source>All Files</source>
-      <translation>所有文件</translation>
-    </message>
-    <message>
       <location filename="../ViewProviderImagePlane.cpp" line="171"/>
       <source>Edit Image Plane</source>
       <translation>编辑图像平面</translation>
+    </message>
+    <message>
+      <location filename="../FileDialog.cpp" line="301"/>
+      <source>All Files</source>
+      <translation>所有文件</translation>
     </message>
   </context>
   <context>
@@ -9673,8 +9673,8 @@ the current copy will be lost.
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="300"/>
-      <source>Sends the selected object to the Python console</source>
-      <translation>所选择的对象发送到 Python 控制台</translation>
+      <source>Sends the selected objects to the Python console</source>
+      <translation>将选定的对象发送到 Python 控制台</translation>
     </message>
   </context>
   <context>
@@ -13205,12 +13205,12 @@ Proceed?</source>
   <context>
     <name>StdCmdToggleSkipRecompute</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="399"/>
+      <location filename="../CommandFeat.cpp" line="363"/>
       <source>Skip Recomputes</source>
       <translation>跳过重新计算</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="401"/>
+      <location filename="../CommandFeat.cpp" line="365"/>
       <source>Enables or disables the recomputations of the document</source>
       <translation>启用或禁用文档的重新计算</translation>
     </message>
@@ -14693,14 +14693,6 @@ This makes the docked panel stay transparent at all times.</source>
     </message>
   </context>
   <context>
-    <name>Gui::TaskCommandLinkDialog</name>
-    <message>
-      <location filename="../TaskCommandLink.ui" line="14"/>
-      <source>Insert</source>
-      <translation>插入</translation>
-    </message>
-  </context>
-  <context>
     <name>FileFormat</name>
     <message>
       <location filename="../FreeCADGuiInit.py" line="567"/>
@@ -14709,46 +14701,11 @@ This makes the docked panel stay transparent at all times.</source>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgDocumentObject</name>
+    <name>Gui::TaskCommandLinkDialog</name>
     <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="14"/>
-      <source>Object</source>
-      <translation>对象</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="46"/>
-      <source>Filter by type</source>
-      <translation>按类型筛选</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="53"/>
-      <source>Synchronizes the 3D view selection with the full object hierarchy</source>
-      <translation>将 3D 视图选区与完整对象层次同步</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="56"/>
-      <source>Sync sub-object selection</source>
-      <translation>同步选中的子对象</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="88"/>
-      <source>Search</source>
-      <translation>搜索</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="95"/>
-      <source>A search pattern to filter the results above</source>
-      <translation>用于筛选上述结果的搜索模式</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.cpp" line="118"/>
-      <source>Reset</source>
-      <translation>重置</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.cpp" line="119"/>
-      <source>Clear</source>
-      <translation>清除</translation>
+      <location filename="../TaskCommandLink.ui" line="14"/>
+      <source>Insert</source>
+      <translation>插入</translation>
     </message>
   </context>
   <context>
@@ -14853,6 +14810,75 @@ treated as shortcut key sequence 'F, F'.</source>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgDocumentObject</name>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="14"/>
+      <source>Object</source>
+      <translation>对象</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="46"/>
+      <source>Filter by type</source>
+      <translation>按类型筛选</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="53"/>
+      <source>Synchronizes the 3D view selection with the full object hierarchy</source>
+      <translation>将 3D 视图选区与完整对象层次同步</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="56"/>
+      <source>Sync sub-object selection</source>
+      <translation>同步选中的子对象</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="88"/>
+      <source>Search</source>
+      <translation>搜索</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="95"/>
+      <source>A search pattern to filter the results above</source>
+      <translation>用于筛选上述结果的搜索模式</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.cpp" line="118"/>
+      <source>Reset</source>
+      <translation>重置</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.cpp" line="119"/>
+      <source>Clear</source>
+      <translation>清除</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleBottomPanels</name>
+    <message>
+      <location filename="../CommandView.cpp" line="3861"/>
+      <source>Toggle Bottom Panels</source>
+      <translation>显示/隐藏底部面板</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="3862"/>
+      <source>Toggles the bottom dock panels</source>
+      <translation>显示/隐藏底部停靠面板</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleSuppress</name>
+    <message>
+      <location filename="../CommandFeat.cpp" line="240"/>
+      <source>Toggle Suppressed</source>
+      <translation>切换隐藏状态</translation>
+    </message>
+    <message>
+      <location filename="../CommandFeat.cpp" line="242"/>
+      <source>Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</source>
+      <translation>切换所选对象的隐藏状态。隐藏对象的行为与被删除时相同。</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdHelpGroup</name>
     <message>
       <location filename="../CommandStd.cpp" line="322"/>
@@ -14881,46 +14907,6 @@ treated as shortcut key sequence 'F, F'.</source>
       <location filename="../CommandStd.cpp" line="1026"/>
       <source>Creates a new annotation label at the picked location in the 3D view</source>
       <translation>在 3D 视图中选择的位置创建一个新的注释标签</translation>
-    </message>
-  </context>
-  <context>
-    <name>FileDialog</name>
-    <message>
-      <location filename="../FileDialog.cpp" line="578"/>
-      <source>Save As</source>
-      <translation>另存为</translation>
-    </message>
-    <message>
-      <location filename="../FileDialog.cpp" line="713"/>
-      <location filename="../FileDialog.cpp" line="808"/>
-      <source>Open</source>
-      <translation>打开</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdToggleBottomPanels</name>
-    <message>
-      <location filename="../CommandView.cpp" line="3861"/>
-      <source>Toggle Bottom Panels</source>
-      <translation>显示/隐藏底部面板</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="3862"/>
-      <source>Toggles the bottom dock panels</source>
-      <translation>显示/隐藏底部停靠面板</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdToggleSuppress</name>
-    <message>
-      <location filename="../CommandFeat.cpp" line="240"/>
-      <source>Toggle Suppressed</source>
-      <translation>切换隐藏状态</translation>
-    </message>
-    <message>
-      <location filename="../CommandFeat.cpp" line="242"/>
-      <source>Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</source>
-      <translation>切换所选对象的隐藏状态。隐藏对象的行为与被删除时相同。</translation>
     </message>
   </context>
   <context>
@@ -14960,6 +14946,28 @@ treated as shortcut key sequence 'F, F'.</source>
       <location filename="../Widgets.cpp" line="1913"/>
       <source>Value</source>
       <translation>值</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileDialog</name>
+    <message>
+      <location filename="../FileDialog.cpp" line="578"/>
+      <source>Save As</source>
+      <translation>另存为</translation>
+    </message>
+    <message>
+      <location filename="../FileDialog.cpp" line="713"/>
+      <location filename="../FileDialog.cpp" line="808"/>
+      <source>Open</source>
+      <translation>打开</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui</name>
+    <message>
+      <location filename="../Dialogs/DlgThemeEditor.cpp" line="284"/>
+      <source>New parameter…</source>
+      <translation>新参数…</translation>
     </message>
   </context>
   <context>
@@ -15034,14 +15042,6 @@ treated as shortcut key sequence 'F, F'.</source>
       <location filename="../propertyeditor/PropertyItem.cpp" line="4933"/>
       <source>Map</source>
       <translation>贴图</translation>
-    </message>
-  </context>
-  <context>
-    <name>Gui</name>
-    <message>
-      <location filename="../Dialogs/DlgThemeEditor.cpp" line="284"/>
-      <source>New parameter…</source>
-      <translation>新参数…</translation>
     </message>
   </context>
 </TS>

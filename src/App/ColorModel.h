@@ -358,7 +358,7 @@ inline Base::Color ColorField::getColor(float fVal) const
     if (fVal <= fMin) {
         return colorModel.colors[0];
     }
-    else if (fVal >= fMax) {
+    if (fVal >= fMax) {
         return colorModel.colors[ct];
     }
 
@@ -571,20 +571,16 @@ inline Base::Color ColorLegend::getColor(float fVal) const
         if ((pI == values.begin()) || (pI == values.end())) {
             return Base::Color(0.5f, 0.5f, 0.5f);
         }
-        else {
-            return colorFields[pI - values.begin() - 1];
-        }
+        return colorFields[pI - values.begin() - 1];
     }
 
     if (pI == values.begin()) {
         return *colorFields.begin();
     }
-    else if (pI == values.end()) {
+    if (pI == values.end()) {
         return *(colorFields.end() - 1);
     }
-    else {
-        return colorFields[pI - values.begin() - 1];
-    }
+    return colorFields[pI - values.begin() - 1];
 }
 
 inline std::size_t ColorLegend::getColorIndex(float fVal) const
@@ -599,12 +595,10 @@ inline std::size_t ColorLegend::getColorIndex(float fVal) const
     if (pI == values.begin()) {
         return 0;
     }
-    else if (pI == values.end()) {
+    if (pI == values.end()) {
         return (std::size_t)(colorFields.size() - 1);
     }
-    else {
-        return pI - values.begin() - 1;
-    }
+    return pI - values.begin() - 1;
 }
 
 inline float ColorLegend::getMinValue() const
@@ -640,16 +634,9 @@ inline Base::Color ColorGradient::_getColor(float fVal) const
     switch (profile.tStyle) {
         case ColorBarStyle::ZERO_BASED: {
             if ((profile.fMin < 0.0f) && (profile.fMax > 0.0f)) {
-                if (fVal < 0.0f) {
-                    return colorField1.getColor(fVal);
-                }
-                else {
-                    return colorField2.getColor(fVal);
-                }
+                return fVal < 0.0f ? colorField1.getColor(fVal) : colorField2.getColor(fVal);
             }
-            else {
-                return colorField1.getColor(fVal);
-            }
+            return colorField1.getColor(fVal);
         }
 
         default:
@@ -667,14 +654,10 @@ inline std::size_t ColorGradient::getColorIndex(float fVal) const
                 if (fVal < 0.0f) {
                     return colorField1.getColorIndex(fVal);
                 }
-                else {
-                    return std::size_t(colorField1.getCountColors()
-                                       + colorField2.getColorIndex(fVal));
-                }
+                return std::size_t(colorField1.getCountColors()
+                                   + colorField2.getColorIndex(fVal));
             }
-            else {
-                return colorField1.getColorIndex(fVal);
-            }
+            return colorField1.getColorIndex(fVal);
         }
 
         default:
@@ -690,12 +673,10 @@ inline const ColorModel& ColorGradient::getColorModel() const
         if (profile.fMax <= 0.0f) {
             return currentModelPack.bottomModel;
         }
-        else if (profile.fMin >= 0.0f) {
+        if (profile.fMin >= 0.0f) {
             return currentModelPack.topModel;
         }
-        else {
-            return currentModelPack.totalModel;
-        }
+        return currentModelPack.totalModel;
     }
 
     return currentModelPack.totalModel;
