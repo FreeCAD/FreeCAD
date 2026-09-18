@@ -93,20 +93,20 @@ endif()
 
 # ------
 
-MESSAGE(STATUS "Check for medfile (libmed and libmedc) ...")
+message(STATUS "Check for medfile (libmed and libmedc) ...")
 
 # ------
 
-SET(MEDFILE_ROOT_DIR $ENV{MEDFILE_ROOT_DIR} CACHE PATH "Path to the MEDFile.")
-IF(MEDFILE_ROOT_DIR)
-  LIST(APPEND CMAKE_PREFIX_PATH "${MEDFILE_ROOT_DIR}")
-ENDIF(MEDFILE_ROOT_DIR)
+set(MEDFILE_ROOT_DIR $ENV{MEDFILE_ROOT_DIR} CACHE PATH "Path to the MEDFile.")
+if(MEDFILE_ROOT_DIR)
+  list(APPEND CMAKE_PREFIX_PATH "${MEDFILE_ROOT_DIR}")
+endif()
 
-FIND_PATH(MEDFILE_INCLUDE_DIRS med.h PATH_SUFFIXES med)
-FIND_FILE(meddotH med.h PATHS ${MEDFILE_INCLUDE_DIRS} NO_DEFAULT_PATH)
-IF(NOT meddotH)
-	MESSAGE(FATAL_ERROR "med.h not found, please install development header-files for libmedc")
-ENDIF(NOT meddotH)
+find_path(MEDFILE_INCLUDE_DIRS med.h PATH_SUFFIXES med)
+find_file(meddotH med.h PATHS ${MEDFILE_INCLUDE_DIRS} NO_DEFAULT_PATH)
+if(NOT meddotH)
+	message(FATAL_ERROR "med.h not found, please install development header-files for libmedc")
+endif()
 
 function(medfile_extract_med_h_data)
     file(READ ${meddotH} _med_h)
@@ -169,5 +169,5 @@ if(NOT MSVC AND MEDFILE_HAVE_MPI)
     target_link_libraries(medC INTERFACE "${OPENMPI_LIBRARIES}")
 endif()
 
-INCLUDE(FindPackageHandleStandardArgs)
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(MEDFile REQUIRED_VARS MEDFILE_INCLUDE_DIRS MEDFILE_LIBRARIES)
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(MEDFile REQUIRED_VARS MEDFILE_INCLUDE_DIRS MEDFILE_LIBRARIES)
