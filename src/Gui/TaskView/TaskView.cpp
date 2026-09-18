@@ -959,6 +959,13 @@ void TaskView::accept(App::Document* doc)
     // the dialog leaves the 'accept' method
     foundTaskInfo->ActiveDialog->setProperty("taskview_accept_or_reject", true);
     bool success = foundTaskInfo->ActiveDialog->accept();
+
+    // accept() can still remove this task through paths that bypass that postponement,
+    // leaving the iterator and ActiveDialog dangling; re-find the entry.
+    foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
+    if (foundTaskInfo == taskInfos.end()) {
+        return;
+    }
     foundTaskInfo->ActiveDialog->setProperty("taskview_accept_or_reject", QVariant());
     if (success || foundTaskInfo->ActiveDialog->property("taskview_remove_dialog").isValid()) {
         removeDialog(doc);
@@ -977,6 +984,13 @@ void TaskView::reject(App::Document* doc)
     // the dialog leaves the 'reject' method
     foundTaskInfo->ActiveDialog->setProperty("taskview_accept_or_reject", true);
     bool success = foundTaskInfo->ActiveDialog->reject();
+
+    // reject() can still remove this task through paths that bypass that postponement,
+    // leaving the iterator and ActiveDialog dangling; re-find the entry.
+    foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
+    if (foundTaskInfo == taskInfos.end()) {
+        return;
+    }
     foundTaskInfo->ActiveDialog->setProperty("taskview_accept_or_reject", QVariant());
     if (success || foundTaskInfo->ActiveDialog->property("taskview_remove_dialog").isValid()) {
         removeDialog(doc);
