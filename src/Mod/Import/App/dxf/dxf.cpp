@@ -447,6 +447,12 @@ void CDxfWrite::makeDimstyleTable()
     (*m_ssDimstyle) << "ENDTAB" << endl;
 }
 
+//! Anonymous dimension block names (*D1, *D2, ...) must be unique within the file.
+void CDxfWrite::assignDimBlockName()
+{
+    m_currentDimBlockName = "*D" + std::to_string(++m_dimBlockCounter);
+}
+
 //***************************
 // makeBlockRecordTableHead
 // added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
@@ -1559,6 +1565,7 @@ void CDxfWrite::writeLinearDim(
 )
 {
     m_stats.entityCounts["DIMENSION_LINEAR"]++;
+    assignDimBlockName();
     (*m_ssEntity) << "  0" << endl;
     (*m_ssEntity) << "DIMENSION" << endl;
     (*m_ssEntity) << "  5" << endl;
@@ -1578,7 +1585,7 @@ void CDxfWrite::writeLinearDim(
         (*m_ssEntity) << "AcDbDimension" << endl;
     }
     (*m_ssEntity) << "  2" << endl;
-    (*m_ssEntity) << "*" << getLayerName() << endl;  // blockName
+    (*m_ssEntity) << m_currentDimBlockName << endl;  // blockName
     (*m_ssEntity) << " 10" << endl;                  // dimension line definition point
     (*m_ssEntity) << lineDefPoint[0] << endl;
     (*m_ssEntity) << " 20" << endl;
@@ -1652,6 +1659,7 @@ void CDxfWrite::writeAngularDim(
 )
 {
     m_stats.entityCounts["DIMENSION_ANGULAR"]++;
+    assignDimBlockName();
     (*m_ssEntity) << "  0" << endl;
     (*m_ssEntity) << "DIMENSION" << endl;
     (*m_ssEntity) << "  5" << endl;
@@ -1669,7 +1677,7 @@ void CDxfWrite::writeAngularDim(
         (*m_ssEntity) << "AcDbDimension" << endl;
     }
     (*m_ssEntity) << "  2" << endl;
-    (*m_ssEntity) << "*" << getLayerName() << endl;  // blockName
+    (*m_ssEntity) << m_currentDimBlockName << endl;  // blockName
 
     (*m_ssEntity) << " 10" << endl;
     (*m_ssEntity) << endExt2[0] << endl;
@@ -1742,6 +1750,7 @@ void CDxfWrite::writeRadialDim(
 )
 {
     m_stats.entityCounts["DIMENSION_RADIAL"]++;
+    assignDimBlockName();
     (*m_ssEntity) << "  0" << endl;
     (*m_ssEntity) << "DIMENSION" << endl;
     (*m_ssEntity) << "  5" << endl;
@@ -1759,7 +1768,7 @@ void CDxfWrite::writeRadialDim(
         (*m_ssEntity) << "AcDbDimension" << endl;
     }
     (*m_ssEntity) << "  2" << endl;
-    (*m_ssEntity) << "*" << getLayerName() << endl;  // blockName
+    (*m_ssEntity) << m_currentDimBlockName << endl;  // blockName
     (*m_ssEntity) << " 10" << endl;                  // arc center point
     (*m_ssEntity) << centerPoint[0] << endl;
     (*m_ssEntity) << " 20" << endl;
@@ -1810,6 +1819,7 @@ void CDxfWrite::writeDiametricDim(
 )
 {
     m_stats.entityCounts["DIMENSION_DIAMETRIC"]++;
+    assignDimBlockName();
     (*m_ssEntity) << "  0" << endl;
     (*m_ssEntity) << "DIMENSION" << endl;
     (*m_ssEntity) << "  5" << endl;
@@ -1827,7 +1837,7 @@ void CDxfWrite::writeDiametricDim(
         (*m_ssEntity) << "AcDbDimension" << endl;
     }
     (*m_ssEntity) << "  2" << endl;
-    (*m_ssEntity) << "*" << getLayerName() << endl;  // blockName
+    (*m_ssEntity) << m_currentDimBlockName << endl;  // blockName
     (*m_ssEntity) << " 10" << endl;
     (*m_ssEntity) << arcPoint1[0] << endl;
     (*m_ssEntity) << " 20" << endl;
@@ -1873,10 +1883,8 @@ void CDxfWrite::writeDiametricDim(
 void CDxfWrite::writeDimBlockPreamble()
 {
     if (m_version > 12) {
-        std::string blockName("*");
-        blockName += getLayerName();
         m_saveBlkRecordHandle = getBlkRecordHandle();
-        addBlockName(blockName, m_saveBlkRecordHandle);
+        addBlockName(m_currentDimBlockName, m_saveBlkRecordHandle);
     }
 
     m_currentBlock = getBlockHandle();
@@ -1897,7 +1905,7 @@ void CDxfWrite::writeDimBlockPreamble()
         (*m_ssBlock) << "AcDbBlockBegin" << endl;
     }
     (*m_ssBlock) << "  2" << endl;
-    (*m_ssBlock) << "*" << getLayerName() << endl;  // blockName
+    (*m_ssBlock) << m_currentDimBlockName << endl;  // blockName
     (*m_ssBlock) << " 70" << endl;
     (*m_ssBlock) << "   1" << endl;
     (*m_ssBlock) << " 10" << endl;
@@ -1907,7 +1915,7 @@ void CDxfWrite::writeDimBlockPreamble()
     (*m_ssBlock) << " 30" << endl;
     (*m_ssBlock) << 0.0 << endl;
     (*m_ssBlock) << "  3" << endl;
-    (*m_ssBlock) << "*" << getLayerName() << endl;  // blockName
+    (*m_ssBlock) << m_currentDimBlockName << endl;  // blockName
     (*m_ssBlock) << "  1" << endl;
     (*m_ssBlock) << " " << endl;
 }
