@@ -665,8 +665,8 @@ public:
         std::vector<PointPos>& PosIdList
     ) const;
     void getDirectlyCoincidentPoints(
-        const int GeoId1,
-        const int GeoId2,
+        int GeoId1,
+        int GeoId2,
         std::vector<int>& GeoIds3,
         std::vector<PointPos>& PosIds3
     ) const;
