@@ -27,6 +27,8 @@
 #include <QString>
 #include <QTimeZone>
 #include <QUrl>
+#include <QtEndian>
+#include <cstdint>
 #include <fmt/format.h>
 
 #include "FileUtilities.h"
@@ -70,6 +72,45 @@ bool Start::useCachedThumbnail(const QString& image, const QString& project)
     }
 
     return f1.lastModified() > f2.lastModified();
+}
+
+bool Start::isValidPNG(const QByteArray& data)
+{
+    constexpr qsizetype chunkOverhead = 12;  // length, type, and CRC
+
+    static const QByteArray signature("\x89PNG\r\n\x1a\n", 8);
+    if (!data.startsWith(signature)) {
+        return false;
+    }
+
+    qsizetype offset = signature.size();
+    bool headerSeen = false;
+    while (offset + chunkOverhead <= data.size()) {
+        // NOLINTNEXTLINE -- pointer arithmetic
+        const auto length = qFromBigEndian<quint32>(data.constData() + offset);
+        if (length > data.size()) {
+            return false;
+        }
+
+        const QByteArray type = data.mid(offset + 4, 4);
+        if (!headerSeen && type != QByteArrayLiteral("IHDR")) {
+            // The first chunk has to be the IHDR
+            return false;
+        }
+        headerSeen = true;
+
+        const qsizetype nextChunk = offset + chunkOverhead + static_cast<qsizetype>(length);
+        if (nextChunk > data.size()) {
+            return false;
+        }
+        if (type == QByteArrayLiteral("IEND")) {
+            // The IEND chunk better be at the end of the buffer: if there's more data, it's invalid
+            return nextChunk == data.size();
+        }
+        offset = nextChunk;
+    }
+
+    return false;
 }
 
 std::string Start::humanReadableSize(uint64_t bytes)

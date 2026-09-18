@@ -29,6 +29,8 @@
 # include <ostream>
 #endif
 
+#include <QFile>
+
 #include <Base/Console.h>
 #include <Base/Stream.h>
 
@@ -39,42 +41,66 @@
 
 using namespace Start;
 
+/// Read a previously-cached thumbnail, discarding the cache entry unless it holds a good PNG.
+/// \returns The image bytes, or an empty QByteArray (if there was nothing usable to read)
+static QByteArray readCachedThumbnail(const QString& pathToCachedThumbnail)
+{
+    auto inputFile = QFile(pathToCachedThumbnail);
+    if (!inputFile.exists() || !inputFile.open(QIODevice::OpenModeFlag::ReadOnly)) {
+        return {};
+    }
+
+    if (auto data = inputFile.readAll(); isValidPNG(data)) {
+        return data;
+    }
+
+    inputFile.close();
+    QFile::remove(pathToCachedThumbnail);  // It's trash, get rid of it
+    return {};
+}
+
+static void writeCachedThumbnail(const QString& pathToCachedThumbnail, const QByteArray& data)
+{
+    createThumbnailsDir();
+    const Base::FileInfo fi(pathToCachedThumbnail.toStdString());
+    Base::ofstream fs(fi, std::ios::out | std::ios::binary);
+    fs.write(data.data(), data.size());
+    fs.close();
+}
+
 /// Load the thumbnail image data (if any) that is stored in an FCStd file.
-/// \returns The image bytes, or an empty QByteArray (if no thumbnail was stored)
+/// \returns The image bytes, or an empty QByteArray (if no usable thumbnail was stored)
 static QByteArray loadFCStdThumbnail(const App::ProjectFile& proj, const QString& filePath)
 {
     try {
         const QString pathToCachedThumbnail = getPathToCachedThumbnail(filePath);
         if (useCachedThumbnail(pathToCachedThumbnail, filePath)) {
-            if (auto inputFile = QFile(pathToCachedThumbnail);
-                inputFile.exists() && inputFile.open(QIODevice::OpenModeFlag::ReadOnly)) {
-                return inputFile.readAll();
+            if (auto cached = readCachedThumbnail(pathToCachedThumbnail); !cached.isEmpty()) {
+                return cached;
             }
         }
-        else {
-            const auto pathToThumbnail = QString(defaultThumbnailPath).toStdString();
-            if (proj.containsFile(pathToThumbnail)) {
-                createThumbnailsDir();
 
-                // Read the thumbnail into a buffer
-                const auto dataSize = proj.sizeOfFile(pathToThumbnail);
-                QByteArray data(dataSize, Qt::Uninitialized);
+        const auto pathToThumbnail = QString(defaultThumbnailPath).toStdString();
+        if (proj.containsFile(pathToThumbnail)) {
+            // Read the thumbnail into a buffer
+            const auto dataSize = proj.sizeOfFile(pathToThumbnail);
+            QByteArray data(dataSize, Qt::Uninitialized);
 #ifdef __cpp_lib_spanstream
-                std::spanstream dataStream({data.data(), size_t(data.size())});
+            std::spanstream dataStream({data.data(), size_t(data.size())});
 #else
-                Base::BufferStreambuf dataStreambuf({data.data(), size_t(data.size())});
-                std::ostream dataStream(&dataStreambuf);
+            Base::BufferStreambuf dataStreambuf({data.data(), size_t(data.size())});
+            std::ostream dataStream(&dataStreambuf);
 #endif
-                proj.readInputFileDirect(pathToThumbnail, dataStream);
+            proj.readInputFileDirect(pathToThumbnail, dataStream);
 
-                // Save that buffer to the thumbnail cache
-                const Base::FileInfo thumbnailFileInfo(pathToCachedThumbnail.toStdString());
-                Base::ofstream thumbnailFileStream(thumbnailFileInfo, std::ios::out | std::ios::binary);
-                thumbnailFileStream.write(data.data(), data.size());
-                thumbnailFileStream.close();
-
-                return data;
+            if (isValidPNG(data)) {
+                writeCachedThumbnail(pathToCachedThumbnail, data);
             }
+            else {
+                Base::Console().log("Not caching non-PNG thumbnail: %s\n", filePath.toStdString());
+            }
+
+            return data;
         }
     }
     catch (...) {
