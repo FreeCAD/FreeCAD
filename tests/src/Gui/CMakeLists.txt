@@ -32,10 +32,18 @@ add_executable(Gui_tests_run
 setup_qt_test(ObjectSelection)
 setup_qt_test(TranslatorLocale)
 setup_qt_test(InputField)
-setup_qt_test(QuantitySpinBox)
+setup_qt_test(QuantitySpinBox SelectionMenu)
 setup_qt_test(NumericLocaleConsumers)
+if(TARGET PartGui)
+    setup_qt_test(SelectionRendering)
+    target_link_libraries(SelectionRendering_Tests_run
+        PartGui
+        ${QtOpenGL_LIBRARIES}
+    )
+endif()
 
 target_link_libraries(Gui_tests_run PRIVATE
+    GTest::gtest_main
     GTest::gmock_main
     FreeCADApp
     FreeCADGui
