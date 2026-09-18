@@ -6090,8 +6090,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="51"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="59"/>
-      <location filename="../../ViewProvider.cpp" line="53"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="55"/>
+      <location filename="../../ViewProvider.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>%1 편집</translation>
     </message>
@@ -6519,7 +6519,7 @@ Continue?</source>
       <translation>거리 입력:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="994"/>
+      <location filename="../../ViewProviderExt.cpp" line="1011"/>
       <source>Appearance per Face</source>
       <translation>면별 외관</translation>
     </message>
@@ -7342,7 +7342,7 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6723"/>
+      <location filename="../../../App/Geometry.cpp" line="6726"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>곡선의 교점을 추정할 수 없습니다. 모깎기하려는 곡선의 꼭짓점 사이에 일치 구속을 추가해 보세요.</translation>
     </message>
@@ -7755,7 +7755,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="236"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="159"/>
+      <source>Preview requires a Part-based view provider; none found for %1.</source>
+      <translation type="unfinished">Preview requires a Part-based view provider; none found for %1.</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
+      <source>unknown object</source>
+      <translation type="unfinished">unknown object</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="303"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>미리보기 렌더링 실패: %1. 일반적으로 모델 오류를 나타냅니다.</translation>
     </message>

@@ -3078,7 +3078,7 @@ Wählen Sie zunächst eine oder mehrere Kantenentitäten aus.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="1039"/>
       <source>No shape selected</source>
-      <translation>Keine Form gewählt</translation>
+      <translation>Keine Form ausgewählt</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="1097"/>
@@ -6099,8 +6099,8 @@ für die Spine-Kurve in der 3D-Ansicht auswählen.</translation>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="51"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="59"/>
-      <location filename="../../ViewProvider.cpp" line="53"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="55"/>
+      <location filename="../../ViewProvider.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>%1 bearbeiten</translation>
     </message>
@@ -6528,7 +6528,7 @@ Fortfahren?</translation>
       <translation>Abstand eingeben:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="994"/>
+      <location filename="../../ViewProviderExt.cpp" line="1011"/>
       <source>Appearance per Face</source>
       <translation>Aussehen per Fläche</translation>
     </message>
@@ -7354,7 +7354,7 @@ oder mit den Formen innerhalb einer Verbindung durch.
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6723"/>
+      <location filename="../../../App/Geometry.cpp" line="6726"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Der Schnittpunkt der Kurven kann nicht ermittelt werden. Die Randbedingung Koinzidenz festlegen, angewendet auf die Endpunkte der Kurven, die verrundet werden sollen, kann hier helfen.</translation>
     </message>
@@ -7767,7 +7767,17 @@ oder mit den Formen innerhalb einer Verbindung durch.
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="236"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="159"/>
+      <source>Preview requires a Part-based view provider; none found for %1.</source>
+      <translation>Für die Vorschau ist ein Part-basierter Ansichts-Provider erforderlich; für %1 wurde keiner gefunden.</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
+      <source>unknown object</source>
+      <translation>unbekanntes Objekt</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="303"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>Fehler beim Rendern der Vorschau: %1. Dies deutet normalerweise auf einen Fehler mit dem Modell hin.</translation>
     </message>

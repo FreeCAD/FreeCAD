@@ -24,6 +24,7 @@
 
 
 #include <QAction>
+#include <QEvent>
 
 
 #include <App/Application.h>
@@ -73,6 +74,7 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
+    setupOperation(ui->labelOperation, ui->comboOperation);
     QMetaObject::connectSlotsByName(this);
 
     // clang-format off
@@ -340,8 +342,13 @@ void TaskLoftParameters::exitSelectionMode()
     this->blockSelection(true);
 }
 
-void TaskLoftParameters::changeEvent(QEvent* /*e*/)
-{}
+void TaskLoftParameters::changeEvent(QEvent* e)
+{
+    TaskBox::changeEvent(e);
+    if (e->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(proxy);
+    }
+}
 
 void TaskLoftParameters::onClosed(bool val)
 {

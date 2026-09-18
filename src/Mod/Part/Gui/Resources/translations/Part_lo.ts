@@ -588,7 +588,7 @@
       <location filename="../../AttacherTexts.cpp" line="365"/>
       <source>Plane origin is midway between two planar faces and its orientation equally bisects their angle. For non-parallel faces the plane contains their intersection line.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane origin is midway between two planar faces and its orientation equally bisects their angle. For non-parallel faces the plane contains their intersection line.</translation>
+      <translation>ຈຸດກຳເນີດຂອງແຜ່ນພຽງຢູ່ເຄິ່ງກາງລະຫວ່າງສອງໜ້າພຽງ ແລະ ທິດທາງຂອງມັນແບ່ງເຄິ່ງມຸມຂອງພວກມັນຢ່າງເທົ່າທຽມກັນ. ສຳລັບໜ້າທີ່ບໍ່ຂະໜານກັນ ແຜ່ນພຽງຈະປະກອບມີເສັ້ນຕັດກັນຂອງພວກມັນ.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="375"/>
@@ -901,7 +901,7 @@
       <location filename="../../AttacherTexts.cpp" line="112"/>
       <source>Plane origin is midway between two planar faces and its orientation equally bisects their angle. For non-parallel faces the plane contains their intersection line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Plane origin is midway between two planar faces and its orientation equally bisects their angle. For non-parallel faces the plane contains their intersection line.</translation>
+      <translation>ຈຸດກຳເນີດຂອງແຜ່ນພຽງຢູ່ເຄິ່ງກາງລະຫວ່າງສອງໜ້າພຽງ ແລະ ທິດທາງຂອງມັນແບ່ງເຄິ່ງມຸມຂອງພວກມັນຢ່າງເທົ່າທຽມກັນ. ສຳລັບໜ້າທີ່ບໍ່ຂະໜານກັນ ແຜ່ນພຽງຈະປະກອບມີເສັ້ນຕັດກັນຂອງພວກມັນ.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="200"/>
@@ -6073,8 +6073,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="51"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="59"/>
-      <location filename="../../ViewProvider.cpp" line="53"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="55"/>
+      <location filename="../../ViewProvider.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>ແກ້ໄຂ %1</translation>
     </message>
@@ -6502,7 +6502,7 @@ Continue?</source>
       <translation>ປ້ອນໄລຍະຫ່າງ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="994"/>
+      <location filename="../../ViewProviderExt.cpp" line="1011"/>
       <source>Appearance per Face</source>
       <translation>ຮູບລັກສະນະແຕ່ລະໜ້າພຽງ</translation>
     </message>
@@ -7323,7 +7323,7 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6723"/>
+      <location filename="../../../App/Geometry.cpp" line="6726"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>ບໍ່ສາມາດລະບຸສ່ວນຕັດຂອງເສັ້ນໂຄ້ງໄດ້. ລອງເພີ່ມຂໍ້ຈຳກັດ coincident ລະຫວ່າງຈຸດຍອດຂອງເສັ້ນໂຄ້ງທີ່ທ່ານຕ້ອງການເຮັດມຸມມົນ.</translation>
     </message>
@@ -7736,7 +7736,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="236"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="159"/>
+      <source>Preview requires a Part-based view provider; none found for %1.</source>
+      <translation>ການເບິ່ງຕົວຢ່າງຕ້ອງການຕົວສະໜອງການເບິ່ງແບບອີງໃສ່ຊິ້ນສ່ວນ; ບໍ່ພົບສຳລັບ %1.</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
+      <source>unknown object</source>
+      <translation>ວັດຖຸທີ່ບໍ່ຮູ້ຈັກ</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="303"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>ການສະແດງຕົວຢ່າງລົ້ມເຫຼວ: %1. ສິ່ງນີ້ມັກຈະບົ່ງບອກເຖິງຂໍ້ຜິດພາດຂອງໂມເດວ.</translation>
     </message>

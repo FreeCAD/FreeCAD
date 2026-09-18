@@ -15,6 +15,7 @@ from typing import Final, List, Tuple, Union, overload
     FatherInclude="App/ComplexGeoDataPy.h",
     FatherNamespace="Data",
     Constructor=True,
+    Hash=True,
 )
 class TopoShape(ComplexGeoData):
     """

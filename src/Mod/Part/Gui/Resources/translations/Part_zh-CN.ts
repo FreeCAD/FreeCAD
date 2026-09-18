@@ -5212,7 +5212,7 @@ only created cuts will be visible</source>
       <location filename="../../TaskShapeBuilder.cpp" line="432"/>
       <location filename="../../TaskShapeBuilder.cpp" line="498"/>
       <source>Wrong Selection</source>
-      <translation>错误选择。</translation>
+      <translation>错误选择</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="281"/>
@@ -5301,7 +5301,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="394"/>
       <source>Wrong Selection</source>
-      <translation>错误选择。</translation>
+      <translation>错误选择</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="395"/>
@@ -6088,8 +6088,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="51"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="59"/>
-      <location filename="../../ViewProvider.cpp" line="53"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="55"/>
+      <location filename="../../ViewProvider.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>编辑 %1</translation>
     </message>
@@ -6132,7 +6132,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../Command.cpp" line="1015"/>
       <location filename="../../Command.cpp" line="2277"/>
       <source>Wrong Selection</source>
-      <translation>错误选择。</translation>
+      <translation>错误选择</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="351"/>
@@ -6517,7 +6517,7 @@ Continue?</source>
       <translation>输入距离：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="994"/>
+      <location filename="../../ViewProviderExt.cpp" line="1011"/>
       <source>Appearance per Face</source>
       <translation>每面外观</translation>
     </message>
@@ -7340,7 +7340,7 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6723"/>
+      <location filename="../../../App/Geometry.cpp" line="6726"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>无法猜测曲线的交点。请尝试在要倒角的曲线的顶点之间添加重合约束。</translation>
     </message>
@@ -7753,7 +7753,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="236"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="159"/>
+      <source>Preview requires a Part-based view provider; none found for %1.</source>
+      <translation>预览需要基于零件（Part）的视图提供程序；未找到用于 %1 的视图提供程序。</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
+      <source>unknown object</source>
+      <translation>未知对象</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="303"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>渲染预览时失败：%1。这通常表示模型存在错误。</translation>
     </message>

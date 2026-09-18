@@ -2265,15 +2265,35 @@ Visit https://openscad.org/ to install it.</source>
       <translation>Адлюстраваць колеры</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderCurvature.cpp" line="475"/>
       <location filename="../../ViewProvider.cpp" line="1701"/>
-      <location filename="../../ViewProviderCurvature.cpp" line="535"/>
       <source>Leave Info Mode</source>
       <translation>Выйсці з інфармацыйнага рэжыму</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1770"/>
+      <location filename="../../ViewProvider.cpp" line="1745"/>
+      <source>Mesh: %1</source>
+      <translation>Паліганальная сетка: %1</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="1748"/>
       <source>Index: %1</source>
       <translation>Індэкс: %1</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="1751"/>
+      <source>Points: &lt;%1, %2, %3&gt;</source>
+      <translation>Кропкі: &lt;%1, %2, %3&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="1758"/>
+      <source>Neighbours: &lt;%1, %2, %3&gt;</source>
+      <translation>Суседзі: &lt;%1, %2, %3&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="1764"/>
+      <source>Triangle:</source>
+      <translation>Трыкутнік:</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1798"/>
@@ -2296,7 +2316,7 @@ Visit https://openscad.org/ to install it.</source>
       <translation>Зныць выбар з абраных граняў</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCurvature.cpp" line="532"/>
+      <location filename="../../ViewProviderCurvature.cpp" line="472"/>
       <source>Annotation</source>
       <translation>Заметка</translation>
     </message>

@@ -80,6 +80,7 @@ TaskHelixParameters::TaskHelixParameters(PartDesignGui::ViewProviderHelix* Helix
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
+    setupOperation(ui->labelOperation, ui->comboOperation);
     this->groupLayout()->addWidget(proxy);
 
     initializeHelix();
@@ -120,7 +121,6 @@ void TaskHelixParameters::assignProperties()
     propLeftHanded = &(helix->LeftHanded);
     propReversed = &(helix->Reversed);
     propMode = &(helix->Mode);
-    propOutside = &(helix->Outside);
 }
 
 void TaskHelixParameters::setValuesFromProperties()
@@ -133,7 +133,6 @@ void TaskHelixParameters::setValuesFromProperties()
     bool leftHanded = propLeftHanded->getValue();
     bool reversed = propReversed->getValue();
     int index = propMode->getValue();
-    bool outside = propOutside->getValue();
 
     ui->pitch->setValue(pitch);
     ui->height->setValue(height);
@@ -145,7 +144,6 @@ void TaskHelixParameters::setValuesFromProperties()
     ui->checkBoxLeftHanded->setChecked(leftHanded);
     ui->checkBoxReversed->setChecked(reversed);
     ui->inputMode->setCurrentIndex(index);
-    ui->checkBoxOutside->setChecked(outside);
 }
 
 void TaskHelixParameters::bindProperties()
@@ -183,8 +181,8 @@ void TaskHelixParameters::connectSlots()
             this, &TaskHelixParameters::onUpdateView);
     connect(ui->inputMode, qOverload<int>(&QComboBox::activated),
             this, &TaskHelixParameters::onModeChanged);
-    connect(ui->checkBoxOutside, &QCheckBox::toggled,
-            this, &TaskHelixParameters::onOutsideChanged);
+    connect(ui->comboOperation, qOverload<int>(&QComboBox::activated),
+            this, &TaskHelixParameters::updateUI);
     // clang-format on
 }
 
@@ -338,14 +336,8 @@ void TaskHelixParameters::adaptVisibilityToMode()
     bool isPitchVisible = false;
     bool isHeightVisible = false;
     bool isTurnsVisible = false;
-    bool isOutsideVisible = false;
     bool isAngleVisible = false;
     bool isGrowthVisible = false;
-
-    auto helix = getObject<PartDesign::Helix>();
-    if (helix->getAddSubType() == PartDesign::FeatureAddSub::Type::Subtractive) {
-        isOutsideVisible = true;
-    }
 
     HelixMode mode = static_cast<HelixMode>(propMode->getValue());
     if (mode == HelixMode::pitch_height_angle) {
@@ -386,8 +378,6 @@ void TaskHelixParameters::adaptVisibilityToMode()
 
     ui->growth->setVisible(isGrowthVisible);
     ui->labelGrowth->setVisible(isGrowthVisible);
-
-    ui->checkBoxOutside->setVisible(isOutsideVisible);
 }
 
 void TaskHelixParameters::assignToolTipsFromPropertyDocs()
@@ -432,9 +422,6 @@ void TaskHelixParameters::assignToolTipsFromPropertyDocs()
 
     toolTip = QApplication::translate(propCategory, helix->Reversed.getDocumentation());
     ui->checkBoxReversed->setToolTip(toolTip);
-
-    toolTip = QApplication::translate(propCategory, helix->Outside.getDocumentation());
-    ui->checkBoxOutside->setToolTip(toolTip);
 }
 
 void TaskHelixParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -597,16 +584,6 @@ void TaskHelixParameters::onReversedChanged(bool on)
     }
 }
 
-void TaskHelixParameters::onOutsideChanged(bool on)
-{
-    if (getObject()) {
-        propOutside->setValue(on);
-        recomputeFeature();
-        updateUI();
-    }
-}
-
-
 TaskHelixParameters::~TaskHelixParameters()
 {
     try {
@@ -718,6 +695,7 @@ void TaskHelixParameters::finishReferenceSelection(App::DocumentObject* profile,
 // this is used for logging the command fully when recording macros
 void TaskHelixParameters::apply()  // NOLINT
 {
+    TaskSketchBasedParameters::apply();
     std::vector<std::string> sub;
     App::DocumentObject* obj {};
     getReferenceAxis(obj, sub);

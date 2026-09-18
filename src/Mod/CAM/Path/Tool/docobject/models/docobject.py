@@ -108,7 +108,11 @@ class DetachedDocumentObject:
         if prop_type == "App::PropertyEnumeration" and isinstance(value, (list, tuple)):
             self._property_enums[name] = list(value)
             assert len(value) > 0, f"Enum property '{name}' must have at least one entry"
-            self._properties.setdefault(name, value[0])
+            if not self._properties.get(name):
+                # addProperty() already created the key with a None value, so
+                # setdefault() would never fire here. Mimic FreeCAD, which makes
+                # the first choice the current value when the choices are set.
+                self._properties[name] = value[0]
             return
 
         # Attempt to convert string values to Quantity if the property type is Quantity

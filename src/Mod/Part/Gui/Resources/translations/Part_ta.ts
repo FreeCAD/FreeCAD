@@ -6105,8 +6105,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="51"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="59"/>
-      <location filename="../../ViewProvider.cpp" line="53"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="55"/>
+      <location filename="../../ViewProvider.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>திருத்த % 1</translation>
     </message>
@@ -6534,7 +6534,7 @@ Continue?</source>
       <translation>தூரத்தை உள்ளிடவும்:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="994"/>
+      <location filename="../../ViewProviderExt.cpp" line="1011"/>
       <source>Appearance per Face</source>
       <translation>ஒவ்வொரு முகத்திற்கும் தோற்றம்</translation>
     </message>
@@ -7360,7 +7360,7 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6723"/>
+      <location filename="../../../App/Geometry.cpp" line="6726"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>வளைவுகளின் குறுக்குவெட்டை யூகிக்க முடியவில்லை. நீங்கள் ஃபில்லட் செய்ய விரும்பும் வளைவுகளின் செங்குத்துகளுக்கு இடையில் ஒரு தற்செயல் தடையைச் சேர்க்க முயற்சிக்கவும்.</translation>
     </message>
@@ -7773,7 +7773,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="236"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="159"/>
+      <source>Preview requires a Part-based view provider; none found for %1.</source>
+      <translation type="unfinished">Preview requires a Part-based view provider; none found for %1.</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
+      <source>unknown object</source>
+      <translation type="unfinished">unknown object</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="303"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>முன்னோட்டத்தை வழங்குவதில் தோல்வி: % 1. இது பொதுவாக மாதிரியில் பிழையைக் குறிக்கிறது.</translation>
     </message>

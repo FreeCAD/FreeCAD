@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # test script for DrawViewDetail
 # creates a page, a view and a detail view
 

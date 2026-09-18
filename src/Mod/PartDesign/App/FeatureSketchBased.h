@@ -187,7 +187,8 @@ protected:
     static TopoShape moveProfileToStart(
         const TopoShape& profileShape,
         const gp_Dir& direction,
-        double offset
+        double offset,
+        bool copyProfile
     );
 
     /// Create a shape with shapes and faces from a given LinkSubList

@@ -1202,6 +1202,34 @@ Note that the calculation can take some time</string>
      </layout>
     </widget>
    </item>
+   <item>
+    <layout class="QHBoxLayout" name="operationLayout" stretch="1,1">
+     <item>
+      <widget class="QLabel" name="labelOperation">
+       <property name="text">
+        <string>Operation</string>
+       </property>
+       <property name="buddy">
+        <cstring>comboOperation</cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboOperation">
+       <item>
+        <property name="text">
+         <string>Subtraction</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Common</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
     </layout>
    </widget>
   </item>

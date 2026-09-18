@@ -25,10 +25,28 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
     def setUp(self):
         super().setUp()
 
+        self.sketcher_tool_params = FreeCAD.ParamGet(
+            "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools"
+        )
+        self.had_ovp_visibility = "OnViewParameterVisibility" in self.sketcher_tool_params.GetInts()
+        self.old_ovp_visibility = self.sketcher_tool_params.GetInt("OnViewParameterVisibility", 1)
+        self.sketcher_tool_params.SetInt("OnViewParameterVisibility", 1)
+
         FreeCADGui.activateWorkbench("SketcherWorkbench")
         self.doc = FreeCAD.newDocument("TestOnViewParameterGui")
         self.sketch = self.doc.addObject("Sketcher::SketchObject", "Sketch")
         self.doc.recompute()
+
+    def tearDown(self):
+        try:
+            if self.had_ovp_visibility:
+                self.sketcher_tool_params.SetInt(
+                    "OnViewParameterVisibility", self.old_ovp_visibility
+                )
+            else:
+                self.sketcher_tool_params.RemInt("OnViewParameterVisibility")
+        finally:
+            super().tearDown()
 
     def pack_color(self, color):
         r, g, b, a = color
@@ -42,6 +60,16 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
     def key_text(self, widget, text):
         for ch in text:
             self.key_click(widget, self.KEYS[ch], ch)
+
+    def active_spinbox(self):
+        widget = QtGui.QApplication.focusWidget()
+        if isinstance(widget, QtGui.QAbstractSpinBox):
+            return widget
+        if isinstance(widget, QtGui.QLineEdit):
+            parent = widget.parent()
+            if isinstance(parent, QtGui.QAbstractSpinBox):
+                return parent
+        return None
 
     def visible_spinboxes(self):
         main_window = FreeCADGui.getMainWindow()
@@ -62,6 +90,9 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
         main_window.activateWindow()
         spinbox.setFocus(QtCore.Qt.OtherFocusReason)
         self.flush_gui()
+
+    def ovp_lock_icon(self, spinbox):
+        return spinbox.findChild(QtGui.QLabel, "onViewParameterLockIcon")
 
     def active_task_dialog(self):
         return FreeCADGui.Control.activeTaskDialog()
@@ -250,7 +281,7 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
         return sensors, updates, completed_updates
 
     def test_origin_marker_tracks_drawing_tool_state(self):
-        """The origin marker is hollow only while a drawing handler is active."""
+        """The origin marker tracks drawing state during off-origin interaction."""
 
         self.begin_sketch_edit_with_task_dialog()
         view = FreeCADGui.ActiveDocument.ActiveView
@@ -258,10 +289,14 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
         view.fitAll()
         self.pump(150)
         viewport = view.graphicsView().viewport()
-        first_point = self.viewport_to_qpoint(
+        origin_point = self.viewport_to_qpoint(
             view,
             viewport,
             view.getPointOnScreen(FreeCAD.Vector(0, 0, 0)),
+        )
+        drawing_point = self.clamp_to_widget(
+            viewport,
+            QtCore.QPoint(origin_point.x() + 80, origin_point.y() - 60),
         )
         filled_marker = self.origin_marker_index()
         self.assertTrue(
@@ -319,12 +354,11 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
             "Expected restoring the marker size to update the active marker",
         )
 
-        active_marker = self.origin_marker_index()
-        self.right_click(viewport, first_point)
+        self.move(viewport, drawing_point)
+        self.right_click(viewport, drawing_point)
         self.assertTrue(
             self.wait_until(
-                lambda: self.origin_marker_is("CIRCLE_FILLED")
-                and self.origin_marker_index() != active_marker,
+                lambda: self.origin_marker_is("CIRCLE_FILLED"),
                 timeout_ms=3000,
             ),
             "Expected leaving the drawing tool to restore the filled origin marker",
@@ -332,12 +366,18 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
 
         second_point = self.clamp_to_widget(
             viewport,
-            QtCore.QPoint(first_point.x() + 100, first_point.y() + 80),
+            QtCore.QPoint(drawing_point.x() + 100, drawing_point.y() + 80),
         )
         FreeCADGui.runCommand("Sketcher_CreateLine")
-        self.pump(100)
-        self.move(viewport, first_point)
-        self.click(viewport, first_point)
+        self.assertTrue(
+            self.wait_until(
+                lambda: self.origin_marker_is("CIRCLE_LINE"),
+                timeout_ms=3000,
+            ),
+            "Expected the second line tool activation to switch the origin marker appearance",
+        )
+        self.move(viewport, drawing_point)
+        self.click(viewport, drawing_point)
         self.move(viewport, second_point)
         self.click(viewport, second_point)
         self.assertGreater(
@@ -345,12 +385,11 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
             0,
             "Expected geometry away from the origin before cancelling the tool",
         )
-        active_marker = self.origin_marker_index()
+        self.move(viewport, second_point)
         self.right_click(viewport, second_point)
         self.assertTrue(
             self.wait_until(
-                lambda: self.origin_marker_is("CIRCLE_FILLED")
-                and self.origin_marker_index() != active_marker,
+                lambda: self.origin_marker_is("CIRCLE_FILLED"),
                 timeout_ms=3000,
             ),
             "Expected cancelling the drawing tool to leave a filled origin marker",
@@ -368,12 +407,11 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
                 ),
                 f"Expected {command} to activate the hollow origin marker",
             )
-            active_marker = self.origin_marker_index()
-            self.right_click(viewport, first_point)
+            self.move(viewport, drawing_point)
+            self.right_click(viewport, drawing_point)
             self.assertTrue(
                 self.wait_until(
-                    lambda: self.origin_marker_is("CIRCLE_FILLED")
-                    and self.origin_marker_index() != active_marker,
+                    lambda: self.origin_marker_is("CIRCLE_FILLED"),
                     timeout_ms=3000,
                 ),
                 f"Expected {command} cancellation to restore the filled origin marker",
@@ -611,6 +649,53 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
             self.sketch.GeometryCount,
             4,
             "Expected the rectangle to be created after accepting both OVPs",
+        )
+
+    def test_clearing_committed_rectangle_ovp_releases_its_lock(self):
+        """A cleared OVP must leave its committed state and resume live geometry input."""
+
+        self.begin_rectangle_with_visible_ovp()
+
+        first_spinbox = self.active_spinbox()
+        self.assertIsNotNone(first_spinbox, "Expected the first rectangle OVP to have focus")
+        self.key_text(first_spinbox, "10")
+        self.key_click(first_spinbox, QtCore.Qt.Key_Tab, "\t")
+
+        lock_icon = self.ovp_lock_icon(first_spinbox)
+        self.assertIsNotNone(lock_icon)
+        self.assertTrue(
+            self.wait_until(lock_icon.isVisible, timeout_ms=1000),
+            "Expected Tab to lock the committed first OVP",
+        )
+
+        first_edit = first_spinbox.findChild(QtGui.QLineEdit)
+        self.assertIsNotNone(first_edit)
+        first_spinbox.setFocus(QtCore.Qt.OtherFocusReason)
+        self.pump(100)
+        self.assertIs(self.active_spinbox(), first_spinbox)
+        first_edit.clear()
+        self.pump(60)
+
+        self.assertTrue(
+            self.wait_until(lambda: not lock_icon.isVisible(), timeout_ms=1000),
+            "Expected clearing the first OVP to release its lock",
+        )
+
+        first_edit.setText("15")
+        self.pump(60)
+        self.key_click(first_spinbox, QtCore.Qt.Key_Tab, "\t")
+
+        self.assertTrue(
+            self.wait_until(
+                lambda: self.active_spinbox() is not None
+                and self.active_spinbox() is not first_spinbox,
+                timeout_ms=1000,
+            ),
+            "Expected a replacement value to recommit the first OVP",
+        )
+        self.assertTrue(
+            self.wait_until(lock_icon.isVisible, timeout_ms=1000),
+            "Expected the replacement value to lock the first OVP again",
         )
 
     def test_rectangle_ovp_escape_resets_tool_without_exiting_sketch(self):

@@ -4,44 +4,44 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="82"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="84"/>
       <source>The center point of the helix' start; derived from the reference axis.</source>
       <translation>Le point central de démarrage de l'hélice. Il est dérivé de l'axe de référence.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="92"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="94"/>
       <source>The helix' direction; derived from the reference axis.</source>
       <translation>La direction de l'hélice. Elle est dérivée de l'axe de référence.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="99"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="101"/>
       <source>The reference axis of the helix.</source>
       <translation>L'axe de référence de l'hélice</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="106"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="108"/>
       <source>The helix input mode specifies which properties are set by the user.
 Dependent properties are then calculated.</source>
       <translation>Le mode de saisie de l'hélice spécifie les propriétés définies par l'utilisateur.
 Les propriétés dépendantes sont ensuite calculées.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="118"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="120"/>
       <source>The axial distance between two turns.</source>
       <translation>La distance axiale entre deux tours</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="125"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="127"/>
       <source>The height of the helix' path, not accounting for the extent of the profile.</source>
       <translation>La hauteur de la trajectoire de l'hélice, sans tenir compte de l'étendue du profil.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="135"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="137"/>
       <source>The number of turns in the helix.</source>
       <translation>Le nombre de tours de l'hélice.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="143"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="145"/>
       <source>The angle of the cone that forms a hull around the helix.
 Non-zero values turn the helix into a conical spiral.
 Positive values make the radius grow, negative shrinks.</source>
@@ -50,37 +50,37 @@ Les valeurs non nulles transforment l'hélice en une spirale conique.
 Les valeurs positives augmentent le rayon, les valeurs négatives le réduisent.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="156"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="158"/>
       <source>The growth of the helix' radius per turn.
 Non-zero values turn the helix into a conical spiral.</source>
       <translation>La croissance du rayon de l'hélice par tour.
 Les valeurs non nulles transforment l'hélice en une spirale conique.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="167"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="169"/>
       <source>Sets the turning direction to left handed,
 i.e. counter-clockwise when moving along its axis.</source>
       <translation>Définit le sens de rotation à gauche, sens inverse des aiguilles
 d'une montre lorsqu'on se déplace le long de son axe.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="178"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="180"/>
       <source>Determines whether the helix points in the opposite direction of the axis.</source>
       <translation>Détermine si l'hélice pointe dans la direction opposée de l'axe.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="188"/>
-      <source>If set, the result will be the intersection of the profile and the preexisting body.</source>
-      <translation>Si activé, le résultat sera l'intersection du profil et du corps préexistant.</translation>
+      <location filename="../../../App/FeatureHelix.cpp" line="210"/>
+      <source>deprecated, do not use</source>
+      <translation>Obsolète, ne pas utiliser</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="198"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="190"/>
       <source>If false, the tool will propose an initial value for the pitch based on the profile bounding box,
 so that self intersection is avoided.</source>
       <translation>Si désactivé, l'outil proposera une valeur initiale pour le pas basée sur la boîte englobante du profil, de sorte que l'auto-intersection soit évitée.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="210"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="202"/>
       <source>Fusion Tolerance for the Helix, increase if helical shape does not merge nicely with part.</source>
       <translation>Tolérance de l'union pour l'hélice, augmenter la si la forme hélicoïdale ne s'intègre pas bien dans la pièce.</translation>
     </message>
@@ -153,36 +153,35 @@ False = roue dentée planétaire</translation>
   <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1601"/>
+      <location filename="../../Command.cpp" line="1602"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1602"/>
+      <location filename="../../Command.cpp" line="1603"/>
       <source>Additive Loft</source>
       <translation>Lissage additif</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1603"/>
-      <source>Lofts the selected sketch or profile along a path and adds it to the body</source>
-      <translation>Le lissage additif crée un solide dans le corps actif en faisant une transition entre deux ou plusieurs esquisses (également appelées
-sections transversales). Si le corps contient déjà des éléments, le lissage additif sera fusionné avec eux. </translation>
+      <location filename="../../Command.cpp" line="1604"/>
+      <source>Lofts the selected sketch or profile through one or more sections and adds it to the body</source>
+      <translation>Crée un lissage à partir de l'esquisse ou du profil sélectionné en passant par une ou plusieurs sections, puis l'ajoute au corps.</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignAdditivePipe</name>
     <message>
-      <location filename="../../Command.cpp" line="1501"/>
+      <location filename="../../Command.cpp" line="1502"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../Command.cpp" line="1503"/>
       <source>Additive Pipe</source>
       <translation>Balayage additif</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1503"/>
+      <location filename="../../Command.cpp" line="1504"/>
       <source>Sweeps the selected sketch or profile along a path and adds it to the body</source>
       <translation>Balaie l'esquisse ou le profil sélectionné suivant une trajectoire et ajoute le résultat au corps.</translation>
     </message>
@@ -208,17 +207,17 @@ sections transversales). Si le corps contient déjà des éléments, le lissage 
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2622"/>
+      <location filename="../../Command.cpp" line="2710"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2623"/>
+      <location filename="../../Command.cpp" line="2711"/>
       <source>Boolean Operation</source>
       <translation>Créer une opération booléenne</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2624"/>
+      <location filename="../../Command.cpp" line="2712"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation>Applique une opération booléenne à des objets sélectionnés et au corps actif.</translation>
     </message>
@@ -226,17 +225,17 @@ sections transversales). Si le corps contient déjà des éléments, le lissage 
   <context>
     <name>CmdPartDesignCS</name>
     <message>
-      <location filename="../../Command.cpp" line="305"/>
+      <location filename="../../Command.cpp" line="306"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="306"/>
+      <location filename="../../Command.cpp" line="307"/>
       <source>Local Coordinate System</source>
       <translation>Système de coordonnées locales</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="307"/>
+      <location filename="../../Command.cpp" line="308"/>
       <source>Creates a new local coordinate system</source>
       <translation>Crée un nouveau système de coordonnées locales.</translation>
     </message>
@@ -262,17 +261,17 @@ sections transversales). Si le corps contient déjà des éléments, le lissage 
   <context>
     <name>CmdPartDesignClone</name>
     <message>
-      <location filename="../../Command.cpp" line="515"/>
+      <location filename="../../Command.cpp" line="516"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="516"/>
+      <location filename="../../Command.cpp" line="517"/>
       <source>Clone</source>
       <translation>Cloner</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="517"/>
+      <location filename="../../Command.cpp" line="518"/>
       <source>Copies a solid object parametrically as the base feature of a new body</source>
       <translation>Copie un objet solide de manière paramétrique en tant que fonction de base d'un nouveau corps.</translation>
     </message>
@@ -280,17 +279,17 @@ sections transversales). Si le corps contient déjà des éléments, le lissage 
   <context>
     <name>CmdPartDesignDraft</name>
     <message>
-      <location filename="../../Command.cpp" line="2057"/>
+      <location filename="../../Command.cpp" line="2145"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2058"/>
+      <location filename="../../Command.cpp" line="2146"/>
       <source>Draft</source>
       <translation>Dépouille</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2059"/>
+      <location filename="../../Command.cpp" line="2147"/>
       <source>Applies a draft to the selected faces</source>
       <translation>Applique une dépouille aux faces sélectionnées.</translation>
     </message>
@@ -334,17 +333,17 @@ sections transversales). Si le corps contient déjà des éléments, le lissage 
   <context>
     <name>CmdPartDesignGroove</name>
     <message>
-      <location filename="../../Command.cpp" line="1431"/>
+      <location filename="../../Command.cpp" line="1432"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1432"/>
+      <location filename="../../Command.cpp" line="1433"/>
       <source>Groove</source>
       <translation>Rainure</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1433"/>
+      <location filename="../../Command.cpp" line="1434"/>
       <source>Revolves the sketch or profile around a line or axis and removes it from the body</source>
       <translation>Applique une révolution à l'esquisse ou au profil autour d'une ligne ou d'un axe et le supprime du corps.</translation>
     </message>
@@ -352,17 +351,17 @@ sections transversales). Si le corps contient déjà des éléments, le lissage 
   <context>
     <name>CmdPartDesignHole</name>
     <message>
-      <location filename="../../Command.cpp" line="1324"/>
+      <location filename="../../Command.cpp" line="1325"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1325"/>
+      <location filename="../../Command.cpp" line="1326"/>
       <source>Hole</source>
       <translation>Perçage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1327"/>
+      <location filename="../../Command.cpp" line="1328"/>
       <source>Creates holes in the active body at the center points of circles or arcs of the selected sketch or profile</source>
       <translation>Crée des trous dans le corps actif au centre des cercles ou des arcs de l'esquisse ou du profil sélectionné.</translation>
     </message>
@@ -370,17 +369,17 @@ sections transversales). Si le corps contient déjà des éléments, le lissage 
   <context>
     <name>CmdPartDesignLine</name>
     <message>
-      <location filename="../../Command.cpp" line="245"/>
+      <location filename="../../Command.cpp" line="246"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="246"/>
+      <location filename="../../Command.cpp" line="247"/>
       <source>Datum Line</source>
       <translation>Ligne de référence</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="247"/>
+      <location filename="../../Command.cpp" line="248"/>
       <source>Creates a new datum line</source>
       <translation>Crée une nouvelle ligne de référence.</translation>
     </message>
@@ -388,17 +387,17 @@ sections transversales). Si le corps contient déjà des éléments, le lissage 
   <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2312"/>
+      <location filename="../../Command.cpp" line="2400"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2313"/>
+      <location filename="../../Command.cpp" line="2401"/>
       <source>Linear Pattern</source>
       <translation>Répétition linéaire</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2314"/>
+      <location filename="../../Command.cpp" line="2402"/>
       <source>Duplicates the selected features or the active body in a linear pattern</source>
       <translation>Duplique les éléments sélectionnés ou le corps actif selon un motif linéaire.</translation>
     </message>
@@ -424,17 +423,17 @@ sections transversales). Si le corps contient déjà des éléments, le lissage 
   <context>
     <name>CmdPartDesignMirrored</name>
     <message>
-      <location filename="../../Command.cpp" line="2255"/>
+      <location filename="../../Command.cpp" line="2343"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2256"/>
+      <location filename="../../Command.cpp" line="2344"/>
       <source>Mirror</source>
       <translation>Symétrie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2257"/>
+      <location filename="../../Command.cpp" line="2345"/>
       <source>Mirrors the selected features or active body</source>
       <translation>Crée une symétrie des fonctions sélectionnées ou du corps actif.</translation>
     </message>
@@ -496,17 +495,17 @@ sections transversales). Si le corps contient déjà des éléments, le lissage 
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2491"/>
+      <location filename="../../Command.cpp" line="2579"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2492"/>
+      <location filename="../../Command.cpp" line="2580"/>
       <source>Multi-Transform</source>
       <translation>Transformation multiple</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2493"/>
+      <location filename="../../Command.cpp" line="2581"/>
       <source>Applies multiple transformations to the selected features or active body</source>
       <translation>Applique plusieurs transformations aux éléments sélectionnés ou au corps actif.</translation>
     </message>
@@ -514,17 +513,17 @@ sections transversales). Si le corps contient déjà des éléments, le lissage 
   <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="596"/>
+      <location filename="../../Command.cpp" line="597"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="597"/>
+      <location filename="../../Command.cpp" line="598"/>
       <source>New Sketch</source>
       <translation>Créer une esquisse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="598"/>
+      <location filename="../../Command.cpp" line="599"/>
       <source>Creates a new sketch</source>
       <translation>Crée une nouvelle esquisse.</translation>
     </message>
@@ -532,17 +531,17 @@ sections transversales). Si le corps contient déjà des éléments, le lissage 
   <context>
     <name>CmdPartDesignPad</name>
     <message>
-      <location filename="../../Command.cpp" line="1266"/>
+      <location filename="../../Command.cpp" line="1267"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1267"/>
+      <location filename="../../Command.cpp" line="1268"/>
       <source>Pad</source>
       <translation>Protrusion</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1268"/>
+      <location filename="../../Command.cpp" line="1269"/>
       <source>Extrudes the selected sketch or profile and adds it to the body</source>
       <translation>Permet d'extruder l'esquisse ou le profil sélectionné et de l'ajouter au corps.</translation>
     </message>
@@ -550,17 +549,17 @@ sections transversales). Si le corps contient déjà des éléments, le lissage 
   <context>
     <name>CmdPartDesignPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="215"/>
+      <location filename="../../Command.cpp" line="216"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="216"/>
+      <location filename="../../Command.cpp" line="217"/>
       <source>Datum Plane</source>
       <translation>Plan de référence</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="217"/>
+      <location filename="../../Command.cpp" line="218"/>
       <source>Creates a new datum plane</source>
       <translation>Crée un nouveau plan de référence.</translation>
     </message>
@@ -568,17 +567,17 @@ sections transversales). Si le corps contient déjà des éléments, le lissage 
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
-      <location filename="../../Command.cpp" line="1295"/>
+      <location filename="../../Command.cpp" line="1296"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1296"/>
+      <location filename="../../Command.cpp" line="1297"/>
       <source>Pocket</source>
       <translation>Cavité</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1297"/>
+      <location filename="../../Command.cpp" line="1298"/>
       <source>Extrudes the selected sketch or profile and removes it from the body</source>
       <translation>Permet d'extruder l'esquisse ou le profil sélectionné et de le supprimer du corps.</translation>
     </message>
@@ -586,17 +585,17 @@ sections transversales). Si le corps contient déjà des éléments, le lissage 
   <context>
     <name>CmdPartDesignPoint</name>
     <message>
-      <location filename="../../Command.cpp" line="275"/>
+      <location filename="../../Command.cpp" line="276"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="276"/>
+      <location filename="../../Command.cpp" line="277"/>
       <source>Datum Point</source>
       <translation>Point de référence</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="277"/>
+      <location filename="../../Command.cpp" line="278"/>
       <source>Creates a new datum point</source>
       <translation>Crée un nouveau point de référence.</translation>
     </message>
@@ -604,17 +603,17 @@ sections transversales). Si le corps contient déjà des éléments, le lissage 
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2386"/>
+      <location filename="../../Command.cpp" line="2474"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2387"/>
+      <location filename="../../Command.cpp" line="2475"/>
       <source>Polar Pattern</source>
       <translation>Répétition circulaire</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2388"/>
+      <location filename="../../Command.cpp" line="2476"/>
       <source>Duplicates the selected features or the active body in a circular pattern</source>
       <translation>Duplique les fonctions sélectionnées ou le corps actif selon un motif circulaire.</translation>
     </message>
@@ -622,17 +621,17 @@ sections transversales). Si le corps contient déjà des éléments, le lissage 
   <context>
     <name>CmdPartDesignRevolution</name>
     <message>
-      <location filename="../../Command.cpp" line="1369"/>
+      <location filename="../../Command.cpp" line="1370"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1370"/>
+      <location filename="../../Command.cpp" line="1371"/>
       <source>Revolve</source>
       <translation>Révolution</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1371"/>
+      <location filename="../../Command.cpp" line="1372"/>
       <source>Revolves the selected sketch or profile around a line or axis and adds it to the body</source>
       <translation>Applique une révolution à l'esquisse ou au profil sélectionné autour d'une ligne ou d'un axe et l"ajoute au corps.</translation>
     </message>
@@ -640,17 +639,17 @@ sections transversales). Si le corps contient déjà des éléments, le lissage 
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2448"/>
+      <location filename="../../Command.cpp" line="2536"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2449"/>
+      <location filename="../../Command.cpp" line="2537"/>
       <source>Scale</source>
       <translation>Échelle</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2450"/>
+      <location filename="../../Command.cpp" line="2538"/>
       <source>Scales the selected features or the active body</source>
       <translation>Met à l'échelle les fonctions sélectionnées ou le corps actif.</translation>
     </message>
@@ -658,17 +657,17 @@ sections transversales). Si le corps contient déjà des éléments, le lissage 
   <context>
     <name>CmdPartDesignShapeBinder</name>
     <message>
-      <location filename="../../Command.cpp" line="339"/>
+      <location filename="../../Command.cpp" line="340"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="340"/>
+      <location filename="../../Command.cpp" line="341"/>
       <source>Shape Binder</source>
       <translation>Créer une forme liée</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="341"/>
+      <location filename="../../Command.cpp" line="342"/>
       <source>Creates a new shape binder</source>
       <translation>Crée une nouvelle forme liée.</translation>
     </message>
@@ -676,17 +675,17 @@ sections transversales). Si le corps contient déjà des éléments, le lissage 
   <context>
     <name>CmdPartDesignSubShapeBinder</name>
     <message>
-      <location filename="../../Command.cpp" line="409"/>
+      <location filename="../../Command.cpp" line="410"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="410"/>
+      <location filename="../../Command.cpp" line="411"/>
       <source>Sub-Shape Binder</source>
       <translation>Créer une sous forme liée</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="411"/>
+      <location filename="../../Command.cpp" line="412"/>
       <source>Creates a reference to geometry from one or more objects, allowing it to be used inside or outside a body. It tracks relative placements, supports multiple geometry types (solids, faces, edges, vertices), and can work with objects in the same or external documents.</source>
       <translation>Crée une référence à la géométrie à partir d'un ou plusieurs objets, ce qui permet de l'utiliser à l'intérieur ou à l'extérieur d'un corps. Elle
 conserve les positions relatives, prend en charge plusieurs types de géométrie (solides, faces, arêtes, sommets) et peut fonctionner
@@ -714,36 +713,35 @@ avec des objets dans le même document ou dans des documents externes.</translat
   <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1651"/>
+      <location filename="../../Command.cpp" line="1652"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1652"/>
+      <location filename="../../Command.cpp" line="1653"/>
       <source>Subtractive Loft</source>
       <translation>Lissage soustractif</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1653"/>
-      <source>Lofts the selected sketch or profile along a path and removes it from the body</source>
-      <translation>Le Lissage soustractif crée un solide soustractif dans le corps actif en effectuant une transition entre deux esquisses ou plus (également
-appelés coupes transversales). Sa forme est ensuite soustraite du solide existant. </translation>
+      <location filename="../../Command.cpp" line="1655"/>
+      <source>Lofts the selected sketch or profile through one or more sections and removes it from the body</source>
+      <translation>Crée un lissage à partir de l'esquisse ou du profil sélectionné en passant par une ou plusieurs sections, puis le supprime du corps.</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignSubtractivePipe</name>
     <message>
-      <location filename="../../Command.cpp" line="1551"/>
+      <location filename="../../Command.cpp" line="1552"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1552"/>
+      <location filename="../../Command.cpp" line="1553"/>
       <source>Subtractive Pipe</source>
       <translation>Balayage soustractif</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1553"/>
+      <location filename="../../Command.cpp" line="1554"/>
       <source>Sweeps the selected sketch or profile along a path and removes it from the body</source>
       <translation>Balaie l'esquisse ou le profil sélectionné suivant une trajectoire et soustrait le résultat au corps.</translation>
     </message>
@@ -751,17 +749,17 @@ appelés coupes transversales). Sa forme est ensuite soustraite du solide exista
   <context>
     <name>CmdPartDesignThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="2127"/>
+      <location filename="../../Command.cpp" line="2215"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2128"/>
+      <location filename="../../Command.cpp" line="2216"/>
       <source>Thickness</source>
       <translation>Évidement</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2129"/>
+      <location filename="../../Command.cpp" line="2217"/>
       <source>Applies thickness and removes the selected faces</source>
       <translation>Applique un évidement et supprime les faces sélectionnées.</translation>
     </message>
@@ -885,32 +883,32 @@ appelés coupes transversales). Sa forme est ensuite soustraite du solide exista
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="361"/>
+      <location filename="../../Command.cpp" line="362"/>
       <source>Edit Shape Binder</source>
       <translation>Éditer une forme liée</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="372"/>
+      <location filename="../../Command.cpp" line="373"/>
       <source>Create Shape Binder</source>
       <translation>Créer une forme liée</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="465"/>
+      <location filename="../../Command.cpp" line="466"/>
       <source>Create Sub-Shape Binder</source>
       <translation>Crée une sous forme liée.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="535"/>
+      <location filename="../../Command.cpp" line="536"/>
       <source>Create Clone</source>
       <translation>Créer un clone</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1150"/>
+      <location filename="../../Command.cpp" line="1151"/>
       <source>Make Copy</source>
       <translation>Créer une copie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2546"/>
+      <location filename="../../Command.cpp" line="2634"/>
       <source>Convert to Multi-Transform feature</source>
       <translation>Transformation multiple</translation>
     </message>
@@ -931,13 +929,13 @@ appelés coupes transversales). Sa forme est ensuite soustraite du solide exista
       <translation>Créer une esquisse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2643"/>
+      <location filename="../../Command.cpp" line="2731"/>
       <source>Create Boolean</source>
       <translation>Créer une opération booléenne</translation>
     </message>
     <message>
-      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <location filename="../../CommandBody.cpp" line="225"/>
+      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <source>Add a Body</source>
       <translation>Ajouter un corps</translation>
     </message>
@@ -1007,7 +1005,7 @@ appelés coupes transversales). Sa forme est ensuite soustraite du solide exista
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
       <source>Helper Tools</source>
-      <translation>Outils d'aide</translation>
+      <translation>Outils d'assistance</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
@@ -1394,7 +1392,7 @@ If zero, it is equal to Radius2</source>
   <context>
     <name>PartDesignGui::NoDependentsSelection</name>
     <message>
-      <location filename="../../ReferenceSelection.cpp" line="287"/>
+      <location filename="../../ReferenceSelection.cpp" line="290"/>
       <source>Selecting this will cause circular dependency.</source>
       <translation>Cette sélection créera une dépendance circulaire.</translation>
     </message>
@@ -1427,12 +1425,12 @@ If zero, it is equal to Radius2</source>
       <translation>Intersection</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="53"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="97"/>
       <source>Boolean Parameters</source>
       <translation>Paramètres de l'opération booléenne</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="84"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="128"/>
       <source>Remove</source>
       <translation>Supprimer</translation>
     </message>
@@ -1641,17 +1639,17 @@ If zero, it is equal to Radius2</source>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="386"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="437"/>
       <source>The body list cannot be empty</source>
       <translation>La liste de corps ne peut pas être vide.</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="386"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="437"/>
       <source>Empty Body List</source>
       <translation>La liste des corps est vide.</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="407"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="458"/>
       <source>Boolean: Accept: Input error</source>
       <translation>Opération booléenne : Accepter : erreur de saisie</translation>
     </message>
@@ -1746,14 +1744,13 @@ If zero, it is equal to Radius2</source>
   <context>
     <name>PartDesignGui::TaskExtrudeParameters</name>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1496"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1478"/>
       <source>No face selected</source>
       <translation>Aucune face sélectionnée</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="183"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="236"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1260"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1242"/>
       <source>Face</source>
       <translation>Face</translation>
     </message>
@@ -1763,29 +1760,29 @@ If zero, it is equal to Radius2</source>
       <translation>Supprimer</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="418"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="400"/>
       <source>Preview</source>
       <translation>Aperçu</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="422"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="404"/>
       <source>Select Faces</source>
       <translation>Sélectionner des faces</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="797"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="779"/>
       <source>Select reference…</source>
       <translation>Sélectionner une référence…</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="684"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="666"/>
       <source>No shape selected</source>
       <translation>Aucune forme sélectionnée</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="67"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="230"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1197"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="225"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1179"/>
       <source>No start reference selected</source>
       <translation>Aucune référence de départ sélectionnée</translation>
     </message>
@@ -1795,58 +1792,58 @@ If zero, it is equal to Radius2</source>
       <translation>Décalage par rapport au profil ou à la référence de départ sélectionnée</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="790"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="772"/>
       <source>Sketch normal</source>
       <translation>Normale à l'esquisse</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="793"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="775"/>
       <source>Face normal</source>
       <translation>Face normale</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="801"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="804"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="783"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="786"/>
       <source>Custom direction</source>
       <translation>Direction personnalisée </translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1191"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1173"/>
       <source>Cancel</source>
       <translation>Annuler</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1192"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1174"/>
       <source>Select face, plane...</source>
       <translation>Sélectionner une face, un plan...</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1196"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1178"/>
       <source>Pick Reference</source>
       <translation>Choisir une référence</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1207"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1189"/>
       <source>Click on a shape in the model</source>
       <translation>Cliquer sur une forme dans le modèle</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1483"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1465"/>
       <source>One sided</source>
       <translation>Unilatérale</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1484"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1466"/>
       <source>Two sided</source>
       <translation>Bilatérale</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1485"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1467"/>
       <source>Symmetric</source>
       <translation>Symétrique</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1491"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1473"/>
       <source>Face selection active</source>
       <translation>Sélection de la face activée</translation>
     </message>
@@ -2233,7 +2230,7 @@ If zero, it is equal to Radius2</source>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="708"/>
-      <location filename="../../TaskHoleParameters.cpp" line="1134"/>
+      <location filename="../../TaskHoleParameters.cpp" line="1126"/>
       <source>No start reference selected</source>
       <translation>Aucune référence de départ sélectionnée</translation>
     </message>
@@ -2290,11 +2287,6 @@ If zero, it is equal to Radius2</source>
       <source>Wide</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Large</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.cpp" line="1140"/>
-      <source>Face</source>
-      <translation>Face</translation>
     </message>
   </context>
   <context>
@@ -2571,7 +2563,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="22"/>
       <source>Start</source>
-      <translation>Plan de départ</translation>
+      <translation>Position initiale</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="30"/>
@@ -2947,142 +2939,192 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="103"/>
-      <location filename="../../TaskRevolutionParameters.ui" line="205"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="194"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="296"/>
       <source>Type</source>
       <translation>Type</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="40"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="270"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="131"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="306"/>
       <source>Base X-axis</source>
       <translation>Axe X de base</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="22"/>
-      <source>Mode</source>
-      <translation>Mode</translation>
+      <source>Start</source>
+      <translation>Position initiale</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="45"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="271"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="30"/>
+      <source>Profile plane</source>
+      <translation>Plan du profil</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="35"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="87"/>
+      <source>Offset</source>
+      <translation>Décalage</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="40"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="48"/>
+      <source>Reference</source>
+      <translation>Référence</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="77"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="488"/>
+      <source>Pick Reference</source>
+      <translation>Choisir une référence</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="113"/>
+      <source>Direction</source>
+      <translation>Direction</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="136"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="307"/>
       <source>Base Y-axis</source>
       <translation>Axe Y de base</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="50"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="272"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="141"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="308"/>
       <source>Base Z-axis</source>
       <translation>Axe Z de base</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="55"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="146"/>
       <source>Horizontal sketch axis</source>
       <translation>Axe horizontal de l'esquisse</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="60"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="151"/>
       <source>Vertical sketch axis</source>
       <translation>Axe vertical de l'esquisse</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="87"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="178"/>
       <source>Side 1</source>
       <translation>Côté 1</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="156"/>
-      <location filename="../../TaskRevolutionParameters.ui" line="252"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="247"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="343"/>
       <source>Select Face</source>
       <translation>Sélectionner une face</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="189"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="280"/>
       <source>Side 2</source>
       <translation>Côté 2</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="276"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="367"/>
       <source>Symmetric to plane</source>
       <translation>Symétrique au plan</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="283"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="374"/>
       <source>Reversed</source>
       <translation>Inverser</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="32"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="123"/>
       <source>Axis</source>
       <translation>Axe</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="65"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="280"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="156"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="316"/>
       <source>Select reference…</source>
       <translation>Sélectionner une référence…</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="119"/>
-      <location filename="../../TaskRevolutionParameters.ui" line="215"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="215"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="210"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="306"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="251"/>
       <source>Angle</source>
       <translation>Angle</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="192"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="534"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="228"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="621"/>
       <source>Face</source>
       <translation>Face</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="297"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="388"/>
       <source>Recompute on change</source>
       <translation>Recalculer en cas de modification</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="217"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="139"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="175"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="489"/>
+      <source>No start reference selected</source>
+      <translation>Aucune référence de départ sélectionnée</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="140"/>
+      <source>Angular offset from the profile or selected start reference</source>
+      <translation>Décalage angulaire par rapport au profil ou à la référence de départ sélectionnée</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="253"/>
       <source>To last</source>
       <translation>À la dernière</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="220"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="256"/>
       <source>Through all</source>
       <translation>À travers tout</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="222"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="258"/>
       <source>To first</source>
       <translation>Au plus proche</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="223"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="259"/>
       <source>Up to face</source>
       <translation>Jusqu'à la face</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="230"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="266"/>
       <source>One sided</source>
       <translation>Unilatérale</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="231"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="267"/>
       <source>Two sided</source>
       <translation>Bilatérale</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="232"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="268"/>
       <source>Symmetric</source>
       <translation>Symétrique</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="555"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="497"/>
+      <source>Cancel</source>
+      <translation>Annuler</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="498"/>
+      <source>Select face, plane...</source>
+      <translation>Sélectionner une face, un plan...</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="642"/>
       <source>Face selection active</source>
       <translation>Sélection de la face activée</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="203"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="560"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="239"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="647"/>
       <source>No face selected</source>
       <translation>Aucune face sélectionnée</translation>
     </message>
@@ -3131,7 +3173,8 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="210"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="127"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="242"/>
       <source>Face</source>
       <translation>Face</translation>
     </message>
@@ -3163,7 +3206,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="75"/>
       <source>Mode</source>
-      <translation>Structure des documents</translation>
+      <translation>Mode</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="83"/>
@@ -3342,14 +3385,14 @@ measured along the specified direction</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="173"/>
+      <location filename="../../Command.cpp" line="174"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
       <translation>Il n’y a aucun mode d'ancrage qui convienne aux objets sélectionnés. Sélectionner autre chose.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="186"/>
-      <location filename="../../Command.cpp" line="194"/>
-      <location filename="../../Command.cpp" line="201"/>
+      <location filename="../../Command.cpp" line="187"/>
+      <location filename="../../Command.cpp" line="195"/>
+      <location filename="../../Command.cpp" line="202"/>
       <source>Error</source>
       <translation>Erreur</translation>
     </message>
@@ -3395,64 +3438,96 @@ measured along the specified direction</source>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../Command.cpp" line="1179"/>
       <location filename="../../ViewProvider.cpp" line="137"/>
-      <location filename="../../SketchWorkflow.cpp" line="763"/>
-      <location filename="../../Command.cpp" line="1178"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
+      <location filename="../../SketchWorkflow.cpp" line="763"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Une fenêtre de dialogue est déjà ouverte dans le panneau des tâches.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1032"/>
+      <location filename="../../Command.cpp" line="1033"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
       <translation>Impossible d'utiliser cette commande car il n'y a pas de solide à soustraire.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1035"/>
+      <location filename="../../Command.cpp" line="1036"/>
       <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
       <translation>Assurez-vous que le corps contient une fonction avant de tenter une commande soustractive.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1059"/>
+      <location filename="../../Command.cpp" line="1060"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
       <translation>Impossible d'utiliser l'objet sélectionné. L'objet sélectionné doit appartenir au corps actif.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="187"/>
+      <location filename="../../Command.cpp" line="188"/>
       <source>There is no active body. Please activate a body before inserting a datum entity.</source>
       <translation>Il n'y a pas de corps actif. Activer un corps avant d'insérer une entité de référence.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="172"/>
+      <location filename="../../Command.cpp" line="173"/>
       <source>Invalid Selection</source>
       <translation>La sélection est non valide.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="493"/>
+      <location filename="../../Command.cpp" line="494"/>
       <source>Sub-shape binder</source>
       <translation>Créer une sous forme liée</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1091"/>
+      <location filename="../../Command.cpp" line="1092"/>
       <source>No sketch to work on</source>
       <translation>Pas d'esquisse de travail</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1092"/>
+      <location filename="../../Command.cpp" line="1093"/>
       <source>No sketch is available in the document</source>
       <translation>Aucune esquisse n’est disponible dans le document</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2233"/>
+      <location filename="../../Command.cpp" line="2070"/>
+      <location filename="../../Command.cpp" line="2098"/>
+      <source>Wrong Selection</source>
+      <translation>Sélection incorrecte</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2071"/>
+      <source>Select faces from a single body</source>
+      <translation>Sélectionner les faces d'un seul corps</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2078"/>
+      <source>Selection Outside Active Body</source>
+      <translation>Sélectionner en dehors du corps actif</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2079"/>
+      <source>Select faces from the active body</source>
+      <translation>Sélectionner les faces du corps actif</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2087"/>
+      <source>Wrong Object Type</source>
+      <translation>Mauvais type d'objet</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2088"/>
+      <location filename="../../Command.cpp" line="2099"/>
+      <source>Defeaturing works only on faces</source>
+      <translation>La fonction « Supprimer la fonction » ne s'applique qu'aux faces.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2321"/>
       <source>Select only one feature in an active body.</source>
       <translation>Sélectionner une seule fonction dans un corps actif</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../Command.cpp" line="1180"/>
       <location filename="../../ViewProvider.cpp" line="138"/>
-      <location filename="../../SketchWorkflow.cpp" line="764"/>
-      <location filename="../../Command.cpp" line="1179"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
+      <location filename="../../SketchWorkflow.cpp" line="764"/>
       <source>Close this dialog?</source>
       <translation>Faut-il fermer cette boîte de dialogue ?</translation>
     </message>
@@ -3469,7 +3544,7 @@ measured along the specified direction</source>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1869"/>
-      <location filename="../../Command.cpp" line="2232"/>
+      <location filename="../../Command.cpp" line="2320"/>
       <source>Selection is not in the active body</source>
       <translation>La sélection n'est pas dans le corps actif.</translation>
     </message>
@@ -3484,7 +3559,7 @@ measured along the specified direction</source>
       <translation>Sélectionnez une arête, une face ou un corps d'un corps actif.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1062"/>
+      <location filename="../../Command.cpp" line="1063"/>
       <source>Consider using a shape binder or a base feature to reference external geometry in a body</source>
       <translation>Penser à utiliser une forme liée ou une fonction de base pour référencer la géométrie externe dans un corps.</translation>
     </message>
@@ -3501,12 +3576,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../CommandBody.cpp" line="90"/>
       <source>Part creation failed</source>
-      <translation>La création de la pièce a échoué</translation>
+      <translation>La création de la pièce a échoué.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="91"/>
       <source>Failed to create a part object.</source>
-      <translation>Impossible de créer un objet part.</translation>
+      <translation>Impossible de créer un objet Part</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="139"/>
@@ -3675,23 +3750,23 @@ This may lead to unexpected results.</source>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="433"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="256"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="292"/>
       <source>Vertical sketch axis</source>
       <translation>Axe vertical de l'esquisse</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="434"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="257"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="293"/>
       <source>Horizontal sketch axis</source>
       <translation>Axe horizontal de l'esquisse</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="259"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="295"/>
       <source>Construction line %1</source>
       <translation>Ligne de construction %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="96"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="97"/>
       <source>Face</source>
       <translation>Face</translation>
     </message>
@@ -3735,10 +3810,10 @@ Pour les documents historiques contenant des objets PartDesign sans corps, utili
       <translation>Afin d'utiliser cette fonction, elle doit appartenir à un objet pièce dans le document.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTransformed.cpp" line="67"/>
       <location filename="../../ViewProviderDressUp.cpp" line="64"/>
       <location filename="../../ViewProvider.cpp" line="94"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="228"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="67"/>
       <source>Edit %1</source>
       <translation>Éditer %1</translation>
     </message>
@@ -3834,7 +3909,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
       <translation>Migrer manuellement</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBoolean.cpp" line="350"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="351"/>
       <source>Edit Boolean</source>
       <translation>Éditer une opération booléenne</translation>
     </message>
@@ -3927,6 +4002,11 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
       <location filename="../../ViewProviderThickness.cpp" line="42"/>
       <source>Edit Thickness</source>
       <translation>Éditer un évidemment</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderDefeaturing.cpp" line="39"/>
+      <source>Edit Defeaturing</source>
+      <translation>Éditer la suppression de la fonction</translation>
     </message>
   </context>
   <context>
@@ -4297,7 +4377,7 @@ Disponible uniquement pour les trous sans filetage</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="78"/>
       <source>Start</source>
-      <translation>Début</translation>
+      <translation>Position initiale</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="86"/>
@@ -4516,7 +4596,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../Workbench.cpp" line="65"/>
       <source>Part Design Helper</source>
-      <translation>Guide de PartDesign</translation>
+      <translation>Assistants de PartDesign</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="66"/>
@@ -4703,23 +4783,23 @@ over 90: larger hole radius at the bottom</source>
       <translation>Impossible d'appliquer une opération booléenne à une forme de base invalide</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureRevolved.cpp" line="535"/>
       <location filename="../../../App/FeatureFillet.cpp" line="142"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="266"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="822"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="838"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="851"/>
       <location filename="../../../App/FeatureLoft.cpp" line="334"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="378"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="420"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="442"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="488"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="537"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="571"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="600"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="369"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2142"/>
       <location filename="../../../App/FeatureDraft.cpp" line="335"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2149"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="433"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="419"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="435"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="453"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="537"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="562"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="580"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="819"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="835"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="848"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Le résultat comporte plusieurs solides : activer « Autoriser les composés » dans le corps actif.</translation>
     </message>
@@ -4754,10 +4834,11 @@ over 90: larger hole radius at the bottom</source>
       <translation>L'extrusion fusionnée résultante est sans résultat.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="813"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="371"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="592"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="362"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="132"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="445"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="572"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="810"/>
       <source>Resulting shape is not a solid</source>
       <translation>La forme résultante n'est pas un solide</translation>
     </message>
@@ -4834,105 +4915,88 @@ de congés ensemble. Essayer de créer des congés sur chaque arête ou des cong
       <translation>La création a échoué car la direction est orthogonale au vecteur normal de l'esquisse.</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureRevolved.cpp" line="298"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="518"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="208"/>
       <source>Creating a face from sketch failed</source>
       <translation>La création d'une face à partir de l'esquisse a échoué</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="231"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="333"/>
       <source>Revolve axis intersects the sketch</source>
       <translation>L'axe de révolution coupe l'esquisse</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="392"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="494"/>
       <source>No revolution geometry was generated</source>
       <translation>Aucune géométrie de révolution n'a été générée.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="418"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="520"/>
       <source>Could not revolve the sketch!</source>
       <translation>Impossible de faire tourner l'esquisse !</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="118"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="208"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Impossible de créer une face à partir de l'esquisse.
 Les entités d'intersection d'esquisse dans une esquisse ne sont pas autorisées.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="237"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="236"/>
       <source>Error: Pitch too small!</source>
       <translation>Erreur : le pas est trop petit !</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="242"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="265"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="241"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="264"/>
       <source>Error: height too small!</source>
       <translation>Erreur : hauteur trop petite !</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="251"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="250"/>
       <source>Error: pitch too small!</source>
       <translation>Erreur : pas trop petit !</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="256"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="270"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="279"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="255"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="269"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="278"/>
       <source>Error: turns too small!</source>
       <translation>Erreur : pas assez de tours !</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="285"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="284"/>
       <source>Error: either height or growth must not be zero!</source>
       <translation>Erreur : la hauteur ou la croissance ne doit pas être nulle !</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="303"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="302"/>
       <source>Error: unsupported mode</source>
       <translation>Erreur : mode non pris en charge</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="317"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="316"/>
       <source>Error: No valid sketch or face</source>
       <translation>Erreur : pas d'esquisse ou de face valide</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="330"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="329"/>
       <source>Error: Face must be planar</source>
       <translation>Erreur : la face doit être plane</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="454"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="499"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2512"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2505"/>
       <source>Error: Result is not a solid</source>
       <translation>Erreur : le résultat n'est pas un solide.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="415"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="414"/>
       <source>Error: There is nothing to subtract</source>
       <translation>Erreur : il n'y a rien à soustraire</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="437"/>
-      <source>Error: Adding the helix failed</source>
-      <translation>Erreur : l'ajout de l'hélice a échoué</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="472"/>
-      <source>Error: Intersecting the helix failed</source>
-      <translation>Erreur : l'intersection de l'hélice a échoué</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="481"/>
-      <source>Error: Subtracting the helix failed</source>
-      <translation>Erreur : la soustraction de l'hélice a échoué</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="515"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="466"/>
       <source>Error: Could not create face from sketch</source>
       <translation>Erreur : impossible de créer une face à partir de l'esquisse</translation>
     </message>
@@ -5007,13 +5071,13 @@ Les entités d'intersection d'esquisse dans une esquisse ne sont pas autorisées
       <translation>Erreur sur le trou : la recherche de l'axe a échoué.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2121"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2129"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2114"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2122"/>
       <source>Boolean operation failed on profile Edge</source>
       <translation>L'opération booléenne a échoué sur le profil de l'arête.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2136"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2129"/>
       <source>Boolean operation produced non-solid on profile Edge</source>
       <translation>L'opération booléenne a produit des éléments non solides sur le profil de l'arête.</translation>
     </message>
@@ -5023,24 +5087,24 @@ Les entités d'intersection d'esquisse dans une esquisse ne sont pas autorisées
       <translation>L'opération booléenne a échoué.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2162"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2155"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>Impossible de créer une face à partir d'une esquisse.
 L'intersection d'entités d'esquisse ou de plusieurs faces dans une esquisse n'est pas autorisée pour créer une cavité jusqu'à une face.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2335"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2328"/>
       <source>Thread type out of range</source>
       <translation>Type de filetage en dehors de la gamme</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2338"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2331"/>
       <source>Thread size out of range</source>
       <translation>Taille du filetage en dehors de la plage</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2486"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2479"/>
       <source>Error: Thread could not be built</source>
       <translation>Erreur : le filetage n'a pas pu être construit.</translation>
     </message>
@@ -5050,7 +5114,7 @@ L'intersection d'entités d'esquisse ou de plusieurs faces dans une esquisse n'e
       <translation>Lissage : au moins une section est nécessaire.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="395"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="386"/>
       <source>Loft: A fatal error occurred when making the loft</source>
       <translation>Lissage : une erreur s'est produite lors de la création du lissage.</translation>
     </message>
@@ -5066,7 +5130,7 @@ L'intersection d'entités d'esquisse ou de plusieurs faces dans une esquisse n'e
       <translation>Lissage : il n'est pas possible de créer une coque.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="866"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="863"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>Impossible de créer une face à partir d'une esquisse.
@@ -5133,32 +5197,27 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
       <translation>Balayage : il n'y a rien à soustraire.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="584"/>
-      <source>Pipe: Invalid Boolean Type</source>
-      <translation>Balayage : le type booléen est non valide.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="614"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="594"/>
       <source>A fatal error occurred when making the pipe</source>
       <translation>Une erreur s'est produite lors de la création du balayage.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="741"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="721"/>
       <source>Invalid element in spine.</source>
       <translation>Élément non valide dans la trajectoire</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="746"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="726"/>
       <source>Element in spine is neither an edge nor a wire.</source>
       <translation>L'élément dans la trajectoire n'est ni une arête ni une polyligne.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="759"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="739"/>
       <source>Spine is neither an edge nor a wire.</source>
       <translation>La trajectoire n'est ni une arête ni une polyligne.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="764"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="744"/>
       <source>Invalid spine.</source>
       <translation>Trajectoire non valide</translation>
     </message>
@@ -5168,133 +5227,127 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
       <translation>Impossible de soustraire la fonction primitive sans la fonction de base</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="356"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
-      <source>Unknown operation type</source>
-      <translation>Type d'opération inconnu</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="364"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="355"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="124"/>
       <source>Failed to perform boolean operation</source>
       <translation>Impossible d'effectuer l'opération booléenne</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="217"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="208"/>
       <source>Length of box too small</source>
       <translation>Longueur de la boîte trop petite</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="222"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="213"/>
       <source>Width of box too small</source>
       <translation>Largeur de la boîte trop petite</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="227"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="218"/>
       <source>Height of box too small</source>
       <translation>Hauteur de la boîte trop petite</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="275"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="266"/>
       <source>Radius of cylinder too small</source>
       <translation>Rayon du cylindre trop petit</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="280"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="271"/>
       <source>Height of cylinder too small</source>
       <translation>Hauteur du cylindre trop petite</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="285"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="276"/>
       <source>Rotation angle of cylinder too small</source>
       <translation>Angle de rotation du cylindre trop petit</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="342"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="333"/>
       <source>Radius of sphere too small</source>
       <translation>Rayon de la sphère trop petit</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="394"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="399"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="385"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="390"/>
       <source>Radius of cone cannot be negative</source>
       <translation>Le rayon du cône ne peut pas être négatif</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="404"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="395"/>
       <source>Height of cone too small</source>
       <translation>Hauteur du cône trop petite</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="484"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="489"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="475"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="480"/>
       <source>Radius of ellipsoid too small</source>
       <translation>Rayon de l'ellipsoïde trop petit</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="583"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="588"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="574"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="579"/>
       <source>Radius of torus too small</source>
       <translation>Rayon du tore trop petit</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="673"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="664"/>
       <source>Polygon of prism is invalid, must have 3 or more sides</source>
       <translation>Le polygone du prisme est invalide, il doit avoir au moins 3 côtés</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="678"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="669"/>
       <source>Circumradius of the polygon, of the prism, is too small</source>
       <translation>Le rayon du cercle circonscrit du polygone, du prisme, est trop petit</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="683"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="674"/>
       <source>Height of prism is too small</source>
       <translation>Hauteur du prisme trop petite</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="770"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="761"/>
       <source>delta x of wedge too small</source>
       <translation>delta X de la pyramide tronquée trop petit</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="776"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="767"/>
       <source>delta y of wedge too small</source>
       <translation>delta Y de la pyramide tronquée trop petit</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="782"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="773"/>
       <source>delta z of wedge too small</source>
       <translation>delta Z de la pyramide tronquée trop petit</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="788"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="779"/>
       <source>delta z2 of wedge is negative</source>
       <translation>delta Z2 de la pyramide tronquée est négatif</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="794"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="785"/>
       <source>delta x2 of wedge is negative</source>
       <translation>delta X2 de la pyramide tronquée est négatif</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="156"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="171"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="246"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="261"/>
       <source>Angle of revolution too large</source>
       <translation>Angle de révolution trop grand</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="164"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="254"/>
       <source>Angle of revolution too small</source>
       <translation>Angle de révolution trop petit</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="202"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="292"/>
       <source>Reference axis is invalid</source>
       <translation>L'axe de référence n'est pas valide</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="805"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="802"/>
       <source>Fusion with base feature failed</source>
       <translation>L'union avec la fonction de base a échoué.</translation>
     </message>
@@ -5334,9 +5387,19 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
       <translation>Seules les fonctions additives et soustractives peuvent être transformées.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureThickness.cpp" line="109"/>
+      <location filename="../../../App/FeatureThickness.cpp" line="108"/>
       <source>Invalid face reference</source>
       <translation>Surface de référence non valide</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureDefeaturing.cpp" line="75"/>
+      <source>Defeaturing failed: result is null</source>
+      <translation>Échec de la suppression de la fonction : le résultat est nul.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureDefeaturing.cpp" line="84"/>
+      <source>Defeaturing did not produce a single solid</source>
+      <translation>La suppression de la fonction n'a pas créé un solide unique.</translation>
     </message>
   </context>
   <context>
@@ -5399,12 +5462,12 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
   <context>
     <name>PartDesign::FeatureAddSub</name>
     <message>
-      <location filename="../../../App/FeatureAddSub.cpp" line="87"/>
+      <location filename="../../../App/FeatureAddSub.cpp" line="140"/>
       <source>Failure while computing removed volume preview: %1</source>
       <translation>Une erreur s'est produite lors du calcul de l'aperçu du volume supprimé : %1</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureAddSub.cpp" line="125"/>
+      <location filename="../../../App/FeatureAddSub.cpp" line="178"/>
       <source>Resulting shape is empty. That may indicate that no material will be removed or a problem with the model.</source>
       <translation>La forme obtenue est vide. Cela peut indiquer qu'aucun matériau ne sera retiré ou qu'il y a un problème avec le modèle.</translation>
     </message>
@@ -5412,12 +5475,12 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2690"/>
+      <location filename="../../Command.cpp" line="2778"/>
       <source>Create Datum</source>
       <translation>Créer une référence</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2691"/>
+      <location filename="../../Command.cpp" line="2779"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Crée un objet de référence ou un système de coordonnées local.</translation>
     </message>
@@ -5425,12 +5488,12 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2725"/>
+      <location filename="../../Command.cpp" line="2813"/>
       <source>Create Datum</source>
       <translation>Créer une référence</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2726"/>
+      <location filename="../../Command.cpp" line="2814"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Crée un objet de référence ou un système de coordonnées local.</translation>
     </message>
@@ -5532,7 +5595,7 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
   <context>
     <name>PartDesignGui::TaskDlgRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="946"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="1096"/>
       <source>Revolution Parameters</source>
       <translation>Paramètres de la révolution</translation>
     </message>
@@ -5540,7 +5603,7 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
   <context>
     <name>PartDesignGui::TaskDlgGrooveParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="956"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="1106"/>
       <source>Groove Parameters</source>
       <translation>Paramètres de la rainure</translation>
     </message>
@@ -5664,14 +5727,71 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
       <translation>Direction 2</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="267"/>
+      <location filename="../../TaskPatternParameters.cpp" line="272"/>
       <source>Select a direction reference (edge, face, datum line)</source>
       <translation>Sélectionner une référence de direction (arête, face, ligne de référence)</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="355"/>
+      <location filename="../../TaskPatternParameters.cpp" line="360"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>La sélection est non valide. Sélectionner une arête, une face planaire ou une ligne de référence.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDefeaturingParameters</name>
+    <message>
+      <location filename="../../TaskDefeaturingParameters.ui" line="20"/>
+      <source>Toggles selection mode</source>
+      <translation>Active/désactive le mode de sélection.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDefeaturingParameters.ui" line="23"/>
+      <source>Select</source>
+      <translation>Sélectionner</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDefeaturingParameters.ui" line="33"/>
+      <source>Select an item in the 3D view to highlight it</source>
+      <translation>Sélectionner un élément dans la vue 3D pour le mettre en surbrillance</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDefeaturingParameters.cpp" line="118"/>
+      <source>Empty defeaturing created</source>
+      <translation>Une fonction « Defeaturing » vide a été créée.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderDefeaturing</name>
+    <message>
+      <location filename="../../ViewProviderDefeaturing.h" line="40"/>
+      <source>Defeaturing Parameters</source>
+      <translation>Paramètres de la suppression de fonction</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="443"/>
+      <source>Input Error</source>
+      <translation>Erreur de saisie</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartDesignDefeaturing</name>
+    <message>
+      <location filename="../../Command.cpp" line="2117"/>
+      <source>PartDesign</source>
+      <translation>PartDesign</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2118"/>
+      <source>Defeaturing</source>
+      <translation>Supprimer une fonction</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2119"/>
+      <source>Removes selected faces from a solid</source>
+      <translation>Supprime les faces sélectionnées d'un solide.</translation>
     </message>
   </context>
   <context>
@@ -5699,11 +5819,11 @@ incompatibles. Modifier les paramètres et réessayer.</translation>
     </message>
   </context>
   <context>
-    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <name>BooleanToolSelection</name>
     <message>
-      <location filename="../../TaskShapeBinder.cpp" line="443"/>
-      <source>Input Error</source>
-      <translation>Erreur de saisie</translation>
+      <location filename="../../TaskBooleanParameters.cpp" line="83"/>
+      <source>The result Body cannot be used as a Boolean tool.</source>
+      <translation>Le résultat « Body » ne peut pas être utilisé comme un outil booléen.</translation>
     </message>
   </context>
 </TS>

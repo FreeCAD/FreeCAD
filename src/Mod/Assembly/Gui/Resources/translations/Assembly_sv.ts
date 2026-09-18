@@ -1634,24 +1634,6 @@ Obs! För närvarande väljs endast delar som inte är anslutna, inte bundna del
     </message>
   </context>
   <context>
-    <name>Assembly_CreateJointRigidGroup</name>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="413"/>
-      <source>Select at least 2 components to create a rigid group</source>
-      <translation>Välj minst två komponenter för att skapa en styv grupp</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="536"/>
-      <source>Create Rigid Group</source>
-      <translation>Skapa styv grupp</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="542"/>
-      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;Skapa en styv grupp.&lt;/p&gt;&lt;p&gt;Skapar en styv grupp som permanent låser samman de valda komponenterna.&lt;/p&gt;</translation>
-    </message>
-  </context>
-  <context>
     <name>Assembly_Snapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
@@ -1672,6 +1654,24 @@ Obs! För närvarande väljs endast delar som inte är anslutna, inte bundna del
       <location filename="../../../CommandCreateSnapshot.py" line="249"/>
       <source>Restore Snapshot</source>
       <translation>Återställ ögonblicksbild</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_CreateJointRigidGroup</name>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="413"/>
+      <source>Select at least 2 components to create a rigid group</source>
+      <translation>Välj minst två komponenter för att skapa en styv grupp</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="536"/>
+      <source>Create Rigid Group</source>
+      <translation>Skapa styv grupp</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="542"/>
+      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Skapa en styv grupp.&lt;/p&gt;&lt;p&gt;Skapar en styv grupp som permanent låser samman de valda komponenterna.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

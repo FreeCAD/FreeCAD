@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2013 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
 # *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *

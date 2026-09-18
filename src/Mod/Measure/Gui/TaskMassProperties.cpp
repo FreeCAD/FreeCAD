@@ -858,6 +858,10 @@ void TaskMassProperties::tryUpdate()
             return false;
         }
 
+        if (obj->Visibility.getValue() == false) {
+            return false;
+        }
+
         App::DocumentObject* object = nullptr;
         Part::ShapeOptions options = Part::ShapeOption::ResolveLink;
 

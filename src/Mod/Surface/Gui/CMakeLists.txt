@@ -81,7 +81,7 @@ target_link_directories(SurfaceGui PUBLIC ${OCC_LIBRARY_DIR})
 target_link_libraries(SurfaceGui ${SurfaceGui_LIBS})
 target_compile_warn_error(SurfaceGui)
 
-SET_BIN_DIR(SurfaceGui SurfaceGui /Mod/Surface)
+SET_BIN_DIR(SurfaceGui)
 SET_PYTHON_PREFIX_SUFFIX(SurfaceGui)
 
 fc_copy_sources(SurfaceGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Surface" ${SurfaceGuiIcon_SVG})

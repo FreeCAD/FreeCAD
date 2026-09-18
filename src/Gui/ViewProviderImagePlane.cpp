@@ -20,11 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
+#include <cstdint>
 #include <sstream>
 #include <QAction>
 #include <QFileInfo>
 #include <QImage>
+#include <QImageReader>
 #include <QMenu>
 #include <QString>
 #include <QSvgRenderer>
@@ -37,7 +38,7 @@
 #include <Inventor/nodes/SoTexture2.h>
 #include <Inventor/nodes/SoTextureCoordinate2.h>
 
-
+#include <Base/Console.h>
 #include <App/Document.h>
 #include <App/ImagePlane.h>
 #include <Gui/Document.h>
@@ -234,9 +235,33 @@ void ViewProviderImagePlane::setPlaneSize(const QSizeF& size, const QImage& img)
 
 QImage ViewProviderImagePlane::loadRaster(const char* fileName) const
 {
-    QImage img;
-    img.load(QString::fromUtf8(fileName));
-    return img;
+    QImageReader reader(QString::fromUtf8(fileName));
+    const QSize imageSize = reader.size();
+
+    if (imageSize.isValid()) {
+        constexpr std::uint64_t bytesPerPixel = 4;
+        constexpr std::uint64_t bytesPerMiB = 1024 * 1024;
+        const auto decodedImageSize = static_cast<std::uint64_t>(imageSize.width())
+            * static_cast<std::uint64_t>(imageSize.height()) * bytesPerPixel;
+        const auto decodedImageSizeMiB = (decodedImageSize - 1) / bytesPerMiB + 1;
+        const int allocationLimit = QImageReader::allocationLimit();
+
+        if (allocationLimit > 0
+            && decodedImageSize > static_cast<std::uint64_t>(allocationLimit) * bytesPerMiB) {
+            const auto message
+                = QObject::tr(
+                      "Cannot load image file %1. The decoded image requires at least %2 MiB, "
+                      "exceeding the %3 MiB limit. Reduce its dimensions before loading it."
+                )
+                      .arg(QString::fromUtf8(fileName))
+                      .arg(decodedImageSizeMiB)
+                      .arg(allocationLimit);
+            Base::Console().warning("%s\n", message.toUtf8().constData());
+            return {};
+        }
+    }
+
+    return reader.read();
 }
 
 void ViewProviderImagePlane::reloadIfSvg()

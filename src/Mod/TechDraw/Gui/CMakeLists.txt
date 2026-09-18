@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 if(MSVC)
     add_compile_options(/utf-8)
 endif(MSVC)
@@ -504,7 +506,7 @@ INSTALL(FILES ${TechDrawGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/T
 fc_copy_sources(TechDrawGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw" ${TechDrawGuiFonts})
 INSTALL(FILES ${TechDrawGuiFonts} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Resources/fonts")
 
-SET_BIN_DIR(TechDrawGui TechDrawGui /Mod/TechDraw)
+SET_BIN_DIR(TechDrawGui)
 SET_PYTHON_PREFIX_SUFFIX(TechDrawGui)
 
 INSTALL(TARGETS TechDrawGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
