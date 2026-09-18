@@ -232,15 +232,7 @@ void QGIFace::addLineSet(LineSet& ls)
 void QGIFace::lineSetToFillItems(LineSet& ls)
 {
     m_patMaker->setScale(m_fillScale);
-    m_patMaker->setPen(setGeomPen());
     m_patMaker->lineSetToFillItems(ls);
-}
-
-QPen QGIFace::setGeomPen()
-{
-    QPen result;
-    result.setStyle(Qt::SolidLine);
-    return result;
 }
 
 
