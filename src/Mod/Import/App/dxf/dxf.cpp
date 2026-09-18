@@ -6,7 +6,9 @@
 // modified 2018 wandererfan
 
 
+#include <algorithm>
 #include <cmath>
+#include <cstdio>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -79,6 +81,78 @@ std::string DxfUnitToString(DxfUnits::eDxfUnits_t unit)
         default:
             return "Unspecified";
     }
+}
+
+// Unicode values of the Windows-1252 bytes 0x80 to 0x9F, where 0 marks an undefined byte.
+constexpr unsigned int cp1252HighBytes[32] = {
+    0x20AC, 0x0000, 0x201A, 0x0192, 0x201E, 0x2026, 0x2020, 0x2021, 0x02C6, 0x2030, 0x0160,
+    0x2039, 0x0152, 0x0000, 0x017D, 0x0000, 0x0000, 0x2018, 0x2019, 0x201C, 0x201D, 0x2022,
+    0x2013, 0x2014, 0x02DC, 0x2122, 0x0161, 0x203A, 0x0153, 0x0000, 0x017E, 0x0178,
+};
+
+// DXF R14 text is 8-bit, in the code page named by $DWGCODEPAGE (Windows-1252 in the header
+// templates). Characters outside that code page are written as \U+XXXX escapes. Characters
+// beyond U+FFFF have no such escape and become '?'.
+std::string Utf8ToDxfText(const std::string& utf8)
+{
+    std::string result;
+    result.reserve(utf8.size());
+
+    std::size_t i = 0;
+    while (i < utf8.size()) {
+        const auto lead = static_cast<unsigned char>(utf8[i]);
+        unsigned int codePoint = lead;
+        std::size_t length = 1;
+        if (lead >= 0xF0) {
+            codePoint = lead & 0x07U;
+            length = 4;
+        }
+        else if (lead >= 0xE0) {
+            codePoint = lead & 0x0FU;
+            length = 3;
+        }
+        else if (lead >= 0xC0) {
+            codePoint = lead & 0x1FU;
+            length = 2;
+        }
+        else if (lead >= 0x80) {
+            result += '?';  // stray continuation byte
+            ++i;
+            continue;
+        }
+
+        bool valid = i + length <= utf8.size();
+        for (std::size_t k = 1; valid && k < length; ++k) {
+            const auto next = static_cast<unsigned char>(utf8[i + k]);
+            valid = (next & 0xC0U) == 0x80U;
+            codePoint = (codePoint << 6U) | (next & 0x3FU);
+        }
+        if (!valid) {
+            result += '?';
+            ++i;
+            continue;
+        }
+        i += length;
+
+        if (codePoint < 0x80 || (codePoint >= 0xA0 && codePoint <= 0xFF)) {
+            result += static_cast<char>(codePoint);
+            continue;
+        }
+        const auto* found
+            = std::find(std::begin(cp1252HighBytes), std::end(cp1252HighBytes), codePoint);
+        if (found != std::end(cp1252HighBytes)) {
+            result += static_cast<char>(0x80 + (found - std::begin(cp1252HighBytes)));
+        }
+        else if (codePoint <= 0xFFFF) {
+            char escape[8];
+            std::snprintf(escape, sizeof(escape), "\\U+%04X", codePoint);
+            result += escape;
+        }
+        else {
+            result += '?';
+        }
+    }
+    return result;
 }
 
 }  // namespace
@@ -1462,7 +1536,7 @@ void CDxfWrite::putText(
     (*outStream) << " 40" << endl;
     (*outStream) << height << endl;
     (*outStream) << "  1" << endl;
-    (*outStream) << text << endl;
+    (*outStream) << Utf8ToDxfText(text) << endl;
     //    (*outStream) << " 50"          << endl;
     //    (*outStream) << 0              << endl;    //rotation
     //    (*outStream) << " 41"          << endl;
