@@ -2073,6 +2073,16 @@ void SketchObject::getDirectlyCoincidentPoints(
     }
 }
 
+bool SketchObject::hasDirectlyCoincidentPoints(int geoId1, int geoId2) const
+{
+    for (const auto* con : Constraints.getValues()) {
+        if (con->Type == Sketcher::ConstraintType::Coincident && con->involvesGeoId(geoId1)
+            && con->involvesGeoId(geoId2)) {
+            return true;
+        }
+    }
+    return false;
+}
 // clang-format off
 
 bool SketchObject::arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2)
