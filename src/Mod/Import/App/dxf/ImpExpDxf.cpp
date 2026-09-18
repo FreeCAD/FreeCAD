@@ -2426,3 +2426,46 @@ Py::Object ImpExpDxfRead::getStatsAsPyObject()
     // Return the fully populated statistics dictionary to the Python caller.
     return statsDict;
 }
+
+Py::Object ImpExpDxfWrite::getStatsAsPyObject()
+{
+    // Create a Python dictionary to hold all export statistics.
+    Py::Dict statsDict;
+
+    // Populate the dictionary with general information about the export.
+    statsDict.setItem("dxfVersion", Py::String(m_stats.dxfVersion));
+    statsDict.setItem("exportTimeSeconds", Py::Float(m_stats.exportTimeSeconds));
+    statsDict.setItem("layerCount", Py::Long(m_stats.layerCount));
+    statsDict.setItem("blockCount", Py::Long(m_stats.blockCount));
+    statsDict.setItem("totalObjectsProcessed", Py::Long(m_stats.totalObjectsProcessed));
+
+    // Create a nested dictionary for the counts of each DXF entity type written.
+    Py::Dict entityCountsDict;
+    for (const auto& pair : m_stats.entityCounts) {
+        entityCountsDict.setItem(pair.first.c_str(), Py::Long(pair.second));
+    }
+    statsDict.setItem("entityCounts", entityCountsDict);
+
+    // Create a nested dictionary for any objects that could not be exported.
+    Py::Dict skippedObjectsDict;
+    for (const auto& pair : m_stats.skippedObjects) {
+        Py::List reasonsList;
+        for (const auto& reason : pair.second) {
+            reasonsList.append(Py::String(reason));
+        }
+        skippedObjectsDict.setItem(pair.first.c_str(), reasonsList);
+    }
+    statsDict.setItem("skippedObjects", skippedObjectsDict);
+
+    // Return the fully populated statistics dictionary to the Python caller.
+    return statsDict;
+}
+
+void ImpExpDxfWrite::recordSkipped(
+    const std::string& objType,
+    const std::string& objName,
+    const std::string& reason
+)
+{
+    m_stats.skippedObjects[objType].push_back(objName + ": " + reason);
+}
