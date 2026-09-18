@@ -57,6 +57,8 @@
 #include <Gui/Selection/Selection.h>
 #include <Gui/Selection/SelectionFilter.h>
 #include <Gui/Selection/SelectionObject.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/App/SolverGeometryExtension.h>
@@ -1322,6 +1324,39 @@ int addProjectedExternalReference(Sketcher::SketchObject* sketch,
 }
 }// namespace SketcherGui
 
+namespace
+{
+
+/**
+ * @brief Enable or disable picking in the 3D view for the sketch being edited.
+ *
+ * @param[in] vp The view provider of the sketch.
+ * @param[in] enable true to accept picks, and false to disable them
+ */
+void setViewerSelectionEnabled(const ViewProviderSketch* vp, bool enable)
+{
+    if (!vp) {
+        return;
+    }
+
+    Gui::Document* document = vp->getDocument();
+    if (!document) {
+        return;
+    }
+
+    auto* view = freecad_cast<Gui::View3DInventor*>(document->getActiveView());
+    if (!view) {
+        return;
+    }
+
+    Gui::View3DInventorViewer* viewer = view->getViewer();
+    if (viewer->getEditingViewProvider() == vp) {
+        viewer->setSelectionEnabled(enable);
+    }
+}
+
+}  // namespace
+
 /**
  * @brief The CmdSketcherConstraint class
  * Superclass for all sketcher constraints to ease generation of constraint
@@ -1408,10 +1443,7 @@ public:
 
     void deactivated() override
     {
-        Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-        if (auto* viewer = dynamic_cast<Gui::View3DInventor*>(mdi)) {
-            viewer->getViewer()->setSelectionEnabled(false);
-        }
+        setViewerSelectionEnabled(sketchgui, false);
     }
 
     void mouseMove(SnapManager::SnapHandle /*snapHandle*/) override
@@ -1900,10 +1932,7 @@ private:
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(selFilterGate);
 
-        Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-        if (auto* viewer = dynamic_cast<Gui::View3DInventor*>(mdi)) {
-            viewer->getViewer()->setSelectionEnabled(true);
-        }
+        setViewerSelectionEnabled(sketchgui, true);
 
         // Constrain icon size in px
         qreal pixelRatio = devicePixelRatio();
@@ -2303,10 +2332,7 @@ public:
         }
         setCursor(cursorPixmap, hotX, hotY, false);
 
-        Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-        if (auto* viewer = dynamic_cast<Gui::View3DInventor*>(mdi)) {
-            viewer->getViewer()->setSelectionEnabled(true);
-        }
+        setViewerSelectionEnabled(sketchgui, true);
 
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new DimensionExternalSelection(sketchgui->getObject()));
@@ -2321,10 +2347,7 @@ public:
         skipReleaseAfterExternalSelection = false;
         Gui::Selection().rmvSelectionGate();
 
-        Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-        if (auto* viewer = dynamic_cast<Gui::View3DInventor*>(mdi)) {
-            viewer->getViewer()->setSelectionEnabled(false);
-        }
+        setViewerSelectionEnabled(sketchgui, false);
 
         if (availableConstraint != AvailableConstraint::FIRST) {
             Obj->solve();
