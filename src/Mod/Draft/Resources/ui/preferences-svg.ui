@@ -133,6 +133,29 @@ a raw wire from the original shape is added</string>
        </layout>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_12">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_handleGroups">
+          <property name="toolTip">
+           <string>Check to reproduce the SVG group/layer hierarchy as nested FreeCAD groups instead of importing all objects flat</string>
+          </property>
+          <property name="text">
+           <string>Preserve groups and layers</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>svgHandleGroups</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_5">
         <item>
          <widget class="QLabel" name="label_3">
