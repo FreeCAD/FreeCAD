@@ -197,5 +197,21 @@ class DraftDXF(test_base.DraftTestCaseDoc):
         self.assertEqual(list(stats["skippedObjects"]), ["AngularDimension"])
         self.assertEqual(len(stats["skippedObjects"]["AngularDimension"]), 1)
 
+    def test_export_dxf_text_encoding(self):
+        """Text is written as Windows-1252 bytes, with escapes for other characters."""
+        text = Draft.make_text(["É à ß € … 日本"], App.Vector(0, 0, 0))
+        self.doc.recompute()
+        out_dir = tempfile.mkdtemp()
+        try:
+            path = os.path.join(out_dir, "out_test.dxf")
+            aux.export_dxf([text], path)
+            pairs = aux.dxf_group_pairs(path)
+        finally:
+            shutil.rmtree(out_dir, ignore_errors=True)
+
+        index = pairs.index(("0", "TEXT"))
+        value = next(value for code, value in pairs[index:] if code == "1")
+        self.assertEqual(value.encode("latin-1"), b"\xc9 \xe0 \xdf \x80 \x85 \\U+65E5\\U+672C")
+
 
 ## @}
