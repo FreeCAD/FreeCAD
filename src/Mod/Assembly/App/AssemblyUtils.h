@@ -45,6 +45,9 @@ class Placement;
 namespace Assembly
 {
 
+/// Whether a generated link element is excluded from assembly operations.
+bool isSuppressedLinkElement(const App::DocumentObject* obj);
+
 // This enum has to be the same as the one in JointObject.py
 enum class JointType
 {
