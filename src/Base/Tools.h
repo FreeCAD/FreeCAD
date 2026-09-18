@@ -499,4 +499,18 @@ constexpr auto to_underlying(E e) noexcept
 #endif
 }
 
+/**
+ * @brief Helper to run code at the end of a scope.
+ * @example `const auto deferredHello = Defer{[]() { printf("Hello, world\n"); }};`
+ */
+template<typename T>
+struct Defer
+{
+    T func;
+    inline ~Defer()
+    {
+        func();
+    }
+};
+
 }  // namespace Base
