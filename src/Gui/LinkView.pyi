@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
+from Base.BoundBox import BoundBox
+from ViewProviderDocumentObject import ViewProviderDocumentObject
 from typing import Any, Final, List, Dict, Tuple, overload
 
 @export(
@@ -124,7 +126,7 @@ class LinkView(BaseClass):
         """
         ...
 
-    def getDetailPath(self, element: Any, /) -> Tuple[Any, Any]:
+    def getDetailPath(self, sub: str, path: Any, /) -> Tuple[Any, Any]:
         """
         get the 3d path an detail of an element.
 
@@ -138,7 +140,7 @@ class LinkView(BaseClass):
         """
         ...
 
-    def getBoundBox(self, vobj: Any = None, /) -> Any:
+    def getBoundBox(self, vobj: ViewProviderDocumentObject, /) -> BoundBox:
         """
         get the bounding box.
         """

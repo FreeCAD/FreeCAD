@@ -90,7 +90,12 @@ class TopoShape(ComplexGeoData):
 
     @constmethod
     def writeInventor(
-        self, *, Mode: int, Deviation: float, Angle: float, FaceColors: object
+        self,
+        *,
+        Mode: int = ...,
+        Deviation: float = ...,
+        Angle: float = ...,
+        FaceColors: object = ...,
     ) -> str:
         """
         Write the mesh in OpenInventor format to a string.
@@ -192,10 +197,10 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def revolve(self, base: Vector, direction: Vector, angle: float, /) -> TopoShape:
+    def revolve(self, base: Vector, direction: Vector, angle: float = ..., /) -> TopoShape:
         """
         Revolve the shape around an Axis to a given degree.
-        revolve(base, direction, angle)
+        revolve(base, direction[, angle])
         --
         Part.revolve(App.Vector(0,0,0),App.Vector(0,0,1),360) - revolves the shape around the Z Axis 360 degree.
 
@@ -669,23 +674,23 @@ class TopoShape(ComplexGeoData):
     def makeEvolved(
         self,
         Profile: TopoShape,
-        Join: int,
-        AxeProf: bool,
+        Join: int = ...,
+        AxeProf: bool = ...,
         *,
-        Solid: bool,
-        ProfOnSpine: bool,
-        Tolerance: float,
-    ) -> None:
+        Solid: bool = ...,
+        ProfOnSpine: bool = ...,
+        Tolerance: float = ...,
+    ) -> TopoShape:
         """
         Profile along the spine
         """
         ...
 
     @constmethod
-    def makeWires(self, op: str = None, /) -> TopoShape:
+    def makeWires(self, op: str, /) -> TopoShape:
         """
         Make wire(s) using the edges of this shape
-        makeWires([op=None])
+        makeWires(op)
         --
         The function will sort any edges inside the current shape, and connect them
         into wire. If more than one wire is found, then it will make a compound out of
@@ -832,10 +837,10 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def tessellate(self) -> Tuple[List[Vector], List]:
+    def tessellate(self, tolerance: float, ok: bool = ..., /) -> Tuple[List[Vector], List]:
         """
         Tessellate the shape and return a list of vertices and face indices
-        tessellate() -> (vertex,facets)
+        tessellate(tolerance[, ok]) -> (vertex, facets)
         """
         ...
 
@@ -893,10 +898,16 @@ class TopoShape(ComplexGeoData):
         """
         ...
 
-    def makeShapeFromMesh(self, mesh: Tuple[List[Vector], List], tolerance: float, /) -> TopoShape:
+    def makeShapeFromMesh(
+        self,
+        mesh: Tuple[List[Vector], List],
+        tolerance: float = ...,
+        sew_shape: bool = ...,
+        /,
+    ) -> TopoShape:
         """
         Make a compound shape out of mesh data.
-        makeShapeFromMesh((vertex,facets),tolerance) -> Shape
+        makeShapeFromMesh((vertex,facets)[, tolerance][, sew_shape]) -> Shape
         --
         Note: This should be used for rather small meshes only.
         """
