@@ -226,6 +226,19 @@ void CDxfWrite::writeTablesSection()
     (*m_ofs) << getPlateFile(fileSpec);
 
     if (m_version > 12) {
+        (*m_ofs) << "  0" << endl;
+        (*m_ofs) << "TABLE" << endl;
+        (*m_ofs) << "  2" << endl;
+        (*m_ofs) << "BLOCK_RECORD" << endl;
+        (*m_ofs) << "  5" << endl;
+        (*m_ofs) << m_saveBlockRecordTableHandle << endl;
+        (*m_ofs) << "330" << endl;
+        (*m_ofs) << "0" << endl;
+        (*m_ofs) << "100" << endl;
+        (*m_ofs) << "AcDbSymbolTable" << endl;
+        (*m_ofs) << "  70" << endl;
+        // *MODEL_SPACE and *PAPER_SPACE, plus one record per block.
+        (*m_ofs) << (m_blockList.size() + 2) << endl;
         (*m_ofs) << (*m_ssBlkRecord).str();
         (*m_ofs) << "  0" << endl;
         (*m_ofs) << "ENDTAB" << endl;
@@ -461,23 +474,10 @@ void CDxfWrite::makeBlockRecordTableHead()
     if (m_version < 14) {
         return;
     }
+    // The table header declares the entry count, so writeTablesSection() writes
+    // it once all blocks are known.
     std::string tablehash = getBlkRecordHandle();
     m_saveBlockRecordTableHandle = tablehash;
-    (*m_ssBlkRecord) << "  0" << endl;
-    (*m_ssBlkRecord) << "TABLE" << endl;
-    (*m_ssBlkRecord) << "  2" << endl;
-    (*m_ssBlkRecord) << "BLOCK_RECORD" << endl;
-    (*m_ssBlkRecord) << "  5" << endl;
-    (*m_ssBlkRecord) << tablehash << endl;
-    (*m_ssBlkRecord) << "330" << endl;
-    (*m_ssBlkRecord) << "0" << endl;
-    (*m_ssBlkRecord) << "100" << endl;
-    (*m_ssBlkRecord) << "AcDbSymbolTable" << endl;
-    (*m_ssBlkRecord) << "  70" << endl;
-    // 2 fixed entries (*MODEL_SPACE, *PAPER_SPACE) below, plus one per
-    // m_blockList entry written later in makeBlockRecordTableBody().
-    (*m_ssBlkRecord) << (m_blockList.size() + 2) << endl;
-    m_stats.blockCount = static_cast<int>(m_blockList.size());
 
     m_saveModelSpaceHandle = getBlkRecordHandle();
     (*m_ssBlkRecord) << "  0" << endl;
@@ -653,6 +653,7 @@ void CDxfWrite::makeBlockSectionHead()
 
 void CDxfWrite::writeBlock(const std::string& blockName, const double basePoint[3])
 {
+    m_stats.blockCount++;
     if (m_version > 12) {
         std::string blkRecordHandle = getBlkRecordHandle();
         addBlockName(blockName, blkRecordHandle);
@@ -1882,6 +1883,7 @@ void CDxfWrite::writeDiametricDim(
 // added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
 void CDxfWrite::writeDimBlockPreamble()
 {
+    m_stats.blockCount++;
     if (m_version > 12) {
         m_saveBlkRecordHandle = getBlkRecordHandle();
         addBlockName(m_currentDimBlockName, m_saveBlkRecordHandle);
