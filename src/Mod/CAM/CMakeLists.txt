@@ -92,6 +92,7 @@ SET(PathPythonDressupGui_SRCS
 SET(PathPythonMain_SRCS
     Path/Main/__init__.py
     Path/Main/Job.py
+    Path/Main/Workplane.py
     Path/Main/Stock.py
 )
 
@@ -103,6 +104,7 @@ SET(PathPythonMainGui_SRCS
     Path/Main/Gui/Inspect.py
     Path/Main/Gui/Job.py
     Path/Main/Gui/JobCmd.py
+    Path/Main/Gui/WorkplaneCmd.py
     Path/Main/Gui/JobDlg.py
     Path/Main/Gui/PreferencesJob.py
     Path/Main/Gui/SanityCmd.py
@@ -662,6 +664,8 @@ SET(Tests_SRCS
     CAMTests/TestPathUtil.py
     CAMTests/TestPathVcarve.py
     CAMTests/TestPathVoronoi.py
+    CAMTests/TestPathWorkplane.py
+    CAMTests/TestPathSharedWorkplane.py
     CAMTests/TestProcessorOptimizations.py
     CAMTests/TestGrblLegacyPost.py
     CAMTests/TestDressupPost.py

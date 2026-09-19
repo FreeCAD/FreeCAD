@@ -274,7 +274,11 @@ class ObjectMillFacing(PathOp.ObjectOp):
         Path.Log.debug(f"Tool diameter: {tool_diameter}")
 
         # Prepare linking parameters
-        solids = [base.Shape for base in self.job.Model.Group]
+        # self.model rather than self.job.Model.Group: the base class wraps
+        # self.model with transformed geometry when a workplane is active, so
+        # collision avoidance tests against the model in the same frame the
+        # path is generated in.
+        solids = [base.Shape for base in self.model]
         linkingArgs = {
             "start_position": None,
             "target_position": None,
