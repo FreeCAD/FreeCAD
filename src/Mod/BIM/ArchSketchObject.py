@@ -25,14 +25,13 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 
-def getSketchDefiningEdges(sketch, selected_edges=None, supported_geometry=None):
+def getSketchDefiningEdges(sketch, selected_edges=[], supported_geometry=None):
     import Part
     import Sketcher
 
     if supported_geometry is None:
         supported_geometry = (Part.LineSegment, Part.Circle, Part.ArcOfCircle, Part.Ellipse)
 
-    selected_edges = {str(edge) for edge in selected_edges or []}
     edges = []
 
     for index, facade in enumerate(sketch.GeometryFacadeList):
