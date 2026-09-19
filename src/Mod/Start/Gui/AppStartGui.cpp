@@ -106,12 +106,26 @@ public:
         // It's possible that "Start_Start" didn't result in the creation of an MDI window, if it
         // was called to early. This polls the views to make sure the view was created, and if it
         // was not, re-calls the command.
-        auto mw = Gui::getMainWindow();
-        auto existingView = mw->findChild<StartGui::StartView*>(QLatin1String("StartView"));
-        if (!existingView) {
-            Launch();
+        if (const auto mw = Gui::getMainWindow();
+            mw->findChild<StartView*>(QLatin1String("StartView"))) {
+            return;
         }
+
+        // Prevent an infinite loop of launch attempts if something has gone wrong
+        if (++_launchAttempts >= maxLaunchAttempts) {
+            Base::Console().error(
+                "Start page could not be created after %d attempts, giving up\n",
+                maxLaunchAttempts
+            );
+            return;
+        }
+        Launch();
     }
+
+private:
+    static constexpr int maxLaunchAttempts {5};
+
+    int _launchAttempts {0};
 };
 
 PyObject* initModule()
