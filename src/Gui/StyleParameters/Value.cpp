@@ -382,7 +382,7 @@ const Value& Tuple::at(size_t index) const
     return fallback;
 }
 
-const Value* Tuple::find(const std::string& name) const
+const Value* Tuple::find(std::string_view name) const
 {
     auto it = std::ranges::find_if(elements, [&](const Element& elem) {
         return elem.name && *elem.name == name;

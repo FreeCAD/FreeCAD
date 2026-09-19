@@ -20,12 +20,21 @@
 #                                                                              #
 ################################################################################
 
+import unittest
+
 import FreeCAD as App
 import Arch
-import ifcopenshell
 from bimtests import TestArchBase
-from nativeifc import ifc_export
-from nativeifc import ifc_tools
+
+# The nativeifc machinery needs ifcopenshell, which is an optional dependency
+try:
+    import ifcopenshell
+    from nativeifc import ifc_export
+    from nativeifc import ifc_tools
+
+    _HAS_IFCOPENSHELL = True
+except ImportError:
+    _HAS_IFCOPENSHELL = False
 
 
 class TestArchBuildingPart(TestArchBase.TestArchBase):
@@ -128,6 +137,7 @@ class TestArchBuildingPart(TestArchBase.TestArchBase):
             floor.IfcType, "Building Storey", "convertFloors failed to set IfcType correctly"
         )
 
+    @unittest.skipUnless(_HAS_IFCOPENSHELL, "ifcopenshell not available")
     def test_nativeifc_aggregate_storey_pset_respects_file_scale(self):
         self.printTestMessage("Testing NativeIFC storey pset restore respects file scale")
 
@@ -185,6 +195,7 @@ class TestArchBuildingPart(TestArchBase.TestArchBase):
         self.assertAlmostEqual(floor.Height, 3000, delta=0.001)
         self.assertAlmostEqual(floor.LevelOffset, 125, delta=0.001)
 
+    @unittest.skipUnless(_HAS_IFCOPENSHELL, "ifcopenshell not available")
     def test_nativeifc_aggregate_storey_preserves_level_data(self):
         self.printTestMessage("Testing NativeIFC aggregated storey level data")
 
@@ -224,6 +235,7 @@ class TestArchBuildingPart(TestArchBase.TestArchBase):
         self.document.recompute()
         self.assertAlmostEqual(storey.Elevation.Value, 6500, delta=0.001)
 
+    @unittest.skipUnless(_HAS_IFCOPENSHELL, "ifcopenshell not available")
     def test_strict_ifc_direct_conversion_preserves_level_data(self):
         self.printTestMessage("Testing Strict IFC direct-conversion storey level data")
 
