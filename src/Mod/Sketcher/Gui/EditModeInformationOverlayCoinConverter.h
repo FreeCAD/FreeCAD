@@ -170,6 +170,26 @@ public:
      */
     void convert(const Part::Geometry* geometry, int geoid);
 
+    /** @returns whether an in-place update detected that the overlay node layout no longer matches
+     *  the nodes currently present in the info group (e.g. the sketch changed between rebuilds).
+     */
+    bool overlayInconsistent() const
+    {
+        return m_overlayInconsistent;
+    }
+
+    /** @returns the number of overlay nodes required by the last convert() run.
+     *
+     *  This equals the next node id to be assigned and is used to compare the expected overlay
+     *  layout against the nodes currently present in the info group (see
+     *  EditModeCoinManager::processGeometryInformationOverlay), so that a layout drift such as a
+     *  growing or shrinking sketch is detected before an in-place update indexes a missing node.
+     */
+    int getNodeCount() const
+    {
+        return nodeId;
+    }
+
 private:
     template<CalculationType calculation>
     void calculate(const Part::Geometry* geometry, [[maybe_unused]] int geoid);
@@ -215,6 +235,10 @@ private:
 
     // Node Management
     int nodeId;
+
+    // Set by updateNode when it is asked to target a node that no longer exists in the info
+    // group, i.e. the overlay layout changed since the last rebuild.
+    bool m_overlayInconsistent = false;
 };
 
 

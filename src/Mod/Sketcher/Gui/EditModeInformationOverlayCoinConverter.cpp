@@ -526,6 +526,14 @@ void EditModeInformationOverlayCoinConverter::updateNode(const Result& result)
     if constexpr (Result::visualisationType == VisualisationType::Text) {
 
         for (size_t i = 0; i < result.strings.size(); i++) {
+            // The in-place update relies on the node created during the last rebuild. If the sketch
+            // changed so fewer nodes exist now, the layout is stale: stop without crashing so the
+            // caller can force a rebuild.
+            if (nodeId >= infoGroup->getNumChildren()) {
+                m_overlayInconsistent = true;
+                return;
+            }
+
             SoSwitch* sw = static_cast<SoSwitch*>(infoGroup->getChild(nodeId));
 
             if (overlayParameters.visibleInformationChanged) {
@@ -572,6 +580,14 @@ void EditModeInformationOverlayCoinConverter::updateNode(const Result& result)
         }
     }
     else if constexpr (Result::visualisationType == VisualisationType::Polygon) {
+
+        // The in-place update relies on the node created during the last rebuild. If the sketch
+        // changed so fewer nodes exist now, the layout is stale: stop without crashing so the
+        // caller can force a rebuild.
+        if (nodeId >= infoGroup->getNumChildren()) {
+            m_overlayInconsistent = true;
+            return;
+        }
 
         SoSwitch* sw = static_cast<SoSwitch*>(infoGroup->getChild(nodeId));
 
