@@ -6,6 +6,7 @@
 #include <App/Document.h>
 #include <App/Property.h>
 #include <App/SuppressibleExtension.h>
+#include <Base/Interpreter.h>
 #include <gp_Dir.hxx>
 #include <Precision.hxx>
 
@@ -20,14 +21,7 @@ protected:
     static void SetUpTestSuite()
     {
         tests::initApplication();
-        Part::LinearPatternExtension::init();
-        Part::PolarPatternExtension::init();
-        Part::LinkArray::init();
-        Part::LinkArrayLinear::init();
-        Part::LinkArrayPolar::init();
-        Part::AttachExtension::init();
-        Part::Primitive::init();
-        Part::Box::init();
+        Base::Interpreter().loadModule("Part");
     }
 
     void SetUp() override
