@@ -5,9 +5,14 @@
 #include <cmath>
 #include <numbers>
 
+#include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepGProp.hxx>
 #include <GProp_GProps.hxx>
+#include <gp_Pln.hxx>
 #include <Precision.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Face.hxx>
 
 #include "src/App/InitApplication.h"
 
@@ -138,6 +143,13 @@ protected:
         groove->Profile.setValue(_profile, {""});
         groove->ReferenceAxis.setValue(_doc->getObject("Y_Axis"), {""});
         return groove;
+    }
+
+    Part::Feature* addAxis(const gp_Pnt& start, const gp_Pnt& end)
+    {
+        auto axis = _doc->addObject<Part::Feature>("ReferenceAxis");
+        axis->Shape.setValue(BRepBuilderAPI_MakeEdge(start, end).Edge());
+        return axis;
     }
 
 private:
@@ -304,6 +316,109 @@ TEST_F(RevolutionTest, SecondSideUpToFaceWithoutTargetIsAnError)
     getDocument()->recompute();
 
     EXPECT_TRUE(revolution->isError());
+}
+
+TEST_F(RevolutionTest, ProjectOffsetAxisAndRestoreOriginalAxis)
+{
+    auto axis = addAxis(gp_Pnt(0.0, 0.0, 5.0), gp_Pnt(0.0, 1.0, 5.0));
+    auto revolution = addRevolution();
+    revolution->ReferenceAxis.setValue(axis, {"Edge1"});
+    EXPECT_FALSE(revolution->ProjectAxis.getValue());
+    revolution->suggestReversed();
+    EXPECT_NEAR(revolution->Base.getValue().z, 5.0, Precision::Confusion());
+
+    revolution->ProjectAxis.setValue(true);
+    getDocument()->recompute();
+
+    ASSERT_FALSE(revolution->isError()) << revolution->getStatusString();
+    EXPECT_NEAR(revolution->Base.getValue().z, 0.0, Precision::Confusion());
+    EXPECT_NEAR(volumeOf(revolution->Shape.getValue()), torusVolume(360.0), volumeTolerance);
+
+    revolution->ProjectAxis.setValue(false);
+    EXPECT_EQ(revolution->mustExecute(), 1);
+    revolution->suggestReversed();
+    EXPECT_NEAR(revolution->Base.getValue().z, 5.0, Precision::Confusion());
+    EXPECT_EQ(revolution->ReferenceAxis.getValue(), axis);
+}
+
+TEST_F(RevolutionTest, ProjectTiltedAxisOntoRotatedProfile)
+{
+    auto profile = getProfile();
+    profile->MapMode.setValue("Deactivated");
+    profile->Placement.setValue(
+        Base::Placement(
+            Base::Vector3d(5.0, 12.0, 15.0),
+            Base::Rotation(Base::Vector3d::UnitX, std::numbers::pi / 2.0)
+        )
+    );
+    auto axis = addAxis(gp_Pnt(5.0, 22.0, 15.0), gp_Pnt(5.0, 23.0, 16.0));
+    auto revolution = addRevolution();
+    revolution->ReferenceAxis.setValue(axis, {"Edge1"});
+    revolution->ProjectAxis.setValue(true);
+
+    getDocument()->recompute();
+
+    ASSERT_FALSE(revolution->isError()) << revolution->getStatusString();
+    EXPECT_NEAR(revolution->Base.getValue().x, 5.0, Precision::Confusion());
+    EXPECT_NEAR(revolution->Base.getValue().y, 12.0, Precision::Confusion());
+    EXPECT_NEAR(revolution->Base.getValue().z, 15.0, Precision::Confusion());
+    EXPECT_NEAR(revolution->Axis.getValue().x, 0.0, Precision::Angular());
+    EXPECT_NEAR(revolution->Axis.getValue().y, 0.0, Precision::Angular());
+    EXPECT_NEAR(revolution->Axis.getValue().z, 1.0, Precision::Angular());
+    EXPECT_NEAR(volumeOf(revolution->Shape.getValue()), torusVolume(360.0), volumeTolerance);
+}
+
+TEST_F(RevolutionTest, ProjectAxisOntoSelectedFacePlane)
+{
+    auto profile = getDocument()->addObject<Part::Feature>("FaceProfile");
+    BRepBuilderAPI_MakeFace
+        face(gp_Pln(gp_Pnt(0.0, 0.0, 15.0), gp_Dir(0.0, 0.0, 1.0)), 20.0, 40.0, -10.0, 10.0);
+    profile->Shape.setValue(face.Face());
+    auto revolution = addRevolution();
+    revolution->Profile.setValue(profile, {"Face1"});
+    revolution->ProjectAxis.setValue(true);
+
+    getDocument()->recompute();
+
+    ASSERT_FALSE(revolution->isError()) << revolution->getStatusString();
+    EXPECT_NEAR(revolution->Base.getValue().z, 15.0, Precision::Confusion());
+    const double expectedVolume = std::numbers::pi * (40.0 * 40.0 - 20.0 * 20.0) * 20.0;
+    EXPECT_NEAR(volumeOf(revolution->Shape.getValue()), expectedVolume, volumeTolerance);
+}
+
+TEST_F(RevolutionTest, ProjectPerpendicularAxisIsAnError)
+{
+    auto revolution = addRevolution();
+    revolution->ProjectAxis.setValue(true);
+    revolution->ReferenceAxis.setValue(getDocument()->getObject("Z_Axis"), {""});
+
+    getDocument()->recompute();
+
+    EXPECT_TRUE(revolution->isError());
+
+    // Sketch axes take a separate path through the reference-axis resolver.
+    revolution->ReferenceAxis.setValue(getProfile(), {"N_Axis"});
+    getDocument()->recompute();
+    EXPECT_TRUE(revolution->isError());
+}
+
+TEST_F(RevolutionTest, GrooveProjectAxis)
+{
+    addBaseCylinder();
+    auto axis = addAxis(gp_Pnt(0.0, 0.0, 5.0), gp_Pnt(0.0, 1.0, 6.0));
+    auto groove = addGroove();
+    EXPECT_FALSE(groove->ProjectAxis.getValue());
+    groove->ReferenceAxis.setValue(axis, {"Edge1"});
+    groove->ProjectAxis.setValue(true);
+
+    getDocument()->recompute();
+
+    ASSERT_FALSE(groove->isError()) << groove->getStatusString();
+    EXPECT_NEAR(
+        volumeOf(groove->Shape.getValue()),
+        cylinderVolume() - torusVolume(360.0),
+        volumeTolerance
+    );
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
