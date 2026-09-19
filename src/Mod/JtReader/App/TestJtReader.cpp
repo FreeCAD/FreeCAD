@@ -53,6 +53,6 @@ void TestJtReader::read(void)
         }
 
 
-        Base::Console().log(i->toString().c_str());
+        Base::Console().log("{}", i->toString());
     }
 }

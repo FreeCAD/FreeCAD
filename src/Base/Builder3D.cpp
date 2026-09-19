@@ -30,6 +30,7 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/tokenizer.hpp>
+#include <fmt/format.h>
 
 #include "Builder3D.h"
 #include "Console.h"

@@ -256,7 +256,7 @@ QImage ViewProviderImagePlane::loadRaster(const char* fileName) const
                       .arg(QString::fromUtf8(fileName))
                       .arg(decodedImageSizeMiB)
                       .arg(allocationLimit);
-            Base::Console().warning("%s\n", message.toUtf8().constData());
+            Base::Console().warning("{}\n", message.toUtf8().constData());
             return {};
         }
     }

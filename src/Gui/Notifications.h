@@ -189,7 +189,8 @@ inline void Gui::Notify(TNotifier&& notifier, TCaption&& caption, TMessage&& mes
                 Base::Console()
                     .send<type, Base::IntendedRecipient::Developer, Base::ContentType::Untranslated>(
                         notifier->getFullLabel(),
-                        msg.c_str()
+                        "{}",
+                        msg
                     );
             }
             else if constexpr (
@@ -200,7 +201,8 @@ inline void Gui::Notify(TNotifier&& notifier, TCaption&& caption, TMessage&& mes
                 Base::Console()
                     .send<type, Base::IntendedRecipient::Developer, Base::ContentType::Untranslated>(
                         notifier->getObject()->getFullLabel(),
-                        msg.c_str()
+                        "{}",
+                        msg
                     );
             }
             else if constexpr (
@@ -209,7 +211,8 @@ inline void Gui::Notify(TNotifier&& notifier, TCaption&& caption, TMessage&& mes
                 Base::Console()
                     .send<type, Base::IntendedRecipient::Developer, Base::ContentType::Untranslated>(
                         notifier->getDocument()->Label.getStrValue(),
-                        msg.c_str()
+                        "{}",
+                        msg
                     );
             }
             else if constexpr (
@@ -218,14 +221,16 @@ inline void Gui::Notify(TNotifier&& notifier, TCaption&& caption, TMessage&& mes
                 Base::Console()
                     .send<type, Base::IntendedRecipient::Developer, Base::ContentType::Untranslated>(
                         notifier->Label.getStrValue(),
-                        msg.c_str()
+                        "{}",
+                        msg
                     );
             }
             else {
                 Base::Console()
                     .send<type, Base::IntendedRecipient::Developer, Base::ContentType::Untranslated>(
                         notifier,
-                        msg.c_str()
+                        "{}",
+                        msg
                     );
             }
         }
@@ -274,7 +279,11 @@ inline void Gui::Notify(TNotifier&& notifier, TCaption&& caption, TMessage&& mes
             if constexpr (
                 std::is_base_of_v<App::DocumentObject, std::remove_pointer_t<typename std::decay<TNotifier>::type>>
             ) {
-                Base::Console().send<type, recipient, content>(notifier->getFullLabel(), msg.toUtf8());
+                Base::Console().send<type, recipient, content>(
+                    notifier->getFullLabel(),
+                    "{}",
+                    msg.toStdString()
+                );
             }
             else if constexpr (
                 std::is_base_of_v<
@@ -283,7 +292,8 @@ inline void Gui::Notify(TNotifier&& notifier, TCaption&& caption, TMessage&& mes
             ) {
                 Base::Console().send<type, recipient, content>(
                     notifier->getObject()->getFullLabel(),
-                    msg.toUtf8()
+                    "{}",
+                    msg.toUtf8().constData()
                 );
             }
             else if constexpr (
@@ -291,7 +301,8 @@ inline void Gui::Notify(TNotifier&& notifier, TCaption&& caption, TMessage&& mes
             ) {
                 Base::Console().send<type, recipient, content>(
                     notifier->getDocument()->Label.getStrValue(),
-                    msg.toUtf8()
+                    "{}",
+                    msg.toUtf8().constData()
                 );
             }
             else if constexpr (
@@ -299,11 +310,12 @@ inline void Gui::Notify(TNotifier&& notifier, TCaption&& caption, TMessage&& mes
             ) {
                 Base::Console().send<type, recipient, content>(
                     notifier->Label.getStrValue(),
-                    msg.toUtf8()
+                    "{}",
+                    msg.toUtf8().constData()
                 );
             }
             else {
-                Base::Console().send<type, recipient, content>(notifier, msg.toUtf8());
+                Base::Console().send<type, recipient, content>(notifier, "{}", msg.toStdString());
             }
         }
         else {
@@ -314,7 +326,7 @@ inline void Gui::Notify(TNotifier&& notifier, TCaption&& caption, TMessage&& mes
             if constexpr (
                 std::is_base_of_v<App::DocumentObject, std::remove_pointer_t<typename std::decay<TNotifier>::type>>
             ) {
-                Base::Console().send<type, recipient, content>(notifier->getFullLabel(), msg.c_str());
+                Base::Console().send<type, recipient, content>(notifier->getFullLabel(), "{}", msg);
             }
             else if constexpr (
                 std::is_base_of_v<
@@ -323,7 +335,8 @@ inline void Gui::Notify(TNotifier&& notifier, TCaption&& caption, TMessage&& mes
             ) {
                 Base::Console().send<type, recipient, content>(
                     notifier->getObject()->getFullLabel(),
-                    msg.c_str()
+                    "{}",
+                    msg
                 );
             }
             else if constexpr (
@@ -331,19 +344,17 @@ inline void Gui::Notify(TNotifier&& notifier, TCaption&& caption, TMessage&& mes
             ) {
                 Base::Console().send<type, recipient, content>(
                     notifier->getDocument()->Label.getStrValue(),
-                    msg.c_str()
+                    "{}",
+                    msg
                 );
             }
             else if constexpr (
                 std::is_base_of_v<App::Document, std::remove_pointer_t<typename std::decay<TNotifier>::type>>
             ) {
-                Base::Console().send<type, recipient, content>(
-                    notifier->Label.getStrValue(),
-                    msg.c_str()
-                );
+                Base::Console().send<type, recipient, content>(notifier->Label.getStrValue(), "{}", msg);
             }
             else {
-                Base::Console().send<type, recipient, content>(notifier, msg.c_str());
+                Base::Console().send<type, recipient, content>(notifier, "{}", msg);
             }
         }
     }

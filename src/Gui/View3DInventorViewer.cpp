@@ -1306,7 +1306,7 @@ void View3DInventorViewer::init()
 #endif
     }
     catch (Base::Exception& e) {
-        Base::Console().warning("Failed to set up gestures. Error: %s\n", e.what());
+        Base::Console().warning("Failed to set up gestures. Error: {}\n", e.what());
     }
     catch (...) {
         Base::Console().warning("Failed to set up gestures. Unknown error.\n");
@@ -2870,7 +2870,7 @@ void View3DInventorViewer::interactionFinishCB(void* ud, SoQTQuarterAdaptor* vie
 void View3DInventorViewer::interactionLoggerCB(void* ud, SoAction* action)
 {
     Q_UNUSED(ud)
-    Base::Console().log("%s\n", action->getTypeId().getName().getString());
+    Base::Console().log("{}\n", action->getTypeId().getName().getString());
 }
 
 void View3DInventorViewer::addGraphicsItem(GLGraphicsItem* item)
@@ -3080,7 +3080,7 @@ QImage View3DInventorViewer::renderToImage(const RenderImageOptions& options)
     QOpenGLFramebufferObject fbo(width, height, fboFormat);
     if (!fbo.isValid()) {
         Base::Console().warning(
-            "renderToImage failed to create a %dx%d framebuffer with %d samples\n",
+            "renderToImage failed to create a {}x{} framebuffer with {} samples\n",
             width,
             height,
             samples

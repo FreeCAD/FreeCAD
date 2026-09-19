@@ -185,8 +185,8 @@ void Revolved::onChanged(const App::Property* prop)
             App::DocumentObject* obj = Profile.getValue();
             auto baseName = obj ? obj->getNameInDocument() : "";
             Base::Console().warning(
-                "The 'Midplane' property being set for the revolution of %s is deprecated and has "
-                "been replaced by the 'SideType' property in Revolved; assuming SideType='%s'."
+                "The 'Midplane' property being set for the revolution of {} is deprecated and has "
+                "been replaced by the 'SideType' property in Revolved; assuming SideType='{}'."
                 " Please update your script, this property will be removed in a future version.\n",
                 baseName,
                 impliedSideType
@@ -274,7 +274,7 @@ App::DocumentObjectExecReturn* Revolved::tryExecuteRevolved(Part::RevolMode revo
                 "The two revolution angles cancel each other resulting in an empty operation."
             )
         );
-        Base::Console().warning("%s\n", warning.c_str());
+        Base::Console().warning("{}\n", warning);
     }
 
     TopoShape sketchshape = getTopoShapeVerifiedFace();

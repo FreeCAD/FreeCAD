@@ -493,7 +493,7 @@ std::string CDxfWrite::getPlateFile(std::string fileSpec)
     std::stringstream outString;
     Base::FileInfo fi(fileSpec);
     if (!fi.isReadable()) {
-        Base::Console().message("dxf unable to open %s!\n", fileSpec.c_str());
+        Base::Console().message("dxf unable to open {}!\n", fileSpec);
     }
     else {
         string line;

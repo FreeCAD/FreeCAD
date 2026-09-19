@@ -475,7 +475,7 @@ void TaskPatternParameters::updatePatternSpacingLabels()
             }
             catch (const Base::Exception& e) {
                 Base::Console().warning(
-                    "Could not update linear pattern spacing labels: %s\n",
+                    "Could not update linear pattern spacing labels: {}\n",
                     e.what()
                 );
             }
@@ -529,7 +529,7 @@ void TaskPatternParameters::updatePatternSpacingLabels()
             }
         }
         catch (const Base::Exception& e) {
-            Base::Console().warning("Could not update polar pattern spacing labels: %s\n", e.what());
+            Base::Console().warning("Could not update polar pattern spacing labels: {}\n", e.what());
         }
     }
 }

@@ -164,7 +164,7 @@ void ViewProviderTransformed::handleTransformedResult(PartDesign::Transformed* p
         else {
             Base::Console().translatedUserWarning(
                 "ViewProviderTransformed",
-                "%d transformed shapes do not intersect the support",
+                "{} transformed shapes do not intersect the support",
                 rejected
             );
         }
@@ -172,7 +172,7 @@ void ViewProviderTransformed::handleTransformedResult(PartDesign::Transformed* p
 
     auto error = pcTransformed->getDocument()->getErrorDescription(pcTransformed);
     if (error) {
-        Base::Console().translatedUserError("ViewProviderTransformed", error);
+        Base::Console().translatedUserError("ViewProviderTransformed", "{}", error);
     }
 }
 

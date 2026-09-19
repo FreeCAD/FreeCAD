@@ -416,7 +416,7 @@ void AssemblyObject::updateSolveStatus()
         if (!jm) {
             return;
         }
-        // Base::Console().warning("jm->name %s\n", jm->name);
+        // Base::Console().warning("jm->name {}\n", jm->name);
         bool isJointRedundant = false;
 
         jm->constraintsDo([&](std::shared_ptr<MbD::Constraint> con) {
@@ -429,7 +429,7 @@ void AssemblyObject::updateSolveStatus()
             if (spec.rfind("Redundant", 0) == 0) {
                 isJointRedundant = true;
             }
-            // Base::Console().warning("    - %s\n", spec);
+            // Base::Console().warning("    - {}\n", spec);
             --lastDoF;
         });
 
@@ -745,7 +745,7 @@ bool AssemblyObject::validateNewPlacements()
 
                 if (!oldPlc.isSame(newPlacement, Precision::Confusion())) {
                     Base::Console().warning(
-                        "Assembly : Ignoring bad solve, a grounded object (%s) moved.\n",
+                        "Assembly : Ignoring bad solve, a grounded object ({}) moved.\n",
                         obj->getFullLabel()
                     );
                     return false;
@@ -1081,9 +1081,9 @@ void AssemblyObject::setNewPlacements()
         }
         if (!isFinitePlacement(newPlacement)) {
             Base::Console().warning(
-                "Assembly: solver returned a non-finite placement for '%s'; keeping its "
+                "Assembly: solver returned a non-finite placement for '{}'; keeping its "
                 "previous position.\n",
-                obj->getFullName().c_str()
+                obj->getFullName()
             );
             continue;
         }
@@ -2374,7 +2374,7 @@ void AssemblyObject::getRackPinionMarkers(
     Base::Placement plc2 = getPlacementFromProp(joint, "Placement2");
 
     if (!part1 || !obj1) {
-        Base::Console().warning("Reference1 of Joint %s is bad.\n", joint->getFullName());
+        Base::Console().warning("Reference1 of Joint {} is bad.\n", joint->getFullName());
         return;
     }
 
@@ -2497,7 +2497,7 @@ bool AssemblyObject::isMbDJointValid(App::DocumentObject* joint)
     // If this joint is self-referential it must be ignored.
     if (getMbDPart(part1) == getMbDPart(part2)) {
         Base::Console().warning(
-            "Assembly: Ignoring joint (%s) because its parts are connected by a fixed "
+            "Assembly: Ignoring joint ({}) because its parts are connected by a fixed "
             "joint bundle. This joint is a conflicting or redundant constraint.\n",
             joint->getFullLabel()
         );
