@@ -48,7 +48,7 @@ class ModelProperty(BaseClass):
     Inherited: Final[bool] = ...
     """True if the property is inherited."""
 
-    def addColumn(self) -> None:
+    def addColumn(self, column: ModelProperty, /) -> None:
         """
         Add a model property column.
         """

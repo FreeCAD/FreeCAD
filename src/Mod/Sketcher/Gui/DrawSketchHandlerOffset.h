@@ -705,9 +705,9 @@ private:
                                         << getHighestCurveIndex() + newCurveCounter << ", "
                                         << curve[j] << "))\n";
                                     newLinesStream
-                                        << "conList2.append(Sketcher.Constraint('PointOnObject',"
+                                        << "conList2.append(Sketcher.Constraint('Coincident',"
                                         << getHighestCurveIndex() + newCurveCounter << ",1, "
-                                        << curve[j] << "))\n";
+                                        << curve[j] << ",1))\n";
                                     newLinesStream
                                         << "conList2.append(Sketcher.Constraint('PointOnObject',"
                                         << getHighestCurveIndex() + newCurveCounter << ",2, "

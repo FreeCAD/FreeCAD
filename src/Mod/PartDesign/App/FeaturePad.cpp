@@ -49,7 +49,7 @@ PROPERTY_SOURCE(PartDesign::Pad, PartDesign::FeatureExtrude)
 
 Pad::Pad()
 {
-    addSubType = FeatureAddSub::Additive;
+    defineAdditive();
 
     ADD_PROPERTY_TYPE(SideType, (0L), "Pad", App::Prop_None, "Type of sides definition");
     ADD_PROPERTY_TYPE(Type, (0L), "Side1", App::Prop_None, "Pad type for side 1");

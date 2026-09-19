@@ -38,11 +38,9 @@ from typing import Any, Dict
 import FreeCAD
 import Path
 
-Path.Log.debug(f"### RELOADED {__file__}")
 import Constants
-
-from Path.Post.Processor import PostProcessor
-from Path.Post.GcodeProcessingUtils import insert_line_numbers
+from Path.Post.Processor import PostProcessor, SCOPE_MACHINE
+from Path.Post.CAMErrors import CAMValueError, CAMAttributeError
 
 translate = FreeCAD.Qt.translate
 
@@ -101,9 +99,9 @@ class OpenSBPPost(PostProcessor):
         "G74 "
         "G93 G94 G95 "  # opensbp only does units/sec
         "G96 G97 "  # spindle control?
-        "M4 ".rstrip().split(  # ccw speed. We could support this, requires spindle-control on the machine
-            " "
-        )
+        "T "  # no tool-prep
+        "M4 "  # ccw speed. We could support this, requires spindle-control on the machine
+        "".rstrip().split()
     )
 
     # Others require translation
@@ -146,6 +144,8 @@ class OpenSBPPost(PostProcessor):
             elif prop["name"] == "supported_commands":
                 # actually, we could allow reducing this list, but not expanding it
                 prop["default"] = "\n".join(cls.GCodeSupported)
+            elif prop["name"] == "ignored_commands":
+                prop["default"] = "\n".join(cls.GCodeSuppressed)
             elif prop["name"] == "drill_cycles_to_translate":
                 prop["default"] = "\n".join(
                     Constants.GCODE_DRILL_EXTENDED + Constants.GCODE_MOVE_DRILL
@@ -163,6 +163,7 @@ class OpenSBPPost(PostProcessor):
         return [
             {
                 "name": "automatic_tool_changer",
+                "scope": SCOPE_MACHINE,
                 "type": "bool",
                 "label": translate("CAM", "Automatic Tool Changer"),
                 "default": False,
@@ -174,6 +175,7 @@ class OpenSBPPost(PostProcessor):
             },
             {
                 "name": "automatic_spindle",
+                "scope": SCOPE_MACHINE,
                 "type": "bool",
                 "label": translate("CAM", "Automatic Spindle Control"),
                 "default": False,
@@ -181,18 +183,6 @@ class OpenSBPPost(PostProcessor):
                     "CAM",
                     "Enable if machine has automatic spindle speed control. "
                     "If disabled, spindle commands will prompt for manual adjustment.",
-                ),
-            },
-            # FIXME: should be a general option
-            {
-                "name": "suppressed_commands",
-                "type": "text",
-                "label": translate("CAM", "Suppressed (tolerated) G-code Commands"),
-                "default": "\n".join(cls.GCodeSuppressed),
-                "help": translate(
-                    "CAM",
-                    "List of G-code commands tolerated but suppressed by this post-processor (one per line). "
-                    "Commands this list will be filtered out",
                 ),
             },
         ]
@@ -254,6 +244,9 @@ class OpenSBPPost(PostProcessor):
         ):
             self.values[property_name.upper()] = schema[property_name]["default"]
 
+        # non-schema override
+        self.values.update({"OUTPUT_DUPLICATE_COMMANDS": True})
+
     def _convert_start_section(self, section_name, sublist):
         # need to note that we are starting a section (file), so "per section" stuff...
         self._first_probe_open = True
@@ -262,46 +255,44 @@ class OpenSBPPost(PostProcessor):
 
     def convert_command_to_gcode(self, command: Path.Command) -> str:
 
-        # FIXME: should be in Processor class
-        if command.Name in self.values["SUPPRESSED_COMMANDS"].split("\n"):
-            Path.Log.debug(f"opensbp suppressed {command}")
-            return None
-
         # FIXME: optional blockdelete emulation w/"if somevariable"
         if command.Annotations.get("blockdelete", False):
-            raise ValueError(f"opensbp does not support blockdelete, at {command.toGCode()}")
+            raise CAMValueError(
+                f"opensbp does not support blockdelete, at {command.toGCode()}",
+                job=self._job,
+                operation=self._operation,
+                command=command,
+                pp=self.values["MACHINE_NAME"],
+            )
 
         return super().convert_command_to_gcode(command)
 
     def _convert_move(self, command):
-        # FIXME: use Path.Command world _add_line_numbers when implemented
-        gcode = super()._convert_move(command)
-        if gcode is None or "" == gcode.strip():
-            return None
+        # Some gcode starts with the same command as shopbot commands
+        # and shopbot will assume they are shopbot
+        # unless they start with gcode line-numbering: Nxxxx
+        if (
+            command.Name in self.GCodeLineNumberRequired
+            # modal can omit the command, leaving a Zn... as the first parameter -> head of string
+            or command.Name[0] in self.GCodeLineNumberRequiredParameters
+        ) and "N" not in command.Parameters:
+            # Shouldn't happen if OUTPUT_LINE_NUMBERS==True
 
-        if self.values["OUTPUT_LINE_NUMBERS"]:
-            # It will be taken care of later (everything line-numbered)
+            # But, we don't know what the line-number should be, so:
+            start = self.values["LINE_NUMBER_START"]
+            params = command.Parameters()
+            params["N"] = start
+            command = Path.Command(command.Name, params)
+
+        gcode = super()._convert_move(command)
+        if gcode is None or gcode == "":
             return gcode
 
         # We have to do this in string world
         result = []
         gcode_lines = gcode.split("\n")
         for line in gcode_lines:
-            command_name, *_ = line.split(" ", 1)
-
-            if (
-                command_name in self.GCodeLineNumberRequired
-                # modal can omit the command, leaving a Zn... as the first parameter -> head of string
-                or command_name[0] in self.GCodeLineNumberRequiredParameters
-            ):
-                # Line-numbering can't work properly, the progress isn't saved anywhere after
-                # calling insert_line_numbers()
-                start = self.values["LINE_NUMBER_START"]
-                increment = self.values["LINE_INCREMENT"]
-                result.append("' LN required")
-                result.extend(insert_line_numbers(gcode.split("\n"), start, increment))
-            else:
-                result.append(line)
+            result.append(line)
 
         return "\n".join(result)
 
@@ -337,19 +328,30 @@ class OpenSBPPost(PostProcessor):
         AllowedParameters = set("XYZIJFN")
 
         if illegal := [x for x in params if x not in AllowedParameters]:
-            # FIXME: what is the right way to report error? How to include context?
-            raise ValueError(
-                f"Only {''.join(AllowedParameters)} allowed for {command.Name}, saw {illegal} in {command}"
+            raise CAMValueError(
+                f"Only {''.join(AllowedParameters)} allowed for {command.Name}, saw {illegal} in {command}",
+                job=self._job,
+                operation=self._operation,
+                command=command,
+                pp=self.values["MACHINE_NAME"],
             )
         if missing := [x for x in AllowedParameters - {"N"} if x not in params]:
-            raise ValueError(
-                f"Requires XYZIFJ for a {command.Name}, missing {missing} in {command} (and in machine-state {machine_state_params})"
+            raise CAMValueError(
+                f"Requires XYZIFJ for a {command.Name}, missing {missing} in {command} (and in machine-state {machine_state_params})",
+                job=self._job,
+                operation=self._operation,
+                command=command,
+                pp=self.values["MACHINE_NAME"],
             )
 
         RequiredState = "XYZ"
         if modal_missing := [p for p in RequiredState if machine_state_params[p] is None]:
-            raise ValueError(
-                f"Arcs require a previous {''.join(modal_missing)} (from some movement) for {command}, previous machine-state = {machine_state_params}"
+            raise CAMValueError(
+                f"Arcs require a previous {''.join(modal_missing)} (from some movement) for {command}, previous machine-state = {machine_state_params}",
+                job=self._job,
+                operation=self._operation,
+                command=command,
+                pp=self.values["MACHINE_NAME"],
             )
 
         # GCODE if no dZ
@@ -483,7 +485,7 @@ class OpenSBPPost(PostProcessor):
         if has_atc:
             # Automatic tool changer
             output.append(f"&ToolName={tool_name}")
-            output.append(f"&Tool={tool_num}")  # FIXME: we want the Tool name, not tc name
+            output.append(f"&Tool={tool_num}")
         else:
             # Manual tool change - pause and prompt
             output.append(f"'Manual tool change to T{tool_num}: {tool_name}")
@@ -541,7 +543,7 @@ class OpenSBPPost(PostProcessor):
     def _quote(self, string):
         """Return a string that is safe for double-quotes (for opensbp)"""
         # very conservative: only alpha-numeric and /-_.
-        return re.sub(r"[^A-Za-z0-9/_ .-]", "", string)
+        return re.sub(r"[^A-Za-z0-9/_ .,-]", "", string)
 
     def _convert_probe_open(self, command):
         """We need to setup for this probe-sequence,
@@ -564,7 +566,17 @@ class OpenSBPPost(PostProcessor):
         # only insert subroutines once per section FIXME: need to be told when starting a section
         if self._first_probe_open:
             self._first_probe_open = False
-            rez.extend(textwrap.dedent("""\
+
+            # build up "where"
+            where = []
+            if self._job:
+                where.append(self._quote(self._job.Label))
+            if self._operation:
+                where.append(self._quote(self._operation.Label))
+            if where:
+                where = " during " + ", ".join(where)
+
+            rez.extend(textwrap.dedent(f"""\
                     ' Loads my-variables, notably my_ZzeroInput
                     C#,90
                     ' PROBE SUBROUTINE
@@ -579,7 +591,7 @@ class OpenSBPPost(PostProcessor):
                     FailedToTouch:
                       ' for g38.2 probe, when
                       ' failed to trigger w/in movement
-                      MSGBOX(Failed to touch...Exiting,16,Probe Failed) # fixme: which job/op label, and file?
+                      MSGBOX("Failed to touch{where}. Exiting",16,Probe Failed)
                       END
                     SkipProbeSubRoutines:
                     ' ------
@@ -611,14 +623,27 @@ class OpenSBPPost(PostProcessor):
         """
 
         # We are being strict here, Z motion only
-        excess = set(command.Parameters.keys()) - set(list("ZF"))
+        excess = set(command.Parameters.keys()) - set(list("ZFN"))
         if len(excess) > 0:
-            raise Exception(f"A probing move (G38.2) must only have Z and F, saw {command}")
+            raise CAMAttributeError(
+                f"A probing move (G38.2) must only have Z, F, and N, saw {command}",
+                job=self._job,
+                operation=self._operation,
+                command=command,
+                pp=self.values["MACHINE_NAME"],
+            )
         required = {p: v for p, v in command.Parameters.items() if p in "ZF"}
         if self.machine_state.F is not None:
             required["F"] = self.machine_state.F
+
         if len(required) != 2:
-            raise Exception(f"A probing move (G38.2) must have a Z and F, only saw: {command}")
+            raise CAMAttributeError(
+                f"A probing move (G38.2) must have a Z and F, saw: {command}",
+                job=self._job,
+                operation=self._operation,
+                command=command,
+                pp=self.values["MACHINE_NAME"],
+            )
 
         # G1, we aren't jogging, we are doing a slow, deliberate move, i.e. ~"feed".
         probe_movement = self._convert_move(Path.Command("G1", required))
@@ -638,9 +663,7 @@ class OpenSBPPost(PostProcessor):
         # so, you can't know the state for modal and axis-modal
         # FIXME: this override goes away when Processor's does
 
-        disable = "OUTPUT_DUPLICATE_COMMANDS FILTER_INEFFICIENT_MOVES OUTPUT_LINE_NUMBERS".split(
-            " "
-        )
+        disable = "FILTER_INEFFICIENT_MOVES".split(" ")
         was = {k: self.values[k] for k in disable}
 
         for k in disable:

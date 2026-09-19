@@ -410,11 +410,11 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <translation>Håll dig inloggad över FreeCAD-sessioner</translation>
     </message>
     <message>
-      <location filename="../ui/dialogExport.ui" line="14"/>
       <location filename="../ui/dialogPhases.ui" line="14"/>
       <location filename="../ui/DialogDisplayText.ui" line="14"/>
       <location filename="../ui/dialogQuantitySurveying.ui" line="14"/>
       <location filename="../ui/dialogListWidget.ui" line="14"/>
+      <location filename="../ui/dialogExport.ui" line="14"/>
       <source>Dialog</source>
       <translation>Dialog</translation>
     </message>
@@ -434,8 +434,8 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <translation>Endast markerade objekt</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcProperties.ui" line="39"/>
       <location filename="../ui/dialogIfcElements.ui" line="30"/>
+      <location filename="../ui/dialogIfcProperties.ui" line="39"/>
       <location filename="../ui/dialogIfcQuantities.ui" line="30"/>
       <source>Only visible BIM objects</source>
       <translation>Endast synliga BIM-objekt</translation>
@@ -473,8 +473,8 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <translation>IFC Fastigheter</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcProperties.ui" line="182"/>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="63"/>
+      <location filename="../ui/dialogIfcProperties.ui" line="182"/>
       <source>Delete Selected Property/Property Set</source>
       <translation>Ta bort vald fastighet/fastighetsuppsättning</translation>
     </message>
@@ -504,20 +504,20 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <translation>Tvinga fram export av fullständiga parametriska data från FreeCAD</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcProperties.ui" line="50"/>
       <location filename="../ui/dialogIfcElements.ui" line="39"/>
+      <location filename="../ui/dialogIfcProperties.ui" line="50"/>
       <source>Order by</source>
       <translation>Sortera efter</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcProperties.ui" line="58"/>
       <location filename="../ui/dialogIfcElements.ui" line="47"/>
+      <location filename="../ui/dialogIfcProperties.ui" line="58"/>
       <source>Alphabetical</source>
       <translation>Alfabetisk</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcProperties.ui" line="68"/>
       <location filename="../ui/dialogIfcElements.ui" line="56"/>
+      <location filename="../ui/dialogIfcProperties.ui" line="68"/>
       <source>IFC type</source>
       <translation>IFC-typ</translation>
     </message>
@@ -527,8 +527,8 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <translation>Material</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcProperties.ui" line="78"/>
       <location filename="../ui/dialogIfcElements.ui" line="70"/>
+      <location filename="../ui/dialogIfcProperties.ui" line="78"/>
       <source>Model structure</source>
       <translation>Modellstruktur</translation>
     </message>
@@ -744,9 +744,9 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <translation>Lägger till detta lager till ett IFC-projekt</translation>
     </message>
     <message>
+      <location filename="../ui/dialogPhases.ui" line="55"/>
       <location filename="../ui/dialogLayersIFC.ui" line="46"/>
       <location filename="../ui/dialogProjectManager.ui" line="679"/>
-      <location filename="../ui/dialogPhases.ui" line="55"/>
       <source>Delete</source>
       <translation>Radera</translation>
     </message>
@@ -784,9 +784,9 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="104"/>
-      <location filename="../ui/dialogProjectManager.ui" line="717"/>
-      <location filename="../ui/dialogPreflightResults.ui" line="103"/>
       <location filename="../ui/dialogQuantitySurveying.ui" line="26"/>
+      <location filename="../ui/dialogPreflightResults.ui" line="103"/>
+      <location filename="../ui/dialogProjectManager.ui" line="717"/>
       <source>OK</source>
       <translation>OK</translation>
     </message>
@@ -846,10 +846,10 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <translation>Lägg till standard IFC PSet</translation>
     </message>
     <message>
-      <location filename="../ui/dialogProjectManager.ui" line="246"/>
-      <location filename="../ui/dialogProjectManager.ui" line="366"/>
       <location filename="../ui/dialogAddPSet.ui" line="43"/>
       <location filename="../ui/dialogAddProperty.ui" line="87"/>
+      <location filename="../ui/dialogProjectManager.ui" line="246"/>
+      <location filename="../ui/dialogProjectManager.ui" line="366"/>
       <source>Name</source>
       <translation>Namn</translation>
     </message>
@@ -1179,8 +1179,8 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <translation>Nedan visas de faser som för närvarande är konfigurerade för denna modell</translation>
     </message>
     <message>
-      <location filename="../ui/dialogProjectManager.ui" line="665"/>
       <location filename="../ui/dialogPhases.ui" line="48"/>
+      <location filename="../ui/dialogProjectManager.ui" line="665"/>
       <source>Add</source>
       <translation>Lägg till</translation>
     </message>
@@ -1708,9 +1708,9 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <translation>Klass</translation>
     </message>
     <message>
-      <location filename="../ui/dialogClasses.ui" line="39"/>
       <location filename="../ui/dialogWindows.ui" line="80"/>
       <location filename="../ui/dialogWindows.ui" line="182"/>
+      <location filename="../ui/dialogClasses.ui" line="39"/>
       <source>Material</source>
       <translation>Material</translation>
     </message>
@@ -1726,8 +1726,8 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <translation>Kan endast innehålla alfanumeriska tecken och inga mellanslag. Använd CamelCase-typning för att definiera mellanslag automatiskt</translation>
     </message>
     <message>
-      <location filename="../ui/dialogCustomProperties.ui" line="37"/>
       <location filename="../ui/dialogWindows.ui" line="189"/>
+      <location filename="../ui/dialogCustomProperties.ui" line="37"/>
       <source>Description</source>
       <translation>Beskrivning</translation>
     </message>
@@ -2261,8 +2261,8 @@ p, li { blanksteg: pre-wrap; }
       <translation>Etikett</translation>
     </message>
     <message>
-      <location filename="../ui/dialogViews.ui" line="74"/>
       <location filename="../ui/dialogWindows.ui" line="175"/>
+      <location filename="../ui/dialogViews.ui" line="74"/>
       <source>Height</source>
       <translation>Höjd</translation>
     </message>
@@ -3384,9 +3384,9 @@ Om du använder Netgen, se till att det är tillgängligt.</translation>
       <translation>Tessellering</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="35"/>
-      <location filename="../ui/preferences-webgl.ui" line="26"/>
       <location filename="../ui/preferences-dae.ui" line="26"/>
+      <location filename="../ui/preferences-webgl.ui" line="26"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="35"/>
       <source>Export Options</source>
       <translation>Exportalternativ</translation>
     </message>
@@ -3583,15 +3583,10 @@ Vissa BIM-applikationer kommer dock att använda denna faktor för att välja vi
 enhet att arbeta med när filen öppnas.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="353"/>
       <location filename="../ui/preferences-ifc.ui" line="460"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="353"/>
       <source>Check also native-IFC-specific preferences under BIM -&gt; Native IFC</source>
       <translation>Kontrollera även native-IFC-specifika inställningar under BIM -&gt; Native IFC</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="363"/>
-      <source>IFC Standard Compliance</source>
-      <translation>Överensstämmelse med IFC-standard</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="369"/>
@@ -3695,6 +3690,11 @@ Det är inte obligatoriskt att ha en byggplats, men det är vanligt att ha minst
       <location filename="../ui/preferences-ifc-export.ui" line="276"/>
       <source>Add default site if one is not found in the document</source>
       <translation>Lägg till standardbyggplats om ingen finns i dokumentet</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc-export.ui" line="363"/>
+      <source>IFC Standard Compliance</source>
+      <translation>Överensstämmelse med IFC-standard</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="389"/>
@@ -3813,49 +3813,445 @@ Standardmallen finns på följande plats:
       <translation>Kategori</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="467"/>
+      <location filename="../../ArchCoveringGui.py" line="524"/>
+      <source>Solid Tiles</source>
+      <translation>Solida plattor</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="525"/>
+      <source>Parametric Pattern</source>
+      <translation>Parametriskt mönster</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="526"/>
+      <source>Monolithic</source>
+      <translation>Monolitisk</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="527"/>
+      <source>Hatch Pattern</source>
+      <translation>Skrafferingsmönster</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="531"/>
+      <source>Top Left</source>
+      <translation>Övre vänster</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="532"/>
+      <source>Top Right</source>
+      <translation>Övre höger</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="533"/>
+      <source>Bottom Left</source>
+      <translation>Nedre vänster</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="534"/>
+      <source>Bottom Right</source>
+      <translation>Nedre höger</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="537"/>
+      <source>Stacked (None)</source>
+      <translation>Staplat (inget förband)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="538"/>
+      <source>Half Bond (1/2)</source>
+      <translation>Halvförband (1/2)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="539"/>
+      <source>Third Bond (1/3)</source>
+      <translation>Tredjedelsförband (1/3)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="540"/>
+      <source>Quarter Bond (1/4)</source>
+      <translation>Fjärdedelsförband (1/4)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="541"/>
+      <location filename="../../ArchCoveringGui.py" line="862"/>
+      <source>Custom</source>
+      <translation>Anpassad</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="619"/>
+      <source>Covering Definition</source>
+      <translation>Definition av ytskikt</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="634"/>
+      <source>Layout and Boundaries</source>
+      <translation>Layout och gränser</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="640"/>
+      <source>Visuals</source>
+      <translation>Visuellt</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="672"/>
+      <location filename="../../ArchCoveringGui.py" line="683"/>
+      <location filename="../../ArchCoveringGui.py" line="742"/>
+      <location filename="../../bimtests/TestArchCoveringGui.py" line="159"/>
+      <source>No selection</source>
+      <translation>Inget val</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="675"/>
+      <location filename="../../ArchCoveringGui.py" line="731"/>
+      <source>The object or face this covering is applied to:</source>
+      <translation>Objektet eller ytan som detta ytskikt tillämpas på:</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="686"/>
+      <location filename="../../ArchCoveringGui.py" line="746"/>
+      <source>The object or face this covering is applied to</source>
+      <translation>Objektet eller ytan som detta ytskikt tillämpas på</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="718"/>
+      <source>%1 (%2 faces)</source>
+      <translation>%1 (%2 ytor)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="725"/>
+      <source>%1 objects selected</source>
+      <translation>%1 objekt markerade</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="748"/>
+      <location filename="../../ArchCoveringGui.py" line="771"/>
+      <source>Pick</source>
+      <translation>Välj</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="752"/>
+      <source>Enable interactive face selection in the 3D view</source>
+      <translation>Aktivera interaktivt val av ytor i 3D-vyn</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="770"/>
+      <source>Picking…</source>
+      <translation>Väljer…</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="779"/>
+      <source>Base</source>
+      <translation>Bas</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="793"/>
+      <source>How the finish is created and displayed:
+- Solid Tiles: Physical 3D tiles with real gaps. Best for accurate detail and counting.
+- Parametric Pattern: A grid of lines on a single slab. Faster to display than real tiles.
+- Monolithic: A single smooth surface. Ideal for paint, plaster, or seamless flooring.
+- Hatch Pattern: Technical drafting symbols (hatching) on a single slab.</source>
+      <translation>Hur ytskiktet skapas och visas:
+– Solida plattor: Fysiska 3D-plattor med verkliga fogar. Bäst för noggranna detaljer och mängdberäkning.
+– Parametriskt mönster: Ett linjerutnät på en enda skiva. Snabbare att visa än verkliga plattor.
+– Monolitiskt: En enda slät yta. Lämpligt för färg, puts eller fogfria golv.
+– Skrafferingsmönster: Tekniska ritsymboler (skraffering) på en enda skiva.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="796"/>
+      <source>Mode</source>
+      <translation>Läge</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="801"/>
+      <source>The thickness of the finish</source>
+      <translation>Ytskiktets tjocklek</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="817"/>
+      <source>Continue</source>
+      <translation>Fortsätt</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="824"/>
+      <source>If checked, the dialog stays open after creating the covering, allowing to pick another face</source>
+      <translation>Om detta markeras förblir dialogrutan öppen efter att ytskiktet har skapats, så att en annan yta kan väljas</translation>
+    </message>
+    <message>
       <location filename="../../ArchCoveringGui.py" line="842"/>
+      <location filename="../../ArchStructure.py" line="467"/>
       <location filename="../../bimcommands/BimProfile.py" line="106"/>
-      <location filename="../../bimcommands/BimWindow.py" line="451"/>
       <location filename="../../bimcommands/BimPanel.py" line="204"/>
+      <location filename="../../bimcommands/BimWindow.py" line="450"/>
       <source>Preset</source>
       <translation>Förval</translation>
     </message>
     <message>
+      <location filename="../../ArchCoveringGui.py" line="847"/>
+      <source>Use standard corner or center alignment relative to the boundary</source>
+      <translation>Använd standardjustering mot hörn eller mitt i förhållande till gränsen</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="855"/>
+      <source>Select which part of the usable boundary to anchor the pattern origin to</source>
+      <translation>Välj vilken del av den användbara gränsen som mönstrets origo ska förankras vid</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="867"/>
+      <source>Use a manually picked 3D point or match the current Working Plane</source>
+      <translation>Använd en manuellt vald 3D-punkt eller matcha det aktuella arbetsplanet</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="868"/>
+      <source>Interactive</source>
+      <translation>Interaktiv</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="878"/>
+      <source>Enter interactive mode to visually place the grid origin and rotate the grid. Click to finish and set the origin. Optionally press R / Shift+R to rotate the tile preview by the PickRotationStep angle (configurable in the View properties).</source>
+      <translation>Gå in i interaktivt läge för att visuellt placera rutnätets origo och rotera rutnätet. Klicka för att avsluta och ange origo. Du kan även trycka på R/Skift+R för att rotera plattförhandsgranskningen med vinkeln PickRotationStep (kan ställas in i vyegenskaperna).</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="879"/>
+      <source>Match Working Plane</source>
+      <translation>Matcha arbetsplan</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="885"/>
+      <source>Use the position and orientation of the active Working Plane for the covering</source>
+      <translation>Använd det aktiva arbetsplanets position och orientering för ytskiktet</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="895"/>
+      <source>Shift the grid along U</source>
+      <translation>Förskjut rutnätet längs U</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="900"/>
+      <source>Shift the grid along V</source>
+      <translation>Förskjut rutnätet längs V</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="904"/>
+      <source>U offset</source>
+      <translation>U-förskjutning</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="905"/>
+      <source>V offset</source>
+      <translation>V-förskjutning</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="912"/>
+      <source>Manual rotation of the tile grid</source>
+      <translation>Manuell rotation av plattrutnätet</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="925"/>
+      <source>Boundaries</source>
+      <translation>Gränser</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="930"/>
+      <source>Distance to offset the covering inwards from the boundary</source>
+      <translation>Avstånd som ytskiktet ska förskjutas inåt från gränsen</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="932"/>
+      <source>Border setback</source>
+      <translation>Kantindrag</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="995"/>
+      <source>The length of the tiles</source>
+      <translation>Plattornas längd</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="996"/>
+      <location filename="../../ArchCoveringGui.py" line="1077"/>
       <location filename="../../ArchStructure.py" line="476"/>
       <location filename="../../ArchStructure.py" line="1604"/>
       <location filename="../../ArchWall.py" line="1857"/>
-      <location filename="../../ArchPanel.py" line="576"/>
       <location filename="../../ArchPrecast.py" line="1719"/>
-      <location filename="../../ArchCoveringGui.py" line="996"/>
-      <location filename="../../ArchCoveringGui.py" line="1077"/>
       <location filename="../../ArchCommands.py" line="1361"/>
+      <location filename="../../ArchPanel.py" line="576"/>
       <location filename="../../bimcommands/BimPanel.py" line="214"/>
       <location filename="../../bimcommands/BimWall.py" line="507"/>
       <source>Length</source>
       <translation>Längd</translation>
     </message>
     <message>
+      <location filename="../../ArchCoveringGui.py" line="1001"/>
+      <source>The width of the tiles</source>
+      <translation>Plattornas bredd</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1002"/>
+      <location filename="../../ArchCoveringGui.py" line="1078"/>
       <location filename="../../ArchStructure.py" line="483"/>
       <location filename="../../ArchStructure.py" line="1605"/>
       <location filename="../../ArchWall.py" line="1863"/>
-      <location filename="../../ArchPanel.py" line="577"/>
       <location filename="../../ArchPrecast.py" line="1720"/>
       <location filename="../../ArchWindow.py" line="1196"/>
-      <location filename="../../ArchCoveringGui.py" line="1002"/>
-      <location filename="../../ArchCoveringGui.py" line="1078"/>
+      <location filename="../../ArchPanel.py" line="577"/>
       <location filename="../../bimcommands/BimPanel.py" line="221"/>
       <location filename="../../bimcommands/BimWall.py" line="514"/>
       <source>Width</source>
       <translation>Bredd</translation>
     </message>
     <message>
+      <location filename="../../ArchCoveringGui.py" line="1007"/>
+      <source>The width of the joints between tiles</source>
+      <translation>Bredden på fogarna mellan plattorna</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1008"/>
+      <source>Joint width</source>
+      <translation>Fogbredd</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1022"/>
+      <source>The horizontal shift applied to every second row:
+- Stacked: all joints align vertically
+- Half/Third/Quarter Bond: shifts by a fraction of the tile length
+- Custom: manual offset value</source>
+      <translation>Den horisontella förskjutning som tillämpas på varannan rad:
+– Staplat: alla fogar ligger i linje vertikalt
+– Halv-/tredjedels-/fjärdedelsförband: förskjuter med en andel av plattans längd
+– Anpassat: manuellt förskjutningsvärde</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1028"/>
+      <source>Custom offset for running bond rows</source>
+      <translation>Anpassad förskjutning för löpförbandsrader</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1030"/>
+      <source>Stagger</source>
+      <translation>Förskjutning mellan rader</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1041"/>
+      <source>The PAT file to use for hatching</source>
+      <translation>PAT-filen som ska användas för skraffering</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1048"/>
+      <source>Pattern file</source>
+      <translation>Mönsterfil</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1052"/>
+      <source>The name of the pattern to use</source>
+      <translation>Namnet på mönstret att använda</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1053"/>
+      <source>Pattern name</source>
+      <translation>Mönstrets namn</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1058"/>
+      <source>The scale of the hatch pattern</source>
+      <translation>Skrafferingsmönstrets skala</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1060"/>
+      <source>Pattern scale</source>
+      <translation>Mönsterskala</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1072"/>
+      <source>Texture repeat interval along U</source>
+      <translation>Texturens upprepningsintervall längs U</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1075"/>
+      <source>Texture repeat interval along V</source>
+      <translation>Texturens upprepningsintervall längs V</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1086"/>
+      <source>Note: In Monolithic mode, dimensions control the repeat interval of the optional surface texture.</source>
+      <translation>Obs! I monolitiskt läge styr dimensionerna upprepningsintervallet för den valfria yttexturen.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1097"/>
+      <source>An image file to map onto each tile or substrate</source>
+      <translation>En bildfil som ska mappas på varje platta eller underlag</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1104"/>
+      <source>Texture image</source>
+      <translation>Texturbild</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1111"/>
+      <source>Horizontal texture multiplier</source>
+      <translation>Horisontell texturmultiplikator</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1115"/>
+      <source>Vertical texture multiplier</source>
+      <translation>Vertikal texturmultiplikator</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1118"/>
+      <source>Texture scale</source>
+      <translation>Texturskala</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1165"/>
+      <source>Select Texture</source>
+      <translation>Välj textur</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1174"/>
+      <source>Select Pattern</source>
+      <translation>Välj mönster</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1390"/>
+      <source>Could not resolve base geometry.</source>
+      <translation>Det gick inte att lösa basgeometrin.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1588"/>
+      <source>%1 pick tile origin</source>
+      <translation>%1 välj plattornas origo</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1592"/>
+      <source>%1 rotate tile CW / Shift+%1 rotate tile CCW</source>
+      <translation>%1 rotera plattan medurs/Skift+%1 rotera plattan moturs</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1600"/>
+      <source>%1 pick new base face or object</source>
+      <translation>%1 välj en ny basyta eller ett nytt objekt</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1604"/>
+      <source>%1+%2 add face or object</source>
+      <translation>%1+%2 lägg till yta eller objekt</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1611"/>
+      <source>%1 pick planar face or object</source>
+      <translation>%1 välj plan yta eller objekt</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1615"/>
+      <source>%1+%2 add planar face or object</source>
+      <translation>%1+%2 lägg till plan yta eller objekt</translation>
+    </message>
+    <message>
       <location filename="../../ArchStructure.py" line="490"/>
       <location filename="../../ArchStructure.py" line="1606"/>
       <location filename="../../ArchWall.py" line="1869"/>
       <location filename="../../ArchPrecast.py" line="1721"/>
-      <location filename="../../ArchWindow.py" line="1199"/>
       <location filename="../../ArchRoof.py" line="1086"/>
+      <location filename="../../ArchWindow.py" line="1199"/>
       <location filename="../../bimcommands/BimWall.py" line="521"/>
       <source>Height</source>
       <translation>Höjd</translation>
@@ -3935,16 +4331,16 @@ Standardmallen finns på följande plats:
     <message>
       <location filename="../../ArchStructure.py" line="294"/>
       <location filename="../../bimcommands/BimCurtainwall.py" line="94"/>
-      <location filename="../../bimcommands/BimWall.py" line="157"/>
       <location filename="../../bimcommands/BimTruss.py" line="83"/>
+      <location filename="../../bimcommands/BimWall.py" line="157"/>
       <source>%1 pick first point</source>
       <translation>%1 välj första punkten</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="296"/>
       <location filename="../../bimcommands/BimCurtainwall.py" line="96"/>
-      <location filename="../../bimcommands/BimWall.py" line="159"/>
       <location filename="../../bimcommands/BimTruss.py" line="85"/>
+      <location filename="../../bimcommands/BimWall.py" line="159"/>
       <source>%1 pick next point</source>
       <translation>%1 välj nästa punkt</translation>
     </message>
@@ -4094,7 +4490,7 @@ Standardmallen finns på följande plats:
       <translation>Profilinställningar</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="769"/>
+      <location filename="../../ArchProfile.py" line="792"/>
       <source>Profile</source>
       <translation>Profil</translation>
     </message>
@@ -4113,6 +4509,12 @@ Standardmallen finns på följande plats:
       <location filename="../../bimcommands/BimRoof.py" line="81"/>
       <source>Create Roof</source>
       <translation>Skapa tak</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimRoof.py" line="97"/>
+      <location filename="../../bimcommands/BimSpace.py" line="74"/>
+      <source>%1 select a base object</source>
+      <translation>%1 välj ett basobjekt</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="829"/>
@@ -4228,8 +4630,8 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
       <translation>Framsida</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1086"/>
       <location filename="../../ArchReference.py" line="909"/>
+      <location filename="../../Arch.py" line="1086"/>
       <source>External Reference</source>
       <translation>Extern referens</translation>
     </message>
@@ -4427,12 +4829,12 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
       <translation>Inget fönster hittades. Det går inte att fortsätta.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="404"/>
+      <location filename="../../bimcommands/BimWindow.py" line="403"/>
       <source>Auto include in host object</source>
       <translation>Automatisk inkludering i värdobjekt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="413"/>
+      <location filename="../../bimcommands/BimWindow.py" line="412"/>
       <source>Sill height</source>
       <translation>Höjd på tröskel</translation>
     </message>
@@ -4455,7 +4857,7 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1191"/>
-      <location filename="../../bimcommands/BimWindow.py" line="400"/>
+      <location filename="../../bimcommands/BimWindow.py" line="399"/>
       <source>Window Options</source>
       <translation>Fönsteralternativ</translation>
     </message>
@@ -4526,37 +4928,186 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
       <translation>Hämtar den valda kanten</translation>
     </message>
     <message>
+      <location filename="../../ArchSectionPlane.py" line="1806"/>
+      <location filename="../../ArchAxis.py" line="999"/>
+      <location filename="../../ArchComponent.py" line="2463"/>
       <location filename="../../ArchSpace.py" line="954"/>
       <location filename="../../ArchAxisSystem.py" line="338"/>
-      <location filename="../../ArchAxis.py" line="999"/>
       <location filename="../../ArchWindow.py" line="1706"/>
-      <location filename="../../ArchComponent.py" line="2463"/>
-      <location filename="../../ArchSectionPlane.py" line="1806"/>
       <source>Remove</source>
       <translation>Ta bort</translation>
     </message>
     <message>
+      <location filename="../../ArchAxis.py" line="1000"/>
+      <location filename="../../ArchComponent.py" line="2464"/>
       <location filename="../../ArchSpace.py" line="949"/>
       <location filename="../../ArchAxisSystem.py" line="339"/>
-      <location filename="../../ArchAxis.py" line="1000"/>
       <location filename="../../ArchWindow.py" line="1707"/>
-      <location filename="../../ArchComponent.py" line="2464"/>
       <source>Add</source>
       <translation>Lägg till</translation>
     </message>
     <message>
-      <location filename="../../ArchIFCView.py" line="63"/>
-      <location filename="../../ArchMaterial.py" line="471"/>
-      <location filename="../../ArchMaterial.py" line="798"/>
-      <location filename="../../ArchAxisSystem.py" line="222"/>
+      <location filename="../../ArchSite.py" line="1053"/>
+      <source>Solar Diagrams</source>
+      <translation>Soldiagram</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1057"/>
+      <source>Location</source>
+      <translation>Placering</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1072"/>
+      <source>The latitude of this site in decimal degrees.
+Positive values are north of the Equator, negative values are south.</source>
+      <translation>Platsens latitud i decimalgrader.
+Positiva värden ligger norr om ekvatorn och negativa värden söder om den.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1073"/>
+      <source>Latitude</source>
+      <translation>Latitud</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1087"/>
+      <source>The longitude of this site in decimal degrees.
+Positive values are east of the Prime Meridian, negative values are west.</source>
+      <translation>Platsens longitud i decimalgrader.
+Positiva värden ligger öster om nollmeridianen och negativa värden väster om den.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1088"/>
+      <source>Longitude</source>
+      <translation>Longitud</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1100"/>
+      <source>The UTC offset of the time zone where this site is located.
+Used when calculating the sun position.</source>
+      <translation>UTC-förskjutningen för den tidszon där platsen ligger.
+Används vid beräkning av solens position.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1101"/>
+      <source>Time zone</source>
+      <translation>Tidszon</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1118"/>
+      <source>The angle between the model's north and geographic north.
+Drives the compass orientation and the declination used to
+align the solar diagram and sun path.</source>
+      <translation>Vinkeln mellan modellens nordriktning och geografiskt norr.
+Styr kompassens orientering och deklinationen som används för att
+rikta in soldiagrammet och solbanan.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1119"/>
+      <source>North offset</source>
+      <translation>Nordförskjutning</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1123"/>
+      <source>Diagrams</source>
+      <translation>Diagram</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1126"/>
+      <source>Solar Diagram</source>
+      <translation>Soldiagram</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1136"/>
+      <source>Shows a sun path arc diagram projected onto the site,
+computed from the site's latitude, longitude and north offset.</source>
+      <translation>Visar ett bågdiagram över solbanan projicerat på platsen,
+beräknat från platsens latitud, longitud och nordförskjutning.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1139"/>
+      <source>Compass</source>
+      <translation>Kompass</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1147"/>
+      <source>Shows a compass rose overlay on the site,
+oriented according to the north offset.</source>
+      <translation>Visar en kompassros ovanpå platsen,
+orienterad enligt nordförskjutningen.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1153"/>
+      <source>Sun Position</source>
+      <translation>Solens position</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1164"/>
+      <source>Shows a sphere and ray indicating the sun position
+for the selected date and time.</source>
+      <translation>Visar en sfär och en stråle som anger solens position
+för valt datum och vald tid.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1184"/>
+      <source>The day and month for which the sun position is shown.
+The year is ignored.</source>
+      <translation>Den dag och månad som solens position visas för.
+Årtalet ignoreras.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1185"/>
+      <source>Date</source>
+      <translation>Datum</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1196"/>
+      <source>The time of day for which the sun position is shown,
+in 24-hour local time. Steps in half-hour increments.</source>
+      <translation>Den tid på dagen som solens position visas för,
+i lokal 24-timmarstid. Steg om en halvtimme.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1209"/>
+      <source>Hour</source>
+      <translation>Timme</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1214"/>
+      <source>Show Hour Labels</source>
+      <translation>Visa timetiketter</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1220"/>
+      <source>Shows text labels at key hours along the sun path arc</source>
+      <translation>Visar textetiketter vid viktiga klockslag längs solbanans båge</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1233"/>
+      <source>Solar calculations require the ladybug or pysolar Python module,
+which was not found.</source>
+      <translation>Solberäkningar kräver Python-modulen ladybug eller pysolar,
+men ingen av dem hittades.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1243"/>
+      <source>Solar calculations unavailable.
+The ladybug or pysolar Python module is required.</source>
+      <translation>Solberäkningar är inte tillgängliga.
+Python-modulen ladybug eller pysolar krävs.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1588"/>
+      <location filename="../../ArchSectionPlane.py" line="1593"/>
       <location filename="../../ArchAxis.py" line="831"/>
       <location filename="../../ArchGrid.py" line="384"/>
-      <location filename="../../ArchWindow.py" line="1708"/>
       <location filename="../../ArchReference.py" line="717"/>
       <location filename="../../ArchComponent.py" line="1971"/>
-      <location filename="../../ArchSite.py" line="1588"/>
+      <location filename="../../ArchMaterial.py" line="471"/>
+      <location filename="../../ArchMaterial.py" line="798"/>
+      <location filename="../../ArchIFCView.py" line="63"/>
+      <location filename="../../ArchAxisSystem.py" line="222"/>
       <location filename="../../ArchSchedule.py" line="765"/>
-      <location filename="../../ArchSectionPlane.py" line="1593"/>
+      <location filename="../../ArchWindow.py" line="1708"/>
       <source>Edit</source>
       <translation>Redigera</translation>
     </message>
@@ -4572,8 +5123,8 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
       <translation>Ledningar</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1714"/>
       <location filename="../../ArchComponent.py" line="2471"/>
+      <location filename="../../ArchWindow.py" line="1714"/>
       <source>Components</source>
       <translation>Komponenter</translation>
     </message>
@@ -4585,20 +5136,20 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
       <translation>Namn</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1717"/>
       <location filename="../../ArchComponent.py" line="2539"/>
       <location filename="../../ArchCommands.py" line="1730"/>
+      <location filename="../../ArchWindow.py" line="1717"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
       <source>Type</source>
       <translation>Typ</translation>
     </message>
     <message>
+      <location filename="../../ArchCoveringGui.py" line="802"/>
       <location filename="../../ArchStructure.py" line="1599"/>
       <location filename="../../ArchMaterial.py" line="897"/>
       <location filename="../../ArchMaterial.py" line="923"/>
-      <location filename="../../ArchPanel.py" line="578"/>
-      <location filename="../../ArchCoveringGui.py" line="802"/>
       <location filename="../../ArchRoof.py" line="1084"/>
+      <location filename="../../ArchPanel.py" line="578"/>
       <location filename="../../bimcommands/BimPanel.py" line="228"/>
       <source>Thickness</source>
       <translation>Tjocklek</translation>
@@ -4651,10 +5202,10 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
       <translation>Välj minst en axel</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="102"/>
-      <location filename="../../ArchAxisSystem.py" line="337"/>
       <location filename="../../ArchAxis.py" line="998"/>
       <location filename="../../ArchComponent.py" line="2470"/>
+      <location filename="../../Arch.py" line="102"/>
+      <location filename="../../ArchAxisSystem.py" line="337"/>
       <source>Axes</source>
       <translation>Axlar</translation>
     </message>
@@ -4664,10 +5215,10 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
       <translation>Axis systemkomponenter</translation>
     </message>
     <message>
-      <location filename="../../importers/importJSON.py" line="62"/>
       <location filename="../../importers/importOBJ.py" line="300"/>
       <location filename="../../importers/importOBJ.py" line="338"/>
       <location filename="../../importers/importWebGL.py" line="372"/>
+      <location filename="../../importers/importJSON.py" line="62"/>
       <source>Successfully written</source>
       <translation>Framgångsrikt skrivet</translation>
     </message>
@@ -4747,12 +5298,6 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
       <translation>Rapportera</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2449"/>
-      <location filename="../../ArchReport.py" line="436"/>
-      <source>New Statement</source>
-      <translation>Ny sats</translation>
-    </message>
-    <message>
       <location filename="../../Arch.py" line="2514"/>
       <source>Structure</source>
       <translation>Struktur</translation>
@@ -4778,9 +5323,9 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
       <translation>Skapa multi-material</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="540"/>
       <location filename="../../ArchMaterial.py" line="896"/>
       <location filename="../../ArchMaterial.py" line="922"/>
+      <location filename="../../Arch.py" line="540"/>
       <source>Material</source>
       <translation>Material</translation>
     </message>
@@ -4876,8 +5421,8 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
       <translation>Ta bort spännvidd</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="504"/>
       <location filename="../../ArchGrid.py" line="488"/>
+      <location filename="../../Arch.py" line="504"/>
       <source>Grid</source>
       <translation>Rutnät</translation>
     </message>
@@ -5022,14 +5567,14 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
       <translation>Lutning</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="205"/>
       <location filename="../../ArchPrecast.py" line="1723"/>
+      <location filename="../../Arch.py" line="205"/>
       <source>Level</source>
       <translation>Nivå</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1724"/>
       <location filename="../../ArchCoveringGui.py" line="913"/>
+      <location filename="../../ArchPrecast.py" line="1724"/>
       <source>Rotation</source>
       <translation>Rotation</translation>
     </message>
@@ -5138,144 +5683,10 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
       <translation>Skapa gardinvägg</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="759"/>
-      <location filename="../../ArchReport.py" line="894"/>
-      <source>Pipe</source>
-      <translation>Rör</translation>
-    </message>
-    <message>
-      <location filename="../../Arch.py" line="806"/>
-      <source>Connector</source>
-      <translation>Anslutare</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimPipe.py" line="62"/>
-      <location filename="../../bimcommands/BimPipe.py" line="71"/>
-      <source>Create Pipe</source>
-      <translation>Skapa rör</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimPipe.py" line="106"/>
-      <source>Select exactly 2 or 3 pipe objects</source>
-      <translation>Välj exakt 2 eller 3 rörobjekt</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimPipe.py" line="112"/>
-      <source>Select only pipe objects</source>
-      <translation>Välj endast rörobjekt</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimPipe.py" line="116"/>
-      <source>Create Connector</source>
-      <translation>Skapa anslutare</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPipe.py" line="205"/>
-      <source>corrected 'Height' and 'Width' properties</source>
-      <translation>korrigerade egenskaperna "Höjd" och "Bredd</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPipe.py" line="241"/>
-      <source>Unable to build the base path</source>
-      <translation>Det går inte att bygga basvägen</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPipe.py" line="257"/>
-      <source>Unable to build the profile</source>
-      <translation>Det går inte att bygga profilen</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPipe.py" line="285"/>
-      <source>Unable to build the pipe</source>
-      <translation>Det går inte att bygga röret</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPipe.py" line="306"/>
-      <source>The base object is not a Part</source>
-      <translation>Basobjektet är inte en del</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPipe.py" line="311"/>
-      <source>Too many wires in the base shape</source>
-      <translation>För många kablar i basformen</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPipe.py" line="315"/>
-      <source>The base wire is closed</source>
-      <translation>Basledningen är sluten</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPipe.py" line="336"/>
-      <source>The profile is not a 2D Part</source>
-      <translation>Profilen är inte en 2D-del</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPipe.py" line="339"/>
-      <source>The profile is not closed</source>
-      <translation>Profilen är inte stängd</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPipe.py" line="488"/>
-      <source>Only the 3 first wires will be connected</source>
-      <translation>Endast de 3 första ledningarna kommer att anslutas</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPipe.py" line="509"/>
-      <location filename="../../ArchPipe.py" line="562"/>
-      <source>Common vertex not found</source>
-      <translation>Gemensam toppunkt hittades inte</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPipe.py" line="530"/>
-      <source>Pipes are already aligned</source>
-      <translation>Rören är redan inriktade</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPipe.py" line="550"/>
-      <source>Unable to revolve this connector</source>
-      <translation>Det går inte att rotera denna anslutare</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPipe.py" line="581"/>
-      <source>At least 2 pipes must align</source>
-      <translation>Minst 2 rör måste vara i linje</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSchedule.py" line="516"/>
-      <source>Unable to retrieve value from object</source>
-      <translation>Det går inte att hämta värde från objektet</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSchedule.py" line="987"/>
-      <location filename="../../ArchSchedule.py" line="1011"/>
-      <source>Operation</source>
-      <translation>Operation</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSchedule.py" line="936"/>
-      <location filename="../../ArchCommands.py" line="1454"/>
-      <source>Export CSV File</source>
-      <translation>Exportera CSV-fil</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSchedule.py" line="771"/>
-      <source>Remove Spreadsheet</source>
-      <translation>Ta bort kalkylblad</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSchedule.py" line="773"/>
-      <source>Attach Spreadsheet</source>
-      <translation>Bifoga kalkylblad</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSchedule.py" line="899"/>
-      <source>Import CSV File</source>
-      <translation>Importera CSV-fil</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSchedule.py" line="963"/>
-      <source>Unable to recognize that file type</source>
-      <translation>Kan inte känna igen den filtypen</translation>
+      <location filename="../../ArchReport.py" line="436"/>
+      <location filename="../../Arch.py" line="2449"/>
+      <source>New Statement</source>
+      <translation>Ny sats</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="884"/>
@@ -5284,10 +5695,10 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
       <translation>Rapportsatser</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="893"/>
-      <location filename="../../ArchCommands.py" line="1360"/>
-      <source>Description</source>
-      <translation>Beskrivning</translation>
+      <location filename="../../ArchReport.py" line="894"/>
+      <location filename="../../Arch.py" line="759"/>
+      <source>Pipe</source>
+      <translation>Rör</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="895"/>
@@ -5799,23 +6210,163 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
       <translation>SQL-lathund för BIM</translation>
     </message>
     <message>
+      <location filename="../../Arch.py" line="806"/>
+      <source>Connector</source>
+      <translation>Anslutare</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimPipe.py" line="62"/>
+      <location filename="../../bimcommands/BimPipe.py" line="71"/>
+      <source>Create Pipe</source>
+      <translation>Skapa rör</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimPipe.py" line="106"/>
+      <source>Select exactly 2 or 3 pipe objects</source>
+      <translation>Välj exakt 2 eller 3 rörobjekt</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimPipe.py" line="112"/>
+      <source>Select only pipe objects</source>
+      <translation>Välj endast rörobjekt</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimPipe.py" line="116"/>
+      <source>Create Connector</source>
+      <translation>Skapa anslutare</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="205"/>
+      <source>corrected 'Height' and 'Width' properties</source>
+      <translation>korrigerade egenskaperna "Höjd" och "Bredd</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="241"/>
+      <source>Unable to build the base path</source>
+      <translation>Det går inte att bygga basvägen</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="257"/>
+      <source>Unable to build the profile</source>
+      <translation>Det går inte att bygga profilen</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="285"/>
+      <source>Unable to build the pipe</source>
+      <translation>Det går inte att bygga röret</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="306"/>
+      <source>The base object is not a Part</source>
+      <translation>Basobjektet är inte en del</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="311"/>
+      <source>Too many wires in the base shape</source>
+      <translation>För många kablar i basformen</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="315"/>
+      <source>The base wire is closed</source>
+      <translation>Basledningen är sluten</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="336"/>
+      <source>The profile is not a 2D Part</source>
+      <translation>Profilen är inte en 2D-del</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="339"/>
+      <source>The profile is not closed</source>
+      <translation>Profilen är inte stängd</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="488"/>
+      <source>Only the 3 first wires will be connected</source>
+      <translation>Endast de 3 första ledningarna kommer att anslutas</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="509"/>
+      <location filename="../../ArchPipe.py" line="562"/>
+      <source>Common vertex not found</source>
+      <translation>Gemensam toppunkt hittades inte</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="530"/>
+      <source>Pipes are already aligned</source>
+      <translation>Rören är redan inriktade</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="550"/>
+      <source>Unable to revolve this connector</source>
+      <translation>Det går inte att rotera denna anslutare</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="581"/>
+      <source>At least 2 pipes must align</source>
+      <translation>Minst 2 rör måste vara i linje</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSchedule.py" line="516"/>
+      <source>Unable to retrieve value from object</source>
+      <translation>Det går inte att hämta värde från objektet</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSchedule.py" line="771"/>
+      <source>Remove Spreadsheet</source>
+      <translation>Ta bort kalkylblad</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSchedule.py" line="773"/>
+      <source>Attach Spreadsheet</source>
+      <translation>Bifoga kalkylblad</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSchedule.py" line="899"/>
+      <source>Import CSV File</source>
+      <translation>Importera CSV-fil</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSchedule.py" line="987"/>
+      <location filename="../../ArchSchedule.py" line="1011"/>
+      <source>Operation</source>
+      <translation>Operation</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCommands.py" line="1454"/>
+      <location filename="../../ArchSchedule.py" line="936"/>
+      <source>Export CSV File</source>
+      <translation>Exportera CSV-fil</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSchedule.py" line="963"/>
+      <source>Unable to recognize that file type</source>
+      <translation>Kan inte känna igen den filtypen</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="893"/>
+      <location filename="../../ArchCommands.py" line="1360"/>
+      <source>Description</source>
+      <translation>Beskrivning</translation>
+    </message>
+    <message>
       <location filename="../../ArchCommands.py" line="1497"/>
       <source>Object does not have settable IFC attributes</source>
       <translation>Objektet har inte inställbara IFC-attribut</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2540"/>
+      <location filename="../../ArchCommands.py" line="1731"/>
       <location filename="../../ArchSchedule.py" line="988"/>
       <location filename="../../ArchSchedule.py" line="1013"/>
-      <location filename="../../ArchCommands.py" line="1731"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="479"/>
       <source>Value</source>
       <translation>Värde</translation>
     </message>
     <message>
+      <location filename="../../ArchCommands.py" line="1732"/>
       <location filename="../../ArchSchedule.py" line="989"/>
       <location filename="../../ArchSchedule.py" line="1015"/>
-      <location filename="../../ArchCommands.py" line="1732"/>
       <source>Unit</source>
       <translation>Enhet</translation>
     </message>
@@ -5907,13 +6458,13 @@ Skapandet av våningen avbröts.</translation>
       <translation>har en ogiltig form</translation>
     </message>
     <message>
+      <location filename="../../ArchComponent.py" line="1171"/>
       <location filename="../../ArchPrecast.py" line="192"/>
       <location filename="../../ArchPrecast.py" line="324"/>
       <location filename="../../ArchPrecast.py" line="444"/>
       <location filename="../../ArchPrecast.py" line="605"/>
       <location filename="../../ArchPrecast.py" line="773"/>
       <location filename="../../ArchPrecast.py" line="894"/>
-      <location filename="../../ArchComponent.py" line="1171"/>
       <source>has a null shape</source>
       <translation>har en nollform</translation>
     </message>
@@ -5945,8 +6496,8 @@ Skapandet av våningen avbröts.</translation>
       <translation>Fel typ av bas</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1978"/>
       <location filename="../../ArchSite.py" line="1594"/>
+      <location filename="../../ArchComponent.py" line="1978"/>
       <source>Toggle Subcomponents</source>
       <translation>Växla underkomponenter</translation>
     </message>
@@ -5963,8 +6514,8 @@ Skapandet av våningen avbröts.</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2132"/>
-      <location filename="../../bimcommands/BimSpace.py" line="71"/>
       <location filename="../../bimcommands/BimRoof.py" line="94"/>
+      <location filename="../../bimcommands/BimSpace.py" line="71"/>
       <source>Select a base object</source>
       <translation>Välj ett basobjekt</translation>
     </message>
@@ -6196,8 +6747,8 @@ Skapandet av våningen avbröts.</translation>
       <translation>Ändra storlek på planet så att det passar objekten i listan ovan</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1873"/>
       <location filename="../../ArchCoveringGui.py" line="530"/>
+      <location filename="../../ArchWall.py" line="1873"/>
       <location filename="../../bimcommands/BimWall.py" line="530"/>
       <source>Center</source>
       <translation>Centrera</translation>
@@ -6254,12 +6805,6 @@ Skapandet av byggnaden avbröts.</translation>
       <location filename="../../bimcommands/BimSpace.py" line="59"/>
       <source>Create Space</source>
       <translation>Skapa utrymme</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimSpace.py" line="74"/>
-      <location filename="../../bimcommands/BimRoof.py" line="97"/>
-      <source>%1 select a base object</source>
-      <translation type="unfinished">%1 select a base object</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="920"/>
@@ -6354,8 +6899,8 @@ Skapandet av byggnaden avbröts.</translation>
       <translation>Skiss</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1893"/>
       <location filename="../../ArchCoveringGui.py" line="837"/>
+      <location filename="../../ArchWall.py" line="1893"/>
       <location filename="../../bimcommands/BimWall.py" line="528"/>
       <source>Alignment</source>
       <translation>Justering</translation>
@@ -6365,22 +6910,6 @@ Skapandet av byggnaden avbröts.</translation>
       <location filename="../../bimcommands/BimWall.py" line="530"/>
       <source>Left</source>
       <translation>Vänster</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="642"/>
-      <source>Cannot create or update {obj.Label} as its length, height or width is zero, and there are no solids in its additions</source>
-      <translation>Det går inte att skapa eller uppdatera {obj.Label} eftersom dess längd, höjd eller bredd är noll och det inte finns några solider i dess additioner</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="1474"/>
-      <source>No supported edges in Base object of {obj.Label} (line, circle, arc, ellipse)</source>
-      <translation>Inga kanter som stöds i basobjektet för {obj.Label} (linje, cirkel, båge, ellips)</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="1848"/>
-      <location filename="../../bimcommands/BimWall.py" line="481"/>
-      <source>Wall Options</source>
-      <translation>Väggalternativ</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1874"/>
@@ -6403,6 +6932,22 @@ Skapandet av byggnaden avbröts.</translation>
       <location filename="../../ArchWall.py" line="749"/>
       <source>Error: Unable to modify the base object of this wall</source>
       <translation>Felmeddelande: Det går inte att modifiera basobjektet för denna vägg</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="642"/>
+      <source>Cannot create or update {obj.Label} as its length, height or width is zero, and there are no solids in its additions</source>
+      <translation>Det går inte att skapa eller uppdatera {obj.Label} eftersom dess längd, höjd eller bredd är noll och det inte finns några solider i dess additioner</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="1474"/>
+      <source>No supported edges in Base object of {obj.Label} (line, circle, arc, ellipse)</source>
+      <translation>Inga kanter som stöds i basobjektet för {obj.Label} (linje, cirkel, båge, ellips)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="1848"/>
+      <location filename="../../bimcommands/BimWall.py" line="481"/>
+      <source>Wall Options</source>
+      <translation>Väggalternativ</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="2115"/>
@@ -6644,6 +7189,46 @@ Skapandet av byggnaden avbröts.</translation>
       <translation>Klona nivå upp</translation>
     </message>
     <message>
+      <location filename="../../ArchTruss.py" line="414"/>
+      <source>Height Start</source>
+      <translation>Starthöjd</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="415"/>
+      <source>Height End</source>
+      <translation>Sluthöjd</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="416"/>
+      <source>Strut Height</source>
+      <translation>Staghöjd</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="417"/>
+      <source>Strut Width</source>
+      <translation>Stagbredd</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="418"/>
+      <source>Rod Sections</source>
+      <translation>Stångsektioner</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="419"/>
+      <source>Rod Size</source>
+      <translation>Stångstorlek</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="420"/>
+      <source>Rod Mode</source>
+      <translation>Stångläge</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="421"/>
+      <source>Rod Type</source>
+      <translation>Stångtyp</translation>
+    </message>
+    <message>
       <location filename="../../ArchCovering.py" line="505"/>
       <source>The specified tile size is too small to be modeled.</source>
       <translation>Den angivna plattstorleken är för liten för att modelleras.</translation>
@@ -6672,6 +7257,25 @@ Skapandet av byggnaden avbröts.</translation>
       <location filename="../../ArchCovering.py" line="717"/>
       <source>A hole is larger than the shrunken area. Skipping this hole.</source>
       <translation>Ett hål är större än det krympta området. Hålet hoppas över.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSql.py" line="2255"/>
+      <location filename="../../ArchSql.py" line="2282"/>
+      <location filename="../../ArchSql.py" line="2304"/>
+      <location filename="../../ArchReport.py" line="1050"/>
+      <location filename="../../ArchReport.py" line="1872"/>
+      <source>Ready</source>
+      <translation>Klar</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSql.py" line="2312"/>
+      <source>Typing…</source>
+      <translation>Skriver…</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSql.py" line="2320"/>
+      <source>Query is valid, but found 0 objects.</source>
+      <translation>Frågan är giltig men hittade 0 objekt.</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="64"/>
@@ -6722,610 +7326,6 @@ Skapandet av byggnaden avbröts.</translation>
       <location filename="../../ArchCurtainWall.py" line="748"/>
       <source>Refine</source>
       <translation>Förfina</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSql.py" line="2255"/>
-      <location filename="../../ArchSql.py" line="2282"/>
-      <location filename="../../ArchSql.py" line="2304"/>
-      <location filename="../../ArchReport.py" line="1050"/>
-      <location filename="../../ArchReport.py" line="1872"/>
-      <source>Ready</source>
-      <translation>Klar</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSql.py" line="2312"/>
-      <source>Typing…</source>
-      <translation>Skriver…</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSql.py" line="2320"/>
-      <source>Query is valid, but found 0 objects.</source>
-      <translation>Frågan är giltig men hittade 0 objekt.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="414"/>
-      <source>Height Start</source>
-      <translation>Starthöjd</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="415"/>
-      <source>Height End</source>
-      <translation>Sluthöjd</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="416"/>
-      <source>Strut Height</source>
-      <translation>Staghöjd</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="417"/>
-      <source>Strut Width</source>
-      <translation>Stagbredd</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="418"/>
-      <source>Rod Sections</source>
-      <translation>Stångsektioner</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="419"/>
-      <source>Rod Size</source>
-      <translation>Stångstorlek</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="420"/>
-      <source>Rod Mode</source>
-      <translation>Stångläge</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="421"/>
-      <source>Rod Type</source>
-      <translation>Stångtyp</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1053"/>
-      <source>Solar Diagrams</source>
-      <translation>Soldiagram</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1057"/>
-      <source>Location</source>
-      <translation>Placering</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1072"/>
-      <source>The latitude of this site in decimal degrees.
-Positive values are north of the Equator, negative values are south.</source>
-      <translation>Platsens latitud i decimalgrader.
-Positiva värden ligger norr om ekvatorn och negativa värden söder om den.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1073"/>
-      <source>Latitude</source>
-      <translation>Latitud</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1087"/>
-      <source>The longitude of this site in decimal degrees.
-Positive values are east of the Prime Meridian, negative values are west.</source>
-      <translation>Platsens longitud i decimalgrader.
-Positiva värden ligger öster om nollmeridianen och negativa värden väster om den.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1088"/>
-      <source>Longitude</source>
-      <translation>Longitud</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1100"/>
-      <source>The UTC offset of the time zone where this site is located.
-Used when calculating the sun position.</source>
-      <translation>UTC-förskjutningen för den tidszon där platsen ligger.
-Används vid beräkning av solens position.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1101"/>
-      <source>Time zone</source>
-      <translation>Tidszon</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1118"/>
-      <source>The angle between the model's north and geographic north.
-Drives the compass orientation and the declination used to
-align the solar diagram and sun path.</source>
-      <translation>Vinkeln mellan modellens nordriktning och geografiskt norr.
-Styr kompassens orientering och deklinationen som används för att
-rikta in soldiagrammet och solbanan.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1119"/>
-      <source>North offset</source>
-      <translation>Nordförskjutning</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1123"/>
-      <source>Diagrams</source>
-      <translation>Diagram</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1126"/>
-      <source>Solar Diagram</source>
-      <translation>Soldiagram</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1136"/>
-      <source>Shows a sun path arc diagram projected onto the site,
-computed from the site's latitude, longitude and north offset.</source>
-      <translation>Visar ett bågdiagram över solbanan projicerat på platsen,
-beräknat från platsens latitud, longitud och nordförskjutning.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1139"/>
-      <source>Compass</source>
-      <translation>Kompass</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1147"/>
-      <source>Shows a compass rose overlay on the site,
-oriented according to the north offset.</source>
-      <translation>Visar en kompassros ovanpå platsen,
-orienterad enligt nordförskjutningen.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1153"/>
-      <source>Sun Position</source>
-      <translation>Solens position</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1164"/>
-      <source>Shows a sphere and ray indicating the sun position
-for the selected date and time.</source>
-      <translation>Visar en sfär och en stråle som anger solens position
-för valt datum och vald tid.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1184"/>
-      <source>The day and month for which the sun position is shown.
-The year is ignored.</source>
-      <translation>Den dag och månad som solens position visas för.
-Årtalet ignoreras.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1185"/>
-      <source>Date</source>
-      <translation>Datum</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1196"/>
-      <source>The time of day for which the sun position is shown,
-in 24-hour local time. Steps in half-hour increments.</source>
-      <translation>Den tid på dagen som solens position visas för,
-i lokal 24-timmarstid. Steg om en halvtimme.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1209"/>
-      <source>Hour</source>
-      <translation>Timme</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1214"/>
-      <source>Show Hour Labels</source>
-      <translation>Visa timetiketter</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1220"/>
-      <source>Shows text labels at key hours along the sun path arc</source>
-      <translation>Visar textetiketter vid viktiga klockslag längs solbanans båge</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1233"/>
-      <source>Solar calculations require the ladybug or pysolar Python module,
-which was not found.</source>
-      <translation>Solberäkningar kräver Python-modulen ladybug eller pysolar,
-men ingen av dem hittades.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1243"/>
-      <source>Solar calculations unavailable.
-The ladybug or pysolar Python module is required.</source>
-      <translation>Solberäkningar är inte tillgängliga.
-Python-modulen ladybug eller pysolar krävs.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="524"/>
-      <source>Solid Tiles</source>
-      <translation>Solida plattor</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="525"/>
-      <source>Parametric Pattern</source>
-      <translation>Parametriskt mönster</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="526"/>
-      <source>Monolithic</source>
-      <translation>Monolitisk</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="527"/>
-      <source>Hatch Pattern</source>
-      <translation>Skrafferingsmönster</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="531"/>
-      <source>Top Left</source>
-      <translation>Övre vänster</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="532"/>
-      <source>Top Right</source>
-      <translation>Övre höger</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="533"/>
-      <source>Bottom Left</source>
-      <translation>Nedre vänster</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="534"/>
-      <source>Bottom Right</source>
-      <translation>Nedre höger</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="537"/>
-      <source>Stacked (None)</source>
-      <translation>Staplat (inget förband)</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="538"/>
-      <source>Half Bond (1/2)</source>
-      <translation>Halvförband (1/2)</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="539"/>
-      <source>Third Bond (1/3)</source>
-      <translation>Tredjedelsförband (1/3)</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="540"/>
-      <source>Quarter Bond (1/4)</source>
-      <translation>Fjärdedelsförband (1/4)</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="541"/>
-      <location filename="../../ArchCoveringGui.py" line="862"/>
-      <source>Custom</source>
-      <translation>Anpassad</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="619"/>
-      <source>Covering Definition</source>
-      <translation>Definition av ytskikt</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="634"/>
-      <source>Layout and Boundaries</source>
-      <translation>Layout och gränser</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="640"/>
-      <source>Visuals</source>
-      <translation>Visuellt</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="672"/>
-      <location filename="../../ArchCoveringGui.py" line="683"/>
-      <location filename="../../ArchCoveringGui.py" line="742"/>
-      <location filename="../../bimtests/TestArchCoveringGui.py" line="159"/>
-      <source>No selection</source>
-      <translation>Inget val</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="675"/>
-      <location filename="../../ArchCoveringGui.py" line="731"/>
-      <source>The object or face this covering is applied to:</source>
-      <translation>Objektet eller ytan som detta ytskikt tillämpas på:</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="686"/>
-      <location filename="../../ArchCoveringGui.py" line="746"/>
-      <source>The object or face this covering is applied to</source>
-      <translation>Objektet eller ytan som detta ytskikt tillämpas på</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="718"/>
-      <source>%1 (%2 faces)</source>
-      <translation>%1 (%2 ytor)</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="725"/>
-      <source>%1 objects selected</source>
-      <translation>%1 objekt markerade</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="748"/>
-      <location filename="../../ArchCoveringGui.py" line="771"/>
-      <source>Pick</source>
-      <translation>Välj</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="752"/>
-      <source>Enable interactive face selection in the 3D view</source>
-      <translation>Aktivera interaktivt val av ytor i 3D-vyn</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="770"/>
-      <source>Picking…</source>
-      <translation>Väljer…</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="779"/>
-      <source>Base</source>
-      <translation>Bas</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="793"/>
-      <source>How the finish is created and displayed:
-- Solid Tiles: Physical 3D tiles with real gaps. Best for accurate detail and counting.
-- Parametric Pattern: A grid of lines on a single slab. Faster to display than real tiles.
-- Monolithic: A single smooth surface. Ideal for paint, plaster, or seamless flooring.
-- Hatch Pattern: Technical drafting symbols (hatching) on a single slab.</source>
-      <translation>Hur ytskiktet skapas och visas:
-– Solida plattor: Fysiska 3D-plattor med verkliga fogar. Bäst för noggranna detaljer och mängdberäkning.
-– Parametriskt mönster: Ett linjerutnät på en enda skiva. Snabbare att visa än verkliga plattor.
-– Monolitiskt: En enda slät yta. Lämpligt för färg, puts eller fogfria golv.
-– Skrafferingsmönster: Tekniska ritsymboler (skraffering) på en enda skiva.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="796"/>
-      <source>Mode</source>
-      <translation>Läge</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="801"/>
-      <source>The thickness of the finish</source>
-      <translation>Ytskiktets tjocklek</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="817"/>
-      <source>Continue</source>
-      <translation>Fortsätt</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="824"/>
-      <source>If checked, the dialog stays open after creating the covering, allowing to pick another face</source>
-      <translation>Om detta markeras förblir dialogrutan öppen efter att ytskiktet har skapats, så att en annan yta kan väljas</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="847"/>
-      <source>Use standard corner or center alignment relative to the boundary</source>
-      <translation>Använd standardjustering mot hörn eller mitt i förhållande till gränsen</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="855"/>
-      <source>Select which part of the usable boundary to anchor the pattern origin to</source>
-      <translation>Välj vilken del av den användbara gränsen som mönstrets origo ska förankras vid</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="867"/>
-      <source>Use a manually picked 3D point or match the current Working Plane</source>
-      <translation>Använd en manuellt vald 3D-punkt eller matcha det aktuella arbetsplanet</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="868"/>
-      <source>Interactive</source>
-      <translation>Interaktiv</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="878"/>
-      <source>Enter interactive mode to visually place the grid origin and rotate the grid. Click to finish and set the origin. Optionally press R / Shift+R to rotate the tile preview by the PickRotationStep angle (configurable in the View properties).</source>
-      <translation>Gå in i interaktivt läge för att visuellt placera rutnätets origo och rotera rutnätet. Klicka för att avsluta och ange origo. Du kan även trycka på R/Skift+R för att rotera plattförhandsgranskningen med vinkeln PickRotationStep (kan ställas in i vyegenskaperna).</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="879"/>
-      <source>Match Working Plane</source>
-      <translation>Matcha arbetsplan</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="885"/>
-      <source>Use the position and orientation of the active Working Plane for the covering</source>
-      <translation>Använd det aktiva arbetsplanets position och orientering för ytskiktet</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="895"/>
-      <source>Shift the grid along U</source>
-      <translation>Förskjut rutnätet längs U</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="900"/>
-      <source>Shift the grid along V</source>
-      <translation>Förskjut rutnätet längs V</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="904"/>
-      <source>U offset</source>
-      <translation>U-förskjutning</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="905"/>
-      <source>V offset</source>
-      <translation>V-förskjutning</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="912"/>
-      <source>Manual rotation of the tile grid</source>
-      <translation>Manuell rotation av plattrutnätet</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="925"/>
-      <source>Boundaries</source>
-      <translation>Gränser</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="930"/>
-      <source>Distance to offset the covering inwards from the boundary</source>
-      <translation>Avstånd som ytskiktet ska förskjutas inåt från gränsen</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="932"/>
-      <source>Border setback</source>
-      <translation>Kantindrag</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="995"/>
-      <source>The length of the tiles</source>
-      <translation>Plattornas längd</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1001"/>
-      <source>The width of the tiles</source>
-      <translation>Plattornas bredd</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1007"/>
-      <source>The width of the joints between tiles</source>
-      <translation>Bredden på fogarna mellan plattorna</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1008"/>
-      <source>Joint width</source>
-      <translation>Fogbredd</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1022"/>
-      <source>The horizontal shift applied to every second row:
-- Stacked: all joints align vertically
-- Half/Third/Quarter Bond: shifts by a fraction of the tile length
-- Custom: manual offset value</source>
-      <translation>Den horisontella förskjutning som tillämpas på varannan rad:
-– Staplat: alla fogar ligger i linje vertikalt
-– Halv-/tredjedels-/fjärdedelsförband: förskjuter med en andel av plattans längd
-– Anpassat: manuellt förskjutningsvärde</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1028"/>
-      <source>Custom offset for running bond rows</source>
-      <translation>Anpassad förskjutning för löpförbandsrader</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1030"/>
-      <source>Stagger</source>
-      <translation>Förskjutning mellan rader</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1041"/>
-      <source>The PAT file to use for hatching</source>
-      <translation>PAT-filen som ska användas för skraffering</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1048"/>
-      <source>Pattern file</source>
-      <translation>Mönsterfil</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1052"/>
-      <source>The name of the pattern to use</source>
-      <translation>Namnet på mönstret att använda</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1053"/>
-      <source>Pattern name</source>
-      <translation>Mönstrets namn</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1058"/>
-      <source>The scale of the hatch pattern</source>
-      <translation>Skrafferingsmönstrets skala</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1060"/>
-      <source>Pattern scale</source>
-      <translation>Mönsterskala</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1072"/>
-      <source>Texture repeat interval along U</source>
-      <translation>Texturens upprepningsintervall längs U</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1075"/>
-      <source>Texture repeat interval along V</source>
-      <translation>Texturens upprepningsintervall längs V</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1086"/>
-      <source>Note: In Monolithic mode, dimensions control the repeat interval of the optional surface texture.</source>
-      <translation>Obs! I monolitiskt läge styr dimensionerna upprepningsintervallet för den valfria yttexturen.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1097"/>
-      <source>An image file to map onto each tile or substrate</source>
-      <translation>En bildfil som ska mappas på varje platta eller underlag</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1104"/>
-      <source>Texture image</source>
-      <translation>Texturbild</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1111"/>
-      <source>Horizontal texture multiplier</source>
-      <translation>Horisontell texturmultiplikator</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1115"/>
-      <source>Vertical texture multiplier</source>
-      <translation>Vertikal texturmultiplikator</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1118"/>
-      <source>Texture scale</source>
-      <translation>Texturskala</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1165"/>
-      <source>Select Texture</source>
-      <translation>Välj textur</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1174"/>
-      <source>Select Pattern</source>
-      <translation>Välj mönster</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1390"/>
-      <source>Could not resolve base geometry.</source>
-      <translation>Det gick inte att lösa basgeometrin.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1588"/>
-      <source>%1 pick tile origin</source>
-      <translation>%1 välj plattornas origo</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1592"/>
-      <source>%1 rotate tile CW / Shift+%1 rotate tile CCW</source>
-      <translation>%1 rotera plattan medurs/Skift+%1 rotera plattan moturs</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1600"/>
-      <source>%1 pick new base face or object</source>
-      <translation>%1 välj en ny basyta eller ett nytt objekt</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1604"/>
-      <source>%1+%2 add face or object</source>
-      <translation>%1+%2 lägg till yta eller objekt</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1611"/>
-      <source>%1 pick planar face or object</source>
-      <translation>%1 välj plan yta eller objekt</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1615"/>
-      <source>%1+%2 add planar face or object</source>
-      <translation>%1+%2 lägg till plan yta eller objekt</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSketch.py" line="57"/>
@@ -7539,8 +7539,8 @@ Python-modulen ladybug eller pysolar krävs.</translation>
       <translation>Typen av denna byggnad</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="230"/>
       <location filename="../../ArchFloor.py" line="236"/>
+      <location filename="../../ArchBuildingPart.py" line="230"/>
       <source>The height of this object</source>
       <translation>Höjden på detta objekt</translation>
     </message>
@@ -7555,26 +7555,26 @@ Python-modulen ladybug eller pysolar krävs.</translation>
       <translation>Nivån på (0,0,0) punkten för denna nivå</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="258"/>
       <location filename="../../ArchFloor.py" line="244"/>
+      <location filename="../../ArchBuildingPart.py" line="258"/>
       <source>The computed floor area of this floor</source>
       <translation>Den beräknade golvytan för denna våning</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="266"/>
       <location filename="../../ArchComponent.py" line="250"/>
+      <location filename="../../ArchBuildingPart.py" line="266"/>
       <source>An optional description for this component</source>
       <translation>En valfri beskrivning för denna komponent</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="274"/>
       <location filename="../../ArchComponent.py" line="258"/>
+      <location filename="../../ArchBuildingPart.py" line="274"/>
       <source>An optional tag for this component</source>
       <translation>En valfri tagg för denna komponent</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="282"/>
       <location filename="../../ArchSectionPlane.py" line="1049"/>
+      <location filename="../../ArchBuildingPart.py" line="282"/>
       <source>The shape of this object</source>
       <translation>Formen på detta objekt</translation>
     </message>
@@ -7594,8 +7594,8 @@ Python-modulen ladybug eller pysolar krävs.</translation>
       <translation>En MaterialName:SolidIndexesList-karta som relaterar materialnamn med solidindex som ska användas när man refererar till detta objekt från andra filer</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="547"/>
       <location filename="../../ArchSectionPlane.py" line="1221"/>
+      <location filename="../../ArchBuildingPart.py" line="547"/>
       <source>The line width of this object</source>
       <translation>Linjebredden för detta objekt</translation>
     </message>
@@ -7746,83 +7746,83 @@ Python-modulen ladybug eller pysolar krävs.</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="190"/>
-      <location filename="../../ArchProfile.py" line="252"/>
-      <location filename="../../ArchProfile.py" line="286"/>
-      <location filename="../../ArchProfile.py" line="346"/>
-      <location filename="../../ArchProfile.py" line="406"/>
-      <location filename="../../ArchProfile.py" line="453"/>
+      <location filename="../../ArchProfile.py" line="262"/>
+      <location filename="../../ArchProfile.py" line="296"/>
+      <location filename="../../ArchProfile.py" line="358"/>
+      <location filename="../../ArchProfile.py" line="418"/>
+      <location filename="../../ArchProfile.py" line="465"/>
       <source>Width of the beam</source>
       <translation>Bredd på strålen</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="197"/>
-      <location filename="../../ArchProfile.py" line="259"/>
-      <location filename="../../ArchProfile.py" line="293"/>
-      <location filename="../../ArchProfile.py" line="353"/>
-      <location filename="../../ArchProfile.py" line="413"/>
-      <location filename="../../ArchProfile.py" line="460"/>
+      <location filename="../../ArchProfile.py" line="269"/>
+      <location filename="../../ArchProfile.py" line="303"/>
+      <location filename="../../ArchProfile.py" line="365"/>
+      <location filename="../../ArchProfile.py" line="425"/>
+      <location filename="../../ArchProfile.py" line="472"/>
       <source>Height of the beam</source>
       <translation>Balkens höjd</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="204"/>
-      <location filename="../../ArchProfile.py" line="467"/>
+      <location filename="../../ArchProfile.py" line="479"/>
       <source>Thickness of the web</source>
       <translation>Tjockleken på banan</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="211"/>
-      <location filename="../../ArchProfile.py" line="474"/>
+      <location filename="../../ArchProfile.py" line="486"/>
       <source>Thickness of the flanges</source>
       <translation>Flänsarnas tjocklek</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="300"/>
+      <location filename="../../ArchProfile.py" line="310"/>
       <source>Thickness of the sides</source>
       <translation>Sidornas tjocklek</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="360"/>
+      <location filename="../../ArchProfile.py" line="372"/>
       <source>Thickness of the webs</source>
       <translation>Tjocklek på banorna</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="367"/>
+      <location filename="../../ArchProfile.py" line="379"/>
       <source>Thickness of the flange</source>
       <translation>Flänsens tjocklek</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="420"/>
+      <location filename="../../ArchProfile.py" line="432"/>
       <source>Thickness of the legs</source>
       <translation>Tjocklek på benen</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="507"/>
+      <location filename="../../ArchProfile.py" line="525"/>
       <source>Overall size</source>
       <translation>Total storlek</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="528"/>
+      <location filename="../../ArchProfile.py" line="546"/>
       <source>T-nut slot width</source>
       <translation>T-mutter spårbredd</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="535"/>
+      <location filename="../../ArchProfile.py" line="553"/>
       <source>T-nut slot depth</source>
       <translation>T-mutter spårdjup</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="549"/>
+      <location filename="../../ArchProfile.py" line="567"/>
       <source>Internal hole diameter</source>
       <translation>Inre håldiameter</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="556"/>
+      <location filename="../../ArchProfile.py" line="574"/>
       <source>Corner fillet radius</source>
       <translation>Radie för kantavfasning</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="514"/>
+      <location filename="../../ArchProfile.py" line="532"/>
       <source>Slot size</source>
       <translation>Storlek på slits</translation>
     </message>
@@ -7832,12 +7832,12 @@ Python-modulen ladybug eller pysolar krävs.</translation>
       <translation>Utsidesdiameter</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="521"/>
+      <location filename="../../ArchProfile.py" line="539"/>
       <source>Thickness of the wall</source>
       <translation>Väggens tjocklek</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="542"/>
+      <location filename="../../ArchProfile.py" line="560"/>
       <source>Internal core size</source>
       <translation>Intern kärnstorlek</translation>
     </message>
@@ -7893,20 +7893,20 @@ Python-modulen ladybug eller pysolar krävs.</translation>
       <translation>En URL som visar den här byggplatsen på en kartläggningswebbplats</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="232"/>
       <location filename="../../ArchSite.py" line="656"/>
+      <location filename="../../ArchComponent.py" line="232"/>
       <source>Other shapes that are appended to this object</source>
       <translation>Andra former som är kopplade till detta objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="242"/>
       <location filename="../../ArchSite.py" line="666"/>
+      <location filename="../../ArchComponent.py" line="242"/>
       <source>Other shapes that are subtracted from this object</source>
       <translation>Andra former som subtraheras från detta objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="337"/>
       <location filename="../../ArchSite.py" line="676"/>
+      <location filename="../../ArchComponent.py" line="337"/>
       <source>The area of the projection of this object onto the XY plane</source>
       <translation>Området för projektionen av detta objekt på XY-planet</translation>
     </message>
@@ -7941,8 +7941,8 @@ Python-modulen ladybug eller pysolar krävs.</translation>
       <translation>En valfri förskjutning mellan modellens (0,0,0) ursprung och den punkt som anges av geokoordinaterna</translation>
     </message>
     <message>
-      <location filename="../../ArchIFC.py" line="87"/>
       <location filename="../../ArchSite.py" line="744"/>
+      <location filename="../../ArchIFC.py" line="87"/>
       <source>The type of this object</source>
       <translation>Typen av detta objekt</translation>
     </message>
@@ -9148,8 +9148,8 @@ Python-modulen ladybug eller pysolar krävs.</translation>
       <translation>Om True, läggs ytterligare rader med varje enskilt objekt till i resultaten</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="253"/>
       <location filename="../../ArchSectionPlane.py" line="1041"/>
+      <location filename="../../ArchFloor.py" line="253"/>
       <source>The placement of this object</source>
       <translation>Placeringen av detta objekt</translation>
     </message>
@@ -9436,14 +9436,14 @@ Python-modulen ladybug eller pysolar krävs.</translation>
       <translation>Visa etiketten i 3D-vyn</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="579"/>
       <location filename="../../ArchSectionPlane.py" line="1275"/>
+      <location filename="../../ArchSpace.py" line="579"/>
       <source>The name of the font</source>
       <translation>Namnet på teckensnittet</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="597"/>
       <location filename="../../ArchSectionPlane.py" line="1284"/>
+      <location filename="../../ArchSpace.py" line="597"/>
       <source>The size of the text font</source>
       <translation>Storleken på textens teckensnitt</translation>
     </message>
@@ -9817,6 +9817,11 @@ Python-modulen ladybug eller pysolar krävs.</translation>
       <translation>Den specifika IFC-undertypen för detta ytskikt. Exporteras som IfcCovering.PredefinedType.</translation>
     </message>
     <message>
+      <location filename="../../ArchCoveringGui.py" line="62"/>
+      <source>Rotation step (degrees) applied per R / Shift+R keypress during interactive grid placement.</source>
+      <translation>Rotationssteg (grader) som tillämpas för varje tryck på R/Skift+R vid interaktiv placering av rutnätet.</translation>
+    </message>
+    <message>
       <location filename="../../ArchReport.py" line="483"/>
       <source>The list of SQL statements to execute (managed by the Task Panel)</source>
       <translation>Listan över SQL-satser som ska köras (hanteras av uppgiftspanelen)</translation>
@@ -9835,11 +9840,6 @@ Python-modulen ladybug eller pysolar krävs.</translation>
       <location filename="../../ArchReport.py" line="530"/>
       <source>The name of the BIM Report that uses this spreadsheet</source>
       <translation>Namnet på den BIM-rapport som använder detta kalkylblad</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="62"/>
-      <source>Rotation step (degrees) applied per R / Shift+R keypress during interactive grid placement.</source>
-      <translation>Rotationssteg (grader) som tillämpas för varje tryck på R/Skift+R vid interaktiv placering av rutnätet.</translation>
     </message>
   </context>
   <context>
@@ -10795,15 +10795,15 @@ Alt+/ för att växla mellan automatiskt och manuellt läge</translation>
       <translation>Skapa ett nytt multimaterial</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="247"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="206"/>
       <location filename="../../bimcommands/BimIfcElements.py" line="139"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="206"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="247"/>
       <source>Label</source>
       <translation>Etikett</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="207"/>
       <location filename="../../bimcommands/BimIfcElements.py" line="140"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="207"/>
       <source>IFC type</source>
       <translation>IFC-typ</translation>
     </message>
@@ -10813,8 +10813,8 @@ Alt+/ för att växla mellan automatiskt och manuellt läge</translation>
       <translation>Material</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="60"/>
       <location filename="../../nativeifc/__init__.py" line="42"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="60"/>
       <source>IfcOpenShell was not found on this system. IFC support is disabled</source>
       <translation>IfcOpenShell hittades inte på det här systemet. IFC-stöd är inaktiverat</translation>
     </message>
@@ -11212,6 +11212,38 @@ Alt+/ för att växla mellan automatiskt och manuellt läge</translation>
       <translation>Nytt material</translation>
     </message>
     <message>
+      <location filename="../../bimcommands/BimMaterial.py" line="148"/>
+      <source>Merge Duplicates</source>
+      <translation>Sammanfoga dubbletter</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimMaterial.py" line="157"/>
+      <source>Delete Unused</source>
+      <translation>Ta bort oanvänd</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="108"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="175"/>
+      <source>Rename</source>
+      <translation>Byt namn</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimMaterial.py" line="177"/>
+      <source>Duplicate</source>
+      <translation>Duplicera</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimMaterial.py" line="179"/>
+      <source>Merge To…</source>
+      <translation>Sammanfoga till…</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="103"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="181"/>
+      <source>Delete</source>
+      <translation>Ta bort</translation>
+    </message>
+    <message>
       <location filename="../../bimcommands/BimMaterial.py" line="88"/>
       <source>Select Material</source>
       <translation>Välj material</translation>
@@ -11230,38 +11262,6 @@ Alt+/ för att växla mellan automatiskt och manuellt läge</translation>
       <location filename="../../bimcommands/BimMaterial.py" line="141"/>
       <source>New Multi-Material</source>
       <translation>Nytt multimaterial</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="148"/>
-      <source>Merge Duplicates</source>
-      <translation>Sammanfoga dubbletter</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="157"/>
-      <source>Delete Unused</source>
-      <translation>Ta bort oanvänd</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="175"/>
-      <location filename="../../bimcommands/BimViews.py" line="108"/>
-      <source>Rename</source>
-      <translation>Byt namn</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="177"/>
-      <source>Duplicate</source>
-      <translation>Duplicera</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="179"/>
-      <source>Merge To…</source>
-      <translation>Sammanfoga till…</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="181"/>
-      <location filename="../../bimcommands/BimViews.py" line="103"/>
-      <source>Delete</source>
-      <translation>Ta bort</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="237"/>
@@ -11526,8 +11526,8 @@ Alt+/ för att växla mellan automatiskt och manuellt läge</translation>
       <translation>Mallen har lästs in i det aktuella dokumentet</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="436"/>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="156"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="436"/>
       <source>New Group</source>
       <translation>Ny prisgrupp</translation>
     </message>
@@ -11579,7 +11579,7 @@ Alt+/ för att växla mellan automatiskt och manuellt läge</translation>
     <message>
       <location filename="../../bimcommands/BimSlab.py" line="65"/>
       <source>%1 select a planar object</source>
-      <translation type="unfinished">%1 select a planar object</translation>
+      <translation>%1 välj ett plant objekt</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSlab.py" line="81"/>
@@ -11648,7 +11648,7 @@ Alt+/ för att växla mellan automatiskt och manuellt läge</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="100"/>
-      <location filename="../../bimcommands/BimViews.py" line="698"/>
+      <location filename="../../bimcommands/BimViews.py" line="701"/>
       <source>Active</source>
       <translation>Aktiv</translation>
     </message>
@@ -11685,7 +11685,7 @@ Alt+/ för att växla mellan automatiskt och manuellt läge</translation>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="107"/>
       <source>Save Visibility of Objects</source>
-      <translation type="unfinished">Save Visibility of Objects</translation>
+      <translation>Spara objektens synlighet</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="134"/>
@@ -11695,7 +11695,7 @@ Alt+/ för att växla mellan automatiskt och manuellt läge</translation>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="147"/>
       <source>Saves the current camera view to the selected items</source>
-      <translation type="unfinished">Saves the current camera view to the selected items</translation>
+      <translation>Sparar den aktuella kameravyn för de valda objekten</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="148"/>
@@ -11704,7 +11704,7 @@ Alt+/ för att växla mellan automatiskt och manuellt läge</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="149"/>
-      <location filename="../../bimcommands/BimViews.py" line="701"/>
+      <location filename="../../bimcommands/BimViews.py" line="704"/>
       <source>Activates the selected item</source>
       <translation>Aktiverar det valda objektet</translation>
     </message>
@@ -11714,24 +11714,24 @@ Alt+/ för att växla mellan automatiskt och manuellt läge</translation>
       <translation>BIM-vyhanterare</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="324"/>
+      <location filename="../../bimcommands/BimViews.py" line="327"/>
       <source>2D Views</source>
       <translation>2D-vyer</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="337"/>
+      <location filename="../../bimcommands/BimViews.py" line="340"/>
       <source>Sheets</source>
       <translation>Lakan</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="709"/>
+      <location filename="../../bimcommands/BimViews.py" line="712"/>
       <source>Set Working Plane</source>
       <translation>Ange arbetsplan</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="713"/>
+      <location filename="../../bimcommands/BimViews.py" line="716"/>
       <source>Sets the selected item as the current working plane</source>
-      <translation type="unfinished">Sets the selected item as the current working plane</translation>
+      <translation>Anger det valda objektet som aktuellt arbetsplan</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindows.py" line="225"/>
@@ -13670,6 +13670,51 @@ markera både vyn och sidan innan du utför kommandot.</translation>
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="128"/>
+      <source>Edit Covering</source>
+      <translation>Redigera ytskikt</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1757"/>
+      <location filename="../../bimcommands/BimCovering.py" line="83"/>
+      <source>Create Covering</source>
+      <translation>Skapa ytskikt</translation>
+    </message>
+  </context>
+  <context>
+    <name>ArchComponent</name>
+    <message>
+      <location filename="../../ArchWall.py" line="1543"/>
+      <source>Unsupported Base</source>
+      <translation>Basen stöds inte</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="1548"/>
+      <source>The base of this wall is not a single straight line.</source>
+      <translation>Väggens bas är inte en enda rak linje.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="1555"/>
+      <source>Removing the base of this complex wall will alter its shape and reset its position.
+
+Do you want to proceed?</source>
+      <translation>Om basen för den här komplexa väggen tas bort ändras dess form och positionen återställs.
+
+Vill du fortsätta?</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIMStatusWidget</name>
+    <message>
+      <location filename="../../BimStatus.py" line="105"/>
+      <source>BIM Status Widget</source>
+      <comment>A context menu action used to show or hide this toolbar widget</comment>
+      <translation>BIM-statuswidget</translation>
+    </message>
+  </context>
+  <context>
     <name>BIM_ArcTools</name>
     <message>
       <location filename="../../InitGui.py" line="239"/>
@@ -13742,56 +13787,16 @@ markera både vyn och sidan innan du utför kommandot.</translation>
     </message>
   </context>
   <context>
-    <name>ArchComponent</name>
+    <name>BIM_Covering</name>
     <message>
-      <location filename="../../ArchWall.py" line="1543"/>
-      <source>Unsupported Base</source>
-      <translation>Basen stöds inte</translation>
+      <location filename="../../bimcommands/BimCovering.py" line="44"/>
+      <source>Covering</source>
+      <translation>Ytskikt</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1548"/>
-      <source>The base of this wall is not a single straight line.</source>
-      <translation>Väggens bas är inte en enda rak linje.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="1555"/>
-      <source>Removing the base of this complex wall will alter its shape and reset its position.
-
-Do you want to proceed?</source>
-      <translation>Om basen för den här komplexa väggen tas bort ändras dess form och positionen återställs.
-
-Vill du fortsätta?</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIMStatusWidget</name>
-    <message>
-      <location filename="../../BimStatus.py" line="105"/>
-      <source>BIM Status Widget</source>
-      <comment>A context menu action used to show or hide this toolbar widget</comment>
-      <translation>BIM-statuswidget</translation>
-    </message>
-  </context>
-  <context>
-    <name>Command</name>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="128"/>
-      <source>Edit Covering</source>
-      <translation>Redigera ytskikt</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1757"/>
-      <location filename="../../bimcommands/BimCovering.py" line="83"/>
-      <source>Create Covering</source>
-      <translation>Skapa ytskikt</translation>
-    </message>
-  </context>
-  <context>
-    <name>BimWall</name>
-    <message>
-      <location filename="../../bimcommands/BimWall.py" line="308"/>
-      <source>Wall Trace</source>
-      <translation>Väggspårning</translation>
+      <location filename="../../bimcommands/BimCovering.py" line="47"/>
+      <source>Creates a covering (floor finish, cladding) on a selected face</source>
+      <translation>Skapar ett ytskikt (golvfinish, beklädnad) på en vald yta</translation>
     </message>
   </context>
   <context>
@@ -13808,6 +13813,14 @@ Vill du fortsätta?</translation>
     </message>
   </context>
   <context>
+    <name>BimWall</name>
+    <message>
+      <location filename="../../bimcommands/BimWall.py" line="308"/>
+      <source>Wall Trace</source>
+      <translation>Väggspårning</translation>
+    </message>
+  </context>
+  <context>
     <name>BIM_LinkMake</name>
     <message>
       <location filename="../../bimcommands/BimLink.py" line="14"/>
@@ -13818,19 +13831,6 @@ Vill du fortsätta?</translation>
       <location filename="../../bimcommands/BimLink.py" line="18"/>
       <source>Creates a Link to the selected object and immediately enables moving it</source>
       <translation>Skapar en länk till det valda objektet och aktiverar omedelbart flyttning av länken</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_Covering</name>
-    <message>
-      <location filename="../../bimcommands/BimCovering.py" line="44"/>
-      <source>Covering</source>
-      <translation>Ytskikt</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimCovering.py" line="47"/>
-      <source>Creates a covering (floor finish, cladding) on a selected face</source>
-      <translation>Skapar ett ytskikt (golvfinish, beklädnad) på en vald yta</translation>
     </message>
   </context>
 </TS>

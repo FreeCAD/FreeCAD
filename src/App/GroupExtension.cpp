@@ -218,11 +218,11 @@ bool GroupExtension::hasObject(const DocumentObject* obj, bool recursive) const
             if (child == obj) {
                 return true;
             }
-            else if (child == getExtendedObject()) {
+            if (child == getExtendedObject()) {
                 throw Base::RuntimeError(
                     "Cyclic dependencies detected: Search cannot be performed");
             }
-            else if (recursive && child->hasExtension(GroupExtension::getExtensionClassTypeId())) {
+            if (recursive && child->hasExtension(GroupExtension::getExtensionClassTypeId())) {
                 App::GroupExtension* subGroup = static_cast<App::GroupExtension*>(
                     child->getExtension(GroupExtension::getExtensionClassTypeId()));
                 std::vector<const GroupExtension*> history;

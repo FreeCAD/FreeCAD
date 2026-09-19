@@ -8,9 +8,10 @@
     "Diameter": "0.375 \"",
     "Flutes": "3",
     "Length": "2.500 \"",
-    "Pitch": "0.000 in",
+    "Pitch": "0.0625 in",
     "ShankDiameter": "0.250 \"",
-    "TipAngle": "90.000 \u00b0"
+    "TipAngle": "90.000 \u00b0",
+    "Units": "Imperial"
   },
   "attribute": {}
 }

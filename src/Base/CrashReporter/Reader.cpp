@@ -21,6 +21,7 @@
 
 #include "Reader.h"
 #include "Format.h"
+#include "FaultCodes.h"
 
 #include <Build/Version.h>
 
@@ -51,10 +52,10 @@ using namespace Base::CrashReporter;
 
 namespace
 {
-std::string_view extractStringFromTable(std::span<const char> stringTable, std::size_t offset)
+std::optional<std::string> extractStringFromTable(std::span<const char> stringTable, std::size_t offset)
 {
     if (offset == NoString) {
-        return {};
+        return std::nullopt;
     }
     if (offset + sizeof(std::uint16_t) > stringTable.size()) {
         throw Base::BadFormatError("String buffer ran out of data");
@@ -69,7 +70,7 @@ std::string_view extractStringFromTable(std::span<const char> stringTable, std::
         throw Base::BadFormatError("String length exceeds storage");
     }
 
-    return {stringTable.data() + offset + sizeof(std::uint16_t), length};
+    return std::string {stringTable.data() + offset + sizeof(std::uint16_t), length};
 }
 
 #ifdef FC_HAVE_CPPTRACE
@@ -97,11 +98,34 @@ std::string stripSourceRoot(const std::string& path)
         = std::filesystem::path(FC_SOURCE_DIR).lexically_normal().generic_string();
 
     if (!sourceRoot.empty() && normalized.size() > sourceRoot.size()
-        && normalized.starts_with(sourceRoot) && normalized[sourceRoot.size()] == '/') {
+        && normalized.starts_with(sourceRoot) && normalized.at(sourceRoot.size()) == '/') {
         return normalized.substr(sourceRoot.size() + 1);
     }
 
     return Base::FileInfo(normalized).fileName();
+}
+
+/**
+ * Trim the "+ offset" that a symbol-table lookup appends to a function name.
+ *
+ * This is purely heuristic: the "<name> + <decimal>" form is an implementation detail of cpptrace's
+ * symbol-table resolution, and was observed in its Mach-O backend and is not part of its documented
+ * API. If cpptrace ever changes the format, this stops matching and the offsets reappear in the
+ * symbols; the `realCrashCapturesUsableFrames` test is designed to catch that. Note that requiring
+ * all digits after the " + " keeps demangled template arguments such as "thinger<1 + 2>" intact.
+ */
+std::string stripSymbolOffset(const std::string& symbol)
+{
+    const auto plus = symbol.rfind(" + ");
+    if (plus == std::string::npos || plus == 0) {
+        return symbol;
+    }
+    const auto offsetDigits = std::string_view {symbol}.substr(plus + 3);
+    if (offsetDigits.empty()
+        || offsetDigits.find_first_not_of("0123456789") != std::string_view::npos) {
+        return symbol;
+    }
+    return symbol.substr(0, plus);
 }
 #endif
 }  // namespace
@@ -151,13 +175,17 @@ ParsedCrashReport Base::CrashReporter::parse(const std::string& pathToRawReportF
         || hasFlag(header.flags, Flags::PartialWrite);
 
     parsedReport.pathToRawReportFile = pathToRawReportFile;
-    parsedReport.faultAddress = header.faultAddress;
+    parsedReport.code = header.code;
+    parsedReport.faultName = faultCodeName(header.code);
+    if (faultAddressIsMeaningful(header.code)) {
+        parsedReport.faultAddress = header.faultAddress;
+    }
+
     parsedReport.threadID = header.threadID;
     parsedReport.timestamp = std::chrono::system_clock::time_point {
         std::chrono::seconds {header.timestamp}
     };
     parsedReport.processID = header.processID;
-    parsedReport.code = header.code;
 
     parsedReport.captureWasSignalSafe = hasFlag(header.flags, Flags::CaptureWasSignalSafe);
 
@@ -169,11 +197,8 @@ ParsedCrashReport Base::CrashReporter::parse(const std::string& pathToRawReportF
 
     parsedReport.buildID = extractStringFromTable(stringTable, header.buildIDStringOffset);
     parsedReport.minidumpPath = extractStringFromTable(stringTable, header.minidumpPathStringOffset);
-    parsedReport.exceptionMessage
-        = extractStringFromTable(stringTable, header.exceptionMessageStringOffset);
 
-    // parsedReport.osVersion = Set by App-level consumer at report-submission, Base has no easy
-    // access to OS information
+    // parsedReport.osVersion = Set by the manager, which is called from App (which has this info)
     parsedReport.osID = header.osID;
     parsedReport.architectureID = header.architectureID;
 
@@ -181,7 +206,7 @@ ParsedCrashReport Base::CrashReporter::parse(const std::string& pathToRawReportF
     parsedReport.freecadVersionMinor = header.freecadVersionMinor;
     parsedReport.freecadVersionPatch = header.freecadVersionPatch;
     parsedReport.freecadVersionSuffix
-        = extractStringFromTable(stringTable, header.freecadVersionSuffixStringOffset);
+        = extractStringFromTable(stringTable, header.freecadVersionSuffixStringOffset).value_or("");
 
     // Read the stack frames (with some error checking):
     if (header.frameCount > MaxFrames) {
@@ -193,8 +218,7 @@ ParsedCrashReport Base::CrashReporter::parse(const std::string& pathToRawReportF
 
 #if defined(FC_HAVE_CPPTRACE) && defined(FCRepositoryHash)
     // Check to see if the current running version is the same as the one in the fcrash file:
-    const bool doSymbolication = !parsedReport.buildID.empty()
-        && parsedReport.buildID == std::string(FCRepositoryHash);
+    const bool doSymbolication = parsedReport.buildID == FCRepositoryHash;
 #else
     constexpr bool doSymbolication = false;
 #endif
@@ -214,7 +238,8 @@ ParsedCrashReport Base::CrashReporter::parse(const std::string& pathToRawReportF
             cpptrace::object_frame objectFrame;
             objectFrame.raw_address = rawFrame.rawAddress;
             objectFrame.object_address = rawFrame.moduleOffset;
-            objectFrame.object_path = extractStringFromTable(stringTable, rawFrame.moduleStringOffset);
+            objectFrame.object_path
+                = extractStringFromTable(stringTable, rawFrame.moduleStringOffset).value_or("");
             modulePathMap[objectFrame.raw_address] = objectFrame.object_path;  // For later lookup
             objectTrace.frames.push_back(std::move(objectFrame));
         }
@@ -226,12 +251,21 @@ ParsedCrashReport Base::CrashReporter::parse(const std::string& pathToRawReportF
             parsedFrame.rawAddress = frame.raw_address;
             parsedFrame.moduleOffset = frame.object_address;
 
-            // To avoid any PII in the backtrace, only include the filename, not the full path:
-            parsedFrame.modulePath = FileInfo(modulePathMap[frame.raw_address]).fileName();
+            const std::string& objectPath = modulePathMap[frame.raw_address];
 
-            parsedFrame.symbol = frame.symbol;
-            parsedFrame.file = stripSourceRoot(frame.filename);  // Avoid PII!
-            parsedFrame.line = frame.line.has_value() ? std::optional(frame.line.value())
+            // To avoid any PII in the backtrace, only include the filename, not the full path:
+            parsedFrame.modulePath = FileInfo(objectPath).fileName();
+
+            parsedFrame.symbol = frame.symbol.empty()
+                ? std::nullopt
+                : std::make_optional(stripSymbolOffset(frame.symbol));
+
+            // `file` means a source file, if we've got it
+            const bool haveRealSourceFile = !frame.filename.empty() && frame.filename != objectPath;
+            parsedFrame.file = haveRealSourceFile
+                ? std::make_optional(stripSourceRoot(frame.filename))
+                : std::nullopt;
+            parsedFrame.line = frame.line.has_value() ? std::make_optional(frame.line.value())
                                                       : std::nullopt;
             parsedFrame.isInline = frame.is_inline;
             parsedReport.stackFrames.push_back(std::move(parsedFrame));
@@ -252,8 +286,12 @@ ParsedCrashReport Base::CrashReporter::parse(const std::string& pathToRawReportF
             ParsedFrame parsedFrame;
             parsedFrame.rawAddress = rawFrame.rawAddress;
             parsedFrame.moduleOffset = rawFrame.moduleOffset;
-            std::string modulePath {extractStringFromTable(stringTable, rawFrame.moduleStringOffset)};
-            parsedFrame.modulePath = FileInfo(modulePath).fileName();  // Avoid PII!
+            std::optional<std::string> modulePath {
+                extractStringFromTable(stringTable, rawFrame.moduleStringOffset)
+            };
+
+            // Strip any potential PII from the crashing filename:
+            parsedFrame.modulePath = FileInfo(modulePath.value_or("")).fileName();
 
             parsedReport.stackFrames.push_back(std::move(parsedFrame));
         }
@@ -277,7 +315,7 @@ std::vector<ParsedFrame> Base::CrashReporter::trimLeadingPlumbingFrames(
 
     auto isAnchor = [&](const ParsedFrame& frame) {
         return std::ranges::any_of(dispatchAnchors, [&](std::string_view anchor) {
-            return frame.symbol.find(anchor) != std::string::npos;
+            return frame.symbol.has_value() && frame.symbol.value().find(anchor) != std::string::npos;
         });
     };
 

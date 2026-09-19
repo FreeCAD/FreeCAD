@@ -271,6 +271,27 @@ TEST_F(RevolutionTest, GrooveTwoSidesThroughAll)
     );
 }
 
+// The angular start offset moves the groove profile before the cut is generated.
+TEST_F(RevolutionTest, GrooveStartOffset)
+{
+    // Arrange
+    addBaseCylinder();
+    auto groove = addGroove();
+    groove->Angle.setValue(30.0);
+    groove->StartType.setValue("Offset");
+    groove->StartOffset.setValue(90.0);
+
+    // Act
+    getDocument()->recompute();
+
+    // Assert
+    ASSERT_FALSE(groove->isError()) << groove->getStatusString();
+    EXPECT_NEAR(volumeOf(groove->Shape.getValue()), cylinderVolume() - torusVolume(30.0), volumeTolerance);
+
+    const Base::BoundBox3d bbox = groove->AddSubShape.getShape().getBoundBox();
+    EXPECT_LT(bbox.MaxZ, -15.0);
+}
+
 // Side 2 set to "Up to face" with no face picked yet is the state the task panel starts
 // in. This should show up as a recompute error (rather than an uncaught exception).
 TEST_F(RevolutionTest, SecondSideUpToFaceWithoutTargetIsAnError)

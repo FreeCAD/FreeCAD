@@ -27,6 +27,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import Constants
 import Path
 import Path.Base.Util as PathUtil
+import Path.Base.Generator.rotation as rotation
 import Path.Geom
 import PathScripts.PathUtils as PathUtils
 from Path.Op.Util import getCycleTimeEstimate
@@ -441,13 +442,17 @@ class ObjectOp(object):
         self.commandlist = None
         self.horizFeed = None
         self.horizRapid = None
+        self.vertFeed = None
+        self.vertRapid = None
+        self.leadInFeed = None
+        self.leadOutFeed = None
+        self.rampFeed = None
+        self.noEngagementFeed = None
         self.job = None
         self.model = None
         self.radius = None
         self.stock = None
         self.tool = None
-        self.vertFeed = None
-        self.vertRapid = None
         self.addNewProps = None
         self.isBaseValid = True
 
@@ -1007,13 +1012,22 @@ class ObjectOp(object):
         wp = obj.Workplane
         z_up = FreeCAD.Vector(0, 0, 1)
 
-        # Check if workplane is effectively Z-up (no rotation needed)
+        machine = self.job.Proxy.getMachine() if self.job else None
+        has_rotaries = machine is not None and machine.has_rotary_axes
+
+        # A Z-up workplane needs no geometry transform, but on a machine with
+        # rotary axes the op must still command its pose explicitly: ops are
+        # atomic and cannot know what pose a previous op left the machine in.
         if wp.isEqual(z_up, 1e-6):
+            if has_rotaries:
+                chain = rotation.build_kinematic_chain(machine)
+                if chain:
+                    self._rotation_commands = [
+                        Path.Command("G0", {axis.name: 0.0 for axis in chain})
+                    ]
             return True
 
-        # Need rotation — get machine from job
-        machine = self.job.Proxy.getMachine() if self.job else None
-        if machine is None or not machine.has_rotary_axes:
+        if not has_rotaries:
             Path.Log.warning(
                 f"Operation {obj.Label}: Workplane requires rotation but "
                 f"no machine with rotary axes is configured"
@@ -1022,8 +1036,6 @@ class ObjectOp(object):
 
         # Solve orientation
         try:
-            import Path.Base.Generator.rotation as rotation
-
             result = rotation.solve_orientation(machine, wp)
             Path.Log.debug(result)
 
@@ -1118,6 +1130,10 @@ class ObjectOp(object):
                 self.horizFeed = tc.HorizFeed.Value
                 self.vertRapid = tc.VertRapid.Value
                 self.horizRapid = tc.HorizRapid.Value
+                self.leadInFeed = tc.LeadInFeed.Value
+                self.leadOutFeed = tc.LeadOutFeed.Value
+                self.rampFeed = tc.RampFeed.Value
+                self.noEngagementFeed = tc.NoEngagementFeed.Value
                 tool = tc.Proxy.getTool(tc)
                 if not tool or float(tool.Diameter) == 0:
                     Path.Log.error(
@@ -1176,7 +1192,7 @@ class ObjectOp(object):
                 self.stock = transform_shape(self.stock)
 
         try:
-            result = self.opExecute(obj)
+            self.opExecute(obj)
         finally:
             # Always restore originals, even if opExecute raises
             self.model = saved_model
@@ -1237,7 +1253,6 @@ class ObjectOp(object):
         obj.Path = path
         obj.CycleTime = getCycleTimeEstimate(obj)
         self.job.Proxy.getCycleTime()
-        return result
 
     def addBase(self, obj, base, sub):
         Path.Log.track(obj, base, sub)

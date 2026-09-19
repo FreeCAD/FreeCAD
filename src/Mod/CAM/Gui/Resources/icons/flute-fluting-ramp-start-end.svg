@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- FlutingType dropdown icon: Ramp Start End, ramps down at entry, flat at
+     floor through the middle, ramps back up to the surface at exit.
+     viewBox height matches the combo's iconSize (16px) exactly so there is
+     no extra vertical scaling; the line occupies y=2..14, leaving a real
+     2px margin top and bottom. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 54 16" width="54" height="16">
+  <polyline fill="none" stroke="#3d85c6" stroke-width="2" stroke-linecap="round"
+    points="2,2 14.5,14 39.5,14 52,2"/>
+</svg>

@@ -87,7 +87,7 @@ enum class OS : std::uint8_t
     Linux,
     macOS,
     Windows,
-    BSD
+    BSDFamily  // Can't use "BSD" since it's #defined
 };
 
 enum class Architecture : std::uint8_t
@@ -124,7 +124,6 @@ struct Header
     std::uint32_t buildIDStringOffset = NoString;
     std::uint32_t freecadVersionSuffixStringOffset = NoString;
     std::uint32_t minidumpPathStringOffset = NoString;
-    std::uint32_t exceptionMessageStringOffset = NoString;
 
     OS osID = OS::None;
     Architecture architectureID = Architecture::None;
@@ -132,8 +131,8 @@ struct Header
     std::uint8_t freecadVersionMinor = 0;
     std::uint8_t freecadVersionPatch = 0;
 
-    // The real data above takes up 81 bytes: pad it out to the HeaderSize
-    std::array<std::uint8_t, HeaderSize - 81> padding = {};
+    // The real data above takes up 77 bytes: pad it out to the HeaderSize
+    std::array<std::uint8_t, HeaderSize - 77> padding = {};
 };
 
 static_assert(sizeof(Header) == HeaderSize);

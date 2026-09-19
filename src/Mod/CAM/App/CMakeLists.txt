@@ -123,9 +123,7 @@ target_include_directories(
     ${EIGEN3_INCLUDE_DIR}
 )
 target_link_libraries(Path ${Path_LIBS})
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(Path)
-endif()
+target_compile_warn_error(Path)
 
 
 if(FREECAD_USE_PCH)
@@ -134,7 +132,7 @@ if(FREECAD_USE_PCH)
     )
 endif(FREECAD_USE_PCH)
 
-SET_BIN_DIR(Path PathApp /Mod/CAM)
+SET_BIN_DIR(Path PathApp)
 SET_PYTHON_PREFIX_SUFFIX(Path)
 
 INSTALL(TARGETS Path DESTINATION ${CMAKE_INSTALL_LIBDIR})
@@ -142,11 +140,9 @@ INSTALL(TARGETS Path DESTINATION ${CMAKE_INSTALL_LIBDIR})
 add_library(tsp_solver SHARED tsp_solver_pybind.cpp tsp_solver.cpp)
 target_include_directories(tsp_solver PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${pybind11_INCLUDE_DIR})
 target_link_libraries(tsp_solver PRIVATE pybind11::module Python3::Python)
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(tsp_solver)
-endif()
+target_compile_warn_error(tsp_solver)
 
-SET_BIN_DIR(tsp_solver tsp_solver /Mod/CAM)
+SET_BIN_DIR(tsp_solver)
 SET_PYTHON_PREFIX_SUFFIX(tsp_solver)
 
 INSTALL(TARGETS tsp_solver DESTINATION ${CMAKE_INSTALL_LIBDIR})
@@ -169,7 +165,7 @@ if (FREECAD_WARN_ERROR)
 target_compile_warn_error(surface_generator)
 endif()
 
-SET_BIN_DIR(surface_generator surface_generator /Mod/CAM)
+SET_BIN_DIR(surface_generator)
 SET_PYTHON_PREFIX_SUFFIX(surface_generator)
 
 INSTALL(TARGETS surface_generator DESTINATION ${CMAKE_INSTALL_LIBDIR})

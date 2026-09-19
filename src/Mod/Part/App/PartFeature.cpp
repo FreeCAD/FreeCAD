@@ -1564,6 +1564,51 @@ void Feature::onChanged(const App::Property* prop)
     GeoFeature::onChanged(prop);
 }
 
+/// Find the nearest match for an element that has "drifted" from its expected location. Still has
+/// a tolerance cap internally to prevent it from going totally off the rails: the element really
+/// might just be gone.
+static std::vector<std::string> searchDriftedElement(
+    const TopoShape& shape,
+    const TopoShape& element,
+    const double startTolerance
+)
+{
+    constexpr double relativeToleranceCap = 1e-3;
+    Bnd_Box bounds;
+    BRepBndLib::Add(element.getShape(), bounds);
+    const double absoluteToleranceCap = relativeToleranceCap * std::sqrt(bounds.SquareExtent());
+    if (absoluteToleranceCap < startTolerance) {
+        // For example, for a lone vertex we are going to just give up because there's no reasonable
+        // tolerance we can use.
+        return {};
+    }
+    double tolerance = startTolerance;
+    while (tolerance <= absoluteToleranceCap) {
+        std::vector<std::string> names;
+        shape.findSubShapesWithSharedVertex(element, &names, Data::SearchOptions(), tolerance);
+        if (names.size() == 1) {
+            return names;
+        }
+        if (names.size() > 1) {
+            // We overshot... as a tiebreaker, add in the actual geometry check
+            names.clear();
+            shape.findSubShapesWithSharedVertex(
+                element,
+                &names,
+                Data::SearchOption::CheckGeometry,
+                tolerance
+            );
+            if (names.size() == 1) {
+                return names;
+            }
+            return {};  // Womp womp. TODO: maybe try bisecting the tolerance??
+        }
+        constexpr double toleranceStep = 2.0;  // Double each time
+        tolerance *= toleranceStep;
+    }
+    return {};
+}
+
 const std::vector<std::string>& Feature::searchElementCache(
     const std::string& element,
     Data::SearchOptions options,
@@ -1589,8 +1634,13 @@ const std::vector<std::string>& Feature::searchElementCache(
                 break;
             }
         }
-        propShape->getShape()
-            .findSubShapesWithSharedVertex(it->second.shape, &it->second.names, options, tol, atol);
+        if (options.testFlag(Data::SearchOption::AdaptiveTolerance)) {
+            it->second.names = searchDriftedElement(propShape->getShape(), it->second.shape, tol);
+        }
+        else {
+            propShape->getShape()
+                .findSubShapesWithSharedVertex(it->second.shape, &it->second.names, options, tol, atol);
+        }
         if (!it->second.names.empty()) {
             it->second.searched = true;
         }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- RampType dropdown icon: Linear (f = t).  viewBox height matches the
+     combo's iconSize (16px) exactly so there is no extra vertical scaling;
+     the curve occupies y=2..14, leaving a real 2px margin top and bottom. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 16" width="24" height="16">
+  <polyline fill="none" stroke="#3d85c6" stroke-width="2" stroke-linecap="round"
+    points="2.0,2.0 3.2,2.8 4.5,3.5 5.8,4.2 7.0,5.0 8.2,5.8 9.5,6.5 10.8,7.2 12.0,8.0 13.2,8.8 14.5,9.5 15.8,10.2 17.0,11.0 18.2,11.8 19.5,12.5 20.8,13.2 22.0,14.0"/>
+</svg>

@@ -4,6 +4,7 @@
 
 #include <gtest/gtest.h>
 
+#include <Base/CrashReporter/FaultCodes.h>
 #include <Base/CrashReporter/Reader.h>
 #include <Base/CrashReporter/Writer.h>
 #include <Base/CrashReporter/Manager.h>
@@ -14,18 +15,60 @@
 #include <cstring>  // IWYU pragma: keep
 #include <fstream>
 
-#ifdef _MSC_VER
+#ifdef FC_OS_WIN32
+# ifndef WIN32_LEAN_AND_MEAN
+#  define WIN32_LEAN_AND_MEAN
+# endif
+# ifndef NOMINMAX
+#  define NOMINMAX
+# endif
 # include <windows.h>
 # include <cstdlib>  // IWYU pragma: keep
 # include <Base/CrashReporter/WindowsCrashReporter.h>
+#else
+# include <csignal>
+# include <sys/resource.h>
 #endif
+
+/// For tests that need a fault that specifically contains an address
+constexpr std::uint32_t syntheticFaultCodeWithAddress()
+{
+#ifdef FC_OS_WIN32
+    return EXCEPTION_ACCESS_VIOLATION;
+#else
+    return SIGSEGV;
+#endif
+}
+
+/// The reverse of the above: a code that does *not* contain an address
+constexpr std::uint32_t syntheticFaultCodeWithoutAddress()
+{
+#ifdef FC_OS_WIN32
+    return EXCEPTION_STACK_OVERFLOW;
+#else
+    return SIGABRT;
+#endif
+}
+
+/// A check for the above: not general, specific to this test suite -- all tests below use this set
+/// of three utility methods to manage this bit of machinery.
+constexpr bool isAddressCarryingFaultCode(std::uint32_t code)
+{
+#ifdef FC_OS_WIN32
+    return code == syntheticFaultCodeWithAddress();
+#else
+    return code == syntheticFaultCodeWithAddress() || code == SIGBUS;
+#endif
+}
 
 // NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers,cppcoreguidelines-pro-bounds-pointer-arithmetic,cppcoreguidelines-pro-type-vararg,hicpp-vararg,cppcoreguidelines-owning-memory,cppcoreguidelines-avoid-non-const-global-variables,cert-err58-cpp)
 
 class CrashReporterTests: public testing::Test
 {
 public:
-    static std::vector<char> createGoodCrashReport();
+    static std::vector<char> createGoodCrashReport(
+        std::uint32_t faultCode = syntheticFaultCodeWithAddress()
+    );
 
     /// Sometimes we need a name that can actually be parsed (for example, to test `scan()`). This
     /// creates an on-disk file with a name that the code internals can parse.
@@ -44,10 +87,10 @@ public:
         bool withDump = false
     );
 
-    /// Check for existence of archived fcrash with this timestamp and PID
+    /// Check for the existence of archived fcrash with this timestamp and PID
     static bool archivedFcrashExists(const std::filesystem::path& dir, std::int64_t ts, int pid);
 
-    /// Check for existence of archived minidump with this timestamp and PID
+    /// Check for the existence of archived minidump with this timestamp and PID
     static bool archivedDumpExists(const std::filesystem::path& dir, std::int64_t ts, int pid);
 
 protected:
@@ -64,20 +107,31 @@ uint32_t addStringToTable(std::vector<char>& stringTable, const std::string& str
     return offset;
 }
 
-std::vector<char> CrashReporterTests::createGoodCrashReport()
+std::vector<char> CrashReporterTests::createGoodCrashReport(std::uint32_t faultCode)
 {
     std::vector<char> buffer;
 
     Base::CrashReporter::Header header;
+
+    // Always planted, whatever the fault code
     header.faultAddress = 0xDEADBEEFCAFEF00D;
+
     header.threadID = 0x1122334455667788;
     header.timestamp = 1700000000;
     header.processID = 0xABCD;
-    header.code = 11;  // SIGSEGV
+    header.code = faultCode;
     header.freecadVersionMajor = 5;
     header.freecadVersionMinor = 6;
     header.freecadVersionPatch = 7;
+#ifdef FC_OS_MACOSX
+    header.osID = Base::CrashReporter::OS::macOS;
+#elif defined(FC_OS_WIN32)
     header.osID = Base::CrashReporter::OS::Windows;
+#elif defined(FC_OS_LINUX)
+    header.osID = Base::CrashReporter::OS::Linux;
+#elif defined(FC_OS_BSD)
+    header.osID = Base::CrashReporter::OS::BSDFamily;
+#endif
     header.architectureID = Base::CrashReporter::Architecture::x64;
 
     std::vector<char> stringTable;
@@ -86,7 +140,6 @@ std::vector<char> CrashReporterTests::createGoodCrashReport()
 #else
     header.buildIDStringOffset = addStringToTable(stringTable, "R43210");
 #endif
-    header.exceptionMessageStringOffset = addStringToTable(stringTable, "A bad thing happened");
     header.freecadVersionSuffixStringOffset = addStringToTable(stringTable, "dev");
     header.minidumpPathStringOffset = Base::CrashReporter::NoString;
 
@@ -224,9 +277,22 @@ TEST_F(CrashReporterTests, parseGoodCrashReportLoads)  // NOLINT
         ofs.write(buffer.data(), static_cast<std::streamsize>(buffer.size()));
     }
     auto report = Base::CrashReporter::parse(fcrashPath.string());
+
+    // On all platforms we've specifically chosen a fault code that has an address, so make sure
+    // it's there:
     EXPECT_EQ(report.faultAddress, 0xDEADBEEFCAFEF00D);
     EXPECT_EQ(report.threadID, 0x1122334455667788);
+
+#ifdef FC_OS_MACOSX
+    EXPECT_EQ(report.osID, Base::CrashReporter::OS::macOS);
+#elif defined(FC_OS_WIN32)
     EXPECT_EQ(report.osID, Base::CrashReporter::OS::Windows);
+#elif defined(FC_OS_LINUX)
+    EXPECT_EQ(report.osID, Base::CrashReporter::OS::Linux);
+#elif defined(FC_OS_BSD)
+    EXPECT_EQ(report.osID, Base::CrashReporter::OS::BSDFamily);
+#endif
+
     EXPECT_EQ(report.architectureID, Base::CrashReporter::Architecture::x64);
     EXPECT_FALSE(report.partialWrite);
 #ifdef FCRepositoryHash
@@ -234,14 +300,61 @@ TEST_F(CrashReporterTests, parseGoodCrashReportLoads)  // NOLINT
 #else
     EXPECT_EQ(report.buildID, "R43210");
 #endif
-    EXPECT_EQ(report.exceptionMessage, "A bad thing happened");
-    EXPECT_TRUE(report.minidumpPath.empty());  // NoString -> empty
+    EXPECT_FALSE(report.minidumpPath.has_value());
     ASSERT_EQ(report.stackFrames.size(), 4U);
     EXPECT_EQ(report.stackFrames.at(0).rawAddress, 0x11111111U);
     EXPECT_EQ(report.stackFrames.at(0).modulePath, "Module1");
     EXPECT_EQ(report.stackFrames.at(1).modulePath, "Module1");  // deduped offset
     EXPECT_EQ(report.stackFrames.at(2).modulePath, "Module2");
     EXPECT_TRUE(report.stackFrames.at(3).modulePath.empty());  // NoString frame
+}
+
+TEST_F(CrashReporterTests, parseDropsFaultAddressForCodeThatHasNone)  // NOLINT
+{
+    auto fcrashPath = tempDir.path() / "no_fault_address.fcrash";
+    {
+        std::ofstream ofs(fcrashPath, std::ios::binary);
+        auto buffer = createGoodCrashReport(syntheticFaultCodeWithoutAddress());
+        ofs.write(buffer.data(), static_cast<std::streamsize>(buffer.size()));
+    }
+    auto report = Base::CrashReporter::parse(fcrashPath.string());
+
+    // The record carries 0xDEADBEEFCAFEF00D like every other fixture, but this fault code has no
+    // faulting data address, so the Reader must drop it rather than pass it on.
+    EXPECT_FALSE(report.faultAddress.has_value());
+    EXPECT_EQ(report.code, syntheticFaultCodeWithoutAddress());
+
+    // The record is well-formed: everything else must still parse.
+    EXPECT_FALSE(report.partialWrite);
+    EXPECT_EQ(report.threadID, 0x1122334455667788);
+    EXPECT_EQ(report.processID, 0xABCDU);
+    ASSERT_EQ(report.stackFrames.size(), 4U);
+}
+
+TEST_F(CrashReporterTests, parseNamesUnrecognizedFaultCodeWithItsHexValue)  // NOLINT
+{
+    // Not a valid fault code on any platform we support, so it cannot be in the lookup table.
+    constexpr std::uint32_t unrecognizedCode = std::numeric_limits<std::uint32_t>::max();
+
+    auto fcrashPath = tempDir.path() / "unrecognized_fault_code.fcrash";
+    {
+        std::ofstream ofs(fcrashPath, std::ios::binary);
+        auto buffer = createGoodCrashReport(unrecognizedCode);
+        ofs.write(buffer.data(), static_cast<std::streamsize>(buffer.size()));
+    }
+    auto report = Base::CrashReporter::parse(fcrashPath.string());
+
+    // The exact spelling is deliberately pinned: downstream consumers might be doing something with
+    // this, don't change it without good cause. (The address doesn't matter, but the form does)
+    EXPECT_EQ(report.faultName, "UNKNOWN(0xFFFFFFFF)");
+
+    // Nothing is known about the code, so nothing can be claimed about its address either.
+    EXPECT_FALSE(report.faultAddress.has_value());
+
+    // The record itself is well-formed: only the code is unrecognized.
+    EXPECT_FALSE(report.partialWrite);
+    EXPECT_EQ(report.code, unrecognizedCode);
+    ASSERT_EQ(report.stackFrames.size(), 4U);
 }
 
 TEST_F(CrashReporterTests, parseBadMagicNumber)  // NOLINT
@@ -396,9 +509,14 @@ std::string findSoleFcrashIn(const std::string& path)
 #else
 # define FC_NOINLINE __attribute__((noinline))
 #endif
+// The target is loaded through a volatile pointer so that the compiler cannot see a literal null.
+// Given one, GCC at -O2 proves the store is unreachable UB and deletes the call to this function,
+// leaving the release build with nothing to crash on.
+static int* volatile deliberateNullTarget = nullptr;
+
 extern "C" FC_NOINLINE void crashReporterFaultSite()
 {
-    volatile int* p = nullptr;
+    volatile int* p = deliberateNullTarget;
     *p = 13;
     std::atomic_signal_fence(std::memory_order_seq_cst);  // defeat tail-call/reorder
 }
@@ -425,6 +543,11 @@ static void installAndCrash(const std::string& crashDir)
 {
 #ifdef _MSC_VER
     SetErrorMode(SEM_NOGPFAULTERRORBOX | SEM_FAILCRITICALERRORS);
+#else
+    // These tests crash on purpose, several times per run on three platforms. Without this the
+    // build directory (and /cores on macOS) collects dumps nobody asked for.
+    const rlimit noCoreDumps {0, 0};
+    setrlimit(RLIMIT_CORE, &noCoreDumps);
 #endif
     Base::CrashReporter::Writer::prewarm();
     Base::CrashReporter::Writer::install(crashDir);
@@ -432,6 +555,65 @@ static void installAndCrash(const std::string& crashDir)
     Base::CrashReporter::WindowsCrashReporter::install(crashDir);
 #endif
     crashReporterFaultSite();
+}
+
+// Windows needs --gtest_catch_exceptions=0, because gtest's own SEH handler would otherwise eat
+// the fault before SetUnhandledExceptionFilter sees it. That flag cannot be assumed in CI, so the
+// assertion test runs automatically on POSIX only;
+#ifdef _MSC_VER
+# define FC_REAL_CAPTURE_TEST DISABLED_realCrashCapturesUsableFrames
+#else
+# define FC_REAL_CAPTURE_TEST realCrashCapturesUsableFrames
+#endif
+
+TEST_F(CrashReporterTests, FC_REAL_CAPTURE_TEST)  // NOLINT
+{
+    const std::string crashDir = resolveCrashDir(tempDir);
+    EXPECT_DEATH(installAndCrash(crashDir), "");  // NOLINT
+
+    const auto path = findSoleFcrashIn(crashDir);
+    ASSERT_FALSE(path.empty());
+    const auto report = Base::CrashReporter::parse(path);
+
+    // The point of the whole exercise: a real crash has to produce a real stack.
+    ASSERT_GT(report.stackFrames.size(), 0U);
+
+    // Every frame must carry a genuine instruction address.
+    for (const auto& frame : report.stackFrames) {
+        EXPECT_NE(frame.rawAddress, 0U);
+    }
+
+    // At least one frame must be attributed to a module. Not all of them: an unattributable frame
+    // is legitimate and is recorded with NoString
+    EXPECT_TRUE(std::ranges::any_of(report.stackFrames, [](const auto& frame) {
+        return !frame.modulePath.empty();
+    }));
+
+    // A symbol is a function name. When a frame resolves from a symbol table rather than from
+    // debug information the symbolicator appends "+ <offset>", which would put a byte offset into
+    // the key consumers group crashes by, so the Reader trims it.
+    for (const auto& frame : report.stackFrames) {
+        if (!frame.symbol.has_value()) {
+            continue;
+        }
+        const auto& symbol = frame.symbol.value();
+        const auto plus = symbol.rfind(" + ");
+        const bool endsWithOffset = plus != std::string::npos
+            && symbol.find_first_not_of("0123456789", plus + 3) == std::string::npos;
+        EXPECT_FALSE(endsWithOffset) << "symbol still carries an offset: " << symbol;
+    }
+
+    // `file` is a source file. A frame with no debug information has none, and must not fall back
+    // to naming the object it resolved against.
+    for (const auto& frame : report.stackFrames) {
+        if (frame.file.has_value()) {
+            EXPECT_NE(frame.file.value(), frame.modulePath);
+        }
+    }
+
+    EXPECT_TRUE(isAddressCarryingFaultCode(report.code)) << "unexpected fault code: " << report.code;
+    EXPECT_TRUE(report.faultAddress.has_value());
+    EXPECT_FALSE(report.partialWrite);
 }
 
 // This test is always disabled in CI runs: to run it, use a direct manual call:
@@ -454,7 +636,7 @@ TEST_F(CrashReporterTests, DISABLED_DeliberateSegfaultRoundTrip)  // NOLINT
     // Keep this code around: you can uncomment it to check out a new/different OS's call stack
     // to add those symbols to the skip-list
     for (std::size_t i = 0; i < report.stackFrames.size(); ++i) {
-        std::printf("[%2zu] %s\n", i, report.stackFrames.at(i).symbol.c_str());
+        std::printf("[%2zu] %s\n", i, report.stackFrames.at(i).symbol.value_or("<unresolved>").c_str());
     }
     std::fflush(stdout);
     // END DISCOVERY CODE
@@ -509,12 +691,12 @@ TEST_F(CrashReporterTests, trimLeadingPlumbingFramesKeepsUnsymbolicatedTopFrame)
 {
     const std::vector<Base::CrashReporter::ParsedFrame> frames = {
         {.symbol = "__kernel_rt_sigreturn"},
-        {.symbol = ""},  // unsymbolicated: treated as real
+        {.symbol = std::nullopt},  // unsymbolicated: treated as real
         {.symbol = "App::foo()"},
     };
     const auto trimmed = Base::CrashReporter::trimLeadingPlumbingFrames(frames);
     EXPECT_EQ(trimmed.size(), frames.size() - 1);
-    EXPECT_TRUE(trimmed.front().symbol.empty());  // Our unsymbolicated frame is still here
+    EXPECT_FALSE(trimmed.front().symbol.has_value());  // Our unsymbolicated frame is still here
 }
 
 
@@ -627,6 +809,39 @@ TEST_F(CrashReporterTests, clearRemovesEverything)  // NOLINT
 TEST_F(CrashReporterTests, clearBeforeScanDoesNothing)  // NOLINT
 {
     Base::CrashReporter::Manager::clear();  // Doesn't crash, throw, etc.
+}
+
+TEST_F(CrashReporterTests, scanSetsOSVersionWhenPresent)  // NOLINT
+{
+    // Arrange
+    const auto buffer = createGoodCrashReport();
+    placeReport(tempDir.path(), 1700000000, 1234, buffer);
+
+    // Act
+    Base::CrashReporter::Manager::scan(tempDir.string(), {}, "The best version");
+    const auto& reports = Base::CrashReporter::Manager::reports();
+    ASSERT_EQ(reports.size(), 1U);
+
+    // Assert
+    const auto osVersion = reports.at(0).osVersion;
+    EXPECT_EQ(osVersion, "The best version");
+}
+
+TEST_F(CrashReporterTests, scanDoesNotSetOSVersionWhenNotPresent)  // NOLINT
+{
+    // Arrange
+    const auto buffer = createGoodCrashReport();
+    placeReport(tempDir.path(), 1700000000, 1234, buffer);
+
+    // Act
+    Base::CrashReporter::Manager::
+        scan(tempDir.string(), {} /*, No version string set here: defaults to an empty optional*/);
+    const auto& reports = Base::CrashReporter::Manager::reports();
+    ASSERT_EQ(reports.size(), 1U);
+
+    // Assert
+    const auto osVersion = reports.at(0).osVersion;
+    EXPECT_FALSE(osVersion.has_value());
 }
 
 
@@ -778,5 +993,33 @@ TEST_F(CrashReporterTests, retentionDeletesCompanionDump)  // NOLINT
     EXPECT_FALSE(archivedFcrashExists(tempDir.path(), now - (200 * secondsPerDay), 1236));
     EXPECT_FALSE(archivedDumpExists(tempDir.path(), now - (200 * secondsPerDay), 1236));
 }
+
+TEST_F(CrashReporterTests, faultAddressIsMeaningfulReturnsFalseForCodeWithoutAddress)  // NOLINT
+{
+    EXPECT_FALSE(Base::CrashReporter::faultAddressIsMeaningful(syntheticFaultCodeWithoutAddress()));
+}
+
+TEST_F(CrashReporterTests, faultAddressIsMeaningfulReturnsTrueForCodeWithAddress)  // NOLINT
+{
+    // Spot check (don't bother with an exhaustive test, it's tautological)
+    EXPECT_TRUE(Base::CrashReporter::faultAddressIsMeaningful(syntheticFaultCodeWithAddress()));
+}
+
+TEST_F(CrashReporterTests, describeFaultCodeGivesValidResultForValidCode)  // NOLINT
+{
+    // Spot check (don't bother with an exhaustive test, it's tautological)
+    auto description = Base::CrashReporter::describeFaultCode(syntheticFaultCodeWithAddress());
+    ASSERT_NE(description, std::nullopt);
+    EXPECT_FALSE(description->name.empty());
+}
+
+TEST_F(CrashReporterTests, describeFaultCodeGivesNulloptForBadCode)  // NOLINT
+{
+    auto description = Base::CrashReporter::describeFaultCode(
+        std::numeric_limits<std::uint32_t>::max()
+    );
+    EXPECT_EQ(description, std::nullopt);
+}
+
 
 // NOLINTEND(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers,cppcoreguidelines-pro-bounds-pointer-arithmetic,cppcoreguidelines-pro-type-vararg,hicpp-vararg,cppcoreguidelines-owning-memory,cppcoreguidelines-avoid-non-const-global-variables,cert-err58-cpp)

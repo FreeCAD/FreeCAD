@@ -36,6 +36,7 @@ from CAMTests import PathTestUtils
 from CAMTests import PostTestMocks
 from Path.Base.MachineState import MachineState
 from Path.Post.Processor import PostProcessorFactory
+from Path.Post.CAMErrors import CAMValueError
 from Machine.models.machine import Machine, Toolhead, ToolheadType, OutputUnits
 
 Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -75,7 +76,6 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
         self.post._machine.output.units = OutputUnits.METRIC
 
         self.post.apply_configuration_bundle()
-        import json
 
         self.post._machine.name = "Test ShopBot Machine"
         toolhead = Toolhead(
@@ -214,7 +214,7 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
         """
         command = Path.Command("G1", {"X": 13.1})
         result = self.post._convert_linear_move(command)
-        self.assertIn(f"G1 X13.100", result)
+        self.assertIn("G1 X13.100", result)
 
     def test_linear_y(self):
         """G1 Y-only"""
@@ -366,7 +366,7 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
 
                 # exception
                 self.assertRaisesRegex(
-                    ValueError,
+                    CAMValueError,
                     r"Arcs require a previous " + required,
                     self.post._convert_arc_move,
                     command,
@@ -385,7 +385,7 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
                 self.post.machine_state.addCommand(command)
 
                 self.assertRaisesRegex(
-                    ValueError,
+                    CAMValueError,
                     r"missing \['" + missing + r"'\]",
                     self.post._convert_arc_move,
                     command,
@@ -998,12 +998,13 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
 
         self.profile_op.Path = Path.Path(
             [
-                Path.Command("G1 X1 Y2 Z9"),  # "Z3"
+                Path.Command("G1 X1 Y2 Z9"),
                 Path.Command("G1 X1 Y2 Z3"),  # "Z3" is a shopbot command
             ]
         )
         gcode = self.post.export2()[0][1]
 
+        # We expect dup-params removed, and the command-name (dup command)
         self.no_unnumbered("Z3.000", gcode.splitlines())
 
     def test_G82(self):
@@ -1082,8 +1083,8 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
 
         # First probe open
         file = "probe_results.txt"
-        open_cmd = Path.Command("(begin probe ...)", {}, {"probe_open": file})
-        gcode = self.post._convert_probe_open(open_cmd)
+        open_comment = Path.Command("(begin probe ...)", {}, {"probe_open": file})
+        gcode = self.post._convert_probe_open(open_comment)
 
         self.assertIn("CaptureZPos:", gcode, "Has subroutines once/job")
         self.assertRegex(
@@ -1094,8 +1095,8 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
 
         # Second probe open (check subroutines added only once)
         file = "probe_results2.txt"
-        open_cmd = Path.Command("(begin probe ...)", {}, {"probe_open": file})
-        _ = self.post._convert_probe_open(open_cmd)
+        open_comment = Path.Command("(begin probe ...)", {}, {"probe_open": file})
+        _ = self.post._convert_probe_open(open_comment)
         subroutine_markers = [
             line for line in self.post.values["POST_JOB"].split("\n") if line in "CaptureZPos:"
         ]
@@ -1132,7 +1133,7 @@ IF &hit = 0 THEN GOTO FailedToTouch
         with self.assertRaisesRegex(Exception, "must have a Z and F"):
             _ = self.post._convert_probe(Path.Command(f"G38.2 F{5/60}"))
 
-        with self.assertRaisesRegex(Exception, "must only have Z and F"):
+        with self.assertRaisesRegex(Exception, "must only have Z, F, and N"):
             _ = self.post._convert_probe(Path.Command(f"G38.2 X1 Z5 F{5/60}"))
 
     def test_convert_probe_close(self):
@@ -1147,19 +1148,3 @@ IF &hit = 0 THEN GOTO FailedToTouch
         # minimal check
         gcode = self.post._convert_probe_close(close)
         self.assertIn("CLOSE #1", gcode)
-
-    @unittest.expectedFailure
-    def test_todo(self):
-        self.assertTrue(False, "probe")
-        self.assertTrue(False, "diff precision for mm|in")
-        self.assertTrue(False, "test on machine G20/G21")
-        self.assertTrue(False, "precision conversion should round +1 digit, then precision")
-        self.assertTrue(
-            False,
-            "test_rapid_z should fail, should have 3 digits of precision? or test_rapid_xy should fail should have .0",
-        )
-        self.assertTrue(False, "do not like _convert_generic")
-        self.assertTrue(False, "test in/sec conversion")
-        self.assertTrue(False, "block-delete isn't spb compatible")
-        self.assertTrue(False, "Add Must Line Number for modal resulting in Zn")
-        # comments stripped, no-headers, etc.

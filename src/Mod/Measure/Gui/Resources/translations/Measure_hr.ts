@@ -533,22 +533,22 @@
       <translation>Inercija</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="425"/>
+      <location filename="../../TaskMassProperties.cpp" line="434"/>
       <source>Close</source>
       <translation>Zatvori</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="428"/>
+      <location filename="../../TaskMassProperties.cpp" line="437"/>
       <source>Save</source>
       <translation>Spremi</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="432"/>
+      <location filename="../../TaskMassProperties.cpp" line="441"/>
       <source>Reset</source>
       <translation>Odbaci</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="1217"/>
+      <location filename="../../TaskMassProperties.cpp" line="1218"/>
       <source> (Average)</source>
       <translation type="unfinished"> (Average)</translation>
     </message>

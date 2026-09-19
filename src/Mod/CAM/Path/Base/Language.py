@@ -22,6 +22,7 @@
 
 import Constants
 import FreeCAD
+from freecad.deprecation import deprecated
 import Path
 import math
 
@@ -198,12 +199,12 @@ class MoveArc(Instruction):
         s1 = Path.Geom.getAngle(end - center)
 
         if self.isCW():
-            while s0 < s1:
+            while s0 <= s1:
                 s0 = s0 + 2 * math.pi
             return s0 - s1
 
         # CCW
-        while s1 < s0:
+        while s1 <= s0:
             s1 = s1 + 2 * math.pi
         return s1 - s0
 
@@ -287,5 +288,8 @@ class Maneuver(object):
         return maneuver
 
     @classmethod
+    @deprecated(
+        deprecated_in="26.3", removed_in="27.2", replacement="Path.Path([Path.Command(x) for x...])"
+    )
     def FromGCode(cls, gcode, begin=None):
         return cls.FromPath(Path.Path(gcode), begin)

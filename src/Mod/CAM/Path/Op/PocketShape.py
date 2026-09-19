@@ -1,25 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2017 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
@@ -158,7 +156,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         Path.Log.error(
                             translate(
                                 "Pocket_Shape",
-                                "Pocke_Shape can not process open wire.\nYou can enable feature Close Open Path",
+                                "Pocket_Shape can not process open wire."
+                                "\nYou can enable feature Close Open Path",
                             )
                         )
                         continue
@@ -324,16 +323,23 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             endFaces.append(face)
 
                     # Add helper edge and try getEnvelope again
-                    if len(endFaces) == 2:  # should be only two end faces
+                    points = None
+                    if len(endFaces) == 1:
+                        face = endFaces[0]
+                        if slc := face.slice(FreeCAD.Vector(0, 0, 1), face.BoundBox.Center.z):
+                            wire = slc[0]
+                            points = wire.OrderedVertexes[0].Point, wire.OrderedVertexes[-1].Point
+                    elif len(endFaces) == 2:
                         points = []  # farest points which should be connected
                         for face in endFaces:
                             candidates.remove(face)
                             comp = Part.Compound(candidates)
                             tPoint = face.distToShape(comp)[1][0][0]  # face touched compound here
                             ps = [(v.Point.distanceToPoint(tPoint), v.Point) for v in face.Vertexes]
-                            p = sorted(ps, key=lambda tup: tup[0])[-1][1]  # farest point
+                            p = max(ps, key=lambda tup: tup[0])[1]  # farest point
                             points.append(p)
-
+                            candidates.append(face)
+                    if points:
                         edge = Part.makeLine(*points)
                         newComp = Part.Compound([vertCon, edge])
                         try:
