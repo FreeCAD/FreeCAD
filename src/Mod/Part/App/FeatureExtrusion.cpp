@@ -118,9 +118,11 @@ void restoreFaceMakerMode(Extrusion* self)
     }
 }
 
-void publishExtrusionSemanticHistory(Extrusion* self,
-                                     BRepPrimAPI_MakePrism* maker,
-                                     const TopoShape& published)
+void publishExtrusionSemanticHistory(
+    Extrusion* self,
+    BRepPrimAPI_MakePrism* maker,
+    const TopoShape& published
+)
 {
     if (!self || !maker || !maker->IsDone() || published.isNull()) {
         return;
@@ -138,7 +140,8 @@ void publishExtrusionSemanticHistory(Extrusion* self,
         eval = doc->semanticState().currentEval();
     }
     std::deque<TopoDS_Shape> held;
-    struct Candidate {
+    struct Candidate
+    {
         App::ElementIndex index;
         App::SemanticKind kind = App::SemanticKind::Face;
     };
@@ -147,8 +150,7 @@ void publishExtrusionSemanticHistory(Extrusion* self,
         return App::shouldRefuseBoundAt(graph, selfId, index);
     };
     auto addImage = [&](const TopoDS_Shape& image) {
-        if (image.IsNull()
-            || (image.ShapeType() != TopAbs_FACE && image.ShapeType() != TopAbs_EDGE)) {
+        if (image.IsNull() || (image.ShapeType() != TopAbs_FACE && image.ShapeType() != TopAbs_EDGE)) {
             return;
         }
         for (const auto& prior : held) {
@@ -169,8 +171,8 @@ void publishExtrusionSemanticHistory(Extrusion* self,
         held.push_back(image);
         Candidate candidate;
         candidate.index = index;
-        candidate.kind = image.ShapeType() == TopAbs_FACE
-            ? App::SemanticKind::Face : App::SemanticKind::Edge;
+        candidate.kind = image.ShapeType() == TopAbs_FACE ? App::SemanticKind::Face
+                                                          : App::SemanticKind::Edge;
         candidates.push_back(candidate);
     };
     for (TopExp_Explorer ex(maker->Shape(), TopAbs_FACE); ex.More(); ex.Next()) {
@@ -213,8 +215,8 @@ void publishExtrusionSemanticHistory(Extrusion* self,
             record.fromSeed = pair.first;
             record.kind = App::EventKind::Generated;
             record.toIndex = indexOf(pair.second);
-            record.outputKind = record.toIndex.type == "Edge"
-                ? App::SemanticKind::Edge : App::SemanticKind::Face;
+            record.outputKind = record.toIndex.type == "Edge" ? App::SemanticKind::Edge
+                                                              : App::SemanticKind::Face;
             if (isNamedIndex(record.toIndex)) {
                 unique.push_back(record);
             }
@@ -236,12 +238,11 @@ void publishExtrusionSemanticHistory(Extrusion* self,
         }
         App::SemanticKind kind = record.outputKind;
         if (kind != App::SemanticKind::Face && kind != App::SemanticKind::Edge) {
-            kind = record.toIndex.type == "Edge"
-                ? App::SemanticKind::Edge : App::SemanticKind::Face;
+            kind = record.toIndex.type == "Edge" ? App::SemanticKind::Edge : App::SemanticKind::Face;
         }
         // A3 deferred mint: allocate only for unique surviving Face/Edge slots.
-        const App::SemanticId seed = graph->recordGenerated(
-            kind, Part::OpCodes::Extrude, selfId, eval, App::SemanticRole::None);
+        const App::SemanticId seed
+            = graph->recordGenerated(kind, Part::OpCodes::Extrude, selfId, eval, App::SemanticRole::None);
         if (!seed.valid()) {
             continue;
         }
@@ -256,8 +257,7 @@ void publishExtrusionSemanticHistory(Extrusion* self,
         Part::testsPublishDiagSkip("extrusionDiag", "no unique images");
         return;
     }
-    SemanticHistoryAdapter::applyHistory(
-        graph, selfId, eval, Part::OpCodes::Extrude, seeds, toApply);
+    SemanticHistoryAdapter::applyHistory(graph, selfId, eval, Part::OpCodes::Extrude, seeds, toApply);
     Part::testsPublishDiagBound("extrusionDiag", toApply.size(), toApply.size());
 }
 }  // namespace
@@ -566,8 +566,8 @@ App::DocumentObjectExecReturn* Extrusion::execute()
     try {
         ExtrusionParameters params = computeFinalParameters();
         TopoShape result(0, getDocument()->getStringHasher());
-        TopoShape source =
-            Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform);
+        TopoShape source
+            = Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform);
         std::unique_ptr<BRepPrimAPI_MakePrism> livePrism;
         extrudeShape(result, source, params, &livePrism);
         this->Shape.setValue(result);

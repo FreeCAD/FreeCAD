@@ -2250,14 +2250,15 @@ template class SketcherExport FeaturePythonT<Sketcher::SketchObject>;
 
 // --- Toponaming sketch entity / semantic seed helpers ---
 
-std::vector<SketchEntityHandle> SketchObject::entityIdsFromTopoWire(const Part::TopoShape &wire) const
+std::vector<SketchEntityHandle> SketchObject::entityIdsFromTopoWire(const Part::TopoShape& wire) const
 {
     std::vector<std::string> names;
     const unsigned long n = wire.countSubShapes(TopAbs_EDGE);
     names.reserve(static_cast<std::size_t>(n));
     for (unsigned long i = 1; i <= n; ++i) {
-        Data::MappedName mapped =
-            wire.getMappedName(Data::IndexedName::fromConst("Edge", static_cast<int>(i)));
+        Data::MappedName mapped = wire.getMappedName(
+            Data::IndexedName::fromConst("Edge", static_cast<int>(i))
+        );
         if (mapped) {
             names.push_back(mapped.toString());
         }
@@ -2265,7 +2266,7 @@ std::vector<SketchEntityHandle> SketchObject::entityIdsFromTopoWire(const Part::
     return SketchEntityIdMap::entityIdsFromMappedNames(names);
 }
 
-void SketchObject::stampInternalFaceRegionKeys(Part::TopoShape &faces) const
+void SketchObject::stampInternalFaceRegionKeys(Part::TopoShape& faces) const
 {
     lastInternalRegionStamps.clear();
     if (faces.isNull()) {
@@ -2275,7 +2276,7 @@ void SketchObject::stampInternalFaceRegionKeys(Part::TopoShape &faces) const
     const auto faceList = faces.getSubTopoShapes(TopAbs_FACE);
     std::vector<SketchEntityIdMap::FaceWires> specs;
     specs.reserve(faceList.size());
-    for (const auto &face : faceList) {
+    for (const auto& face : faceList) {
         SketchEntityIdMap::FaceWires spec;
         std::vector<Part::TopoShape> inners;
         Part::TopoShape outer = face.splitWires(&inners, Part::TopoShape::NoReorient);
@@ -2284,7 +2285,7 @@ void SketchObject::stampInternalFaceRegionKeys(Part::TopoShape &faces) const
             spec.outer = entityIdsFromTopoWire(outer);
         }
         spec.inners.reserve(inners.size());
-        for (auto &inner : inners) {
+        for (auto& inner : inners) {
             inner.mapSubElement(face);
             spec.inners.push_back(entityIdsFromTopoWire(inner));
         }
@@ -2295,15 +2296,17 @@ void SketchObject::stampInternalFaceRegionKeys(Part::TopoShape &faces) const
     if (!faces.hasElementMap()) {
         faces.resetElementMap(std::make_shared<Data::ElementMap>());
     }
-    for (const auto &st : lastInternalRegionStamps) {
+    for (const auto& st : lastInternalRegionStamps) {
         if (st.faceIndex <= 0 || st.key.empty()) {
             continue;
         }
-        faces.setElementName(Data::IndexedName::fromConst("Face", st.faceIndex),
-                             Data::MappedName(st.key),
-                             0L,
-                             nullptr,
-                             /*overwrite*/true);
+        faces.setElementName(
+            Data::IndexedName::fromConst("Face", st.faceIndex),
+            Data::MappedName(st.key),
+            0L,
+            nullptr,
+            /*overwrite*/ true
+        );
     }
 }
 
@@ -2335,7 +2338,8 @@ void SketchObject::rebuildEntityIdMapFromGeometry()
     publishSemanticSeeds();
 }
 
-namespace {
+namespace
+{
 bool hasProfileEndpoints(const Part::Geometry* geo)
 {
     if (!geo) {
@@ -2403,7 +2407,11 @@ std::vector<SketchVertexKey> SketchObject::uniqueProfileCornerKeys()
         }
     }
     auto unique = SketchSemanticSeeds::uniqueProfileCorners(
-        endpoints, coincidences, points, Precision::Confusion());
+        endpoints,
+        coincidences,
+        points,
+        Precision::Confusion()
+    );
 
     const Part::TopoShape& shape = Shape.getShape();
     if (shape.isNull() || unique.size() < 2) {
@@ -2421,8 +2429,10 @@ std::vector<SketchVertexKey> SketchObject::uniqueProfileCornerKeys()
         if (slot < 0 || slot >= static_cast<int>(geos.size())) {
             return Base::Vector3d(0.0, 0.0, 0.0);
         }
-        Base::Vector3d local = SketchObject::getPoint(geos[static_cast<std::size_t>(slot)],
-                                                     static_cast<PointPos>(key.pos));
+        Base::Vector3d local = SketchObject::getPoint(
+            geos[static_cast<std::size_t>(slot)],
+            static_cast<PointPos>(key.pos)
+        );
         Base::Vector3d world;
         plm.multVec(local, world);
         return world;
@@ -2474,11 +2484,13 @@ App::SemanticId SketchObject::ensureSeedForEntity(SketchEntityHandle handle)
     if (!doc) {
         return {};
     }
-    return SketchSemanticSeeds::ensureSeedForEntity(doc->semanticGraph(),
-                                                    static_cast<App::ObjectId>(getID()),
-                                                    doc->semanticState().currentEval(),
-                                                    handle,
-                                                    App::SemanticKind::Edge);
+    return SketchSemanticSeeds::ensureSeedForEntity(
+        doc->semanticGraph(),
+        static_cast<App::ObjectId>(getID()),
+        doc->semanticState().currentEval(),
+        handle,
+        App::SemanticKind::Edge
+    );
 }
 
 std::vector<App::SemanticId> SketchObject::seedsForProfile()
@@ -2489,12 +2501,14 @@ std::vector<App::SemanticId> SketchObject::seedsForProfile()
     }
     const auto live = entityIds.live();
     const auto corners = uniqueProfileCornerKeys();
-    const auto profile = SketchSemanticSeeds::seedsForProfile(doc->semanticGraph(),
-                                                              static_cast<App::ObjectId>(getID()),
-                                                              doc->semanticState().currentEval(),
-                                                              live,
-                                                              {},
-                                                              corners);
+    const auto profile = SketchSemanticSeeds::seedsForProfile(
+        doc->semanticGraph(),
+        static_cast<App::ObjectId>(getID()),
+        doc->semanticState().currentEval(),
+        live,
+        {},
+        corners
+    );
     return profile.curves;
 }
 
@@ -2537,11 +2551,13 @@ std::vector<App::SemanticId> SketchObject::regionSeedsForProfile()
         return {};
     }
     const std::vector<std::string> keys = regionKeysFromStampsOrProfileWires();
-    const auto profile = SketchSemanticSeeds::seedsForProfile(doc->semanticGraph(),
-                                                              static_cast<App::ObjectId>(getID()),
-                                                              doc->semanticState().currentEval(),
-                                                              {},
-                                                              keys);
+    const auto profile = SketchSemanticSeeds::seedsForProfile(
+        doc->semanticGraph(),
+        static_cast<App::ObjectId>(getID()),
+        doc->semanticState().currentEval(),
+        {},
+        keys
+    );
     return profile.regions;
 }
 

@@ -120,8 +120,8 @@ App::DocumentObjectExecReturn* Fillet::execute()
     collectDressUpBaseSeeds(req);
     // R2: resolve FilletEdge before makeElementFillet. Missing / Incompatible
     // skips the maker. Do not pick a similar-length neighbour (I10).
-    const Part::FilletPreflight pre =
-        Part::SemanticHistoryAdapter::preflightFillet(graph, req.filletEdges);
+    const Part::FilletPreflight pre
+        = Part::SemanticHistoryAdapter::preflightFillet(graph, req.filletEdges);
     // During a restore-only republish the graph has no live Bindings yet, so a
     // valid restored seed resolves as Missing even though its cached Base
     // subname is still authoritative for rebuilding the shape.
@@ -139,12 +139,11 @@ App::DocumentObjectExecReturn* Fillet::execute()
     }
 
     if (graph && graph->hasBindings() && Base.getValue()) {
-        const App::ObjectId baseFeature =
-            static_cast<App::ObjectId>(Base.getValue()->semanticProjectionFeatureId());
-        retainResolvedDressUpSeeds(
-            graph, baseFeature, App::SemanticKind::Edge, req.filletEdges);
-        retainResolvedDressUpSeeds(
-            graph, baseFeature, App::SemanticKind::Face, req.filletAdjacentFaces);
+        const App::ObjectId baseFeature = static_cast<App::ObjectId>(
+            Base.getValue()->semanticProjectionFeatureId()
+        );
+        retainResolvedDressUpSeeds(graph, baseFeature, App::SemanticKind::Edge, req.filletEdges);
+        retainResolvedDressUpSeeds(graph, baseFeature, App::SemanticKind::Face, req.filletAdjacentFaces);
     }
 
     // Candidate A/B (manual-3-dressup-relink-a): getContinuousEdges refreshes
@@ -226,11 +225,12 @@ App::DocumentObjectExecReturn* Fillet::execute()
         std::deque<TopoDS_Shape> held;
         std::vector<std::pair<App::SemanticId, const void*>> inputs;
         if (graph && Base.getValue()) {
-            const App::ObjectId baseFeature =
-                static_cast<App::ObjectId>(Base.getValue()->semanticProjectionFeatureId());
+            const App::ObjectId baseFeature = static_cast<App::ObjectId>(
+                Base.getValue()->semanticProjectionFeatureId()
+            );
             for (const App::SemanticId& edge : req.filletEdges) {
-                const auto unique = uniqueResolvedDressUpBinding(
-                    graph, edge, baseFeature, App::SemanticKind::Edge);
+                const auto unique
+                    = uniqueResolvedDressUpBinding(graph, edge, baseFeature, App::SemanticKind::Edge);
                 if (!unique) {
                     continue;
                 }
@@ -255,7 +255,7 @@ App::DocumentObjectExecReturn* Fillet::execute()
             }
             if (!alreadyCaptured) {
                 held.push_back(selectedShape);
-                inputs.push_back({App::SemanticId{}, &held.back()});
+                inputs.push_back({App::SemanticId {}, &held.back()});
             }
         }
         auto indexOf = [&shape](const void* occ) -> App::ElementIndex {
@@ -293,14 +293,19 @@ App::DocumentObjectExecReturn* Fillet::execute()
             }
         }
         const Part::ApplyResult applied = Part::SemanticHistoryAdapter::applyHistory(
-            graph, fid, eval, "Fillet", req.filletEdges, toApply);
+            graph,
+            fid,
+            eval,
+            "Fillet",
+            req.filletEdges,
+            toApply
+        );
         if (applied.boundCount == 0) {
             SemanticEmitter::afterExecute(graph, Opcode::Fillet, fid, eval, req);
         }
         if (semanticRepublish) {
             AfterExecuteRequest profileReq;
-            SemanticEmitter::appendInverseProfileFaceIndices(
-                this, shape, profileReq.namedFaceIndices);
+            SemanticEmitter::appendInverseProfileFaceIndices(this, shape, profileReq.namedFaceIndices);
             if (!profileReq.namedFaceIndices.empty()) {
                 SemanticEmitter::afterExecute(graph, Opcode::Fillet, fid, eval, profileReq);
             }

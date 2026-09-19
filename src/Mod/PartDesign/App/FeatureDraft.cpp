@@ -144,7 +144,9 @@ App::DocumentObjectExecReturn* Draft::execute()
     // Seeded refs: strict preflight (I13 — no similar-angle neighbour).
     // Empty seeds → do not skip (I7 FaceN fallback via SubVals / getFaces).
     const Part::FilletPreflight pre = Part::SemanticHistoryAdapter::preflightNamedReferences(
-        graph, namedFaceReferences, App::SemanticKind::Face
+        graph,
+        namedFaceReferences,
+        App::SemanticKind::Face
     );
     if (pre.makerSkipped) {
         SemanticEmitter::afterExecute(graph, Opcode::Draft, fid, eval, req);
@@ -196,12 +198,13 @@ App::DocumentObjectExecReturn* Draft::execute()
             const auto& pullRefs = PullDirection.getSemanticRefs();
             if (graph && !pullRefs.empty() && pullRefs[0].seed.valid()) {
                 const App::ObjectId linked = static_cast<App::ObjectId>(
-                    refDirection->semanticProjectionFeatureId());
+                    refDirection->semanticProjectionFeatureId()
+                );
                 const char* element = Data::findElementName(subStrings[0].c_str());
                 const std::string el = element ? element : subStrings[0];
                 if (boost::starts_with(el, "Edge")) {
-                    if (const auto unique =
-                            uniqueEdgeBindingOnFeature(graph, pullRefs[0].seed, linked)) {
+                    if (const auto unique
+                        = uniqueEdgeBindingOnFeature(graph, pullRefs[0].seed, linked)) {
                         subStrings[0] = unique->index.toString();
                     }
                 }
@@ -246,8 +249,7 @@ App::DocumentObjectExecReturn* Draft::execute()
         // stale FaceN cache cannot steer NeutralPlane while Draft.Base seeds
         // still drive the maker (I13). Fall back to SubVals[0] when empty.
         const std::vector<std::string> resolvedFaces = getFaceSubValues(graph);
-        const std::string& guessFace =
-            !resolvedFaces.empty() ? resolvedFaces.front() : SubVals[0];
+        const std::string& guessFace = !resolvedFaces.empty() ? resolvedFaces.front() : SubVals[0];
         TopoDS_Shape face = TopShape.getSubShape(guessFace.c_str());
         TopTools_IndexedMapOfShape mapOfEdges;
         TopExp::MapShapes(face, TopAbs_EDGE, mapOfEdges);
@@ -321,19 +323,19 @@ App::DocumentObjectExecReturn* Draft::execute()
             }
             const auto& planeRefs = NeutralPlane.getSemanticRefs();
             if (graph && !planeRefs.empty() && planeRefs[0].seed.valid()) {
-                const App::ObjectId linked =
-                    static_cast<App::ObjectId>(refPlane->semanticProjectionFeatureId());
+                const App::ObjectId linked = static_cast<App::ObjectId>(
+                    refPlane->semanticProjectionFeatureId()
+                );
                 const char* element = Data::findElementName(subStrings[0].c_str());
                 const std::string el = element ? element : subStrings[0];
                 if (boost::starts_with(el, "Face")) {
-                    if (const auto unique =
-                            uniqueResolvedFaceReference(graph, planeRefs[0], linked)) {
+                    if (const auto unique = uniqueResolvedFaceReference(graph, planeRefs[0], linked)) {
                         subStrings[0] = unique->index.toString();
                     }
                 }
                 else if (boost::starts_with(el, "Edge")) {
-                    if (const auto unique =
-                            uniqueEdgeBindingOnFeature(graph, planeRefs[0].seed, linked)) {
+                    if (const auto unique
+                        = uniqueEdgeBindingOnFeature(graph, planeRefs[0].seed, linked)) {
                         subStrings[0] = unique->index.toString();
                     }
                 }
@@ -429,9 +431,7 @@ App::DocumentObjectExecReturn* Draft::execute()
             for (auto it = faces.begin(); it != faces.end(); ++it) {
                 mkDraft.Add(TopoDS::Face(it->getShape()), pullDirection, angle, neutralPlane);
                 if (!mkDraft.AddDone()) {
-                    Base::Console().warning(
-                        "Failed to add some face for drafting, skip\n"
-                    );
+                    Base::Console().warning("Failed to add some face for drafting, skip\n");
                     done = false;
                     faces.erase(it);
                     break;
@@ -443,18 +443,16 @@ App::DocumentObjectExecReturn* Draft::execute()
         // keeps history off a maker whose Add already failed.
         if (!done) {
             SemanticEmitter::afterExecute(graph, Opcode::Draft, fid, eval, req);
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
-                "Exception",
-                "Failed to add some face for drafting"
-            ));
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Failed to add some face for drafting")
+            );
         }
         mkDraft.Build();
         if (!mkDraft.IsDone()) {
             SemanticEmitter::afterExecute(graph, Opcode::Draft, fid, eval, req);
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
-                "Exception",
-                "Failed to create draft"
-            ));
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Failed to create draft")
+            );
         }
         shape.makeElementShape(mkDraft, baseShape, Part::OpCodes::Draft);
 
@@ -479,8 +477,9 @@ App::DocumentObjectExecReturn* Draft::execute()
         std::deque<TopoDS_Shape> held;
         std::vector<std::pair<App::SemanticId, const void*>> inputs;
         if (graph && Base.getValue()) {
-            const App::ObjectId baseFeature =
-                static_cast<App::ObjectId>(Base.getValue()->semanticProjectionFeatureId());
+            const App::ObjectId baseFeature = static_cast<App::ObjectId>(
+                Base.getValue()->semanticProjectionFeatureId()
+            );
             for (const App::SemanticId& face : req.draftFaces) {
                 const auto unique = uniqueFaceBindingOnFeature(graph, face, baseFeature);
                 if (!unique) {
@@ -525,7 +524,13 @@ App::DocumentObjectExecReturn* Draft::execute()
             }
         }
         const Part::ApplyResult applied = Part::SemanticHistoryAdapter::applyHistory(
-            graph, fid, eval, "Draft", req.draftFaces, toApply);
+            graph,
+            fid,
+            eval,
+            "Draft",
+            req.draftFaces,
+            toApply
+        );
         if (applied.boundCount == 0) {
             SemanticEmitter::afterExecute(graph, Opcode::Draft, fid, eval, req);
         }

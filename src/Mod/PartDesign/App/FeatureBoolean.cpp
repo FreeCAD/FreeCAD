@@ -84,7 +84,8 @@ namespace
 void setFuseAutoFuzzy(
     FCBRepAlgoAPI_Fuse* fcFuse,
     const TopTools_ListOfShape& args,
-    const TopTools_ListOfShape& tools)
+    const TopTools_ListOfShape& tools
+)
 {
     Bnd_Box bounds;
     for (TopTools_ListOfShape::Iterator it(args); it.More(); it.Next()) {
@@ -94,15 +95,16 @@ void setFuseAutoFuzzy(
         BRepBndLib::Add(it.Value(), bounds);
     }
     fcFuse->SetFuzzyValue(
-        Part::FuzzyHelper::getBooleanFuzzy() * sqrt(bounds.SquareExtent())
-        * Precision::Confusion());
+        Part::FuzzyHelper::getBooleanFuzzy() * sqrt(bounds.SquareExtent()) * Precision::Confusion()
+    );
 }
 
 /// Same LNK2019 lesson as Fuse: do not call FCBRepAlgoAPIHelper from PartDesign.
 void setCutAutoFuzzy(
     FCBRepAlgoAPI_Cut* fcCut,
     const TopTools_ListOfShape& args,
-    const TopTools_ListOfShape& tools)
+    const TopTools_ListOfShape& tools
+)
 {
     Bnd_Box bounds;
     for (TopTools_ListOfShape::Iterator it(args); it.More(); it.Next()) {
@@ -112,15 +114,16 @@ void setCutAutoFuzzy(
         BRepBndLib::Add(it.Value(), bounds);
     }
     fcCut->SetFuzzyValue(
-        Part::FuzzyHelper::getBooleanFuzzy() * sqrt(bounds.SquareExtent())
-        * Precision::Confusion());
+        Part::FuzzyHelper::getBooleanFuzzy() * sqrt(bounds.SquareExtent()) * Precision::Confusion()
+    );
 }
 
 /// Same LNK2019 lesson as Fuse/Cut: do not call FCBRepAlgoAPIHelper from PartDesign.
 void setCommonAutoFuzzy(
     FCBRepAlgoAPI_Common* fcCommon,
     const TopTools_ListOfShape& args,
-    const TopTools_ListOfShape& tools)
+    const TopTools_ListOfShape& tools
+)
 {
     Bnd_Box bounds;
     for (TopTools_ListOfShape::Iterator it(args); it.More(); it.Next()) {
@@ -130,20 +133,22 @@ void setCommonAutoFuzzy(
         BRepBndLib::Add(it.Value(), bounds);
     }
     fcCommon->SetFuzzyValue(
-        Part::FuzzyHelper::getBooleanFuzzy() * sqrt(bounds.SquareExtent())
-        * Precision::Confusion());
+        Part::FuzzyHelper::getBooleanFuzzy() * sqrt(bounds.SquareExtent()) * Precision::Confusion()
+    );
 }
 
 
 /// C1 reuse / I13 source seeds: Part::collectUniqueSourceSeeds (shared
 /// Boolean / Primitive / Transformed collector). Body Tip is walked when
 /// `obj` is a Body so Tip Face/Edge Bindings reach maker inputs.
-void collectFromObject(App::SemanticGraph* graph,
-                       App::DocumentObject* obj,
-                       const Part::TopoShape& sourceShape,
-                       std::deque<TopoDS_Shape>& held,
-                       std::vector<std::pair<App::SemanticId, const void*>>& inputs,
-                       std::unordered_set<App::SemanticHandle>& seen)
+void collectFromObject(
+    App::SemanticGraph* graph,
+    App::DocumentObject* obj,
+    const Part::TopoShape& sourceShape,
+    std::deque<TopoDS_Shape>& held,
+    std::vector<std::pair<App::SemanticId, const void*>>& inputs,
+    std::unordered_set<App::SemanticHandle>& seen
+)
 {
     if (!obj) {
         return;
@@ -277,7 +282,8 @@ void Boolean::publishBooleanSemanticHistory(
     const Part::TopoShape& baseShape,
     const std::vector<App::DocumentObject*>& toolObjs,
     const std::vector<Part::TopoShape>& toolShapes,
-    const char* diagTag)
+    const char* diagTag
+)
 {
     if (!mkBool || !mkBool->IsDone() || published.isNull()) {
         return;
@@ -299,13 +305,13 @@ void Boolean::publishBooleanSemanticHistory(
         collectFromObject(graph, toolObjs[i], toolShapes[i], held, inputs, seen);
     }
     if (inputs.empty()) {
-        SemanticEmitter::afterExecute(graph, Opcode::Boolean,
-                                      static_cast<App::ObjectId>(getID()), 0, {});
+        SemanticEmitter::afterExecute(graph, Opcode::Boolean, static_cast<App::ObjectId>(getID()), 0, {});
         SemanticEmitter::appendAfterExecuteNote("skip emit: no unique Boolean source seeds");
         Base::Console().message(
             "TESTS %s %s\n",
             diagTag ? diagTag : "booleanDiag",
-            SemanticEmitter::lastAfterExecuteNote().c_str());
+            SemanticEmitter::lastAfterExecuteNote().c_str()
+        );
         return;
     }
 
@@ -317,10 +323,8 @@ void Boolean::publishBooleanSemanticHistory(
         return Part::indexOnPublished(published, *static_cast<const TopoDS_Shape*>(occ));
     };
 
-    const Part::HistoryTable raw =
-        Part::SemanticHistoryAdapter::fromMaker(mkBool, inputs, indexOf);
-    const Part::HistoryTable unique =
-        Part::SemanticHistoryAdapter::uniqueOneImageGenerated(raw);
+    const Part::HistoryTable raw = Part::SemanticHistoryAdapter::fromMaker(mkBool, inputs, indexOf);
+    const Part::HistoryTable unique = Part::SemanticHistoryAdapter::uniqueOneImageGenerated(raw);
 
     const App::ObjectId selfId = static_cast<App::ObjectId>(getID());
     Part::HistoryTable toApply;
@@ -355,15 +359,21 @@ void Boolean::publishBooleanSemanticHistory(
     }
     if (!toApply.empty()) {
         Part::SemanticHistoryAdapter::applyHistory(
-            graph, selfId, eval, opcodeName(Opcode::Boolean), seeds, toApply);
+            graph,
+            selfId,
+            eval,
+            opcodeName(Opcode::Boolean),
+            seeds,
+            toApply
+        );
     }
     SemanticEmitter::afterExecute(graph, Opcode::Boolean, selfId, eval, req);
-    SemanticEmitter::appendAfterExecuteNote(
-        Part::SemanticHistoryAdapter::lastApplyNote());
+    SemanticEmitter::appendAfterExecuteNote(Part::SemanticHistoryAdapter::lastApplyNote());
     Base::Console().message(
-            "TESTS %s %s\n",
-            diagTag ? diagTag : "booleanDiag",
-            SemanticEmitter::lastAfterExecuteNote().c_str());
+        "TESTS %s %s\n",
+        diagTag ? diagTag : "booleanDiag",
+        SemanticEmitter::lastAfterExecuteNote().c_str()
+    );
 }
 
 App::DocumentObjectExecReturn* Boolean::execute()
@@ -596,10 +606,9 @@ App::DocumentObjectExecReturn* Boolean::execute()
         if (shapes.size() > 1) {
             toolShapes.assign(shapes.begin() + 1, shapes.end());
         }
-        const char* diag =
-            (type == "Cut") ? "cutDiag"
-            : (type == "Common") ? "commonDiag"
-            : "booleanDiag";
+        const char* diag = (type == "Cut") ? "cutDiag"
+            : (type == "Common")           ? "commonDiag"
+                                           : "booleanDiag";
         publishBooleanSemanticHistory(
             mkBool.get(),
             this->Shape.getShape(),
@@ -607,7 +616,8 @@ App::DocumentObjectExecReturn* Boolean::execute()
             shapes.empty() ? baseTopShape : shapes[0],
             tools,
             toolShapes,
-            diag);
+            diag
+        );
     }
 
     return StdReturn;

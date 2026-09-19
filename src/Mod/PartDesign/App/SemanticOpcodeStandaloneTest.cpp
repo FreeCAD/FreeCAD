@@ -71,9 +71,7 @@ SemanticBinding makeBinding(const SemanticId& id, ObjectId feature, EvalSerial e
     return b;
 }
 
-SemanticReference makeRef(const SemanticId& seed,
-                          CardinalityReducer reducer,
-                          SemanticKind kind)
+SemanticReference makeRef(const SemanticId& seed, CardinalityReducer reducer, SemanticKind kind)
 {
     SemanticReference ref;
     ref.seed = seed;
@@ -92,11 +90,17 @@ void testNoopWithoutGraph()
     CHECK(sides.empty());
     const auto caps = SemanticEmitter::emitPadCaps(nullptr, {}, 1, 1, 1);
     CHECK(caps.empty());
-    const auto split = SemanticEmitter::emitPocketSplit(nullptr, SemanticId{}, 2, 1, 1, 1);
+    const auto split = SemanticEmitter::emitPocketSplit(nullptr, SemanticId {}, 2, 1, 1, 1);
     CHECK(split.empty());
 
-    ResolutionResult r = SemanticEmitter::emitFillet(nullptr, SemanticId{}, {}, 1, 1,
-                                                     ElementIndex::fromString("Face1"));
+    ResolutionResult r = SemanticEmitter::emitFillet(
+        nullptr,
+        SemanticId {},
+        {},
+        1,
+        1,
+        ElementIndex::fromString("Face1")
+    );
     CHECK(r.state == ResolutionState::Missing);
 
     SemanticEmitter::afterExecute(nullptr, Opcode::Pad, 0, 0);
@@ -256,8 +260,9 @@ void testRoleTablesExist()
     CHECK(holeResult.opcode == Opcode::Hole);
     CHECK(std::string(holeResult.name) == "HoleResult");
     CHECK(std::string(holeResult.partOpCode) == "HOL");
-    CHECK(static_cast<int>(OpcodeRoleId::HoleStart)
-          == static_cast<int>(OpcodeRoleId::GrooveUpToFace) + 1);
+    CHECK(
+        static_cast<int>(OpcodeRoleId::HoleStart) == static_cast<int>(OpcodeRoleId::GrooveUpToFace) + 1
+    );
 
     CHECK(!opcodeRolesFor(Opcode::LinearPattern).empty());
     CHECK(opcodeRolesFor(Opcode::LinearPattern).size() >= 2);
@@ -276,8 +281,10 @@ void testRoleTablesExist()
     CHECK(lptEdge.eventKind == EventKind::Generated);
     CHECK(std::string(lptEdge.partOpCode) == "LPT");
     CHECK(std::string(lptEdge.name) == "LinearPatternEdge");
-    CHECK(static_cast<int>(OpcodeRoleId::LinearPatternFace)
-          == static_cast<int>(OpcodeRoleId::HoleResult) + 1);
+    CHECK(
+        static_cast<int>(OpcodeRoleId::LinearPatternFace)
+        == static_cast<int>(OpcodeRoleId::HoleResult) + 1
+    );
 
     CHECK(!opcodeRolesFor(Opcode::PolarPattern).empty());
     CHECK(opcodeRolesFor(Opcode::PolarPattern).size() >= 2);
@@ -298,14 +305,14 @@ void testRoleTablesExist()
     const OpcodeRole& mirEdge = opcodeRole(OpcodeRoleId::MirroredEdge);
     CHECK(mirEdge.seedKind == SemanticKind::Edge);
     CHECK(std::string(mirEdge.name) == "MirroredEdge");
-    CHECK(static_cast<int>(OpcodeRoleId::MirroredEdge)
-          == static_cast<int>(OpcodeRoleId::MirroredFace) + 1);
+    CHECK(
+        static_cast<int>(OpcodeRoleId::MirroredEdge) == static_cast<int>(OpcodeRoleId::MirroredFace) + 1
+    );
 
     CHECK(static_cast<int>(Opcode::Loft) == 12);
     CHECK(static_cast<int>(Opcode::Pipe) == 13);
     CHECK(static_cast<int>(Opcode::Helix) == 14);
-    CHECK(static_cast<int>(OpcodeRoleId::LoftSide)
-          == static_cast<int>(OpcodeRoleId::MirroredEdge) + 1);
+    CHECK(static_cast<int>(OpcodeRoleId::LoftSide) == static_cast<int>(OpcodeRoleId::MirroredEdge) + 1);
     CHECK(!opcodeRolesFor(Opcode::Loft).empty());
     CHECK(opcodeRolesFor(Opcode::Loft).size() >= 2);
     const OpcodeRole& loftSide = opcodeRole(OpcodeRoleId::LoftSide);
@@ -332,8 +339,7 @@ void testRoleTablesExist()
     CHECK(std::string(helixCap.name) == "HelixCap");
 
     CHECK(static_cast<int>(Opcode::Boolean) == 15);
-    CHECK(static_cast<int>(OpcodeRoleId::BooleanFace)
-          == static_cast<int>(OpcodeRoleId::HelixCap) + 1);
+    CHECK(static_cast<int>(OpcodeRoleId::BooleanFace) == static_cast<int>(OpcodeRoleId::HelixCap) + 1);
     CHECK(!opcodeRolesFor(Opcode::Boolean).empty());
     CHECK(opcodeRolesFor(Opcode::Boolean).size() >= 2);
     const OpcodeRole& boolFace = opcodeRole(OpcodeRoleId::BooleanFace);
@@ -353,8 +359,10 @@ void testRoleTablesExist()
     CHECK(std::string(boolEdge.name) == "BooleanEdge");
 
     CHECK(static_cast<int>(Opcode::AdditiveBox) == 16);
-    CHECK(static_cast<int>(OpcodeRoleId::AdditiveBoxFace)
-          == static_cast<int>(OpcodeRoleId::BooleanEdge) + 1);
+    CHECK(
+        static_cast<int>(OpcodeRoleId::AdditiveBoxFace)
+        == static_cast<int>(OpcodeRoleId::BooleanEdge) + 1
+    );
     CHECK(!opcodeRolesFor(Opcode::AdditiveBox).empty());
     CHECK(opcodeRolesFor(Opcode::AdditiveBox).size() >= 2);
     const OpcodeRole& boxFace = opcodeRole(OpcodeRoleId::AdditiveBoxFace);
@@ -374,8 +382,10 @@ void testRoleTablesExist()
     CHECK(std::string(boxEdge.name) == "AdditiveBoxEdge");
 
     CHECK(static_cast<int>(Opcode::AdditiveCylinder) == 17);
-    CHECK(static_cast<int>(OpcodeRoleId::AdditiveCylinderFace)
-          == static_cast<int>(OpcodeRoleId::AdditiveBoxEdge) + 1);
+    CHECK(
+        static_cast<int>(OpcodeRoleId::AdditiveCylinderFace)
+        == static_cast<int>(OpcodeRoleId::AdditiveBoxEdge) + 1
+    );
     CHECK(!opcodeRolesFor(Opcode::AdditiveCylinder).empty());
     CHECK(opcodeRolesFor(Opcode::AdditiveCylinder).size() >= 2);
     const OpcodeRole& cylFace = opcodeRole(OpcodeRoleId::AdditiveCylinderFace);
@@ -395,8 +405,10 @@ void testRoleTablesExist()
     CHECK(std::string(cylEdge.name) == "AdditiveCylinderEdge");
 
     CHECK(static_cast<int>(Opcode::AdditiveSphere) == 18);
-    CHECK(static_cast<int>(OpcodeRoleId::AdditiveSphereFace)
-          == static_cast<int>(OpcodeRoleId::AdditiveCylinderEdge) + 1);
+    CHECK(
+        static_cast<int>(OpcodeRoleId::AdditiveSphereFace)
+        == static_cast<int>(OpcodeRoleId::AdditiveCylinderEdge) + 1
+    );
     CHECK(!opcodeRolesFor(Opcode::AdditiveSphere).empty());
     CHECK(opcodeRolesFor(Opcode::AdditiveSphere).size() >= 2);
     const OpcodeRole& sphFace = opcodeRole(OpcodeRoleId::AdditiveSphereFace);
@@ -416,8 +428,10 @@ void testRoleTablesExist()
     CHECK(std::string(sphEdge.name) == "AdditiveSphereEdge");
 
     CHECK(static_cast<int>(Opcode::AdditiveCone) == 19);
-    CHECK(static_cast<int>(OpcodeRoleId::AdditiveConeFace)
-          == static_cast<int>(OpcodeRoleId::AdditiveSphereEdge) + 1);
+    CHECK(
+        static_cast<int>(OpcodeRoleId::AdditiveConeFace)
+        == static_cast<int>(OpcodeRoleId::AdditiveSphereEdge) + 1
+    );
     CHECK(!opcodeRolesFor(Opcode::AdditiveCone).empty());
     CHECK(opcodeRolesFor(Opcode::AdditiveCone).size() >= 2);
     const OpcodeRole& coneFace = opcodeRole(OpcodeRoleId::AdditiveConeFace);
@@ -437,8 +451,10 @@ void testRoleTablesExist()
     CHECK(std::string(coneEdge.name) == "AdditiveConeEdge");
 
     CHECK(static_cast<int>(Opcode::AdditiveTorus) == 20);
-    CHECK(static_cast<int>(OpcodeRoleId::AdditiveTorusFace)
-          == static_cast<int>(OpcodeRoleId::AdditiveConeEdge) + 1);
+    CHECK(
+        static_cast<int>(OpcodeRoleId::AdditiveTorusFace)
+        == static_cast<int>(OpcodeRoleId::AdditiveConeEdge) + 1
+    );
     CHECK(!opcodeRolesFor(Opcode::AdditiveTorus).empty());
     CHECK(opcodeRolesFor(Opcode::AdditiveTorus).size() >= 2);
     const OpcodeRole& torFace = opcodeRole(OpcodeRoleId::AdditiveTorusFace);
@@ -458,8 +474,10 @@ void testRoleTablesExist()
     CHECK(std::string(torEdge.name) == "AdditiveTorusEdge");
 
     CHECK(static_cast<int>(Opcode::AdditivePrism) == 21);
-    CHECK(static_cast<int>(OpcodeRoleId::AdditivePrismFace)
-          == static_cast<int>(OpcodeRoleId::AdditiveTorusEdge) + 1);
+    CHECK(
+        static_cast<int>(OpcodeRoleId::AdditivePrismFace)
+        == static_cast<int>(OpcodeRoleId::AdditiveTorusEdge) + 1
+    );
     CHECK(!opcodeRolesFor(Opcode::AdditivePrism).empty());
     CHECK(opcodeRolesFor(Opcode::AdditivePrism).size() >= 2);
     const OpcodeRole& priFace = opcodeRole(OpcodeRoleId::AdditivePrismFace);
@@ -479,8 +497,10 @@ void testRoleTablesExist()
     CHECK(std::string(priEdge.name) == "AdditivePrismEdge");
 
     CHECK(static_cast<int>(Opcode::AdditiveWedge) == 22);
-    CHECK(static_cast<int>(OpcodeRoleId::AdditiveWedgeFace)
-          == static_cast<int>(OpcodeRoleId::AdditivePrismEdge) + 1);
+    CHECK(
+        static_cast<int>(OpcodeRoleId::AdditiveWedgeFace)
+        == static_cast<int>(OpcodeRoleId::AdditivePrismEdge) + 1
+    );
     CHECK(!opcodeRolesFor(Opcode::AdditiveWedge).empty());
     CHECK(opcodeRolesFor(Opcode::AdditiveWedge).size() >= 2);
     const OpcodeRole& wedFace = opcodeRole(OpcodeRoleId::AdditiveWedgeFace);
@@ -502,9 +522,18 @@ void testRoleTablesExist()
     CHECK(static_cast<int>(Opcode::SubtractiveBox) == 24);
     CHECK(static_cast<int>(Opcode::SubtractiveCylinder) == 25);
     CHECK(static_cast<int>(Opcode::SubtractiveSphere) == 26);
-    CHECK(static_cast<int>(OpcodeRoleId::SubtractiveBoxFace) > static_cast<int>(OpcodeRoleId::AdditiveEllipsoidEdge));
-    CHECK(static_cast<int>(OpcodeRoleId::SubtractiveCylinderFace) == static_cast<int>(OpcodeRoleId::SubtractiveBoxEdge) + 1);
-    CHECK(static_cast<int>(OpcodeRoleId::SubtractiveSphereFace) == static_cast<int>(OpcodeRoleId::SubtractiveCylinderEdge) + 1);
+    CHECK(
+        static_cast<int>(OpcodeRoleId::SubtractiveBoxFace)
+        > static_cast<int>(OpcodeRoleId::AdditiveEllipsoidEdge)
+    );
+    CHECK(
+        static_cast<int>(OpcodeRoleId::SubtractiveCylinderFace)
+        == static_cast<int>(OpcodeRoleId::SubtractiveBoxEdge) + 1
+    );
+    CHECK(
+        static_cast<int>(OpcodeRoleId::SubtractiveSphereFace)
+        == static_cast<int>(OpcodeRoleId::SubtractiveCylinderEdge) + 1
+    );
     CHECK(opcodeRolesFor(Opcode::SubtractiveBox).size() >= 2);
     CHECK(opcodeRolesFor(Opcode::SubtractiveCylinder).size() >= 2);
     CHECK(opcodeRolesFor(Opcode::SubtractiveSphere).size() >= 2);
@@ -541,9 +570,9 @@ void testRoleTablesExist()
     CHECK(std::string(opcodeName(Opcode::Scaled)) == "Scaled");
     CHECK(std::string(opcodeName(Opcode::MultiTransform)) == "MultiTransform");
 
-    SemanticReference up = referenceFor(SemanticId{}, OpcodeRoleId::PadUpToFace);
+    SemanticReference up = referenceFor(SemanticId {}, OpcodeRoleId::PadUpToFace);
     CHECK(up.reducer == CardinalityReducer::RequireOne);
-    SemanticReference fe = referenceFor(SemanticId{}, OpcodeRoleId::FilletEdge);
+    SemanticReference fe = referenceFor(SemanticId {}, OpcodeRoleId::FilletEdge);
     CHECK(fe.reducer == CardinalityReducer::AcceptAll);
     CHECK(fe.kind == SemanticKind::Edge);
 }
@@ -593,8 +622,8 @@ void testPadFromSketchSeeds()
         g.bind(makeBinding(c, sketch, 1, ("Edge" + std::to_string(i)).c_str()));
         curves.push_back(c);
     }
-    const SemanticId region =
-        g.recordGenerated(SemanticKind::Region, "Sketch", sketch, 1, SemanticRole::None);
+    const SemanticId region
+        = g.recordGenerated(SemanticKind::Region, "Sketch", sketch, 1, SemanticRole::None);
     g.bind(makeBinding(region, sketch, 1, "Face1"));
     g.commitEvaluate();
 
@@ -624,9 +653,10 @@ void testPadFromSketchSeeds()
     CHECK(fromC0.size() == 1);
     CHECK(fromC0.front().handle == sides[0].handle);
 
-    const auto r = SemanticResolver::resolve(makeRef(caps[0], CardinalityReducer::RequireOne,
-                                                     SemanticKind::Face),
-                                             g);
+    const auto r = SemanticResolver::resolve(
+        makeRef(caps[0], CardinalityReducer::RequireOne, SemanticKind::Face),
+        g
+    );
     CHECK(r.state == ResolutionState::Resolved);
     CHECK(r.identities.front().handle == caps[0].handle);
 }
@@ -646,8 +676,8 @@ void testPadCapPocketSplitAndSketchInsert()
         g.bind(makeBinding(c, sketch, 1, ("Edge" + std::to_string(i)).c_str()));
         curves.push_back(c);
     }
-    const SemanticId region =
-        g.recordGenerated(SemanticKind::Region, "Sketch", sketch, 1, SemanticRole::None);
+    const SemanticId region
+        = g.recordGenerated(SemanticKind::Region, "Sketch", sketch, 1, SemanticRole::None);
     g.bind(makeBinding(region, sketch, 1, "Face1"));
     g.commitEvaluate();
 
@@ -657,15 +687,18 @@ void testPadCapPocketSplitAndSketchInsert()
     // Cap-boundary edges Generated from the same curve seeds, for fillet.
     std::vector<SemanticId> padEdges;
     for (int i = 0; i < 4; ++i) {
-        padEdges.push_back(SemanticEmitter::emitGeneratedFrom(
-            &g,
-            {curves[static_cast<std::size_t>(i)]},
-            SemanticKind::Edge,
-            "Pad",
-            pad,
-            2,
-            SemanticRole::None,
-            ElementIndex::fromString(("Edge" + std::to_string(i + 1)).c_str())));
+        padEdges.push_back(
+            SemanticEmitter::emitGeneratedFrom(
+                &g,
+                {curves[static_cast<std::size_t>(i)]},
+                SemanticKind::Edge,
+                "Pad",
+                pad,
+                2,
+                SemanticRole::None,
+                ElementIndex::fromString(("Edge" + std::to_string(i + 1)).c_str())
+            )
+        );
     }
     g.commitEvaluate();
 
@@ -678,13 +711,23 @@ void testPadCapPocketSplitAndSketchInsert()
     g.clearBindings(pad);
     // Rebind survivors that the pocket did not split.
     for (std::size_t i = 0; i < sides.size(); ++i) {
-        SemanticEmitter::bind(&g, sides[i], pad, 3,
-                              ElementIndex::fromString(("Face" + std::to_string(i + 1)).c_str()));
+        SemanticEmitter::bind(
+            &g,
+            sides[i],
+            pad,
+            3,
+            ElementIndex::fromString(("Face" + std::to_string(i + 1)).c_str())
+        );
     }
     SemanticEmitter::bind(&g, endCap, pad, 3, ElementIndex::fromString("Face6"));
     for (std::size_t i = 0; i < padEdges.size(); ++i) {
-        SemanticEmitter::bind(&g, padEdges[i], pad, 3,
-                              ElementIndex::fromString(("Edge" + std::to_string(i + 1)).c_str()));
+        SemanticEmitter::bind(
+            &g,
+            padEdges[i],
+            pad,
+            3,
+            ElementIndex::fromString(("Edge" + std::to_string(i + 1)).c_str())
+        );
     }
     const auto capHalves = SemanticEmitter::emitPocketSplit(&g, startCap, 2, pocket, 3, 10);
     g.commitEvaluate();
@@ -694,18 +737,26 @@ void testPadCapPocketSplitAndSketchInsert()
     CHECK(capHalves[1].handle != startCap.handle);
 
     const auto reqOne = SemanticResolver::resolve(
-        makeRef(startCap, CardinalityReducer::RequireOne, SemanticKind::Face), g);
+        makeRef(startCap, CardinalityReducer::RequireOne, SemanticKind::Face),
+        g
+    );
     CHECK(reqOne.state == ResolutionState::Ambiguous);
     CHECK(reqOne.identities.empty());
 
     const auto accAll = SemanticResolver::resolve(
-        makeRef(startCap, CardinalityReducer::AcceptAll, SemanticKind::Face), g);
+        makeRef(startCap, CardinalityReducer::AcceptAll, SemanticKind::Face),
+        g
+    );
     CHECK(accAll.state == ResolutionState::ResolvedSet);
     CHECK(accAll.identities.size() == 2);
-    CHECK(accAll.identities[0].handle == capHalves[0].handle
-          || accAll.identities[1].handle == capHalves[0].handle);
-    CHECK(accAll.identities[0].handle == capHalves[1].handle
-          || accAll.identities[1].handle == capHalves[1].handle);
+    CHECK(
+        accAll.identities[0].handle == capHalves[0].handle
+        || accAll.identities[1].handle == capHalves[0].handle
+    );
+    CHECK(
+        accAll.identities[0].handle == capHalves[1].handle
+        || accAll.identities[1].handle == capHalves[1].handle
+    );
 
     // No cross-lineage: cap seed must not bind a side face.
     for (const SemanticBinding& b : accAll.bindings) {
@@ -714,7 +765,9 @@ void testPadCapPocketSplitAndSketchInsert()
         CHECK(b.stid.handle != endCap.handle);
     }
     const auto sideOfOther = SemanticResolver::resolve(
-        makeRef(sides[0], CardinalityReducer::AcceptAll, SemanticKind::Face), g);
+        makeRef(sides[0], CardinalityReducer::AcceptAll, SemanticKind::Face),
+        g
+    );
     CHECK(sideOfOther.state == ResolutionState::Resolved);
     CHECK(sideOfOther.identities.front().handle == sides[0].handle);
     CHECK(sideOfOther.identities.front().handle != capHalves[0].handle);
@@ -722,28 +775,36 @@ void testPadCapPocketSplitAndSketchInsert()
     // Fillet: resolve edge first, generate face from (edge, adjacent faces).
     g.beginEvaluate(4);
     const ResolutionResult fil = SemanticEmitter::emitFillet(
-        &g, filletEdge, {sides[0], startCap}, fillet, 4, ElementIndex::fromString("Face20"));
+        &g,
+        filletEdge,
+        {sides[0], startCap},
+        fillet,
+        4,
+        ElementIndex::fromString("Face20")
+    );
     g.commitEvaluate();
     CHECK(fil.state == ResolutionState::Resolved);
     CHECK(fil.identities.size() >= 1);
 
     // Sketch-insert split of the generating curve → side + pad-edge split.
     g.beginEvaluate(5);
-    const auto curveKids =
-        g.recordSplit(curves[0], 2, "SketchInsert", sketch, 5, SemanticRole::None);
+    const auto curveKids = g.recordSplit(curves[0], 2, "SketchInsert", sketch, 5, SemanticRole::None);
     CHECK(curveKids.size() == 2);
     g.bind(makeBinding(curveKids[0], sketch, 5, "Edge1"));
     g.bind(makeBinding(curveKids[1], sketch, 5, "Edge5"));
-    const auto prop =
-        SemanticEmitter::propagateSourceSplit(&g, curves[0], 2, "Pad", pad, 5, 30);
+    const auto prop = SemanticEmitter::propagateSourceSplit(&g, curves[0], 2, "Pad", pad, 5, 30);
     CHECK(!prop.empty());
     g.commitEvaluate();
 
     const auto sideAfterInsert = SemanticResolver::resolve(
-        makeRef(sides[0], CardinalityReducer::RequireOne, SemanticKind::Face), g);
+        makeRef(sides[0], CardinalityReducer::RequireOne, SemanticKind::Face),
+        g
+    );
     CHECK(sideAfterInsert.state == ResolutionState::Ambiguous);
     const auto sideAll = SemanticResolver::resolve(
-        makeRef(sides[0], CardinalityReducer::AcceptAll, SemanticKind::Face), g);
+        makeRef(sides[0], CardinalityReducer::AcceptAll, SemanticKind::Face),
+        g
+    );
     CHECK(sideAll.state == ResolutionState::ResolvedSet);
     CHECK(sideAll.identities.size() >= 2);
     // The two split remnants of the side must be in the set.
@@ -759,10 +820,14 @@ void testPadCapPocketSplitAndSketchInsert()
 
     // Cap seed is still the pocket split (sketch insert was a different curve).
     const auto capStill = SemanticResolver::resolve(
-        makeRef(startCap, CardinalityReducer::RequireOne, SemanticKind::Face), g);
+        makeRef(startCap, CardinalityReducer::RequireOne, SemanticKind::Face),
+        g
+    );
     CHECK(capStill.state == ResolutionState::Ambiguous);
     const auto capStillAll = SemanticResolver::resolve(
-        makeRef(startCap, CardinalityReducer::AcceptAll, SemanticKind::Face), g);
+        makeRef(startCap, CardinalityReducer::AcceptAll, SemanticKind::Face),
+        g
+    );
     CHECK(capStillAll.state == ResolutionState::ResolvedSet);
     CHECK(capStillAll.identities.size() >= 2);
     bool hasH0 = false;
@@ -780,9 +845,12 @@ void testPadCapPocketSplitAndSketchInsert()
 
     // Fillet after the generating curve split: edge remnants, AcceptAll → set.
     const auto edgeAfter = SemanticResolver::resolve(
-        makeRef(filletEdge, CardinalityReducer::AcceptAll, SemanticKind::Edge), g);
-    CHECK(edgeAfter.state == ResolutionState::ResolvedSet
-          || edgeAfter.state == ResolutionState::Resolved);
+        makeRef(filletEdge, CardinalityReducer::AcceptAll, SemanticKind::Edge),
+        g
+    );
+    CHECK(
+        edgeAfter.state == ResolutionState::ResolvedSet || edgeAfter.state == ResolutionState::Resolved
+    );
 
     // I2: cap seed must not bind a face that is only in another curve's lineage
     // (other pad sides). A multi-parent fillet face may legally appear in both
@@ -808,12 +876,9 @@ void testFilletMissingIfEdgeDeleted()
     const ObjectId pad = 20;
     const ObjectId fillet = 40;
     g.beginEvaluate(1);
-    const SemanticId edge =
-        g.recordGenerated(SemanticKind::Edge, "Pad", pad, 1, SemanticRole::None);
-    const SemanticId f1 =
-        g.recordGenerated(SemanticKind::Face, "Pad", pad, 1, SemanticRole::None);
-    const SemanticId f2 =
-        g.recordGenerated(SemanticKind::Face, "Pad", pad, 1, SemanticRole::None);
+    const SemanticId edge = g.recordGenerated(SemanticKind::Edge, "Pad", pad, 1, SemanticRole::None);
+    const SemanticId f1 = g.recordGenerated(SemanticKind::Face, "Pad", pad, 1, SemanticRole::None);
+    const SemanticId f2 = g.recordGenerated(SemanticKind::Face, "Pad", pad, 1, SemanticRole::None);
     g.bind(makeBinding(edge, pad, 1, "Edge1"));
     g.bind(makeBinding(f1, pad, 1, "Face1"));
     g.bind(makeBinding(f2, pad, 1, "Face2"));
@@ -828,20 +893,24 @@ void testFilletMissingIfEdgeDeleted()
     SemanticEmitter::emitDeleted(&g, edge, "Pocket", 30, 2, SemanticRole::DressUpEdge);
     g.commitEvaluate();
 
-    const ResolutionResult fil = SemanticEmitter::emitFillet(
-        &g, edge, {f1, f2}, fillet, 3, ElementIndex::fromString("Face9"));
+    const ResolutionResult fil
+        = SemanticEmitter::emitFillet(&g, edge, {f1, f2}, fillet, 3, ElementIndex::fromString("Face9"));
     CHECK(fil.state == ResolutionState::Missing);
     CHECK(fil.identities.empty());
 
     // Neighbour faces did not become the fillet seed.
     const auto neighbour = SemanticResolver::resolve(
-        makeRef(edge, CardinalityReducer::AcceptAll, SemanticKind::Edge), g);
+        makeRef(edge, CardinalityReducer::AcceptAll, SemanticKind::Edge),
+        g
+    );
     CHECK(neighbour.state == ResolutionState::Missing);
     CHECK(neighbour.bindings.empty());
 
     // A later feature resolving the deleted edge under RequireOne is also Missing.
     const auto req = SemanticResolver::resolve(
-        makeRef(edge, CardinalityReducer::RequireOne, SemanticKind::Edge), g);
+        makeRef(edge, CardinalityReducer::RequireOne, SemanticKind::Edge),
+        g
+    );
     CHECK(req.state == ResolutionState::Missing);
 }
 
@@ -851,10 +920,9 @@ void testPocketS3RemnantKeepsHandle()
     const ObjectId pad = 20;
     const ObjectId pocket = 30;
     g.beginEvaluate(1);
-    const SemanticId cap =
-        g.recordGenerated(SemanticKind::Face, "Pad", pad, 1, SemanticRole::None);
-    const SemanticId holeRegion =
-        g.recordGenerated(SemanticKind::Region, "Sketch", 11, 1, SemanticRole::None);
+    const SemanticId cap = g.recordGenerated(SemanticKind::Face, "Pad", pad, 1, SemanticRole::None);
+    const SemanticId holeRegion
+        = g.recordGenerated(SemanticKind::Region, "Sketch", 11, 1, SemanticRole::None);
     g.bind(makeBinding(cap, pad, 1, "Face5"));
     g.commitEvaluate();
 
@@ -863,12 +931,22 @@ void testPocketS3RemnantKeepsHandle()
     g.beginEvaluate(2);
     g.clearBindings(pad);
     const SemanticId same = SemanticEmitter::emitPocketHole(
-        &g, cap, holeRegion, 4, pocket, 2, ElementIndex::fromString("Face5"), 20);
+        &g,
+        cap,
+        holeRegion,
+        4,
+        pocket,
+        2,
+        ElementIndex::fromString("Face5"),
+        20
+    );
     g.commitEvaluate();
 
     CHECK(same.handle == cap.handle);
     const auto r = SemanticResolver::resolve(
-        makeRef(cap, CardinalityReducer::RequireOne, SemanticKind::Face), g);
+        makeRef(cap, CardinalityReducer::RequireOne, SemanticKind::Face),
+        g
+    );
     CHECK(r.state == ResolutionState::Resolved);
     CHECK(r.identities.front().handle == cap.handle);
     CHECK(!g.aliasUsedForModified());
@@ -884,8 +962,7 @@ void testUpToFaceIncompatibleOnSet()
 {
     SemanticGraph g;
     g.beginEvaluate(1);
-    const SemanticId face =
-        g.recordGenerated(SemanticKind::Face, "Pad", 20, 1, SemanticRole::None);
+    const SemanticId face = g.recordGenerated(SemanticKind::Face, "Pad", 20, 1, SemanticRole::None);
     g.bind(makeBinding(face, 20, 1, "Face1"));
     g.commitEvaluate();
 
@@ -905,8 +982,8 @@ void testUpToFaceIncompatibleOnSet()
 void testNamedOutputTypeGuards()
 {
     SemanticGraph pad;
-    const SemanticId padCurve =
-        pad.recordGenerated(SemanticKind::Edge, "Sketch", 11, 1, SemanticRole::None);
+    const SemanticId padCurve
+        = pad.recordGenerated(SemanticKind::Edge, "Sketch", 11, 1, SemanticRole::None);
     AfterExecuteRequest padRequest;
     padRequest.curveSeeds = {padCurve};
     padRequest.namedFaceIndices = {ElementIndex::fromString("Edge2")};
@@ -915,13 +992,12 @@ void testNamedOutputTypeGuards()
     CHECK(SemanticEmitter::generatedFrom(pad, padCurve.handle).empty());
 
     SemanticGraph revolution;
-    const SemanticId revolutionCurve =
-        revolution.recordGenerated(SemanticKind::Edge, "Sketch", 12, 1, SemanticRole::None);
+    const SemanticId revolutionCurve
+        = revolution.recordGenerated(SemanticKind::Edge, "Sketch", 12, 1, SemanticRole::None);
     AfterExecuteRequest revolutionRequest;
     revolutionRequest.curveSeeds = {revolutionCurve};
     revolutionRequest.namedFaceIndices = {ElementIndex::fromString("Edge3")};
-    SemanticEmitter::afterExecute(
-        &revolution, Opcode::Revolution, 21, 1, revolutionRequest);
+    SemanticEmitter::afterExecute(&revolution, Opcode::Revolution, 21, 1, revolutionRequest);
     CHECK(SemanticEmitter::lastAfterExecuteNote().find("unnamed=1") != std::string::npos);
     CHECK(SemanticEmitter::generatedFrom(revolution, revolutionCurve.handle).empty());
 }
@@ -934,8 +1010,8 @@ void testPocketAfterExecuteBindsNamedEdge2OnPocketId()
     const ObjectId sketch = 11;
     const ObjectId pocket = 30;
     g.beginEvaluate(1);
-    const SemanticId vertex =
-        g.recordGenerated(SemanticKind::Vertex, "Sketch", sketch, 1, SemanticRole::None);
+    const SemanticId vertex
+        = g.recordGenerated(SemanticKind::Vertex, "Sketch", sketch, 1, SemanticRole::None);
     AfterExecuteRequest req;
     req.vertexSeeds = {vertex};
     req.namedEdgeIndices = {ElementIndex::fromString("Edge2")};
@@ -959,10 +1035,10 @@ void testIdenticalGeometryDifferentProvenance()
 {
     SemanticGraph g;
     g.beginEvaluate(1);
-    const SemanticId curveA =
-        g.recordGenerated(SemanticKind::Edge, "Sketch", 10, 1, SemanticRole::None);
-    const SemanticId curveB =
-        g.recordGenerated(SemanticKind::Edge, "Sketch", 10, 1, SemanticRole::None);
+    const SemanticId curveA
+        = g.recordGenerated(SemanticKind::Edge, "Sketch", 10, 1, SemanticRole::None);
+    const SemanticId curveB
+        = g.recordGenerated(SemanticKind::Edge, "Sketch", 10, 1, SemanticRole::None);
     g.commitEvaluate();
 
     g.beginEvaluate(2);
@@ -974,7 +1050,9 @@ void testIdenticalGeometryDifferentProvenance()
     CHECK(sideB.size() == 1);
 
     const auto r = SemanticResolver::resolve(
-        makeRef(sideA[0], CardinalityReducer::AcceptAll, SemanticKind::Face), g);
+        makeRef(sideA[0], CardinalityReducer::AcceptAll, SemanticKind::Face),
+        g
+    );
     CHECK(r.state == ResolutionState::Resolved);
     CHECK(r.identities.size() == 1);
     CHECK(r.identities.front().handle == sideA[0].handle);
@@ -989,12 +1067,11 @@ void testUniqueFaceBindingOnLinkedFeature()
     const ObjectId pad = 20;
     const ObjectId leftover = 30;
     g.beginEvaluate(1);
-    const SemanticId face =
-        g.recordGenerated(SemanticKind::Face, "Pad", pad, 1, SemanticRole::None);
+    const SemanticId face = g.recordGenerated(SemanticKind::Face, "Pad", pad, 1, SemanticRole::None);
     g.commitEvaluate();
 
     CHECK(!uniqueFaceBindingOnFeature(nullptr, face, pad).has_value());
-    CHECK(!uniqueFaceBindingOnFeature(&g, SemanticId{}, pad).has_value());
+    CHECK(!uniqueFaceBindingOnFeature(&g, SemanticId {}, pad).has_value());
     CHECK(!uniqueFaceBindingOnFeature(&g, face, 0).has_value());
     CHECK(!uniqueFaceBindingOnFeature(&g, face, pad).has_value());  // 0 rows
 
@@ -1027,8 +1104,8 @@ void testUniqueResolvedFaceReference()
     const ObjectId feature = 20;
     const ObjectId other = 30;
     g.beginEvaluate(1);
-    const SemanticId face =
-        g.recordGenerated(SemanticKind::Face, "Pad", feature, 1, SemanticRole::None);
+    const SemanticId face
+        = g.recordGenerated(SemanticKind::Face, "Pad", feature, 1, SemanticRole::None);
     g.commitEvaluate();
 
     SemanticReference ref = makeRef(face, CardinalityReducer::RequireOne, SemanticKind::Face);
@@ -1059,12 +1136,11 @@ void testUniqueEdgeBindingOnLinkedFeature()
     const ObjectId base = 20;
     const ObjectId leftover = 30;
     g.beginEvaluate(1);
-    const SemanticId edge =
-        g.recordGenerated(SemanticKind::Edge, "Pad", base, 1, SemanticRole::None);
+    const SemanticId edge = g.recordGenerated(SemanticKind::Edge, "Pad", base, 1, SemanticRole::None);
     g.commitEvaluate();
 
     CHECK(!uniqueEdgeBindingOnFeature(nullptr, edge, base).has_value());
-    CHECK(!uniqueEdgeBindingOnFeature(&g, SemanticId{}, base).has_value());
+    CHECK(!uniqueEdgeBindingOnFeature(&g, SemanticId {}, base).has_value());
     CHECK(!uniqueEdgeBindingOnFeature(&g, edge, 0).has_value());
     CHECK(!uniqueEdgeBindingOnFeature(&g, edge, base).has_value());
 
@@ -1098,7 +1174,7 @@ void testRequestSeedDeduplication()
     edge.handle = 42;
     edge.kind = SemanticKind::Edge;
 
-    CHECK(!appendUniqueSemanticSeed(seeds, SemanticId{}));
+    CHECK(!appendUniqueSemanticSeed(seeds, SemanticId {}));
     CHECK(appendUniqueSemanticSeed(seeds, face));
     CHECK(!appendUniqueSemanticSeed(seeds, face));
     CHECK(appendUniqueSemanticSeed(seeds, edge));
@@ -1116,15 +1192,15 @@ void testCollectProfileSeedsPromotesFaceCacheOnlyWithUniqueBinding()
 
     SemanticGraph g;
     g.beginEvaluate(1);
-    const SemanticId face =
-        g.recordGenerated(SemanticKind::Face, "Fillet", profile, 1, SemanticRole::None);
+    const SemanticId face
+        = g.recordGenerated(SemanticKind::Face, "Fillet", profile, 1, SemanticRole::None);
     g.bind(makeBinding(face, profile, 1, "Face4"));
     g.commitEvaluate();
 
     // Loft, Pipe, and Helix share this collector; duplicate LinkSub rows
     // must not duplicate one profile seed in either role zipper.
-    const AfterExecuteRequest promoted =
-        SemanticEmitter::collectProfileSeeds(&g, profile, {cached, cached});
+    const AfterExecuteRequest promoted
+        = SemanticEmitter::collectProfileSeeds(&g, profile, {cached, cached});
     CHECK(promoted.curveSeeds.size() == 1);
     CHECK(promoted.regionSeeds.size() == 1);
     CHECK(promoted.curveSeeds.front() == face);
@@ -1133,8 +1209,8 @@ void testCollectProfileSeedsPromotesFaceCacheOnlyWithUniqueBinding()
     SemanticGraph noBinding;
     noBinding.beginEvaluate(1);
     noBinding.commitEvaluate();
-    const AfterExecuteRequest refused =
-        SemanticEmitter::collectProfileSeeds(&noBinding, profile, {cached});
+    const AfterExecuteRequest refused
+        = SemanticEmitter::collectProfileSeeds(&noBinding, profile, {cached});
     CHECK(refused.curveSeeds.empty());
     CHECK(refused.regionSeeds.empty());
 }

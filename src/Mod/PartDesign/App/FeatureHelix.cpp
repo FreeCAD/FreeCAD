@@ -251,8 +251,7 @@ App::DocumentObjectExecReturn* Helix::execute()
 {
     // The Refine-only shortcut must not suppress restore republish: the maker
     // is needed to recreate durable history for both helix variants.
-    const bool semanticRepublish =
-        isSemanticRepublishPass(SemanticEmitter::graphFor(this));
+    const bool semanticRepublish = isSemanticRepublishPass(SemanticEmitter::graphFor(this));
     if (!semanticRepublish && onlyHaveRefined()) {
         return App::DocumentObject::StdReturn;
     }
@@ -412,7 +411,10 @@ App::DocumentObjectExecReturn* Helix::execute()
         // case be less than the tolerance lower limit below, but sufficient to avoid the bug
 
         auto mkPS = std::make_unique<BRepOffsetAPI_MakePipe>(
-            TopoDS::Wire(path), face, GeomFill_Trihedron::GeomFill_IsFrenet, Standard_False
+            TopoDS::Wire(path),
+            face,
+            GeomFill_Trihedron::GeomFill_IsFrenet,
+            Standard_False
         );
         result = mkPS->Shape();
 
@@ -440,7 +442,7 @@ App::DocumentObjectExecReturn* Helix::execute()
             }
         }
         const TopoShape makerShape(result);
-        std::vector<TopoDS_Shape> firstAddShapes{face};
+        std::vector<TopoDS_Shape> firstAddShapes {face};
 
         AddSubShape.setValue(result);
 
@@ -462,13 +464,7 @@ App::DocumentObjectExecReturn* Helix::execute()
             // store shape before refinement
             this->rawShape = result;
             Shape.setValue(getSolid(result));
-            emitCapturedHelix(
-                mkPS.get(),
-                makerShape,
-                Shape.getShape(),
-                firstAddShapes,
-                nullptr
-            );
+            emitCapturedHelix(mkPS.get(), makerShape, Shape.getShape(), firstAddShapes, nullptr);
             return App::DocumentObject::StdReturn;
         }
 
@@ -505,13 +501,7 @@ App::DocumentObjectExecReturn* Helix::execute()
                 boolOp = refineShapeIfActive(boolOp, RefineErrorPolicy::Warn);
             }
             Shape.setValue(getSolid(boolOp));
-            emitCapturedHelix(
-                mkPS.get(),
-                makerShape,
-                Shape.getShape(),
-                firstAddShapes,
-                nullptr
-            );
+            emitCapturedHelix(mkPS.get(), makerShape, Shape.getShape(), firstAddShapes, nullptr);
         }
         else if (getAddSubType() == FeatureAddSub::Type::Subtractive) {
 
@@ -559,13 +549,7 @@ App::DocumentObjectExecReturn* Helix::execute()
                 boolOp = refineShapeIfActive(boolOp, RefineErrorPolicy::Warn);
             }
             Shape.setValue(getSolid(boolOp));
-            emitCapturedHelix(
-                mkPS.get(),
-                makerShape,
-                Shape.getShape(),
-                firstAddShapes,
-                nullptr
-            );
+            emitCapturedHelix(mkPS.get(), makerShape, Shape.getShape(), firstAddShapes, nullptr);
         }
 
         return App::DocumentObject::StdReturn;
@@ -600,8 +584,7 @@ App::ElementIndex Helix::uniqueLongestEdgeOnPublished(const TopoShape& published
     double best = -1.0;
     int winner = 0;
     for (unsigned long i = 1; i <= n; ++i) {
-        const TopoDS_Shape e =
-            published.getSubShape(TopAbs_EDGE, static_cast<int>(i), true);
+        const TopoDS_Shape e = published.getSubShape(TopAbs_EDGE, static_cast<int>(i), true);
         if (e.IsNull() || e.ShapeType() != TopAbs_EDGE) {
             continue;
         }
@@ -629,11 +612,13 @@ void Helix::clearSemanticCapture()
     lastNamedEdgeIndices.clear();
 }
 
-void Helix::captureHelixMaker(void* occMaker,
-                            const TopoShape& preSewShell,
-                            const TopoShape& published,
-                            const std::vector<TopoDS_Shape>& addWireShapes,
-                            BRepBuilderAPI_Sewing* sewer)
+void Helix::captureHelixMaker(
+    void* occMaker,
+    const TopoShape& preSewShell,
+    const TopoShape& published,
+    const std::vector<TopoDS_Shape>& addWireShapes,
+    BRepBuilderAPI_Sewing* sewer
+)
 {
     int early = 0;
     int genFaceRaw = 0;
@@ -652,28 +637,18 @@ void Helix::captureHelixMaker(void* occMaker,
     auto finishDiag = [&]() {
         const std::size_t nf = Part::namedIndexCount(lastNamedFaceIndices);
         const std::size_t ne = Part::namedIndexCount(lastNamedEdgeIndices);
-        lastHelixDiag =
-            std::string("helixDiag early=") + std::to_string(early)
-            + " preCompat=1 sew=" + std::to_string(sew)
-            + " inputs=" + std::to_string(addWireShapes.size())
-            + " curveSeeds=" + std::to_string(nCurve)
-            + " vertexSeeds=" + std::to_string(nVertex)
-            + " edges=" + std::to_string(nEdges)
-            + " verts=" + std::to_string(nVerts)
-            + " genFaceRaw=" + std::to_string(genFaceRaw)
-            + " genFace=" + std::to_string(lastHelixGenerated.size())
-            + " genEdgeRaw=" + std::to_string(genEdgeRaw)
+        lastHelixDiag = std::string("helixDiag early=") + std::to_string(early) + " preCompat=1 sew="
+            + std::to_string(sew) + " inputs=" + std::to_string(addWireShapes.size())
+            + " curveSeeds=" + std::to_string(nCurve) + " vertexSeeds=" + std::to_string(nVertex)
+            + " edges=" + std::to_string(nEdges) + " verts=" + std::to_string(nVerts)
+            + " genFaceRaw=" + std::to_string(genFaceRaw) + " genFace="
+            + std::to_string(lastHelixGenerated.size()) + " genEdgeRaw=" + std::to_string(genEdgeRaw)
             + " genEdge=" + std::to_string(lastHelixGeneratedEdges.size())
-            + " fromMaker=" + std::to_string(fromMaker)
-            + " fromHist=" + std::to_string(fromHistN)
-            + " namedFace=" + std::to_string(nf)
-            + " namedFaceMiss="
-            + std::to_string(lastNamedFaceIndices.size() - nf)
-            + " namedEdge=" + std::to_string(ne)
-            + " namedEdgeMiss="
-            + std::to_string(lastNamedEdgeIndices.size() - ne)
-            + " zEdge=" + std::to_string(nZ)
-            + " longEdge=" + std::to_string(nLong)
+            + " fromMaker=" + std::to_string(fromMaker) + " fromHist=" + std::to_string(fromHistN)
+            + " namedFace=" + std::to_string(nf) + " namedFaceMiss="
+            + std::to_string(lastNamedFaceIndices.size() - nf) + " namedEdge=" + std::to_string(ne)
+            + " namedEdgeMiss=" + std::to_string(lastNamedEdgeIndices.size() - ne)
+            + " zEdge=" + std::to_string(nZ) + " longEdge=" + std::to_string(nLong)
             + " longIdx=" + std::to_string(nLongIdx);
     };
 
@@ -783,7 +758,8 @@ void Helix::captureHelixMaker(void* occMaker,
             vertices,
             lastHelixGenerated,
             lastHelixGeneratedEdges,
-            &usedFromMaker));
+            &usedFromMaker
+        ));
         fromMaker = usedFromMaker ? 1 : 0;
     }
 
@@ -794,12 +770,14 @@ void Helix::captureHelixMaker(void* occMaker,
         lastHelixGenerated,
         lastHelixGeneratedEdges,
         lastNamedFaceIndices,
-        lastNamedEdgeIndices);
+        lastNamedEdgeIndices
+    );
 
     // Edge binding ALWAYS: unique Z-parallel of each published Face, even when
     // vertexSeeds is non-empty (root cause 4). I13: 0 or N unnamed.
-    nZ = static_cast<int>(Part::mergeUniqueZParallelEdgesOntoNamed(
-        published, lastNamedFaceIndices, lastNamedEdgeIndices));
+    nZ = static_cast<int>(
+        Part::mergeUniqueZParallelEdgesOntoNamed(published, lastNamedFaceIndices, lastNamedEdgeIndices)
+    );
 
     // Helix rails are not Z-parallel (zEdge=0 on 1212c475). pick_loop3_edge
     // falls back to unique longest published Edge (Edge24). afterExecute zips
@@ -824,8 +802,8 @@ void Helix::captureHelixMaker(void* occMaker,
             else if (found != 0) {
                 const App::ElementIndex keep = lastNamedEdgeIndices[found];
                 lastNamedEdgeIndices.erase(
-                    lastNamedEdgeIndices.begin()
-                    + static_cast<std::ptrdiff_t>(found));
+                    lastNamedEdgeIndices.begin() + static_cast<std::ptrdiff_t>(found)
+                );
                 lastNamedEdgeIndices.insert(lastNamedEdgeIndices.begin(), keep);
             }
         }
@@ -833,11 +811,13 @@ void Helix::captureHelixMaker(void* occMaker,
     finishDiag();
 }
 
-void Helix::emitCapturedHelix(void* occMaker,
-                            const TopoShape& preSewShell,
-                            const TopoShape& published,
-                            const std::vector<TopoDS_Shape>& addWireShapes,
-                            BRepBuilderAPI_Sewing* sewer)
+void Helix::emitCapturedHelix(
+    void* occMaker,
+    const TopoShape& preSewShell,
+    const TopoShape& published,
+    const std::vector<TopoDS_Shape>& addWireShapes,
+    BRepBuilderAPI_Sewing* sewer
+)
 {
     clearSemanticCapture();
     captureHelixMaker(occMaker, preSewShell, published, addWireShapes, sewer);
@@ -859,7 +839,8 @@ void Helix::emitCapturedHelix(void* occMaker,
         getAddSubType() == FeatureAddSub::Type::Subtractive ? Opcode::SubtractiveHelix : Opcode::Helix,
         fid,
         eval,
-        req);
+        req
+    );
     // EM14-S1 / PD32-H1: Helix is in Additive/Subtractive stamp scope (with
     // Loft/Pipe). Pad/Pocket/Revolution/Groove publish Bindings via afterExecute
     // only — do not broaden ElementMap stamp without TESTS re-gate.
@@ -867,9 +848,7 @@ void Helix::emitCapturedHelix(void* occMaker,
     // (lockstep uniqueBindingOnFeature / AG21-E1 — QUALITY-SWEEP #22).
     SemanticEmitter::stampElementMap(Shape, graph, fid);
     SemanticEmitter::appendAfterExecuteNote(lastHelixDiag);
-    Base::Console().message(
-        "TESTS helixDiag %s\n",
-        SemanticEmitter::lastAfterExecuteNote().c_str());
+    Base::Console().message("TESTS helixDiag %s\n", SemanticEmitter::lastAfterExecuteNote().c_str());
 }
 
 
@@ -1227,4 +1206,3 @@ void Helix::onDocumentRestored()
 
     ProfileBased::onDocumentRestored();
 }
-

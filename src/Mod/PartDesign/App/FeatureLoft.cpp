@@ -186,8 +186,7 @@ App::DocumentObjectExecReturn* Loft::execute()
 {
     // The Refine-only shortcut must not suppress restore republish: the maker
     // is needed to recreate durable history for both loft variants.
-    const bool semanticRepublish =
-        isSemanticRepublishPass(SemanticEmitter::graphFor(this));
+    const bool semanticRepublish = isSemanticRepublishPass(SemanticEmitter::graphFor(this));
     if (!semanticRepublish && onlyHaveRefined()) {
         return App::DocumentObject::StdReturn;
     }
@@ -262,7 +261,8 @@ App::DocumentObjectExecReturn* Loft::execute()
                 wire.move(invObjLoc);
             }
             auto mkLoft = std::make_unique<BRepOffsetAPI_ThruSections>(
-                Standard_False, Ruled.getValue() ? Standard_True : Standard_False
+                Standard_False,
+                Ruled.getValue() ? Standard_True : Standard_False
             );
             const bool captureThis = firstAddWires.empty();
             for (auto& sh : sectionWires) {
@@ -450,7 +450,11 @@ App::DocumentObjectExecReturn* Loft::execute()
             }
             else if (getAddSubType() == FeatureAddSub::Type::Additive) {
                 boolOp.makeElementBoolean(
-                    Part::OpCodes::Fuse, {base, result}, nullptr, FuzzyTolerance.getValue());
+                    Part::OpCodes::Fuse,
+                    {base, result},
+                    nullptr,
+                    FuzzyTolerance.getValue()
+                );
             }
             else {
                 return new App::DocumentObjectExecReturn(
@@ -493,12 +497,12 @@ App::DocumentObjectExecReturn* Loft::execute()
                 &base.getShape(),
                 baseObj,
                 Opcode::SubtractiveLoft,
-                "subLoftDiag");
+                "subLoftDiag"
+            );
             App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
             // I8 dual-write after Cut Bindings publish; EM14-U1 fail-closed
             // (lockstep uniqueBindingOnFeature / AG21-E1 — EM22-L1 / #30).
-            SemanticEmitter::stampElementMap(
-                Shape, graph, static_cast<App::ObjectId>(getID()));
+            SemanticEmitter::stampElementMap(Shape, graph, static_cast<App::ObjectId>(getID()));
         }
         else if (!liveLofts.empty()) {
             emitCapturedLoft(
@@ -537,7 +541,6 @@ SubtractiveLoft::SubtractiveLoft()
 }
 
 
-
 void Loft::clearSemanticCapture()
 {
     lastLoftGenerated.clear();
@@ -546,11 +549,13 @@ void Loft::clearSemanticCapture()
     lastNamedEdgeIndices.clear();
 }
 
-void Loft::captureLoftMaker(void* occMaker,
-                            const TopoShape& preSewShell,
-                            const TopoShape& published,
-                            const std::vector<TopoDS_Shape>& addWireShapes,
-                            BRepBuilderAPI_Sewing* sewer)
+void Loft::captureLoftMaker(
+    void* occMaker,
+    const TopoShape& preSewShell,
+    const TopoShape& published,
+    const std::vector<TopoDS_Shape>& addWireShapes,
+    BRepBuilderAPI_Sewing* sewer
+)
 {
     int early = 0;
     int genFaceRaw = 0;
@@ -567,26 +572,17 @@ void Loft::captureLoftMaker(void* occMaker,
     auto finishDiag = [&]() {
         const std::size_t nf = Part::namedIndexCount(lastNamedFaceIndices);
         const std::size_t ne = Part::namedIndexCount(lastNamedEdgeIndices);
-        lastLoftDiag =
-            std::string("loftDiag early=") + std::to_string(early)
-            + " preCompat=1 sew=" + std::to_string(sew)
-            + " inputs=" + std::to_string(addWireShapes.size())
-            + " curveSeeds=" + std::to_string(nCurve)
-            + " vertexSeeds=" + std::to_string(nVertex)
-            + " edges=" + std::to_string(nEdges)
-            + " verts=" + std::to_string(nVerts)
-            + " genFaceRaw=" + std::to_string(genFaceRaw)
-            + " genFace=" + std::to_string(lastLoftGenerated.size())
-            + " genEdgeRaw=" + std::to_string(genEdgeRaw)
+        lastLoftDiag = std::string("loftDiag early=") + std::to_string(early) + " preCompat=1 sew="
+            + std::to_string(sew) + " inputs=" + std::to_string(addWireShapes.size())
+            + " curveSeeds=" + std::to_string(nCurve) + " vertexSeeds=" + std::to_string(nVertex)
+            + " edges=" + std::to_string(nEdges) + " verts=" + std::to_string(nVerts)
+            + " genFaceRaw=" + std::to_string(genFaceRaw) + " genFace="
+            + std::to_string(lastLoftGenerated.size()) + " genEdgeRaw=" + std::to_string(genEdgeRaw)
             + " genEdge=" + std::to_string(lastLoftGeneratedEdges.size())
-            + " fromMaker=" + std::to_string(fromMaker)
-            + " fromHist=" + std::to_string(fromHistN)
-            + " namedFace=" + std::to_string(nf)
-            + " namedFaceMiss="
-            + std::to_string(lastNamedFaceIndices.size() - nf)
-            + " namedEdge=" + std::to_string(ne)
-            + " namedEdgeMiss="
-            + std::to_string(lastNamedEdgeIndices.size() - ne)
+            + " fromMaker=" + std::to_string(fromMaker) + " fromHist=" + std::to_string(fromHistN)
+            + " namedFace=" + std::to_string(nf) + " namedFaceMiss="
+            + std::to_string(lastNamedFaceIndices.size() - nf) + " namedEdge=" + std::to_string(ne)
+            + " namedEdgeMiss=" + std::to_string(lastNamedEdgeIndices.size() - ne)
             + " zEdge=" + std::to_string(nZ);
     };
 
@@ -696,7 +692,8 @@ void Loft::captureLoftMaker(void* occMaker,
             vertices,
             lastLoftGenerated,
             lastLoftGeneratedEdges,
-            &usedFromMaker));
+            &usedFromMaker
+        ));
         fromMaker = usedFromMaker ? 1 : 0;
     }
 
@@ -707,20 +704,24 @@ void Loft::captureLoftMaker(void* occMaker,
         lastLoftGenerated,
         lastLoftGeneratedEdges,
         lastNamedFaceIndices,
-        lastNamedEdgeIndices);
+        lastNamedEdgeIndices
+    );
 
     // Edge binding ALWAYS: unique Z-parallel of each published Face, even when
     // vertexSeeds is non-empty (root cause 4). I13: 0 or N unnamed.
-    nZ = static_cast<int>(Part::mergeUniqueZParallelEdgesOntoNamed(
-        published, lastNamedFaceIndices, lastNamedEdgeIndices));
+    nZ = static_cast<int>(
+        Part::mergeUniqueZParallelEdgesOntoNamed(published, lastNamedFaceIndices, lastNamedEdgeIndices)
+    );
     finishDiag();
 }
 
-void Loft::emitCapturedLoft(void* occMaker,
-                            const TopoShape& preSewShell,
-                            const TopoShape& published,
-                            const std::vector<TopoDS_Shape>& addWireShapes,
-                            BRepBuilderAPI_Sewing* sewer)
+void Loft::emitCapturedLoft(
+    void* occMaker,
+    const TopoShape& preSewShell,
+    const TopoShape& published,
+    const std::vector<TopoDS_Shape>& addWireShapes,
+    BRepBuilderAPI_Sewing* sewer
+)
 {
     clearSemanticCapture();
     captureLoftMaker(occMaker, preSewShell, published, addWireShapes, sewer);
@@ -742,14 +743,13 @@ void Loft::emitCapturedLoft(void* occMaker,
         getAddSubType() == FeatureAddSub::Type::Subtractive ? Opcode::SubtractiveLoft : Opcode::Loft,
         fid,
         eval,
-        req);
+        req
+    );
     // I8 dual-write after Bindings publish; EM14-U1 fail-closed if multi-eval
     // (lockstep uniqueBindingOnFeature / AG21-E1 — QUALITY-SWEEP #22/#30 EM22-L1).
     SemanticEmitter::stampElementMap(Shape, graph, fid);
     SemanticEmitter::appendAfterExecuteNote(lastLoftDiag);
-    Base::Console().message(
-        "TESTS loftDiag %s\n",
-        SemanticEmitter::lastAfterExecuteNote().c_str());
+    Base::Console().message("TESTS loftDiag %s\n", SemanticEmitter::lastAfterExecuteNote().c_str());
 }
 
 void Loft::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)

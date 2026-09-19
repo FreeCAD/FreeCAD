@@ -39,11 +39,11 @@
 #include <vector>
 
 #ifdef SKETCH_ENTITY_ID_STANDALONE
-#ifndef SketcherExport
-#define SketcherExport
-#endif
+# ifndef SketcherExport
+#  define SketcherExport
+# endif
 #else
-#include <Mod/Sketcher/SketcherGlobal.h>
+# include <Mod/Sketcher/SketcherGlobal.h>
 #endif
 
 namespace Sketcher
@@ -150,8 +150,7 @@ public:
     /// Not FaceN, not "largest face of this evaluate." Wire IDs are sorted
     /// unique so the key is independent of list order.
     /// Format: `W<id1>,<id2>,...:<Role>`  e.g. `W3,7,12:Interior`.
-    static std::string regionKey(std::vector<SketchEntityHandle> wireIds,
-                                 std::string_view role);
+    static std::string regionKey(std::vector<SketchEntityHandle> wireIds, std::string_view role);
 
     static constexpr const char* RoleInterior = "Interior";
     static constexpr const char* RoleHole = "Hole";
@@ -163,7 +162,8 @@ public:
 
     /// Unique generating entity IDs parsed from edge mapped names.
     static std::vector<SketchEntityHandle> entityIdsFromMappedNames(
-        const std::vector<std::string>& mappedNames);
+        const std::vector<std::string>& mappedNames
+    );
 
     /// True if `key` is `W...:Interior|Hole|Cap`, not FaceN.
     static bool isRegionKey(std::string_view key);

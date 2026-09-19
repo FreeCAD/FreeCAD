@@ -123,8 +123,9 @@ Pad::Pad()
 
 App::DocumentObjectExecReturn* Pad::execute()
 {
-    App::DocumentObjectExecReturn* ret =
-        buildExtrusion(ExtrudeOption::MakeFace | ExtrudeOption::MakeFuse);
+    App::DocumentObjectExecReturn* ret = buildExtrusion(
+        ExtrudeOption::MakeFace | ExtrudeOption::MakeFuse
+    );
     App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
     App::ObjectId fid = static_cast<App::ObjectId>(getID());
     App::EvalSerial eval = 0;

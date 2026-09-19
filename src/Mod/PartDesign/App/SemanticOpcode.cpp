@@ -55,8 +55,7 @@ namespace PartDesign
 namespace
 {
 
-constexpr App::FilterFlag kSameKind =
-    App::FilterFlag::DescendantsOfSeed | App::FilterFlag::SameKind;
+constexpr App::FilterFlag kSameKind = App::FilterFlag::DescendantsOfSeed | App::FilterFlag::SameKind;
 
 const OpcodeRole kRoles[] = {
     // Pad / pocket: sides from curves, caps from regions. Source split
@@ -820,22 +819,198 @@ const OpcodeRole kRoles[] = {
      App::AcceptedCardinality::OneOrMore,
      false},
     // Remaining PartDesign subtractive primitive with-base Cut roles.
-    {Opcode::SubtractiveCone, OpcodeRoleId::SubtractiveConeFace, "SubtractiveConeFace", "PCN", App::SemanticKind::Face, App::SemanticKind::Face, App::EventKind::Generated, App::SemanticRole::None, kSameKind, App::CardinalityReducer::AcceptAll, App::AcceptedCardinality::OneOrMore, false},
-    {Opcode::SubtractiveCone, OpcodeRoleId::SubtractiveConeEdge, "SubtractiveConeEdge", "PCN", App::SemanticKind::Edge, App::SemanticKind::Edge, App::EventKind::Generated, App::SemanticRole::None, kSameKind, App::CardinalityReducer::AcceptAll, App::AcceptedCardinality::OneOrMore, false},
-    {Opcode::SubtractiveTorus, OpcodeRoleId::SubtractiveTorusFace, "SubtractiveTorusFace", "PTO", App::SemanticKind::Face, App::SemanticKind::Face, App::EventKind::Generated, App::SemanticRole::None, kSameKind, App::CardinalityReducer::AcceptAll, App::AcceptedCardinality::OneOrMore, false},
-    {Opcode::SubtractiveTorus, OpcodeRoleId::SubtractiveTorusEdge, "SubtractiveTorusEdge", "PTO", App::SemanticKind::Edge, App::SemanticKind::Edge, App::EventKind::Generated, App::SemanticRole::None, kSameKind, App::CardinalityReducer::AcceptAll, App::AcceptedCardinality::OneOrMore, false},
-    {Opcode::SubtractivePrism, OpcodeRoleId::SubtractivePrismFace, "SubtractivePrismFace", "PPR", App::SemanticKind::Face, App::SemanticKind::Face, App::EventKind::Generated, App::SemanticRole::None, kSameKind, App::CardinalityReducer::AcceptAll, App::AcceptedCardinality::OneOrMore, false},
-    {Opcode::SubtractivePrism, OpcodeRoleId::SubtractivePrismEdge, "SubtractivePrismEdge", "PPR", App::SemanticKind::Edge, App::SemanticKind::Edge, App::EventKind::Generated, App::SemanticRole::None, kSameKind, App::CardinalityReducer::AcceptAll, App::AcceptedCardinality::OneOrMore, false},
-    {Opcode::SubtractiveWedge, OpcodeRoleId::SubtractiveWedgeFace, "SubtractiveWedgeFace", "PWD", App::SemanticKind::Face, App::SemanticKind::Face, App::EventKind::Generated, App::SemanticRole::None, kSameKind, App::CardinalityReducer::AcceptAll, App::AcceptedCardinality::OneOrMore, false},
-    {Opcode::SubtractiveWedge, OpcodeRoleId::SubtractiveWedgeEdge, "SubtractiveWedgeEdge", "PWD", App::SemanticKind::Edge, App::SemanticKind::Edge, App::EventKind::Generated, App::SemanticRole::None, kSameKind, App::CardinalityReducer::AcceptAll, App::AcceptedCardinality::OneOrMore, false},
-    {Opcode::SubtractiveEllipsoid, OpcodeRoleId::SubtractiveEllipsoidFace, "SubtractiveEllipsoidFace", "PEL", App::SemanticKind::Face, App::SemanticKind::Face, App::EventKind::Generated, App::SemanticRole::None, kSameKind, App::CardinalityReducer::AcceptAll, App::AcceptedCardinality::OneOrMore, false},
-    {Opcode::SubtractiveEllipsoid, OpcodeRoleId::SubtractiveEllipsoidEdge, "SubtractiveEllipsoidEdge", "PEL", App::SemanticKind::Edge, App::SemanticKind::Edge, App::EventKind::Generated, App::SemanticRole::None, kSameKind, App::CardinalityReducer::AcceptAll, App::AcceptedCardinality::OneOrMore, false},
-    {Opcode::SubtractiveLoft, OpcodeRoleId::SubtractiveLoftSide, "SubtractiveLoftSide", "SLF", App::SemanticKind::Edge, App::SemanticKind::Face, App::EventKind::Generated, App::SemanticRole::None, kSameKind, App::CardinalityReducer::AcceptAll, App::AcceptedCardinality::OneOrMore, false},
-    {Opcode::SubtractiveLoft, OpcodeRoleId::SubtractiveLoftCap, "SubtractiveLoftCap", "SLF", App::SemanticKind::Region, App::SemanticKind::Face, App::EventKind::Generated, App::SemanticRole::None, kSameKind, App::CardinalityReducer::AcceptAll, App::AcceptedCardinality::OneOrMore, false},
-    {Opcode::SubtractivePipe, OpcodeRoleId::SubtractivePipeSide, "SubtractivePipeSide", "SPP", App::SemanticKind::Edge, App::SemanticKind::Face, App::EventKind::Generated, App::SemanticRole::None, kSameKind, App::CardinalityReducer::AcceptAll, App::AcceptedCardinality::OneOrMore, false},
-    {Opcode::SubtractivePipe, OpcodeRoleId::SubtractivePipeCap, "SubtractivePipeCap", "SPP", App::SemanticKind::Region, App::SemanticKind::Face, App::EventKind::Generated, App::SemanticRole::None, kSameKind, App::CardinalityReducer::AcceptAll, App::AcceptedCardinality::OneOrMore, false},
-    {Opcode::SubtractiveHelix, OpcodeRoleId::SubtractiveHelixSide, "SubtractiveHelixSide", "SHX", App::SemanticKind::Edge, App::SemanticKind::Face, App::EventKind::Generated, App::SemanticRole::None, kSameKind, App::CardinalityReducer::AcceptAll, App::AcceptedCardinality::OneOrMore, false},
-    {Opcode::SubtractiveHelix, OpcodeRoleId::SubtractiveHelixCap, "SubtractiveHelixCap", "SHX", App::SemanticKind::Region, App::SemanticKind::Face, App::EventKind::Generated, App::SemanticRole::None, kSameKind, App::CardinalityReducer::AcceptAll, App::AcceptedCardinality::OneOrMore, false},
+    {Opcode::SubtractiveCone,
+     OpcodeRoleId::SubtractiveConeFace,
+     "SubtractiveConeFace",
+     "PCN",
+     App::SemanticKind::Face,
+     App::SemanticKind::Face,
+     App::EventKind::Generated,
+     App::SemanticRole::None,
+     kSameKind,
+     App::CardinalityReducer::AcceptAll,
+     App::AcceptedCardinality::OneOrMore,
+     false},
+    {Opcode::SubtractiveCone,
+     OpcodeRoleId::SubtractiveConeEdge,
+     "SubtractiveConeEdge",
+     "PCN",
+     App::SemanticKind::Edge,
+     App::SemanticKind::Edge,
+     App::EventKind::Generated,
+     App::SemanticRole::None,
+     kSameKind,
+     App::CardinalityReducer::AcceptAll,
+     App::AcceptedCardinality::OneOrMore,
+     false},
+    {Opcode::SubtractiveTorus,
+     OpcodeRoleId::SubtractiveTorusFace,
+     "SubtractiveTorusFace",
+     "PTO",
+     App::SemanticKind::Face,
+     App::SemanticKind::Face,
+     App::EventKind::Generated,
+     App::SemanticRole::None,
+     kSameKind,
+     App::CardinalityReducer::AcceptAll,
+     App::AcceptedCardinality::OneOrMore,
+     false},
+    {Opcode::SubtractiveTorus,
+     OpcodeRoleId::SubtractiveTorusEdge,
+     "SubtractiveTorusEdge",
+     "PTO",
+     App::SemanticKind::Edge,
+     App::SemanticKind::Edge,
+     App::EventKind::Generated,
+     App::SemanticRole::None,
+     kSameKind,
+     App::CardinalityReducer::AcceptAll,
+     App::AcceptedCardinality::OneOrMore,
+     false},
+    {Opcode::SubtractivePrism,
+     OpcodeRoleId::SubtractivePrismFace,
+     "SubtractivePrismFace",
+     "PPR",
+     App::SemanticKind::Face,
+     App::SemanticKind::Face,
+     App::EventKind::Generated,
+     App::SemanticRole::None,
+     kSameKind,
+     App::CardinalityReducer::AcceptAll,
+     App::AcceptedCardinality::OneOrMore,
+     false},
+    {Opcode::SubtractivePrism,
+     OpcodeRoleId::SubtractivePrismEdge,
+     "SubtractivePrismEdge",
+     "PPR",
+     App::SemanticKind::Edge,
+     App::SemanticKind::Edge,
+     App::EventKind::Generated,
+     App::SemanticRole::None,
+     kSameKind,
+     App::CardinalityReducer::AcceptAll,
+     App::AcceptedCardinality::OneOrMore,
+     false},
+    {Opcode::SubtractiveWedge,
+     OpcodeRoleId::SubtractiveWedgeFace,
+     "SubtractiveWedgeFace",
+     "PWD",
+     App::SemanticKind::Face,
+     App::SemanticKind::Face,
+     App::EventKind::Generated,
+     App::SemanticRole::None,
+     kSameKind,
+     App::CardinalityReducer::AcceptAll,
+     App::AcceptedCardinality::OneOrMore,
+     false},
+    {Opcode::SubtractiveWedge,
+     OpcodeRoleId::SubtractiveWedgeEdge,
+     "SubtractiveWedgeEdge",
+     "PWD",
+     App::SemanticKind::Edge,
+     App::SemanticKind::Edge,
+     App::EventKind::Generated,
+     App::SemanticRole::None,
+     kSameKind,
+     App::CardinalityReducer::AcceptAll,
+     App::AcceptedCardinality::OneOrMore,
+     false},
+    {Opcode::SubtractiveEllipsoid,
+     OpcodeRoleId::SubtractiveEllipsoidFace,
+     "SubtractiveEllipsoidFace",
+     "PEL",
+     App::SemanticKind::Face,
+     App::SemanticKind::Face,
+     App::EventKind::Generated,
+     App::SemanticRole::None,
+     kSameKind,
+     App::CardinalityReducer::AcceptAll,
+     App::AcceptedCardinality::OneOrMore,
+     false},
+    {Opcode::SubtractiveEllipsoid,
+     OpcodeRoleId::SubtractiveEllipsoidEdge,
+     "SubtractiveEllipsoidEdge",
+     "PEL",
+     App::SemanticKind::Edge,
+     App::SemanticKind::Edge,
+     App::EventKind::Generated,
+     App::SemanticRole::None,
+     kSameKind,
+     App::CardinalityReducer::AcceptAll,
+     App::AcceptedCardinality::OneOrMore,
+     false},
+    {Opcode::SubtractiveLoft,
+     OpcodeRoleId::SubtractiveLoftSide,
+     "SubtractiveLoftSide",
+     "SLF",
+     App::SemanticKind::Edge,
+     App::SemanticKind::Face,
+     App::EventKind::Generated,
+     App::SemanticRole::None,
+     kSameKind,
+     App::CardinalityReducer::AcceptAll,
+     App::AcceptedCardinality::OneOrMore,
+     false},
+    {Opcode::SubtractiveLoft,
+     OpcodeRoleId::SubtractiveLoftCap,
+     "SubtractiveLoftCap",
+     "SLF",
+     App::SemanticKind::Region,
+     App::SemanticKind::Face,
+     App::EventKind::Generated,
+     App::SemanticRole::None,
+     kSameKind,
+     App::CardinalityReducer::AcceptAll,
+     App::AcceptedCardinality::OneOrMore,
+     false},
+    {Opcode::SubtractivePipe,
+     OpcodeRoleId::SubtractivePipeSide,
+     "SubtractivePipeSide",
+     "SPP",
+     App::SemanticKind::Edge,
+     App::SemanticKind::Face,
+     App::EventKind::Generated,
+     App::SemanticRole::None,
+     kSameKind,
+     App::CardinalityReducer::AcceptAll,
+     App::AcceptedCardinality::OneOrMore,
+     false},
+    {Opcode::SubtractivePipe,
+     OpcodeRoleId::SubtractivePipeCap,
+     "SubtractivePipeCap",
+     "SPP",
+     App::SemanticKind::Region,
+     App::SemanticKind::Face,
+     App::EventKind::Generated,
+     App::SemanticRole::None,
+     kSameKind,
+     App::CardinalityReducer::AcceptAll,
+     App::AcceptedCardinality::OneOrMore,
+     false},
+    {Opcode::SubtractiveHelix,
+     OpcodeRoleId::SubtractiveHelixSide,
+     "SubtractiveHelixSide",
+     "SHX",
+     App::SemanticKind::Edge,
+     App::SemanticKind::Face,
+     App::EventKind::Generated,
+     App::SemanticRole::None,
+     kSameKind,
+     App::CardinalityReducer::AcceptAll,
+     App::AcceptedCardinality::OneOrMore,
+     false},
+    {Opcode::SubtractiveHelix,
+     OpcodeRoleId::SubtractiveHelixCap,
+     "SubtractiveHelixCap",
+     "SHX",
+     App::SemanticKind::Region,
+     App::SemanticKind::Face,
+     App::EventKind::Generated,
+     App::SemanticRole::None,
+     kSameKind,
+     App::CardinalityReducer::AcceptAll,
+     App::AcceptedCardinality::OneOrMore,
+     false},
 
 };
 
@@ -847,8 +1022,7 @@ App::ElementIndex faceIndex(int n)
     return idx;
 }
 
-void appendUniqueSemanticId(std::vector<App::SemanticId>& seeds,
-                            const App::SemanticId& addition)
+void appendUniqueSemanticId(std::vector<App::SemanticId>& seeds, const App::SemanticId& addition)
 {
     if (!addition.valid()) {
         return;
@@ -858,8 +1032,10 @@ void appendUniqueSemanticId(std::vector<App::SemanticId>& seeds,
     }
 }
 
-void appendUniqueSemanticIds(std::vector<App::SemanticId>& seeds,
-                             const std::vector<App::SemanticId>& additions)
+void appendUniqueSemanticIds(
+    std::vector<App::SemanticId>& seeds,
+    const std::vector<App::SemanticId>& additions
+)
 {
     for (const App::SemanticId& addition : additions) {
         appendUniqueSemanticId(seeds, addition);
@@ -868,12 +1044,14 @@ void appendUniqueSemanticIds(std::vector<App::SemanticId>& seeds,
 
 bool isValidNamedIndex(const App::ElementIndex& index, const char* expectedType);
 
-bool emitSeedlessDressUpFaces(App::SemanticGraph* graph,
-                              const char* op,
-                              App::ObjectId feature,
-                              App::EvalSerial eval,
-                              const std::vector<App::ElementIndex>& namedFaces,
-                              std::string& note)
+bool emitSeedlessDressUpFaces(
+    App::SemanticGraph* graph,
+    const char* op,
+    App::ObjectId feature,
+    App::EvalSerial eval,
+    const std::vector<App::ElementIndex>& namedFaces,
+    std::string& note
+)
 {
     if (!graph || namedFaces.empty()) {
         return false;
@@ -899,7 +1077,13 @@ bool emitSeedlessDressUpFaces(App::SemanticGraph* graph,
             continue;
         }
         const App::SemanticId child = graph->recordGeneratedFrom(
-            {}, App::SemanticKind::Face, op, feature, eval, App::SemanticRole::None);
+            {},
+            App::SemanticKind::Face,
+            op,
+            feature,
+            eval,
+            App::SemanticRole::None
+        );
         App::SemanticBinding row;
         row.stid = child;
         row.feature = feature;
@@ -1026,8 +1210,7 @@ App::SemanticId firstNamedFace(const std::vector<App::SemanticReference>& refs)
     // First-wins (not I13 unique). Prefer uniqueNamedFace for product consume.
     for (const App::SemanticReference& ref : refs) {
         if (ref.seed.valid()
-            && (ref.seed.kind == App::SemanticKind::Face
-                || ref.kind == App::SemanticKind::Face)) {
+            && (ref.seed.kind == App::SemanticKind::Face || ref.kind == App::SemanticKind::Face)) {
             return ref.seed;
         }
     }
@@ -1048,14 +1231,12 @@ App::SemanticId uniqueNamedFace(const std::vector<App::SemanticReference>& refs)
         ++n;
         found = ref.seed;
     }
-    return n == 1 ? found : App::SemanticId{};
+    return n == 1 ? found : App::SemanticId {};
 }
 
-bool appendUniqueSemanticSeed(std::vector<App::SemanticId>& seeds,
-                              const App::SemanticId& seed)
+bool appendUniqueSemanticSeed(std::vector<App::SemanticId>& seeds, const App::SemanticId& seed)
 {
-    if (!seed.valid()
-        || std::find(seeds.begin(), seeds.end(), seed) != seeds.end()) {
+    if (!seed.valid() || std::find(seeds.begin(), seeds.end(), seed) != seeds.end()) {
         return false;
     }
     seeds.push_back(seed);
@@ -1065,7 +1246,8 @@ bool appendUniqueSemanticSeed(std::vector<App::SemanticId>& seeds,
 std::optional<App::SemanticBinding> uniqueFaceBindingOnFeature(
     const App::SemanticGraph* graph,
     const App::SemanticId& seed,
-    App::ObjectId linkedFeature)
+    App::ObjectId linkedFeature
+)
 {
     // Keep the PartDesign Face convenience API on the shared App helper so
     // Part and PartDesign consume exactly the same I13 uniqueness policy.
@@ -1075,7 +1257,8 @@ std::optional<App::SemanticBinding> uniqueFaceBindingOnFeature(
 std::optional<App::SemanticBinding> uniqueResolvedFaceReference(
     const App::SemanticGraph* graph,
     const App::SemanticReference& reference,
-    App::ObjectId linkedFeature)
+    App::ObjectId linkedFeature
+)
 {
     if (!graph || !graph->hasBindings() || linkedFeature == 0 || !reference.seed.valid()
         || reference.seed.kind != App::SemanticKind::Face
@@ -1087,16 +1270,15 @@ std::optional<App::SemanticBinding> uniqueResolvedFaceReference(
     requirement.expectedKind = App::SemanticKind::Face;
     requirement.acceptedCardinality = App::AcceptedCardinality::One;
     requirement.acceptedReducers = {reference.reducer};
-    const App::ResolutionResult result =
-        App::SemanticResolver::resolve(reference, *graph, &requirement);
+    const App::ResolutionResult result
+        = App::SemanticResolver::resolve(reference, *graph, &requirement);
     if (result.state != App::ResolutionState::Resolved || result.bindings.size() != 1) {
         return std::nullopt;
     }
 
     const App::SemanticBinding& binding = result.bindings.front();
-    if (binding.stid.handle != reference.seed.handle
-        || binding.stid.kind != App::SemanticKind::Face || binding.feature != linkedFeature
-        || !isValidNamedIndex(binding.index, "Face")) {  // PD32-N1
+    if (binding.stid.handle != reference.seed.handle || binding.stid.kind != App::SemanticKind::Face
+        || binding.feature != linkedFeature || !isValidNamedIndex(binding.index, "Face")) {  // PD32-N1
         return std::nullopt;
     }
     return binding;
@@ -1163,8 +1345,7 @@ bool SemanticEmitter::attached(const App::SemanticGraph* graph)
     return graph != nullptr;
 }
 
-bool SemanticEmitter::needsSemanticRepublish(const App::SemanticGraph* graph,
-                                               App::ObjectId feature)
+bool SemanticEmitter::needsSemanticRepublish(const App::SemanticGraph* graph, App::ObjectId feature)
 {
     return graph && feature != 0 && !graph->hasFeatureData(feature);
 }
@@ -1172,7 +1353,8 @@ bool SemanticEmitter::needsSemanticRepublish(const App::SemanticGraph* graph,
 void SemanticEmitter::appendInverseProfileFaceIndices(
     const App::DocumentObject* profileFeature,
     const Part::TopoShape& profileShape,
-    std::vector<App::ElementIndex>& namedFaceIndices)
+    std::vector<App::ElementIndex>& namedFaceIndices
+)
 {
     if (!profileFeature || profileShape.isNull()) {
         return;
@@ -1226,9 +1408,7 @@ namespace
 {
 std::string g_lastAfterExecuteNote;
 
-bool alreadyGeneratedKind(const App::SemanticGraph& graph,
-                          App::SemanticHandle seed,
-                          App::SemanticKind kind)
+bool alreadyGeneratedKind(const App::SemanticGraph& graph, App::SemanticHandle seed, App::SemanticKind kind)
 {
     for (const App::SemanticId& id : SemanticEmitter::generatedFrom(graph, seed)) {
         if (id.kind == kind) {
@@ -1245,15 +1425,17 @@ bool alreadyGeneratedFace(const App::SemanticGraph& graph, App::SemanticHandle s
 
 bool isValidNamedIndex(const App::ElementIndex& index, const char* expectedType);
 
-void emitNamedEdgesFromRequest(App::SemanticGraph* graph,
-                               const char* op,
-                               App::ObjectId feature,
-                               App::EvalSerial eval,
-                               const AfterExecuteRequest& request,
-                               const std::vector<App::SemanticId>& edgeSeeds,
-                               std::size_t& nEdges,
-                               std::size_t& nSkip,
-                               bool protectOutputOwnership = false)
+void emitNamedEdgesFromRequest(
+    App::SemanticGraph* graph,
+    const char* op,
+    App::ObjectId feature,
+    App::EvalSerial eval,
+    const AfterExecuteRequest& request,
+    const std::vector<App::SemanticId>& edgeSeeds,
+    std::size_t& nEdges,
+    std::size_t& nSkip,
+    bool protectOutputOwnership = false
+)
 {
     std::size_t ni = 0;
     for (const App::SemanticId& seed : edgeSeeds) {
@@ -1265,20 +1447,24 @@ void emitNamedEdgesFromRequest(App::SemanticGraph* graph,
             ++nSkip;
             continue;
         }
-        SemanticEmitter::emitGeneratedFrom(graph,
-                                           {seed},
-                                           App::SemanticKind::Edge,
-                                           op,
-                                           feature,
-                                           eval,
-                                           App::SemanticRole::None,
-                                           idx);
+        SemanticEmitter::emitGeneratedFrom(
+            graph,
+            {seed},
+            App::SemanticKind::Edge,
+            op,
+            feature,
+            eval,
+            App::SemanticRole::None,
+            idx
+        );
         ++nEdges;
     }
 }
 
-std::vector<App::SemanticId> edgeZipSeeds(const App::SemanticGraph& graph,
-                                          const AfterExecuteRequest& request)
+std::vector<App::SemanticId> edgeZipSeeds(
+    const App::SemanticGraph& graph,
+    const AfterExecuteRequest& request
+)
 {
     std::vector<App::SemanticId> vertices;
     for (const App::SemanticId& v : request.vertexSeeds) {
@@ -1316,8 +1502,7 @@ bool isValidNamedIndex(const App::ElementIndex& index, const char* expectedType)
     return isValidNamedIndex(index) && (!expectedType || index.type == expectedType);
 }
 
-std::size_t countValidNamedIndices(const std::vector<App::ElementIndex>& indices,
-                                   const char* type)
+std::size_t countValidNamedIndices(const std::vector<App::ElementIndex>& indices, const char* type)
 {
     std::size_t count = 0;
     for (const App::ElementIndex& index : indices) {
@@ -1340,9 +1525,11 @@ const std::string& SemanticEmitter::lastAfterExecuteNote()
     return g_lastAfterExecuteNote;
 }
 
-void SemanticEmitter::stampElementMap(App::PropertyComplexGeoData& map,
-                                      const App::SemanticGraph* graph,
-                                      App::ObjectId feature)
+void SemanticEmitter::stampElementMap(
+    App::PropertyComplexGeoData& map,
+    const App::SemanticGraph* graph,
+    App::ObjectId feature
+)
 {
     const Data::ComplexGeoData* geoConst = map.getComplexData();
     if (!graph || !geoConst || !geoConst->hasElementMap()) {
@@ -1395,13 +1582,15 @@ void SemanticEmitter::stampElementMap(App::PropertyComplexGeoData& map,
 }
 
 
-void SemanticEmitter::publishSubtractiveCutHistory(App::DocumentObject* feature,
-                                                   void* occBooleanOp,
-                                                   const void* toolShapeOcc,
-                                                   const void* baseShapeOcc,
-                                                   App::DocumentObject* baseObj,
-                                                   Opcode opcode,
-                                                   const char* diagName)
+void SemanticEmitter::publishSubtractiveCutHistory(
+    App::DocumentObject* feature,
+    void* occBooleanOp,
+    const void* toolShapeOcc,
+    const void* baseShapeOcc,
+    App::DocumentObject* baseObj,
+    Opcode opcode,
+    const char* diagName
+)
 {
     // Shared with-base Cut publisher for Batch A subtractive twins and
     // SubtractiveLoft/Pipe. Dedicated opcode; never reuse Boolean=15.
@@ -1465,11 +1654,9 @@ void SemanticEmitter::publishSubtractiveCutHistory(App::DocumentObject* feature,
             }
         }
         if (!seed.valid()) {
-            const App::SemanticKind kind =
-                sub.ShapeType() == TopAbs_FACE ? App::SemanticKind::Face
-                                               : App::SemanticKind::Edge;
-            seed = graph->recordGenerated(
-                kind, opcodeName(opcode), selfId, eval, App::SemanticRole::None);
+            const App::SemanticKind kind = sub.ShapeType() == TopAbs_FACE ? App::SemanticKind::Face
+                                                                          : App::SemanticKind::Edge;
+            seed = graph->recordGenerated(kind, opcodeName(opcode), selfId, eval, App::SemanticRole::None);
         }
         if (!seed.valid()) {
             return;
@@ -1494,10 +1681,13 @@ void SemanticEmitter::publishSubtractiveCutHistory(App::DocumentObject* feature,
     if (inputs.empty()) {
         SemanticEmitter::afterExecute(graph, opcode, selfId, eval, req);
         SemanticEmitter::appendAfterExecuteNote(
-            std::string("skip emit: no unique ") + opcodeName(opcode) + " Cut source seeds");
+            std::string("skip emit: no unique ") + opcodeName(opcode) + " Cut source seeds"
+        );
         Base::Console().message(
-            "%s %s\n", diagName ? diagName : "subtractiveDiag",
-            SemanticEmitter::lastAfterExecuteNote().c_str());
+            "%s %s\n",
+            diagName ? diagName : "subtractiveDiag",
+            SemanticEmitter::lastAfterExecuteNote().c_str()
+        );
         return;
     }
 
@@ -1509,10 +1699,8 @@ void SemanticEmitter::publishSubtractiveCutHistory(App::DocumentObject* feature,
         return Part::indexOnPublished(published, *static_cast<const TopoDS_Shape*>(occ));
     };
 
-    const Part::HistoryTable raw =
-        Part::SemanticHistoryAdapter::fromMaker(mkCut, inputs, indexOf);
-    const Part::HistoryTable unique =
-        Part::SemanticHistoryAdapter::uniqueOneImageGenerated(raw);
+    const Part::HistoryTable raw = Part::SemanticHistoryAdapter::fromMaker(mkCut, inputs, indexOf);
+    const Part::HistoryTable unique = Part::SemanticHistoryAdapter::uniqueOneImageGenerated(raw);
 
     Part::HistoryTable toApply;
     std::vector<App::SemanticId> seeds;
@@ -1551,15 +1739,15 @@ void SemanticEmitter::publishSubtractiveCutHistory(App::DocumentObject* feature,
     }
 
     if (!toApply.empty()) {
-        Part::SemanticHistoryAdapter::applyHistory(
-            graph, selfId, eval, opcodeName(opcode), seeds, toApply);
+        Part::SemanticHistoryAdapter::applyHistory(graph, selfId, eval, opcodeName(opcode), seeds, toApply);
     }
     SemanticEmitter::afterExecute(graph, opcode, selfId, eval, req);
-    SemanticEmitter::appendAfterExecuteNote(
-        Part::SemanticHistoryAdapter::lastApplyNote());
+    SemanticEmitter::appendAfterExecuteNote(Part::SemanticHistoryAdapter::lastApplyNote());
     Base::Console().message(
-        "%s %s\n", diagName ? diagName : "subtractiveDiag",
-        SemanticEmitter::lastAfterExecuteNote().c_str());
+        "%s %s\n",
+        diagName ? diagName : "subtractiveDiag",
+        SemanticEmitter::lastAfterExecuteNote().c_str()
+    );
 }
 
 void SemanticEmitter::appendAfterExecuteNote(const std::string& suffix)
@@ -1573,8 +1761,10 @@ void SemanticEmitter::appendAfterExecuteNote(const std::string& suffix)
     g_lastAfterExecuteNote += suffix;
 }
 
-AfterExecuteRequest SemanticEmitter::collectSketchProfileSeeds(const App::SemanticGraph* graph,
-                                                               App::ObjectId sketch)
+AfterExecuteRequest SemanticEmitter::collectSketchProfileSeeds(
+    const App::SemanticGraph* graph,
+    App::ObjectId sketch
+)
 {
     AfterExecuteRequest req;
     if (!graph || sketch == 0) {
@@ -1611,7 +1801,8 @@ AfterExecuteRequest SemanticEmitter::collectSketchProfileSeeds(const App::Semant
 AfterExecuteRequest SemanticEmitter::collectProfileSeeds(
     const App::SemanticGraph* graph,
     App::ObjectId profile,
-    const std::vector<App::SemanticReference>& profileRefs)
+    const std::vector<App::SemanticReference>& profileRefs
+)
 {
     AfterExecuteRequest req = collectSketchProfileSeeds(graph, profile);
     if (!req.curveSeeds.empty() || !req.regionSeeds.empty() || !req.vertexSeeds.empty()) {
@@ -1627,13 +1818,12 @@ AfterExecuteRequest SemanticEmitter::collectProfileSeeds(
     for (const App::SemanticReference& ref : profileRefs) {
         App::SemanticId seed;
         if (ref.seed.valid()
-            && (ref.seed.kind == App::SemanticKind::Face
-                || ref.kind == App::SemanticKind::Face)) {
+            && (ref.seed.kind == App::SemanticKind::Face || ref.kind == App::SemanticKind::Face)) {
             seed = ref.seed;
         }
         else if (graph && isValidNamedIndex(ref.fallback, "Face")) {  // PD32-N5
-            const std::optional<App::SemanticBinding> promoted =
-                App::uniquePublishedBinding(*graph, ref.fallback, profile);
+            const std::optional<App::SemanticBinding> promoted
+                = App::uniquePublishedBinding(*graph, ref.fallback, profile);
             if (promoted && isValidNamedIndex(promoted->index, "Face")
                 && promoted->kind == App::SemanticKind::Face
                 && promoted->stid.kind == App::SemanticKind::Face) {
@@ -1649,11 +1839,13 @@ AfterExecuteRequest SemanticEmitter::collectProfileSeeds(
     return req;
 }
 
-void SemanticEmitter::afterExecute(App::SemanticGraph* graph,
-                                   Opcode opcode,
-                                   App::ObjectId feature,
-                                   App::EvalSerial eval,
-                                   const AfterExecuteRequest& request)
+void SemanticEmitter::afterExecute(
+    App::SemanticGraph* graph,
+    Opcode opcode,
+    App::ObjectId feature,
+    App::EvalSerial eval,
+    const AfterExecuteRequest& request
+)
 {
     g_lastAfterExecuteNote.clear();
     if (!graph) {
@@ -1707,8 +1899,7 @@ void SemanticEmitter::afterExecute(App::SemanticGraph* graph,
             }
             return;
         }
-        const bool useNamed =
-            !request.namedFaceIndices.empty() || !request.namedEdgeIndices.empty();
+        const bool useNamed = !request.namedFaceIndices.empty() || !request.namedEdgeIndices.empty();
         const bool useSeq = request.allowSequentialFaceN && !useNamed;
         if (!useNamed && !useSeq) {
             g_lastAfterExecuteNote = "skip emit: no named pad history (half-map)";
@@ -1733,14 +1924,16 @@ void SemanticEmitter::afterExecute(App::SemanticGraph* graph,
                     ++nSkip;
                     continue;
                 }
-                emitGeneratedFrom(graph,
-                                  {curve},
-                                  App::SemanticKind::Face,
-                                  "Pad",
-                                  feature,
-                                  eval,
-                                  App::SemanticRole::None,
-                                  idx);
+                emitGeneratedFrom(
+                    graph,
+                    {curve},
+                    App::SemanticKind::Face,
+                    "Pad",
+                    feature,
+                    eval,
+                    App::SemanticRole::None,
+                    idx
+                );
                 ++nSides;
             }
             for (const App::SemanticId& region : regions) {
@@ -1750,20 +1943,21 @@ void SemanticEmitter::afterExecute(App::SemanticGraph* graph,
                         ++nSkip;
                         continue;
                     }
-                    emitGeneratedFrom(graph,
-                                      {region},
-                                      App::SemanticKind::Face,
-                                      "Pad",
-                                      feature,
-                                      eval,
-                                      App::SemanticRole::None,
-                                      idx);
+                    emitGeneratedFrom(
+                        graph,
+                        {region},
+                        App::SemanticKind::Face,
+                        "Pad",
+                        feature,
+                        eval,
+                        App::SemanticRole::None,
+                        idx
+                    );
                     ++nCaps;
                 }
             }
             if (hasEdgeWork) {
-                emitNamedEdgesFromRequest(
-                    graph, "Pad", feature, eval, request, edgeSeeds, nEdges, nSkip, true);
+                emitNamedEdgesFromRequest(graph, "Pad", feature, eval, request, edgeSeeds, nEdges, nSkip, true);
             }
             g_lastAfterExecuteNote = "emitted pad sides=" + std::to_string(nSides)
                 + " caps=" + std::to_string(nCaps) + " edges=" + std::to_string(nEdges)
@@ -1820,14 +2014,16 @@ void SemanticEmitter::afterExecute(App::SemanticGraph* graph,
                     if (App::shouldRefuseNamedEmitSlot(graph, feature, idx, "Face")) {
                         continue;
                     }
-                    emitGeneratedFrom(graph,
-                                      {curve},
-                                      App::SemanticKind::Face,
-                                      "Pocket",
-                                      feature,
-                                      eval,
-                                      App::SemanticRole::None,
-                                      idx);
+                    emitGeneratedFrom(
+                        graph,
+                        {curve},
+                        App::SemanticKind::Face,
+                        "Pocket",
+                        feature,
+                        eval,
+                        App::SemanticRole::None,
+                        idx
+                    );
                     ++nSides;
                 }
                 for (const App::SemanticId& region : regions) {
@@ -1836,14 +2032,16 @@ void SemanticEmitter::afterExecute(App::SemanticGraph* graph,
                         if (App::shouldRefuseNamedEmitSlot(graph, feature, idx, "Face")) {
                             continue;
                         }
-                        emitGeneratedFrom(graph,
-                                          {region},
-                                          App::SemanticKind::Face,
-                                          "Pocket",
-                                          feature,
-                                          eval,
-                                          App::SemanticRole::None,
-                                          idx);
+                        emitGeneratedFrom(
+                            graph,
+                            {region},
+                            App::SemanticKind::Face,
+                            "Pocket",
+                            feature,
+                            eval,
+                            App::SemanticRole::None,
+                            idx
+                        );
                         ++nCaps;
                     }
                 }
@@ -1851,33 +2049,39 @@ void SemanticEmitter::afterExecute(App::SemanticGraph* graph,
             else if (bindSequential) {
                 int idx = faceIdx;
                 for (const App::SemanticId& curve : curves) {
-                    emitGeneratedFrom(graph,
-                                      {curve},
-                                      App::SemanticKind::Face,
-                                      "Pocket",
-                                      feature,
-                                      eval,
-                                      App::SemanticRole::None,
-                                      faceIndex(idx++));
+                    emitGeneratedFrom(
+                        graph,
+                        {curve},
+                        App::SemanticKind::Face,
+                        "Pocket",
+                        feature,
+                        eval,
+                        App::SemanticRole::None,
+                        faceIndex(idx++)
+                    );
                     ++nSides;
                 }
                 for (const App::SemanticId& region : regions) {
-                    emitGeneratedFrom(graph,
-                                      {region},
-                                      App::SemanticKind::Face,
-                                      "Pocket",
-                                      feature,
-                                      eval,
-                                      App::SemanticRole::None,
-                                      faceIndex(idx++));
-                    emitGeneratedFrom(graph,
-                                      {region},
-                                      App::SemanticKind::Face,
-                                      "Pocket",
-                                      feature,
-                                      eval,
-                                      App::SemanticRole::None,
-                                      faceIndex(idx++));
+                    emitGeneratedFrom(
+                        graph,
+                        {region},
+                        App::SemanticKind::Face,
+                        "Pocket",
+                        feature,
+                        eval,
+                        App::SemanticRole::None,
+                        faceIndex(idx++)
+                    );
+                    emitGeneratedFrom(
+                        graph,
+                        {region},
+                        App::SemanticKind::Face,
+                        "Pocket",
+                        feature,
+                        eval,
+                        App::SemanticRole::None,
+                        faceIndex(idx++)
+                    );
                     nCaps += 2;
                 }
                 faceIdx = idx;
@@ -1887,52 +2091,76 @@ void SemanticEmitter::afterExecute(App::SemanticGraph* graph,
         const std::vector<App::SemanticId> edgeSeeds = edgeZipSeeds(*graph, request);
         if (!request.namedEdgeIndices.empty() && !edgeSeeds.empty()) {
             emitNamedEdgesFromRequest(
-                graph, "Pocket", feature, eval, request, edgeSeeds, nEdges, nEdgeSkip, true);
+                graph,
+                "Pocket",
+                feature,
+                eval,
+                request,
+                edgeSeeds,
+                nEdges,
+                nEdgeSkip,
+                true
+            );
         }
 
         std::string splitNote;
         if (request.pocketTarget.valid()) {
             if (request.pocketMode == AfterExecuteRequest::PocketMode::ThroughCut) {
                 if (bindSequential) {
-                    emitPocketSplit(graph,
-                                    request.pocketTarget,
-                                    request.pocketSplitCount == 0 ? 2 : request.pocketSplitCount,
-                                    feature,
-                                    eval,
-                                    faceIdx);
+                    emitPocketSplit(
+                        graph,
+                        request.pocketTarget,
+                        request.pocketSplitCount == 0 ? 2 : request.pocketSplitCount,
+                        feature,
+                        eval,
+                        faceIdx
+                    );
                     splitNote = "pocket ThroughCut Split";
                 }
                 else {
-                    const std::size_t n =
-                        request.pocketSplitCount == 0 ? 2 : request.pocketSplitCount;
+                    const std::size_t n = request.pocketSplitCount == 0 ? 2
+                                                                        : request.pocketSplitCount;
                     graph->unbind(request.pocketTarget.handle);
-                    graph->recordSplit(request.pocketTarget, n, "Pocket", feature, eval,
-                                       App::SemanticRole::None);
+                    graph->recordSplit(
+                        request.pocketTarget,
+                        n,
+                        "Pocket",
+                        feature,
+                        eval,
+                        App::SemanticRole::None
+                    );
                     splitNote = "pocket ThroughCut Split (no FaceN bind)";
                 }
             }
             else if (request.pocketMode == AfterExecuteRequest::PocketMode::Hole) {
                 if (bindSequential) {
-                    App::SemanticId wallRegion =
-                        regions.empty() ? (request.regionSeeds.empty() ? App::SemanticId{}
-                                                                       : request.regionSeeds.front())
-                                        : regions.front();
+                    App::SemanticId wallRegion = regions.empty()
+                        ? (request.regionSeeds.empty() ? App::SemanticId {}
+                                                       : request.regionSeeds.front())
+                        : regions.front();
                     App::ElementIndex remnantIdx;
                     remnantIdx.type = "Face";
                     remnantIdx.index = faceIdx;
-                    emitPocketHole(graph,
-                                   request.pocketTarget,
-                                   wallRegion,
-                                   request.pocketWallCount,
-                                   feature,
-                                   eval,
-                                   remnantIdx,
-                                   faceIdx + 1);
+                    emitPocketHole(
+                        graph,
+                        request.pocketTarget,
+                        wallRegion,
+                        request.pocketWallCount,
+                        feature,
+                        eval,
+                        remnantIdx,
+                        faceIdx + 1
+                    );
                     splitNote = "pocket Length S3 hole";
                 }
                 else {
-                    graph->recordModified(request.pocketTarget, "Pocket", feature, eval,
-                                          App::SemanticRole::None);
+                    graph->recordModified(
+                        request.pocketTarget,
+                        "Pocket",
+                        feature,
+                        eval,
+                        App::SemanticRole::None
+                    );
                     splitNote = "pocket Length S3 hole (no FaceN bind)";
                 }
             }
@@ -1958,13 +2186,11 @@ void SemanticEmitter::afterExecute(App::SemanticGraph* graph,
         return;
     }
 
-    if (opcode == Opcode::Revolution || opcode == Opcode::Groove
-        || opcode == Opcode::Loft || opcode == Opcode::Pipe || opcode == Opcode::Helix
-        || opcode == Opcode::SubtractiveLoft || opcode == Opcode::SubtractivePipe
-        || opcode == Opcode::SubtractiveHelix) {
+    if (opcode == Opcode::Revolution || opcode == Opcode::Groove || opcode == Opcode::Loft
+        || opcode == Opcode::Pipe || opcode == Opcode::Helix || opcode == Opcode::SubtractiveLoft
+        || opcode == Opcode::SubtractivePipe || opcode == Opcode::SubtractiveHelix) {
         const char* opName = opcodeName(opcode);
-        const bool protectOutputOwnership =
-            opcode == Opcode::Revolution || opcode == Opcode::Groove
+        const bool protectOutputOwnership = opcode == Opcode::Revolution || opcode == Opcode::Groove
             || opcode == Opcode::Loft || opcode == Opcode::Pipe || opcode == Opcode::Helix
             || opcode == Opcode::SubtractiveLoft || opcode == Opcode::SubtractivePipe
             || opcode == Opcode::SubtractiveHelix;
@@ -1995,8 +2221,7 @@ void SemanticEmitter::afterExecute(App::SemanticGraph* graph,
                 + " curve/region seeds (half-map)";
             return;
         }
-        const bool useNamed =
-            !request.namedFaceIndices.empty() || !request.namedEdgeIndices.empty();
+        const bool useNamed = !request.namedFaceIndices.empty() || !request.namedEdgeIndices.empty();
         if (!useNamed) {
             // UpTo* and discarded makers: unnamed, no sequential FaceN (I13).
             g_lastAfterExecuteNote = std::string("skip emit: no named ") + opName
@@ -2016,69 +2241,67 @@ void SemanticEmitter::afterExecute(App::SemanticGraph* graph,
         };
         for (const App::SemanticId& curve : curves) {
             const App::ElementIndex idx = takeNamed();
-            if (App::shouldRefuseNamedEmitSlot(graph,
-                                          feature,
-                                          idx,
-                                          "Face",
-                                          protectOutputOwnership)) {
+            if (App::shouldRefuseNamedEmitSlot(graph, feature, idx, "Face", protectOutputOwnership)) {
                 ++nSkip;
                 continue;
             }
-            emitGeneratedFrom(graph,
-                              {curve},
-                              App::SemanticKind::Face,
-                              opName,
-                              feature,
-                              eval,
-                              App::SemanticRole::None,
-                              idx);
+            emitGeneratedFrom(
+                graph,
+                {curve},
+                App::SemanticKind::Face,
+                opName,
+                feature,
+                eval,
+                App::SemanticRole::None,
+                idx
+            );
             ++nSides;
         }
         for (const App::SemanticId& region : regions) {
             for (int cap = 0; cap < 2; ++cap) {
                 const App::ElementIndex idx = takeNamed();
-                if (App::shouldRefuseNamedEmitSlot(graph,
-                                              feature,
-                                              idx,
-                                              "Face",
-                                              protectOutputOwnership)) {
+                if (App::shouldRefuseNamedEmitSlot(graph, feature, idx, "Face", protectOutputOwnership)) {
                     ++nSkip;
                     continue;
                 }
-                emitGeneratedFrom(graph,
-                                  {region},
-                                  App::SemanticKind::Face,
-                                  opName,
-                                  feature,
-                                  eval,
-                                  App::SemanticRole::None,
-                                  idx);
+                emitGeneratedFrom(
+                    graph,
+                    {region},
+                    App::SemanticKind::Face,
+                    opName,
+                    feature,
+                    eval,
+                    App::SemanticRole::None,
+                    idx
+                );
                 ++nCaps;
             }
         }
         if (hasEdgeWork) {
-            emitNamedEdgesFromRequest(graph,
-                                       opName,
-                                       feature,
-                                       eval,
-                                       request,
-                                       edgeSeeds,
-                                       nEdges,
-                                       nSkip,
-                                       protectOutputOwnership);
+            emitNamedEdgesFromRequest(
+                graph,
+                opName,
+                feature,
+                eval,
+                request,
+                edgeSeeds,
+                nEdges,
+                nSkip,
+                protectOutputOwnership
+            );
         }
         g_lastAfterExecuteNote = std::string("emitted ") + opName
-            + " sides=" + std::to_string(nSides)
-            + " caps=" + std::to_string(nCaps) + " edges=" + std::to_string(nEdges)
-            + " unnamed=" + std::to_string(nSkip);
+            + " sides=" + std::to_string(nSides) + " caps=" + std::to_string(nCaps)
+            + " edges=" + std::to_string(nEdges) + " unnamed=" + std::to_string(nSkip);
         return;
     }
 
     if (opcode == Opcode::Fillet) {
         if (request.filletEdges.empty()) {
             std::string seedlessNote;
-            if (emitSeedlessDressUpFaces(
-                    graph, "Fillet", feature, eval, request.namedFaceIndices, seedlessNote)) {
+            if (
+                emitSeedlessDressUpFaces(graph, "Fillet", feature, eval, request.namedFaceIndices, seedlessNote)
+            ) {
                 g_lastAfterExecuteNote = seedlessNote;
                 return;
             }
@@ -2106,8 +2329,8 @@ void SemanticEmitter::afterExecute(App::SemanticGraph* graph,
             else {
                 bindIdx = faceIndex(idx++);
             }
-            const App::ResolutionResult r =
-                emitFillet(graph, edge, request.filletAdjacentFaces, feature, eval, bindIdx);
+            const App::ResolutionResult r
+                = emitFillet(graph, edge, request.filletAdjacentFaces, feature, eval, bindIdx);
             if (r.state == App::ResolutionState::Missing
                 || r.state == App::ResolutionState::Incompatible) {
                 ++nMissing;
@@ -2125,12 +2348,10 @@ void SemanticEmitter::afterExecute(App::SemanticGraph* graph,
         }
         if (nOk == 0) {
             if (nUnnamed > 0 && nMissing == 0) {
-                g_lastAfterExecuteNote =
-                    "skip emit: no named fillet history (half-map)";
+                g_lastAfterExecuteNote = "skip emit: no named fillet history (half-map)";
             }
             else {
-                g_lastAfterExecuteNote =
-                    "FilletEdge Missing; no neighbour invented (I2/I10)";
+                g_lastAfterExecuteNote = "FilletEdge Missing; no neighbour invented (I2/I10)";
             }
             return;
         }
@@ -2143,8 +2364,9 @@ void SemanticEmitter::afterExecute(App::SemanticGraph* graph,
         // Chamfer reuses request.filletEdges / filletAdjacentFaces (dress-up seeds).
         if (request.filletEdges.empty()) {
             std::string seedlessNote;
-            if (emitSeedlessDressUpFaces(
-                    graph, "Chamfer", feature, eval, request.namedFaceIndices, seedlessNote)) {
+            if (
+                emitSeedlessDressUpFaces(graph, "Chamfer", feature, eval, request.namedFaceIndices, seedlessNote)
+            ) {
                 g_lastAfterExecuteNote = seedlessNote;
                 return;
             }
@@ -2172,8 +2394,8 @@ void SemanticEmitter::afterExecute(App::SemanticGraph* graph,
             else {
                 bindIdx = faceIndex(idx++);
             }
-            const App::ResolutionResult r =
-                emitChamfer(graph, edge, request.filletAdjacentFaces, feature, eval, bindIdx);
+            const App::ResolutionResult r
+                = emitChamfer(graph, edge, request.filletAdjacentFaces, feature, eval, bindIdx);
             if (r.state == App::ResolutionState::Missing
                 || r.state == App::ResolutionState::Incompatible) {
                 ++nMissing;
@@ -2191,12 +2413,10 @@ void SemanticEmitter::afterExecute(App::SemanticGraph* graph,
         }
         if (nOk == 0) {
             if (nUnnamed > 0 && nMissing == 0) {
-                g_lastAfterExecuteNote =
-                    "skip emit: no named chamfer history (half-map)";
+                g_lastAfterExecuteNote = "skip emit: no named chamfer history (half-map)";
             }
             else {
-                g_lastAfterExecuteNote =
-                    "ChamferEdge Missing; no neighbour invented (I2/I10)";
+                g_lastAfterExecuteNote = "ChamferEdge Missing; no neighbour invented (I2/I10)";
             }
             return;
         }
@@ -2232,8 +2452,7 @@ void SemanticEmitter::afterExecute(App::SemanticGraph* graph,
             else {
                 bindIdx = faceIndex(idx++);
             }
-            const App::ResolutionResult r =
-                emitDraft(graph, face, feature, eval, bindIdx);
+            const App::ResolutionResult r = emitDraft(graph, face, feature, eval, bindIdx);
             if (r.state == App::ResolutionState::Missing
                 || r.state == App::ResolutionState::Incompatible) {
                 ++nMissing;
@@ -2251,12 +2470,10 @@ void SemanticEmitter::afterExecute(App::SemanticGraph* graph,
         }
         if (nOk == 0) {
             if (nUnnamed > 0 && nMissing == 0) {
-                g_lastAfterExecuteNote =
-                    "skip emit: no named draft history (half-map)";
+                g_lastAfterExecuteNote = "skip emit: no named draft history (half-map)";
             }
             else {
-                g_lastAfterExecuteNote =
-                    "DraftFace Missing; no neighbour invented (I2/I10)";
+                g_lastAfterExecuteNote = "DraftFace Missing; no neighbour invented (I2/I10)";
             }
             return;
         }
@@ -2291,8 +2508,7 @@ void SemanticEmitter::afterExecute(App::SemanticGraph* graph,
             else {
                 bindIdx = faceIndex(idx++);
             }
-            const App::ResolutionResult r =
-                emitThickness(graph, face, feature, eval, bindIdx);
+            const App::ResolutionResult r = emitThickness(graph, face, feature, eval, bindIdx);
             if (r.state == App::ResolutionState::Missing
                 || r.state == App::ResolutionState::Incompatible) {
                 ++nMissing;
@@ -2310,12 +2526,10 @@ void SemanticEmitter::afterExecute(App::SemanticGraph* graph,
         }
         if (nOk == 0) {
             if (nUnnamed > 0 && nMissing == 0) {
-                g_lastAfterExecuteNote =
-                    "skip emit: no named thickness history (half-map)";
+                g_lastAfterExecuteNote = "skip emit: no named thickness history (half-map)";
             }
             else {
-                g_lastAfterExecuteNote =
-                    "ThicknessFace Missing; no neighbour invented (I2/I10)";
+                g_lastAfterExecuteNote = "ThicknessFace Missing; no neighbour invented (I2/I10)";
             }
             return;
         }
@@ -2352,8 +2566,7 @@ void SemanticEmitter::afterExecute(App::SemanticGraph* graph,
             else {
                 bindIdx = faceIndex(idx++);
             }
-            const App::ResolutionResult r =
-                emitHole(graph, face, feature, eval, bindIdx);
+            const App::ResolutionResult r = emitHole(graph, face, feature, eval, bindIdx);
             if (r.state == App::ResolutionState::Missing
                 || r.state == App::ResolutionState::Incompatible) {
                 ++nMissing;
@@ -2371,12 +2584,10 @@ void SemanticEmitter::afterExecute(App::SemanticGraph* graph,
         }
         if (nOk == 0) {
             if (nUnnamed > 0 && nMissing == 0) {
-                g_lastAfterExecuteNote =
-                    "skip emit: no named hole history (half-map)";
+                g_lastAfterExecuteNote = "skip emit: no named hole history (half-map)";
             }
             else {
-                g_lastAfterExecuteNote =
-                    "HoleStart Missing; no neighbour invented (I2/I10)";
+                g_lastAfterExecuteNote = "HoleStart Missing; no neighbour invented (I2/I10)";
             }
             return;
         }
@@ -2385,8 +2596,7 @@ void SemanticEmitter::afterExecute(App::SemanticGraph* graph,
         return;
     }
 
-    const bool directHistoryOpcode =
-        opcode == Opcode::Boolean || opcode == Opcode::AdditiveBox
+    const bool directHistoryOpcode = opcode == Opcode::Boolean || opcode == Opcode::AdditiveBox
         || opcode == Opcode::AdditiveCylinder || opcode == Opcode::AdditiveSphere
         || opcode == Opcode::AdditiveCone || opcode == Opcode::AdditiveTorus
         || opcode == Opcode::AdditivePrism || opcode == Opcode::AdditiveWedge
@@ -2414,11 +2624,13 @@ void SemanticEmitter::afterExecute(App::SemanticGraph* graph,
     g_lastAfterExecuteNote = "skip emit: unknown opcode";
 }
 
-void SemanticEmitter::bind(App::SemanticGraph* graph,
-                           const App::SemanticId& id,
-                           App::ObjectId feature,
-                           App::EvalSerial eval,
-                           const App::ElementIndex& index)
+void SemanticEmitter::bind(
+    App::SemanticGraph* graph,
+    const App::SemanticId& id,
+    App::ObjectId feature,
+    App::EvalSerial eval,
+    const App::ElementIndex& index
+)
 {
     if (!graph || !id.valid()) {
         return;
@@ -2433,20 +2645,21 @@ void SemanticEmitter::bind(App::SemanticGraph* graph,
     graph->bind(row);
 }
 
-App::SemanticId SemanticEmitter::emitGeneratedFrom(App::SemanticGraph* graph,
-                                                   const std::vector<App::SemanticId>& seeds,
-                                                   App::SemanticKind outKind,
-                                                   const std::string& op,
-                                                   App::ObjectId feature,
-                                                   App::EvalSerial eval,
-                                                   App::SemanticRole role,
-                                                   const App::ElementIndex& index)
+App::SemanticId SemanticEmitter::emitGeneratedFrom(
+    App::SemanticGraph* graph,
+    const std::vector<App::SemanticId>& seeds,
+    App::SemanticKind outKind,
+    const std::string& op,
+    App::ObjectId feature,
+    App::EvalSerial eval,
+    App::SemanticRole role,
+    const App::ElementIndex& index
+)
 {
     if (!graph) {
         return {};
     }
-    const App::SemanticId child =
-        graph->recordGeneratedFrom(seeds, outKind, op, feature, eval, role);
+    const App::SemanticId child = graph->recordGeneratedFrom(seeds, outKind, op, feature, eval, role);
     bind(graph, child, feature, eval, index);
     return child;
 }
@@ -2459,7 +2672,8 @@ std::vector<App::SemanticId> SemanticEmitter::emitSplit(
     App::ObjectId feature,
     App::EvalSerial eval,
     App::SemanticRole role,
-    const std::vector<App::ElementIndex>& indices)
+    const std::vector<App::ElementIndex>& indices
+)
 {
     if (!graph || !input.valid() || count == 0) {
         return {};
@@ -2474,12 +2688,14 @@ std::vector<App::SemanticId> SemanticEmitter::emitSplit(
     return kids;
 }
 
-App::EventId SemanticEmitter::emitDeleted(App::SemanticGraph* graph,
-                                          const App::SemanticId& input,
-                                          const std::string& op,
-                                          App::ObjectId feature,
-                                          App::EvalSerial eval,
-                                          App::SemanticRole role)
+App::EventId SemanticEmitter::emitDeleted(
+    App::SemanticGraph* graph,
+    const App::SemanticId& input,
+    const std::string& op,
+    App::ObjectId feature,
+    App::EvalSerial eval,
+    App::SemanticRole role
+)
 {
     if (!graph || !input.valid()) {
         return 0;
@@ -2487,13 +2703,15 @@ App::EventId SemanticEmitter::emitDeleted(App::SemanticGraph* graph,
     return graph->recordDeleted(input, op, feature, eval, role);
 }
 
-App::EventId SemanticEmitter::emitModified(App::SemanticGraph* graph,
-                                           const App::SemanticId& input,
-                                           const std::string& op,
-                                           App::ObjectId feature,
-                                           App::EvalSerial eval,
-                                           App::SemanticRole role,
-                                           const App::ElementIndex& index)
+App::EventId SemanticEmitter::emitModified(
+    App::SemanticGraph* graph,
+    const App::SemanticId& input,
+    const std::string& op,
+    App::ObjectId feature,
+    App::EvalSerial eval,
+    App::SemanticRole role,
+    const App::ElementIndex& index
+)
 {
     if (!graph || !input.valid()) {
         return 0;
@@ -2510,7 +2728,8 @@ std::vector<App::SemanticId> SemanticEmitter::emitPadSides(
     const std::vector<App::SemanticId>& curveSeeds,
     App::ObjectId feature,
     App::EvalSerial eval,
-    int firstFaceIndex)
+    int firstFaceIndex
+)
 {
     if (!graph) {
         return {};
@@ -2519,14 +2738,16 @@ std::vector<App::SemanticId> SemanticEmitter::emitPadSides(
     sides.reserve(curveSeeds.size());
     int idx = firstFaceIndex;
     for (const App::SemanticId& curve : curveSeeds) {
-        sides.push_back(emitGeneratedFrom(graph,
-                                          {curve},
-                                          App::SemanticKind::Face,
-                                          "Pad",
-                                          feature,
-                                          eval,
-                                          App::SemanticRole::None,
-                                          faceIndex(idx++)));
+        sides.push_back(emitGeneratedFrom(
+            graph,
+            {curve},
+            App::SemanticKind::Face,
+            "Pad",
+            feature,
+            eval,
+            App::SemanticRole::None,
+            faceIndex(idx++)
+        ));
     }
     return sides;
 }
@@ -2536,7 +2757,8 @@ std::vector<App::SemanticId> SemanticEmitter::emitPadCaps(
     const std::vector<App::SemanticId>& regionSeeds,
     App::ObjectId feature,
     App::EvalSerial eval,
-    int firstFaceIndex)
+    int firstFaceIndex
+)
 {
     if (!graph) {
         return {};
@@ -2545,22 +2767,26 @@ std::vector<App::SemanticId> SemanticEmitter::emitPadCaps(
     // Two caps (start, end) per region seed — both Generated from that region.
     int idx = firstFaceIndex;
     for (const App::SemanticId& region : regionSeeds) {
-        caps.push_back(emitGeneratedFrom(graph,
-                                         {region},
-                                         App::SemanticKind::Face,
-                                         "Pad",
-                                         feature,
-                                         eval,
-                                         App::SemanticRole::None,
-                                         faceIndex(idx++)));
-        caps.push_back(emitGeneratedFrom(graph,
-                                         {region},
-                                         App::SemanticKind::Face,
-                                         "Pad",
-                                         feature,
-                                         eval,
-                                         App::SemanticRole::None,
-                                         faceIndex(idx++)));
+        caps.push_back(emitGeneratedFrom(
+            graph,
+            {region},
+            App::SemanticKind::Face,
+            "Pad",
+            feature,
+            eval,
+            App::SemanticRole::None,
+            faceIndex(idx++)
+        ));
+        caps.push_back(emitGeneratedFrom(
+            graph,
+            {region},
+            App::SemanticKind::Face,
+            "Pad",
+            feature,
+            eval,
+            App::SemanticRole::None,
+            faceIndex(idx++)
+        ));
     }
     return caps;
 }
@@ -2571,7 +2797,8 @@ std::vector<App::SemanticId> SemanticEmitter::emitPocketSplit(
     std::size_t count,
     App::ObjectId feature,
     App::EvalSerial eval,
-    int firstFaceIndex)
+    int firstFaceIndex
+)
 {
     if (!graph) {
         return {};
@@ -2581,24 +2808,19 @@ std::vector<App::SemanticId> SemanticEmitter::emitPocketSplit(
     for (std::size_t i = 0; i < count; ++i) {
         indices.push_back(faceIndex(firstFaceIndex + static_cast<int>(i)));
     }
-    return emitSplit(graph,
-                     target,
-                     count,
-                     "Pocket",
-                     feature,
-                     eval,
-                     App::SemanticRole::None,
-                     indices);
+    return emitSplit(graph, target, count, "Pocket", feature, eval, App::SemanticRole::None, indices);
 }
 
-App::SemanticId SemanticEmitter::emitPocketHole(App::SemanticGraph* graph,
-                                                const App::SemanticId& remnant,
-                                                const App::SemanticId& pocketRegion,
-                                                std::size_t wallCount,
-                                                App::ObjectId feature,
-                                                App::EvalSerial eval,
-                                                const App::ElementIndex& remnantIndex,
-                                                int firstWallFaceIndex)
+App::SemanticId SemanticEmitter::emitPocketHole(
+    App::SemanticGraph* graph,
+    const App::SemanticId& remnant,
+    const App::SemanticId& pocketRegion,
+    std::size_t wallCount,
+    App::ObjectId feature,
+    App::EvalSerial eval,
+    const App::ElementIndex& remnantIndex,
+    int firstWallFaceIndex
+)
 {
     if (!graph) {
         return {};
@@ -2607,14 +2829,16 @@ App::SemanticId SemanticEmitter::emitPocketHole(App::SemanticGraph* graph,
     emitModified(graph, remnant, "Pocket", feature, eval, App::SemanticRole::None, remnantIndex);
     int idx = firstWallFaceIndex;
     for (std::size_t i = 0; i < wallCount; ++i) {
-        emitGeneratedFrom(graph,
-                          {pocketRegion},
-                          App::SemanticKind::Face,
-                          "Pocket",
-                          feature,
-                          eval,
-                          App::SemanticRole::None,
-                          faceIndex(idx++));
+        emitGeneratedFrom(
+            graph,
+            {pocketRegion},
+            App::SemanticKind::Face,
+            "Pocket",
+            feature,
+            eval,
+            App::SemanticRole::None,
+            faceIndex(idx++)
+        );
     }
     return remnant;
 }
@@ -2625,7 +2849,8 @@ App::ResolutionResult SemanticEmitter::emitFillet(
     const std::vector<App::SemanticId>& adjacentFaces,
     App::ObjectId feature,
     App::EvalSerial eval,
-    const App::ElementIndex& faceIndex_)
+    const App::ElementIndex& faceIndex_
+)
 {
     App::ResolutionResult inbound;
     if (!graph) {
@@ -2656,14 +2881,16 @@ App::ResolutionResult SemanticEmitter::emitFillet(
     std::vector<App::SemanticId> seeds;
     seeds.push_back(edge);
     appendUniqueSemanticIds(seeds, adjacentFaces);
-    const App::SemanticId face = emitGeneratedFrom(graph,
-                                                   seeds,
-                                                   App::SemanticKind::Face,
-                                                   "Fillet",
-                                                   feature,
-                                                   eval,
-                                                   App::SemanticRole::None,
-                                                   faceIndex_);
+    const App::SemanticId face = emitGeneratedFrom(
+        graph,
+        seeds,
+        App::SemanticKind::Face,
+        "Fillet",
+        feature,
+        eval,
+        App::SemanticRole::None,
+        faceIndex_
+    );
     inbound.identities.push_back(face);
     return inbound;
 }
@@ -2674,7 +2901,8 @@ App::ResolutionResult SemanticEmitter::emitChamfer(
     const std::vector<App::SemanticId>& adjacentFaces,
     App::ObjectId feature,
     App::EvalSerial eval,
-    const App::ElementIndex& faceIndex_)
+    const App::ElementIndex& faceIndex_
+)
 {
     App::ResolutionResult inbound;
     if (!graph) {
@@ -2705,14 +2933,16 @@ App::ResolutionResult SemanticEmitter::emitChamfer(
     std::vector<App::SemanticId> seeds;
     seeds.push_back(edge);
     appendUniqueSemanticIds(seeds, adjacentFaces);
-    const App::SemanticId face = emitGeneratedFrom(graph,
-                                                   seeds,
-                                                   App::SemanticKind::Face,
-                                                   "Chamfer",
-                                                   feature,
-                                                   eval,
-                                                   App::SemanticRole::None,
-                                                   faceIndex_);
+    const App::SemanticId face = emitGeneratedFrom(
+        graph,
+        seeds,
+        App::SemanticKind::Face,
+        "Chamfer",
+        feature,
+        eval,
+        App::SemanticRole::None,
+        faceIndex_
+    );
     inbound.identities.push_back(face);
     return inbound;
 }
@@ -2722,7 +2952,8 @@ App::ResolutionResult SemanticEmitter::emitDraft(
     const App::SemanticId& face,
     App::ObjectId feature,
     App::EvalSerial eval,
-    const App::ElementIndex& faceIndex_)
+    const App::ElementIndex& faceIndex_
+)
 {
     App::ResolutionResult inbound;
     if (!graph) {
@@ -2750,14 +2981,16 @@ App::ResolutionResult SemanticEmitter::emitDraft(
         return inbound;
     }
 
-    const App::SemanticId out = emitGeneratedFrom(graph,
-                                                  {face},
-                                                  App::SemanticKind::Face,
-                                                  "Draft",
-                                                  feature,
-                                                  eval,
-                                                  App::SemanticRole::None,
-                                                  faceIndex_);
+    const App::SemanticId out = emitGeneratedFrom(
+        graph,
+        {face},
+        App::SemanticKind::Face,
+        "Draft",
+        feature,
+        eval,
+        App::SemanticRole::None,
+        faceIndex_
+    );
     inbound.identities.push_back(out);
     return inbound;
 }
@@ -2767,7 +3000,8 @@ App::ResolutionResult SemanticEmitter::emitThickness(
     const App::SemanticId& face,
     App::ObjectId feature,
     App::EvalSerial eval,
-    const App::ElementIndex& faceIndex_)
+    const App::ElementIndex& faceIndex_
+)
 {
     App::ResolutionResult inbound;
     if (!graph) {
@@ -2795,14 +3029,16 @@ App::ResolutionResult SemanticEmitter::emitThickness(
         return inbound;
     }
 
-    const App::SemanticId out = emitGeneratedFrom(graph,
-                                                  {face},
-                                                  App::SemanticKind::Face,
-                                                  "Thickness",
-                                                  feature,
-                                                  eval,
-                                                  App::SemanticRole::None,
-                                                  faceIndex_);
+    const App::SemanticId out = emitGeneratedFrom(
+        graph,
+        {face},
+        App::SemanticKind::Face,
+        "Thickness",
+        feature,
+        eval,
+        App::SemanticRole::None,
+        faceIndex_
+    );
     inbound.identities.push_back(out);
     return inbound;
 }
@@ -2812,7 +3048,8 @@ App::ResolutionResult SemanticEmitter::emitHole(
     const App::SemanticId& face,
     App::ObjectId feature,
     App::EvalSerial eval,
-    const App::ElementIndex& faceIndex_)
+    const App::ElementIndex& faceIndex_
+)
 {
     App::ResolutionResult inbound;
     if (!graph) {
@@ -2848,20 +3085,24 @@ App::ResolutionResult SemanticEmitter::emitHole(
         return inbound;
     }
 
-    const App::SemanticId out = emitGeneratedFrom(graph,
-                                                  {face},
-                                                  App::SemanticKind::Face,
-                                                  "Hole",
-                                                  feature,
-                                                  eval,
-                                                  App::SemanticRole::None,
-                                                  faceIndex_);
+    const App::SemanticId out = emitGeneratedFrom(
+        graph,
+        {face},
+        App::SemanticKind::Face,
+        "Hole",
+        feature,
+        eval,
+        App::SemanticRole::None,
+        faceIndex_
+    );
     inbound.identities.push_back(out);
     return inbound;
 }
 
-std::vector<App::SemanticId> SemanticEmitter::generatedFrom(const App::SemanticGraph& graph,
-                                                            App::SemanticHandle seed)
+std::vector<App::SemanticId> SemanticEmitter::generatedFrom(
+    const App::SemanticGraph& graph,
+    App::SemanticHandle seed
+)
 {
     std::vector<App::SemanticId> out;
     if (seed == 0) {
@@ -2893,7 +3134,8 @@ std::vector<App::SemanticId> SemanticEmitter::propagateSourceSplit(
     const std::string& op,
     App::ObjectId feature,
     App::EvalSerial eval,
-    int firstFaceIndex)
+    int firstFaceIndex
+)
 {
     if (!graph || !source.valid() || childCount == 0) {
         return {};
@@ -2947,8 +3189,8 @@ std::vector<App::SemanticId> SemanticEmitter::propagateSourceSplit(
         for (std::size_t i = 0; i < childCount; ++i) {
             indices.push_back(faceIndex(idx++));
         }
-        auto kids = emitSplit(graph, root, childCount, op, feature, eval,
-                              App::SemanticRole::None, indices);
+        auto kids
+            = emitSplit(graph, root, childCount, op, feature, eval, App::SemanticRole::None, indices);
         allKids.insert(allKids.end(), kids.begin(), kids.end());
     }
     return allKids;

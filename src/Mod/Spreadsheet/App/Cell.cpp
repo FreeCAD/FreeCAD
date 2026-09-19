@@ -997,9 +997,8 @@ void Cell::save(std::ostream& os, const char* indent, bool noContent) const
     }
 
     if (!noContent) {
-        const App::SemanticReference* seed = expression
-            ? expression->firstTopologySemanticRef()
-            : nullptr;
+        const App::SemanticReference* seed = expression ? expression->firstTopologySemanticRef()
+                                                        : nullptr;
         // Keep the XML dual-write alive if restore could not attach the seed
         // to a parsed expression. A later edit clears this fallback in
         // setExpression(), so stale topology metadata is never resurrected.

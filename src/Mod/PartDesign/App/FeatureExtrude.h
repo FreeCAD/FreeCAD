@@ -123,7 +123,7 @@ protected:
         const std::string& method,
         double length,
         double taperAngleDeg,
-        App::PropertyLinkSub& upToFacePropHandle,       // e.g., &UpToFace or &UpToFace2
+        App::PropertyLinkSub& upToFacePropHandle,  // e.g., &UpToFace or &UpToFace2
         const std::string& resolvedUpToFaceSubname,
         App::PropertyLinkSubList& upToShapePropHandle,  // e.g., &UpToShape or &UpToShape2
         gp_Dir dir,
@@ -149,10 +149,12 @@ protected:
 
     void clearSemanticCapture();
     void capturePrismMaker(void* occMaker, const TopoShape& prism, const TopoShape& sketch);
-    void captureBooleanHistory(void* occMaker,
-                               const TopoShape& result,
-                               const TopoShape& baseShape,
-                               const TopoShape& tool);
+    void captureBooleanHistory(
+        void* occMaker,
+        const TopoShape& result,
+        const TopoShape& baseShape,
+        const TopoShape& tool
+    );
     void refreshNamedIndices(const TopoShape& published);
     void publishSemanticHistory(const TopoShape& published);
 };

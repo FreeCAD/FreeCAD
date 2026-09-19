@@ -37,11 +37,13 @@ namespace Sketcher
 namespace
 {
 
-void bindSketch(App::SemanticGraph& graph,
-                const App::SemanticId& id,
-                App::ObjectId sketch,
-                App::EvalSerial eval,
-                SketchEntityHandle handle)
+void bindSketch(
+    App::SemanticGraph& graph,
+    const App::SemanticId& id,
+    App::ObjectId sketch,
+    App::EvalSerial eval,
+    SketchEntityHandle handle
+)
 {
     if (!id.valid()) {
         return;
@@ -74,11 +76,13 @@ int vertexBindingIndex(const SketchVertexKey& key)
     return static_cast<int>(packed);
 }
 
-void bindVertex(App::SemanticGraph& graph,
-                const App::SemanticId& id,
-                App::ObjectId sketch,
-                App::EvalSerial eval,
-                const SketchVertexKey& key)
+void bindVertex(
+    App::SemanticGraph& graph,
+    const App::SemanticId& id,
+    App::ObjectId sketch,
+    App::EvalSerial eval,
+    const SketchVertexKey& key
+)
 {
     if (!id.valid() || !key.valid()) {
         return;
@@ -146,9 +150,7 @@ std::vector<App::SemanticId> outputsOf(const App::SemanticGraph& graph, App::Eve
     return out;
 }
 
-bool hasGeneratedNote(const App::SemanticGraph& graph,
-                      App::ObjectId sketch,
-                      std::string_view note)
+bool hasGeneratedNote(const App::SemanticGraph& graph, App::ObjectId sketch, std::string_view note)
 {
     for (const App::Event& ev : graph.events()) {
         if (ev.feature == sketch && ev.kind == App::EventKind::Generated && ev.op == note) {
@@ -158,10 +160,12 @@ bool hasGeneratedNote(const App::SemanticGraph& graph,
     return false;
 }
 
-App::SemanticId uniqueGeneratedSeedByNote(const App::SemanticGraph& graph,
-                                          App::ObjectId sketch,
-                                          App::SemanticKind kind,
-                                          std::string_view note)
+App::SemanticId uniqueGeneratedSeedByNote(
+    const App::SemanticGraph& graph,
+    App::ObjectId sketch,
+    App::SemanticKind kind,
+    std::string_view note
+)
 {
     App::SemanticId found;
     for (const App::Event& ev : graph.events()) {
@@ -181,9 +185,11 @@ App::SemanticId uniqueGeneratedSeedByNote(const App::SemanticGraph& graph,
     return found;
 }
 
-bool parseSplitNote(const std::string& op,
-                    SketchEntityHandle& parent,
-                    std::vector<SketchEntityHandle>& children)
+bool parseSplitNote(
+    const std::string& op,
+    SketchEntityHandle& parent,
+    std::vector<SketchEntityHandle>& children
+)
 {
     const std::string prefix = SketchSemanticSeeds::SplitPrefix;
     if (op.size() < prefix.size() || op.compare(0, prefix.size(), prefix) != 0) {
@@ -201,12 +207,12 @@ bool parseSplitNote(const std::string& op,
     std::size_t start = arrow + 2;
     while (start < rest.size()) {
         const auto comma = rest.find(',', start);
-        const auto token = rest.substr(start, comma == std::string_view::npos
-                                                ? std::string_view::npos
-                                                : comma - start);
+        const auto token = rest.substr(
+            start,
+            comma == std::string_view::npos ? std::string_view::npos : comma - start
+        );
         SketchEntityHandle child = SketchEntityIdMap::Invalid;
-        if (!parseEntityHandle(token, child)
-            || child == parent
+        if (!parseEntityHandle(token, child) || child == parent
             || std::find(children.begin(), children.end(), child) != children.end()) {
             return false;
         }
@@ -222,9 +228,7 @@ bool parseSplitNote(const std::string& op,
     return !children.empty();
 }
 
-bool isSplitParentHandle(const App::SemanticGraph& graph,
-                          App::ObjectId sketch,
-                          SketchEntityHandle handle)
+bool isSplitParentHandle(const App::SemanticGraph& graph, App::ObjectId sketch, SketchEntityHandle handle)
 {
     if (handle == SketchEntityIdMap::Invalid) {
         return false;
@@ -264,9 +268,11 @@ std::string SketchSemanticSeeds::regionNote(std::string_view regionKey)
     return std::string(NotePrefix) + std::string(regionKey);
 }
 
-App::SemanticId SketchSemanticSeeds::findSeed(const App::SemanticGraph& graph,
-                                              App::ObjectId sketch,
-                                              SketchEntityHandle handle)
+App::SemanticId SketchSemanticSeeds::findSeed(
+    const App::SemanticGraph& graph,
+    App::ObjectId sketch,
+    SketchEntityHandle handle
+)
 {
     if (handle == SketchEntityIdMap::Invalid) {
         return {};
@@ -312,17 +318,21 @@ App::SemanticId SketchSemanticSeeds::findSeed(const App::SemanticGraph& graph,
     return found;
 }
 
-App::SemanticId SketchSemanticSeeds::findRegionSeed(const App::SemanticGraph& graph,
-                                                    App::ObjectId sketch,
-                                                    std::string_view regionKey)
+App::SemanticId SketchSemanticSeeds::findRegionSeed(
+    const App::SemanticGraph& graph,
+    App::ObjectId sketch,
+    std::string_view regionKey
+)
 {
     return uniqueGeneratedSeedByNote(graph, sketch, App::SemanticKind::Region, regionNote(regionKey));
 }
 
-App::SemanticId SketchSemanticSeeds::findSeedByKindNote(const App::SemanticGraph& graph,
-                                                        App::ObjectId sketch,
-                                                        App::SemanticKind kind,
-                                                        std::string_view note)
+App::SemanticId SketchSemanticSeeds::findSeedByKindNote(
+    const App::SemanticGraph& graph,
+    App::ObjectId sketch,
+    App::SemanticKind kind,
+    std::string_view note
+)
 {
     if (note.empty()) {
         return {};
@@ -330,9 +340,11 @@ App::SemanticId SketchSemanticSeeds::findSeedByKindNote(const App::SemanticGraph
     return uniqueGeneratedSeedByNote(graph, sketch, kind, note);
 }
 
-App::SemanticId SketchSemanticSeeds::findSeedForVertex(const App::SemanticGraph& graph,
-                                                       App::ObjectId sketch,
-                                                       const SketchVertexKey& key)
+App::SemanticId SketchSemanticSeeds::findSeedForVertex(
+    const App::SemanticGraph& graph,
+    App::ObjectId sketch,
+    const SketchVertexKey& key
+)
 {
     if (!key.valid()) {
         return {};
@@ -340,11 +352,13 @@ App::SemanticId SketchSemanticSeeds::findSeedForVertex(const App::SemanticGraph&
     return findSeedByKindNote(graph, sketch, App::SemanticKind::Vertex, vertexNote(key));
 }
 
-App::SemanticId SketchSemanticSeeds::ensureSeedForEntity(App::SemanticGraph& graph,
-                                                         App::ObjectId sketch,
-                                                         App::EvalSerial eval,
-                                                         SketchEntityHandle handle,
-                                                         App::SemanticKind kind)
+App::SemanticId SketchSemanticSeeds::ensureSeedForEntity(
+    App::SemanticGraph& graph,
+    App::ObjectId sketch,
+    App::EvalSerial eval,
+    SketchEntityHandle handle,
+    App::SemanticKind kind
+)
 {
     if (handle == SketchEntityIdMap::Invalid || handle < 0) {
         // Axes (−1/−2) are never issued as sketch handles and are not seeds.
@@ -365,16 +379,18 @@ App::SemanticId SketchSemanticSeeds::ensureSeedForEntity(App::SemanticGraph& gra
     if (hasGeneratedNote(graph, sketch, entityNote(handle))) {
         return {};
     }
-    const App::SemanticId id =
-        graph.recordGenerated(kind, entityNote(handle), sketch, eval, App::SemanticRole::User);
+    const App::SemanticId id
+        = graph.recordGenerated(kind, entityNote(handle), sketch, eval, App::SemanticRole::User);
     bindSketch(graph, id, sketch, eval, handle);
     return id;
 }
 
-App::SemanticId SketchSemanticSeeds::ensureSeedForVertex(App::SemanticGraph& graph,
-                                                         App::ObjectId sketch,
-                                                         App::EvalSerial eval,
-                                                         const SketchVertexKey& key)
+App::SemanticId SketchSemanticSeeds::ensureSeedForVertex(
+    App::SemanticGraph& graph,
+    App::ObjectId sketch,
+    App::EvalSerial eval,
+    const SketchVertexKey& key
+)
 {
     if (!key.valid()) {
         return {};
@@ -386,11 +402,13 @@ App::SemanticId SketchSemanticSeeds::ensureSeedForVertex(App::SemanticGraph& gra
     if (hasGeneratedNote(graph, sketch, vertexNote(key))) {
         return {};
     }
-    const App::SemanticId id = graph.recordGenerated(App::SemanticKind::Vertex,
-                                                     vertexNote(key),
-                                                     sketch,
-                                                     eval,
-                                                     App::SemanticRole::User);
+    const App::SemanticId id = graph.recordGenerated(
+        App::SemanticKind::Vertex,
+        vertexNote(key),
+        sketch,
+        eval,
+        App::SemanticRole::User
+    );
     bindVertex(graph, id, sketch, eval, key);
     return id;
 }
@@ -399,7 +417,8 @@ std::vector<SketchVertexKey> SketchSemanticSeeds::uniqueProfileCorners(
     const std::vector<SketchVertexKey>& endpoints,
     const std::vector<std::pair<SketchVertexKey, SketchVertexKey>>& coincidences,
     const std::vector<SketchVertexPoint>& points,
-    double confusion)
+    double confusion
+)
 {
     struct Row
     {
@@ -515,10 +534,12 @@ std::vector<SketchVertexKey> SketchSemanticSeeds::uniqueProfileCorners(
     return out;
 }
 
-App::SemanticId SketchSemanticSeeds::ensureRegionSeed(App::SemanticGraph& graph,
-                                                      App::ObjectId sketch,
-                                                      App::EvalSerial eval,
-                                                      std::string_view regionKey)
+App::SemanticId SketchSemanticSeeds::ensureRegionSeed(
+    App::SemanticGraph& graph,
+    App::ObjectId sketch,
+    App::EvalSerial eval,
+    std::string_view regionKey
+)
 {
     if (regionKey.empty()) {
         return {};
@@ -530,11 +551,13 @@ App::SemanticId SketchSemanticSeeds::ensureRegionSeed(App::SemanticGraph& graph,
     if (hasGeneratedNote(graph, sketch, regionNote(regionKey))) {
         return {};
     }
-    const App::SemanticId id = graph.recordGenerated(App::SemanticKind::Region,
-                                                     regionNote(regionKey),
-                                                     sketch,
-                                                     eval,
-                                                     App::SemanticRole::User);
+    const App::SemanticId id = graph.recordGenerated(
+        App::SemanticKind::Region,
+        regionNote(regionKey),
+        sketch,
+        eval,
+        App::SemanticRole::User
+    );
     App::SemanticBinding row;
     row.stid = id;
     row.feature = sketch;
@@ -553,7 +576,8 @@ SketchProfileSeeds SketchSemanticSeeds::seedsForProfile(
     App::EvalSerial eval,
     const std::vector<SketchEntityHandle>& liveCurves,
     const std::vector<std::string>& regionKeys,
-    const std::vector<SketchVertexKey>& uniqueCorners)
+    const std::vector<SketchVertexKey>& uniqueCorners
+)
 {
     SketchProfileSeeds out;
     out.curveHandles = liveCurves;
@@ -574,10 +598,12 @@ SketchProfileSeeds SketchSemanticSeeds::seedsForProfile(
     return out;
 }
 
-void SketchSemanticSeeds::recordRetired(App::SemanticGraph& graph,
-                                        App::ObjectId sketch,
-                                        App::EvalSerial eval,
-                                        SketchEntityHandle handle)
+void SketchSemanticSeeds::recordRetired(
+    App::SemanticGraph& graph,
+    App::ObjectId sketch,
+    App::EvalSerial eval,
+    SketchEntityHandle handle
+)
 {
     const App::SemanticId id = findSeed(graph, sketch, handle);
     if (!id.valid()) {
@@ -600,7 +626,8 @@ std::vector<App::SemanticId> SketchSemanticSeeds::splitEntity(
     App::ObjectId sketch,
     App::EvalSerial eval,
     SketchEntityHandle parent,
-    const std::vector<SketchEntityHandle>& children)
+    const std::vector<SketchEntityHandle>& children
+)
 {
     if (parent == SketchEntityIdMap::Invalid || parent < 0 || children.empty()) {
         return {};
@@ -624,8 +651,8 @@ std::vector<App::SemanticId> SketchSemanticSeeds::splitEntity(
         op << children[i];
     }
     graph.unbind(parentId.handle);
-    const auto kids =
-        graph.recordSplit(parentId, children.size(), op.str(), sketch, eval, App::SemanticRole::User);
+    const auto kids
+        = graph.recordSplit(parentId, children.size(), op.str(), sketch, eval, App::SemanticRole::User);
     for (std::size_t i = 0; i < kids.size() && i < children.size(); ++i) {
         bindSketch(graph, kids[i], sketch, eval, children[i]);
     }

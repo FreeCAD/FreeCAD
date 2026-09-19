@@ -29,17 +29,17 @@
 #include <string>
 
 #ifndef SEMANTIC_TOPOLOGY_STANDALONE
-#ifndef FC_USE_OCC
-#define FC_USE_OCC 1
-#endif
+# ifndef FC_USE_OCC
+#  define FC_USE_OCC 1
+# endif
 #endif
 
 #ifdef FC_USE_OCC
-#include <BRepBuilderAPI_MakeShape.hxx>
-#include <BRepTools_History.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
-#include <TopTools_ListOfShape.hxx>
-#include <TopoDS_Shape.hxx>
+# include <BRepBuilderAPI_MakeShape.hxx>
+# include <BRepTools_History.hxx>
+# include <TopTools_ListIteratorOfListOfShape.hxx>
+# include <TopTools_ListOfShape.hxx>
+# include <TopoDS_Shape.hxx>
 #endif
 
 namespace Part
@@ -49,11 +49,13 @@ namespace
 
 std::string g_lastApplyNote;
 
-void bindNamed(App::SemanticGraph* graph,
-               const App::SemanticId& id,
-               App::ObjectId feature,
-               App::EvalSerial eval,
-               const App::ElementIndex& index)
+void bindNamed(
+    App::SemanticGraph* graph,
+    const App::SemanticId& id,
+    App::ObjectId feature,
+    App::EvalSerial eval,
+    const App::ElementIndex& index
+)
 {
     if (!graph || !id.valid() || !isNamedIndex(index)) {
         return;
@@ -88,12 +90,14 @@ const std::string& SemanticHistoryAdapter::lastApplyNote()
     return g_lastApplyNote;
 }
 
-ApplyResult SemanticHistoryAdapter::applyHistory(App::SemanticGraph* graph,
-                                                 App::ObjectId feature,
-                                                 App::EvalSerial eval,
-                                                 const std::string& opcode,
-                                                 const std::vector<App::SemanticId>& inputSeeds,
-                                                 const HistoryTable& table)
+ApplyResult SemanticHistoryAdapter::applyHistory(
+    App::SemanticGraph* graph,
+    App::ObjectId feature,
+    App::EvalSerial eval,
+    const std::string& opcode,
+    const std::vector<App::SemanticId>& inputSeeds,
+    const HistoryTable& table
+)
 {
     ApplyResult out;
     g_lastApplyNote.clear();
@@ -114,8 +118,8 @@ ApplyResult SemanticHistoryAdapter::applyHistory(App::SemanticGraph* graph,
     std::map<std::size_t, std::vector<std::size_t>> seedlessFaces;
     for (std::size_t i = 0; i < table.size(); ++i) {
         const HistoryRecord& rec = table[i];
-        if (rec.seedless && (rec.kind == App::EventKind::Generated
-                             || rec.kind == App::EventKind::Modified)
+        if (rec.seedless
+            && (rec.kind == App::EventKind::Generated || rec.kind == App::EventKind::Modified)
             && isNamedIndex(rec.toIndex) && rec.toIndex.type == "Face") {
             seedlessFaces[rec.sourceGroup].push_back(i);
         }
@@ -124,8 +128,7 @@ ApplyResult SemanticHistoryAdapter::applyHistory(App::SemanticGraph* graph,
     for (std::size_t i = 0; i < table.size(); ++i) {
         const HistoryRecord& rec = table[i];
         const bool seedlessOutput = rec.seedless && !rec.fromSeed.valid()
-            && (rec.kind == App::EventKind::Generated
-                || rec.kind == App::EventKind::Modified)
+            && (rec.kind == App::EventKind::Generated || rec.kind == App::EventKind::Modified)
             && isNamedIndex(rec.toIndex) && rec.toIndex.type == "Face";
         if (!rec.fromSeed.valid() && !seedlessOutput) {
             ++out.skippedUnnamed;
@@ -144,7 +147,13 @@ ApplyResult SemanticHistoryAdapter::applyHistory(App::SemanticGraph* graph,
                 }
             }
             const App::SemanticId child = graph->recordGeneratedFrom(
-                seeds, rec.outputKind, opcode, feature, eval, App::SemanticRole::None);
+                seeds,
+                rec.outputKind,
+                opcode,
+                feature,
+                eval,
+                App::SemanticRole::None
+            );
             bindNamed(graph, child, feature, eval, rec.toIndex);
             ++out.namedCount;
             ++out.boundCount;
@@ -195,7 +204,13 @@ ApplyResult SemanticHistoryAdapter::applyHistory(App::SemanticGraph* graph,
                 }
             }
             const App::SemanticId child = graph->recordGeneratedFrom(
-                seeds, rec.outputKind, opcode, feature, eval, App::SemanticRole::None);
+                seeds,
+                rec.outputKind,
+                opcode,
+                feature,
+                eval,
+                App::SemanticRole::None
+            );
             bindNamed(graph, child, feature, eval, rec.toIndex);
             ++out.namedCount;
             ++out.boundCount;
@@ -214,12 +229,14 @@ ApplyResult SemanticHistoryAdapter::applyHistory(App::SemanticGraph* graph,
             indices.push_back(table[idx].toIndex);
         }
         graph->unbind(first.fromSeed.handle);
-        const auto kids = graph->recordSplit(first.fromSeed,
-                                             group.second.size(),
-                                             opcode,
-                                             feature,
-                                             eval,
-                                             App::SemanticRole::None);
+        const auto kids = graph->recordSplit(
+            first.fromSeed,
+            group.second.size(),
+            opcode,
+            feature,
+            eval,
+            App::SemanticRole::None
+        );
         for (std::size_t k = 0; k < kids.size(); ++k) {
             if (k < indices.size()) {
                 bindNamed(graph, kids[k], feature, eval, indices[k]);
@@ -235,9 +252,8 @@ ApplyResult SemanticHistoryAdapter::applyHistory(App::SemanticGraph* graph,
         out.note = "skip applyHistory: history rows unnamed (half-map, no FaceN)";
     }
     else {
-        out.note = "applyHistory bound=" + std::to_string(out.boundCount)
-            + " named=" + std::to_string(out.namedCount)
-            + " unnamed=" + std::to_string(out.skippedUnnamed);
+        out.note = "applyHistory bound=" + std::to_string(out.boundCount) + " named="
+            + std::to_string(out.namedCount) + " unnamed=" + std::to_string(out.skippedUnnamed);
     }
     g_lastApplyNote = out.note;
     return out;
@@ -245,7 +261,8 @@ ApplyResult SemanticHistoryAdapter::applyHistory(App::SemanticGraph* graph,
 
 FilletPreflight SemanticHistoryAdapter::preflightFillet(
     App::SemanticGraph* graph,
-    const std::vector<App::SemanticId>& edges)
+    const std::vector<App::SemanticId>& edges
+)
 {
     FilletPreflight out;
     if (!graph) {
@@ -270,12 +287,11 @@ FilletPreflight SemanticHistoryAdapter::preflightFillet(
         App::ReferenceRequirement req;
         req.expectedKind = App::SemanticKind::Edge;
         req.acceptedCardinality = App::AcceptedCardinality::OneOrMore;
-        req.acceptedReducers = {App::CardinalityReducer::AcceptAll,
-                                App::CardinalityReducer::RequireOne};
+        req.acceptedReducers
+            = {App::CardinalityReducer::AcceptAll, App::CardinalityReducer::RequireOne};
         const App::ResolutionResult r = App::SemanticResolver::resolve(ref, *graph, &req);
         out.perEdge.push_back(r);
-        if (r.state == App::ResolutionState::Missing
-            || r.state == App::ResolutionState::Incompatible
+        if (r.state == App::ResolutionState::Missing || r.state == App::ResolutionState::Incompatible
             || r.state == App::ResolutionState::Ambiguous) {
             anySkip = true;
             out.state = r.state;
@@ -292,8 +308,7 @@ FilletPreflight SemanticHistoryAdapter::preflightFillet(
     return out;
 }
 
-bool SemanticHistoryAdapter::canUseCachedGeometry(const FilletPreflight& pre,
-                                                  bool semanticRepublish)
+bool SemanticHistoryAdapter::canUseCachedGeometry(const FilletPreflight& pre, bool semanticRepublish)
 {
     // C1/D2: republish only a valid cached result; it must not mint a seed from
     // a stale FaceN/EdgeN.  A normal execute may use the cached Base geometry
@@ -304,17 +319,16 @@ bool SemanticHistoryAdapter::canUseCachedGeometry(const FilletPreflight& pre,
     if (!pre.makerSkipped || pre.perEdge.empty()) {
         return false;
     }
-    return std::all_of(pre.perEdge.begin(),
-                       pre.perEdge.end(),
-                       [](const App::ResolutionResult& result) {
-                           return result.state == App::ResolutionState::Missing;
-                       });
+    return std::all_of(pre.perEdge.begin(), pre.perEdge.end(), [](const App::ResolutionResult& result) {
+        return result.state == App::ResolutionState::Missing;
+    });
 }
 
 FilletPreflight SemanticHistoryAdapter::preflightNamedSeeds(
     App::SemanticGraph* graph,
     const std::vector<App::SemanticId>& seeds,
-    App::SemanticKind kind)
+    App::SemanticKind kind
+)
 {
     std::vector<App::SemanticReference> references;
     references.reserve(seeds.size());
@@ -332,7 +346,8 @@ FilletPreflight SemanticHistoryAdapter::preflightNamedSeeds(
 FilletPreflight SemanticHistoryAdapter::preflightNamedReferences(
     App::SemanticGraph* graph,
     const std::vector<App::SemanticReference>& references,
-    App::SemanticKind kind)
+    App::SemanticKind kind
+)
 {
     FilletPreflight out;
     if (!graph) {
@@ -361,8 +376,7 @@ FilletPreflight SemanticHistoryAdapter::preflightNamedReferences(
             r = App::SemanticResolver::resolve(reference, *graph, &req);
         }
         out.perEdge.push_back(r);
-        if (r.state == App::ResolutionState::Missing
-            || r.state == App::ResolutionState::Incompatible
+        if (r.state == App::ResolutionState::Missing || r.state == App::ResolutionState::Incompatible
             || r.state == App::ResolutionState::Ambiguous) {
             anySkip = true;
             out.state = r.state;
@@ -394,20 +408,22 @@ App::SemanticKind kindFromIndex(const App::ElementIndex& idx, App::SemanticKind 
     return fallback;
 }
 
-void appendOccLists(HistoryTable& table,
-                    const App::SemanticId& seed,
-                    const TopoDS_Shape& shape,
-                    const TopTools_ListOfShape& generated,
-                    const TopTools_ListOfShape& modified,
-                    bool removed,
-                    const std::function<App::ElementIndex(const void* occShape)>& indexOf,
-                    std::size_t sourceGroup)
+void appendOccLists(
+    HistoryTable& table,
+    const App::SemanticId& seed,
+    const TopoDS_Shape& shape,
+    const TopTools_ListOfShape& generated,
+    const TopTools_ListOfShape& modified,
+    bool removed,
+    const std::function<App::ElementIndex(const void* occShape)>& indexOf,
+    std::size_t sourceGroup
+)
 {
     // Edge seed → Face is the pad-side heuristic when indexOf cannot name the
     // image. When indexOf names an EDGE (Generated(vertex) unique vertical),
     // outputKind must be Edge so fromMaker Edge rows are actually edges.
-    const App::SemanticKind genKind =
-        seed.kind == App::SemanticKind::Edge ? App::SemanticKind::Face : seed.kind;
+    const App::SemanticKind genKind = seed.kind == App::SemanticKind::Edge ? App::SemanticKind::Face
+                                                                           : seed.kind;
     for (TopTools_ListIteratorOfListOfShape it(generated); it.More(); it.Next()) {
         HistoryRecord rec;
         rec.fromSeed = seed;
@@ -429,8 +445,7 @@ void appendOccLists(HistoryTable& table,
     // maker input, a unique Face is normalized to a 0-to-1 Generated output;
     // ambiguous history remains unnamed (I13). Do not invent FaceN.
     const int nMod = modified.Extent();
-    const App::EventKind modKind =
-        nMod > 1 ? App::EventKind::Split : App::EventKind::Modified;
+    const App::EventKind modKind = nMod > 1 ? App::EventKind::Split : App::EventKind::Modified;
     for (TopTools_ListIteratorOfListOfShape it(modified); it.More(); it.Next()) {
         HistoryRecord rec;
         rec.fromSeed = seed;
@@ -457,7 +472,10 @@ void appendOccLists(HistoryTable& table,
     // on the result (GUI :U;XTR Pad Edge3). Identity continues (Modified).
     if (!removed && generated.IsEmpty() && modified.IsEmpty() && indexOf) {
         SemanticHistoryAdapter::appendUnmodifiedSurvivor(
-            table, seed, indexOf(static_cast<const void*>(&shape)));
+            table,
+            seed,
+            indexOf(static_cast<const void*>(&shape))
+        );
     }
 }
 #endif
@@ -465,7 +483,8 @@ void appendOccLists(HistoryTable& table,
 bool SemanticHistoryAdapter::appendUnmodifiedSurvivor(
     HistoryTable& table,
     const App::SemanticId& seed,
-    const App::ElementIndex& toIndex)
+    const App::ElementIndex& toIndex
+)
 {
     if (!seed.valid() || !isNamedIndex(toIndex)) {
         return false;
@@ -551,7 +570,8 @@ HistoryTable SemanticHistoryAdapter::uniqueOneImageGenerated(const HistoryTable&
 HistoryTable SemanticHistoryAdapter::supplementLocatedInputs(
     const HistoryTable& unique,
     const std::vector<std::pair<App::SemanticId, const void*>>& inputs,
-    const std::function<App::ElementIndex(const void* occShape)>& indexOf)
+    const std::function<App::ElementIndex(const void* occShape)>& indexOf
+)
 {
     std::set<std::string> claimed;
     for (const HistoryRecord& rec : unique) {
@@ -600,7 +620,8 @@ HistoryTable SemanticHistoryAdapter::supplementLocatedInputs(
 HistoryTable SemanticHistoryAdapter::fromOcctHistory(
     const void* occHistory,
     const std::vector<std::pair<App::SemanticId, const void*>>& inputShapes,
-    const std::function<App::ElementIndex(const void* occShape)>& indexOf)
+    const std::function<App::ElementIndex(const void* occShape)>& indexOf
+)
 {
     HistoryTable table;
 #ifdef FC_USE_OCC
@@ -616,14 +637,16 @@ HistoryTable SemanticHistoryAdapter::fromOcctHistory(
             continue;
         }
         const auto& shape = *static_cast<const TopoDS_Shape*>(shapePtr);
-        appendOccLists(table,
-                       seed,
-                       shape,
-                       hist->Generated(shape),
-                       hist->Modified(shape),
-                       hist->IsRemoved(shape),
-                       indexOf,
-                       0);
+        appendOccLists(
+            table,
+            seed,
+            shape,
+            hist->Generated(shape),
+            hist->Modified(shape),
+            hist->IsRemoved(shape),
+            indexOf,
+            0
+        );
     }
 #else
     (void)occHistory;
@@ -636,7 +659,8 @@ HistoryTable SemanticHistoryAdapter::fromOcctHistory(
 HistoryTable SemanticHistoryAdapter::fromMaker(
     const void* occMaker,
     const std::vector<std::pair<App::SemanticId, const void*>>& inputShapes,
-    const std::function<App::ElementIndex(const void* occShape)>& indexOf)
+    const std::function<App::ElementIndex(const void* occShape)>& indexOf
+)
 {
     HistoryTable table;
 #ifdef FC_USE_OCC
@@ -653,14 +677,16 @@ HistoryTable SemanticHistoryAdapter::fromMaker(
             continue;
         }
         const auto& shape = *static_cast<const TopoDS_Shape*>(shapePtr);
-        appendOccLists(table,
-                       seed,
-                       shape,
-                       maker->Generated(shape),
-                       maker->Modified(shape),
-                       maker->IsDeleted(shape),
-                       indexOf,
-                       sourceGroup);
+        appendOccLists(
+            table,
+            seed,
+            shape,
+            maker->Generated(shape),
+            maker->Modified(shape),
+            maker->IsDeleted(shape),
+            indexOf,
+            sourceGroup
+        );
     }
 #else
     (void)occMaker;

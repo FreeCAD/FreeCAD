@@ -56,12 +56,14 @@
 namespace Part
 {
 
-void collectUniqueSourceSeeds(App::SemanticGraph* graph,
-                              App::DocumentObject* obj,
-                              const TopoShape& sourceShape,
-                              std::deque<TopoDS_Shape>& held,
-                              std::vector<std::pair<App::SemanticId, const void*>>& inputs,
-                              std::unordered_set<App::SemanticHandle>& seenSeeds)
+void collectUniqueSourceSeeds(
+    App::SemanticGraph* graph,
+    App::DocumentObject* obj,
+    const TopoShape& sourceShape,
+    std::deque<TopoDS_Shape>& held,
+    std::vector<std::pair<App::SemanticId, const void*>>& inputs,
+    std::unordered_set<App::SemanticHandle>& seenSeeds
+)
 {
     if (!graph || !obj || sourceShape.isNull()) {
         return;
@@ -71,22 +73,19 @@ void collectUniqueSourceSeeds(App::SemanticGraph* graph,
         if (b.feature != fid || !b.stid.valid()) {
             continue;
         }
-        if (!isNamedIndex(b.index)
-            || (b.index.type != "Face" && b.index.type != "Edge")) {
+        if (!isNamedIndex(b.index) || (b.index.type != "Face" && b.index.type != "Edge")) {
             continue;
         }
-        if (!graph->allocator.isPublished(b.stid.handle)
-            || graph->hasDeletedEvent(b.stid.handle)) {
+        if (!graph->allocator.isPublished(b.stid.handle) || graph->hasDeletedEvent(b.stid.handle)) {
             continue;
         }
         const char* typ = b.index.type.c_str();
-        const std::optional<App::SemanticBinding> unique =
-            App::uniqueBindingOnFeature(graph, b.stid, fid, typ);
+        const std::optional<App::SemanticBinding> unique
+            = App::uniqueBindingOnFeature(graph, b.stid, fid, typ);
         if (!unique.has_value()) {
             continue;
         }
-        const TopAbs_ShapeEnum st =
-            unique->index.type == "Face" ? TopAbs_FACE : TopAbs_EDGE;
+        const TopAbs_ShapeEnum st = unique->index.type == "Face" ? TopAbs_FACE : TopAbs_EDGE;
         TopoDS_Shape s = sourceShape.findShape(st, unique->index.index);
         if (s.IsNull()) {
             continue;
@@ -103,8 +102,7 @@ void collectUniqueSourceSeeds(App::SemanticGraph* graph,
     }
 }
 
-App::ElementIndex uniqueNamedIndexOnPublished(const TopoShape& published,
-                                              const TopoDS_Shape& image)
+App::ElementIndex uniqueNamedIndexOnPublished(const TopoShape& published, const TopoDS_Shape& image)
 {
     App::ElementIndex index;
     if (published.isNull() || image.IsNull()) {
@@ -117,8 +115,7 @@ App::ElementIndex uniqueNamedIndexOnPublished(const TopoShape& published,
     if (number <= 0) {
         int matches = 0;
         int partner = 0;
-        for (TopExp_Explorer ex(published.getShape(), image.ShapeType()); ex.More();
-             ex.Next()) {
+        for (TopExp_Explorer ex(published.getShape(), image.ShapeType()); ex.More(); ex.Next()) {
             if (ex.Current().IsPartner(image)) {
                 ++matches;
                 partner = published.findShape(ex.Current());
@@ -183,9 +180,8 @@ int uniqueCoplanarFaceIndex(const TopoShape& owner, const TopoDS_Shape& sub)
         if (dst.GetType() != GeomAbs_Plane) {
             continue;
         }
-        if (!srcPln.Position().IsCoplanar(dst.Plane().Position(),
-                                          Precision::Confusion(),
-                                          Precision::Angular())) {
+        if (!srcPln.Position()
+                 .IsCoplanar(dst.Plane().Position(), Precision::Confusion(), Precision::Angular())) {
             continue;
         }
         bool dup = false;
@@ -230,11 +226,10 @@ int uniqueGeometricEdgeIndex(const TopoShape& owner, const TopoDS_Shape& sub)
         }
         const gp_Pnt qa = BRep_Tool::Pnt(a);
         const gp_Pnt qb = BRep_Tool::Pnt(b);
-        const bool same =
-            ((p1.Distance(qa) <= Precision::Confusion()
-              && p2.Distance(qb) <= Precision::Confusion())
-             || (p1.Distance(qb) <= Precision::Confusion()
-                 && p2.Distance(qa) <= Precision::Confusion()));
+        const bool same
+            = ((p1.Distance(qa) <= Precision::Confusion() && p2.Distance(qb) <= Precision::Confusion())
+               || (p1.Distance(qb) <= Precision::Confusion()
+                   && p2.Distance(qa) <= Precision::Confusion()));
         if (!same) {
             continue;
         }
@@ -255,7 +250,8 @@ int uniqueGeometricEdgeIndex(const TopoShape& owner, const TopoDS_Shape& sub)
     return owner.findShape(hits.front());
 }
 
-namespace {
+namespace
+{
 
 bool sameEdgeEndpoints(const TopoDS_Edge& a, const TopoDS_Edge& b)
 {
@@ -273,10 +269,12 @@ bool sameEdgeEndpoints(const TopoDS_Edge& a, const TopoDS_Edge& b)
         || (pa1.IsEqual(pb2, Precision::Confusion()) && pa2.IsEqual(pb1, Precision::Confusion()));
 }
 
-bool sameSupportingCurve(const BRepAdaptor_Curve& src,
-                         const BRepAdaptor_Curve& dst,
-                         const TopoDS_Edge& srcEdge,
-                         const TopoDS_Edge& dstEdge)
+bool sameSupportingCurve(
+    const BRepAdaptor_Curve& src,
+    const BRepAdaptor_Curve& dst,
+    const TopoDS_Edge& srcEdge,
+    const TopoDS_Edge& dstEdge
+)
 {
     if (src.GetType() != dst.GetType()) {
         return false;
@@ -374,8 +372,7 @@ App::ElementIndex indexOnPublished(const TopoShape& owner, const TopoDS_Shape& s
     return idx;
 }
 
-App::ElementIndex indexOnPublishedPartnerCoplanar(const TopoShape& owner,
-                                                  const TopoDS_Shape& sub)
+App::ElementIndex indexOnPublishedPartnerCoplanar(const TopoShape& owner, const TopoDS_Shape& sub)
 {
     App::ElementIndex idx;
     if (sub.IsNull()) {
@@ -412,8 +409,7 @@ App::ElementIndex indexOnPublishedPartnerCoplanar(const TopoShape& owner,
     return idx;
 }
 
-App::ElementIndex indexOnPublishedPartnerSameCurve(const TopoShape& owner,
-                                                   const TopoDS_Shape& sub)
+App::ElementIndex indexOnPublishedPartnerSameCurve(const TopoShape& owner, const TopoDS_Shape& sub)
 {
     App::ElementIndex idx;
     if (sub.IsNull()) {
@@ -447,9 +443,11 @@ App::ElementIndex indexOnPublishedPartnerSameCurve(const TopoShape& owner,
 }
 
 
-TopoDS_Shape uniquePartnerEdgeExcluding(const TopoDS_Shape& input,
-                                        const TopoShape& result,
-                                        const std::vector<TopoDS_Shape>& excludeStashed)
+TopoDS_Shape uniquePartnerEdgeExcluding(
+    const TopoDS_Shape& input,
+    const TopoShape& result,
+    const std::vector<TopoDS_Shape>& excludeStashed
+)
 {
     TopoDS_Shape none;
     if (input.IsNull() || result.isNull()) {
@@ -497,16 +495,13 @@ bool sameOccShape(const TopoDS_Shape& a, const TopoDS_Shape& b)
     return !a.IsNull() && !b.IsNull() && a.IsSame(b);
 }
 
-int countGeneratedOf(BRepBuilderAPI_MakeShape* maker,
-                     const TopoDS_Shape& input,
-                     TopAbs_ShapeEnum t)
+int countGeneratedOf(BRepBuilderAPI_MakeShape* maker, const TopoDS_Shape& input, TopAbs_ShapeEnum t)
 {
     int n = 0;
     if (!maker || input.IsNull()) {
         return 0;
     }
-    for (TopTools_ListIteratorOfListOfShape it(maker->Generated(input)); it.More();
-         it.Next()) {
+    for (TopTools_ListIteratorOfListOfShape it(maker->Generated(input)); it.More(); it.Next()) {
         if (it.Value().ShapeType() == t) {
             ++n;
         }
@@ -527,21 +522,20 @@ std::size_t namedIndexCount(const std::vector<App::ElementIndex>& xs)
 
 std::vector<TopoDS_Shape> uniqueGeneratedThenModifiedEdgeImages(
     BRepBuilderAPI_MakeShape* maker,
-    const TopoDS_Shape& input)
+    const TopoDS_Shape& input
+)
 {
     std::vector<TopoDS_Shape> images;
     if (!maker || input.IsNull()) {
         return images;
     }
-    for (TopTools_ListIteratorOfListOfShape it(maker->Generated(input)); it.More();
-         it.Next()) {
+    for (TopTools_ListIteratorOfListOfShape it(maker->Generated(input)); it.More(); it.Next()) {
         if (it.Value().ShapeType() == TopAbs_EDGE) {
             images.push_back(it.Value());
         }
     }
     if (images.empty()) {
-        for (TopTools_ListIteratorOfListOfShape it(maker->Modified(input)); it.More();
-             it.Next()) {
+        for (TopTools_ListIteratorOfListOfShape it(maker->Modified(input)); it.More(); it.Next()) {
             if (it.Value().ShapeType() == TopAbs_EDGE) {
                 images.push_back(it.Value());
             }
@@ -553,7 +547,8 @@ std::vector<TopoDS_Shape> uniqueGeneratedThenModifiedEdgeImages(
 std::vector<TopoDS_Shape> uniqueModifiedThenGeneratedEdgeImages(
     BRepBuilderAPI_MakeShape* maker,
     const TopoDS_Shape& input,
-    const TopoShape& result)
+    const TopoShape& result
+)
 {
     std::vector<TopoDS_Shape> images;
     if (!maker || input.IsNull()) {
@@ -565,8 +560,7 @@ std::vector<TopoDS_Shape> uniqueModifiedThenGeneratedEdgeImages(
         }
     }
     if (images.empty()) {
-        for (TopTools_ListIteratorOfListOfShape it(maker->Generated(input)); it.More();
-             it.Next()) {
+        for (TopTools_ListIteratorOfListOfShape it(maker->Generated(input)); it.More(); it.Next()) {
             if (it.Value().ShapeType() == TopAbs_EDGE) {
                 images.push_back(it.Value());
             }
@@ -609,8 +603,7 @@ TopoDS_Shape uniqueGeneratedFace(BRepBuilderAPI_MakeShape* maker, const TopoDS_S
         return unique;
     }
     int n = 0;
-    for (TopTools_ListIteratorOfListOfShape it(maker->Generated(input)); it.More();
-         it.Next()) {
+    for (TopTools_ListIteratorOfListOfShape it(maker->Generated(input)); it.More(); it.Next()) {
         if (it.Value().ShapeType() == TopAbs_FACE) {
             ++n;
             unique = it.Value();
@@ -622,8 +615,10 @@ TopoDS_Shape uniqueGeneratedFace(BRepBuilderAPI_MakeShape* maker, const TopoDS_S
     return unique;
 }
 
-App::ElementIndex uniqueZParallelEdgeOnPublishedFace(const TopoShape& owner,
-                                                     const App::ElementIndex& faceIdx)
+App::ElementIndex uniqueZParallelEdgeOnPublishedFace(
+    const TopoShape& owner,
+    const App::ElementIndex& faceIdx
+)
 {
     if (owner.isNull() || !isNamedIndex(faceIdx) || faceIdx.type != "Face") {
         return {};
@@ -672,7 +667,8 @@ App::ElementIndex indexOnPublishedPartnerSameCurveSewSharedVertex(
     const TopoShape& published,
     const TopoDS_Shape& sub,
     const TopoShape& preSew,
-    BRepBuilderAPI_Sewing* sewer)
+    BRepBuilderAPI_Sewing* sewer
+)
 {
     App::ElementIndex idx;
     if (sub.IsNull()) {
@@ -693,8 +689,9 @@ App::ElementIndex indexOnPublishedPartnerSameCurveSewSharedVertex(
             return hit;
         }
         try {
-            const std::vector<TopoShape> found =
-                published.findSubShapesWithSharedVertex(TopoShape(cand));
+            const std::vector<TopoShape> found = published.findSubShapesWithSharedVertex(
+                TopoShape(cand)
+            );
             if (found.size() != 1) {
                 return App::ElementIndex();
             }
@@ -705,8 +702,7 @@ App::ElementIndex indexOnPublishedPartnerSameCurveSewSharedVertex(
         }
     };
 
-    auto uniqueMapped = [&](const TopoShape& source,
-                            const TopoDS_Shape& srcSub) -> App::ElementIndex {
+    auto uniqueMapped = [&](const TopoShape& source, const TopoDS_Shape& srcSub) -> App::ElementIndex {
         App::ElementIndex hit;
         if (source.isNull() || srcSub.IsNull() || published.isNull()) {
             return hit;
@@ -725,8 +721,7 @@ App::ElementIndex indexOnPublishedPartnerSameCurveSewSharedVertex(
         else {
             return hit;
         }
-        const Data::MappedName mapped =
-            source.getMappedName(Data::IndexedName::fromConst(type, n));
+        const Data::MappedName mapped = source.getMappedName(Data::IndexedName::fromConst(type, n));
         if (!mapped) {
             return hit;
         }
@@ -742,7 +737,8 @@ App::ElementIndex indexOnPublishedPartnerSameCurveSewSharedVertex(
         const unsigned long count = published.countSubShapes(srcSub.ShapeType());
         for (unsigned long i = 1; i <= count; ++i) {
             const Data::MappedName p = published.getMappedName(
-                Data::IndexedName::fromConst(type, static_cast<int>(i)));
+                Data::IndexedName::fromConst(type, static_cast<int>(i))
+            );
             if (!p) {
                 continue;
             }
@@ -786,8 +782,9 @@ App::ElementIndex indexOnPublishedPartnerSameCurveSewSharedVertex(
                     return idx;
                 }
                 if (sewer) {
-                    const std::vector<TopoDS_Shape> images =
-                        Part::MapperSewing(*sewer).modified(shellSub);
+                    const std::vector<TopoDS_Shape> images = Part::MapperSewing(*sewer).modified(
+                        shellSub
+                    );
                     if (images.size() == 1) {
                         idx = uniqueShared(images.front());
                         if (isNamedIndex(idx)) {
@@ -814,7 +811,8 @@ App::ElementIndex indexOnPublishedPartnerSameCurveSewSharedVertex(
 std::size_t mergeUniqueZParallelEdgesOntoNamed(
     const TopoShape& published,
     const std::vector<App::ElementIndex>& namedFaces,
-    std::vector<App::ElementIndex>& namedEdges)
+    std::vector<App::ElementIndex>& namedEdges
+)
 {
     std::vector<App::ElementIndex> zEdges;
     zEdges.reserve(namedFaces.size());
@@ -844,8 +842,7 @@ std::size_t mergeUniqueZParallelEdgesOntoNamed(
                 continue;
             }
             if (i < namedEdges.size()
-                && (!isNamedIndex(namedEdges[i])
-                    || namedEdges[i].type != "Edge")) {
+                && (!isNamedIndex(namedEdges[i]) || namedEdges[i].type != "Edge")) {
                 namedEdges[i] = zEdges[i];
             }
             else {
@@ -859,22 +856,20 @@ std::size_t mergeUniqueZParallelEdgesOntoNamed(
 std::size_t appendUniqueZParallelFaceRailEdges(
     const TopoShape& shell,
     const std::vector<SemanticSeededShape>& faces,
-    std::vector<SemanticSeededShape>& edges)
+    std::vector<SemanticSeededShape>& edges
+)
 {
     std::size_t appended = 0;
     for (const auto& p : faces) {
         if (p.shape.IsNull() || p.shape.ShapeType() != TopAbs_FACE) {
             continue;
         }
-        const App::ElementIndex faceIdx =
-            indexOnPublishedPartnerSameCurve(shell, p.shape);
-        const App::ElementIndex zIdx =
-            uniqueZParallelEdgeOnPublishedFace(shell, faceIdx);
+        const App::ElementIndex faceIdx = indexOnPublishedPartnerSameCurve(shell, p.shape);
+        const App::ElementIndex zIdx = uniqueZParallelEdgeOnPublishedFace(shell, faceIdx);
         if (!isNamedIndex(zIdx) || zIdx.type != "Edge") {
             continue;
         }
-        const TopoDS_Shape zEdge =
-            shell.getSubShape(TopAbs_EDGE, zIdx.index, true);
+        const TopoDS_Shape zEdge = shell.getSubShape(TopAbs_EDGE, zIdx.index, true);
         if (zEdge.IsNull()) {
             continue;
         }
@@ -903,7 +898,8 @@ std::size_t appendFromMakerGeneratedWhenFacesEmpty(
     const std::vector<TopoShape>& profileVertices,
     std::vector<SemanticSeededShape>& faces,
     std::vector<SemanticSeededShape>& outEdges,
-    bool* usedFromMaker)
+    bool* usedFromMaker
+)
 {
     if (!faces.empty()) {
         return 0;
@@ -932,12 +928,10 @@ std::size_t appendFromMakerGeneratedWhenFacesEmpty(
         if (!occ) {
             return App::ElementIndex();
         }
-        return indexOnPublishedPartnerSameCurve(
-            preSewShell, *static_cast<const TopoDS_Shape*>(occ));
+        return indexOnPublishedPartnerSameCurve(preSewShell, *static_cast<const TopoDS_Shape*>(occ));
     };
 
-    const HistoryTable fromHist =
-        SemanticHistoryAdapter::fromMaker(occMaker, inputs, indexOf);
+    const HistoryTable fromHist = SemanticHistoryAdapter::fromMaker(occMaker, inputs, indexOf);
 
     auto alreadyHasEdge = [&outEdges](const TopoDS_Shape& s) -> bool {
         for (const auto& existing : outEdges) {
@@ -969,7 +963,6 @@ std::size_t appendFromMakerGeneratedWhenFacesEmpty(
 }
 
 
-
 void refreshNamedIndicesFromSeededShapes(
     const TopoShape& published,
     const TopoShape& preSewShell,
@@ -977,21 +970,22 @@ void refreshNamedIndicesFromSeededShapes(
     const std::vector<SemanticSeededShape>& faces,
     const std::vector<SemanticSeededShape>& edges,
     std::vector<App::ElementIndex>& namedFaces,
-    std::vector<App::ElementIndex>& namedEdges)
+    std::vector<App::ElementIndex>& namedEdges
+)
 {
     namedFaces.clear();
     namedFaces.reserve(faces.size());
     for (const auto& p : faces) {
         namedFaces.push_back(
-            indexOnPublishedPartnerSameCurveSewSharedVertex(
-                published, p.shape, preSewShell, sewer));
+            indexOnPublishedPartnerSameCurveSewSharedVertex(published, p.shape, preSewShell, sewer)
+        );
     }
     namedEdges.clear();
     namedEdges.reserve(edges.size());
     for (const auto& p : edges) {
         namedEdges.push_back(
-            indexOnPublishedPartnerSameCurveSewSharedVertex(
-                published, p.shape, preSewShell, sewer));
+            indexOnPublishedPartnerSameCurveSewSharedVertex(published, p.shape, preSewShell, sewer)
+        );
     }
 }
 
@@ -1003,8 +997,7 @@ bool testsPublishDiagEnabled()
         return env && env[0] != '\0' && !(env[0] == '0' && env[1] == '\0');
     };
     // Prefer FREECAD_TESTS_DIAG; fall back to legacy FREECAD_TEST5_DIAG for one tip.
-    if (envTruthy(std::getenv("FREECAD_TESTS_DIAG"))
-        || envTruthy(std::getenv("FREECAD_TEST5_DIAG"))) {
+    if (envTruthy(std::getenv("FREECAD_TESTS_DIAG")) || envTruthy(std::getenv("FREECAD_TEST5_DIAG"))) {
         return true;
     }
     // Do not create the tag: DEFAULT (-1) would inherit MSG on release and
@@ -1041,8 +1034,7 @@ void testsPublishDiagBound(const char* diagTag, std::size_t bound, std::size_t n
     if (!diagTag || !testsPublishDiagEnabled()) {
         return;
     }
-    Base::Console().message("TESTS %s bound=%zu named=%zu unnamed=0\n",
-                            diagTag, bound, named);
+    Base::Console().message("TESTS %s bound=%zu named=%zu unnamed=0\n", diagTag, bound, named);
 }
 
 }  // namespace Part

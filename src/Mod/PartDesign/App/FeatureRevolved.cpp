@@ -1071,8 +1071,7 @@ void Revolved::captureRevolveMaker(void* occMaker, const TopoShape& revol, const
     };
 
     auto* maker = static_cast<BRepBuilderAPI_MakeShape*>(occMaker);
-    const Part::HistoryTable fromHist =
-        Part::SemanticHistoryAdapter::fromMaker(maker, inputs, indexOf);
+    const Part::HistoryTable fromHist = Part::SemanticHistoryAdapter::fromMaker(maker, inputs, indexOf);
     // Keep the Face and Edge request zippers independent: a profile seed may
     // legitimately produce one published face and one published edge, while
     // distinct images of either kind are ambiguous under I13. Count unique
@@ -1121,8 +1120,6 @@ void Revolved::captureRevolveMaker(void* occMaker, const TopoShape& revol, const
         }
     }
     if (lastNamedFaceIndices.empty() && lastNamedEdgeIndices.empty()) {
-        Base::Console().message(
-            "TESTS revolutionCapture skip emit: no unique fromMaker images\n");
+        Base::Console().message("TESTS revolutionCapture skip emit: no unique fromMaker images\n");
     }
 }
-

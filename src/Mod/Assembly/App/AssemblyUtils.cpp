@@ -195,7 +195,8 @@ DistanceType getDistanceType(
     std::string& elt1,
     std::string& elt2,
     App::DocumentObject*& obj1,
-    App::DocumentObject*& obj2)
+    App::DocumentObject*& obj2
+)
 {
     elt1.clear();
     elt2.clear();
@@ -577,14 +578,17 @@ std::string getElementFromProp(const App::DocumentObject* obj, const char* pName
     if (sref.seed.kind == App::SemanticKind::Edge || sref.kind == App::SemanticKind::Edge) {
         indexType = "Edge";
     }
-    else if (sref.seed.kind == App::SemanticKind::Vertex
-             || sref.kind == App::SemanticKind::Vertex) {
+    else if (sref.seed.kind == App::SemanticKind::Vertex || sref.kind == App::SemanticKind::Vertex) {
         indexType = "Vertex";
     }
     // Consume uniqueness is all-eval (AG21-E1 / EM14-U1 lockstep): publishers
     // clearBindings first; do not switch to max-eval here without TESTS coverage.
     const std::optional<App::SemanticBinding> unique = App::uniqueBindingOnFeature(
-        graph, sref.seed, static_cast<App::ObjectId>(linked->getID()), indexType);
+        graph,
+        sref.seed,
+        static_cast<App::ObjectId>(linked->getID()),
+        indexType
+    );
     if (!unique.has_value() || unique->index.toString().empty()) {
         return fallback;  // I7 / I10: 0 or >1 stays the cache; no mint
     }

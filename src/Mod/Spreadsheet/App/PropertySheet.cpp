@@ -1868,8 +1868,7 @@ bool PropertySheet::applySemanticReadPolicy(const SemanticGraph& graph)
 {
     bool changed = false;
     for (auto& d : data) {
-        if (d.second && d.second->expression
-            && d.second->expression->applySemanticReadPolicy(graph)) {
+        if (d.second && d.second->expression && d.second->expression->applySemanticReadPolicy(graph)) {
             changed = true;
         }
     }

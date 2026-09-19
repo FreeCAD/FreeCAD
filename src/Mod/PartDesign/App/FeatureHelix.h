@@ -124,7 +124,7 @@ protected:
         const std::vector<TopoDS_Shape>& addWireShapes,
         BRepBuilderAPI_Sewing* sewer
     );
-void emitCapturedHelix(
+    void emitCapturedHelix(
         void* occMaker,
         const TopoShape& preSewShell,
         const TopoShape& published,

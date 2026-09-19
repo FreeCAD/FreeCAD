@@ -90,7 +90,8 @@ protected:
         const Part::TopoShape& baseShape,
         const std::vector<App::DocumentObject*>& toolObjs,
         const std::vector<Part::TopoShape>& toolShapes,
-        const char* diagTag);
+        const char* diagTag
+    );
 
 private:
     Part::TopoShape getBooleanTopoShape(const App::DocumentObject* object) const;

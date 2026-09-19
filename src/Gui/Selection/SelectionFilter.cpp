@@ -79,7 +79,8 @@ bool SelectionFilterGate::allow(App::Document* /*pDoc*/, App::DocumentObject* pO
     return Filter->test(pObj, sSubName);
 }
 
-namespace {
+namespace
+{
 // G28-N1: shared gated-types walk. Null filter / empty Ast → {} so BoxSelection
 // falls through to all element types (allow() still gates picks). PartDesign
 // ReferenceSelection / NoDependents / Combine construct SelectionFilterGate(nullPointer()).

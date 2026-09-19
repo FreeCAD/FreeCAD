@@ -48,9 +48,11 @@
 using namespace Part;
 namespace
 {
-void publishRevolutionSemanticHistory(Revolution* self,
-                                     BRepPrimAPI_MakeRevol* maker,
-                                     const TopoShape& published)
+void publishRevolutionSemanticHistory(
+    Revolution* self,
+    BRepPrimAPI_MakeRevol* maker,
+    const TopoShape& published
+)
 {
     if (!self || !maker || !maker->IsDone() || published.isNull()) {
         return;
@@ -68,7 +70,8 @@ void publishRevolutionSemanticHistory(Revolution* self,
         eval = doc->semanticState().currentEval();
     }
     std::deque<TopoDS_Shape> held;
-    struct Candidate {
+    struct Candidate
+    {
         App::ElementIndex index;
         App::SemanticKind kind = App::SemanticKind::Face;
     };
@@ -77,8 +80,7 @@ void publishRevolutionSemanticHistory(Revolution* self,
         return App::shouldRefuseBoundAt(graph, selfId, index);
     };
     auto addImage = [&](const TopoDS_Shape& image) {
-        if (image.IsNull()
-            || (image.ShapeType() != TopAbs_FACE && image.ShapeType() != TopAbs_EDGE)) {
+        if (image.IsNull() || (image.ShapeType() != TopAbs_FACE && image.ShapeType() != TopAbs_EDGE)) {
             return;
         }
         for (const auto& prior : held) {
@@ -99,8 +101,8 @@ void publishRevolutionSemanticHistory(Revolution* self,
         held.push_back(image);
         Candidate candidate;
         candidate.index = index;
-        candidate.kind = image.ShapeType() == TopAbs_FACE
-            ? App::SemanticKind::Face : App::SemanticKind::Edge;
+        candidate.kind = image.ShapeType() == TopAbs_FACE ? App::SemanticKind::Face
+                                                          : App::SemanticKind::Edge;
         candidates.push_back(candidate);
     };
     for (TopExp_Explorer ex(maker->Shape(), TopAbs_FACE); ex.More(); ex.Next()) {
@@ -143,8 +145,8 @@ void publishRevolutionSemanticHistory(Revolution* self,
             record.fromSeed = pair.first;
             record.kind = App::EventKind::Generated;
             record.toIndex = indexOf(pair.second);
-            record.outputKind = record.toIndex.type == "Edge"
-                ? App::SemanticKind::Edge : App::SemanticKind::Face;
+            record.outputKind = record.toIndex.type == "Edge" ? App::SemanticKind::Edge
+                                                              : App::SemanticKind::Face;
             if (isNamedIndex(record.toIndex)) {
                 unique.push_back(record);
             }
@@ -166,12 +168,11 @@ void publishRevolutionSemanticHistory(Revolution* self,
         }
         App::SemanticKind kind = record.outputKind;
         if (kind != App::SemanticKind::Face && kind != App::SemanticKind::Edge) {
-            kind = record.toIndex.type == "Edge"
-                ? App::SemanticKind::Edge : App::SemanticKind::Face;
+            kind = record.toIndex.type == "Edge" ? App::SemanticKind::Edge : App::SemanticKind::Face;
         }
         // A3 deferred mint: allocate only for unique surviving Face/Edge slots.
-        const App::SemanticId seed = graph->recordGenerated(
-            kind, Part::OpCodes::Revolve, selfId, eval, App::SemanticRole::None);
+        const App::SemanticId seed
+            = graph->recordGenerated(kind, Part::OpCodes::Revolve, selfId, eval, App::SemanticRole::None);
         if (!seed.valid()) {
             continue;
         }
@@ -186,8 +187,7 @@ void publishRevolutionSemanticHistory(Revolution* self,
         Part::testsPublishDiagSkip("revolutionDiag", "no unique images");
         return;
     }
-    SemanticHistoryAdapter::applyHistory(
-        graph, selfId, eval, Part::OpCodes::Revolve, seeds, toApply);
+    SemanticHistoryAdapter::applyHistory(graph, selfId, eval, Part::OpCodes::Revolve, seeds, toApply);
     Part::testsPublishDiagBound("revolutionDiag", toApply.size(), toApply.size());
 }
 

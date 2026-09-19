@@ -104,8 +104,8 @@ void testFakeHistoryOneCurveOneSideFace()
     const ObjectId sketch = 10;
     const ObjectId pad = 20;
     g.beginEvaluate(1);
-    const SemanticId curve =
-        g.recordGenerated(SemanticKind::Edge, "Sketch", sketch, 1, SemanticRole::None);
+    const SemanticId curve
+        = g.recordGenerated(SemanticKind::Edge, "Sketch", sketch, 1, SemanticRole::None);
     g.bind(makeBinding(curve, sketch, 1, "Edge1"));
     g.commitEvaluate();
 
@@ -115,8 +115,7 @@ void testFakeHistoryOneCurveOneSideFace()
     rec.toIndex = ElementIndex::fromString("Face7");  // named by history, not sequential Face1
     rec.kind = EventKind::Generated;
     rec.outputKind = SemanticKind::Face;
-    const ApplyResult applied =
-        SemanticHistoryAdapter::applyHistory(&g, pad, 2, "Pad", {curve}, {rec});
+    const ApplyResult applied = SemanticHistoryAdapter::applyHistory(&g, pad, 2, "Pad", {curve}, {rec});
     g.commitEvaluate();
 
     CHECK(applied.boundCount == 1);
@@ -141,7 +140,9 @@ void testFakeHistoryOneCurveOneSideFace()
     CHECK(from.front().handle != curve.handle);
 
     const auto r = SemanticResolver::resolve(
-        makeRef(side, CardinalityReducer::RequireOne, SemanticKind::Face), g);
+        makeRef(side, CardinalityReducer::RequireOne, SemanticKind::Face),
+        g
+    );
     CHECK(r.state == ResolutionState::Resolved);
     CHECK(r.identities.front().handle == side.handle);
     CHECK(r.bindings.front().index.toString() == "Face7");
@@ -152,14 +153,11 @@ void testDeletedEdgeFilletMissingMakerSkipped()
     SemanticGraph g;
     const ObjectId pad = 20;
     g.beginEvaluate(1);
-    const SemanticId edge =
-        g.recordGenerated(SemanticKind::Edge, "Pad", pad, 1, SemanticRole::None);
-    const SemanticId f1 =
-        g.recordGenerated(SemanticKind::Face, "Pad", pad, 1, SemanticRole::None);
-    const SemanticId f2 =
-        g.recordGenerated(SemanticKind::Face, "Pad", pad, 1, SemanticRole::None);
-    const SemanticId neighbourEdge =
-        g.recordGenerated(SemanticKind::Edge, "Pad", pad, 1, SemanticRole::None);
+    const SemanticId edge = g.recordGenerated(SemanticKind::Edge, "Pad", pad, 1, SemanticRole::None);
+    const SemanticId f1 = g.recordGenerated(SemanticKind::Face, "Pad", pad, 1, SemanticRole::None);
+    const SemanticId f2 = g.recordGenerated(SemanticKind::Face, "Pad", pad, 1, SemanticRole::None);
+    const SemanticId neighbourEdge
+        = g.recordGenerated(SemanticKind::Edge, "Pad", pad, 1, SemanticRole::None);
     g.bind(makeBinding(edge, pad, 1, "Edge1"));
     g.bind(makeBinding(f1, pad, 1, "Face1"));
     g.bind(makeBinding(f2, pad, 1, "Face2"));
@@ -190,14 +188,18 @@ void testDeletedEdgeFilletMissingMakerSkipped()
     CHECK(g.allIdentities().size() == nBefore);
 
     const auto neighbour = SemanticResolver::resolve(
-        makeRef(edge, CardinalityReducer::AcceptAll, SemanticKind::Edge), g);
+        makeRef(edge, CardinalityReducer::AcceptAll, SemanticKind::Edge),
+        g
+    );
     CHECK(neighbour.state == ResolutionState::Missing);
     CHECK(neighbour.bindings.empty());
     CHECK(neighbour.identities.empty());
 
     // Neighbour edge still resolves as itself — not as the deleted fillet seed (I10).
     const auto other = SemanticResolver::resolve(
-        makeRef(neighbourEdge, CardinalityReducer::AcceptAll, SemanticKind::Edge), g);
+        makeRef(neighbourEdge, CardinalityReducer::AcceptAll, SemanticKind::Edge),
+        g
+    );
     CHECK(other.state == ResolutionState::Resolved);
     CHECK(other.identities.front().handle == neighbourEdge.handle);
     CHECK(other.identities.front().handle != edge.handle);
@@ -212,8 +214,8 @@ void testDeletedEdgeFilletMissingMakerSkipped()
     CHECK(!face1IsFillet);
 
     // Empty history after a skipped maker still does not invent FaceN.
-    const ApplyResult skippedHist =
-        SemanticHistoryAdapter::applyHistory(&g, 40, 3, "Fillet", {edge}, {});
+    const ApplyResult skippedHist
+        = SemanticHistoryAdapter::applyHistory(&g, 40, 3, "Fillet", {edge}, {});
     CHECK(skippedHist.boundCount == 0);
     CHECK(skippedHist.halfMap);
 }
@@ -224,12 +226,9 @@ void testNoNeighbourBindFromHistory()
     const ObjectId pad = 20;
     const ObjectId fillet = 40;
     g.beginEvaluate(1);
-    const SemanticId edge =
-        g.recordGenerated(SemanticKind::Edge, "Pad", pad, 1, SemanticRole::None);
-    const SemanticId f1 =
-        g.recordGenerated(SemanticKind::Face, "Pad", pad, 1, SemanticRole::None);
-    const SemanticId f2 =
-        g.recordGenerated(SemanticKind::Face, "Pad", pad, 1, SemanticRole::None);
+    const SemanticId edge = g.recordGenerated(SemanticKind::Edge, "Pad", pad, 1, SemanticRole::None);
+    const SemanticId f1 = g.recordGenerated(SemanticKind::Face, "Pad", pad, 1, SemanticRole::None);
+    const SemanticId f2 = g.recordGenerated(SemanticKind::Face, "Pad", pad, 1, SemanticRole::None);
     g.bind(makeBinding(edge, pad, 1, "Edge1"));
     g.bind(makeBinding(f1, pad, 1, "Face1"));
     g.bind(makeBinding(f2, pad, 1, "Face2"));
@@ -243,8 +242,8 @@ void testNoNeighbourBindFromHistory()
     rec.toIndex = ElementIndex::fromString("Face12");
     rec.kind = EventKind::Generated;
     rec.outputKind = SemanticKind::Face;
-    const ApplyResult applied =
-        SemanticHistoryAdapter::applyHistory(&g, fillet, 2, "Fillet", {edge}, {rec});
+    const ApplyResult applied
+        = SemanticHistoryAdapter::applyHistory(&g, fillet, 2, "Fillet", {edge}, {rec});
     g.commitEvaluate();
 
     CHECK(applied.boundCount == 1);
@@ -269,8 +268,8 @@ void testNoNeighbourBindFromHistory()
     unnamed.kind = EventKind::Generated;
     unnamed.outputKind = SemanticKind::Face;
     const std::size_t nBind = g.allBindings().size();
-    const ApplyResult noName =
-        SemanticHistoryAdapter::applyHistory(&g, fillet, 3, "Fillet", {edge}, {unnamed});
+    const ApplyResult noName
+        = SemanticHistoryAdapter::applyHistory(&g, fillet, 3, "Fillet", {edge}, {unnamed});
     g.commitEvaluate();
     CHECK(noName.boundCount == 0);
     CHECK(noName.skippedUnnamed == 1);
@@ -290,8 +289,8 @@ void testSeedlessMakerFacePublication()
     unique.toIndex = ElementIndex::fromString("Face12");
     unique.kind = EventKind::Generated;
     unique.outputKind = SemanticKind::Face;
-    const ApplyResult published =
-        SemanticHistoryAdapter::applyHistory(&g, fillet, 1, "Fillet", {}, {unique});
+    const ApplyResult published
+        = SemanticHistoryAdapter::applyHistory(&g, fillet, 1, "Fillet", {}, {unique});
     g.commitEvaluate();
 
     CHECK(published.boundCount == 1);
@@ -310,8 +309,8 @@ void testSeedlessMakerFacePublication()
     ambiguousB.toIndex = ElementIndex::fromString("Face14");
     const std::size_t idsBefore = g.allIdentities().size();
     const std::size_t bindingsBefore = g.allBindings().size();
-    const ApplyResult refused = SemanticHistoryAdapter::applyHistory(
-        &g, fillet, 2, "Fillet", {}, {ambiguousA, ambiguousB});
+    const ApplyResult refused
+        = SemanticHistoryAdapter::applyHistory(&g, fillet, 2, "Fillet", {}, {ambiguousA, ambiguousB});
     g.commitEvaluate();
 
     CHECK(refused.boundCount == 0);
@@ -332,8 +331,8 @@ void testSeedlessModifiedFacePublication()
     unique.kind = EventKind::Modified;
     unique.outputKind = SemanticKind::Face;
     unique.toIndex = ElementIndex::fromString("Face4");
-    const ApplyResult published =
-        SemanticHistoryAdapter::applyHistory(&g, fillet, 1, "Fillet", {}, {unique});
+    const ApplyResult published
+        = SemanticHistoryAdapter::applyHistory(&g, fillet, 1, "Fillet", {}, {unique});
     g.commitEvaluate();
 
     CHECK(published.boundCount == 1);
@@ -350,8 +349,8 @@ void testSeedlessModifiedFacePublication()
     ambiguousB.toIndex = ElementIndex::fromString("Face6");
     const std::size_t idsBefore = g.allIdentities().size();
     const std::size_t bindingsBefore = g.allBindings().size();
-    const ApplyResult refused = SemanticHistoryAdapter::applyHistory(
-        &g, fillet, 2, "Fillet", {}, {ambiguousA, ambiguousB});
+    const ApplyResult refused
+        = SemanticHistoryAdapter::applyHistory(&g, fillet, 2, "Fillet", {}, {ambiguousA, ambiguousB});
     g.commitEvaluate();
 
     CHECK(refused.boundCount == 0);
@@ -370,13 +369,12 @@ void testFromOcctHistoryStandaloneIsEmpty()
     // I13: missing maker / empty history must not invent FaceN.
     SemanticGraph g;
     g.beginEvaluate(1);
-    const SemanticId curve =
-        g.recordGenerated(SemanticKind::Edge, "Sketch", 10, 1, SemanticRole::None);
+    const SemanticId curve = g.recordGenerated(SemanticKind::Edge, "Sketch", 10, 1, SemanticRole::None);
     g.bind(makeBinding(curve, 10, 1, "Edge1"));
     const std::size_t nBind = g.allBindings().size();
     const std::size_t nId = g.allIdentities().size();
-    const ApplyResult applied =
-        SemanticHistoryAdapter::applyHistory(&g, 20, 1, "Pad", {curve}, fromMaker);
+    const ApplyResult applied
+        = SemanticHistoryAdapter::applyHistory(&g, 20, 1, "Pad", {curve}, fromMaker);
     CHECK(applied.halfMap);
     CHECK(applied.boundCount == 0);
     CHECK(g.allBindings().size() == nBind);
@@ -393,8 +391,8 @@ void testPadAfterExecuteBindsNamedFace7NotFace1()
     const ObjectId sketch = 10;
     const ObjectId pad = 20;
     g.beginEvaluate(1);
-    const SemanticId curve =
-        g.recordGenerated(SemanticKind::Edge, "Sketch", sketch, 1, SemanticRole::None);
+    const SemanticId curve
+        = g.recordGenerated(SemanticKind::Edge, "Sketch", sketch, 1, SemanticRole::None);
     g.bind(makeBinding(curve, sketch, 1, "Edge1"));
     g.commitEvaluate();
 
@@ -417,8 +415,8 @@ void testPadAfterExecuteBindsNamedFace7NotFace1()
     CHECK(rows.front().index.toString() != "Face1");
 
     // A second curve with no named slot is skipped (half-map), not Face1/Face2.
-    const SemanticId curve2 =
-        g.recordGenerated(SemanticKind::Edge, "Sketch", sketch, 1, SemanticRole::None);
+    const SemanticId curve2
+        = g.recordGenerated(SemanticKind::Edge, "Sketch", sketch, 1, SemanticRole::None);
     AfterExecuteRequest req2;
     req2.curveSeeds = {curve2};
     req2.namedFaceIndices = {ElementIndex::fromString("Face3")};
@@ -435,10 +433,8 @@ void testPadNamedEmptySlotSkipsNoFaceN()
 {
     SemanticGraph g;
     g.beginEvaluate(1);
-    const SemanticId c1 =
-        g.recordGenerated(SemanticKind::Edge, "Sketch", 10, 1, SemanticRole::None);
-    const SemanticId c2 =
-        g.recordGenerated(SemanticKind::Edge, "Sketch", 10, 1, SemanticRole::None);
+    const SemanticId c1 = g.recordGenerated(SemanticKind::Edge, "Sketch", 10, 1, SemanticRole::None);
+    const SemanticId c2 = g.recordGenerated(SemanticKind::Edge, "Sketch", 10, 1, SemanticRole::None);
     AfterExecuteRequest req;
     req.curveSeeds = {c1, c2};
     req.namedFaceIndices = {ElementIndex::fromString("Face7")};  // only first named
@@ -455,8 +451,7 @@ void testPreflightResolvedDoesNotSkip()
 {
     SemanticGraph g;
     g.beginEvaluate(1);
-    const SemanticId edge =
-        g.recordGenerated(SemanticKind::Edge, "Pad", 20, 1, SemanticRole::None);
+    const SemanticId edge = g.recordGenerated(SemanticKind::Edge, "Pad", 20, 1, SemanticRole::None);
     g.bind(makeBinding(edge, 20, 1, "Edge1"));
     g.commitEvaluate();
 
@@ -469,41 +464,39 @@ void testNamedReferencePolicyGate()
 {
     SemanticGraph g;
     g.beginEvaluate(1);
-    const SemanticId seed =
-        g.recordGenerated(SemanticKind::Face, "Pad", 20, 1, SemanticRole::None);
-    const SemanticId child1 =
-        g.recordGeneratedFrom({seed}, SemanticKind::Face, "Draft", 30, 1, SemanticRole::None);
-    const SemanticId child2 =
-        g.recordGeneratedFrom({seed}, SemanticKind::Face, "Draft", 30, 1, SemanticRole::None);
+    const SemanticId seed = g.recordGenerated(SemanticKind::Face, "Pad", 20, 1, SemanticRole::None);
+    const SemanticId child1
+        = g.recordGeneratedFrom({seed}, SemanticKind::Face, "Draft", 30, 1, SemanticRole::None);
+    const SemanticId child2
+        = g.recordGeneratedFrom({seed}, SemanticKind::Face, "Draft", 30, 1, SemanticRole::None);
     g.bind(makeBinding(seed, 20, 1, "Face1"));
     g.bind(makeBinding(child1, 30, 1, "Face2"));
     g.bind(makeBinding(child2, 30, 1, "Face3"));
     g.commitEvaluate();
 
-    const SemanticReference strict =
-        makeRef(seed, CardinalityReducer::RequireOne, SemanticKind::Face);
-    const FilletPreflight ambiguous =
-        SemanticHistoryAdapter::preflightNamedReferences(&g, {strict}, SemanticKind::Face);
+    const SemanticReference strict = makeRef(seed, CardinalityReducer::RequireOne, SemanticKind::Face);
+    const FilletPreflight ambiguous
+        = SemanticHistoryAdapter::preflightNamedReferences(&g, {strict}, SemanticKind::Face);
     CHECK(ambiguous.makerSkipped);
     CHECK(ambiguous.state == ResolutionState::Ambiguous);
 
     SemanticReference acceptsSet = strict;
     acceptsSet.reducer = CardinalityReducer::AcceptAll;
-    const FilletPreflight resolvedSet =
-        SemanticHistoryAdapter::preflightNamedReferences(&g, {acceptsSet}, SemanticKind::Face);
+    const FilletPreflight resolvedSet
+        = SemanticHistoryAdapter::preflightNamedReferences(&g, {acceptsSet}, SemanticKind::Face);
     CHECK(!resolvedSet.makerSkipped);
     CHECK(resolvedSet.state == ResolutionState::ResolvedSet);
 
     SemanticReference wrongKind = strict;
     wrongKind.kind = SemanticKind::Edge;
-    const FilletPreflight incompatible =
-        SemanticHistoryAdapter::preflightNamedReferences(&g, {wrongKind}, SemanticKind::Face);
+    const FilletPreflight incompatible
+        = SemanticHistoryAdapter::preflightNamedReferences(&g, {wrongKind}, SemanticKind::Face);
     CHECK(incompatible.makerSkipped);
     CHECK(incompatible.state == ResolutionState::Incompatible);
 
     // The seed-only wrapper keeps its legacy AcceptAll policy.
-    const FilletPreflight legacy = SemanticHistoryAdapter::preflightNamedSeeds(
-        &g, {seed}, SemanticKind::Face);
+    const FilletPreflight legacy
+        = SemanticHistoryAdapter::preflightNamedSeeds(&g, {seed}, SemanticKind::Face);
     CHECK(!legacy.makerSkipped);
 }
 
@@ -532,10 +525,10 @@ void testPadAfterExecuteBindsNamedEdge8NotEdge1()
     const ObjectId sketch = 10;
     const ObjectId pad = 20;
     g.beginEvaluate(1);
-    const SemanticId curve =
-        g.recordGenerated(SemanticKind::Edge, "Sketch", sketch, 1, SemanticRole::None);
-    const SemanticId vertex =
-        g.recordGenerated(SemanticKind::Vertex, "Sketch", sketch, 1, SemanticRole::None);
+    const SemanticId curve
+        = g.recordGenerated(SemanticKind::Edge, "Sketch", sketch, 1, SemanticRole::None);
+    const SemanticId vertex
+        = g.recordGenerated(SemanticKind::Vertex, "Sketch", sketch, 1, SemanticRole::None);
     g.bind(makeBinding(curve, sketch, 1, "Edge1"));
     g.bind(makeBinding(vertex, sketch, 1, "Vertex1"));
     g.commitEvaluate();
@@ -572,10 +565,8 @@ void testPadNamedEmptyEdgeSlotSkipsNoEdgeN()
 {
     SemanticGraph g;
     g.beginEvaluate(1);
-    const SemanticId v1 =
-        g.recordGenerated(SemanticKind::Vertex, "Sketch", 10, 1, SemanticRole::None);
-    const SemanticId v2 =
-        g.recordGenerated(SemanticKind::Vertex, "Sketch", 10, 1, SemanticRole::None);
+    const SemanticId v1 = g.recordGenerated(SemanticKind::Vertex, "Sketch", 10, 1, SemanticRole::None);
+    const SemanticId v2 = g.recordGenerated(SemanticKind::Vertex, "Sketch", 10, 1, SemanticRole::None);
     AfterExecuteRequest req;
     req.vertexSeeds = {v1, v2};
     req.namedEdgeIndices = {ElementIndex::fromString("Edge8")};  // only first named
@@ -594,8 +585,7 @@ void testPadEdgeZipFallsBackToCurveSeed()
     // No vertex seeds: named Edge8 zips onto the curve seed (same 1:1 as faces).
     SemanticGraph g;
     g.beginEvaluate(1);
-    const SemanticId curve =
-        g.recordGenerated(SemanticKind::Edge, "Sketch", 10, 1, SemanticRole::None);
+    const SemanticId curve = g.recordGenerated(SemanticKind::Edge, "Sketch", 10, 1, SemanticRole::None);
     AfterExecuteRequest req;
     req.curveSeeds = {curve};
     req.namedEdgeIndices = {ElementIndex::fromString("Edge8")};
@@ -612,15 +602,14 @@ void testApplyHistoryNamedEdge8()
 {
     SemanticGraph g;
     g.beginEvaluate(1);
-    const SemanticId vertex =
-        g.recordGenerated(SemanticKind::Vertex, "Sketch", 10, 1, SemanticRole::None);
+    const SemanticId vertex
+        = g.recordGenerated(SemanticKind::Vertex, "Sketch", 10, 1, SemanticRole::None);
     HistoryRecord rec;
     rec.fromSeed = vertex;
     rec.toIndex = ElementIndex::fromString("Edge8");
     rec.kind = EventKind::Generated;
     rec.outputKind = SemanticKind::Edge;
-    const ApplyResult applied =
-        SemanticHistoryAdapter::applyHistory(&g, 20, 1, "Pad", {vertex}, {rec});
+    const ApplyResult applied = SemanticHistoryAdapter::applyHistory(&g, 20, 1, "Pad", {vertex}, {rec});
     g.commitEvaluate();
     CHECK(applied.boundCount == 1);
     CHECK(!applied.halfMap);
@@ -634,15 +623,15 @@ void testPocketApplyHistoryBindsEdge2OnPocketFeature()
     SemanticGraph g;
     const ObjectId pocket = 30;
     g.beginEvaluate(1);
-    const SemanticId padCorner =
-        g.recordGenerated(SemanticKind::Edge, "Pad", 20, 1, SemanticRole::None);
+    const SemanticId padCorner
+        = g.recordGenerated(SemanticKind::Edge, "Pad", 20, 1, SemanticRole::None);
     HistoryRecord rec;
     rec.fromSeed = padCorner;
     rec.toIndex = ElementIndex::fromString("Edge2");
     rec.kind = EventKind::Generated;
     rec.outputKind = SemanticKind::Edge;
-    const ApplyResult applied =
-        SemanticHistoryAdapter::applyHistory(&g, pocket, 1, "Pocket", {padCorner}, {rec});
+    const ApplyResult applied
+        = SemanticHistoryAdapter::applyHistory(&g, pocket, 1, "Pocket", {padCorner}, {rec});
     g.commitEvaluate();
     CHECK(applied.boundCount == 1);
     CHECK(!applied.halfMap);
@@ -663,11 +652,11 @@ void testUnmodifiedSurvivorPadEdge3Promotes()
     SemanticId sketchEdge;
     sketchEdge.handle = 4;
     sketchEdge.kind = SemanticKind::Edge;
-    CHECK(!SemanticHistoryAdapter::appendUnmodifiedSurvivor(
-        table, sketchEdge, ElementIndex{}));
+    CHECK(!SemanticHistoryAdapter::appendUnmodifiedSurvivor(table, sketchEdge, ElementIndex {}));
     CHECK(table.empty());
-    CHECK(SemanticHistoryAdapter::appendUnmodifiedSurvivor(
-        table, sketchEdge, ElementIndex::fromString("Edge3")));
+    CHECK(
+        SemanticHistoryAdapter::appendUnmodifiedSurvivor(table, sketchEdge, ElementIndex::fromString("Edge3"))
+    );
     CHECK(table.size() == 1);
     CHECK(table[0].kind == EventKind::Modified);
     CHECK(table[0].toIndex.toString() == "Edge3");
@@ -676,11 +665,9 @@ void testUnmodifiedSurvivorPadEdge3Promotes()
     SemanticGraph g;
     const ObjectId pad = 10;
     g.beginEvaluate(1);
-    const SemanticId seed =
-        g.recordGenerated(SemanticKind::Edge, "Sketch", pad, 1, SemanticRole::None);
+    const SemanticId seed = g.recordGenerated(SemanticKind::Edge, "Sketch", pad, 1, SemanticRole::None);
     table[0].fromSeed = seed;
-    const ApplyResult applied =
-        SemanticHistoryAdapter::applyHistory(&g, pad, 1, "Pad", {seed}, table);
+    const ApplyResult applied = SemanticHistoryAdapter::applyHistory(&g, pad, 1, "Pad", {seed}, table);
     g.commitEvaluate();
     CHECK(applied.boundCount == 1);
     CHECK(!applied.halfMap);
@@ -699,20 +686,22 @@ void testPadAfterExecuteBindsNamedEdge13NotEdge1()
     const ObjectId sketch = 10;
     const ObjectId pad = 20;
     g.beginEvaluate(1);
-    const SemanticId v1 =
-        g.recordGenerated(SemanticKind::Vertex, "Sketch", sketch, 1, SemanticRole::None);
-    const SemanticId v2 =
-        g.recordGenerated(SemanticKind::Vertex, "Sketch", sketch, 1, SemanticRole::None);
-    const SemanticId v3 =
-        g.recordGenerated(SemanticKind::Vertex, "Sketch", sketch, 1, SemanticRole::None);
+    const SemanticId v1
+        = g.recordGenerated(SemanticKind::Vertex, "Sketch", sketch, 1, SemanticRole::None);
+    const SemanticId v2
+        = g.recordGenerated(SemanticKind::Vertex, "Sketch", sketch, 1, SemanticRole::None);
+    const SemanticId v3
+        = g.recordGenerated(SemanticKind::Vertex, "Sketch", sketch, 1, SemanticRole::None);
     g.commitEvaluate();
 
     AfterExecuteRequest req;
     req.vertexSeeds = {v1, v2, v3};
     req.allowSequentialFaceN = false;
-    req.namedEdgeIndices = {ElementIndex::fromString("Edge13"),
-                            ElementIndex::fromString("Edge17"),
-                            ElementIndex::fromString("Edge14")};
+    req.namedEdgeIndices = {
+        ElementIndex::fromString("Edge13"),
+        ElementIndex::fromString("Edge17"),
+        ElementIndex::fromString("Edge14")
+    };
 
     g.beginEvaluate(2);
     SemanticEmitter::afterExecute(&g, Opcode::Pad, pad, 2, req);
@@ -740,10 +729,8 @@ void testBooleanUniqueOneImageBindsOnFeature()
     const ObjectId pad = 20;
     const ObjectId fuse = 50;
     g.beginEvaluate(1);
-    const SemanticId padEdge =
-        g.recordGenerated(SemanticKind::Edge, "Pad", pad, 1, SemanticRole::None);
-    const SemanticId padFace =
-        g.recordGenerated(SemanticKind::Face, "Pad", pad, 1, SemanticRole::None);
+    const SemanticId padEdge = g.recordGenerated(SemanticKind::Edge, "Pad", pad, 1, SemanticRole::None);
+    const SemanticId padFace = g.recordGenerated(SemanticKind::Face, "Pad", pad, 1, SemanticRole::None);
     g.bind(makeBinding(padEdge, pad, 1, "Edge2"));
     g.bind(makeBinding(padFace, pad, 1, "Face6"));
     g.commitEvaluate();
@@ -771,8 +758,8 @@ void testBooleanUniqueOneImageBindsOnFeature()
     CHECK(unique[1].kind == EventKind::Generated);
 
     g.beginEvaluate(2);
-    const ApplyResult applied = SemanticHistoryAdapter::applyHistory(
-        &g, fuse, 2, "FUS", {padEdge, padFace}, unique);
+    const ApplyResult applied
+        = SemanticHistoryAdapter::applyHistory(&g, fuse, 2, "FUS", {padEdge, padFace}, unique);
     g.commitEvaluate();
 
     CHECK(applied.boundCount == 2);
@@ -807,8 +794,7 @@ void testBooleanTwoImageRefuses()
     const ObjectId pad = 20;
     const ObjectId fuse = 50;
     g.beginEvaluate(1);
-    const SemanticId padFace =
-        g.recordGenerated(SemanticKind::Face, "Pad", pad, 1, SemanticRole::None);
+    const SemanticId padFace = g.recordGenerated(SemanticKind::Face, "Pad", pad, 1, SemanticRole::None);
     g.bind(makeBinding(padFace, pad, 1, "Face1"));
     g.commitEvaluate();
 
@@ -832,8 +818,8 @@ void testBooleanTwoImageRefuses()
     const std::size_t nBind = g.allBindings().size();
     const std::size_t nId = g.allIdentities().size();
     g.beginEvaluate(2);
-    const ApplyResult applied =
-        SemanticHistoryAdapter::applyHistory(&g, fuse, 2, "FUS", {padFace}, unique);
+    const ApplyResult applied
+        = SemanticHistoryAdapter::applyHistory(&g, fuse, 2, "FUS", {padFace}, unique);
     g.commitEvaluate();
     CHECK(applied.boundCount == 0);
     CHECK(applied.halfMap);
@@ -858,8 +844,7 @@ void testDuplicateSameSlotRowsKept()
     first.outputKind = SemanticKind::Face;
     HistoryRecord dup = first;
 
-    const HistoryTable unique =
-        SemanticHistoryAdapter::uniqueOneImageGenerated({first, dup});
+    const HistoryTable unique = SemanticHistoryAdapter::uniqueOneImageGenerated({first, dup});
     CHECK(unique.size() == 1);
     CHECK(unique[0].toIndex.toString() == std::string("Face3"));
     CHECK(unique[0].fromSeed.handle == seed.handle);
@@ -899,8 +884,8 @@ void testSupplementLocatedInputsFillsUncoveredEdges()
         }
         return {};
     };
-    const HistoryTable out =
-        SemanticHistoryAdapter::supplementLocatedInputs({faceRec}, inputs, indexOf);
+    const HistoryTable out
+        = SemanticHistoryAdapter::supplementLocatedInputs({faceRec}, inputs, indexOf);
     CHECK(out.size() == 2);
     bool sawEdge = false;
     for (const auto& rec : out) {
@@ -931,8 +916,7 @@ void testDuplicatePublishedSlotRefuses()
 
     // Two distinct sources cannot both own the exact published slot.
     // Refuse both instead of allowing map/order to choose a first row.
-    const HistoryTable unique =
-        SemanticHistoryAdapter::uniqueOneImageGenerated({first, second});
+    const HistoryTable unique = SemanticHistoryAdapter::uniqueOneImageGenerated({first, second});
     CHECK(unique.empty());
 }
 
@@ -945,8 +929,7 @@ void testBooleanC1SeedUnchanged()
     const ObjectId pad = 20;
     const ObjectId fuse = 50;
     g.beginEvaluate(1);
-    const SemanticId padEdge =
-        g.recordGenerated(SemanticKind::Edge, "Pad", pad, 1, SemanticRole::None);
+    const SemanticId padEdge = g.recordGenerated(SemanticKind::Edge, "Pad", pad, 1, SemanticRole::None);
     g.bind(makeBinding(padEdge, pad, 1, "Edge2"));
     g.commitEvaluate();
 
@@ -955,38 +938,33 @@ void testBooleanC1SeedUnchanged()
     rec.toIndex = ElementIndex::fromString("Edge7");
     rec.kind = EventKind::Modified;
     rec.outputKind = SemanticKind::Edge;
-    const HistoryTable unique =
-        SemanticHistoryAdapter::uniqueOneImageGenerated({rec});
+    const HistoryTable unique = SemanticHistoryAdapter::uniqueOneImageGenerated({rec});
 
     g.beginEvaluate(2);
-    const ApplyResult first = SemanticHistoryAdapter::applyHistory(
-        &g, fuse, 2, "FUS", {padEdge}, unique);
+    const ApplyResult first
+        = SemanticHistoryAdapter::applyHistory(&g, fuse, 2, "FUS", {padEdge}, unique);
     g.commitEvaluate();
     CHECK(first.boundCount == 1);
     const SemanticId child = first.outputs.front();
     const SemanticHandle water = g.allocator.highWaterMark();
-    CHECK(uniqueBindingOnFeature(&g, child, fuse, "Edge")->index.toString()
-          == std::string("Edge7"));
+    CHECK(uniqueBindingOnFeature(&g, child, fuse, "Edge")->index.toString() == std::string("Edge7"));
 
     HistoryRecord rec2;
     rec2.fromSeed = padEdge;
     rec2.toIndex = ElementIndex::fromString("Edge9");
     rec2.kind = EventKind::Modified;
     rec2.outputKind = SemanticKind::Edge;
-    const HistoryTable wouldRename =
-        SemanticHistoryAdapter::uniqueOneImageGenerated({rec2});
+    const HistoryTable wouldRename = SemanticHistoryAdapter::uniqueOneImageGenerated({rec2});
     CHECK(wouldRename.size() == 1);
 
     // Product C1: skip apply when a unique descendant is already bound on Fuse.
-    const bool already =
-        uniqueBindingOnFeature(&g, child, fuse, "Edge").has_value();
+    const bool already = uniqueBindingOnFeature(&g, child, fuse, "Edge").has_value();
     CHECK(already);
     g.beginEvaluate(3);
     if (!already) {
         SemanticHistoryAdapter::applyHistory(&g, fuse, 3, "FUS", {padEdge}, wouldRename);
     }
-    const ApplyResult empty =
-        SemanticHistoryAdapter::applyHistory(&g, fuse, 3, "FUS", {padEdge}, {});
+    const ApplyResult empty = SemanticHistoryAdapter::applyHistory(&g, fuse, 3, "FUS", {padEdge}, {});
     g.commitEvaluate();
     CHECK(empty.halfMap);
     CHECK(empty.boundCount == 0);
@@ -1007,8 +985,7 @@ void testPatternUniqueOneImageBindsOnFeature()
     const ObjectId pad = 20;
     const ObjectId pattern = 60;
     g.beginEvaluate(1);
-    const SemanticId padEdge =
-        g.recordGenerated(SemanticKind::Edge, "Pad", pad, 1, SemanticRole::None);
+    const SemanticId padEdge = g.recordGenerated(SemanticKind::Edge, "Pad", pad, 1, SemanticRole::None);
     g.bind(makeBinding(padEdge, pad, 1, "Edge15"));
     g.commitEvaluate();
 
@@ -1020,14 +997,13 @@ void testPatternUniqueOneImageBindsOnFeature()
     rec.toIndex = ElementIndex::fromString("Edge4");
     rec.kind = EventKind::Modified;
     rec.outputKind = SemanticKind::Edge;
-    const HistoryTable unique =
-        SemanticHistoryAdapter::uniqueOneImageGenerated({rec});
+    const HistoryTable unique = SemanticHistoryAdapter::uniqueOneImageGenerated({rec});
     CHECK(unique.size() == 1);
     CHECK(unique[0].kind == EventKind::Generated);
 
     g.beginEvaluate(2);
-    const ApplyResult applied = SemanticHistoryAdapter::applyHistory(
-        &g, pattern, 2, "LinearPattern", {padEdge}, unique);
+    const ApplyResult applied
+        = SemanticHistoryAdapter::applyHistory(&g, pattern, 2, "LinearPattern", {padEdge}, unique);
     g.commitEvaluate();
 
     CHECK(applied.boundCount == 1);
@@ -1051,8 +1027,7 @@ void testPatternNImageUnnamedAndPadLeftoverRefuse()
     const ObjectId pad = 20;
     const ObjectId pattern = 60;
     g.beginEvaluate(1);
-    const SemanticId padEdge =
-        g.recordGenerated(SemanticKind::Edge, "Pad", pad, 1, SemanticRole::None);
+    const SemanticId padEdge = g.recordGenerated(SemanticKind::Edge, "Pad", pad, 1, SemanticRole::None);
     g.bind(makeBinding(padEdge, pad, 1, "Edge15"));
     g.commitEvaluate();
 
@@ -1074,8 +1049,8 @@ void testPatternNImageUnnamedAndPadLeftoverRefuse()
     CHECK(unique.empty());
 
     g.beginEvaluate(2);
-    const ApplyResult applied =
-        SemanticHistoryAdapter::applyHistory(&g, pattern, 2, "LinearPattern", {padEdge}, unique);
+    const ApplyResult applied
+        = SemanticHistoryAdapter::applyHistory(&g, pattern, 2, "LinearPattern", {padEdge}, unique);
     g.commitEvaluate();
     CHECK(applied.boundCount == 0);
     CHECK(applied.halfMap);
@@ -1087,12 +1062,11 @@ void testPatternNImageUnnamedAndPadLeftoverRefuse()
     one.toIndex = ElementIndex::fromString("Edge2");
     one.kind = EventKind::Modified;
     one.outputKind = SemanticKind::Edge;
-    const HistoryTable polar =
-        SemanticHistoryAdapter::uniqueOneImageGenerated({one});
+    const HistoryTable polar = SemanticHistoryAdapter::uniqueOneImageGenerated({one});
     CHECK(polar.size() == 1);
     g.beginEvaluate(3);
-    const ApplyResult polarApplied = SemanticHistoryAdapter::applyHistory(
-        &g, 70, 3, "PolarPattern", {padEdge}, polar);
+    const ApplyResult polarApplied
+        = SemanticHistoryAdapter::applyHistory(&g, 70, 3, "PolarPattern", {padEdge}, polar);
     g.commitEvaluate();
     CHECK(polarApplied.boundCount == 1);
     CHECK(polarApplied.outputs.front().handle != padEdge.handle);
@@ -1104,8 +1078,7 @@ void testPatternC1KeepValidSeed()
     const ObjectId pad = 20;
     const ObjectId mirrored = 80;
     g.beginEvaluate(1);
-    const SemanticId padEdge =
-        g.recordGenerated(SemanticKind::Edge, "Pad", pad, 1, SemanticRole::None);
+    const SemanticId padEdge = g.recordGenerated(SemanticKind::Edge, "Pad", pad, 1, SemanticRole::None);
     g.bind(makeBinding(padEdge, pad, 1, "Edge15"));
     g.commitEvaluate();
 
@@ -1114,12 +1087,11 @@ void testPatternC1KeepValidSeed()
     rec.toIndex = ElementIndex::fromString("Edge7");
     rec.kind = EventKind::Modified;
     rec.outputKind = SemanticKind::Edge;
-    const HistoryTable unique =
-        SemanticHistoryAdapter::uniqueOneImageGenerated({rec});
+    const HistoryTable unique = SemanticHistoryAdapter::uniqueOneImageGenerated({rec});
 
     g.beginEvaluate(2);
-    const ApplyResult first = SemanticHistoryAdapter::applyHistory(
-        &g, mirrored, 2, "Mirrored", {padEdge}, unique);
+    const ApplyResult first
+        = SemanticHistoryAdapter::applyHistory(&g, mirrored, 2, "Mirrored", {padEdge}, unique);
     g.commitEvaluate();
     CHECK(first.boundCount == 1);
     const SemanticId child = first.outputs.front();
@@ -1130,18 +1102,16 @@ void testPatternC1KeepValidSeed()
     rec2.toIndex = ElementIndex::fromString("Edge9");
     rec2.kind = EventKind::Modified;
     rec2.outputKind = SemanticKind::Edge;
-    const HistoryTable wouldRename =
-        SemanticHistoryAdapter::uniqueOneImageGenerated({rec2});
+    const HistoryTable wouldRename = SemanticHistoryAdapter::uniqueOneImageGenerated({rec2});
 
-    const bool already =
-        uniqueBindingOnFeature(&g, child, mirrored, "Edge").has_value();
+    const bool already = uniqueBindingOnFeature(&g, child, mirrored, "Edge").has_value();
     CHECK(already);
     g.beginEvaluate(3);
     if (!already) {
         SemanticHistoryAdapter::applyHistory(&g, mirrored, 3, "Mirrored", {padEdge}, wouldRename);
     }
-    const ApplyResult empty =
-        SemanticHistoryAdapter::applyHistory(&g, mirrored, 3, "Mirrored", {padEdge}, {});
+    const ApplyResult empty
+        = SemanticHistoryAdapter::applyHistory(&g, mirrored, 3, "Mirrored", {padEdge}, {});
     g.commitEvaluate();
     CHECK(empty.halfMap);
     CHECK(g.allocator.highWaterMark() == water);
@@ -1161,12 +1131,9 @@ void testFirstNamedFaceAndSequentialFlag()
 
     SemanticGraph g;
     g.beginEvaluate(1);
-    const SemanticId face =
-        g.recordGenerated(SemanticKind::Face, "Pad", 20, 1, SemanticRole::None);
-    const SemanticId face2 =
-        g.recordGenerated(SemanticKind::Face, "Pad", 20, 1, SemanticRole::None);
-    const SemanticId edge =
-        g.recordGenerated(SemanticKind::Edge, "Sketch", 10, 1, SemanticRole::None);
+    const SemanticId face = g.recordGenerated(SemanticKind::Face, "Pad", 20, 1, SemanticRole::None);
+    const SemanticId face2 = g.recordGenerated(SemanticKind::Face, "Pad", 20, 1, SemanticRole::None);
+    const SemanticId edge = g.recordGenerated(SemanticKind::Edge, "Sketch", 10, 1, SemanticRole::None);
     g.bind(makeBinding(face, 20, 1, "Face5"));
     g.commitEvaluate();
 
@@ -1213,8 +1180,7 @@ void testPatternSupportCopyNotPadShapeContract()
     const ObjectId pad = 20;
     const ObjectId pattern = 60;
     g.beginEvaluate(1);
-    const SemanticId padEdge =
-        g.recordGenerated(SemanticKind::Edge, "Pad", pad, 1, SemanticRole::None);
+    const SemanticId padEdge = g.recordGenerated(SemanticKind::Edge, "Pad", pad, 1, SemanticRole::None);
     g.bind(makeBinding(padEdge, pad, 1, "Edge15"));
     g.commitEvaluate();
 
@@ -1223,12 +1189,11 @@ void testPatternSupportCopyNotPadShapeContract()
     rec.toIndex = ElementIndex::fromString("Edge4");
     rec.kind = EventKind::Modified;
     rec.outputKind = SemanticKind::Edge;
-    const HistoryTable unique =
-        SemanticHistoryAdapter::uniqueOneImageGenerated({rec});
+    const HistoryTable unique = SemanticHistoryAdapter::uniqueOneImageGenerated({rec});
 
     g.beginEvaluate(2);
-    const ApplyResult applied = SemanticHistoryAdapter::applyHistory(
-        &g, pattern, 2, "LinearPattern", {padEdge}, unique);
+    const ApplyResult applied
+        = SemanticHistoryAdapter::applyHistory(&g, pattern, 2, "LinearPattern", {padEdge}, unique);
     g.commitEvaluate();
 
     CHECK(applied.boundCount == 1);

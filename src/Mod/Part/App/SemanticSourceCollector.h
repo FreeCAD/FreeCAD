@@ -74,14 +74,16 @@ PartExport void collectUniqueSourceSeeds(
     const TopoShape& sourceShape,
     std::deque<TopoDS_Shape>& held,
     std::vector<std::pair<App::SemanticId, const void*>>& inputs,
-    std::unordered_set<App::SemanticHandle>& seenSeeds);
+    std::unordered_set<App::SemanticHandle>& seenSeeds
+);
 
 /// Locate a Face/Edge on `published`: prefer findShape, else the unique
 /// IsPartner match on the published solid (I13 — 0 or >1 partners stay
 /// unnamed). Returns an empty ElementIndex when unnamed. Does not mint.
 PartExport App::ElementIndex uniqueNamedIndexOnPublished(
     const TopoShape& published,
-    const TopoDS_Shape& image);
+    const TopoDS_Shape& image
+);
 
 /// Unique IsPartner (or IsSame) of `sub` on `owner` after findShape misses
 /// (Refine). EDGE and FACE only. Dedup orientations. 1 → owner's findShape
@@ -116,16 +118,20 @@ PartExport App::ElementIndex indexOnPublished(const TopoShape& owner, const Topo
 /// fallthrough. Null / n<=0 / other shape types → empty ElementIndex (I13).
 /// Does not mint. Matches FeatureExtrude elementIndexOf and Part Boolean
 /// partner+coplanar locate (distinct from indexOnPublished).
-PartExport App::ElementIndex indexOnPublishedPartnerCoplanar(const TopoShape& owner,
-                                                             const TopoDS_Shape& sub);
+PartExport App::ElementIndex indexOnPublishedPartnerCoplanar(
+    const TopoShape& owner,
+    const TopoDS_Shape& sub
+);
 
 /// Locate Face/Edge on `owner`: findShape, else uniquePartnerIndex, else
 /// uniqueCoplanarFaceIndex (FACE) / uniqueSameCurveEdgeIndex (EDGE).
 /// Null / n<=0 / other shape types → empty ElementIndex (I13). Does not mint.
 /// Matches FeatureSketchBased sweepElementIndexOf (distinct from
 /// indexOnPublished and indexOnPublishedPartnerCoplanar).
-PartExport App::ElementIndex indexOnPublishedPartnerSameCurve(const TopoShape& owner,
-                                                              const TopoDS_Shape& sub);
+PartExport App::ElementIndex indexOnPublishedPartnerSameCurve(
+    const TopoShape& owner,
+    const TopoDS_Shape& sub
+);
 
 /// Unique IsSame/IsPartner EDGE of `input` on `result`, excluding any
 /// IsSame/IsPartner of non-null `excludeStashed` entries (Extrude :U bottom
@@ -134,7 +140,8 @@ PartExport App::ElementIndex indexOnPublishedPartnerSameCurve(const TopoShape& o
 PartExport TopoDS_Shape uniquePartnerEdgeExcluding(
     const TopoDS_Shape& input,
     const TopoShape& result,
-    const std::vector<TopoDS_Shape>& excludeStashed);
+    const std::vector<TopoDS_Shape>& excludeStashed
+);
 
 /// Non-null IsSame check for OCCT shapes (Pipe/Loft/Helix/Extrude stash
 /// dedup). Does not mint.
@@ -142,9 +149,11 @@ PartExport bool sameOccShape(const TopoDS_Shape& a, const TopoDS_Shape& b);
 
 /// Count Generated(input) images whose ShapeType equals `t`. Null maker/input
 /// → 0. Pipe/Loft/Helix diagnostics only; does not mint.
-PartExport int countGeneratedOf(BRepBuilderAPI_MakeShape* maker,
-                                const TopoDS_Shape& input,
-                                TopAbs_ShapeEnum t);
+PartExport int countGeneratedOf(
+    BRepBuilderAPI_MakeShape* maker,
+    const TopoDS_Shape& input,
+    TopAbs_ShapeEnum t
+);
 
 /// Count ElementIndex entries that pass Part::isNamedIndex (non-empty type,
 /// index>0). Pipe/Loft/Helix named-slot diagnostics; does not mint.
@@ -156,7 +165,8 @@ PartExport std::size_t namedIndexCount(const std::vector<App::ElementIndex>& xs)
 /// + findShape + partner fallthrough) — do not merge those contracts.
 PartExport std::vector<TopoDS_Shape> uniqueGeneratedThenModifiedEdgeImages(
     BRepBuilderAPI_MakeShape* maker,
-    const TopoDS_Shape& input);
+    const TopoDS_Shape& input
+);
 
 /// Unique EDGE images of `input` through maker history: Modified first, else
 /// Generated, else the input if it still lives on `result`, else a unique
@@ -167,12 +177,12 @@ PartExport std::vector<TopoDS_Shape> uniqueGeneratedThenModifiedEdgeImages(
 PartExport std::vector<TopoDS_Shape> uniqueModifiedThenGeneratedEdgeImages(
     BRepBuilderAPI_MakeShape* maker,
     const TopoDS_Shape& input,
-    const TopoShape& result);
+    const TopoShape& result
+);
 
 /// Unique 1-image FACE from Generated(input). 0 or N → Null (I13).
 /// Pipe/Loft/Helix side-face capture. Does not mint.
-PartExport TopoDS_Shape uniqueGeneratedFace(BRepBuilderAPI_MakeShape* maker,
-                                            const TopoDS_Shape& input);
+PartExport TopoDS_Shape uniqueGeneratedFace(BRepBuilderAPI_MakeShape* maker, const TopoDS_Shape& input);
 
 /// Unique Z-parallel Edge of a published Face (Loft/Pipe/Helix side vertical
 /// rail). TopExp edges of that Face; GeomAbs_Line parallel to +Z; uniquely 1
@@ -180,7 +190,8 @@ PartExport TopoDS_Shape uniqueGeneratedFace(BRepBuilderAPI_MakeShape* maker,
 /// Formerly ProfileBased::uniqueZParallelEdgeOnPublishedFace (Pass 135–136).
 PartExport App::ElementIndex uniqueZParallelEdgeOnPublishedFace(
     const TopoShape& owner,
-    const App::ElementIndex& faceIdx);
+    const App::ElementIndex& faceIdx
+);
 
 /// Map a Pipe/Loft/Helix pre-sew shell TShape onto the published sew+solid Shape.
 /// indexOnPublishedPartnerSameCurve first; MapperSewing sew hop; unique shared-vertex
@@ -191,7 +202,8 @@ PartExport App::ElementIndex indexOnPublishedPartnerSameCurveSewSharedVertex(
     const TopoShape& published,
     const TopoDS_Shape& sub,
     const TopoShape& preSew,
-    BRepBuilderAPI_Sewing* sewer);
+    BRepBuilderAPI_Sewing* sewer
+);
 
 /// Build Z-parallel Face-rail Edges and merge onto named Edge indices
 /// (Pipe/Loft/Helix capture). For each Face index call
@@ -202,7 +214,8 @@ PartExport App::ElementIndex indexOnPublishedPartnerSameCurveSewSharedVertex(
 PartExport std::size_t mergeUniqueZParallelEdgesOntoNamed(
     const TopoShape& published,
     const std::vector<App::ElementIndex>& namedFaces,
-    std::vector<App::ElementIndex>& namedEdges);
+    std::vector<App::ElementIndex>& namedEdges
+);
 
 /// Face/Edge capture row shared by Pipe/Loft/Helix Pad-fallback Z-rail append
 /// (and usable as the seeded shape vector element type).
@@ -219,7 +232,8 @@ struct SemanticSeededShape
 PartExport std::size_t appendUniqueZParallelFaceRailEdges(
     const TopoShape& shell,
     const std::vector<SemanticSeededShape>& faces,
-    std::vector<SemanticSeededShape>& edges);
+    std::vector<SemanticSeededShape>& edges
+);
 
 
 /// When `faces` is empty, run SemanticHistoryAdapter::fromMaker on curve/vertex
@@ -238,7 +252,8 @@ PartExport std::size_t appendFromMakerGeneratedWhenFacesEmpty(
     const std::vector<TopoShape>& profileVertices,
     std::vector<SemanticSeededShape>& faces,
     std::vector<SemanticSeededShape>& outEdges,
-    bool* usedFromMaker = nullptr);
+    bool* usedFromMaker = nullptr
+);
 
 
 /// Map Pipe/Loft/Helix captured Face/Edge seeded shapes onto the published
@@ -253,23 +268,22 @@ PartExport void refreshNamedIndicesFromSeededShapes(
     const std::vector<SemanticSeededShape>& faces,
     const std::vector<SemanticSeededShape>& edges,
     std::vector<App::ElementIndex>& namedFaces,
-    std::vector<App::ElementIndex>& namedEdges);
+    std::vector<App::ElementIndex>& namedEdges
+);
 
 /// A4: TESTS Extrusion/Revolution/Mirroring publish `*Diag` Console strings.
 /// Default **off** so product builds stay quiet. Enable with env
-/// `FREECAD_TESTS_DIAG=1` (legacy `FREECAD_TEST5_DIAG`) or `FreeCAD.setLogLevel('PartTestsDiag', 'Message')` (legacy `PartTest5Diag`)
-/// (or higher). `tests_automated.py` does **not** grep these strings; docs
-/// historically reference the exact text for human console reading.
-/// When enabled, emit the historical strings verbatim via Console().message.
-/// Gate only — does **not** change emit order, mint, applyHistory, or I13.
+/// `FREECAD_TESTS_DIAG=1` (legacy `FREECAD_TEST5_DIAG`) or `FreeCAD.setLogLevel('PartTestsDiag',
+/// 'Message')` (legacy `PartTest5Diag`) (or higher). `tests_automated.py` does **not** grep these
+/// strings; docs historically reference the exact text for human console reading. When enabled,
+/// emit the historical strings verbatim via Console().message. Gate only — does **not** change emit
+/// order, mint, applyHistory, or I13.
 PartExport bool testsPublishDiagEnabled();
 /// Emit `message` verbatim when enabled (include trailing `\n` if desired).
 PartExport void testsPublishDiag(const char* message);
 /// Emit `TESTS <diagTag> skip emit: <reason>\n` when enabled.
 PartExport void testsPublishDiagSkip(const char* diagTag, const char* reason);
 /// Emit `TESTS <diagTag> bound=%zu named=%zu unnamed=0\n` when enabled.
-PartExport void testsPublishDiagBound(const char* diagTag,
-                                     std::size_t bound,
-                                     std::size_t named);
+PartExport void testsPublishDiagBound(const char* diagTag, std::size_t bound, std::size_t named);
 
 }  // namespace Part

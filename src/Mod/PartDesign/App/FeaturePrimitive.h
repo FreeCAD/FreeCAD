@@ -81,16 +81,20 @@ protected:
     // make the boolean ops with the primitives provided by the derived features
     App::DocumentObjectExecReturn* execute(const TopoDS_Shape& primitiveShape);
     /// Shared with-base subtractive live Cut provenance publisher.
-    void publishSubtractiveCutSemanticHistory(BRepAlgoAPI_BooleanOperation* mkCut,
-                                              const TopoDS_Shape& toolShape,
-                                              const TopoDS_Shape& baseShape,
-                                              App::DocumentObject* baseObj,
-                                              Opcode opcode,
-                                              const char* diagName);
-    virtual void onSubtractiveCutDone(BRepAlgoAPI_BooleanOperation* mkCut,
-                                      const TopoDS_Shape& toolShape,
-                                      const TopoDS_Shape& baseShape,
-                                      App::DocumentObject* baseObj);
+    void publishSubtractiveCutSemanticHistory(
+        BRepAlgoAPI_BooleanOperation* mkCut,
+        const TopoDS_Shape& toolShape,
+        const TopoDS_Shape& baseShape,
+        App::DocumentObject* baseObj,
+        Opcode opcode,
+        const char* diagName
+    );
+    virtual void onSubtractiveCutDone(
+        BRepAlgoAPI_BooleanOperation* mkCut,
+        const TopoDS_Shape& toolShape,
+        const TopoDS_Shape& baseShape,
+        App::DocumentObject* baseObj
+    );
     Type primitiveType = Box;
 };
 
@@ -115,10 +119,12 @@ protected:
     /// MSVC C2248 — getSolid is protected. Shared subtractive Cut uses the base publisher.
     void publishAdditiveBoxSemanticHistory(BRepPrimAPI_MakeBox* mkBox);
     /// SubtractiveBox opcode + diagnostic wrapper for shared live Cut publish.
-    void onSubtractiveCutDone(BRepAlgoAPI_BooleanOperation* mkCut,
-                              const TopoDS_Shape& toolShape,
-                              const TopoDS_Shape& baseShape,
-                              App::DocumentObject* baseObj) override;
+    void onSubtractiveCutDone(
+        BRepAlgoAPI_BooleanOperation* mkCut,
+        const TopoDS_Shape& toolShape,
+        const TopoDS_Shape& baseShape,
+        App::DocumentObject* baseObj
+    ) override;
 };
 
 class PartDesignExport AdditiveBox: public Box
@@ -165,10 +171,12 @@ protected:
     /// MSVC C2248 — getSolid is protected.
     void publishAdditiveCylinderSemanticHistory(BRepPrimAPI_MakeCylinder* mkCylr);
     /// SubtractiveCylinder opcode + diagnostic wrapper for shared live Cut publish.
-    void onSubtractiveCutDone(BRepAlgoAPI_BooleanOperation* mkCut,
-                              const TopoDS_Shape& toolShape,
-                              const TopoDS_Shape& baseShape,
-                              App::DocumentObject* baseObj) override;
+    void onSubtractiveCutDone(
+        BRepAlgoAPI_BooleanOperation* mkCut,
+        const TopoDS_Shape& toolShape,
+        const TopoDS_Shape& baseShape,
+        App::DocumentObject* baseObj
+    ) override;
 };
 
 class PartDesignExport AdditiveCylinder: public Cylinder
@@ -216,10 +224,12 @@ protected:
     /// MSVC C2248 — getSolid is protected.
     void publishAdditiveSphereSemanticHistory(BRepPrimAPI_MakeSphere* mkSphere);
     /// SubtractiveSphere opcode + diagnostic wrapper for shared live Cut publish.
-    void onSubtractiveCutDone(BRepAlgoAPI_BooleanOperation* mkCut,
-                              const TopoDS_Shape& toolShape,
-                              const TopoDS_Shape& baseShape,
-                              App::DocumentObject* baseObj) override;
+    void onSubtractiveCutDone(
+        BRepAlgoAPI_BooleanOperation* mkCut,
+        const TopoDS_Shape& toolShape,
+        const TopoDS_Shape& baseShape,
+        App::DocumentObject* baseObj
+    ) override;
 };
 
 class PartDesignExport AdditiveSphere: public Sphere
@@ -265,10 +275,12 @@ protected:
     /// First-solid AdditiveCone live-maker emit. Member (not a free function):
     /// MSVC C2248 — getSolid is protected. Shared subtractive Cut uses the base publisher.
     void publishAdditiveConeSemanticHistory(BRepPrimAPI_MakeCone* mkCone);
-    void onSubtractiveCutDone(BRepAlgoAPI_BooleanOperation* mkCut,
-                              const TopoDS_Shape& toolShape,
-                              const TopoDS_Shape& baseShape,
-                              App::DocumentObject* baseObj) override;
+    void onSubtractiveCutDone(
+        BRepAlgoAPI_BooleanOperation* mkCut,
+        const TopoDS_Shape& toolShape,
+        const TopoDS_Shape& baseShape,
+        App::DocumentObject* baseObj
+    ) override;
 };
 
 class PartDesignExport AdditiveCone: public Cone
@@ -320,10 +332,12 @@ protected:
     /// Locate/bind (Wedge class): GTransform has no reliable Generated history
     /// for fromMaker; published FACE/EDGE locate + bind is the MSVC-safe path.
     void publishAdditiveEllipsoidSemanticHistory(const TopoDS_Shape& makerSolid);
-    void onSubtractiveCutDone(BRepAlgoAPI_BooleanOperation* mkCut,
-                              const TopoDS_Shape& toolShape,
-                              const TopoDS_Shape& baseShape,
-                              App::DocumentObject* baseObj) override;
+    void onSubtractiveCutDone(
+        BRepAlgoAPI_BooleanOperation* mkCut,
+        const TopoDS_Shape& toolShape,
+        const TopoDS_Shape& baseShape,
+        App::DocumentObject* baseObj
+    ) override;
 };
 
 class PartDesignExport AdditiveEllipsoid: public Ellipsoid
@@ -371,10 +385,12 @@ protected:
     /// First-solid AdditiveTorus live-maker emit. Member (not a free function):
     /// MSVC C2248 — getSolid is protected. Shared subtractive Cut uses the base publisher.
     void publishAdditiveTorusSemanticHistory(BRepPrimAPI_MakeTorus* mkTorus);
-    void onSubtractiveCutDone(BRepAlgoAPI_BooleanOperation* mkCut,
-                              const TopoDS_Shape& toolShape,
-                              const TopoDS_Shape& baseShape,
-                              App::DocumentObject* baseObj) override;
+    void onSubtractiveCutDone(
+        BRepAlgoAPI_BooleanOperation* mkCut,
+        const TopoDS_Shape& toolShape,
+        const TopoDS_Shape& baseShape,
+        App::DocumentObject* baseObj
+    ) override;
 };
 
 class PartDesignExport AdditiveTorus: public Torus
@@ -420,10 +436,12 @@ protected:
     /// First-solid AdditivePrism live-maker emit. Member (not a free function):
     /// MSVC C2248 — getSolid is protected. Shared subtractive Cut uses the base publisher.
     void publishAdditivePrismSemanticHistory(BRepPrimAPI_MakePrism* mkPrism);
-    void onSubtractiveCutDone(BRepAlgoAPI_BooleanOperation* mkCut,
-                              const TopoDS_Shape& toolShape,
-                              const TopoDS_Shape& baseShape,
-                              App::DocumentObject* baseObj) override;
+    void onSubtractiveCutDone(
+        BRepAlgoAPI_BooleanOperation* mkCut,
+        const TopoDS_Shape& toolShape,
+        const TopoDS_Shape& baseShape,
+        App::DocumentObject* baseObj
+    ) override;
 };
 
 class PartDesignExport AdditivePrism: public Prism
@@ -477,10 +495,12 @@ protected:
     /// MSVC C2248 — getSolid is protected. Shared subtractive Cut uses the base publisher.
     /// @param makerSolid Solid built from BRepPrim_Wedge (no 11-arg MakeWedge API).
     void publishAdditiveWedgeSemanticHistory(const TopoDS_Shape& makerSolid);
-    void onSubtractiveCutDone(BRepAlgoAPI_BooleanOperation* mkCut,
-                              const TopoDS_Shape& toolShape,
-                              const TopoDS_Shape& baseShape,
-                              App::DocumentObject* baseObj) override;
+    void onSubtractiveCutDone(
+        BRepAlgoAPI_BooleanOperation* mkCut,
+        const TopoDS_Shape& toolShape,
+        const TopoDS_Shape& baseShape,
+        App::DocumentObject* baseObj
+    ) override;
 };
 
 class PartDesignExport AdditiveWedge: public Wedge

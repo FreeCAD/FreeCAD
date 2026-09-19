@@ -1813,8 +1813,9 @@ App::DocumentObjectExecReturn* Hole::execute()
                     && semanticRef.kind != App::SemanticKind::Face)) {
                 continue;
             }
-            const App::ObjectId linked =
-                static_cast<App::ObjectId>(StartReference.getValue()->semanticProjectionFeatureId());
+            const App::ObjectId linked = static_cast<App::ObjectId>(
+                StartReference.getValue()->semanticProjectionFeatureId()
+            );
             if (const auto unique = uniqueResolvedFaceReference(graph, semanticRef, linked)) {
                 resolvedStartReference = unique->index.toString();
                 appendUniqueSemanticSeed(req.holeFaces, semanticRef.seed);
@@ -1867,17 +1868,16 @@ App::DocumentObjectExecReturn* Hole::execute()
         holeDirection.Reverse();
         const char* startType = StartType.getValueAsString();
         const double startOffset = std::strcmp(startType, "Profile plane") == 0 ? 0.0
-            : std::strcmp(startType, "Offset") == 0 ? StartOffset.getValue()
-                                                    : getStartReferenceOffset(
-                                                          profileshape,
-                                                          StartReference,
-                                                          holeDirection,
-                                                          StartOffset.getValue(),
-                                                          invObjLoc,
-                                                          resolvedStartReference.empty()
-                                                              ? nullptr
-                                                              : &resolvedStartReference
-                                                      );
+            : std::strcmp(startType, "Offset") == 0
+            ? StartOffset.getValue()
+            : getStartReferenceOffset(
+                  profileshape,
+                  StartReference,
+                  holeDirection,
+                  StartOffset.getValue(),
+                  invObjLoc,
+                  resolvedStartReference.empty() ? nullptr : &resolvedStartReference
+              );
         profileshape = moveProfileToStart(profileshape, holeDirection, startOffset, true);
 
         if (method == "Dimension") {

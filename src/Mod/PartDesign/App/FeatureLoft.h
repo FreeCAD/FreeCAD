@@ -90,7 +90,7 @@ protected:
         const std::vector<TopoDS_Shape>& addWireShapes,
         BRepBuilderAPI_Sewing* sewer
     );
-void emitCapturedLoft(
+    void emitCapturedLoft(
         void* occMaker,
         const TopoShape& preSewShell,
         const TopoShape& published,

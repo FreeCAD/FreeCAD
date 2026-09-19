@@ -183,8 +183,7 @@ int SketchEntityIdMap::remapSlotAfterErase(int geoId, int erasedAt)
     return geoId;
 }
 
-std::string SketchEntityIdMap::regionKey(std::vector<SketchEntityHandle> wireIds,
-                                         std::string_view role)
+std::string SketchEntityIdMap::regionKey(std::vector<SketchEntityHandle> wireIds, std::string_view role)
 {
     std::sort(wireIds.begin(), wireIds.end());
     wireIds.erase(std::unique(wireIds.begin(), wireIds.end()), wireIds.end());
@@ -268,7 +267,8 @@ SketchEntityHandle SketchEntityIdMap::entityIdFromMappedName(std::string_view ma
 }
 
 std::vector<SketchEntityHandle> SketchEntityIdMap::entityIdsFromMappedNames(
-    const std::vector<std::string>& mappedNames)
+    const std::vector<std::string>& mappedNames
+)
 {
     std::vector<SketchEntityHandle> ids;
     ids.reserve(mappedNames.size());
@@ -295,7 +295,8 @@ bool SketchEntityIdMap::isRegionKey(std::string_view key)
 }
 
 std::vector<SketchEntityIdMap::RegionStamp> SketchEntityIdMap::regionStampsForFaces(
-    const std::vector<FaceWires>& faces)
+    const std::vector<FaceWires>& faces
+)
 {
     std::vector<std::vector<SketchEntityHandle>> innerSets;
     for (const FaceWires& face : faces) {

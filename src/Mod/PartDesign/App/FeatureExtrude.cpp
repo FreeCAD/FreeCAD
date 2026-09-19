@@ -161,7 +161,8 @@ void FeatureExtrude::capturePrismMaker(void* occMaker, const TopoShape& prism, c
         names.reserve(static_cast<std::size_t>(nEdges));
         for (unsigned long i = 1; i <= nEdges; ++i) {
             Data::MappedName mapped = faces[0].getMappedName(
-                Data::IndexedName::fromConst("Edge", static_cast<int>(i)));
+                Data::IndexedName::fromConst("Edge", static_cast<int>(i))
+            );
             if (mapped) {
                 names.push_back(mapped.toString());
             }
@@ -177,9 +178,15 @@ void FeatureExtrude::capturePrismMaker(void* occMaker, const TopoShape& prism, c
                 currentEval = doc->semanticState().currentEval();
             }
             const std::string key = Sketcher::SketchEntityIdMap::regionKey(
-                ids, Sketcher::SketchEntityIdMap::RoleInterior);
+                ids,
+                Sketcher::SketchEntityIdMap::RoleInterior
+            );
             const App::SemanticId region = Sketcher::SketchSemanticSeeds::ensureRegionSeed(
-                *graph, sketchObjectId, currentEval, key);
+                *graph,
+                sketchObjectId,
+                currentEval,
+                key
+            );
             if (region.valid()) {
                 seeds.regionSeeds.push_back(region);
             }
@@ -262,8 +269,8 @@ void FeatureExtrude::capturePrismMaker(void* occMaker, const TopoShape& prism, c
         // (caller drops size!=1 and would unnamed both). 1 image → name it.
         // 0 or N → unnamed (I13). Vertical corners stay on the vertex stash.
         for (std::size_t i = 0; i < seeds.curveSeeds.size() && i < edges.size(); ++i) {
-            const auto images =
-                Part::uniqueModifiedThenGeneratedEdgeImages(maker, edges[i].getShape(), prism);
+            const auto images
+                = Part::uniqueModifiedThenGeneratedEdgeImages(maker, edges[i].getShape(), prism);
             if (images.size() == 1) {
                 bool dup = false;
                 for (const auto& existing : lastPrismGeneratedEdges) {
@@ -281,8 +288,8 @@ void FeatureExtrude::capturePrismMaker(void* occMaker, const TopoShape& prism, c
             for (const auto& existing : lastPrismGeneratedEdges) {
                 stashed.push_back(existing.shape);
             }
-            const TopoDS_Shape partner =
-                Part::uniquePartnerEdgeExcluding(edges[i].getShape(), prism, stashed);
+            const TopoDS_Shape partner
+                = Part::uniquePartnerEdgeExcluding(edges[i].getShape(), prism, stashed);
             if (!partner.IsNull()) {
                 lastPrismGeneratedEdges.push_back({seeds.curveSeeds[i], partner});
             }
@@ -301,8 +308,8 @@ void FeatureExtrude::capturePrismMaker(void* occMaker, const TopoShape& prism, c
         }
         // BRepBuilderAPI_MakeShape has no History() on this OCCT. fromMaker
         // (Generated/Modified/IsDeleted) only. Empty -> no invented FaceN (I13).
-        const Part::HistoryTable fromHist =
-            Part::SemanticHistoryAdapter::fromMaker(maker, inputs, indexOf);
+        const Part::HistoryTable fromHist
+            = Part::SemanticHistoryAdapter::fromMaker(maker, inputs, indexOf);
         if (lastPrismGenerated.empty()) {
             for (const auto& rec : fromHist) {
                 if (rec.kind != App::EventKind::Generated
@@ -365,10 +372,12 @@ void FeatureExtrude::capturePrismMaker(void* occMaker, const TopoShape& prism, c
     refreshNamedIndices(prism);
 }
 
-void FeatureExtrude::captureBooleanHistory(void* occMaker,
-                                           const TopoShape& result,
-                                           const TopoShape& baseShape,
-                                           const TopoShape& tool)
+void FeatureExtrude::captureBooleanHistory(
+    void* occMaker,
+    const TopoShape& result,
+    const TopoShape& baseShape,
+    const TopoShape& tool
+)
 {
     (void)tool;
     if (result.isNull()) {
@@ -429,7 +438,8 @@ void FeatureExtrude::captureBooleanHistory(void* occMaker,
             if (p.shape.IsNull()) {
                 continue;
             }
-            const std::vector<TopoDS_Shape> images = Part::uniqueModifiedThenGeneratedEdgeImages(maker, p.shape, result);
+            const std::vector<TopoDS_Shape> images
+                = Part::uniqueModifiedThenGeneratedEdgeImages(maker, p.shape, result);
             if (images.size() == 1) {
                 nextEdges.push_back({p.fromSeed, images.front()});
             }
@@ -446,16 +456,16 @@ void FeatureExtrude::captureBooleanHistory(void* occMaker,
                 std::unordered_set<App::SemanticHandle> seenEdge;
                 for (const App::SemanticBinding& b : graph->allBindings()) {
                     if (b.feature != baseId || !Part::isNamedIndex(b.index)  // PD32-E3
-                        || b.index.type != "Edge"
-                        || !b.stid.valid() || !seenEdge.insert(b.stid.handle).second) {
+                        || b.index.type != "Edge" || !b.stid.valid()
+                        || !seenEdge.insert(b.stid.handle).second) {
                         continue;
                     }
                     TopoDS_Shape edge = baseShape.findShape(TopAbs_EDGE, b.index.index);
                     if (edge.IsNull()) {
                         continue;
                     }
-                    const std::vector<TopoDS_Shape> images =
-                        Part::uniqueModifiedThenGeneratedEdgeImages(maker, edge, result);
+                    const std::vector<TopoDS_Shape> images
+                        = Part::uniqueModifiedThenGeneratedEdgeImages(maker, edge, result);
                     if (images.size() != 1) {
                         continue;
                     }
@@ -485,8 +495,8 @@ void FeatureExtrude::captureBooleanHistory(void* occMaker,
             std::unordered_set<App::SemanticHandle> seen;
             for (const App::SemanticBinding& b : graph->allBindings()) {
                 if (b.feature != baseId || !Part::isNamedIndex(b.index)  // PD32-E4
-                    || b.index.type != "Face"
-                    || !b.stid.valid() || !seen.insert(b.stid.handle).second) {
+                    || b.index.type != "Face" || !b.stid.valid()
+                    || !seen.insert(b.stid.handle).second) {
                     continue;
                 }
                 TopoDS_Shape face = baseShape.findShape(TopAbs_FACE, b.index.index);
@@ -576,10 +586,12 @@ void FeatureExtrude::publishSemanticHistory(const TopoShape& published)
         edgeRows.push_back(rec);
     }
 
-    const Part::HistoryTable uniqueFaces =
-        Part::SemanticHistoryAdapter::uniqueOneImageGenerated(faceSingles);
-    const Part::HistoryTable uniqueEdges =
-        Part::SemanticHistoryAdapter::uniqueOneImageGenerated(edgeRows);
+    const Part::HistoryTable uniqueFaces = Part::SemanticHistoryAdapter::uniqueOneImageGenerated(
+        faceSingles
+    );
+    const Part::HistoryTable uniqueEdges = Part::SemanticHistoryAdapter::uniqueOneImageGenerated(
+        edgeRows
+    );
     Part::HistoryTable candidates;
     candidates.reserve(uniqueFaces.size() + regionRows.size() + uniqueEdges.size());
     candidates.insert(candidates.end(), uniqueFaces.begin(), uniqueFaces.end());
@@ -637,14 +649,14 @@ void FeatureExtrude::publishSemanticHistory(const TopoShape& published)
         const auto indices = acceptedIndices(p.fromSeed.handle, "Face");
         if (p.fromSeed.kind == App::SemanticKind::Region) {
             for (std::size_t cap = 0; cap < 2; ++cap) {
-                lastNamedFaceIndices.push_back(cap < indices.size()
-                                                   ? indices[cap]
-                                                   : App::ElementIndex{});
+                lastNamedFaceIndices.push_back(
+                    cap < indices.size() ? indices[cap] : App::ElementIndex {}
+                );
             }
         }
         else {
             lastNamedFaceIndices.push_back(
-                indices.size() == 1 ? indices.front() : App::ElementIndex{}
+                indices.size() == 1 ? indices.front() : App::ElementIndex {}
             );
         }
     }
@@ -655,9 +667,7 @@ void FeatureExtrude::publishSemanticHistory(const TopoShape& published)
             continue;
         }
         const auto indices = acceptedIndices(p.fromSeed.handle, "Edge");
-        lastNamedEdgeIndices.push_back(
-            indices.size() == 1 ? indices.front() : App::ElementIndex{}
-        );
+        lastNamedEdgeIndices.push_back(indices.size() == 1 ? indices.front() : App::ElementIndex {});
     }
 
     std::vector<App::SemanticId> seeds;
@@ -678,7 +688,8 @@ void FeatureExtrude::publishSemanticHistory(const TopoShape& published)
         eval,
         getAddSubType() == FeatureAddSub::Type::Subtractive ? "Pocket" : "Pad",
         seeds,
-        table);
+        table
+    );
 }
 
 
@@ -693,8 +704,8 @@ short FeatureExtrude::mustExecute() const
         || UpToShape.isTouched() || UpToShape2.isTouched() || UseLegacyTaperDirection.isTouched()) {
         return 1;
     }
-    if (const App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
-        graph && isValid() && !Shape.getShape().isNull()
+    if (const App::SemanticGraph* graph = SemanticEmitter::graphFor(this); graph && isValid()
+        && !Shape.getShape().isNull()
         && SemanticEmitter::needsSemanticRepublish(graph, static_cast<App::ObjectId>(getID()))) {
         return 1;
     }
@@ -1004,50 +1015,48 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
         : OpcodeRoleId::PadUpToFace;
     std::string resolvedUpToFace1;
     std::string resolvedUpToFace2;
-    const auto upToFaceResolved = [&](const char* side,
-                                      const App::PropertyLinkSub& target,
-                                      std::string& resolvedSubname) {
-        resolvedSubname.clear();
-        if (std::strcmp(side, "UpToFace") != 0) {
-            return true;
-        }
-        App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
-        if (!graph) {
-            return true;
-        }
-        bool sawSeed = false;
-        bool sawFaceSeed = false;
-        for (const App::SemanticReference& ref : target.getSemanticRefs()) {
-            if (!ref.seed.valid()) {
-                continue;
+    const auto upToFaceResolved =
+        [&](const char* side, const App::PropertyLinkSub& target, std::string& resolvedSubname) {
+            resolvedSubname.clear();
+            if (std::strcmp(side, "UpToFace") != 0) {
+                return true;
             }
-            sawSeed = true;
-            if (ref.seed.kind != App::SemanticKind::Face || ref.kind != App::SemanticKind::Face
-                || sawFaceSeed) {
-                return false;
+            App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
+            if (!graph) {
+                return true;
             }
-            sawFaceSeed = true;
-            if (!target.getValue()) {
-                return false;
+            bool sawSeed = false;
+            bool sawFaceSeed = false;
+            for (const App::SemanticReference& ref : target.getSemanticRefs()) {
+                if (!ref.seed.valid()) {
+                    continue;
+                }
+                sawSeed = true;
+                if (ref.seed.kind != App::SemanticKind::Face || ref.kind != App::SemanticKind::Face
+                    || sawFaceSeed) {
+                    return false;
+                }
+                sawFaceSeed = true;
+                if (!target.getValue()) {
+                    return false;
+                }
+                App::ReferenceRequirement requirement = requirementFor(upToFaceRole);
+                requirement.acceptedReducers = {ref.reducer};
+                const App::ResolutionResult result
+                    = App::SemanticResolver::resolve(ref, *graph, &requirement);
+                if (result.state != App::ResolutionState::Resolved || result.bindings.size() != 1) {
+                    return false;
+                }
+                const App::SemanticBinding& binding = result.bindings.front();
+                if (binding.feature != static_cast<App::ObjectId>(target.getValue()->getID())
+                    || binding.stid != ref.seed || !Part::isNamedIndex(binding.index)  // PD32-E5
+                    || binding.index.type != "Face") {
+                    return false;
+                }
+                resolvedSubname = binding.index.toString();
             }
-            App::ReferenceRequirement requirement = requirementFor(upToFaceRole);
-            requirement.acceptedReducers = {ref.reducer};
-            const App::ResolutionResult result =
-                App::SemanticResolver::resolve(ref, *graph, &requirement);
-            if (result.state != App::ResolutionState::Resolved || result.bindings.size() != 1) {
-                return false;
-            }
-            const App::SemanticBinding& binding = result.bindings.front();
-            if (binding.feature != static_cast<App::ObjectId>(target.getValue()->getID())
-                || binding.stid != ref.seed
-                || !Part::isNamedIndex(binding.index)  // PD32-E5
-                || binding.index.type != "Face") {
-                return false;
-            }
-            resolvedSubname = binding.index.toString();
-        }
-        return !sawSeed || sawFaceSeed;
-    };
+            return !sawSeed || sawFaceSeed;
+        };
     if (!upToFaceResolved(method.c_str(), UpToFace, resolvedUpToFace1)
         || !upToFaceResolved(method2.c_str(), UpToFace2, resolvedUpToFace2)) {
         return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(

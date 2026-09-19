@@ -198,8 +198,7 @@ void SketchObject::replaceGeometries(std::vector<int> oldGeoIds, std::vector<Par
     delGeometries(oldGeoIdIter, oldGeoIds.end());
 }
 
-void SketchObject::replaceGeometriesRecordingSplit(int oldGeoId,
-                                                   std::vector<Part::Geometry*>& newGeos)
+void SketchObject::replaceGeometriesRecordingSplit(int oldGeoId, std::vector<Part::Geometry*>& newGeos)
 {
     // S4-S1: multi-piece split/trim must not copyId the parent onto the first
     // child. New entity handles + Split events keep Pad profile seeds on Split
@@ -213,16 +212,18 @@ void SketchObject::replaceGeometriesRecordingSplit(int oldGeoId,
         replaceGeometries({oldGeoId}, newGeos);
         return;
     }
-    const SketchEntityHandle parentHandle =
-        static_cast<SketchEntityHandle>(GeometryFacade::getFacade(oldGeo)->getId());
+    const SketchEntityHandle parentHandle = static_cast<SketchEntityHandle>(
+        GeometryFacade::getFacade(oldGeo)->getId()
+    );
     for (Part::Geometry* geo : newGeos) {
         generateId(geo);
     }
     std::vector<SketchEntityHandle> childHandles;
     childHandles.reserve(newGeos.size());
     for (Part::Geometry* geo : newGeos) {
-        const SketchEntityHandle h =
-            static_cast<SketchEntityHandle>(GeometryFacade::getFacade(geo)->getId());
+        const SketchEntityHandle h = static_cast<SketchEntityHandle>(
+            GeometryFacade::getFacade(geo)->getId()
+        );
         if (h == SketchEntityIdMap::Invalid || h < 0 || h == parentHandle) {
             // Fail closed: fall back to ordinary replace (Generated republish).
             replaceGeometries({oldGeoId}, newGeos);
@@ -232,11 +233,13 @@ void SketchObject::replaceGeometriesRecordingSplit(int oldGeoId,
     }
     if (App::Document* doc = getDocument()) {
         if (parentHandle != SketchEntityIdMap::Invalid && parentHandle > 0) {
-            SketchSemanticSeeds::splitEntity(doc->semanticGraph(),
-                                             static_cast<App::ObjectId>(getID()),
-                                             doc->semanticState().currentEval(),
-                                             parentHandle,
-                                             childHandles);
+            SketchSemanticSeeds::splitEntity(
+                doc->semanticGraph(),
+                static_cast<App::ObjectId>(getID()),
+                doc->semanticState().currentEval(),
+                parentHandle,
+                childHandles
+            );
         }
     }
     auto& vals = getInternalGeometry();

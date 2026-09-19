@@ -287,11 +287,13 @@ protected:
     /// (consumed) wins; else IndexedName from newName / oldName; else
     /// Edges.edgeid. Returns 0 when out of [1, mapExtent] so callers never
     /// call FindKey(0) on hashed `;:H…` mapped names.
-    static int resolveEdgeFindKeyIndex(int consumed,
-                                      const std::string& ref,
-                                      const std::string& oldName,
-                                      int edgeid,
-                                      int mapExtent);
+    static int resolveEdgeFindKeyIndex(
+        int consumed,
+        const std::string& ref,
+        const std::string& oldName,
+        int edgeid,
+        int mapExtent
+    );
 };
 
 using FeaturePython = App::FeaturePythonT<Feature>;

@@ -88,13 +88,11 @@ namespace
 {
 
 
-
 /// A maker history row is usable only when its output still resolves on the
 /// exact shape that will be published. Keep stale or malformed rows out of
 /// applyHistory; no semantic binding is safer than a binding to another
 /// output (I13).
-bool isUsableTransformedHistory(const Part::TopoShape& published,
-                                const Part::HistoryRecord& record)
+bool isUsableTransformedHistory(const Part::TopoShape& published, const Part::HistoryRecord& record)
 {
     if (!record.fromSeed.valid() || published.isNull() || record.toIndex.index <= 0) {
         return false;
@@ -152,7 +150,8 @@ Part::TopoShape copyTopoForBoolean(const Part::TopoShape& src, long selfTag)
 /// Never call FCBRepAlgoAPIHelper from PartDesign (LNK2019).
 std::unique_ptr<BRepAlgoAPI_BooleanOperation> sideMakerOnCopies(
     bool fuse,
-    const std::vector<Part::TopoShape>& copies)
+    const std::vector<Part::TopoShape>& copies
+)
 {
     if (copies.size() < 2) {
         return nullptr;
@@ -196,7 +195,8 @@ App::DocumentObjectExecReturn* applyTransformedBoolean(
     const std::vector<Part::TopoShape>& shapes,
     std::unique_ptr<BRepAlgoAPI_BooleanOperation>& lastMk,
     Part::TopoShape& lastSeedShape,
-    long selfTag)
+    long selfTag
+)
 {
     // Retagged copies (Transformed id, never Pad.Tag). Product prefers the
     // side-maker Shape so fromMaker images are the stored TShape.
@@ -256,7 +256,8 @@ void publishTransformedSemanticHistory(
     const Part::TopoShape& result,
     App::DocumentObject* supportObj,
     const Part::TopoShape& supportShape,
-    const std::vector<App::DocumentObject*>& originals)
+    const std::vector<App::DocumentObject*>& originals
+)
 {
     if (!self || !mkBool || !mkBool->IsDone() || result.isNull()) {
         return;
@@ -295,10 +296,8 @@ void publishTransformedSemanticHistory(
         return Part::indexOnPublished(result, *static_cast<const TopoDS_Shape*>(occ));
     };
 
-    const Part::HistoryTable raw =
-        Part::SemanticHistoryAdapter::fromMaker(mkBool, inputs, indexOf);
-    const Part::HistoryTable unique =
-        Part::SemanticHistoryAdapter::uniqueOneImageGenerated(raw);
+    const Part::HistoryTable raw = Part::SemanticHistoryAdapter::fromMaker(mkBool, inputs, indexOf);
+    const Part::HistoryTable unique = Part::SemanticHistoryAdapter::uniqueOneImageGenerated(raw);
 
     const App::ObjectId selfId = static_cast<App::ObjectId>(self->getID());
     App::EvalSerial eval = 0;
@@ -325,8 +324,7 @@ void publishTransformedSemanticHistory(
     }
 
     const char* opcode = transformedOpcodeName(self);
-    Part::SemanticHistoryAdapter::applyHistory(
-        graph, selfId, eval, opcode ? opcode : "", seeds, toApply);
+    Part::SemanticHistoryAdapter::applyHistory(graph, selfId, eval, opcode ? opcode : "", seeds, toApply);
 }
 
 }  // namespace
@@ -535,10 +533,9 @@ short Transformed::mustExecute() const
     // can republish their semantic history. MultiTransform children are not
     // publishers and must remain owned by their parent.
     if (!isMultiTransformChild()) {
-        if (const App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
-            graph && isValid() && !Shape.getShape().isNull()
-            && SemanticEmitter::needsSemanticRepublish(
-                graph, static_cast<App::ObjectId>(getID()))) {
+        if (const App::SemanticGraph* graph = SemanticEmitter::graphFor(this); graph && isValid()
+            && !Shape.getShape().isNull()
+            && SemanticEmitter::needsSemanticRepublish(graph, static_cast<App::ObjectId>(getID()))) {
             return 1;
         }
     }
@@ -739,8 +736,10 @@ App::DocumentObjectExecReturn* Transformed::execute()
                     if (Base::Sequencer().wasCanceled()) {
                         return new App::DocumentObjectExecReturn("User aborted");
                     }
-                    if (auto* err = applyTransformedBoolean(
-                            supportShape, true, shapes, lastMk, lastSeedShape, selfTag)) {
+                    if (
+                        auto* err
+                        = applyTransformedBoolean(supportShape, true, shapes, lastMk, lastSeedShape, selfTag)
+                    ) {
                         return err;
                     }
                 }
@@ -749,8 +748,10 @@ App::DocumentObjectExecReturn* Transformed::execute()
                     if (Base::Sequencer().wasCanceled()) {
                         return new App::DocumentObjectExecReturn("User aborted");
                     }
-                    if (auto* err = applyTransformedBoolean(
-                            supportShape, false, shapes, lastMk, lastSeedShape, selfTag)) {
+                    if (
+                        auto* err
+                        = applyTransformedBoolean(supportShape, false, shapes, lastMk, lastSeedShape, selfTag)
+                    ) {
                         return err;
                     }
                 }
@@ -761,8 +762,8 @@ App::DocumentObjectExecReturn* Transformed::execute()
             if (Base::Sequencer().wasCanceled()) {
                 return new App::DocumentObjectExecReturn("User aborted");
             }
-            if (auto* err = applyTransformedBoolean(
-                    supportShape, true, shapes, lastMk, lastSeedShape, selfTag)) {
+            if (auto* err
+                = applyTransformedBoolean(supportShape, true, shapes, lastMk, lastSeedShape, selfTag)) {
                 return err;
             }
             break;
@@ -795,7 +796,8 @@ App::DocumentObjectExecReturn* Transformed::execute()
         this->Shape.getShape(),
         supportFeature,
         lastSeedShape.isNull() ? supportShape : lastSeedShape,
-        originals);
+        originals
+    );
 
     return App::DocumentObject::StdReturn;
 }

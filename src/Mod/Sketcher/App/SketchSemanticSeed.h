@@ -73,9 +73,9 @@ struct SketcherExport SketchVertexPoint
 /// Profile seeds published on the document graph for one sketch.
 struct SketcherExport SketchProfileSeeds
 {
-    std::vector<App::SemanticId> curves;     ///< kind Edge, slot order
-    std::vector<App::SemanticId> regions;    ///< kind Region, regionKey order
-    std::vector<App::SemanticId> vertices;   ///< kind Vertex, unique corners
+    std::vector<App::SemanticId> curves;    ///< kind Edge, slot order
+    std::vector<App::SemanticId> regions;   ///< kind Region, regionKey order
+    std::vector<App::SemanticId> vertices;  ///< kind Vertex, unique corners
     std::vector<SketchEntityHandle> curveHandles;
     std::vector<std::string> regionKeys;
     std::vector<SketchVertexKey> vertexKeys;
@@ -97,23 +97,29 @@ public:
     /// Kind Edge for curves. Vertex corners use ensureSeedForVertex (distinct
     /// note + Binding type "Vertex", not type "g"). Never recycles the sketch
     /// handle and never mints a second heap.
-    static App::SemanticId ensureSeedForEntity(App::SemanticGraph& graph,
-                                               App::ObjectId sketch,
-                                               App::EvalSerial eval,
-                                               SketchEntityHandle handle,
-                                               App::SemanticKind kind = App::SemanticKind::Edge);
+    static App::SemanticId ensureSeedForEntity(
+        App::SemanticGraph& graph,
+        App::ObjectId sketch,
+        App::EvalSerial eval,
+        SketchEntityHandle handle,
+        App::SemanticKind kind = App::SemanticKind::Edge
+    );
 
     /// Allocate or reuse a Vertex seed for a unique profile corner (C1).
     /// Binding index.type is "Vertex" (never "g"); index packs handle+pos.
-    static App::SemanticId ensureSeedForVertex(App::SemanticGraph& graph,
-                                               App::ObjectId sketch,
-                                               App::EvalSerial eval,
-                                               const SketchVertexKey& key);
+    static App::SemanticId ensureSeedForVertex(
+        App::SemanticGraph& graph,
+        App::ObjectId sketch,
+        App::EvalSerial eval,
+        const SketchVertexKey& key
+    );
 
-    static App::SemanticId ensureRegionSeed(App::SemanticGraph& graph,
-                                            App::ObjectId sketch,
-                                            App::EvalSerial eval,
-                                            std::string_view regionKey);
+    static App::SemanticId ensureRegionSeed(
+        App::SemanticGraph& graph,
+        App::ObjectId sketch,
+        App::EvalSerial eval,
+        std::string_view regionKey
+    );
 
     /// Dedup start/end endpoints into unique corners. Coincident (handle,pos)
     /// pairs merge; optional parallel points merge within `confusion`.
@@ -122,7 +128,8 @@ public:
         const std::vector<SketchVertexKey>& endpoints,
         const std::vector<std::pair<SketchVertexKey, SketchVertexKey>>& coincidences,
         const std::vector<SketchVertexPoint>& points = {},
-        double confusion = 1e-7);
+        double confusion = 1e-7
+    );
 
     /// Ensure curve seeds in `liveCurves` order, region seeds, and Vertex
     /// seeds for already-deduped `uniqueCorners` (rectangle → 4, not 8).
@@ -132,30 +139,41 @@ public:
         App::EvalSerial eval,
         const std::vector<SketchEntityHandle>& liveCurves,
         const std::vector<std::string>& regionKeys,
-        const std::vector<SketchVertexKey>& uniqueCorners = {});
+        const std::vector<SketchVertexKey>& uniqueCorners = {}
+    );
 
     /// Curve-handle lookup (Sketch.gN / split notes). Does not return Vertex.
-    static App::SemanticId findSeed(const App::SemanticGraph& graph,
-                                    App::ObjectId sketch,
-                                    SketchEntityHandle handle);
+    static App::SemanticId findSeed(
+        const App::SemanticGraph& graph,
+        App::ObjectId sketch,
+        SketchEntityHandle handle
+    );
     /// Vertex lookup by kind + note (Sketch.v{handle}:{pos}).
-    static App::SemanticId findSeedForVertex(const App::SemanticGraph& graph,
-                                             App::ObjectId sketch,
-                                             const SketchVertexKey& key);
-    static App::SemanticId findSeedByKindNote(const App::SemanticGraph& graph,
-                                              App::ObjectId sketch,
-                                              App::SemanticKind kind,
-                                              std::string_view note);
-    static App::SemanticId findRegionSeed(const App::SemanticGraph& graph,
-                                          App::ObjectId sketch,
-                                          std::string_view regionKey);
+    static App::SemanticId findSeedForVertex(
+        const App::SemanticGraph& graph,
+        App::ObjectId sketch,
+        const SketchVertexKey& key
+    );
+    static App::SemanticId findSeedByKindNote(
+        const App::SemanticGraph& graph,
+        App::ObjectId sketch,
+        App::SemanticKind kind,
+        std::string_view note
+    );
+    static App::SemanticId findRegionSeed(
+        const App::SemanticGraph& graph,
+        App::ObjectId sketch,
+        std::string_view regionKey
+    );
 
     /// Record Deleted for a retired handle that already had a seed. No-op
     /// if the handle never published or is already Deleted.
-    static void recordRetired(App::SemanticGraph& graph,
-                              App::ObjectId sketch,
-                              App::EvalSerial eval,
-                              SketchEntityHandle handle);
+    static void recordRetired(
+        App::SemanticGraph& graph,
+        App::ObjectId sketch,
+        App::EvalSerial eval,
+        SketchEntityHandle handle
+    );
 
     /// Topological split of a sketch entity: parent becomes historical,
     /// children are the Split outputs. Child handles are notes, not new
@@ -165,11 +183,13 @@ public:
     /// collect (collectSketchProfileSeeds) accepts Split outputs so Pad still
     /// gets seeds. recordRetired skips Split parents (historical via Split,
     /// not Deleted).
-    static std::vector<App::SemanticId> splitEntity(App::SemanticGraph& graph,
-                                                    App::ObjectId sketch,
-                                                    App::EvalSerial eval,
-                                                    SketchEntityHandle parent,
-                                                    const std::vector<SketchEntityHandle>& children);
+    static std::vector<App::SemanticId> splitEntity(
+        App::SemanticGraph& graph,
+        App::ObjectId sketch,
+        App::EvalSerial eval,
+        SketchEntityHandle parent,
+        const std::vector<SketchEntityHandle>& children
+    );
 
     static constexpr const char* NotePrefix = "Sketch.";
     static constexpr const char* SplitPrefix = "Sketch.split:";

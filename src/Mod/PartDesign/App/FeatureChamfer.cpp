@@ -167,8 +167,8 @@ App::DocumentObjectExecReturn* Chamfer::execute()
     collectDressUpBaseSeeds(req);
     // R2: resolve ChamferEdge before the maker. Missing / Incompatible
     // skips the maker. Do not pick a similar-length neighbour (I10).
-    const Part::FilletPreflight pre =
-        Part::SemanticHistoryAdapter::preflightFillet(graph, req.filletEdges);
+    const Part::FilletPreflight pre
+        = Part::SemanticHistoryAdapter::preflightFillet(graph, req.filletEdges);
     // A restored semantic seed has no live Binding until its producer has
     // executed in this evaluation.  For the narrow valid-cached-shape
     // republish pass, rebuild from the cached Base subname rather than turning
@@ -187,12 +187,11 @@ App::DocumentObjectExecReturn* Chamfer::execute()
     }
 
     if (graph && graph->hasBindings() && Base.getValue()) {
-        const App::ObjectId baseFeature =
-            static_cast<App::ObjectId>(Base.getValue()->semanticProjectionFeatureId());
-        retainResolvedDressUpSeeds(
-            graph, baseFeature, App::SemanticKind::Edge, req.filletEdges);
-        retainResolvedDressUpSeeds(
-            graph, baseFeature, App::SemanticKind::Face, req.filletAdjacentFaces);
+        const App::ObjectId baseFeature = static_cast<App::ObjectId>(
+            Base.getValue()->semanticProjectionFeatureId()
+        );
+        retainResolvedDressUpSeeds(graph, baseFeature, App::SemanticKind::Edge, req.filletEdges);
+        retainResolvedDressUpSeeds(graph, baseFeature, App::SemanticKind::Face, req.filletAdjacentFaces);
     }
 
     // Candidate A/B (manual-3-dressup-relink-a): see Fillet::execute.
@@ -272,9 +271,7 @@ App::DocumentObjectExecReturn* Chamfer::execute()
                     mkChamfer.Add(size, size2, TopoDS::Edge(edge), TopoDS::Face(face));
                     break;
                 case Part::ChamferType::distanceAngle:
-                    mkChamfer.AddDA(
-                        size, Base::toRadians(size2), TopoDS::Edge(edge), TopoDS::Face(face)
-                    );
+                    mkChamfer.AddDA(size, Base::toRadians(size2), TopoDS::Edge(edge), TopoDS::Face(face));
                     break;
             }
         }
@@ -315,11 +312,12 @@ App::DocumentObjectExecReturn* Chamfer::execute()
         std::deque<TopoDS_Shape> held;
         std::vector<std::pair<App::SemanticId, const void*>> inputs;
         if (graph && Base.getValue()) {
-            const App::ObjectId baseFeature =
-                static_cast<App::ObjectId>(Base.getValue()->semanticProjectionFeatureId());
+            const App::ObjectId baseFeature = static_cast<App::ObjectId>(
+                Base.getValue()->semanticProjectionFeatureId()
+            );
             for (const App::SemanticId& edge : req.filletEdges) {
-                const auto unique = uniqueResolvedDressUpBinding(
-                    graph, edge, baseFeature, App::SemanticKind::Edge);
+                const auto unique
+                    = uniqueResolvedDressUpBinding(graph, edge, baseFeature, App::SemanticKind::Edge);
                 if (!unique) {
                     continue;
                 }
@@ -344,7 +342,7 @@ App::DocumentObjectExecReturn* Chamfer::execute()
             }
             if (!alreadyCaptured) {
                 held.push_back(selectedShape);
-                inputs.push_back({App::SemanticId{}, &held.back()});
+                inputs.push_back({App::SemanticId {}, &held.back()});
             }
         }
         auto indexOf = [&shape](const void* occ) -> App::ElementIndex {
@@ -382,7 +380,13 @@ App::DocumentObjectExecReturn* Chamfer::execute()
             }
         }
         const Part::ApplyResult applied = Part::SemanticHistoryAdapter::applyHistory(
-            graph, fid, eval, "Chamfer", req.filletEdges, toApply);
+            graph,
+            fid,
+            eval,
+            "Chamfer",
+            req.filletEdges,
+            toApply
+        );
         if (applied.boundCount == 0) {
             SemanticEmitter::afterExecute(graph, Opcode::Chamfer, fid, eval, req);
         }

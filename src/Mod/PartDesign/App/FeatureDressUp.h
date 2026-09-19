@@ -63,11 +63,12 @@ public:
     // add argument to return the selected face that edges were derived from
     void getContinuousEdges(Part::TopoShape, std::vector<std::string>&, std::vector<std::string>&);
     // Todo: Post-TNP the above two versions should be able to be factored out.
-    std::vector<TopoShape> getContinuousEdges(const TopoShape& shape,
-                                              const App::SemanticGraph* graph = nullptr);
+    std::vector<TopoShape> getContinuousEdges(
+        const TopoShape& shape,
+        const App::SemanticGraph* graph = nullptr
+    );
 
-    std::vector<TopoShape> getFaces(const TopoShape& shape,
-                                    const App::SemanticGraph* graph = nullptr);
+    std::vector<TopoShape> getFaces(const TopoShape& shape, const App::SemanticGraph* graph = nullptr);
     /// Return selected Face subnames, carrying a uniquely resolved live slot
     /// into the maker. Seed present but non-unique Binding resolve → skip
     /// (D9-S1 fail-closed / silence; match Facebinder). Seedless FaceN-only
@@ -88,11 +89,14 @@ protected:
         const App::SemanticGraph* graph,
         const App::SemanticId& seed,
         App::ObjectId linkedFeature,
-        App::SemanticKind expectedKind) const;
-    void retainResolvedDressUpSeeds(const App::SemanticGraph* graph,
-                                    App::ObjectId linkedFeature,
-                                    App::SemanticKind expectedKind,
-                                    std::vector<App::SemanticId>& seeds) const;
+        App::SemanticKind expectedKind
+    ) const;
+    void retainResolvedDressUpSeeds(
+        const App::SemanticGraph* graph,
+        App::ObjectId linkedFeature,
+        App::SemanticKind expectedKind,
+        std::vector<App::SemanticId>& seeds
+    ) const;
     void onChanged(const App::Property* prop) override;
     void onBaseFeatureRerouted(App::DocumentObject* oldBase, App::DocumentObject* newBase) override;
     /// Before edge/face gather: App PropertyLinkSub element-reference refresh

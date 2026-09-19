@@ -318,7 +318,9 @@ void testEntityIdFromMappedName()
     CHECK(SketchEntityIdMap::entityIdFromMappedName("largest") == SketchEntityIdMap::Invalid);
     CHECK(SketchEntityIdMap::entityIdFromMappedName("") == SketchEntityIdMap::Invalid);
 
-    const auto ids = SketchEntityIdMap::entityIdsFromMappedNames({"g12;SKT", "g3", "g12", "Face1", "e5"});
+    const auto ids = SketchEntityIdMap::entityIdsFromMappedNames(
+        {"g12;SKT", "g3", "g12", "Face1", "e5"}
+    );
     CHECK(ids.size() == 3);
     CHECK(ids[0] == 3);
     CHECK(ids[1] == 5);

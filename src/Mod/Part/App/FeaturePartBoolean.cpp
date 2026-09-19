@@ -55,14 +55,16 @@ using namespace Part;
 namespace
 {
 
-void publishBooleanSemanticHistory(App::DocumentObject* self,
-                                   const char* opcode,
-                                   BRepAlgoAPI_BooleanOperation* mkBool,
-                                   const TopoShape& result,
-                                   App::DocumentObject* baseObj,
-                                   const TopoShape& baseShape,
-                                   App::DocumentObject* toolObj,
-                                   const TopoShape& toolShape)
+void publishBooleanSemanticHistory(
+    App::DocumentObject* self,
+    const char* opcode,
+    BRepAlgoAPI_BooleanOperation* mkBool,
+    const TopoShape& result,
+    App::DocumentObject* baseObj,
+    const TopoShape& baseShape,
+    App::DocumentObject* toolObj,
+    const TopoShape& toolShape
+)
 {
     if (!self || !mkBool || !mkBool->IsDone() || result.isNull()) {
         return;
@@ -92,10 +94,8 @@ void publishBooleanSemanticHistory(App::DocumentObject* self,
         return Part::indexOnPublishedPartnerCoplanar(result, *static_cast<const TopoDS_Shape*>(occ));
     };
 
-    const HistoryTable raw =
-        SemanticHistoryAdapter::fromMaker(mkBool, inputs, indexOf);
-    const HistoryTable unique =
-        SemanticHistoryAdapter::uniqueOneImageGenerated(raw);
+    const HistoryTable raw = SemanticHistoryAdapter::fromMaker(mkBool, inputs, indexOf);
+    const HistoryTable unique = SemanticHistoryAdapter::uniqueOneImageGenerated(raw);
 
     const App::ObjectId selfId = static_cast<App::ObjectId>(self->getID());
     HistoryTable toApply;
@@ -122,8 +122,7 @@ void publishBooleanSemanticHistory(App::DocumentObject* self,
     if (App::Document* doc = self->getDocument()) {
         eval = doc->semanticState().currentEval();
     }
-    SemanticHistoryAdapter::applyHistory(
-        graph, selfId, eval, opcode ? opcode : "", seeds, toApply);
+    SemanticHistoryAdapter::applyHistory(graph, selfId, eval, opcode ? opcode : "", seeds, toApply);
 }
 
 }  // namespace
@@ -260,8 +259,7 @@ App::DocumentObjectExecReturn* Boolean::execute()
         this->Shape.setValue(res);
         // Unique 1-image Base/Tool Face/Edge Binding publish (I13) for Part WB
         // Fillet/Chamfer consume — restored after on-main Boolean rewrite.
-        publishBooleanSemanticHistory(
-            this, opCode(), mkBool.get(), res, base, shapes[0], tool, shapes[1]);
+        publishBooleanSemanticHistory(this, opCode(), mkBool.get(), res, base, shapes[0], tool, shapes[1]);
         copyMaterial(base);
         return Part::Feature::execute();
     }

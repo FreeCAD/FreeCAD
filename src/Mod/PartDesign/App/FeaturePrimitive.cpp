@@ -94,7 +94,6 @@ namespace
 {
 
 
-
 struct LocatedPrimitiveCandidate
 {
     TopoDS_Shape shape;
@@ -108,7 +107,8 @@ struct LocatedPrimitiveCandidate
 /// mint one identity and leave the other unnamed (I13).
 std::vector<LocatedPrimitiveCandidate> uniqueLocatedPrimitiveCandidates(
     const TopoDS_Shape& makerSolid,
-    const Part::TopoShape& published)
+    const Part::TopoShape& published
+)
 {
     std::vector<LocatedPrimitiveCandidate> candidates;
     auto consider = [&](const TopoDS_Shape& sub) {
@@ -127,7 +127,8 @@ std::vector<LocatedPrimitiveCandidate> uniqueLocatedPrimitiveCandidates(
         LocatedPrimitiveCandidate candidate;
         candidate.shape = sub;
         candidate.index = index;
-        candidate.kind = sub.ShapeType() == TopAbs_FACE ? App::SemanticKind::Face : App::SemanticKind::Edge;
+        candidate.kind = sub.ShapeType() == TopAbs_FACE ? App::SemanticKind::Face
+                                                        : App::SemanticKind::Edge;
         candidates.push_back(std::move(candidate));
     };
     for (TopExp_Explorer ex(makerSolid, TopAbs_FACE); ex.More(); ex.Next()) {
@@ -167,7 +168,8 @@ std::vector<std::pair<App::SemanticId, const void*>> collectLocatedPrimitiveInpu
     App::EvalSerial eval,
     const char* opcode,
     const std::vector<LocatedPrimitiveCandidate>& candidates,
-    std::deque<TopoDS_Shape>& held)
+    std::deque<TopoDS_Shape>& held
+)
 {
     std::vector<std::pair<App::SemanticId, const void*>> inputs;
     if (!graph || feature == 0 || !opcode) {
@@ -185,8 +187,7 @@ std::vector<std::pair<App::SemanticId, const void*>> collectLocatedPrimitiveInpu
             }
         }
         else {
-            seed = graph->recordGenerated(
-                candidate.kind, opcode, feature, eval, App::SemanticRole::None);
+            seed = graph->recordGenerated(candidate.kind, opcode, feature, eval, App::SemanticRole::None);
         }
         if (!seed.valid()) {
             continue;
@@ -201,7 +202,8 @@ std::vector<std::pair<App::SemanticId, const void*>> collectLocatedPrimitiveInpu
 void setCutAutoFuzzy(
     FCBRepAlgoAPI_Cut* fcCut,
     const TopTools_ListOfShape& args,
-    const TopTools_ListOfShape& tools)
+    const TopTools_ListOfShape& tools
+)
 {
     Bnd_Box bounds;
     for (TopTools_ListOfShape::Iterator it(args); it.More(); it.Next()) {
@@ -211,8 +213,8 @@ void setCutAutoFuzzy(
         BRepBndLib::Add(it.Value(), bounds);
     }
     fcCut->SetFuzzyValue(
-        Part::FuzzyHelper::getBooleanFuzzy() * sqrt(bounds.SquareExtent())
-        * Precision::Confusion());
+        Part::FuzzyHelper::getBooleanFuzzy() * sqrt(bounds.SquareExtent()) * Precision::Confusion()
+    );
 }
 
 }  // namespace
@@ -321,7 +323,12 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
                 boolOp.makeElementShape(*fcCut, {base, primitiveShape}, maker);
             }
             else {
-                boolOp.makeElementBoolean(maker, {base, primitiveShape}, nullptr, FuzzyTolerance.getValue());
+                boolOp.makeElementBoolean(
+                    maker,
+                    {base, primitiveShape},
+                    nullptr,
+                    FuzzyTolerance.getValue()
+                );
             }
         }
         catch (Standard_Failure&) {
@@ -414,30 +421,42 @@ Box::Box()
 }
 
 
-void FeaturePrimitive::onSubtractiveCutDone(BRepAlgoAPI_BooleanOperation* /*mkCut*/,
-                                              const TopoDS_Shape& /*toolShape*/,
-                                              const TopoDS_Shape& /*baseShape*/,
-                                              App::DocumentObject* /*baseObj*/)
-{
-}
+void FeaturePrimitive::onSubtractiveCutDone(
+    BRepAlgoAPI_BooleanOperation* /*mkCut*/,
+    const TopoDS_Shape& /*toolShape*/,
+    const TopoDS_Shape& /*baseShape*/,
+    App::DocumentObject* /*baseObj*/
+)
+{}
 
-void Box::onSubtractiveCutDone(BRepAlgoAPI_BooleanOperation* mkCut,
-                               const TopoDS_Shape& toolShape,
-                               const TopoDS_Shape& baseShape,
-                               App::DocumentObject* baseObj)
+void Box::onSubtractiveCutDone(
+    BRepAlgoAPI_BooleanOperation* mkCut,
+    const TopoDS_Shape& toolShape,
+    const TopoDS_Shape& baseShape,
+    App::DocumentObject* baseObj
+)
 {
     if (getAddSubType() != FeatureAddSub::Type::Subtractive) {
         return;
     }
-    publishSubtractiveCutSemanticHistory(mkCut, toolShape, baseShape, baseObj, Opcode::SubtractiveBox, "subBoxDiag");
+    publishSubtractiveCutSemanticHistory(
+        mkCut,
+        toolShape,
+        baseShape,
+        baseObj,
+        Opcode::SubtractiveBox,
+        "subBoxDiag"
+    );
 }
 
-void FeaturePrimitive::publishSubtractiveCutSemanticHistory(BRepAlgoAPI_BooleanOperation* mkCut,
-                                                            const TopoDS_Shape& toolShape,
-                                                            const TopoDS_Shape& baseShape,
-                                                            App::DocumentObject* baseObj,
-                                                            Opcode opcode,
-                                                            const char* diagName)
+void FeaturePrimitive::publishSubtractiveCutSemanticHistory(
+    BRepAlgoAPI_BooleanOperation* mkCut,
+    const TopoDS_Shape& toolShape,
+    const TopoDS_Shape& baseShape,
+    App::DocumentObject* baseObj,
+    Opcode opcode,
+    const char* diagName
+)
 {
     SemanticEmitter::publishSubtractiveCutHistory(
         this,
@@ -446,7 +465,8 @@ void FeaturePrimitive::publishSubtractiveCutSemanticHistory(BRepAlgoAPI_BooleanO
         &baseShape,
         baseObj,
         opcode,
-        diagName);
+        diagName
+    );
 }
 
 void Box::publishAdditiveBoxSemanticHistory(BRepPrimAPI_MakeBox* mkBox)
@@ -476,23 +496,25 @@ void Box::publishAdditiveBoxSemanticHistory(BRepPrimAPI_MakeBox* mkBox)
         eval = doc->semanticState().currentEval();
     }
 
-    const std::vector<LocatedPrimitiveCandidate> candidates =
-        uniqueLocatedPrimitiveCandidates(mkBox->Shape(), published);
+    const std::vector<LocatedPrimitiveCandidate> candidates
+        = uniqueLocatedPrimitiveCandidates(mkBox->Shape(), published);
     std::deque<TopoDS_Shape> held;
-    const std::vector<std::pair<App::SemanticId, const void*>> inputs =
-        collectLocatedPrimitiveInputs(
-            graph, selfId, eval, opcodeName(Opcode::AdditiveBox), candidates, held);
+    const std::vector<std::pair<App::SemanticId, const void*>> inputs = collectLocatedPrimitiveInputs(
+        graph,
+        selfId,
+        eval,
+        opcodeName(Opcode::AdditiveBox),
+        candidates,
+        held
+    );
 
 
     AfterExecuteRequest req;
     req.allowSequentialFaceN = false;
     if (inputs.empty()) {
         SemanticEmitter::afterExecute(graph, Opcode::AdditiveBox, selfId, eval, req);
-        SemanticEmitter::appendAfterExecuteNote(
-            "skip emit: no unique AdditiveBox maker images");
-        Base::Console().message(
-            "TESTS boxDiag %s\n",
-            SemanticEmitter::lastAfterExecuteNote().c_str());
+        SemanticEmitter::appendAfterExecuteNote("skip emit: no unique AdditiveBox maker images");
+        Base::Console().message("TESTS boxDiag %s\n", SemanticEmitter::lastAfterExecuteNote().c_str());
         return;
     }
 
@@ -504,10 +526,8 @@ void Box::publishAdditiveBoxSemanticHistory(BRepPrimAPI_MakeBox* mkBox)
         return Part::indexOnPublished(published, *static_cast<const TopoDS_Shape*>(occ));
     };
 
-    const Part::HistoryTable raw =
-        Part::SemanticHistoryAdapter::fromMaker(mkBox, inputs, indexOf);
-    Part::HistoryTable unique =
-        Part::SemanticHistoryAdapter::uniqueOneImageGenerated(raw);
+    const Part::HistoryTable raw = Part::SemanticHistoryAdapter::fromMaker(mkBox, inputs, indexOf);
+    Part::HistoryTable unique = Part::SemanticHistoryAdapter::uniqueOneImageGenerated(raw);
     // MakeBox has no Generated/Modified arguments. Unmodified survivor of the
     // live maker FACE/EDGE is the unique 1-image. If fromMaker is empty
     // (TShape miss), bind the already-located maker images (I13 unnamed skip).
@@ -519,8 +539,8 @@ void Box::publishAdditiveBoxSemanticHistory(BRepPrimAPI_MakeBox* mkBox)
             Part::HistoryRecord rec;
             rec.fromSeed = pair.first;
             rec.kind = App::EventKind::Generated;
-            rec.toIndex = Part::indexOnPublished(
-                published, *static_cast<const TopoDS_Shape*>(pair.second));
+            rec.toIndex
+                = Part::indexOnPublished(published, *static_cast<const TopoDS_Shape*>(pair.second));
             if (rec.toIndex.type == "Edge") {
                 rec.outputKind = App::SemanticKind::Edge;
             }
@@ -558,11 +578,9 @@ void Box::publishAdditiveBoxSemanticHistory(BRepPrimAPI_MakeBox* mkBox)
     }
     SemanticEmitter::afterExecute(graph, Opcode::AdditiveBox, selfId, eval, req);
     SemanticEmitter::appendAfterExecuteNote(
-        std::string("bound=") + std::to_string(nBound)
-        + " named=" + std::to_string(nBound) + " unnamed=0");
-    Base::Console().message(
-        "TESTS boxDiag %s\n",
-        SemanticEmitter::lastAfterExecuteNote().c_str());
+        std::string("bound=") + std::to_string(nBound) + " named=" + std::to_string(nBound) + " unnamed=0"
+    );
+    Base::Console().message("TESTS boxDiag %s\n", SemanticEmitter::lastAfterExecuteNote().c_str());
 }
 
 App::DocumentObjectExecReturn* Box::execute()
@@ -631,12 +649,24 @@ Cylinder::Cylinder()
     primitiveType = FeaturePrimitive::Cylinder;
 }
 
-void Cylinder::onSubtractiveCutDone(BRepAlgoAPI_BooleanOperation* mkCut, const TopoDS_Shape& toolShape, const TopoDS_Shape& baseShape, App::DocumentObject* baseObj)
+void Cylinder::onSubtractiveCutDone(
+    BRepAlgoAPI_BooleanOperation* mkCut,
+    const TopoDS_Shape& toolShape,
+    const TopoDS_Shape& baseShape,
+    App::DocumentObject* baseObj
+)
 {
     if (getAddSubType() != FeatureAddSub::Type::Subtractive) {
         return;
     }
-    publishSubtractiveCutSemanticHistory(mkCut, toolShape, baseShape, baseObj, Opcode::SubtractiveCylinder, "subCylinderDiag");
+    publishSubtractiveCutSemanticHistory(
+        mkCut,
+        toolShape,
+        baseShape,
+        baseObj,
+        Opcode::SubtractiveCylinder,
+        "subCylinderDiag"
+    );
 }
 
 void Cylinder::publishAdditiveCylinderSemanticHistory(BRepPrimAPI_MakeCylinder* mkCylr)
@@ -666,23 +696,25 @@ void Cylinder::publishAdditiveCylinderSemanticHistory(BRepPrimAPI_MakeCylinder* 
         eval = doc->semanticState().currentEval();
     }
 
-    const std::vector<LocatedPrimitiveCandidate> candidates =
-        uniqueLocatedPrimitiveCandidates(mkCylr->Shape(), published);
+    const std::vector<LocatedPrimitiveCandidate> candidates
+        = uniqueLocatedPrimitiveCandidates(mkCylr->Shape(), published);
     std::deque<TopoDS_Shape> held;
-    const std::vector<std::pair<App::SemanticId, const void*>> inputs =
-        collectLocatedPrimitiveInputs(
-            graph, selfId, eval, opcodeName(Opcode::AdditiveCylinder), candidates, held);
+    const std::vector<std::pair<App::SemanticId, const void*>> inputs = collectLocatedPrimitiveInputs(
+        graph,
+        selfId,
+        eval,
+        opcodeName(Opcode::AdditiveCylinder),
+        candidates,
+        held
+    );
 
 
     AfterExecuteRequest req;
     req.allowSequentialFaceN = false;
     if (inputs.empty()) {
         SemanticEmitter::afterExecute(graph, Opcode::AdditiveCylinder, selfId, eval, req);
-        SemanticEmitter::appendAfterExecuteNote(
-            "skip emit: no unique AdditiveCylinder maker images");
-        Base::Console().message(
-            "TESTS cylDiag %s\n",
-            SemanticEmitter::lastAfterExecuteNote().c_str());
+        SemanticEmitter::appendAfterExecuteNote("skip emit: no unique AdditiveCylinder maker images");
+        Base::Console().message("TESTS cylDiag %s\n", SemanticEmitter::lastAfterExecuteNote().c_str());
         return;
     }
 
@@ -694,10 +726,8 @@ void Cylinder::publishAdditiveCylinderSemanticHistory(BRepPrimAPI_MakeCylinder* 
         return Part::indexOnPublished(published, *static_cast<const TopoDS_Shape*>(occ));
     };
 
-    const Part::HistoryTable raw =
-        Part::SemanticHistoryAdapter::fromMaker(mkCylr, inputs, indexOf);
-    Part::HistoryTable unique =
-        Part::SemanticHistoryAdapter::uniqueOneImageGenerated(raw);
+    const Part::HistoryTable raw = Part::SemanticHistoryAdapter::fromMaker(mkCylr, inputs, indexOf);
+    Part::HistoryTable unique = Part::SemanticHistoryAdapter::uniqueOneImageGenerated(raw);
     // MakeCylinder has no Generated/Modified arguments. Unmodified survivor of
     // the live maker FACE/EDGE is the unique 1-image. If fromMaker is empty
     // (TShape miss / makePrism taper), bind already-located maker images
@@ -710,8 +740,8 @@ void Cylinder::publishAdditiveCylinderSemanticHistory(BRepPrimAPI_MakeCylinder* 
             Part::HistoryRecord rec;
             rec.fromSeed = pair.first;
             rec.kind = App::EventKind::Generated;
-            rec.toIndex = Part::indexOnPublished(
-                published, *static_cast<const TopoDS_Shape*>(pair.second));
+            rec.toIndex
+                = Part::indexOnPublished(published, *static_cast<const TopoDS_Shape*>(pair.second));
             if (rec.toIndex.type == "Edge") {
                 rec.outputKind = App::SemanticKind::Edge;
             }
@@ -750,11 +780,9 @@ void Cylinder::publishAdditiveCylinderSemanticHistory(BRepPrimAPI_MakeCylinder* 
     }
     SemanticEmitter::afterExecute(graph, Opcode::AdditiveCylinder, selfId, eval, req);
     SemanticEmitter::appendAfterExecuteNote(
-        std::string("bound=") + std::to_string(nBound)
-        + " named=" + std::to_string(nBound) + " unnamed=0");
-    Base::Console().message(
-        "TESTS cylDiag %s\n",
-        SemanticEmitter::lastAfterExecuteNote().c_str());
+        std::string("bound=") + std::to_string(nBound) + " named=" + std::to_string(nBound) + " unnamed=0"
+    );
+    Base::Console().message("TESTS cylDiag %s\n", SemanticEmitter::lastAfterExecuteNote().c_str());
 }
 
 App::DocumentObjectExecReturn* Cylinder::execute()
@@ -790,8 +818,7 @@ App::DocumentObjectExecReturn* Cylinder::execute()
         TopoDS_Shape result;
         const double fa = FirstAngle.getValue();
         const double sa = SecondAngle.getValue();
-        const bool taper =
-            fa > Precision::Angular() || fa < -Precision::Angular()
+        const bool taper = fa > Precision::Angular() || fa < -Precision::Angular()
             || sa > Precision::Angular() || sa < -Precision::Angular();
         if (taper) {
             BRepPrim_Cylinder prim = mkCylr.Cylinder();
@@ -843,12 +870,24 @@ Sphere::Sphere()
     primitiveType = FeaturePrimitive::Sphere;
 }
 
-void Sphere::onSubtractiveCutDone(BRepAlgoAPI_BooleanOperation* mkCut, const TopoDS_Shape& toolShape, const TopoDS_Shape& baseShape, App::DocumentObject* baseObj)
+void Sphere::onSubtractiveCutDone(
+    BRepAlgoAPI_BooleanOperation* mkCut,
+    const TopoDS_Shape& toolShape,
+    const TopoDS_Shape& baseShape,
+    App::DocumentObject* baseObj
+)
 {
     if (getAddSubType() != FeatureAddSub::Type::Subtractive) {
         return;
     }
-    publishSubtractiveCutSemanticHistory(mkCut, toolShape, baseShape, baseObj, Opcode::SubtractiveSphere, "subSphereDiag");
+    publishSubtractiveCutSemanticHistory(
+        mkCut,
+        toolShape,
+        baseShape,
+        baseObj,
+        Opcode::SubtractiveSphere,
+        "subSphereDiag"
+    );
 }
 
 void Sphere::publishAdditiveSphereSemanticHistory(BRepPrimAPI_MakeSphere* mkSphere)
@@ -878,23 +917,28 @@ void Sphere::publishAdditiveSphereSemanticHistory(BRepPrimAPI_MakeSphere* mkSphe
         eval = doc->semanticState().currentEval();
     }
 
-    const std::vector<LocatedPrimitiveCandidate> candidates =
-        uniqueLocatedPrimitiveCandidates(mkSphere->Shape(), published);
+    const std::vector<LocatedPrimitiveCandidate> candidates
+        = uniqueLocatedPrimitiveCandidates(mkSphere->Shape(), published);
     std::deque<TopoDS_Shape> held;
-    const std::vector<std::pair<App::SemanticId, const void*>> inputs =
-        collectLocatedPrimitiveInputs(
-            graph, selfId, eval, opcodeName(Opcode::AdditiveSphere), candidates, held);
+    const std::vector<std::pair<App::SemanticId, const void*>> inputs = collectLocatedPrimitiveInputs(
+        graph,
+        selfId,
+        eval,
+        opcodeName(Opcode::AdditiveSphere),
+        candidates,
+        held
+    );
 
 
     AfterExecuteRequest req;
     req.allowSequentialFaceN = false;
     if (inputs.empty()) {
         SemanticEmitter::afterExecute(graph, Opcode::AdditiveSphere, selfId, eval, req);
-        SemanticEmitter::appendAfterExecuteNote(
-            "skip emit: no unique AdditiveSphere maker images");
+        SemanticEmitter::appendAfterExecuteNote("skip emit: no unique AdditiveSphere maker images");
         Base::Console().message(
             "TESTS sphereDiag %s\n",
-            SemanticEmitter::lastAfterExecuteNote().c_str());
+            SemanticEmitter::lastAfterExecuteNote().c_str()
+        );
         return;
     }
 
@@ -906,10 +950,8 @@ void Sphere::publishAdditiveSphereSemanticHistory(BRepPrimAPI_MakeSphere* mkSphe
         return Part::indexOnPublished(published, *static_cast<const TopoDS_Shape*>(occ));
     };
 
-    const Part::HistoryTable raw =
-        Part::SemanticHistoryAdapter::fromMaker(mkSphere, inputs, indexOf);
-    Part::HistoryTable unique =
-        Part::SemanticHistoryAdapter::uniqueOneImageGenerated(raw);
+    const Part::HistoryTable raw = Part::SemanticHistoryAdapter::fromMaker(mkSphere, inputs, indexOf);
+    Part::HistoryTable unique = Part::SemanticHistoryAdapter::uniqueOneImageGenerated(raw);
     // MakeSphere has no Generated/Modified arguments. Unmodified survivor of
     // the live maker FACE/EDGE is the unique 1-image. If fromMaker is empty
     // (TShape miss / seam+pole ambiguity), bind already-located maker images
@@ -922,8 +964,8 @@ void Sphere::publishAdditiveSphereSemanticHistory(BRepPrimAPI_MakeSphere* mkSphe
             Part::HistoryRecord rec;
             rec.fromSeed = pair.first;
             rec.kind = App::EventKind::Generated;
-            rec.toIndex = Part::indexOnPublished(
-                published, *static_cast<const TopoDS_Shape*>(pair.second));
+            rec.toIndex
+                = Part::indexOnPublished(published, *static_cast<const TopoDS_Shape*>(pair.second));
             if (rec.toIndex.type == "Edge") {
                 rec.outputKind = App::SemanticKind::Edge;
             }
@@ -962,11 +1004,9 @@ void Sphere::publishAdditiveSphereSemanticHistory(BRepPrimAPI_MakeSphere* mkSphe
     }
     SemanticEmitter::afterExecute(graph, Opcode::AdditiveSphere, selfId, eval, req);
     SemanticEmitter::appendAfterExecuteNote(
-        std::string("bound=") + std::to_string(nBound)
-        + " named=" + std::to_string(nBound) + " unnamed=0");
-    Base::Console().message(
-        "TESTS sphereDiag %s\n",
-        SemanticEmitter::lastAfterExecuteNote().c_str());
+        std::string("bound=") + std::to_string(nBound) + " named=" + std::to_string(nBound) + " unnamed=0"
+    );
+    Base::Console().message("TESTS sphereDiag %s\n", SemanticEmitter::lastAfterExecuteNote().c_str());
 }
 
 App::DocumentObjectExecReturn* Sphere::execute()
@@ -1030,10 +1070,22 @@ Cone::Cone()
     primitiveType = FeaturePrimitive::Cone;
 }
 
-void Cone::onSubtractiveCutDone(BRepAlgoAPI_BooleanOperation* mkCut, const TopoDS_Shape& toolShape, const TopoDS_Shape& baseShape, App::DocumentObject* baseObj)
+void Cone::onSubtractiveCutDone(
+    BRepAlgoAPI_BooleanOperation* mkCut,
+    const TopoDS_Shape& toolShape,
+    const TopoDS_Shape& baseShape,
+    App::DocumentObject* baseObj
+)
 {
     if (getAddSubType() == FeatureAddSub::Type::Subtractive) {
-        publishSubtractiveCutSemanticHistory(mkCut, toolShape, baseShape, baseObj, Opcode::SubtractiveCone, "subConeDiag");
+        publishSubtractiveCutSemanticHistory(
+            mkCut,
+            toolShape,
+            baseShape,
+            baseObj,
+            Opcode::SubtractiveCone,
+            "subConeDiag"
+        );
     }
 }
 
@@ -1065,23 +1117,25 @@ void Cone::publishAdditiveConeSemanticHistory(BRepPrimAPI_MakeCone* mkCone)
         eval = doc->semanticState().currentEval();
     }
 
-    const std::vector<LocatedPrimitiveCandidate> candidates =
-        uniqueLocatedPrimitiveCandidates(mkCone->Shape(), published);
+    const std::vector<LocatedPrimitiveCandidate> candidates
+        = uniqueLocatedPrimitiveCandidates(mkCone->Shape(), published);
     std::deque<TopoDS_Shape> held;
-    const std::vector<std::pair<App::SemanticId, const void*>> inputs =
-        collectLocatedPrimitiveInputs(
-            graph, selfId, eval, opcodeName(Opcode::AdditiveCone), candidates, held);
+    const std::vector<std::pair<App::SemanticId, const void*>> inputs = collectLocatedPrimitiveInputs(
+        graph,
+        selfId,
+        eval,
+        opcodeName(Opcode::AdditiveCone),
+        candidates,
+        held
+    );
 
 
     AfterExecuteRequest req;
     req.allowSequentialFaceN = false;
     if (inputs.empty()) {
         SemanticEmitter::afterExecute(graph, Opcode::AdditiveCone, selfId, eval, req);
-        SemanticEmitter::appendAfterExecuteNote(
-            "skip emit: no unique AdditiveCone maker images");
-        Base::Console().message(
-            "TESTS coneDiag %s\n",
-            SemanticEmitter::lastAfterExecuteNote().c_str());
+        SemanticEmitter::appendAfterExecuteNote("skip emit: no unique AdditiveCone maker images");
+        Base::Console().message("TESTS coneDiag %s\n", SemanticEmitter::lastAfterExecuteNote().c_str());
         return;
     }
 
@@ -1093,10 +1147,8 @@ void Cone::publishAdditiveConeSemanticHistory(BRepPrimAPI_MakeCone* mkCone)
         return Part::indexOnPublished(published, *static_cast<const TopoDS_Shape*>(occ));
     };
 
-    const Part::HistoryTable raw =
-        Part::SemanticHistoryAdapter::fromMaker(mkCone, inputs, indexOf);
-    Part::HistoryTable unique =
-        Part::SemanticHistoryAdapter::uniqueOneImageGenerated(raw);
+    const Part::HistoryTable raw = Part::SemanticHistoryAdapter::fromMaker(mkCone, inputs, indexOf);
+    Part::HistoryTable unique = Part::SemanticHistoryAdapter::uniqueOneImageGenerated(raw);
     // MakeCone may lack Generated/Modified arguments. Unmodified survivor of
     // the live maker FACE/EDGE is the unique 1-image. If fromMaker is empty
     // (TShape miss / seam ambiguity), bind already-located maker images
@@ -1109,8 +1161,8 @@ void Cone::publishAdditiveConeSemanticHistory(BRepPrimAPI_MakeCone* mkCone)
             Part::HistoryRecord rec;
             rec.fromSeed = pair.first;
             rec.kind = App::EventKind::Generated;
-            rec.toIndex = Part::indexOnPublished(
-                published, *static_cast<const TopoDS_Shape*>(pair.second));
+            rec.toIndex
+                = Part::indexOnPublished(published, *static_cast<const TopoDS_Shape*>(pair.second));
             if (rec.toIndex.type == "Edge") {
                 rec.outputKind = App::SemanticKind::Edge;
             }
@@ -1149,11 +1201,9 @@ void Cone::publishAdditiveConeSemanticHistory(BRepPrimAPI_MakeCone* mkCone)
     }
     SemanticEmitter::afterExecute(graph, Opcode::AdditiveCone, selfId, eval, req);
     SemanticEmitter::appendAfterExecuteNote(
-        std::string("bound=") + std::to_string(nBound)
-        + " named=" + std::to_string(nBound) + " unnamed=0");
-    Base::Console().message(
-        "TESTS coneDiag %s\n",
-        SemanticEmitter::lastAfterExecuteNote().c_str());
+        std::string("bound=") + std::to_string(nBound) + " named=" + std::to_string(nBound) + " unnamed=0"
+    );
+    Base::Console().message("TESTS coneDiag %s\n", SemanticEmitter::lastAfterExecuteNote().c_str());
 }
 
 App::DocumentObjectExecReturn* Cone::execute()
@@ -1254,10 +1304,22 @@ Ellipsoid::Ellipsoid()
     primitiveType = FeaturePrimitive::Ellipsoid;
 }
 
-void Ellipsoid::onSubtractiveCutDone(BRepAlgoAPI_BooleanOperation* mkCut, const TopoDS_Shape& toolShape, const TopoDS_Shape& baseShape, App::DocumentObject* baseObj)
+void Ellipsoid::onSubtractiveCutDone(
+    BRepAlgoAPI_BooleanOperation* mkCut,
+    const TopoDS_Shape& toolShape,
+    const TopoDS_Shape& baseShape,
+    App::DocumentObject* baseObj
+)
 {
     if (getAddSubType() == FeatureAddSub::Type::Subtractive) {
-        publishSubtractiveCutSemanticHistory(mkCut, toolShape, baseShape, baseObj, Opcode::SubtractiveEllipsoid, "subEllipsoidDiag");
+        publishSubtractiveCutSemanticHistory(
+            mkCut,
+            toolShape,
+            baseShape,
+            baseObj,
+            Opcode::SubtractiveEllipsoid,
+            "subEllipsoidDiag"
+        );
     }
 }
 
@@ -1375,12 +1437,17 @@ void Ellipsoid::publishAdditiveEllipsoidSemanticHistory(const TopoDS_Shape& make
         eval = doc->semanticState().currentEval();
     }
 
-    const std::vector<LocatedPrimitiveCandidate> candidates =
-        uniqueLocatedPrimitiveCandidates(makerSolid, published);
+    const std::vector<LocatedPrimitiveCandidate> candidates
+        = uniqueLocatedPrimitiveCandidates(makerSolid, published);
     std::deque<TopoDS_Shape> held;
-    const std::vector<std::pair<App::SemanticId, const void*>> inputs =
-        collectLocatedPrimitiveInputs(
-            graph, selfId, eval, opcodeName(Opcode::AdditiveEllipsoid), candidates, held);
+    const std::vector<std::pair<App::SemanticId, const void*>> inputs = collectLocatedPrimitiveInputs(
+        graph,
+        selfId,
+        eval,
+        opcodeName(Opcode::AdditiveEllipsoid),
+        candidates,
+        held
+    );
 
     AfterExecuteRequest req;
     req.allowSequentialFaceN = false;
@@ -1390,11 +1457,11 @@ void Ellipsoid::publishAdditiveEllipsoidSemanticHistory(const TopoDS_Shape& make
     // circular/elliptical equator (Sphere pick class).
     if (inputs.empty()) {
         SemanticEmitter::afterExecute(graph, Opcode::AdditiveEllipsoid, selfId, eval, req);
-        SemanticEmitter::appendAfterExecuteNote(
-            "skip emit: no unique AdditiveEllipsoid maker images");
+        SemanticEmitter::appendAfterExecuteNote("skip emit: no unique AdditiveEllipsoid maker images");
         Base::Console().message(
             "TESTS ellipsoidDiag %s\n",
-            SemanticEmitter::lastAfterExecuteNote().c_str());
+            SemanticEmitter::lastAfterExecuteNote().c_str()
+        );
         return;
     }
 
@@ -1406,8 +1473,7 @@ void Ellipsoid::publishAdditiveEllipsoidSemanticHistory(const TopoDS_Shape& make
         Part::HistoryRecord rec;
         rec.fromSeed = pair.first;
         rec.kind = App::EventKind::Generated;
-        rec.toIndex = Part::indexOnPublished(
-            published, *static_cast<const TopoDS_Shape*>(pair.second));
+        rec.toIndex = Part::indexOnPublished(published, *static_cast<const TopoDS_Shape*>(pair.second));
         if (rec.toIndex.type == "Edge") {
             rec.outputKind = App::SemanticKind::Edge;
         }
@@ -1445,11 +1511,9 @@ void Ellipsoid::publishAdditiveEllipsoidSemanticHistory(const TopoDS_Shape& make
     }
     SemanticEmitter::afterExecute(graph, Opcode::AdditiveEllipsoid, selfId, eval, req);
     SemanticEmitter::appendAfterExecuteNote(
-        std::string("bound=") + std::to_string(nBound)
-        + " named=" + std::to_string(nBound) + " unnamed=0");
-    Base::Console().message(
-        "TESTS ellipsoidDiag %s\n",
-        SemanticEmitter::lastAfterExecuteNote().c_str());
+        std::string("bound=") + std::to_string(nBound) + " named=" + std::to_string(nBound) + " unnamed=0"
+    );
+    Base::Console().message("TESTS ellipsoidDiag %s\n", SemanticEmitter::lastAfterExecuteNote().c_str());
 }
 
 PROPERTY_SOURCE(PartDesign::AdditiveEllipsoid, PartDesign::Ellipsoid)
@@ -1474,10 +1538,22 @@ Torus::Torus()
     primitiveType = FeaturePrimitive::Torus;
 }
 
-void Torus::onSubtractiveCutDone(BRepAlgoAPI_BooleanOperation* mkCut, const TopoDS_Shape& toolShape, const TopoDS_Shape& baseShape, App::DocumentObject* baseObj)
+void Torus::onSubtractiveCutDone(
+    BRepAlgoAPI_BooleanOperation* mkCut,
+    const TopoDS_Shape& toolShape,
+    const TopoDS_Shape& baseShape,
+    App::DocumentObject* baseObj
+)
 {
     if (getAddSubType() == FeatureAddSub::Type::Subtractive) {
-        publishSubtractiveCutSemanticHistory(mkCut, toolShape, baseShape, baseObj, Opcode::SubtractiveTorus, "subTorusDiag");
+        publishSubtractiveCutSemanticHistory(
+            mkCut,
+            toolShape,
+            baseShape,
+            baseObj,
+            Opcode::SubtractiveTorus,
+            "subTorusDiag"
+        );
     }
 }
 
@@ -1508,23 +1584,25 @@ void Torus::publishAdditiveTorusSemanticHistory(BRepPrimAPI_MakeTorus* mkTorus)
         eval = doc->semanticState().currentEval();
     }
 
-    const std::vector<LocatedPrimitiveCandidate> candidates =
-        uniqueLocatedPrimitiveCandidates(mkTorus->Shape(), published);
+    const std::vector<LocatedPrimitiveCandidate> candidates
+        = uniqueLocatedPrimitiveCandidates(mkTorus->Shape(), published);
     std::deque<TopoDS_Shape> held;
-    const std::vector<std::pair<App::SemanticId, const void*>> inputs =
-        collectLocatedPrimitiveInputs(
-            graph, selfId, eval, opcodeName(Opcode::AdditiveTorus), candidates, held);
+    const std::vector<std::pair<App::SemanticId, const void*>> inputs = collectLocatedPrimitiveInputs(
+        graph,
+        selfId,
+        eval,
+        opcodeName(Opcode::AdditiveTorus),
+        candidates,
+        held
+    );
 
 
     AfterExecuteRequest req;
     req.allowSequentialFaceN = false;
     if (inputs.empty()) {
         SemanticEmitter::afterExecute(graph, Opcode::AdditiveTorus, selfId, eval, req);
-        SemanticEmitter::appendAfterExecuteNote(
-            "skip emit: no unique AdditiveTorus maker images");
-        Base::Console().message(
-            "TESTS torusDiag %s\n",
-            SemanticEmitter::lastAfterExecuteNote().c_str());
+        SemanticEmitter::appendAfterExecuteNote("skip emit: no unique AdditiveTorus maker images");
+        Base::Console().message("TESTS torusDiag %s\n", SemanticEmitter::lastAfterExecuteNote().c_str());
         return;
     }
 
@@ -1536,10 +1614,8 @@ void Torus::publishAdditiveTorusSemanticHistory(BRepPrimAPI_MakeTorus* mkTorus)
         return Part::indexOnPublished(published, *static_cast<const TopoDS_Shape*>(occ));
     };
 
-    const Part::HistoryTable raw =
-        Part::SemanticHistoryAdapter::fromMaker(mkTorus, inputs, indexOf);
-    Part::HistoryTable unique =
-        Part::SemanticHistoryAdapter::uniqueOneImageGenerated(raw);
+    const Part::HistoryTable raw = Part::SemanticHistoryAdapter::fromMaker(mkTorus, inputs, indexOf);
+    Part::HistoryTable unique = Part::SemanticHistoryAdapter::uniqueOneImageGenerated(raw);
     // MakeTorus may lack Generated/Modified arguments. Unmodified survivor of
     // the live maker FACE/EDGE is the unique 1-image. If fromMaker is empty
     // (TShape miss / seam ambiguity), bind already-located maker images
@@ -1554,8 +1630,8 @@ void Torus::publishAdditiveTorusSemanticHistory(BRepPrimAPI_MakeTorus* mkTorus)
             Part::HistoryRecord rec;
             rec.fromSeed = pair.first;
             rec.kind = App::EventKind::Generated;
-            rec.toIndex = Part::indexOnPublished(
-                published, *static_cast<const TopoDS_Shape*>(pair.second));
+            rec.toIndex
+                = Part::indexOnPublished(published, *static_cast<const TopoDS_Shape*>(pair.second));
             if (rec.toIndex.type == "Edge") {
                 rec.outputKind = App::SemanticKind::Edge;
             }
@@ -1594,11 +1670,9 @@ void Torus::publishAdditiveTorusSemanticHistory(BRepPrimAPI_MakeTorus* mkTorus)
     }
     SemanticEmitter::afterExecute(graph, Opcode::AdditiveTorus, selfId, eval, req);
     SemanticEmitter::appendAfterExecuteNote(
-        std::string("bound=") + std::to_string(nBound)
-        + " named=" + std::to_string(nBound) + " unnamed=0");
-    Base::Console().message(
-        "TESTS torusDiag %s\n",
-        SemanticEmitter::lastAfterExecuteNote().c_str());
+        std::string("bound=") + std::to_string(nBound) + " named=" + std::to_string(nBound) + " unnamed=0"
+    );
+    Base::Console().message("TESTS torusDiag %s\n", SemanticEmitter::lastAfterExecuteNote().c_str());
 }
 
 App::DocumentObjectExecReturn* Torus::execute()
@@ -1689,10 +1763,22 @@ Prism::Prism()
     primitiveType = FeaturePrimitive::Prism;
 }
 
-void Prism::onSubtractiveCutDone(BRepAlgoAPI_BooleanOperation* mkCut, const TopoDS_Shape& toolShape, const TopoDS_Shape& baseShape, App::DocumentObject* baseObj)
+void Prism::onSubtractiveCutDone(
+    BRepAlgoAPI_BooleanOperation* mkCut,
+    const TopoDS_Shape& toolShape,
+    const TopoDS_Shape& baseShape,
+    App::DocumentObject* baseObj
+)
 {
     if (getAddSubType() == FeatureAddSub::Type::Subtractive) {
-        publishSubtractiveCutSemanticHistory(mkCut, toolShape, baseShape, baseObj, Opcode::SubtractivePrism, "subPrismDiag");
+        publishSubtractiveCutSemanticHistory(
+            mkCut,
+            toolShape,
+            baseShape,
+            baseObj,
+            Opcode::SubtractivePrism,
+            "subPrismDiag"
+        );
     }
 }
 
@@ -1723,23 +1809,25 @@ void Prism::publishAdditivePrismSemanticHistory(BRepPrimAPI_MakePrism* mkPrism)
         eval = doc->semanticState().currentEval();
     }
 
-    const std::vector<LocatedPrimitiveCandidate> candidates =
-        uniqueLocatedPrimitiveCandidates(mkPrism->Shape(), published);
+    const std::vector<LocatedPrimitiveCandidate> candidates
+        = uniqueLocatedPrimitiveCandidates(mkPrism->Shape(), published);
     std::deque<TopoDS_Shape> held;
-    const std::vector<std::pair<App::SemanticId, const void*>> inputs =
-        collectLocatedPrimitiveInputs(
-            graph, selfId, eval, opcodeName(Opcode::AdditivePrism), candidates, held);
+    const std::vector<std::pair<App::SemanticId, const void*>> inputs = collectLocatedPrimitiveInputs(
+        graph,
+        selfId,
+        eval,
+        opcodeName(Opcode::AdditivePrism),
+        candidates,
+        held
+    );
 
 
     AfterExecuteRequest req;
     req.allowSequentialFaceN = false;
     if (inputs.empty()) {
         SemanticEmitter::afterExecute(graph, Opcode::AdditivePrism, selfId, eval, req);
-        SemanticEmitter::appendAfterExecuteNote(
-            "skip emit: no unique AdditivePrism maker images");
-        Base::Console().message(
-            "TESTS prismDiag %s\n",
-            SemanticEmitter::lastAfterExecuteNote().c_str());
+        SemanticEmitter::appendAfterExecuteNote("skip emit: no unique AdditivePrism maker images");
+        Base::Console().message("TESTS prismDiag %s\n", SemanticEmitter::lastAfterExecuteNote().c_str());
         return;
     }
 
@@ -1751,10 +1839,8 @@ void Prism::publishAdditivePrismSemanticHistory(BRepPrimAPI_MakePrism* mkPrism)
         return Part::indexOnPublished(published, *static_cast<const TopoDS_Shape*>(occ));
     };
 
-    const Part::HistoryTable raw =
-        Part::SemanticHistoryAdapter::fromMaker(mkPrism, inputs, indexOf);
-    Part::HistoryTable unique =
-        Part::SemanticHistoryAdapter::uniqueOneImageGenerated(raw);
+    const Part::HistoryTable raw = Part::SemanticHistoryAdapter::fromMaker(mkPrism, inputs, indexOf);
+    Part::HistoryTable unique = Part::SemanticHistoryAdapter::uniqueOneImageGenerated(raw);
     // MakePrism may lack Generated/Modified arguments for solid FACE/EDGE.
     // Unmodified survivor of the live maker FACE/EDGE is the unique 1-image
     // (Box clone). If fromMaker is empty (TShape miss), bind already-located
@@ -1763,8 +1849,7 @@ void Prism::publishAdditivePrismSemanticHistory(BRepPrimAPI_MakePrism* mkPrism)
     // After unique-slot counting, fromMaker may uniquely keep Faces only;
     // always supplement uncovered locate Edge slots (unique.empty() full
     // fallback is a special case of the same helper).
-    unique = Part::SemanticHistoryAdapter::supplementLocatedInputs(
-        unique, inputs, indexOf);
+    unique = Part::SemanticHistoryAdapter::supplementLocatedInputs(unique, inputs, indexOf);
 
     // Bind the 0-to-1 AdditivePrism identities (fromSeed). Do not
     // applyHistory remint children — that would double-bind FaceN/EdgeN (I13).
@@ -1790,11 +1875,9 @@ void Prism::publishAdditivePrismSemanticHistory(BRepPrimAPI_MakePrism* mkPrism)
     }
     SemanticEmitter::afterExecute(graph, Opcode::AdditivePrism, selfId, eval, req);
     SemanticEmitter::appendAfterExecuteNote(
-        std::string("bound=") + std::to_string(nBound)
-        + " named=" + std::to_string(nBound) + " unnamed=0");
-    Base::Console().message(
-        "TESTS prismDiag %s\n",
-        SemanticEmitter::lastAfterExecuteNote().c_str());
+        std::string("bound=") + std::to_string(nBound) + " named=" + std::to_string(nBound) + " unnamed=0"
+    );
+    Base::Console().message("TESTS prismDiag %s\n", SemanticEmitter::lastAfterExecuteNote().c_str());
 }
 
 App::DocumentObjectExecReturn* Prism::execute()
@@ -1892,10 +1975,22 @@ Wedge::Wedge()
     primitiveType = FeaturePrimitive::Wedge;
 }
 
-void Wedge::onSubtractiveCutDone(BRepAlgoAPI_BooleanOperation* mkCut, const TopoDS_Shape& toolShape, const TopoDS_Shape& baseShape, App::DocumentObject* baseObj)
+void Wedge::onSubtractiveCutDone(
+    BRepAlgoAPI_BooleanOperation* mkCut,
+    const TopoDS_Shape& toolShape,
+    const TopoDS_Shape& baseShape,
+    App::DocumentObject* baseObj
+)
 {
     if (getAddSubType() == FeatureAddSub::Type::Subtractive) {
-        publishSubtractiveCutSemanticHistory(mkCut, toolShape, baseShape, baseObj, Opcode::SubtractiveWedge, "subWedgeDiag");
+        publishSubtractiveCutSemanticHistory(
+            mkCut,
+            toolShape,
+            baseShape,
+            baseObj,
+            Opcode::SubtractiveWedge,
+            "subWedgeDiag"
+        );
     }
 }
 
@@ -1955,8 +2050,8 @@ App::DocumentObjectExecReturn* Wedge::execute()
         // wedge (4/8 args), not FreeCAD's general 11-parameter wedge.
         // Publish uses unique FACE/EDGE locate + bind on the maker solid
         // (Box/Prism fallback when fromMaker is empty).
-        BRepPrim_Wedge mkWedge(
-            gp_Ax2(pnt, dir), xmin, ymin, zmin, z2min, x2min, xmax, ymax, zmax, z2max, x2max);
+        BRepPrim_Wedge
+            mkWedge(gp_Ax2(pnt, dir), xmin, ymin, zmin, z2min, x2min, xmax, ymax, zmax, z2max, x2max);
         BRepBuilderAPI_MakeSolid mkSolid;
         mkSolid.Add(mkWedge.Shell());
         if (!mkSolid.IsDone()) {
@@ -2016,12 +2111,17 @@ void Wedge::publishAdditiveWedgeSemanticHistory(const TopoDS_Shape& makerSolid)
         eval = doc->semanticState().currentEval();
     }
 
-    const std::vector<LocatedPrimitiveCandidate> candidates =
-        uniqueLocatedPrimitiveCandidates(makerSolid, published);
+    const std::vector<LocatedPrimitiveCandidate> candidates
+        = uniqueLocatedPrimitiveCandidates(makerSolid, published);
     std::deque<TopoDS_Shape> held;
-    const std::vector<std::pair<App::SemanticId, const void*>> inputs =
-        collectLocatedPrimitiveInputs(
-            graph, selfId, eval, opcodeName(Opcode::AdditiveWedge), candidates, held);
+    const std::vector<std::pair<App::SemanticId, const void*>> inputs = collectLocatedPrimitiveInputs(
+        graph,
+        selfId,
+        eval,
+        opcodeName(Opcode::AdditiveWedge),
+        candidates,
+        held
+    );
 
     AfterExecuteRequest req;
     req.allowSequentialFaceN = false;
@@ -2031,11 +2131,8 @@ void Wedge::publishAdditiveWedgeSemanticHistory(const TopoDS_Shape& makerSolid)
     // pick_vertical_outer_edge class as Box/Prism.
     if (inputs.empty()) {
         SemanticEmitter::afterExecute(graph, Opcode::AdditiveWedge, selfId, eval, req);
-        SemanticEmitter::appendAfterExecuteNote(
-            "skip emit: no unique AdditiveWedge maker images");
-        Base::Console().message(
-            "TESTS wedgeDiag %s\n",
-            SemanticEmitter::lastAfterExecuteNote().c_str());
+        SemanticEmitter::appendAfterExecuteNote("skip emit: no unique AdditiveWedge maker images");
+        Base::Console().message("TESTS wedgeDiag %s\n", SemanticEmitter::lastAfterExecuteNote().c_str());
         return;
     }
 
@@ -2047,8 +2144,7 @@ void Wedge::publishAdditiveWedgeSemanticHistory(const TopoDS_Shape& makerSolid)
         Part::HistoryRecord rec;
         rec.fromSeed = pair.first;
         rec.kind = App::EventKind::Generated;
-        rec.toIndex = Part::indexOnPublished(
-            published, *static_cast<const TopoDS_Shape*>(pair.second));
+        rec.toIndex = Part::indexOnPublished(published, *static_cast<const TopoDS_Shape*>(pair.second));
         if (rec.toIndex.type == "Edge") {
             rec.outputKind = App::SemanticKind::Edge;
         }
@@ -2086,11 +2182,9 @@ void Wedge::publishAdditiveWedgeSemanticHistory(const TopoDS_Shape& makerSolid)
     }
     SemanticEmitter::afterExecute(graph, Opcode::AdditiveWedge, selfId, eval, req);
     SemanticEmitter::appendAfterExecuteNote(
-        std::string("bound=") + std::to_string(nBound)
-        + " named=" + std::to_string(nBound) + " unnamed=0");
-    Base::Console().message(
-        "TESTS wedgeDiag %s\n",
-        SemanticEmitter::lastAfterExecuteNote().c_str());
+        std::string("bound=") + std::to_string(nBound) + " named=" + std::to_string(nBound) + " unnamed=0"
+    );
+    Base::Console().message("TESTS wedgeDiag %s\n", SemanticEmitter::lastAfterExecuteNote().c_str());
 }
 
 PROPERTY_SOURCE(PartDesign::AdditiveWedge, PartDesign::Wedge)

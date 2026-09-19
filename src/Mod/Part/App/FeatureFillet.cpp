@@ -95,8 +95,8 @@ App::DocumentObjectExecReturn* Fillet::execute()
                 continue;
             }
 
-            const int id = resolveEdgeFindKeyIndex(
-                consumed, ref, oldName, info.edgeid, mapOfEdges.Extent());
+            const int id
+                = resolveEdgeFindKeyIndex(consumed, ref, oldName, info.edgeid, mapOfEdges.Extent());
             if (id <= 0) {
                 fullErrMsg.append("Invalid edge link: ");
                 fullErrMsg.append(ref.empty() ? oldName : ref);

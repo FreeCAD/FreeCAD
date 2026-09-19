@@ -142,15 +142,17 @@ AfterExecuteRequest ProfileBased::collectProfileSemanticSeeds() const
         return {};
     }
     return SemanticEmitter::collectProfileSeeds(
-        graph, static_cast<App::ObjectId>(profile->getID()), Profile.getSemanticRefs());
+        graph,
+        static_cast<App::ObjectId>(profile->getID()),
+        Profile.getSemanticRefs()
+    );
 }
 std::vector<std::string> ProfileBased::getProfileSubValuesForMaker() const
 {
     std::vector<std::string> subValues = Profile.getSubValues(false);
     App::DocumentObject* profile = Profile.getValue();
     App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
-    if (!profile || !graph || !graph->hasBindings()
-        || profile->isDerivedFrom<Part::Part2DObject>()) {
+    if (!profile || !graph || !graph->hasBindings() || profile->isDerivedFrom<Part::Part2DObject>()) {
         return subValues;
     }
 
@@ -184,8 +186,7 @@ bool ProfileBased::isSemanticRepublishPass(const App::SemanticGraph* graph) cons
     // are absent. Keep this gate shared so additive and subtractive sweeps use
     // the same scheduler and Refine fast-path policy.
     return graph && isValid() && !Shape.getShape().isNull()
-        && SemanticEmitter::needsSemanticRepublish(
-            graph, static_cast<App::ObjectId>(getID()));
+        && SemanticEmitter::needsSemanticRepublish(graph, static_cast<App::ObjectId>(getID()));
 }
 
 short ProfileBased::mustExecute() const
@@ -900,8 +901,8 @@ double ProfileBased::getStartReferenceOffset(
         const Part::ShapeOptions options = Part::ShapeOption::NeedSubElement
             | Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform;
         try {
-            referenceShape = Part::Feature::getTopoShape(
-                reference.getValue(), options, resolvedSubname->c_str());
+            referenceShape
+                = Part::Feature::getTopoShape(reference.getValue(), options, resolvedSubname->c_str());
             if (referenceShape.hasSubShape(TopAbs_FACE)) {
                 consumed = true;
             }
@@ -929,8 +930,7 @@ double ProfileBased::getStartReferenceOffset(
                     break;
                 }
                 sawFaceReference = true;
-                const App::ObjectId linked =
-                    static_cast<App::ObjectId>(reference.getValue()->getID());
+                const App::ObjectId linked = static_cast<App::ObjectId>(reference.getValue()->getID());
                 if (const auto unique = uniqueResolvedFaceReference(graph, semanticRef, linked)) {
                     const std::string faceN = unique->index.toString();
                     const Part::ShapeOptions options = Part::ShapeOption::NeedSubElement
@@ -971,7 +971,8 @@ double ProfileBased::getStartReferenceOffset(
                 );
             }
             if (!referenceShape.hasSubShape(TopAbs_FACE)) {
-                referenceShape = getTopoShapeVerifiedFace(false, false, reference.getValue(), subValues);
+                referenceShape
+                    = getTopoShapeVerifiedFace(false, false, reference.getValue(), subValues);
             }
         }
         else {

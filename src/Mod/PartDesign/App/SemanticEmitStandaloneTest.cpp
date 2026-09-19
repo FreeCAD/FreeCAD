@@ -94,18 +94,18 @@ void testSketchSeedsAreDocumentHandles()
     const EvalSerial eval = scope.eval();
     CHECK(eval != 0);
 
-    const SemanticId sA =
-        SketchSemanticSeeds::ensureSeedForEntity(*g, sketch, eval, a, SemanticKind::Edge);
-    const SemanticId sA2 =
-        SketchSemanticSeeds::ensureSeedForEntity(*g, sketch, eval, a, SemanticKind::Edge);
+    const SemanticId sA
+        = SketchSemanticSeeds::ensureSeedForEntity(*g, sketch, eval, a, SemanticKind::Edge);
+    const SemanticId sA2
+        = SketchSemanticSeeds::ensureSeedForEntity(*g, sketch, eval, a, SemanticKind::Edge);
     CHECK(sA.valid());
     CHECK(sA.handle == sA2.handle);  // reuse, not a second heap
     CHECK(sA.kind == SemanticKind::Edge);
     CHECK(sA.allocatedBy == sketch);
     CHECK(sA.allocatedRole == SemanticRole::User);
 
-    const SemanticId sB =
-        SketchSemanticSeeds::ensureSeedForEntity(*g, sketch, eval, b, SemanticKind::Edge);
+    const SemanticId sB
+        = SketchSemanticSeeds::ensureSeedForEntity(*g, sketch, eval, b, SemanticKind::Edge);
     CHECK(sB.handle != sA.handle);
 
     // Axes / invalid never become seeds.
@@ -127,8 +127,8 @@ void testSketchSeedsAreDocumentHandles()
     CHECK(stillB.handle == sB.handle);
     const auto next = map.append();
     CHECK(next != b);  // I5 sketch handle
-    const SemanticId sNext =
-        SketchSemanticSeeds::ensureSeedForEntity(*g, sketch, eval, next, SemanticKind::Edge);
+    const SemanticId sNext
+        = SketchSemanticSeeds::ensureSeedForEntity(*g, sketch, eval, next, SemanticKind::Edge);
     CHECK(sNext.handle != sB.handle);  // I5 semantic handle
 
     scope.commit();
@@ -172,7 +172,8 @@ void testClickableEmitScenario()
             sketch,
             scope.eval(),
             {h1, h2, h3, h4},
-            {SketchEntityIdMap::regionKey({h1, h2, h3, h4}, SketchEntityIdMap::RoleInterior)});
+            {SketchEntityIdMap::regionKey({h1, h2, h3, h4}, SketchEntityIdMap::RoleInterior)}
+        );
         CHECK(profile.curves.size() == 4);
         CHECK(profile.regions.size() == 1);
         c1 = profile.curves[0];
@@ -191,7 +192,12 @@ void testClickableEmitScenario()
         req.regionSeeds = {region};
         req.allowSequentialFaceN = true;  // test fallback; product leaves this false
         SemanticEmitter::afterExecute(
-            SemanticEmitter::graphFor(&padPtr), Opcode::Pad, pad, scope.eval(), req);
+            SemanticEmitter::graphFor(&padPtr),
+            Opcode::Pad,
+            pad,
+            scope.eval(),
+            req
+        );
         CHECK(scope.eval() != 0);
         CHECK(SemanticEmitter::lastAfterExecuteNote().find("emitted pad") == 0);
         auto s1 = SemanticEmitter::generatedFrom(state.graph(), c1.handle);
@@ -215,7 +221,8 @@ void testClickableEmitScenario()
             pad,
             scope.eval(),
             SemanticRole::None,
-            ElementIndex::fromString("Edge1"));
+            ElementIndex::fromString("Edge1")
+        );
         CHECK(padEdge.valid());
         CHECK(padEdge.kind == SemanticKind::Edge);
         scope.commit();
@@ -224,13 +231,17 @@ void testClickableEmitScenario()
     // I2: cap seed does not resolve to another curve's side.
     {
         const auto capAll = SemanticResolver::resolve(
-            makeRef(cap0, CardinalityReducer::AcceptAll, SemanticKind::Face), state.graph());
+            makeRef(cap0, CardinalityReducer::AcceptAll, SemanticKind::Face),
+            state.graph()
+        );
         CHECK(capAll.state == ResolutionState::Resolved);
         CHECK(capAll.identities.front().handle == cap0.handle);
         CHECK(capAll.identities.front().handle != side1.handle);
         CHECK(capAll.identities.front().handle != side2.handle);
         const auto sideA = SemanticResolver::resolve(
-            makeRef(side1, CardinalityReducer::RequireOne, SemanticKind::Face), state.graph());
+            makeRef(side1, CardinalityReducer::RequireOne, SemanticKind::Face),
+            state.graph()
+        );
         CHECK(sideA.state == ResolutionState::Resolved);
         CHECK(sideA.identities.front().handle == side1.handle);
         CHECK(sideA.identities.front().handle != side2.handle);
@@ -247,16 +258,25 @@ void testClickableEmitScenario()
         req.pocketMode = AfterExecuteRequest::PocketMode::ThroughCut;
         req.allowSequentialFaceN = true;
         SemanticEmitter::afterExecute(
-            SemanticEmitter::graphFor(&pocketPtr), Opcode::Pocket, pocket, scope.eval(), req);
+            SemanticEmitter::graphFor(&pocketPtr),
+            Opcode::Pocket,
+            pocket,
+            scope.eval(),
+            req
+        );
         CHECK(SemanticEmitter::lastAfterExecuteNote().find("ThroughCut") != std::string::npos);
         scope.commit();
     }
     {
         const auto reqOne = SemanticResolver::resolve(
-            makeRef(cap0, CardinalityReducer::RequireOne, SemanticKind::Face), state.graph());
+            makeRef(cap0, CardinalityReducer::RequireOne, SemanticKind::Face),
+            state.graph()
+        );
         CHECK(reqOne.state == ResolutionState::Ambiguous);
         const auto accAll = SemanticResolver::resolve(
-            makeRef(cap0, CardinalityReducer::AcceptAll, SemanticKind::Face), state.graph());
+            makeRef(cap0, CardinalityReducer::AcceptAll, SemanticKind::Face),
+            state.graph()
+        );
         CHECK(accAll.state == ResolutionState::ResolvedSet);
         CHECK(accAll.identities.size() == 2);
         for (const SemanticBinding& b : accAll.bindings) {
@@ -274,7 +294,12 @@ void testClickableEmitScenario()
         req.filletAdjacentFaces = {side1, cap0};
         req.allowSequentialFaceN = true;
         SemanticEmitter::afterExecute(
-            SemanticEmitter::graphFor(&filletPtr), Opcode::Fillet, fillet, scope.eval(), req);
+            SemanticEmitter::graphFor(&filletPtr),
+            Opcode::Fillet,
+            fillet,
+            scope.eval(),
+            req
+        );
         CHECK(SemanticEmitter::lastAfterExecuteNote().find("emitted fillet") == 0);
         scope.commit();
     }
@@ -286,20 +311,23 @@ void testClickableEmitScenario()
         const auto childB = map.append();
         CHECK(childA != h1 && childB != h1);
         SemanticGraph* g = SemanticEmitter::graphFor(&sketchPtr);
-        const auto kids =
-            SketchSemanticSeeds::splitEntity(*g, sketch, scope.eval(), h1, {childA, childB});
+        const auto kids
+            = SketchSemanticSeeds::splitEntity(*g, sketch, scope.eval(), h1, {childA, childB});
         CHECK(kids.size() == 2);
         CHECK(g->isHistorical(c1.handle));
-        const auto prop = SemanticEmitter::propagateSourceSplit(
-            g, c1, 2, "Pad", pad, scope.eval(), 40);
+        const auto prop = SemanticEmitter::propagateSourceSplit(g, c1, 2, "Pad", pad, scope.eval(), 40);
         CHECK(prop.size() >= 2);
         scope.commit();
 
         const auto sideAfter = SemanticResolver::resolve(
-            makeRef(side1, CardinalityReducer::RequireOne, SemanticKind::Face), state.graph());
+            makeRef(side1, CardinalityReducer::RequireOne, SemanticKind::Face),
+            state.graph()
+        );
         CHECK(sideAfter.state == ResolutionState::Ambiguous);
         const auto sideAll = SemanticResolver::resolve(
-            makeRef(side1, CardinalityReducer::AcceptAll, SemanticKind::Face), state.graph());
+            makeRef(side1, CardinalityReducer::AcceptAll, SemanticKind::Face),
+            state.graph()
+        );
         CHECK(sideAll.state == ResolutionState::ResolvedSet);
         CHECK(sideAll.identities.size() >= 2);
         int remnants = 0;
@@ -313,7 +341,9 @@ void testClickableEmitScenario()
         CHECK(remnants == 2);
         // No cross-lineage: other sides stay themselves.
         const auto other = SemanticResolver::resolve(
-            makeRef(side2, CardinalityReducer::RequireOne, SemanticKind::Face), state.graph());
+            makeRef(side2, CardinalityReducer::RequireOne, SemanticKind::Face),
+            state.graph()
+        );
         CHECK(other.state == ResolutionState::Resolved);
         CHECK(other.identities.front().handle == side2.handle);
         for (const SemanticBinding& b : sideAll.bindings) {
@@ -336,11 +366,17 @@ void testClickableEmitScenario()
             pad,
             scope.eval(),
             SemanticRole::None,
-            ElementIndex::fromString("Edge2"));
+            ElementIndex::fromString("Edge2")
+        );
         CHECK(doomed.valid());
         SemanticEmitter::emitDeleted(
-            SemanticEmitter::graphFor(&padPtr), doomed, "DeleteEdge", pad, scope.eval(),
-            SemanticRole::DressUpEdge);
+            SemanticEmitter::graphFor(&padPtr),
+            doomed,
+            "DeleteEdge",
+            pad,
+            scope.eval(),
+            SemanticRole::DressUpEdge
+        );
         SemanticEmitter::graphFor(&padPtr)->unbind(doomed.handle);
         scope.commit();
     }
@@ -350,7 +386,12 @@ void testClickableEmitScenario()
         req.filletEdges = {doomed};
         req.filletAdjacentFaces = {side2, cap1};
         SemanticEmitter::afterExecute(
-            SemanticEmitter::graphFor(&filletPtr), Opcode::Fillet, fillet, scope.eval(), req);
+            SemanticEmitter::graphFor(&filletPtr),
+            Opcode::Fillet,
+            fillet,
+            scope.eval(),
+            req
+        );
         CHECK(SemanticEmitter::lastAfterExecuteNote().find("Missing") != std::string::npos);
         const ResolutionResult fil = SemanticEmitter::emitFillet(
             SemanticEmitter::graphFor(&filletPtr),
@@ -358,11 +399,14 @@ void testClickableEmitScenario()
             {side2, cap1},
             fillet,
             scope.eval(),
-            ElementIndex::fromString("Face99"));
+            ElementIndex::fromString("Face99")
+        );
         CHECK(fil.state == ResolutionState::Missing);
         CHECK(fil.identities.empty());
         const auto neighbour = SemanticResolver::resolve(
-            makeRef(doomed, CardinalityReducer::AcceptAll, SemanticKind::Edge), state.graph());
+            makeRef(doomed, CardinalityReducer::AcceptAll, SemanticKind::Edge),
+            state.graph()
+        );
         CHECK(neighbour.state == ResolutionState::Missing);
         CHECK(neighbour.bindings.empty());
         scope.commit();
@@ -430,7 +474,12 @@ void testFilletConsumesAttachedEdge8()
     {
         SemanticDocumentState::EvaluateScope scope(state);
         SemanticEmitter::afterExecute(
-            SemanticEmitter::graphFor(&filletPtr), Opcode::Fillet, 40, scope.eval(), fil);
+            SemanticEmitter::graphFor(&filletPtr),
+            Opcode::Fillet,
+            40,
+            scope.eval(),
+            fil
+        );
         CHECK(SemanticEmitter::lastAfterExecuteNote().find("emitted fillet") == 0);
         scope.commit();
     }
@@ -442,16 +491,22 @@ void testDressUpAdjacentFaceUniqueness()
     const ObjectId pad = 20;
     const ObjectId fillet = 40;
     graph.beginEvaluate(1);
-    const SemanticId edge =
-        graph.recordGenerated(SemanticKind::Edge, "Pad", pad, 1, SemanticRole::None);
-    const SemanticId face =
-        graph.recordGenerated(SemanticKind::Face, "Pad", pad, 1, SemanticRole::None);
+    const SemanticId edge
+        = graph.recordGenerated(SemanticKind::Edge, "Pad", pad, 1, SemanticRole::None);
+    const SemanticId face
+        = graph.recordGenerated(SemanticKind::Face, "Pad", pad, 1, SemanticRole::None);
     SemanticEmitter::bind(&graph, edge, pad, 1, ElementIndex::fromString("Edge1"));
     graph.commitEvaluate();
 
     graph.beginEvaluate(2);
     const ResolutionResult result = SemanticEmitter::emitFillet(
-        &graph, edge, {face, face}, fillet, 2, ElementIndex::fromString("Face7"));
+        &graph,
+        edge,
+        {face, face},
+        fillet,
+        2,
+        ElementIndex::fromString("Face7")
+    );
     CHECK(result.state == ResolutionState::Resolved);
     const auto events = graph.events();
     CHECK(!events.empty());
@@ -485,8 +540,7 @@ void testFilletPocketTipEdge2AndPadEdge13()
     SemanticId curve, pocketEdge, padEdge13;
     {
         SemanticDocumentState::EvaluateScope scope(state);
-        curve = g->recordGenerated(
-            SemanticKind::Edge, "Sketch", 11, scope.eval(), SemanticRole::None);
+        curve = g->recordGenerated(SemanticKind::Edge, "Sketch", 11, scope.eval(), SemanticRole::None);
         AfterExecuteRequest preq;
         preq.curveSeeds = {curve};
         preq.namedEdgeIndices = {ElementIndex::fromString("Edge2")};
@@ -500,8 +554,8 @@ void testFilletPocketTipEdge2AndPadEdge13()
         CHECK(g->bindingsOf(pocketEdge.handle).front().feature == 30);
         CHECK(g->bindingsOf(pocketEdge.handle).front().index.toString() == "Edge2");
 
-        const SemanticId v13 = g->recordGenerated(
-            SemanticKind::Vertex, "Sketch", 10, scope.eval(), SemanticRole::None);
+        const SemanticId v13
+            = g->recordGenerated(SemanticKind::Vertex, "Sketch", 10, scope.eval(), SemanticRole::None);
         AfterExecuteRequest padReq;
         padReq.vertexSeeds = {v13};
         padReq.namedEdgeIndices = {ElementIndex::fromString("Edge13")};
@@ -516,22 +570,19 @@ void testFilletPocketTipEdge2AndPadEdge13()
         scope.commit();
     }
 
-    const auto tipRefs =
-        makeSemanticRefsForSubNames({"Edge2"}, g, SemanticRole::DressUpEdge, 30);
+    const auto tipRefs = makeSemanticRefsForSubNames({"Edge2"}, g, SemanticRole::DressUpEdge, 30);
     CHECK(tipRefs.size() == 1);
     CHECK(tipRefs[0].seed.valid());
     CHECK(tipRefs[0].seed.handle == pocketEdge.handle);
     CHECK(semanticRefXmlAttributes(tipRefs[0]).find("stSeed=") != std::string::npos);
 
-    const auto pad13Refs =
-        makeSemanticRefsForSubNames({"Edge13"}, g, SemanticRole::DressUpEdge, 20);
+    const auto pad13Refs = makeSemanticRefsForSubNames({"Edge13"}, g, SemanticRole::DressUpEdge, 20);
     CHECK(pad13Refs[0].seed.handle == padEdge13.handle);
     CHECK(pad13Refs[0].fallback == ElementIndex::fromString("Edge13"));
     CHECK(semanticRefXmlAttributes(pad13Refs[0]).find("stSeed=") != std::string::npos);
 
     // Binding.feature=Pad (Edge13) + linked Pocket → refuse Edge13 on Pocket.
-    const auto scopedRefuse =
-        makeSemanticRefsForSubNames({"Edge13"}, g, SemanticRole::DressUpEdge, 30);
+    const auto scopedRefuse = makeSemanticRefsForSubNames({"Edge13"}, g, SemanticRole::DressUpEdge, 30);
     CHECK(scopedRefuse.size() == 1);
     CHECK(!scopedRefuse[0].seed.valid());
 
@@ -541,7 +592,12 @@ void testFilletPocketTipEdge2AndPadEdge13()
     {
         SemanticDocumentState::EvaluateScope scope(state);
         SemanticEmitter::afterExecute(
-            SemanticEmitter::graphFor(&filletPtr), Opcode::Fillet, 40, scope.eval(), fil);
+            SemanticEmitter::graphFor(&filletPtr),
+            Opcode::Fillet,
+            40,
+            scope.eval(),
+            fil
+        );
         CHECK(SemanticEmitter::lastAfterExecuteNote().find("emitted fillet") == 0);
         scope.commit();
     }
@@ -575,7 +631,8 @@ void testNamedHistoryPadCapsBindFace5AndFace6()
             10,
             scope.eval(),
             {h1, h2, h3, h4},
-            {SketchEntityIdMap::regionKey({h1, h2, h3, h4}, SketchEntityIdMap::RoleInterior)});
+            {SketchEntityIdMap::regionKey({h1, h2, h3, h4}, SketchEntityIdMap::RoleInterior)}
+        );
         CHECK(profile.curves.size() == 4);
         CHECK(profile.regions.size() == 1);
         c1 = profile.curves[0];
@@ -591,12 +648,14 @@ void testNamedHistoryPadCapsBindFace5AndFace6()
         req.curveSeeds = {c1, c2, c3, c4};
         req.regionSeeds = {region};
         req.allowSequentialFaceN = false;
-        req.namedFaceIndices = {ElementIndex::fromString("Face10"),
-                                ElementIndex::fromString("Face11"),
-                                ElementIndex::fromString("Face12"),
-                                ElementIndex::fromString("Face13"),
-                                ElementIndex::fromString("Face5"),
-                                ElementIndex::fromString("Face6")};
+        req.namedFaceIndices = {
+            ElementIndex::fromString("Face10"),
+            ElementIndex::fromString("Face11"),
+            ElementIndex::fromString("Face12"),
+            ElementIndex::fromString("Face13"),
+            ElementIndex::fromString("Face5"),
+            ElementIndex::fromString("Face6")
+        };
         SemanticEmitter::afterExecute(g, Opcode::Pad, 20, scope.eval(), req);
         CHECK(SemanticEmitter::lastAfterExecuteNote().find("emitted pad") == 0);
         CHECK(SemanticEmitter::lastAfterExecuteNote().find("caps=2") != std::string::npos);
@@ -605,8 +664,7 @@ void testNamedHistoryPadCapsBindFace5AndFace6()
         const auto sides2 = SemanticEmitter::generatedFrom(*g, c2.handle);
         const auto sides3 = SemanticEmitter::generatedFrom(*g, c3.handle);
         const auto sides4 = SemanticEmitter::generatedFrom(*g, c4.handle);
-        CHECK(sides1.size() == 1 && sides2.size() == 1 && sides3.size() == 1
-              && sides4.size() == 1);
+        CHECK(sides1.size() == 1 && sides2.size() == 1 && sides3.size() == 1 && sides4.size() == 1);
         CHECK(g->bindingsOf(sides1.front().handle).front().index.toString() == "Face10");
         CHECK(g->bindingsOf(sides2.front().handle).front().index.toString() == "Face11");
         CHECK(g->bindingsOf(sides3.front().handle).front().index.toString() == "Face12");
@@ -640,8 +698,7 @@ void testNoHalfMapWithoutSeeds()
     state.bindOwner(&doc);
     state.bindAlias(&padPtr);
     SemanticDocumentState::EvaluateScope scope(state);
-    SemanticEmitter::afterExecute(
-        SemanticEmitter::graphFor(&padPtr), Opcode::Pad, 20, scope.eval(), {});
+    SemanticEmitter::afterExecute(SemanticEmitter::graphFor(&padPtr), Opcode::Pad, 20, scope.eval(), {});
     CHECK(SemanticEmitter::lastAfterExecuteNote().find("skip emit") == 0);
     // No identities minted from FaceN.
     CHECK(state.graph().allIdentities().empty());
@@ -657,8 +714,8 @@ void testGraphPersistenceRoundTrip()
     SemanticGraph* g = &a.graph();
     SketchEntityIdMap map;
     const auto h = map.append();
-    const SemanticId seed =
-        SketchSemanticSeeds::ensureSeedForEntity(*g, 10, scope.eval(), h, SemanticKind::Edge);
+    const SemanticId seed
+        = SketchSemanticSeeds::ensureSeedForEntity(*g, 10, scope.eval(), h, SemanticKind::Edge);
     AfterExecuteRequest req;
     req.curveSeeds = {seed};
     req.allowSequentialFaceN = true;
@@ -690,7 +747,12 @@ void testGraphPersistenceRoundTrip()
     // I5: next allocate does not reuse.
     b.beginEvaluate();
     const SemanticId extra = b.graph().recordGenerated(
-        SemanticKind::Face, "AfterRestore", 99, b.currentEval(), SemanticRole::None);
+        SemanticKind::Face,
+        "AfterRestore",
+        99,
+        b.currentEval(),
+        SemanticRole::None
+    );
     b.commitEvaluate();
     CHECK(extra.handle >= water);
     CHECK(extra.handle != seed.handle);
@@ -699,10 +761,8 @@ void testGraphPersistenceRoundTrip()
     // Merge + alias round-trip.
     SemanticDocumentState c;
     c.beginEvaluate();
-    const SemanticId p1 =
-        c.graph().recordGenerated(SemanticKind::Face, "A", 1, 1, SemanticRole::None);
-    const SemanticId p2 =
-        c.graph().recordGenerated(SemanticKind::Face, "A", 1, 1, SemanticRole::None);
+    const SemanticId p1 = c.graph().recordGenerated(SemanticKind::Face, "A", 1, 1, SemanticRole::None);
+    const SemanticId p2 = c.graph().recordGenerated(SemanticKind::Face, "A", 1, 1, SemanticRole::None);
     const SemanticId m = c.graph().recordMerge({p1, p2}, "Merge", 1, 1, SemanticRole::None);
     CHECK(c.graph().aliasClass().same(p1.handle, m.handle));
     c.commitEvaluate();
@@ -734,8 +794,8 @@ void testChamferAfterExecuteNamedFace()
     SemanticId padEdge;
     {
         SemanticDocumentState::EvaluateScope scope(state);
-        const SemanticId curve =
-            g->recordGenerated(SemanticKind::Edge, "Sketch", 10, scope.eval(), SemanticRole::None);
+        const SemanticId curve
+            = g->recordGenerated(SemanticKind::Edge, "Sketch", 10, scope.eval(), SemanticRole::None);
         AfterExecuteRequest req;
         req.curveSeeds = {curve};
         req.namedEdgeIndices = {ElementIndex::fromString("Edge8")};
@@ -759,7 +819,12 @@ void testChamferAfterExecuteNamedFace()
         req.namedFaceIndices = {ElementIndex::fromString("Face9")};
         req.allowSequentialFaceN = false;
         SemanticEmitter::afterExecute(
-            SemanticEmitter::graphFor(&chamferPtr), Opcode::Chamfer, 50, scope.eval(), req);
+            SemanticEmitter::graphFor(&chamferPtr),
+            Opcode::Chamfer,
+            50,
+            scope.eval(),
+            req
+        );
         CHECK(SemanticEmitter::lastAfterExecuteNote().find("emitted chamfer") == 0);
         bool sawChamfer = false;
         bool sawFilletOnChamfer = false;
@@ -803,10 +868,10 @@ void testChamferAfterExecuteNamedFace()
             20,
             scope.eval(),
             SemanticRole::None,
-            ElementIndex::fromString("Edge2"));
+            ElementIndex::fromString("Edge2")
+        );
         CHECK(doomed.valid());
-        SemanticEmitter::emitDeleted(
-            g, doomed, "DeleteEdge", 20, scope.eval(), SemanticRole::DressUpEdge);
+        SemanticEmitter::emitDeleted(g, doomed, "DeleteEdge", 20, scope.eval(), SemanticRole::DressUpEdge);
         g->unbind(doomed.handle);
         scope.commit();
     }
@@ -817,14 +882,27 @@ void testChamferAfterExecuteNamedFace()
         req.filletEdges = {doomed};
         req.namedFaceIndices = {ElementIndex::fromString("Face99")};
         SemanticEmitter::afterExecute(
-            SemanticEmitter::graphFor(&chamferPtr), Opcode::Chamfer, 50, scope.eval(), req);
+            SemanticEmitter::graphFor(&chamferPtr),
+            Opcode::Chamfer,
+            50,
+            scope.eval(),
+            req
+        );
         CHECK(SemanticEmitter::lastAfterExecuteNote().find("Missing") != std::string::npos);
         const ResolutionResult r = SemanticEmitter::emitChamfer(
-            g, doomed, {}, 50, scope.eval(), ElementIndex::fromString("Face99"));
+            g,
+            doomed,
+            {},
+            50,
+            scope.eval(),
+            ElementIndex::fromString("Face99")
+        );
         CHECK(r.state == ResolutionState::Missing);
         CHECK(r.identities.empty());
         const auto neighbour = SemanticResolver::resolve(
-            makeRef(doomed, CardinalityReducer::AcceptAll, SemanticKind::Edge), *g);
+            makeRef(doomed, CardinalityReducer::AcceptAll, SemanticKind::Edge),
+            *g
+        );
         CHECK(neighbour.state == ResolutionState::Missing);
         CHECK(neighbour.bindings.empty());
         CHECK(g->allIdentities().size() == nIdentities);
@@ -848,12 +926,11 @@ void testDraftAfterExecuteNamedFace()
     SemanticId padFace;
     {
         SemanticDocumentState::EvaluateScope scope(state);
-        const SemanticId region =
-            g->recordGenerated(SemanticKind::Region, "Sketch", 10, scope.eval(), SemanticRole::None);
+        const SemanticId region
+            = g->recordGenerated(SemanticKind::Region, "Sketch", 10, scope.eval(), SemanticRole::None);
         AfterExecuteRequest req;
         req.regionSeeds = {region};
-        req.namedFaceIndices = {ElementIndex::fromString("Face6"),
-                                ElementIndex::fromString("Face5")};
+        req.namedFaceIndices = {ElementIndex::fromString("Face6"), ElementIndex::fromString("Face5")};
         req.allowSequentialFaceN = false;
         SemanticEmitter::afterExecute(g, Opcode::Pad, 20, scope.eval(), req);
         const auto kids = SemanticEmitter::generatedFrom(*g, region.handle);
@@ -871,7 +948,12 @@ void testDraftAfterExecuteNamedFace()
         req.namedFaceIndices = {ElementIndex::fromString("Face9")};
         req.allowSequentialFaceN = false;
         SemanticEmitter::afterExecute(
-            SemanticEmitter::graphFor(&draftPtr), Opcode::Draft, 60, scope.eval(), req);
+            SemanticEmitter::graphFor(&draftPtr),
+            Opcode::Draft,
+            60,
+            scope.eval(),
+            req
+        );
         CHECK(SemanticEmitter::lastAfterExecuteNote().find("emitted draft") == 0);
         bool sawDraft = false;
         bool sawFilletOnDraft = false;
@@ -920,10 +1002,10 @@ void testDraftAfterExecuteNamedFace()
             20,
             scope.eval(),
             SemanticRole::None,
-            ElementIndex::fromString("Face2"));
+            ElementIndex::fromString("Face2")
+        );
         CHECK(doomed.valid());
-        SemanticEmitter::emitDeleted(
-            g, doomed, "DeleteFace", 20, scope.eval(), SemanticRole::None);
+        SemanticEmitter::emitDeleted(g, doomed, "DeleteFace", 20, scope.eval(), SemanticRole::None);
         g->unbind(doomed.handle);
         scope.commit();
     }
@@ -934,14 +1016,26 @@ void testDraftAfterExecuteNamedFace()
         req.draftFaces = {doomed};
         req.namedFaceIndices = {ElementIndex::fromString("Face99")};
         SemanticEmitter::afterExecute(
-            SemanticEmitter::graphFor(&draftPtr), Opcode::Draft, 60, scope.eval(), req);
+            SemanticEmitter::graphFor(&draftPtr),
+            Opcode::Draft,
+            60,
+            scope.eval(),
+            req
+        );
         CHECK(SemanticEmitter::lastAfterExecuteNote().find("Missing") != std::string::npos);
         const ResolutionResult r = SemanticEmitter::emitDraft(
-            g, doomed, 60, scope.eval(), ElementIndex::fromString("Face99"));
+            g,
+            doomed,
+            60,
+            scope.eval(),
+            ElementIndex::fromString("Face99")
+        );
         CHECK(r.state == ResolutionState::Missing);
         CHECK(r.identities.empty());
         const auto neighbour = SemanticResolver::resolve(
-            makeRef(doomed, CardinalityReducer::AcceptAll, SemanticKind::Face), *g);
+            makeRef(doomed, CardinalityReducer::AcceptAll, SemanticKind::Face),
+            *g
+        );
         CHECK(neighbour.state == ResolutionState::Missing);
         CHECK(neighbour.bindings.empty());
         CHECK(g->allIdentities().size() == nIdentities);
@@ -966,12 +1060,11 @@ void testThicknessAfterExecuteNamedFace()
     SemanticId padFace;
     {
         SemanticDocumentState::EvaluateScope scope(state);
-        const SemanticId region =
-            g->recordGenerated(SemanticKind::Region, "Sketch", 10, scope.eval(), SemanticRole::None);
+        const SemanticId region
+            = g->recordGenerated(SemanticKind::Region, "Sketch", 10, scope.eval(), SemanticRole::None);
         AfterExecuteRequest req;
         req.regionSeeds = {region};
-        req.namedFaceIndices = {ElementIndex::fromString("Face6"),
-                                ElementIndex::fromString("Face5")};
+        req.namedFaceIndices = {ElementIndex::fromString("Face6"), ElementIndex::fromString("Face5")};
         req.allowSequentialFaceN = false;
         SemanticEmitter::afterExecute(g, Opcode::Pad, 20, scope.eval(), req);
         const auto kids = SemanticEmitter::generatedFrom(*g, region.handle);
@@ -989,7 +1082,12 @@ void testThicknessAfterExecuteNamedFace()
         req.namedFaceIndices = {ElementIndex::fromString("Face9")};
         req.allowSequentialFaceN = false;
         SemanticEmitter::afterExecute(
-            SemanticEmitter::graphFor(&thicknessPtr), Opcode::Thickness, 70, scope.eval(), req);
+            SemanticEmitter::graphFor(&thicknessPtr),
+            Opcode::Thickness,
+            70,
+            scope.eval(),
+            req
+        );
         CHECK(SemanticEmitter::lastAfterExecuteNote().find("emitted thickness") == 0);
         bool sawThickness = false;
         bool sawDraftOnThickness = false;
@@ -1033,10 +1131,10 @@ void testThicknessAfterExecuteNamedFace()
             20,
             scope.eval(),
             SemanticRole::None,
-            ElementIndex::fromString("Face2"));
+            ElementIndex::fromString("Face2")
+        );
         CHECK(doomed.valid());
-        SemanticEmitter::emitDeleted(
-            g, doomed, "DeleteFace", 20, scope.eval(), SemanticRole::None);
+        SemanticEmitter::emitDeleted(g, doomed, "DeleteFace", 20, scope.eval(), SemanticRole::None);
         g->unbind(doomed.handle);
         scope.commit();
     }
@@ -1047,14 +1145,26 @@ void testThicknessAfterExecuteNamedFace()
         req.thicknessFaces = {doomed};
         req.namedFaceIndices = {ElementIndex::fromString("Face99")};
         SemanticEmitter::afterExecute(
-            SemanticEmitter::graphFor(&thicknessPtr), Opcode::Thickness, 70, scope.eval(), req);
+            SemanticEmitter::graphFor(&thicknessPtr),
+            Opcode::Thickness,
+            70,
+            scope.eval(),
+            req
+        );
         CHECK(SemanticEmitter::lastAfterExecuteNote().find("Missing") != std::string::npos);
         const ResolutionResult r = SemanticEmitter::emitThickness(
-            g, doomed, 70, scope.eval(), ElementIndex::fromString("Face99"));
+            g,
+            doomed,
+            70,
+            scope.eval(),
+            ElementIndex::fromString("Face99")
+        );
         CHECK(r.state == ResolutionState::Missing);
         CHECK(r.identities.empty());
         const auto neighbour = SemanticResolver::resolve(
-            makeRef(doomed, CardinalityReducer::AcceptAll, SemanticKind::Face), *g);
+            makeRef(doomed, CardinalityReducer::AcceptAll, SemanticKind::Face),
+            *g
+        );
         CHECK(neighbour.state == ResolutionState::Missing);
         CHECK(neighbour.bindings.empty());
         CHECK(g->allIdentities().size() == nIdentities);
@@ -1080,12 +1190,11 @@ void testHoleAfterExecuteNamedFace()
     SemanticId padFace;
     {
         SemanticDocumentState::EvaluateScope scope(state);
-        const SemanticId region =
-            g->recordGenerated(SemanticKind::Region, "Sketch", 10, scope.eval(), SemanticRole::None);
+        const SemanticId region
+            = g->recordGenerated(SemanticKind::Region, "Sketch", 10, scope.eval(), SemanticRole::None);
         AfterExecuteRequest req;
         req.regionSeeds = {region};
-        req.namedFaceIndices = {ElementIndex::fromString("Face6"),
-                                ElementIndex::fromString("Face5")};
+        req.namedFaceIndices = {ElementIndex::fromString("Face6"), ElementIndex::fromString("Face5")};
         req.allowSequentialFaceN = false;
         SemanticEmitter::afterExecute(g, Opcode::Pad, 20, scope.eval(), req);
         const auto kids = SemanticEmitter::generatedFrom(*g, region.handle);
@@ -1102,9 +1211,15 @@ void testHoleAfterExecuteNamedFace()
         req.holeFaces = {padFace};
         req.allowSequentialFaceN = false;
         SemanticEmitter::afterExecute(
-            SemanticEmitter::graphFor(&holePtr), Opcode::Hole, 80, scope.eval(), req);
-        CHECK(SemanticEmitter::lastAfterExecuteNote().find("no named hole history")
-              != std::string::npos);
+            SemanticEmitter::graphFor(&holePtr),
+            Opcode::Hole,
+            80,
+            scope.eval(),
+            req
+        );
+        CHECK(
+            SemanticEmitter::lastAfterExecuteNote().find("no named hole history") != std::string::npos
+        );
         bool sawHole = false;
         for (const Event& ev : g->events()) {
             if (ev.feature == 80 && ev.op == "Hole") {
@@ -1122,7 +1237,12 @@ void testHoleAfterExecuteNamedFace()
         req.namedFaceIndices = {ElementIndex::fromString("Face9")};
         req.allowSequentialFaceN = false;
         SemanticEmitter::afterExecute(
-            SemanticEmitter::graphFor(&holePtr), Opcode::Hole, 80, scope.eval(), req);
+            SemanticEmitter::graphFor(&holePtr),
+            Opcode::Hole,
+            80,
+            scope.eval(),
+            req
+        );
         CHECK(SemanticEmitter::lastAfterExecuteNote().find("emitted hole") == 0);
         bool sawHole = false;
         bool sawDraftOnHole = false;
@@ -1166,10 +1286,10 @@ void testHoleAfterExecuteNamedFace()
             20,
             scope.eval(),
             SemanticRole::None,
-            ElementIndex::fromString("Face2"));
+            ElementIndex::fromString("Face2")
+        );
         CHECK(doomed.valid());
-        SemanticEmitter::emitDeleted(
-            g, doomed, "DeleteFace", 20, scope.eval(), SemanticRole::None);
+        SemanticEmitter::emitDeleted(g, doomed, "DeleteFace", 20, scope.eval(), SemanticRole::None);
         g->unbind(doomed.handle);
         scope.commit();
     }
@@ -1180,14 +1300,21 @@ void testHoleAfterExecuteNamedFace()
         req.holeFaces = {doomed};
         req.namedFaceIndices = {ElementIndex::fromString("Face99")};
         SemanticEmitter::afterExecute(
-            SemanticEmitter::graphFor(&holePtr), Opcode::Hole, 80, scope.eval(), req);
+            SemanticEmitter::graphFor(&holePtr),
+            Opcode::Hole,
+            80,
+            scope.eval(),
+            req
+        );
         CHECK(SemanticEmitter::lastAfterExecuteNote().find("Missing") != std::string::npos);
-        const ResolutionResult r = SemanticEmitter::emitHole(
-            g, doomed, 80, scope.eval(), ElementIndex::fromString("Face99"));
+        const ResolutionResult r
+            = SemanticEmitter::emitHole(g, doomed, 80, scope.eval(), ElementIndex::fromString("Face99"));
         CHECK(r.state == ResolutionState::Missing);
         CHECK(r.identities.empty());
         const auto neighbour = SemanticResolver::resolve(
-            makeRef(doomed, CardinalityReducer::AcceptAll, SemanticKind::Face), *g);
+            makeRef(doomed, CardinalityReducer::AcceptAll, SemanticKind::Face),
+            *g
+        );
         CHECK(neighbour.state == ResolutionState::Missing);
         CHECK(neighbour.bindings.empty());
         CHECK(g->allIdentities().size() == nIdentities);
@@ -1209,18 +1336,17 @@ void testHoleOutputOwnershipConflict()
     SemanticId source;
     {
         SemanticDocumentState::EvaluateScope scope(state);
-        source = g->recordGenerated(
-            SemanticKind::Face, "Pad", 20, scope.eval(), SemanticRole::None);
+        source = g->recordGenerated(SemanticKind::Face, "Pad", 20, scope.eval(), SemanticRole::None);
         SemanticEmitter::bind(g, source, 20, scope.eval(), ElementIndex::fromString("Face4"));
         scope.commit();
     }
 
     {
         SemanticDocumentState::EvaluateScope scope(state);
-        const SemanticId first =
-            g->recordGenerated(SemanticKind::Face, "Hole", 80, scope.eval(), SemanticRole::None);
-        const SemanticId second =
-            g->recordGenerated(SemanticKind::Face, "Hole", 80, scope.eval(), SemanticRole::None);
+        const SemanticId first
+            = g->recordGenerated(SemanticKind::Face, "Hole", 80, scope.eval(), SemanticRole::None);
+        const SemanticId second
+            = g->recordGenerated(SemanticKind::Face, "Hole", 80, scope.eval(), SemanticRole::None);
         const ElementIndex output = ElementIndex::fromString("Face9");
         SemanticEmitter::bind(g, first, 80, scope.eval(), output);
         SemanticEmitter::bind(g, second, 80, scope.eval(), output);
@@ -1257,23 +1383,26 @@ void testPadPocketOutputOwnershipConflict()
     SemanticId pocketSeed;
     {
         SemanticDocumentState::EvaluateScope scope(state);
-        padSeed = g->recordGenerated(
-            SemanticKind::Edge, "Sketch", 10, scope.eval(), SemanticRole::None);
-        pocketSeed = g->recordGenerated(
-            SemanticKind::Edge, "Sketch", 10, scope.eval(), SemanticRole::None);
+        padSeed = g->recordGenerated(SemanticKind::Edge, "Sketch", 10, scope.eval(), SemanticRole::None);
+        pocketSeed
+            = g->recordGenerated(SemanticKind::Edge, "Sketch", 10, scope.eval(), SemanticRole::None);
         for (const auto feature : {20, 30}) {
-            const SemanticId first =
-                g->recordGenerated(
-                    SemanticKind::Face, feature == 20 ? "Pad" : "Pocket", feature, scope.eval(),
-                    SemanticRole::None);
-            const SemanticId second =
-                g->recordGenerated(
-                    SemanticKind::Face, feature == 20 ? "Pad" : "Pocket", feature, scope.eval(),
-                    SemanticRole::None);
-            SemanticEmitter::bind(
-                g, first, feature, scope.eval(), ElementIndex::fromString("Face9"));
-            SemanticEmitter::bind(
-                g, second, feature, scope.eval(), ElementIndex::fromString("Face9"));
+            const SemanticId first = g->recordGenerated(
+                SemanticKind::Face,
+                feature == 20 ? "Pad" : "Pocket",
+                feature,
+                scope.eval(),
+                SemanticRole::None
+            );
+            const SemanticId second = g->recordGenerated(
+                SemanticKind::Face,
+                feature == 20 ? "Pad" : "Pocket",
+                feature,
+                scope.eval(),
+                SemanticRole::None
+            );
+            SemanticEmitter::bind(g, first, feature, scope.eval(), ElementIndex::fromString("Face9"));
+            SemanticEmitter::bind(g, second, feature, scope.eval(), ElementIndex::fromString("Face9"));
         }
         scope.commit();
     }
@@ -1317,21 +1446,19 @@ void testRevolutionGrooveOutputOwnershipConflict()
     SemanticId grooveSeed;
     {
         SemanticDocumentState::EvaluateScope scope(state);
-        revolutionSeed = g->recordGenerated(
-            SemanticKind::Edge, "Sketch", 10, scope.eval(), SemanticRole::None);
-        grooveSeed = g->recordGenerated(
-            SemanticKind::Edge, "Sketch", 10, scope.eval(), SemanticRole::None);
+        revolutionSeed
+            = g->recordGenerated(SemanticKind::Edge, "Sketch", 10, scope.eval(), SemanticRole::None);
+        grooveSeed
+            = g->recordGenerated(SemanticKind::Edge, "Sketch", 10, scope.eval(), SemanticRole::None);
         for (const auto feature : {40, 50}) {
             const char* op = feature == 40 ? "Revolution" : "Groove";
-            const SemanticKind outputKind = feature == 40 ? SemanticKind::Face
-                                                           : SemanticKind::Edge;
-            const ElementIndex output = feature == 40
-                ? ElementIndex::fromString("Face9")
-                : ElementIndex::fromString("Edge9");
-            const SemanticId first =
-                g->recordGenerated(outputKind, op, feature, scope.eval(), SemanticRole::None);
-            const SemanticId second =
-                g->recordGenerated(outputKind, op, feature, scope.eval(), SemanticRole::None);
+            const SemanticKind outputKind = feature == 40 ? SemanticKind::Face : SemanticKind::Edge;
+            const ElementIndex output = feature == 40 ? ElementIndex::fromString("Face9")
+                                                      : ElementIndex::fromString("Edge9");
+            const SemanticId first
+                = g->recordGenerated(outputKind, op, feature, scope.eval(), SemanticRole::None);
+            const SemanticId second
+                = g->recordGenerated(outputKind, op, feature, scope.eval(), SemanticRole::None);
             SemanticEmitter::bind(g, first, feature, scope.eval(), output);
             SemanticEmitter::bind(g, second, feature, scope.eval(), output);
         }
@@ -1467,14 +1594,18 @@ void testProfileSweepOutputOwnershipConflict()
             const int feature = featureIds[i];
             const char* op = opcodeName(opcodes[i]);
             const SemanticKind outputKind = outputs[i].type == "Face" ? SemanticKind::Face
-                                                                         : SemanticKind::Edge;
+                                                                      : SemanticKind::Edge;
             seeds.push_back(g->recordGenerated(
-                SemanticKind::Edge, "Sketch", 20 + static_cast<int>(i), scope.eval(),
-                SemanticRole::None));
-            const SemanticId first =
-                g->recordGenerated(outputKind, op, feature, scope.eval(), SemanticRole::None);
-            const SemanticId second =
-                g->recordGenerated(outputKind, op, feature, scope.eval(), SemanticRole::None);
+                SemanticKind::Edge,
+                "Sketch",
+                20 + static_cast<int>(i),
+                scope.eval(),
+                SemanticRole::None
+            ));
+            const SemanticId first
+                = g->recordGenerated(outputKind, op, feature, scope.eval(), SemanticRole::None);
+            const SemanticId second
+                = g->recordGenerated(outputKind, op, feature, scope.eval(), SemanticRole::None);
             SemanticEmitter::bind(g, first, feature, scope.eval(), outputs[i]);
             SemanticEmitter::bind(g, second, feature, scope.eval(), outputs[i]);
         }
@@ -1492,8 +1623,7 @@ void testProfileSweepOutputOwnershipConflict()
         else {
             req.namedEdgeIndices = {outputs[i]};
         }
-        SemanticEmitter::afterExecute(
-            g, opcodes[i], featureIds[i], scope.eval(), req);
+        SemanticEmitter::afterExecute(g, opcodes[i], featureIds[i], scope.eval(), req);
         const char* expected = outputs[i].type == "Face" ? "sides=0" : "edges=0";
         CHECK(SemanticEmitter::lastAfterExecuteNote().find(expected) != std::string::npos);
         CHECK(g->allIdentities().size() == identities);

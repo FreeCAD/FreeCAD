@@ -106,12 +106,15 @@ class Facebinder(DraftObject):
                             # fall back to a stale FaceN cache and become a
                             # first-row-wins face (strict I13). DressUp
                             # getFaceSubValues is likewise fail-closed (D9-S1).
-                            if (rec.get("kind") != "F"
-                                    or rec.get("resolvedUnique") is False
-                                    or (rec.get("resolvedUnique") is not None
-                                        and rec.get("resolutionState") in {
-                                            "Ambiguous", "Incompatible", "Missing"
-                                        })):
+                            if (
+                                rec.get("kind") != "F"
+                                or rec.get("resolvedUnique") is False
+                                or (
+                                    rec.get("resolvedUnique") is not None
+                                    and rec.get("resolutionState")
+                                    in {"Ambiguous", "Incompatible", "Missing"}
+                                )
+                            ):
                                 slot += 1
                                 continue
                             if rec.get("resolvedUnique") is True:

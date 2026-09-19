@@ -2099,12 +2099,12 @@ int FilletBase::uniqueBaseEdgeIndex(std::size_t slot, bool& missing) const
     if (slot >= vals.size()) {
         return 0;
     }
-    const std::string& ref =
-        (slot < shadows.size() && !shadows[slot].newName.empty()) ? shadows[slot].newName
-                                                                  : vals[slot];
-    const std::string oldName =
-        (slot < shadows.size() && !shadows[slot].oldName.empty()) ? shadows[slot].oldName
-                                                                  : std::string();
+    const std::string& ref = (slot < shadows.size() && !shadows[slot].newName.empty())
+        ? shadows[slot].newName
+        : vals[slot];
+    const std::string oldName = (slot < shadows.size() && !shadows[slot].oldName.empty())
+        ? shadows[slot].oldName
+        : std::string();
     if (Data::hasMissingElement(ref.c_str()) || Data::hasMissingElement(oldName.c_str())) {
         missing = true;
         return 0;
@@ -2126,8 +2126,7 @@ int FilletBase::uniqueBaseEdgeIndex(std::size_t slot, bool& missing) const
     if (!graph) {
         return 0;
     }
-    if (!graph->allocator.isPublished(sref.seed.handle)
-        || graph->hasDeletedEvent(sref.seed.handle)) {
+    if (!graph->allocator.isPublished(sref.seed.handle) || graph->hasDeletedEvent(sref.seed.handle)) {
         missing = true;
         return 0;
     }
@@ -2137,19 +2136,21 @@ int FilletBase::uniqueBaseEdgeIndex(std::size_t slot, bool& missing) const
         return 0;
     }
     const App::ObjectId linked = static_cast<App::ObjectId>(base->getID());
-    const std::optional<App::SemanticBinding> unique =
-        App::uniqueBindingOnFeature(graph, sref.seed, linked, "Edge");
+    const std::optional<App::SemanticBinding> unique
+        = App::uniqueBindingOnFeature(graph, sref.seed, linked, "Edge");
     if (!unique.has_value()) {
         return 0;
     }
     return unique->index.index;
 }
 
-int FilletBase::resolveEdgeFindKeyIndex(int consumed,
-                                       const std::string& ref,
-                                       const std::string& oldName,
-                                       int edgeid,
-                                       int mapExtent)
+int FilletBase::resolveEdgeFindKeyIndex(
+    int consumed,
+    const std::string& ref,
+    const std::string& oldName,
+    int edgeid,
+    int mapExtent
+)
 {
     // Unique Edge Binding on Base (I13) wins; else IndexedName from
     // newName / oldName (FaceN/EdgeN cache); else Edges.edgeid.

@@ -97,7 +97,8 @@ void testRegionSeedsStableAcrossReorderAndInsert()
     still.outer = {a, b, c, d};
     const auto keys3 = SketchEntityIdMap::regionKeysForFaces({still});
     CHECK(keys3 == keys);
-    const auto afterInsert = SketchSemanticSeeds::seedsForProfile(graph, sketch, eval, ids.live(), keys3);
+    const auto afterInsert
+        = SketchSemanticSeeds::seedsForProfile(graph, sketch, eval, ids.live(), keys3);
     CHECK(afterInsert.regions[0].handle == first.regions[0].handle);
     CHECK(afterInsert.curves.size() == ids.live().size());
 
@@ -108,7 +109,8 @@ void testRegionSeedsStableAcrossReorderAndInsert()
     ring.inners = {{hole}};
     const auto keysHole = SketchEntityIdMap::regionKeysForFaces({ring});
     CHECK(keysHole.size() == 2);
-    const auto withHole = SketchSemanticSeeds::seedsForProfile(graph, sketch, eval, ids.live(), keysHole);
+    const auto withHole
+        = SketchSemanticSeeds::seedsForProfile(graph, sketch, eval, ids.live(), keysHole);
     CHECK(withHole.regions.size() == 2);
     bool keptInterior = false;
     bool newHole = false;
@@ -176,7 +178,14 @@ void testRectangleFourVertexSeedsNotEight()
     const auto d = ids.append();
 
     const std::vector<SketchVertexKey> endpoints = {
-        {a, 1}, {a, 2}, {b, 1}, {b, 2}, {c, 1}, {c, 2}, {d, 1}, {d, 2},
+        {a, 1},
+        {a, 2},
+        {b, 1},
+        {b, 2},
+        {c, 1},
+        {c, 2},
+        {d, 1},
+        {d, 2},
     };
     const std::vector<std::pair<SketchVertexKey, SketchVertexKey>> coins = {
         {{a, 2}, {b, 1}},
@@ -190,8 +199,8 @@ void testRectangleFourVertexSeedsNotEight()
     App::SemanticGraph graph;
     const App::ObjectId sketch = 7;
     const App::EvalSerial eval = 1;
-    const auto profile = SketchSemanticSeeds::seedsForProfile(
-        graph, sketch, eval, {a, b, c, d}, {}, unique);
+    const auto profile
+        = SketchSemanticSeeds::seedsForProfile(graph, sketch, eval, {a, b, c, d}, {}, unique);
     CHECK(profile.curves.size() == 4);
     CHECK(profile.vertices.size() == 4);
     CHECK(profile.vertexKeys.size() == 4);
@@ -209,10 +218,16 @@ void testRectangleFourVertexSeedsNotEight()
     const App::SemanticId vert0 = SketchSemanticSeeds::findSeedForVertex(graph, sketch, unique[0]);
     CHECK(vert0.kind == App::SemanticKind::Vertex);
     CHECK(vert0.handle != edgeA.handle);
-    CHECK(SketchSemanticSeeds::findSeedByKindNote(
-              graph, sketch, App::SemanticKind::Vertex, SketchSemanticSeeds::entityNote(a))
-              .valid()
-          == false);
+    CHECK(
+        SketchSemanticSeeds::findSeedByKindNote(
+            graph,
+            sketch,
+            App::SemanticKind::Vertex,
+            SketchSemanticSeeds::entityNote(a)
+        )
+            .valid()
+        == false
+    );
 
     int gBind = 0;
     int vBind = 0;
@@ -244,8 +259,8 @@ void testRectangleFourVertexSeedsNotEight()
     CHECK(gIndex[0] == static_cast<int>(a));
     CHECK(gIndex[3] == static_cast<int>(d));
     // Re-publish: C1 keeps the same Vertex handles.
-    const auto again = SketchSemanticSeeds::seedsForProfile(
-        graph, sketch, eval, {a, b, c, d}, {}, unique);
+    const auto again
+        = SketchSemanticSeeds::seedsForProfile(graph, sketch, eval, {a, b, c, d}, {}, unique);
     CHECK(again.vertices.size() == 4);
     for (std::size_t i = 0; i < 4; ++i) {
         CHECK(again.vertices[i].handle == profile.vertices[i].handle);
@@ -258,9 +273,9 @@ void testVertexFindDoesNotReturnEdge()
     const App::ObjectId sketch = 3;
     const App::EvalSerial eval = 1;
     const SketchEntityHandle h = 1;
-    const App::SemanticId edge =
-        SketchSemanticSeeds::ensureSeedForEntity(graph, sketch, eval, h, App::SemanticKind::Edge);
-    const SketchVertexKey key{h, 1};
+    const App::SemanticId edge
+        = SketchSemanticSeeds::ensureSeedForEntity(graph, sketch, eval, h, App::SemanticKind::Edge);
+    const SketchVertexKey key {h, 1};
     const App::SemanticId vert = SketchSemanticSeeds::ensureSeedForVertex(graph, sketch, eval, key);
     CHECK(edge.valid());
     CHECK(vert.valid());
@@ -270,12 +285,14 @@ void testVertexFindDoesNotReturnEdge()
     CHECK(SketchSemanticSeeds::findSeed(graph, sketch, h).handle == edge.handle);
     CHECK(SketchSemanticSeeds::findSeed(graph, sketch, h).kind == App::SemanticKind::Edge);
     CHECK(SketchSemanticSeeds::findSeedForVertex(graph, sketch, key).handle == vert.handle);
-    CHECK(SketchSemanticSeeds::ensureSeedForEntity(graph, sketch, eval, h, App::SemanticKind::Vertex)
-              .valid()
-          == false);
-    CHECK(SketchSemanticSeeds::ensureSeedForEntity(graph, sketch, eval, h, App::SemanticKind::Face)
-              .valid()
-          == false);
+    CHECK(
+        SketchSemanticSeeds::ensureSeedForEntity(graph, sketch, eval, h, App::SemanticKind::Vertex).valid()
+        == false
+    );
+    CHECK(
+        SketchSemanticSeeds::ensureSeedForEntity(graph, sketch, eval, h, App::SemanticKind::Face).valid()
+        == false
+    );
     CHECK(SketchSemanticSeeds::vertexNote(key).find("Sketch.v") == 0);
     CHECK(SketchSemanticSeeds::entityNote(h).find("Sketch.g") == 0);
     CHECK(SketchSemanticSeeds::vertexNote(key) != SketchSemanticSeeds::entityNote(h));
@@ -301,9 +318,14 @@ void testEntitySeedEmitIntegrity()
     App::SemanticGraph valid;
     valid.beginEvaluate(1);
     const App::SemanticId edge = valid.recordGenerated(
-        App::SemanticKind::Edge, SketchSemanticSeeds::entityNote(1), sketch, 1, App::SemanticRole::User);
-    const auto children = valid.recordSplit(
-        edge, 2, "Sketch.split:1->2,3", sketch, 1, App::SemanticRole::User);
+        App::SemanticKind::Edge,
+        SketchSemanticSeeds::entityNote(1),
+        sketch,
+        1,
+        App::SemanticRole::User
+    );
+    const auto children
+        = valid.recordSplit(edge, 2, "Sketch.split:1->2,3", sketch, 1, App::SemanticRole::User);
     valid.commitEvaluate();
     CHECK(SketchSemanticSeeds::findSeed(valid, sketch, 1).handle == edge.handle);
     CHECK(SketchSemanticSeeds::findSeed(valid, sketch, 2).handle == children[0].handle);
@@ -312,18 +334,38 @@ void testEntitySeedEmitIntegrity()
     App::SemanticGraph wrongKind;
     wrongKind.beginEvaluate(1);
     wrongKind.recordGenerated(
-        App::SemanticKind::Edge, SketchSemanticSeeds::entityNote(4), sketch, 1, App::SemanticRole::User);
+        App::SemanticKind::Edge,
+        SketchSemanticSeeds::entityNote(4),
+        sketch,
+        1,
+        App::SemanticRole::User
+    );
     wrongKind.recordGenerated(
-        App::SemanticKind::Face, SketchSemanticSeeds::entityNote(4), sketch, 1, App::SemanticRole::User);
+        App::SemanticKind::Face,
+        SketchSemanticSeeds::entityNote(4),
+        sketch,
+        1,
+        App::SemanticRole::User
+    );
     wrongKind.commitEvaluate();
     CHECK(!SketchSemanticSeeds::findSeed(wrongKind, sketch, 4).valid());
 
     App::SemanticGraph duplicate;
     duplicate.beginEvaluate(1);
     duplicate.recordGenerated(
-        App::SemanticKind::Edge, SketchSemanticSeeds::entityNote(5), sketch, 1, App::SemanticRole::User);
+        App::SemanticKind::Edge,
+        SketchSemanticSeeds::entityNote(5),
+        sketch,
+        1,
+        App::SemanticRole::User
+    );
     duplicate.recordGenerated(
-        App::SemanticKind::Edge, SketchSemanticSeeds::entityNote(5), sketch, 1, App::SemanticRole::User);
+        App::SemanticKind::Edge,
+        SketchSemanticSeeds::entityNote(5),
+        sketch,
+        1,
+        App::SemanticRole::User
+    );
     duplicate.commitEvaluate();
     CHECK(!SketchSemanticSeeds::findSeed(duplicate, sketch, 5).valid());
     const auto duplicateEvents = duplicate.events().size();
@@ -333,7 +375,12 @@ void testEntitySeedEmitIntegrity()
     App::SemanticGraph wrongKindEnsure;
     wrongKindEnsure.beginEvaluate(1);
     wrongKindEnsure.recordGenerated(
-        App::SemanticKind::Face, SketchSemanticSeeds::entityNote(7), sketch, 1, App::SemanticRole::User);
+        App::SemanticKind::Face,
+        SketchSemanticSeeds::entityNote(7),
+        sketch,
+        1,
+        App::SemanticRole::User
+    );
     wrongKindEnsure.commitEvaluate();
     const auto wrongKindEvents = wrongKindEnsure.events().size();
     CHECK(!SketchSemanticSeeds::ensureSeedForEntity(wrongKindEnsure, sketch, 2, 7).valid());
@@ -342,18 +389,22 @@ void testEntitySeedEmitIntegrity()
     App::SemanticGraph malformed;
     malformed.beginEvaluate(1);
     const App::SemanticId malformedParent = malformed.recordGenerated(
-        App::SemanticKind::Edge, SketchSemanticSeeds::entityNote(6), sketch, 1, App::SemanticRole::User);
-    malformed.recordSplit(
-        malformedParent, 1, "Sketch.split:6->7,", sketch, 1, App::SemanticRole::User);
+        App::SemanticKind::Edge,
+        SketchSemanticSeeds::entityNote(6),
+        sketch,
+        1,
+        App::SemanticRole::User
+    );
+    malformed.recordSplit(malformedParent, 1, "Sketch.split:6->7,", sketch, 1, App::SemanticRole::User);
     malformed.commitEvaluate();
     CHECK(!SketchSemanticSeeds::findSeed(malformed, sketch, 7).valid());
     App::SemanticGraph duplicateRegion;
     duplicateRegion.beginEvaluate(1);
     const std::string regionNote = SketchSemanticSeeds::regionNote("Interior:1,2,3");
-    duplicateRegion.recordGenerated(
-        App::SemanticKind::Region, regionNote, sketch, 1, App::SemanticRole::User);
-    duplicateRegion.recordGenerated(
-        App::SemanticKind::Region, regionNote, sketch, 1, App::SemanticRole::User);
+    duplicateRegion
+        .recordGenerated(App::SemanticKind::Region, regionNote, sketch, 1, App::SemanticRole::User);
+    duplicateRegion
+        .recordGenerated(App::SemanticKind::Region, regionNote, sketch, 1, App::SemanticRole::User);
     duplicateRegion.commitEvaluate();
     CHECK(!SketchSemanticSeeds::findRegionSeed(duplicateRegion, sketch, "Interior:1,2,3").valid());
     const auto duplicateRegionEvents = duplicateRegion.events().size();
@@ -364,14 +415,26 @@ void testEntitySeedEmitIntegrity()
 void testPointDedupWithoutCoincidence()
 {
     const std::vector<SketchVertexKey> endpoints = {
-        {1, 1}, {1, 2}, {2, 1}, {2, 2}, {3, 1}, {3, 2}, {4, 1}, {4, 2},
+        {1, 1},
+        {1, 2},
+        {2, 1},
+        {2, 2},
+        {3, 1},
+        {3, 2},
+        {4, 1},
+        {4, 2},
     };
     const std::vector<SketchVertexPoint> pts = {
-        {0, 1, 0}, {1, 1, 0}, {1, 1, 0}, {1, 0, 0},
-        {1, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 1, 0},
+        {0, 1, 0},
+        {1, 1, 0},
+        {1, 1, 0},
+        {1, 0, 0},
+        {1, 0, 0},
+        {0, 0, 0},
+        {0, 0, 0},
+        {0, 1, 0},
     };
-    const auto unique =
-        SketchSemanticSeeds::uniqueProfileCorners(endpoints, {}, pts, 1e-7);
+    const auto unique = SketchSemanticSeeds::uniqueProfileCorners(endpoints, {}, pts, 1e-7);
     CHECK(unique.size() == 4);
 }
 
@@ -384,7 +447,7 @@ int main()
     testEntitySeedEmitIntegrity();
     testPointDedupWithoutCoincidence();
 
-    std::cout << "Sketch semantic seed region+vertex: " << g_passed << " checks passed, " << g_failed
-              << " failed\n";
+    std::cout << "Sketch semantic seed region+vertex: " << g_passed << " checks passed, "
+              << g_failed << " failed\n";
     return g_failed == 0 ? 0 : 1;
 }

@@ -119,7 +119,9 @@ App::DocumentObjectExecReturn* Thickness::execute()
     // skips the maker. Do not pick a neighbour (I10).
     // Empty seeds → do not skip (I7 FaceN fallback).
     const Part::FilletPreflight pre = Part::SemanticHistoryAdapter::preflightNamedReferences(
-        graph, namedFaceReferences, App::SemanticKind::Face
+        graph,
+        namedFaceReferences,
+        App::SemanticKind::Face
     );
     if (pre.makerSkipped) {
         SemanticEmitter::afterExecute(graph, Opcode::Thickness, fid, eval, req);
@@ -192,8 +194,8 @@ App::DocumentObjectExecReturn* Thickness::execute()
                 std::vector<Part::TopoShape> dummy;
                 const auto* faces = &dummy;
                 Part::TopoShape solid = TopShape;
-                // expect the sub element indexes in the map to be in order and matching our loop index,
-                // and effectively ignore them if they are not.
+                // expect the sub element indexes in the map to be in order and matching our loop
+                // index, and effectively ignore them if they are not.
                 if (mapIterator != closeFaces.end() && loopIndex >= mapIterator->first) {
                     faces = &mapIterator->second;
                     solid = TopShape.getSubTopoShape(TopAbs_SOLID, mapIterator->first);
@@ -262,8 +264,9 @@ App::DocumentObjectExecReturn* Thickness::execute()
             std::deque<TopoDS_Shape> held;
             std::vector<std::pair<App::SemanticId, const void*>> inputs;
             if (graph && Base.getValue()) {
-                const App::ObjectId baseFeature =
-                    static_cast<App::ObjectId>(Base.getValue()->semanticProjectionFeatureId());
+                const App::ObjectId baseFeature = static_cast<App::ObjectId>(
+                    Base.getValue()->semanticProjectionFeatureId()
+                );
                 for (const App::SemanticId& face : req.thicknessFaces) {
                     const auto unique = uniqueFaceBindingOnFeature(graph, face, baseFeature);
                     if (!unique) {
@@ -295,7 +298,8 @@ App::DocumentObjectExecReturn* Thickness::execute()
                 return idx;
             };
             // fromMaker only: empty table -> applyHistory half-map, no sequential FaceN (I13).
-            Part::HistoryTable hist = Part::SemanticHistoryAdapter::fromMaker(&mkThick, inputs, indexOf);
+            Part::HistoryTable hist
+                = Part::SemanticHistoryAdapter::fromMaker(&mkThick, inputs, indexOf);
             Part::HistoryTable toApply;
             toApply.reserve(hist.size());
             for (const auto& rec : hist) {
@@ -308,7 +312,13 @@ App::DocumentObjectExecReturn* Thickness::execute()
                 }
             }
             const Part::ApplyResult applied = Part::SemanticHistoryAdapter::applyHistory(
-                graph, fid, eval, "Thickness", req.thicknessFaces, toApply);
+                graph,
+                fid,
+                eval,
+                "Thickness",
+                req.thicknessFaces,
+                toApply
+            );
             if (applied.boundCount == 0) {
                 SemanticEmitter::afterExecute(graph, Opcode::Thickness, fid, eval, req);
             }

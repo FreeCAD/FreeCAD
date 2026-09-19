@@ -41,13 +41,13 @@
 #include <vector>
 
 #ifndef SEMANTIC_TOPOLOGY_STANDALONE
-#ifndef PartExport
-#include <Mod/Part/PartGlobal.h>
-#endif
+# ifndef PartExport
+#  include <Mod/Part/PartGlobal.h>
+# endif
 #else
-#ifndef PartExport
-#define PartExport
-#endif
+# ifndef PartExport
+#  define PartExport
+# endif
 #endif
 
 namespace Part
@@ -104,18 +104,22 @@ public:
     /// opcode is the Event.op token ("Pad" / "Fillet" / "Pocket" / "XTR" / "FLT").
     /// inputSeeds are the inbound named seeds; they are not scanned for a
     /// similar-length neighbour (I10).
-    static ApplyResult applyHistory(App::SemanticGraph* graph,
-                                    App::ObjectId feature,
-                                    App::EvalSerial eval,
-                                    const std::string& opcode,
-                                    const std::vector<App::SemanticId>& inputSeeds,
-                                    const HistoryTable& table);
+    static ApplyResult applyHistory(
+        App::SemanticGraph* graph,
+        App::ObjectId feature,
+        App::EvalSerial eval,
+        const std::string& opcode,
+        const std::vector<App::SemanticId>& inputSeeds,
+        const HistoryTable& table
+    );
 
     /// Resolve FilletEdge before the maker (R2). Missing / Incompatible /
     /// Ambiguous → makerSkipped. Null graph or empty edges → do not skip
     /// (FaceN dual-write fallback, I7). Never searches a neighbour (I10).
-    static FilletPreflight preflightFillet(App::SemanticGraph* graph,
-                                           const std::vector<App::SemanticId>& edges);
+    static FilletPreflight preflightFillet(
+        App::SemanticGraph* graph,
+        const std::vector<App::SemanticId>& edges
+    );
 
     /// C1/D2 restore rule for dress-ups: a valid cached Base may rebuild geometry
     /// when republishing, or when every named seed is only transiently Missing.
@@ -125,15 +129,18 @@ public:
     /// Kind-agnostic Missing-check (Draft Face seeds). Empty list or null graph
     /// → do not skip (I7 FaceN fallback). Missing / Incompatible / Ambiguous
     /// → makerSkipped. Never searches a neighbour (I10).
-    static FilletPreflight preflightNamedSeeds(App::SemanticGraph* graph,
-                                               const std::vector<App::SemanticId>& seeds,
-                                               App::SemanticKind kind);
+    static FilletPreflight preflightNamedSeeds(
+        App::SemanticGraph* graph,
+        const std::vector<App::SemanticId>& seeds,
+        App::SemanticKind kind
+    );
 
     /// Draft/Thickness consume gate using the stored reference policy.
     static FilletPreflight preflightNamedReferences(
         App::SemanticGraph* graph,
         const std::vector<App::SemanticReference>& references,
-        App::SemanticKind kind);
+        App::SemanticKind kind
+    );
 
     /// `occHistory` is `const BRepTools_History*` when OCCT is present, else
     /// ignored. `inputShapes[].second` is `const TopoDS_Shape*`. `indexOf`
@@ -141,7 +148,8 @@ public:
     static HistoryTable fromOcctHistory(
         const void* occHistory,
         const std::vector<std::pair<App::SemanticId, const void*>>& inputShapes,
-        const std::function<App::ElementIndex(const void* occShape)>& indexOf);
+        const std::function<App::ElementIndex(const void* occShape)>& indexOf
+    );
 
     /// `occMaker` is `const BRepBuilderAPI_MakeShape*` when OCCT is present
     /// (prism / fillet / until-prism). Same contract as fromOcctHistory.
@@ -151,13 +159,16 @@ public:
     static HistoryTable fromMaker(
         const void* occMaker,
         const std::vector<std::pair<App::SemanticId, const void*>>& inputShapes,
-        const std::function<App::ElementIndex(const void* occShape)>& indexOf);
+        const std::function<App::ElementIndex(const void* occShape)>& indexOf
+    );
 
     /// Input still lives on the result (OCCT Unmodified / mapped :U). Identity
     /// continues as Modified with a named toIndex. Empty index → no row (I13).
-    static bool appendUnmodifiedSurvivor(HistoryTable& table,
-                                         const App::SemanticId& seed,
-                                         const App::ElementIndex& toIndex);
+    static bool appendUnmodifiedSurvivor(
+        HistoryTable& table,
+        const App::SemanticId& seed,
+        const App::ElementIndex& toIndex
+    );
 
     /// I13 for Boolean (and similar) emit: keep a row only when that fromSeed
     /// has exactly one named Face/Edge toIndex. 0 or >1 images, Deleted, and
@@ -175,7 +186,8 @@ public:
     static HistoryTable supplementLocatedInputs(
         const HistoryTable& unique,
         const std::vector<std::pair<App::SemanticId, const void*>>& inputs,
-        const std::function<App::ElementIndex(const void* occShape)>& indexOf);
+        const std::function<App::ElementIndex(const void* occShape)>& indexOf
+    );
 
     static const std::string& lastApplyNote();
 };
