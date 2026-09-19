@@ -274,9 +274,9 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
     // two geometries can only get filleted if they have a coincident point
     std::vector<int> GeoIdList;
     std::vector<PointPos> PosIdList;
-    getDirectlyCoincidentPoints(GeoId1, GeoId2, GeoIdList, PosIdList);
+    const int count = getDirectlyCoincidentPoints(GeoId1, GeoId2, GeoIdList, PosIdList);
 
-    if (GeoIdList.size() < 1) {
+    if (count < 1) {
         return -1;
     }
 
