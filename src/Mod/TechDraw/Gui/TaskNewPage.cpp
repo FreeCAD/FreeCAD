@@ -38,6 +38,7 @@
 #include <QUrl>
 #include <QEvent>
 #include <QPainter>
+#include <QSignalBlocker>
 #endif  // #ifndef _PreComp_
 
 #include "TaskNewPage.h"
@@ -206,9 +207,10 @@ void TaskNewPage::populateStandards()
     QStringList rawEntries =
         dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name | QDir::LocaleAware);
 
+    // Only list folders that follow the standard/size/orientation layout.
     QStringList entries;
     for (const QString& entry : rawEntries) {
-        if (!entry.startsWith(QLatin1Char('.'))) {
+        if (!entry.startsWith(QLatin1Char('.')) && !validSizes(entry).isEmpty()) {
             entries.append(entry);
         }
     }
@@ -285,8 +287,7 @@ void TaskNewPage::populateSizes()
         return;
     }
 
-    QStringList entries =
-        standardDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name | QDir::LocaleAware);
+    QStringList entries = validSizes(currentStandard);
     if (!entries.isEmpty()) {
         ui->sizeComboBox->addItems(entries);
 
@@ -308,7 +309,44 @@ void TaskNewPage::populateSizes()
     }
 
     ui->sizeComboBox->blockSignals(false);
+    updateOrientationAvailability();
     updatePreviewAndPath();
+}
+
+QStringList TaskNewPage::validSizes(const QString& standard) const
+{
+    QDir standardDir(QDir(m_baseTemplateDir).filePath(standard));
+    const QStringList sizeDirs =
+        standardDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name | QDir::LocaleAware);
+
+    QStringList sizes;
+    for (const QString& size : sizeDirs) {
+        if (!findTemplateFile(standard, size, true).isEmpty()
+            || !findTemplateFile(standard, size, false).isEmpty()) {
+            sizes.append(size);
+        }
+    }
+    return sizes;
+}
+
+void TaskNewPage::updateOrientationAvailability()
+{
+    const QString standard = ui->standardComboBox->currentText();
+    const QString size = ui->sizeComboBox->currentText();
+    const bool hasLandscape = !findTemplateFile(standard, size, true).isEmpty();
+    const bool hasPortrait = !findTemplateFile(standard, size, false).isEmpty();
+
+    ui->landscapeRadioButton->setEnabled(hasLandscape);
+    ui->portraitRadioButton->setEnabled(hasPortrait);
+
+    // Switch to the only available orientation. The callers refresh the preview.
+    const QSignalBlocker blocker(ui->landscapeRadioButton);
+    if (ui->landscapeRadioButton->isChecked() && !hasLandscape && hasPortrait) {
+        ui->portraitRadioButton->setChecked(true);
+    }
+    else if (ui->portraitRadioButton->isChecked() && !hasPortrait && hasLandscape) {
+        ui->landscapeRadioButton->setChecked(true);
+    }
 }
 
 void TaskNewPage::onBrowseTemplate()
@@ -333,6 +371,7 @@ void TaskNewPage::onOpenTemplateFolderClicked()
 void TaskNewPage::onSizeChanged(int index)
 {
     Q_UNUSED(index);
+    updateOrientationAvailability();
     updatePreviewAndPath();
 }
 
@@ -356,8 +395,6 @@ QString TaskNewPage::findTemplateFile(const QString& standard, const QString& si
     QDir orientationDir(orientationDirPath);
 
     if (!orientationDir.exists()) {
-        Base::Console().warning("Template orientation directory not found: %s\n",
-        orientationDirPath.toStdString().c_str());
         return QString();
     }
     QStringList nameFilters;
@@ -370,7 +407,6 @@ QString TaskNewPage::findTemplateFile(const QString& standard, const QString& si
         return orientationDir.filePath(files.first());
     }
 
-    Base::Console().warning("No SVG file found in: %s\n", orientationDirPath.toStdString().c_str());
     return QString();
 }
 
