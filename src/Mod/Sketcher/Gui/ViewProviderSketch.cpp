@@ -3899,8 +3899,18 @@ void ViewProviderSketch::slotSolverUpdate()
             + getSketchObject()->getHighestCurveIndex() + 1
         == getSolvedSketch().getGeometrySize()) {
 
-        Gui::MDIView* mdi =
-            Gui::Application::Instance->editViewOfNode(editCoinManager->getRootEditNode());
+        Gui::MDIView* mdi = Gui::Application::Instance->editViewOfNode(
+            editCoinManager->getRootEditNode()
+        );
+
+        if (mdi == nullptr) {
+            if (auto editDoc = Gui::Application::Instance->editDocument(
+                    [this](Gui::Document* editdoc) { return editdoc->getEditViewProvider() == this; }
+                )) {
+                mdi = editDoc->getActiveView();
+            }
+        }
+
         if (mdi && mdi->isDerivedFrom<Gui::View3DInventor>()) {
             draw(false, true);
         }
