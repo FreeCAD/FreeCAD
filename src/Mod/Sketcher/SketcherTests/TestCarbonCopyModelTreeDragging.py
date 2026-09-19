@@ -6,7 +6,7 @@ does not trigger CarbonCopy multiple times.
 
 import FreeCAD
 import Part
-from PySide import QtCore
+from PySide import QtCore, QtWidgets
 from FreeCAD import Base
 
 from SketcherTests.GuiTestCase import FreeCADGui, SketcherGuiTestCase
@@ -32,6 +32,7 @@ class TestCarbonCopyModelTreeDragging(SketcherGuiTestCase):
         return items[0]
 
     def sendMouseDragEvents(self, widget, pos):
+        dragDistance = max(QtWidgets.QApplication.startDragDistance(), 1)
         self.send_mouse(
             widget,
             QtCore.QEvent.MouseButtonPress,
@@ -42,7 +43,7 @@ class TestCarbonCopyModelTreeDragging(SketcherGuiTestCase):
         self.send_mouse(
             widget,
             QtCore.QEvent.MouseMove,
-            pos + QtCore.QPoint(0, 1),
+            pos + QtCore.QPoint(0, dragDistance),
             QtCore.Qt.NoButton,
             QtCore.Qt.LeftButton,
         )
@@ -56,7 +57,7 @@ class TestCarbonCopyModelTreeDragging(SketcherGuiTestCase):
         self.send_mouse(
             widget,
             QtCore.QEvent.MouseMove,
-            pos + QtCore.QPoint(0, 1),
+            pos + QtCore.QPoint(0, -dragDistance),
             QtCore.Qt.NoButton,
             QtCore.Qt.LeftButton,
         )

@@ -25,6 +25,7 @@
 #pragma once
 
 #include <QApplication>
+#include <QMouseEvent>
 
 #include <Gui/Notifications.h>
 #include <Gui/Selection/SelectionFilter.h>
@@ -135,15 +136,18 @@ public:
     {}
 
 protected:
-    bool eventFilter(QObject* obj, QEvent* event) override
+    bool eventFilter(QObject*, QEvent* event) override
     {
         // Filter out mouse move events
         // to prevent drag-selection in the TreeWidget,
         // avoiding repeated CarbonCopy execution
         if (event->type() == QEvent::MouseMove) {
-            return true;
+            auto* mouseEvent = static_cast<QMouseEvent*>(event);
+            if (mouseEvent->buttons() != Qt::NoButton) {
+                return true;
+            }
         }
-        return QObject::eventFilter(obj, event);
+        return false;
     }
 };
 
