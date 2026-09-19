@@ -522,6 +522,7 @@ SET(Dialog_CPP_SRCS
     TaskTransform.cpp
     TransformSnap.cpp
     TransformSnapRotation.cpp
+    TransformSnapSolver.cpp
     TranslationConstraintSolver.cpp
     TaskCommandLink.cpp
     Dialogs/DlgUndoRedo.cpp
@@ -569,6 +570,7 @@ SET(Dialog_HPP_SRCS
     TaskTransform.h
     TransformSnap.h
     TransformSnapRotation.h
+    TransformSnapSolver.h
     TranslationConstraintSolver.h
     TaskCommandLink.h
     Dialogs/DlgUndoRedo.h
