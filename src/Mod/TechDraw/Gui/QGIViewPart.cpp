@@ -25,8 +25,46 @@
 #include <QPainterPath>
 #include <QKeyEvent>
 #include <QGraphicsTransform>
+#include <QImage>
+#include <QOpenGLContext>
+#include <algorithm>
+#include <cmath>
 #include <cstdio>
+#include <limits>
+#include <list>
+#include <memory>
+#include <optional>
 #include <qmath.h>
+#include <utility>
+#include <vector>
+
+#include <Inventor/nodes/SoDirectionalLight.h>
+#include <Inventor/nodes/SoEnvironment.h>
+#include <Inventor/nodes/SoFrustumCamera.h>
+#include <Inventor/nodes/SoIndexedFaceSet.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoOrthographicCamera.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoShapeHints.h>
+#include <Inventor/nodes/SoVertexProperty.h>
+
+#include <BRepBndLib.hxx>
+#include <BRepBuilderAPI_Copy.hxx>
+#include <BRepMesh_IncrementalMesh.hxx>
+#include <BRep_Tool.hxx>
+#include <Bnd_Box.hxx>
+#include <Poly_Triangulation.hxx>
+#include <Precision.hxx>
+#include <Standard_Version.hxx>
+#include <TopAbs_Orientation.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopLoc_Location.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Face.hxx>
+#if OCC_VERSION_HEX < 0x070600
+#include <Poly_Array1OfTriangle.hxx>
+#include <TColgp_Array1OfPnt.hxx>
+#endif
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -34,7 +72,12 @@
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
 #include <Base/Vector3D.h>
+#include <Gui/Application.h>
+#include <Gui/Document.h>
 #include <Gui/Selection/Selection.h>
+#include <Gui/SoFCOffscreenRenderer.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Mod/TechDraw/App/CenterLine.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
 #include <Mod/TechDraw/App/DrawComplexSection.h>
@@ -45,9 +88,11 @@
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewSection.h>
 #include <Mod/TechDraw/App/Geometry.h>
+#include <Mod/TechDraw/App/GeometryObject.h>
 #include <Mod/TechDraw/App/DrawBrokenView.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
+#include <Mod/Part/App/Tools.h>
 
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
@@ -59,6 +104,7 @@
 #include "QGIFace.h"
 #include "QGIHighlight.h"
 #include "QGIMatting.h"
+#include "QGIPrimPath.h"
 #include "QGISectionLine.h"
 #include "QGIVertex.h"
 #include "QGIViewPart.h"
@@ -80,6 +126,261 @@ using DU = DrawUtil;
 using FillMode = QGIFace::FillMode;
 
 const float lineScaleFactor = Rez::guiX(1.);// temp fiddle for devel
+
+namespace {
+
+constexpr double ShadedPixelsPerMillimetre = 12.0;  // approximately 300 dpi
+constexpr int ShadedMaxImageDimension = 4096;
+constexpr double ShadedAngularDeflection = 0.20;
+
+struct ShadedImage
+{
+    QImage image;
+    QRectF rect;
+};
+
+class QGIShadedImage final : public QGIPrimPath
+{
+public:
+    explicit QGIShadedImage(ShadedImage shaded)
+        : m_image(std::move(shaded.image))
+        , m_rect(shaded.rect)
+    {
+        QPainterPath outline;
+        outline.addRect(m_rect);
+        setPath(outline);
+        setFlag(QGraphicsItem::ItemIsSelectable, false);
+        setFlag(QGraphicsItem::ItemIsFocusable, false);
+        setAcceptHoverEvents(false);
+    }
+
+    void paint(QPainter* painter,
+               const QStyleOptionGraphicsItem*,
+               QWidget*) override
+    {
+        painter->save();
+        painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
+        painter->drawImage(m_rect, m_image);
+        painter->restore();
+    }
+
+private:
+    QImage m_image;
+    QRectF m_rect;
+};
+
+// Render in projection coordinates, with the same Coin lighting pipeline as the
+// 3D viewer. Only tessellation and image composition are performed on the CPU.
+std::optional<ShadedImage> makeShadedImage(DrawViewPart* viewPart, QColor baseColor)
+{
+    const auto geometry = viewPart->getGeometryObject();
+    if (!geometry || geometry->getProjectionShape().IsNull()) {
+        return {};
+    }
+    BRepBuilderAPI_Copy copier(geometry->getProjectionShape(), false, false);
+    const TopoDS_Shape displayShape = copier.Shape();
+    Bnd_Box shapeBox;
+    BRepBndLib::Add(displayShape, shapeBox);
+    if (shapeBox.IsVoid()) {
+        return {};
+    }
+    double xMin, yMin, zMin, xMax, yMax, zMax;
+    shapeBox.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+    const double extent = std::max({xMax - xMin, yMax - yMin, zMax - zMin});
+    BRepMesh_IncrementalMesh mesher(displayShape,
+        std::max(Precision::Confusion(), extent / 500.0), false,
+        ShadedAngularDeflection, true);
+    if (!mesher.IsDone()) {
+        return {};
+    }
+
+    auto unref = [](SoSeparator* node) { node->unref(); };
+    std::unique_ptr<SoSeparator, decltype(unref)> root(new SoSeparator, unref);
+    root->ref();
+    // Lights precede the camera, just as in View3DInventorViewer::renderToImage.
+    auto* guiDocument = Gui::Application::Instance->getDocument(viewPart->getDocument());
+    const auto views = guiDocument
+        ? guiDocument->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId())
+        : std::list<Gui::MDIView*>();
+    if (!views.empty()) {
+        auto* viewer = static_cast<Gui::View3DInventor*>(views.front())->getViewer();
+        root->addChild(viewer->getEnvironment()->copy());
+        root->addChild(viewer->getHeadlight()->copy());
+        root->addChild(viewer->getBacklight()->copy());
+        root->addChild(viewer->getFillLight()->copy());
+    }
+    else {
+        root->addChild(new SoEnvironment);
+        root->addChild(new SoDirectionalLight);
+    }
+
+    const bool perspective = geometry->isPerspective();
+    const double focus = std::max(Precision::Confusion(), geometry->getFocus());
+    SoCamera* camera = perspective ? static_cast<SoCamera*>(new SoFrustumCamera)
+                                   : static_cast<SoCamera*>(new SoOrthographicCamera);
+    root->addChild(camera);
+    auto* material = new SoMaterial;
+    material->diffuseColor.setValue(float(baseColor.redF()), float(baseColor.greenF()),
+                                    float(baseColor.blueF()));
+    root->addChild(material);
+    auto* hints = new SoShapeHints;
+    // Two-sided lighting for open shells; do not cull reversed/open faces.
+    hints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+    hints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
+    root->addChild(hints);
+
+    const gp_Ax2 projection = geometry->getProjectionAxis();
+    const gp_Vec axisX(projection.XDirection());
+    const gp_Vec axisY(projection.YDirection());
+    const gp_Vec axisZ(projection.Direction());
+    double minX = std::numeric_limits<double>::infinity();
+    double minY = minX, minZ = minX;
+    double maxX = -minX, maxY = -minX, maxZ = -minX;
+    for (TopExp_Explorer explorer(displayShape, TopAbs_FACE); explorer.More(); explorer.Next()) {
+        const TopoDS_Face face = TopoDS::Face(explorer.Current());
+        TopLoc_Location location;
+        const auto triangulation = BRep_Tool::Triangulation(face, location);
+        if (triangulation.IsNull()) {
+            continue;
+        }
+        std::vector<gp_Vec> normals;
+        Part::Tools::getPointNormals(face, triangulation, normals);
+        Part::Tools::applyTransformationOnNormals(location, normals);
+        auto* mesh = new SoIndexedFaceSet;
+        root->addChild(mesh);
+        auto* vertices = new SoVertexProperty;
+        mesh->vertexProperty = vertices;
+        vertices->normalBinding = SoVertexProperty::PER_VERTEX_INDEXED;
+        vertices->vertex.setNum(triangulation->NbNodes());
+        vertices->normal.setNum(triangulation->NbNodes());
+        for (int i = 1; i <= triangulation->NbNodes(); ++i) {
+#if OCC_VERSION_HEX < 0x070600
+            gp_Pnt point = triangulation->Nodes()(i);
+#else
+            gp_Pnt point = triangulation->Node(i);
+#endif
+            point.Transform(location.Transformation());
+            const gp_Vec relative(projection.Location(), point);
+            const double x = relative.Dot(axisX), y = relative.Dot(axisY), z = relative.Dot(axisZ);
+            // HLR perspective projects from (0, 0, focus) onto z=0.
+            if (perspective && focus - z <= Precision::Confusion()) {
+                return {}; // A shape crossing the eye plane has no finite image bounds.
+            }
+            const double factor = perspective ? focus / (focus - z) : 1.0;
+            minX = std::min(minX, x * factor);
+            maxX = std::max(maxX, x * factor);
+            minY = std::min(minY, y * factor);
+            maxY = std::max(maxY, y * factor);
+            minZ = std::min(minZ, z);
+            maxZ = std::max(maxZ, z);
+            const auto& normal = normals.at(size_t(i - 1));
+            vertices->vertex.set1Value(i - 1, float(x), float(y), float(z));
+            vertices->normal.set1Value(i - 1, float(normal.Dot(axisX)),
+                float(normal.Dot(axisY)), float(normal.Dot(axisZ)));
+        }
+        mesh->coordIndex.setNum(4 * triangulation->NbTriangles());
+        for (int i = 1; i <= triangulation->NbTriangles(); ++i) {
+            int a, b, c;
+#if OCC_VERSION_HEX < 0x070600
+            triangulation->Triangles()(i).Get(a, b, c);
+#else
+            triangulation->Triangle(i).Get(a, b, c);
+#endif
+            if (face.Orientation() == TopAbs_REVERSED) {
+                std::swap(b, c);
+            }
+            const int32_t indices[] = {a - 1, b - 1, c - 1, -1};
+            mesh->coordIndex.setValues(4 * (i - 1), 4, indices);
+        }
+    }
+    if (!std::isfinite(minX) || maxX <= minX || maxY <= minY) {
+        return {};
+    }
+    const double pixelsPerUnit = std::min(ShadedPixelsPerMillimetre,
+        (ShadedMaxImageDimension - 4.0) / std::max(maxX - minX, maxY - minY));
+    minX -= 2.0 / pixelsPerUnit;
+    maxX += 2.0 / pixelsPerUnit;
+    minY -= 2.0 / pixelsPerUnit;
+    maxY += 2.0 / pixelsPerUnit;
+    const int width = std::min(ShadedMaxImageDimension,
+        std::max(2, int(std::ceil((maxX - minX) * pixelsPerUnit))));
+    const int height = std::min(ShadedMaxImageDimension,
+        std::max(2, int(std::ceil((maxY - minY) * pixelsPerUnit))));
+    // Account for rounding so Coin and QPainter use exactly the same aspect ratio.
+    const double centerX = (minX + maxX) / 2.0;
+    const double halfWidth = (maxY - minY) * width / height / 2.0;
+    minX = centerX - halfWidth;
+    maxX = centerX + halfWidth;
+    const double padding = std::max(extent * 0.1, 0.001);
+    const double eye = perspective ? focus : maxZ + padding;
+    const double nearDistance = std::max(Precision::Confusion(), (eye - maxZ) * 0.5);
+    camera->nearDistance = float(nearDistance);
+    camera->farDistance = float(eye - minZ + padding);
+    camera->viewportMapping = SoCamera::LEAVE_ALONE;
+    camera->aspectRatio = float(width) / height;
+    if (perspective) {
+        camera->position.setValue(0, 0, float(eye));
+        auto* frustum = static_cast<SoFrustumCamera*>(camera);
+        frustum->left = float(minX * nearDistance / focus);
+        frustum->right = float(maxX * nearDistance / focus);
+        frustum->bottom = float(minY * nearDistance / focus);
+        frustum->top = float(maxY * nearDistance / focus);
+    }
+    else {
+        camera->position.setValue(float(centerX), float((minY + maxY) / 2.0), float(eye));
+        static_cast<SoOrthographicCamera*>(camera)->height = float(maxY - minY);
+    }
+
+    // The shared renderer color-keys transparent backgrounds. Two opaque passes
+    // instead recover antialiased coverage without white fringes or erasing white
+    // material. This is alpha composition, not a separate lighting calculation.
+    struct RestoreContext
+    {
+        QOpenGLContext* context = QOpenGLContext::currentContext();
+        QSurface* surface = context ? context->surface() : nullptr;
+        ~RestoreContext()
+        {
+            if (context && surface) {
+                context->makeCurrent(surface);
+            }
+        }
+    } restoreContext;
+    auto render = [&](float background) {
+        Gui::SoQtOffscreenRenderer renderer{SbViewportRegion(short(width), short(height))};
+        renderer.setNumPasses(4);
+        renderer.setBackgroundColor(SbColor4f(background, background, background, 1.0F));
+        QImage image;
+        if (renderer.render(root.get())) {
+            renderer.writeToImage(image);
+        }
+        return image.convertToFormat(QImage::Format_RGB32);
+    };
+    const QImage black = render(0.0F);
+    const QImage white = render(1.0F);
+    if (black.isNull() || white.isNull()) {
+        return {};
+    }
+    QImage image(width, height, QImage::Format_ARGB32_Premultiplied);
+    for (int y = 0; y < height; ++y) {
+        const auto* b = reinterpret_cast<const QRgb*>(black.constScanLine(y));
+        const auto* w = reinterpret_cast<const QRgb*>(white.constScanLine(y));
+        auto* out = reinterpret_cast<QRgb*>(image.scanLine(y));
+        for (int x = 0; x < width; ++x) {
+            const int alpha = std::clamp(255 - std::max({qRed(w[x]) - qRed(b[x]),
+                qGreen(w[x]) - qGreen(b[x]), qBlue(w[x]) - qBlue(b[x])}), 0, 255);
+            const auto channel = [&](int value) {
+                return std::min(value, alpha) * baseColor.alpha() / 255;
+            };
+            out[x] = qRgba(channel(qRed(b[x])), channel(qGreen(b[x])),
+                channel(qBlue(b[x])), alpha * baseColor.alpha() / 255);
+        }
+    }
+    return ShadedImage{std::move(image),
+        QRectF(QPointF(Rez::guiX(minX), Rez::guiX(-maxY)),
+               QPointF(Rez::guiX(maxX), Rez::guiX(-minY)))};
+}
+
+}  // namespace
 
 QGIViewPart::QGIViewPart()
 {
@@ -305,13 +606,52 @@ void QGIViewPart::drawViewPart()
     removePrimitives();//clean the slate
     removeDecorations();
 
-    if (viewPart->handleFaces() && !viewPart->CoarseView.getValue()) {
+    if (viewPart->hasShadedDisplay()) {
+        drawShaded();
+    }
+    else if (viewPart->handleFaces() && !viewPart->CoarseView.getValue()) {
         drawAllFaces();
     }
 
     drawAllEdges();
 
     drawAllVertexes();
+}
+
+void QGIViewPart::drawShaded()
+{
+    auto* viewPart = static_cast<TechDraw::DrawViewPart*>(getViewObject());
+    auto* viewProvider =
+        dynamic_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
+    if (!viewProvider) {
+        return;
+    }
+
+    QColor faceColor = viewProvider->FaceColor.getValue().asValue<QColor>();
+    faceColor.setAlpha(
+        (100 - viewProvider->FaceTransparency.getValue()) * 255 / 100);
+
+    std::optional<ShadedImage> shaded;
+    try {
+        shaded = makeShadedImage(viewPart, faceColor);
+    }
+    catch (const Standard_Failure& error) {
+        Base::Console().warning("TechDraw shading: %s\n", error.GetMessageString());
+    }
+    catch (const std::exception& error) {
+        Base::Console().warning("TechDraw shading: %s\n", error.what());
+    }
+    if (!shaded) {
+        Base::Console().warning(
+            "Could not create shaded image for %s\n",
+            viewPart->getNameInDocument());
+        return;
+    }
+
+    auto* item = new QGIShadedImage(std::move(*shaded));
+    addToGroupWithoutUpdate(item);
+    item->setPos(0.0, 0.0);
+    item->setZValue(ZVALUE::FACE);
 }
 
 void QGIViewPart::drawAllFaces(void)
@@ -452,10 +792,22 @@ void QGIViewPart::drawAllEdges()
             } else {
                 if (!(*itGeom)->getHlrVisible()) {
                     // hidden line without a format
-                    item->setLinePen(m_dashedLineGenerator->getLinePen(Preferences::HiddenLineStyle(),
-                                                                       vp->LineWidth.getValue()));
+                    if (dvp->hiddenEdgesAreSolid()) {
+                        item->setLinePen(
+                            m_dashedLineGenerator->getLinePen(
+                                1, vp->LineWidth.getValue()));
+                    }
+                    else {
+                        item->setLinePen(
+                            m_dashedLineGenerator->getLinePen(
+                                Preferences::HiddenLineStyle(),
+                                vp->HiddenWidth.getValue()));
+                    }
                     item->setHiddenEdge(true);
-                    item->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));   //thin
+                    const double hiddenWidth = dvp->hiddenEdgesAreSolid()
+                        ? vp->LineWidth.getValue()
+                        : vp->HiddenWidth.getValue();
+                    item->setWidth(Rez::guiX(hiddenWidth));
                     item->setZValue(ZVALUE::HIDEDGE);
                 } else {
                     // unformatted visible line, draw as continuous line
@@ -476,6 +828,13 @@ void QGIViewPart::drawAllEdges()
 
         item->setPos(0.0, 0.0);//now at group(0, 0)
         item->setZValue(ZVALUE::EDGE);
+        if (!dvp->showsVisibleEdges()
+            && (*itGeom)->source() == TechDraw::SourceType::GEOMETRY) {
+            // Retain real edge items for hover, selection, and dimensions while
+            // suppressing their normal paint in the edge-free shaded style.
+            item->setHiddenEdge(false);
+            item->setNormalColor(Qt::transparent);
+        }
         item->setPrettyNormal();
 
         if (!vp->ShowAllEdges.getValue() && !showItem) {
@@ -1511,5 +1870,3 @@ void QGIViewPart::setMovableFlagProjGroupItem()
     // not locked, not autoDistribute
     setFlag(QGraphicsItem::ItemIsMovable, true);
 }
-
-
