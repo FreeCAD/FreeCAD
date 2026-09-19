@@ -526,7 +526,8 @@ def parse(pathobj):
         if OUTPUT_COMMENTS and OUTPUT_PATH:
             out += linenumber() + "(Path: " + pathobj.Label + ")\n"
 
-        for c in PathUtils.getPathWithPlacement(pathobj).Commands:
+        path_to_process = PathUtils.getPathWithPlacementAndTerminator(pathobj)
+        for c in path_to_process.Commands:
             outlist = []
             command = c.Name
             outlist.append(command)

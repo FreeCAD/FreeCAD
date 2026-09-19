@@ -502,7 +502,7 @@ def parse(pathobj):
                         "Tool Controller Vertical Rapid Values are unset" + "\n"
                     )
 
-        commands = PathUtils.getPathWithPlacement(pathobj).Commands
+        commands = PathUtils.getPathWithPlacementAndTerminator(pathobj).Commands
         for index, c in enumerate(commands):
 
             outstring = []
@@ -616,7 +616,8 @@ def parse(pathobj):
                         )
 
                 out += linenumber() + command + paramstring + "\n"
-                out += linenumber() + "G80\n"  # End tapping cycle
+                if nextcommand != "G80":  # cannedCycleTerminator usually supplies it
+                    out += linenumber() + "G80\n"  # End tapping cycle
                 continue
 
             outstring.append(command)

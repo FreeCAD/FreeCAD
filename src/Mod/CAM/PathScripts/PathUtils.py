@@ -28,6 +28,7 @@ from PySide import QtCore
 import Part
 import Path
 import Path.Main.Job as PathJob
+import Path.Post.Utils as PostUtils
 import math
 from numpy import linspace
 import tsp_solver
@@ -965,6 +966,15 @@ def getPathWithPlacement(pathobj):
         return pathobj.Path
 
     return applyPlacementToPath(pathobj.Placement, pathobj.Path)
+
+
+def getPathWithPlacementAndTerminator(pathobj):
+    """Apply the object's Placement, then insert G98/G99 and G80 around canned cycles.
+
+    Ops like Drilling only *annotate* each cycle command with its retract mode;
+    cannedCycleTerminator makes that literal. Post scripts that walk Commands
+    themselves need both steps, so this is the one call they should make."""
+    return PostUtils.cannedCycleTerminator(getPathWithPlacement(pathobj))
 
 
 def applyPlacementToPath(placement, path):

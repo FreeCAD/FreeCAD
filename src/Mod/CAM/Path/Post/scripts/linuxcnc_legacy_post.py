@@ -346,7 +346,9 @@ def parse(pathobj):
         # change here until we can figure out what it going on.
         #
         # for c in PathUtils.getPathWithPlacement(pathobj).Commands:
-        for c in pathobj.Path.Commands:
+        # No placement here (see above); still need G98/G99 made literal.
+        path_to_process = PostUtils.cannedCycleTerminator(pathobj.Path)
+        for c in path_to_process.Commands:
             outstring = []
             command = c.Name
             outstring.append(command)

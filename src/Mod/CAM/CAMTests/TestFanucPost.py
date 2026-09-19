@@ -345,9 +345,11 @@ M30
         self.job.PostProcessorArgs = "--no-header --no-show-editor"
         gcode = self.post.export()[0][1]
         self.assertEqual(gcode.splitlines()[18], "G0 X10.000 Y10.000")
-        self.assertEqual(gcode.splitlines()[19], "M29 S1000")
-        self.assertEqual(gcode.splitlines()[20], "G84 Z-10.000 R20.000 F1000.000 P1.000 Q1.000")
-        self.assertEqual(gcode.splitlines()[21], "G80")
+        self.assertEqual(gcode.splitlines()[19], "G98")
+        self.assertEqual(gcode.splitlines()[20], "M29 S1000")
+        self.assertEqual(gcode.splitlines()[21], "G84 Z-10.000 R20.000 F1000.000 P1.000 Q1.000")
+        self.assertEqual(gcode.splitlines()[22], "G80")
+        self.assertNotEqual(gcode.splitlines()[23], "G80")  # exactly one terminator
 
     def test_comment(self):
         """
@@ -401,16 +403,26 @@ M30
         print(gcode)
         expected = "G0 X0.000 Y0.000"
         self.assertEqual(glines[19], expected)
-        expected = "G83 Z0.000 F6000.000 Q2.000 R10.000"
+        expected = "G98"
         self.assertEqual(glines[20], expected)
-        expected = "G0 X20.000"
+        expected = "G83 Z0.000 F6000.000 Q2.000 R10.000"
         self.assertEqual(glines[21], expected)
-        expected = "G83 Z0.000 Q2.000 R10.000"
+        expected = "G80"
         self.assertEqual(glines[22], expected)
-        expected = "G0 X40.000"
+        expected = "G0 X20.000"
         self.assertEqual(glines[23], expected)
-        expected = "G83 Z0.000 Q2.000 R10.000"
+        expected = "G98"
         self.assertEqual(glines[24], expected)
+        expected = "G83 Z0.000 Q2.000 R10.000"
+        self.assertEqual(glines[25], expected)
+        expected = "G80"
+        self.assertEqual(glines[26], expected)
+        expected = "G0 X40.000"
+        self.assertEqual(glines[27], expected)
+        expected = "G98"
+        self.assertEqual(glines[28], expected)
+        expected = "G83 Z0.000 Q2.000 R10.000"
+        self.assertEqual(glines[29], expected)
 
     def test_drilling_peck_chipbreak(self):
         """
@@ -450,13 +462,23 @@ M30
         print(gcode)
         expected = "G0 X0.000 Y0.000"
         self.assertEqual(glines[19], expected)
-        expected = "G73 Z0.000 F6000.000 Q2.000 R10.000"
+        expected = "G98"
         self.assertEqual(glines[20], expected)
-        expected = "G0 X20.000"
+        expected = "G73 Z0.000 F6000.000 Q2.000 R10.000"
         self.assertEqual(glines[21], expected)
-        expected = "G73 Z0.000 Q2.000 R10.000"
+        expected = "G80"
         self.assertEqual(glines[22], expected)
-        expected = "G0 X40.000"
+        expected = "G0 X20.000"
         self.assertEqual(glines[23], expected)
-        expected = "G73 Z0.000 Q2.000 R10.000"
+        expected = "G98"
         self.assertEqual(glines[24], expected)
+        expected = "G73 Z0.000 Q2.000 R10.000"
+        self.assertEqual(glines[25], expected)
+        expected = "G80"
+        self.assertEqual(glines[26], expected)
+        expected = "G0 X40.000"
+        self.assertEqual(glines[27], expected)
+        expected = "G98"
+        self.assertEqual(glines[28], expected)
+        expected = "G73 Z0.000 Q2.000 R10.000"
+        self.assertEqual(glines[29], expected)

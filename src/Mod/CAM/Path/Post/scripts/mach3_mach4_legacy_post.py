@@ -365,7 +365,7 @@ def parse(pathobj):
                         "Tool Controller Vertical Rapid Values are unset" + "\n"
                     )
 
-        for c in PathUtils.getPathWithPlacement(pathobj).Commands:
+        for c in PathUtils.getPathWithPlacementAndTerminator(pathobj).Commands:
 
             outstring = []
             command = c.Name
