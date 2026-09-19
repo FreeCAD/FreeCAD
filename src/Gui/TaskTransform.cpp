@@ -24,6 +24,7 @@
 #include <algorithm>
 #include <cmath>
 #include <string_view>
+#include <QAbstractItemView>
 #include <QApplication>
 
 #include <View3DInventorViewer.h>
@@ -271,6 +272,8 @@ void TaskTransform::setupGui()
     ui->customCSReferenceLabel->hide();
     ui->customCSPickerWidget->hide();
     ui->alignRotationCheckBox->hide();
+    ui->cumulativeSnapHistoryList->setSelectionMode(QAbstractItemView::NoSelection);
+    ui->cumulativeSnapHistoryList->setFocusPolicy(Qt::NoFocus);
 
     for (auto positionSpinBox :
          {ui->translationIncrementSpinBox,
@@ -326,6 +329,13 @@ void TaskTransform::setupGui()
     );
     connect(ui->alignToOtherObjectButton, &QPushButton::clicked, this, &TaskTransform::onAlignToOtherObject);
     connect(ui->cumulativeSnapButton, &QPushButton::clicked, this, &TaskTransform::onCumulativeSnap);
+    connect(ui->undoCumulativeSnapButton, &QPushButton::clicked, this, &TaskTransform::onUndoCumulativeSnap);
+    connect(
+        ui->clearCumulativeSnapButton,
+        &QPushButton::clicked,
+        this,
+        &TaskTransform::onClearCumulativeSnap
+    );
     connect(ui->moveOptionsButton, &QPushButton::toggled, ui->frameMoveOptions, &QWidget::setVisible);
     connect(ui->translateCheckbox, &QCheckBox::toggled, this, [this](bool translateChecked) {
         ui->matchXcheckbox->setEnabled(translateChecked);
@@ -1136,6 +1146,20 @@ void TaskTransform::updateCumulativeSnapUi() const
     ui->referencePickerWidget->setEnabled(!cumulativeSnapActive);
     coordinatesWidget->setEnabled(!cumulativeSnapActive);
     ui->cumulativeSnapButton->setEnabled(subObjectPlacementProvider != nullptr);
+
+    ui->cumulativeSnapHistoryList->clear();
+    for (std::size_t i = 0; i < cumulativeSnapHistory.size(); ++i) {
+        ui->cumulativeSnapHistoryList->addItem(QStringLiteral("%1) %2").arg(i + 1).arg(
+            QString::fromStdString(cumulativeSnapHistory[i].label)
+        ));
+    }
+
+    ui->cumulativeSnapHistoryList->setVisible(cumulativeSnapActive);
+    ui->undoCumulativeSnapButton->setVisible(cumulativeSnapActive);
+    ui->clearCumulativeSnapButton->setVisible(cumulativeSnapActive);
+
+    ui->undoCumulativeSnapButton->setEnabled(cumulativeSnapActive && !cumulativeSnapHistory.empty());
+    ui->clearCumulativeSnapButton->setEnabled(cumulativeSnapActive && !cumulativeSnapHistory.empty());
 }
 
 void TaskTransform::onCumulativeSnap()
@@ -1145,6 +1169,42 @@ void TaskTransform::onCumulativeSnap()
     }
     else {
         startCumulativeSnap();
+    }
+}
+
+void TaskTransform::onUndoCumulativeSnap()
+{
+    if (cumulativeSnapHistory.empty()) {
+        return;
+    }
+
+    cumulativeSnapHistory.pop_back();
+    const auto placement = cumulativeSnapHistory.empty()
+        ? cumulativeSnapStartPlacement.value_or(vp->getObjectPlacement())
+        : cumulativeSnapHistory.back().objectPlacement;
+
+    restoreCumulativeSnapPlacement(placement);
+    updateCumulativeSnapUi();
+
+    if (cumulativeSnapActive) {
+        currentCumulativeSnapReference.reset();
+        setSelectionMode(SelectionMode::SelectCumulativeSnapReference);
+    }
+}
+
+void TaskTransform::onClearCumulativeSnap()
+{
+    if (!cumulativeSnapStartPlacement.has_value()) {
+        return;
+    }
+
+    cumulativeSnapHistory.clear();
+    currentCumulativeSnapReference.reset();
+    restoreCumulativeSnapPlacement(*cumulativeSnapStartPlacement);
+    updateCumulativeSnapUi();
+
+    if (cumulativeSnapActive) {
+        setSelectionMode(SelectionMode::SelectCumulativeSnapReference);
     }
 }
 

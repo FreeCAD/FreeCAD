@@ -136,6 +136,8 @@ private Q_SLOTS:
     void onAlignToOtherObject();
     void onFlip();
     void onCumulativeSnap();
+    void onUndoCumulativeSnap();
+    void onClearCumulativeSnap();
 
     void onCoordinateSystemChange(int mode);
 
