@@ -22,6 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <set>
+
 #include <QCursor>
 #include <QLocale>
 #include <QRegularExpression>
@@ -32,11 +34,14 @@
 #include <App/Application.h>
 #include <App/Transactions.h>
 #include <Base/Quantity.h>
+#include <Base/Interpreter.h>
 #include <Base/UnitsApi.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/Selection/Selection.h>
+#include <Gui/Notifications.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
+#include <Mod/Part/App/GeometryPy.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "DrawSketchHandler.h"
@@ -589,6 +594,33 @@ bool SketcherGui::isCommandNeedingGeometryActive(Gui::Document* doc)
     return false;
 }
 
+bool SketcherGui::isCreateBlockActive(Gui::Document* doc)
+{
+    if (!isCommandActive(doc)) {
+        return false;
+    }
+    const auto selection = Gui::Selection().getSelectionEx(
+        doc->getDocument()->getName(),
+        Sketcher::SketchObject::getClassTypeId()
+    );
+    auto* sketch = static_cast<ViewProviderSketch*>(doc->getInEdit())->getSketchObject();
+    if (selection.size() != 1 || selection[0].getObject() != sketch) {
+        return false;
+    }
+    std::set<int> edges;
+    for (const auto& name : selection[0].getSubNames()) {
+        if (name.starts_with("Edge") || name.starts_with("ExternalEdge")) {
+            int geoId;
+            PointPos posId;
+            getIdsFromName(name, sketch, geoId, posId);
+            if (sketch->getGeometry(geoId)) {
+                edges.insert(geoId);
+            }
+        }
+    }
+    return edges.size() >= 2;
+}
+
 bool SketcherGui::isCommandNeedingBSplineActive(Gui::Document* doc)
 {
     if (!isCommandActive(doc)) {
@@ -1055,4 +1087,133 @@ QMap<QString, QString> SketcherGui::findAvailableFontFiles()
         }
     }
     return fontMap;
+}
+
+std::vector<std::unique_ptr<Part::Geometry>> SketcherGui::readBlockGeometry(
+    const std::string& filename,
+    bool* fixedSize,
+    Base::Vector3d* sourceHandle
+)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Module blocks("SketcherBlock");
+        Py::Tuple args(1);
+        args.setItem(0, Py::String(filename));
+        Py::List list(blocks.callMemberFunction("read", args));
+        if (fixedSize || sourceHandle) {
+            Py::Dict options(blocks.callMemberFunction("metadata", args));
+            if (fixedSize) {
+                *fixedSize = Py::Boolean(options.getItem("fixed_size")).isTrue();
+            }
+            if (sourceHandle) {
+                Py::Tuple handle(options.getItem("handle"));
+                *sourceHandle = Base::Vector3d(Py::Float(handle[0]), Py::Float(handle[1]), 0);
+            }
+        }
+        std::vector<std::unique_ptr<Part::Geometry>> result;
+        for (const auto& item : list) {
+            if (!PyObject_TypeCheck(item.ptr(), &Part::GeometryPy::Type)) {
+                throw Base::TypeError("Expected Part geometry in block file");
+            }
+            result.emplace_back(static_cast<Part::GeometryPy*>(item.ptr())->getGeometryPtr()->copy());
+        }
+        return result;
+    }
+    catch (Py::Exception&) {
+        Base::PyException error;
+        throw Base::RuntimeError(error.what());
+    }
+}
+
+void SketcherGui::reloadFileGroup(ViewProviderSketch* view, int constraintId)
+{
+    if (!view) {
+        return;
+    }
+    auto* sketch = view->getSketchObject();
+    const auto& constraints = sketch->Constraints.getValues();
+    if (constraintId < 0 || constraintId >= static_cast<int>(constraints.size())) {
+        return;
+    }
+    auto* doc = view->getDocument();
+    doc->openCommand(QT_TRANSLATE_NOOP("Command", "Reload group from file"));
+    try {
+        Gui::Command::doCommand(Gui::Command::App, "import SketcherBlock");
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "SketcherBlock.reload(%s, %d)",
+            Gui::Command::getObjectCmd(sketch).c_str(),
+            constraintId
+        );
+        if (sketch->solve() != Sketcher::SketchSolveStatus::Success) {
+            throw Base::RuntimeError("The reloaded group could not be solved");
+        }
+        doc->commitCommand();
+        view->draw(false, false);
+    }
+    catch (const Base::Exception& error) {
+        doc->abortCommand();
+        Gui::NotifyError(view, QT_TRANSLATE_NOOP("Notifications", "Cannot reload group"), error.what());
+    }
+}
+
+int SketcherGui::selectedBlockConstraint(Gui::Document* doc)
+{
+    if (!isCommandActive(doc)) {
+        return -1;
+    }
+    auto* sketch = static_cast<ViewProviderSketch*>(doc->getInEdit())->getSketchObject();
+    const auto selection = Gui::Selection().getSelectionEx(
+        doc->getDocument()->getName(),
+        Sketcher::SketchObject::getClassTypeId()
+    );
+    if (selection.size() != 1 || selection[0].getObject() != sketch) {
+        return -1;
+    }
+    std::set<int> candidates;
+    const auto& constraints = sketch->Constraints.getValues();
+    for (const auto& name : selection[0].getSubNames()) {
+        int geoId = GeoEnum::GeoUndef;
+        PointPos posId = PointPos::none;
+        getIdsFromName(name, sketch, geoId, posId);
+        for (int i = 0; i < static_cast<int>(constraints.size()); ++i) {
+            const auto* c = constraints[i];
+            if (c->Type != Sketcher::Group
+                || QFileInfo(QString::fromStdString(c->getFile()))
+                        .suffix()
+                        .compare(QStringLiteral("txt"), Qt::CaseInsensitive)
+                    != 0) {
+                continue;
+            }
+            if (name == "Constraint" + std::to_string(i + 1)) {
+                candidates.insert(i);
+            }
+            for (int j = 0; c->hasElement(j); ++j) {
+                if (geoId != GeoEnum::GeoUndef && c->getGeoId(j) == geoId) {
+                    candidates.insert(i);
+                }
+            }
+        }
+    }
+    return candidates.size() == 1 ? *candidates.begin() : -1;
+}
+
+void SketcherGui::editFileBlock(ViewProviderSketch* view, int constraintId)
+{
+    if (!view) {
+        return;
+    }
+    try {
+        Gui::Command::doCommand(Gui::Command::App, "import SketcherBlock");
+        Gui::Command::doCommand(
+            Gui::Command::App,
+            "SketcherBlock.edit(%s, %d)",
+            Gui::Command::getObjectCmd(view->getSketchObject()).c_str(),
+            constraintId
+        );
+    }
+    catch (const Base::Exception& error) {
+        Gui::NotifyError(view, QT_TRANSLATE_NOOP("Notifications", "Cannot edit block"), error.what());
+    }
 }
