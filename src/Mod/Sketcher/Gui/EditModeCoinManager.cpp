@@ -211,6 +211,11 @@ struct GeometryScreenPreselector
 
             int pointCount = coords->point.getNum();
             for (int pointIndex = 0; pointIndex < pointCount; ++pointIndex) {
+                // The scenegraph point count can exceed the number of tracked point IDs; skip
+                // indices that have no corresponding entry in PointIdToVertexId before indexing.
+                if (!coinMapping.isValidPointId(pointIndex, layerIndex)) {
+                    continue;
+                }
                 int vertexId = coinMapping.getPointVertexId(pointIndex, layerIndex);
                 if (vertexId < 0) {
                     continue;
