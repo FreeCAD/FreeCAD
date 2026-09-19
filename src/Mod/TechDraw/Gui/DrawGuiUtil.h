@@ -89,6 +89,8 @@ class TechDrawGuiExport DrawGuiUtil {
 
     static double roundToDigits(double original, int digits);
 
+    static double screenWidth(double sceneWidth);
+
     static bool isSelectedInTree(QGraphicsItem* item);
     static void setSelectedTree(QGraphicsItem* item, bool selected);
     static bool isStyleSheetDark(std::string curStyleSheet);
