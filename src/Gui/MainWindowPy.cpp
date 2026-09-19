@@ -241,12 +241,40 @@ Py::Object MainWindowPy::removeWindow(const Py::Tuple& args)
     return Py::None();
 }
 
+static InputHint::UserInput toUserInput(long value)
+{
+    static constexpr std::array mouse {
+        static_cast<long>(MouseInput::MouseMove),
+        static_cast<long>(MouseInput::MouseLeft),
+        static_cast<long>(MouseInput::MouseRight),
+        static_cast<long>(MouseInput::MouseMiddle),
+        static_cast<long>(MouseInput::MouseScroll),
+        static_cast<long>(MouseInput::MouseScrollUp),
+        static_cast<long>(MouseInput::MouseScrollDown),
+    };
+    static constexpr std::array modifier {
+        static_cast<long>(Qt::ShiftModifier),
+        static_cast<long>(Qt::ControlModifier),
+        static_cast<long>(Qt::AltModifier),
+        static_cast<long>(Qt::MetaModifier),
+    };
+
+    if (std::find(mouse.begin(), mouse.end(), value) != mouse.end()) {
+        return static_cast<MouseInput>(value);
+    }
+    if (std::find(modifier.begin(), modifier.end(), value) != modifier.end()) {
+        return static_cast<Qt::KeyboardModifier>(value);
+    }
+
+    return static_cast<Qt::Key>(value);
+}
+
 Py::Object MainWindowPy::showHint(const Py::Tuple& args)
 {
     static auto userInputFromPyObject = [](const Py::Object& object) -> InputHint::UserInput {
         Py::Long value(object.getAttr("value"));
 
-        return static_cast<InputHint::UserInput>(value.as_long());
+        return static_cast<InputHint::UserInput>(toUserInput(value.as_long()));
     };
 
     static auto inputSequenceFromPyObject = [](const Py::Object& sequence) -> InputHint::InputSequence {

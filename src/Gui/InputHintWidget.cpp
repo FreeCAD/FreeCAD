@@ -21,6 +21,11 @@
  *                                                                          *
  ***************************************************************************/
 
+#include <algorithm>
+#include <array>
+#include <string_view>
+#include <tuple>
+
 #include <QBuffer>
 #include <QPainter>
 
@@ -36,6 +41,52 @@ namespace
 constexpr int iconSize = 22;
 constexpr int iconMargin = 2;
 }  // namespace
+
+using namespace Gui;
+using Input = InputHint::UserInput;
+
+// clang-format off
+static constexpr auto iconPath = std::to_array<std::tuple<Input, std::string_view>>({
+    {MouseInput::Mouse, ":/icons/user-input/mouse.svg"},
+    {MouseInput::MouseLeft, ":/icons/user-input/mouse-left.svg"},
+    {MouseInput::MouseRight, ":/icons/user-input/mouse-right.svg"},
+    {MouseInput::MouseMove, ":/icons/user-input/mouse-move.svg"},
+    {MouseInput::MouseMoveLeft, ":/icons/user-input/mouse-move-left.svg"},
+    {MouseInput::MouseMoveMiddle, ":/icons/user-input/mouse-move-middle.svg"},
+    {MouseInput::MouseMoveRight, ":/icons/user-input/mouse-move-right.svg"},
+    {MouseInput::MouseDoubleLeft, ":/icons/user-input/mouse-double-left.svg"},
+    {MouseInput::MouseMiddle, ":/icons/user-input/mouse-middle.svg"},
+    {MouseInput::MouseScroll, ":/icons/user-input/mouse-scroll.svg"},
+    {MouseInput::MouseScrollDown, ":/icons/user-input/mouse-scroll-down.svg"},
+    {MouseInput::MouseScrollUp, ":/icons/user-input/mouse-scroll-up.svg"},
+});
+
+static auto userInputStr = std::to_array<std::tuple<Input, QString>>({
+    {Qt::Key_NumberSign, QStringLiteral("-/+")},
+    {Qt::Key_Tab, Gui::InputHintWidget::tr("tab ⭾")},
+    {Qt::Key_Backspace, Gui::InputHintWidget::tr("⌫")},
+    {Qt::Key_Return, Gui::InputHintWidget::tr("↵ Enter")},
+    {Qt::Key_Left, QStringLiteral("←")},
+    {Qt::Key_Up, QStringLiteral("↑")},
+    {Qt::Key_Right, QStringLiteral("→")},
+    {Qt::Key_Down, QStringLiteral("↓")},
+#if defined (FC_OS_MACOSX)
+    {Qt::Key_Shift, QStringLiteral("⇧")},
+    {Qt::Key_Control, QStringLiteral("⇧")},
+    {Qt::Key_Meta, QStringLiteral("⌃")},
+    {Qt::Key_Alt, QStringLiteral("⌥")},
+#else
+    {Qt::Key_Shift, Gui::InputHintWidget::tr("Shift")},
+    {Qt::Key_Control, Gui::InputHintWidget::tr("Ctrl")},
+    {Qt::Key_Alt, Gui::InputHintWidget::tr("Alt")},
+#if defined(FC_OS_WIN32)
+    {Qt::Key_Meta, Gui::InputHintWidget::tr("⊞ Win")},
+#else
+    {Qt::Key_Meta, Gui::InputHintWidget::tr("❖ Meta")},
+#endif
+#endif
+});
+// clang-format on
 
 Gui::InputHintWidget::InputHintWidget(QWidget* parent)
     : StatusBarLabel(parent)
@@ -114,34 +165,13 @@ void Gui::InputHintWidget::clearHints()
 
 std::optional<const char*> Gui::InputHintWidget::getCustomIconPath(const InputHint::UserInput key)
 {
-    switch (key) {
-        case InputHint::UserInput::Mouse:
-            return ":/icons/user-input/mouse.svg";
-        case InputHint::UserInput::MouseLeft:
-            return ":/icons/user-input/mouse-left.svg";
-        case InputHint::UserInput::MouseRight:
-            return ":/icons/user-input/mouse-right.svg";
-        case InputHint::UserInput::MouseMove:
-            return ":/icons/user-input/mouse-move.svg";
-        case InputHint::UserInput::MouseMoveLeft:
-            return ":/icons/user-input/mouse-move-left.svg";
-        case InputHint::UserInput::MouseMoveMiddle:
-            return ":/icons/user-input/mouse-move-middle.svg";
-        case InputHint::UserInput::MouseMoveRight:
-            return ":/icons/user-input/mouse-move-right.svg";
-        case InputHint::UserInput::MouseDoubleLeft:
-            return ":/icons/user-input/mouse-double-left.svg";
-        case InputHint::UserInput::MouseMiddle:
-            return ":/icons/user-input/mouse-middle.svg";
-        case InputHint::UserInput::MouseScroll:
-            return ":/icons/user-input/mouse-scroll.svg";
-        case InputHint::UserInput::MouseScrollDown:
-            return ":/icons/user-input/mouse-scroll-down.svg";
-        case InputHint::UserInput::MouseScrollUp:
-            return ":/icons/user-input/mouse-scroll-up.svg";
-        default:
-            return std::nullopt;
+    auto it = std::find_if(iconPath.begin(), iconPath.end(), [key](const auto& input) {
+        return std::get<0>(input) == key;
+    });
+    if (it != iconPath.end()) {
+        return std::get<1>(*it).data();
     }
+    return std::nullopt;
 }
 
 QPixmap Gui::InputHintWidget::generateKeyIcon(const InputHint::UserInput key, const QColor color, int height)
@@ -180,205 +210,25 @@ QPixmap Gui::InputHintWidget::generateKeyIcon(const InputHint::UserInput key, co
 
 QString Gui::InputHintWidget::inputRepresentation(const InputHint::UserInput key)
 {
-    using enum InputHint::UserInput;
-
-    // clang-format off
-    switch (key) {
-        // Keyboard Keys
-        case KeySpace: return QStringLiteral("  ␣  ");
-        case KeyExclam: return QStringLiteral("!");
-        case KeyQuoteDbl: return QStringLiteral("\"");
-        case KeyNumberSign: return QStringLiteral("-/+");
-        case KeyDollar: return QStringLiteral("$");
-        case KeyPercent: return QStringLiteral("%");
-        case KeyAmpersand: return QStringLiteral("&");
-        case KeyApostrophe: return QStringLiteral("\'");
-        case KeyParenLeft: return QStringLiteral("(");
-        case KeyParenRight: return QStringLiteral(")");
-        case KeyAsterisk: return QStringLiteral("*");
-        case KeyPlus: return QStringLiteral("+");
-        case KeyComma: return QStringLiteral(",");
-        case KeyMinus: return QStringLiteral("-");
-        case KeyPeriod: return QStringLiteral(".");
-        case KeySlash: return QStringLiteral("/");
-        case Key0: return QStringLiteral("0");
-        case Key1: return QStringLiteral("1");
-        case Key2: return QStringLiteral("2");
-        case Key3: return QStringLiteral("3");
-        case Key4: return QStringLiteral("4");
-        case Key5: return QStringLiteral("5");
-        case Key6: return QStringLiteral("6");
-        case Key7: return QStringLiteral("7");
-        case Key8: return QStringLiteral("8");
-        case Key9: return QStringLiteral("9");
-        case KeyColon: return QStringLiteral(":");
-        case KeySemicolon: return QStringLiteral(";");
-        case KeyLess: return QStringLiteral("<");
-        case KeyEqual: return QStringLiteral("=");
-        case KeyGreater: return QStringLiteral(">");
-        case KeyQuestion: return QStringLiteral("?");
-        case KeyAt: return QStringLiteral("@");
-        case KeyA: return QStringLiteral("A");
-        case KeyB: return QStringLiteral("B");
-        case KeyC: return QStringLiteral("C");
-        case KeyD: return QStringLiteral("D");
-        case KeyE: return QStringLiteral("E");
-        case KeyF: return QStringLiteral("F");
-        case KeyG: return QStringLiteral("G");
-        case KeyH: return QStringLiteral("H");
-        case KeyI: return QStringLiteral("I");
-        case KeyJ: return QStringLiteral("J");
-        case KeyK: return QStringLiteral("K");
-        case KeyL: return QStringLiteral("L");
-        case KeyM: return QStringLiteral("M");
-        case KeyN: return QStringLiteral("N");
-        case KeyO: return QStringLiteral("O");
-        case KeyP: return QStringLiteral("P");
-        case KeyQ: return QStringLiteral("Q");
-        case KeyR: return QStringLiteral("R");
-        case KeyS: return QStringLiteral("S");
-        case KeyT: return QStringLiteral("T");
-        case KeyU: return QStringLiteral("U");
-        case KeyV: return QStringLiteral("V");
-        case KeyW: return QStringLiteral("W");
-        case KeyX: return QStringLiteral("X");
-        case KeyY: return QStringLiteral("Y");
-        case KeyZ: return QStringLiteral("Z");
-        case KeyBracketLeft: return QStringLiteral("[");
-        case KeyBackslash: return QStringLiteral("\\");
-        case KeyBracketRight: return QStringLiteral("]");
-        case KeyUnderscore: return QStringLiteral("_");
-        case KeyQuoteLeft: return QStringLiteral("\"");
-        case KeyBraceLeft: return QStringLiteral("{");
-        case KeyBar: return QStringLiteral("|");
-        case KeyBraceRight: return QStringLiteral("}");
-        case KeyAsciiTilde: return QStringLiteral("~");
-
-        // misc keys
-        /*: Keyboard key for Escape */
-        case KeyEscape: return tr("Esc");
-        /*: Keyboard key for Tab */
-        case KeyTab: return tr("Tab ⭾");
-        /*: Keyboard key for Backtab */
-        case KeyBacktab: return tr("Backtab");
-        case KeyBackspace: return QStringLiteral("⌫");
-        case KeyReturn: return QStringLiteral("↵");
-        /*: Keyboard key for numpad Enter */
-        case KeyEnter: return tr("Enter");
-        /*: Keyboard key for Insert */
-        case KeyInsert: return tr("Insert");
-        /*: Keyboard key for Delete */
-        case KeyDelete: return tr("Del");
-        /*: Keyboard key for Pause */
-        case KeyPause: return tr("Pause");
-        /*: Keyboard key for Print */
-        case KeyPrintScr: return tr("Print");
-        /*: Keyboard key for SysReq */
-        case KeySysReq: return tr("SysReq");
-        /*: Keyboard key for Clear */
-        case KeyClear: return tr("Clear");
-
-        // cursor movement
-        /*: Keyboard key for Home */
-        case KeyHome: return tr("Home");
-        /*: Keyboard key for End */
-        case KeyEnd: return tr("End");
-        case KeyLeft: return QStringLiteral("←");
-        case KeyUp: return QStringLiteral("↑");
-        case KeyRight: return QStringLiteral("→");
-        case KeyDown: return QStringLiteral("↓");
-        /*: Keyboard key for Page Down */
-        case KeyPageUp: return tr("PgDown");
-        /*: Keyboard key for Page Up */
-        case KeyPageDown: return tr("PgUp");
-
-        // modifiers
-#ifdef FC_OS_MACOSX
-        case KeyShift: return QStringLiteral("⇧");
-        case KeyControl: return QStringLiteral("⌘");
-        case KeyMeta: return QStringLiteral("⌃");
-        case KeyAlt: return QStringLiteral("⌥");
-#else
-        /*: Keyboard key for Shift on Windows & Linux */
-        case KeyShift: return tr("⇧ Shift");
-        /*: Keyboard key for Control on Windows & Linux */
-        case KeyControl: return tr("Ctrl");
-#ifdef FC_OS_WIN32
-        case KeyMeta: return QStringLiteral("⊞ Win");
-#else
-        case KeyMeta: return QStringLiteral("❖ Meta");
-#endif
-        /*: Keyboard key for Alt on Windows & Linux */
-        case KeyAlt: return tr("Alt");
-#endif
-        /*: Keyboard key for Caps Lock */
-        case KeyCapsLock: return tr("Caps Lock");
-        /*: Keyboard key for Num Lock */
-        case KeyNumLock: return tr("Num Lock");
-        /*: Keyboard key for Scroll Lock */
-        case KeyScrollLock: return tr("Scroll Lock");
-
-        // function
-        case KeyF1: return QStringLiteral("F1");
-        case KeyF2: return QStringLiteral("F2");
-        case KeyF3: return QStringLiteral("F3");
-        case KeyF4: return QStringLiteral("F4");
-        case KeyF5: return QStringLiteral("F5");
-        case KeyF6: return QStringLiteral("F6");
-        case KeyF7: return QStringLiteral("F7");
-        case KeyF8: return QStringLiteral("F8");
-        case KeyF9: return QStringLiteral("F9");
-        case KeyF10: return QStringLiteral("F10");
-        case KeyF11: return QStringLiteral("F11");
-        case KeyF12: return QStringLiteral("F12");
-        case KeyF13: return QStringLiteral("F13");
-        case KeyF14: return QStringLiteral("F14");
-        case KeyF15: return QStringLiteral("F15");
-        case KeyF16: return QStringLiteral("F16");
-        case KeyF17: return QStringLiteral("F17");
-        case KeyF18: return QStringLiteral("F18");
-        case KeyF19: return QStringLiteral("F19");
-        case KeyF20: return QStringLiteral("F20");
-        case KeyF21: return QStringLiteral("F21");
-        case KeyF22: return QStringLiteral("F22");
-        case KeyF23: return QStringLiteral("F23");
-        case KeyF24: return QStringLiteral("F24");
-        case KeyF25: return QStringLiteral("F25");
-        case KeyF26: return QStringLiteral("F26");
-        case KeyF27: return QStringLiteral("F27");
-        case KeyF28: return QStringLiteral("F28");
-        case KeyF29: return QStringLiteral("F29");
-        case KeyF30: return QStringLiteral("F30");
-        case KeyF31: return QStringLiteral("F31");
-        case KeyF32: return QStringLiteral("F32");
-        case KeyF33: return QStringLiteral("F33");
-        case KeyF34: return QStringLiteral("F34");
-        case KeyF35: return QStringLiteral("F35");
-
-        // numpad
-        /*: Keyboard key for numpad 0 */
-        case KeyNum0: return tr("Num0");
-        /*: Keyboard key for numpad 1 */
-        case KeyNum1: return tr("Num1");
-        /*: Keyboard key for numpad 2 */
-        case KeyNum2: return tr("Num2");
-        /*: Keyboard key for numpad 3 */
-        case KeyNum3: return tr("Num3");
-        /*: Keyboard key for numpad 4 */
-        case KeyNum4: return tr("Num4");
-        /*: Keyboard key for numpad 5 */
-        case KeyNum5: return tr("Num5");
-        /*: Keyboard key for numpad 6 */
-        case KeyNum6: return tr("Num6");
-        /*: Keyboard key for numpad 7 */
-        case KeyNum7: return tr("Num7");
-        /*: Keyboard key for numpad 8 */
-        case KeyNum8: return tr("Num8");
-        /*: Keyboard key for numpad 9 */
-        case KeyNum9: return tr("Num9");
-
-
-        default: return QStringLiteral("???");
+    // Custom string representation
+    auto it = std::find_if(userInputStr.begin(), userInputStr.end(), [key](const auto& input) {
+        return std::get<0>(input) == key;
+    });
+    if (it != userInputStr.end()) {
+        return std::get<1>(*it);
     }
-    // clang-format on
+
+    if (auto qtkey = std::get_if<Qt::Key>(&key)) {
+        // Generic user input
+        QKeySequence ks(static_cast<int>(*qtkey));
+        return ks.toString(QKeySequence::NativeText);
+    }
+
+    if (auto qtkey = std::get_if<Qt::KeyboardModifier>(&key)) {
+        // Generic user input
+        QKeySequence ks(static_cast<int>(*qtkey));
+        return ks.toString(QKeySequence::NativeText);
+    }
+
+    return tr("???");
 }
