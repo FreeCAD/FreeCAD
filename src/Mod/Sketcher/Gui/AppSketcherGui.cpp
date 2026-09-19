@@ -31,6 +31,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
 #include <Gui/Language/Translator.h>
+#include <Gui/PythonWrapper.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/WidgetFactory.h>
 
@@ -71,6 +72,12 @@ public:
         : Py::ExtensionModule<Module>("SketcherGui")
     {
         add_varargs_method(
+            "findModelTreeWidget",
+            &Module::findModelTreeWidgetPy,
+            "Returns the Model TreeWidget if it exists"
+        );
+
+        add_varargs_method(
             "getActiveSketchPreselection",
             &Module::getActiveSketchPreselection,
             "getActiveSketchPreselection(tuple(int,int)) -> dictionary or None\n"
@@ -86,6 +93,19 @@ public:
     {}
 
 private:
+    Py::Object findModelTreeWidgetPy(const Py::Tuple& /*args*/)
+    {
+        auto tree = SketcherGui::findModelTreeWidget();
+
+        Gui::PythonWrapper wrap;
+        if (wrap.loadCoreModule() && tree) {
+            return wrap.fromQWidget(tree);
+        }
+
+        PyErr_SetString(PyExc_TypeError, "finding the Model TreeWidget failed");
+        return Py::None();
+    }
+
     Py::Object getActiveSketchPreselection(const Py::Tuple& args)
     {
         PyObject* object;
