@@ -471,11 +471,7 @@ void ViewProviderMeasureBase::updateData(const App::Property* prop)
     if (doUpdate) {
         redrawAnnotation();
 
-        // Update label with measurement result.
-        // Use the name part before ":" if the label was already formatted,
-        // otherwise fall back to the internal object name (which carries
-        // the unique suffix, e.g. "Length001") to avoid the dedup suffix
-        // being appended after the result value.
+        // Update label
         std::string userLabel(obj->Label.getValue());
         auto colonPos = userLabel.find(':');
         std::string name = colonPos != std::string::npos ? userLabel.substr(0, colonPos)
