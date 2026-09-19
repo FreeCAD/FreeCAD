@@ -34,6 +34,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Expression.h>
+#include <App/Link.h>
 #include <App/ObjectIdentifier.h>
 #include <App/PropertyLinks.h>
 #include <App/PropertyStandard.h>
@@ -90,7 +91,363 @@ TEST_F(PropertyFloatTest, testWriteRead)
     EXPECT_DOUBLE_EQ(prop2.getValue(), value);
 }
 
+PROPERTY_SOURCE(tests::HookRecordingContainer, App::PropertyContainer)
+
+App::Document* PropertyAliasStatic::doc {nullptr};
+
+App::Document* PropertyAlias::doc {nullptr};
+
 App::Document* RenameProperty::doc {nullptr};
+
+// Tests that a class-level alias is visible on every instance of the class, which is only
+// true if it is stored in PropertyData rather than in a per-instance map.
+TEST_F(PropertyAliasStatic, staticAliasResolvesOnEveryInstance)
+{
+    EXPECT_EQ(first->getPropertyByName("AliasPlain"), &first->AliasTarget);
+    EXPECT_EQ(second->getPropertyByName("AliasPlain"), &second->AliasTarget);
+}
+
+// Tests that an alias declared on a base class is reachable through a derived class, via
+// the parentPropertyData chain. App::FeatureTestException derives from App::FeatureTest.
+TEST_F(PropertyAliasStatic, staticAliasInheritedBySubclass)
+{
+    auto* derived = freecad_cast<App::FeatureTestException*>(
+        doc->addObject("App::FeatureTestException", "Derived")
+    );
+    ASSERT_NE(derived, nullptr);
+    EXPECT_EQ(derived->getPropertyByName("AliasPlain"), &derived->AliasTarget);
+    doc->removeObject(derived->getNameInDocument());
+}
+
+// Tests that an alias resolves to the same property as the canonical name.
+TEST_F(PropertyAlias, aliasResolvesToCanonicalProperty)
+{
+    varSet->addPropertyAlias("NewName", "OldName");
+
+    App::Property* byCanonical = varSet->getPropertyByName("NewName");
+    App::Property* byAlias = varSet->getPropertyByName("OldName");
+
+    ASSERT_NE(byCanonical, nullptr);
+    EXPECT_EQ(byAlias, byCanonical);
+}
+
+// Tests that a non-deprecated alias emits no warning.
+TEST_F(PropertyAlias, nonDeprecatedAliasEmitsNoWarning)
+{
+    varSet->addPropertyAlias("NewName", "OldName");
+
+    WarningCapture capture;
+    varSet->getPropertyByName("OldName");
+
+    EXPECT_TRUE(capture.warnings.empty());
+}
+
+// Tests that a deprecated alias still resolves but emits a warning.
+TEST_F(PropertyAlias, deprecatedAliasEmitsWarningAndResolves)
+{
+    varSet->addPropertyAlias("NewName", "OldDeprecated", App::PropertyAliasType::Deprecated);
+
+    WarningCapture capture;
+    App::Property* prop = varSet->getPropertyByName("OldDeprecated");
+
+    ASSERT_NE(prop, nullptr);
+    EXPECT_EQ(prop, varSet->getPropertyByName("NewName"));
+    ASSERT_EQ(capture.warnings.size(), 1u);
+    EXPECT_NE(capture.warnings[0].find("OldDeprecated"), std::string::npos);
+    EXPECT_NE(capture.warnings[0].find("NewName"), std::string::npos);
+}
+
+// Tests that an unknown name still returns nullptr (no regression).
+TEST_F(PropertyAlias, unknownNameReturnsNullptr)
+{
+    App::Property* prop = varSet->getPropertyByName("DoesNotExist");
+
+    EXPECT_EQ(prop, nullptr);
+}
+
+// Tests that an alias works for a static property (Label is inherited from DocumentObject).
+TEST_F(PropertyAlias, aliasForStaticProperty)
+{
+    varSet->addPropertyAlias("Label", "OldLabel");
+
+    App::Property* byCanonical = varSet->getPropertyByName("Label");
+    App::Property* byAlias = varSet->getPropertyByName("OldLabel");
+
+    ASSERT_NE(byCanonical, nullptr);
+    EXPECT_EQ(byAlias, byCanonical);
+}
+
+// Tests that Python attribute access via an alias returns the correct value.
+TEST_F(PropertyAlias, pythonAttributeAccessViaAlias)
+{
+    varSet->addPropertyAlias("NewName", "OldName");
+
+    std::string cmd = std::string("vs = App.getDocument('") + doc->getName() + "').getObject('"
+        + varSet->getNameInDocument()
+        + "')\n"
+          "val = vs.OldName\n"
+          "assert val == 42, f'Expected 42, got {val}'";
+    Base::Interpreter().runString(cmd.c_str());
+}
+
+// Tests that Python getPropertyByName() resolves aliases.
+TEST_F(PropertyAlias, pythonGetPropertyByNameViaAlias)
+{
+    varSet->addPropertyAlias("NewName", "OldName");
+
+    std::string cmd = std::string("vs = App.getDocument('") + doc->getName() + "').getObject('"
+        + varSet->getNameInDocument()
+        + "')\n"
+          "p1 = vs.getPropertyByName('NewName')\n"
+          "p2 = vs.getPropertyByName('OldName')\n"
+          "assert p1 == p2, f'Alias must resolve to same value, got {p1} vs {p2}'";
+    Base::Interpreter().runString(cmd.c_str());
+}
+
+// Tests that addPropertyAlias is callable from Python.
+TEST_F(PropertyAlias, pythonAddPropertyAlias)
+{
+    std::string cmd = std::string("vs = App.getDocument('") + doc->getName() + "').getObject('"
+        + varSet->getNameInDocument()
+        + "')\n"
+          "vs.addPropertyAlias('NewName', 'PyAlias')\n"
+          "p = vs.getPropertyByName('PyAlias')\n"
+          "assert p is not None, 'Alias registered from Python must resolve'";
+    Base::Interpreter().runString(cmd.c_str());
+
+    EXPECT_EQ(varSet->getPropertyByName("PyAlias"), varSet->getPropertyByName("NewName"));
+}
+
+// Tests that a real property is never shadowed by an alias of the same name.
+TEST_F(PropertyAlias, realPropertyTakesPrecedenceOverAlias)
+{
+    varSet->addDynamicProperty("App::PropertyInteger", "OldName", "Variables");
+    varSet->addPropertyAlias("NewName", "OldName");
+
+    App::Property* byName = varSet->getPropertyByName("OldName");
+
+    ASSERT_NE(byName, nullptr);
+    EXPECT_NE(byName, dynProp);
+    EXPECT_STREQ(byName->getName(), "OldName");
+}
+
+// Tests that writing through an alias updates the canonical property.
+TEST_F(PropertyAlias, settingValueThroughAliasUpdatesCanonical)
+{
+    varSet->addPropertyAlias("NewName", "OldName");
+
+    auto* viaAlias = freecad_cast<App::PropertyInteger*>(varSet->getPropertyByName("OldName"));
+    ASSERT_NE(viaAlias, nullptr);
+    viaAlias->setValue(99);
+
+    EXPECT_EQ(dynProp->getValue(), 99);
+}
+
+// Tests that a cyclic alias pair terminates instead of recursing forever.
+TEST_F(PropertyAlias, aliasChainDoesNotRecurse)
+{
+    varSet->addPropertyAlias("Missing", "AlsoMissing");
+    varSet->addPropertyAlias("AlsoMissing", "Missing");
+
+    EXPECT_EQ(varSet->getPropertyByName("Missing"), nullptr);
+    EXPECT_EQ(varSet->getPropertyByName("AlsoMissing"), nullptr);
+}
+
+// Tests that a runtime alias shadows a class-level alias of the same name.
+TEST_F(PropertyAliasStatic, instanceAliasOverridesClassAlias)
+{
+    first->addDynamicProperty("App::PropertyInteger", "Other", "Variables");
+    first->addPropertyAlias("Other", "AliasPlain");
+
+    App::Property* resolved = first->getPropertyByName("AliasPlain");
+
+    ASSERT_NE(resolved, nullptr);
+    EXPECT_STREQ(resolved->getName(), "Other");
+    // The other instance is unaffected — the override is per object.
+    EXPECT_EQ(second->getPropertyByName("AliasPlain"), &second->AliasTarget);
+}
+
+// Tests that the deprecation warning names the version the alias was introduced in.
+TEST_F(PropertyAliasStatic, warningIncludesSinceVersion)
+{
+    WarningCapture capture;
+    first->getPropertyByName("AliasDeprecated");
+
+    ASSERT_EQ(capture.warnings.size(), 1U);
+    EXPECT_NE(capture.warnings[0].find("since 1.1"), std::string::npos);
+    EXPECT_NE(capture.warnings[0].find("AliasTarget"), std::string::npos);
+}
+
+// Tests that a deprecated alias warns only once per container, so an alias referenced from an
+// expression does not flood the report view on every recompute.
+TEST_F(PropertyAliasStatic, warningEmittedOncePerContainerPerAlias)
+{
+    WarningCapture capture;
+    first->getPropertyByName("AliasDeprecated");
+    first->getPropertyByName("AliasDeprecated");
+    first->getPropertyByName("AliasDeprecated");
+
+    EXPECT_EQ(capture.warnings.size(), 1U);
+}
+
+// Tests that the once-per-container budget is not shared between objects, so every call site
+// the developer needs to fix is reported.
+TEST_F(PropertyAliasStatic, warningEmittedForEachContainerSeparately)
+{
+    WarningCapture capture;
+    first->getPropertyByName("AliasDeprecated");
+    second->getPropertyByName("AliasDeprecated");
+
+    EXPECT_EQ(capture.warnings.size(), 2U);
+}
+
+// Tests that a non-deprecated alias is silent no matter how often it is used.
+TEST_F(PropertyAliasStatic, nonDeprecatedAliasNeverWarns)
+{
+    WarningCapture capture;
+    first->getPropertyByName("AliasPlain");
+    first->getPropertyByName("AliasPlain");
+
+    EXPECT_TRUE(capture.warnings.empty());
+}
+
+// Tests that the property reports its canonical name even when reached through an alias, so
+// code that round-trips through getName() does not resurrect the old name.
+TEST_F(PropertyAlias, getPropertyNameReturnsCanonicalAfterAliasLookup)
+{
+    varSet->addPropertyAlias("NewName", "OldName");
+
+    App::Property* byAlias = varSet->getPropertyByName("OldName");
+
+    ASSERT_NE(byAlias, nullptr);
+    EXPECT_STREQ(byAlias->getName(), "NewName");
+    EXPECT_STREQ(varSet->getPropertyName(byAlias), "NewName");
+}
+
+// Tests that aliases stay out of the property map, so the property editor and dir() are
+// unaffected by them.
+TEST_F(PropertyAlias, getPropertyMapExcludesAliases)
+{
+    varSet->addPropertyAlias("NewName", "OldName");
+
+    std::map<std::string, App::Property*> propertyMap;
+    varSet->getPropertyMap(propertyMap);
+
+    EXPECT_TRUE(propertyMap.contains("NewName"));
+    EXPECT_FALSE(propertyMap.contains("OldName"));
+}
+
+// Tests that resolving a class-level alias leaves the per-instance overlay empty. It must
+// still fail if a regression made class aliases get copied into the per-instance map.
+TEST_F(PropertyAliasStatic, classAliasDoesNotPopulateInstanceOverlay)
+{
+    App::Property* resolved = first->getPropertyByName("AliasPlain");
+
+    ASSERT_EQ(resolved, &first->AliasTarget);
+    EXPECT_FALSE(first->hasInstanceAliases());
+}
+
+// Tests that aliases work on App::Document, which is a PropertyContainer too.
+TEST_F(PropertyAliasDocument, documentContainerSupportsAliases)
+{
+    doc->addPropertyAlias("Comment", "OldComment");
+
+    App::Property* byAlias = doc->getPropertyByName("OldComment");
+
+    ASSERT_NE(byAlias, nullptr);
+    EXPECT_EQ(byAlias, &doc->Comment);
+}
+
+// Tests that an alias can point at a property provided by an extension rather than by the
+// container itself. Support -> AttachmentSupport in AttachExtension is exactly this shape.
+TEST_F(PropertyAliasExtension, aliasResolvesToExtensionProperty)
+{
+    App::Property* canonical = group->getPropertyByName("Group");
+    ASSERT_NE(canonical, nullptr);
+
+    group->addPropertyAlias("Group", "OldGroup");
+
+    EXPECT_EQ(group->getPropertyByName("OldGroup"), canonical);
+}
+
+// Tests that a deprecated alias onto an extension property still warns, so the diagnostic is
+// not silently lost for the case that motivated this fix.
+TEST_F(PropertyAliasExtension, deprecatedAliasToExtensionPropertyWarns)
+{
+    group->addPropertyAlias("Group", "OldGroup", App::PropertyAliasType::Deprecated, "1.1");
+
+    WarningCapture capture;
+    App::Property* resolved = group->getPropertyByName("OldGroup");
+
+    ASSERT_NE(resolved, nullptr);
+    ASSERT_EQ(capture.warnings.size(), 1U);
+    EXPECT_NE(capture.warnings[0].find("since 1.1"), std::string::npos);
+}
+
+// Tests that PropertyLookupMode::WithoutAliases is honoured when the property is provided by an
+// extension (LinkBaseExtension::extensionGetPropertyByName), not just when it lives directly on
+// the container. Alias resolution internally re-looks-up the canonical property using
+// WithoutAliases to guarantee that a chained or cyclic alias cannot recurse forever; if the mode
+// is silently dropped somewhere along the extension chain, that guarantee is lost.
+TEST_F(PropertyAliasExtension, extensionLookupRespectsWithoutAliases)
+{
+    auto* link = freecad_cast<App::Link*>(doc->addObject("App::Link", "LinkObject"));
+    ASSERT_NE(link, nullptr);
+
+    App::Property* canonical = link->addDynamicProperty("App::PropertyInteger", "Canonical", "Base");
+    ASSERT_NE(canonical, nullptr);
+
+    link->addPropertyAlias("Canonical", "Old");
+
+    EXPECT_EQ(link->getPropertyByName("Old", App::PropertyLookupMode::WithAliases), canonical);
+    EXPECT_EQ(link->getPropertyByName("Old", App::PropertyLookupMode::WithoutAliases), nullptr);
+}
+
+// Tests that a property saved under its old name restores into the renamed property with no
+// handleChangedPropertyName override — the central claim of the alias mechanism.
+TEST_F(PropertyAliasRestore, restoresOldNameWithNoHandleChangedPropertyNameOverride)
+{
+    tests::HookRecordingContainer container;
+    restoreInto(container, makeDocument("OldName", "App::PropertyInteger", "<Integer value='7'/>\n"));
+
+    EXPECT_EQ(container.Renamed.getValue(), 7);
+    EXPECT_TRUE(container.nameHookCalls.empty());
+}
+
+// Tests that restoring through an alias emits no deprecation warning. The file was written by
+// an older version; the user did nothing to deprecate.
+TEST_F(PropertyAliasRestore, restoreThroughAliasIsSilent)
+{
+    tests::HookRecordingContainer container;
+
+    WarningCapture capture;
+    restoreInto(container, makeDocument("OldName", "App::PropertyInteger", "<Integer value='7'/>\n"));
+
+    EXPECT_TRUE(capture.warnings.empty());
+}
+
+// Tests that an alias whose saved type disagrees with the canonical property reaches the type
+// hook rather than being force-read into the wrong property.
+TEST_F(PropertyAliasRestore, mismatchedTypeFallsBackToHandleChangedPropertyType)
+{
+    tests::HookRecordingContainer container;
+    restoreInto(container, makeDocument("OldName", "App::PropertyString", "<String value='seven'/>\n"));
+
+    ASSERT_EQ(container.typeHookCalls.size(), 1U);
+    EXPECT_EQ(container.typeHookCalls[0], "App::PropertyString");
+    EXPECT_TRUE(container.nameHookCalls.empty());
+}
+
+// Tests that a name matching no property and no alias still reaches the legacy hook, so
+// subclasses with existing migration logic do not regress.
+TEST_F(PropertyAliasRestore, unmatchedNameStillReachesHandleChangedPropertyName)
+{
+    tests::HookRecordingContainer container;
+    restoreInto(container, makeDocument("Unrelated", "App::PropertyInteger", "<Integer value='7'/>\n"));
+
+    ASSERT_EQ(container.nameHookCalls.size(), 1U);
+    EXPECT_EQ(container.nameHookCalls[0], "Unrelated");
+}
 
 // Tests whether we can rename a property
 TEST_F(RenameProperty, simple)
@@ -193,6 +550,47 @@ TEST_F(RenameProperty, lockedProperty)
     EXPECT_EQ(prop->getValue(), value);
     EXPECT_EQ(varSet->getDynamicPropertyByName("Variable"), prop);
     EXPECT_EQ(varSet->getDynamicPropertyByName("NewName"), nullptr);
+}
+
+// Tests that the Skip policy neither renames a locked property nor throws
+TEST_F(RenameProperty, lockedPropertySkipPolicyDoesNotRename)
+{
+    // Arrange
+    prop->setStatus(App::Property::LockDynamic, true);
+
+    // Act
+    bool isRenamed = varSet->renameDynamicProperty(prop, "NewName", App::RenameLockedPolicy::Skip);
+
+    // Assert
+    EXPECT_FALSE(isRenamed);
+    EXPECT_STREQ(varSet->getPropertyName(prop), "Variable");
+    EXPECT_EQ(prop->getValue(), value);
+    EXPECT_EQ(varSet->getDynamicPropertyByName("Variable"), prop);
+    EXPECT_EQ(varSet->getDynamicPropertyByName("NewName"), nullptr);
+}
+
+// Tests that RenameLockedPolicy::Skip on a locked property with a bound expression leaves
+// the binding intact under the original name, rather than destroying it. The rename itself
+// is declined, so a binding re-created under the (never taken) new name would point at
+// nothing.
+TEST_F(RenameProperty, skipPolicyPreservesBoundExpressions)
+{
+    // Arrange
+    prop->setStatus(App::Property::LockDynamic, true);
+    App::ObjectIdentifier path(*prop);
+    std::shared_ptr<App::Expression> expr(App::Expression::parse(varSet, "1 + 1"));
+    varSet->setExpression(path, expr);
+
+    // Act
+    bool isRenamed = varSet->renameDynamicProperty(prop, "NewName", App::RenameLockedPolicy::Skip);
+
+    // Assert
+    EXPECT_FALSE(isRenamed);
+    EXPECT_STREQ(varSet->getPropertyName(prop), "Variable");
+
+    auto expressions = varSet->ExpressionEngine.getExpressions();
+    ASSERT_EQ(expressions.size(), 1U);
+    EXPECT_EQ(expressions.begin()->first.getProperty(), prop);
 }
 
 // Tests whether we can rename to a property that already exists
@@ -906,4 +1304,245 @@ TEST_F(MoveProperty, redoExpressionOriginatingContainerOtherDoc)
 TEST_F(MoveProperty, redoExpressionTargetContainerOtherDoc)
 {
     testRedoMovePropertyExpression(varSetDoc2, varSetDoc2, "Variable", "test#VarSet.Variable");
+}
+
+// Tests the add-on compatibility case: code guarded on PropertiesList membership will call
+// addProperty with the old name, and must get the canonical property back rather than an error.
+TEST_F(PropertyAliasStatic, addOnAliasNameReturnsCanonical)
+{
+    App::Property* added = nullptr;
+    ASSERT_NO_THROW(
+        added = first->addDynamicProperty("App::PropertyInteger", "AliasPlain", "Variables")
+    );
+
+    EXPECT_EQ(added, &first->AliasTarget);
+}
+
+// Tests that a type disagreement is reported rather than silently returning the wrong property.
+TEST_F(PropertyAliasStatic, addOnAliasNameWithWrongTypeThrows)
+{
+    EXPECT_THROW(
+        first->addDynamicProperty("App::PropertyString", "AliasPlain", "Variables"),
+        Base::TypeError
+    );
+}
+
+// Tests that colliding with a real property still throws, unchanged.
+TEST_F(PropertyAliasStatic, addOnRealNameStillThrows)
+{
+    EXPECT_THROW(
+        first->addDynamicProperty("App::PropertyInteger", "AliasTarget", "Variables"),
+        Base::NameError
+    );
+}
+
+// Tests that enumeration reports both class-level and instance-level aliases with their
+// metadata, which is what a retirement audit needs.
+TEST_F(PropertyAliasStatic, getPropertyAliasesMergesClassAndInstance)
+{
+    first->addDynamicProperty("App::PropertyInteger", "Runtime", "Variables");
+    first->addPropertyAlias("Runtime", "RuntimeAlias", App::PropertyAliasType::Normal, "1.2");
+
+    auto aliases = first->getPropertyAliases();
+
+    ASSERT_TRUE(aliases.contains("AliasDeprecated"));
+    EXPECT_EQ(aliases["AliasDeprecated"].canonicalName, "AliasTarget");
+    EXPECT_EQ(aliases["AliasDeprecated"].since, "1.1");
+    EXPECT_EQ(aliases["AliasDeprecated"].type, App::PropertyAliasType::Deprecated);
+
+    ASSERT_TRUE(aliases.contains("RuntimeAlias"));
+    EXPECT_EQ(aliases["RuntimeAlias"].canonicalName, "Runtime");
+    EXPECT_EQ(aliases["RuntimeAlias"].since, "1.2");
+    EXPECT_EQ(aliases["RuntimeAlias"].type, App::PropertyAliasType::Normal);
+}
+
+// Tests the Python migration path: registering an alias renames a dynamic property left over
+// from an older document, preserving its value.
+TEST_F(PropertyAlias, registrationRenamesExistingDynamicProperty)
+{
+    auto* legacy = freecad_cast<App::PropertyInteger*>(
+        varSet->addDynamicProperty("App::PropertyInteger", "LegacyName", "Variables")
+    );
+    ASSERT_NE(legacy, nullptr);
+    legacy->setValue(17);
+
+    varSet->addPropertyAlias("CanonicalName", "LegacyName", App::PropertyAliasType::Deprecated, "1.1");
+
+    auto* migrated = freecad_cast<App::PropertyInteger*>(varSet->getPropertyByName("CanonicalName"));
+    ASSERT_NE(migrated, nullptr);
+    EXPECT_EQ(migrated, legacy);
+    EXPECT_EQ(migrated->getValue(), 17);
+    EXPECT_STREQ(migrated->getName(), "CanonicalName");
+}
+
+// Tests that an already migrated container is left alone, so the recipe is safe to run on
+// every load.
+TEST_F(PropertyAlias, registrationSkipsWhenCanonicalExists)
+{
+    auto* legacy = freecad_cast<App::PropertyInteger*>(
+        varSet->addDynamicProperty("App::PropertyInteger", "LegacyName", "Variables")
+    );
+    legacy->setValue(17);
+    auto* canonical = freecad_cast<App::PropertyInteger*>(
+        varSet->addDynamicProperty("App::PropertyInteger", "CanonicalName", "Variables")
+    );
+    canonical->setValue(23);
+
+    varSet->addPropertyAlias("CanonicalName", "LegacyName");
+
+    EXPECT_EQ(canonical->getValue(), 23);
+    EXPECT_STREQ(legacy->getName(), "LegacyName");
+}
+
+// Tests that a locked property migrates. renameProperty refuses these today, which leaves an
+// add-on that used locked=True permanently stuck with the old name.
+TEST_F(PropertyAlias, registrationRenamesLockedDynamicProperty)
+{
+    auto* legacy = freecad_cast<App::PropertyInteger*>(
+        varSet->addDynamicProperty("App::PropertyInteger", "LegacyName", "Variables")
+    );
+    legacy->setStatus(App::Property::LockDynamic, true);
+    legacy->setValue(17);
+
+    varSet->addPropertyAlias("CanonicalName", "LegacyName");
+
+    EXPECT_STREQ(legacy->getName(), "CanonicalName");
+    EXPECT_EQ(legacy->getValue(), 17);
+}
+
+// Pins the D6 semantics: declaring an alias claims that name, so a colliding user-added
+// property is renamed. This is exactly what obj.renameProperty() already does for unlocked
+// properties, so the design changes nothing here.
+TEST_F(PropertyAlias, registrationRenamesUserAddedPropertyOnCollision)
+{
+    auto* userAdded = freecad_cast<App::PropertyInteger*>(
+        varSet->addDynamicProperty("App::PropertyInteger", "UserChosen", "Variables")
+    );
+    userAdded->setValue(5);
+
+    varSet->addPropertyAlias("ClaimedName", "UserChosen");
+
+    EXPECT_STREQ(userAdded->getName(), "ClaimedName");
+    EXPECT_EQ(userAdded->getValue(), 5);
+}
+
+// Tests that an expression written against an alias is rewritten to the canonical name when
+// the document is restored, so files stop accumulating alias references.
+TEST_F(PropertyAliasStatic, restoredExpressionIsCanonicalized)
+{
+    second->setExpression(
+        App::ObjectIdentifier(second, std::string("Integer")),
+        App::Expression::parse(second, "First.AliasDeprecated")
+    );
+
+    doc->recompute();
+    doc->afterRestore();
+
+    auto expressions = second->ExpressionEngine.getExpressions();
+    ASSERT_EQ(expressions.size(), 1U);
+    std::string text = expressions.begin()->second->toString();
+    EXPECT_NE(text.find("AliasTarget"), std::string::npos);
+    EXPECT_EQ(text.find("AliasDeprecated"), std::string::npos);
+}
+
+// Tests that healing an expression does not make the document dirty. Opening a file should
+// never mark it as modified.
+TEST_F(PropertyAliasStatic, canonicalizationLeavesDocumentUntouched)
+{
+    second->setExpression(
+        App::ObjectIdentifier(second, std::string("Integer")),
+        App::Expression::parse(second, "First.AliasDeprecated")
+    );
+
+    doc->recompute();
+    doc->purgeTouched();
+    doc->afterRestore();
+
+    EXPECT_FALSE(doc->isTouched());
+}
+
+// Tests that the logged rewrite count is measured rather than assumed.
+TEST_F(PropertyAliasStatic, canonicalizationLogsRewriteCount)
+{
+    second->setExpression(
+        App::ObjectIdentifier(second, std::string("Integer")),
+        App::Expression::parse(second, "First.AliasDeprecated")
+    );
+    doc->recompute();
+
+    LogCapture capture;
+    doc->afterRestore();
+
+    auto matches = [](const std::string& line) {
+        return line.find("canonicalized 1 expression reference(s)") != std::string::npos;
+    };
+    EXPECT_TRUE(std::ranges::any_of(capture.messages, matches));
+}
+
+// Tests that a document with no aliased references is left completely alone.
+TEST_F(PropertyAliasStatic, canonicalizationSkipsDocumentsWithoutAliasedReferences)
+{
+    second->setExpression(
+        App::ObjectIdentifier(second, std::string("Integer")),
+        App::Expression::parse(second, "First.AliasTarget")
+    );
+
+    doc->recompute();
+    doc->afterRestore();
+
+    auto expressions = second->ExpressionEngine.getExpressions();
+    ASSERT_EQ(expressions.size(), 1U);
+    EXPECT_NE(expressions.begin()->second->toString().find("AliasTarget"), std::string::npos);
+}
+
+// Tests that an alias shadowed by a real property of the same name is left alone: it is a
+// genuine property reference, not a stale alias, so canonicalization must not rewrite it.
+TEST_F(PropertyAliasStatic, canonicalizationSkipsShadowedAlias)
+{
+    // "Shadowed" is first added as a real dynamic property, then separately registered as an
+    // alias for AliasTarget. Because AliasTarget already exists, addPropertyAlias() declines to
+    // migrate/rename the dynamic property, leaving "Shadowed" as a genuine property that
+    // happens to share its name with a registered alias.
+    first->addDynamicProperty("App::PropertyInteger", "Shadowed", "Variables");
+    first->addPropertyAlias("AliasTarget", "Shadowed", App::PropertyAliasType::Normal, "1.3");
+    ASSERT_TRUE(first->getPropertyByName("Shadowed", App::PropertyLookupMode::WithoutAliases));
+    ASSERT_TRUE(first->getPropertyAliases().contains("Shadowed"));
+
+    second->setExpression(
+        App::ObjectIdentifier(second, std::string("Integer")),
+        App::Expression::parse(second, "First.Shadowed")
+    );
+
+    doc->recompute();
+    doc->afterRestore();
+
+    auto expressions = second->ExpressionEngine.getExpressions();
+    ASSERT_EQ(expressions.size(), 1U);
+    std::string text = expressions.begin()->second->toString();
+    EXPECT_NE(text.find("Shadowed"), std::string::npos);
+    EXPECT_EQ(text.find("AliasTarget"), std::string::npos);
+}
+
+// Tests that a dangling alias -- one whose canonical name does not resolve to any real
+// property, e.g. a typo or a bad add-on registration -- is left alone by canonicalization.
+// Rewriting an expression to a canonical name that does not exist would permanently corrupt
+// it, since the rewrite gets written back to the file on next save.
+TEST_F(PropertyAliasStatic, canonicalizationLeavesDanglingAliasAlone)
+{
+    first->addPropertyAlias("DoesNotExist", "DanglingAlias", App::PropertyAliasType::Normal, "1.3");
+    ASSERT_FALSE(first->getPropertyByName("DoesNotExist", App::PropertyLookupMode::WithoutAliases));
+    ASSERT_TRUE(first->getPropertyAliases().contains("DanglingAlias"));
+
+    second->setExpression(
+        App::ObjectIdentifier(second, std::string("Integer")),
+        App::Expression::parse(second, "First.DanglingAlias")
+    );
+
+    doc->recompute();
+    doc->afterRestore();
+
+    auto expressions = second->ExpressionEngine.getExpressions();
+    ASSERT_EQ(expressions.size(), 1U);
+    std::string text = expressions.begin()->second->toString();
+    EXPECT_NE(text.find("DanglingAlias"), std::string::npos);
 }

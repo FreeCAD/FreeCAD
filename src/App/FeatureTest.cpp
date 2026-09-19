@@ -123,6 +123,9 @@ FeatureTest::FeatureTest()
     ADD_PROPERTY_TYPE(Source2, (nullptr), group, Prop_None, "Source for testing links");
     ADD_PROPERTY_TYPE(SourceN, (nullptr), group, Prop_None, "Source for testing links");
     ADD_PROPERTY_TYPE(ExecResult, ("empty"), group, Prop_None, "Result of the execution");
+    ADD_PROPERTY_TYPE(AliasTarget, (0), group, Prop_None, "Property exercising property aliases");
+    ADD_PROPERTY_ALIAS(AliasTarget, "AliasPlain", "1.1");
+    ADD_PROPERTY_DEPRECATED_ALIAS(AliasTarget, "AliasDeprecated", "1.1");
     ADD_PROPERTY_TYPE(ExceptionType,
                       (0),
                       group,
