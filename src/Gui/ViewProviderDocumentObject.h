@@ -64,6 +64,10 @@ public:
     App::PropertyEnumeration OnTopWhenSelected;
     App::PropertyEnumeration SelectionStyle;
 
+    /// Default reference for direct API calls: follow model containers, not linked occurrences.
+    /// Tree clicks and callers editing a particular link must supply that occurrence explicitly.
+    App::SubObjectT getDefaultEditReference() const;
+
     virtual void attach(App::DocumentObject* pcObject);
     virtual void reattach(App::DocumentObject*);
     void update(const App::Property*) override;

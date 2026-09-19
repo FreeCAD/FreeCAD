@@ -407,6 +407,7 @@ SET(PathPythonOp_SRCS
     Path/Op/RotarySurface.py
     Path/Op/Slot.py
     Path/Op/Surface.py
+    Path/Op/PlanarSurface.py
     Path/Op/SurfaceSupport.py
     Path/Op/Tapping.py
     Path/Op/ThreadMilling.py
@@ -444,6 +445,7 @@ SET(PathPythonOpGui_SRCS
     Path/Op/Gui/Slot.py
     Path/Op/Gui/Stop.py
     Path/Op/Gui/Surface.py
+    Path/Op/Gui/PlanarSurface.py
     Path/Op/Gui/Tapping.py
     Path/Op/Gui/ThreadMilling.py
     Path/Op/Gui/Vcarve.py
@@ -567,6 +569,7 @@ SET(Tests_SRCS
     CAMTests/test_geomop.fcstd
     CAMTests/test_holes00.fcstd
     CAMTests/TestAreaOperations.py
+    CAMTests/TestArcFitting.py
     CAMTests/TestSlicer.py
     CAMTests/TestCAMSanity.py
     CAMTests/TestCentroidLegacyPost.py
@@ -596,6 +599,8 @@ SET(Tests_SRCS
     CAMTests/TestPathDressupDogboneII.py
     CAMTests/TestPathDressupHoldingTags.py
     CAMTests/TestPathDrillGenerator.py
+    CAMTests/TestPathDrilling.py
+    CAMTests/TestDrillingPostIntegration.py
     CAMTests/TestDrillCycleExpander.py
     CAMTests/TestPathDrillable.py
     CAMTests/TestPathEngrave.py
@@ -678,6 +683,7 @@ SET(Tests_SRCS
     CAMTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd
     CAMTests/TestToolBitRecomputeState.py
     CAMTests/TestAdaptiveCommonGenerator.py
+    CAMTests/TestPlanarSurfaceOp.py
     CAMTests/TestSurfaceGenerator.py
     CAMTests/TestSurfaceCommonGenerator.py
     CAMTests/TestSurfacePostprocessGenerator.py

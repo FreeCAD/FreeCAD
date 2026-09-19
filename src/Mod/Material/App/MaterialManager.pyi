@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from Base.Metadata import export
 from Base.BaseClass import BaseClass
+from Material import Material
 from typing import Final, List, Dict
 
 
@@ -22,33 +23,33 @@ class MaterialManager(BaseClass):
     Materials: Final[Dict] = ...
     """List of Materials."""
 
-    def getMaterial(self) -> None:
+    def getMaterial(self, uuid: str, /) -> Material:
         """
         Get a material object by specifying its UUID
         """
         ...
 
-    def getMaterialByPath(self) -> None:
+    def getMaterialByPath(self, path: str, library: str = "", /) -> Material:
         """
         Get a material object by specifying its path and library name
         """
         ...
 
-    def inheritMaterial(self) -> None:
+    def inheritMaterial(self, uuid: str, /) -> Material:
         """
         Create a new material object by specifying the UUID of its parent
         """
         ...
 
-    def materialsWithModel(self) -> None:
+    def materialsWithModel(self, uuid: str, /) -> Dict[str, Material]:
         """
-        Get a list of materials implementing the specified model
+        Get a dictionary of materials implementing the specified model, keyed by material UUID
         """
         ...
 
-    def materialsWithModelComplete(self) -> None:
+    def materialsWithModelComplete(self, uuid: str, /) -> Dict[str, Material]:
         """
-        Get a list of materials implementing the specified model, with values for all properties
+        Get a dictionary of materials implementing the specified model, with values for all properties, keyed by material UUID
         """
         ...
 

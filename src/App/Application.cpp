@@ -87,8 +87,11 @@
 #include <Base/ExceptionFactory.h>
 #include <Base/FileInfo.h>
 #include <Base/GeometryPyCXX.h>
+#include <Base/CrashReporter/CrashFramePy.h>
+#include <Base/CrashReporter/CrashReportPy.h>
 #include <Base/Interpreter.h>
 #include <Base/MatrixPy.h>
+#include <Base/NumericFormatting.h>
 #include <Base/QuantityPy.h>
 #include <Base/ParameterPy.h>
 #include <Base/Persistence.h>
@@ -458,6 +461,8 @@ void Application::setupPythonTypes()
     Base::InterpreterSingleton::addType(&Base::PlacementPy::Type, pAppModule, "Placement");
     Base::InterpreterSingleton::addType(&Base::RotationPy::Type, pAppModule, "Rotation");
     Base::InterpreterSingleton::addType(&Base::AxisPy::Type, pAppModule, "Axis");
+    Base::InterpreterSingleton::addType(&Base::CrashReportPy::Type, pAppModule, "CrashReport");
+    Base::InterpreterSingleton::addType(&Base::CrashFramePy::Type, pAppModule, "CrashFrame");
 
     // Note: Create an own module 'Base' which should provide the python
     // binding classes from the base module. At a later stage we should
@@ -724,12 +729,7 @@ Document* Application::getDocument(const char *Name) const
 }
 Document* Application::getDocumentOrActive(const char *Name) const
 {
-    if (!Base::Tools::isNullOrEmpty(Name)) {
-        return getDocument(Name);
-    }
-    else {
-        return getActiveDocument();
-    }
+    return !Base::Tools::isNullOrEmpty(Name) ? getDocument(Name) : getActiveDocument();
 }
 
 const char * Application::getDocumentName(const Document* doc) const
@@ -2117,6 +2117,11 @@ void initExceptions()
 void Application::init(int argc, char ** argv)
 {
     try {
+        // Establish the initial Base snapshot before application or GUI preferences can override it.
+        Base::publishNumericLocaleContext(
+            Base::createNumericLocaleContext()
+        );
+
         Base::SystemHandler::installNewHandler();
         Base::SystemHandler::installSegfaultHandler();
 
@@ -3009,7 +3014,10 @@ void Application::initCrashReporter()
         const std::string crashReportsDirectory {getUserAppDataDir() + "CrashReports"};
         Base::CrashReporter::Writer::prewarm();
         Base::CrashReporter::Writer::install(crashReportsDirectory);
-        Base::CrashReporter::Manager::scan(crashReportsDirectory);
+        Base::CrashReporter::Manager::scan(
+            crashReportsDirectory,
+            {},
+            App::ProgramInformation::prettyProductInfoWrapper());
     } catch (Base::Exception &e) {
         Base::Console().warning("Crash reporting failed during startup:\n%s\n", e.getMessage());
     } catch (std::exception &e) {

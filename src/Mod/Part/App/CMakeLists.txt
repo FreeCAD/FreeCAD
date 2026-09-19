@@ -223,6 +223,14 @@ SET(Features_SRCS
     LinkArrayCircular.h
     LinkArrayLinear.cpp
     LinkArrayLinear.h
+    LinkArrayPath.cpp
+    LinkArrayPath.h
+    LinkArrayPolar.cpp
+    LinkArrayPolar.h
+    LinkArrayPoint.cpp
+    LinkArrayPoint.h
+    PointPatternExtension.cpp
+    PointPatternExtension.h
     PolarPatternExtension.cpp
     PolarPatternExtension.h
     PathPatternExtension.cpp

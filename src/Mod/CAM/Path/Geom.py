@@ -740,7 +740,7 @@ def removeDuplicateEdges(wire):
     return Part.Wire(unique)
 
 
-def flipEdge(edge):
+def _flipEdge(edge):
     """flipEdge(edge)
     Flips given edge around so the new Vertexes[0] was the old Vertexes[-1] and vice versa, without changing the shape.
     Currently only lines, line segments, circles, arcs and ellipses are supported."""
@@ -765,8 +765,7 @@ def flipEdge(edge):
             )
         )
         # Now the edge always starts at 0 and LastParameter is the value range
-        arc = Part.Edge(circle, 0, edge.LastParameter - edge.FirstParameter)
-        return arc
+        return Part.Edge(circle, 0, edge.LastParameter - edge.FirstParameter)
     elif isinstance(edge.Curve, Part.Ellipse):
         # Ellipse has no (center, normal, radii) constructor to build the
         # inverted curve directly the way Circle does above, so build it
@@ -821,6 +820,22 @@ def flipEdge(edge):
         return edge.reversed()
 
     Path.Log.warning(translate("PathGeom", "%s not supported for flipping") % type(edge.Curve))
+    return None
+
+
+def flipEdge(edge):
+    """flipEdge(edge)
+    Flips given edge around so the new Vertexes[0] was the old Vertexes[-1] and vice versa, without changing the shape.
+    """
+
+    flipped = _flipEdge(edge)
+
+    # Preserve vertex tolerances (reversed order)
+    if flipped and len(edge.Vertexes) >= 2 and len(flipped.Vertexes) >= 2:
+        flipped.Vertexes[0].Tolerance = edge.Vertexes[-1].Tolerance
+        flipped.Vertexes[-1].Tolerance = edge.Vertexes[0].Tolerance
+
+    return flipped
 
 
 def flipWire(wire):

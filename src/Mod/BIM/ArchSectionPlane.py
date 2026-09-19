@@ -1222,14 +1222,6 @@ class _ViewProviderSectionPlane:
                 locked=True,
             )
             vobj.LineWidth = 1
-        if not "CutDistance" in pl:
-            vobj.addProperty(
-                "App::PropertyLength",
-                "CutDistance",
-                "SectionPlane",
-                QT_TRANSLATE_NOOP("App::Property", "Show the cut in the 3D view"),
-                locked=True,
-            )
         if not "LineColor" in pl:
             vobj.addProperty(
                 "App::PropertyColor",
@@ -1291,6 +1283,13 @@ class _ViewProviderSectionPlane:
     def onDocumentRestored(self, vobj):
 
         self.setProperties(vobj)
+
+    def finishRestoring(self):
+        """Remove CutDistance from older documents."""
+        vobj = self.Object.ViewObject
+        if "CutDistance" in vobj.PropertiesList:
+            vobj.setPropertyStatus("CutDistance", "-LockDynamic")
+            vobj.removeProperty("CutDistance")
 
     def getIcon(self):
 
