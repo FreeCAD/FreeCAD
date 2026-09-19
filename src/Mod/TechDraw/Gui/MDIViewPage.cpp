@@ -107,7 +107,7 @@ MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* 
     m_toggleGridAction = new QAction(tr("Show &Grid"), this);
     connect(m_toggleGridAction, &QAction::triggered, this, &MDIViewPage::toggleGrid);
 
-    m_toggleScreenModeAction = new QAction(tr("Screen Mode"), this);
+    m_toggleScreenModeAction = new QAction(tr("Screen &Mode"), this);
     connect(m_toggleScreenModeAction, &QAction::triggered, this, &MDIViewPage::toggleScreenMode);
 
     m_exportSVGAction = new QAction(tr("&Export SVG"), this);

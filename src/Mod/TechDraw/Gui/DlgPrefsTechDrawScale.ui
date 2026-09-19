@@ -448,7 +448,7 @@
       </size>
      </property>
      <property name="title">
-      <string>Screen mode</string>
+      <string>Screen Mode</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_5">
       <item>
@@ -456,10 +456,10 @@
         <item row="0" column="0" colspan="3">
          <widget class="Gui::PrefCheckBox" name="cbScreenMode">
           <property name="toolTip">
-           <string>Draw vertices and edges at a constant size on screen instead of scaling them with the page. Can also be toggled from the page context menu.</string>
+           <string>Draws vertices and edges at a constant size on screen instead of scaling them with the page. Can also be toggled from the page context menu.</string>
           </property>
           <property name="text">
-           <string>Screen mode on</string>
+           <string>Screen mode</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -535,7 +535,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="label_17">
           <property name="text">
-           <string>Edge size</string>
+           <string>Edge width</string>
           </property>
          </widget>
         </item>
