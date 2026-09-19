@@ -531,6 +531,30 @@
         </item>
        </layout>
       </item>
+      <item>
+       <layout class="QHBoxLayout" name="cumulativeSnapInvertButtonLayout">
+        <item>
+         <widget class="QPushButton" name="invertCumulativeSnapUButton">
+          <property name="toolTip">
+           <string>Inverts the snap direction by U-axis rotation</string>
+          </property>
+          <property name="text">
+           <string>Invert U</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="invertCumulativeSnapVButton">
+          <property name="toolTip">
+           <string>Inverts the snap direction by V-axis rotation</string>
+          </property>
+          <property name="text">
+           <string>Invert V</string>
+          </property>
+         </widget>
+       </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </item>
@@ -836,6 +860,8 @@
   <tabstop>cumulativeSnapButton</tabstop>
   <tabstop>undoCumulativeSnapButton</tabstop>
   <tabstop>clearCumulativeSnapButton</tabstop>
+  <tabstop>invertCumulativeSnapUButton</tabstop>
+  <tabstop>invertCumulativeSnapVButton</tabstop>
  </tabstops>
  <resources/>
  <connections/>

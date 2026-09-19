@@ -125,6 +125,7 @@ QString snapTypeLabel(App::SubObjectPlacementProvider::SnapGeometryType type)
     return QCoreApplication::translate("Gui::TaskTransform", "Reference");
 }
 
+
 }  // namespace
 
 TaskTransform::TaskTransform(
@@ -335,6 +336,18 @@ void TaskTransform::setupGui()
         &QPushButton::clicked,
         this,
         &TaskTransform::onClearCumulativeSnap
+    );
+    connect(
+        ui->invertCumulativeSnapUButton,
+        &QPushButton::clicked,
+        this,
+        &TaskTransform::onInvertCumulativeSnapU
+    );
+    connect(
+        ui->invertCumulativeSnapVButton,
+        &QPushButton::clicked,
+        this,
+        &TaskTransform::onInvertCumulativeSnapV
     );
     connect(ui->moveOptionsButton, &QPushButton::toggled, ui->frameMoveOptions, &QWidget::setVisible);
     connect(ui->translateCheckbox, &QCheckBox::toggled, this, [this](bool translateChecked) {
@@ -1131,6 +1144,103 @@ void TaskTransform::restoreCumulativeSnapPlacement(const Base::Placement& placem
     updatePositionAndRotationUi();
 }
 
+bool TaskTransform::isCumulativeSnapStepInvertible(const CumulativeSnapStep& step) const
+{
+    using SnapGeometryType = App::SubObjectPlacementProvider::SnapGeometryType;
+
+    return step.constraint.targetType == SnapGeometryType::Axis
+        || step.constraint.targetType == SnapGeometryType::Plane;
+}
+
+std::optional<std::size_t> TaskTransform::cumulativeSnapInvertTargetIndex() const
+{
+    if (cumulativeSnapHistory.empty()) {
+        return std::nullopt;
+    }
+
+    const auto latestIndex = cumulativeSnapHistory.size() - 1;
+    if (!isCumulativeSnapStepInvertible(cumulativeSnapHistory[latestIndex])) {
+        return std::nullopt;
+    }
+
+    return latestIndex;
+}
+
+bool TaskTransform::canInvertCumulativeSnapDirection() const
+{
+    if (!cumulativeSnapActive || cumulativeSnapHistory.empty()) {
+        return false;
+    }
+
+    return cumulativeSnapInvertTargetIndex().has_value();
+}
+
+void TaskTransform::invertCumulativeSnapDirection(const Base::Vector3d& localAxis)
+{
+    const auto targetIndex = cumulativeSnapInvertTargetIndex();
+    if (!targetIndex) {
+        return;
+    }
+
+    const auto previousHistory = cumulativeSnapHistory;
+    const auto previousTransformOrigin = vp->getTransformOrigin();
+
+    auto& step = cumulativeSnapHistory[*targetIndex];
+    auto& constraint = step.constraint;
+    constraint.targetPlacement
+        = TransformSnap::invertedPlacementAroundLocalAxis(constraint.targetPlacement, localAxis);
+    constraint.targetDirectionSignFixed = true;
+    step.objectPlacement = TransformSnap::objectPlacementMatchingSnapFrame(
+        step.objectPlacement,
+        constraint.localPlacement,
+        constraint.targetPlacement
+    );
+
+    vp->setTransformOrigin(constraint.localPlacement);
+    if (!updateCumulativeSnapHistoryPlacements()) {
+        cumulativeSnapHistory = previousHistory;
+        vp->setTransformOrigin(previousTransformOrigin);
+        vp->setDraggerPlacement(vp->getObjectPlacement() * previousTransformOrigin);
+        vp->updateTransformFromDragger();
+        getMainWindow()->showMessage(tr("Unable to compute a valid snap placement"));
+        return;
+    }
+
+    updateCumulativeSnapUi();
+
+    if (selectionMode == SelectionMode::SelectCumulativeSnapTarget && currentCumulativeSnapReference) {
+        vp->setTransformOrigin(currentCumulativeSnapReference->localPlacement);
+        vp->setDraggerPlacement(
+            vp->getObjectPlacement() * currentCumulativeSnapReference->localPlacement
+        );
+        vp->updateTransformFromDragger();
+    }
+    else {
+        currentCumulativeSnapReference.reset();
+        setSelectionMode(SelectionMode::SelectCumulativeSnapReference);
+    }
+}
+
+bool TaskTransform::updateCumulativeSnapHistoryPlacements()
+{
+    auto candidate = cumulativeSnapStartPlacement.value_or(vp->getObjectPlacement());
+    for (std::size_t i = 0; i < cumulativeSnapHistory.size(); ++i) {
+        const auto& step = cumulativeSnapHistory[i];
+        const auto preferredPlacement = step.objectPlacement.isFinite() ? step.objectPlacement
+                                                                        : candidate;
+        const auto placement
+            = solveCumulativeSnapObjectPlacement(preferredPlacement, step.constraint, i);
+        if (!placement) {
+            return false;
+        }
+        cumulativeSnapHistory[i].objectPlacement = *placement;
+        candidate = *placement;
+    }
+
+    restoreCumulativeSnapPlacement(candidate);
+    return true;
+}
+
 void TaskTransform::updateCumulativeSnapUi() const
 {
     QSignalBlocker blocker(ui->cumulativeSnapButton);
@@ -1157,9 +1267,17 @@ void TaskTransform::updateCumulativeSnapUi() const
     ui->cumulativeSnapHistoryList->setVisible(cumulativeSnapActive);
     ui->undoCumulativeSnapButton->setVisible(cumulativeSnapActive);
     ui->clearCumulativeSnapButton->setVisible(cumulativeSnapActive);
+    ui->invertCumulativeSnapUButton->setVisible(cumulativeSnapActive);
+    ui->invertCumulativeSnapVButton->setVisible(cumulativeSnapActive);
 
     ui->undoCumulativeSnapButton->setEnabled(cumulativeSnapActive && !cumulativeSnapHistory.empty());
     ui->clearCumulativeSnapButton->setEnabled(cumulativeSnapActive && !cumulativeSnapHistory.empty());
+    ui->invertCumulativeSnapUButton->setEnabled(
+        cumulativeSnapActive && canInvertCumulativeSnapDirection()
+    );
+    ui->invertCumulativeSnapVButton->setEnabled(
+        cumulativeSnapActive && canInvertCumulativeSnapDirection()
+    );
 }
 
 void TaskTransform::onCumulativeSnap()
@@ -1206,6 +1324,16 @@ void TaskTransform::onClearCumulativeSnap()
     if (cumulativeSnapActive) {
         setSelectionMode(SelectionMode::SelectCumulativeSnapReference);
     }
+}
+
+void TaskTransform::onInvertCumulativeSnapU()
+{
+    invertCumulativeSnapDirection(Base::Vector3d::UnitX);
+}
+
+void TaskTransform::onInvertCumulativeSnapV()
+{
+    invertCumulativeSnapDirection(Base::Vector3d::UnitY);
 }
 
 void TaskTransform::onFlip()
