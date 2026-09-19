@@ -63,11 +63,23 @@ QSize StatusBarLabel::minimumSizeHint() const
 void StatusBarLabel::paintEvent(QPaintEvent* event)
 {
     if (m_elideMode == Qt::ElideNone) {
+        if (!toolTip().isEmpty()) {
+            setToolTip(QString());
+        }
         QLabel::paintEvent(event);
         return;
     }
+
     QPainter painter(this);
     const QString elided = fontMetrics().elidedText(text(), m_elideMode, contentsRect().width());
+
+    // when the text doesn't fit, show full string on hover. cleared when it fits
+    // so a fully visible label doesn't get a tooltip repeating itself
+    const QString tip = (elided != text()) ? text() : QString();
+    if (toolTip() != tip) {
+        setToolTip(tip);
+    }
+
     painter.drawText(contentsRect(), static_cast<int>(alignment()), elided);
 }
 

@@ -52,10 +52,13 @@ void ViewProviderDressUp::attach(App::DocumentObject* pcObject)
 {
     ViewProvider::attach(pcObject);
 
+    setErrorState(false);
+}
+
+void ViewProviderDressUp::updatePreviewColor()
+{
     auto* styleParameterManager = Base::provideService<Gui::StyleParameters::ParameterManager>();
     PreviewColor.setValue(styleParameterManager->resolve(StyleParameters::PreviewDressUpColor));
-
-    setErrorState(false);
 }
 
 void ViewProviderDressUp::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)

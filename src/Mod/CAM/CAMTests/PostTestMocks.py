@@ -142,6 +142,7 @@ class MockMachine:
             "xy_before_z_after_tool_change": False,
             "spindle": False,  # Disable spindle commands to avoid M3 S1000
             "coolant": False,  # Disable coolant commands
+            "ignored_commands": "",
         }
         # Make processing properties accessible as attributes
         self.processing = type("Processing", (), processing_config)()

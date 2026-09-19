@@ -104,6 +104,8 @@ public:
     Py::Object getViewer();
     Py::Object addEventCallbackPivy(const Py::Tuple&);
     Py::Object removeEventCallbackPivy(const Py::Tuple&);
+    Py::Object addEventCallbackSWIG(const Py::Tuple&);
+    Py::Object removeEventCallbackSWIG(const Py::Tuple&);
     Py::Object listNavigationTypes();
     Py::Object getNavigationType();
     Py::Object setNavigationType(const Py::Tuple&);
@@ -130,7 +132,7 @@ private:
     static void draggerCallback(void* ud, SoDragger* dragger);
 
 private:
-    using method_varargs_handler = PyObject* (*)(PyObject * _self, PyObject* _args);
+    using method_varargs_handler = PyObject* (*)(PyObject* _self, PyObject* _args);
     static method_varargs_handler pycxx_handler;
     static PyObject* method_varargs_ext_handler(PyObject* _self, PyObject* _args);
     Py::Object getattribute(const char*);

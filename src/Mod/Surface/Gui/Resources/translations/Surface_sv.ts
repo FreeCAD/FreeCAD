@@ -221,7 +221,7 @@
     <message>
       <location filename="../../TaskFillingVertex.ui" line="23"/>
       <source>Non-Boundary Vertices</source>
-      <translation type="unfinished">Non-Boundary Vertices</translation>
+      <translation>Icke-gränshörn</translation>
     </message>
     <message>
       <location filename="../../TaskFillingVertex.ui" line="40"/>
@@ -523,9 +523,9 @@ Detta kommando fungerar endast med ett nätobjekt.</translation>
     <message numerus="yes">
       <location filename="../../TaskFilling.cpp" line="615"/>
       <source>Edge has %n adjacent faces</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Kant har %n angränsande sidor</numerusform>
-        <numerusform>Edge has %n adjacent faces</numerusform>
+        <numerusform>Kanten har %n angränsande ytor</numerusform>
       </translation>
     </message>
     <message>

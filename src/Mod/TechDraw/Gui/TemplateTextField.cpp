@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Ian Rees <ian.rees@gmail.com>                      *
  *                                                                         *
@@ -46,7 +48,8 @@ TemplateTextField::TemplateTextField(QGraphicsItem *parent,
       tmplte(myTmplte),
       fieldName(myFieldName),
       m_rect(new QGraphicsRectItem()),
-      m_line(new QGraphicsPathItem())
+      m_line(new QGraphicsPathItem()),
+      m_isShortText(false)
 {
     setFlag(QGraphicsItem::ItemIsFocusable, true);
     setAcceptHoverEvents(true);
@@ -133,6 +136,21 @@ void TemplateTextField::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     hideLine();
     QGraphicsItemGroup::hoverLeaveEvent(event);
+}
+
+
+void TemplateTextField::hideLine()
+{
+    if (!tmplte) {
+        return;
+    }
+
+    // like template's isShort
+    if (isShortText()) {
+        return;
+    }
+
+    m_line->hide();
 }
 
 

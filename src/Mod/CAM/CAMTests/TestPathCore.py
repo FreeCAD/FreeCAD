@@ -21,6 +21,8 @@
 # *                                                                         *
 # ***************************************************************************
 
+import math
+
 import FreeCAD
 import Path
 from CAMTests.PathTestUtils import PathTestBase
@@ -139,3 +141,75 @@ G0 Z0.500000
         path = Path.Path(commands)
 
         self.assertEqual(path.Length, 2)
+
+    def test51(self):
+        """Test Path arc length and cycle time calculations"""
+        path = Path.Path(
+            [
+                Path.Command("G0 X2 Y0"),
+                Path.Command("G3 X3 Y1 I0 J1"),
+            ]
+        )
+        expected_length = 2 + math.pi / 2
+        self.assertAlmostEqual(path.Length, expected_length, places=12)
+        self.assertAlmostEqual(path.getCycleTime(1, 1, 1), expected_length, places=12)
+
+        absolute_center_path = Path.Path(
+            [
+                Path.Command("G0 X2 Y0"),
+                Path.Command("G90.1"),
+                Path.Command("G3 X3 Y1 I2 J1"),
+            ]
+        )
+        self.assertAlmostEqual(absolute_center_path.Length, expected_length, places=12)
+
+    # Command (App/Command.cpp) does not try to correctly parse modal g-code.
+    # (strings with just the axis, missing the "command" part).
+    # As implemented, Command (setFromGCode()) skips non-alpha leading chars (unless comment).
+    # So, " X1" is the Command.Name X1, not the axis X.
+    # Similarly, it does not try to render a modal via toGCode(),
+    # Path.Command("",{"X":1}).toGCode() gives " X1.00000".
+    # Code should not rely on "modal" behavior.
+    # No tests around this, therefore.
+
+    def test_ramp_cycle_time(self):
+        """
+        Test that getCycleTime for a ramp move uses F feed rate, not the default
+        vertical or horizontal feed rate.
+
+        The test path starts with a G1 setting the feed, then a G0 setting the
+        rapid feed, then does the ramp. The ramp should use the feed from the G1
+        """
+
+        h_feed = 600.0 / 60
+        v_feed = 300.0 / 60
+        rapid = 3000.0 / 60
+
+        g1_length = 5.0
+        g0_length = 5.0
+
+        dx = 3
+        dz = -4
+        ramp_length = math.hypot(dx, dz)
+
+        def check_ramp_cycle_time(feed):
+            with self.subTest(feed=feed):
+                path = Path.Path(
+                    [
+                        Path.Command("G1", {"X": g1_length, "F": feed}),
+                        Path.Command("G0", {"Y": g0_length, "F": rapid}),
+                        Path.Command("G1", {"X": g1_length + dx, "Z": dz, "F": feed}),
+                    ]
+                )
+                t = path.getCycleTime(h_feed, v_feed, rapid)
+
+                t_g1 = g1_length / feed
+                t_g0 = g0_length / rapid
+                t_ramp = ramp_length / feed
+                t_expected = t_g1 + t_g0 + t_ramp
+
+                self.assertAlmostEqual(t, t_expected)
+
+        check_ramp_cycle_time(h_feed)
+        check_ramp_cycle_time(v_feed)
+        check_ramp_cycle_time((h_feed + v_feed) / 2)

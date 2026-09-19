@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -33,6 +35,7 @@
 #include <Mod/TechDraw/App/DrawUtil.h>
 
 #include "QGIEdge.h"
+#include "DrawGuiUtil.h"
 #include "PreferencesGui.h"
 #include "TaskLineDecor.h"
 #include "QGIView.h"
@@ -111,5 +114,19 @@ void QGIEdge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 void QGIEdge::setLinePen(const QPen& linePen)
 {
     m_pen = linePen;
+}
+
+void QGIEdge::setWidth(double width)
+{
+    m_width = DrawGuiUtil::screenWidth(width);
+
+    QGIPrimPath::setWidth(m_width * m_screenScale);
+}
+
+void QGIEdge::setScreenScale(double scale)
+{
+    ScreenScalable::setScreenScale(scale);
+    QGIPrimPath::setWidth(m_width * m_screenScale);
+    setEdgeFuzzScale(m_screenScale);
 }
 

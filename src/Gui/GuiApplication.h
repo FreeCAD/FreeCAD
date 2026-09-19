@@ -25,10 +25,12 @@
 
 #include "GuiApplicationNativeEventAware.h"
 #include <Base/Interpreter.h>  // For Base::SystemExitException
+#include <Base/Parameter.h>
 #include <QList>
 #include <memory>
 
 class QSessionManager;
+class QWidget;
 
 namespace Gui
 {
@@ -90,6 +92,12 @@ class WheelEventFilter: public QObject
 public:
     explicit WheelEventFilter(QObject* parent);
     bool eventFilter(QObject* obj, QEvent* ev) override;
+
+private:
+    bool isEnabled() const;
+    void updateFocusPolicy(QWidget* widget) const;
+
+    ParameterGrp::handle hGrp;
 };
 
 }  // namespace Gui

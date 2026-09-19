@@ -28,6 +28,7 @@ import FreeCAD
 import FreeCADGui
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
+translate = FreeCAD.Qt.translate
 
 
 class BIM_Sketch:
@@ -47,15 +48,18 @@ class BIM_Sketch:
 
     def Activated(self):
         import WorkingPlane
+        from draftutils import gui_utils
         from draftutils import params
         from draftutils import utils
         from FreeCAD import Units
 
+        doc = FreeCAD.ActiveDocument
+        doc.openTransaction(translate("Arch", "Create Sketch"))
         wp = WorkingPlane.get_working_plane()  # also updates the grid
-        sk = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject", "Sketch")
+        sk = doc.addObject("Sketcher::SketchObject", "Sketch")
         sk.Placement = wp.get_placement()
         sk.MapMode = "Deactivated"
-
+        gui_utils.autogroup(sk)
         if not params.get_param("BIMSketchPlacementOnly", path="Mod/BIM"):
             sk.ViewObject.LineWidth = params.get_param_view("DefaultShapeLineWidth")
             sk.ViewObject.PointSize = params.get_param_view("DefaultShapePointSize")
@@ -66,6 +70,7 @@ class BIM_Sketch:
             if getattr(FreeCADGui, "Snapper", None) and FreeCADGui.Snapper.grid.Visible:
                 sk.ViewObject.GridSize = Units.Quantity(params.get_param("gridSpacing"))
                 sk.ViewObject.ShowGrid = True
+        doc.commitTransaction()
 
         FreeCADGui.ActiveDocument.setEdit(sk.Name)
         FreeCADGui.activateWorkbench("SketcherWorkbench")

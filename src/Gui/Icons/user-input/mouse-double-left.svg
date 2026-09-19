@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="24"
+   height="24"
+   fill="none"
+   viewBox="0 0 24 24"
+   version="1.1"
+   id="svg2"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2" />
+  <path
+     id="path3"
+     style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"
+     d="m 12,3 v 7 m -6,0 h 6.789062 m 0,0 H 18 m -1.269553,9.923165 C 15.994458,20.610695 15.020067,21 14,21 H 10 C 7.790861,21 6,19.209139 6,17 V 7 7 C 6,4.790861 7.790861,3 10,3 h 4 c 2.209139,0 4,1.790861 4,4 v 2.7876302 m 0,0 v 1.0207648" />
+  <path
+     fill="#ffffff"
+     d="M12 3v7H6V6l3-3h3Z"
+     id="path2" />
+  <g
+     id="text2"
+     style="font-size:10.7589px;font-family:'Noto Sans Linear A';-inkscape-font-specification:'Noto Sans Linear A, Normal';fill:#ffffff;stroke-width:2.00714;stroke-miterlimit:5"
+     transform="matrix(1.0669336,0,0,0.93060542,1.1704065,-0.05380283)"
+     aria-label="X2">
+    <path
+       style="font-weight:bold;font-size:7.64591px;font-family:Sans;-inkscape-font-specification:'Sans, Bold';stroke-width:2.00714"
+       d="m 14.774908,19.915559 h -1.890384 l -1.366698,-2.086237 -1.392243,2.086237 H 8.3203495 L 10.568376,16.72234 8.3671835,13.575955 h 1.8861285 l 1.319863,1.975539 1.358183,-1.975539 h 1.809489 l -2.213964,3.082521 z"
+       id="path9" />
+    <path
+       style="font-weight:bold;font-size:9.17508px;font-family:Sans;-inkscape-font-specification:'Sans, Bold';stroke-width:2.00714"
+       d="m 20.69762,19.915558 h -5.237143 v -1.102085 q 0.600323,-0.434562 1.200646,-0.922884 0.604802,-0.488322 0.967684,-0.842244 0.542082,-0.524162 0.770563,-0.913924 0.228481,-0.389761 0.228481,-0.770563 0,-0.456962 -0.295681,-0.703363 -0.291201,-0.250881 -0.842244,-0.250881 -0.412162,0 -0.869124,0.17024 -0.452482,0.170241 -0.842243,0.434562 H 15.635198 V 13.53153 q 0.318082,-0.138881 0.936324,-0.277761 0.622723,-0.138881 1.245446,-0.138881 1.254405,0 1.912968,0.528642 0.658563,0.524163 0.658563,1.487367 0,0.631683 -0.318081,1.200645 -0.313602,0.568963 -0.963205,1.173765 -0.407681,0.376322 -0.819843,0.694403 -0.412162,0.313602 -0.586883,0.439042 h 2.997133 z"
+       id="path10" />
+  </g>
+</svg>

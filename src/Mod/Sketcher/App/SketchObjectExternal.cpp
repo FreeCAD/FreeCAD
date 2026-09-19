@@ -24,6 +24,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <limits>
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
@@ -1899,8 +1900,14 @@ void processEdge(const TopoDS_Edge& edge,
         //           + minorRadius * sin(t) * origAxisMinorDir
         gp_Vec2d PA = ProjVecOnPlane_UV(origAxisMajor, sketchPlane);
         gp_Vec2d PB = ProjVecOnPlane_UV(origAxisMinor, sketchPlane);
-        double t_max = 2.0 * PA.Dot(PB) / (PA.SquareMagnitude() - PB.SquareMagnitude());
-        t_max = 0.5 * atan(t_max);// gives new major axis is most cases, but not all
+        double t_max = 0.0;
+        const double dPAPB = PA.SquareMagnitude() - PB.SquareMagnitude();
+
+        // For dPAPB=0 it's a circle where we use t_max=0
+        if (std::fabs(dPAPB) > std::numeric_limits<double>::epsilon()) {
+            t_max = 2.0 * PA.Dot(PB) / (PA.SquareMagnitude() - PB.SquareMagnitude());
+            t_max = 0.5 * atan(t_max);// gives new major axis is most cases, but not all
+        }
         double t_min = t_max + 0.5 * pi;
 
         // ON_max = OM(t_max) gives the point, which projected on the sketch plane,
@@ -2299,6 +2306,17 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
     Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
 
     fixMissingAxisInExternalGeo();
+
+    // Remember which way the projected lines currently run. Signed constraints record which side
+    // of a line their subject sits on, and that side is expressed relative to the line direction,
+    // so a projection that comes back reversed would otherwise drag the sketch to the other side.
+    std::map<long, Base::Vector3d> previousLineDirections;
+    for (const auto& geo : ExternalGeo.getValues()) {
+        if (auto* line = freecad_cast<const Part::GeomLineSegment*>(geo)) {
+            previousLineDirections[GeometryFacade::getId(geo)] =
+                line->getEndPoint() - line->getStartPoint();
+        }
+    }
 
     // Analyze the state of existing external geometries to infer the desired state for new ones.
     // If any geometry from a source link is "defining", we'll treat the whole link as "defining".
@@ -2699,8 +2717,23 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
         }
     }
 
+    std::set<int> reversedGeoIds;
+    for (std::size_t index = 0; index < geoms.size(); ++index) {
+        auto* line = freecad_cast<const Part::GeomLineSegment*>(geoms[index]);
+        if (!line) {
+            continue;
+        }
+        auto previous = previousLineDirections.find(GeometryFacade::getId(geoms[index]));
+        if (previous != previousLineDirections.end()
+            && (line->getEndPoint() - line->getStartPoint()).Dot(previous->second) < 0.0) {
+            reversedGeoIds.insert(-static_cast<int>(index) - 1);
+        }
+    }
+
     ExternalGeo.setValues(std::move(geoms));
     rebuildVertexIndex();
+
+    reorientConstraintsOnReversedGeometry(reversedGeoIds);
 
     // clean up geometry reference
     if(refSet.size() != (size_t)ExternalGeometry.getSize()) {

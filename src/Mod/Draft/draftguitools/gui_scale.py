@@ -138,6 +138,9 @@ class Scale(gui_base_original.Modifier):
         for sel in selection:
             for sub in sel.SubElementNames if sel.SubElementNames else [""]:
                 if (not copy and "Vertex" in sub) or "Edge" in sub:
+                    obj = sel.Object.getSubObject(sub, 1)
+                    if utils.get_type(obj) != "Wire":
+                        continue
                     shape = Part.getShape(sel.Object, sub, needSubElement=True, retType=0)
                     ghosts.append(trackers.ghostTracker(shape))
         return ghosts

@@ -49,10 +49,7 @@ bool(Draft_rc.__name__)
 
 
 def _quantity(st):
-    # workaround for improper handling of plus sign
-    # in Building US unit system
-    # https://github.com/FreeCAD/FreeCAD/issues/11345
-    return U.Quantity(st.replace("+", "--")).Value
+    return U.Quantity(st).Value
 
 
 class TaskPanelPolarArray:

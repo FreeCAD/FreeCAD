@@ -2119,6 +2119,12 @@ void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
         return;
     }
 
+    QModelIndex index = indexAt(event->pos());
+    if (index.column() != 0) {
+        QTreeWidget::mouseDoubleClickEvent(event);
+        return;
+    }
+
     try {
         if (item->type() == TreeWidget::DocumentType) {
             Gui::Document* doc = static_cast<DocumentItem*>(item)->document();
@@ -2146,13 +2152,24 @@ void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
             auto lines = manager->getLines();
 
             std::ostringstream ss;
-            ss << Command::getObjectCmd(vp->getObject()) << ".ViewObject.doubleClicked()";
+            App::DocumentObject* root = nullptr;
+            std::ostringstream subname;
+            objitem->getSubName(subname, root);
+            if (root) {
+                subname << vp->getObject()->getNameInDocument() << '.';
+            }
+            else {
+                root = vp->getObject();
+            }
+            const App::SubObjectT reference(root, subname.str().c_str());
+            ss << Command::getObjectCmd(vp->getObject()) << ".ViewObject.doubleClicked("
+               << Command::getObjectCmd(root) << ", '" << reference.getSubName() << "')";
 
             const char* commandText = vp->getTransactionText();
             if (commandText) {
                 appdoc->openTransaction(commandText);
 
-                if (!vp->doubleClicked()) {
+                if (!vp->doubleClickedObject(reference)) {
                     QTreeWidget::mouseDoubleClickEvent(event);
                 }
                 else if (lines == manager->getLines()) {
@@ -2160,7 +2177,7 @@ void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
                 }
             }
             else {
-                if (!vp->doubleClicked()) {
+                if (!vp->doubleClickedObject(reference)) {
                     QTreeWidget::mouseDoubleClickEvent(event);
                 }
                 else if (lines == manager->getLines()) {
@@ -6551,6 +6568,17 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
     }
 
     this->setIcon(0, icon);
+}
+
+QVariant DocumentObjectItem::data(int column, int role) const
+{
+    if (column == 0 && role == Qt::ToolTipRole && object()) {
+        const QString tip = object()->getToolTip();
+        if (!tip.isEmpty()) {
+            return tip;
+        }
+    }
+    return QTreeWidgetItem::data(column, role);
 }
 
 void DocumentObjectItem::displayStatusInfo()

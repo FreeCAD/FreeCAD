@@ -410,10 +410,10 @@ of that project, no matter if they are expanded or not.</source>
     </message>
     <message>
       <location filename="../ui/dialogPhases.ui" line="14"/>
+      <location filename="../ui/DialogDisplayText.ui" line="14"/>
       <location filename="../ui/dialogQuantitySurveying.ui" line="14"/>
       <location filename="../ui/dialogListWidget.ui" line="14"/>
       <location filename="../ui/dialogExport.ui" line="14"/>
-      <location filename="../ui/DialogDisplayText.ui" line="14"/>
       <source>Dialog</source>
       <translation>대화 상자</translation>
     </message>
@@ -784,8 +784,8 @@ of that project, no matter if they are expanded or not.</source>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="104"/>
       <location filename="../ui/dialogQuantitySurveying.ui" line="26"/>
-      <location filename="../ui/dialogProjectManager.ui" line="717"/>
       <location filename="../ui/dialogPreflightResults.ui" line="103"/>
+      <location filename="../ui/dialogProjectManager.ui" line="717"/>
       <source>OK</source>
       <translation>확인</translation>
     </message>
@@ -845,10 +845,10 @@ of that project, no matter if they are expanded or not.</source>
       <translation>표준 IFC PSet 추가</translation>
     </message>
     <message>
+      <location filename="../ui/dialogAddPSet.ui" line="43"/>
       <location filename="../ui/dialogAddProperty.ui" line="87"/>
       <location filename="../ui/dialogProjectManager.ui" line="246"/>
       <location filename="../ui/dialogProjectManager.ui" line="366"/>
-      <location filename="../ui/dialogAddPSet.ui" line="43"/>
       <source>Name</source>
       <translation>이름</translation>
     </message>
@@ -2111,10 +2111,15 @@ of that project, no matter if they are expanded or not.</source>
       <translation>IfcRectangleProfileDef 내보내기가 비활성화되어 있습니까?(Revit 전용)</translation>
     </message>
     <message>
-      <location filename="../ui/dialogReorder.ui" line="14"/>
       <location filename="../ui/dialogViews.ui" line="14"/>
+      <location filename="../ui/dialogReorder.ui" line="14"/>
       <source>Form</source>
       <translation>양식</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogViews.ui" line="69"/>
+      <source>Elevation</source>
+      <translation>표고</translation>
     </message>
     <message>
       <location filename="../ui/dialogReorder.ui" line="20"/>
@@ -2187,11 +2192,6 @@ p, li { white-space: pre-wrap; }
       <translation>요소</translation>
     </message>
     <message>
-      <location filename="../ui/dialogViews.ui" line="69"/>
-      <source>Elevation</source>
-      <translation>표고</translation>
-    </message>
-    <message>
       <location filename="../ui/dialogViews.ui" line="84"/>
       <source>2D Views</source>
       <translation>2D 보기</translation>
@@ -2260,8 +2260,8 @@ p, li { white-space: pre-wrap; }
       <translation>레이블</translation>
     </message>
     <message>
-      <location filename="../ui/dialogViews.ui" line="74"/>
       <location filename="../ui/dialogWindows.ui" line="175"/>
+      <location filename="../ui/dialogViews.ui" line="74"/>
       <source>Height</source>
       <translation>높이</translation>
     </message>
@@ -3375,9 +3375,9 @@ If using Netgen, make sure that it is available.</source>
       <translation>테셀레이션</translation>
     </message>
     <message>
+      <location filename="../ui/preferences-dae.ui" line="26"/>
       <location filename="../ui/preferences-webgl.ui" line="26"/>
       <location filename="../ui/preferences-ifc-export.ui" line="35"/>
-      <location filename="../ui/preferences-dae.ui" line="26"/>
       <source>Export Options</source>
       <translation>내보내기 옵션</translation>
     </message>
@@ -3738,18 +3738,18 @@ The default template is located at:
     <name>Arch</name>
     <message>
       <location filename="../../ArchStructure.py" line="449"/>
-      <location filename="../../Arch.py" line="2565"/>
+      <location filename="../../Arch.py" line="2576"/>
       <source>Beam</source>
       <translation>보</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="450"/>
-      <location filename="../../Arch.py" line="2569"/>
+      <location filename="../../Arch.py" line="2580"/>
       <source>Column</source>
       <translation>기둥</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2618"/>
+      <location filename="../../Arch.py" line="2629"/>
       <source>StructuralSystem</source>
       <translation>구조 시스템</translation>
     </message>
@@ -3951,7 +3951,7 @@ The default template is located at:
       <location filename="../../ArchStructure.py" line="467"/>
       <location filename="../../bimcommands/BimProfile.py" line="106"/>
       <location filename="../../bimcommands/BimPanel.py" line="204"/>
-      <location filename="../../bimcommands/BimWindow.py" line="451"/>
+      <location filename="../../bimcommands/BimWindow.py" line="450"/>
       <source>Preset</source>
       <translation>프리셋</translation>
     </message>
@@ -4040,9 +4040,9 @@ The default template is located at:
       <location filename="../../ArchCoveringGui.py" line="1077"/>
       <location filename="../../ArchStructure.py" line="476"/>
       <location filename="../../ArchStructure.py" line="1604"/>
-      <location filename="../../ArchCommands.py" line="1361"/>
-      <location filename="../../ArchPrecast.py" line="1719"/>
       <location filename="../../ArchWall.py" line="1857"/>
+      <location filename="../../ArchPrecast.py" line="1719"/>
+      <location filename="../../ArchCommands.py" line="1361"/>
       <location filename="../../ArchPanel.py" line="576"/>
       <location filename="../../bimcommands/BimPanel.py" line="214"/>
       <location filename="../../bimcommands/BimWall.py" line="507"/>
@@ -4059,9 +4059,9 @@ The default template is located at:
       <location filename="../../ArchCoveringGui.py" line="1078"/>
       <location filename="../../ArchStructure.py" line="483"/>
       <location filename="../../ArchStructure.py" line="1605"/>
-      <location filename="../../ArchWindow.py" line="1196"/>
-      <location filename="../../ArchPrecast.py" line="1720"/>
       <location filename="../../ArchWall.py" line="1863"/>
+      <location filename="../../ArchPrecast.py" line="1720"/>
+      <location filename="../../ArchWindow.py" line="1196"/>
       <location filename="../../ArchPanel.py" line="577"/>
       <location filename="../../bimcommands/BimPanel.py" line="221"/>
       <location filename="../../bimcommands/BimWall.py" line="514"/>
@@ -4217,10 +4217,10 @@ The default template is located at:
     <message>
       <location filename="../../ArchStructure.py" line="490"/>
       <location filename="../../ArchStructure.py" line="1606"/>
-      <location filename="../../ArchWindow.py" line="1199"/>
-      <location filename="../../ArchPrecast.py" line="1721"/>
       <location filename="../../ArchWall.py" line="1869"/>
-      <location filename="../../ArchRoof.py" line="1088"/>
+      <location filename="../../ArchPrecast.py" line="1721"/>
+      <location filename="../../ArchRoof.py" line="1086"/>
+      <location filename="../../ArchWindow.py" line="1199"/>
       <location filename="../../bimcommands/BimWall.py" line="521"/>
       <source>Height</source>
       <translation>높이</translation>
@@ -4299,16 +4299,16 @@ The default template is located at:
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="294"/>
-      <location filename="../../bimcommands/BimTruss.py" line="83"/>
       <location filename="../../bimcommands/BimCurtainwall.py" line="94"/>
+      <location filename="../../bimcommands/BimTruss.py" line="83"/>
       <location filename="../../bimcommands/BimWall.py" line="157"/>
       <source>%1 pick first point</source>
       <translation>%1 첫 번째 점 선택</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="296"/>
-      <location filename="../../bimcommands/BimTruss.py" line="85"/>
       <location filename="../../bimcommands/BimCurtainwall.py" line="96"/>
+      <location filename="../../bimcommands/BimTruss.py" line="85"/>
       <location filename="../../bimcommands/BimWall.py" line="159"/>
       <source>%1 pick next point</source>
       <translation>%1 다음 점 선택</translation>
@@ -4417,7 +4417,7 @@ The default template is located at:
       <translation>완료</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="387"/>
+      <location filename="../../Arch.py" line="397"/>
       <source>Equipment</source>
       <translation>설비</translation>
     </message>
@@ -4432,7 +4432,7 @@ The default template is located at:
       <translation>설비 만들기</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="172"/>
+      <location filename="../../Arch.py" line="173"/>
       <source>BuildingPart</source>
       <translation>건물파트</translation>
     </message>
@@ -4459,12 +4459,12 @@ The default template is located at:
       <translation>프로파일 설정</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="769"/>
+      <location filename="../../ArchProfile.py" line="792"/>
       <source>Profile</source>
       <translation>프로파일</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1270"/>
+      <location filename="../../Arch.py" line="1281"/>
       <source>Site</source>
       <translation>사이트</translation>
     </message>
@@ -4474,19 +4474,25 @@ The default template is located at:
       <translation>사이트 만들기</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRoof.py" line="64"/>
-      <location filename="../../bimcommands/BimRoof.py" line="80"/>
+      <location filename="../../bimcommands/BimRoof.py" line="65"/>
+      <location filename="../../bimcommands/BimRoof.py" line="81"/>
       <source>Create Roof</source>
       <translation>지붕 만들기</translation>
     </message>
     <message>
+      <location filename="../../bimcommands/BimRoof.py" line="97"/>
+      <location filename="../../bimcommands/BimSpace.py" line="74"/>
+      <source>%1 select a base object</source>
+      <translation type="unfinished">%1 select a base object</translation>
+    </message>
+    <message>
       <location filename="../../ArchRoof.py" line="829"/>
-      <location filename="../../bimcommands/BimRoof.py" line="91"/>
+      <location filename="../../bimcommands/BimRoof.py" line="92"/>
       <source>Unable to create a roof</source>
       <translation>지붕을 만들 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1079"/>
+      <location filename="../../ArchRoof.py" line="1077"/>
       <source>Parameters of the roof profiles:
 * Angle: slope in degrees relative to the horizontal.
 * Run: horizontal distance between the wall and the ridge.
@@ -4511,28 +4517,28 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
 런 = 0이면 상대 프로파일과 높이가 같도록 런이 계산됩니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1084"/>
+      <location filename="../../ArchRoof.py" line="1082"/>
       <source>Run</source>
       <translation>런</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1087"/>
+      <location filename="../../ArchRoof.py" line="1085"/>
       <source>Overhang</source>
       <translation>처마 돌출</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1072"/>
-      <location filename="../../Arch.py" line="1144"/>
+      <location filename="../../Arch.py" line="1155"/>
+      <location filename="../../ArchRoof.py" line="1070"/>
       <source>Roof</source>
       <translation>지붕</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1082"/>
+      <location filename="../../ArchRoof.py" line="1080"/>
       <source>Id</source>
       <translation>ID</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1085"/>
+      <location filename="../../ArchRoof.py" line="1083"/>
       <source>IdRel</source>
       <translation>IdRel</translation>
     </message>
@@ -4542,8 +4548,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>문</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1202"/>
       <location filename="../../ArchWindowPresets.py" line="566"/>
+      <location filename="../../ArchWindow.py" line="1202"/>
       <source>Opening</source>
       <translation>개구부</translation>
     </message>
@@ -4594,7 +4600,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchReference.py" line="909"/>
-      <location filename="../../Arch.py" line="1075"/>
+      <location filename="../../Arch.py" line="1086"/>
       <source>External Reference</source>
       <translation>외부 참조</translation>
     </message>
@@ -4695,7 +4701,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>외부 참조 만들기</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="462"/>
+      <location filename="../../Arch.py" line="472"/>
       <source>Frame</source>
       <translation>프레임</translation>
     </message>
@@ -4755,7 +4761,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>shapefile 라이브러리는 다음 URL에서 다운로드하여 매크로 폴더에 설치할 수 있습니다:</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2089"/>
+      <location filename="../../Arch.py" line="2100"/>
       <source>Window</source>
       <translation>창</translation>
     </message>
@@ -4792,12 +4798,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>창을 찾을 수 없습니다. 계속할 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="404"/>
+      <location filename="../../bimcommands/BimWindow.py" line="403"/>
       <source>Auto include in host object</source>
       <translation>호스트 객체에 자동 포함</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="413"/>
+      <location filename="../../bimcommands/BimWindow.py" line="412"/>
       <source>Sill height</source>
       <translation>창턱 높이</translation>
     </message>
@@ -4820,7 +4826,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1191"/>
-      <location filename="../../bimcommands/BimWindow.py" line="400"/>
+      <location filename="../../bimcommands/BimWindow.py" line="399"/>
       <source>Window Options</source>
       <translation>창 옵션</translation>
     </message>
@@ -4891,37 +4897,175 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Retrieves the selected edge</translation>
     </message>
     <message>
-      <location filename="../../ArchAxisSystem.py" line="338"/>
+      <location filename="../../ArchSectionPlane.py" line="1806"/>
+      <location filename="../../ArchAxis.py" line="999"/>
+      <location filename="../../ArchComponent.py" line="2463"/>
       <location filename="../../ArchSpace.py" line="954"/>
-      <location filename="../../ArchAxis.py" line="985"/>
+      <location filename="../../ArchAxisSystem.py" line="338"/>
       <location filename="../../ArchWindow.py" line="1706"/>
-      <location filename="../../ArchComponent.py" line="2462"/>
-      <location filename="../../ArchSectionPlane.py" line="1782"/>
       <source>Remove</source>
       <translation>제거</translation>
     </message>
     <message>
-      <location filename="../../ArchAxisSystem.py" line="339"/>
+      <location filename="../../ArchAxis.py" line="1000"/>
+      <location filename="../../ArchComponent.py" line="2464"/>
       <location filename="../../ArchSpace.py" line="949"/>
-      <location filename="../../ArchAxis.py" line="986"/>
+      <location filename="../../ArchAxisSystem.py" line="339"/>
       <location filename="../../ArchWindow.py" line="1707"/>
-      <location filename="../../ArchComponent.py" line="2463"/>
       <source>Add</source>
       <translation>추가</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="765"/>
-      <location filename="../../ArchAxisSystem.py" line="222"/>
-      <location filename="../../ArchReference.py" line="717"/>
-      <location filename="../../ArchAxis.py" line="830"/>
-      <location filename="../../ArchWindow.py" line="1708"/>
-      <location filename="../../ArchGrid.py" line="384"/>
-      <location filename="../../ArchComponent.py" line="1971"/>
-      <location filename="../../ArchSectionPlane.py" line="1549"/>
-      <location filename="../../ArchIFCView.py" line="63"/>
+      <location filename="../../ArchSite.py" line="1053"/>
+      <source>Solar Diagrams</source>
+      <translation>일사 다이어그램</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1057"/>
+      <source>Location</source>
+      <translation>위치</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1072"/>
+      <source>The latitude of this site in decimal degrees.
+Positive values are north of the Equator, negative values are south.</source>
+      <translation>이 사이트의 위도(십진수 도). 양수는 적도 북쪽, 음수는 적도 남쪽입니다.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1073"/>
+      <source>Latitude</source>
+      <translation>위도</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1087"/>
+      <source>The longitude of this site in decimal degrees.
+Positive values are east of the Prime Meridian, negative values are west.</source>
+      <translation>이 사이트의 경도(십진수 도). 양수는 본초자오선 동쪽, 음수는 서쪽입니다.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1088"/>
+      <source>Longitude</source>
+      <translation>경도</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1100"/>
+      <source>The UTC offset of the time zone where this site is located.
+Used when calculating the sun position.</source>
+      <translation>이 사이트가 위치한 시간대의 UTC 오프셋입니다. 태양 위치 계산 시 사용됩니다.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1101"/>
+      <source>Time zone</source>
+      <translation>시간대</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1118"/>
+      <source>The angle between the model's north and geographic north.
+Drives the compass orientation and the declination used to
+align the solar diagram and sun path.</source>
+      <translation>모델의 북쪽과 지리적 북쪽 사이의 각도입니다. 나침반 방향 및 일사 다이어그램과 태양 경로 정렬에 사용되는 편각을 결정합니다.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1119"/>
+      <source>North offset</source>
+      <translation>북쪽 오프셋</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1123"/>
+      <source>Diagrams</source>
+      <translation>다이어그램</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1126"/>
+      <source>Solar Diagram</source>
+      <translation>일사 다이어그램</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1136"/>
+      <source>Shows a sun path arc diagram projected onto the site,
+computed from the site's latitude, longitude and north offset.</source>
+      <translation>사이트의 위도, 경도, 북쪽 오프셋으로 계산된 태양 경로 호 다이어그램을 사이트에 투영하여 표시합니다.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1139"/>
+      <source>Compass</source>
+      <translation>나침반</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1147"/>
+      <source>Shows a compass rose overlay on the site,
+oriented according to the north offset.</source>
+      <translation>북쪽 오프셋에 따라 방향이 지정된 나침반 장미 오버레이를 사이트에 표시합니다.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1153"/>
+      <source>Sun Position</source>
+      <translation>태양 위치</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1164"/>
+      <source>Shows a sphere and ray indicating the sun position
+for the selected date and time.</source>
+      <translation>선택된 날짜와 시간의 태양 위치를 나타내는 구와 광선을 표시합니다.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1184"/>
+      <source>The day and month for which the sun position is shown.
+The year is ignored.</source>
+      <translation>태양의 위치가 표시되는 날짜와 월입니다.
+연도는 무시됩니다.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1185"/>
+      <source>Date</source>
+      <translation>날짜</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1196"/>
+      <source>The time of day for which the sun position is shown,
+in 24-hour local time. Steps in half-hour increments.</source>
+      <translation>태양 위치가 표시될 시간(24시간 현지 시간). 30분 단위로 증감합니다.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1209"/>
+      <source>Hour</source>
+      <translation>시간</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1214"/>
+      <source>Show Hour Labels</source>
+      <translation>시간 레이블 표시</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1220"/>
+      <source>Shows text labels at key hours along the sun path arc</source>
+      <translation>태양 경로 호를 따라 주요 시간에 텍스트 레이블을 표시합니다</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1233"/>
+      <source>Solar calculations require the ladybug or pysolar Python module,
+which was not found.</source>
+      <translation>태양 계산에는 ladybug 또는 pysolar Python 모듈이 필요하며, 찾을 수 없습니다.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1243"/>
+      <source>Solar calculations unavailable.
+The ladybug or pysolar Python module is required.</source>
+      <translation>태양 계산을 사용할 수 없습니다. ladybug 또는 pysolar Python 모듈이 필요합니다.</translation>
+    </message>
+    <message>
       <location filename="../../ArchSite.py" line="1588"/>
+      <location filename="../../ArchSectionPlane.py" line="1593"/>
+      <location filename="../../ArchAxis.py" line="831"/>
+      <location filename="../../ArchGrid.py" line="384"/>
+      <location filename="../../ArchReference.py" line="717"/>
+      <location filename="../../ArchComponent.py" line="1971"/>
       <location filename="../../ArchMaterial.py" line="471"/>
       <location filename="../../ArchMaterial.py" line="798"/>
+      <location filename="../../ArchIFCView.py" line="63"/>
+      <location filename="../../ArchAxisSystem.py" line="222"/>
+      <location filename="../../ArchSchedule.py" line="765"/>
+      <location filename="../../ArchWindow.py" line="1708"/>
       <source>Edit</source>
       <translation>편집</translation>
     </message>
@@ -4937,22 +5081,22 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>철사</translation>
     </message>
     <message>
+      <location filename="../../ArchComponent.py" line="2471"/>
       <location filename="../../ArchWindow.py" line="1714"/>
-      <location filename="../../ArchComponent.py" line="2470"/>
       <source>Components</source>
       <translation>구성요소</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1716"/>
       <location filename="../../ArchMaterial.py" line="895"/>
       <location filename="../../ArchMaterial.py" line="921"/>
+      <location filename="../../ArchWindow.py" line="1716"/>
       <source>Name</source>
       <translation>이름</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1717"/>
-      <location filename="../../ArchComponent.py" line="2538"/>
+      <location filename="../../ArchComponent.py" line="2539"/>
       <location filename="../../ArchCommands.py" line="1730"/>
+      <location filename="../../ArchWindow.py" line="1717"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
       <source>Type</source>
       <translation>유형</translation>
@@ -4960,17 +5104,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchCoveringGui.py" line="802"/>
       <location filename="../../ArchStructure.py" line="1599"/>
-      <location filename="../../ArchPanel.py" line="578"/>
-      <location filename="../../ArchRoof.py" line="1086"/>
       <location filename="../../ArchMaterial.py" line="897"/>
       <location filename="../../ArchMaterial.py" line="923"/>
+      <location filename="../../ArchRoof.py" line="1084"/>
+      <location filename="../../ArchPanel.py" line="578"/>
       <location filename="../../bimcommands/BimPanel.py" line="228"/>
       <source>Thickness</source>
       <translation>두께</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1720"/>
       <location filename="../../ArchPrecast.py" line="1725"/>
+      <location filename="../../ArchWindow.py" line="1720"/>
       <location filename="../../bimcommands/BimWall.py" line="537"/>
       <source>Offset</source>
       <translation>오프셋</translation>
@@ -4996,7 +5140,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>선택된 에지 가져오기</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="141"/>
+      <location filename="../../Arch.py" line="142"/>
       <source>Axis System</source>
       <translation>축 시스템</translation>
     </message>
@@ -5016,10 +5160,10 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>최소 하나의 축을 선택하십시오</translation>
     </message>
     <message>
+      <location filename="../../ArchAxis.py" line="998"/>
+      <location filename="../../ArchComponent.py" line="2470"/>
+      <location filename="../../Arch.py" line="102"/>
       <location filename="../../ArchAxisSystem.py" line="337"/>
-      <location filename="../../ArchAxis.py" line="984"/>
-      <location filename="../../ArchComponent.py" line="2469"/>
-      <location filename="../../Arch.py" line="101"/>
       <source>Axes</source>
       <translation>축</translation>
     </message>
@@ -5031,13 +5175,13 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../importers/importOBJ.py" line="300"/>
       <location filename="../../importers/importOBJ.py" line="338"/>
-      <location filename="../../importers/importWebGL.py" line="371"/>
+      <location filename="../../importers/importWebGL.py" line="372"/>
       <location filename="../../importers/importJSON.py" line="62"/>
       <source>Successfully written</source>
       <translation>성공적으로 기록됨</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1652"/>
+      <location filename="../../Arch.py" line="1663"/>
       <source>Truss</source>
       <translation>트러스</translation>
     </message>
@@ -5077,47 +5221,47 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>도면</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="426"/>
+      <location filename="../../Arch.py" line="436"/>
       <source>Fence</source>
       <translation>울타리</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="592"/>
+      <location filename="../../Arch.py" line="602"/>
       <source>Materials</source>
       <translation>재질</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="686"/>
+      <location filename="../../Arch.py" line="696"/>
       <source>View of {panel.Label}</source>
       <translation>{panel.Label}의 보기</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="915"/>
+      <location filename="../../Arch.py" line="926"/>
       <source>Project</source>
       <translation>프로젝트</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1474"/>
+      <location filename="../../Arch.py" line="1485"/>
       <source>Stairs</source>
       <translation>계단</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1598"/>
+      <location filename="../../Arch.py" line="1609"/>
       <source>Railing</source>
       <translation>난간</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2425"/>
+      <location filename="../../Arch.py" line="2436"/>
       <source>Report</source>
       <translation>보고서</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2503"/>
+      <location filename="../../Arch.py" line="2514"/>
       <source>Structure</source>
       <translation>구조</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2722"/>
+      <location filename="../../Arch.py" line="2733"/>
       <source>Covering</source>
       <translation>마감</translation>
     </message>
@@ -5137,14 +5281,14 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>복합 재질 만들기</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="530"/>
       <location filename="../../ArchMaterial.py" line="896"/>
       <location filename="../../ArchMaterial.py" line="922"/>
+      <location filename="../../Arch.py" line="540"/>
       <source>Material</source>
       <translation>재질</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="565"/>
+      <location filename="../../Arch.py" line="575"/>
       <source>MultiMaterial</source>
       <translation>복합 재질</translation>
     </message>
@@ -5159,12 +5303,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>새 레이어</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="1008"/>
+      <location filename="../../ArchMaterial.py" line="1007"/>
       <source>Total thickness</source>
       <translation>총 두께</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="1015"/>
+      <location filename="../../ArchMaterial.py" line="1014"/>
       <source>depends on the object</source>
       <translation>객체에 따라 다름</translation>
     </message>
@@ -5236,7 +5380,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="488"/>
-      <location filename="../../Arch.py" line="494"/>
+      <location filename="../../Arch.py" line="504"/>
       <source>Grid</source>
       <translation>그리드</translation>
     </message>
@@ -5382,7 +5526,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1723"/>
-      <location filename="../../Arch.py" line="204"/>
+      <location filename="../../Arch.py" line="205"/>
       <source>Level</source>
       <translation>레벨</translation>
     </message>
@@ -5393,12 +5537,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>회전</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="648"/>
+      <location filename="../../Arch.py" line="658"/>
       <source>Panel</source>
       <translation>패널</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="714"/>
+      <location filename="../../Arch.py" line="724"/>
       <source>PanelSheet</source>
       <translation>패널 시트</translation>
     </message>
@@ -5480,13 +5624,13 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>이 객체에 면이 없습니다</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="352"/>
+      <location filename="../../Arch.py" line="362"/>
       <source>Curtain Wall</source>
       <translation>커튼월</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTruss.py" line="61"/>
       <location filename="../../bimcommands/BimCurtainwall.py" line="62"/>
+      <location filename="../../bimcommands/BimTruss.py" line="61"/>
       <source>Select only one base object or none</source>
       <translation>기본 객체를 하나만 선택하거나 선택하지 마십시오</translation>
     </message>
@@ -5498,7 +5642,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchReport.py" line="436"/>
-      <location filename="../../Arch.py" line="2438"/>
+      <location filename="../../Arch.py" line="2449"/>
       <source>New Statement</source>
       <translation>새 명령문</translation>
     </message>
@@ -5510,7 +5654,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchReport.py" line="894"/>
-      <location filename="../../Arch.py" line="749"/>
+      <location filename="../../Arch.py" line="759"/>
       <source>Pipe</source>
       <translation>배관</translation>
     </message>
@@ -6024,7 +6168,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>BIM SQL 치트시트</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="796"/>
+      <location filename="../../Arch.py" line="806"/>
       <source>Connector</source>
       <translation>커넥터</translation>
     </message>
@@ -6116,7 +6260,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>이 커넥터를 회전할 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="580"/>
+      <location filename="../../ArchPipe.py" line="581"/>
       <source>At least 2 pipes must align</source>
       <translation>최소 2개의 배관이 정렬되어야 합니다</translation>
     </message>
@@ -6124,18 +6268,6 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchSchedule.py" line="516"/>
       <source>Unable to retrieve value from object</source>
       <translation>객체에서 값을 가져올 수 없습니다</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSchedule.py" line="987"/>
-      <location filename="../../ArchSchedule.py" line="1011"/>
-      <source>Operation</source>
-      <translation>작업</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSchedule.py" line="936"/>
-      <location filename="../../ArchCommands.py" line="1454"/>
-      <source>Export CSV File</source>
-      <translation>CSV 파일 내보내기</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="771"/>
@@ -6153,13 +6285,25 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>CSV 파일 가져오기</translation>
     </message>
     <message>
+      <location filename="../../ArchSchedule.py" line="987"/>
+      <location filename="../../ArchSchedule.py" line="1011"/>
+      <source>Operation</source>
+      <translation>작업</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCommands.py" line="1454"/>
+      <location filename="../../ArchSchedule.py" line="936"/>
+      <source>Export CSV File</source>
+      <translation>CSV 파일 내보내기</translation>
+    </message>
+    <message>
       <location filename="../../ArchSchedule.py" line="963"/>
       <source>Unable to recognize that file type</source>
       <translation>해당 파일 유형을 인식할 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1360"/>
       <location filename="../../ArchReport.py" line="893"/>
+      <location filename="../../ArchCommands.py" line="1360"/>
       <source>Description</source>
       <translation>설명</translation>
     </message>
@@ -6169,23 +6313,23 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>객체에 설정 가능한 IFC 속성이 없습니다</translation>
     </message>
     <message>
+      <location filename="../../ArchComponent.py" line="2540"/>
+      <location filename="../../ArchCommands.py" line="1731"/>
       <location filename="../../ArchSchedule.py" line="988"/>
       <location filename="../../ArchSchedule.py" line="1013"/>
-      <location filename="../../ArchComponent.py" line="2539"/>
-      <location filename="../../ArchCommands.py" line="1731"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="479"/>
       <source>Value</source>
       <translation>값</translation>
     </message>
     <message>
+      <location filename="../../ArchCommands.py" line="1732"/>
       <location filename="../../ArchSchedule.py" line="989"/>
       <location filename="../../ArchSchedule.py" line="1015"/>
-      <location filename="../../ArchCommands.py" line="1732"/>
       <source>Unit</source>
       <translation>단위</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1195"/>
+      <location filename="../../Arch.py" line="1206"/>
       <source>Schedule</source>
       <translation>수량 집계표</translation>
     </message>
@@ -6226,28 +6370,23 @@ Floor creation aborted.</source>
       <translation>축 만들기</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="991"/>
-      <source>Distances (mm) and angles (deg) between axes</source>
-      <translation>축 간 거리(mm) 및 각도(도)</translation>
-    </message>
-    <message>
-      <location filename="../../ArchAxis.py" line="994"/>
+      <location filename="../../ArchAxis.py" line="1003"/>
       <source>Axis</source>
       <translation>축</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="995"/>
+      <location filename="../../ArchAxis.py" line="1004"/>
       <source>Distance</source>
       <translation>거리</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="996"/>
-      <location filename="../../ArchRoof.py" line="1083"/>
+      <location filename="../../ArchAxis.py" line="1005"/>
+      <location filename="../../ArchRoof.py" line="1081"/>
       <source>Angle</source>
       <translation>각도</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="997"/>
+      <location filename="../../ArchAxis.py" line="1006"/>
       <source>Label</source>
       <translation>레이블</translation>
     </message>
@@ -6295,17 +6434,17 @@ Floor creation aborted.</source>
 </translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2464"/>
+      <location filename="../../ArchComponent.py" line="2465"/>
       <source>Components of This Object</source>
       <translation>이 객체의 구성요소</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2474"/>
+      <location filename="../../ArchComponent.py" line="2475"/>
       <source>Edit IFC Properties</source>
       <translation>IFC 속성 편집</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2475"/>
+      <location filename="../../ArchComponent.py" line="2476"/>
       <source>Edit Standard Code</source>
       <translation>표준 코드 편집</translation>
     </message>
@@ -6315,8 +6454,8 @@ Floor creation aborted.</source>
       <translation>잘못된 기본 유형</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1978"/>
       <location filename="../../ArchSite.py" line="1594"/>
+      <location filename="../../ArchComponent.py" line="1978"/>
       <source>Toggle Subcomponents</source>
       <translation>하위 구성요소 전환</translation>
     </message>
@@ -6326,15 +6465,15 @@ Floor creation aborted.</source>
       <translation>스케치 편집 닫기</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2461"/>
+      <location filename="../../ArchComponent.py" line="2462"/>
       <location filename="../../ArchCommands.py" line="315"/>
       <source>Component</source>
       <translation>구성요소</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2132"/>
-      <location filename="../../bimcommands/BimRoof.py" line="93"/>
-      <location filename="../../bimcommands/BimSpace.py" line="70"/>
+      <location filename="../../bimcommands/BimRoof.py" line="94"/>
+      <location filename="../../bimcommands/BimSpace.py" line="71"/>
       <source>Select a base object</source>
       <translation>기본 객체를 선택하십시오</translation>
     </message>
@@ -6367,85 +6506,85 @@ Floor creation aborted.</source>
 </translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2465"/>
+      <location filename="../../ArchComponent.py" line="2466"/>
       <source>Base component</source>
       <translation>기본 구성요소</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2466"/>
+      <location filename="../../ArchComponent.py" line="2467"/>
       <source>Additions</source>
       <translation>합산</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2467"/>
+      <location filename="../../ArchComponent.py" line="2468"/>
       <source>Subtractions</source>
       <translation>감산</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2468"/>
+      <location filename="../../ArchComponent.py" line="2469"/>
       <source>Objects</source>
       <translation>객체</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2471"/>
+      <location filename="../../ArchComponent.py" line="2472"/>
       <source>Fixtures</source>
       <translation>설비 기구</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2472"/>
+      <location filename="../../ArchComponent.py" line="2473"/>
       <source>Group</source>
       <translation>그룹</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2473"/>
+      <location filename="../../ArchComponent.py" line="2474"/>
       <source>Hosts</source>
       <translation>호스트</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2537"/>
+      <location filename="../../ArchComponent.py" line="2538"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="477"/>
       <source>Property</source>
       <translation>속성</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2545"/>
+      <location filename="../../ArchComponent.py" line="2546"/>
       <source>Add property</source>
       <translation>속성 추가</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2549"/>
+      <location filename="../../ArchComponent.py" line="2550"/>
       <source>Add property set</source>
       <translation>속성 세트 추가</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2550"/>
+      <location filename="../../ArchComponent.py" line="2551"/>
       <source>New…</source>
       <translation type="unfinished">New…</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2816"/>
+      <location filename="../../ArchComponent.py" line="2817"/>
       <source>Options</source>
       <translation>옵션</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2957"/>
+      <location filename="../../ArchComponent.py" line="2958"/>
       <source>Error saving property</source>
       <translation>속성 저장 오류</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2699"/>
+      <location filename="../../ArchComponent.py" line="2700"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="634"/>
       <source>New property</source>
       <translation>새 속성</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2736"/>
+      <location filename="../../ArchComponent.py" line="2737"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="683"/>
       <source>New property set</source>
       <translation>새 속성 세트</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1002"/>
+      <location filename="../../Arch.py" line="1013"/>
       <source>Rebar</source>
       <translation>철근</translation>
     </message>
@@ -6461,7 +6600,7 @@ Floor creation aborted.</source>
       <translation>구조 객체의 기본 면을 선택하십시오</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1229"/>
+      <location filename="../../Arch.py" line="1240"/>
       <source>Section</source>
       <translation>단면</translation>
     </message>
@@ -6471,97 +6610,97 @@ Floor creation aborted.</source>
       <translation>단면 평면 만들기</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1775"/>
+      <location filename="../../ArchSectionPlane.py" line="1799"/>
       <source>Scope</source>
       <translation>범위</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1778"/>
+      <location filename="../../ArchSectionPlane.py" line="1802"/>
       <source>Placement and Visuals</source>
       <translation>배치 및 시각</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1781"/>
+      <location filename="../../ArchSectionPlane.py" line="1805"/>
       <source>Objects seen by this section plane</source>
       <translation>이 단면 평면이 보는 객체</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1787"/>
+      <location filename="../../ArchSectionPlane.py" line="1811"/>
       <source>Removes highlighted objects from the list above</source>
       <translation>위 목록에서 강조 표시된 객체를 제거함</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1788"/>
+      <location filename="../../ArchSectionPlane.py" line="1812"/>
       <source>Add Selected</source>
       <translation>선택된 항목 추가</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1793"/>
+      <location filename="../../ArchSectionPlane.py" line="1817"/>
       <source>Adds selected objects to the scope of this section plane</source>
       <translation>선택된 객체를 이 단면 평면의 범위에 추가함</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1794"/>
+      <location filename="../../ArchSectionPlane.py" line="1818"/>
       <source>Cut View</source>
       <translation>단면 보기</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1801"/>
+      <location filename="../../ArchSectionPlane.py" line="1825"/>
       <source>Creates a live cut in the 3D view, hiding geometry on one side of the plane to see inside your model</source>
       <translation>3D 보기에서 실시간 절단을 만들기하여 평면 한쪽의 지오메트리를 숨기고 모델 내부를 볼 수 있음</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1802"/>
+      <location filename="../../ArchSectionPlane.py" line="1826"/>
       <source>Rotate by 90°</source>
       <translation>90° 회전</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1806"/>
+      <location filename="../../ArchSectionPlane.py" line="1830"/>
       <source>Rotates the plane around its local X-axis</source>
       <translation>평면을 로컬 X축을 중심으로 회전함</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1810"/>
+      <location filename="../../ArchSectionPlane.py" line="1834"/>
       <source>Rotates the plane around its local Y-axis</source>
       <translation>평면을 로컬 Y축을 중심으로 회전함</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1814"/>
+      <location filename="../../ArchSectionPlane.py" line="1838"/>
       <source>Rotates the plane around its local Z-axis</source>
       <translation>평면을 로컬 Z축을 중심으로 회전함</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1815"/>
+      <location filename="../../ArchSectionPlane.py" line="1839"/>
       <source>Resize to Fit</source>
       <translation>크기에 맞게 조정</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1821"/>
+      <location filename="../../ArchSectionPlane.py" line="1845"/>
       <source>Recenter Plane</source>
       <translation>평면 재중앙</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1803"/>
+      <location filename="../../ArchSectionPlane.py" line="1827"/>
       <source>Rotate X</source>
       <translation>X축 회전</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1554"/>
+      <location filename="../../ArchSectionPlane.py" line="1598"/>
       <source>Toggle Cut View</source>
       <translation>단면 보기 전환</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1807"/>
+      <location filename="../../ArchSectionPlane.py" line="1831"/>
       <source>Rotate Y</source>
       <translation>Y축 회전</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1811"/>
+      <location filename="../../ArchSectionPlane.py" line="1835"/>
       <source>Rotate Z</source>
       <translation>Z축 회전</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1820"/>
+      <location filename="../../ArchSectionPlane.py" line="1844"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>위 목록의 객체에 맞게 평면 크기를 조정함</translation>
     </message>
@@ -6573,12 +6712,12 @@ Floor creation aborted.</source>
       <translation>중앙</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1826"/>
+      <location filename="../../ArchSectionPlane.py" line="1850"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>위 목록의 객체를 중심으로 평면을 중앙 배치함</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="231"/>
+      <location filename="../../Arch.py" line="232"/>
       <location filename="../../ArchBuilding.py" line="214"/>
       <source>Building</source>
       <translation>건물</translation>
@@ -6616,7 +6755,7 @@ Building creation aborted.</source>
       <translation>건물 만들기</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1332"/>
+      <location filename="../../Arch.py" line="1343"/>
       <source>Space</source>
       <translation>공간</translation>
     </message>
@@ -6666,12 +6805,12 @@ Building creation aborted.</source>
       <translation>공간 경계</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1720"/>
+      <location filename="../../Arch.py" line="1731"/>
       <source>Wall</source>
       <translation>벽</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1731"/>
+      <location filename="../../Arch.py" line="1742"/>
       <source>Walls can only be based on Part or Mesh objects</source>
       <translation>벽은 파트 또는 메시 객체만 기반으로 할 수 있습니다</translation>
     </message>
@@ -6978,8 +7117,18 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1176"/>
-      <source>Write Camera Position</source>
-      <translation>카메라 위치 기록</translation>
+      <source>Save Camera View</source>
+      <translation type="unfinished">Save Camera View</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="1218"/>
+      <source>Active working plane set to Top</source>
+      <translation type="unfinished">Active working plane set to Top</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="1223"/>
+      <source>Active working plane set to {self.Object.Label}</source>
+      <translation type="unfinished">Active working plane set to {self.Object.Label}</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1182"/>
@@ -6987,8 +7136,8 @@ Building creation aborted.</source>
       <translation>새 그룹</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1186"/>
       <location filename="../../ArchMaterial.py" line="100"/>
+      <location filename="../../ArchBuildingPart.py" line="1186"/>
       <source>Reorder Children Alphabetically</source>
       <translation>하위 항목을 가나다순으로 재정렬</translation>
     </message>
@@ -7036,16 +7185,6 @@ Building creation aborted.</source>
       <location filename="../../ArchTruss.py" line="421"/>
       <source>Rod Type</source>
       <translation>봉 유형</translation>
-    </message>
-    <message>
-      <location filename="../../ArchEquipment.py" line="64"/>
-      <source>Model</source>
-      <translation>모델</translation>
-    </message>
-    <message>
-      <location filename="../../ArchEquipment.py" line="65"/>
-      <source>Equipment Power</source>
-      <translation>설비 전력</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="505"/>
@@ -7097,6 +7236,16 @@ Building creation aborted.</source>
       <translation>쿼리가 유효하지만 0개의 객체를 찾았습니다.</translation>
     </message>
     <message>
+      <location filename="../../ArchEquipment.py" line="64"/>
+      <source>Model</source>
+      <translation>모델</translation>
+    </message>
+    <message>
+      <location filename="../../ArchEquipment.py" line="65"/>
+      <source>Equipment Power</source>
+      <translation>설비 전력</translation>
+    </message>
+    <message>
       <location filename="../../ArchCurtainWall.py" line="732"/>
       <source>Vertical Sections</source>
       <translation>수직 구간</translation>
@@ -7137,142 +7286,9 @@ Building creation aborted.</source>
       <translation>면 정리</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="1053"/>
-      <source>Solar Diagrams</source>
-      <translation>일사 다이어그램</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1057"/>
-      <source>Location</source>
-      <translation>위치</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1072"/>
-      <source>The latitude of this site in decimal degrees.
-Positive values are north of the Equator, negative values are south.</source>
-      <translation>이 사이트의 위도(십진수 도). 양수는 적도 북쪽, 음수는 적도 남쪽입니다.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1073"/>
-      <source>Latitude</source>
-      <translation>위도</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1087"/>
-      <source>The longitude of this site in decimal degrees.
-Positive values are east of the Prime Meridian, negative values are west.</source>
-      <translation>이 사이트의 경도(십진수 도). 양수는 본초자오선 동쪽, 음수는 서쪽입니다.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1088"/>
-      <source>Longitude</source>
-      <translation>경도</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1100"/>
-      <source>The UTC offset of the time zone where this site is located.
-Used when calculating the sun position.</source>
-      <translation>이 사이트가 위치한 시간대의 UTC 오프셋입니다. 태양 위치 계산 시 사용됩니다.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1101"/>
-      <source>Time zone</source>
-      <translation>시간대</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1118"/>
-      <source>The angle between the model's north and geographic north.
-Drives the compass orientation and the declination used to
-align the solar diagram and sun path.</source>
-      <translation>모델의 북쪽과 지리적 북쪽 사이의 각도입니다. 나침반 방향 및 일사 다이어그램과 태양 경로 정렬에 사용되는 편각을 결정합니다.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1119"/>
-      <source>North offset</source>
-      <translation>북쪽 오프셋</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1123"/>
-      <source>Diagrams</source>
-      <translation>다이어그램</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1126"/>
-      <source>Solar Diagram</source>
-      <translation>일사 다이어그램</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1136"/>
-      <source>Shows a sun path arc diagram projected onto the site,
-computed from the site's latitude, longitude and north offset.</source>
-      <translation>사이트의 위도, 경도, 북쪽 오프셋으로 계산된 태양 경로 호 다이어그램을 사이트에 투영하여 표시합니다.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1139"/>
-      <source>Compass</source>
-      <translation>나침반</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1147"/>
-      <source>Shows a compass rose overlay on the site,
-oriented according to the north offset.</source>
-      <translation>북쪽 오프셋에 따라 방향이 지정된 나침반 장미 오버레이를 사이트에 표시합니다.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1153"/>
-      <source>Sun Position</source>
-      <translation>태양 위치</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1164"/>
-      <source>Shows a sphere and ray indicating the sun position
-for the selected date and time.</source>
-      <translation>선택된 날짜와 시간의 태양 위치를 나타내는 구와 광선을 표시합니다.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1184"/>
-      <source>The day and month for which the sun position is shown.
-The year is ignored.</source>
-      <translation>태양의 위치가 표시되는 날짜와 월입니다.
-연도는 무시됩니다.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1185"/>
-      <source>Date</source>
-      <translation>날짜</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1196"/>
-      <source>The time of day for which the sun position is shown,
-in 24-hour local time. Steps in half-hour increments.</source>
-      <translation>태양 위치가 표시될 시간(24시간 현지 시간). 30분 단위로 증감합니다.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1209"/>
-      <source>Hour</source>
-      <translation>시간</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1214"/>
-      <source>Show Hour Labels</source>
-      <translation>시간 레이블 표시</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1220"/>
-      <source>Shows text labels at key hours along the sun path arc</source>
-      <translation>태양 경로 호를 따라 주요 시간에 텍스트 레이블을 표시합니다</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1233"/>
-      <source>Solar calculations require the ladybug or pysolar Python module,
-which was not found.</source>
-      <translation>태양 계산에는 ladybug 또는 pysolar Python 모듈이 필요하며, 찾을 수 없습니다.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1243"/>
-      <source>Solar calculations unavailable.
-The ladybug or pysolar Python module is required.</source>
-      <translation>태양 계산을 사용할 수 없습니다. ladybug 또는 pysolar Python 모듈이 필요합니다.</translation>
+      <location filename="../../bimcommands/BimSketch.py" line="57"/>
+      <source>Create Sketch</source>
+      <translation type="unfinished">Create Sketch</translation>
     </message>
   </context>
   <context>
@@ -7402,8 +7418,8 @@ The ladybug or pysolar Python module is required.</source>
       <translation>기본 ArchSketch의 선택된 에지(또는 에지 그룹)로 이 BIM 구조의 형상을 생성합니다(기본적으로 기본 형상의 모든 에지를 사용하는 대신). 입력은 에지 또는 그룹의 인덱스 번호입니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="903"/>
       <location filename="../../ArchStairs.py" line="547"/>
+      <location filename="../../ArchStructure.py" line="903"/>
       <source>Select User Defined PropertySet to use in creating variant shape, with same ArchSketch </source>
       <translation>동일한 ArchSketch로 변형 형상을 생성하는 데 사용할 사용자 정의 속성 세트을 선택하십시오</translation>
     </message>
@@ -7474,8 +7490,8 @@ The ladybug or pysolar Python module is required.</source>
       <translation>이 설비에 필요한 전력(와트)</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="234"/>
-      <location filename="../../Arch.py" line="307"/>
+      <location filename="../../Arch.py" line="235"/>
+      <location filename="../../Arch.py" line="317"/>
       <location filename="../../ArchBuilding.py" line="308"/>
       <source>The type of this building</source>
       <translation>이 건물의 유형</translation>
@@ -7515,7 +7531,7 @@ The ladybug or pysolar Python module is required.</source>
       <translation>이 구성요소의 선택적 태그</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1005"/>
+      <location filename="../../ArchSectionPlane.py" line="1049"/>
       <location filename="../../ArchBuildingPart.py" line="282"/>
       <source>The shape of this object</source>
       <translation>이 객체의 형상</translation>
@@ -7536,7 +7552,7 @@ The ladybug or pysolar Python module is required.</source>
       <translation>다른 파일에서 이 객체를 참조할 때 사용할 재질 이름과 솔리드 인덱스를 연결하는 MaterialName:SolidIndexesList 맵</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1177"/>
+      <location filename="../../ArchSectionPlane.py" line="1221"/>
       <location filename="../../ArchBuildingPart.py" line="547"/>
       <source>The line width of this object</source>
       <translation>이 대상체의 선 두께</translation>
@@ -7688,83 +7704,83 @@ The ladybug or pysolar Python module is required.</source>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="190"/>
-      <location filename="../../ArchProfile.py" line="252"/>
-      <location filename="../../ArchProfile.py" line="286"/>
-      <location filename="../../ArchProfile.py" line="346"/>
-      <location filename="../../ArchProfile.py" line="406"/>
-      <location filename="../../ArchProfile.py" line="453"/>
+      <location filename="../../ArchProfile.py" line="262"/>
+      <location filename="../../ArchProfile.py" line="296"/>
+      <location filename="../../ArchProfile.py" line="358"/>
+      <location filename="../../ArchProfile.py" line="418"/>
+      <location filename="../../ArchProfile.py" line="465"/>
       <source>Width of the beam</source>
       <translation>보의 너비</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="197"/>
-      <location filename="../../ArchProfile.py" line="259"/>
-      <location filename="../../ArchProfile.py" line="293"/>
-      <location filename="../../ArchProfile.py" line="353"/>
-      <location filename="../../ArchProfile.py" line="413"/>
-      <location filename="../../ArchProfile.py" line="460"/>
+      <location filename="../../ArchProfile.py" line="269"/>
+      <location filename="../../ArchProfile.py" line="303"/>
+      <location filename="../../ArchProfile.py" line="365"/>
+      <location filename="../../ArchProfile.py" line="425"/>
+      <location filename="../../ArchProfile.py" line="472"/>
       <source>Height of the beam</source>
       <translation>보의 높이</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="204"/>
-      <location filename="../../ArchProfile.py" line="467"/>
+      <location filename="../../ArchProfile.py" line="479"/>
       <source>Thickness of the web</source>
       <translation>웹의 두께</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="211"/>
-      <location filename="../../ArchProfile.py" line="474"/>
+      <location filename="../../ArchProfile.py" line="486"/>
       <source>Thickness of the flanges</source>
       <translation>플랜지의 두께</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="300"/>
+      <location filename="../../ArchProfile.py" line="310"/>
       <source>Thickness of the sides</source>
       <translation>측면의 두께</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="360"/>
+      <location filename="../../ArchProfile.py" line="372"/>
       <source>Thickness of the webs</source>
       <translation>웹의 두께</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="367"/>
+      <location filename="../../ArchProfile.py" line="379"/>
       <source>Thickness of the flange</source>
       <translation>플랜지의 두께</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="420"/>
+      <location filename="../../ArchProfile.py" line="432"/>
       <source>Thickness of the legs</source>
       <translation>레그의 두께</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="507"/>
+      <location filename="../../ArchProfile.py" line="525"/>
       <source>Overall size</source>
       <translation>전체 크기</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="528"/>
+      <location filename="../../ArchProfile.py" line="546"/>
       <source>T-nut slot width</source>
       <translation>T-nut 슬롯 너비</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="535"/>
+      <location filename="../../ArchProfile.py" line="553"/>
       <source>T-nut slot depth</source>
       <translation>T-nut 슬롯 깊이</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="549"/>
+      <location filename="../../ArchProfile.py" line="567"/>
       <source>Internal hole diameter</source>
       <translation>내부 구멍 직경</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="556"/>
+      <location filename="../../ArchProfile.py" line="574"/>
       <source>Corner fillet radius</source>
       <translation>모서리 필렛 반경</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="514"/>
+      <location filename="../../ArchProfile.py" line="532"/>
       <source>Slot size</source>
       <translation>슬롯 크기</translation>
     </message>
@@ -7774,12 +7790,12 @@ The ladybug or pysolar Python module is required.</source>
       <translation>외경</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="521"/>
+      <location filename="../../ArchProfile.py" line="539"/>
       <source>Thickness of the wall</source>
       <translation>벽의 두께</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="542"/>
+      <location filename="../../ArchProfile.py" line="560"/>
       <source>Internal core size</source>
       <translation>내부 코어 크기</translation>
     </message>
@@ -7835,20 +7851,20 @@ The ladybug or pysolar Python module is required.</source>
       <translation>지도 웹사이트에서 이 사이트를 보여주는 URL</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="232"/>
       <location filename="../../ArchSite.py" line="656"/>
+      <location filename="../../ArchComponent.py" line="232"/>
       <source>Other shapes that are appended to this object</source>
       <translation>이 객체에 추가된 다른 형상</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="242"/>
       <location filename="../../ArchSite.py" line="666"/>
+      <location filename="../../ArchComponent.py" line="242"/>
       <source>Other shapes that are subtracted from this object</source>
       <translation>이 객체에서 빼기된 다른 형상</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="337"/>
       <location filename="../../ArchSite.py" line="676"/>
+      <location filename="../../ArchComponent.py" line="337"/>
       <source>The area of the projection of this object onto the XY plane</source>
       <translation>이 객체를 XY 평면에 투영한 면적</translation>
     </message>
@@ -7883,8 +7899,8 @@ The ladybug or pysolar Python module is required.</source>
       <translation>모델 (0,0,0) 원점과 지리 좌표로 표시된 점 사이의 선택적 오프셋</translation>
     </message>
     <message>
-      <location filename="../../ArchIFC.py" line="87"/>
       <location filename="../../ArchSite.py" line="744"/>
+      <location filename="../../ArchIFC.py" line="87"/>
       <source>The type of this object</source>
       <translation>이 객체의 유형</translation>
     </message>
@@ -7979,17 +7995,17 @@ The ladybug or pysolar Python module is required.</source>
       <translation>태양 경로의 주요 시간에 텍스트 레이블 표시</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="2357"/>
+      <location filename="../../ArchSite.py" line="2359"/>
       <source>The altitude of the sun above the horizon</source>
       <translation>지평선 위 태양의 고도</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="2367"/>
+      <location filename="../../ArchSite.py" line="2369"/>
       <source>The compass direction of the sun (0° is North)</source>
       <translation>태양의 나침반 방향(0°는 북쪽)</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="2375"/>
+      <location filename="../../ArchSite.py" line="2377"/>
       <source>The date and time for this sun position</source>
       <translation>이 태양 위치의 날짜와 시간</translation>
     </message>
@@ -9090,93 +9106,93 @@ The ladybug or pysolar Python module is required.</source>
       <translation>True이면 각 개별 객체의 추가 행이 결과에 추가됨</translation>
     </message>
     <message>
+      <location filename="../../ArchSectionPlane.py" line="1041"/>
       <location filename="../../ArchFloor.py" line="253"/>
-      <location filename="../../ArchSectionPlane.py" line="997"/>
       <source>The placement of this object</source>
       <translation>이 대상체의 배치</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="256"/>
+      <location filename="../../ArchAxis.py" line="257"/>
       <source>The intervals between axes</source>
       <translation>축 사이의 간격</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="264"/>
+      <location filename="../../ArchAxis.py" line="265"/>
       <source>The angles of each axis</source>
       <translation>각 축의 각도</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="272"/>
+      <location filename="../../ArchAxis.py" line="273"/>
       <source>The label of each axis</source>
       <translation>각 축의 이름표</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="280"/>
+      <location filename="../../ArchAxis.py" line="281"/>
       <source>An optional custom bubble number</source>
       <translation>선택적 사용자 정의 버블 번호</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="288"/>
+      <location filename="../../ArchAxis.py" line="289"/>
       <source>The length of the axes</source>
       <translation>축의 길이</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="304"/>
+      <location filename="../../ArchAxis.py" line="305"/>
       <source>If not zero, the axes are not represented as one full line but as two lines of the given length</source>
       <translation>0이 아니면 축이 하나의 전체 선이 아닌 주어진 길이의 두 선으로 표시됨</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="400"/>
+      <location filename="../../ArchAxis.py" line="401"/>
       <source>The size of the axis bubbles</source>
       <translation>축 버블의 크기</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="409"/>
+      <location filename="../../ArchAxis.py" line="410"/>
       <source>The numbering style</source>
       <translation>번호 매기기 스타일</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="427"/>
+      <location filename="../../ArchAxis.py" line="428"/>
       <source>The type of line to draw this axis</source>
       <translation>이 축을 그리는 선의 유형</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="439"/>
+      <location filename="../../ArchAxis.py" line="440"/>
       <source>Where to add bubbles to this axis: Start, end, both or none</source>
       <translation>이 축에 버블을 추가할 위치: 시작, 끝, 둘 다 또는 없음</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="457"/>
+      <location filename="../../ArchAxis.py" line="458"/>
       <source>The line width to draw this axis</source>
       <translation>이 축을 그리는 선 두께</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="466"/>
+      <location filename="../../ArchAxis.py" line="467"/>
       <source>The color of this axis</source>
       <translation>이 축의 색상</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="475"/>
+      <location filename="../../ArchAxis.py" line="476"/>
       <source>The number of the first axis</source>
       <translation>첫 번째 축의 번호</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="484"/>
+      <location filename="../../ArchAxis.py" line="485"/>
       <source>The font to use for texts</source>
       <translation>텍스트에 사용할 글꼴</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="493"/>
+      <location filename="../../ArchAxis.py" line="494"/>
       <source>The font size</source>
       <translation>글꼴 크기</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="502"/>
+      <location filename="../../ArchAxis.py" line="503"/>
       <source>If true, show the labels</source>
       <translation>True이면 레이블을 표시함</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="509"/>
+      <location filename="../../ArchAxis.py" line="510"/>
       <source>A transformation to apply to each label</source>
       <translation>각 이름표에 적용할 변환</translation>
     </message>
@@ -9312,80 +9328,80 @@ The ladybug or pysolar Python module is required.</source>
       <translation>철근의 형상</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1016"/>
+      <location filename="../../ArchSectionPlane.py" line="1060"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>이 단면 평면이 고려해야 하는 객체. 비어 있으면 전체 문서를 의미합니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1027"/>
+      <location filename="../../ArchSectionPlane.py" line="1071"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>False이면 솔리드가 아닌 것도 절단되며 잘못된 결과가 나올 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1039"/>
+      <location filename="../../ArchSectionPlane.py" line="1083"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation>True이면 결과 보기가 단면 평면 영역으로 클리핑됩니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1050"/>
+      <location filename="../../ArchSectionPlane.py" line="1094"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation>True이면 객체 재질의 색상이 절단 영역을 채우는 데 사용됩니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1062"/>
+      <location filename="../../ArchSectionPlane.py" line="1106"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
       <translation>이 값보다 먼 지오메트리는 잘립니다. 제한 없이 유지하려면 0으로 설정하십시오.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1135"/>
+      <location filename="../../ArchSectionPlane.py" line="1179"/>
       <source>The display length of this section plane</source>
       <translation>이 단면 평면의 표시 길이</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1147"/>
+      <location filename="../../ArchSectionPlane.py" line="1191"/>
       <source>The display height of this section plane</source>
       <translation>이 단면 평면의 표시 높이</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1159"/>
+      <location filename="../../ArchSectionPlane.py" line="1203"/>
       <source>The size of the arrows of this section plane</source>
       <translation>이 단면 평면의 화살표 크기</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1168"/>
+      <location filename="../../ArchSectionPlane.py" line="1212"/>
       <source>The transparency of this object</source>
       <translation>이 대상체의 투명도</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1186"/>
-      <location filename="../../ArchSectionPlane.py" line="1203"/>
+      <location filename="../../ArchSectionPlane.py" line="1230"/>
+      <location filename="../../ArchSectionPlane.py" line="1247"/>
       <source>Show the cut in the 3D view</source>
       <translation>3D 보기에서 절단 표시</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1194"/>
+      <location filename="../../ArchSectionPlane.py" line="1238"/>
       <source>The color of this object</source>
       <translation>이 대상체의 색상</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1214"/>
+      <location filename="../../ArchSectionPlane.py" line="1258"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>절단면과 실제 보기 절단 사이의 거리(매우 작은 값이지만 0은 아닌 값으로 유지)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1223"/>
+      <location filename="../../ArchSectionPlane.py" line="1267"/>
       <source>Show the label in the 3D view</source>
       <translation>3D 보기에서 레이블 표시</translation>
     </message>
     <message>
+      <location filename="../../ArchSectionPlane.py" line="1275"/>
       <location filename="../../ArchSpace.py" line="579"/>
-      <location filename="../../ArchSectionPlane.py" line="1231"/>
       <source>The name of the font</source>
       <translation>글꼴 이름</translation>
     </message>
     <message>
+      <location filename="../../ArchSectionPlane.py" line="1284"/>
       <location filename="../../ArchSpace.py" line="597"/>
-      <location filename="../../ArchSectionPlane.py" line="1240"/>
       <source>The size of the text font</source>
       <translation>텍스트 글꼴 크기</translation>
     </message>
@@ -9611,11 +9627,6 @@ The ladybug or pysolar Python module is required.</source>
       <translation>벽 속성 대신 기본 ArchSketch(사용된 경우) 데이터(예: 너비, 정렬, 오프셋) 사용</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="62"/>
-      <source>Rotation step (degrees) applied per R / Shift+R keypress during interactive grid placement.</source>
-      <translation>인터랙티브 그리드 배치 중 R / Shift+R 키를 누를 때마다 적용되는 회전 단계(도).</translation>
-    </message>
-    <message>
       <location filename="../../ArchCovering.py" line="104"/>
       <source>The object or face this covering is applied to</source>
       <translation>이 마감이 적용된 객체 또는 면</translation>
@@ -9764,6 +9775,11 @@ The ladybug or pysolar Python module is required.</source>
       <translation>이 마감의 특정 IFC 하위 유형. IfcCovering.PredefinedType으로 내보내집니다.</translation>
     </message>
     <message>
+      <location filename="../../ArchCoveringGui.py" line="62"/>
+      <source>Rotation step (degrees) applied per R / Shift+R keypress during interactive grid placement.</source>
+      <translation>인터랙티브 그리드 배치 중 R / Shift+R 키를 누를 때마다 적용되는 회전 단계(도).</translation>
+    </message>
+    <message>
       <location filename="../../ArchReport.py" line="483"/>
       <source>The list of SQL statements to execute (managed by the Task Panel)</source>
       <translation>실행할 SQL 문 목록(작업 패널에서 관리)</translation>
@@ -9813,7 +9829,7 @@ The ladybug or pysolar Python module is required.</source>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1250"/>
+      <location filename="../../ArchBuildingPart.py" line="1233"/>
       <source>Writing camera position</source>
       <translation>카메라 위치 기록 중</translation>
     </message>
@@ -9821,102 +9837,102 @@ The ladybug or pysolar Python module is required.</source>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../InitGui.py" line="530"/>
+      <location filename="../../InitGui.py" line="529"/>
       <source>&amp;2D Drafting</source>
       <translation>2D 드래프팅(&amp;2)</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="531"/>
+      <location filename="../../InitGui.py" line="530"/>
       <source>&amp;3D/BIM</source>
       <translation>3D/BIM(&amp;3)</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="509"/>
+      <location filename="../../InitGui.py" line="508"/>
       <source>Drafting Tools</source>
       <translation>드래프팅 도구</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="510"/>
+      <location filename="../../InitGui.py" line="509"/>
       <source>Draft Snap</source>
       <translation>제도의 포착</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="511"/>
+      <location filename="../../InitGui.py" line="510"/>
       <source>3D/BIM Tools</source>
       <translation>3D/BIM 도구</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="512"/>
+      <location filename="../../InitGui.py" line="511"/>
       <source>Annotation Tools</source>
       <translation>주석 도구</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="513"/>
+      <location filename="../../InitGui.py" line="512"/>
       <source>2D Tools</source>
       <translation>2D 도구</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="514"/>
+      <location filename="../../InitGui.py" line="513"/>
       <source>Manage Tools</source>
       <translation>관리 도구</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="515"/>
+      <location filename="../../InitGui.py" line="514"/>
       <source>General Tools</source>
       <translation>일반 도구</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="516"/>
+      <location filename="../../InitGui.py" line="515"/>
       <source>Object Tools</source>
       <translation>객체 도구</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="517"/>
+      <location filename="../../InitGui.py" line="516"/>
       <source>3D Tools</source>
       <translation>3D 도구</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="532"/>
+      <location filename="../../InitGui.py" line="531"/>
       <source>&amp;Reinforcement Tools</source>
       <translation>보강 도구(&amp;R)</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="535"/>
+      <location filename="../../InitGui.py" line="534"/>
       <source>M&amp;odify</source>
       <translation>수정(&amp;O)</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="537"/>
+      <location filename="../../InitGui.py" line="536"/>
       <source>Ma&amp;nage</source>
       <translation>관리(&amp;N)</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="539"/>
+      <location filename="../../InitGui.py" line="538"/>
       <source>Fas&amp;teners</source>
       <translation>패스너(&amp;T)</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="533"/>
+      <location filename="../../InitGui.py" line="532"/>
       <source>&amp;Annotation</source>
       <translation>주석(&amp;A)</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="534"/>
+      <location filename="../../InitGui.py" line="533"/>
       <source>&amp;Snapping</source>
       <translation>스냅(&amp;S)</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="538"/>
+      <location filename="../../InitGui.py" line="537"/>
       <source>&amp;Flamingo</source>
       <translation>Flamingo(&amp;F)</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="540"/>
+      <location filename="../../InitGui.py" line="539"/>
       <source>&amp;Utils</source>
       <translation>유틸리티(&amp;U)</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="545"/>
+      <location filename="../../InitGui.py" line="544"/>
       <source>Nudge</source>
       <translation>미세 조정</translation>
     </message>
@@ -10562,17 +10578,17 @@ The ladybug or pysolar Python module is required.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../InitGui.py" line="597"/>
+      <location filename="../../InitGui.py" line="596"/>
       <source>BIM</source>
       <translation>BIM</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="598"/>
+      <location filename="../../InitGui.py" line="597"/>
       <source>Draft</source>
       <translation>드래프트</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="844"/>
+      <location filename="../../InitGui.py" line="843"/>
       <source>Import-Export</source>
       <translation>가져오기-내보내기</translation>
     </message>
@@ -10623,41 +10639,25 @@ Alt+PgUp으로 돌출부 확장, Alt+PgDown으로 돌출부 축소, Alt+/로 자
       <translation>BIM</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="807"/>
+      <location filename="../../InitGui.py" line="806"/>
       <source>Snapping</source>
       <translation>스냅</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="81"/>
-      <location filename="../../bimcommands/BimImagePlane.py" line="81"/>
-      <source>%1 pick first point</source>
-      <translation>%1 첫 번째 점 선택</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimBox.py" line="83"/>
-      <source>%1 pick next point</source>
-      <translation>%1 다음 점 선택</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimBox.py" line="171"/>
-      <source>Box Dimensions</source>
-      <translation>박스 치수</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimBox.py" line="174"/>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="48"/>
+      <location filename="../../bimcommands/BimBox.py" line="174"/>
       <source>Length</source>
       <translation>길이</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="183"/>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="49"/>
+      <location filename="../../bimcommands/BimBox.py" line="183"/>
       <source>Width</source>
       <translation>너비</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="192"/>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="50"/>
+      <location filename="../../bimcommands/BimBox.py" line="192"/>
       <source>Height</source>
       <translation>높이</translation>
     </message>
@@ -10749,15 +10749,15 @@ Alt+PgUp으로 돌출부 확장, Alt+PgDown으로 돌출부 축소, Alt+/로 자
       <translation>새 다중 재질 만들기</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="206"/>
       <location filename="../../bimcommands/BimIfcElements.py" line="139"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="206"/>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="247"/>
       <source>Label</source>
       <translation>레이블</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="207"/>
       <location filename="../../bimcommands/BimIfcElements.py" line="140"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="207"/>
       <source>IFC type</source>
       <translation>IFC 유형</translation>
     </message>
@@ -10767,8 +10767,8 @@ Alt+PgUp으로 돌출부 확장, Alt+PgDown으로 돌출부 축소, Alt+/로 자
       <translation>재질</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="60"/>
       <location filename="../../nativeifc/__init__.py" line="42"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="60"/>
       <source>IfcOpenShell was not found on this system. IFC support is disabled</source>
       <translation>이 시스템에서 IfcOpenShell을 찾을 수 없습니다. IFC 지원이 비활성화됩니다</translation>
     </message>
@@ -10953,6 +10953,12 @@ Alt+PgUp으로 돌출부 확장, Alt+PgDown으로 돌출부 축소, Alt+/로 자
       <location filename="../../bimcommands/BimImagePlane.py" line="56"/>
       <source>Image file (*.png *.jpg *.bmp)</source>
       <translation>이미지 파일 (*.png *.jpg *.bmp)</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimImagePlane.py" line="81"/>
+      <location filename="../../bimcommands/BimBox.py" line="81"/>
+      <source>%1 pick first point</source>
+      <translation>%1 첫 번째 점 선택</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimImagePlane.py" line="83"/>
@@ -11170,7 +11176,7 @@ Alt+PgUp으로 돌출부 확장, Alt+PgDown으로 돌출부 축소, Alt+/로 자
       <translation>미사용 항목 삭제</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="95"/>
+      <location filename="../../bimcommands/BimViews.py" line="108"/>
       <location filename="../../bimcommands/BimMaterial.py" line="175"/>
       <source>Rename</source>
       <translation>이름 바꾸기</translation>
@@ -11186,7 +11192,7 @@ Alt+PgUp으로 돌출부 확장, Alt+PgDown으로 돌출부 축소, Alt+/로 자
       <translation>다음으로 병합…</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="91"/>
+      <location filename="../../bimcommands/BimViews.py" line="103"/>
       <location filename="../../bimcommands/BimMaterial.py" line="181"/>
       <source>Delete</source>
       <translation>삭제</translation>
@@ -11474,8 +11480,8 @@ Alt+PgUp으로 돌출부 확장, Alt+PgDown으로 돌출부 축소, Alt+/로 자
       <translation>템플릿이 현재 문서에 성공적으로 불러오기되었습니다</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="436"/>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="156"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="436"/>
       <source>New Group</source>
       <translation>새 모둠</translation>
     </message>
@@ -11525,7 +11531,12 @@ Alt+PgUp으로 돌출부 확장, Alt+PgDown으로 돌출부 축소, Alt+/로 자
       <translation>평면 객체를 선택하십시오</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="75"/>
+      <location filename="../../bimcommands/BimSlab.py" line="65"/>
+      <source>%1 select a planar object</source>
+      <translation type="unfinished">%1 select a planar object</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimSlab.py" line="81"/>
       <source>Slab</source>
       <translation>슬래브</translation>
     </message>
@@ -11545,17 +11556,17 @@ Alt+PgUp으로 돌출부 확장, Alt+PgDown으로 돌출부 축소, Alt+/로 자
       <translation>휴지통</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTutorial.py" line="129"/>
+      <location filename="../../bimcommands/BimTutorial.py" line="130"/>
       <source>Unable to access the tutorial. Verify the internet connection (This is needed only once).</source>
       <translation>튜토리얼에 액세스할 수 없습니다. 인터넷 연결을 확인하십시오(한 번만 필요합니다).</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTutorial.py" line="157"/>
+      <location filename="../../bimcommands/BimTutorial.py" line="160"/>
       <source>Downloading images…</source>
       <translation>이미지 다운로드 중…</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTutorial.py" line="241"/>
+      <location filename="../../bimcommands/BimTutorial.py" line="244"/>
       <source>BIM Tutorial - Step</source>
       <translation>BIM 튜토리얼 - 단계</translation>
     </message>
@@ -11575,89 +11586,106 @@ Alt+PgUp으로 돌출부 확장, Alt+PgDown으로 돌출부 축소, Alt+/로 자
       <translation>정확히 하나의 객체를 선택하십시오</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="93"/>
+      <location filename="../../bimcommands/BimViews.py" line="105"/>
       <source>Isolate</source>
       <translation>격리</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="124"/>
+      <location filename="../../bimcommands/BimViews.py" line="137"/>
       <source>Creates a new working plane proxy</source>
       <translation>새 작업 평면 프록시를 만듭니다</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="125"/>
+      <location filename="../../bimcommands/BimViews.py" line="138"/>
       <source>Deletes the selected item</source>
       <translation>선택된 항목을 삭제합니다</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="88"/>
+      <location filename="../../bimcommands/BimViews.py" line="100"/>
+      <location filename="../../bimcommands/BimViews.py" line="701"/>
       <source>Active</source>
       <translation>활성</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="89"/>
-      <source>New Level Above</source>
-      <translation type="unfinished">New Level Above</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimViews.py" line="90"/>
+      <location filename="../../bimcommands/BimViews.py" line="102"/>
       <source>New Working Plane Proxy</source>
       <translation>새 작업 평면 프록시</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="92"/>
+      <location filename="../../bimcommands/BimViews.py" line="104"/>
       <source>Toggle Visibility</source>
       <translation>표시여부 전환</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="94"/>
-      <source>Save View Position</source>
-      <translation>보기 위치 저장</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimViews.py" line="121"/>
-      <source>Creates a new level above the highest existing one</source>
-      <translation type="unfinished">Creates a new level above the highest existing one</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimViews.py" line="128"/>
+      <location filename="../../bimcommands/BimViews.py" line="141"/>
       <source>Toggles the visibility of selected items</source>
       <translation>선택된 항목의 표시여부를 전환합니다</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="131"/>
+      <location filename="../../bimcommands/BimViews.py" line="144"/>
       <source>Turns all items off except the selected ones</source>
       <translation>선택된 항목을 제외한 모든 항목을 끕니다</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="134"/>
-      <source>Saves the current camera position to the selected items</source>
-      <translation>현재 카메라 위치를 선택된 항목에 저장합니다</translation>
+      <location filename="../../bimcommands/BimViews.py" line="101"/>
+      <source>New Level Above</source>
+      <translation type="unfinished">New Level Above</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="135"/>
+      <location filename="../../bimcommands/BimViews.py" line="106"/>
+      <source>Save Camera View</source>
+      <translation type="unfinished">Save Camera View</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="107"/>
+      <source>Save Visibility of Objects</source>
+      <translation type="unfinished">Save Visibility of Objects</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="134"/>
+      <source>Creates a new level above the highest existing one</source>
+      <translation type="unfinished">Creates a new level above the highest existing one</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="147"/>
+      <source>Saves the current camera view to the selected items</source>
+      <translation type="unfinished">Saves the current camera view to the selected items</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="148"/>
       <source>Renames the selected item</source>
       <translation>선택된 항목의 이름을 바꿉니다</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="136"/>
+      <location filename="../../bimcommands/BimViews.py" line="149"/>
+      <location filename="../../bimcommands/BimViews.py" line="704"/>
       <source>Activates the selected item</source>
       <translation>선택된 항목을 활성화합니다</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="162"/>
+      <location filename="../../bimcommands/BimViews.py" line="176"/>
       <source>BIM Views Manager</source>
       <translation>BIM 보기 관리자</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="310"/>
+      <location filename="../../bimcommands/BimViews.py" line="327"/>
       <source>2D Views</source>
       <translation>2D 보기</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="323"/>
+      <location filename="../../bimcommands/BimViews.py" line="340"/>
       <source>Sheets</source>
       <translation>시트</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="712"/>
+      <source>Set Working Plane</source>
+      <translation>작업 평면 설정</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="716"/>
+      <source>Sets the selected item as the current working plane</source>
+      <translation type="unfinished">Sets the selected item as the current working plane</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindows.py" line="225"/>
@@ -11775,12 +11803,12 @@ Alt+PgUp으로 돌출부 확장, Alt+PgDown으로 돌출부 축소, Alt+/로 자
       <translation>속성이 이미 존재합니다</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="78"/>
+      <location filename="../../bimcommands/BimDrawingView.py" line="81"/>
       <source>Viewed lines</source>
       <translation>보기 선</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="84"/>
+      <location filename="../../bimcommands/BimDrawingView.py" line="85"/>
       <source>Cut lines</source>
       <translation>단면선</translation>
     </message>
@@ -11820,7 +11848,7 @@ Alt+PgUp으로 돌출부 확장, Alt+PgDown으로 돌출부 축소, Alt+/로 자
       <translation>ID '{id}' 및 유형 '{sh_type}'인 요소를 찾을 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../importers/importSH3DHelper.py" line="3263"/>
+      <location filename="../../importers/importSH3DHelper.py" line="3255"/>
       <source>Type of &lt;{elm.tag}&gt; #{i} is not supported: '{attribute}'. Skipping!</source>
       <translation>&lt;{elm.tag}&gt; #{i}의 유형이 지원되지 않습니다: '{attribute}'. 건너뜁니다!</translation>
     </message>
@@ -11933,16 +11961,26 @@ FreeCAD 설치를 확인하거나, [환경 설정] → [가져오기/내보내�
       <source>Select an object to link</source>
       <translation>연결할 객체를 선택하십시오</translation>
     </message>
+    <message>
+      <location filename="../../bimcommands/BimBox.py" line="83"/>
+      <source>%1 pick next point</source>
+      <translation>%1 다음 점 선택</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimBox.py" line="171"/>
+      <source>Box Dimensions</source>
+      <translation>박스 치수</translation>
+    </message>
   </context>
   <context>
     <name>Arch_RebarTools</name>
     <message>
-      <location filename="../../InitGui.py" line="415"/>
+      <location filename="../../InitGui.py" line="414"/>
       <source>Reinforcement Tools</source>
       <translation>보강 도구</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="416"/>
+      <location filename="../../InitGui.py" line="415"/>
       <source>Reinforcement tools</source>
       <translation>보강 도구</translation>
     </message>
@@ -12134,8 +12172,8 @@ FreeCAD 설치를 확인하거나, [환경 설정] → [가져오기/내보내�
       <translation>다른 곳에서 사용되지 않는 모든 객체를 휴지통에서 삭제합니다</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTrash.py" line="78"/>
       <location filename="../../bimcommands/BimEmptyTrash.py" line="38"/>
+      <location filename="../../bimcommands/BimTrash.py" line="78"/>
       <source>Empty Trash</source>
       <translation>휴지통 비우기</translation>
     </message>
@@ -12360,7 +12398,7 @@ FreeCAD 설치를 확인하거나, [환경 설정] → [가져오기/내보내�
     <message>
       <location filename="../../bimcommands/BimOffset.py" line="38"/>
       <source>2D Offset</source>
-      <translation>2D 오프셋</translation>
+      <translation>2D 편위</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimOffset.py" line="39"/>
@@ -12436,12 +12474,12 @@ FreeCAD 설치를 확인하거나, [환경 설정] → [가져오기/내보내�
   <context>
     <name>BIM_Sketch</name>
     <message>
-      <location filename="../../bimcommands/BimSketch.py" line="37"/>
+      <location filename="../../bimcommands/BimSketch.py" line="38"/>
       <source>New Sketch</source>
       <translation>새 스케치</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSketch.py" line="40"/>
+      <location filename="../../bimcommands/BimSketch.py" line="41"/>
       <source>Creates a new sketch in the current working plane</source>
       <translation>현재 작업 평면에 새 스케치를 만듭니다</translation>
     </message>
@@ -12501,12 +12539,12 @@ FreeCAD 설치를 확인하거나, [환경 설정] → [가져오기/내보내�
   <context>
     <name>BIM_Tutorial</name>
     <message>
-      <location filename="../../bimcommands/BimTutorial.py" line="50"/>
+      <location filename="../../bimcommands/BimTutorial.py" line="51"/>
       <source>BIM Tutorial</source>
       <translation>BIM 튜토리얼</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTutorial.py" line="53"/>
+      <location filename="../../bimcommands/BimTutorial.py" line="54"/>
       <source>Starts or continues the BIM in-game tutorial</source>
       <translation>BIM 인게임 튜토리얼을 시작하거나 계속합니다</translation>
     </message>
@@ -12527,12 +12565,12 @@ FreeCAD 설치를 확인하거나, [환경 설정] → [가져오기/내보내�
   <context>
     <name>BIM_Views</name>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="44"/>
+      <location filename="../../bimcommands/BimViews.py" line="55"/>
       <source>Views Manager</source>
       <translation>보기 관리자</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="45"/>
+      <location filename="../../bimcommands/BimViews.py" line="56"/>
       <source>Shows or hides the views manager</source>
       <translation>보기 관리자를 표시하거나 숨깁니다</translation>
     </message>
@@ -13103,7 +13141,7 @@ FreeCAD 설치를 확인하거나, [환경 설정] → [가져오기/내보내�
   <context>
     <name>BIM_GenericTools</name>
     <message>
-      <location filename="../../InitGui.py" line="370"/>
+      <location filename="../../InitGui.py" line="369"/>
       <source>Generic 3D Tools</source>
       <translation>일반 3D 도구</translation>
     </message>
@@ -13111,7 +13149,7 @@ FreeCAD 설치를 확인하거나, [환경 설정] → [가져오기/내보내�
   <context>
     <name>BIM_Create2DViews</name>
     <message>
-      <location filename="../../InitGui.py" line="383"/>
+      <location filename="../../InitGui.py" line="382"/>
       <source>Create 2D Views</source>
       <translation>2D 보기 만들기</translation>
     </message>
@@ -13495,29 +13533,6 @@ select both the view and the page before executing the command.</source>
     </message>
   </context>
   <context>
-    <name>Command</name>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="128"/>
-      <source>Edit Covering</source>
-      <translation>마감 편집</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1757"/>
-      <location filename="../../bimcommands/BimCovering.py" line="83"/>
-      <source>Create Covering</source>
-      <translation>마감 만들기</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIMStatusWidget</name>
-    <message>
-      <location filename="../../BimStatus.py" line="105"/>
-      <source>BIM Status Widget</source>
-      <comment>A context menu action used to show or hide this toolbar widget</comment>
-      <translation>BIM 상태 위젯</translation>
-    </message>
-  </context>
-  <context>
     <name>ArchSql</name>
     <message>
       <location filename="../../ArchSql.py" line="578"/>
@@ -13609,6 +13624,20 @@ select both the view and the page before executing the command.</source>
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="128"/>
+      <source>Edit Covering</source>
+      <translation>마감 편집</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1757"/>
+      <location filename="../../bimcommands/BimCovering.py" line="83"/>
+      <source>Create Covering</source>
+      <translation>마감 만들기</translation>
+    </message>
+  </context>
+  <context>
     <name>ArchComponent</name>
     <message>
       <location filename="../../ArchWall.py" line="1543"/>
@@ -13631,9 +13660,18 @@ Do you want to proceed?</source>
     </message>
   </context>
   <context>
+    <name>BIMStatusWidget</name>
+    <message>
+      <location filename="../../BimStatus.py" line="105"/>
+      <source>BIM Status Widget</source>
+      <comment>A context menu action used to show or hide this toolbar widget</comment>
+      <translation>BIM 상태 위젯</translation>
+    </message>
+  </context>
+  <context>
     <name>BIM_ArcTools</name>
     <message>
-      <location filename="../../InitGui.py" line="240"/>
+      <location filename="../../InitGui.py" line="239"/>
       <source>Arc Tools</source>
       <translation>호 도구</translation>
     </message>
@@ -13641,7 +13679,7 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_SplineTools</name>
     <message>
-      <location filename="../../InitGui.py" line="252"/>
+      <location filename="../../InitGui.py" line="251"/>
       <source>Spline Tools</source>
       <translation>스플라인 도구</translation>
     </message>
@@ -13649,7 +13687,7 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_AxisTools</name>
     <message>
-      <location filename="../../InitGui.py" line="264"/>
+      <location filename="../../InitGui.py" line="263"/>
       <source>Axis Tools</source>
       <translation>축 도구</translation>
     </message>
@@ -13657,7 +13695,7 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_OffsetTools</name>
     <message>
-      <location filename="../../InitGui.py" line="277"/>
+      <location filename="../../InitGui.py" line="276"/>
       <source>Offset Tools</source>
       <translation>오프셋 도구</translation>
     </message>
@@ -13665,7 +13703,7 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_ArrayTools</name>
     <message>
-      <location filename="../../InitGui.py" line="295"/>
+      <location filename="../../InitGui.py" line="294"/>
       <source>Array Tools</source>
       <translation>배열 도구</translation>
     </message>
@@ -13673,7 +13711,7 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_BooleanTools</name>
     <message>
-      <location filename="../../InitGui.py" line="308"/>
+      <location filename="../../InitGui.py" line="307"/>
       <source>Boolean Tools</source>
       <translation>불리언 도구</translation>
     </message>
@@ -13681,7 +13719,7 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_IfcManageTools</name>
     <message>
-      <location filename="../../InitGui.py" line="325"/>
+      <location filename="../../InitGui.py" line="324"/>
       <source>IFC Management</source>
       <translation>IFC 관리</translation>
     </message>
@@ -13689,7 +13727,7 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_ReportTools</name>
     <message>
-      <location filename="../../InitGui.py" line="337"/>
+      <location filename="../../InitGui.py" line="336"/>
       <source>Report Tools</source>
       <translation>보고서 도구</translation>
     </message>
@@ -13697,7 +13735,7 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_CloneTools</name>
     <message>
-      <location filename="../../InitGui.py" line="349"/>
+      <location filename="../../InitGui.py" line="348"/>
       <source>Cloning Tools</source>
       <translation>클론 도구</translation>
     </message>
@@ -13713,19 +13751,6 @@ Do you want to proceed?</source>
       <location filename="../../bimcommands/BimCovering.py" line="47"/>
       <source>Creates a covering (floor finish, cladding) on a selected face</source>
       <translation>선택한 면에 마감(바닥 마감, 외장재 등)을 생성합니다</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_LinkMake</name>
-    <message>
-      <location filename="../../bimcommands/BimLink.py" line="14"/>
-      <source>Make Link</source>
-      <translation>링크 만들기</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimLink.py" line="18"/>
-      <source>Creates a Link to the selected object and immediately enables moving it</source>
-      <translation>선택된 객체에 대한 링크를 만들기하고 즉시 이동을 활성화합니다</translation>
     </message>
   </context>
   <context>
@@ -13747,6 +13772,19 @@ Do you want to proceed?</source>
       <location filename="../../bimcommands/BimWall.py" line="308"/>
       <source>Wall Trace</source>
       <translation>벽 추적</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_LinkMake</name>
+    <message>
+      <location filename="../../bimcommands/BimLink.py" line="14"/>
+      <source>Make Link</source>
+      <translation>링크 만들기</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimLink.py" line="18"/>
+      <source>Creates a Link to the selected object and immediately enables moving it</source>
+      <translation>선택된 객체에 대한 링크를 만들기하고 즉시 이동을 활성화합니다</translation>
     </message>
   </context>
 </TS>

@@ -43,7 +43,9 @@
 #include "FirstStartWidget.h"
 #include "FlowLayout.h"
 #include "NewFileButton.h"
+#include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/DocumentSettings.h>
 #include <App/Application.h>
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>
@@ -191,7 +193,7 @@ StartView::StartView(QWidget* parent)
     }
     configureRecentFilesListWidget(recentFilesListWidget, _recentFilesLabel);
 
-    QTimer::singleShot(2000, [this, recentFilesListWidget]() {
+    QTimer::singleShot(2000, this, [this, recentFilesListWidget]() {
         auto updateFun = [this, recentFilesListWidget]() {
             configureRecentFilesListWidget(recentFilesListWidget, _recentFilesLabel);
         };
@@ -204,53 +206,39 @@ StartView::StartView(QWidget* parent)
     isInitialized = true;
 
     retranslateUi();
+
+    // NOLINTBEGIN
+    _saveddoc = App::GetApplication().signalFinishSaveDocument.connect(
+        [this](const App::Document& doc, const std::string&) {
+            _recentFilesModel.modifiedFile(QString::fromStdString(doc.FileName.getStrValue()));
+        }
+    );
+    // NOLINTEND
 }
 
-void StartView::configureNewFileButtons(QLayout* layout) const
+void StartView::configureNewFileButtons(QLayout* layout)
 {
-    auto newEmptyFile = gsl::owner<NewFileButton*>(new NewFileButton(
-        {tr("Empty File"),
-         tr("Creates a new empty FreeCAD file"),
-         QLatin1String(":/icons/document-new.svg")}
-    ));
-    auto openFile = gsl::owner<NewFileButton*>(new NewFileButton(
-        {tr("Open File"),
-         tr("Opens an existing CAD file or 3D model"),
-         QLatin1String(":/icons/document-open.svg")}
-    ));
-    auto partDesign = gsl::owner<NewFileButton*>(new NewFileButton(
-        {tr("Parametric Body"),
-         tr("Creates a body with the Part Design workbench"),
-         QLatin1String(":/icons/PartDesignWorkbench.svg")}
-    ));
-    auto assembly = gsl::owner<NewFileButton*>(new NewFileButton(
-        {tr("Assembly"),
-         tr("Creates an assembly project"),
-         QLatin1String(":/icons/AssemblyWorkbench.svg")}
-    ));
-    auto draft = gsl::owner<NewFileButton*>(new NewFileButton(
-        {tr("2D Draft"), tr("Creates a 2D Draft document"), QLatin1String(":/icons/DraftWorkbench.svg")}
-    ));
-    auto arch = gsl::owner<NewFileButton*>(new NewFileButton(
-        {tr("BIM/Architecture"),
-         tr("Creates an architectural project"),
-         QLatin1String(":/icons/BIMWorkbench.svg")}
-    ));
+    _newEmptyFileButton = new NewFileButton(this, QStringLiteral(":/icons/document-new.svg"));
+    _openFileButton = new NewFileButton(this, QStringLiteral(":/icons/document-open.svg"));
+    _partDesignButton = new NewFileButton(this, QStringLiteral(":/icons/PartDesignWorkbench.svg"));
+    _assemblyButton = new NewFileButton(this, QStringLiteral(":/icons/AssemblyWorkbench.svg"));
+    _draftButton = new NewFileButton(this, QStringLiteral(":/icons/DraftWorkbench.svg"));
+    _bimButton = new NewFileButton(this, QStringLiteral(":/icons/BIMWorkbench.svg"));
 
     // TODO: Ensure all of the required WBs are actually available
-    layout->addWidget(partDesign);
-    layout->addWidget(assembly);
-    layout->addWidget(draft);
-    layout->addWidget(arch);
-    layout->addWidget(newEmptyFile);
-    layout->addWidget(openFile);
+    layout->addWidget(_partDesignButton);
+    layout->addWidget(_assemblyButton);
+    layout->addWidget(_draftButton);
+    layout->addWidget(_bimButton);
+    layout->addWidget(_newEmptyFileButton);
+    layout->addWidget(_openFileButton);
 
-    connect(newEmptyFile, &QPushButton::clicked, this, &StartView::newEmptyFile);
-    connect(openFile, &QPushButton::clicked, this, &StartView::openExistingFile);
-    connect(partDesign, &QPushButton::clicked, this, &StartView::newPartDesignFile);
-    connect(assembly, &QPushButton::clicked, this, &StartView::newAssemblyFile);
-    connect(draft, &QPushButton::clicked, this, &StartView::newDraftFile);
-    connect(arch, &QPushButton::clicked, this, &StartView::newArchFile);
+    connect(_newEmptyFileButton, &QPushButton::clicked, this, &StartView::newEmptyFile);
+    connect(_openFileButton, &QPushButton::clicked, this, &StartView::openExistingFile);
+    connect(_partDesignButton, &QPushButton::clicked, this, &StartView::newPartDesignFile);
+    connect(_assemblyButton, &QPushButton::clicked, this, &StartView::newAssemblyFile);
+    connect(_draftButton, &QPushButton::clicked, this, &StartView::newDraftFile);
+    connect(_bimButton, &QPushButton::clicked, this, &StartView::newBimFile);
 }
 
 void StartView::configureFileCardWidget(QListView* fileCardWidget)
@@ -345,9 +333,17 @@ void StartView::newDraftFile()
     postStart(PostStartBehavior::doNotSwitchWorkbench);
 }
 
-void StartView::newArchFile()
+void StartView::newBimFile()
 {
     Gui::Application::Instance->commandManager().runCommandByName("Std_New");
+    auto* doc = App::GetApplication().getActiveDocument();
+    App::DocumentSettings gridSettings(doc, "Draft");
+
+    // Create a 10 m grid (100 mm spacing x 100 squares), matching the camera zoom set below
+    gridSettings.setString("GridSpacing", "100 mm");
+    gridSettings.setInt("GridMainlines", 10);
+    gridSettings.setInt("GridSize", 100);
+
     try {
         Gui::Application::Instance->activateWorkbench("BIMWorkbench");
     }
@@ -518,6 +514,19 @@ void StartView::retranslateUi()
     const QLatin1String h1End("</h1>");
 
     _newFileLabel->setText(h1Start + tr("New File") + h1End);
+    _newEmptyFileButton->setHeadingText(tr("Empty File"));
+    _newEmptyFileButton->setDescriptionText(tr("Creates a new empty FreeCAD file"));
+    _openFileButton->setHeadingText(tr("Open File"));
+    _openFileButton->setDescriptionText(tr("Opens an existing CAD file or 3D model"));
+    _partDesignButton->setHeadingText(tr("Parametric Body"));
+    _partDesignButton->setDescriptionText(tr("Creates a body with the Part Design workbench"));
+    _assemblyButton->setHeadingText(tr("Assembly"));
+    _assemblyButton->setDescriptionText(tr("Creates an assembly project"));
+    _draftButton->setHeadingText(tr("2D Draft"));
+    _draftButton->setDescriptionText(tr("Creates a 2D Draft document"));
+    _bimButton->setHeadingText(tr("BIM/Architecture"));
+    _bimButton->setDescriptionText(tr("Creates an architectural project"));
+
     if (_examplesLabel) {
         _examplesLabel->setText(h1Start + tr("Examples") + h1End);
     }

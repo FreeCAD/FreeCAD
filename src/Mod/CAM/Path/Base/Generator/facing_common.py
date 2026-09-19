@@ -219,7 +219,7 @@ def get_angled_polygon(wire, angle):
     3. Rotating the bounding box back to the desired angle
 
     Args:
-        wire (Part.Wire): A closed wire to create the rotated bounding box for
+        wire (Part.Wire): A closed wire or list of wires to create the rotated bounding box for
         angle (float): Rotation angle in degrees (positive = counterclockwise)
 
     Returns:
@@ -228,7 +228,10 @@ def get_angled_polygon(wire, angle):
     Raises:
         ValueError: If the input wire is not closed
     """
-    if not wire.isClosed():
+    if isinstance(wire, (list, tuple)):
+        wire = Part.Compound(wire)
+
+    if any(not w.isClosed() for w in wire.Wires):
         raise ValueError("Wire must be closed")
 
     # Get the center point of the original wire for all rotations

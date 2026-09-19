@@ -4,17 +4,17 @@
   <context>
     <name>CmdTechDraw2LineCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="789"/>
+      <location filename="../../CommandAnnotate.cpp" line="791"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="790"/>
+      <location filename="../../CommandAnnotate.cpp" line="792"/>
       <source>Centerline Between 2 Lines</source>
       <translation>Mittlinje mellan 2 linjer</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="791"/>
+      <location filename="../../CommandAnnotate.cpp" line="793"/>
       <source>Adds a centerline between 2 selected lines</source>
       <translation>Lägger till en mittlinje mellan 2 markerade linjer</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdTechDraw2PointCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="864"/>
+      <location filename="../../CommandAnnotate.cpp" line="866"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="865"/>
+      <location filename="../../CommandAnnotate.cpp" line="867"/>
       <source>Centerline Between 2 Points</source>
       <translation>Mittlinje mellan 2 punkter</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="866"/>
+      <location filename="../../CommandAnnotate.cpp" line="868"/>
       <source>Adds a centerline between 2 selected points</source>
       <translation>Lägger till en mittlinje mellan 2 valda punkter</translation>
     </message>
@@ -40,19 +40,19 @@
   <context>
     <name>CmdTechDraw2PointCosmeticLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="977"/>
+      <location filename="../../CommandAnnotate.cpp" line="979"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="978"/>
+      <location filename="../../CommandAnnotate.cpp" line="980"/>
       <source>Cosmetic Line Through 2 Points</source>
       <translation>Kosmetisk linje genom 2 punkter</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="979"/>
+      <location filename="../../CommandAnnotate.cpp" line="981"/>
       <source>Adds a cosmetic line that passes through 2 selected points</source>
-      <translation type="unfinished">Adds a cosmetic line that passes through 2 selected points</translation>
+      <translation>Lägger till en kosmetisk linje som går genom 2 valda punkter</translation>
     </message>
   </context>
   <context>
@@ -76,12 +76,12 @@
   <context>
     <name>CmdTechDrawActiveView</name>
     <message>
-      <location filename="../../Command.cpp" line="702"/>
+      <location filename="../../Command.cpp" line="704"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="703"/>
+      <location filename="../../Command.cpp" line="705"/>
       <source>Active View</source>
       <translation>Aktiv vy</translation>
     </message>
@@ -125,17 +125,17 @@
   <context>
     <name>CmdTechDrawArchView</name>
     <message>
-      <location filename="../../Command.cpp" line="1673"/>
+      <location filename="../../Command.cpp" line="1675"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1674"/>
+      <location filename="../../Command.cpp" line="1676"/>
       <source>BIM View</source>
       <translation>BIM-vy</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1675"/>
+      <location filename="../../Command.cpp" line="1677"/>
       <source>Inserts a view of a BIM section plane</source>
       <translation>Infogar en vy av en BIM-sektionsplan</translation>
     </message>
@@ -143,17 +143,17 @@
   <context>
     <name>CmdTechDrawBalloon</name>
     <message>
-      <location filename="../../Command.cpp" line="1281"/>
+      <location filename="../../Command.cpp" line="1283"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1282"/>
+      <location filename="../../Command.cpp" line="1284"/>
       <source>Balloon Annotation</source>
       <translation>Annotation om ballonger</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1283"/>
+      <location filename="../../Command.cpp" line="1285"/>
       <source>Inserts a new balloon annotation in the selected view</source>
       <translation>Infogar en ny ballongannotation i den valda vyn</translation>
     </message>
@@ -178,23 +178,23 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="649"/>
       <source>Centerline on Face</source>
-      <translation type="unfinished">Centerline on Face</translation>
+      <translation>Mittlinje på yta</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawClipGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="1345"/>
+      <location filename="../../Command.cpp" line="1347"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1346"/>
+      <location filename="../../Command.cpp" line="1348"/>
       <source>Clip Group</source>
       <translation>Clip-grupp</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1347"/>
+      <location filename="../../Command.cpp" line="1349"/>
       <source>Inserts a new clip group for the selected view</source>
       <translation>Infogar en ny klippgrupp för den markerade vyn</translation>
     </message>
@@ -202,17 +202,17 @@
   <context>
     <name>CmdTechDrawClipGroupAdd</name>
     <message>
-      <location filename="../../Command.cpp" line="1382"/>
+      <location filename="../../Command.cpp" line="1384"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1383"/>
+      <location filename="../../Command.cpp" line="1385"/>
       <source>Add View To Clip Group</source>
       <translation>Lägg till vy i klippgrupp</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1384"/>
+      <location filename="../../Command.cpp" line="1386"/>
       <source>Adds the selected view to a clip group</source>
       <translation>Lägger till den markerade vyn i en klippgrupp</translation>
     </message>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdTechDrawClipGroupRemove</name>
     <message>
-      <location filename="../../Command.cpp" line="1466"/>
+      <location filename="../../Command.cpp" line="1468"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1467"/>
+      <location filename="../../Command.cpp" line="1469"/>
       <source>Remove From Clip Group</source>
       <translation>Ta bort från klippgrupp</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1468"/>
+      <location filename="../../Command.cpp" line="1470"/>
       <source>Removes a view based on the selected clip group</source>
       <translation>Tar bort en vy baserat på den markerade klippgruppen</translation>
     </message>
@@ -238,17 +238,17 @@
   <context>
     <name>CmdTechDrawComplexSection</name>
     <message>
-      <location filename="../../Command.cpp" line="888"/>
+      <location filename="../../Command.cpp" line="890"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="889"/>
+      <location filename="../../Command.cpp" line="891"/>
       <source>Complex Section View</source>
       <translation>Komplex sektionsvy</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="890"/>
+      <location filename="../../Command.cpp" line="892"/>
       <source>Inserts a complex section view based on the selected view in the current page</source>
       <translation>Infogar en komplex sektionsvy baserat på den valda vyn på den aktuella sidan</translation>
     </message>
@@ -256,17 +256,17 @@
   <context>
     <name>CmdTechDrawCosmeticEraser</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1128"/>
+      <location filename="../../CommandAnnotate.cpp" line="1130"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1129"/>
+      <location filename="../../CommandAnnotate.cpp" line="1131"/>
       <source>Remove Cosmetic Object</source>
       <translation>Ta bort kosmetiskt objekt</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1130"/>
+      <location filename="../../CommandAnnotate.cpp" line="1132"/>
       <source>Removes the selected cosmetic object from the page</source>
       <translation>Tar bort det valda kosmetiska objektet från sidan</translation>
     </message>
@@ -311,17 +311,17 @@
   <context>
     <name>CmdTechDrawDecorateLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1246"/>
+      <location filename="../../CommandAnnotate.cpp" line="1248"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1247"/>
+      <location filename="../../CommandAnnotate.cpp" line="1249"/>
       <source>Edit Line Appearance</source>
       <translation>Redigera linjeutseende</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1248"/>
+      <location filename="../../CommandAnnotate.cpp" line="1250"/>
       <source>Opens the &apos;Line decoration&apos; dialog to edit the selected lines</source>
       <translation>Öppnar dialogrutan "Linjedekoration" för att redigera de markerade linjerna</translation>
     </message>
@@ -329,17 +329,17 @@
   <context>
     <name>CmdTechDrawDetailView</name>
     <message>
-      <location filename="../../Command.cpp" line="1014"/>
+      <location filename="../../Command.cpp" line="1016"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1015"/>
+      <location filename="../../Command.cpp" line="1017"/>
       <source>Detail View</source>
       <translation>Detaljvy</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1016"/>
+      <location filename="../../Command.cpp" line="1018"/>
       <source>Inserts a new detail view based on the selected view in the current page</source>
       <translation>Infogar en ny detaljvy baserad på den valda vyn på den aktuella sidan</translation>
     </message>
@@ -387,17 +387,17 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawDraftView</name>
     <message>
-      <location filename="../../Command.cpp" line="1606"/>
+      <location filename="../../Command.cpp" line="1608"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1607"/>
+      <location filename="../../Command.cpp" line="1609"/>
       <source>Draft View</source>
       <translation>Släppningsvy</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1609"/>
+      <location filename="../../Command.cpp" line="1611"/>
       <source>Inserts a view of a Draft object</source>
       <extracomment>&quot;Draft&quot; is a workbench and should not be translated</extracomment>
       <translation>Lägger till en vy av ett Draft-objekt</translation>
@@ -406,17 +406,17 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExportPageDXF</name>
     <message>
-      <location filename="../../Command.cpp" line="1864"/>
+      <location filename="../../Command.cpp" line="1885"/>
       <source>File</source>
       <translation>Fil</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1865"/>
+      <location filename="../../Command.cpp" line="1886"/>
       <source>Export Page as DXF</source>
       <translation>Exportera sida som DXF</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1866"/>
+      <location filename="../../Command.cpp" line="1887"/>
       <source>Exports the current page as a DXF</source>
       <translation>Exporterar den aktuella sidan som en DXF-fil</translation>
     </message>
@@ -424,17 +424,17 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExportPageSVG</name>
     <message>
-      <location filename="../../Command.cpp" line="1821"/>
+      <location filename="../../Command.cpp" line="1842"/>
       <source>File</source>
       <translation>Fil</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1822"/>
+      <location filename="../../Command.cpp" line="1843"/>
       <source>Export Page as SVG</source>
       <translation>Exportera sidan som SVG</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1823"/>
+      <location filename="../../Command.cpp" line="1844"/>
       <source>Exports the current page as an SVG</source>
       <translation>Exporterar den aktuella sidan som en SVG</translation>
     </message>
@@ -478,17 +478,17 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExtensionCascadeDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1134"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1135"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1135"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1136"/>
       <source>Cascade Horizontal Dimensions</source>
       <translation>Cascade Horisontella mått</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1136"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1137"/>
       <source>Evenly spaces the selected horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Placera de valda horisontella dimensionerna jämnt:&lt;br&gt;- Ange kaskadavstånd (valfritt)&lt;br&gt;- Välj två eller flera horisontella dimensioner&lt;br&gt;- Den första dimensionen definierar positionen&lt;br&gt;- Klicka på det här verktyget</translation>
     </message>
@@ -496,19 +496,19 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExtensionCascadeHorizDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="956"/>
+      <location filename="../../CommandExtensionDims.cpp" line="957"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="957"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1211"/>
+      <location filename="../../CommandExtensionDims.cpp" line="958"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1212"/>
       <source>Cascade Horizontal Dimensions</source>
       <translation>Cascade Horisontella mått</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="958"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1212"/>
+      <location filename="../../CommandExtensionDims.cpp" line="959"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1213"/>
       <source>Evenly spaces the selected horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Placera de valda horisontella dimensionerna jämnt:&lt;br&gt;- Ange kaskadavstånd (valfritt)&lt;br&gt;- Välj två eller flera horisontella dimensioner&lt;br&gt;- Den första dimensionen definierar positionen&lt;br&gt;- Klicka på det här verktyget</translation>
     </message>
@@ -516,19 +516,19 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExtensionCascadeObliqueDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1098"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1099"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1099"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1229"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1100"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1230"/>
       <source>Cascade Oblique Dimensions</source>
       <translation>Kaskad Sneda dimensioner</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1100"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1230"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1101"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1231"/>
       <source>Evenly spaces the selected oblique dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Placera de valda sneda måtten jämnt:&lt;br&gt;- Ange kaskadavståndet (valfritt)&lt;br&gt;- Välj två eller flera parallella sneda mått&lt;br&gt;- Det första måttet definierar positionen&lt;br&gt;- Klicka på det här verktyget</translation>
     </message>
@@ -536,19 +536,19 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExtensionCascadeVertDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1023"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1024"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1024"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1220"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1025"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1221"/>
       <source>Cascade Vertical Dimensions</source>
       <translation>Cascade Vertikala mått</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1025"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1221"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1026"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1222"/>
       <source>Evenly spaces the selected vertical dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Placera de valda vertikala dimensionerna jämnt:&lt;br&gt;- Ange kaskadavstånd (valfritt)&lt;br&gt;- Välj två eller flera vertikala dimensioner&lt;br&gt;- Den första dimensionen definierar positionen&lt;br&gt;- Klicka på det här verktyget</translation>
     </message>
@@ -556,17 +556,17 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExtensionChamferDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2116"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2117"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2117"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2118"/>
       <source>Horizontal Chamfer Dimension</source>
       <translation>Dimension för horisontell fasning</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2118"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2119"/>
       <source>Inserts a horizontal size and angle dimension for a chamfer from 2 selected vertices</source>
       <translation>Infogar ett horisontellt mått och vinkelmått för en avfasning från 2 valda hörnpunkter</translation>
     </message>
@@ -634,17 +634,17 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExtensionCreateChainDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1508"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1509"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1509"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1510"/>
       <source>Horizontal Chain Dimension</source>
       <translation>Horisontell kedjedimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1510"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1511"/>
       <source>Inserts a sequence of aligned horizontal dimensions to at least three selected vertices, where the first two define the direction</source>
       <translation>Infogar en sekvens av inriktade horisontella dimensioner till minst tre utvalda hörn, där de två första definierar riktningen</translation>
     </message>
@@ -652,17 +652,17 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExtensionCreateCoordDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1878"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1879"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1879"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1880"/>
       <source>Horizontal Coordinate Dimension</source>
       <translation>Horisontell koordinat Dimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1880"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1881"/>
       <source>Adds evenly spaced horizontal dimensions between 3 or more vertices aligned to a shared baseline</source>
       <translation>Lägger till jämnt fördelade horisontella dimensioner mellan 3 eller fler hörn som är inriktade på en gemensam baslinje</translation>
     </message>
@@ -670,23 +670,23 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExtensionCreateHorizChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1288"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1289"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1289"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1582"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1290"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1583"/>
       <source>Horizontal Chain Dimension</source>
       <translation>Horisontell kedjedimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1290"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1291"/>
       <source>Inserts a sequence of aligned horizontal dimensions to at least three selected vertices</source>
       <translation>Infogar en sekvens av inriktade horisontella dimensioner till minst tre utvalda hörn</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1583"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1584"/>
       <source>Inserts a sequence of aligned horizontal dimensions to at least three selected vertices, where the first two define the direction</source>
       <translation>Infogar en sekvens av inriktade horisontella dimensioner till minst tre utvalda hörn, där de två första definierar riktningen</translation>
     </message>
@@ -694,19 +694,19 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExtensionCreateHorizChamferDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2019"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2020"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2020"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2182"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2021"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2183"/>
       <source>Horizontal Chamfer Dimension</source>
       <translation>Dimension för horisontell fasning</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2021"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2183"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2022"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2184"/>
       <source>Inserts a horizontal size and angle dimension for a chamfer from 2 selected vertices</source>
       <translation>Infogar ett horisontellt mått och vinkelmått för en avfasning från 2 valda hörnpunkter</translation>
     </message>
@@ -714,19 +714,19 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExtensionCreateHorizCoordDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1653"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1654"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1654"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1951"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1655"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1952"/>
       <source>Horizontal Coordinate Dimension</source>
       <translation>Horisontell koordinat Dimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1655"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1952"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1656"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1953"/>
       <source>Adds evenly spaced horizontal dimensions between 3 or more vertices aligned to a shared baseline</source>
       <translation>Lägger till jämnt fördelade horisontella dimensioner mellan 3 eller fler hörn som är inriktade på en gemensam baslinje</translation>
     </message>
@@ -734,17 +734,17 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExtensionCreateLengthArc</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2210"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2211"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2211"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2212"/>
       <source>Arc Length Dimension</source>
       <translation>Båge Längdmått</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2212"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2213"/>
       <source>Inserts an arc length dimension to the selected arc</source>
       <translation>Lägger till en båglängdsdimension till den valda bågen</translation>
     </message>
@@ -752,19 +752,19 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExtensionCreateObliqueChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1476"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1477"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1477"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1592"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1478"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1593"/>
       <source>Oblique Chain Dimension</source>
       <translation>Sned kedjedimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1478"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1593"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1479"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1594"/>
       <source>Inserts a sequence of aligned oblique dimensions to at least three selected vertices, where the first two define the direction</source>
       <translation>Infogar en sekvens av inriktade sneda dimensioner till minst tre valda hörnpunkter, där de två första definierar riktningen</translation>
     </message>
@@ -772,19 +772,19 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExtensionCreateObliqueCoordDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1847"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1848"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1848"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1961"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1849"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1962"/>
       <source>Oblique Coordinate Dimension</source>
       <translation>Oblik koordinatdimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1849"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1962"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1850"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1963"/>
       <source>Adds evenly spaced oblique dimensions between 3 or more vertices aligned to a shared baseline</source>
       <translation>Lägger till jämnt fördelade sneda dimensioner mellan 3 eller fler hörn som är inriktade på en gemensam baslinje</translation>
     </message>
@@ -792,23 +792,23 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExtensionCreateVertChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1354"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1355"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1355"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1587"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1356"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1588"/>
       <source>Vertical Chain Dimension</source>
       <translation>Vertikal kedjedimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1356"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1357"/>
       <source>Inserts a sequence of aligned vertical dimensions to at least three selected vertices</source>
       <translation>Infogar en sekvens av inriktade vertikala dimensioner till minst tre utvalda hörn</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1588"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1589"/>
       <source>Inserts a sequence of aligned vertical dimensions to at least three selected vertices, where the first two define the direction</source>
       <translation>Infogar en sekvens av inriktade vertikala dimensioner till minst tre utvalda hörn, där de två första definierar riktningen</translation>
     </message>
@@ -816,19 +816,19 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExtensionCreateVertChamferDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2085"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2086"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2086"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2187"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2087"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2188"/>
       <source>Vertical Chamfer Dimension</source>
       <translation>Vertikal avfasning Dimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2087"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2188"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2088"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2189"/>
       <source>Inserts a vertical size and angle dimension for a chamfer from 2 selected vertices</source>
       <translation>Lägger in ett vertikalt mått och ett vinkelmått för en avfasning från 2 valda hörn</translation>
     </message>
@@ -836,19 +836,19 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExtensionCreateVertCoordDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1722"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1723"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1723"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1956"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1724"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1957"/>
       <source>Vertical Coordinate Dimension</source>
       <translation>Vertikal koordinatdimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1724"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1957"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1725"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1958"/>
       <source>Adds evenly spaced vertical dimensions between 3 or more vertices aligned to a shared baseline</source>
       <translation>Lägger till jämnt fördelade vertikala dimensioner mellan 3 eller fler hörn som är inriktade på en gemensam baslinje</translation>
     </message>
@@ -856,17 +856,17 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExtensionCustomizeFormat</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2259"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2260"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2260"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2261"/>
       <source>Customize Format Label</source>
       <translation>Anpassa formatetikett</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2261"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2262"/>
       <source>Customizes the format label of a selected dimension or balloon</source>
       <translation>Anpassar formatetiketten för en vald dimension eller ballong</translation>
     </message>
@@ -874,19 +874,19 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExtensionDecreaseDecimal</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="491"/>
+      <location filename="../../CommandExtensionDims.cpp" line="492"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="492"/>
-      <location filename="../../CommandExtensionDims.cpp" line="593"/>
+      <location filename="../../CommandExtensionDims.cpp" line="493"/>
+      <location filename="../../CommandExtensionDims.cpp" line="594"/>
       <source>Decrease Decimal Places</source>
       <translation>Minska decimaler</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="493"/>
-      <location filename="../../CommandExtensionDims.cpp" line="594"/>
+      <location filename="../../CommandExtensionDims.cpp" line="494"/>
+      <location filename="../../CommandExtensionDims.cpp" line="595"/>
       <source>Decreases the number of decimal places of the dimension</source>
       <translation>Minskar antalet decimaler för dimensionen</translation>
     </message>
@@ -1024,19 +1024,19 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExtensionIncreaseDecimal</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="460"/>
+      <location filename="../../CommandExtensionDims.cpp" line="461"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="461"/>
-      <location filename="../../CommandExtensionDims.cpp" line="588"/>
+      <location filename="../../CommandExtensionDims.cpp" line="462"/>
+      <location filename="../../CommandExtensionDims.cpp" line="589"/>
       <source>Increase Decimal Places</source>
       <translation>Öka antalet decimaler</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="462"/>
-      <location filename="../../CommandExtensionDims.cpp" line="589"/>
+      <location filename="../../CommandExtensionDims.cpp" line="463"/>
+      <location filename="../../CommandExtensionDims.cpp" line="590"/>
       <source>Increases the number of decimal places of the dimension</source>
       <translation>Ökar antalet decimaler för dimensionen</translation>
     </message>
@@ -1044,17 +1044,17 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExtensionIncreaseDecreaseGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="522"/>
+      <location filename="../../CommandExtensionDims.cpp" line="523"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="523"/>
+      <location filename="../../CommandExtensionDims.cpp" line="524"/>
       <source>Increase Decimal Places</source>
       <translation>Öka antalet decimaler</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="524"/>
+      <location filename="../../CommandExtensionDims.cpp" line="525"/>
       <source>Increases the number of decimal places of the dimension</source>
       <translation>Ökar antalet decimaler för dimensionen</translation>
     </message>
@@ -1062,19 +1062,19 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExtensionInsertDiameter</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="163"/>
+      <location filename="../../CommandExtensionDims.cpp" line="164"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="164"/>
-      <location filename="../../CommandExtensionDims.cpp" line="393"/>
+      <location filename="../../CommandExtensionDims.cpp" line="165"/>
+      <location filename="../../CommandExtensionDims.cpp" line="394"/>
       <source>Insert &apos;⌀&apos; Prefix</source>
       <translation>Infoga prefixet "⌀</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="165"/>
-      <location filename="../../CommandExtensionDims.cpp" line="394"/>
+      <location filename="../../CommandExtensionDims.cpp" line="166"/>
+      <location filename="../../CommandExtensionDims.cpp" line="395"/>
       <source>Inserts a &apos;⌀&apos; symbol at the beginning of the dimension</source>
       <translation>Infogar en "⌀"-symbol i början av dimensionen</translation>
     </message>
@@ -1082,17 +1082,17 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExtensionInsertPrefixGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="313"/>
+      <location filename="../../CommandExtensionDims.cpp" line="314"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="314"/>
+      <location filename="../../CommandExtensionDims.cpp" line="315"/>
       <source>Insert &apos;⌀&apos; Prefix</source>
       <translation>Infoga prefixet "⌀</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="315"/>
+      <location filename="../../CommandExtensionDims.cpp" line="316"/>
       <source>Inserts a &apos;⌀&apos; symbol at the beginning of the dimension text</source>
       <translation>Infogar en "⌀"-symbol i början av dimensionstexten</translation>
     </message>
@@ -1100,19 +1100,19 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExtensionInsertSquare</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="194"/>
+      <location filename="../../CommandExtensionDims.cpp" line="195"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="195"/>
-      <location filename="../../CommandExtensionDims.cpp" line="398"/>
+      <location filename="../../CommandExtensionDims.cpp" line="196"/>
+      <location filename="../../CommandExtensionDims.cpp" line="399"/>
       <source>Insert &apos;□&apos; Prefix</source>
       <translation>Infoga prefixet "□</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="196"/>
-      <location filename="../../CommandExtensionDims.cpp" line="399"/>
+      <location filename="../../CommandExtensionDims.cpp" line="197"/>
+      <location filename="../../CommandExtensionDims.cpp" line="400"/>
       <source>Inserts a &apos;□&apos; symbol at the beginning of the dimension</source>
       <translation>Infogar en "□"-symbol i början av dimensionen</translation>
     </message>
@@ -1200,17 +1200,17 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExtensionPosChainDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="807"/>
+      <location filename="../../CommandExtensionDims.cpp" line="808"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="808"/>
+      <location filename="../../CommandExtensionDims.cpp" line="809"/>
       <source>Align Horizontal Chain Dimensions</source>
       <translation>Rikta in horisontella kedjemått</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="809"/>
+      <location filename="../../CommandExtensionDims.cpp" line="810"/>
       <source>Aligns the horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Riktar in de horisontella dimensionerna för att skapa en kedjedimension:&lt;br&gt;- Välj två eller flera horisontella dimensioner&lt;br&gt;- Den första dimensionen definierar positionen&lt;br&gt;- Klicka på det här verktyget</translation>
     </message>
@@ -1218,23 +1218,23 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExtensionPosHorizChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="643"/>
+      <location filename="../../CommandExtensionDims.cpp" line="644"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="644"/>
+      <location filename="../../CommandExtensionDims.cpp" line="645"/>
       <source>Align Horizontal Chain Dimensions</source>
       <translation>Rikta in horisontella kedjemått</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="645"/>
-      <location filename="../../CommandExtensionDims.cpp" line="884"/>
+      <location filename="../../CommandExtensionDims.cpp" line="646"/>
+      <location filename="../../CommandExtensionDims.cpp" line="885"/>
       <source>Aligns the horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Riktar in de horisontella dimensionerna för att skapa en kedjedimension:&lt;br&gt;- Välj två eller flera horisontella dimensioner&lt;br&gt;- Den första dimensionen definierar positionen&lt;br&gt;- Klicka på det här verktyget</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="883"/>
+      <location filename="../../CommandExtensionDims.cpp" line="884"/>
       <source>Position Horizontal Chain Dimensions</source>
       <translation>Position Horisontell kedja Mått</translation>
     </message>
@@ -1242,23 +1242,23 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExtensionPosObliqueChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="772"/>
+      <location filename="../../CommandExtensionDims.cpp" line="773"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="773"/>
+      <location filename="../../CommandExtensionDims.cpp" line="774"/>
       <source>Align Oblique Chain Dimensions</source>
       <translation>Rikta in sneda kedjemått</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="774"/>
-      <location filename="../../CommandExtensionDims.cpp" line="900"/>
+      <location filename="../../CommandExtensionDims.cpp" line="775"/>
+      <location filename="../../CommandExtensionDims.cpp" line="901"/>
       <source>Aligns the oblique dimensions to create a chain dimension:&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Riktar in sneda dimensioner för att skapa en kedjedimension:&lt;br&gt;- Välj två eller flera parallella sneda dimensioner&lt;br&gt;- Den första dimensionen definierar positionen&lt;br&gt;- Klicka på det här verktyget</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="899"/>
+      <location filename="../../CommandExtensionDims.cpp" line="900"/>
       <source>Position Oblique Chain Dimensions</source>
       <translation>Position Sned kedja Mått</translation>
     </message>
@@ -1266,23 +1266,23 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExtensionPosVertChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="705"/>
+      <location filename="../../CommandExtensionDims.cpp" line="706"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="706"/>
+      <location filename="../../CommandExtensionDims.cpp" line="707"/>
       <source>Align Vertical Chain Dimensions</source>
-      <translation type="unfinished">Align Vertical Chain Dimensions</translation>
+      <translation>Justera vertikala kedjemått</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="707"/>
-      <location filename="../../CommandExtensionDims.cpp" line="892"/>
+      <location filename="../../CommandExtensionDims.cpp" line="708"/>
+      <location filename="../../CommandExtensionDims.cpp" line="893"/>
       <source>Aligns the vertical dimensions to create a chain dimension:&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Riktar in de vertikala dimensionerna för att skapa en kedjedimension:&lt;br&gt;- Välj två eller flera vertikala dimensioner&lt;br&gt;- Den första dimensionen definierar positionen&lt;br&gt;- Klicka på det här verktyget</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="891"/>
+      <location filename="../../CommandExtensionDims.cpp" line="892"/>
       <source>Position Vertical Chain Dimensions</source>
       <translation>Position Vertikal kedja Mått</translation>
     </message>
@@ -1290,17 +1290,17 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawExtensionRemovePrefixChar</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="282"/>
+      <location filename="../../CommandExtensionDims.cpp" line="283"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="283"/>
+      <location filename="../../CommandExtensionDims.cpp" line="284"/>
       <source>Remove Prefix</source>
       <translation>Ta bort prefix</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="284"/>
+      <location filename="../../CommandExtensionDims.cpp" line="285"/>
       <source>Removes the prefix symbols at the beginning of the dimension</source>
       <translation>Tar bort prefixsymbolerna i början av dimensionen</translation>
     </message>
@@ -1505,7 +1505,7 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
     <message>
       <location filename="../../CommandAnnotate.cpp" line="679"/>
       <source>Centerline on Face</source>
-      <translation type="unfinished">Centerline on Face</translation>
+      <translation>Mittlinje på yta</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="680"/>
@@ -1582,7 +1582,7 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1968"/>
       <source>Inserts a dimension showing the horizontal extent (overall length) of an object or feature</source>
-      <translation type="unfinished">Inserts a dimension showing the horizontal extent (overall length) of an object or feature</translation>
+      <translation>Infogar ett mått som visar ett objekts eller formelements horisontella utsträckning (totala längd)</translation>
     </message>
   </context>
   <context>
@@ -1665,17 +1665,17 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawPageDefault</name>
     <message>
-      <location filename="../../Command.cpp" line="108"/>
+      <location filename="../../Command.cpp" line="110"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="109"/>
+      <location filename="../../Command.cpp" line="111"/>
       <source>New Page</source>
       <translation>Ny sida</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="110"/>
+      <location filename="../../Command.cpp" line="112"/>
       <source>Creates a new page with the default template</source>
       <translation>Skapar en ny sida med standardmallen</translation>
     </message>
@@ -1683,17 +1683,17 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawPageTemplate</name>
     <message>
-      <location filename="../../Command.cpp" line="168"/>
+      <location filename="../../Command.cpp" line="170"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="169"/>
+      <location filename="../../Command.cpp" line="171"/>
       <source>New Page From Template</source>
       <translation>Ny sida från mall</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="170"/>
+      <location filename="../../Command.cpp" line="172"/>
       <source>Creates a new page from a custom template</source>
       <translation>Skapar en ny sida från en anpassad mall</translation>
     </message>
@@ -1701,17 +1701,17 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawPrintAll</name>
     <message>
-      <location filename="../../Command.cpp" line="273"/>
+      <location filename="../../Command.cpp" line="275"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="274"/>
+      <location filename="../../Command.cpp" line="276"/>
       <source>Print All Pages</source>
       <translation>Skriv ut alla sidor</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="275"/>
+      <location filename="../../Command.cpp" line="277"/>
       <source>Prints all pages with the print dialog</source>
       <translation>Skriver ut alla sidor med utskriftsdialogrutan</translation>
     </message>
@@ -1719,17 +1719,17 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawProjectShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1928"/>
+      <location filename="../../Command.cpp" line="2009"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1929"/>
+      <location filename="../../Command.cpp" line="2010"/>
       <source>Project Shape</source>
       <translation>Projektets form</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1930"/>
+      <location filename="../../Command.cpp" line="2011"/>
       <source>Creates a projected geometry of the selected object in the 3D view from the current camera angle</source>
       <translation>Skapar en projicerad geometri av det valda objektet i 3D-vyn från den aktuella kameravinkeln</translation>
     </message>
@@ -1737,17 +1737,17 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawProjectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="1058"/>
+      <location filename="../../Command.cpp" line="1060"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1059"/>
+      <location filename="../../Command.cpp" line="1061"/>
       <source>Projection Group</source>
       <translation>Projektionsgruppen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1060"/>
+      <location filename="../../Command.cpp" line="1062"/>
       <source>Inserts multiple new linked views of the selected objects in the current page</source>
       <translation>Infogar flera nya länkade vyer av de markerade objekten på den aktuella sidan</translation>
     </message>
@@ -1791,17 +1791,17 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawRedrawPage</name>
     <message>
-      <location filename="../../Command.cpp" line="237"/>
+      <location filename="../../Command.cpp" line="239"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="238"/>
+      <location filename="../../Command.cpp" line="240"/>
       <source>Redraw Page</source>
       <translation>Rita om sidan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="239"/>
+      <location filename="../../Command.cpp" line="241"/>
       <source>Redraws the current page</source>
       <translation>Rita om den aktuella sidan</translation>
     </message>
@@ -1827,27 +1827,27 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawSectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="733"/>
+      <location filename="../../Command.cpp" line="735"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="734"/>
+      <location filename="../../Command.cpp" line="736"/>
       <source>Section View (Simple or Complex)</source>
       <translation>Sektionsvy (enkel eller komplex)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="735"/>
+      <location filename="../../Command.cpp" line="737"/>
       <source>Inserts a simple or complex section view in the current page</source>
       <translation>Infogar en enkel eller komplex sektionsvy på den aktuella sidan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="799"/>
+      <location filename="../../Command.cpp" line="801"/>
       <source>Section View</source>
       <translation>Sektionsvy</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="803"/>
+      <location filename="../../Command.cpp" line="805"/>
       <source>Complex Section View</source>
       <translation>Komplex sektionsvy</translation>
     </message>
@@ -1855,17 +1855,17 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawSectionView</name>
     <message>
-      <location filename="../../Command.cpp" line="825"/>
+      <location filename="../../Command.cpp" line="827"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="826"/>
+      <location filename="../../Command.cpp" line="828"/>
       <source>Section View</source>
       <translation>Sektionsvy</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="827"/>
+      <location filename="../../Command.cpp" line="829"/>
       <source>Inserts a new section view based on the selected view in the current page</source>
       <translation>Infogar en ny sektionsvy baserat på den valda vyn på den aktuella sidan</translation>
     </message>
@@ -1873,17 +1873,17 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawShowAll</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1328"/>
+      <location filename="../../CommandAnnotate.cpp" line="1330"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1329"/>
+      <location filename="../../CommandAnnotate.cpp" line="1331"/>
       <source>Toggle Edge Visibility</source>
       <translation>Växla synlighet för kant</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1330"/>
+      <location filename="../../CommandAnnotate.cpp" line="1332"/>
       <source>Toggles the visibility of the selected edges</source>
       <translation>Växlar synligheten för de markerade kanterna</translation>
     </message>
@@ -1891,17 +1891,17 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawSpreadsheetView</name>
     <message>
-      <location filename="../../Command.cpp" line="1746"/>
+      <location filename="../../Command.cpp" line="1748"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1747"/>
+      <location filename="../../Command.cpp" line="1749"/>
       <source>Spreadsheet View</source>
       <translation>Kalkylbladets vy</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1748"/>
+      <location filename="../../Command.cpp" line="1750"/>
       <source>Inserts a view of a spreadsheet in the current page</source>
       <translation>Infogar en vy av ett kalkylblad på den aktuella sidan</translation>
     </message>
@@ -2019,17 +2019,17 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawSurfaceFinishSymbols</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1457"/>
+      <location filename="../../CommandAnnotate.cpp" line="1459"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1458"/>
+      <location filename="../../CommandAnnotate.cpp" line="1460"/>
       <source>Surface Finish Symbol</source>
       <translation>Ytfinish Symbol</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1459"/>
+      <location filename="../../CommandAnnotate.cpp" line="1461"/>
       <source>Adds a surface finish symbol in the selected view</source>
       <translation>Lägger till en symbol för ytfinish i den valda vyn</translation>
     </message>
@@ -2037,17 +2037,17 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
   <context>
     <name>CmdTechDrawSymbol</name>
     <message>
-      <location filename="../../Command.cpp" line="1539"/>
+      <location filename="../../Command.cpp" line="1541"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1540"/>
+      <location filename="../../Command.cpp" line="1542"/>
       <source>Insert SVG</source>
       <translation>Infoga SVG</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1541"/>
+      <location filename="../../Command.cpp" line="1543"/>
       <source>Inserts a symbol from an SVG file</source>
       <translation>Infogar en symbol från en SVG-fil</translation>
     </message>
@@ -2085,23 +2085,23 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2093"/>
       <source>Inserts a dimension showing the vertical extent (overall length) of an object or feature</source>
-      <translation type="unfinished">Inserts a dimension showing the vertical extent (overall length) of an object or feature</translation>
+      <translation>Infogar ett mått som visar ett objekts eller formelements vertikala utsträckning (totala längd)</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawView</name>
     <message>
-      <location filename="../../Command.cpp" line="298"/>
+      <location filename="../../Command.cpp" line="300"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="299"/>
+      <location filename="../../Command.cpp" line="301"/>
       <source>New View</source>
       <translation>Ny vy</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="300"/>
+      <location filename="../../Command.cpp" line="302"/>
       <source>Inserts a new view into the current page based on the selected object in the tree view or 3D view.
 If no object is selected, a file browser opens to select an SVG or image file.</source>
       <translation>Infogar en ny vy på den aktuella sidan baserat på det valda objektet i trädvyn eller 3D-vyn.
@@ -2111,17 +2111,17 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
   <context>
     <name>CmdTechDrawWeldSymbol</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1393"/>
+      <location filename="../../CommandAnnotate.cpp" line="1395"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1394"/>
+      <location filename="../../CommandAnnotate.cpp" line="1396"/>
       <source>Weld Symbol</source>
       <translation>Symbol för svetsning</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1395"/>
+      <location filename="../../CommandAnnotate.cpp" line="1397"/>
       <source>Adds welding information to the selected leader line</source>
       <translation>Lägger till svetsinformation till den valda ledraden</translation>
     </message>
@@ -2129,72 +2129,76 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="124"/>
-      <location filename="../../Command.cpp" line="193"/>
+      <location filename="../../Command.cpp" line="126"/>
+      <location filename="../../Command.cpp" line="195"/>
       <source>Drawing create page</source>
       <translation>Ritning skapa sida</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="363"/>
-      <location filename="../../Command.cpp" line="1720"/>
+      <location filename="../../Command.cpp" line="365"/>
+      <location filename="../../Command.cpp" line="1722"/>
       <source>Create BIM view</source>
       <translation>Skapa BIM-vy</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="485"/>
+      <location filename="../../Command.cpp" line="487"/>
       <source>Create image</source>
       <translation>Skapa bild</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="503"/>
+      <location filename="../../Command.cpp" line="505"/>
       <source>Create view</source>
       <translation>Skapa vy</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="651"/>
+      <location filename="../../Command.cpp" line="653"/>
       <source>Create broken view</source>
       <translation>Skapa trasig vy</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1907"/>
-      <location filename="../../PagePrinter.cpp" line="444"/>
+      <location filename="../../PagePrinter.cpp" line="476"/>
+      <location filename="../../Command.cpp" line="1928"/>
       <source>Save page to DXF</source>
       <translation>Spara sidan till DXF</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="463"/>
-      <location filename="../../Command.cpp" line="1570"/>
+      <location filename="../../Command.cpp" line="465"/>
+      <location filename="../../Command.cpp" line="1572"/>
       <source>Create Symbol</source>
       <translation>Skapa symbol</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1142"/>
+      <location filename="../../Command.cpp" line="1144"/>
       <source>Create projection group</source>
       <translation>Skapa projektionsgrupp</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1363"/>
+      <location filename="../../Command.cpp" line="1365"/>
       <source>Create clip</source>
       <translation>Skapa klipp</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1435"/>
+      <location filename="../../Command.cpp" line="1437"/>
       <source>Add clip group</source>
       <translation>Lägg till klippgrupp</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1506"/>
+      <location filename="../../Command.cpp" line="1508"/>
       <source>Remove clip group</source>
       <translation>Ta bort klippgruppen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1644"/>
+      <location filename="../../Command.cpp" line="1646"/>
       <source>Create DraftView</source>
       <translation>Skapa DraftView</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="343"/>
       <location filename="../../Command.cpp" line="1772"/>
+      <source>Create Spreadsheet View</source>
+      <translation type="unfinished">Create Spreadsheet View</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="345"/>
       <source>Create spreadsheet view</source>
       <translation>Skapa kalkylbladsvy</translation>
     </message>
@@ -2206,15 +2210,15 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
     <message>
       <location filename="../../CommandAnnotate.cpp" line="360"/>
       <source>Add Quadrant vertices</source>
-      <translation type="unfinished">Add Quadrant vertices</translation>
+      <translation>Lägg till kvadranthörn</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="112"/>
+      <location filename="../../TaskRichAnno.cpp" line="111"/>
       <source>Edit Annotation</source>
-      <translation type="unfinished">Edit Annotation</translation>
+      <translation>Redigera anteckning</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="153"/>
+      <location filename="../../TaskRichAnno.cpp" line="152"/>
       <location filename="../../CommandAnnotate.cpp" line="543"/>
       <source>Create Annotation</source>
       <translation>Skapa anteckning</translation>
@@ -2438,7 +2442,7 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
       <translation>Skapa bild</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="511"/>
+      <location filename="../../QGIViewBalloon.cpp" line="525"/>
       <source>Drag Balloon</source>
       <translation>Dragballong</translation>
     </message>
@@ -2514,92 +2518,92 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
       <translation>Lägg till kosmetisk vertex</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="254"/>
+      <location filename="../../CommandExtensionDims.cpp" line="255"/>
       <source>TechDraw Remove Prefix</source>
       <translation>TechDraw Ta bort prefix</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="258"/>
+      <location filename="../../CommandExtensionDims.cpp" line="259"/>
       <source>Remove Prefix</source>
       <translation>Ta bort prefix</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="432"/>
+      <location filename="../../CommandExtensionDims.cpp" line="433"/>
       <source>Increase/Decrease Decimal</source>
       <translation>Öka/minska Decimal</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="617"/>
+      <location filename="../../CommandExtensionDims.cpp" line="618"/>
       <source>Position Horizontal Chain Dimension</source>
       <translation>Position Horisontell kedja Dimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="678"/>
+      <location filename="../../CommandExtensionDims.cpp" line="679"/>
       <source>Position Vert Chain Dimension</source>
       <translation>Position Vert Kedja Dimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="740"/>
+      <location filename="../../CommandExtensionDims.cpp" line="741"/>
       <source>Position Oblique Chain Dimension</source>
       <translation>Position Sned kedja Dimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="926"/>
+      <location filename="../../CommandExtensionDims.cpp" line="927"/>
       <source>Cascade Horizontal Dimension</source>
       <translation>Cascade Horisontell dimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="992"/>
+      <location filename="../../CommandExtensionDims.cpp" line="993"/>
       <source>Cascade Vertical Dimension</source>
       <translation>Cascade Vertikal dimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1059"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1060"/>
       <source>Cascade Oblique Dimension</source>
       <translation>Kaskad Sned dimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1258"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1259"/>
       <source>Create Horizontal Chain Dimension</source>
       <translation>Skapa horisontell kedjedimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1323"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1324"/>
       <source>Create Vert Chain dimension</source>
       <translation>Skapa dimensionen Vert Chain</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1388"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1389"/>
       <source>Create oblique chain dimension</source>
       <translation>Skapa snedställd kedjedimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1617"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1618"/>
       <source>Create Horizontal Coord Dimension</source>
       <translation>Skapa horisontell koordinatdimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1685"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1686"/>
       <source>Create vert coord dimension</source>
       <translation>Skapa vert coord-dimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1755"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1756"/>
       <source>Create oblique coord dimension</source>
       <translation>Skapa snett koordinatmått</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1986"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1987"/>
       <source>Create Horizontal Chamfer Dimension</source>
       <translation>Skapa dimension för horisontell avfasning</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2052"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2053"/>
       <source>Create Vert Chamfer Dimension</source>
       <translation>Skapa dimension för Vert-avfasning</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2227"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2228"/>
       <source>Create Arc Length Dimension</source>
       <translation>Skapa dimension för båglängd</translation>
     </message>
@@ -3050,24 +3054,25 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="635"/>
-      <location filename="../../Command.cpp" line="645"/>
-      <location filename="../../Command.cpp" line="862"/>
-      <location filename="../../Command.cpp" line="979"/>
-      <location filename="../../Command.cpp" line="986"/>
-      <location filename="../../Command.cpp" line="991"/>
-      <location filename="../../Command.cpp" line="1029"/>
-      <location filename="../../Command.cpp" line="1128"/>
-      <location filename="../../Command.cpp" line="1395"/>
-      <location filename="../../Command.cpp" line="1412"/>
-      <location filename="../../Command.cpp" line="1417"/>
-      <location filename="../../Command.cpp" line="1426"/>
-      <location filename="../../Command.cpp" line="1479"/>
-      <location filename="../../Command.cpp" line="1498"/>
-      <location filename="../../Command.cpp" line="1623"/>
-      <location filename="../../Command.cpp" line="1701"/>
-      <location filename="../../Command.cpp" line="1707"/>
-      <location filename="../../Command.cpp" line="1766"/>
+      <location filename="../../Command.cpp" line="637"/>
+      <location filename="../../Command.cpp" line="647"/>
+      <location filename="../../Command.cpp" line="864"/>
+      <location filename="../../Command.cpp" line="981"/>
+      <location filename="../../Command.cpp" line="988"/>
+      <location filename="../../Command.cpp" line="993"/>
+      <location filename="../../Command.cpp" line="1031"/>
+      <location filename="../../Command.cpp" line="1130"/>
+      <location filename="../../Command.cpp" line="1397"/>
+      <location filename="../../Command.cpp" line="1414"/>
+      <location filename="../../Command.cpp" line="1419"/>
+      <location filename="../../Command.cpp" line="1428"/>
+      <location filename="../../Command.cpp" line="1481"/>
+      <location filename="../../Command.cpp" line="1500"/>
+      <location filename="../../Command.cpp" line="1625"/>
+      <location filename="../../Command.cpp" line="1703"/>
+      <location filename="../../Command.cpp" line="1709"/>
+      <location filename="../../CommandHelpers.cpp" line="87"/>
+      <location filename="../../CommandHelpers.cpp" line="100"/>
       <location filename="../../CommandAnnotate.cpp" line="115"/>
       <location filename="../../CommandAnnotate.cpp" line="120"/>
       <location filename="../../CommandAnnotate.cpp" line="311"/>
@@ -3076,105 +3081,134 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
       <location filename="../../CommandAnnotate.cpp" line="725"/>
       <location filename="../../CommandAnnotate.cpp" line="752"/>
       <location filename="../../CommandAnnotate.cpp" line="762"/>
-      <location filename="../../CommandAnnotate.cpp" line="839"/>
-      <location filename="../../CommandAnnotate.cpp" line="848"/>
-      <location filename="../../CommandAnnotate.cpp" line="905"/>
-      <location filename="../../CommandAnnotate.cpp" line="912"/>
-      <location filename="../../CommandAnnotate.cpp" line="939"/>
-      <location filename="../../CommandAnnotate.cpp" line="951"/>
-      <location filename="../../CommandAnnotate.cpp" line="961"/>
-      <location filename="../../CommandAnnotate.cpp" line="1044"/>
-      <location filename="../../CommandAnnotate.cpp" line="1052"/>
-      <location filename="../../CommandAnnotate.cpp" line="1072"/>
-      <location filename="../../CommandAnnotate.cpp" line="1108"/>
-      <location filename="../../CommandAnnotate.cpp" line="1154"/>
-      <location filename="../../CommandAnnotate.cpp" line="1162"/>
-      <location filename="../../CommandAnnotate.cpp" line="1209"/>
-      <location filename="../../CommandAnnotate.cpp" line="1272"/>
-      <location filename="../../CommandAnnotate.cpp" line="1292"/>
-      <location filename="../../CommandAnnotate.cpp" line="1354"/>
-      <location filename="../../CommandAnnotate.cpp" line="1361"/>
-      <location filename="../../CommandAnnotate.cpp" line="1425"/>
-      <location filename="../../CommandHelpers.cpp" line="87"/>
-      <location filename="../../CommandHelpers.cpp" line="100"/>
+      <location filename="../../CommandAnnotate.cpp" line="841"/>
+      <location filename="../../CommandAnnotate.cpp" line="850"/>
+      <location filename="../../CommandAnnotate.cpp" line="907"/>
+      <location filename="../../CommandAnnotate.cpp" line="914"/>
+      <location filename="../../CommandAnnotate.cpp" line="941"/>
+      <location filename="../../CommandAnnotate.cpp" line="953"/>
+      <location filename="../../CommandAnnotate.cpp" line="963"/>
+      <location filename="../../CommandAnnotate.cpp" line="1046"/>
+      <location filename="../../CommandAnnotate.cpp" line="1054"/>
+      <location filename="../../CommandAnnotate.cpp" line="1074"/>
+      <location filename="../../CommandAnnotate.cpp" line="1110"/>
+      <location filename="../../CommandAnnotate.cpp" line="1156"/>
+      <location filename="../../CommandAnnotate.cpp" line="1164"/>
+      <location filename="../../CommandAnnotate.cpp" line="1211"/>
+      <location filename="../../CommandAnnotate.cpp" line="1274"/>
+      <location filename="../../CommandAnnotate.cpp" line="1294"/>
+      <location filename="../../CommandAnnotate.cpp" line="1356"/>
+      <location filename="../../CommandAnnotate.cpp" line="1363"/>
+      <location filename="../../CommandAnnotate.cpp" line="1427"/>
       <source>Wrong selection</source>
       <translation>Felaktigt val</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="430"/>
+      <location filename="../../Command.cpp" line="432"/>
       <source>To insert a view from existing objects, select them before invoking this tool. Without a selection, a file browser will open to insert an SVG or image file.</source>
       <translation>För att infoga en vy från befintliga objekt, markera dem innan du använder detta verktyg. Utan en markering öppnas en filbläddrare för att infoga en SVG- eller bildfil.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="435"/>
+      <location filename="../../Command.cpp" line="437"/>
       <source>Do not show this message again</source>
       <translation>Visa inte det här meddelandet igen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="453"/>
+      <location filename="../../Command.cpp" line="455"/>
       <source>Select a SVG or Image file to open</source>
       <translation>Välj en SVG- eller bildfil som ska öppnas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="449"/>
+      <location filename="../../Command.cpp" line="451"/>
       <source>SVG or Image files</source>
       <translation>SVG- eller bildfiler</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="182"/>
+      <location filename="../../Command.cpp" line="184"/>
       <source>Select a template file</source>
       <translation>Välj en mallfil</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="183"/>
+      <location filename="../../Command.cpp" line="185"/>
       <source>Template</source>
       <translation>Mall</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="596"/>
+      <location filename="../../Command.cpp" line="598"/>
       <source>Empty Selection</source>
       <translation>Tom markering</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="992"/>
+      <location filename="../../Command.cpp" line="994"/>
       <source>No profile object found in selection</source>
       <translation>Inget profilobjekt hittades i markering</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1413"/>
+      <location filename="../../Command.cpp" line="1415"/>
       <source>Select exactly one view to add to clip group</source>
       <translation>Välj exakt en vy för att lägga till klippgrupp</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1480"/>
+      <location filename="../../Command.cpp" line="1482"/>
       <source>Select exactly one view to remove from clip group</source>
       <translation>Välj exakt en vy för att ta bort från klippgrupp</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1849"/>
+      <location filename="../../Command.cpp" line="1870"/>
       <source>FreeCAD could not find a page to export</source>
       <translation>FreeCAD kunde inte hitta en sida att exportera</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="597"/>
+      <location filename="../../Command.cpp" line="599"/>
       <source>Select objects to break or a base view and break definition objects</source>
       <translation>Välj objekt som ska brytas eller en basvy och bryt definitionsobjekt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="636"/>
+      <location filename="../../Command.cpp" line="638"/>
       <source>No break objects found in this selection</source>
       <translation>Inga brytobjekt hittades i denna markering</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="646"/>
-      <location filename="../../Command.cpp" line="1129"/>
+      <location filename="../../Command.cpp" line="648"/>
+      <location filename="../../Command.cpp" line="1131"/>
       <source>No shapes, groups, or links in this selection</source>
       <translation>Inga former, grupper eller länkar i denna markering</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="745"/>
-      <location filename="../../Command.cpp" line="838"/>
-      <location filename="../../Command.cpp" line="901"/>
+      <location filename="../../CommandStack.cpp" line="73"/>
+      <location filename="../../CommandStack.cpp" line="189"/>
+      <location filename="../../CommandStack.cpp" line="249"/>
+      <location filename="../../CommandStack.cpp" line="309"/>
+      <location filename="../../CommandExtensionDims.cpp" line="326"/>
+      <location filename="../../CommandExtensionDims.cpp" line="535"/>
+      <location filename="../../CommandExtensionDims.cpp" line="823"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1151"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1522"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1891"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2129"/>
+      <location filename="../../Command.cpp" line="747"/>
+      <location filename="../../Command.cpp" line="840"/>
+      <location filename="../../Command.cpp" line="903"/>
+      <location filename="../../CommandExtensionPack.cpp" line="302"/>
+      <location filename="../../CommandExtensionPack.cpp" line="605"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1225"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1470"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1768"/>
+      <location filename="../../CommandAnnotate.cpp" line="100"/>
+      <location filename="../../CommandAnnotate.cpp" line="161"/>
+      <location filename="../../CommandAnnotate.cpp" line="213"/>
+      <location filename="../../CommandAnnotate.cpp" line="399"/>
+      <location filename="../../CommandAnnotate.cpp" line="460"/>
+      <location filename="../../CommandAnnotate.cpp" line="499"/>
+      <location filename="../../CommandAnnotate.cpp" line="588"/>
+      <location filename="../../CommandAnnotate.cpp" line="692"/>
+      <location filename="../../CommandAnnotate.cpp" line="805"/>
+      <location filename="../../CommandAnnotate.cpp" line="880"/>
+      <location filename="../../CommandAnnotate.cpp" line="993"/>
+      <location filename="../../CommandAnnotate.cpp" line="1143"/>
+      <location filename="../../CommandAnnotate.cpp" line="1262"/>
+      <location filename="../../CommandAnnotate.cpp" line="1343"/>
+      <location filename="../../CommandAnnotate.cpp" line="1409"/>
       <location filename="../../CommandCreateDims.cpp" line="1499"/>
       <location filename="../../CommandCreateDims.cpp" line="1547"/>
       <location filename="../../CommandCreateDims.cpp" line="1595"/>
@@ -3186,44 +3220,20 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
       <location filename="../../CommandCreateDims.cpp" line="1885"/>
       <location filename="../../CommandCreateDims.cpp" line="1981"/>
       <location filename="../../CommandCreateDims.cpp" line="2106"/>
-      <location filename="../../CommandAnnotate.cpp" line="100"/>
-      <location filename="../../CommandAnnotate.cpp" line="161"/>
-      <location filename="../../CommandAnnotate.cpp" line="213"/>
-      <location filename="../../CommandAnnotate.cpp" line="399"/>
-      <location filename="../../CommandAnnotate.cpp" line="460"/>
-      <location filename="../../CommandAnnotate.cpp" line="499"/>
-      <location filename="../../CommandAnnotate.cpp" line="588"/>
-      <location filename="../../CommandAnnotate.cpp" line="692"/>
-      <location filename="../../CommandAnnotate.cpp" line="803"/>
-      <location filename="../../CommandAnnotate.cpp" line="878"/>
-      <location filename="../../CommandAnnotate.cpp" line="991"/>
-      <location filename="../../CommandAnnotate.cpp" line="1141"/>
-      <location filename="../../CommandAnnotate.cpp" line="1260"/>
-      <location filename="../../CommandAnnotate.cpp" line="1341"/>
-      <location filename="../../CommandAnnotate.cpp" line="1407"/>
-      <location filename="../../CommandStack.cpp" line="73"/>
-      <location filename="../../CommandStack.cpp" line="189"/>
-      <location filename="../../CommandStack.cpp" line="249"/>
-      <location filename="../../CommandStack.cpp" line="309"/>
-      <location filename="../../CommandExtensionPack.cpp" line="302"/>
-      <location filename="../../CommandExtensionPack.cpp" line="605"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1225"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1470"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1768"/>
-      <location filename="../../CommandExtensionDims.cpp" line="325"/>
-      <location filename="../../CommandExtensionDims.cpp" line="534"/>
-      <location filename="../../CommandExtensionDims.cpp" line="822"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1150"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1521"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1890"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2128"/>
       <source>Task in progress</source>
       <translation>Pågående uppgift</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="746"/>
-      <location filename="../../Command.cpp" line="839"/>
-      <location filename="../../Command.cpp" line="902"/>
+      <location filename="../../CommandExtensionDims.cpp" line="327"/>
+      <location filename="../../CommandExtensionDims.cpp" line="536"/>
+      <location filename="../../CommandExtensionDims.cpp" line="824"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1152"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1523"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1892"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2130"/>
+      <location filename="../../Command.cpp" line="748"/>
+      <location filename="../../Command.cpp" line="841"/>
+      <location filename="../../Command.cpp" line="904"/>
       <location filename="../../CommandAnnotate.cpp" line="101"/>
       <location filename="../../CommandAnnotate.cpp" line="162"/>
       <location filename="../../CommandAnnotate.cpp" line="214"/>
@@ -3232,128 +3242,116 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
       <location filename="../../CommandAnnotate.cpp" line="500"/>
       <location filename="../../CommandAnnotate.cpp" line="589"/>
       <location filename="../../CommandAnnotate.cpp" line="693"/>
-      <location filename="../../CommandAnnotate.cpp" line="804"/>
-      <location filename="../../CommandAnnotate.cpp" line="879"/>
-      <location filename="../../CommandAnnotate.cpp" line="992"/>
-      <location filename="../../CommandAnnotate.cpp" line="1142"/>
-      <location filename="../../CommandAnnotate.cpp" line="1261"/>
-      <location filename="../../CommandAnnotate.cpp" line="1342"/>
-      <location filename="../../CommandAnnotate.cpp" line="1408"/>
-      <location filename="../../CommandExtensionDims.cpp" line="326"/>
-      <location filename="../../CommandExtensionDims.cpp" line="535"/>
-      <location filename="../../CommandExtensionDims.cpp" line="823"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1151"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1522"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1891"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2129"/>
+      <location filename="../../CommandAnnotate.cpp" line="806"/>
+      <location filename="../../CommandAnnotate.cpp" line="881"/>
+      <location filename="../../CommandAnnotate.cpp" line="994"/>
+      <location filename="../../CommandAnnotate.cpp" line="1144"/>
+      <location filename="../../CommandAnnotate.cpp" line="1263"/>
+      <location filename="../../CommandAnnotate.cpp" line="1344"/>
+      <location filename="../../CommandAnnotate.cpp" line="1410"/>
       <source>Close active task dialog and try again</source>
       <translation>Stäng dialogrutan för aktiv uppgift och försök igen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="863"/>
-      <location filename="../../Command.cpp" line="1030"/>
+      <location filename="../../Command.cpp" line="865"/>
+      <location filename="../../Command.cpp" line="1032"/>
       <source>Select at least 1 DrawViewPart object as base</source>
       <translation>Välj minst 1 DrawViewPart-objekt som bas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="980"/>
+      <location filename="../../Command.cpp" line="982"/>
       <source>No base view selected</source>
       <translation>Ingen basvy vald</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="987"/>
+      <location filename="../../Command.cpp" line="989"/>
       <source>No base view, shapes, groups, or links in this selection</source>
       <translation>Inga basvyer, former, grupper eller länkar i denna markering</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1198"/>
+      <location filename="../../Command.cpp" line="1200"/>
       <location filename="../../CommandCreateDims.cpp" line="2371"/>
       <source>Select an object first</source>
       <translation>Välj ett objekt först</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1205"/>
+      <location filename="../../Command.cpp" line="1207"/>
       <location filename="../../CommandCreateDims.cpp" line="2379"/>
       <source>Too many objects selected</source>
       <translation>För många objekt valda</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1213"/>
+      <location filename="../../Command.cpp" line="1215"/>
       <source>Create a page first</source>
       <translation>Skapa en sida först</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1225"/>
+      <location filename="../../Command.cpp" line="1227"/>
       <source>No view of a part in selection</source>
       <translation>Ingen vy över en del i markeringen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1396"/>
+      <location filename="../../Command.cpp" line="1398"/>
       <source>Select one clip group and one view</source>
       <translation>Välj en klippgrupp och en vy</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1885"/>
+      <location filename="../../Command.cpp" line="1906"/>
       <source>Page contains a BIM view which will not be exported. Continue?</source>
       <translation>Sidan innehåller en BIM-vy som inte kommer att exporteras. Fortsätta?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1899"/>
+      <location filename="../../Command.cpp" line="1920"/>
       <source>Save DXF file</source>
       <translation>Spara DXF-fil</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2089"/>
+      <location filename="../../Command.cpp" line="2172"/>
       <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
-      <translation type="unfinished">Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</translation>
+      <translation>Den valda riktningen ligger inom %1 grader från en standardriktning. Ersätt den valda riktningen med %2?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2094"/>
+      <location filename="../../Command.cpp" line="2177"/>
       <source>Direction is close to standard</source>
-      <translation type="unfinished">Direction is close to standard</translation>
+      <translation>Riktningen ligger nära en standardriktning</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1418"/>
+      <location filename="../../Command.cpp" line="1420"/>
       <source>Select exactly one clip group</source>
       <translation>Välj exakt en klippgrupp</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1427"/>
+      <location filename="../../Command.cpp" line="1429"/>
       <source>Clip and view must be from same page</source>
       <translation>Klipp och vy måste vara från samma sida</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1499"/>
+      <location filename="../../Command.cpp" line="1501"/>
       <source>View does not belong to a clip</source>
       <translation>Vyn hör inte till ett klipp</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1624"/>
+      <location filename="../../Command.cpp" line="1626"/>
       <source>Select at least one object</source>
       <translation>Välj minst ett objekt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1702"/>
+      <location filename="../../Command.cpp" line="1704"/>
       <source>Select only 1 BIM section plane</source>
       <translation>Välj endast 1 BIM-sektionsplan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1708"/>
+      <location filename="../../Command.cpp" line="1710"/>
       <source>No BIM section plane in selection</source>
       <translation>Ingen BIM-sektionsplan i markeringen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1767"/>
-      <source>Select exactly one spreadsheet object</source>
-      <translation>Välj exakt ett kalkylbladsobjekt</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1848"/>
+      <location filename="../../Command.cpp" line="1869"/>
       <source>No drawing page</source>
       <translation>Ingen ritningssida</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1884"/>
+      <location filename="../../Command.cpp" line="1905"/>
       <source>Cannot export selection</source>
       <translation>Det går inte att exportera markering</translation>
     </message>
@@ -3401,7 +3399,7 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2220"/>
       <source>Cannot make 3D dimension without 3d references</source>
-      <translation type="unfinished">Cannot make 3D dimension without 3d references</translation>
+      <translation>Det går inte att skapa ett 3D-mått utan 3D-referenser</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2235"/>
@@ -3434,23 +3432,26 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
       <translation>Skapa först en sida.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1562"/>
+      <location filename="../../Command.cpp" line="1564"/>
       <source>Choose an SVG file to open</source>
       <translation>Välj en SVG-fil att öppna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1197"/>
-      <location filename="../../Command.cpp" line="1204"/>
-      <location filename="../../Command.cpp" line="1212"/>
-      <location filename="../../Command.cpp" line="1224"/>
       <location filename="../../CommandDecorate.cpp" line="418"/>
       <location filename="../../CommandDecorate.cpp" line="425"/>
       <location filename="../../CommandDecorate.cpp" line="432"/>
       <location filename="../../CommandDecorate.cpp" line="439"/>
       <location filename="../../CommandDecorate.cpp" line="445"/>
-      <location filename="../../TaskDimension.cpp" line="551"/>
       <location filename="../../TaskDimRepair.cpp" line="137"/>
       <location filename="../../TaskDimRepair.cpp" line="148"/>
+      <location filename="../../Command.cpp" line="1199"/>
+      <location filename="../../Command.cpp" line="1206"/>
+      <location filename="../../Command.cpp" line="1214"/>
+      <location filename="../../Command.cpp" line="1226"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1881"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2005"/>
+      <location filename="../../CommandAlign.cpp" line="53"/>
+      <location filename="../../TaskDimension.cpp" line="551"/>
       <location filename="../../CommandCreateDims.cpp" line="2007"/>
       <location filename="../../CommandCreateDims.cpp" line="2023"/>
       <location filename="../../CommandCreateDims.cpp" line="2049"/>
@@ -3463,9 +3464,6 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
       <location filename="../../CommandCreateDims.cpp" line="2370"/>
       <location filename="../../CommandCreateDims.cpp" line="2378"/>
       <location filename="../../CommandCreateDims.cpp" line="2387"/>
-      <location filename="../../CommandAlign.cpp" line="53"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1881"/>
-      <location filename="../../CommandExtensionPack.cpp" line="2005"/>
       <source>Incorrect Selection</source>
       <translation>Felaktig markering</translation>
     </message>
@@ -3540,7 +3538,7 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="120"/>
       <source>Can not make hole circle for %1</source>
-      <translation type="unfinished">Can not make hole circle for %1</translation>
+      <translation>Det går inte att skapa en hålcirkel för %1</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="242"/>
@@ -3551,17 +3549,17 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
       <location filename="../../CommandExtensionPack.cpp" line="243"/>
       <location filename="../../CommandExtensionPack.cpp" line="1676"/>
       <source>Can not make centerlines for %1</source>
-      <translation type="unfinished">Can not make centerlines for %1</translation>
+      <translation>Det går inte att skapa mittlinjer för %1</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="982"/>
       <source>Select a center for the circle.</source>
-      <translation type="unfinished">Select a center for the circle.</translation>
+      <translation>Välj en mittpunkt för cirkeln.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1675"/>
       <source>TechDraw extend/shorten line</source>
-      <translation type="unfinished">TechDraw extend/shorten line</translation>
+      <translation>TechDraw: förläng/förkorta linje</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1882"/>
@@ -3576,12 +3574,12 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2220"/>
       <source>TechDraw create thread circle</source>
-      <translation type="unfinished">TechDraw create thread circle</translation>
+      <translation>TechDraw: skapa gängcirkel</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2221"/>
       <source>Can not make thread circle for %1</source>
-      <translation type="unfinished">Can not make thread circle for %1</translation>
+      <translation>Det går inte att skapa en gängcirkel för %1</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2238"/>
@@ -3594,12 +3592,12 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
       <translation>Välj 2 raka linjer</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="768"/>
-      <location filename="../../CommandAnnotate.cpp" line="1021"/>
       <location filename="../../CommandExtensionPack.cpp" line="900"/>
       <location filename="../../CommandExtensionPack.cpp" line="923"/>
       <location filename="../../CommandExtensionPack.cpp" line="945"/>
       <location filename="../../CommandExtensionPack.cpp" line="981"/>
+      <location filename="../../CommandAnnotate.cpp" line="768"/>
+      <location filename="../../CommandAnnotate.cpp" line="1023"/>
       <source>Wrong Selection</source>
       <translation>Felaktigt val</translation>
     </message>
@@ -3617,14 +3615,14 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
     <message>
       <location filename="../../CommandAnnotate.cpp" line="121"/>
       <location filename="../../CommandAnnotate.cpp" line="726"/>
-      <location filename="../../CommandAnnotate.cpp" line="906"/>
-      <location filename="../../CommandAnnotate.cpp" line="1045"/>
+      <location filename="../../CommandAnnotate.cpp" line="908"/>
+      <location filename="../../CommandAnnotate.cpp" line="1047"/>
       <source>You must select a base view for the line</source>
       <translation>Du måste välja en basvy för linjen</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="720"/>
-      <location filename="../../CommandAnnotate.cpp" line="913"/>
+      <location filename="../../CommandAnnotate.cpp" line="915"/>
       <source>No base view in selection</source>
       <translation>Ingen basvy i markering</translation>
     </message>
@@ -3640,100 +3638,100 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="769"/>
-      <location filename="../../CommandAnnotate.cpp" line="952"/>
+      <location filename="../../CommandAnnotate.cpp" line="954"/>
       <source>Selection is not a centerline</source>
       <translation>Valet är inte en mittlinje</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="840"/>
+      <location filename="../../CommandAnnotate.cpp" line="842"/>
       <source>Selection is not a Centerline</source>
       <translation>Valet är inte en mittlinje</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="849"/>
+      <location filename="../../CommandAnnotate.cpp" line="851"/>
       <source>Selection not understood</source>
       <translation>Valet inte förstått</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="940"/>
+      <location filename="../../CommandAnnotate.cpp" line="942"/>
       <source>You must select 2 vertices or an existing centerline</source>
       <translation>Du måste välja 2 hörnpunkter eller en befintlig mittlinje</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="962"/>
+      <location filename="../../CommandAnnotate.cpp" line="964"/>
       <source>Select 2 vertices or 1 centerline</source>
       <translation>Välj 2 hörn eller 1 mittlinje</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1053"/>
+      <location filename="../../CommandAnnotate.cpp" line="1055"/>
       <source>Not enough points in the selection</source>
       <translation>Inte tillräckligt med punkter i markering</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1073"/>
+      <location filename="../../CommandAnnotate.cpp" line="1075"/>
       <source>Selection is not a cosmetic line</source>
       <translation>Markeringen är inte en kosmetisk linje</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1109"/>
+      <location filename="../../CommandAnnotate.cpp" line="1111"/>
       <source>You must select 2 vertices</source>
       <translation>Du måste välja 2 hörn</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1155"/>
-      <location filename="../../CommandAnnotate.cpp" line="1355"/>
+      <location filename="../../CommandAnnotate.cpp" line="1157"/>
+      <location filename="../../CommandAnnotate.cpp" line="1357"/>
       <source>Nothing selected</source>
       <translation>Inget markerat</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1163"/>
+      <location filename="../../CommandAnnotate.cpp" line="1165"/>
       <source>At least 1 object in selection is not a part view</source>
       <translation>Minst 1 objekt i markeringen är inte en delvy</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1210"/>
+      <location filename="../../CommandAnnotate.cpp" line="1212"/>
       <source>Unknown object type in selection</source>
       <translation>Okänd objekttyp i urvalet</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1273"/>
+      <location filename="../../CommandAnnotate.cpp" line="1275"/>
       <source>You must select a view and/or lines</source>
       <translation>Du måste välja en vy och/eller linjer</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1293"/>
+      <location filename="../../CommandAnnotate.cpp" line="1295"/>
       <source>No view in selection</source>
       <translation>Ingen vy i urvalet</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1362"/>
+      <location filename="../../CommandAnnotate.cpp" line="1364"/>
       <source>No part views in this selection</source>
       <translation>Inga delvyer i detta urval</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1426"/>
+      <location filename="../../CommandAnnotate.cpp" line="1428"/>
       <source>Select exactly one leader line or one weld symbol</source>
       <translation>Välj exakt en ledlinje eller en svetsningssymbol</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1485"/>
+      <location filename="../../CommandAnnotate.cpp" line="1487"/>
       <source>SurfaceFinishSymbols</source>
       <translation>YtfinishSymboler</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1486"/>
+      <location filename="../../CommandAnnotate.cpp" line="1488"/>
       <source>Selected object is not a part view, nor a leader line</source>
       <translation>Valt objekt är inte en delvy, inte heller en ledarlinje</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="103"/>
       <source>No TechDraw Page</source>
-      <translation type="unfinished">No TechDraw Page</translation>
+      <translation>Ingen TechDraw-sida</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="104"/>
       <source>Need a TechDraw Page for this command</source>
-      <translation type="unfinished">Need a TechDraw Page for this command</translation>
+      <translation>En TechDraw-sida krävs för det här kommandot</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="209"/>
@@ -3797,34 +3795,34 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
       <translation>Den här funktionen behöver en sida.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="619"/>
+      <location filename="../../MDIViewPage.cpp" line="838"/>
       <source>Export Page as PDF</source>
       <translation>Exportera sidan som PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="538"/>
+      <location filename="../../MDIViewPage.cpp" line="757"/>
       <source>Export page as SVG</source>
       <translation>Exportera sidan som SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="561"/>
+      <location filename="../../MDIViewPage.cpp" line="780"/>
       <source>Export page as DXF</source>
       <translation>Exportera sidan som DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="602"/>
+      <location filename="../../MDIViewPage.cpp" line="821"/>
       <source>Unable to Write File</source>
-      <translation type="unfinished">Unable to Write File</translation>
+      <translation>Det går inte att skriva filen</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="603"/>
+      <location filename="../../MDIViewPage.cpp" line="822"/>
       <source>FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</source>
-      <translation type="unfinished">FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</translation>
+      <translation>FreeCAD kan inte öppna filen %1 för skrivning. Filen kan vara öppen i ett annat program.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroup.cpp" line="160"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
       <location filename="../../ViewProviderPage.cpp" line="219"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
       <source>Are you sure you want to continue?</source>
       <translation>Är du säker på att du vill fortsätta?</translation>
     </message>
@@ -3849,7 +3847,7 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
       <translation>Redigera ledarlinje</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="376"/>
+      <location filename="../../TaskRichAnno.cpp" line="379"/>
       <source>Rich text editor</source>
       <translation>Rich Text-redigerare</translation>
     </message>
@@ -3963,144 +3961,144 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
       <translation>Redigera %1</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="109"/>
+      <location filename="../../CommandExtensionDims.cpp" line="110"/>
       <source>TechDraw Insert Prefix</source>
       <translation>TechDraw Infoga prefix</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="143"/>
+      <location filename="../../CommandExtensionDims.cpp" line="144"/>
       <source>Insert Prefix</source>
       <translation>Infoga prefix</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="428"/>
+      <location filename="../../CommandExtensionDims.cpp" line="429"/>
       <source>TechDraw Increase/Decrease Decimal</source>
       <translation>TechDraw Öka/minska decimal</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="613"/>
-      <location filename="../../CommandExtensionDims.cpp" line="622"/>
+      <location filename="../../CommandExtensionDims.cpp" line="614"/>
+      <location filename="../../CommandExtensionDims.cpp" line="623"/>
       <source>TechDraw PosHorizChainDimension</source>
-      <translation type="unfinished">TechDraw PosHorizChainDimension</translation>
+      <translation>TechDraw PosHorizChainDimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="623"/>
-      <location filename="../../CommandExtensionDims.cpp" line="932"/>
+      <location filename="../../CommandExtensionDims.cpp" line="624"/>
+      <location filename="../../CommandExtensionDims.cpp" line="933"/>
       <source>No horizontal dimensions selected</source>
       <translation>Inga horisontella dimensioner valda</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="674"/>
-      <location filename="../../CommandExtensionDims.cpp" line="683"/>
+      <location filename="../../CommandExtensionDims.cpp" line="675"/>
+      <location filename="../../CommandExtensionDims.cpp" line="684"/>
       <source>TechDraw PosVertChainDimension</source>
       <translation>TechDraw PosVertKedjaDimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="684"/>
-      <location filename="../../CommandExtensionDims.cpp" line="998"/>
+      <location filename="../../CommandExtensionDims.cpp" line="685"/>
+      <location filename="../../CommandExtensionDims.cpp" line="999"/>
       <source>No vertical dimensions selected</source>
       <translation>Inga vertikala dimensioner valda</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="736"/>
-      <location filename="../../CommandExtensionDims.cpp" line="745"/>
+      <location filename="../../CommandExtensionDims.cpp" line="737"/>
+      <location filename="../../CommandExtensionDims.cpp" line="746"/>
       <source>TechDraw PosObliqueChainDimension</source>
-      <translation type="unfinished">TechDraw PosObliqueChainDimension</translation>
+      <translation>TechDraw PosObliqueChainDimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="746"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1065"/>
+      <location filename="../../CommandExtensionDims.cpp" line="747"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1066"/>
       <source>No oblique dimensions selected</source>
       <translation>Inga sneda dimensioner valda</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="922"/>
-      <location filename="../../CommandExtensionDims.cpp" line="931"/>
+      <location filename="../../CommandExtensionDims.cpp" line="923"/>
+      <location filename="../../CommandExtensionDims.cpp" line="932"/>
       <source>TechDraw CascadeHorizDimension</source>
       <translation>TechDraw KaskadHorizDimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="988"/>
-      <location filename="../../CommandExtensionDims.cpp" line="997"/>
+      <location filename="../../CommandExtensionDims.cpp" line="989"/>
+      <location filename="../../CommandExtensionDims.cpp" line="998"/>
       <source>TechDraw CascadeVertDimension</source>
       <translation>TechDraw KaskadVertDimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1055"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1064"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1056"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1065"/>
       <source>TechDraw CascadeObliqueDimension</source>
       <translation>TechDraw KaskadOblikeradDimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1254"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1255"/>
       <source>TechDraw Create Horizontal Chain Dimension</source>
       <translation>TechDraw Skapa horisontell kedjedimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1319"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1320"/>
       <source>TechDraw Create Vertical Chain Dimension</source>
       <translation>TechDraw Skapa vertikal kedjedimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1384"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1385"/>
       <source>TechDraw Create Oblique Chain Dimension</source>
       <translation>TechDraw Skapa sned kedjedimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1613"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1614"/>
       <source>TechDraw Create Horizontal Coordinate Dimension</source>
       <translation>TechDraw Skapa horisontell koordinatdimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1682"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1683"/>
       <source>TechDraw Create Vertical Coord dimension</source>
       <translation>TechDraw Skapa vertikal koordinatdimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2380"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2381"/>
       <source>No sub-elements selected</source>
       <translation>Inga underelement valda</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1751"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1752"/>
       <source>TechDraw Create Oblique Coord Dimension</source>
       <translation>TechDraw Skapa sned Coordimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="116"/>
+      <location filename="../../CommandExtensionDims.cpp" line="117"/>
       <source>Prefix Text</source>
-      <translation type="unfinished">Prefix Text</translation>
+      <translation>Prefixtext</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1982"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1983"/>
       <source>TechDraw Create Horizontal Chamfer Dimension</source>
       <translation>TechDraw Skapa dimension för horisontell avfasning</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2048"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2049"/>
       <source>TechDraw Create Vertical Chamfer Dimension</source>
       <translation>TechDraw Skapa dimension för vertikal avfasning</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2223"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2224"/>
       <source>TechDraw Create Arc Length Dimension</source>
       <translation>TechDraw Skapa dimension för båglängd</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2271"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2272"/>
       <source>TechDraw Customize Format</source>
       <translation>TechDraw Anpassa format</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1022"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2345"/>
       <location filename="../../CommandExtensionPack.cpp" line="2146"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2344"/>
+      <location filename="../../CommandAnnotate.cpp" line="1024"/>
       <source>Selection is empty</source>
       <translation>Markeringen är tom</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="2361"/>
       <location filename="../../CommandExtensionPack.cpp" line="2153"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2360"/>
       <source>No object selected</source>
       <translation>Inget objekt valt</translation>
     </message>
@@ -4235,7 +4233,7 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
       <translation>Parameterfel</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="279"/>
+      <location filename="../../PagePrinter.cpp" line="285"/>
       <source>Document Name:</source>
       <translation>Dokumentets namn:</translation>
     </message>
@@ -4270,34 +4268,34 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
       <translation>Redigera mittlinje</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="117"/>
+      <location filename="../../TaskRichAnno.cpp" line="116"/>
       <source>Rich Text Editor</source>
       <translation>Aktivering av rich text-editor</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="156"/>
+      <location filename="../../TaskRichAnno.cpp" line="155"/>
       <source>Rich Text Creator</source>
       <translation>Skapare av rik text</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="374"/>
+      <location filename="../../TaskRichAnno.cpp" line="377"/>
       <source>Rich text creator</source>
-      <translation type="unfinished">Rich text creator</translation>
+      <translation>Skapa formaterad text</translation>
     </message>
     <message>
       <location filename="../../QGIRichAnno.cpp" line="400"/>
       <source>Resize Rich Annotation</source>
-      <translation type="unfinished">Resize Rich Annotation</translation>
+      <translation>Ändra storlek på formaterad anteckning</translation>
+    </message>
+    <message>
+      <location filename="../../TemplateTextField.cpp" line="56"/>
+      <source>Updates the text</source>
+      <translation>Uppdaterar texten</translation>
     </message>
     <message>
       <location filename="../../SymbolChooser.cpp" line="59"/>
       <source>Select a Symbol</source>
       <translation>Välj en symbol</translation>
-    </message>
-    <message>
-      <location filename="../../TemplateTextField.cpp" line="55"/>
-      <source>Updates the text</source>
-      <translation type="unfinished">Updates the text</translation>
     </message>
   </context>
   <context>
@@ -4310,28 +4308,28 @@ it has a weld symbol that would become broken.</source>
 den har en svetsningssymbol som skulle bli bruten.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="392"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="403"/>
       <source>Close open dialog before deleting detail object</source>
       <translation>Stäng öppen dialog innan du tar bort detaljobjekt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="407"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="418"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
       <translation>Du kan inte ta bort denna vy eftersom den har en eller flera beroende vyer som skulle bli brutna.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderWeld.cpp" line="143"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="146"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="163"/>
-      <location filename="../../ViewProviderLeader.cpp" line="212"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="174"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="182"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="190"/>
+      <location filename="../../ViewProviderWeld.cpp" line="143"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="407"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="422"/>
       <location filename="../../ViewProviderPage.cpp" line="222"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="396"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="411"/>
+      <location filename="../../ViewProviderLeader.cpp" line="212"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <source>Object dependencies</source>
       <translation>Beroende av objekt</translation>
     </message>
@@ -4399,12 +4397,12 @@ den har en kakelsvets som skulle bli trasig.</translation>
     <message>
       <location filename="../../TaskActiveView.ui" line="20"/>
       <source>Crop</source>
-      <translation type="unfinished">Crop</translation>
+      <translation>Beskär</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="47"/>
       <source>Crops the captured image to this height</source>
-      <translation type="unfinished">Crops the captured image to this height</translation>
+      <translation>Beskär den tagna bilden till den här höjden</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="70"/>
@@ -4414,7 +4412,7 @@ den har en kakelsvets som skulle bli trasig.</translation>
     <message>
       <location filename="../../TaskActiveView.ui" line="89"/>
       <source>Crops the captured image to this width</source>
-      <translation type="unfinished">Crops the captured image to this width</translation>
+      <translation>Beskär den tagna bilden till den här bredden</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="108"/>
@@ -4738,7 +4736,7 @@ men det kan bli en prestandaförlust i komplexa modeller.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="275"/>
       <source>Mark fuzz</source>
-      <translation type="unfinished">Mark fuzz</translation>
+      <translation>Markera tolerans</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="311"/>
@@ -5061,9 +5059,9 @@ when hatching a face with a PAT pattern</source>
 always be the right choice.  Flat or square caps are useful
 for using drawings as a 1:1 cutting guide.
 </source>
-      <translation type="unfinished">Shape of line end caps. The default (round) should almost
-always be the right choice.  Flat or square caps are useful
-for using drawings as a 1:1 cutting guide.
+      <translation>Formen på linjernas ändhättor. Standardalternativet (rund) är nästan
+alltid rätt val. Platta eller fyrkantiga ändhättor är användbara
+när ritningar används som skärmallar i skala 1:1.
 </translation>
     </message>
     <message>
@@ -5216,32 +5214,32 @@ for using drawings as a 1:1 cutting guide.
       <translation>Färger</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="592"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="545"/>
       <source>Grid color</source>
       <translation>Rutnätsfärg</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="604"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="557"/>
       <source>Hidden line</source>
       <translation>Dold linje</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="616"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="569"/>
       <source>Normal</source>
       <translation>Normal</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="508"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="461"/>
       <source>Normal line color</source>
       <translation>Normal linjefärg</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="528"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="481"/>
       <source>Hidden line color</source>
       <translation>Färg på dold linje</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="248"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="228"/>
       <source>Preselected</source>
       <translation>Förvald</translation>
     </message>
@@ -5251,7 +5249,7 @@ for using drawings as a 1:1 cutting guide.
       <translation>Färg för förval</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="623"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="576"/>
       <source>Section face color</source>
       <translation>Ytfärg på sektion</translation>
     </message>
@@ -5261,12 +5259,12 @@ for using drawings as a 1:1 cutting guide.
       <translation>Vald</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="441"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="421"/>
       <source>Selected item color</source>
       <translation>Färg på valt objekt</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="347"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="327"/>
       <source>Section line color</source>
       <translation>Färg på sektionslinje</translation>
     </message>
@@ -5296,47 +5294,47 @@ for using drawings as a 1:1 cutting guide.
       <translation>Sektionsyta</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="260"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="240"/>
       <source>Leader line</source>
       <translation>Ledarlinje</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="280"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="260"/>
       <source>Color of dimension lines and text</source>
       <translation>Färg på måttlinjer och text</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="300"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="280"/>
       <source>Use a light color for dark text and dark color for light text</source>
       <translation>Använd en ljus färg för mörk text och en mörk färg för ljus text</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="392"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="372"/>
       <source>Detail highlight</source>
       <translation>Detaljhöjdpunkt</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="404"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="384"/>
       <source>Hatch</source>
       <translation>Skraffering</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="643"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="596"/>
       <source>Template underline</source>
       <translation>Mall understrykning</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="327"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="307"/>
       <source>Hatch image color</source>
       <translation>Färg på skrafferingsbilden</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="565"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="518"/>
       <source>Dimension</source>
       <translation>Storlek</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="367"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="347"/>
       <source>Geometric hatch pattern color</source>
       <translation>Geometriskt skrafferingsmönsterfärg</translation>
     </message>
@@ -5346,27 +5344,27 @@ for using drawings as a 1:1 cutting guide.
       <translation>Mittlinje</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="267"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="247"/>
       <source>Monochrome text color</source>
       <translation>Monokrom textfärg</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="411"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="391"/>
       <source>Page color</source>
       <translation>Sidans färg</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="418"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="398"/>
       <source>Section line</source>
       <translation>Sektion linje</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="425"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="405"/>
       <source>Uses light text and lines on dark backgrounds and sets page color to a dark color. Transparent or light color faces are recommended with this option.</source>
       <translation>Använder ljus text och ljusa linjer på mörka bakgrunder och ställer in sidans färg till en mörk färg. Transparenta eller ljusa sidor rekommenderas med detta alternativ.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="428"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="408"/>
       <source>Light on dark</source>
       <translation>Ljus på mörker</translation>
     </message>
@@ -5381,27 +5379,27 @@ for using drawings as a 1:1 cutting guide.
       <translation>Toppunkt</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="495"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="634"/>
       <source>Transparent faces</source>
       <translation>Transparenta ytor</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="572"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="525"/>
       <source>Color of vertices in views</source>
       <translation>Färg på hörn i vyer</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="461"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="441"/>
       <source>Default color for leader lines</source>
       <translation>Standardfärg för ledlinjer</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="492"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="631"/>
       <source>Object faces will be transparent</source>
       <translation>Objektytorna blir transparenta</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="223"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="647"/>
       <source>Face color (if not transparent)</source>
       <translation>Ytfärg (om den inte är transparent)</translation>
     </message>
@@ -5411,7 +5409,17 @@ for using drawings as a 1:1 cutting guide.
       <translation>Monokrom</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="678"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="672"/>
+      <source>Break line</source>
+      <translation type="unfinished">Break line</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="679"/>
+      <source>Break line color for broken views</source>
+      <translation type="unfinished">Break line color for broken views</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="710"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Obs:&lt;/span&gt; Objekt i &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; är standardvärden för nya objekt. De har ingen effekt på befintliga objekt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -5646,22 +5654,22 @@ Detta påverkar endast verktygsfältet; alla verktyg förblir tillgängliga via 
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="627"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this is checked, new dimensions will be set to snap to position.  If not checked, new dimensions will not snap.  Snapping for individual dimensions may be adjusted with the &amp;quot;AllowSnapping&amp;quot; property.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this is checked, new dimensions will be set to snap to position.  If not checked, new dimensions will not snap.  Snapping for individual dimensions may be adjusted with the &amp;quot;AllowSnapping&amp;quot; property.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Om detta markeras kommer nya mått att fästas vid positionen. Om det inte markeras fästs inte nya mått. Fästning för enskilda mått kan justeras med egenskapen &amp;quot;AllowSnapping&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="630"/>
       <source>Snap dimensions</source>
-      <translation type="unfinished">Snap dimensions</translation>
+      <translation>Fäst mått</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="658"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fraction of the dimension text length within which the text snaps to its centered position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fraction of the dimension text length within which the text snaps to its centered position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Andel av måtttextens längd inom vilken texten fästs vid sin centrerade position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="677"/>
       <source>Dimension text factor</source>
-      <translation type="unfinished">Dimension text factor</translation>
+      <translation>Faktor för måtttext</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="684"/>
@@ -5671,12 +5679,12 @@ Detta påverkar endast verktygsfältet; alla verktyg förblir tillgängliga via 
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="697"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fraction of the spacing between dimensions within which they snap as chain or ordinate dimensions.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fraction of the spacing between dimensions within which they snap as chain or ordinate dimensions.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Andel av avståndet mellan mått inom vilken de fästs som kedje- eller ordinatmått.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="737"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Note: Snapping settings for views are on the general tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Note: Snapping settings for views are on the general tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Obs! Fästinställningar för vyer finns på fliken Allmänt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="529"/>
@@ -6008,7 +6016,7 @@ kan åsidosätta den globala parametern "Uppdatera med 3D</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="955"/>
       <source>Check this box if you want detail view highlights to snap to the nearest vertex when dragging.</source>
-      <translation type="unfinished">Check this box if you want detail view highlights to snap to the nearest vertex when dragging.</translation>
+      <translation>Markera den här rutan om du vill att markeringar för detaljvyer ska fästas vid närmaste hörn när de dras.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="974"/>
@@ -6023,7 +6031,7 @@ kan åsidosätta den globala parametern "Uppdatera med 3D</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="853"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Control when the view boundary frames and labels are displayed.&lt;/p&gt;&lt;p&gt;Auto: Show on hover, On: Always show, Off: Never show.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Control when the view boundary frames and labels are displayed.&lt;/p&gt;&lt;p&gt;Auto: Show on hover, On: Always show, Off: Never show.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Styr när vyernas ramgränser och etiketter visas.&lt;/p&gt;&lt;p&gt;Automatiskt: Visa när pekaren förs över, På: Visa alltid, Av: Visa aldrig.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="863"/>
@@ -6043,17 +6051,17 @@ kan åsidosätta den globala parametern "Uppdatera med 3D</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="878"/>
       <source>Manual</source>
-      <translation type="unfinished">Manual</translation>
+      <translation>Manuellt</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="886"/>
       <source>View frames mode</source>
-      <translation type="unfinished">View frames mode</translation>
+      <translation>Läge för vyramar</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="910"/>
       <source>Snaps a view into its aligned position when it is within this fraction of the view size from the alignment target.</source>
-      <translation type="unfinished">Snaps a view into its aligned position when it is within this fraction of the view size from the alignment target.</translation>
+      <translation>Fäster en vy vid dess justerade position när den befinner sig inom denna andel av vystorleken från justeringsmålet.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="981"/>
@@ -6063,7 +6071,7 @@ kan åsidosätta den globala parametern "Uppdatera med 3D</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1035"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Note: Snapping settings for dimensions are on the dimensions tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Note: Snapping settings for dimensions are on the dimensions tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Obs! Fästinställningar för mått finns på fliken Mått.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1071"/>
@@ -6302,66 +6310,66 @@ Snabbt, men resultatet är en samling korta raka linjer.</translation>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="92"/>
-      <source>Toggle &amp;Keep Updated</source>
-      <translation>Växla &amp;Håll uppdaterad</translation>
+      <location filename="../../MDIViewPage.cpp" line="99"/>
+      <source>&amp;Keep Updated</source>
+      <translation>&amp;Håll uppdaterat</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="95"/>
-      <source>Toggle &amp;Frames</source>
-      <translation type="unfinished">Toggle &amp;Frames</translation>
+      <location filename="../../MDIViewPage.cpp" line="102"/>
+      <source>Show &amp;Frames</source>
+      <translation>Visa &amp;ramar</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="98"/>
-      <source>Toggle &amp;Grid</source>
-      <translation type="unfinished">Toggle &amp;Grid</translation>
+      <location filename="../../MDIViewPage.cpp" line="105"/>
+      <source>Show &amp;Grid</source>
+      <translation>Visa &amp;rutnät</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="101"/>
+      <location filename="../../MDIViewPage.cpp" line="108"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;Exportera SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="105"/>
+      <location filename="../../MDIViewPage.cpp" line="112"/>
       <source>Export DXF</source>
       <translation>Exportera DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="109"/>
+      <location filename="../../MDIViewPage.cpp" line="116"/>
       <source>Export PDF</source>
       <translation>Exportera PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="113"/>
+      <location filename="../../MDIViewPage.cpp" line="120"/>
       <source>Print All Pages</source>
       <translation>Skriv ut alla sidor</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="428"/>
+      <location filename="../../MDIViewPage.cpp" line="442"/>
       <source>Different orientation</source>
       <translation>Olika inriktning</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="429"/>
+      <location filename="../../MDIViewPage.cpp" line="443"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>Skrivaren använder en annan orientering än ritningen.
 Vill du fortsätta?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="438"/>
+      <location filename="../../MDIViewPage.cpp" line="452"/>
       <source>Different paper size</source>
       <translation>Olika pappersstorlek</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="439"/>
+      <location filename="../../MDIViewPage.cpp" line="453"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>Skrivaren använder en annan pappersstorlek än ritningen.
 Vill du fortsätta?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1161"/>
+      <location filename="../../MDIViewPage.cpp" line="1401"/>
       <source>Selected:</source>
       <translation>Valda:</translation>
     </message>
@@ -6424,7 +6432,7 @@ Vill du fortsätta?</translation>
     <message>
       <location filename="../../TaskBalloon.ui" line="102"/>
       <source>Bubble Appearance</source>
-      <translation type="unfinished">Bubble Appearance</translation>
+      <translation>Ballongens utseende</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="118"/>
@@ -6504,7 +6512,7 @@ Vill du fortsätta?</translation>
     <message>
       <location filename="../../TaskBalloon.ui" line="291"/>
       <source>Kink length</source>
-      <translation type="unfinished">Kink length</translation>
+      <translation>Knäcklängd</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="298"/>
@@ -6529,7 +6537,7 @@ Vill du fortsätta?</translation>
     <message>
       <location filename="../../TaskBalloon.ui" line="312"/>
       <source>Symbol scale</source>
-      <translation type="unfinished">Symbol scale</translation>
+      <translation>Symbolskala</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="319"/>
@@ -6592,7 +6600,7 @@ Vill du fortsätta?</translation>
     <message>
       <location filename="../../TaskCenterLine.ui" line="77"/>
       <source>The centerline is positioned at the center of the combined bounding box of the selected elements</source>
-      <translation type="unfinished">The centerline is positioned at the center of the combined bounding box of the selected elements</translation>
+      <translation>Mittlinjen placeras i mitten av den kombinerade begränsningsramen för de valda elementen</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="95"/>
@@ -6625,22 +6633,22 @@ Vill du fortsätta?</translation>
     <message>
       <location filename="../../TaskCenterLine.ui" line="174"/>
       <source>Shifts the line up (+) or down (-)</source>
-      <translation type="unfinished">Shifts the line up (+) or down (-)</translation>
+      <translation>Flyttar linjen uppåt (+) eller nedåt (−)</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="190"/>
       <source>Shifts the line left (-) or right (+)</source>
-      <translation type="unfinished">Shifts the line left (-) or right (+)</translation>
+      <translation>Flyttar linjen åt vänster (−) eller höger (+)</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="220"/>
       <source>Rotates the line counterclockwise (+) or clockwise (-)</source>
-      <translation type="unfinished">Rotates the line counterclockwise (+) or clockwise (-)</translation>
+      <translation>Roterar linjen moturs (+) eller medurs (−)</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="246"/>
       <source>Extends the line by the specified amount beyond its natural endpoints</source>
-      <translation type="unfinished">Extends the line by the specified amount beyond its natural endpoints</translation>
+      <translation>Förlänger linjen med det angivna måttet utanför dess naturliga ändpunkter</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="264"/>
@@ -6877,7 +6885,7 @@ Vill du fortsätta?</translation>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="173"/>
       <source>Escape Picking</source>
-      <translation type="unfinished">Escape Picking</translation>
+      <translation>Avsluta val</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="201"/>
@@ -7542,12 +7550,12 @@ av ett negativt värde för "Övertolerans".</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="330"/>
       <source>Override Angles</source>
-      <translation type="unfinished">Override Angles</translation>
+      <translation>Åsidosätt vinklar</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="341"/>
       <source>Sets the extension line angle to match the selected edge or vertices</source>
-      <translation type="unfinished">Sets the extension line angle to match the selected edge or vertices</translation>
+      <translation>Ställer in hjälplinjens vinkel så att den matchar den valda kanten eller de valda hörnen</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="357"/>
@@ -7558,17 +7566,17 @@ av ett negativt värde för "Övertolerans".</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="370"/>
       <source>Sets the dimension line angle to match the selected edge or vertices</source>
-      <translation type="unfinished">Sets the dimension line angle to match the selected edge or vertices</translation>
+      <translation>Ställer in måttlinjens vinkel så att den matchar den valda kanten eller de valda hörnen</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="380"/>
       <source>Resets the dimension line angle to the default orthographic value</source>
-      <translation type="unfinished">Resets the dimension line angle to the default orthographic value</translation>
+      <translation>Återställer måttlinjens vinkel till det ortografiska standardvärdet</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="423"/>
       <source>Resets the extension line angle to the default orthographic value</source>
-      <translation type="unfinished">Resets the extension line angle to the default orthographic value</translation>
+      <translation>Återställer hjälplinjens vinkel till det ortografiska standardvärdet</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="390"/>
@@ -8388,7 +8396,7 @@ med hjälp av de angivna X/Y-avstånden</translation>
     <message>
       <location filename="../../TaskRichAnno.ui" line="45"/>
       <source>Maximal width of the annotation block, if -1 then automatic width</source>
-      <translation type="unfinished">Maximal width of the annotation block, if -1 then automatic width</translation>
+      <translation>Största bredd för anteckningsblocket; −1 ger automatisk bredd</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="61"/>
@@ -8446,7 +8454,7 @@ med hjälp av de angivna X/Y-avstånden</translation>
       <translation>Streck-punkt-punkt</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="661"/>
+      <location filename="../../TaskRichAnno.cpp" line="674"/>
       <source>RichTextAnnotation</source>
       <translation>RichTextAnnotation</translation>
     </message>
@@ -8765,7 +8773,7 @@ med hjälp av de angivna X/Y-avstånden</translation>
     <message>
       <location filename="../../DlgTemplateField.ui" line="88"/>
       <source>Applies autofill to this field</source>
-      <translation type="unfinished">Applies autofill to this field</translation>
+      <translation>Fyller i det här fältet automatiskt</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="101"/>
@@ -8781,12 +8789,12 @@ med hjälp av de angivna X/Y-avstånden</translation>
   <context>
     <name>TechDraw_ExtensionremovePrefixChar</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="408"/>
+      <location filename="../../CommandExtensionDims.cpp" line="409"/>
       <source>Remove Prefix</source>
       <translation>Ta bort prefix</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="409"/>
+      <location filename="../../CommandExtensionDims.cpp" line="410"/>
       <source>Removes the prefix symbols at the beginning of the dimension</source>
       <translation>Tar bort prefixsymbolerna i början av dimensionen</translation>
     </message>
@@ -9037,7 +9045,7 @@ med hjälp av de angivna X/Y-avstånden</translation>
     <message>
       <location filename="../../TaskDimRepair.ui" line="91"/>
       <source>Replace References With Selection</source>
-      <translation type="unfinished">Replace References With Selection</translation>
+      <translation>Ersätt referenser med markeringen</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="107"/>
@@ -9539,7 +9547,7 @@ det finns en dialogruta med en öppen uppgift.</translation>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="36"/>
       <source>The selected vertex this offset vertex is based on</source>
-      <translation type="unfinished">The selected vertex this offset vertex is based on</translation>
+      <translation>Det valda hörn som detta förskjutna hörn baseras på</translation>
     </message>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="45"/>
@@ -9554,7 +9562,7 @@ det finns en dialogruta med en öppen uppgift.</translation>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="59"/>
       <source>The X offset distance from the source vertex</source>
-      <translation type="unfinished">The X offset distance from the source vertex</translation>
+      <translation>X-förskjutningens avstånd från källhörnet</translation>
     </message>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="72"/>
@@ -9892,19 +9900,19 @@ det finns en dialogruta med en öppen uppgift.</translation>
   <context>
     <name>CmdTechDrawExtensionInsertRepetition</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="225"/>
+      <location filename="../../CommandExtensionDims.cpp" line="226"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="226"/>
-      <location filename="../../CommandExtensionDims.cpp" line="403"/>
+      <location filename="../../CommandExtensionDims.cpp" line="227"/>
+      <location filename="../../CommandExtensionDims.cpp" line="404"/>
       <source>Insert &apos;n×&apos; Prefix</source>
       <translation>Infoga prefixet "n×</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="227"/>
-      <location filename="../../CommandExtensionDims.cpp" line="404"/>
+      <location filename="../../CommandExtensionDims.cpp" line="228"/>
+      <location filename="../../CommandExtensionDims.cpp" line="405"/>
       <source>Inserts a repeated feature count at the beginning of the dimension</source>
       <translation>Infogar ett upprepat antal objekt i början av dimensionen</translation>
     </message>
@@ -9935,17 +9943,17 @@ det finns en öppen uppgiftsdialog.</translation>
   <context>
     <name>CmdTechDrawBrokenView</name>
     <message>
-      <location filename="../../Command.cpp" line="553"/>
+      <location filename="../../Command.cpp" line="555"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="554"/>
+      <location filename="../../Command.cpp" line="556"/>
       <source>Broken View</source>
       <translation>Bruten vy</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="555"/>
+      <location filename="../../Command.cpp" line="557"/>
       <source>Inserts a new broken view for the selected objects or base view and break definition objects</source>
       <translation>Infogar en ny trasig vy för de markerade objekten eller basvyn och objekten för definition av trasig vy</translation>
     </message>
@@ -10159,7 +10167,7 @@ det finns en öppen uppgiftsdialog.</translation>
   <context>
     <name>TechDraw_SectionView</name>
     <message>
-      <location filename="../../Command.cpp" line="800"/>
+      <location filename="../../Command.cpp" line="802"/>
       <source>Inserts a simple section view</source>
       <translation>Infogar en enkel sektionsvy</translation>
     </message>
@@ -10167,7 +10175,7 @@ det finns en öppen uppgiftsdialog.</translation>
   <context>
     <name>TechDraw_ComplexSection</name>
     <message>
-      <location filename="../../Command.cpp" line="805"/>
+      <location filename="../../Command.cpp" line="807"/>
       <source>Inserts a complex section view</source>
       <translation>Infogar en komplex sektionsvy</translation>
     </message>
@@ -10308,6 +10316,104 @@ det finns en öppen uppgiftsdialog.</translation>
     </message>
   </context>
   <context>
+    <name>TaskSpreadsheetView</name>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="14"/>
+      <source>Spreadsheet View Parameters</source>
+      <translation type="unfinished">Spreadsheet View Parameters</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="20"/>
+      <source>Range:</source>
+      <translation type="unfinished">Range:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="27"/>
+      <source>Enter the top-left cell of the range (e.g., A1)</source>
+      <translation type="unfinished">Enter the top-left cell of the range (e.g., A1)</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="30"/>
+      <source>A1</source>
+      <translation>A1</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="37"/>
+      <source> to </source>
+      <translation type="unfinished"> to </translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="44"/>
+      <source>Enter the bottom-right cell of the range (e.g., B2)</source>
+      <translation type="unfinished">Enter the bottom-right cell of the range (e.g., B2)</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="47"/>
+      <source>B2</source>
+      <translation type="unfinished">B2</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="54"/>
+      <source>View Appearance</source>
+      <translation type="unfinished">View Appearance</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="60"/>
+      <source>Scale:</source>
+      <translation type="unfinished">Scale:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="67"/>
+      <source>Scale of the view. Let you adjust the overall size of the table.</source>
+      <translation type="unfinished">Scale of the view. Let you adjust the overall size of the table.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="83"/>
+      <source>Font:</source>
+      <translation type="unfinished">Font:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="93"/>
+      <source>Text Size:</source>
+      <translation type="unfinished">Text Size:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="100"/>
+      <source>Font size in points</source>
+      <translation type="unfinished">Font size in points</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="119"/>
+      <source>Text Color:</source>
+      <translation type="unfinished">Text Color:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="126"/>
+      <source>Line color</source>
+      <translation>Linjefärg</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="140"/>
+      <source>Line Width:</source>
+      <translation type="unfinished">Line Width:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="147"/>
+      <source>Width of the cell border lines</source>
+      <translation type="unfinished">Width of the cell border lines</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="172"/>
+      <source>Claim spreadsheet as child</source>
+      <translation type="unfinished">Claim spreadsheet as child</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="175"/>
+      <source>If checked, this view will claim the associated spreadsheet as child in the tree.</source>
+      <translation type="unfinished">If checked, this view will claim the associated spreadsheet as child in the tree.</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdTechDrawToggleFrame</name>
     <message>
       <location filename="../../CommandDecorate.cpp" line="75"/>
@@ -10317,12 +10423,12 @@ det finns en öppen uppgiftsdialog.</translation>
     <message>
       <location filename="../../CommandDecorate.cpp" line="76"/>
       <source>Toggle View Frames</source>
-      <translation type="unfinished">Toggle View Frames</translation>
+      <translation>Växla vyramar</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="77"/>
       <source>Toggles visibility of view frames and vertices</source>
-      <translation type="unfinished">Toggles visibility of view frames and vertices</translation>
+      <translation>Växlar synligheten för vyramar och hörn</translation>
     </message>
   </context>
   <context>
@@ -10340,13 +10446,44 @@ det finns en öppen uppgiftsdialog.</translation>
     <message>
       <location filename="../../CommandDecorate.cpp" line="140"/>
       <source>Toggles the grid on the active page</source>
-      <translation type="unfinished">Toggles the grid on the active page</translation>
+      <translation>Växlar rutnätet på den aktiva sidan</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawExportPagePDF</name>
+    <message>
+      <location filename="../../Command.cpp" line="1947"/>
+      <source>File</source>
+      <translation>Fil</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1948"/>
+      <source>Export Page as PDF</source>
+      <translation>Exportera sidan som PDF</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1949"/>
+      <source>Exports the current page as a PDF</source>
+      <translation type="unfinished">Exports the current page as a PDF</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawExportGroup</name>
+    <message>
+      <location filename="../../Command.cpp" line="1977"/>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1978"/>
+      <source>Print All Pages</source>
+      <translation>Skriv ut alla sidor</translation>
     </message>
   </context>
   <context>
     <name>TechDrawGui::TaskDlgLineDecor</name>
     <message>
-      <location filename="../../TaskLineDecor.cpp" line="454"/>
+      <location filename="../../TaskLineDecor.cpp" line="456"/>
       <source>Restore Invisible Lines</source>
       <translation>Återställer osynliga linjer</translation>
     </message>
@@ -10365,6 +10502,45 @@ det finns en öppen uppgiftsdialog.</translation>
       <location filename="../../CommandAnnotate.cpp" line="657"/>
       <source>Centerline Between 2 Points</source>
       <translation>Mittlinje mellan 2 punkter</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::QGIViewSpreadsheet</name>
+    <message>
+      <location filename="../../QGIViewSpreadsheet.cpp" line="428"/>
+      <source>Add row</source>
+      <translation type="unfinished">Add row</translation>
+    </message>
+    <message>
+      <location filename="../../QGIViewSpreadsheet.cpp" line="429"/>
+      <source>Add column</source>
+      <translation>Lägg till kolumn</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskSpreadsheetView</name>
+    <message>
+      <location filename="../../TaskSpreadsheetView.cpp" line="185"/>
+      <source>Invalid Range</source>
+      <translation type="unfinished">Invalid Range</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.cpp" line="185"/>
+      <source>The specified cell range is invalid. Please correct it.</source>
+      <translation type="unfinished">The specified cell range is invalid. Please correct it.</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskDlgSpreadsheetView</name>
+    <message>
+      <location filename="../../TaskSpreadsheetView.cpp" line="725"/>
+      <source>Create Spreadsheet View</source>
+      <translation type="unfinished">Create Spreadsheet View</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.cpp" line="726"/>
+      <source>Edit Spreadsheet View</source>
+      <translation type="unfinished">Edit Spreadsheet View</translation>
     </message>
   </context>
 </TS>

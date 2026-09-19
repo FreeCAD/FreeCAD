@@ -3120,8 +3120,8 @@ void DSHRectangleController::addConstraints()
             ConstraintLineByAngle(firstCurve, angle, obj);
         }
         if (innerAngleSet) {
-            if (fabs(innerAngle - pi / 2) > Precision::Confusion()) {
-                // if 90? then perpendicular already created.
+            if (fabs(fmod(fabs(innerAngle), pi) - pi / 2) > Precision::Confusion()) {
+                // At odd multiples of 90 degrees, a perpendicular constraint was already created.
                 Gui::cmdAppObjectArgs(
                     obj,
                     "addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f)) ",
@@ -3152,8 +3152,8 @@ void DSHRectangleController::addConstraints()
             );
         }
         if (innerAngleSet) {
-            if (fabs(innerAngle - pi / 2) > Precision::Confusion()) {
-                // if 90? then perpendicular already created.
+            if (fabs(fmod(fabs(innerAngle), pi) - pi / 2) > Precision::Confusion()) {
+                // At odd multiples of 90 degrees, a perpendicular constraint was already created.
                 Gui::cmdAppObjectArgs(
                     obj,
                     "addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f)) ",

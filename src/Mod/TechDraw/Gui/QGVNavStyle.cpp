@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Wanderer Fan <wandererfan@gmail.com>               *
  *                                                                         *
@@ -298,6 +300,7 @@ void QGVNavStyle::zoom(double factor)
 
     setAnchor();
     getViewer()->scale(factor, factor);
+    getViewer()->getScene()->updateScreenScale();
     m_zoomPending = false;
 }
 

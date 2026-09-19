@@ -24,8 +24,19 @@
 
 
 #include <algorithm>
-#include <boost/graph/graphviz.hpp>
 #include <random>
+
+// GCC reports boost::detail::write_graphviz_subgraph's edge iterators as
+// possibly uninitialized; they are assigned by tie(...) = edges(g).
+#if defined(__GNUC__) && !defined(__clang__)
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
+#include <boost/graph/graphviz.hpp>
+#if defined(__GNUC__) && !defined(__clang__)
+# pragma GCC diagnostic pop
+#endif
+
 #include <App/Application.h>
 
 #include "Application.h"
@@ -87,7 +98,7 @@ static PropType getPropType(DocumentObject* obj, const std::string& propName)
     if (obj->isInputProperty(propName)) {
         return PropType::PROP_INPUT;
     }
-    else if (obj->isOutputProperty(propName)) {
+    if (obj->isOutputProperty(propName)) {
         return PropType::PROP_OUTPUT;
     }
     return PropType::PROP_REGULAR;
@@ -447,24 +458,16 @@ void Document::exportGraphviz(std::ostream& out) const
             GlobalVertexList[getId(docObj)] = vertex_no++;
 
             // If node is in main graph, style it with rounded corners. If not, make it invisible.
+            auto& props = get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]];
             if (!GraphList[docObj]) {
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["style"] = "filled";
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["shape"] = "Mrecord";
-                // Set node label
-                if (name == label) {
-                    get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["label"] = name;
-                }
-                else {
-                    get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["label"] =
-                        name + "&#92;n(" + label + ")";
-                }
+                props["style"] = "rounded,filled";
+                props["shape"] = "box";
+                props["label"] = name == label ? name : name + "&#92;n(" + label + ")";
             }
             else {
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["style"] = "invis";
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["fixedsize"] =
-                    "true";
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["width"] = "0";
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["height"] = "0";
+                props["style"] = "invis";
+                props["shape"] = "point";
+                props["margin"] = "0";
             }
 
             // Add expressions and its dependencies

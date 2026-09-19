@@ -237,8 +237,8 @@
       <translation>Posicionamento</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="242"/>
       <location filename="../../FitBSplineCurve.cpp" line="152"/>
+      <location filename="../../FitBSplineSurface.cpp" line="242"/>
       <source>Fit B-spline</source>
       <translation>Encaixar B-spline</translation>
     </message>
@@ -593,12 +593,12 @@
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>&amp;Reverse Engineering</source>
-      <translation type="unfinished">&amp;Reverse Engineering</translation>
+      <translation>&amp;Engenharia Reversa</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
       <source>Surface Reconstruction</source>
-      <translation type="unfinished">Surface Reconstruction</translation>
+      <translation>Reconstrução de Superfície</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
@@ -608,7 +608,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>Approximation</source>
-      <translation type="unfinished">Approximation</translation>
+      <translation>Aproximação</translation>
     </message>
   </context>
   <context>
@@ -641,7 +641,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="47"/>
       <source>Equidistant</source>
-      <translation type="unfinished">Equidistant</translation>
+      <translation>Equidistante</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="55"/>

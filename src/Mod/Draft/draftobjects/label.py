@@ -250,6 +250,8 @@ class Label(DraftAnnotation):
     def onChanged(self, obj, prop):
         """Execute when a property is changed."""
         self.show_and_hide(obj, prop)
+        if prop in ("CustomText", "LabelType", "Target"):
+            self.update_text(obj)
 
     def show_and_hide(self, obj, prop):
         """Show and hide the properties depending on the touched property."""
@@ -290,9 +292,16 @@ class Label(DraftAnnotation):
             # will be overwritten
             pass
 
+        self.update_text(obj)
+
+    def update_text(self, obj):
+        """Update the text displayed by this label."""
+        properties = obj.PropertiesList
+        if "Text" not in properties or "LabelType" not in properties:
+            return
+
         if obj.LabelType == "Custom":
-            if obj.CustomText:
-                obj.Text = obj.CustomText
+            obj.Text = obj.CustomText if obj.CustomText else []
 
         elif obj.Target and obj.Target[0]:
             target = obj.Target[0]

@@ -476,16 +476,16 @@ Select a set and then press the button to view said configurations.</string>
 Rounded Arcball: moving the mouse in the corners of the screen will only roll the part.
 Trackball: moving the mouse horizontally will rotate the part around the Y-axis.
 Trackball Classic: moving the mouse will rotate the part allowing precession.
-Turntable: the part will be rotated around the Z-axis (with constrained axes).
 Free Turntable: the part will be rotated around the Z-axis.
+Turntable: the part will be rotated around the Z-axis (with constrained axes).
          </string>
         </property>
         <property name="currentIndex">
-         <number>4</number>
+         <number>0</number>
         </property>
         <item>
          <property name="text">
-          <string>Turntable</string>
+          <string>Rounded Arcball</string>
          </property>
         </item>
         <item>
@@ -495,17 +495,17 @@ Free Turntable: the part will be rotated around the Z-axis.
         </item>
         <item>
          <property name="text">
-          <string>Free Turntable</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
           <string>Trackball Classic</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Rounded Arcball</string>
+          <string>Free Turntable</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Turntable</string>
          </property>
         </item>
        </widget>

@@ -1196,8 +1196,8 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
       <location filename="../../ListEdit.cpp" line="142"/>
-      <location filename="../../MaterialSave.cpp" line="568"/>
       <location filename="../../Array2D.cpp" line="170"/>
+      <location filename="../../MaterialSave.cpp" line="568"/>
       <source>Confirm Delete</source>
       <translation>ຢືນຢັນການລຶບ</translation>
     </message>

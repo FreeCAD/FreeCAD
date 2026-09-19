@@ -43,24 +43,6 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
     def tearDown(self):
         App.closeDocument(self.doc.Name)
 
-    def test00(self):
-        """Test CompareVecs"""
-
-        # Vec and origin
-        v1 = App.Vector(0, 0, 10)
-        v2 = App.Vector(0, 0, 0)
-        self.assertTrue(Drillable.compareVecs(v1, v2))
-
-        # two valid vectors
-        v1 = App.Vector(0, 10, 0)
-        v2 = App.Vector(0, 20, 0)
-        self.assertTrue(Drillable.compareVecs(v1, v2))
-
-        # two valid vectors not aligned
-        v1 = App.Vector(0, 10, 0)
-        v2 = App.Vector(10, 0, 0)
-        self.assertFalse(Drillable.compareVecs(v1, v2))
-
     def test10(self):
         """Test isDrillable"""
 

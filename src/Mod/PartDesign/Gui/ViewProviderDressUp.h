@@ -65,6 +65,7 @@ public:
 
 protected:
     bool setEdit(int ModNum) override;
+    void updatePreviewColor() override;
 };
 
 
