@@ -244,6 +244,13 @@ void View3DInventor::applySettings()
     naviSettings->applySettings();
 }
 
+void View3DInventor::syncCameraTypePref(bool isOrthographic)
+{
+    if (viewSettings) {
+        viewSettings->syncOrthographicPref(isOrthographic);
+    }
+}
+
 void View3DInventor::onRename(Gui::Document* pDoc)
 {
     SoSFString name;
