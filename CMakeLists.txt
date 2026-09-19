@@ -137,7 +137,12 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIB
 
     if(BUILD_BIM)
         SetupLark()
-        find_python_runtime_dep(ifcopenshell ifcopenshell ifcopenshell_VERSION "IFC files support disabled.")
+        find_python_runtime_dep(
+            ifcopenshell
+            ifcopenshell
+            ifcopenshell_VERSION
+            "IfcOpenShell can still be installed in FreeCAD's user Python package directory at runtime."
+        )
     endif()
     if(BUILD_ASSEMBLY)
         find_python_runtime_dep(av av av_VERSION "Assembly simulation video export will not work properly.")
