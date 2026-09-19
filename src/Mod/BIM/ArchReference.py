@@ -437,10 +437,12 @@ class ArchReference:
         """Gets an IfcOpenShell object"""
 
         try:
-            import ifcopenshell
-        except:
-            t = translate("Arch", "NativeIFC not available - unable to process IFC files")
-            FreeCAD.Console.PrintError(t + "\n")
+            from nativeifc import backend
+
+            ifcopenshell = backend.get_backend(capability=backend.READ)
+        except ImportError as exc:
+            t = translate("Arch", "IfcOpenShell unavailable - unable to process IFC files")
+            FreeCAD.Console.PrintError(f"{t}: {exc}\n")
             return None
         if not getattr(self, "ifcfile", None):
             self.ifcfile = ifcopenshell.open(filename)
