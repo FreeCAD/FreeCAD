@@ -241,8 +241,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     // hatching
     Gui::MenuItem* hatch = new Gui::MenuItem;
     hatch->setCommand("Hatching");
-    *hatch << "TechDraw_Hatch";
-    *hatch << "TechDraw_GeometricHatch";
+    *hatch << "TechDraw_HatchFace";
 
     // symbols
     Gui::MenuItem* symbols = new Gui::MenuItem;
@@ -386,8 +385,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* decor = new Gui::ToolBarItem(root);
     decor->setCommand("TechDraw Decoration");
     *decor << "TechDraw_ToggleFrame";
-    *decor << "TechDraw_Hatch";
-    *decor << "TechDraw_GeometricHatch";
+    *decor << "TechDraw_HatchFace";
 
     Gui::ToolBarItem* anno = new Gui::ToolBarItem(root);
     anno->setCommand("TechDraw Annotation");
@@ -482,8 +480,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     Gui::ToolBarItem* decor = new Gui::ToolBarItem(root);
     decor->setCommand("TechDraw Decoration");
     *decor << "TechDraw_ToggleFrame";
-    *decor << "TechDraw_Hatch";
-    *decor << "TechDraw_GeometricHatch";
+    *decor << "TechDraw_HatchFace";
 
     Gui::ToolBarItem* anno = new Gui::ToolBarItem(root);
     anno->setCommand("TechDraw Annotation");
