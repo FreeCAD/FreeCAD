@@ -116,6 +116,41 @@
           </property>
          </widget>
         </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="toolTip">
+           <string>Total number of triangles used to display all visible Part objects. The limit is shared between the visible objects of all open documents. Set to 0 to disable the limit.</string>
+          </property>
+          <property name="text">
+           <string>Maximum facets for display (0 = unlimited)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::PrefSpinBox" name="maxFacets">
+          <property name="specialValueText">
+           <string>Unlimited</string>
+          </property>
+          <property name="minimum">
+           <number>0</number>
+          </property>
+          <property name="maximum">
+           <number>1000000000</number>
+          </property>
+          <property name="singleStep">
+           <number>100000</number>
+          </property>
+          <property name="value">
+           <number>2000000</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>MaxFacetsForDisplay</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Part</cstring>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>
@@ -141,6 +176,11 @@
   <customwidget>
    <class>Gui::PrefDoubleSpinBox</class>
    <extends>QDoubleSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
