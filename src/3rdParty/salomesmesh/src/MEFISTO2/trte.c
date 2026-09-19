@@ -1208,7 +1208,7 @@ integer nosstr_(doublereal *p, doublereal *pxyd, integer *nt, integer *letree)
 /*      si letree(0,.)>0 alors */
 /*         letree(0:3,j) : no (>0) letree des 4 sous-triangles du triangle j */
 /*      sinon */
-/*         letree(0:3,j) :-no pxyd des 1 …a 4 points internes au triangle j */
+/*         letree(0:3,j) :-no pxyd des 1 â€¦a 4 points internes au triangle j */
 /*                         0  si pas de point */
 /*                       ( j est alors une feuille de l'arbre ) */
 /*      letree(4,j) : no letree du sur-triangle du triangle j */
@@ -1291,7 +1291,7 @@ integer notrpt_(doublereal *p, doublereal *pxyd, integer *notrde, integer *
 /*      si letree(0,.)>0 alors */
 /*         letree(0:3,j) : no (>0) letree des 4 sous-triangles du triangle j */
 /*      sinon */
-/*         letree(0:3,j) :-no pxyd des 1 … 4 points internes au triangle j */
+/*         letree(0:3,j) :-no pxyd des 1 â€¦ 4 points internes au triangle j */
 /*                         0  si pas de point */
 /*                        ( j est alors une feuille de l'arbre ) */
 /*      letree(4,j) : no letree du sur-triangle du triangle j */
@@ -1359,7 +1359,7 @@ L10:
 /*      si letree(0,.)>0 alors */
 /*         letree(0:3,j) : no (>0) letree des 4 sous-triangles du triangle j */
 /*      sinon */
-/*         letree(0:3,j) :-no pxyd des 1 …a 4 points internes au triangle j */
+/*         letree(0:3,j) :-no pxyd des 1 â€¦a 4 points internes au triangle j */
 /*                         0  si pas de point */
 /*                        ( j est alors une feuille de l'arbre ) */
 /*      letree(4,j) : no letree du sur-triangle du triangle j */
