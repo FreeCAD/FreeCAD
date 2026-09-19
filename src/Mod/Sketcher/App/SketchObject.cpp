@@ -75,6 +75,114 @@ namespace bio = boost::iostreams;
 
 FC_LOG_LEVEL_INIT("Sketch", true, true)
 
+namespace bg = boost::geometry;
+namespace bgi = boost::geometry::index;
+
+// NOLINTNEXTLINE
+BOOST_GEOMETRY_REGISTER_POINT_3D(Base::Vector3d, double, bg::cs::cartesian, x, y, z)
+
+class SketchObject::GeoHistory
+{
+private:
+    static constexpr int bgiMaxElements = 16;
+
+    using Parameters = bgi::linear<bgiMaxElements>;
+    using IdSet = std::set<long>;
+    using IdSets = std::pair<IdSet, IdSet>;
+    using AdjList = std::list<IdSet>;
+
+    // associate a geo with connected ones on both points
+    using AdjMap = std::map<long, IdSets>;
+
+    // maps start/end points to all existing geo to query and update adjacencies
+    using Value = std::pair<Base::Vector3d, AdjList::iterator>;
+
+    AdjList adjlist;
+    AdjMap adjmap;
+    bgi::rtree<Value,Parameters> rtree;
+
+public:
+    AdjList::iterator find(const Base::Vector3d &pt,bool strict=true){
+        std::vector<Value> ret;
+        rtree.query(bgi::nearest(pt, 1), std::back_inserter(ret));
+        if (!ret.empty()) {
+            // NOTE: we are using square distance here, the 1e-6 threshold is
+            // very forgiving. We should have used Precision::SquareConfisuion(),
+            // which is 1e-14. However, there is a problem with current
+            // commandGeoCreate. They create new geometry with initial point of
+            // the exact mouse position, instead of the preselected point
+            // position, and rely on auto constraint to snap in the new
+            // geometry. So, we cannot use a very strict threshold here.
+            double tol = strict?Precision::SquareConfusion()*10:1e-6;
+            double d = Base::DistanceP2(ret[0].first,pt);
+            if(d<tol) {
+                return ret[0].second;
+            }
+        }
+        return adjlist.end();
+    }
+
+    void clear() {
+        rtree.clear();
+        adjlist.clear();
+    }
+
+    void update(const Base::Vector3d &pt, long id) {
+        FC_TRACE("update " << id << ", " << FC_xyz(pt));
+        auto it = find(pt);
+        if(it==adjlist.end()) {
+            adjlist.emplace_back();
+            it = adjlist.end();
+            --it;
+            rtree.insert(std::make_pair(pt,it));
+        }
+        it->insert(id);
+    }
+
+    void finishUpdate(const std::map<long,int> &geomap) {
+        IdSet oldset;
+        for(auto &idset : adjlist) {
+            oldset.clear();
+            for(long _id : idset) {
+                long id = abs(_id);
+                auto& v = adjmap[id];
+                auto& adj = _id > 0 ? v.first : v.second;
+                for (auto it = adj.begin(); it != adj.end(); /* don't advance here */) {
+                    long other = *it;
+                    auto removeId = it++;  // grab ID we might erase, and advance
+                    if (geomap.find(other) == geomap.end()) {
+                        // remember those deleted IDs to swap in below
+                        oldset.insert(other);
+                    }
+                    else if (idset.find(other) == idset.end()) {
+                        // delete any existing IDs that are no longer in the adj list
+                        adj.erase(removeId);
+                    }
+                }
+                // now merge the current ones
+                for(long _id2 : idset) {
+                    long id2 = abs(_id2);
+                    if(id!=id2) {
+                        adj.insert(id2);
+                    }
+                }
+            }
+            // now reset the adjacency list with only those deleted id's,
+            // because the whole purpose of this history is to try to reuse
+            // deleted id.
+            idset.swap(oldset);
+        }
+    }
+
+    AdjList::iterator end() {
+        return adjlist.end();
+    }
+
+    size_t size() {
+        return rtree.size();
+    }
+};
+
 PROPERTY_SOURCE(Sketcher::SketchObject, Part::Part2DObject)
 
 SketchObject::SketchObject() : geoLastId(0)
@@ -486,114 +594,6 @@ static const char *hasSketchMarker(const char *name) {
         return nullptr;
     return strstr(name,marker.c_str());
 }
-
-namespace bg = boost::geometry;
-namespace bgi = boost::geometry::index;
-
-// NOLINTNEXTLINE
-BOOST_GEOMETRY_REGISTER_POINT_3D(Base::Vector3d, double, bg::cs::cartesian, x, y, z)
-
-class SketchObject::GeoHistory
-{
-private:
-    static constexpr int bgiMaxElements = 16;
-
-    using Parameters = bgi::linear<bgiMaxElements>;
-    using IdSet = std::set<long>;
-    using IdSets = std::pair<IdSet, IdSet>;
-    using AdjList = std::list<IdSet>;
-
-    // associate a geo with connected ones on both points
-    using AdjMap = std::map<long, IdSets>;
-
-    // maps start/end points to all existing geo to query and update adjacencies
-    using Value = std::pair<Base::Vector3d, AdjList::iterator>;
-
-    AdjList adjlist;
-    AdjMap adjmap;
-    bgi::rtree<Value,Parameters> rtree;
-
-public:
-    AdjList::iterator find(const Base::Vector3d &pt,bool strict=true){
-        std::vector<Value> ret;
-        rtree.query(bgi::nearest(pt, 1), std::back_inserter(ret));
-        if (!ret.empty()) {
-            // NOTE: we are using square distance here, the 1e-6 threshold is
-            // very forgiving. We should have used Precision::SquareConfisuion(),
-            // which is 1e-14. However, there is a problem with current
-            // commandGeoCreate. They create new geometry with initial point of
-            // the exact mouse position, instead of the preselected point
-            // position, and rely on auto constraint to snap in the new
-            // geometry. So, we cannot use a very strict threshold here.
-            double tol = strict?Precision::SquareConfusion()*10:1e-6;
-            double d = Base::DistanceP2(ret[0].first,pt);
-            if(d<tol) {
-                return ret[0].second;
-            }
-        }
-        return adjlist.end();
-    }
-
-    void clear() {
-        rtree.clear();
-        adjlist.clear();
-    }
-
-    void update(const Base::Vector3d &pt, long id) {
-        FC_TRACE("update " << id << ", " << FC_xyz(pt));
-        auto it = find(pt);
-        if(it==adjlist.end()) {
-            adjlist.emplace_back();
-            it = adjlist.end();
-            --it;
-            rtree.insert(std::make_pair(pt,it));
-        }
-        it->insert(id);
-    }
-
-    void finishUpdate(const std::map<long,int> &geomap) {
-        IdSet oldset;
-        for(auto &idset : adjlist) {
-            oldset.clear();
-            for(long _id : idset) {
-                long id = abs(_id);
-                auto& v = adjmap[id];
-                auto& adj = _id > 0 ? v.first : v.second;
-                for (auto it = adj.begin(); it != adj.end(); /* don't advance here */) {
-                    long other = *it;
-                    auto removeId = it++;  // grab ID we might erase, and advance
-                    if (geomap.find(other) == geomap.end()) {
-                        // remember those deleted IDs to swap in below
-                        oldset.insert(other);
-                    }
-                    else if (idset.find(other) == idset.end()) {
-                        // delete any existing IDs that are no longer in the adj list
-                        adj.erase(removeId);
-                    }
-                }
-                // now merge the current ones
-                for(long _id2 : idset) {
-                    long id2 = abs(_id2);
-                    if(id!=id2) {
-                        adj.insert(id2);
-                    }
-                }
-            }
-            // now reset the adjacency list with only those deleted id's,
-            // because the whole purpose of this history is to try to reuse
-            // deleted id.
-            idset.swap(oldset);
-        }
-    }
-
-    AdjList::iterator end() {
-        return adjlist.end();
-    }
-
-    size_t size() {
-        return rtree.size();
-    }
-};
 
 void SketchObject::updateGeoHistory() {
     if(!geoHistoryLevel) return;
