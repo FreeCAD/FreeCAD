@@ -10385,6 +10385,9 @@ void CmdSketcherConstrainGroup::activated(int iMsg)
         Sketcher::PointPos posId;
         getIdsFromName(subName, Obj, geoId, posId);
 
+        // A selected member represents its whole outermost group.
+        geoId = Obj->getGroupHandleIfInGroup(geoId);
+
         bool alreadyAdded = std::any_of(elts.begin(), elts.end(),
                                 [geoId](const Sketcher::GeoElementId& elem) {
                                     return elem.GeoId == geoId;
