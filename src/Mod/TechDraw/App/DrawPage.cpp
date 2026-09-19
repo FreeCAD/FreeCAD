@@ -430,7 +430,10 @@ void DrawPage::unsetupObject()
     std::string pageName = getNameInDocument();
 
     try {
-        for (auto& v : Views.getValues()) {
+        // Removing a view breaks its backlink and mutates Views. Iterate over a
+        // snapshot so the range iterator is not invalidated by removeObject().
+        const std::vector<App::DocumentObject*> views = Views.getValues();
+        for (auto* v : views) {
             //NOTE: the order of objects in Page.Views does not reflect the object hierarchy
             //      this means that a ProjGroup could be deleted before its child ProjGroupItems.
             //      this causes problems when removing objects from document
