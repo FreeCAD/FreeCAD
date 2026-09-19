@@ -85,6 +85,11 @@ DualQuat Placement::toDualQuaternion() const
     return ret;
 }
 
+bool Placement::isFinite() const
+{
+    return _pos.isFinite() && _rot.isFinite();
+}
+
 bool Placement::isIdentity() const
 {
     Base::Vector3d nullvec(0, 0, 0);
