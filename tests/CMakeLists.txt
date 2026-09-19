@@ -10,6 +10,20 @@ include_directories(
 
 set(CMAKE_AUTOMOC ON)
 
+# With BUILD_DYNAMIC_LINK_PYTHON OFF the FreeCAD libraries do not link against Python: they
+# resolve the Python symbols at load time from the executable hosting them. A test runner must
+# therefore keep libpython in its own link. GNU ld's default --as-needed drops a library nothing
+# on the link line references yet (and ignores -u for that decision), so disable it here.
+function(keep_python_linked _target)
+    if(NOT BUILD_DYNAMIC_LINK_PYTHON)
+        if(APPLE)
+            target_link_options(${_target} PRIVATE "LINKER:-u,_PyBaseObject_Type")
+        elseif(UNIX)
+            target_link_options(${_target} PRIVATE "LINKER:--no-as-needed")
+        endif()
+    endif()
+endfunction()
+
 function(setup_qt_test)
     foreach(_testname ${ARGN})
         add_executable(${_testname}_Tests_run ${_testname}.cpp)
@@ -29,6 +43,7 @@ function(setup_qt_test)
             FreeCADGui
             ${QtTest_LIBRARIES}
             ${${_testname}_LIBS})
+        keep_python_linked(${_testname}_Tests_run)
 
         if(WIN32)
             set_target_properties(${_testname}_Tests_run PROPERTIES
@@ -126,6 +141,7 @@ include(GoogleTest)
 set(CMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE PRE_TEST)
 
 foreach (exe ${TestExecutables})
+    keep_python_linked(${exe})
     if(WIN32)
         if(CMAKE_CONFIGURATION_TYPES)
             set(OUTPUT_DIR ${CMAKE_BINARY_DIR}/bin)
