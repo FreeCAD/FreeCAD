@@ -745,7 +745,7 @@ def removeShape(objs, mark=True):
                     import Arch
 
                     place.move(place.Rotation.multVec(Vector(-length / 2, 0, 0)))
-                    line = Draft.makeLine(Vector(0, 0, 0), Vector(length, 0, 0))
+                    line = Draft.make_line(Vector(0, 0, 0), Vector(length, 0, 0))
                     line.Placement = place
                     wall = Arch.makeWall(
                         line, width=width, height=height, align="Center", name=name
