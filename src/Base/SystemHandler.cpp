@@ -183,7 +183,7 @@ void my_se_translator_filter(unsigned int code, EXCEPTION_POINTERS* /*pExp*/)
             throw Base::AccessViolation();
         case EXCEPTION_FLT_DIVIDE_BY_ZERO:
         case EXCEPTION_INT_DIVIDE_BY_ZERO:
-            Base::Console().error("SEH exception (%u): Division by zero\n", code);
+            Base::Console().error("SEH exception ({}): Division by zero\n", code);
             return;
     }
 

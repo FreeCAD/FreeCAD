@@ -276,7 +276,7 @@ std::string PropertyPythonObject::toString() const
     }
     catch (Py::Exception&) {
         Py::String typestr(this->object.type().str());
-        Base::Console().error("PropertyPythonObject::toString(): failed for %s\n",
+        Base::Console().error("PropertyPythonObject::toString(): failed for {}\n",
                               typestr.as_string().c_str());
         Base::PyException e;  // extract the Python error text
         e.reportException();
@@ -422,7 +422,7 @@ void PropertyPythonObject::restoreObject(Base::XMLReader& reader)
         e.clear();
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("%s\n", e.what());
+        Base::Console().error("{}\n", e.what());
     }
     catch (...) {
         Base::Console().error("Critical error in PropertyPythonObject::restoreObject\n");
@@ -484,7 +484,7 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
                 std::string moduleName = reader.getAttribute<const char*>("module");
                 if (!isAllowedModule(moduleName)) {
                     Base::Console().warning(
-                        "PropertyPythonObject::Restore: blocked import of module '%s' during"
+                        "PropertyPythonObject::Restore: blocked import of module '{}' during"
                         " document restore. Only modules from FreeCAD or installed addons"
                         " are permitted.\n",
                         moduleName.c_str());
@@ -526,7 +526,7 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
         }
         else if (!load_failed) {
             Base::Console().warning(
-                "PropertyPythonObject::Restore: unsupported serialisation: %s\n",
+                "PropertyPythonObject::Restore: unsupported serialisation: {}\n",
                 buffer.c_str());
         }
         restoreObject(reader);

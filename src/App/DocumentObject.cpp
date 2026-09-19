@@ -140,7 +140,7 @@ void DocumentObject::printInvalidLinks() const
             scopenames.pop_back();
         }
 
-        Base::Console().warning("%s: %s links are out of scope. Out of scope links to: %s\n",
+        Base::Console().warning("{}: {} links are out of scope. Out of scope links to: {}\n",
                                 getTypeId().getName(),
                                 getNameInDocument(),
                                 objnames.c_str());

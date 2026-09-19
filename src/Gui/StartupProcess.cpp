@@ -373,7 +373,7 @@ void StartupPostProcess::checkOpenGL()
                                .arg(major)
                                .arg(minor)
                 + QStringLiteral("\n");
-            Base::Console().warning(message.toStdString().c_str());
+            Base::Console().warning("{}", message.toStdString());
             Dialog::DlgCheckableMessageBox::showMessage(
                 QCoreApplication::applicationName() + QStringLiteral(" - ")
                     + QObject::tr("Invalid OpenGL Version"),
@@ -382,7 +382,7 @@ void StartupPostProcess::checkOpenGL()
         }
 #endif
         const char* glVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
-        Base::Console().log("OpenGL version is: %d.%d (%s)\n", major, minor, glVersion);
+        Base::Console().log("OpenGL version is: {}.{} ({})\n", major, minor, glVersion);
     }
 }
 
@@ -462,7 +462,7 @@ void StartupPostProcess::showMainWindow()
         setImportImageFormats();
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("Error in FreeCADGuiInit.py: %s\n", e.what());
+        Base::Console().error("Error in FreeCADGuiInit.py: {}\n", e.what());
         mainWindow->stopSplasher();
         throw;
     }
@@ -477,7 +477,7 @@ void StartupPostProcess::activateWorkbench()
 {
     // Activate the correct workbench
     std::string start = App::Application::Config()["StartWorkbench"];
-    Base::Console().log("Init: Activating default workbench %s\n", start.c_str());
+    Base::Console().log("Init: Activating default workbench {}\n", start);
     std::string autoload = App::GetApplication()
                                .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
                                ->GetASCII("AutoloadModule", start.c_str());

@@ -151,7 +151,7 @@ void DlgMigrateExternal::migrate()
 
 void DlgMigrateExternal::statusUpdate(const QString& status)
 {
-    Base::Console().log("%s\n", status.toStdString().c_str());
+    Base::Console().log("{}\n", status.toStdString());
     ui->textStatus->append(status);
 
     // This is required to update in real time

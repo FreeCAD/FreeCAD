@@ -247,7 +247,7 @@ void TaskPatternParameters::showOriginAxes(bool show)
             }
         }
         catch (const Base::Exception& ex) {
-            Base::Console().error("TaskPatternParameters: Error accessing origin axes: %s\n", ex.what());
+            Base::Console().error("TaskPatternParameters: Error accessing origin axes: {}\n", ex.what());
         }
     }
 }
@@ -357,7 +357,8 @@ void TaskPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     getReferencedSelection(patternObj, msg, selObj, directions);
     if (!selObj) {
         Base::Console().warning(
-            tr("Invalid selection. Select an edge, planar face, or datum line.").toStdString().c_str()
+            "{}",
+            tr("Invalid selection. Select an edge, planar face, or datum line.").toStdString()
         );
         return;
     }
@@ -548,7 +549,7 @@ Base::Vector3d TaskPatternParameters::getStartPoint() const
             }
             catch (const Base::Exception& e) {
                 Base::Console().warning(
-                    "Could not calculate center of patterned features: %s\n",
+                    "Could not calculate center of patterned features: {}\n",
                     e.what()
                 );
                 // startPoint remains (0,0,0) as a fallback.

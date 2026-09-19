@@ -43,7 +43,7 @@ void ExamplesModel::loadExamples()
     clear();
     if (!_examplesDirectory.isReadable()) {
         Base::Console().warning(
-            "Cannot read %s",
+            "Cannot read {}",
             _examplesDirectory.absolutePath().toStdString().c_str()
         );
     }

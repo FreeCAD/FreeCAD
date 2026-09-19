@@ -61,7 +61,7 @@ FileCardDelegate::FileCardDelegate(QObject* parent)
         int maxCacheItems = (CACHE_SIZE_MB * 1024 * 1024) / thumbnailMemory;
         _thumbnailCache.setMaxCost(maxCacheItems);
         Base::Console().log(
-            "FileCardDelegate: Initialized thumbnail cache for %d items (%d MB)\n",
+            "FileCardDelegate: Initialized thumbnail cache for {} items ({} MB)\n",
             maxCacheItems,
             CACHE_SIZE_MB
         );
@@ -217,7 +217,7 @@ QPixmap FileCardDelegate::loadAndCacheThumbnail(const QString& path, int thumbna
         }
         else {
             Base::Console().log(
-                "FileCardDelegate: Failed to load image %s: %s\n",
+                "FileCardDelegate: Failed to load image {}: {}\n",
                 path.toStdString().c_str(),
                 reader.errorString().toStdString().c_str()
             );

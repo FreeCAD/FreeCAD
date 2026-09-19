@@ -53,7 +53,7 @@ void Manager::scan(
         return;
     }
     if (!fileInfo.isDir()) {
-        Console().error("Expected parameter to be a directory: %s\n", crashReportDirectory.c_str());
+        Console().error("Expected parameter to be a directory: {}\n", crashReportDirectory.c_str());
         return;
     }
     s_crashReportDirectory = crashReportDirectory;
@@ -77,7 +77,7 @@ void Manager::scan(
             catch (const Base::Exception& e) {
                 // Some sort of corrupt report: log it
                 Console().warning(
-                    "Corrupted crash report file found: %s\n%s\n",
+                    "Corrupted crash report file found: {}\n{}\n",
                     contentItem.filePath().c_str(),
                     e.what()
                 );
@@ -193,12 +193,12 @@ void Manager::enforceRetention(RetentionPolicy policy)
         // Delete the old fcrash file and its optional minidump companion
         std::string dmp = contentItem.dirPath() + "/" + contentItem.fileNamePure() + ".dmp";
         if (!contentItem.deleteFile()) {
-            Console().warning("Failed to delete file %s\n", contentItem.filePath().c_str());
+            Console().warning("Failed to delete file {}\n", contentItem.filePath().c_str());
         }
         FileInfo dmpInfo {dmp};
         if (dmpInfo.exists()) {
             if (!dmpInfo.deleteFile()) {
-                Console().warning("Failed to delete file %s\n", dmpInfo.filePath().c_str());
+                Console().warning("Failed to delete file {}\n", dmpInfo.filePath().c_str());
             }
         }
 

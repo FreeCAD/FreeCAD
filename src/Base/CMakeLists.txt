@@ -104,7 +104,7 @@ if(BUILD_TRACY_FRAME_PROFILER)
     list(APPEND FreeCADBase_LIBS TracyClient)
 endif()
 
-list(APPEND FreeCADBase_LIBS libfastsignals fmt::fmt)
+list(APPEND FreeCADBase_LIBS libfastsignals)
 
 if(cpptrace_FOUND)
     list(APPEND FreeCADBase_LIBS cpptrace::cpptrace)
