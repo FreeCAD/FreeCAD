@@ -921,25 +921,27 @@ QSize QuantitySpinBox::sizeHintForDigits(int digits) const
     Q_D(const QuantitySpinBox);
     ensurePolished();
 
-    const int maxLen = getMaxStrLength(digits);
-    int length = maxLen;
+    QString txt;
+    auto le = lineEdit();
 
-    if (d->adjustableWidth) {
-        int currenLen = qMax(lineEdit()->text().length(), 4);
-        length = currenLen < maxLen ? currenLen : maxLen;
+    if (d->adjustableWidth && le) {
+        txt = le->text();
     }
-
-    QString longestString = QStringLiteral("8").repeated(length);
+    else {
+        const int maxLen = getMaxStrLength(digits);
+        txt = QStringLiteral("8").repeated(maxLen);
+    }
+    // font-proportional padding for cursor blinking
+    txt += QLatin1Char('8');
 
     const QFontMetrics fm(fontMetrics());
-    int w = qMax(0, QtTools::horizontalAdvance(fm, longestString));
-    w += 4;  // cursor blinking space
+    int w = qMax(0, QtTools::horizontalAdvance(fm, txt));
     if (d->addIconSpace) {
         w += iconHeight;
     }
     QStyleOptionSpinBox opt;
     initStyleOption(&opt);
-    QSize hint(w, lineEdit()->sizeHint().height());
+    QSize hint(w, le ? le->sizeHint().height() : 0);
 
     QSize size = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, this);
     return size;
