@@ -44,7 +44,7 @@ def getSketchDefiningEdges(sketch, selected_edges=[], supported_geometry=None):
         if isinstance(facade.Geometry, supported_geometry):
             edges.append(facade.Geometry.toShape())
 
-    external_geometry = list(getattr(sketch, "ExternalGeo", []))
+    external_geometry = sketch.ExternalGeo
     for index, geometry in enumerate(external_geometry[2:], start=2):
         facade = Sketcher.ExternalGeometryFacade(geometry)
         geo_id = -index - 1
