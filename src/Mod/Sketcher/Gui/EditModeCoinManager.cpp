@@ -1634,25 +1634,47 @@ void EditModeCoinManager::processGeometryInformationOverlay(const GeoListFacade&
         Gui::coinRemoveAllChildren(editModeScenegraphNodes.infoGroup);
     }
 
-    auto ioconv = EditModeInformationOverlayCoinConverter(
+    auto processInformation = [&](EditModeInformationOverlayCoinConverter& ioconv) {
+        // geometry information layer for bsplines, as they need a second round now that max
+        // curvature is known
+        for (auto geoid : analysisResults.bsplineGeoIds) {
+            const Part::Geometry* geo = geolistfacade.getGeometryFromGeoId(geoid);
+
+            ioconv.convert(geo, geoid);
+        }
+        for (auto geoid : analysisResults.arcGeoIds) {
+            const Part::Geometry* geo = geolistfacade.getGeometryFromGeoId(geoid);
+            ioconv.convert(geo, geoid);
+        }
+    };
+
+    EditModeInformationOverlayCoinConverter ioconv(
         viewProvider,
         editModeScenegraphNodes.infoGroup,
         overlayParameters,
         drawingParameters
     );
 
-    // geometry information layer for bsplines, as they need a second round now that max curvature
-    // is known
-    for (auto geoid : analysisResults.bsplineGeoIds) {
-        const Part::Geometry* geo = geolistfacade.getGeometryFromGeoId(geoid);
+    processInformation(ioconv);
 
-        ioconv.convert(geo, geoid);
+    // The incremental update relies on the overlay node layout staying identical to the last
+    // rebuild. If the sketch changed between rebuilds, the current conversion now needs a
+    // different number of nodes than the overlay holds (either more, which would index out of
+    // bounds, or fewer, which would leave stale nodes). Force a full rebuild to recover.
+    if (!overlayParameters.rebuildInformationLayer
+        && (ioconv.overlayInconsistent()
+            || ioconv.getNodeCount()
+                != static_cast<int>(editModeScenegraphNodes.infoGroup->getNumChildren()))) {
+        overlayParameters.rebuildInformationLayer = true;
+        Gui::coinRemoveAllChildren(editModeScenegraphNodes.infoGroup);
+        EditModeInformationOverlayCoinConverter rebuildConverter(
+            viewProvider,
+            editModeScenegraphNodes.infoGroup,
+            overlayParameters,
+            drawingParameters
+        );
+        processInformation(rebuildConverter);
     }
-    for (auto geoid : analysisResults.arcGeoIds) {
-        const Part::Geometry* geo = geolistfacade.getGeometryFromGeoId(geoid);
-        ioconv.convert(geo, geoid);
-    }
-
 
     overlayParameters.visibleInformationChanged = false;  // just updated
 }
