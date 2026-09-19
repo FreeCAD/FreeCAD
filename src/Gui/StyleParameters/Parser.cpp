@@ -87,6 +87,16 @@ bool isSpaceChar(char character)
     return std::isspace(static_cast<unsigned char>(character)) != 0;
 }
 
+/// Describes the character at pos for parser diagnostics, naming end of input
+/// explicitly: input[input.size()] is '\0', which would truncate what().
+std::string describeAt(const std::string& input, size_t pos)
+{
+    if (pos >= input.size()) {
+        return "end of input";
+    }
+    return fmt::format("'{}'", input[pos]);
+}
+
 int parseIntOrThrow(const std::string& text, int base = 10)  // NOLINT(*-magic-numbers)
 {
     try {
@@ -216,7 +226,7 @@ Value lightenOrDarken(const Tuple& args, bool lighten)
 {
     const char* functionName = lighten ? "lighten" : "darken";
 
-    auto resolved = ArgumentParser {{"color"}, {"amount"}}.resolve(args);
+    auto resolved = ArgumentParser {{.name = "color"}, {.name = "amount"}}.resolve(args);
 
     // In Qt if you want to make color 20% darker or lighter, you need to pass 120 as the value
     // we, however, want users to pass only the relative difference, hence we need to add the
@@ -261,7 +271,7 @@ Value darken(const Tuple& args)
 
 Value blend(const Tuple& args)
 {
-    auto resolved = ArgumentParser {{"from"}, {"to"}, {"amount"}}.resolve(args);
+    auto resolved = ArgumentParser {{.name = "from"}, {.name = "to"}, {.name = "amount"}}.resolve(args);
 
     auto amount = Base::fromPercent(
         static_cast<long>(requireArgument<Numeric>(resolved, "amount", "blend").value)
@@ -270,9 +280,9 @@ Value blend(const Tuple& args)
     const auto blendColors =
         [amount](const Base::Color& first, const Base::Color& second) -> Base::Color {
         return Base::Color(
-            (1 - amount) * first.r + amount * second.r,
-            (1 - amount) * first.g + amount * second.g,
-            (1 - amount) * first.b + amount * second.b
+            ((1 - amount) * first.r) + (amount * second.r),
+            ((1 - amount) * first.g) + (amount * second.g),
+            ((1 - amount) * first.b) + (amount * second.b)
         );
     };
 
@@ -325,11 +335,11 @@ Value shade(const Tuple& args)
     auto resolved = ArgumentParser {
         {.name = "color"},
         {.name = "lightness"},
-        {.name = "range", .defaultValue = Numeric {0.8, ""}},
-        {.name = "min", .defaultValue = Numeric {0.17, ""}},
-        {.name = "max", .defaultValue = Numeric {0.97, ""}},
-        {.name = "pivot", .defaultValue = Numeric {0.5, ""}},
-        {.name = "q", .defaultValue = Numeric {0.1, ""}},
+        {.name = "range", .defaultValue = Numeric {.value=0.8, .unit=""}},
+        {.name = "min", .defaultValue = Numeric {.value=0.17, .unit=""}},
+        {.name = "max", .defaultValue = Numeric {.value=0.97, .unit=""}},
+        {.name = "pivot", .defaultValue = Numeric {.value=0.5, .unit=""}},
+        {.name = "q", .defaultValue = Numeric {.value=0.1, .unit=""}},
     }.resolve(args);
 
     auto position = asPercent(requireArgument<Numeric>(resolved, "lightness", "shade"));
@@ -357,11 +367,11 @@ Value shades(const Tuple& args)
     auto resolved = ArgumentParser {
         {.name = "color"},
         {.name = "shades"},
-        {.name = "range", .defaultValue = Numeric {0.8, ""}},
-        {.name = "min", .defaultValue = Numeric {0.17, ""}},
-        {.name = "max", .defaultValue = Numeric {0.97, ""}},
-        {.name = "pivot", .defaultValue = Numeric {0.5, ""}},
-        {.name = "q", .defaultValue = Numeric {0.1, ""}},
+        {.name = "range", .defaultValue = Numeric {.value=0.8, .unit=""}},
+        {.name = "min", .defaultValue = Numeric {.value=0.17, .unit=""}},
+        {.name = "max", .defaultValue = Numeric {.value=0.97, .unit=""}},
+        {.name = "pivot", .defaultValue = Numeric {.value=0.5, .unit=""}},
+        {.name = "q", .defaultValue = Numeric {.value=0.1, .unit=""}},
     }.resolve(args);
 
     const auto& shadesSpec = requireArgument<Tuple>(resolved, "shades", "shades");
@@ -456,7 +466,7 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
         }
         for (const auto& element : arguments.elements) {
             Value result = element.expression->evaluate(context);
-            if (!result.holds<std::string>() || !result.get<std::string>().starts_with("@")) {
+            if (!result.holds<std::string>() || !result.get<std::string>().starts_with('@')) {
                 return result;
             }
         }
@@ -498,7 +508,8 @@ Value TupleLiteral::evaluate(const EvaluationContext& context) const
     Tuple tuple;
     for (const auto& elem : elements) {
         tuple.elements.push_back(
-            {elem.name, std::make_shared<const Value>(elem.expression->evaluate(context))}
+            {.name = elem.name,
+             .value = std::make_shared<const Value>(elem.expression->evaluate(context))}
         );
     }
     return tuple;
@@ -630,7 +641,10 @@ std::unique_ptr<Expr> Parser::parseFactor()
             else {
                 // If followed by `)` → grouped expression (backward compatible)
                 if (!match(')')) {
-                    THROWM(Base::ParserError, fmt::format("Expected ')', got '{}'", input[pos]));
+                    THROWM(
+                        Base::ParserError,
+                        fmt::format("Expected ')', got {}", describeAt(input, pos))
+                    );
                 }
             }
         }
@@ -700,24 +714,33 @@ std::unique_ptr<Expr> Parser::parseColor()
 
         int r = parseInt();
         if (!match(',')) {
-            THROWM(Base::ParserError, fmt::format("Expected ',' after red, got '{}'", input[pos]));
+            THROWM(
+                Base::ParserError,
+                fmt::format("Expected ',' after red, got {}", describeAt(input, pos))
+            );
         }
         int g = parseInt();
         if (!match(',')) {
-            THROWM(Base::ParserError, fmt::format("Expected ',' after green, got '{}'", input[pos]));
+            THROWM(
+                Base::ParserError,
+                fmt::format("Expected ',' after green, got {}", describeAt(input, pos))
+            );
         }
         int b = parseInt();
         int a = 255;  // NOLINT(*-magic-numbers)
         if (hasAlpha) {
             if (!match(',')) {
-                THROWM(Base::ParserError, fmt::format("Expected ',' after blue, got '{}'", input[pos]));
+                THROWM(
+                    Base::ParserError,
+                    fmt::format("Expected ',' after blue, got {}", describeAt(input, pos))
+                );
             }
             a = parseInt();
         }
         if (!match(')')) {
             THROWM(
                 Base::ParserError,
-                fmt::format("Expected ')' after color arguments, got '{}'", input[pos])
+                fmt::format("Expected ')' after color arguments, got {}", describeAt(input, pos))
             );
         }
         return std::make_unique<Color>(Base::Color(r / 255.0, g / 255.0, b / 255.0, a / 255.0));
@@ -746,7 +769,10 @@ std::unique_ptr<Expr> Parser::parseParameter()
 {
     skipWhitespace();
     if (!match('@')) {
-        THROWM(Base::ParserError, fmt::format("Expected '@' for parameter, got '{}'", input[pos]));
+        THROWM(
+            Base::ParserError,
+            fmt::format("Expected '@' for parameter, got {}", describeAt(input, pos))
+        );
     }
     size_t start = pos;
     while (pos < input.size() && (isAlnumChar(input[pos]) || input[pos] == '_')) {
@@ -755,7 +781,7 @@ std::unique_ptr<Expr> Parser::parseParameter()
     if (start == pos) {
         THROWM(
             Base::ParserError,
-            fmt::format("Expected parameter name after '@', got '{}'", input[pos])
+            fmt::format("Expected parameter name after '@', got {}", describeAt(input, pos))
         );
     }
     return std::make_unique<ParameterReference>(input.substr(start, pos - start));
@@ -777,7 +803,10 @@ std::unique_ptr<Expr> Parser::parseFunctionCall()
     std::string functionName = input.substr(start, pos - start);
 
     if (!match('(')) {
-        THROWM(Base::ParserError, fmt::format("Expected '(' after function name, got '{}'", input[pos]));
+        THROWM(
+            Base::ParserError,
+            fmt::format("Expected '(' after function name, got {}", describeAt(input, pos))
+        );
     }
 
     auto arguments = parseTuple();
@@ -853,7 +882,10 @@ std::unique_ptr<TupleLiteral> Parser::parseTuple(std::optional<TupleLiteral::Ele
             if (pos >= input.size()) {
                 THROWM(Base::ParserError, "Expected ')' to close tuple");
             }
-            THROWM(Base::ParserError, fmt::format("Expected ',' or ')' in tuple, got '{}'", input[pos]));
+            THROWM(
+                Base::ParserError,
+                fmt::format("Expected ',' or ')' in tuple, got {}", describeAt(input, pos))
+            );
         }
 
         tuple->elements.push_back(parseElement());

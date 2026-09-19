@@ -48,20 +48,20 @@ protected:
         // Create test sources
         auto source1 = std::make_unique<InMemoryParameterSource>(
             std::list<Parameter> {
-                {"BaseSize", "8px"},
-                {"PrimaryColor", "#ff0000"},
-                {"SecondaryColor", "#00ff00"},
+                {.name = "BaseSize", .value = "8px"},
+                {.name = "PrimaryColor", .value = "#ff0000"},
+                {.name = "SecondaryColor", .value = "#00ff00"},
             },
-            ParameterSource::Metadata {"Source 1"}
+            ParameterSource::Metadata {.name = "Source 1"}
         );
 
         auto source2 = std::make_unique<InMemoryParameterSource>(
             std::list<Parameter> {
-                {"BaseSize", "16px"},  // Override from source1
-                {"Margin", "@BaseSize * 2"},
-                {"Padding", "@BaseSize / 2"},
+                {.name = "BaseSize", .value = "16px"},  // Override from source1
+                {.name = "Margin", .value = "@BaseSize * 2"},
+                {.name = "Padding", .value = "@BaseSize / 2"},
             },
-            ParameterSource::Metadata {"Source 2"}
+            ParameterSource::Metadata {.name = "Source 2"}
         );
 
         manager.addSource(source1.get());
@@ -150,9 +150,9 @@ TEST_F(ParameterManagerTest, SourcePriority)
     // Create a third source with higher priority
     auto source3 = std::make_unique<InMemoryParameterSource>(
         std::list<Parameter> {
-            {"BaseSize", "24px"},  // Should override both previous sources
+            {.name = "BaseSize", .value = "24px"},  // Should override both previous sources
         },
-        ParameterSource::Metadata {"Source 3"}
+        ParameterSource::Metadata {.name = "Source 3"}
     );
 
     manager.addSource(source3.get());
@@ -241,10 +241,10 @@ TEST_F(ParameterManagerTest, CircularReferenceDetection)
     // Create a source with circular reference
     auto circularSource = std::make_unique<InMemoryParameterSource>(
         std::list<Parameter> {
-            {"A", "@B"},
-            {"B", "@A"},
+            {.name = "A", .value = "@B"},
+            {.name = "B", .value = "@A"},
         },
-        ParameterSource::Metadata {"Circular Source"}
+        ParameterSource::Metadata {.name = "Circular Source"}
     );
 
     manager.addSource(circularSource.get());
@@ -262,11 +262,11 @@ TEST_F(ParameterManagerTest, ComplexExpressions)
     // Create a source with complex expressions
     auto complexSource = std::make_unique<InMemoryParameterSource>(
         std::list<Parameter> {
-            {"ComplexMargin", "(@BaseSize + 4px) * 2"},
-            {"ComplexPadding", "(@BaseSize - 2px) / 2"},
-            {"ColorWithFunction", "lighten(@PrimaryColor, 20)"},
+            {.name = "ComplexMargin", .value = "(@BaseSize + 4px) * 2"},
+            {.name = "ComplexPadding", .value = "(@BaseSize - 2px) / 2"},
+            {.name = "ColorWithFunction", .value = "lighten(@PrimaryColor, 20)"},
         },
-        ParameterSource::Metadata {"Complex Source"}
+        ParameterSource::Metadata {.name = "Complex Source"}
     );
 
     manager.addSource(complexSource.get());
@@ -301,9 +301,9 @@ TEST_F(ParameterManagerTest, ErrorHandling)
     // Test invalid expression
     auto invalidSource = std::make_unique<InMemoryParameterSource>(
         std::list<Parameter> {
-            {"Invalid", "invalid expression that will fail"},
+            {.name = "Invalid", .value = "invalid expression that will fail"},
         },
-        ParameterSource::Metadata {"Invalid Source"}
+        ParameterSource::Metadata {.name = "Invalid Source"}
     );
 
     manager.addSource(invalidSource.get());
@@ -374,8 +374,8 @@ TEST_F(ParameterManagerTest, InlineExpressionFunctionCall)
 TEST_F(ParameterManagerTest, InlineExpressionWithParameterReference)
 {
     auto source = std::make_unique<InMemoryParameterSource>(
-        std::list<Parameter> {{"InlineBase", "8px"}},
-        ParameterSource::Metadata {"Inline Source"}
+        std::list<Parameter> {{.name = "InlineBase", .value = "8px"}},
+        ParameterSource::Metadata {.name = "Inline Source"}
     );
     manager.addSource(source.get());
     sources.push_back(std::move(source));
@@ -782,10 +782,10 @@ TEST_F(ParameterManagerTest, CircularReferenceReportsThroughDiagnostics)
 
     auto circularSource = std::make_unique<InMemoryParameterSource>(
         std::list<Parameter> {
-            {"A", "@B"},
-            {"B", "@A"},
+            {.name = "A", .value = "@B"},
+            {.name = "B", .value = "@A"},
         },
-        ParameterSource::Metadata {"Circular Source"}
+        ParameterSource::Metadata {.name = "Circular Source"}
     );
     manager.addSource(circularSource.get());
     sources.push_back(std::move(circularSource));
@@ -838,4 +838,75 @@ TEST_F(ParameterManagerTest, TokenThatFailsToEvaluateSubstitutesItsLiteralText)
         "border: 16px solid nope(1);"
     );
     EXPECT_THAT(capture.messages(), Contains(HasSubstr("Broken")));
+}
+
+TEST_F(ParameterManagerTest, BareWordValuesFallBackToStringsSilently)
+{
+    DiagnosticsCapture capture;
+
+    // Theme values such as icon color names or folder names are plain words, not expressions.
+    // They are expected to fail parsing and resolve through the generic string fallback, so
+    // that path must not produce a diagnostic, see github issue: #32689
+    InMemoryParameterSource source(
+        std::list<Parameter> {
+            {.name = "IconsColor", .value = "black"},
+            {.name = "IconsFolder", .value = "images_classic"},
+        },
+        ParameterSource::Metadata {.name = "Bare Word Source"}
+    );
+    manager.addSource(&source);
+
+    auto color = manager.resolve("IconsColor");
+    ASSERT_TRUE(color.has_value());
+    ASSERT_TRUE(color->holds<std::string>());
+    EXPECT_EQ(color->get<std::string>(), "black");
+
+    auto folder = manager.resolve("IconsFolder");
+    ASSERT_TRUE(folder.has_value());
+    ASSERT_TRUE(folder->holds<std::string>());
+    EXPECT_EQ(folder->get<std::string>(), "images_classic");
+
+    EXPECT_THAT(capture.messages(), testing::IsEmpty());
+}
+
+TEST_F(ParameterManagerTest, BareWordValuesSubstituteIntoQssPaths)
+{
+    DiagnosticsCapture capture;
+
+    // Mirrors how FreeCAD.qss builds icon paths from bare word parameters.
+    InMemoryParameterSource source(
+        std::list<Parameter> {
+            {.name = "IconsColor", .value = "black"},
+            {.name = "IconsFolder", .value = "images_classic"},
+        },
+        ParameterSource::Metadata {.name = "Bare Word Source"}
+    );
+    manager.addSource(&source);
+
+    EXPECT_EQ(
+        manager.replacePlaceholders("image: url(qss:@IconsFolder/check-mark-@IconsColor.svg);"),
+        "image: url(qss:images_classic/check-mark-black.svg);"
+    );
+    EXPECT_THAT(capture.messages(), testing::IsEmpty());
+}
+
+TEST_F(ParameterManagerTest, ParseErrorAtEndOfInputIsNamedNotTruncated)
+{
+    DiagnosticsCapture capture;
+
+    // "black" at the end is read as a function name with no '(' following. The parser used
+    // to format input[input.size()] ('\0') into the message, which truncated what() mid-quote.
+    // The value is not a bare word, so it is still reported.
+    InMemoryParameterSource source(
+        std::list<Parameter> {{.name = "Trailing", .value = "@BaseSize + black"}},
+        ParameterSource::Metadata {.name = "Trailing Identifier Source"}
+    );
+    manager.addSource(&source);
+
+    manager.resolve("Trailing");
+
+    EXPECT_THAT(
+        capture.messages(),
+        Contains(HasSubstr("Expected '(' after function name, got end of input"))
+    );
 }
