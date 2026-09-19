@@ -36,7 +36,6 @@ namespace App
 class AppExport Origin: public App::LocalCoordinateSystem
 {
     PROPERTY_HEADER_WITH_OVERRIDE(App::Origin);
-    Q_DECLARE_TR_FUNCTIONS(App::Origin)
 
 public:
     /// Constructor

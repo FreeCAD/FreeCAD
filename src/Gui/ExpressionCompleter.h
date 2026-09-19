@@ -75,14 +75,11 @@ public:
         bool checkInList = true
     );
 
-    void getPrefixRange(int& start, int& end) const
-    {
-        tokenizer.getPrefixRange(start, end);
-    }
+    void getPrefixRange(int& start, int& end) const;
 
-    void updatePrefixEnd(int end)
+    void updatePrefixEndBytes(int endBytes)
     {
-        tokenizer.updatePrefixEnd(end);
+        tokenizer.updatePrefixEnd(endBytes);
     }
 
     void setDocumentObject(const App::DocumentObject*, bool checkInList = true);
