@@ -26,6 +26,7 @@
 #include <App/Application.h>
 #include <App/FeaturePythonPyImp.h>
 #include <Base/Parameter.h>
+#include <Base/Exception.h>
 #include <Mod/Part/App/modelRefine.h>
 
 #include "FeatureRefine.h"
@@ -101,7 +102,15 @@ TopoShape FeatureRefine::refineShapeIfActive(
     }
     TopoShape shape(oldShape);
     try {
-        return shape.makeElementRefine();
+        TopoShape refinedShape = shape.makeElementRefine();
+        if (refinedShape.isValid() || !oldShape.isValid()) {
+            return refinedShape;
+        }
+        if (onError == RefineErrorPolicy::Raise) {
+            throw Base::RuntimeError("Refine produced an invalid shape");
+        }
+        Base::Console().warning("Refine produced an invalid shape; keeping the unrefined shape.");
+        return oldShape;
     }
     catch (Standard_Failure& err) {
         if (onError == RefineErrorPolicy::Warn) {
