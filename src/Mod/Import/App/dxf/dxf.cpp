@@ -1962,7 +1962,7 @@ void CDxfRead::ProcessScaledDouble(CDxfRead* object, void* target)
     ss >> value;
     if (ss.fail()) {
         object->ImportError(
-            "Unable to parse value '%s', using zero as its value\n",
+            "Unable to parse value '{}', using zero as its value\n",
             object->m_record_data
         );
     }
@@ -1978,7 +1978,7 @@ void CDxfRead::ProcessScaledDoubleIntoList(CDxfRead* object, void* target)
     ss >> value;
     if (ss.fail()) {
         object->ImportError(
-            "Unable to parse value '%s', using zero as its value\n",
+            "Unable to parse value '{}', using zero as its value\n",
             object->m_record_data
         );
     }
@@ -1994,7 +1994,7 @@ bool CDxfRead::ParseValue(CDxfRead* object, void* target)
     ss >> *static_cast<T*>(target);
     if (ss.fail()) {
         object->ImportError(
-            "Unable to parse value '%s', using zero as its value\n",
+            "Unable to parse value '{}', using zero as its value\n",
             object->m_record_data
         );
         *static_cast<T*>(target) = 0;
@@ -2215,7 +2215,7 @@ bool CDxfRead::ReadText()
         OnReadText(insertionPoint, height, textPrefix, rotation);
     }
     else {
-        ImportError("Unable to process encoding for TEXT/MTEXT '%s'\n", textPrefix);
+        ImportError("Unable to process encoding for TEXT/MTEXT '{}'\n", textPrefix);
     }
     return true;
 }
@@ -2331,7 +2331,7 @@ bool CDxfRead::ReadPolyLine()
         vertices.push_back(currentVertex);
     }
     if (!IsObjectName("SEQEND")) {
-        ImportError("POLYLINE ends with '%s' record rather than 'SEQEND'\n", m_record_data);
+        ImportError("POLYLINE ends with '{}' record rather than 'SEQEND'\n", m_record_data);
         repeat_last_record();
     }
 
@@ -2389,7 +2389,7 @@ bool CDxfRead::ReadDimension()
             OnReadDimension(start, end, linePosition, dimensionType, Base::toRadians(rotation));
             break;
         default:
-            UnsupportedFeature("Dimension type '%d'", dimensionType);
+            UnsupportedFeature("Dimension type '{}'", dimensionType);
             break;
     }
     return true;
@@ -2398,7 +2398,7 @@ bool CDxfRead::ReadDimension()
 bool CDxfRead::ReadUnknownEntity()
 {
     ProcessAllEntityAttributes();
-    UnsupportedFeature("Entity type '%s'", m_current_entity_name.c_str());
+    UnsupportedFeature("Entity type '{}'", m_current_entity_name);
     return true;
 }
 
@@ -2453,10 +2453,9 @@ bool CDxfRead::SkipBlockContents()
 }
 
 template<typename... args>
-void CDxfRead::UnsupportedFeature(const char* format, args&&... argValuess)
+void CDxfRead::UnsupportedFeature(std::format_string<args...> format, args&&... argValues)
 {
-    // NOLINTNEXTLINE(runtime/printf)
-    std::string formattedMessage = fmt::sprintf(format, std::forward<args>(argValuess)...);
+    std::string formattedMessage = std::format(format, std::forward<args>(argValues)...);
     m_stats.unsupportedFeatures[formattedMessage].emplace_back(
         m_current_entity_line_number,
         m_current_entity_handle
@@ -2481,7 +2480,7 @@ bool CDxfRead::get_next_record()
         int temp = 0;
         if (!ParseValue<int>(this, &temp)) {
             ImportError(
-                "CDxfRead::get_next_record() Failed to get integer record type from '%s'\n",
+                "CDxfRead::get_next_record() Failed to get integer record type from '{}'\n",
                 m_record_data
             );
             return false;
@@ -2768,7 +2767,7 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */)
         while (get_next_record()) {
             if (m_record_type != eObjectType) {
                 ImportError(
-                    "Found type %d record when expecting start of a SECTION or EOF\n",
+                    "Found type {} record when expecting start of a SECTION or EOF\n",
                     (int)m_record_type
                 );
                 continue;
@@ -2778,7 +2777,7 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */)
             }
             if (!IsObjectName("SECTION")) {
                 ImportError(
-                    "Found %s record when expecting start of a SECTION\n",
+                    "Found {} record when expecting start of a SECTION\n",
                     m_record_data.c_str()
                 );
                 continue;
@@ -2849,7 +2848,7 @@ bool CDxfRead::ReadSection()
 void CDxfRead::ProcessLayerReference(CDxfRead* object, void* target)
 {
     if (!object->Layers.contains(object->m_record_data)) {
-        object->ImportError("First reference to missing Layer '%s'", object->m_record_data);
+        object->ImportError("First reference to missing Layer '{}'", object->m_record_data);
         // Synthesize the Layer so we don't get the same error again.
         // We need to take copies of the string arguments because MakeLayer uses them as move
         // inputs.
@@ -2964,7 +2963,7 @@ bool CDxfRead::ReadVariable()
         get_next_record();  // Get the value for the variable
         int varValue = 0;
         if (!ParseValue<int>(this, &varValue)) {
-            ImportError("Failed to get integer from INSUNITS value '%s'\n", m_record_data);
+            ImportError("Failed to get integer from INSUNITS value '{}'\n", m_record_data);
         }
         else {
             auto units = DxfUnits::eDxfUnits_t(varValue);
@@ -3016,7 +3015,7 @@ bool CDxfRead::ReadTablesSection()
         }
         get_next_record();
         if (m_record_type != eName) {
-            ImportError("Found unexpected type %d record instead of table name\n", (int)m_record_type);
+            ImportError("Found unexpected type {} record instead of table name\n", (int)m_record_type);
         }
         else if (IsObjectName("LAYER")) {
             if (!ReadLayerTable()) {
@@ -3256,4 +3255,4 @@ Base::Color CDxfRead::ObjectColor(ColorIndex_t index)
 }
 // NOLINTEND(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
 
-template void CDxfRead::UnsupportedFeature<>(const char*);
+template void CDxfRead::UnsupportedFeature<>(std::format_string<>);
