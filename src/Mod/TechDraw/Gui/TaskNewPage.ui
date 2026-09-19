@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskNewPage</class>
+ <widget class="QWidget" name="TaskNewPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>350</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Insert New Page</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_Main">
+   <item>
+     <layout class="QFormLayout" name="formLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="labelStandard">
+        <property name="text">
+         <string>Standard</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="standardComboBox"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="labelSize">
+        <property name="text">
+         <string>Page size</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="sizeComboBox"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="labelOrientation">
+        <property name="text">
+         <string>Orientation</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayoutOrientation">
+        <item>
+         <widget class="QRadioButton" name="landscapeRadioButton">
+          <property name="text">
+           <string>Landscape</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="portraitRadioButton">
+          <property name="text">
+           <string>Portrait</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="labelLanguage">
+        <property name="text">
+         <string>Language</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QComboBox" name="languageComboBox">
+        <property name="toolTip">
+         <string>Sets the language used for translatable templates. Only ISO5457 templates are currently translatable.</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+   </item>
+   <item>
+    <widget class="QPushButton" name="browseTemplateButton">
+     <property name="text">
+      <string>Choose Template File…</string>
+     </property>
+     <property name="toolTip">
+      <string>Selects an SVG template from any folder, including existing template directories</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="selectedTemplateLabel">
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::PlainText</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBoxPreview">
+     <property name="title">
+      <string>Preview</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayoutPreview">
+      <item>
+       <widget class="QSvgWidget" name="svgPreviewWidget"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="templateFolderButton">
+     <property name="text">
+      <string>See template folder</string>
+     </property>
+     <property name="toolTip">
+      <string>Opens the configured template folder in the file manager</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+    <class>QSvgWidget</class>
+    <extends>QWidget</extends>
+    <header>QtSvgWidgets/QSvgWidget</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
