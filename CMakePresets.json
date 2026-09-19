@@ -40,6 +40,10 @@
           "CMAKE_BUILD_TYPE": {
             "type": "STRING",
             "value": "Debug"
+          },
+          "FREECAD_VCS_PROVENANCE": {
+            "type": "STRING",
+            "value": "OFF"
           }
         }
       },

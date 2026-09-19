@@ -5,6 +5,18 @@ macro(InitializeFreeCADBuildOptions)
 
     option(BUILD_FORCE_DIRECTORY "The build directory must be different to the source directory." OFF)
     option(BUILD_GUI "Build FreeCAD Gui. Otherwise you have only the command line and the Python import module." ON)
+    set(FREECAD_VCS_PROVENANCE "COMMIT" CACHE STRING
+	"Version-control provenance embedded in the build (OFF or COMMIT). This is a build-duration optimization for developers, release builds should have this set to 'COMMIT'")
+    set_property(CACHE FREECAD_VCS_PROVENANCE PROPERTY STRINGS "OFF" "COMMIT")
+    string(TOUPPER "${FREECAD_VCS_PROVENANCE}" FREECAD_VCS_PROVENANCE)
+    set(FREECAD_VCS_PROVENANCE "${FREECAD_VCS_PROVENANCE}" CACHE STRING
+        "Version-control provenance embedded in the build (OFF or COMMIT)." FORCE)
+    if(NOT FREECAD_VCS_PROVENANCE STREQUAL "OFF"
+       AND NOT FREECAD_VCS_PROVENANCE STREQUAL "COMMIT")
+        message(FATAL_ERROR
+            "FREECAD_VCS_PROVENANCE must be either OFF or COMMIT, not "
+            "'${FREECAD_VCS_PROVENANCE}'.")
+    endif()
     option(FREECAD_USE_EXTERNAL_ZIPIOS "Use system installed zipios++ instead of the bundled." OFF)
     option(FREECAD_USE_EXTERNAL_SMESH "Use system installed smesh instead of the bundled." OFF)
     option(FREECAD_USE_EXTERNAL_KDL "Use system installed orocos-kdl instead of the bundled." OFF)
