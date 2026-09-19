@@ -51,6 +51,12 @@ public:
     DrawViewBalloon();
     ~DrawViewBalloon() override;
 
+    // TD8-P1 / Sweep #37: SourceView is whole-view PropertyLink only — not
+    // PropertyLinkSub / XLinkSub / References3D. OriginX/Y are 2D view coords
+    // (no Face/Edge attach). No getSemanticRefs → no tryResolveSubNameFromSeed
+    // path without inventing LinkSub UI. Closest honest consume = leave the
+    // whole-view link as-is (feature-scope is the linked DrawView object).
+    // GeomHatch Source remains the product Face Binding path (DrawGeomHatch).
     App::PropertyLink SourceView;
     App::PropertyString Text;
     App::PropertyEnumeration EndType;

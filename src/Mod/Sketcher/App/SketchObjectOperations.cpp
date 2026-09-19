@@ -26,6 +26,8 @@
 #include <cmath>
 #include <tuple>
 
+#include <App/Document.h>
+#include <App/SemanticDocumentState.h>
 #include <App/Expression.h>
 #include <App/ObjectIdentifier.h>
 #include <Base/Console.h>
@@ -195,6 +197,57 @@ void SketchObject::replaceGeometries(std::vector<int> oldGeoIds, std::vector<Par
 
     delGeometries(oldGeoIdIter, oldGeoIds.end());
 }
+
+void SketchObject::replaceGeometriesRecordingSplit(int oldGeoId,
+                                                   std::vector<Part::Geometry*>& newGeos)
+{
+    // S4-S1: multi-piece split/trim must not copyId the parent onto the first
+    // child. New entity handles + Split events keep Pad profile seeds on Split
+    // outputs instead of republishing Generated.
+    if (oldGeoId < 0 || newGeos.size() < 2) {
+        replaceGeometries({oldGeoId}, newGeos);
+        return;
+    }
+    const Part::Geometry* oldGeo = getGeometry(oldGeoId);
+    if (!oldGeo) {
+        replaceGeometries({oldGeoId}, newGeos);
+        return;
+    }
+    const SketchEntityHandle parentHandle =
+        static_cast<SketchEntityHandle>(GeometryFacade::getFacade(oldGeo)->getId());
+    for (Part::Geometry* geo : newGeos) {
+        generateId(geo);
+    }
+    std::vector<SketchEntityHandle> childHandles;
+    childHandles.reserve(newGeos.size());
+    for (Part::Geometry* geo : newGeos) {
+        const SketchEntityHandle h =
+            static_cast<SketchEntityHandle>(GeometryFacade::getFacade(geo)->getId());
+        if (h == SketchEntityIdMap::Invalid || h < 0 || h == parentHandle) {
+            // Fail closed: fall back to ordinary replace (Generated republish).
+            replaceGeometries({oldGeoId}, newGeos);
+            return;
+        }
+        childHandles.push_back(h);
+    }
+    if (App::Document* doc = getDocument()) {
+        if (parentHandle != SketchEntityIdMap::Invalid && parentHandle > 0) {
+            SketchSemanticSeeds::splitEntity(doc->semanticGraph(),
+                                             static_cast<App::ObjectId>(getID()),
+                                             doc->semanticState().currentEval(),
+                                             parentHandle,
+                                             childHandles);
+        }
+    }
+    auto& vals = getInternalGeometry();
+    auto newVals(vals);
+    newVals[static_cast<std::size_t>(oldGeoId)] = newGeos.front();
+    for (std::size_t i = 1; i < newGeos.size(); ++i) {
+        newVals.push_back(newGeos[i]);
+    }
+    Geometry.setValues(std::move(newVals));
+}
+
 // clang-format off
 
 std::vector<int> SketchObject::chooseFilletsEdges(const std::vector<int>& GeoIdList) const
@@ -1107,7 +1160,12 @@ SketchSolveStatus SketchObject::trim(int GeoId, const Base::Vector3d& point, boo
         }
     }
 
-    replaceGeometries({GeoId}, newGeos);
+    if (newGeos.size() >= 2) {
+        replaceGeometriesRecordingSplit(GeoId, newGeos);
+    }
+    else {
+        replaceGeometries({GeoId}, newGeos);
+    }
     for (auto newId : newIds) {
         setConstruction(newId, isOriginalCurveConstruction);
     }
@@ -1267,7 +1325,12 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
     }
 
     delConstraints(std::move(idsOfOldConstraints), DeleteOption::NoSolve);
-    replaceGeometries({GeoId}, newGeos);
+    if (newGeos.size() >= 2) {
+        replaceGeometriesRecordingSplit(GeoId, newGeos);
+    }
+    else {
+        replaceGeometries({GeoId}, newGeos);
+    }
     addConstraints(newConstraints);
 
     if (noRecomputes) {

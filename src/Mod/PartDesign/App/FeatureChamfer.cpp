@@ -24,11 +24,14 @@
 
 #include <limits>
 
+#include <deque>
 #include <BRepAlgo.hxx>
 #include <BRepFilletAPI_MakeChamfer.hxx>
+#include <BRep_Tool.hxx>
 #include <TopExp.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
+#include <TopoDS_Face.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopTools_ListOfShape.hxx>
 #include <ShapeFix_Shape.hxx>
@@ -36,13 +39,19 @@
 #include <Standard_Version.hxx>
 
 
+#include <App/Document.h>
+#include <App/PropertyLinks.h>
+#include <App/SemanticDocumentState.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
 #include <Mod/Part/App/SignalException.h>
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/App/TopoShapeOpCode.h>
+#include <Mod/Part/App/SemanticHistoryAdapter.h>
 
 #include "FeatureChamfer.h"
+#include "SemanticOpcode.h"
 
 #include <Base/ProgramVersion.h>
 
@@ -116,12 +125,24 @@ short Chamfer::mustExecute() const
     if (Placement.isTouched() || touched) {
         return 1;
     }
+
+    // See Fillet::mustExecute(): restore only schedules a semantic publisher
+    // whose valid cached shape has no durable STG1 rows of its own.
+    if (isSemanticRepublishPass(SemanticEmitter::graphFor(this))) {
+        return 1;
+    }
     return DressUp::mustExecute();
 }
 
 App::DocumentObjectExecReturn* Chamfer::execute()
 {
-    if (onlyHaveRefined()) {
+    // See Fillet::execute(): restore can mark Refine touched even though the
+    // valid cached result is precisely the shape that needs semantic history
+    // republished.  Do not take the refine-only early return in that case.
+    App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
+    const App::ObjectId fid = static_cast<App::ObjectId>(getID());
+    const bool semanticRepublish = isSemanticRepublishPass(graph);
+    if (!semanticRepublish && onlyHaveRefined()) {
         return App::DocumentObject::StdReturn;
     }
 
@@ -137,8 +158,52 @@ App::DocumentObjectExecReturn* Chamfer::execute()
 
     TopShape.setTransform(Base::Matrix4D());
 
-    auto edges = UseAllEdges.getValue() ? TopShape.getSubTopoShapes(TopAbs_EDGE)
-                                        : getContinuousEdges(TopShape);
+    App::EvalSerial eval = 0;
+    AfterExecuteRequest req;
+    if (App::Document* doc = getDocument()) {
+        eval = doc->semanticState().currentEval();
+    }
+    // Chamfer reuses filletEdges / filletAdjacentFaces (dress-up seeds).
+    collectDressUpBaseSeeds(req);
+    // R2: resolve ChamferEdge before the maker. Missing / Incompatible
+    // skips the maker. Do not pick a similar-length neighbour (I10).
+    const Part::FilletPreflight pre =
+        Part::SemanticHistoryAdapter::preflightFillet(graph, req.filletEdges);
+    // A restored semantic seed has no live Binding until its producer has
+    // executed in this evaluation.  For the narrow valid-cached-shape
+    // republish pass, rebuild from the cached Base subname rather than turning
+    // that transient Missing resolution into an execution error.
+    if (pre.makerSkipped) {
+        if (Part::SemanticHistoryAdapter::canUseCachedGeometry(pre, semanticRepublish)) {
+            req.filletEdges.clear();
+        }
+        else {
+            SemanticEmitter::afterExecute(graph, Opcode::Chamfer, fid, eval, req);
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                "Exception",
+                "Chamfer edge Missing; maker skipped. No similar-length neighbour substitution."
+            ));
+        }
+    }
+
+    if (graph && graph->hasBindings() && Base.getValue()) {
+        const App::ObjectId baseFeature =
+            static_cast<App::ObjectId>(Base.getValue()->semanticProjectionFeatureId());
+        retainResolvedDressUpSeeds(
+            graph, baseFeature, App::SemanticKind::Edge, req.filletEdges);
+        retainResolvedDressUpSeeds(
+            graph, baseFeature, App::SemanticKind::Face, req.filletAdjacentFaces);
+    }
+
+    // Candidate A/B (manual-3-dressup-relink-a): see Fillet::execute.
+    std::vector<TopoShape> edges;
+    try {
+        edges = UseAllEdges.getValue() ? TopShape.getSubTopoShapes(TopAbs_EDGE)
+                                       : getContinuousEdges(TopShape, graph);
+    }
+    catch (Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
+    }
 
     if (edges.empty()) {
         return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "No edges specified"));
@@ -162,15 +227,58 @@ App::DocumentObjectExecReturn* Chamfer::execute()
     try {
         TopoShape shape(0);
         Part::SignalException sig;
-        shape.makeElementChamfer(
-            TopShape,
-            edges,
-            static_cast<Part::ChamferType>(chamferType),
-            size,
-            size2,
-            nullptr,
-            flipDirection ? Part::Flip::flip : Part::Flip::none
-        );
+        // Keep the maker alive for fromMaker (makeElementChamfer discards it).
+        BRepFilletAPI_MakeChamfer mkChamfer(TopShape.getShape());
+        const auto type = static_cast<Part::ChamferType>(chamferType);
+        const Part::Flip flip = flipDirection ? Part::Flip::flip : Part::Flip::none;
+        for (auto& e : edges) {
+            const auto& edge = e.getShape();
+            if (e.isNull()) {
+                continue;
+            }
+            if (!TopShape.findShape(edge)) {
+                return new App::DocumentObjectExecReturn(
+                    QT_TRANSLATE_NOOP("Exception", "Chamfer edge does not belong to the shape")
+                );
+            }
+            if (BRep_Tool::Degenerated(TopoDS::Edge(edge))) {
+                return new App::DocumentObjectExecReturn(
+                    QT_TRANSLATE_NOOP("Exception", "Chamfer edge is degenerated")
+                );
+            }
+            TopoDS_Shape face;
+            if (flip == Part::Flip::flip) {
+                const auto faces = TopShape.findAncestorsShapes(edge, TopAbs_FACE);
+                if (faces.empty()) {
+                    return new App::DocumentObjectExecReturn(
+                        QT_TRANSLATE_NOOP("Exception", "Chamfer edge has no adjacent face")
+                    );
+                }
+                face = faces.back();
+            }
+            else {
+                face = TopShape.findAncestorShape(edge, TopAbs_FACE);
+            }
+            if (face.IsNull()) {
+                return new App::DocumentObjectExecReturn(
+                    QT_TRANSLATE_NOOP("Exception", "Chamfer edge has no adjacent face")
+                );
+            }
+            switch (type) {
+                case Part::ChamferType::equalDistance:
+                    mkChamfer.Add(size, size, TopoDS::Edge(edge), TopoDS::Face(face));
+                    break;
+                case Part::ChamferType::twoDistances:
+                    mkChamfer.Add(size, size2, TopoDS::Edge(edge), TopoDS::Face(face));
+                    break;
+                case Part::ChamferType::distanceAngle:
+                    mkChamfer.AddDA(
+                        size, Base::toRadians(size2), TopoDS::Edge(edge), TopoDS::Face(face)
+                    );
+                    break;
+            }
+        }
+        shape.makeElementShape(mkChamfer, TopShape, Part::OpCodes::Chamfer);
         if (shape.isNull()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Failed to create chamfer")
@@ -201,6 +309,83 @@ App::DocumentObjectExecReturn* Chamfer::execute()
 
         shape = getSolid(shape);
         this->Shape.setValue(shape);
+        // Bind Generated chamfer faces from the maker history. Empty / unnamed
+        // -> leave Binding empty (I10). Never sequential FaceN.
+        // Does not resetElementMap. Does not replace Shape.setValue.
+        std::deque<TopoDS_Shape> held;
+        std::vector<std::pair<App::SemanticId, const void*>> inputs;
+        if (graph && Base.getValue()) {
+            const App::ObjectId baseFeature =
+                static_cast<App::ObjectId>(Base.getValue()->semanticProjectionFeatureId());
+            for (const App::SemanticId& edge : req.filletEdges) {
+                const auto unique = uniqueResolvedDressUpBinding(
+                    graph, edge, baseFeature, App::SemanticKind::Edge);
+                if (!unique) {
+                    continue;
+                }
+                TopoDS_Shape es = TopShape.findShape(TopAbs_EDGE, unique->index.index);
+                if (es.IsNull()) {
+                    continue;
+                }
+                held.push_back(es);
+                inputs.push_back({edge, &held.back()});
+            }
+        }
+        // Inspect selected edges even when their Base LinkSub has no seed.
+        for (const TopoShape& selected : edges) {
+            const TopoDS_Shape& selectedShape = selected.getShape();
+            bool alreadyCaptured = false;
+            for (const auto& input : inputs) {
+                if (input.second
+                    && static_cast<const TopoDS_Shape*>(input.second)->IsSame(selectedShape)) {
+                    alreadyCaptured = true;
+                    break;
+                }
+            }
+            if (!alreadyCaptured) {
+                held.push_back(selectedShape);
+                inputs.push_back({App::SemanticId{}, &held.back()});
+            }
+        }
+        auto indexOf = [&shape](const void* occ) -> App::ElementIndex {
+            App::ElementIndex idx;
+            if (!occ) {
+                return idx;
+            }
+            const auto& sub = *static_cast<const TopoDS_Shape*>(occ);
+            if (sub.IsNull() || sub.ShapeType() != TopAbs_FACE) {
+                return idx;
+            }
+            const int n = shape.findShape(sub);
+            if (n <= 0) {
+                return idx;
+            }
+            idx.type = "Face";
+            idx.index = n;
+            return idx;
+        };
+        // fromMaker only: BRepFilletAPI_MakeChamfer has no History() on this OCCT.
+        // Empty table -> applyHistory half-map, no sequential FaceN (I13).
+        Part::HistoryTable hist = Part::SemanticHistoryAdapter::fromMaker(&mkChamfer, inputs, indexOf);
+        for (auto& rec : hist) {
+            rec.extraSeeds = req.filletAdjacentFaces;
+        }
+        Part::HistoryTable toApply;
+        toApply.reserve(hist.size());
+        for (const auto& rec : hist) {
+            if (App::shouldRefuseDressUpMintKind(rec.kind, graph, fid, rec.toIndex)) {
+                continue;
+            }
+            toApply.push_back(rec);
+            if (Part::isNamedIndex(rec.toIndex)) {
+                req.namedFaceIndices.push_back(rec.toIndex);
+            }
+        }
+        const Part::ApplyResult applied = Part::SemanticHistoryAdapter::applyHistory(
+            graph, fid, eval, "Chamfer", req.filletEdges, toApply);
+        if (applied.boundCount == 0) {
+            SemanticEmitter::afterExecute(graph, Opcode::Chamfer, fid, eval, req);
+        }
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
@@ -212,6 +397,7 @@ App::DocumentObjectExecReturn* Chamfer::execute()
         );
     }
 }
+
 
 void Chamfer::Restore(Base::XMLReader& reader)
 {

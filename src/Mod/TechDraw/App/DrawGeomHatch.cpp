@@ -24,6 +24,7 @@
 
 
 # include <iomanip>
+# include <optional>
 # include <limits>
 # include <sstream>
 
@@ -48,6 +49,9 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/PropertyLinks.h>
+#include <App/SemanticLinkSub.h>
+#include <App/SemanticReference.h>
 #include <Base/Console.h>
 #include <Base/Converter.h>
 #include <Base/FileInfo.h>
@@ -71,12 +75,39 @@ using DU = DrawUtil;
 App::PropertyFloatConstraint::Constraints DrawGeomHatch::scaleRange = {
     Precision::Confusion(), std::numeric_limits<double>::max(), (0.1)}; // increment by 0.1
 
+namespace {
+std::optional<std::string> resolvedSourceSub(const DrawGeomHatch& hatch, std::size_t i)
+{
+    const std::vector<std::string>& names = hatch.Source.getSubValues();
+    const std::string fallback = (i < names.size()) ? names[i] : std::string();
+    const std::vector<App::SemanticReference>& refs = hatch.Source.getSemanticRefs();
+    if (i >= refs.size() || !refs[i].seed.valid()) {
+        return fallback;
+    }
+    App::DocumentObject* linked = hatch.Source.getValue();
+    if (!linked) {
+        return std::nullopt;
+    }
+    const App::SemanticGraph* graph = nullptr;
+    if (hatch.getDocument()) {
+        graph = &hatch.getDocument()->semanticGraph();
+    }
+    // TD8-P1: same strict I13 consume as DrawHatch (tryResolveSubNameFromSeed).
+    // Face consumer only; nullopt on Ambiguous/Incompatible once Bindings are live.
+    return App::tryResolveSubNameFromSeed(graph, refs[i],
+        static_cast<App::ObjectId>(linked->getID()), fallback, App::SemanticKind::Face);
+}
+}  // namespace
+
 PROPERTY_SOURCE(TechDraw::DrawGeomHatch, App::DocumentObject)
 
 DrawGeomHatch::DrawGeomHatch()
 {
     static const char *vgroup = "GeomHatch";
 
+    // TD8-P1: Source is PropertyLinkSub (View + Face). Binding resolve via
+    // resolvedSourceSub / affectsFace / faceIsGeomHatched (strict I13, like DrawHatch).
+    // Balloon SourceView remains PropertyLink-only — no invent (see DrawViewBalloon.h).
     ADD_PROPERTY_TYPE(Source, (nullptr), vgroup, App::PropertyType::Prop_None,
                       "The View + Face to be crosshatched");
     Source.setScope(App::LinkScope::Global);
@@ -213,6 +244,33 @@ DrawViewPart* DrawGeomHatch::getSourceView() const
     DrawViewPart* result = freecad_cast<DrawViewPart*>(obj);
     return result;
 }
+
+bool DrawGeomHatch::affectsFace(int i)
+{
+    const std::vector<std::string>& sourceNames = Source.getSubValues();
+    for (std::size_t n = 0; n < sourceNames.size(); ++n) {
+        const auto resolved = resolvedSourceSub(*this, n);
+        if (!resolved) {
+            continue;  // I13 silence
+        }
+        int fdx = TechDraw::DrawUtil::getIndexFromName(*resolved);
+        if (fdx == i) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool DrawGeomHatch::faceIsGeomHatched(int i, std::vector<TechDraw::DrawGeomHatch*> geomObjs)
+{
+    for (auto& h : geomObjs) {
+        if (h && h->affectsFace(i)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 
 std::vector<PATLineSpec> DrawGeomHatch::getDecodedSpecsFromFile()
 {

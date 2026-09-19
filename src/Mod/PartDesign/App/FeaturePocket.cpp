@@ -31,6 +31,9 @@
 
 
 #include <App/DocumentObject.h>
+#include "SemanticOpcode.h"
+#include <App/SemanticDocumentState.h>
+#include <App/Document.h>
 #include <Base/Exception.h>
 
 #include "FeaturePocket.h"
@@ -138,7 +141,48 @@ App::DocumentObjectExecReturn* Pocket::execute()
     ExtrudeOptions options(
         ExtrudeOption::MakeFace | ExtrudeOption::MakeFuse | ExtrudeOption::InverseDirection
     );
-    return buildExtrusion(options);
+    App::DocumentObjectExecReturn* ret = buildExtrusion(options);
+    App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
+    App::ObjectId fid = static_cast<App::ObjectId>(getID());
+    App::EvalSerial eval = 0;
+    AfterExecuteRequest req;
+    if (App::Document* doc = getDocument()) {
+        eval = doc->semanticState().currentEval();
+        if (App::DocumentObject* profile = Profile.getValue()) {
+            req = collectProfileSemanticSeeds();
+        }
+    }
+    if (const char* t = Type.getValueAsString()) {
+        if (std::strcmp(t, "ThroughAll") == 0) {
+            req.pocketMode = AfterExecuteRequest::PocketMode::ThroughCut;
+        }
+        else if (std::strcmp(t, "Length") == 0) {
+            req.pocketMode = AfterExecuteRequest::PocketMode::Hole;
+        }
+        // else Unknown: emit Generated sides/caps; Split vs S3 needs a named cap.
+    }
+    // Named remnant / UpToFace only. Never invent pocketTarget from FaceN (I10).
+    // PD5-I13: uniqueNamedFace (I13) — 0 or >1 Face seeds → unnamed; no first-wins.
+    req.pocketTarget = uniqueNamedFace(UpToFace.getSemanticRefs());
+    if (!req.pocketTarget.valid()) {
+        req.pocketTarget = uniqueNamedFace(UpToFace2.getSemanticRefs());
+    }
+    if (!req.pocketTarget.valid()) {
+        req.pocketTarget = uniqueNamedFace(StartReference.getSemanticRefs());
+    }
+    // Length/ThroughAll: lastCutRemnant from boolean history. Exactly one
+    // named base Face Modified/Split, or (several) the uniquely-named Profile
+    // AttachmentSupport Face among those cut Faces. 0 or >1 → unnamed (I13).
+    // UpToFirst/Last/Shape: BRepFeat history is internal — do not invent FaceN.
+    if (!req.pocketTarget.valid()) {
+        req.pocketTarget = lastCutRemnant;
+    }
+    req.namedFaceIndices = lastNamedFaceIndices;
+    req.namedEdgeIndices = lastNamedEdgeIndices;
+    // Product: no sequential FaceN Binding. allowSequentialFaceN is test-only.
+    req.allowSequentialFaceN = false;
+    SemanticEmitter::afterExecute(graph, Opcode::Pocket, fid, eval, req);
+    return ret;
 }
 
 Base::Vector3d Pocket::getProfileNormal() const

@@ -24,6 +24,8 @@
 
 #include <FCConfig.h>
 
+#include <deque>
+#include <memory>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
@@ -40,6 +42,8 @@
 
 
 #include <App/Document.h>
+#include <App/SemanticDocumentState.h>
+#include <App/SemanticReference.h>
 #include <Base/Exception.h>
 #include <Base/ProgramVersion.h>
 #include <Base/Tools.h>
@@ -47,6 +51,9 @@
 #include "FeatureExtrusion.h"
 #include "ExtrusionHelper.h"
 #include "Part2DObject.h"
+#include "SemanticHistoryAdapter.h"
+#include "SemanticSourceCollector.h"
+#include "TopoShapeOpCode.h"
 
 
 using namespace Part;
@@ -109,6 +116,149 @@ void restoreFaceMakerMode(Extrusion* self)
     if (strcmp(mode, type) != 0) {
         self->FaceMakerMode.setValue(classToEnum(type));
     }
+}
+
+void publishExtrusionSemanticHistory(Extrusion* self,
+                                     BRepPrimAPI_MakePrism* maker,
+                                     const TopoShape& published)
+{
+    if (!self || !maker || !maker->IsDone() || published.isNull()) {
+        return;
+    }
+    App::SemanticGraph* graph = App::SemanticDocumentState::graphFor(self);
+    if (!graph && self->getDocument()) {
+        graph = &self->getDocument()->semanticGraph();
+    }
+    if (!graph) {
+        return;
+    }
+    const App::ObjectId selfId = static_cast<App::ObjectId>(self->getID());
+    App::EvalSerial eval = 0;
+    if (App::Document* doc = self->getDocument()) {
+        eval = doc->semanticState().currentEval();
+    }
+    std::deque<TopoDS_Shape> held;
+    struct Candidate {
+        App::ElementIndex index;
+        App::SemanticKind kind = App::SemanticKind::Face;
+    };
+    std::vector<Candidate> candidates;
+    auto boundAt = [graph, selfId](const App::ElementIndex& index) {
+        return App::shouldRefuseBoundAt(graph, selfId, index);
+    };
+    auto addImage = [&](const TopoDS_Shape& image) {
+        if (image.IsNull()
+            || (image.ShapeType() != TopAbs_FACE && image.ShapeType() != TopAbs_EDGE)) {
+            return;
+        }
+        for (const auto& prior : held) {
+            if (prior.IsSame(image) || prior.IsPartner(image)) {
+                return;
+            }
+        }
+        const App::ElementIndex index = Part::uniqueNamedIndexOnPublished(published, image);
+        if (!isNamedIndex(index)) {
+            return;
+        }
+        if (boundAt(index)) {
+            return;
+        }
+        // A3: defer recordGenerated until after fromMaker / uniqueOneImageGenerated
+        // / supplementLocatedInputs (Mirroring deferred-mint pattern). Provisional
+        // handles below are bookkeeping only - never written to the durable graph.
+        held.push_back(image);
+        Candidate candidate;
+        candidate.index = index;
+        candidate.kind = image.ShapeType() == TopAbs_FACE
+            ? App::SemanticKind::Face : App::SemanticKind::Edge;
+        candidates.push_back(candidate);
+    };
+    for (TopExp_Explorer ex(maker->Shape(), TopAbs_FACE); ex.More(); ex.Next()) {
+        addImage(ex.Current());
+    }
+    for (TopExp_Explorer ex(maker->Shape(), TopAbs_EDGE); ex.More(); ex.Next()) {
+        addImage(ex.Current());
+    }
+    if (candidates.empty()) {
+        // A4: TESTS *Diag gated (default off). Exact historical strings via
+        // testsPublishDiagSkip/Bound — enable FREECAD_TESTS_DIAG=1 or
+        // FreeCAD.setLogLevel('PartTestsDiag','Message'). Emit/I13 unchanged.
+        Part::testsPublishDiagSkip("extrusionDiag", "no named maker images");
+        return;
+    }
+    // Provisional SemanticIds (handle = 1..N) drive fromMaker uniqueness without
+    // minting orphans. Real seeds are allocated only for surviving unique slots.
+    std::vector<std::pair<App::SemanticId, const void*>> inputs;
+    inputs.reserve(candidates.size());
+    for (std::size_t i = 0; i < candidates.size(); ++i) {
+        App::SemanticId provisional;
+        provisional.handle = static_cast<App::SemanticHandle>(i + 1);
+        provisional.kind = candidates[i].kind;
+        inputs.push_back({provisional, static_cast<const void*>(&held[i])});
+    }
+    auto indexOf = [&published](const void* occ) -> App::ElementIndex {
+        if (!occ) {
+            return App::ElementIndex();
+        }
+        const TopoDS_Shape& shape = *static_cast<const TopoDS_Shape*>(occ);
+        return Part::uniqueNamedIndexOnPublished(published, shape);
+    };
+    const HistoryTable makerHistory = SemanticHistoryAdapter::fromMaker(maker, inputs, indexOf);
+    HistoryTable unique = SemanticHistoryAdapter::uniqueOneImageGenerated(makerHistory);
+    // A non-empty but unusable maker history is an I13 failure, not permission
+    // to mint a fresh binding from the published-shape fallback.
+    if (makerHistory.empty()) {
+        for (const auto& pair : inputs) {
+            HistoryRecord record;
+            record.fromSeed = pair.first;
+            record.kind = App::EventKind::Generated;
+            record.toIndex = indexOf(pair.second);
+            record.outputKind = record.toIndex.type == "Edge"
+                ? App::SemanticKind::Edge : App::SemanticKind::Face;
+            if (isNamedIndex(record.toIndex)) {
+                unique.push_back(record);
+            }
+        }
+        unique = SemanticHistoryAdapter::uniqueOneImageGenerated(unique);
+    }
+    else if (!unique.empty()) {
+        // MakePrism fromMaker often uniquely keeps Faces while vertical Edges
+        // are unmodified survivors only present in locate inputs (Vertex-rooted
+        // ElementMap). Supplement uncovered Edge slots without undoing Pass-32
+        // refuse when unique is empty.
+        unique = SemanticHistoryAdapter::supplementLocatedInputs(unique, inputs, indexOf);
+    }
+    HistoryTable toApply;
+    std::vector<App::SemanticId> seeds;
+    for (const HistoryRecord& record : unique) {
+        if (!isNamedIndex(record.toIndex)) {
+            continue;
+        }
+        App::SemanticKind kind = record.outputKind;
+        if (kind != App::SemanticKind::Face && kind != App::SemanticKind::Edge) {
+            kind = record.toIndex.type == "Edge"
+                ? App::SemanticKind::Edge : App::SemanticKind::Face;
+        }
+        // A3 deferred mint: allocate only for unique surviving Face/Edge slots.
+        const App::SemanticId seed = graph->recordGenerated(
+            kind, Part::OpCodes::Extrude, selfId, eval, App::SemanticRole::None);
+        if (!seed.valid()) {
+            continue;
+        }
+        HistoryRecord minted = record;
+        minted.fromSeed = seed;
+        minted.kind = App::EventKind::Generated;
+        minted.outputKind = kind;
+        toApply.push_back(minted);
+        seeds.push_back(seed);
+    }
+    if (toApply.empty()) {
+        Part::testsPublishDiagSkip("extrusionDiag", "no unique images");
+        return;
+    }
+    SemanticHistoryAdapter::applyHistory(
+        graph, selfId, eval, Part::OpCodes::Extrude, seeds, toApply);
+    Part::testsPublishDiagBound("extrusionDiag", toApply.size(), toApply.size());
 }
 }  // namespace
 
@@ -338,7 +488,12 @@ Base::Vector3d Extrusion::calculateShapeNormal(const App::PropertyLink& shapeLin
     return Base::Vector3d(normal.X(), normal.Y(), normal.Z());
 }
 
-void Extrusion::extrudeShape(TopoShape& result, const TopoShape& source, const ExtrusionParameters& params)
+void Extrusion::extrudeShape(
+    TopoShape& result,
+    const TopoShape& source,
+    const ExtrusionParameters& params,
+    std::unique_ptr<BRepPrimAPI_MakePrism>* livePrism
+)
 {
     gp_Vec vec = gp_Vec(params.dir).Multiplied(params.lengthFwd + params.lengthRev);  // total vector
                                                                                       // of extrusion
@@ -389,8 +544,15 @@ void Extrusion::extrudeShape(TopoShape& result, const TopoShape& source, const E
             }
         }
 
-        // extrude!
-        result.makeElementPrism(myShape, vec);
+        // Keep the live prism maker for Part-side semantic history.
+        if (livePrism) {
+            auto prism = std::make_unique<BRepPrimAPI_MakePrism>(myShape.getShape(), vec);
+            result.makeElementShape(*prism, myShape, Part::OpCodes::Extrude);
+            *livePrism = std::move(prism);
+        }
+        else {
+            result.makeElementPrism(myShape, vec);
+        }
     }
 }
 
@@ -404,13 +566,12 @@ App::DocumentObjectExecReturn* Extrusion::execute()
     try {
         ExtrusionParameters params = computeFinalParameters();
         TopoShape result(0, getDocument()->getStringHasher());
-
-        extrudeShape(
-            result,
-            Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform),
-            params
-        );
+        TopoShape source =
+            Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform);
+        std::unique_ptr<BRepPrimAPI_MakePrism> livePrism;
+        extrudeShape(result, source, params, &livePrism);
         this->Shape.setValue(result);
+        publishExtrusionSemanticHistory(this, livePrism.get(), result);
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {

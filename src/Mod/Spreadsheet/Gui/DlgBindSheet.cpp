@@ -53,6 +53,7 @@ DlgBindSheet::DlgBindSheet(Sheet* sheet, const std::vector<Range>& ranges, QWidg
     std::string toStart, toEnd;
     ExpressionPtr pStart, pEnd;
     App::ObjectIdentifier bindingTarget;
+    // "Binding" here is cell-range Bind (Bind / BindHiddenRef), not semantic Binding.
     PropertySheet::BindingType type = sheet->getCellBinding(range, &pStart, &pEnd, &bindingTarget);
     if (type == PropertySheet::BindingNone) {
         if (ranges.size() > 1) {

@@ -24,6 +24,7 @@
 
 
 #include <sstream>
+#include <optional>
 #include <Bnd_Box.hxx>
 #include <BRep_Builder.hxx>
 #include <BRepAdaptor_Curve.hxx>
@@ -68,6 +69,8 @@
 #include <App/Link.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/ElementNamingUtils.h>
+#include <App/SemanticDocumentState.h>
+#include <App/SemanticReference.h>
 #include <App/Placement.h>
 #include <App/Datums.h>
 #include <Base/Exception.h>
@@ -2085,6 +2088,87 @@ void FilletBase::syncEdgeLink()
         subs.emplace_back(sub + std::to_string(info.edgeid));
     }
     EdgeLinks.setValue(Base.getValue(), subs);
+}
+
+
+int FilletBase::uniqueBaseEdgeIndex(std::size_t slot, bool& missing) const
+{
+    missing = false;
+    const std::vector<std::string>& vals = EdgeLinks.getSubValues(true);
+    const auto& shadows = EdgeLinks.getShadowSubs();
+    if (slot >= vals.size()) {
+        return 0;
+    }
+    const std::string& ref =
+        (slot < shadows.size() && !shadows[slot].newName.empty()) ? shadows[slot].newName
+                                                                  : vals[slot];
+    const std::string oldName =
+        (slot < shadows.size() && !shadows[slot].oldName.empty()) ? shadows[slot].oldName
+                                                                  : std::string();
+    if (Data::hasMissingElement(ref.c_str()) || Data::hasMissingElement(oldName.c_str())) {
+        missing = true;
+        return 0;
+    }
+
+    const std::vector<App::SemanticReference>& srefs = EdgeLinks.getSemanticRefs();
+    if (slot >= srefs.size() || !srefs[slot].seed.valid()) {
+        return 0;
+    }
+    const App::SemanticReference& sref = srefs[slot];
+    if (sref.seed.kind != App::SemanticKind::Edge && sref.kind != App::SemanticKind::Edge) {
+        return 0;
+    }
+
+    App::SemanticGraph* graph = App::SemanticDocumentState::graphFor(this);
+    if (!graph && getDocument()) {
+        graph = &getDocument()->semanticGraph();
+    }
+    if (!graph) {
+        return 0;
+    }
+    if (!graph->allocator.isPublished(sref.seed.handle)
+        || graph->hasDeletedEvent(sref.seed.handle)) {
+        missing = true;
+        return 0;
+    }
+
+    App::DocumentObject* base = Base.getValue();
+    if (!base) {
+        return 0;
+    }
+    const App::ObjectId linked = static_cast<App::ObjectId>(base->getID());
+    const std::optional<App::SemanticBinding> unique =
+        App::uniqueBindingOnFeature(graph, sref.seed, linked, "Edge");
+    if (!unique.has_value()) {
+        return 0;
+    }
+    return unique->index.index;
+}
+
+int FilletBase::resolveEdgeFindKeyIndex(int consumed,
+                                       const std::string& ref,
+                                       const std::string& oldName,
+                                       int edgeid,
+                                       int mapExtent)
+{
+    // Unique Edge Binding on Base (I13) wins; else IndexedName from
+    // newName / oldName (FaceN/EdgeN cache); else Edges.edgeid.
+    // Hashed mapped names (`;:H…`) do not parse as IndexedName — never
+    // call FindKey(0).
+    int id = consumed;
+    if (id <= 0) {
+        id = Data::MappedName(ref.c_str()).toIndexedName().getIndex();
+    }
+    if (id <= 0 && !oldName.empty()) {
+        id = Data::MappedName(oldName.c_str()).toIndexedName().getIndex();
+    }
+    if (id <= 0) {
+        id = edgeid;
+    }
+    if (id < 1 || id > mapExtent) {
+        return 0;
+    }
+    return id;
 }
 
 void FilletBase::onUpdateElementReference(const App::Property* prop)

@@ -183,7 +183,7 @@ testing::AssertionResult elementsMatch(const TopoShape& shape, const std::vector
                         return matchStringsWithoutClause(
                             element.name.toString(),
                             name,
-                            "(;D|;:H|;K)-?[a-fA-F0-9]+(:[0-9]+)?|(\\(.*?\\))?"
+                            "(;D|;:H|;K)-?[a-fA-F0-9]+(:[0-9]+)?|#([0-9a-fA-F]+:[0-9a-fA-F]+)|(\\(.*?\\))?"
                         );
                         // ;D ;:H and ;K are the sections of an encoded name for
                         // Duplicate, Tag and a Face name in slices.  All three of these

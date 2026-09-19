@@ -1238,6 +1238,92 @@ ExpressionPtr Expression::copy() const
     return expr;
 }
 
+void Expression::promoteSemanticRefs(const SemanticGraph& graph)
+{
+    struct Visitor: ExpressionVisitor
+    {
+        const SemanticGraph& graph;
+        explicit Visitor(const SemanticGraph& g)
+            : graph(g)
+        {}
+        void visit(Expression& node) override
+        {
+            node._promoteSemanticRefs(graph);
+        }
+    } visitor(graph);
+    visit(visitor);
+}
+
+bool Expression::applySemanticReadPolicy(const SemanticGraph& graph)
+{
+    bool changed = false;
+    struct Visitor: ExpressionVisitor
+    {
+        const SemanticGraph& graph;
+        bool* changed;
+        Visitor(const SemanticGraph& g, bool* c)
+            : graph(g)
+            , changed(c)
+        {}
+        void visit(Expression& node) override
+        {
+            if (node._applySemanticReadPolicy(graph)) {
+                *changed = true;
+            }
+        }
+    } visitor(graph, &changed);
+    visit(visitor);
+    return changed;
+}
+
+void Expression::restoreSemanticRef(const SemanticReference& restored)
+{
+    struct Visitor: ExpressionVisitor
+    {
+        const SemanticReference& restored;
+        explicit Visitor(const SemanticReference& r)
+            : restored(r)
+        {}
+        void visit(Expression& node) override
+        {
+            node._restoreSemanticRef(restored);
+        }
+    } visitor(restored);
+    visit(visitor);
+}
+
+const SemanticReference* Expression::firstTopologySemanticRef() const
+{
+    // SS7-I13 / I13: fail-closed — exactly one valid topology seed, else nullptr.
+    const SemanticReference* found = nullptr;
+    int validCount = 0;
+    struct Visitor: ExpressionVisitor
+    {
+        const SemanticReference** found;
+        int* validCount;
+        explicit Visitor(const SemanticReference** f, int* c)
+            : found(f)
+            , validCount(c)
+        {}
+        void visit(Expression& node) override
+        {
+            if (auto* ve = freecad_cast<VariableExpression*>(&node)) {
+                if (ve->path().getSemanticRef().seed.valid()) {
+                    ++(*validCount);
+                    if (*validCount == 1) {
+                        *found = &ve->path().getSemanticRef();
+                    }
+                    else {
+                        *found = nullptr;  // ambiguous multi-seed
+                    }
+                }
+            }
+        }
+    } visitor(&found, &validCount);
+    const_cast<Expression*>(this)->visit(visitor);
+    return found;
+}
+
 
 //
 // UnitExpression class
@@ -2919,6 +3005,7 @@ void VariableExpression::addComponent(Component *c) {
             break;
         if(!c->e1 && !c->e2) {
             var << c->comp;
+            var.promoteFromLiveGraph();
             return;
         }
         long l1=0,l2=0,l3=1;
@@ -3020,6 +3107,21 @@ bool VariableExpression::_updateElementReference(
         App::DocumentObject *feature, bool reverse, ExpressionVisitor &v)
 {
     return var.updateElementReference(v,feature,reverse);
+}
+
+void VariableExpression::_promoteSemanticRefs(const SemanticGraph& graph)
+{
+    var.promoteWithGraph(graph);
+}
+
+bool VariableExpression::_applySemanticReadPolicy(const SemanticGraph& graph)
+{
+    return var.applySemanticReadPolicy(graph);
+}
+
+void VariableExpression::_restoreSemanticRef(const SemanticReference& restored)
+{
+    var.keepRestoredSeed(restored);
 }
 
 bool VariableExpression::_renameObjectIdentifier(

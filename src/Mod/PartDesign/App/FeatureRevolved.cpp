@@ -48,6 +48,14 @@
 #include <Mod/Part/App/TopoShapeOpCode.h>
 
 #include "FeatureRevolved.h"
+#include <BRepPrimAPI_MakeRevol.hxx>
+#include <deque>
+#include <Mod/Sketcher/App/SketchEntityId.h>
+#include <Mod/Sketcher/App/SketchSemanticSeed.h>
+#include <Mod/Part/App/SemanticSourceCollector.h>
+#include <Mod/Part/App/SemanticHistoryAdapter.h>
+#include "SemanticOpcode.h"
+#include <App/SemanticDocumentState.h>
 
 using namespace PartDesign;
 
@@ -221,6 +229,8 @@ App::DocumentObjectExecReturn* Revolved::executeRevolved(Part::RevolMode revolMo
 
 App::DocumentObjectExecReturn* Revolved::tryExecuteRevolved(Part::RevolMode revolMode)
 {
+    lastNamedFaceIndices.clear();
+    lastNamedEdgeIndices.clear();
     if (onlyHaveRefined()) {
         return App::DocumentObject::StdReturn;
     }
@@ -890,9 +900,12 @@ void Revolved::generateRevolution(
         // revolve the face to a solid
         // BRepPrimAPI is the only option that allows use of this shape for patterns.
         // See https://forum.freecad.org/viewtopic.php?f=8&t=70185&p=611673#p611673.
+        // Keep the maker for fromMaker (makeElementRevolve discards it).
         revol = from;
-        revol = revol.makeElementRevolve(revolAx, angleTotal);
+        BRepPrimAPI_MakeRevol mkRevol(from.getShape(), revolAx, angleTotal);
+        revol.makeElementShape(mkRevol, from, Part::OpCodes::Revolve);
         revol.Tag = -getID();
+        captureRevolveMaker(&mkRevol, revol, from);
     }
     else {
         throw Base::RuntimeError(
@@ -991,3 +1004,125 @@ void Revolved::onDocumentRestored()
 }
 
 }  // namespace PartDesign
+
+void Revolved::captureRevolveMaker(void* occMaker, const TopoShape& revol, const TopoShape& sketch)
+{
+    lastNamedFaceIndices.clear();
+    lastNamedEdgeIndices.clear();
+    if (!occMaker || revol.isNull() || sketch.isNull()) {
+        return;
+    }
+
+    App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
+    AfterExecuteRequest seeds;
+    seeds = collectProfileSemanticSeeds();
+
+    const auto edges = sketch.getSubTopoShapes(TopAbs_EDGE);
+    const auto faces = sketch.getSubTopoShapes(TopAbs_FACE);
+    const auto vertices = sketch.getSubTopoShapes(TopAbs_VERTEX);
+
+    std::deque<TopoDS_Shape> held;
+    std::vector<std::pair<App::SemanticId, const void*>> inputs;
+    for (std::size_t i = 0; i < seeds.curveSeeds.size() && i < edges.size(); ++i) {
+        held.push_back(edges[i].getShape());
+        inputs.push_back({seeds.curveSeeds[i], &held.back()});
+    }
+    for (std::size_t i = 0; i < seeds.regionSeeds.size() && i < faces.size(); ++i) {
+        held.push_back(faces[i].getShape());
+        inputs.push_back({seeds.regionSeeds[i], &held.back()});
+    }
+    if (!seeds.vertexSeeds.empty()) {
+        for (std::size_t i = 0; i < seeds.vertexSeeds.size() && i < vertices.size(); ++i) {
+            held.push_back(vertices[i].getShape());
+            inputs.push_back({seeds.vertexSeeds[i], &held.back()});
+        }
+    }
+    else {
+        for (std::size_t i = 0; i < seeds.curveSeeds.size() && i < vertices.size(); ++i) {
+            held.push_back(vertices[i].getShape());
+            inputs.push_back({seeds.curveSeeds[i], &held.back()});
+        }
+    }
+
+    auto indexOf = [&revol](const void* occ) -> App::ElementIndex {
+        App::ElementIndex idx;
+        if (!occ) {
+            return idx;
+        }
+        const auto& sub = *static_cast<const TopoDS_Shape*>(occ);
+        if (sub.IsNull()) {
+            return idx;
+        }
+        const int n = revol.findShape(sub);
+        if (n <= 0) {
+            return idx;
+        }
+        if (sub.ShapeType() == TopAbs_FACE) {
+            idx.type = "Face";
+        }
+        else if (sub.ShapeType() == TopAbs_EDGE) {
+            idx.type = "Edge";
+        }
+        else {
+            return idx;
+        }
+        idx.index = n;
+        return idx;
+    };
+
+    auto* maker = static_cast<BRepBuilderAPI_MakeShape*>(occMaker);
+    const Part::HistoryTable fromHist =
+        Part::SemanticHistoryAdapter::fromMaker(maker, inputs, indexOf);
+    // Keep the Face and Edge request zippers independent: a profile seed may
+    // legitimately produce one published face and one published edge, while
+    // distinct images of either kind are ambiguous under I13. Count unique
+    // published slots — not raw fromMaker rows — because BRepPrimAPI_MakeRevol
+    // often lists the same FaceN/EdgeN twice (9f1a082596); raw-row counting
+    // emptied lastNamed* and skipped emit (Windows revolution_base_seed).
+    // Preserve input order: afterExecute() zips these vectors onto profile seeds.
+    // EM14-S1 / PD23-S1: Revolution/Groove callers publish Bindings via afterExecute
+    // only — no stampElementMap dual-write (unlike Loft/Pipe/Helix). Keep that scope.
+    std::map<std::pair<App::SemanticHandle, std::string>, std::set<std::string>> sourceSlots;
+    std::map<std::string, std::set<App::SemanticHandle>> slotOwners;
+    for (const auto& rec : fromHist) {
+        if (!rec.fromSeed.valid() || rec.kind == App::EventKind::Deleted
+            || !Part::isNamedIndex(rec.toIndex)  // PD23-R1
+            || (rec.toIndex.type != "Face" && rec.toIndex.type != "Edge")) {
+            continue;
+        }
+        const std::string slot = rec.toIndex.toString();
+        sourceSlots[{rec.fromSeed.handle, rec.toIndex.type}].insert(slot);
+        slotOwners[slot].insert(rec.fromSeed.handle);
+    }
+    auto pushUnique = [](std::vector<App::ElementIndex>& dst, const App::ElementIndex& idx) {
+        for (const auto& existing : dst) {
+            if (existing.type == idx.type && existing.index == idx.index) {
+                return;
+            }
+        }
+        dst.push_back(idx);
+    };
+    for (const auto& rec : fromHist) {
+        if (!rec.fromSeed.valid() || rec.kind == App::EventKind::Deleted
+            || !Part::isNamedIndex(rec.toIndex)  // PD23-R1
+            || (rec.toIndex.type != "Face" && rec.toIndex.type != "Edge")) {
+            continue;
+        }
+        const std::string slot = rec.toIndex.toString();
+        if (sourceSlots[{rec.fromSeed.handle, rec.toIndex.type}].size() != 1
+            || slotOwners[slot].size() != 1) {
+            continue;
+        }
+        if (rec.toIndex.type == "Face") {
+            pushUnique(lastNamedFaceIndices, rec.toIndex);
+        }
+        else if (rec.toIndex.type == "Edge") {
+            pushUnique(lastNamedEdgeIndices, rec.toIndex);
+        }
+    }
+    if (lastNamedFaceIndices.empty() && lastNamedEdgeIndices.empty()) {
+        Base::Console().message(
+            "TESTS revolutionCapture skip emit: no unique fromMaker images\n");
+    }
+}
+

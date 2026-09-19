@@ -113,6 +113,11 @@ AppExport std::string oldElementName(const char *name);
 /// Strip out the old and new element name if there is one.
 AppExport std::string noElementName(const char *name);
 
+/// V2 interchange token for a Rev 3.1 SemanticId handle (typed API over MappedName, not a second heap).
+/// Consumers searching MappedName for this mark must use MappedName::contains
+/// (or find >= 0; int −1 miss) — never std::string::npos (Sweep #3 E1 / EM14-D1 / EM30-C1).
+constexpr const char* POSTFIX_SEMANTIC                  = ";:ST";
+
 /// Find the start of an element name in a subname
 AppExport const char *findElementName(const char *subname);
 

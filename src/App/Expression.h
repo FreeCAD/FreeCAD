@@ -507,6 +507,18 @@ public:
     /// Visit the expression with a visitor.
     void visit(ExpressionVisitor & v);
 
+    /// I13: dual-write Face/Edge/Vertex seeds on VariableExpression paths.
+    void promoteSemanticRefs(const SemanticGraph& graph);
+    /// D2: rewrite FaceN cache from unique Binding after remap. C1 keeps seeds.
+    bool applySemanticReadPolicy(const SemanticGraph& graph);
+    /// C1: attach a restored stSeed onto matching topology identifiers.
+    void restoreSemanticRef(const SemanticReference& restored);
+    /// Unique valid topology seed in this tree, or nullptr (SS7-I13 / I13).
+    /// Exactly one VariableExpression with a valid seed → that ref; 0 or >1 → nullptr
+    /// (fail-closed, never first-wins). Product Spreadsheet cases use one path
+    /// (spreadsheet_face_seed).
+    const SemanticReference* firstTopologySemanticRef() const;
+
     /// Exception class for expression errors.
     class Exception : public Base::Exception {
     public:
@@ -564,6 +576,9 @@ protected:
     virtual void _getIdentifiers(std::map<App::ObjectIdentifier,bool> &) const  {}
     virtual bool _adjustLinks(const std::set<App::DocumentObject*> &, ExpressionVisitor &) {return false;}
     virtual bool _updateElementReference(App::DocumentObject *,bool,ExpressionVisitor &) {return false;}
+    virtual void _promoteSemanticRefs(const SemanticGraph&) {}
+    virtual bool _applySemanticReadPolicy(const SemanticGraph&) {return false;}
+    virtual void _restoreSemanticRef(const SemanticReference&) {}
     virtual bool _relabeledDocument(const std::string &, const std::string &, ExpressionVisitor &) {return false;}
     virtual void _importSubNames(const ObjectIdentifier::SubNameMap &) {}
     virtual void _updateLabelReference(App::DocumentObject *, const std::string &, const char *) {}

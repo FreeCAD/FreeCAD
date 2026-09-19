@@ -9,8 +9,8 @@
 
 #include "Gui/QuantitySpinBox.h"
 #include "Gui/propertyeditor/PropertyItem.h"
-#include <src/App/InitApplication.h>
 #include <src/LocaleTestHelpers.h>
+#include <src/Gui/InitQtTest.h>
 
 // NOLINTBEGIN(readability-magic-numbers)
 
@@ -58,7 +58,7 @@ class testPropertyItem: public QObject
 public:
     testPropertyItem()
     {
-        tests::initApplication();
+        tests::initQtGuiTest();
         item.reset(new MockPropertyItem());
     }
 
@@ -150,6 +150,6 @@ private:
 
 // NOLINTEND(readability-magic-numbers)
 
-QTEST_MAIN(testPropertyItem)
+QTEST_APPLESS_MAIN(testPropertyItem)
 
 #include "PropertyItem.moc"

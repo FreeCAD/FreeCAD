@@ -99,15 +99,15 @@ void FeatureAddSub::onChanged(const App::Property* property)
         const char* strOp = Operation.getValueAsString();
         if (strcmp(strOp, "Subtraction") == 0) {
             booleanOperation = BooleanOperation::Subtraction;
-            addSubType = Type::Subtractive;
+            addSubType = FeatureAddSub::Type::Subtractive;
         }
         else if (strcmp(strOp, "Common") == 0) {
             booleanOperation = BooleanOperation::Common;
-            addSubType = Type::Subtractive;
+            addSubType = FeatureAddSub::Type::Subtractive;
         }
         else {
             booleanOperation = BooleanOperation::Union;
-            addSubType = Type::Additive;
+            addSubType = FeatureAddSub::Type::Additive;
         }
     }
 
@@ -124,7 +124,7 @@ short FeatureAddSub::mustExecute() const
 
 void FeatureAddSub::getAddSubShape(Part::TopoShape& addShape, Part::TopoShape& subShape)
 {
-    if (addSubType == Type::Additive) {
+    if (addSubType == FeatureAddSub::Type::Additive) {
         addShape = AddSubShape.getShape();
     }
     else {

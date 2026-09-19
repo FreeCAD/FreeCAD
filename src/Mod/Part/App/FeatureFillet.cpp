@@ -62,8 +62,7 @@ App::DocumentObjectExecReturn* Fillet::execute()
             = Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform);
         auto baseShape = baseTopoShape.getShape();
         BRepFilletAPI_MakeFillet mkFillet(baseShape);
-        TopTools_IndexedMapOfShape mapOfShape;
-        TopExp::MapShapes(baseShape, TopAbs_EDGE, mapOfShape);
+        // PW33-D1: dropped unused mapOfShape duplicate of mapOfEdges.
         TopTools_IndexedMapOfShape mapOfEdges;
         TopExp::MapShapes(baseShape, TopAbs_EDGE, mapOfEdges);
         std::vector<Part::FilletElement> edges = Edges.getValues();
@@ -79,9 +78,13 @@ App::DocumentObjectExecReturn* Fillet::execute()
             auto& sub = subs[i];
             auto& ref = sub.newName.empty() ? vals[i] : sub.newName;
             auto& oldName = sub.oldName.empty() ? "" : sub.oldName;
+            const size_t slot = i;
             ++i;
 
-            if (Data::hasMissingElement(ref.c_str()) || Data::hasMissingElement(oldName.c_str())) {
+            bool missingSeed = false;
+            const int consumed = uniqueBaseEdgeIndex(slot, missingSeed);
+            if (missingSeed || Data::hasMissingElement(ref.c_str())
+                || Data::hasMissingElement(oldName.c_str())) {
                 fullErrMsg.append("Missing edge link: ");
                 fullErrMsg.append(ref);
                 fullErrMsg.append("\n");
@@ -92,12 +95,16 @@ App::DocumentObjectExecReturn* Fillet::execute()
                 continue;
             }
 
-            // Toponaming project March 2024:  Replaced this code because it wouldn't work:
-            //            TopoDS_Shape edge;
-            //            try {
-            //                edge = baseTopoShape.getSubShape(ref.c_str());
-            //            }catch(...){}
-            auto id = Data::IndexedName(Data::oldElementName(ref.c_str()).c_str()).getIndex();
+            const int id = resolveEdgeFindKeyIndex(
+                consumed, ref, oldName, info.edgeid, mapOfEdges.Extent());
+            if (id <= 0) {
+                fullErrMsg.append("Invalid edge link: ");
+                fullErrMsg.append(ref.empty() ? oldName : ref);
+                fullErrMsg.append("\n");
+                auto removeIt = std::remove(edges.begin(), edges.end(), info);
+                edges.erase(removeIt, edges.end());
+                continue;
+            }
             const TopoDS_Edge& edge = TopoDS::Edge(mapOfEdges.FindKey(id));
 
             if (edge.IsNull()) {

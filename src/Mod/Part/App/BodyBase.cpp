@@ -112,6 +112,18 @@ void BodyBase::handleChangedPropertyName(Base::XMLReader& reader, const char* Ty
     }
 }
 
+long BodyBase::semanticProjectionFeatureId() const
+{
+    // G10-B1 / G19: Tip-or-Body contract for I13 Binding projection.
+    // When Tip is set, present that feature's published Bindings (no Body FaceN
+    // mint). When Tip is null, fall back to this Body's own id. Shape still
+    // comes from Tip via PartDesign::Body::execute; this id is Binding scope only.
+    if (App::DocumentObject* tip = Tip.getValue()) {
+        return tip->getID();
+    }
+    return getID();
+}
+
 PyObject* BodyBase::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {

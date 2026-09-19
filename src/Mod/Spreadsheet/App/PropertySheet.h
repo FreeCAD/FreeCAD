@@ -86,6 +86,9 @@ public:
     void afterRestore() override;
     void onContainerRestored() override;
 
+    void promoteWithGraph(const App::SemanticGraph& graph) override;
+    bool applySemanticReadPolicy(const App::SemanticGraph& graph) override;
+
     Property* Copy() const override;
 
     void Paste(const Property& from) override;
@@ -261,6 +264,7 @@ public:
         bool* href = nullptr
     ) const;
 
+    // Cell-range Bind UI (DlgBindSheet) — NOT Rev31 semantic Binding / stSeed.
     enum BindingType
     {
         BindingNone,

@@ -88,6 +88,8 @@ class DocumentPy;
 class Application;
 class Transaction;
 class StringHasher;
+class SemanticGraph;
+class SemanticDocumentState;
 using StringHasherRef = Base::Reference<StringHasher>;
 
 /**
@@ -1220,6 +1222,13 @@ public:
      */
     StringHasherRef getStringHasher(int index = -1) const;
 
+    /// Document-owned semantic provenance graph. Lifetime = this document.
+    /// Allocator high-water is not rewound on undo (I5).
+    SemanticGraph& semanticGraph();
+    const SemanticGraph& semanticGraph() const;
+    SemanticDocumentState& semanticState();
+    const SemanticDocumentState& semanticState() const;
+
     /**
      * @brief Get the links to a given object.
      *
@@ -1422,6 +1431,14 @@ protected:
      */
     int _recomputeFeature(DocumentObject* Feat);
 
+    /// After onContainerRestored: promote empty seeds only; D2 no-op until SemanticBinding.
+    /// Does not mint a seed from raw FaceN (I13). Does not wipe restored stSeed (C1).
+    void applySemanticRestorePolicy();
+
+    /// Shared walk: PropertyLinkSub/List/XLink + PropertyExpressionContainer promoteWithGraph + applySemanticReadPolicy.
+    /// Called from restore and after a successful recompute pass. Empty/invalid
+    /// seeds only (C1). No mint from FaceN/EdgeN (I13). Not a Save-time invent.
+    void applySemanticPromotePolicy(const SemanticGraph& graph);
     /// Clear the redos.
     void _clearRedos();
 

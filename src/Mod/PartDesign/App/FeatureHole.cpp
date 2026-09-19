@@ -52,8 +52,11 @@
 #include <TopExp.hxx>
 
 #include <App/Application.h>
+#include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/SemanticDocumentState.h>
 #include <Base/Converter.h>
+#include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Reader.h>
 #include <Base/Stream.h>
@@ -64,6 +67,7 @@
 #include <Mod/Part/App/Tools.h>
 
 #include "FeatureHole.h"
+#include "SemanticOpcode.h"
 #include "nlohmann/json.hpp"
 
 #include <numbers>
@@ -1790,6 +1794,46 @@ App::DocumentObjectExecReturn* Hole::execute()
         return new App::DocumentObjectExecReturn(text);
     }
 
+    App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
+    App::ObjectId fid = static_cast<App::ObjectId>(getID());
+    App::EvalSerial eval = 0;
+    AfterExecuteRequest req;
+    if (App::Document* doc = getDocument()) {
+        eval = doc->semanticState().currentEval();
+    }
+    req.allowSequentialFaceN = false;
+    std::string resolvedStartReference;
+    // A seeded StartReference is a consume-side contract: require one exact
+    // live Face Binding under its stored filter/reducer policy. Do not fall
+    // back to stale FaceN geometry when the live state is not resolved.
+    if (graph && StartReference.getValue()) {
+        for (const App::SemanticReference& semanticRef : StartReference.getSemanticRefs()) {
+            if (!semanticRef.seed.valid()
+                || (semanticRef.seed.kind != App::SemanticKind::Face
+                    && semanticRef.kind != App::SemanticKind::Face)) {
+                continue;
+            }
+            const App::ObjectId linked =
+                static_cast<App::ObjectId>(StartReference.getValue()->semanticProjectionFeatureId());
+            if (const auto unique = uniqueResolvedFaceReference(graph, semanticRef, linked)) {
+                resolvedStartReference = unique->index.toString();
+                appendUniqueSemanticSeed(req.holeFaces, semanticRef.seed);
+            }
+            else {
+                try {
+                    SemanticEmitter::afterExecute(graph, Opcode::Hole, fid, eval, req);
+                }
+                catch (Base::Exception&) {
+                }
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                    "Exception",
+                    "Hole StartReference face Missing; maker skipped. No neighbour substitution."
+                ));
+            }
+            break;
+        }
+    }
+
     try {
         if (Diameter.getValue() < diameterRange.LowerBound) {
             return new App::DocumentObjectExecReturn(
@@ -1829,7 +1873,10 @@ App::DocumentObjectExecReturn* Hole::execute()
                                                           StartReference,
                                                           holeDirection,
                                                           StartOffset.getValue(),
-                                                          invObjLoc
+                                                          invObjLoc,
+                                                          resolvedStartReference.empty()
+                                                              ? nullptr
+                                                              : &resolvedStartReference
                                                       );
         profileshape = moveProfileToStart(profileshape, holeDirection, startOffset, true);
 
@@ -2073,6 +2120,11 @@ App::DocumentObjectExecReturn* Hole::execute()
 
         if (base.isNull()) {
             Shape.setValue(compound);
+            try {
+                SemanticEmitter::afterExecute(graph, Opcode::Hole, fid, eval, req);
+            }
+            catch (Base::Exception&) {
+            }
             return App::DocumentObject::StdReturn;
         }
 
@@ -2146,6 +2198,11 @@ App::DocumentObjectExecReturn* Hole::execute()
         }
         this->Shape.setValue(result);
 
+        try {
+            SemanticEmitter::afterExecute(graph, Opcode::Hole, fid, eval, req);
+        }
+        catch (Base::Exception&) {
+        }
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {

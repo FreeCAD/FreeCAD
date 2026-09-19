@@ -260,6 +260,16 @@ public:
         return _Id;
     }
 
+
+    /// Feature id whose published Bindings this object presents.
+    /// Default: this object's id. BodyBase overrides to Tip when set.
+    /// I13 projection only: does not mint Body-owned FaceN identity.
+    /// User-facing labels stay FaceN/EdgeN; this is not a GUI name.
+    virtual long semanticProjectionFeatureId() const
+    {
+        return getID();
+    }
+
     /**
      * @brief Get the export name of the object.
      *

@@ -29,6 +29,7 @@
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <QDialog>
+#include <unordered_set>
 
 
 #include <App/Document.h>
@@ -197,6 +198,12 @@ bool ReferenceSelection::allowDatum(PartDesign::Body* body, App::DocumentObject*
 
 bool ReferenceSelection::allowPartFeature(App::DocumentObject* pObj, const char* sSubName) const
 {
+    // G19-R1 watchlist: Face/Edge/Vertex prefix gates (geometry validators).
+    // Unlike SelectionFilterGate::getGatedTypes (G10-G1), this path does not call
+    // semanticSubNameMatchesKind — product picks stay FaceN/EdgeN. Do not invent
+    // kind-match here without a product Binding path + TESTS case.
+    // G28-N1: constructed with SelectionFilterGate(nullPointer()); getGatedTypes
+    // returns {} (BoxSelection fallthrough) — allow() above is the real gate.
     std::string subName(sSubName);
     if (type.testFlag(AllowSelection::POINT) && subName.compare(0, 6, "Vertex") == 0) {
         return true;
@@ -295,6 +302,32 @@ bool NoDependentsSelection::allow(App::Document* /*pDoc*/, App::DocumentObject* 
 bool CombineSelectionFilterGates::allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName)
 {
     return filter1->allow(pDoc, pObj, sSubName) && filter2->allow(pDoc, pObj, sSubName);
+}
+
+std::unordered_set<std::string> CombineSelectionFilterGates::getGatedTypes(
+    const std::vector<const char*>& allTypesForGeometry
+) const
+{
+    // G28-C1: intersect typed child gates. Empty = unrestricted (G28-N1), so
+    // empty ∩ T = T and empty ∩ empty = empty (BoxSelection fallthrough).
+    if (!filter1 || !filter2) {
+        return {};
+    }
+    auto a = filter1->getGatedTypes(allTypesForGeometry);
+    auto b = filter2->getGatedTypes(allTypesForGeometry);
+    if (a.empty()) {
+        return b;
+    }
+    if (b.empty()) {
+        return a;
+    }
+    std::unordered_set<std::string> out;
+    for (const auto& t : a) {
+        if (b.count(t)) {
+            out.insert(t);
+        }
+    }
+    return out;
 }
 
 

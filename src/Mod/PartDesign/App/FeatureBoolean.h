@@ -29,6 +29,8 @@
 #include <App/PropertyStandard.h>
 #include "FeatureRefine.h"
 
+class BRepAlgoAPI_BooleanOperation;
+
 
 namespace PartDesign
 {
@@ -79,6 +81,16 @@ protected:
         const char* PropName
     ) override;
 
+    /// Fuse/Cut/Common live-maker emit. Reuses Opcode::Boolean=15 PBF.
+    /// Member (not a free function): MSVC C2248 — getSolid is protected.
+    void publishBooleanSemanticHistory(
+        BRepAlgoAPI_BooleanOperation* mkBool,
+        const Part::TopoShape& published,
+        App::DocumentObject* baseObj,
+        const Part::TopoShape& baseShape,
+        const std::vector<App::DocumentObject*>& toolObjs,
+        const std::vector<Part::TopoShape>& toolShapes,
+        const char* diagTag);
 
 private:
     Part::TopoShape getBooleanTopoShape(const App::DocumentObject* object) const;

@@ -24,23 +24,109 @@
 
 #include <FCConfig.h>
 
+#include <deque>
 #include <memory>
+#include <unordered_set>
+#include <utility>
+#include <vector>
 
 #include <Mod/Part/App/FCBRepAlgoAPI_BooleanOperation.h>
 #include <BRepCheck_Analyzer.hxx>
 #include <Standard_Failure.hxx>
+#include <TopoDS_Shape.hxx>
 
 #include <App/Application.h>
+#include <App/Document.h>
+#include <App/SemanticDocumentState.h>
+#include <App/SemanticReference.h>
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
 #include <Base/ProgramVersion.h>
 
 #include "FeaturePartBoolean.h"
+#include "SemanticHistoryAdapter.h"
+#include "SemanticSourceCollector.h"
 #include "TopoShapeOpCode.h"
 #include "modelRefine.h"
 
 
 using namespace Part;
+
+namespace
+{
+
+void publishBooleanSemanticHistory(App::DocumentObject* self,
+                                   const char* opcode,
+                                   BRepAlgoAPI_BooleanOperation* mkBool,
+                                   const TopoShape& result,
+                                   App::DocumentObject* baseObj,
+                                   const TopoShape& baseShape,
+                                   App::DocumentObject* toolObj,
+                                   const TopoShape& toolShape)
+{
+    if (!self || !mkBool || !mkBool->IsDone() || result.isNull()) {
+        return;
+    }
+    App::SemanticGraph* graph = App::SemanticDocumentState::graphFor(self);
+    if (!graph && self->getDocument()) {
+        graph = &self->getDocument()->semanticGraph();
+    }
+    if (!graph) {
+        return;
+    }
+
+    std::deque<TopoDS_Shape> held;
+    std::vector<std::pair<App::SemanticId, const void*>> inputs;
+    std::unordered_set<App::SemanticHandle> seenSeeds;
+    Part::collectUniqueSourceSeeds(graph, baseObj, baseShape, held, inputs, seenSeeds);
+    Part::collectUniqueSourceSeeds(graph, toolObj, toolShape, held, inputs, seenSeeds);
+    if (inputs.empty()) {
+        return;
+    }
+
+    auto indexOf = [&result](const void* occ) -> App::ElementIndex {
+        App::ElementIndex idx;
+        if (!occ) {
+            return idx;
+        }
+        return Part::indexOnPublishedPartnerCoplanar(result, *static_cast<const TopoDS_Shape*>(occ));
+    };
+
+    const HistoryTable raw =
+        SemanticHistoryAdapter::fromMaker(mkBool, inputs, indexOf);
+    const HistoryTable unique =
+        SemanticHistoryAdapter::uniqueOneImageGenerated(raw);
+
+    const App::ObjectId selfId = static_cast<App::ObjectId>(self->getID());
+    HistoryTable toApply;
+    std::vector<App::SemanticId> seeds;
+    toApply.reserve(unique.size());
+    seeds.reserve(unique.size());
+    for (const HistoryRecord& rec : unique) {
+        // I13 leave-unnamed / C1: already bound, conflicted slot, or unique owner.
+        // Match Extrusion/Revolution/Mirroring: refuse unnamed slots before apply.
+        if (!isNamedIndex(rec.toIndex)) {
+            continue;
+        }
+        if (App::shouldRefuseGeneratedMint(graph, rec.fromSeed, selfId, rec.toIndex)) {
+            continue;
+        }
+        toApply.push_back(rec);
+        seeds.push_back(rec.fromSeed);
+    }
+    if (toApply.empty()) {
+        return;
+    }
+
+    App::EvalSerial eval = 0;
+    if (App::Document* doc = self->getDocument()) {
+        eval = doc->semanticState().currentEval();
+    }
+    SemanticHistoryAdapter::applyHistory(
+        graph, selfId, eval, opcode ? opcode : "", seeds, toApply);
+}
+
+}  // namespace
 
 namespace Part
 {
@@ -172,6 +258,10 @@ App::DocumentObjectExecReturn* Boolean::execute()
             res = res.makeElementRefine();
         }
         this->Shape.setValue(res);
+        // Unique 1-image Base/Tool Face/Edge Binding publish (I13) for Part WB
+        // Fillet/Chamfer consume — restored after on-main Boolean rewrite.
+        publishBooleanSemanticHistory(
+            this, opCode(), mkBool.get(), res, base, shapes[0], tool, shapes[1]);
         copyMaterial(base);
         return Part::Feature::execute();
     }

@@ -50,7 +50,10 @@ public:
     Draft();
 
     App::PropertyAngle Angle;
+    // D26-N1: explicit NeutralPlane Face/Edge soft Binding rewrite at execute
+    // (unique → index; 0/many soft-retain FaceN/EdgeN). Auto-guess still D9-N1.
     App::PropertyLinkSub NeutralPlane;
+    // D26-P1: Part::Feature PullDirection Edge soft Binding rewrite (D9-S1 retain).
     App::PropertyLinkSub PullDirection;
     App::PropertyBool Reversed;
 

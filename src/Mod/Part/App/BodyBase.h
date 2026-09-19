@@ -22,7 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#pragma once
+#ifndef PART_BodyBase_H
+#define PART_BodyBase_H
 
 #include <App/PropertyStandard.h>
 #include <App/OriginGroupExtension.h>
@@ -83,6 +84,12 @@ public:
     static BodyBase* findBodyOf(const App::DocumentObject* f);
     PyObject* getPyObject() override;
 
+    /** Tip-or-Body Binding projection (G10-B1 / G19).
+     *  Tip set → Tip feature id (present Tip's published Bindings).
+     *  Tip null → this Body's id. I13: no Body FaceN mint. Face/Edge UX unchanged.
+     */
+    long semanticProjectionFeatureId() const override;
+
 protected:
     /// If BaseFeature is getting changed and Tip points to it reset the Tip
     void onBeforeChange(const App::Property* prop) override;
@@ -96,3 +103,6 @@ protected:
 };
 
 }  // namespace Part
+
+
+#endif  // PART_BodyBase_H

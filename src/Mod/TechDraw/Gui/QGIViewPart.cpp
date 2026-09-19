@@ -1144,6 +1144,10 @@ void QGIViewPart::toggleCosmeticLines(bool state)
     }
 }
 
+// TD17-G1 / TD25-G1: Gui matches FaceN cache only. App DrawHatch::faceIsHatched /
+// affectsFace use resolvedSourceSub → tryResolveSubNameFromSeed (strict I13).
+// Do not align Gui to seed resolve here without a product paint-after-stale case
+// (behavior-sensitive; TESTS-gated if ever invented).
 //get hatchObj for face i if it exists
 TechDraw::DrawHatch* QGIViewPart::faceIsHatched(int i,
                                                 std::vector<TechDraw::DrawHatch*> hatchObjs) const
@@ -1167,23 +1171,16 @@ TechDraw::DrawHatch* QGIViewPart::faceIsHatched(int i,
     return result;
 }
 
+// TD8-P1: GeomHatch Binding resolve via App DrawGeomHatch::affectsFace
+// (tryResolveSubNameFromSeed, strict I13). Last matching hatch wins (preserve
+// prior multi-hatch loop); Ambiguous/Incompatible slots stay silent.
 TechDraw::DrawGeomHatch*
 QGIViewPart::faceIsGeomHatched(int i, std::vector<TechDraw::DrawGeomHatch*> geomObjs) const
 {
     TechDraw::DrawGeomHatch* result = nullptr;
-    bool found = false;
     for (auto& h : geomObjs) {
-        const std::vector<std::string>& sourceNames = h->Source.getSubValues();
-        for (auto& sn : sourceNames) {
-            int fdx = TechDraw::DrawUtil::getIndexFromName(sn);
-            if (fdx == i) {
-                result = h;
-                found = true;
-                break;
-            }
-            if (found) {
-                break;
-            }
+        if (h && h->affectsFace(i)) {
+            result = h;  // last match wins
         }
     }
     return result;

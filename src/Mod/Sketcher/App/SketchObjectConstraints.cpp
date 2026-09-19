@@ -2328,16 +2328,17 @@ std::string SketchObject::validateExpression(const App::ObjectIdentifier& path,
         auto geo = vals[i];
         auto gf = GeometryFacade::getFacade(geo);
         if(!gf->getId()) {
-            gf->setId(++geoLastId);
+            gf->setId(nextEntityId());
         }
         else if(gf->getId() > geoLastId) {
             geoLastId = gf->getId();
         }
         while(!geoMap.insert(std::make_pair(gf->getId(),i)).second) {
             FC_WARN("duplicate geometry id " << gf->getId() << " -> " << geoLastId+1);
-            gf->setId(++geoLastId);
+            gf->setId(nextEntityId());
         }
     }
+    rebuildEntityIdMapFromGeometry();
     updateGeoHistory();
 
     return "";

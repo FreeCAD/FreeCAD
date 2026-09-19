@@ -14,6 +14,7 @@ set(PartDesign_LIBS
     ${OCC_DEBUG_LIBRARIES}
     Part
     FreeCADApp
+    Sketcher
 )
 
 SET(Features_SRCS
@@ -45,6 +46,8 @@ SOURCE_GROUP("DatumFeatures" FILES ${DatumFeatures_SRCS})
 SET(FeaturesTransformed_SRCS
     FeatureTransformed.h
     FeatureTransformed.cpp
+    SemanticOpcode.cpp
+    SemanticOpcode.h
     FeatureMirrored.h
     FeatureMirrored.cpp
     FeatureLinearPattern.h

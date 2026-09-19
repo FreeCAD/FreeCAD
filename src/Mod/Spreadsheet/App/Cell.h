@@ -29,6 +29,7 @@
 
 #include <App/Expression.h>
 #include <App/Material.h>
+#include <App/SemanticReference.h>
 
 #include <Mod/Spreadsheet/SpreadsheetGlobal.h>
 
@@ -208,6 +209,10 @@ private:
 
     unsigned int used;
     mutable App::ExpressionPtr expression;
+    /// C1 dual-write sidecar: XML stSeed kept until afterRestore attaches it to the
+    /// parsed expression (or cleared if the cell is empty / edit clears via setExpression).
+    /// Save may fall back to this when firstTopologySemanticRef is empty (0 or >1 seeds, SS7-I13).
+    App::SemanticReference restoredSemanticRef;
     int alignment;
     std::set<std::string> style;
     Base::Color foregroundColor;

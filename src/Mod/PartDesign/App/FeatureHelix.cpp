@@ -23,11 +23,19 @@
  ***************************************************************************/
 
 #include <limits>
+#include <memory>
+#include <cstring>
+#include <deque>
+#include <string>
+#include <vector>
 #include <BRepAdaptor_Surface.hxx>
 #include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
 #include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 #include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 #include <BRepBndLib.hxx>
+#include <BRepGProp.hxx>
+#include <GProp_GProps.hxx>
+#include <BRepBuilderAPI_MakeShape.hxx>
 #include <BRepBuilderAPI_MakeSolid.hxx>
 #include <BRepBuilderAPI_Sewing.hxx>
 #include <BRepClass3d_SolidClassifier.hxx>
@@ -40,21 +48,29 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Wire.hxx>
+#include <TopTools_ListIteratorOfListOfShape.hxx>
 #include <gp_Ax1.hxx>
 #include <gp_Ax3.hxx>
 
 #include <Standard_Version.hxx>
+#include <App/Document.h>
+#include <App/IndexedName.h>
+#include <App/MappedName.h>
+#include <App/SemanticDocumentState.h>
 #include <Base/Axis.h>
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Tools.h>
 
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
+#include <Mod/Part/App/SemanticHistoryAdapter.h>
+#include <Mod/Part/App/SemanticSourceCollector.h>
+#include <Mod/Part/App/TopoShapeMapper.h>
 
 #include "FeatureHelix.h"
-#include "App/Document.h"
-#include "Mod/Part/App/TopoShapeOpCode.h"
+#include "SemanticOpcode.h"
 
 using namespace PartDesign;
 
@@ -183,6 +199,16 @@ Helix::Helix()
         )
     );
     ADD_PROPERTY_TYPE(
+        Outside,
+        (false),
+        group,
+        App::Prop_None,
+        QT_TRANSLATE_NOOP(
+            "App::Property",
+            "If set, the result will be the intersection of the profile and the preexisting body."
+        )
+    );
+    ADD_PROPERTY_TYPE(
         HasBeenEdited,
         (false),
         group,
@@ -202,13 +228,6 @@ Helix::Helix()
         QT_TRANSLATE_NOOP("App::Property", "Fusion Tolerance for the Helix, increase if helical shape does not merge nicely with part.")
     );
     Tolerance.setConstraints(&floatTolerance);
-    ADD_PROPERTY_TYPE(
-        Outside,
-        (false),
-        group,
-        App::Prop_Hidden,
-        QT_TRANSLATE_NOOP("App::Property", "deprecated, do not use")
-    );
 
     setReadWriteStatusForMode(initialMode);
 }
@@ -219,17 +238,27 @@ short Helix::mustExecute() const
         || Angle.isTouched()) {
         return 1;
     }
+
+    // Shared by additive and subtractive helix restore republish.
+    if (isSemanticRepublishPass(SemanticEmitter::graphFor(this))) {
+        return 1;
+    }
+
     return ProfileBased::mustExecute();
 }
 
 App::DocumentObjectExecReturn* Helix::execute()
 {
-    if (onlyHaveRefined()) {
+    // The Refine-only shortcut must not suppress restore republish: the maker
+    // is needed to recreate durable history for both helix variants.
+    const bool semanticRepublish =
+        isSemanticRepublishPass(SemanticEmitter::graphFor(this));
+    if (!semanticRepublish && onlyHaveRefined()) {
         return App::DocumentObject::StdReturn;
     }
 
     // Validate and normalize parameters
-    auto mode = static_cast<HelixMode>(Mode.getValue());
+    HelixMode mode = static_cast<HelixMode>(Mode.getValue());
     if (mode == HelixMode::pitch_height_angle) {
         if (Pitch.getValue() < Precision::Confusion()) {
             return new App::DocumentObjectExecReturn(
@@ -382,9 +411,10 @@ App::DocumentObjectExecReturn* Helix::execute()
         // pieces increasing a tiny bit of extra tolerance to the path fixes this. This will in any
         // case be less than the tolerance lower limit below, but sufficient to avoid the bug
 
-        BRepOffsetAPI_MakePipe
-            mkPS(TopoDS::Wire(path), face, GeomFill_Trihedron::GeomFill_IsFrenet, Standard_False);
-        result = mkPS.Shape();
+        auto mkPS = std::make_unique<BRepOffsetAPI_MakePipe>(
+            TopoDS::Wire(path), face, GeomFill_Trihedron::GeomFill_IsFrenet, Standard_False
+        );
+        result = mkPS->Shape();
 
         BRepClass3d_SolidClassifier SC(result);
         SC.PerformInfinitePoint(Precision::Confusion());
@@ -398,12 +428,19 @@ App::DocumentObjectExecReturn* Helix::execute()
         );  // significant precision reduction due to helical approximation - needed to allow fusion
             // to succeed
 
-        // try to auto-fix possible invalid result
+        // Skip ShapeFix_Solid when it replaces the TShape so fromMaker images
+        // still match the published solid (IsSame/IsPartner). Loop 2 lesson.
+        const TopoDS_Shape beforeFix = result;
         ShapeFix_Solid fixer;
         fixer.Init(TopoDS::Solid(result));
         if (fixer.Perform()) {
-            result = fixer.Solid();
+            const TopoDS_Shape fixed = fixer.Solid();
+            if (!fixed.IsNull() && (fixed.IsSame(beforeFix) || fixed.IsPartner(beforeFix))) {
+                result = fixed;
+            }
         }
+        const TopoShape makerShape(result);
+        std::vector<TopoDS_Shape> firstAddShapes{face};
 
         AddSubShape.setValue(result);
 
@@ -425,38 +462,112 @@ App::DocumentObjectExecReturn* Helix::execute()
             // store shape before refinement
             this->rawShape = result;
             Shape.setValue(getSolid(result));
+            emitCapturedHelix(
+                mkPS.get(),
+                makerShape,
+                Shape.getShape(),
+                firstAddShapes,
+                nullptr
+            );
             return App::DocumentObject::StdReturn;
         }
 
-        Part::TopoShape boolOp(0, getDocument()->getStringHasher());
-        boolOp.makeElementBoolean(getBooleanMaker(), {base, result});
+        if (getAddSubType() == FeatureAddSub::Type::Additive) {
 
-        if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
-                "Exception",
-                "Result has multiple solids: enable 'Allow Compound' in the active body."
-            ));
+            FCBRepAlgoAPI_Fuse mkFuse(base.getShape(), result);
+            if (!mkFuse.IsDone()) {
+                return new App::DocumentObjectExecReturn(
+                    QT_TRANSLATE_NOOP("Exception", "Error: Adding the helix failed")
+                );
+            }
+
+            if (!isSingleSolidRuleSatisfied(mkFuse.Shape())) {
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                    "Exception",
+                    "Result has multiple solids: enable 'Allow Compound' in the active body."
+                ));
+            }
+
+            // we have to get the solids (fuse sometimes creates compounds)
+            TopoShape boolOp = this->getSolid(mkFuse.Shape());
+
+            // lets check if the result is a solid
+            if (boolOp.isNull()) {
+                return new App::DocumentObjectExecReturn(
+                    QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid")
+                );
+            }
+
+            // store shape before refinement. Skip refine when the helix maker
+            // is live so fromMaker TShapes still match the published solid.
+            this->rawShape = boolOp;
+            if (!mkPS) {
+                boolOp = refineShapeIfActive(boolOp, RefineErrorPolicy::Warn);
+            }
+            Shape.setValue(getSolid(boolOp));
+            emitCapturedHelix(
+                mkPS.get(),
+                makerShape,
+                Shape.getShape(),
+                firstAddShapes,
+                nullptr
+            );
         }
+        else if (getAddSubType() == FeatureAddSub::Type::Subtractive) {
 
-        TopoShape solid = getSolid(boolOp);
-        // lets check if the result is a solid
-        if (solid.isNull()) {
-            return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid")
+            TopoShape boolOp;
+
+            TopoDS_Shape rawBoolOp;
+            if (Outside.getValue()) {  // are we subtracting the inside or the outside of the profile.
+                FCBRepAlgoAPI_Common mkCom(result, base.getShape());
+                if (!mkCom.IsDone()) {
+                    return new App::DocumentObjectExecReturn(
+                        QT_TRANSLATE_NOOP("Exception", "Error: Intersecting the helix failed")
+                    );
+                }
+                rawBoolOp = mkCom.Shape();
+            }
+            else {
+                FCBRepAlgoAPI_Cut mkCut(base.getShape(), result);
+                if (!mkCut.IsDone()) {
+                    return new App::DocumentObjectExecReturn(
+                        QT_TRANSLATE_NOOP("Exception", "Error: Subtracting the helix failed")
+                    );
+                }
+                rawBoolOp = mkCut.Shape();
+            }
+
+            if (!isSingleSolidRuleSatisfied(rawBoolOp)) {
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                    "Exception",
+                    "Result has multiple solids: enable 'Allow Compound' in the active body."
+                ));
+            }
+
+            boolOp = this->getSolid(rawBoolOp);
+
+            // lets check if the result is a solid
+            if (boolOp.isNull()) {
+                return new App::DocumentObjectExecReturn(
+                    QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid")
+                );
+            }
+
+            // store shape before refinement
+            this->rawShape = boolOp;
+            if (!mkPS) {
+                boolOp = refineShapeIfActive(boolOp, RefineErrorPolicy::Warn);
+            }
+            Shape.setValue(getSolid(boolOp));
+            emitCapturedHelix(
+                mkPS.get(),
+                makerShape,
+                Shape.getShape(),
+                firstAddShapes,
+                nullptr
             );
         }
 
-        // store shape before refinement
-        this->rawShape = solid;
-        solid = refineShapeIfActive(solid);
-        if (!isSingleSolidRuleSatisfied(solid.getShape())) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
-                "Exception",
-                "Result has multiple solids: enable 'Allow Compound' in the active body."
-            ));
-        }
-
-        Shape.setValue(solid);
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
@@ -474,6 +585,293 @@ App::DocumentObjectExecReturn* Helix::execute()
         return new App::DocumentObjectExecReturn(e.what());
     }
 }
+
+
+App::ElementIndex Helix::uniqueLongestEdgeOnPublished(const TopoShape& published)
+{
+    // Match pick_longest_edge: strict greater-than, keep first max.
+    // Confusion() tie-unnamed made longEdge=0 on f266de18 (helical
+    // segments within Confusion() of each other).
+    App::ElementIndex idx;
+    if (published.isNull()) {
+        return idx;
+    }
+    const unsigned long n = published.countSubShapes(TopAbs_EDGE);
+    double best = -1.0;
+    int winner = 0;
+    for (unsigned long i = 1; i <= n; ++i) {
+        const TopoDS_Shape e =
+            published.getSubShape(TopAbs_EDGE, static_cast<int>(i), true);
+        if (e.IsNull() || e.ShapeType() != TopAbs_EDGE) {
+            continue;
+        }
+        GProp_GProps props;
+        BRepGProp::LinearProperties(e, props);
+        const double len = props.Mass();
+        if (len > best) {
+            best = len;
+            winner = static_cast<int>(i);
+        }
+    }
+    if (winner <= 0) {
+        return idx;
+    }
+    idx.type = "Edge";
+    idx.index = winner;
+    return idx;
+}
+
+void Helix::clearSemanticCapture()
+{
+    lastHelixGenerated.clear();
+    lastNamedFaceIndices.clear();
+    lastHelixGeneratedEdges.clear();
+    lastNamedEdgeIndices.clear();
+}
+
+void Helix::captureHelixMaker(void* occMaker,
+                            const TopoShape& preSewShell,
+                            const TopoShape& published,
+                            const std::vector<TopoDS_Shape>& addWireShapes,
+                            BRepBuilderAPI_Sewing* sewer)
+{
+    int early = 0;
+    int genFaceRaw = 0;
+    int genEdgeRaw = 0;
+    int fromMaker = 0;
+    int fromHistN = 0;
+    int nCurve = 0;
+    int nVertex = 0;
+    int nEdges = 0;
+    int nVerts = 0;
+    int nZ = 0;
+    int nLong = 0;
+    int nLongIdx = 0;
+    const int sew = sewer ? 1 : 0;
+
+    auto finishDiag = [&]() {
+        const std::size_t nf = Part::namedIndexCount(lastNamedFaceIndices);
+        const std::size_t ne = Part::namedIndexCount(lastNamedEdgeIndices);
+        lastHelixDiag =
+            std::string("helixDiag early=") + std::to_string(early)
+            + " preCompat=1 sew=" + std::to_string(sew)
+            + " inputs=" + std::to_string(addWireShapes.size())
+            + " curveSeeds=" + std::to_string(nCurve)
+            + " vertexSeeds=" + std::to_string(nVertex)
+            + " edges=" + std::to_string(nEdges)
+            + " verts=" + std::to_string(nVerts)
+            + " genFaceRaw=" + std::to_string(genFaceRaw)
+            + " genFace=" + std::to_string(lastHelixGenerated.size())
+            + " genEdgeRaw=" + std::to_string(genEdgeRaw)
+            + " genEdge=" + std::to_string(lastHelixGeneratedEdges.size())
+            + " fromMaker=" + std::to_string(fromMaker)
+            + " fromHist=" + std::to_string(fromHistN)
+            + " namedFace=" + std::to_string(nf)
+            + " namedFaceMiss="
+            + std::to_string(lastNamedFaceIndices.size() - nf)
+            + " namedEdge=" + std::to_string(ne)
+            + " namedEdgeMiss="
+            + std::to_string(lastNamedEdgeIndices.size() - ne)
+            + " zEdge=" + std::to_string(nZ)
+            + " longEdge=" + std::to_string(nLong)
+            + " longIdx=" + std::to_string(nLongIdx);
+    };
+
+    if (!occMaker) {
+        early = 1;
+        finishDiag();
+        return;
+    }
+    if (preSewShell.isNull()) {
+        early = 2;
+        finishDiag();
+        return;
+    }
+    if (addWireShapes.empty()) {
+        early = 3;
+        finishDiag();
+        return;
+    }
+
+    App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
+    AfterExecuteRequest seeds;
+    if (graph) {
+        if (App::DocumentObject* profile = Profile.getValue()) {
+            seeds = collectProfileSemanticSeeds();
+        }
+    }
+    nCurve = static_cast<int>(seeds.curveSeeds.size());
+    nVertex = static_cast<int>(seeds.vertexSeeds.size());
+
+    // Generated() keys are the FACE TShape passed to MakePipe (and its
+    // edges/vertices), not Add() wires. First shape is the post-move profile FACE.
+    const TopoShape profile(addWireShapes.front());
+    if (profile.isNull()) {
+        early = 4;
+        finishDiag();
+        return;
+    }
+    const auto edges = profile.getSubTopoShapes(TopAbs_EDGE);
+    const auto vertices = profile.getSubTopoShapes(TopAbs_VERTEX);
+    nEdges = static_cast<int>(edges.size());
+    nVerts = static_cast<int>(vertices.size());
+
+    auto* maker = static_cast<BRepBuilderAPI_MakeShape*>(occMaker);
+
+    auto alreadyHasEdge = [&](const TopoDS_Shape& s) -> bool {
+        for (const auto& existing : lastHelixGeneratedEdges) {
+            if (Part::sameOccShape(existing.shape, s)) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    // Direct maker->Generated(profileEdge) → unique side FACE on preSewShell.
+    for (std::size_t i = 0; i < seeds.curveSeeds.size() && i < edges.size(); ++i) {
+        genFaceRaw += Part::countGeneratedOf(maker, edges[i].getShape(), TopAbs_FACE);
+        const TopoDS_Shape face = Part::uniqueGeneratedFace(maker, edges[i].getShape());
+        if (!face.IsNull()) {
+            lastHelixGenerated.push_back({seeds.curveSeeds[i], face});
+        }
+    }
+
+    // Vertical corners: Generated EDGE from profile VERTEX, 1 image (Pad).
+    auto stashUniqueEdge = [&](const App::SemanticId& seed, const TopoDS_Shape& input) {
+        if (!seed.valid() || input.IsNull()) {
+            return;
+        }
+        genEdgeRaw += Part::countGeneratedOf(maker, input, TopAbs_EDGE);
+        const auto images = Part::uniqueGeneratedThenModifiedEdgeImages(maker, input);
+        if (images.size() == 1 && !alreadyHasEdge(images.front())) {
+            lastHelixGeneratedEdges.push_back({seed, images.front()});
+        }
+    };
+    if (!seeds.vertexSeeds.empty()) {
+        for (std::size_t i = 0; i < seeds.vertexSeeds.size() && i < vertices.size(); ++i) {
+            stashUniqueEdge(seeds.vertexSeeds[i], vertices[i].getShape());
+        }
+    }
+    else {
+        for (std::size_t i = 0; i < seeds.curveSeeds.size() && i < vertices.size(); ++i) {
+            stashUniqueEdge(seeds.curveSeeds[i], vertices[i].getShape());
+        }
+    }
+
+    // Pad uniqueEdgeImages: unique EDGE image of each profile EDGE.
+    for (std::size_t i = 0; i < seeds.curveSeeds.size() && i < edges.size(); ++i) {
+        genEdgeRaw += Part::countGeneratedOf(maker, edges[i].getShape(), TopAbs_EDGE);
+        const auto images = Part::uniqueGeneratedThenModifiedEdgeImages(maker, edges[i].getShape());
+        if (images.size() == 1 && !alreadyHasEdge(images.front())) {
+            lastHelixGeneratedEdges.push_back({seeds.curveSeeds[i], images.front()});
+        }
+    }
+
+    // Pad fallback: unique vertical EDGE of a Generated side face on preSewShell.
+    Part::appendUniqueZParallelFaceRailEdges(preSewShell, lastHelixGenerated, lastHelixGeneratedEdges);
+
+    // fromMaker fallback on preSewShell only (not published) if Generated walk
+    // produced no Faces — Pad lastPrismGenerated empty path. Index later.
+    {
+        bool usedFromMaker = false;
+        fromHistN = static_cast<int>(Part::appendFromMakerGeneratedWhenFacesEmpty(
+            maker,
+            preSewShell,
+            seeds.curveSeeds,
+            edges,
+            seeds.vertexSeeds,
+            vertices,
+            lastHelixGenerated,
+            lastHelixGeneratedEdges,
+            &usedFromMaker));
+        fromMaker = usedFromMaker ? 1 : 0;
+    }
+
+    Part::refreshNamedIndicesFromSeededShapes(
+        published,
+        preSewShell,
+        sewer,
+        lastHelixGenerated,
+        lastHelixGeneratedEdges,
+        lastNamedFaceIndices,
+        lastNamedEdgeIndices);
+
+    // Edge binding ALWAYS: unique Z-parallel of each published Face, even when
+    // vertexSeeds is non-empty (root cause 4). I13: 0 or N unnamed.
+    nZ = static_cast<int>(Part::mergeUniqueZParallelEdgesOntoNamed(
+        published, lastNamedFaceIndices, lastNamedEdgeIndices));
+
+    // Helix rails are not Z-parallel (zEdge=0 on 1212c475). pick_loop3_edge
+    // falls back to unique longest published Edge (Edge24). afterExecute zips
+    // only the first edgeZipSeeds (4 vertex seeds), so put that Edge first.
+    // I13: length tie stays unnamed.
+    {
+        const App::ElementIndex longest = uniqueLongestEdgeOnPublished(published);
+        if (Part::isNamedIndex(longest) && longest.type == "Edge") {  // PD23-H1
+            ++nLong;
+            nLongIdx = longest.index;
+            std::size_t found = lastNamedEdgeIndices.size();
+            for (std::size_t i = 0; i < lastNamedEdgeIndices.size(); ++i) {
+                if (lastNamedEdgeIndices[i].type == longest.type
+                    && lastNamedEdgeIndices[i].index == longest.index) {
+                    found = i;
+                    break;
+                }
+            }
+            if (found == lastNamedEdgeIndices.size()) {
+                lastNamedEdgeIndices.insert(lastNamedEdgeIndices.begin(), longest);
+            }
+            else if (found != 0) {
+                const App::ElementIndex keep = lastNamedEdgeIndices[found];
+                lastNamedEdgeIndices.erase(
+                    lastNamedEdgeIndices.begin()
+                    + static_cast<std::ptrdiff_t>(found));
+                lastNamedEdgeIndices.insert(lastNamedEdgeIndices.begin(), keep);
+            }
+        }
+    }
+    finishDiag();
+}
+
+void Helix::emitCapturedHelix(void* occMaker,
+                            const TopoShape& preSewShell,
+                            const TopoShape& published,
+                            const std::vector<TopoDS_Shape>& addWireShapes,
+                            BRepBuilderAPI_Sewing* sewer)
+{
+    clearSemanticCapture();
+    captureHelixMaker(occMaker, preSewShell, published, addWireShapes, sewer);
+    App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
+    AfterExecuteRequest req;
+    App::ObjectId fid = static_cast<App::ObjectId>(getID());
+    App::EvalSerial eval = 0;
+    if (App::Document* doc = getDocument()) {
+        eval = doc->semanticState().currentEval();
+        if (App::DocumentObject* profile = Profile.getValue()) {
+            req = collectProfileSemanticSeeds();
+        }
+    }
+    req.namedFaceIndices = lastNamedFaceIndices;
+    req.namedEdgeIndices = lastNamedEdgeIndices;
+    req.allowSequentialFaceN = false;
+    SemanticEmitter::afterExecute(
+        graph,
+        getAddSubType() == FeatureAddSub::Type::Subtractive ? Opcode::SubtractiveHelix : Opcode::Helix,
+        fid,
+        eval,
+        req);
+    // EM14-S1 / PD32-H1: Helix is in Additive/Subtractive stamp scope (with
+    // Loft/Pipe). Pad/Pocket/Revolution/Groove publish Bindings via afterExecute
+    // only — do not broaden ElementMap stamp without TESTS re-gate.
+    // I8 dual-write after Bindings publish; EM14-U1 fail-closed if multi-eval
+    // (lockstep uniqueBindingOnFeature / AG21-E1 — QUALITY-SWEEP #22).
+    SemanticEmitter::stampElementMap(Shape, graph, fid);
+    SemanticEmitter::appendAfterExecuteNote(lastHelixDiag);
+    Base::Console().message(
+        "TESTS helixDiag %s\n",
+        SemanticEmitter::lastAfterExecuteNote().c_str());
+}
+
 
 void Helix::updateAxis()
 {
@@ -745,22 +1143,12 @@ void Helix::onChanged(const App::Property* prop)
         setReadWriteStatusForMode(inputMode);
     }
 
-    // Reflect Operation property value to deprectated Outside
-    if (prop == &Operation && addSubType == Type::Subtractive) {
+    // Reflect Operation property value to deprecated Outside
+    if (prop == &Operation && addSubType == FeatureAddSub::Type::Subtractive) {
         Outside.setValue(strcmp(Operation.getValueAsString(), "Common") == 0);
     }
 
     ProfileBased::onChanged(prop);
-}
-
-void Helix::onDocumentRestored()
-{
-    // Reflect deprecated Outside property value to Operation
-    if (addSubType == Type::Subtractive) {
-        Operation.setValue(Outside.getValue() ? "Common" : "Subtraction");
-    }
-
-    ProfileBased::onDocumentRestored();
 }
 
 void Helix::setReadWriteStatusForMode(HelixMode inputMode)
@@ -820,10 +1208,23 @@ PROPERTY_SOURCE(PartDesign::AdditiveHelix, PartDesign::Helix)
 AdditiveHelix::AdditiveHelix()
 {
     defineAdditive();
+    Outside.setStatus(App::Property::Hidden, true);
 }
 
 PROPERTY_SOURCE(PartDesign::SubtractiveHelix, PartDesign::Helix)
 SubtractiveHelix::SubtractiveHelix()
 {
     defineSubtractive();
+    Outside.setStatus(App::Property::Hidden, false);
 }
+
+void Helix::onDocumentRestored()
+{
+    // Reflect deprecated Outside property value to Operation
+    if (addSubType == FeatureAddSub::Type::Subtractive) {
+        Operation.setValue(Outside.getValue() ? "Common" : "Subtraction");
+    }
+
+    ProfileBased::onDocumentRestored();
+}
+

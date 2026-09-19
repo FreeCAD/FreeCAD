@@ -241,6 +241,10 @@ SET(Features_SRCS
     PartFeatures.cpp
     PartFeatures.h
     PartFeature.cpp
+    SemanticHistoryAdapter.cpp
+    SemanticHistoryAdapter.h
+    SemanticSourceCollector.cpp
+    SemanticSourceCollector.h
     PartFeature.h
     PartFeatureReference.cpp
     PartFeatureReference.h

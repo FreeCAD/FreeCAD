@@ -30,7 +30,9 @@
 #include <sstream>
 
 
+#include <App/Document.h>
 #include <App/ExpressionParser.h>
+#include <App/SemanticLinkSub.h>
 #include <Base/Console.h>
 #include <Base/Quantity.h>
 #include <Base/Reader.h>
@@ -130,6 +132,7 @@ Cell::Cell(PropertySheet* _owner, const Cell& other)
     , owner(_owner)
     , used(other.used)
     , expression(other.expression ? other.expression->copy() : nullptr)
+    , restoredSemanticRef(other.restoredSemanticRef)
     , alignment(other.alignment)
     , style(other.style)
     , foregroundColor(other.foregroundColor)
@@ -151,6 +154,7 @@ Cell& Cell::operator=(const Cell& rhs)
     address = rhs.address;
 
     setExpression(App::ExpressionPtr(rhs.expression ? rhs.expression->copy() : nullptr));
+    restoredSemanticRef = rhs.restoredSemanticRef;
     setAlignment(rhs.alignment);
     setStyle(rhs.style);
     setBackground(rhs.backgroundColor);
@@ -183,6 +187,8 @@ void Cell::setExpression(App::ExpressionPtr&& expr)
 {
     PropertySheet::AtomicPropertyChange signaller(*owner);
 
+    restoredSemanticRef = App::SemanticReference();
+
     owner->setDirty(address);
 
     /* Remove dependencies */
@@ -214,6 +220,9 @@ void Cell::setExpression(App::ExpressionPtr&& expr)
 
     expression = std::move(expr);
     setUsed(EXPRESSION_SET, !!expression);
+    if (expression && owner && owner->sheet() && owner->sheet()->getDocument()) {
+        expression->promoteSemanticRefs(owner->sheet()->getDocument()->semanticGraph());
+    }
 
     /* Update dependencies */
     owner->addDependencies(address);
@@ -276,9 +285,24 @@ bool Cell::getStringContent(std::string& s, bool persistent) const
 
 void Cell::afterRestore()
 {
+    const App::SemanticReference restored = restoredSemanticRef;
     auto expr = freecad_cast<StringExpression*>(expression.get());
     if (expr) {
         setContent(expr->getText().c_str());
+    }
+    // C1: re-parsed content has no seed; attach restored stSeed before Bindings exist.
+    if (restored.seed.valid() && expression) {
+        expression->restoreSemanticRef(restored);
+    }
+    // Preserve the XML side of the dual-write when the expression could not
+    // accept the restored topology reference (for example, a parse failure).
+    if (restored.seed.valid() && expression && !expression->firstTopologySemanticRef()) {
+        restoredSemanticRef = restored;
+    }
+    else if (!expression) {
+        // An empty cell has no expression side of the dual-write. Do not
+        // carry its XML seed forward and resurrect topology metadata on save.
+        restoredSemanticRef = App::SemanticReference();
     }
 }
 
@@ -848,6 +872,14 @@ void Cell::restore(Base::XMLReader& reader, bool checkAlias)
         ? reader.getAttribute<const char*>("colSpan")
         : nullptr;
 
+    // Route stSeed* attrs through shared App helper (same as PropertyLinks).
+    // Keep only a valid seed sidecar — Fallback-only must not resurrect FaceN
+    // cache as Spreadsheet Cell dual-write without a seed (I13 / Pass 54).
+    restoredSemanticRef = App::semanticRefFromXmlReader(reader);
+    if (!restoredSemanticRef.seed.valid()) {
+        restoredSemanticRef = App::SemanticReference();
+    }
+
     // Don't trigger multiple updates below; wait until everything is loaded by calling unfreeze()
     // below.
     PropertySheet::AtomicPropertyChange signaller(*owner);
@@ -964,6 +996,23 @@ void Cell::save(std::ostream& os, const char* indent, bool noContent) const
         os << "colSpan=\"" << colSpan << "\" ";
     }
 
+    if (!noContent) {
+        const App::SemanticReference* seed = expression
+            ? expression->firstTopologySemanticRef()
+            : nullptr;
+        // Keep the XML dual-write alive if restore could not attach the seed
+        // to a parsed expression. A later edit clears this fallback in
+        // setExpression(), so stale topology metadata is never resurrected.
+        if (!seed && restoredSemanticRef.seed.valid()) {
+            seed = &restoredSemanticRef;
+        }
+        if (seed) {
+            const std::string stAttrs = App::semanticRefXmlAttributes(*seed);
+            if (!stAttrs.empty()) {
+                os << stAttrs;
+            }
+        }
+    }
     os << "/>";
     if (!noContent) {
         os << std::endl;

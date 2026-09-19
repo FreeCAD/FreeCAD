@@ -27,6 +27,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <boost/algorithm/string/predicate.hpp>
+#include <ostream>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -35,6 +36,8 @@
 #include <Base/Tools.h>
 
 #include "PropertyLinks.h"
+#include "SemanticLinkSub.h"
+
 #include "Application.h"
 #include "Document.h"
 #include "DocumentObject.h"
@@ -52,6 +55,82 @@ using namespace App;
 using namespace Base;
 using namespace std;
 namespace sp = std::placeholders;
+
+static SemanticReference semanticRefFromXmlReaderWithSub(Base::XMLReader& reader,
+                                                       const std::string& subName);
+
+namespace
+{
+
+std::vector<std::size_t> rewriteSemanticRefsFromGraph(std::vector<SemanticReference>& refs,
+                                                       const SemanticGraph& graph)
+{
+    // Keep D2 identical for LinkSub, LinkSubList, and XLink: only a live,
+    // singleton Binding may rewrite the cached FaceN/EdgeN component.
+    std::vector<std::size_t> rewritten;
+    if (!graph.hasBindings()) {
+        return rewritten;
+    }
+    for (std::size_t i = 0; i < refs.size(); ++i) {
+        SemanticReference& ref = refs[i];
+        if (ref.seed.valid() && rewriteFallbackFromBinding(ref, graph)) {
+            rewritten.push_back(i);
+        }
+    }
+    return rewritten;
+}
+
+template<typename NameContainer>
+bool applySemanticD2Cache(std::vector<SemanticReference>& refs,
+                          NameContainer& names,
+                          std::vector<PropertyLinkBase::ShadowSub>& shadows,
+                          const SemanticGraph& graph)
+{
+    // D2 is one cache policy for every link flavor: restored seeds remain
+    // authoritative, while only a live singleton Binding refreshes FaceN/EdgeN.
+    const std::vector<std::size_t> rewritten = rewriteSemanticRefsFromGraph(refs, graph);
+    for (const std::size_t i : rewritten) {
+        SemanticReference& ref = refs[i];
+        const std::string cache = dualWriteSubName(ref);
+        if (cache.empty()) {
+            continue;
+        }
+        if (i < shadows.size()) {
+            shadows[i].oldName = cache;
+        }
+        // Bare FaceN/EdgeN is the Python-visible cache; mapped names retain
+        // their lineage text and must not be replaced by a fallback.
+        if (i < names.size()) {
+            const std::string& name = names[i];
+            if (name.find(';') == std::string::npos && name.find('.') == std::string::npos
+                && !elementIndexFromSubName(name).type.empty()) {
+                names[i] = cache;
+            }
+        }
+    }
+    return !rewritten.empty();
+}
+
+void appendSemanticRefForSlot(std::vector<SemanticReference>& refs,
+                              const std::vector<SemanticReference>& source,
+                              std::size_t index)
+{
+    refs.push_back(index < source.size() ? source[index] : SemanticReference{});
+}
+
+std::vector<SemanticReference> semanticRefsForSlots(
+    const std::vector<SemanticReference>& source,
+    const std::vector<std::size_t>& slots)
+{
+    std::vector<SemanticReference> refs;
+    refs.reserve(slots.size());
+    for (const std::size_t slot : slots) {
+        appendSemanticRefForSlot(refs, source, slot);
+    }
+    return refs;
+}
+
+}  // namespace
 
 //**************************************************************************
 //**************************************************************************
@@ -491,7 +570,13 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
         // map for the first time, or we are re-generating the element map due
         // to version change, i.e. 'reverse', try search by geometry first
         const char* oldElement = Data::findElementName(shadow.oldName.c_str());
-        if (!Data::hasMissingElement(oldElement)) {
+        // Allow rematch when already marked missing ('?EdgeN'): geometry cache
+        // may still hold the pre-change snapshot. Strip MISSING_PREFIX only for
+        // the cache key; do not invent identity.
+        if (oldElement && Data::hasMissingElement(oldElement)) {
+            oldElement += strlen(Data::MISSING_PREFIX);
+        }
+        if (oldElement && oldElement[0] && !Data::hasMissingElement(oldElement)) {
             auto names = geo->searchElementCache(oldElement, Data::SearchOption::CheckGeometry);
             if (names.empty()) {
                 // try floating point tolerance
@@ -500,7 +585,9 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
             if (names.empty() && missing) {
                 names = rescueDriftedElement(*geo, oldElement);
             }
-            if (names.size()) {
+            // Rev 3.1 I13: unique geometry match only — never first-wins.
+            // 0 or >1 cache hits: leave missing / unresolved (no identity invent).
+            if (names.size() == 1) {
                 missing = false;
                 std::string newsub(subname, strlen(subname) - strlen(element));
                 newsub += names.front();
@@ -671,7 +758,8 @@ PropertyLinkBase::tryReplaceLinkSubs(const PropertyContainer* owner,
                                      const DocumentObject* parent,
                                      DocumentObject* oldObj,
                                      DocumentObject* newObj,
-                                     const std::vector<std::string>& subs)
+                                     const std::vector<std::string>& subs,
+                                     std::vector<std::size_t>* keptIndices)
 {
     std::pair<DocumentObject*, std::vector<std::string>> res;
     res.first = 0;
@@ -683,19 +771,35 @@ PropertyLinkBase::tryReplaceLinkSubs(const PropertyContainer* owner,
     if (r.first) {
         res.first = r.first;
         res.second = subs;
+        if (keptIndices) {
+            keptIndices->reserve(subs.size());
+            for (std::size_t i = 0; i < subs.size(); ++i) {
+                keptIndices->push_back(i);
+            }
+        }
         return res;
     }
-    for (auto it = subs.begin(); it != subs.end(); ++it) {
+    std::size_t index = 0;
+    for (auto it = subs.begin(); it != subs.end(); ++it, ++index) {
         auto r = tryReplaceLink(owner, obj, parent, oldObj, newObj, it->c_str());
         if (r.first) {
             if (!res.first) {
                 res.first = r.first;
                 res.second.insert(res.second.end(), subs.begin(), it);
+                if (keptIndices) {
+                    keptIndices->insert(keptIndices->end(), 0, index);
+                }
             }
             res.second.push_back(std::move(r.second));
+            if (keptIndices) {
+                keptIndices->push_back(index);
+            }
         }
         else if (res.first) {
             res.second.push_back(*it);
+            if (keptIndices) {
+                keptIndices->push_back(index);
+            }
         }
     }
     return res;
@@ -1365,14 +1469,21 @@ void PropertyLinkSub::setSyncSubObject(bool enable)
 
 void PropertyLinkSub::setValue(App::DocumentObject* lValue,
                                const std::vector<std::string>& SubList,
-                               std::vector<ShadowSub>&& shadows)
+                               std::vector<ShadowSub>&& shadows,
+
+                               std::vector<SemanticReference>&& semanticRefs)
+
 {
-    setValue(lValue, std::vector<std::string>(SubList), std::move(shadows));
+    setValue(lValue, std::vector<std::string>(SubList), std::move(shadows), std::move(semanticRefs));
+
 }
 
 void PropertyLinkSub::setValue(App::DocumentObject* lValue,
                                std::vector<std::string>&& subs,
-                               std::vector<ShadowSub>&& shadows)
+                               std::vector<ShadowSub>&& shadows,
+
+                               std::vector<SemanticReference>&& semanticRefs)
+
 {
     auto parent = freecad_cast<App::DocumentObject*>(getContainer());
     if (lValue) {
@@ -1401,8 +1512,74 @@ void PropertyLinkSub::setValue(App::DocumentObject* lValue,
         }
     }
 
+    std::vector<SemanticReference> previousRefs = _SemanticRefs;
+    std::vector<std::string> previousSubs = _cSubList;
     _pcLinkSub = lValue;
     _cSubList = std::move(subs);
+    {
+
+        // G1: live graph + linked feature id. Seed only if unique published
+
+        // SemanticBinding on that feature (I13). Decode ";:ST". Never mint from
+
+        // raw FaceN/EdgeN. C1: never overwrite a valid stSeed the caller passed.
+
+        const SemanticGraph* graph = nullptr;
+
+        if (parent) {
+
+            if (Document* doc = parent->getDocument()) {
+
+                graph = &doc->semanticGraph();
+
+            }
+
+        }
+
+        const ObjectId linkedId =
+
+            _pcLinkSub ? static_cast<ObjectId>(_pcLinkSub->semanticProjectionFeatureId()) : 0;
+
+        if (semanticRefs.size() == _cSubList.size()) {
+
+            _SemanticRefs = std::move(semanticRefs);
+
+        }
+
+        else {
+
+            _SemanticRefs =
+
+                makeSemanticRefsForSubNames(_cSubList, graph, SemanticRole::None, linkedId);
+
+        }
+
+        syncSemanticRefsSize();
+
+        // TaskDlg accept() rebuilds refs from subnames (no semanticRefs).
+
+        // Keep a valid in-session seed for the same EdgeN/FaceN if the new
+
+        // slot is empty (C1). Then promote still fills remaining empties.
+
+        keepValidSeedsForSameIndex(
+
+            _SemanticRefs, _cSubList, previousRefs, previousSubs);
+
+        // Always promote empty/invalid slots even when the caller passed a
+
+        // same-size semanticRefs vector (GUI Task/Cmd often does). Valid seeds
+
+        // are left alone (C1).
+
+        if (graph) {
+
+            promoteRefsWithGraph(_SemanticRefs, _cSubList, *graph, linkedId);
+
+        }
+
+    }
+
     if (shadows.size() == _cSubList.size()) {
         _ShadowSubList = std::move(shadows);
         onContainerRestored();  // re-register element references
@@ -1412,6 +1589,44 @@ void PropertyLinkSub::setValue(App::DocumentObject* lValue,
     }
     checkLabelReferences(_cSubList);
     hasSetValue();
+}
+
+void PropertyLinkSub::syncSemanticRefsSize()
+
+{
+
+    App::syncSemanticRefsSize(_SemanticRefs, _cSubList.size());
+
+}
+
+
+
+void PropertyLinkSub::promoteWithGraph(const SemanticGraph& graph)
+
+{
+
+    // C1: only fill empty/invalid-seed slots. A valid restored stSeed must
+
+    // survive STG1 restore (Bindings omitted). Does not mint (I13 / D3b).
+
+    // Scope uniqueness to the projected feature (Body Tip, else getID()), not
+
+    // document-wide EdgeN.
+
+    const ObjectId linkedId =
+
+        _pcLinkSub ? static_cast<ObjectId>(_pcLinkSub->semanticProjectionFeatureId()) : 0;
+
+    promoteRefsWithGraph(_SemanticRefs, _cSubList, graph, linkedId);
+
+}
+
+
+
+bool PropertyLinkSub::applySemanticReadPolicy(const SemanticGraph& graph)
+{
+    syncSemanticRefsSize();
+    return applySemanticD2Cache(_SemanticRefs, _cSubList, _ShadowSubList, graph);
 }
 
 App::DocumentObject* PropertyLinkSub::getValue() const
@@ -1557,6 +1772,57 @@ void PropertyLinkSub::setPyObject(PyObject* value)
     }
 }
 
+static const SemanticGraph* liveSemanticGraphFor(Property* prop)
+{
+    auto* owner = freecad_cast<DocumentObject*>(prop->getContainer());
+    if (!owner) {
+        return nullptr;
+    }
+    Document* doc = owner->getDocument();
+    if (!doc) {
+        return nullptr;
+    }
+    return &doc->semanticGraph();
+}
+
+static SemanticReference semanticRefFromXmlReaderWithSub(Base::XMLReader& reader,
+                                                         const std::string& subName)
+{
+    // D1/D3: optional SemanticReference attributes. Absent = pre-migration file.
+    // Shared App::semanticRefFromXmlReader parses attrs; FaceN mint stays here
+    // only as the pre-migration subName fallback (I13 / D3b — no invent from FaceN
+    // when stSeed/stFallback attrs are present).
+    if (reader.hasAttribute(SemanticLinkXml::Seed)
+        || reader.hasAttribute(SemanticLinkXml::Fallback)) {
+        return App::semanticRefFromXmlReader(reader);
+    }
+    return makeSemanticRefForSubName(subName, nullptr);
+}
+
+static void writeSemanticXmlTail(std::ostream& stream,
+                                 const std::vector<SemanticReference>& refs,
+                                 std::size_t index)
+{
+    // semanticRefXmlAttributes() is a fully-quoted fragment ( stSeed=".." ...).
+    // Close the previous attribute first, then emit /> without a stray quote.
+    // Without semantic attrs, still close the open attribute value quote (I13
+    // port half-merge had both arms identical — missing the quote).
+    bool wroteSemantic = false;
+    if (index < refs.size()) {
+        const std::string stAttrs = semanticRefXmlAttributes(refs[index]);
+        if (!stAttrs.empty()) {
+            stream << '"' << stAttrs;
+            wroteSemantic = true;
+        }
+    }
+    if (wroteSemantic) {
+        stream << "/>" << endl;
+    }
+    else {
+        stream << "\"/>" << endl;
+    }
+}
+
 static bool updateLinkReference(App::PropertyLinkBase* prop,
                                 App::DocumentObject* feature,
                                 bool reverse,
@@ -1608,12 +1874,20 @@ static bool updateLinkReference(App::PropertyLinkBase* prop,
 void PropertyLinkSub::afterRestore()
 {
     _ShadowSubList.resize(_cSubList.size());
-    if (!testFlag(LinkRestoreLabel) || !_pcLinkSub || !_pcLinkSub->isAttachedToDocument()) {
-        return;
+    syncSemanticRefsSize();
+    if (testFlag(LinkRestoreLabel) && _pcLinkSub && _pcLinkSub->isAttachedToDocument()) {
+        setFlag(LinkRestoreLabel, false);
+        for (std::size_t i = 0; i < _cSubList.size(); ++i) {
+            restoreLabelReference(_pcLinkSub, _cSubList[i], &_ShadowSubList[i]);
+        }
     }
-    setFlag(LinkRestoreLabel, false);
-    for (std::size_t i = 0; i < _cSubList.size(); ++i) {
-        restoreLabelReference(_pcLinkSub, _cSubList[i], &_ShadowSubList[i]);
+    // Graph is on Document (the previous "once Document exposes SemanticGraph"
+    // comment is stale). Promote empty slots only (C1). Read-policy rewrites
+    // FaceN from a unique live Binding; no-op when Bindings empty (STG1 omits
+    // them). Never mint from raw FaceN (I13).
+    if (const SemanticGraph* graph = liveSemanticGraphFor(this)) {
+        promoteWithGraph(*graph);
+        applySemanticReadPolicy(*graph);
     }
 }
 
@@ -1630,14 +1904,22 @@ void PropertyLinkSub::onContainerRestored()
 
 void PropertyLinkSub::updateElementReference(DocumentObject* feature, bool reverse, bool notify)
 {
-    if (!updateLinkReference(this,
-                             feature,
-                             reverse,
-                             notify,
-                             _pcLinkSub,
-                             _cSubList,
-                             _mapped,
-                             _ShadowSubList)) {
+    // Phase D/C1: do not drop _SemanticRefs. After ElementMap remap, rewrite
+    // FaceN/EdgeN cache from a unique live Binding (I13: 0 or >1 -> no rewrite).
+    // C1: applySemanticReadPolicy does not overwrite a valid seed.
+    const bool remapped = updateLinkReference(this,
+                                              feature,
+                                              reverse,
+                                              notify,
+                                              _pcLinkSub,
+                                              _cSubList,
+                                              _mapped,
+                                              _ShadowSubList);
+    bool rewritten = false;
+    if (const SemanticGraph* graph = liveSemanticGraphFor(this)) {
+        rewritten = applySemanticReadPolicy(*graph);
+    }
+    if (!remapped && !rewritten) {
         return;
     }
     if (notify) {
@@ -1930,8 +2212,10 @@ void PropertyLinkSub::Save(Base::Writer& writer) const
                 }
             }
         }
-        writer.Stream() << "\"/>" << endl;
+        // D1: SemanticReference fields next to Sub / ShadowSub.
+        writeSemanticXmlTail(writer.Stream(), _SemanticRefs, i);
     }
+
     writer.decInd();
     writer.Stream() << writer.ind() << "</LinkSub>" << endl;
 }
@@ -1962,6 +2246,8 @@ void PropertyLinkSub::Restore(Base::XMLReader& reader)
     std::vector<int> mapped;
     std::vector<std::string> values(count);
     std::vector<ShadowSub> shadows(count);
+    std::vector<SemanticReference> semanticRefs(count);
+
     bool restoreLabel = false;
     // Sub may store '.' separated object names, so be aware of the possible mapping when import
     for (int i = 0; i < count; i++) {
@@ -1981,13 +2267,16 @@ void PropertyLinkSub::Restore(Base::XMLReader& reader)
         if (reader.hasAttribute(ATTR_MAPPED)) {
             mapped.push_back(i);
         }
+        // D1/D3 + I13: shared reader — never mint from FaceN cache.
+        semanticRefs[i] = semanticRefFromXmlReaderWithSub(reader, values[i]);
     }
     setFlag(LinkRestoreLabel, restoreLabel);
 
     reader.readEndElement("LinkSub");
 
     if (pcObject) {
-        setValue(pcObject, std::move(values), std::move(shadows));
+        setValue(pcObject, std::move(values), std::move(shadows), std::move(semanticRefs));
+
         _mapped = std::move(mapped);
     }
     else {
@@ -1999,6 +2288,7 @@ template<class Func, class... Args>
 std::vector<std::string> updateLinkSubs(const App::DocumentObject* obj,
                                         const std::vector<std::string>& subs,
                                         Func* f,
+                                        std::vector<std::size_t>* keptIndices,
                                         Args&&... args)
 {
     if (!obj || !obj->isAttachedToDocument()) {
@@ -2006,18 +2296,28 @@ std::vector<std::string> updateLinkSubs(const App::DocumentObject* obj,
     }
 
     std::vector<std::string> res;
-    for (auto it = subs.begin(); it != subs.end(); ++it) {
+    std::size_t index = 0;
+    for (auto it = subs.begin(); it != subs.end(); ++it, ++index) {
         const auto& sub = *it;
         auto new_sub = (*f)(obj, sub.c_str(), args...);
         if (new_sub.size()) {
             if (res.empty()) {
                 res.reserve(subs.size());
                 res.insert(res.end(), subs.begin(), it);
+                if (keptIndices) {
+                    keptIndices->insert(keptIndices->end(), 0, index);
+                }
             }
             res.push_back(std::move(new_sub));
+            if (keptIndices) {
+                keptIndices->push_back(index);
+            }
         }
         else if (!res.empty()) {
             res.push_back(sub);
+            if (keptIndices) {
+                keptIndices->push_back(index);
+            }
         }
     }
     return res;
@@ -2034,8 +2334,9 @@ PropertyLinkSub::CopyOnImportExternal(const std::map<std::string, std::string>& 
         return nullptr;
     }
 
+    std::vector<std::size_t> keptIndices;
     auto subs =
-        updateLinkSubs(_pcLinkSub, _cSubList, &tryImportSubName, owner->getDocument(), nameMap);
+        updateLinkSubs(_pcLinkSub, _cSubList, &tryImportSubName, &keptIndices, owner->getDocument(), nameMap);
     auto linked = tryImport(owner->getDocument(), _pcLinkSub, nameMap);
     if (subs.empty() && linked == _pcLinkSub) {
         return nullptr;
@@ -2049,6 +2350,8 @@ PropertyLinkSub::CopyOnImportExternal(const std::map<std::string, std::string>& 
     else {
         p->_cSubList = std::move(subs);
     }
+    p->_SemanticRefs = keptIndices.empty() ? _SemanticRefs : semanticRefsForSlots(_SemanticRefs, keptIndices);
+    p->syncSemanticRefsSize();
     return p;
 }
 
@@ -2064,7 +2367,8 @@ Property* PropertyLinkSub::CopyOnLabelChange(App::DocumentObject* obj,
         return nullptr;
     }
 
-    auto subs = updateLinkSubs(_pcLinkSub, _cSubList, &updateLabelReference, obj, ref, newLabel);
+    std::vector<std::size_t> keptIndices;
+    auto subs = updateLinkSubs(_pcLinkSub, _cSubList, &updateLabelReference, &keptIndices, obj, ref, newLabel);
     if (subs.empty()) {
         return nullptr;
     }
@@ -2072,6 +2376,9 @@ Property* PropertyLinkSub::CopyOnLabelChange(App::DocumentObject* obj,
     PropertyLinkSub* p = new PropertyLinkSub();
     p->_pcLinkSub = _pcLinkSub;
     p->_cSubList = std::move(subs);
+    p->_SemanticRefs = semanticRefsForSlots(_SemanticRefs, keptIndices);
+    p->syncSemanticRefsSize();
+
     return p;
 }
 
@@ -2079,11 +2386,15 @@ Property* PropertyLinkSub::CopyOnLinkReplace(const App::DocumentObject* parent,
                                              App::DocumentObject* oldObj,
                                              App::DocumentObject* newObj) const
 {
-    auto res = tryReplaceLinkSubs(getContainer(), _pcLinkSub, parent, oldObj, newObj, _cSubList);
+    std::vector<std::size_t> keptIndices;
+    auto res = tryReplaceLinkSubs(getContainer(), _pcLinkSub, parent, oldObj, newObj, _cSubList, &keptIndices);
     if (res.first) {
         PropertyLinkSub* p = new PropertyLinkSub();
         p->_pcLinkSub = res.first;
         p->_cSubList = std::move(res.second);
+        p->_SemanticRefs = semanticRefsForSlots(_SemanticRefs, keptIndices);
+        p->syncSemanticRefsSize();
+
         return p;
     }
     return nullptr;
@@ -2095,6 +2406,10 @@ Property* PropertyLinkSub::Copy() const
     p->_pcLinkSub = _pcLinkSub;
     p->_cSubList = _cSubList;
     p->_ShadowSubList = _ShadowSubList;
+    p->_SemanticRefs = _SemanticRefs;
+
+    p->syncSemanticRefsSize();
+
     return p;
 }
 
@@ -2104,7 +2419,14 @@ void PropertyLinkSub::Paste(const Property& from)
         throw Base::TypeError("Incompatible property to paste to");
     }
     auto& link = static_cast<const PropertyLinkSub&>(from);
-    setValue(link._pcLinkSub, link._cSubList, std::vector<ShadowSub>(link._ShadowSubList));
+    setValue(link._pcLinkSub,
+
+             link._cSubList,
+
+             std::vector<ShadowSub>(link._ShadowSubList),
+
+             std::vector<SemanticReference>(link._SemanticRefs));
+
 }
 
 void PropertyLinkSub::getLinks(std::vector<App::DocumentObject*>& objs,
@@ -2201,7 +2523,13 @@ bool PropertyLinkSub::adjustLink(const std::set<App::DocumentObject*>& inList)
     auto subs = _cSubList;
     auto link = adjustLinkSubs(this, inList, _pcLinkSub, subs);
     if (link) {
-        setValue(link, std::move(subs));
+        // The link/subname rewrite changes ownership, not the referenced
+        // topology slot. Carry the single-link semantic sidecars through the
+        // same-index transform instead of rebuilding them from FaceN/EdgeN.
+        setValue(link,
+                 std::move(subs),
+                 std::vector<ShadowSub>{},
+                 std::vector<SemanticReference>(_SemanticRefs));
         return true;
     }
     return false;
@@ -2265,6 +2593,73 @@ void PropertyLinkSubList::setSize(int newSize)
     _lValueList.resize(newSize);
     _lSubList.resize(newSize);
     _ShadowSubList.resize(newSize);
+    syncSemanticRefsSize();
+}
+
+void PropertyLinkSubList::syncSemanticRefsSize()
+{
+    App::syncSemanticRefsSize(_SemanticRefs, _lSubList.size());
+}
+
+void PropertyLinkSubList::applyIncomingSemanticRefs(
+    std::vector<SemanticReference>&& semanticRefs,
+    const std::vector<SemanticReference>& previousRefs,
+    const std::vector<std::string>& previousSubs)
+{
+    // G1: live graph + per-slot linked feature id. Seed only if unique published
+    // SemanticBinding on THAT slot's object (I13). Decode ";:ST". Never mint from
+    // raw FaceN/EdgeN. C1: never overwrite a valid stSeed the caller passed.
+    auto parent = freecad_cast<App::DocumentObject*>(getContainer());
+    const SemanticGraph* graph = nullptr;
+    if (parent) {
+        if (Document* doc = parent->getDocument()) {
+            graph = &doc->semanticGraph();
+        }
+    }
+    if (semanticRefs.size() == _lSubList.size()) {
+        _SemanticRefs = std::move(semanticRefs);
+    }
+    else {
+        _SemanticRefs.clear();
+        _SemanticRefs.reserve(_lSubList.size());
+        for (std::size_t i = 0; i < _lSubList.size(); ++i) {
+            const ObjectId linkedId =
+                (i < _lValueList.size() && _lValueList[i])
+                    ? static_cast<ObjectId>(_lValueList[i]->semanticProjectionFeatureId())
+                    : 0;
+            _SemanticRefs.push_back(
+                makeSemanticRefForSubName(_lSubList[i], graph, SemanticRole::None, linkedId));
+        }
+    }
+    syncSemanticRefsSize();
+    keepValidSeedsForSameIndex(_SemanticRefs, _lSubList, previousRefs, previousSubs);
+    if (graph) {
+        promoteWithGraph(*graph);
+    }
+}
+
+void PropertyLinkSubList::promoteWithGraph(const SemanticGraph& graph)
+{
+    // C1: only fill empty/invalid-seed slots. A valid restored stSeed must
+    // survive STG1 restore (Bindings omitted). Does not mint (I13 / D3b).
+    // Scope uniqueness to THAT slot's object getID() (AttachmentSupport /
+    // ShapeBinder / Loft Sections can mix objects).
+    syncSemanticRefsSize();
+    for (std::size_t i = 0; i < _lSubList.size(); ++i) {
+        const ObjectId linkedId =
+            (i < _lValueList.size() && _lValueList[i])
+                ? static_cast<ObjectId>(_lValueList[i]->semanticProjectionFeatureId())
+                : 0;
+        std::vector<SemanticReference> slotRefs = {_SemanticRefs[i]};
+        promoteRefsWithGraph(slotRefs, {_lSubList[i]}, graph, linkedId);
+        _SemanticRefs[i] = std::move(slotRefs.front());
+    }
+}
+
+bool PropertyLinkSubList::applySemanticReadPolicy(const SemanticGraph& graph)
+{
+    syncSemanticRefsSize();
+    return applySemanticD2Cache(_SemanticRefs, _lSubList, _ShadowSubList, graph);
 }
 
 int PropertyLinkSubList::getSize() const
@@ -2295,18 +2690,20 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const char* SubName)
         }
     }
 
+    aboutToSetValue();
+    std::vector<SemanticReference> previousRefs = _SemanticRefs;
+    std::vector<std::string> previousSubs = _lSubList;
     if (lValue) {
-        aboutToSetValue();
         _lValueList.resize(1);
         _lValueList[0] = lValue;
         _lSubList.resize(1);
         _lSubList[0] = SubName;
     }
     else {
-        aboutToSetValue();
         _lValueList.clear();
         _lSubList.clear();
     }
+    applyIncomingSemanticRefs({}, previousRefs, previousSubs);
     updateElementReference(nullptr);
     checkLabelReferences(_lSubList);
     hasSetValue();
@@ -2351,6 +2748,8 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,
     }
 
     aboutToSetValue();
+    std::vector<SemanticReference> previousRefs = _SemanticRefs;
+    std::vector<std::string> previousSubs = _lSubList;
     _lValueList = lValue;
     _lSubList.resize(lSubNames.size());
     int i = 0;
@@ -2360,6 +2759,7 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,
             _lSubList[i] = *it;
         }
     }
+    applyIncomingSemanticRefs({}, previousRefs, previousSubs);
     updateElementReference(nullptr);
     checkLabelReferences(_lSubList);
     hasSetValue();
@@ -2367,16 +2767,19 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,
 
 void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,
                                     const std::vector<std::string>& lSubNames,
-                                    std::vector<ShadowSub>&& ShadowSubList)
+                                    std::vector<ShadowSub>&& ShadowSubList,
+                                    std::vector<SemanticReference>&& SemanticRefs)
 {
     setValues(std::vector<DocumentObject*>(lValue),
               std::vector<std::string>(lSubNames),
-              std::move(ShadowSubList));
+              std::move(ShadowSubList),
+              std::move(SemanticRefs));
 }
 
 void PropertyLinkSubList::setValues(std::vector<DocumentObject*>&& lValue,
                                     std::vector<std::string>&& lSubNames,
-                                    std::vector<ShadowSub>&& ShadowSubList)
+                                    std::vector<ShadowSub>&& ShadowSubList,
+                                    std::vector<SemanticReference>&& SemanticRefs)
 {
     auto parent = freecad_cast<App::DocumentObject*>(getContainer());
     for (auto obj : lValue) {
@@ -2413,8 +2816,11 @@ void PropertyLinkSubList::setValues(std::vector<DocumentObject*>&& lValue,
     }
 
     aboutToSetValue();
+    std::vector<SemanticReference> previousRefs = _SemanticRefs;
+    std::vector<std::string> previousSubs = _lSubList;
     _lValueList = std::move(lValue);
     _lSubList = std::move(lSubNames);
+    applyIncomingSemanticRefs(std::move(SemanticRefs), previousRefs, previousSubs);
     if (ShadowSubList.size() == _lSubList.size()) {
         _ShadowSubList = std::move(ShadowSubList);
         onContainerRestored();  // re-register element references
@@ -2455,6 +2861,8 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<std
     }
 
     aboutToSetValue();
+    std::vector<SemanticReference> previousRefs = _SemanticRefs;
+    std::vector<std::string> previousSubs = _lSubList;
     std::size_t size = SubList.size();
     this->_lValueList.clear();
     this->_lSubList.clear();
@@ -2468,6 +2876,7 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<std
         this->_lSubList = SubList;
         this->_lValueList.insert(this->_lValueList.begin(), size, lValue);
     }
+    applyIncomingSemanticRefs({}, previousRefs, previousSubs);
     updateElementReference(nullptr);
     checkLabelReferences(_lSubList);
     hasSetValue();
@@ -2534,8 +2943,11 @@ void PropertyLinkSubList::addValue(App::DocumentObject* obj,
     }
 
     aboutToSetValue();
+    std::vector<SemanticReference> previousRefs = _SemanticRefs;
+    std::vector<std::string> previousSubs = _lSubList;
     _lValueList = valueList;
     _lSubList = subList;
+    applyIncomingSemanticRefs({}, previousRefs, previousSubs);
     updateElementReference(nullptr);
     checkLabelReferences(_lSubList);
     hasSetValue();
@@ -2600,17 +3012,20 @@ int PropertyLinkSubList::removeValue(App::DocumentObject* lValue)
 
     std::vector<DocumentObject*> links;
     std::vector<std::string> subs;
+    std::vector<std::size_t> keptIndices;
     links.reserve(this->_lValueList.size() - num);
     subs.reserve(this->_lSubList.size() - num);
+    keptIndices.reserve(this->_lValueList.size() - num);
 
     for (std::size_t i = 0; i < this->_lValueList.size(); ++i) {
         if (this->_lValueList[i] != lValue) {
             links.push_back(this->_lValueList[i]);
             subs.push_back(this->_lSubList[i]);
+            keptIndices.push_back(i);
         }
     }
 
-    setValues(links, subs);
+    setValues(links, subs, {}, semanticRefsForSlots(_SemanticRefs, keptIndices));
     return static_cast<int>(num);
 }
 
@@ -2773,12 +3188,17 @@ void PropertyLinkSubList::setPyObject(PyObject* value)
 void PropertyLinkSubList::afterRestore()
 {
     assert(_lSubList.size() == _ShadowSubList.size());
-    if (!testFlag(LinkRestoreLabel)) {
-        return;
+    if (testFlag(LinkRestoreLabel)) {
+        setFlag(LinkRestoreLabel, false);
+        for (size_t i = 0; i < _lSubList.size(); ++i) {
+            restoreLabelReference(_lValueList[i], _lSubList[i], &_ShadowSubList[i]);
+        }
     }
-    setFlag(LinkRestoreLabel, false);
-    for (size_t i = 0; i < _lSubList.size(); ++i) {
-        restoreLabelReference(_lValueList[i], _lSubList[i], &_ShadowSubList[i]);
+    // Graph is on Document. Promote empty slots only (C1). Read-policy rewrites
+    // FaceN from a unique live Binding; no-op when Bindings empty. Never mint (I13).
+    if (const SemanticGraph* graph = liveSemanticGraphFor(this)) {
+        promoteWithGraph(*graph);
+        applySemanticReadPolicy(*graph);
     }
 }
 
@@ -2792,6 +3212,9 @@ void PropertyLinkSubList::onContainerRestored()
 
 void PropertyLinkSubList::updateElementReference(DocumentObject* feature, bool reverse, bool notify)
 {
+    // Phase D/C1: do not clear _SemanticRefs. FaceN cache in _lSubList /
+    // _ShadowSubList may jump; stSeed must survive. After ElementMap remap,
+    // rewrite cache from a unique live Binding (I13: 0 or >1 -> no rewrite).
     if (!feature) {
         _ShadowSubList.clear();
         unregisterElementReference();
@@ -2814,25 +3237,31 @@ void PropertyLinkSubList::updateElementReference(DocumentObject* feature, bool r
             touched = true;
         }
     }
-    if (!touched) {
-        return;
-    }
-
-    std::vector<int> mapped;
-    mapped.reserve(_mapped.size());
-    for (int idx : _mapped) {
-        if (idx < (int)_lSubList.size()) {
-            if (!_ShadowSubList[idx].newName.empty()) {
-                _lSubList[idx] = _ShadowSubList[idx].newName;
-            }
-            else {
-                mapped.push_back(idx);
+    if (touched) {
+        std::vector<int> mapped;
+        mapped.reserve(_mapped.size());
+        for (int idx : _mapped) {
+            if (idx < (int)_lSubList.size()) {
+                if (!_ShadowSubList[idx].newName.empty()) {
+                    _lSubList[idx] = _ShadowSubList[idx].newName;
+                }
+                else {
+                    mapped.push_back(idx);
+                }
             }
         }
+        _mapped.swap(mapped);
+        if (owner && feature) {
+            owner->onUpdateElementReference(this);
+        }
     }
-    _mapped.swap(mapped);
-    if (owner && feature) {
-        owner->onUpdateElementReference(this);
+
+    bool rewritten = false;
+    if (const SemanticGraph* graph = liveSemanticGraphFor(this)) {
+        rewritten = applySemanticReadPolicy(*graph);
+    }
+    if (!touched && !rewritten) {
+        return;
     }
     if (notify) {
         hasSetValue();
@@ -2892,7 +3321,8 @@ void PropertyLinkSubList::Save(Base::Writer& writer) const
                 }
             }
         }
-        writer.Stream() << "\"/>" << endl;
+        // D1: SemanticReference fields next to Link / ShadowSub.
+        writeSemanticXmlTail(writer.Stream(), _SemanticRefs, static_cast<std::size_t>(i));
     }
 
     writer.decInd();
@@ -2912,6 +3342,8 @@ void PropertyLinkSubList::Restore(Base::XMLReader& reader)
     SubNames.reserve(count);
     std::vector<ShadowSub> shadows;
     shadows.reserve(count);
+    std::vector<SemanticReference> semanticRefs;
+    semanticRefs.reserve(count);
     DocumentObject* father = freecad_cast<DocumentObject*>(getContainer());
     App::Document* document = father ? father->getDocument() : nullptr;
     std::vector<int> mapped;
@@ -2944,6 +3376,8 @@ void PropertyLinkSubList::Restore(Base::XMLReader& reader)
             if (reader.hasAttribute(ATTR_MAPPED)) {
                 mapped.push_back(i);
             }
+            // D1/D3 + I13: shared reader — never mint from FaceN cache.
+            semanticRefs.push_back(semanticRefFromXmlReaderWithSub(reader, SubNames.back()));
         }
         else if (reader.isVerbose()) {
             Base::Console().warning("Lost link to '%s' while loading, maybe "
@@ -2956,7 +3390,7 @@ void PropertyLinkSubList::Restore(Base::XMLReader& reader)
     reader.readEndElement("LinkSubList");
 
     // assignment
-    setValues(values, SubNames, std::move(shadows));
+    setValues(values, SubNames, std::move(shadows), std::move(semanticRefs));
     _mapped.swap(mapped);
 }
 
@@ -2999,14 +3433,17 @@ PropertyLinkSubList::CopyOnImportExternal(const std::map<std::string, std::strin
     }
     std::vector<App::DocumentObject*> values;
     std::vector<std::string> subs;
+    std::vector<SemanticReference> semanticRefs;
     auto itSub = _lSubList.begin();
-    for (auto itValue = _lValueList.begin(); itValue != _lValueList.end(); ++itValue, ++itSub) {
+    std::size_t index = 0;
+    for (auto itValue = _lValueList.begin(); itValue != _lValueList.end(); ++itValue, ++itSub, ++index) {
         auto value = *itValue;
         const auto& sub = *itSub;
         if (!value || !value->isAttachedToDocument()) {
             if (!values.empty()) {
                 values.push_back(value);
                 subs.push_back(sub);
+                appendSemanticRefForSlot(semanticRefs, _SemanticRefs, index);
             }
             continue;
         }
@@ -3018,13 +3455,19 @@ PropertyLinkSubList::CopyOnImportExternal(const std::map<std::string, std::strin
                 values.insert(values.end(), _lValueList.begin(), itValue);
                 subs.reserve(_lSubList.size());
                 subs.insert(subs.end(), _lSubList.begin(), itSub);
+                semanticRefs.reserve(_SemanticRefs.size());
+                for (std::size_t prefix = 0; prefix < index; ++prefix) {
+                    appendSemanticRefForSlot(semanticRefs, _SemanticRefs, prefix);
+                }
             }
             values.push_back(linked);
             subs.push_back(std::move(new_sub));
+            appendSemanticRefForSlot(semanticRefs, _SemanticRefs, index);
         }
         else if (!values.empty()) {
             values.push_back(linked);
             subs.push_back(sub);
+            appendSemanticRefForSlot(semanticRefs, _SemanticRefs, index);
         }
     }
     if (values.empty()) {
@@ -3033,6 +3476,8 @@ PropertyLinkSubList::CopyOnImportExternal(const std::map<std::string, std::strin
     std::unique_ptr<PropertyLinkSubList> p(new PropertyLinkSubList);
     p->_lValueList = std::move(values);
     p->_lSubList = std::move(subs);
+    p->_SemanticRefs = std::move(semanticRefs);
+    p->syncSemanticRefsSize();
     return p.release();
 }
 
@@ -3046,14 +3491,17 @@ Property* PropertyLinkSubList::CopyOnLabelChange(App::DocumentObject* obj,
     }
     std::vector<App::DocumentObject*> values;
     std::vector<std::string> subs;
+    std::vector<SemanticReference> semanticRefs;
     auto itSub = _lSubList.begin();
-    for (auto itValue = _lValueList.begin(); itValue != _lValueList.end(); ++itValue, ++itSub) {
+    std::size_t index = 0;
+    for (auto itValue = _lValueList.begin(); itValue != _lValueList.end(); ++itValue, ++itSub, ++index) {
         auto value = *itValue;
         const auto& sub = *itSub;
         if (!value || !value->isAttachedToDocument()) {
             if (!values.empty()) {
                 values.push_back(value);
                 subs.push_back(sub);
+                appendSemanticRefForSlot(semanticRefs, _SemanticRefs, index);
             }
             continue;
         }
@@ -3064,13 +3512,19 @@ Property* PropertyLinkSubList::CopyOnLabelChange(App::DocumentObject* obj,
                 values.insert(values.end(), _lValueList.begin(), itValue);
                 subs.reserve(_lSubList.size());
                 subs.insert(subs.end(), _lSubList.begin(), itSub);
+                semanticRefs.reserve(_SemanticRefs.size());
+                for (std::size_t prefix = 0; prefix < index; ++prefix) {
+                    appendSemanticRefForSlot(semanticRefs, _SemanticRefs, prefix);
+                }
             }
             values.push_back(value);
             subs.push_back(std::move(new_sub));
+            appendSemanticRefForSlot(semanticRefs, _SemanticRefs, index);
         }
         else if (!values.empty()) {
             values.push_back(value);
             subs.push_back(sub);
+            appendSemanticRefForSlot(semanticRefs, _SemanticRefs, index);
         }
     }
     if (values.empty()) {
@@ -3079,6 +3533,8 @@ Property* PropertyLinkSubList::CopyOnLabelChange(App::DocumentObject* obj,
     std::unique_ptr<PropertyLinkSubList> p(new PropertyLinkSubList);
     p->_lValueList = std::move(values);
     p->_lSubList = std::move(subs);
+    p->_SemanticRefs = std::move(semanticRefs);
+    p->syncSemanticRefsSize();
     return p.release();
 }
 
@@ -3088,15 +3544,18 @@ Property* PropertyLinkSubList::CopyOnLinkReplace(const App::DocumentObject* pare
 {
     std::vector<App::DocumentObject*> values;
     std::vector<std::string> subs;
+    std::vector<SemanticReference> semanticRefs;
     auto itSub = _lSubList.begin();
     std::vector<size_t> positions;
-    for (auto itValue = _lValueList.begin(); itValue != _lValueList.end(); ++itValue, ++itSub) {
+    std::size_t index = 0;
+    for (auto itValue = _lValueList.begin(); itValue != _lValueList.end(); ++itValue, ++itSub, ++index) {
         auto value = *itValue;
         const auto& sub = *itSub;
         if (!value || !value->isAttachedToDocument()) {
             if (!values.empty()) {
                 values.push_back(value);
                 subs.push_back(sub);
+                appendSemanticRefForSlot(semanticRefs, _SemanticRefs, index);
             }
             continue;
         }
@@ -3107,12 +3566,18 @@ Property* PropertyLinkSubList::CopyOnLinkReplace(const App::DocumentObject* pare
                 values.insert(values.end(), _lValueList.begin(), itValue);
                 subs.reserve(_lSubList.size());
                 subs.insert(subs.end(), _lSubList.begin(), itSub);
+                semanticRefs.reserve(_SemanticRefs.size());
+                for (std::size_t prefix = 0; prefix < index; ++prefix) {
+                    appendSemanticRefForSlot(semanticRefs, _SemanticRefs, prefix);
+                }
             }
             if (res.first == newObj) {
                 // check for duplication
                 auto itS = subs.begin();
                 for (auto itV = values.begin(); itV != values.end();) {
                     if (*itV == res.first && *itS == res.second) {
+                        const auto duplicateIndex = static_cast<std::size_t>(itV - values.begin());
+                        semanticRefs.erase(semanticRefs.begin() + duplicateIndex);
                         itV = values.erase(itV);
                         itS = subs.erase(itS);
                     }
@@ -3125,6 +3590,7 @@ Property* PropertyLinkSubList::CopyOnLinkReplace(const App::DocumentObject* pare
             }
             values.push_back(res.first);
             subs.push_back(std::move(res.second));
+            appendSemanticRefForSlot(semanticRefs, _SemanticRefs, index);
         }
         else if (!values.empty()) {
             bool duplicate = false;
@@ -3139,6 +3605,7 @@ Property* PropertyLinkSubList::CopyOnLinkReplace(const App::DocumentObject* pare
             if (!duplicate) {
                 values.push_back(value);
                 subs.push_back(sub);
+                appendSemanticRefForSlot(semanticRefs, _SemanticRefs, index);
             }
         }
     }
@@ -3148,6 +3615,8 @@ Property* PropertyLinkSubList::CopyOnLinkReplace(const App::DocumentObject* pare
     std::unique_ptr<PropertyLinkSubList> p(new PropertyLinkSubList);
     p->_lValueList = std::move(values);
     p->_lSubList = std::move(subs);
+    p->_SemanticRefs = std::move(semanticRefs);
+    p->syncSemanticRefsSize();
     return p.release();
 }
 
@@ -3157,6 +3626,8 @@ Property* PropertyLinkSubList::Copy() const
     p->_lValueList = _lValueList;
     p->_lSubList = _lSubList;
     p->_ShadowSubList = _ShadowSubList;
+    p->_SemanticRefs = _SemanticRefs;
+    p->syncSemanticRefsSize();
     return p;
 }
 
@@ -3166,7 +3637,10 @@ void PropertyLinkSubList::Paste(const Property& from)
         throw Base::TypeError("Incompatible property to paste to");
     }
     auto& link = static_cast<const PropertyLinkSubList&>(from);
-    setValues(link._lValueList, link._lSubList, std::vector<ShadowSub>(link._ShadowSubList));
+    setValues(link._lValueList,
+              link._lSubList,
+              std::vector<ShadowSub>(link._ShadowSubList),
+              std::vector<SemanticReference>(link._SemanticRefs));
 }
 
 unsigned int PropertyLinkSubList::getMemSize() const
@@ -3265,6 +3739,7 @@ void PropertyLinkSubList::breakLink(App::DocumentObject* obj, bool clear)
 {
     std::vector<DocumentObject*> values;
     std::vector<std::string> subs;
+    std::vector<std::size_t> keptIndices;
 
     if (clear && getContainer() == obj) {
         setValues(values, subs);
@@ -3274,6 +3749,7 @@ void PropertyLinkSubList::breakLink(App::DocumentObject* obj, bool clear)
 
     values.reserve(_lValueList.size());
     subs.reserve(_lSubList.size());
+    keptIndices.reserve(_lValueList.size());
 
     int i = -1;
     for (auto o : _lValueList) {
@@ -3283,9 +3759,10 @@ void PropertyLinkSubList::breakLink(App::DocumentObject* obj, bool clear)
         }
         values.push_back(o);
         subs.push_back(_lSubList[i]);
+        keptIndices.push_back(static_cast<std::size_t>(i));
     }
     if (values.size() != _lValueList.size()) {
-        setValues(values, subs);
+        setValues(values, subs, {}, semanticRefsForSlots(_SemanticRefs, keptIndices));
     }
 }
 
@@ -3323,7 +3800,10 @@ bool PropertyLinkSubList::adjustLink(const std::set<App::DocumentObject*>& inLis
         }
     }
     if (touched) {
-        setValues(links, subs);
+        // The link/subname rewrite changes ownership, not the referenced
+        // topology slot. Carry each slot's semantic sidecar through the
+        // same-index transform instead of rebuilding it from FaceN/EdgeN.
+        setValues(links, subs, {}, std::vector<SemanticReference>(_SemanticRefs));
     }
     return touched;
 }
@@ -3861,9 +4341,33 @@ void PropertyXLink::setSubName(const char* subname)
     hasSetValue();
 }
 
-void PropertyXLink::setSubValues(std::vector<std::string>&& subs, std::vector<ShadowSub>&& shadows)
+void PropertyXLink::setSubValues(std::vector<std::string>&& subs,
+                                 std::vector<ShadowSub>&& shadows,
+                                 std::vector<SemanticReference>&& semanticRefs)
 {
+    std::vector<SemanticReference> previousRefs = _SemanticRefs;
+    std::vector<std::string> previousSubs = _SubList;
     _SubList = std::move(subs);
+    {
+        // G1: live graph + linked feature id. Seed only if unique published
+        // SemanticBinding on that feature (I13). Decode ";:ST". Never mint from
+        // raw FaceN/EdgeN. C1: never overwrite a valid stSeed the caller passed.
+        const SemanticGraph* graph = liveSemanticGraphFor(this);
+        const ObjectId linkedId =
+            _pcLink ? static_cast<ObjectId>(_pcLink->semanticProjectionFeatureId()) : 0;
+        if (semanticRefs.size() == _SubList.size()) {
+            _SemanticRefs = std::move(semanticRefs);
+        }
+        else {
+            _SemanticRefs =
+                makeSemanticRefsForSubNames(_SubList, graph, SemanticRole::None, linkedId);
+        }
+        syncSemanticRefsSize();
+        keepValidSeedsForSameIndex(_SemanticRefs, _SubList, previousRefs, previousSubs);
+        if (graph) {
+            promoteRefsWithGraph(_SemanticRefs, _SubList, *graph, linkedId);
+        }
+    }
     _ShadowSubList.clear();
     if (shadows.size() == _SubList.size()) {
         _ShadowSubList = std::move(shadows);
@@ -3873,6 +4377,28 @@ void PropertyXLink::setSubValues(std::vector<std::string>&& subs, std::vector<Sh
         updateElementReference(nullptr);
     }
     checkLabelReferences(_SubList);
+}
+
+void PropertyXLink::syncSemanticRefsSize()
+{
+    App::syncSemanticRefsSize(_SemanticRefs, _SubList.size());
+}
+
+void PropertyXLink::promoteWithGraph(const SemanticGraph& graph)
+{
+    // C1: only fill empty/invalid-seed slots. A valid restored stSeed must
+    // survive STG1 restore (Bindings omitted). Does not mint (I13 / D3b).
+    // Scope uniqueness to the projected feature (Body Tip, else getID()).
+    // PropertyXLinkSub inherits this.
+    const ObjectId linkedId =
+        _pcLink ? static_cast<ObjectId>(_pcLink->semanticProjectionFeatureId()) : 0;
+    promoteRefsWithGraph(_SemanticRefs, _SubList, graph, linkedId);
+}
+
+bool PropertyXLink::applySemanticReadPolicy(const SemanticGraph& graph)
+{
+    syncSemanticRefsSize();
+    return applySemanticD2Cache(_SemanticRefs, _SubList, _ShadowSubList, graph);
 }
 
 void PropertyXLink::setValue(App::DocumentObject* lValue)
@@ -3921,9 +4447,15 @@ void PropertyXLink::restoreLink(App::DocumentObject* lValue)
 
 void PropertyXLink::setValue(App::DocumentObject* lValue,
                              std::vector<std::string>&& subs,
-                             std::vector<ShadowSub>&& shadows)
+                             std::vector<ShadowSub>&& shadows,
+                             std::vector<SemanticReference>&& semanticRefs)
 {
-    if (_pcLink == lValue && _SubList == subs) {
+    // A plain setter with unchanged link/subnames is a no-op, but restore and
+    // copy paths may carry the semantic/shadow sidecars for the same target.
+    // Do not discard those dual-write fields before setSubValues() can retain
+    // valid seeds and refresh the FaceN/EdgeN cache.
+    const bool hasSidecars = !shadows.empty() || !semanticRefs.empty();
+    if (_pcLink == lValue && _SubList == subs && !hasSidecars) {
         return;
     }
 
@@ -3987,17 +4519,18 @@ void PropertyXLink::setValue(App::DocumentObject* lValue,
         stamp = docInfo->pcDoc->LastModifiedDate.getValue();
     }
     objectName = name;
-    setSubValues(std::move(subs), std::move(shadows));
+    setSubValues(std::move(subs), std::move(shadows), std::move(semanticRefs));
     hasSetValue();
 }
 
 void PropertyXLink::setValue(std::string&& filename,
                              std::string&& name,
                              std::vector<std::string>&& subs,
-                             std::vector<ShadowSub>&& shadows)
+                             std::vector<ShadowSub>&& shadows,
+                             std::vector<SemanticReference>&& semanticRefs)
 {
     if (name.empty()) {
-        setValue(nullptr, std::move(subs), std::move(shadows));
+        setValue(nullptr, std::move(subs), std::move(shadows), std::move(semanticRefs));
         return;
     }
     auto owner = freecad_cast<DocumentObject*>(getContainer());
@@ -4019,7 +4552,7 @@ void PropertyXLink::setValue(std::string&& filename,
     }
 
     if (pObject) {
-        setValue(pObject, std::move(subs), std::move(shadows));
+        setValue(pObject, std::move(subs), std::move(shadows), std::move(semanticRefs));
         return;
     }
     setFlag(LinkDetached, false);
@@ -4042,15 +4575,16 @@ void PropertyXLink::setValue(std::string&& filename,
         stamp = docInfo->pcDoc->LastModifiedDate.getValue();
     }
     objectName = std::move(name);
-    setSubValues(std::move(subs), std::move(shadows));
+    setSubValues(std::move(subs), std::move(shadows), std::move(semanticRefs));
     hasSetValue();
 }
 
 void PropertyXLink::setValue(App::DocumentObject* link,
                              const std::vector<std::string>& subs,
-                             std::vector<ShadowSub>&& shadows)
+                             std::vector<ShadowSub>&& shadows,
+                             std::vector<SemanticReference>&& semanticRefs)
 {
-    setValue(link, std::vector<std::string>(subs), std::move(shadows));
+    setValue(link, std::vector<std::string>(subs), std::move(shadows), std::move(semanticRefs));
 }
 
 App::Document* PropertyXLink::getDocument() const
@@ -4134,14 +4668,20 @@ int PropertyXLink::checkRestore(std::string* msg) const
 
 void PropertyXLink::afterRestore()
 {
-    assert(_SubList.size() == _ShadowSubList.size());
-    if (!testFlag(LinkRestoreLabel) || !_pcLink || !_pcLink->isAttachedToDocument()) {
-        return;
+    _ShadowSubList.resize(_SubList.size());
+    syncSemanticRefsSize();
+    if (testFlag(LinkRestoreLabel) && _pcLink && _pcLink->isAttachedToDocument()) {
+        setFlag(LinkRestoreLabel, false);
+        for (size_t i = 0; i < _SubList.size(); ++i) {
+            restoreLabelReference(_pcLink, _SubList[i], &_ShadowSubList[i]);
+        }
     }
-
-    setFlag(LinkRestoreLabel, false);
-    for (size_t i = 0; i < _SubList.size(); ++i) {
-        restoreLabelReference(_pcLink, _SubList[i], &_ShadowSubList[i]);
+    // Graph is on Document. Promote empty slots only (C1). Read-policy rewrites
+    // FaceN from a unique live Binding; no-op when Bindings empty (STG1 omits
+    // them). Never mint from raw FaceN (I13).
+    if (const SemanticGraph* graph = liveSemanticGraphFor(this)) {
+        promoteWithGraph(*graph);
+        applySemanticReadPolicy(*graph);
     }
 }
 
@@ -4157,14 +4697,22 @@ void PropertyXLink::onContainerRestored()
 
 void PropertyXLink::updateElementReference(DocumentObject* feature, bool reverse, bool notify)
 {
-    if (!updateLinkReference(this,
-                             feature,
-                             reverse,
-                             notify,
-                             _pcLink,
-                             _SubList,
-                             _mapped,
-                             _ShadowSubList)) {
+    // Phase D/C1: do not drop _SemanticRefs. After ElementMap remap, rewrite
+    // FaceN/EdgeN cache from a unique live Binding (I13: 0 or >1 -> no rewrite).
+    // C1: applySemanticReadPolicy does not overwrite a valid seed.
+    const bool remapped = updateLinkReference(this,
+                                              feature,
+                                              reverse,
+                                              notify,
+                                              _pcLink,
+                                              _SubList,
+                                              _mapped,
+                                              _ShadowSubList);
+    bool rewritten = false;
+    if (const SemanticGraph* graph = liveSemanticGraphFor(this)) {
+        rewritten = applySemanticReadPolicy(*graph);
+    }
+    if (!remapped && !rewritten) {
         return;
     }
     if (notify) {
@@ -4259,7 +4807,8 @@ void PropertyXLink::Save(Base::Writer& writer) const
                 }
             }
         }
-        writer.Stream() << "\"/>" << std::endl;
+        // D1: SemanticReference fields next to XLink sub / ShadowSub.
+        writeSemanticXmlTail(writer.Stream(), _SemanticRefs, 0);
     }
     else {
         writer.Stream() << "\" count=\"" << _SubList.size() << "\">" << std::endl;
@@ -4291,7 +4840,8 @@ void PropertyXLink::Save(Base::Writer& writer) const
                     }
                 }
             }
-            writer.Stream() << "\"/>" << endl;
+            // D1: SemanticReference fields next to Sub / ShadowSub.
+            writeSemanticXmlTail(writer.Stream(), _SemanticRefs, i);
         }
         writer.decInd();
         writer.Stream() << writer.ind() << "</XLink>" << endl;
@@ -4335,6 +4885,7 @@ void PropertyXLink::Restore(Base::XMLReader& reader)
 
     std::vector<std::string> subs;
     std::vector<ShadowSub> shadows;
+    std::vector<SemanticReference> semanticRefs;
     std::vector<int> mapped;
     bool restoreLabel = false;
     if (reader.hasAttribute("sub")) {
@@ -4357,11 +4908,13 @@ void PropertyXLink::Restore(Base::XMLReader& reader)
                     importSubName(reader, reader.getAttribute<const char*>(ATTR_SHADOW), restoreLabel);
             }
         }
+        semanticRefs.push_back(semanticRefFromXmlReaderWithSub(reader, subname));
     }
     else if (reader.hasAttribute("count")) {
         int count = reader.getAttribute<long>("count");
         subs.resize(count);
         shadows.resize(count);
+        semanticRefs.resize(count);
         for (int i = 0; i < count; i++) {
             reader.readElement("Sub");
             shadows[i].oldName = importSubName(reader, reader.getAttribute<const char*>("value"), restoreLabel);
@@ -4379,6 +4932,7 @@ void PropertyXLink::Restore(Base::XMLReader& reader)
             if (reader.hasAttribute(ATTR_MAPPED)) {
                 mapped.push_back(i);
             }
+            semanticRefs[i] = semanticRefFromXmlReaderWithSub(reader, subs[i]);
         }
         reader.readEndElement("XLink");
     }
@@ -4391,10 +4945,14 @@ void PropertyXLink::Restore(Base::XMLReader& reader)
 
     if (!file.empty() || (!object && !name.empty())) {
         this->stamp = stampAttr;
-        setValue(std::move(file), std::move(name), std::move(subs), std::move(shadows));
+        setValue(std::move(file),
+                 std::move(name),
+                 std::move(subs),
+                 std::move(shadows),
+                 std::move(semanticRefs));
     }
     else {
-        setValue(object, std::move(subs), std::move(shadows));
+        setValue(object, std::move(subs), std::move(shadows), std::move(semanticRefs));
     }
     _mapped = std::move(mapped);
 }
@@ -4407,14 +4965,15 @@ PropertyXLink::CopyOnImportExternal(const std::map<std::string, std::string>& na
         return nullptr;
     }
 
-    auto subs = updateLinkSubs(_pcLink, _SubList, &tryImportSubName, owner->getDocument(), nameMap);
+    std::vector<std::size_t> keptIndices;
+    auto subs = updateLinkSubs(_pcLink, _SubList, &tryImportSubName, &keptIndices, owner->getDocument(), nameMap);
     auto linked = tryImport(owner->getDocument(), _pcLink, nameMap);
     if (subs.empty() && linked == _pcLink) {
         return nullptr;
     }
 
     std::unique_ptr<PropertyXLink> p(new PropertyXLink);
-    copyTo(*p, linked, &subs);
+    copyTo(*p, linked, &subs, &keptIndices);
     return p.release();
 }
 
@@ -4422,12 +4981,13 @@ Property* PropertyXLink::CopyOnLinkReplace(const App::DocumentObject* parent,
                                            App::DocumentObject* oldObj,
                                            App::DocumentObject* newObj) const
 {
-    auto res = tryReplaceLinkSubs(getContainer(), _pcLink, parent, oldObj, newObj, _SubList);
+    std::vector<std::size_t> keptIndices;
+    auto res = tryReplaceLinkSubs(getContainer(), _pcLink, parent, oldObj, newObj, _SubList, &keptIndices);
     if (!res.first) {
         return nullptr;
     }
     std::unique_ptr<PropertyXLink> p(new PropertyXLink);
-    copyTo(*p, res.first, &res.second);
+    copyTo(*p, res.first, &res.second, &keptIndices);
     return p.release();
 }
 
@@ -4439,18 +4999,20 @@ Property* PropertyXLink::CopyOnLabelChange(App::DocumentObject* obj,
     if (!owner || !owner->getDocument() || !_pcLink || !_pcLink->isAttachedToDocument()) {
         return nullptr;
     }
-    auto subs = updateLinkSubs(_pcLink, _SubList, &updateLabelReference, obj, ref, newLabel);
+    std::vector<std::size_t> keptIndices;
+    auto subs = updateLinkSubs(_pcLink, _SubList, &updateLabelReference, &keptIndices, obj, ref, newLabel);
     if (subs.empty()) {
         return nullptr;
     }
     std::unique_ptr<PropertyXLink> p(new PropertyXLink);
-    copyTo(*p, _pcLink, &subs);
+    copyTo(*p, _pcLink, &subs, &keptIndices);
     return p.release();
 }
 
 void PropertyXLink::copyTo(PropertyXLink& other,
                            DocumentObject* linked,
-                           std::vector<std::string>* subs) const
+                           std::vector<std::string>* subs,
+                           const std::vector<std::size_t>* keptIndices) const
 {
     if (!linked) {
         linked = _pcLink;
@@ -4469,10 +5031,15 @@ void PropertyXLink::copyTo(PropertyXLink& other,
     }
     if (subs) {
         other._SubList = std::move(*subs);
+        other._SemanticRefs = keptIndices && !keptIndices->empty()
+            ? semanticRefsForSlots(_SemanticRefs, *keptIndices)
+            : _SemanticRefs;
+        other.syncSemanticRefsSize();
     }
     else {
         other._SubList = _SubList;
         other._ShadowSubList = _ShadowSubList;
+        other._SemanticRefs = _SemanticRefs;
     }
     other._Flags = _Flags;
 }
@@ -4504,13 +5071,15 @@ void PropertyXLink::Paste(const Property& from)
         }
         setValue(obj,
                  std::vector<std::string>(other._SubList),
-                 std::vector<ShadowSub>(other._ShadowSubList));
+                 std::vector<ShadowSub>(other._ShadowSubList),
+                 std::vector<SemanticReference>(other._SemanticRefs));
     }
     else {
         setValue(std::string(other.filePath),
                  std::string(other.objectName),
                  std::vector<std::string>(other._SubList),
-                 std::vector<ShadowSub>(other._ShadowSubList));
+                 std::vector<ShadowSub>(other._ShadowSubList),
+                 std::vector<SemanticReference>(other._SemanticRefs));
     }
     setFlag(LinkAllowPartial, other.testFlag(LinkAllowPartial));
 }

@@ -26,7 +26,11 @@
 #pragma once
 
 #include <App/PropertyUnits.h>
+#include <App/SemanticId.h>
+#include <string>
+#include <vector>
 #include "FeatureSketchBased.h"
+#include <Mod/Part/App/SemanticSourceCollector.h>
 #include <TopoDS_Shape.hxx>
 
 namespace PartDesign
@@ -56,13 +60,9 @@ public:
     App::PropertyAngle Angle;
     App::PropertyDistance Growth;
     App::PropertyEnumeration Mode;
+    App::PropertyBool Outside;
     App::PropertyBool HasBeenEdited;
     App::PropertyFloatConstraint Tolerance;
-
-    /** DEPRECATED but kept for forward compatibility,
-     *  the changes of this property are not tracked
-     */
-    App::PropertyBool Outside;
 
     /** if this property is set to a valid link, both Axis and Base properties
      *  are calculated according to the linked line
@@ -82,8 +82,6 @@ public:
 
     void proposeParameters(bool force = false);
     double safePitch();
-
-    void onDocumentRestored() override;
 
 protected:
     /// updates Axis from ReferenceAxis
@@ -106,12 +104,43 @@ protected:
     ) override;
 
     void onChanged(const App::Property* prop) override;
+    void onDocumentRestored() override;
+
+    /// Pad-style capture: Generated Faces/Edges on the MakePipe Shape,
+    /// then refreshNamedIndices onto the published getSolid Shape.
+    using HelixFaceSeed = Part::SemanticSeededShape;
+    std::vector<HelixFaceSeed> lastHelixGenerated;
+    std::vector<HelixFaceSeed> lastHelixGeneratedEdges;
+    std::vector<App::ElementIndex> lastNamedFaceIndices;
+    std::vector<App::ElementIndex> lastNamedEdgeIndices;
+    /// Isolate diagnostic: Generated vs published-map counts. Not identity.
+    std::string lastHelixDiag;
+
+    void clearSemanticCapture();
+    void captureHelixMaker(
+        void* occMaker,
+        const TopoShape& preSewShell,
+        const TopoShape& published,
+        const std::vector<TopoDS_Shape>& addWireShapes,
+        BRepBuilderAPI_Sewing* sewer
+    );
+void emitCapturedHelix(
+        void* occMaker,
+        const TopoShape& preSewShell,
+        const TopoShape& published,
+        const std::vector<TopoDS_Shape>& addWireShapes,
+        BRepBuilderAPI_Sewing* sewer
+    );
 
     static const App::PropertyFloatConstraint::Constraints floatTurns;
     static const App::PropertyAngle::Constraints floatAngle;
     static const App::PropertyFloatConstraint::Constraints floatTolerance;
 
 private:
+    /// Strict greater-than longest published Edge (pick_longest_edge).
+    /// First max wins. Empty published stays unnamed.
+    static App::ElementIndex uniqueLongestEdgeOnPublished(const TopoShape& published);
+
     static const char* ModeEnums[];
 
     // Sets the read-only status bit for properties depending on the input mode.

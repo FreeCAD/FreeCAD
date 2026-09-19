@@ -40,6 +40,7 @@
 #include "ObjectIdentifier.h"
 #include "Application.h"
 #include "Document.h"
+#include "SemanticLinkSub.h"
 #include "ExpressionParser.h"
 #include "Link.h"
 #include "Property.h"
@@ -50,6 +51,30 @@ FC_LOG_LEVEL_INIT("Expression", true, true)
 
 using namespace App;
 using namespace Base;
+
+namespace
+{
+
+bool isFaceEdgeOrVertexName(const std::string& name)
+{
+    const ElementIndex idx = elementIndexFromSubName(name);
+    return idx.index > 0 && (idx.type == "Face" || idx.type == "Edge" || idx.type == "Vertex");
+}
+
+const SemanticGraph* liveSemanticGraphForObject(const DocumentObject* obj)
+{
+    if (!obj) {
+        return nullptr;
+    }
+    Document* doc = obj->getDocument();
+    if (!doc) {
+        return nullptr;
+    }
+    return &doc->semanticGraph();
+}
+
+}  // namespace
+
 
 std::string App::quote(const std::string& input, bool toPython)
 {
@@ -197,6 +222,9 @@ void App::ObjectIdentifier::setComponent(int idx, Component&& comp)
     }
     components[idx] = std::move(comp);
     _cache.clear();
+    // A semantic D2 rewrite may replace a geometry component after this identifier has
+    // already been hashed. Clear the cached hash as well as the resolve cache.
+    _hash = 0;
 }
 
 void App::ObjectIdentifier::setComponent(int idx, const Component& comp)
@@ -1673,6 +1701,13 @@ ObjectIdentifier::access(const ResolveResults& result, const Py::Object* value, 
 
 App::any ObjectIdentifier::getValue(bool pathValue, bool* isPseudoProperty) const
 {
+    // Keep C++ access on the same dual-write read boundary as getPyValue().
+    // A live Binding may have rewritten the FaceN/EdgeN cache since this
+    // identifier was parsed; returning the stale component here would make
+    // C++ expression consumers disagree with Python property access.
+    if (const SemanticGraph* graph = liveSemanticGraphForObject(owner)) {
+        const_cast<ObjectIdentifier*>(this)->applySemanticReadPolicy(*graph);
+    }
     ResolveResults rs(*this);
 
     if (isPseudoProperty) {
@@ -1700,6 +1735,10 @@ App::any ObjectIdentifier::getValue(bool pathValue, bool* isPseudoProperty) cons
 
 Py::Object ObjectIdentifier::getPyValue(bool pathValue, bool* isPseudoProperty) const
 {
+    // Resolve prefers unique Binding index (rewrite FaceN cache if jumped).
+    if (const SemanticGraph* graph = liveSemanticGraphForObject(owner)) {
+        const_cast<ObjectIdentifier*>(this)->applySemanticReadPolicy(*graph);
+    }
     ResolveResults rs(*this);
 
     if (isPseudoProperty) {
@@ -1803,24 +1842,164 @@ bool ObjectIdentifier::updateElementReference(ExpressionVisitor& v,
                                               bool reverse)
 {
     assert(v.getPropertyLink());
-    if (subObjectName.getString().empty()) {
-        return false;
+    bool changed = false;
+    if (!subObjectName.getString().empty()) {
+        ResolveResults result(*this);
+        if (result.resolvedSubObject
+            && v.getPropertyLink()->_updateElementReference(feature,
+                                                            result.resolvedDocumentObject,
+                                                            subObjectName.str,
+                                                            shadowSub,
+                                                            reverse)) {
+            _cache.clear();
+            changed = true;
+        }
     }
-
-    ResolveResults result(*this);
-    if (!result.resolvedSubObject) {
-        return false;
+    // Phase D order: ElementMap remap first, then Binding rewrite (I13 / C1).
+    // Pad.Shape.Face6.Area has empty subObjectName; still rewrite the FaceN component.
+    DocumentObject* linked = nullptr;
+    try {
+        linked = getDocumentObject();
     }
-    if (v.getPropertyLink()->_updateElementReference(feature,
-                                                     result.resolvedDocumentObject,
-                                                     subObjectName.str,
-                                                     shadowSub,
-                                                     reverse)) {
-        _cache.clear();
+    catch (...) {
+        linked = nullptr;
+    }
+    const SemanticGraph* graph = liveSemanticGraphForObject(linked ? linked : owner);
+    if (graph && applySemanticReadPolicy(*graph)) {
+        changed = true;
+    }
+    if (changed) {
         v.aboutToChange();
         return true;
     }
     return false;
+}
+
+std::string ObjectIdentifier::geometryElementName() const
+{
+    for (auto it = components.rbegin(); it != components.rend(); ++it) {
+        if (it->isSimple() && isFaceEdgeOrVertexName(it->getName())) {
+            return it->getName();
+        }
+    }
+    const std::string& sub = subObjectName.getString();
+    if (!sub.empty() && isFaceEdgeOrVertexName(sub)) {
+        return std::string(elementIndexFromSubName(sub).toString());
+    }
+    return {};
+}
+
+void ObjectIdentifier::promoteWithGraph(const SemanticGraph& graph)
+{
+    // C1: never overwrite a valid restored/in-session seed.
+    if (semanticRef.seed.valid()) {
+        return;
+    }
+    const std::string geo = geometryElementName();
+    if (geo.empty()) {
+        return;
+    }
+    // I13: uniqueness is on the linked feature (the Pad), not document-wide Face6.
+    DocumentObject* linked = getDocumentObject();
+    if (!linked) {
+        return;
+    }
+    const ObjectId linkedId = static_cast<ObjectId>(linked->getID());
+    if (linkedId == 0) {
+        return;
+    }
+    std::vector<SemanticReference> refs{semanticRef};
+    promoteRefsWithGraph(refs, {geo}, graph, linkedId);
+    semanticRef = refs.front();
+}
+
+bool ObjectIdentifier::applySemanticReadPolicy(const SemanticGraph& graph)
+{
+    if (!semanticRef.seed.valid()) {
+        return false;
+    }
+    if (!rewriteFallbackFromBinding(semanticRef, graph)) {
+        return false;
+    }
+    const std::string cache = dualWriteSubName(semanticRef);
+    if (cache.empty()) {
+        return false;
+    }
+    for (int i = static_cast<int>(components.size()) - 1; i >= 0; --i) {
+        if (!components[static_cast<std::size_t>(i)].isSimple()) {
+            continue;
+        }
+        if (!isFaceEdgeOrVertexName(components[static_cast<std::size_t>(i)].getName())) {
+            continue;
+        }
+        if (components[static_cast<std::size_t>(i)].getName() == cache) {
+            return false;
+        }
+        setComponent(i, SimpleComponent(cache.c_str()));
+        return true;
+    }
+    const std::string& sub = subObjectName.getString();
+    if (!sub.empty() && isFaceEdgeOrVertexName(sub)) {
+        const ElementIndex have = elementIndexFromSubName(sub);
+        const std::string haveName = have.toString();
+        if (haveName == cache) {
+            return false;
+        }
+        if (sub == haveName) {
+            subObjectName = String(cache, true);
+            _cache.clear();
+            _hash = 0;
+            return true;
+        }
+        if (sub.size() >= haveName.size()
+            && sub.compare(sub.size() - haveName.size(), haveName.size(), haveName) == 0) {
+            std::string next = sub.substr(0, sub.size() - haveName.size());
+            next += cache;
+            subObjectName = String(std::move(next), true);
+            _cache.clear();
+            _hash = 0;
+            return true;
+        }
+    }
+    return false;
+}
+
+void ObjectIdentifier::keepRestoredSeed(const SemanticReference& restored)
+{
+    if (!restored.seed.valid() || semanticRef.seed.valid()) {
+        return;
+    }
+    const std::string geo = geometryElementName();
+    if (geo.empty()) {
+        return;
+    }
+    if (!restored.fallback.type.empty()) {
+        const ElementIndex have = elementIndexFromSubName(geo);
+        if (have.type != restored.fallback.type) {
+            return;
+        }
+    }
+    semanticRef = restored;
+}
+
+void ObjectIdentifier::promoteFromLiveGraph()
+{
+    const SemanticGraph* graph = liveSemanticGraphForObject(owner);
+    if (!graph) {
+        DocumentObject* linked = nullptr;
+        try {
+            linked = getDocumentObject();
+        }
+        catch (...) {
+            linked = nullptr;
+        }
+        graph = liveSemanticGraphForObject(linked);
+    }
+    if (!graph) {
+        return;
+    }
+    promoteWithGraph(*graph);
+    applySemanticReadPolicy(*graph);
 }
 
 bool ObjectIdentifier::adjustLinks(ExpressionVisitor& v,

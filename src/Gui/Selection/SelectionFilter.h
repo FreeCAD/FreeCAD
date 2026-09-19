@@ -46,7 +46,8 @@ class SelectionFilterPy;
 /** Selection filter definition
  *  This class builds up a type/count tree out of a string
  *  to test very fast a selection or object/subelement type
- *  against it.
+ *  against it. Subelement tests stay Face/Edge/Vertex labels;
+ *  mapped ;:ST tokens match by kind via App (no new GUI vocabulary).
  *
  *  Example strings are:
  *  "SELECT Part::Feature SUBELEMENT Edge",
@@ -93,7 +94,7 @@ public:
         return Ast ? true : false;
     }
 
-    std::shared_ptr<const Node_Block> getAst()
+    std::shared_ptr<const Node_Block> getAst() const
     {
         return Ast;
     }
@@ -124,7 +125,12 @@ public:
     ~SelectionFilterGate() override;
     bool allow(App::Document*, App::DocumentObject*, const char*) override;
 
-
+    /** Geometry-type gate set for highlighter / preselect (BoxSelection).
+     *  Starts-with Face/Edge labels, then I13 kind-match (G10-G1 / G19) so
+     *  gates stay aligned with SelectionFilter::test. No new GUI vocabulary.
+     *  G28-N1: null Filter or empty Ast → {} (BoxSelection falls through);
+     *  subclasses that pass nullPointer() (e.g. ReferenceSelection) rely on allow().
+     */
     std::unordered_set<std::string> getGatedTypes(
         const std::vector<const char*>& allTypesForGeometry
     ) const override;
@@ -182,6 +188,10 @@ public:
     ~SelectionFilterGatePython() override;
 
     bool allow(App::Document*, App::DocumentObject*, const char*) override;
+    /** G28-P1: same gated-types walk as SelectionFilterGate (kind-match). */
+    std::unordered_set<std::string> getGatedTypes(
+        const std::vector<const char*>& allTypesForGeometry
+    ) const override;
 
 private:
     SelectionFilterPy* filter;

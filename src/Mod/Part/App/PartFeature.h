@@ -278,6 +278,20 @@ protected:
     void onDocumentRestored() override;
     void onChanged(const App::Property*) override;
     void syncEdgeLink();
+    /// Unique Edge Binding on Base (I13). Sets missing=true when the seed is
+    /// unpublished/deleted or the cache name is already a missing element —
+    /// skips the slot (I10: hasMissingElement or unpublished/deleted seed).
+    /// 0 with missing=false → mapped-name path (I7). Never first-Binding-wins.
+    int uniqueBaseEdgeIndex(std::size_t slot, bool& missing) const;
+    /// Resolve Edge FindKey index for Fillet/Chamfer: unique Binding
+    /// (consumed) wins; else IndexedName from newName / oldName; else
+    /// Edges.edgeid. Returns 0 when out of [1, mapExtent] so callers never
+    /// call FindKey(0) on hashed `;:H…` mapped names.
+    static int resolveEdgeFindKeyIndex(int consumed,
+                                      const std::string& ref,
+                                      const std::string& oldName,
+                                      int edgeid,
+                                      int mapExtent);
 };
 
 using FeaturePython = App::FeaturePythonT<Feature>;

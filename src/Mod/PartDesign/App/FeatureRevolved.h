@@ -25,6 +25,9 @@
 #pragma once
 
 #include <App/PropertyUnits.h>
+#include <App/SemanticId.h>
+#include <vector>
+#include <string>
 #include "FeatureSketchBased.h"
 
 namespace Part
@@ -180,6 +183,16 @@ private:
     void updateProperties();
 
     static const App::PropertyAngle::Constraints floatAngle;
+
+protected:
+    /// Revolve history capture for Revolution/Groove Binding. FaceN/EdgeN from
+    /// named OCCT indices only. UpTo* leave these empty (I10 / I13).
+    /// Revolution/Groove::execute copy these into AfterExecuteRequest.
+    std::vector<App::ElementIndex> lastNamedFaceIndices;
+    std::vector<App::ElementIndex> lastNamedEdgeIndices;
+
+private:
+    void captureRevolveMaker(void* occMaker, const TopoShape& revol, const TopoShape& sketch);
 };
 
 }  // namespace PartDesign

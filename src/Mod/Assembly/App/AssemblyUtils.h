@@ -150,6 +150,18 @@ AssemblyExport double getFaceRadius(const App::DocumentObject* obj, const std::s
 AssemblyExport double getEdgeRadius(const App::DocumentObject* obj, const std::string& elName);
 
 AssemblyExport DistanceType getDistanceType(App::DocumentObject* joint);
+/** Same as getDistanceType(joint), also returning post-swap element names / linked objs
+ *  so callers (e.g. makeMbdJointDistance) need not re-run getElementFromProp /
+ *  uniqueBindingOnFeature. Out values match what a fresh resolve would see after any
+ *  swapJCS inside classification.
+ */
+AssemblyExport DistanceType getDistanceType(
+    App::DocumentObject* joint,
+    std::string& elt1,
+    std::string& elt2,
+    App::DocumentObject*& obj1,
+    App::DocumentObject*& obj2
+);
 AssemblyExport JointGroup* getJointGroup(const App::Part* part);
 
 AssemblyExport std::vector<App::DocumentObject*> getAssemblyComponents(const AssemblyObject* assembly);
@@ -161,7 +173,15 @@ AssemblyExport double getJointAngle(const App::DocumentObject* joint);
 AssemblyExport double getJointDistance(const App::DocumentObject* joint);
 AssemblyExport double getJointDistance2(const App::DocumentObject* joint);
 AssemblyExport JointType getJointType(const App::DocumentObject* joint);
+/** Resolve Joint Reference (or any XLinkSub) to FaceN/EdgeN/VertexN: prefer unique
+ *  Binding from dual-write seed (I13); I7 fallback to cache sub name when 0 or >1.
+ *  AJ6-M1: exactly one valid seed + unique Binding; multi-sub / multi-seed → silence
+ *  (empty sub list / cache fallback, never first-wins).
+ */
 AssemblyExport std::string getElementFromProp(const App::DocumentObject* obj, const char* propName);
+/** Face/Edge/Vertex type from getElementFromProp. After AJ16-D1, Joint distance
+ *  prefers getDistanceType out-params; this helper stays exported (AJ24-T1).
+ */
 AssemblyExport std::string getElementTypeFromProp(const App::DocumentObject* obj, const char* propName);
 AssemblyExport App::DocumentObject* getObjFromProp(
     const App::DocumentObject* joint,

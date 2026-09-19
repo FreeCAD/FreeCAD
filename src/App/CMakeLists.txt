@@ -332,6 +332,11 @@ SET(FreeCADApp_CPP_SRCS
     Metadata.cpp
     MetadataPyImp.cpp
     ElementNamingUtils.cpp
+    SemanticId.cpp
+    SemanticTopology.cpp
+    SemanticReference.cpp
+    SemanticLinkSub.cpp
+    SemanticDocumentState.cpp
     ProgramInformation.cpp
     SafeMode.cpp
     Services.cpp
@@ -360,6 +365,11 @@ SET(FreeCADApp_HPP_SRCS
     MeasureManager.h
     Metadata.h
     ElementNamingUtils.h
+    SemanticId.h
+    SemanticTopology.h
+    SemanticReference.h
+    SemanticLinkSub.h
+    SemanticDocumentState.h
     ProgramInformation.h
     Services.h
     StringHasher.h
@@ -418,3 +428,37 @@ else(WIN32)
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 endif(WIN32)
+
+# Optional Rev31 semantic standalone suites (no Qt / OCCT / FreeCADApp).
+# OFF by default so Windows `pixi run test-debug` (`ctest -LE Qt`) is unchanged.
+# Enable: -DFREECAD_BUILD_SEMANTIC_STANDALONE_TESTS=ON then
+#   ctest -L SemanticStandalone --output-on-failure
+# Or without CMake: src/App/compile_semantic_topology_test.sh && run the three bins.
+option(FREECAD_BUILD_SEMANTIC_STANDALONE_TESTS
+    "Build App semantic topology/document-state/LinkSub standalone tests" OFF)
+if(FREECAD_BUILD_SEMANTIC_STANDALONE_TESTS)
+    set(_sem_standalone_common
+        SemanticId.cpp
+        SemanticTopology.cpp
+        SemanticReference.cpp
+    )
+    function(add_semantic_standalone_test _name)
+        add_executable(${_name} ${_sem_standalone_common} ${ARGN})
+        target_compile_definitions(${_name} PRIVATE SEMANTIC_TOPOLOGY_STANDALONE)
+        target_include_directories(${_name} PRIVATE
+            ${CMAKE_SOURCE_DIR}/src
+            ${CMAKE_CURRENT_SOURCE_DIR}
+        )
+        target_compile_features(${_name} PRIVATE cxx_std_17)
+        add_test(NAME ${_name} COMMAND ${_name})
+        set_tests_properties(${_name} PROPERTIES LABELS "SemanticStandalone")
+    endfunction()
+    add_semantic_standalone_test(SemanticTopologyStandaloneTest
+        SemanticTopologyStandaloneTest.cpp)
+    add_semantic_standalone_test(SemanticLinkSubStandaloneTest
+        SemanticLinkSub.cpp
+        SemanticLinkSubStandaloneTest.cpp)
+    add_semantic_standalone_test(SemanticDocumentStateStandaloneTest
+        SemanticDocumentState.cpp
+        SemanticDocumentStateStandaloneTest.cpp)
+endif()

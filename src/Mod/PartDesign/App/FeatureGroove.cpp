@@ -23,6 +23,10 @@
  ******************************************************************************/
 
 #include "FeatureGroove.h"
+#include "SemanticOpcode.h"
+
+#include <App/Document.h>
+#include <App/SemanticDocumentState.h>
 #include "Mod/Part/App/TopoShapeOpCode.h"
 
 using namespace PartDesign;
@@ -74,7 +78,22 @@ Groove::Groove()
 
 App::DocumentObjectExecReturn* Groove::execute()
 {
-    return executeRevolved(Part::RevolMode::CutFromBase);
+    App::DocumentObjectExecReturn* ret = executeRevolved(Part::RevolMode::CutFromBase);
+    App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
+    App::ObjectId fid = static_cast<App::ObjectId>(getID());
+    App::EvalSerial eval = 0;
+    AfterExecuteRequest req;
+    if (App::Document* doc = getDocument()) {
+        eval = doc->semanticState().currentEval();
+        if (App::DocumentObject* profile = Profile.getValue()) {
+            req = collectProfileSemanticSeeds();
+        }
+    }
+    req.namedFaceIndices = lastNamedFaceIndices;
+    req.namedEdgeIndices = lastNamedEdgeIndices;
+    req.allowSequentialFaceN = false;
+    SemanticEmitter::afterExecute(graph, Opcode::Groove, fid, eval, req);
+    return ret;
 }
 
 TopoShape Groove::makeShape(const TopoShape& base, const TopoShape& revolve) const

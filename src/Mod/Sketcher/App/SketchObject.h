@@ -41,6 +41,9 @@
 #include "Sketch.h"
 
 #include "SketchGeometryExtension.h"
+#include "SketchEntityId.h"
+#include "SketchSemanticSeed.h"
+#include <App/SemanticId.h>
 #include "ExternalGeometryExtension.h"
 
 namespace Sketcher
@@ -288,6 +291,10 @@ public:
     }
 
     std::unique_ptr<const GeometryFacade> getGeometryFacade(int GeoId) const;
+    /// Resolve Geometry[] via the durable entity id, not the array index.
+    const Part::Geometry* getGeometryByEntityId(long entityId) const;
+    /// Slot (GeoId-as-index) for a durable entity id, or GeoEnum::GeoUndef.
+    int getGeoIdForEntity(long entityId) const;
 
     /// returns a list of all internal geometries
     const std::vector<Part::Geometry*>& getInternalGeometry() const
@@ -1009,6 +1016,12 @@ public:  // geometry extension functionalities for single element sketch object 
     /// NOTE: Does NOT move any constraints
     void replaceGeometries(std::vector<int> oldGeoIds, std::vector<Part::Geometry*>& newGeos);
 
+    /// Split/trim multi-piece replace (S4-S1): assign NEW entity ids to all
+    /// pieces (no copyId of the parent), record Split via splitEntity before
+    /// Geometry mutation so publishSemanticSeeds finds Split children instead
+    /// of minting Generated, then apply the geometry change.
+    void replaceGeometriesRecordingSplit(int oldGeoId, std::vector<Part::Geometry*>& newGeos);
+
 protected:
     // Only the first flag is toggled, the rest of the flags is set or cleared following the first
     // flag.
@@ -1056,6 +1069,33 @@ protected:
     std::vector<Part::Geometry*> supportedGeometry(const std::vector<Part::Geometry*>& geoList) const;
 
     void updateGeoHistory();
+
+    const SketchEntityIdMap& getEntityIdMap() const
+    {
+        return entityIds;
+    }
+    /// Document-graph seed for a sketch entity. I8: the handle is a note on
+    /// the Generated event, not a second identity heap.
+    App::SemanticId ensureSeedForEntity(SketchEntityHandle handle);
+    /// Curve seeds for Pad/Pocket profile consume (I8).
+    std::vector<App::SemanticId> seedsForProfile();
+    /// Region seeds for profile faces (MakeInternals on or closed-wire fallback).
+    std::vector<App::SemanticId> regionSeedsForProfile();
+
+
+    long nextEntityId();
+    /// Rebuild entityIds + geoMap from Geometry[]. Retires vanished ids.
+    void rebuildEntityIdMapFromGeometry();
+    /// Publish live curve (Sketch.gN) and unique Vertex / Region seeds.
+    void publishSemanticSeeds();
+    /// Unique start/end corners of live non-construction profile curves.
+    /// Member (not anon-ns free function): MSVC C2248 — free helpers cannot
+    /// call protected getEntityIdMap. Snapshot still has the free-function form.
+    std::vector<SketchVertexKey> uniqueProfileCornerKeys();
+    std::vector<SketchEntityHandle> entityIdsFromTopoWire(const Part::TopoShape& wire) const;
+    void stampInternalFaceRegionKeys(Part::TopoShape& faces) const;
+    std::vector<std::string> regionKeysFromStampsOrProfileWires() const;
+
     void generateId(const Part::Geometry* geo);
 
     // refactoring functions
@@ -1234,6 +1274,11 @@ private:
     const int geoHistoryLevel = 1;
     std::vector<long> geoIdHistory;
     long geoLastId;
+    // Durable sketch entity IDs next to Geometry[] (Toponaming Phase 1). Issues
+    // SketchGeometryExtension::Id; never recycles. geoMap is the slot lookup.
+    SketchEntityIdMap entityIds;
+    /// Last v2 FaceMaker region stamps. FaceN is Binding; key is identity.
+    mutable std::vector<SketchEntityIdMap::RegionStamp> lastInternalRegionStamps;
 
     class GeoHistory;
     std::unique_ptr<GeoHistory> geoHistory;

@@ -1007,7 +1007,9 @@ def removeTNPFromSubname(doc_name, obj_name, sub_name):
     element_name_TNP = resolved[1]
     element_name = resolved[2]
 
-    # Preprocess the sub_name to remove the TNP string
+    # Preprocess the sub_name to remove the classic hashed element-name TNP segment
+    # from resolveSubElement (not Rev31 SemanticId / stSeed / Bindings / ;:ST — those
+    # stay under the hood; Joint UI still speaks Face/Edge).
     # We do this because after we need to add the vertex_name as well.
     # And the names will be resolved anyway after.
     if len(element_name_TNP.split(".")) == 2:

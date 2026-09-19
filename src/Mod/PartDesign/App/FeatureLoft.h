@@ -25,7 +25,12 @@
 
 #pragma once
 
+#include <App/SemanticId.h>
+#include <TopoDS_Shape.hxx>
+#include <string>
+#include <vector>
 #include "FeatureSketchBased.h"
+#include <Mod/Part/App/SemanticSourceCollector.h>
 
 namespace PartDesign
 {
@@ -66,6 +71,32 @@ protected:
         const char* TypeName,
         App::Property* prop
     ) override;
+
+    /// Pad-style capture: Generated Faces/Edges on the ThruSections shell,
+    /// then refreshNamedIndices onto the published sew+solid Shape.
+    using LoftFaceSeed = Part::SemanticSeededShape;
+    std::vector<LoftFaceSeed> lastLoftGenerated;
+    std::vector<LoftFaceSeed> lastLoftGeneratedEdges;
+    std::vector<App::ElementIndex> lastNamedFaceIndices;
+    std::vector<App::ElementIndex> lastNamedEdgeIndices;
+    /// Isolate diagnostic: Generated vs published-map counts. Not identity.
+    std::string lastLoftDiag;
+
+    void clearSemanticCapture();
+    void captureLoftMaker(
+        void* occMaker,
+        const TopoShape& preSewShell,
+        const TopoShape& published,
+        const std::vector<TopoDS_Shape>& addWireShapes,
+        BRepBuilderAPI_Sewing* sewer
+    );
+void emitCapturedLoft(
+        void* occMaker,
+        const TopoShape& preSewShell,
+        const TopoShape& published,
+        const std::vector<TopoDS_Shape>& addWireShapes,
+        BRepBuilderAPI_Sewing* sewer
+    );
 
 private:
     // static const char* TypeEnums[];

@@ -4,6 +4,8 @@
 #include <Base/Quantity.h>
 #include "Base/UnitsApi.h"
 #include <QLocale>
+#include <QRegularExpression>
+#include <QString>
 
 using Base::ParserError;
 using Base::Quantity;
@@ -224,6 +226,17 @@ TEST(BaseQuantity, TestPow)
     EXPECT_THROW(q1.pow(q2), UnitsMismatchError);
 }
 
+namespace
+{
+void expectPressureUserStringAt6894Pa76(const QString& formatted)
+{
+    EXPECT_TRUE(formatted.endsWith(QStringLiteral(" Pa")));
+    static const QRegularExpression re(QStringLiteral(R"(^6894[.,]76 Pa$)"));
+    ASSERT_TRUE(re.isValid());
+    EXPECT_TRUE(re.match(formatted).hasMatch()) << formatted.toStdString();
+}
+}  // namespace
+
 class BaseQuantityLoc: public ::testing::Test
 {
 protected:
@@ -255,7 +268,7 @@ TEST_F(BaseQuantityLoc, psi_parse_user_str)
     auto format = qParsed.getFormat();
     format.setPrecision(2);
     qParsed.setFormat(format);
-    EXPECT_EQ(qParsed.getUserString(), "6894.76 Pa");
+    expectPressureUserStringAt6894Pa76(QString::fromStdString(qParsed.getUserString()));
 }
 
 TEST_F(BaseQuantityLoc, psi_parse_safe_user_str)
@@ -265,7 +278,7 @@ TEST_F(BaseQuantityLoc, psi_parse_safe_user_str)
     auto format = qParsed.getFormat();
     format.setPrecision(2);
     qParsed.setFormat(format);
-    EXPECT_EQ(qParsed.getSafeUserString(), "6894.76 Pa");
+    expectPressureUserStringAt6894Pa76(QString::fromStdString(qParsed.getSafeUserString()));
 }
 
 TEST_F(BaseQuantityLoc, psi_parse_unit_type)

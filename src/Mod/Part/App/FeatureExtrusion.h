@@ -24,6 +24,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 #include <App/Document.h>
@@ -33,6 +35,8 @@
 #include "FaceMakerCheese.h"
 #include "PartFeature.h"
 #include "ExtrusionHelper.h"
+
+class BRepPrimAPI_MakePrism;
 
 namespace Part
 {
@@ -80,7 +84,8 @@ public:
     static void extrudeShape(
         TopoShape& result,
         const TopoShape& source,
-        const ExtrusionParameters& params
+        const ExtrusionParameters& params,
+        std::unique_ptr<BRepPrimAPI_MakePrism>* livePrism = nullptr
     );
 
     /**

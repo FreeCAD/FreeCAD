@@ -30,19 +30,23 @@ function(setup_qt_test)
             ${QtTest_LIBRARIES}
             ${${_testname}_LIBS})
 
+        # Headless-safe defaults: offscreen platform + plugin path (Windows pixi/conda).
+        # Label "Qt" so `ctest -LE Qt` can exclude widget tests that still abort
+        # (0xc0000409) when no platform plugin is available.
+        set(_qt_env_mod "${_test_env_mod}")
+        list(APPEND _qt_env_mod "QT_QPA_PLATFORM=set:offscreen")
         if(WIN32)
             set_target_properties(${_testname}_Tests_run PROPERTIES
                 RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
             set_tests_properties(${_testname}_Tests_run PROPERTIES
                 LABELS "Qt"
-                ENVIRONMENT "QT_QPA_PLATFORM=offscreen"
-                ENVIRONMENT_MODIFICATION "${_test_env_mod}")
+                ENVIRONMENT_MODIFICATION "${_qt_env_mod}")
         else()
             set_target_properties(${_testname}_Tests_run PROPERTIES
                 RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tests)
             set_tests_properties(${_testname}_Tests_run PROPERTIES
                 LABELS "Qt"
-                ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
+                ENVIRONMENT_MODIFICATION "${_qt_env_mod}")
         endif()
     endforeach()
 endfunction()
@@ -111,6 +115,13 @@ if(WIN32)
         list(APPEND _test_env_mod "PATH=path_list_prepend:${_conda_prefix}/Library/bin")
     elseif(EXISTS "${CMAKE_PREFIX_PATH}/bin")
         list(APPEND _test_env_mod "PATH=path_list_prepend:${CMAKE_PREFIX_PATH}/bin")
+    endif()
+    # Qt platform plugins (qwindows / qoffscreen) live here under pixi/conda.
+    # Without this, QApplication aborts with 0xc0000409 under CTest.
+    if(EXISTS "${_conda_prefix}/Library/plugins")
+        list(APPEND _test_env_mod "QT_PLUGIN_PATH=path_list_prepend:${_conda_prefix}/Library/plugins")
+    elseif(EXISTS "${CMAKE_PREFIX_PATH}/plugins")
+        list(APPEND _test_env_mod "QT_PLUGIN_PATH=path_list_prepend:${CMAKE_PREFIX_PATH}/plugins")
     endif()
     file(GLOB _mod_dirs LIST_DIRECTORIES true "${CMAKE_BINARY_DIR}/Mod/*")
     foreach(_mod_dir ${_mod_dirs})

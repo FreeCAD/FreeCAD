@@ -36,6 +36,7 @@
 #include <FCConfig.h>
 
 #include "ElementNamingUtils.h"
+#include "SemanticReference.h"
 
 namespace Py
 {
@@ -802,6 +803,7 @@ public:
         documentObjectName = std::move(other.documentObjectName);
         subObjectName = std::move(other.subObjectName);
         shadowSub = std::move(other.shadowSub);
+        semanticRef = std::move(other.semanticRef);
         components = std::move(other.components);
         documentNameSet = other.documentNameSet;
         documentObjectNameSet = other.documentObjectNameSet;
@@ -1406,6 +1408,28 @@ public:
                                 App::DocumentObject* feature = nullptr,
                                 bool reverse = false);
 
+    /// FaceN/EdgeN/VertexN cache name in this path, or empty if none.
+    std::string geometryElementName() const;
+
+    /// Dual-write payload. Empty seed means FaceN-only cache (I7).
+    const SemanticReference& getSemanticRef() const
+    {
+        return semanticRef;
+    }
+
+    /// I13: attach a seed from unique Binding on the resolved document object.
+    /// Never overwrites a valid restored/in-session seed (C1). Does not mint.
+    void promoteWithGraph(const SemanticGraph& graph);
+
+    /// D2: rewrite FaceN/EdgeN/VertexN cache from a unique live Binding.
+    /// Seed unchanged. 0 or >1 Bindings -> no rewrite (I13).
+    bool applySemanticReadPolicy(const SemanticGraph& graph);
+
+    /// C1: copy a restored valid seed onto this identifier when the slot is empty.
+    void keepRestoredSeed(const SemanticReference& restored);
+
+    /// Resolve prefers unique Binding index when the graph is live.
+    void promoteFromLiveGraph();
 
     /// Resolve ambiguity in the object identifier.
     void resolveAmbiguity();
@@ -1568,6 +1592,8 @@ protected:
      * This contains both the new and old style sub-element names.
      */
     ElementNamePair shadowSub;
+    /// Dual-write identity for a geometry sub-element (FaceN/EdgeN/VertexN).
+    SemanticReference semanticRef;
     /// The components of the object identifier.
     std::vector<Component> components;
     /// Whether a document name is forced set.

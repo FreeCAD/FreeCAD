@@ -33,6 +33,7 @@
 #include <unordered_map>
 
 #include "Property.h"
+#include "SemanticReference.h"
 
 namespace Base
 {
@@ -388,7 +389,8 @@ public:
                        const App::DocumentObject* parent,
                        App::DocumentObject* oldObj,
                        App::DocumentObject* newObj,
-                       const std::vector<std::string>& subs);
+                       const std::vector<std::string>& subs,
+                       std::vector<std::size_t>* keptIndices = nullptr);
 
     /// Update all element references in all link properties of \a feature
     static void updateElementReferences(DocumentObject* feature, bool reverse = false);
@@ -908,6 +910,16 @@ public:
  *  sub elements. These subelements (like Edges of a Shape)
  *  are stored as names, which can be resolved by the
  *  ComplexGeoDataType interface to concrete sub objects.
+ *
+ *  Rev 3.1 dual-write (Phase 3):
+ *  Newly written sub-element values store SemanticReference
+ *  (seed, role, filter, reducer, fallback IndexedName) next to the
+ *  existing FaceN / mapped-name string (D1 / I7). Readers prefer
+ *  SemanticReference and rewrite FaceN from SemanticBinding (D2).
+ *  Do not mint a seed from an unverified raw FaceN (I13 / D3b).
+ *  See App::SemanticLinkSub, App::dualWriteSubName. Phase D: afterRestore
+ *  promote+read when the document graph is available; updateElementReference
+ *  rewrites cache from a unique live Binding without dropping _SemanticRefs.
  */
 class AppExport PropertyLinkSub: public PropertyLinkBase
 {
@@ -933,12 +945,30 @@ public:
      */
     void setValue(App::DocumentObject*,
                   const std::vector<std::string>& SubList,
-                  std::vector<ShadowSub>&& ShadowSubList = {});
+                  std::vector<ShadowSub>&& ShadowSubList = {},
+                  std::vector<SemanticReference>&& SemanticRefs = {});
     void setValue(App::DocumentObject*,
                   std::vector<std::string>&& SubList = {},
-                  std::vector<ShadowSub>&& ShadowSubList = {});
-
-    /** This method returns the linked DocumentObject
+                  std::vector<ShadowSub>&& ShadowSubList = {},
+                  std::vector<SemanticReference>&& SemanticRefs = {});
+
+    /// Parallel to getSubValues(). Empty seed means FaceN-only dual-write cache.
+    const std::vector<SemanticReference>& getSemanticRefs() const
+    {
+        return _SemanticRefs;
+    }
+
+    /// I13: attach seeds from SemanticBinding+lineage for empty/invalid-seed slots only.
+    /// Never overwrites a valid restored seed. Does not mint. Uniqueness is scoped
+    /// to _pcLinkSub->getID() when the linked object is set.
+    void promoteWithGraph(const SemanticGraph& graph);
+
+    /// D2: prefer SemanticReference; rewrite FaceN cache from a singleton SemanticBinding.
+    /// No-op when SemanticBinding is empty (restore / pre-recompute).
+    /// Returns true if a fallback / bare FaceN cache was rewritten.
+    bool applySemanticReadPolicy(const SemanticGraph& graph);
+
+    /** This method returns the linked DocumentObject
      */
     App::DocumentObject* getValue() const;
 
@@ -1025,8 +1055,11 @@ protected:
     App::DocumentObject* _pcLinkSub {nullptr};
     std::vector<std::string> _cSubList;
     std::vector<ShadowSub> _ShadowSubList;
+    std::vector<SemanticReference> _SemanticRefs;  ///< parallel to _cSubList (I7)
     std::vector<int> _mapped;
     bool _restoreLabel {false};
+
+    void syncSemanticRefsSize();
 };
 
 /** The general Link Property with Child scope
@@ -1099,10 +1132,12 @@ public:
     void setValues(const std::vector<DocumentObject*>&, const std::vector<const char*>&);
     void setValues(const std::vector<DocumentObject*>&,
                    const std::vector<std::string>&,
-                   std::vector<ShadowSub>&& ShadowSubList = {});
+                   std::vector<ShadowSub>&& ShadowSubList = {},
+                   std::vector<SemanticReference>&& SemanticRefs = {});
     void setValues(std::vector<DocumentObject*>&&,
                    std::vector<std::string>&& subs,
-                   std::vector<ShadowSub>&& ShadowSubList = {});
+                   std::vector<ShadowSub>&& ShadowSubList = {},
+                   std::vector<SemanticReference>&& SemanticRefs = {});
 
     /**
      * @brief setValue: PropertyLinkSub-compatible overload
@@ -1141,6 +1176,22 @@ public:
     {
         return _ShadowSubList;
     }
+
+    /// Parallel to getSubValues(). Empty seed means FaceN-only dual-write cache.
+    const std::vector<SemanticReference>& getSemanticRefs() const
+    {
+        return _SemanticRefs;
+    }
+
+    /// I13: attach seeds from SemanticBinding+lineage for empty/invalid-seed slots only.
+    /// Never overwrites a valid restored seed. Does not mint. Uniqueness is scoped
+    /// to that slot's object getID() (list can have different objects per index).
+    void promoteWithGraph(const SemanticGraph& graph);
+
+    /// D2: prefer SemanticReference; rewrite FaceN cache from a singleton SemanticBinding.
+    /// No-op when SemanticBinding is empty (restore / pre-recompute).
+    /// Returns true if a fallback / bare FaceN cache was rewritten.
+    bool applySemanticReadPolicy(const SemanticGraph& graph);
 
     /**
      * @brief Removes all occurrences of \a lValue in the property
@@ -1204,17 +1255,23 @@ public:
 
 private:
     void verifyObject(App::DocumentObject*, App::DocumentObject*);
+    void syncSemanticRefsSize();
+    void applyIncomingSemanticRefs(std::vector<SemanticReference>&& semanticRefs,
+                                   const std::vector<SemanticReference>& previousRefs,
+                                   const std::vector<std::string>& previousSubs);
 
 private:
     // FIXME: Do not make two independent lists because this will lead to some inconsistencies!
     std::vector<DocumentObject*> _lValueList;
     std::vector<std::string> _lSubList;
     std::vector<ShadowSub> _ShadowSubList;
+    std::vector<SemanticReference> _SemanticRefs;  ///< parallel to _lSubList (I7)
     std::vector<int> _mapped;
 };
 
 /** The general Link Property with Child scope
  */
+
 class AppExport PropertyLinkSubListChild: public PropertyLinkSubList
 {
     TYPESYSTEM_HEADER();
@@ -1255,6 +1312,12 @@ public:
 class PropertyXLinkSubList;
 
 /** Link to an (sub)object in the same or different document
+ *
+ *  Rev 3.1 dual-write (Phase E leftover): PropertyXLink / PropertyXLinkSub
+ *  store SemanticReference next to FaceN / mapped-name (D1 / I7), same policy
+ *  as PropertyLinkSub. PropertyXLinkSub is a thin subclass. Do not mint a
+ *  seed from an unverified raw FaceN (I13 / D3b). C1: never overwrite a
+ *  valid restored/in-session seed. See App::SemanticLinkSub.
  */
 class AppExport PropertyXLink: public PropertyLinkGlobal
 {
@@ -1279,18 +1342,22 @@ public:
     void setValue(std::string&& filePath,
                   std::string&& objectName,
                   std::vector<std::string>&& SubList,
-                  std::vector<ShadowSub>&& ShadowSubList = {});
+                  std::vector<ShadowSub>&& ShadowSubList = {},
+                  std::vector<SemanticReference>&& SemanticRefs = {});
 
     void setValue(App::DocumentObject*,
                   std::vector<std::string>&& SubList,
-                  std::vector<ShadowSub>&& ShadowSubList = {});
+                  std::vector<ShadowSub>&& ShadowSubList = {},
+                  std::vector<SemanticReference>&& SemanticRefs = {});
 
     void setValue(App::DocumentObject*,
                   const std::vector<std::string>& SubList,
-                  std::vector<ShadowSub>&& ShadowSubList = {});
+                  std::vector<ShadowSub>&& ShadowSubList = {},
+                  std::vector<SemanticReference>&& SemanticRefs = {});
 
     void setSubValues(std::vector<std::string>&& SubList,
-                      std::vector<ShadowSub>&& ShadowSubList = {});
+                      std::vector<ShadowSub>&& ShadowSubList = {},
+                      std::vector<SemanticReference>&& SemanticRefs = {});
 
     const char* getSubName(bool newStyle = true) const;
     void setSubName(const char* subname);
@@ -1365,6 +1432,23 @@ public:
     {
         return _ShadowSubList;
     }
+
+    /// Parallel to getSubValues(). Empty seed means FaceN-only dual-write cache.
+    const std::vector<SemanticReference>& getSemanticRefs() const
+    {
+        return _SemanticRefs;
+    }
+
+    /// I13: attach seeds from SemanticBinding+lineage for empty/invalid-seed slots only.
+    /// Never overwrites a valid restored seed. Does not mint. Uniqueness is scoped
+    /// to _pcLink->getID() when the linked object is set.
+    void promoteWithGraph(const SemanticGraph& graph);
+
+    /// D2: prefer SemanticReference; rewrite FaceN cache from a singleton SemanticBinding.
+    /// No-op when SemanticBinding is empty (restore / pre-recompute).
+    /// Returns true if a fallback / bare FaceN cache was rewritten.
+    bool applySemanticReadPolicy(const SemanticGraph& graph);
+
     std::vector<std::string> getSubValues(bool newStyle) const;
     std::vector<std::string> getSubValuesStartsWith(const char*, bool newStyle = false) const;
 
@@ -1387,7 +1471,8 @@ protected:
 
     void copyTo(PropertyXLink& other,
                 App::DocumentObject* linked = nullptr,
-                std::vector<std::string>* subs = nullptr) const;
+                std::vector<std::string>* subs = nullptr,
+                const std::vector<std::size_t>* keptIndices = nullptr) const;
 
     void aboutToSetValue() override;
 
@@ -1403,13 +1488,19 @@ protected:
     std::string stamp;
     std::vector<std::string> _SubList;
     std::vector<ShadowSub> _ShadowSubList;
+    std::vector<SemanticReference> _SemanticRefs;  ///< parallel to _SubList (I7)
     std::vector<int> _mapped;
     PropertyLinkBase* parentProp;
     mutable std::string tmpShadow;
+
+    void syncSemanticRefsSize();
 };
 
 
 /** Link to one or more (sub)object from the same or different document
+ *
+ *  Thin PropertyXLink subclass. Dual-write / stSeed XML / promote live on
+ *  PropertyXLink (covers Assembly Joint Reference1/Reference2).
  */
 class AppExport PropertyXLinkSub: public PropertyXLink
 {

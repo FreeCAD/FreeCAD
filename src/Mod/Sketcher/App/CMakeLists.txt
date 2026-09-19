@@ -72,6 +72,10 @@ SET(Features_SRCS
     SketchObjectExternal.cpp
     SketchObjectConstraints.cpp
     SketchObjectOperations.cpp
+    SketchEntityId.cpp
+    SketchEntityId.h
+    SketchSemanticSeed.cpp
+    SketchSemanticSeed.h
     SketchAnalysis.h
     SketchAnalysis.cpp
     Analyse.h

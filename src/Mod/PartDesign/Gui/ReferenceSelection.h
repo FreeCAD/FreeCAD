@@ -26,6 +26,7 @@
 #pragma once
 
 #include <Gui/Selection/SelectionFilter.h>
+#include <unordered_set>
 #include <Mod/PartDesign/Gui/EnumFlags.h>
 
 namespace App
@@ -101,6 +102,12 @@ public:
         , filter2(std::move(filter2_))
     {}
     bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName) override;
+    /** G28-C1: intersect child gated-types. Empty child set = unrestricted
+     *  (G28-N1 null-Filter fallthrough). Users still pick Face/Edge only.
+     */
+    std::unordered_set<std::string> getGatedTypes(
+        const std::vector<const char*>& allTypesForGeometry
+    ) const override;
 };
 // Convenience methods
 /// Extract reference from Selection

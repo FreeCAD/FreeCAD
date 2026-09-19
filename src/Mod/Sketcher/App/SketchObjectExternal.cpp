@@ -438,7 +438,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
             }
             auto copy = geo->copy();
             auto egf = ExternalGeometryFacade::getFacade(copy);
-            egf->setId(++geoLastId);
+            egf->setId(nextEntityId());
             if (!egf->getRef().empty()) {
                 auto& refs = this->externalGeoRefMap[egf->getRef()];
                 refs.push_back(geoLastId);
@@ -2655,7 +2655,7 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
         auto egf = ExternalGeometryFacade::getFacade(geos.front().get());
         auto &refs = externalGeoRefMap[egf->getRef()];
         while(refs.size() < geos.size())
-            refs.push_back(++geoLastId);
+            refs.push_back(nextEntityId());
 
         // In case a projection reduces output geometries, delete them
         std::set<long> geoIds;

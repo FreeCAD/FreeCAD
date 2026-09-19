@@ -16,7 +16,7 @@
 #include "Gui/QuantitySpinBox.h"
 #include "Gui/PrefWidgets.h"
 #include <src/LocaleTestHelpers.h>
-#include <src/App/InitApplication.h>
+#include <src/Gui/InitQtTest.h>
 
 // NOLINTBEGIN(readability-magic-numbers)
 
@@ -93,7 +93,7 @@ class testQuantitySpinBox: public QObject
 public:
     testQuantitySpinBox()
     {
-        tests::initApplication();
+        tests::initQtGuiTest(false);
         qsb = std::make_unique<Gui::QuantitySpinBox>();
     }
 
@@ -1122,6 +1122,6 @@ private:
 
 // NOLINTEND(readability-magic-numbers)
 
-QTEST_MAIN(testQuantitySpinBox)
+QTEST_APPLESS_MAIN(testQuantitySpinBox)
 
 #include "QuantitySpinBox.moc"

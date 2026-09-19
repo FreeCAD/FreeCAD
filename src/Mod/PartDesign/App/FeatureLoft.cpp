@@ -22,75 +22,46 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
+#include <BRepAlgoAPI_BooleanOperation.hxx>
+#include <BRepBuilderAPI_MakeShape.hxx>
+#include <TopTools_ListOfShape.hxx>
 #include <BRepBuilderAPI_Sewing.hxx>
 #include <BRepClass3d_SolidClassifier.hxx>
+#include <BRepOffsetAPI_ThruSections.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopTools_ListIteratorOfListOfShape.hxx>
 #include <TopoDS.hxx>
+#include <TopoDS_Vertex.hxx>
+#include <TopoDS_Wire.hxx>
 #include <Precision.hxx>
+#include <cstring>
+#include <deque>
+#include <string>
+#include <vector>
+#include <memory>
 
 
 #include <boost/core/ignore_unused.hpp>
 
 #include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <App/IndexedName.h>
+#include <App/MappedName.h>
+#include <App/SemanticDocumentState.h>
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
+#include <Mod/Part/App/SemanticHistoryAdapter.h>
+#include <Mod/Part/App/SemanticSourceCollector.h>
 
 #include "Mod/Part/App/TopoShapeOpCode.h"
 
 #include "FeatureLoft.h"
+#include "SemanticOpcode.h"
+
 using namespace PartDesign;
-
-namespace
-{
-
-void sortWiresByNesting(std::vector<Part::TopoShape>& wires)
-{
-    if (wires.size() < 2) {
-        return;
-    }
-
-    struct WireInfo
-    {
-        Part::TopoShape wire;
-        std::size_t depth {0};
-    };
-
-    std::vector<WireInfo> wireInfos;
-    wireInfos.reserve(wires.size());
-    for (const auto& wire : wires) {
-        if (!wire.isClosed()) {
-            return;
-        }
-        wireInfos.push_back({wire, 0});
-    }
-
-    try {
-        for (std::size_t outer = 0; outer < wireInfos.size(); ++outer) {
-            const auto outerWire = TopoDS::Wire(wireInfos[outer].wire.getShape());
-            for (std::size_t inner = 0; inner < wireInfos.size(); ++inner) {
-                if (outer == inner) {
-                    continue;
-                }
-                const auto innerWire = TopoDS::Wire(wireInfos[inner].wire.getShape());
-                if (Part::FaceMakerCheese::isInside(outerWire, innerWire)) {
-                    ++wireInfos[inner].depth;
-                }
-            }
-        }
-    }
-    catch (const Standard_Failure&) {
-        // Non-planar or otherwise unsuitable wires are still valid loft inputs. Preserve their
-        // original order and let the loft algorithm report any actual construction error.
-        return;
-    }
-
-    // Keep the original ordering within the same depth (e.g., if multiple wires/loops exist within
-    // an outer loop) because this doesn't determine correspondence between peers.
-    std::ranges::stable_sort(wireInfos, {}, &WireInfo::depth);
-    std::ranges::transform(wireInfos, wires.begin(), [](auto& info) { return std::move(info.wire); });
-}
-
-}  // namespace
 
 PROPERTY_SOURCE(PartDesign::Loft, PartDesign::ProfileBased)
 
@@ -111,6 +82,11 @@ short Loft::mustExecute() const
         return 1;
     }
     if (Closed.isTouched()) {
+        return 1;
+    }
+
+    // Shared by additive and subtractive loft restore republish.
+    if (isSemanticRepublishPass(SemanticEmitter::graphFor(this))) {
         return 1;
     }
 
@@ -191,7 +167,6 @@ std::vector<Part::TopoShape> Loft::getSectionShape(
         if (expected_size && expected_size != wires.size()) {
             FC_THROWM(Base::CADKernelError, msg);
         }
-        sortWiresByNesting(wires);
         return wires;
     }
     auto vertices = compound.getSubTopoShapes(TopAbs_VERTEX);
@@ -209,13 +184,19 @@ std::vector<Part::TopoShape> Loft::getSectionShape(
 
 App::DocumentObjectExecReturn* Loft::execute()
 {
-    if (onlyHaveRefined()) {
+    // The Refine-only shortcut must not suppress restore republish: the maker
+    // is needed to recreate durable history for both loft variants.
+    const bool semanticRepublish =
+        isSemanticRepublishPass(SemanticEmitter::graphFor(this));
+    if (!semanticRepublish && onlyHaveRefined()) {
         return App::DocumentObject::StdReturn;
     }
 
     std::vector<TopoShape> wires;
     try {
-        wires = getSectionShape("Profile", Profile.getValue(), Profile.getSubValues());
+        // Profile Face references must use the live semantic slot when available;
+        // otherwise a stale dual-write subname can feed the loft maker.
+        wires = getSectionShape("Profile", Profile.getValue(), getProfileSubValuesForMaker());
     }
     catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
@@ -270,19 +251,53 @@ App::DocumentObjectExecReturn* Loft::execute()
         TopoShape result(0, hasher);
         std::vector<TopoShape> shapes;
 
-        // build all shells
+        // build all shells. Keep live ThruSections until captureLoftMaker.
+        // Store the exact AddWire/AddVertex TShapes (post-move) — those are
+        // the Generated() keys. Do not use FaceMaker front or FirstShape.
         std::vector<TopoShape> shells;
+        std::vector<std::unique_ptr<BRepOffsetAPI_ThruSections>> liveLofts;
+        std::vector<TopoDS_Shape> firstAddWires;
         for (auto& sectionWires : wiresections) {
             for (auto& wire : sectionWires) {
                 wire.move(invObjLoc);
             }
-            shells.push_back(TopoShape(0, hasher).makeElementLoft(
-                sectionWires,
-                Part::IsSolid::notSolid,
-                Ruled.getValue() ? Part::IsRuled::ruled : Part::IsRuled::notRuled,
-                closed ? Part::IsClosed::closed : Part::IsClosed::notClosed
-            ));
+            auto mkLoft = std::make_unique<BRepOffsetAPI_ThruSections>(
+                Standard_False, Ruled.getValue() ? Standard_True : Standard_False
+            );
+            const bool captureThis = firstAddWires.empty();
+            for (auto& sh : sectionWires) {
+                const auto& shape = sh.getShape();
+                if (captureThis) {
+                    firstAddWires.push_back(shape);
+                }
+                if (shape.ShapeType() == TopAbs_VERTEX) {
+                    mkLoft->AddVertex(TopoDS::Vertex(shape));
+                }
+                else {
+                    mkLoft->AddWire(TopoDS::Wire(shape));
+                }
+            }
+            if (closed && !sectionWires.empty()
+                && sectionWires.back().getShape().ShapeType() != TopAbs_VERTEX) {
+                const TopoDS_Shape& firstProfile = sectionWires.front().getShape();
+                if (firstProfile.ShapeType() == TopAbs_VERTEX) {
+                    mkLoft->AddVertex(TopoDS::Vertex(firstProfile));
+                }
+                else {
+                    mkLoft->AddWire(TopoDS::Wire(firstProfile));
+                }
+            }
+            mkLoft->CheckCompatibility(Standard_True);
+            mkLoft->Build();
+            TopoShape shell(0, hasher);
+            shell.makeElementShape(*mkLoft, sectionWires, Part::OpCodes::Loft);
+            shells.push_back(shell);
+            liveLofts.push_back(std::move(mkLoft));
         }
+
+        // ThruSections makeElementShape shell sewer.Add receives, before
+        // front/back append and before sew / makeElementSolid.
+        const TopoShape preSewShell = shells.empty() ? TopoShape() : shells.front();
 
         // build the top and bottom face, sew the shell and build the final solid
         TopoShape front;
@@ -322,8 +337,9 @@ App::DocumentObjectExecReturn* Loft::execute()
             }
         }
 
+        BRepBuilderAPI_Sewing sewer;
+        bool sewRan = false;
         if (!front.isNull() || !back.isNull()) {
-            BRepBuilderAPI_Sewing sewer;
             sewer.SetTolerance(Precision::Confusion());
             if (!front.isNull()) {
                 sewer.Add(front.getShape());
@@ -350,6 +366,7 @@ App::DocumentObjectExecReturn* Loft::execute()
                 shells,
                 Part::OpCodes::Sewing
             );
+            sewRan = true;
         }
 
         if (!result.countSubShapes(TopAbs_SHELL)) {
@@ -390,18 +407,56 @@ App::DocumentObjectExecReturn* Loft::execute()
                 ));
             }
             Shape.setValue(getSolid(result));
+            if (!liveLofts.empty()) {
+                emitCapturedLoft(
+                    liveLofts.front().get(),
+                    preSewShell,
+                    Shape.getShape(),
+                    firstAddWires,
+                    sewRan ? &sewer : nullptr
+                );
+            }
             return App::DocumentObject::StdReturn;
         }
 
         result.Tag = -getID();
         TopoShape boolOp(0, getDocument()->getStringHasher());
+        std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkCut;
+        const TopoDS_Shape toolOcc = result.getShape();
+
         try {
-            boolOp.makeElementBoolean(
-                getBooleanMaker(),
-                {base, result},
-                nullptr,
-                FuzzyTolerance.getValue()
-            );
+            if (getAddSubType() == FeatureAddSub::Type::Subtractive) {
+                // Live Cut + ElementMap (Batch A / FeaturePrimitive parity) so
+                // Fillet can bind :M;CUT edges and stampElementMap can write ;:ST.
+                auto* fcCut = new FCBRepAlgoAPI_Cut;
+                mkCut.reset(fcCut);
+                TopTools_ListOfShape args;
+                TopTools_ListOfShape toolList;
+                args.Append(base.getShape());
+                toolList.Append(toolOcc);
+                fcCut->SetArguments(args);
+                fcCut->SetTools(toolList);
+                const double fuzzy = FuzzyTolerance.getValue();
+                if (fuzzy > 0.0) {
+                    fcCut->SetFuzzyValue(fuzzy);
+                }
+                fcCut->Build();
+                if (!fcCut->IsDone()) {
+                    return new App::DocumentObjectExecReturn(
+                        QT_TRANSLATE_NOOP("Exception", "Failed to perform boolean operation")
+                    );
+                }
+                boolOp.makeElementShape(*fcCut, {base, result}, Part::OpCodes::Cut);
+            }
+            else if (getAddSubType() == FeatureAddSub::Type::Additive) {
+                boolOp.makeElementBoolean(
+                    Part::OpCodes::Fuse, {base, result}, nullptr, FuzzyTolerance.getValue());
+            }
+            else {
+                return new App::DocumentObjectExecReturn(
+                    QT_TRANSLATE_NOOP("Exception", "Unknown operation type")
+                );
+            }
         }
         catch (Standard_Failure&) {
             return new App::DocumentObjectExecReturn(
@@ -415,9 +470,12 @@ App::DocumentObjectExecReturn* Loft::execute()
                 QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid")
             );
         }
-        // store shape before refinement
+        // store shape before refinement. Skip refine when live Cut/loft makers
+        // are retained so fromMaker TShapes still match the published solid.
         this->rawShape = boolOp;
-        boolOp = refineShapeIfActive(boolOp);
+        if (!mkCut && liveLofts.empty()) {
+            boolOp = refineShapeIfActive(boolOp);
+        }
         if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
                 "Exception",
@@ -426,6 +484,31 @@ App::DocumentObjectExecReturn* Loft::execute()
         }
         boolOp = getSolid(boolOp);
         Shape.setValue(boolOp);
+        if (mkCut) {
+            App::DocumentObject* baseObj = getBaseObject(/* silent = */ true);
+            SemanticEmitter::publishSubtractiveCutHistory(
+                this,
+                mkCut.get(),
+                &toolOcc,
+                &base.getShape(),
+                baseObj,
+                Opcode::SubtractiveLoft,
+                "subLoftDiag");
+            App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
+            // I8 dual-write after Cut Bindings publish; EM14-U1 fail-closed
+            // (lockstep uniqueBindingOnFeature / AG21-E1 — EM22-L1 / #30).
+            SemanticEmitter::stampElementMap(
+                Shape, graph, static_cast<App::ObjectId>(getID()));
+        }
+        else if (!liveLofts.empty()) {
+            emitCapturedLoft(
+                liveLofts.front().get(),
+                preSewShell,
+                Shape.getShape(),
+                firstAddWires,
+                sewRan ? &sewer : nullptr
+            );
+        }
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
@@ -451,6 +534,222 @@ PROPERTY_SOURCE(PartDesign::SubtractiveLoft, PartDesign::Loft)
 SubtractiveLoft::SubtractiveLoft()
 {
     defineSubtractive();
+}
+
+
+
+void Loft::clearSemanticCapture()
+{
+    lastLoftGenerated.clear();
+    lastNamedFaceIndices.clear();
+    lastLoftGeneratedEdges.clear();
+    lastNamedEdgeIndices.clear();
+}
+
+void Loft::captureLoftMaker(void* occMaker,
+                            const TopoShape& preSewShell,
+                            const TopoShape& published,
+                            const std::vector<TopoDS_Shape>& addWireShapes,
+                            BRepBuilderAPI_Sewing* sewer)
+{
+    int early = 0;
+    int genFaceRaw = 0;
+    int genEdgeRaw = 0;
+    int fromMaker = 0;
+    int fromHistN = 0;
+    int nCurve = 0;
+    int nVertex = 0;
+    int nEdges = 0;
+    int nVerts = 0;
+    int nZ = 0;
+    const int sew = sewer ? 1 : 0;
+
+    auto finishDiag = [&]() {
+        const std::size_t nf = Part::namedIndexCount(lastNamedFaceIndices);
+        const std::size_t ne = Part::namedIndexCount(lastNamedEdgeIndices);
+        lastLoftDiag =
+            std::string("loftDiag early=") + std::to_string(early)
+            + " preCompat=1 sew=" + std::to_string(sew)
+            + " inputs=" + std::to_string(addWireShapes.size())
+            + " curveSeeds=" + std::to_string(nCurve)
+            + " vertexSeeds=" + std::to_string(nVertex)
+            + " edges=" + std::to_string(nEdges)
+            + " verts=" + std::to_string(nVerts)
+            + " genFaceRaw=" + std::to_string(genFaceRaw)
+            + " genFace=" + std::to_string(lastLoftGenerated.size())
+            + " genEdgeRaw=" + std::to_string(genEdgeRaw)
+            + " genEdge=" + std::to_string(lastLoftGeneratedEdges.size())
+            + " fromMaker=" + std::to_string(fromMaker)
+            + " fromHist=" + std::to_string(fromHistN)
+            + " namedFace=" + std::to_string(nf)
+            + " namedFaceMiss="
+            + std::to_string(lastNamedFaceIndices.size() - nf)
+            + " namedEdge=" + std::to_string(ne)
+            + " namedEdgeMiss="
+            + std::to_string(lastNamedEdgeIndices.size() - ne)
+            + " zEdge=" + std::to_string(nZ);
+    };
+
+    if (!occMaker) {
+        early = 1;
+        finishDiag();
+        return;
+    }
+    if (preSewShell.isNull()) {
+        early = 2;
+        finishDiag();
+        return;
+    }
+    if (addWireShapes.empty()) {
+        early = 3;
+        finishDiag();
+        return;
+    }
+
+    App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
+    AfterExecuteRequest seeds;
+    if (graph) {
+        if (App::DocumentObject* profile = Profile.getValue()) {
+            seeds = collectProfileSemanticSeeds();
+        }
+    }
+    nCurve = static_cast<int>(seeds.curveSeeds.size());
+    nVertex = static_cast<int>(seeds.vertexSeeds.size());
+
+    // Generated() keys are the AddWire/AddVertex TShapes kept alive from
+    // execute() (post-move). First shape is the profile wire.
+    const TopoShape profile(addWireShapes.front());
+    if (profile.isNull()) {
+        early = 4;
+        finishDiag();
+        return;
+    }
+    const auto edges = profile.getSubTopoShapes(TopAbs_EDGE);
+    const auto vertices = profile.getSubTopoShapes(TopAbs_VERTEX);
+    nEdges = static_cast<int>(edges.size());
+    nVerts = static_cast<int>(vertices.size());
+
+    auto* maker = static_cast<BRepBuilderAPI_MakeShape*>(occMaker);
+
+    auto alreadyHasEdge = [&](const TopoDS_Shape& s) -> bool {
+        for (const auto& existing : lastLoftGeneratedEdges) {
+            if (Part::sameOccShape(existing.shape, s)) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    // Direct maker->Generated(profileEdge) → unique side FACE on preSewShell.
+    for (std::size_t i = 0; i < seeds.curveSeeds.size() && i < edges.size(); ++i) {
+        genFaceRaw += Part::countGeneratedOf(maker, edges[i].getShape(), TopAbs_FACE);
+        const TopoDS_Shape face = Part::uniqueGeneratedFace(maker, edges[i].getShape());
+        if (!face.IsNull()) {
+            lastLoftGenerated.push_back({seeds.curveSeeds[i], face});
+        }
+    }
+
+    // Vertical corners: Generated EDGE from profile VERTEX, 1 image (Pad).
+    auto stashUniqueEdge = [&](const App::SemanticId& seed, const TopoDS_Shape& input) {
+        if (!seed.valid() || input.IsNull()) {
+            return;
+        }
+        genEdgeRaw += Part::countGeneratedOf(maker, input, TopAbs_EDGE);
+        const auto images = Part::uniqueGeneratedThenModifiedEdgeImages(maker, input);
+        if (images.size() == 1 && !alreadyHasEdge(images.front())) {
+            lastLoftGeneratedEdges.push_back({seed, images.front()});
+        }
+    };
+    if (!seeds.vertexSeeds.empty()) {
+        for (std::size_t i = 0; i < seeds.vertexSeeds.size() && i < vertices.size(); ++i) {
+            stashUniqueEdge(seeds.vertexSeeds[i], vertices[i].getShape());
+        }
+    }
+    else {
+        for (std::size_t i = 0; i < seeds.curveSeeds.size() && i < vertices.size(); ++i) {
+            stashUniqueEdge(seeds.curveSeeds[i], vertices[i].getShape());
+        }
+    }
+
+    // Pad uniqueEdgeImages: unique EDGE image of each profile EDGE.
+    for (std::size_t i = 0; i < seeds.curveSeeds.size() && i < edges.size(); ++i) {
+        genEdgeRaw += Part::countGeneratedOf(maker, edges[i].getShape(), TopAbs_EDGE);
+        const auto images = Part::uniqueGeneratedThenModifiedEdgeImages(maker, edges[i].getShape());
+        if (images.size() == 1 && !alreadyHasEdge(images.front())) {
+            lastLoftGeneratedEdges.push_back({seeds.curveSeeds[i], images.front()});
+        }
+    }
+
+    // Pad fallback: unique vertical EDGE of a Generated side face on preSewShell.
+    Part::appendUniqueZParallelFaceRailEdges(preSewShell, lastLoftGenerated, lastLoftGeneratedEdges);
+
+    // fromMaker fallback on preSewShell only (not published) if Generated walk
+    // produced no Faces — Pad lastPrismGenerated empty path. Index later.
+    {
+        bool usedFromMaker = false;
+        fromHistN = static_cast<int>(Part::appendFromMakerGeneratedWhenFacesEmpty(
+            maker,
+            preSewShell,
+            seeds.curveSeeds,
+            edges,
+            seeds.vertexSeeds,
+            vertices,
+            lastLoftGenerated,
+            lastLoftGeneratedEdges,
+            &usedFromMaker));
+        fromMaker = usedFromMaker ? 1 : 0;
+    }
+
+    Part::refreshNamedIndicesFromSeededShapes(
+        published,
+        preSewShell,
+        sewer,
+        lastLoftGenerated,
+        lastLoftGeneratedEdges,
+        lastNamedFaceIndices,
+        lastNamedEdgeIndices);
+
+    // Edge binding ALWAYS: unique Z-parallel of each published Face, even when
+    // vertexSeeds is non-empty (root cause 4). I13: 0 or N unnamed.
+    nZ = static_cast<int>(Part::mergeUniqueZParallelEdgesOntoNamed(
+        published, lastNamedFaceIndices, lastNamedEdgeIndices));
+    finishDiag();
+}
+
+void Loft::emitCapturedLoft(void* occMaker,
+                            const TopoShape& preSewShell,
+                            const TopoShape& published,
+                            const std::vector<TopoDS_Shape>& addWireShapes,
+                            BRepBuilderAPI_Sewing* sewer)
+{
+    clearSemanticCapture();
+    captureLoftMaker(occMaker, preSewShell, published, addWireShapes, sewer);
+    App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
+    AfterExecuteRequest req;
+    App::ObjectId fid = static_cast<App::ObjectId>(getID());
+    App::EvalSerial eval = 0;
+    if (App::Document* doc = getDocument()) {
+        eval = doc->semanticState().currentEval();
+        if (App::DocumentObject* profile = Profile.getValue()) {
+            req = collectProfileSemanticSeeds();
+        }
+    }
+    req.namedFaceIndices = lastNamedFaceIndices;
+    req.namedEdgeIndices = lastNamedEdgeIndices;
+    req.allowSequentialFaceN = false;
+    SemanticEmitter::afterExecute(
+        graph,
+        getAddSubType() == FeatureAddSub::Type::Subtractive ? Opcode::SubtractiveLoft : Opcode::Loft,
+        fid,
+        eval,
+        req);
+    // I8 dual-write after Bindings publish; EM14-U1 fail-closed if multi-eval
+    // (lockstep uniqueBindingOnFeature / AG21-E1 — QUALITY-SWEEP #22/#30 EM22-L1).
+    SemanticEmitter::stampElementMap(Shape, graph, fid);
+    SemanticEmitter::appendAfterExecuteNote(lastLoftDiag);
+    Base::Console().message(
+        "TESTS loftDiag %s\n",
+        SemanticEmitter::lastAfterExecuteNote().c_str());
 }
 
 void Loft::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)

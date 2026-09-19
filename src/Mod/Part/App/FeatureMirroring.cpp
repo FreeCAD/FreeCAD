@@ -38,16 +38,131 @@
 #include <TopExp_Explorer.hxx>
 #include <TopLoc_Location.hxx>
 
+#include <deque>
+#include <map>
+#include <memory>
 
 #include <Mod/Part/App/PrimitiveFeature.h>
 #include <App/Link.h>
 #include <App/Datums.h>
+#include <App/Document.h>
+#include <App/SemanticDocumentState.h>
+#include <App/SemanticReference.h>
 
 #include "FeatureMirroring.h"
 #include "DatumFeature.h"
+#include "SemanticHistoryAdapter.h"
+#include "SemanticSourceCollector.h"
+#include "TopoShapeOpCode.h"
 
 
 using namespace Part;
+
+namespace
+{
+void publishMirroringSemanticHistory(
+    Mirroring* self,
+    BRepBuilderAPI_Transform* maker,
+    const TopoShape& published
+)
+{
+    if (!self || !maker || !maker->IsDone() || published.isNull()) {
+        return;
+    }
+    App::SemanticGraph* graph = App::SemanticDocumentState::graphFor(self);
+    if (!graph && self->getDocument()) {
+        graph = &self->getDocument()->semanticGraph();
+    }
+    if (!graph) {
+        return;
+    }
+    const App::ObjectId selfId = static_cast<App::ObjectId>(self->getID());
+    App::EvalSerial eval = 0;
+    if (App::Document* doc = self->getDocument()) {
+        eval = doc->semanticState().currentEval();
+    }
+    std::deque<TopoDS_Shape> held;
+    struct Candidate { App::ElementIndex index; App::SemanticKind kind = App::SemanticKind::Face; };
+    std::vector<Candidate> candidates;
+    auto boundAt = [graph, selfId](const App::ElementIndex& index) {
+        return App::shouldRefuseBoundAt(graph, selfId, index);
+    };
+    auto addImage = [&](const TopoDS_Shape& image) {
+        if (image.IsNull()
+            || (image.ShapeType() != TopAbs_FACE && image.ShapeType() != TopAbs_EDGE)) {
+            return;
+        }
+        for (const auto& prior : held) {
+            if (prior.IsSame(image) || prior.IsPartner(image)) {
+                return;
+            }
+        }
+        const App::ElementIndex index = Part::uniqueNamedIndexOnPublished(published, image);
+        if (!isNamedIndex(index)) {
+            return;
+        }
+        // Refuse before recordGenerated: ambiguous ownership and a uniquely
+        // published existing slot both skip minting (same boundAt as Extrusion).
+        if (boundAt(index)) {
+            return;
+        }
+        held.push_back(image);
+        Candidate candidate;
+        candidate.index = index;
+        candidate.kind = image.ShapeType() == TopAbs_FACE
+            ? App::SemanticKind::Face : App::SemanticKind::Edge;
+        candidates.push_back(candidate);
+    };
+    for (TopExp_Explorer ex(maker->Shape(), TopAbs_FACE); ex.More(); ex.Next()) {
+        addImage(ex.Current());
+    }
+    for (TopExp_Explorer ex(maker->Shape(), TopAbs_EDGE); ex.More(); ex.Next()) {
+        addImage(ex.Current());
+    }
+    if (candidates.empty()) {
+        // A4: TESTS *Diag gated (default off). Exact historical strings via
+        // testsPublishDiagSkip/Bound — enable FREECAD_TESTS_DIAG=1 or
+        // FreeCAD.setLogLevel('PartTestsDiag','Message'). Emit/I13 unchanged.
+        Part::testsPublishDiagSkip("mirroringDiag", "no named maker images");
+        return;
+    }
+    // BRepBuilderAPI_Transform history queries can fault when inputs are already on the
+    // maker output; locate/bind on published indices instead (same fallback as Extrusion).
+    // Do not allocate graph identities until slot ownership is known: an ambiguous
+    // locate must not leave orphan Generated events in the durable graph.
+    std::map<std::string, std::vector<std::size_t>> owners;
+    for (std::size_t i = 0; i < candidates.size(); ++i) {
+        owners[candidates[i].index.toString()].push_back(i);
+    }
+    HistoryTable toApply;
+    std::vector<App::SemanticId> seeds;
+    for (const auto& owner : owners) {
+        if (owner.second.size() != 1) {
+            continue;
+        }
+        const Candidate& candidate = candidates[owner.second.front()];
+        const App::SemanticId seed = graph->recordGenerated(
+            candidate.kind, Part::OpCodes::Mirror, selfId, eval, App::SemanticRole::None);
+        if (!seed.valid()) {
+            continue;
+        }
+        HistoryRecord record;
+        record.fromSeed = seed;
+        record.kind = App::EventKind::Generated;
+        record.toIndex = candidate.index;
+        record.outputKind = candidate.kind;
+        toApply.push_back(record);
+        seeds.push_back(seed);
+    }
+    if (toApply.empty()) {
+        Part::testsPublishDiagSkip("mirroringDiag", "no unique images");
+        return;
+    }
+    SemanticHistoryAdapter::applyHistory(
+        graph, selfId, eval, Part::OpCodes::Mirror, seeds, toApply);
+    Part::testsPublishDiagBound("mirroringDiag", toApply.size(), toApply.size());
+}
+}  // namespace
 
 PROPERTY_SOURCE(Part::Mirroring, Part::Feature)
 
@@ -344,12 +459,22 @@ App::DocumentObjectExecReturn* Mirroring::execute()
             throw Standard_Failure("Cannot mirror empty shape");
         }
 
-        auto mirrored = TopoShape(0).makeElementMirror(shape, ax2);
+        // Keep a live BRepBuilderAPI_Transform for Part-side semantic Binding
+        // publish (same class as Extrusion/Boolean). makeElementMirror alone
+        // stamps :M;MIR on the ElementMap but does not emit graph Bindings.
+        gp_Trsf mirrorTransform;
+        mirrorTransform.SetMirror(ax2);
+        auto liveMirror = std::make_unique<BRepBuilderAPI_Transform>(shape.getShape(), mirrorTransform);
+        if (!liveMirror->IsDone() || liveMirror->Shape().IsNull()) {
+            return new App::DocumentObjectExecReturn("Resulting shape is null");
+        }
+        TopoShape mirrored(0, getDocument()->getStringHasher());
+        mirrored.makeElementShape(*liveMirror, shape, Part::OpCodes::Mirror);
 
         this->Shape.setValue(mirrored);
         copyMaterial(link);
-
-        return Part::Feature::execute();
+        publishMirroringSemanticHistory(this, liveMirror.get(), mirrored);
+        return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

@@ -24,11 +24,15 @@
 
 
 # include <iomanip>
+# include <optional>
 # include <sstream>
 
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/PropertyLinks.h>
+#include <App/SemanticLinkSub.h>
+#include <App/SemanticReference.h>
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
@@ -42,6 +46,38 @@
 
 using namespace TechDraw;
 using DU = DrawUtil;
+
+namespace {
+std::optional<std::string> resolvedSourceSub(const DrawHatch& hatch, std::size_t i)
+{
+    const std::vector<std::string>& names = hatch.Source.getSubValues();
+    const std::string fallback = (i < names.size()) ? names[i] : std::string();
+    const std::vector<App::SemanticReference>& refs = hatch.Source.getSemanticRefs();
+    if (i >= refs.size() || !refs[i].seed.valid()) {
+        return fallback;
+    }
+    App::DocumentObject* linked = hatch.Source.getValue();
+    if (!linked) {
+        return std::nullopt;
+    }
+    const App::SemanticGraph* graph = nullptr;
+    if (hatch.getDocument()) {
+        graph = &hatch.getDocument()->semanticGraph();
+    }
+    // A restored seed has no live Binding until the first recompute. Keep the
+    // legacy cache in that window, but once the graph is live do not consume a
+    // stale or ambiguous FaceN row. TechDraw Source is a one-Face consumer;
+    // accepting an Edge or a multi-candidate result would make the fallback
+    // look resolved and bypass I13. Shared App::tryResolveSubNameFromSeed
+    // (strict nullopt; not I7 resolveSubNameFromSeed).
+    // TD25-E1: SemanticResolver + AcceptedCardinality::One (strict I13), not
+    // Assembly-style uniqueBindingOnFeature — same fail-closed intent as
+    // AJ24-E1 / AG21-E1 lockstep. Do not soften to I7 always-fallback or switch
+    // helpers without TESTS coverage.
+    return App::tryResolveSubNameFromSeed(graph, refs[i],
+        static_cast<App::ObjectId>(linked->getID()), fallback, App::SemanticKind::Face);
+}
+}  // namespace
 
 PROPERTY_SOURCE(TechDraw::DrawHatch, App::DocumentObject)
 
@@ -100,8 +136,12 @@ bool DrawHatch::faceIsHatched(int i, std::vector<TechDraw::DrawHatch*> hatchObjs
 {
     for (auto& h:hatchObjs) {
         const std::vector<std::string> &sourceNames = h->Source.getSubValues();
-        for (auto& s : sourceNames) {
-            int fdx = TechDraw::DrawUtil::getIndexFromName(s);
+        for (std::size_t n = 0; n < sourceNames.size(); ++n) {
+            const auto resolved = resolvedSourceSub(*h, n);
+            if (!resolved) {
+                continue;
+            }
+            int fdx = TechDraw::DrawUtil::getIndexFromName(*resolved);
             if (fdx == i) {
                 return true;  // Found something
             }
@@ -114,8 +154,12 @@ bool DrawHatch::faceIsHatched(int i, std::vector<TechDraw::DrawHatch*> hatchObjs
 bool DrawHatch::affectsFace(int i)
 {
     const std::vector<std::string> &sourceNames = Source.getSubValues();
-    for (auto& s : sourceNames) {
-        int fdx = TechDraw::DrawUtil::getIndexFromName(s);
+    for (std::size_t n = 0; n < sourceNames.size(); ++n) {
+        const auto resolved = resolvedSourceSub(*this, n);
+        if (!resolved) {
+            continue;
+        }
+        int fdx = TechDraw::DrawUtil::getIndexFromName(*resolved);
         if (fdx == i) {
             return true;  // Found something
         }

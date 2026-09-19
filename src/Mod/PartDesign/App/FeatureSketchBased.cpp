@@ -61,6 +61,8 @@
 
 
 #include <App/Document.h>
+#include <Mod/Part/App/SemanticSourceCollector.h>
+#include <App/SemanticDocumentState.h>
 #include <App/Datums.h>
 #include <Base/Converter.h>
 #include <Base/Reader.h>
@@ -130,6 +132,60 @@ ProfileBased::ProfileBased()
         App::Prop_None,
         "Allow multiple faces in profile"
     );
+}
+
+AfterExecuteRequest ProfileBased::collectProfileSemanticSeeds() const
+{
+    App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
+    App::DocumentObject* profile = Profile.getValue();
+    if (!graph || !profile) {
+        return {};
+    }
+    return SemanticEmitter::collectProfileSeeds(
+        graph, static_cast<App::ObjectId>(profile->getID()), Profile.getSemanticRefs());
+}
+std::vector<std::string> ProfileBased::getProfileSubValuesForMaker() const
+{
+    std::vector<std::string> subValues = Profile.getSubValues(false);
+    App::DocumentObject* profile = Profile.getValue();
+    App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
+    if (!profile || !graph || !graph->hasBindings()
+        || profile->isDerivedFrom<Part::Part2DObject>()) {
+        return subValues;
+    }
+
+    const auto& refs = Profile.getSemanticRefs();
+    const App::ObjectId linkedFeature = static_cast<App::ObjectId>(profile->getID());
+    for (std::size_t i = 0; i < refs.size(); ++i) {
+        const App::SemanticReference& ref = refs[i];
+        if (!ref.seed.valid() || ref.seed.kind != App::SemanticKind::Face
+            || ref.kind != App::SemanticKind::Face) {
+            continue;
+        }
+        const auto resolved = uniqueResolvedFaceReference(graph, ref, linkedFeature);
+        if (!resolved) {
+            continue;
+        }
+        if (i < subValues.size()) {
+            subValues[i] = resolved->index.toString();
+        }
+        else if (subValues.empty() && refs.size() == 1) {
+            // A whole-object LinkSub can have an empty legacy subname while
+            // its semantic slot identifies one Face. Carry that slot rather
+            // than making the maker consume the complete stale object.
+            subValues.push_back(resolved->index.toString());
+        }
+    }
+    return subValues;
+}
+bool ProfileBased::isSemanticRepublishPass(const App::SemanticGraph* graph) const
+{
+    // Restore can retain a valid cached shape while the durable publisher rows
+    // are absent. Keep this gate shared so additive and subtractive sweeps use
+    // the same scheduler and Refine fast-path policy.
+    return graph && isValid() && !Shape.getShape().isNull()
+        && SemanticEmitter::needsSemanticRepublish(
+            graph, static_cast<App::ObjectId>(getID()));
 }
 
 short ProfileBased::mustExecute() const
@@ -756,7 +812,11 @@ void ProfileBased::onBaseFeatureRerouted(App::DocumentObject* oldBase, App::Docu
     }
 }
 
-void ProfileBased::getUpToFaceFromLinkSub(TopoShape& upToFace, const App::PropertyLinkSub& refFace)
+void ProfileBased::getUpToFaceFromLinkSub(
+    TopoShape& upToFace,
+    const App::PropertyLinkSub& refFace,
+    const std::string* resolvedSubname
+)
 {
     App::DocumentObject* ref = refFace.getValue();
 
@@ -770,11 +830,13 @@ void ProfileBased::getUpToFaceFromLinkSub(TopoShape& upToFace, const App::Proper
     }
 
     const auto& subs = refFace.getSubValues();
+    const char* subname = resolvedSubname ? resolvedSubname->c_str()
+                                          : (subs.empty() ? nullptr : subs[0].c_str());
     upToFace = Part::Feature::getTopoShape(
         ref,
         Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
             | Part::ShapeOption::Transform,
-        subs.empty() ? nullptr : subs[0].c_str()
+        subname
     );
 
     if (!upToFace.hasSubShape(TopAbs_FACE)) {
@@ -821,7 +883,8 @@ double ProfileBased::getStartReferenceOffset(
     const App::PropertyLinkSub& reference,
     const gp_Dir& direction,
     double offset,
-    const TopLoc_Location& invObjLoc
+    const TopLoc_Location& invObjLoc,
+    const std::string* resolvedSubname
 ) const
 {
     if (!reference.getValue()) {
@@ -829,23 +892,91 @@ double ProfileBased::getStartReferenceOffset(
     }
 
     TopoShape referenceShape;
-    const auto& subValues = reference.getSubValues();
-    if (reference.getValue()->isDerivedFrom<Part::Part2DObject>()) {
-        if (!subValues.empty()) {
-            const Part::ShapeOptions options = Part::ShapeOption::NeedSubElement
-                | Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform;
+    bool consumed = false;
+    // A caller that already validated a unique live Binding may carry its
+    // current FaceN slot directly into the maker. This avoids re-reading the
+    // stale dual-write subname after the consume gate.
+    if (resolvedSubname && !resolvedSubname->empty()) {
+        const Part::ShapeOptions options = Part::ShapeOption::NeedSubElement
+            | Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform;
+        try {
             referenceShape = Part::Feature::getTopoShape(
-                reference.getValue(),
-                options,
-                subValues.front().c_str()
-            );
+                reference.getValue(), options, resolvedSubname->c_str());
+            if (referenceShape.hasSubShape(TopAbs_FACE)) {
+                consumed = true;
+            }
         }
-        if (!referenceShape.hasSubShape(TopAbs_FACE)) {
-            referenceShape = getTopoShapeVerifiedFace(false, false, reference.getValue(), subValues);
+        catch (Base::Exception&) {
+            // Fall through to the existing live-resolution/fallback policy.
         }
     }
-    else {
-        getUpToFaceFromLinkSub(referenceShape, reference);
+
+    // Consume a Face only when the stored filter/reducer resolves exactly one
+    // live Binding on the linked feature. Missing, ambiguous, incompatible,
+    // and cross-kind results retain the legacy FaceN fallback.
+    if (!consumed) {
+        if (App::SemanticGraph* graph = SemanticEmitter::graphFor(this)) {
+            bool sawFaceReference = false;
+            bool multipleFaceReferences = false;
+            for (const App::SemanticReference& semanticRef : reference.getSemanticRefs()) {
+                if (!semanticRef.seed.valid()
+                    || (semanticRef.seed.kind != App::SemanticKind::Face
+                        && semanticRef.kind != App::SemanticKind::Face)) {
+                    continue;
+                }
+                if (sawFaceReference) {
+                    multipleFaceReferences = true;
+                    break;
+                }
+                sawFaceReference = true;
+                const App::ObjectId linked =
+                    static_cast<App::ObjectId>(reference.getValue()->getID());
+                if (const auto unique = uniqueResolvedFaceReference(graph, semanticRef, linked)) {
+                    const std::string faceN = unique->index.toString();
+                    const Part::ShapeOptions options = Part::ShapeOption::NeedSubElement
+                        | Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform;
+                    try {
+                        referenceShape = Part::Feature::getTopoShape(
+                            reference.getValue(),
+                            options,
+                            faceN.c_str()
+                        );
+                        if (referenceShape.hasSubShape(TopAbs_FACE)) {
+                            consumed = true;
+                        }
+                    }
+                    catch (Base::Exception&) {
+                        // I7 FaceN fallback
+                    }
+                }
+            }
+
+            if (multipleFaceReferences) {
+                consumed = false;
+                referenceShape = TopoShape();
+            }
+        }
+    }
+
+    const auto& subValues = reference.getSubValues();
+    if (!consumed) {
+        if (reference.getValue()->isDerivedFrom<Part::Part2DObject>()) {
+            if (!subValues.empty()) {
+                const Part::ShapeOptions options = Part::ShapeOption::NeedSubElement
+                    | Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform;
+                referenceShape = Part::Feature::getTopoShape(
+                    reference.getValue(),
+                    options,
+                    subValues.front().c_str()
+                );
+            }
+            if (!referenceShape.hasSubShape(TopAbs_FACE)) {
+                referenceShape = getTopoShapeVerifiedFace(false, false, reference.getValue(), subValues);
+            }
+        }
+        else {
+            getUpToFaceFromLinkSub(referenceShape, reference);
+        }
     }
     referenceShape.move(invObjLoc);
 

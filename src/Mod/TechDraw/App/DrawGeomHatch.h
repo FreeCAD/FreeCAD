@@ -57,6 +57,7 @@ public:
     DrawGeomHatch();
     ~DrawGeomHatch() override = default;
 
+    // TD8-P1: Binding resolve via affectsFace / faceIsGeomHatched (strict I13).
     App::PropertyLinkSub     Source;                                   //the dvX & face(s) this crosshatch belongs to
     App::PropertyFile        FilePattern;
     App::PropertyFileIncluded PatIncluded;
@@ -77,6 +78,8 @@ public:
 
 
     DrawViewPart* getSourceView() const;
+    bool affectsFace(int i);
+    static bool faceIsGeomHatched(int i, std::vector<TechDraw::DrawGeomHatch*> geomObjs);
 
     std::vector<LineSet> getFaceOverlay(int iFace = 0);
     std::vector<LineSet> getTrimmedLines(int iFace = 0);

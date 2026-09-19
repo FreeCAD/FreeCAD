@@ -22,6 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <algorithm>
+
 #include <BRep_Builder.hxx>
 #include <BRep_Tool.hxx>
 #include <TopExp.hxx>
@@ -35,10 +37,13 @@
 #include <boost/algorithm/string/predicate.hpp>
 
 #include "FeatureDressUp.h"
+#include "SemanticOpcode.h"
 #include <Base/Console.h>
 #include <App/Document.h>
+#include <App/GeoFeature.h>
 #include <Base/Exception.h>
 #include "Mod/Part/App/TopoShapeMapper.h"
+#include <Mod/Part/App/SemanticHistoryAdapter.h>
 
 FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
@@ -75,6 +80,112 @@ short DressUp::mustExecute() const
     }
     return PartDesign::FeatureAddSub::mustExecute();
 }
+
+
+bool DressUp::isSemanticRepublishPass(const App::SemanticGraph* graph) const
+{
+    // Old FCStd restore can keep a valid cached Shape while STG1 has no durable
+    // rows for this publisher. Shared Fillet/Chamfer gate for mustExecute/execute.
+    return graph && isValid() && !Shape.getShape().isNull()
+        && SemanticEmitter::needsSemanticRepublish(
+            graph, static_cast<App::ObjectId>(getID()));
+}
+
+void DressUp::collectDressUpBaseSeeds(AfterExecuteRequest& req) const
+{
+    // Same Edge/Face kind checks Fillet and Chamfer used inline.
+    auto appendUnique = [](std::vector<App::SemanticId>& seeds,
+                           const App::SemanticId& seed) {
+        for (const App::SemanticId& existing : seeds) {
+            if (existing == seed) {
+                return;
+            }
+        }
+        seeds.push_back(seed);
+    };
+    for (const App::SemanticReference& ref : Base.getSemanticRefs()) {
+        if (!ref.seed.valid()) {
+            continue;
+        }
+        if (ref.seed.kind == App::SemanticKind::Edge || ref.kind == App::SemanticKind::Edge) {
+            appendUnique(req.filletEdges, ref.seed);
+        }
+        else if (ref.seed.kind == App::SemanticKind::Face) {
+            appendUnique(req.filletAdjacentFaces, ref.seed);
+        }
+    }
+}
+
+std::optional<App::SemanticBinding> DressUp::uniqueResolvedDressUpBinding(
+    const App::SemanticGraph* graph,
+    const App::SemanticId& seed,
+    App::ObjectId linkedFeature,
+    App::SemanticKind expectedKind) const
+{
+    if (!graph || !graph->hasBindings() || !seed.valid() || linkedFeature == 0
+        || seed.kind != expectedKind) {
+        return std::nullopt;
+    }
+
+    const char* expectedType = expectedKind == App::SemanticKind::Edge ? "Edge" : "Face";
+    std::optional<App::SemanticBinding> found;
+    for (const App::SemanticReference& ref : Base.getSemanticRefs()) {
+        if (ref.seed != seed || ref.kind != expectedKind) {
+            continue;
+        }
+
+        // The stored Base policy is authoritative. Require the live resolver
+        // to produce one result under that policy before consuming its index;
+        // a direct bindingsOf(seed) lookup would bypass filters/reducers.
+        App::ReferenceRequirement requirement;
+        requirement.expectedKind = expectedKind;
+        requirement.acceptedCardinality = App::AcceptedCardinality::One;
+        requirement.acceptedReducers = {ref.reducer};
+        const App::ResolutionResult result =
+            App::SemanticResolver::resolve(ref, *graph, &requirement);
+        if (result.state != App::ResolutionState::Resolved || result.bindings.size() != 1) {
+            continue;
+        }
+
+        const App::SemanticBinding& binding = result.bindings.front();
+        if (binding.stid.handle != seed.handle || binding.stid.kind != seed.kind
+            || binding.feature != linkedFeature
+            || !Part::isNamedIndex(binding.index)  // PD32-D1
+            || binding.index.type != expectedType) {
+            continue;
+        }
+        if (found) {
+            return std::nullopt;
+        }
+        found = binding;
+    }
+    return found;
+}
+
+void DressUp::retainResolvedDressUpSeeds(const App::SemanticGraph* graph,
+                                         App::ObjectId linkedFeature,
+                                         App::SemanticKind expectedKind,
+                                         std::vector<App::SemanticId>& seeds) const
+{
+    if (!graph || !graph->hasBindings() || linkedFeature == 0) {
+        return;
+    }
+    std::vector<App::SemanticId> retained;
+    retained.reserve(seeds.size());
+    for (const App::SemanticId& seed : seeds) {
+        if (uniqueResolvedDressUpBinding(graph, seed, linkedFeature, expectedKind)) {
+            retained.push_back(seed);
+        }
+    }
+    seeds = std::move(retained);
+}
+
+/// DressUp fromMaker mint refusal uses App::shouldRefuseDressUpMintKind
+/// (Generated/Intersection/Split require a named conflict-free slot; I13
+/// leave-unnamed otherwise). Non-minting kinds pass through. Ownership
+/// details still compose hasOutputOwnershipConflict. Fillet/Chamfer/Draft/
+/// Thickness call sites use the shared App helper.
+
 
 void DressUp::positionByBaseFeature()
 {
@@ -186,8 +297,31 @@ void DressUp::getContinuousEdges(
     }
 }
 
-std::vector<TopoShape> DressUp::getContinuousEdges(const TopoShape& shape)
+void DressUp::refreshBaseElementReferences()
 {
+    App::DocumentObject* linked = Base.getValue();
+    if (!linked || !linked->isAttachedToDocument()) {
+        return;
+    }
+    auto* geo = freecad_cast<App::GeoFeature*>(linked);
+    if (!geo) {
+        return;
+    }
+    // Same App remapping GeoFeature runs when support Shape changes: ElementMap
+    // shadow + unique geometry-cache search (PropertyLinkSub::updateElementReference).
+    // Exactly one match rewrites EdgeN/FaceN; 0 or many leave Invalid/Missing (I13).
+    // Does not mint stSeed from raw EdgeN / FaceN.
+    Base.updateElementReference(geo, /*reverse*/ false, /*notify*/ true);
+}
+
+std::vector<TopoShape> DressUp::getContinuousEdges(
+    const TopoShape& shape,
+    const App::SemanticGraph* graph)
+{
+    // Candidate A (manual-3-dressup-relink-a): refresh Base LinkSub before
+    // resolving EdgeN so in-place support reshape can unique-rematch.
+    refreshBaseElementReferences();
+
     std::vector<TopoShape> ret;
     std::unordered_set<TopoDS_Shape, Part::ShapeHasher, Part::ShapeHasher> shapeSet;
 
@@ -212,11 +346,14 @@ std::vector<TopoShape> DressUp::getContinuousEdges(const TopoShape& shape)
         ret.push_back(subshape);
     };
 
-    for (const auto& v : Base.getShadowSubs()) {
+    for (const auto& ref : getEdgeSubValues(graph)) {
         TopoDS_Shape subshape;
-        const auto& ref = v.newName.size() ? v.newName : v.oldName;
         subshape = shape.getSubShape(ref.c_str(), true);
         if (subshape.IsNull()) {
+            // Option B: callers (Fillet/Chamfer) catch Base::Exception and return
+            // DocumentObjectExecReturn so Document::_recomputeFeature does not
+            // reportException-spam for already-broken '?Edge*' links. Still
+            // Invalid — never claim success or invent an edge.
             FC_THROWM(Base::CADKernelError, "Invalid edge link: " << ref);
         }
 
@@ -238,18 +375,13 @@ std::vector<TopoShape> DressUp::getContinuousEdges(const TopoShape& shape)
     return ret;
 }
 
-std::vector<TopoShape> DressUp::getFaces(const TopoShape& shape)
+std::vector<TopoShape> DressUp::getFaces(const TopoShape& shape,
+                                            const App::SemanticGraph* graph)
 {
+    refreshBaseElementReferences();
+
     std::vector<TopoShape> ret;
-    const auto& vals = Base.getSubValues();
-    const auto& subs = Base.getShadowSubs();
-    size_t i = 0;
-    for (auto& val : vals) {
-        if (!boost::starts_with(val, "Face")) {
-            continue;
-        }
-        auto& sub = subs[i++];
-        auto& ref = sub.newName.size() ? sub.newName : val;
+    for (const auto& ref : getFaceSubValues(graph)) {
         TopoShape subshape;
         try {
             subshape = shape.getSubTopoShape(ref.c_str());
@@ -270,6 +402,80 @@ std::vector<TopoShape> DressUp::getFaces(const TopoShape& shape)
             continue;
         }
         ret.push_back(subshape);
+    }
+    return ret;
+}
+
+std::vector<std::string> DressUp::getFaceSubValues(const App::SemanticGraph* graph) const
+{
+    // D9-S1: uniquely resolved Binding rewrites FaceN into the maker. When a seed
+    // is present but uniqueResolvedFaceReference fails (0/many), skip the stale
+    // FaceN (fail-closed / silence - match Facebinder I13). Seedless FaceN-only
+    // selections still pass through (preserve Face UX).
+    std::vector<std::string> ret;
+    const std::vector<std::string> vals = Base.getSubValues(false);
+    const auto& refs = Base.getSemanticRefs();
+    const App::ObjectId baseFeature = Base.getValue()
+        ? static_cast<App::ObjectId>(Base.getValue()->semanticProjectionFeatureId())
+        : 0;
+    ret.reserve(vals.size());
+    for (size_t i = 0; i < vals.size(); ++i) {
+        const char* element = Data::findElementName(vals[i].c_str());
+        if (!element || !boost::starts_with(element, "Face")) {
+            continue;
+        }
+        std::string ref = element;
+        if (graph && baseFeature != 0 && i < refs.size()) {
+            if (const auto unique = uniqueResolvedFaceReference(graph, refs[i], baseFeature)) {
+                ref = unique->index.toString();
+            }
+            else if (refs[i].seed.valid()) {
+                // Ambiguous / Missing / Incompatible with a seed: do not invent.
+                continue;
+            }
+        }
+        ret.push_back(std::move(ref));
+    }
+    return ret;
+}
+
+std::vector<std::string> DressUp::getEdgeSubValues(const App::SemanticGraph* graph) const
+{
+    // D9-S1 sibling (Edge path): unique Binding rewrites EdgeN/FaceN; seed present
+    // but non-unique → skip (fail-closed / silence). Seedless EdgeN/FaceN-only
+    // selections still pass through (preserve Edge/Face UX).
+    std::vector<std::string> ret;
+    const std::vector<std::string> vals = Base.getSubValues(false);
+    const auto& refs = Base.getSemanticRefs();
+    const App::ObjectId baseFeature = Base.getValue()
+        ? static_cast<App::ObjectId>(Base.getValue()->semanticProjectionFeatureId())
+        : 0;
+    ret.reserve(vals.size());
+    for (size_t i = 0; i < vals.size(); ++i) {
+        const char* element = Data::findElementName(vals[i].c_str());
+        std::string ref = element ? element : vals[i];
+        if (graph && baseFeature != 0 && i < refs.size()) {
+            if (boost::starts_with(ref, "Edge")) {
+                if (const auto unique = uniqueResolvedDressUpBinding(
+                        graph, refs[i].seed, baseFeature, App::SemanticKind::Edge)) {
+                    ref = unique->index.toString();
+                }
+                else if (refs[i].seed.valid()) {
+                    continue;
+                }
+            }
+            else if (boost::starts_with(ref, "Face")) {
+                // Face-selected continuous edges expand from the live Face slot.
+                if (const auto unique = uniqueResolvedFaceReference(
+                        graph, refs[i], baseFeature)) {
+                    ref = unique->index.toString();
+                }
+                else if (refs[i].seed.valid()) {
+                    continue;
+                }
+            }
+        }
+        ret.push_back(std::move(ref));
     }
     return ret;
 }
@@ -332,7 +538,7 @@ void DressUp::getAddSubShape(Part::TopoShape& addShape, Part::TopoShape& subShap
             if (base) {
                 baseShape = base->getBaseTopoShape(true);
                 baseShape.move(base->getLocation().Inverted());
-                if (base->getAddSubType() == Type::Additive) {
+                if (base->getAddSubType() == FeatureAddSub::Type::Additive) {
                     if (!baseShape.isNull() && baseShape.hasSubShape(TopAbs_SOLID)) {
                         shapes.emplace_back(shape.makeElementCut(baseShape.getShape()));
                     }

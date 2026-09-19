@@ -79,6 +79,19 @@ public:
      */
     virtual void setExpressions(std::map<App::ObjectIdentifier, App::ExpressionPtr>&& exprs) = 0;
 
+    /// I13/C1: fill empty topology seeds from unique Binding on the linked feature.
+    virtual void promoteWithGraph(const SemanticGraph& graph)
+    {
+        (void)graph;
+    }
+
+    /// D2: rewrite FaceN cache after remap. Does not drop seeds (C1).
+    virtual bool applySemanticReadPolicy(const SemanticGraph& graph)
+    {
+        (void)graph;
+        return false;
+    }
+
 protected:
     /**
      * @brief Handle document relabeling.
@@ -313,6 +326,9 @@ public:
     void afterRestore() override;
     void onContainerRestored() override;
 
+    void promoteWithGraph(const SemanticGraph& graph) override;
+    bool applySemanticReadPolicy(const SemanticGraph& graph) override;
+
     void getLinksTo(std::vector<App::ObjectIdentifier>& identifiers,
                     App::DocumentObject* obj,
                     const char* subname = nullptr,
@@ -366,6 +382,7 @@ private:
         std::string path;
         std::string expr;
         std::string comment;
+        SemanticReference semanticRef;
     };
     /**< Expressions are read from file to this map first before they are validated and inserted
      * into the actual map */

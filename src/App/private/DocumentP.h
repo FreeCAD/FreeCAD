@@ -46,6 +46,7 @@
 #include <App/StringHasher.h>
 #include <App/ExportInfo.h>
 #include <Base/UniqueNameManager.h>
+#include <App/SemanticDocumentState.h>
 
 // using VertexProperty = boost::property<boost::vertex_root_t, DocumentObject* >;
 using DependencyList = boost::adjacency_list<
@@ -106,6 +107,9 @@ struct DocumentP
     ExportInfo exportInfo;
 
     StringHasherRef Hasher {new StringHasher};
+
+    /// One SemanticGraph per document. Allocator survives undo (I5).
+    SemanticDocumentState semanticState;
 
     DocumentP();
 

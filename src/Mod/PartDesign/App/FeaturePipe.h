@@ -25,7 +25,12 @@
 
 #pragma once
 
+#include <App/SemanticId.h>
+#include <TopoDS_Shape.hxx>
+#include <string>
+#include <vector>
 #include "FeatureSketchBased.h"
+#include <Mod/Part/App/SemanticSourceCollector.h>
 #include <BRepOffsetAPI_MakePipeShell.hxx>
 
 namespace PartDesign
@@ -91,6 +96,32 @@ protected:
         const char* TypeName,
         const char* PropName
     ) override;
+
+    /// Pad-style capture: Generated Faces/Edges on the PipeShell,
+    /// then refreshNamedIndices onto the published sew+solid Shape.
+    using PipeFaceSeed = Part::SemanticSeededShape;
+    std::vector<PipeFaceSeed> lastPipeGenerated;
+    std::vector<PipeFaceSeed> lastPipeGeneratedEdges;
+    std::vector<App::ElementIndex> lastNamedFaceIndices;
+    std::vector<App::ElementIndex> lastNamedEdgeIndices;
+    /// Isolate diagnostic: Generated vs published-map counts. Not identity.
+    std::string lastPipeDiag;
+
+    void clearSemanticCapture();
+    void capturePipeMaker(
+        void* occMaker,
+        const TopoShape& preSewShell,
+        const TopoShape& published,
+        const std::vector<TopoDS_Shape>& addWireShapes,
+        BRepBuilderAPI_Sewing* sewer
+    );
+void emitCapturedPipe(
+        void* occMaker,
+        const TopoShape& preSewShell,
+        const TopoShape& published,
+        const std::vector<TopoDS_Shape>& addWireShapes,
+        BRepBuilderAPI_Sewing* sewer
+    );
 
 private:
     static const char* TypeEnums[];

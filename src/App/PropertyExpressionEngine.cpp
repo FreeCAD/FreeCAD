@@ -37,7 +37,9 @@
 #include <CXX/Objects.hxx>
 
 #include "PropertyExpressionEngine.h"
+#include "ExpressionParser.h"
 #include "ExpressionVisitors.h"
+#include "SemanticLinkSub.h"
 
 
 FC_LOG_LEVEL_INIT("App", true);
@@ -453,6 +455,14 @@ void PropertyExpressionEngine::Save(Base::Writer& writer) const
         if (!comment.empty()) {
             writer.Stream() << " comment=\"" << Property::encodeAttribute(comment) << "\"";
         }
+        if (it.second.expression) {
+            if (const SemanticReference* seed = it.second.expression->firstTopologySemanticRef()) {
+                const std::string stAttrs = semanticRefXmlAttributes(*seed);
+                if (!stAttrs.empty()) {
+                    writer.Stream() << stAttrs;
+                }
+            }
+        }
         writer.Stream() << "/>" << std::endl;
     }
     writer.decInd();
@@ -479,6 +489,40 @@ void PropertyExpressionEngine::Restore(Base::XMLReader& reader)
         info.expr = reader.getAttribute<const char*>("expression");
         if (reader.hasAttribute("comment")) {
             info.comment = reader.getAttribute<const char*>("comment");
+        }
+        if (reader.hasAttribute(SemanticLinkXml::Seed)) {
+            SemanticRefXmlFields fields;
+            fields.seed = reader.getAttribute<const char*>(SemanticLinkXml::Seed);
+            if (reader.hasAttribute(SemanticLinkXml::Kind)) {
+                fields.kind = reader.getAttribute<const char*>(SemanticLinkXml::Kind);
+            }
+            if (reader.hasAttribute(SemanticLinkXml::Role)) {
+                fields.role = reader.getAttribute<const char*>(SemanticLinkXml::Role);
+            }
+            if (reader.hasAttribute(SemanticLinkXml::Filter)) {
+                fields.filter = reader.getAttribute<const char*>(SemanticLinkXml::Filter);
+            }
+            if (reader.hasAttribute(SemanticLinkXml::Reducer)) {
+                fields.reducer = reader.getAttribute<const char*>(SemanticLinkXml::Reducer);
+            }
+            if (reader.hasAttribute(SemanticLinkXml::Fallback)) {
+                fields.fallback = reader.getAttribute<const char*>(SemanticLinkXml::Fallback);
+            }
+            if (reader.hasAttribute(SemanticLinkXml::Anchor)) {
+                fields.anchor = reader.getAttribute<const char*>(SemanticLinkXml::Anchor);
+            }
+            if (reader.hasAttribute(SemanticLinkXml::SameGenerator)) {
+                fields.sameGenerator =
+                    reader.getAttribute<const char*>(SemanticLinkXml::SameGenerator);
+            }
+            if (reader.hasAttribute(SemanticLinkXml::SameRole)) {
+                fields.sameRole = reader.getAttribute<const char*>(SemanticLinkXml::SameRole);
+            }
+            if (reader.hasAttribute(SemanticLinkXml::SameInstance)) {
+                fields.sameInstance =
+                    reader.getAttribute<const char*>(SemanticLinkXml::SameInstance);
+            }
+            info.semanticRef = semanticRefFromXmlFields(fields);
         }
     }
 
@@ -548,6 +592,9 @@ void PropertyExpressionEngine::tryRestoreExpression(DocumentObject* docObj,
                 Expression::parse(docObj, info.expr));
             if (expression) {
                 expression->comment = info.comment;
+                if (info.semanticRef.seed.valid()) {
+                    expression->restoreSemanticRef(info.semanticRef);
+                }
             }
             setValue(path, expression);
         }
@@ -613,6 +660,10 @@ void PropertyExpressionEngine::setValue(const ObjectIdentifier& path,
         }
         AtomicPropertyChange signaller(*this);
         expressions[usePath] = ExpressionInfo(expr);
+        auto* ownerObj = freecad_cast<DocumentObject*>(getContainer());
+        if (ownerObj && ownerObj->getDocument()) {
+            expr->promoteSemanticRefs(ownerObj->getDocument()->semanticGraph());
+        }
         expressionChanged(usePath);
         signaller.tryInvoke();
     }
@@ -1009,6 +1060,26 @@ bool PropertyExpressionEngine::adjustLink(const std::set<DocumentObject*>& inLis
     return true;
 }
 
+void PropertyExpressionEngine::promoteWithGraph(const SemanticGraph& graph)
+{
+    for (auto& e : expressions) {
+        if (e.second.expression) {
+            e.second.expression->promoteSemanticRefs(graph);
+        }
+    }
+}
+
+bool PropertyExpressionEngine::applySemanticReadPolicy(const SemanticGraph& graph)
+{
+    bool changed = false;
+    for (auto& e : expressions) {
+        if (e.second.expression && e.second.expression->applySemanticReadPolicy(graph)) {
+            changed = true;
+        }
+    }
+    return changed;
+}
+
 void PropertyExpressionEngine::updateElementReference(DocumentObject* feature,
                                                       bool reverse,
                                                       bool notify)
@@ -1018,16 +1089,28 @@ void PropertyExpressionEngine::updateElementReference(DocumentObject* feature,
         unregisterElementReference();
     }
     UpdateElementReferenceExpressionVisitor<PropertyExpressionEngine> v(*this, feature, reverse);
+    const SemanticGraph* graph = nullptr;
+    auto* ownerObj = freecad_cast<DocumentObject*>(getContainer());
+    if (ownerObj && ownerObj->getDocument()) {
+        graph = &ownerObj->getDocument()->semanticGraph();
+    }
+    bool elementReferenceChanged = false;
     for (auto& e : expressions) {
         if (e.second.expression) {
             e.second.expression->visit(v);
-            if (v.changed()) {
+            // Phase D order: remap first, then Binding rewrite. Do not drop seeds (C1).
+            const bool semanticChanged =
+                graph && e.second.expression->applySemanticReadPolicy(*graph);
+            // D2 rewrites the cached FaceN/EdgeN component without going through
+            // the remap visitor, so it must notify the same expression-change path.
+            if (v.changed() || semanticChanged) {
+                elementReferenceChanged = elementReferenceChanged || v.changed();
                 expressionChanged(e.first);
                 v.reset();
             }
         }
     }
-    if (feature && v.changed()) {
+    if (feature && elementReferenceChanged) {
         auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
         if (owner) {
             owner->onUpdateElementReference(this);

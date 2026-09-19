@@ -56,8 +56,13 @@
 #include <TopoDS_Shape.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 
+#include <optional>
+
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/PropertyLinks.h>
+#include <App/SemanticLinkSub.h>
+#include <App/SemanticReference.h>
 #include <Base/Console.h>
 #include <Base/Converter.h>
 #include <Base/Parameter.h>
@@ -1563,6 +1568,32 @@ DrawViewPart* DrawViewDimension::getViewPart() const
 // return the references controlling this dimension. 3d references are used when available
 // otherwise 2d references are returned. no checking is performed. Result is pairs of (object,
 // subName)
+
+namespace {
+// Strict I13 consume via App::tryResolveSubNameFromSeed (not I7
+// resolveSubNameFromSeed, which always returns FaceN fallback on fail).
+// TD25-E1: SemanticResolver + AcceptedCardinality::One (not uniqueBindingOnFeature);
+// lockstep AJ24-E1 / AG21-E1 fail-closed intent. Linked-null returns fallback here
+// (DrawHatch::resolvedSourceSub returns nullopt) — preserve that asymmetry.
+std::optional<std::string> resolvedLinkSubListSlot(const App::PropertyLinkSubList& prop, std::size_t i)
+{
+    const std::vector<std::string>& subs = prop.getSubValues();
+    const std::string fallback = (i < subs.size()) ? subs[i] : std::string();
+    const std::vector<App::SemanticReference>& refs = prop.getSemanticRefs();
+    if (i >= refs.size() || !refs[i].seed.valid()) {
+        return fallback;
+    }
+    const std::vector<App::DocumentObject*>& objs = prop.getValues();
+    App::DocumentObject* linked = (i < objs.size()) ? objs[i] : nullptr;
+    if (!linked) {
+        return fallback;
+    }
+    const App::SemanticGraph* graph = linked->getDocument() ? &linked->getDocument()->semanticGraph() : nullptr;
+    return App::tryResolveSubNameFromSeed(graph, refs[i],
+        static_cast<App::ObjectId>(linked->getID()), fallback);
+}
+}  // namespace
+
 ReferenceVector DrawViewDimension::getEffectiveReferences() const
 {
     const std::vector<App::DocumentObject*>& objects3d = References3D.getValues();
@@ -1591,10 +1622,14 @@ ReferenceVector DrawViewDimension::getEffectiveReferences() const
         }
     }
     else {
-        // use 3d references
+        // use 3d references (strict I13 via tryResolveSubNameFromSeed; skip slot on nullopt.
+        // Not I7 resolveSubNameFromSeed always-fallback — stale FaceN must not look resolved.)
         size_t refCount = objects3d.size();
         for (size_t i = 0; i < refCount; i++) {
-            ReferenceEntry ref(objects3d.at(i), std::string(subElements3d.at(i)));
+            const auto sub = resolvedLinkSubListSlot(References3D, i);
+            if (!sub) continue;
+            const std::string fallback = i < subElements3d.size() ? subElements3d[i] : std::string();
+            ReferenceEntry ref(objects3d.at(i), sub->empty() ? fallback : *sub);
             effectiveRefs.push_back(ref);
         }
     }
@@ -1895,7 +1930,11 @@ void DrawViewDimension::setAll3DMeasurement()
     size_t end = Objs.size();
     size_t iObject = 0;
     for (; iObject < end; iObject++) {
-        static_cast<void>(measurement->addReference3D(Objs.at(iObject), Subs.at(iObject)));
+        const auto sub = resolvedLinkSubListSlot(References3D, iObject);
+        if (!sub) continue;
+        const std::string fallback = iObject < Subs.size() ? Subs[iObject] : std::string();
+        static_cast<void>(measurement->addReference3D(
+            Objs.at(iObject), sub->empty() ? fallback : *sub));
         // cache the referenced object
         m_3dObjectCache.insert(Objs.at(iObject)->getNameInDocument());
         // cache the parent object if available.  Ideally, we would handle deletion
@@ -2118,7 +2157,10 @@ ReferenceVector DrawViewDimension::getReferences3d() const
     ReferenceVector refs3d;
     size_t refCount = objects3d.size();
     for (size_t i = 0; i < refCount; i++) {
-        ReferenceEntry ref(objects3d.at(i), subElements3d.at(i));
+        const auto sub = resolvedLinkSubListSlot(References3D, i);
+        if (!sub) continue;
+        const std::string fallback = i < subElements3d.size() ? subElements3d[i] : std::string();
+        ReferenceEntry ref(objects3d.at(i), sub->empty() ? fallback : *sub);
         refs3d.push_back(ref);
     }
     return refs3d;

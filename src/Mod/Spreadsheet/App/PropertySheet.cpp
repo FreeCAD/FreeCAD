@@ -34,6 +34,7 @@
 #include <App/Expression.h>
 #include <App/ExpressionParser.h>
 #include <App/ExpressionVisitors.h>
+#include <App/SemanticLinkSub.h>
 #include <App/Property.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -1851,6 +1852,30 @@ PyObject* PropertySheet::getPyValue(PyObject* key)
     PY_CATCH
 }
 
+void PropertySheet::promoteWithGraph(const SemanticGraph& graph)
+{
+    // Phase E Spreadsheet dual-write: attach live seeds onto VariableExpression paths
+    // (C1 never overwrites a valid restored stSeed). Cell-range BindingType below is
+    // unrelated to semantic Binding.
+    for (auto& d : data) {
+        if (d.second && d.second->expression) {
+            d.second->expression->promoteSemanticRefs(graph);
+        }
+    }
+}
+
+bool PropertySheet::applySemanticReadPolicy(const SemanticGraph& graph)
+{
+    bool changed = false;
+    for (auto& d : data) {
+        if (d.second && d.second->expression
+            && d.second->expression->applySemanticReadPolicy(graph)) {
+            changed = true;
+        }
+    }
+    return changed;
+}
+
 void PropertySheet::afterRestore()
 {
     Base::FlagToggler<bool> flag(restoring);
@@ -1862,6 +1887,14 @@ void PropertySheet::afterRestore()
         for (auto& d : data) {
             d.second->afterRestore();
         }
+    }
+    if (owner && owner->getDocument()) {
+        const SemanticGraph& graph = owner->getDocument()->semanticGraph();
+        // afterRestore: promote seeds first, then D2 Binding rewrite (same order as
+        // ObjectIdentifier::promoteFromLiveGraph). Remap visitor runs later via
+        // onContainerRestored / updateElementReference.
+        promoteWithGraph(graph);
+        applySemanticReadPolicy(graph);
     }
 
     for (auto& v : _XLinks) {
@@ -1942,12 +1975,25 @@ void PropertySheet::updateElementReference(DocumentObject* feature, bool reverse
         unregisterElementReference();
     }
     UpdateElementReferenceExpressionVisitor<PropertySheet> visitor(*this, feature, reverse);
+    const SemanticGraph* graph = nullptr;
+    if (owner && owner->getDocument()) {
+        graph = &owner->getDocument()->semanticGraph();
+    }
     for (auto& d : data) {
         auto expr = d.second->expression.get();
         if (!expr) {
             continue;
         }
         expr->visit(visitor);
+        // Phase D order: remap first, then Binding rewrite. Do not drop seeds (C1).
+        // SS27-N1: Binding-only FaceN rewrite does not go through the remap visitor.
+        // PropertyExpressionEngine::updateElementReference dirties via expressionChanged
+        // when applySemanticReadPolicy returns true; PropertySheet still only notifies on
+        // visitor.changed(). Do not invent setDirty/touch here without a remesh product
+        // case + TESTS (spreadsheet_face_seed scores initial dual-write, not Binding jump).
+        if (graph) {
+            expr->applySemanticReadPolicy(*graph);
+        }
     }
     if (feature && visitor.changed()) {
         auto owner = dynamic_cast<App::DocumentObject*>(getContainer());

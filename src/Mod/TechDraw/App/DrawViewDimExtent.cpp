@@ -52,7 +52,10 @@ DrawViewDimExtent::DrawViewDimExtent(void)
     ADD_PROPERTY_TYPE(Source, (nullptr, nullptr), "", (App::PropertyType)(App::Prop_Output), "View containing the  dimension");
     Source.setScope(App::LinkScope::Global);
 
-    //Source3d is a candidate for deprecation as References3D contains the same information
+    // Source3d is a candidate for deprecation as References3D contains the same information.
+    // TD8-P1: 3d extent already goes through DrawViewDimension::getEffectiveReferences()
+    // (References3D + tryResolveSubNameFromSeed). Source3d itself has no seed consume —
+    // do not dual-wire seed rewrite here without deprecating Source3d first.
     ADD_PROPERTY_TYPE(Source3d, (nullptr, nullptr), "", (App::PropertyType)(App::Prop_Output), "3D geometry to be dimensioned");
     Source3d.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(DirExtent ,(0), "", App::Prop_Output, "Horizontal / Vertical");

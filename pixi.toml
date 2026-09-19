@@ -195,8 +195,13 @@ configure-rel-with-deb-info = { cmd = [ "cmake", "--preset", "conda-windows-rel-
 configure-debug = { cmd = [ "cmake", "--preset", "conda-windows-debug", "-DCMAKE_GENERATOR_PLATFORM=", "-DCMAKE_GENERATOR_TOOLSET=", "{{ extra_args }}" ], args = [{ "arg" = "extra_args", "default" = "" }], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 configure-release = { cmd = [ "cmake", "--preset", "conda-windows-release", "-DCMAKE_GENERATOR_PLATFORM=", "-DCMAKE_GENERATOR_TOOLSET=" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 freecad-rel-with-deb-info = { cmd = [ ".pixi/envs/default/Library/bin/FreeCAD.exe" ], depends-on = ["install-rel-with-deb-info"]}
-freecad-debug = { cmd = [ ".pixi/envs/default/Library/bin/FreeCAD.exe" ], depends-on = ["install-debug"]}
-freecad-release = { cmd = [ ".pixi/envs/default/Library/bin/FreeCAD.exe" ], depends-on = ["install-release"]}
+# Interactive GUI: force native Windows QPA (undo leftover QT_QPA_PLATFORM=offscreen from CTest).
+freecad-debug = { cmd = [ ".pixi/envs/default/Library/bin/FreeCAD.exe" ], depends-on = ["install-debug"], env = { QT_QPA_PLATFORM = "windows" } }
+freecad-release = { cmd = [ ".pixi/envs/default/Library/bin/FreeCAD.exe" ], depends-on = ["install-release"], env = { QT_QPA_PLATFORM = "windows" } }
+# Default CTest excludes Qt-labelled widget tests — they abort headless when offscreen path is wrong.
+test-debug = { cmd = ["ctest", "--test-dir", "build/debug", "--output-on-failure", "-LE", "Qt"] }
+test-debug-qt = { cmd = ["ctest", "--test-dir", "build/debug", "--output-on-failure", "-L", "Qt"] }
+test-debug-all = { cmd = ["ctest", "--test-dir", "build/debug", "--output-on-failure"] }
 
 [tasks]
 initialize = { cmd = ["git", "submodule", "update", "--init", "--recursive"]}
@@ -213,8 +218,8 @@ install-rel-with-deb-info = { cmd = ["cmake", "--install", "build/relWithDebInfo
 install-debug = { cmd = ["cmake", "--install", "build/debug"]}
 install-release = { cmd = ["cmake", "--install", "build/release"]}
 test-rel-with-deb-info = { cmd = ["ctest", "--test-dir", "build/relWithDebInfo"]}
-test-debug = { cmd = ["ctest", "--test-dir", "build/debug"]}
-test-release = { cmd = ["ctest", "--test-dir", "build/release"]}
+test-debug = { cmd = ["ctest", "--test-dir", "build/debug", "--output-on-failure"]}
+test-release = { cmd = ["ctest", "--test-dir", "build/release", "--output-on-failure"]}
 freecad-rel-with-deb-info = "build/relWithDebInfo/bin/FreeCAD"
 freecad-debug = "build/debug/bin/FreeCAD"
 freecad-release = "build/release/bin/FreeCAD"

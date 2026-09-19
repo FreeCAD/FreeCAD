@@ -26,6 +26,7 @@
 #pragma once
 
 #include "FeatureAddSub.h"
+#include "SemanticOpcode.h"
 
 namespace PartDesign
 {
@@ -62,15 +63,42 @@ public:
     // add argument to return the selected face that edges were derived from
     void getContinuousEdges(Part::TopoShape, std::vector<std::string>&, std::vector<std::string>&);
     // Todo: Post-TNP the above two versions should be able to be factored out.
-    std::vector<TopoShape> getContinuousEdges(const TopoShape& shape);
+    std::vector<TopoShape> getContinuousEdges(const TopoShape& shape,
+                                              const App::SemanticGraph* graph = nullptr);
 
-    std::vector<TopoShape> getFaces(const TopoShape& shape);
+    std::vector<TopoShape> getFaces(const TopoShape& shape,
+                                    const App::SemanticGraph* graph = nullptr);
+    /// Return selected Face subnames, carrying a uniquely resolved live slot
+    /// into the maker. Seed present but non-unique Binding resolve → skip
+    /// (D9-S1 fail-closed / silence; match Facebinder). Seedless FaceN-only
+    /// selections still pass through (preserve Face UX).
+    std::vector<std::string> getFaceSubValues(const App::SemanticGraph* graph) const;
+    /// Return selected Edge subnames, carrying a uniquely resolved live slot
+    /// into the maker. Seed present but non-unique → skip (D9-S1 sibling).
+    std::vector<std::string> getEdgeSubValues(const App::SemanticGraph* graph) const;
     void getAddSubShape(Part::TopoShape& addShape, Part::TopoShape& subShape) override;
     void updatePreviewShape() override;
 
 protected:
+    /// Restore/recompute gate: valid cached Shape with no durable STG1 for this feature.
+    bool isSemanticRepublishPass(const App::SemanticGraph* graph) const;
+    /// Fill filletEdges / filletAdjacentFaces from Base semantic refs (Fillet/Chamfer).
+    void collectDressUpBaseSeeds(AfterExecuteRequest& req) const;
+    std::optional<App::SemanticBinding> uniqueResolvedDressUpBinding(
+        const App::SemanticGraph* graph,
+        const App::SemanticId& seed,
+        App::ObjectId linkedFeature,
+        App::SemanticKind expectedKind) const;
+    void retainResolvedDressUpSeeds(const App::SemanticGraph* graph,
+                                    App::ObjectId linkedFeature,
+                                    App::SemanticKind expectedKind,
+                                    std::vector<App::SemanticId>& seeds) const;
     void onChanged(const App::Property* prop) override;
     void onBaseFeatureRerouted(App::DocumentObject* oldBase, App::DocumentObject* newBase) override;
+    /// Before edge/face gather: App PropertyLinkSub element-reference refresh
+    /// against current Base support (manual-3-dressup-relink-a). Unique geometry
+    /// match relinks EdgeN/FaceN; 0 or many stay Invalid/Missing (I13).
+    void refreshBaseElementReferences();
 };
 
 }  // namespace PartDesign

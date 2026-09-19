@@ -88,11 +88,55 @@ class Facebinder(DraftObject):
         import Part
 
         faces = []
+        srefs = []
         try:
+            srefs = obj.getSemanticRefs("Faces")
+        except Exception:
+            srefs = []
+        try:
+            slot = 0
             for sel in obj.Faces:
                 for sub in sel[1]:
-                    if "Face" in sub:
-                        face = Part.getShape(sel[0], sub, needSubElement=True, retType=0)
+                    use = sub
+                    if slot < len(srefs):
+                        rec = srefs[slot] or {}
+                        if rec.get("seed"):
+                            # Facebinder consumes exactly one live Face Binding.
+                            # An ambiguous/missing or cross-kind seed must not
+                            # fall back to a stale FaceN cache and become a
+                            # first-row-wins face (strict I13). DressUp
+                            # getFaceSubValues is likewise fail-closed (D9-S1).
+                            if (rec.get("kind") != "F"
+                                    or rec.get("resolvedUnique") is False
+                                    or (rec.get("resolvedUnique") is not None
+                                        and rec.get("resolutionState") in {
+                                            "Ambiguous", "Incompatible", "Missing"
+                                        })):
+                                slot += 1
+                                continue
+                            if rec.get("resolvedUnique") is True:
+                                # D26-F1: when Unique, use only the live resolved
+                                # name — never soft-retain fallback/sub FaceN
+                                # (empty resolved → skip; fail-closed I13).
+                                cand = rec.get("resolved")
+                                if not cand:
+                                    slot += 1
+                                    continue
+                                use = cand
+                            else:
+                                # Restore window: resolvedUnique is None when no
+                                # live Binding yet (DocumentObjectPy). Retain
+                                # FaceN fallback until first recompute.
+                                use = rec.get("fallback") or sub
+                        else:
+                            cand = rec.get("fallback") or sub
+                            if cand:
+                                use = cand
+                    slot += 1
+                    if "Face" not in use and "Face" in sub:
+                        use = sub
+                    if "Face" in use:
+                        face = Part.getShape(sel[0], use, needSubElement=True, retType=0)
                         faces.append(face)
         except Part.OCCError:
             self._report_face_error(obj)

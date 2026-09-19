@@ -27,6 +27,7 @@
 
 #include <Mod/Part/App/Part2DObject.h>
 #include "FeatureAddSub.h"
+#include "SemanticOpcode.h"
 
 class gp_Dir;
 class gp_Lin;
@@ -164,6 +165,19 @@ public:
     static const char* StartTypesEnums[];
 
 protected:
+    /// True when a restored cached shape needs the normal maker path to republish
+    /// missing semantic history. Shared by additive and subtractive sweeps.
+    bool isSemanticRepublishPass(const App::SemanticGraph* graph) const;
+
+    /// Collect the semantic seeds for this feature linked profile.
+    /// Sketch and non-Sketch profiles use the same I13-safe policy.
+    AfterExecuteRequest collectProfileSemanticSeeds() const;
+
+    /// Return Profile subnames with uniquely resolved live Face slots carried
+    /// into profile-based makers. Sketch edge/region slots and legacy links
+    /// retain their stored subnames.
+    std::vector<std::string> getProfileSubValuesForMaker() const;
+
     /// Set while onDocumentRestored() rewrites deprecated properties, so that the deprecation
     /// notices in onChanged() stay quiet for the migration's own writes.
     bool migratingDeprecatedProperties = false;
@@ -175,14 +189,19 @@ protected:
     static void getFaceFromLinkSub(TopoDS_Face& upToFace, const App::PropertyLinkSub& refFace);
 
     /// Extract a face from a given LinkSub
-    static void getUpToFaceFromLinkSub(TopoShape& upToFace, const App::PropertyLinkSub& refFace);
+    static void getUpToFaceFromLinkSub(
+        TopoShape& upToFace,
+        const App::PropertyLinkSub& refFace,
+        const std::string* resolvedSubname = nullptr
+    );
 
     double getStartReferenceOffset(
         const TopoShape& profileShape,
         const App::PropertyLinkSub& reference,
         const gp_Dir& direction,
         double offset,
-        const TopLoc_Location& invObjLoc
+        const TopLoc_Location& invObjLoc,
+        const std::string* resolvedSubname = nullptr
     ) const;
     static TopoShape moveProfileToStart(
         const TopoShape& profileShape,

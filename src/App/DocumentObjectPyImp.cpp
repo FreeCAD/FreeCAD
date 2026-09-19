@@ -23,6 +23,8 @@
  ***************************************************************************/
 
 
+#include <sstream>
+#include <iomanip>
 #include <Base/GeometryPyCXX.h>
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
@@ -39,6 +41,8 @@
 #include "GeoFeatureGroupExtension.h"
 #include "GroupExtension.h"
 #include "MainThreadSignal.h"
+#include "PropertyLinks.h"
+#include "SemanticLinkSub.h"
 #include "Services.h"
 
 
@@ -88,6 +92,131 @@ PyObject* DocumentObjectPy::isAttachedToDocument(PyObject* args) const
     DocumentObject* object = this->getDocumentObjectPtr();
     bool ok = object->isAttachedToDocument();
     return Py::new_reference_to(Py::Boolean(ok));
+}
+
+PyObject* DocumentObjectPy::getSemanticRefs(PyObject* args) const
+{
+    const char* propName = nullptr;
+    if (!PyArg_ParseTuple(args, "s", &propName)) {
+        return nullptr;
+    }
+
+    DocumentObject* object = getDocumentObjectPtr();
+    Property* prop = object->getPropertyByName(propName);
+    if (!prop) {
+        PyErr_Format(PyExc_AttributeError, "unknown property '%s'", propName);
+        return nullptr;
+    }
+
+    const SemanticGraph* graph = nullptr;
+    if (Document* doc = object->getDocument()) {
+        graph = &doc->semanticGraph();
+    }
+
+    const std::vector<SemanticReference>* refs = nullptr;
+    const std::vector<std::string>* subs = nullptr;
+    std::vector<DocumentObject*> linked;
+    if (auto* p = freecad_cast<PropertyLinkSub*>(prop)) {
+        if (graph) {
+            p->applySemanticReadPolicy(*graph);
+        }
+        refs = &p->getSemanticRefs();
+        subs = &p->getSubValues();
+        linked.assign(subs->size(), p->getValue());
+    }
+    else if (auto* p = freecad_cast<PropertyLinkSubList*>(prop)) {
+        if (graph) {
+            p->applySemanticReadPolicy(*graph);
+        }
+        refs = &p->getSemanticRefs();
+        subs = &p->getSubValues();
+        linked = p->getValues();
+    }
+    else if (auto* p = freecad_cast<PropertyXLink*>(prop)) {
+        if (graph) {
+            p->applySemanticReadPolicy(*graph);
+        }
+        refs = &p->getSemanticRefs();
+        subs = &p->getSubValues();
+        linked.assign(subs->size(), p->getValue());
+    }
+    else {
+        PyErr_Format(PyExc_TypeError,
+                     "property '%s' is not a LinkSub / LinkSubList / XLink",
+                     propName);
+        return nullptr;
+    }
+
+    Py::List out;
+    const std::size_t n = subs->size();
+    for (std::size_t i = 0; i < n; ++i) {
+        const std::string& fallback = (*subs)[i];
+        SemanticReference sref;
+        if (refs && i < refs->size()) {
+            sref = (*refs)[i];
+        }
+        DocumentObject* link = i < linked.size() ? linked[i] : nullptr;
+        const ObjectId linkedId =
+            link ? static_cast<ObjectId>(link->semanticProjectionFeatureId()) : 0;
+        const std::string resolved =
+            resolveSubNameFromSeed(graph, sref.seed, linkedId, fallback);
+
+        // Expose whether the resolved name came from one live, feature-scoped
+        // Binding. Consumers that require one topology element must not treat
+        // the unchanged fallback returned for an ambiguous seed as resolved.
+        bool hasLiveResolution = false;
+        bool hasUniqueLiveResolution = false;
+        ResolutionState liveResolutionState = sref.state;
+        if (graph && graph->hasBindings() && sref.seed.valid() && linkedId != 0) {
+            // Keep the producer state separate from the one-element consumer
+            // contract below. A RequireOne consumer may turn a multi-binding
+            // result into Incompatible, but the Python inspection API should
+            // still display the underlying Ambiguous/ResolvedSet state rather
+            // than hiding why the cached fallback was retained.
+            const ResolutionResult liveResult = SemanticResolver::resolve(sref, *graph);
+            liveResolutionState = liveResult.state;
+            ReferenceRequirement requirement;
+            requirement.expectedKind = sref.kind;
+            requirement.acceptedCardinality = AcceptedCardinality::One;
+            const ResolutionResult result =
+                SemanticResolver::resolve(sref, *graph, &requirement);
+            hasLiveResolution = true;
+            if (result.state == ResolutionState::Resolved && result.bindings.size() == 1
+                && result.bindings.front().feature == linkedId
+                && result.bindings.front().index.index > 0) {
+                const std::string expectedType =
+                    sref.kind == SemanticKind::Face
+                        ? "Face"
+                        : (sref.kind == SemanticKind::Edge ? "Edge" : "Vertex");
+                hasUniqueLiveResolution = result.bindings.front().index.type == expectedType;
+            }
+        }
+
+        Py::Dict slot;
+        if (sref.seed.valid()) {
+            std::ostringstream hex;
+            hex << std::hex << sref.seed.handle;
+            slot.setItem("seed", Py::String(hex.str()));
+        }
+        else {
+            slot.setItem("seed", Py::String(""));
+        }
+        char kind[2] = {SemanticId::kindChar(sref.kind), 0};
+        slot.setItem("kind", Py::String(kind));
+        slot.setItem("fallback", Py::String(fallback));
+        slot.setItem("resolved", Py::String(resolved));
+        slot.setItem("resolutionState", Py::String(resolutionStateName(liveResolutionState)));
+        if (hasLiveResolution) {
+            slot.setItem("resolvedUnique", Py::Boolean(hasUniqueLiveResolution));
+        }
+        else {
+            // A restored seed has no live Binding before the first recompute;
+            // retain the legacy fallback window for existing Python consumers.
+            slot.setItem("resolvedUnique", Py::None());
+        }
+        out.append(slot);
+    }
+    return Py::new_reference_to(out);
 }
 
 PyObject* DocumentObjectPy::addProperty(PyObject* args, PyObject* kwd)

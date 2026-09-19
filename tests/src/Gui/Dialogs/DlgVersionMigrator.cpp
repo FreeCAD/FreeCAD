@@ -31,7 +31,7 @@
 
 #include "App/ApplicationDirectories.h"
 
-#include <src/App/InitApplication.h>
+#include <src/Gui/InitQtTest.h>
 
 
 class TestablePathMigrationWorker: public Gui::Dialog::PathMigrationWorker
@@ -90,7 +90,7 @@ class testPathMigrationWorker final: public QObject
 public:
     testPathMigrationWorker()
     {
-        tests::initApplication();
+        tests::initQtGuiTest(false);
     }
 
 private Q_SLOTS:
@@ -283,6 +283,6 @@ private Q_SLOTS:
 };
 
 
-QTEST_MAIN(testPathMigrationWorker)
+QTEST_APPLESS_MAIN(testPathMigrationWorker)
 
 #include "DlgVersionMigrator.moc"

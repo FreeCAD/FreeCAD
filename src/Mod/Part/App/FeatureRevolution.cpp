@@ -23,20 +23,175 @@
  ***************************************************************************/
 
 #include <BRepAdaptor_Curve.hxx>
+#include <BRepPrimAPI_MakeRevol.hxx>
 #include <gp_Ax1.hxx>
 #include <gp_Circ.hxx>
 #include <gp_Lin.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
 
+#include <deque>
+#include <memory>
+
 
 #include <App/Document.h>
+#include <App/SemanticDocumentState.h>
+#include <App/SemanticReference.h>
 #include <Base/Tools.h>
 #include "FeatureRevolution.h"
 #include "FaceMaker.h"
+#include "SemanticHistoryAdapter.h"
+#include "SemanticSourceCollector.h"
+#include "TopoShapeOpCode.h"
 
 
 using namespace Part;
+namespace
+{
+void publishRevolutionSemanticHistory(Revolution* self,
+                                     BRepPrimAPI_MakeRevol* maker,
+                                     const TopoShape& published)
+{
+    if (!self || !maker || !maker->IsDone() || published.isNull()) {
+        return;
+    }
+    App::SemanticGraph* graph = App::SemanticDocumentState::graphFor(self);
+    if (!graph && self->getDocument()) {
+        graph = &self->getDocument()->semanticGraph();
+    }
+    if (!graph) {
+        return;
+    }
+    const App::ObjectId selfId = static_cast<App::ObjectId>(self->getID());
+    App::EvalSerial eval = 0;
+    if (App::Document* doc = self->getDocument()) {
+        eval = doc->semanticState().currentEval();
+    }
+    std::deque<TopoDS_Shape> held;
+    struct Candidate {
+        App::ElementIndex index;
+        App::SemanticKind kind = App::SemanticKind::Face;
+    };
+    std::vector<Candidate> candidates;
+    auto boundAt = [graph, selfId](const App::ElementIndex& index) {
+        return App::shouldRefuseBoundAt(graph, selfId, index);
+    };
+    auto addImage = [&](const TopoDS_Shape& image) {
+        if (image.IsNull()
+            || (image.ShapeType() != TopAbs_FACE && image.ShapeType() != TopAbs_EDGE)) {
+            return;
+        }
+        for (const auto& prior : held) {
+            if (prior.IsSame(image) || prior.IsPartner(image)) {
+                return;
+            }
+        }
+        const App::ElementIndex index = Part::uniqueNamedIndexOnPublished(published, image);
+        if (!isNamedIndex(index)) {
+            return;
+        }
+        if (boundAt(index)) {
+            return;
+        }
+        // A3: defer recordGenerated until after fromMaker / uniqueOneImageGenerated
+        // / supplementLocatedInputs (Mirroring deferred-mint pattern). Provisional
+        // handles below are bookkeeping only - never written to the durable graph.
+        held.push_back(image);
+        Candidate candidate;
+        candidate.index = index;
+        candidate.kind = image.ShapeType() == TopAbs_FACE
+            ? App::SemanticKind::Face : App::SemanticKind::Edge;
+        candidates.push_back(candidate);
+    };
+    for (TopExp_Explorer ex(maker->Shape(), TopAbs_FACE); ex.More(); ex.Next()) {
+        addImage(ex.Current());
+    }
+    for (TopExp_Explorer ex(maker->Shape(), TopAbs_EDGE); ex.More(); ex.Next()) {
+        addImage(ex.Current());
+    }
+    if (candidates.empty()) {
+        // A4: TESTS *Diag gated (default off). Exact historical strings via
+        // testsPublishDiagSkip/Bound — enable FREECAD_TESTS_DIAG=1 or
+        // FreeCAD.setLogLevel('PartTestsDiag','Message'). Emit/I13 unchanged.
+        Part::testsPublishDiagSkip("revolutionDiag", "no named maker images");
+        return;
+    }
+    // Provisional SemanticIds (handle = 1..N) drive fromMaker uniqueness without
+    // minting orphans. Real seeds are allocated only for surviving unique slots.
+    std::vector<std::pair<App::SemanticId, const void*>> inputs;
+    inputs.reserve(candidates.size());
+    for (std::size_t i = 0; i < candidates.size(); ++i) {
+        App::SemanticId provisional;
+        provisional.handle = static_cast<App::SemanticHandle>(i + 1);
+        provisional.kind = candidates[i].kind;
+        inputs.push_back({provisional, static_cast<const void*>(&held[i])});
+    }
+    auto indexOf = [&published](const void* occ) -> App::ElementIndex {
+        if (!occ) {
+            return App::ElementIndex();
+        }
+        const TopoDS_Shape& shape = *static_cast<const TopoDS_Shape*>(occ);
+        return Part::uniqueNamedIndexOnPublished(published, shape);
+    };
+    const HistoryTable makerHistory = SemanticHistoryAdapter::fromMaker(maker, inputs, indexOf);
+    HistoryTable unique = SemanticHistoryAdapter::uniqueOneImageGenerated(makerHistory);
+    // A non-empty but unusable maker history is an I13 failure, not permission
+    // to mint a fresh binding from the published-shape fallback.
+    if (makerHistory.empty()) {
+        for (const auto& pair : inputs) {
+            HistoryRecord record;
+            record.fromSeed = pair.first;
+            record.kind = App::EventKind::Generated;
+            record.toIndex = indexOf(pair.second);
+            record.outputKind = record.toIndex.type == "Edge"
+                ? App::SemanticKind::Edge : App::SemanticKind::Face;
+            if (isNamedIndex(record.toIndex)) {
+                unique.push_back(record);
+            }
+        }
+        unique = SemanticHistoryAdapter::uniqueOneImageGenerated(unique);
+    }
+    else if (!unique.empty()) {
+        // MakeRevol fromMaker often uniquely keeps Faces while vertical Edges
+        // are unmodified survivors only present in locate inputs (Vertex-rooted
+        // ElementMap). Supplement uncovered Edge slots without undoing Pass-32
+        // refuse when unique is empty.
+        unique = SemanticHistoryAdapter::supplementLocatedInputs(unique, inputs, indexOf);
+    }
+    HistoryTable toApply;
+    std::vector<App::SemanticId> seeds;
+    for (const HistoryRecord& record : unique) {
+        if (!isNamedIndex(record.toIndex)) {
+            continue;
+        }
+        App::SemanticKind kind = record.outputKind;
+        if (kind != App::SemanticKind::Face && kind != App::SemanticKind::Edge) {
+            kind = record.toIndex.type == "Edge"
+                ? App::SemanticKind::Edge : App::SemanticKind::Face;
+        }
+        // A3 deferred mint: allocate only for unique surviving Face/Edge slots.
+        const App::SemanticId seed = graph->recordGenerated(
+            kind, Part::OpCodes::Revolve, selfId, eval, App::SemanticRole::None);
+        if (!seed.valid()) {
+            continue;
+        }
+        HistoryRecord minted = record;
+        minted.fromSeed = seed;
+        minted.kind = App::EventKind::Generated;
+        minted.outputKind = kind;
+        toApply.push_back(minted);
+        seeds.push_back(seed);
+    }
+    if (toApply.empty()) {
+        Part::testsPublishDiagSkip("revolutionDiag", "no unique images");
+        return;
+    }
+    SemanticHistoryAdapter::applyHistory(
+        graph, selfId, eval, Part::OpCodes::Revolve, seeds, toApply);
+    Part::testsPublishDiagBound("revolutionDiag", toApply.size(), toApply.size());
+}
+
+}  // namespace
 
 App::PropertyFloatConstraint::Constraints Revolution::angleRangeU = {-360.0, 360.0, 1.0};
 
@@ -219,17 +374,23 @@ App::DocumentObjectExecReturn* Revolution::execute()
             sourceShape.setShape(sourceShape.getShape().Moved(loc));
         }
         TopoShape revolve(0, getDocument()->getStringHasher());
-        revolve.makeElementRevolve(
-            sourceShape,
-            revAx,
-            angle,
-            Solid.getValue() ? FaceMakerClass.getValue() : 0
-        );
+        if (Solid.getValue() && !sourceShape.hasSubShape(TopAbs_FACE)) {
+            if (!sourceShape.hasSubShape(TopAbs_WIRE)) {
+                sourceShape = sourceShape.makeElementWires();
+            }
+            sourceShape = sourceShape.makeElementFace(nullptr, FaceMakerClass.getValue());
+        }
+        auto liveRevol = std::make_unique<BRepPrimAPI_MakeRevol>(sourceShape.getShape(), revAx, angle);
+        if (!liveRevol->IsDone() || liveRevol->Shape().IsNull()) {
+            return new App::DocumentObjectExecReturn("Resulting shape is null");
+        }
+        revolve.makeElementShape(*liveRevol, sourceShape, Part::OpCodes::Revolve);
         if (revolve.isNull()) {
             return new App::DocumentObjectExecReturn("Resulting shape is null");
         }
         this->Shape.setValue(revolve);
-        return Part::Feature::execute();
+        publishRevolutionSemanticHistory(this, liveRevol.get(), revolve);
+        return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

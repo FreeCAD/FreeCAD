@@ -27,6 +27,9 @@
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
+#include <App/SemanticId.h>
+#include <TopoDS_Shape.hxx>
+#include <vector>
 #include "FeatureSketchBased.h"
 
 class gp_Dir;
@@ -121,6 +124,7 @@ protected:
         double length,
         double taperAngleDeg,
         App::PropertyLinkSub& upToFacePropHandle,       // e.g., &UpToFace or &UpToFace2
+        const std::string& resolvedUpToFaceSubname,
         App::PropertyLinkSubList& upToShapePropHandle,  // e.g., &UpToShape or &UpToShape2
         gp_Dir dir,
         double offsetVal,
@@ -128,6 +132,29 @@ protected:
         const TopoShape& base,      // The base shape for context (global CS)
         TopLoc_Location& invObjLoc  // MUST be passed. Cannot be re-accessed, see #26677
     );
+
+    /// Prism/boolean history capture for Pad/Pocket Binding. FaceN/EdgeN come
+    /// from named OCCT indices only (findShape type-local: Edge8 is 8).
+    /// Never sequential FaceN/EdgeN. Never resetElementMap.
+    struct PrismFaceSeed
+    {
+        App::SemanticId fromSeed;
+        TopoDS_Shape shape;
+    };
+    std::vector<PrismFaceSeed> lastPrismGenerated;
+    std::vector<App::ElementIndex> lastNamedFaceIndices;
+    std::vector<PrismFaceSeed> lastPrismGeneratedEdges;
+    std::vector<App::ElementIndex> lastNamedEdgeIndices;
+    App::SemanticId lastCutRemnant;
+
+    void clearSemanticCapture();
+    void capturePrismMaker(void* occMaker, const TopoShape& prism, const TopoShape& sketch);
+    void captureBooleanHistory(void* occMaker,
+                               const TopoShape& result,
+                               const TopoShape& baseShape,
+                               const TopoShape& tool);
+    void refreshNamedIndices(const TopoShape& published);
+    void publishSemanticHistory(const TopoShape& published);
 };
 
 }  // namespace PartDesign

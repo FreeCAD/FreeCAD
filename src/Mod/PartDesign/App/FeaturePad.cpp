@@ -31,6 +31,9 @@
 
 
 #include <App/DocumentObject.h>
+#include "SemanticOpcode.h"
+#include <App/SemanticDocumentState.h>
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 
@@ -120,5 +123,23 @@ Pad::Pad()
 
 App::DocumentObjectExecReturn* Pad::execute()
 {
-    return buildExtrusion(ExtrudeOption::MakeFace | ExtrudeOption::MakeFuse);
+    App::DocumentObjectExecReturn* ret =
+        buildExtrusion(ExtrudeOption::MakeFace | ExtrudeOption::MakeFuse);
+    App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
+    App::ObjectId fid = static_cast<App::ObjectId>(getID());
+    App::EvalSerial eval = 0;
+    AfterExecuteRequest req;
+    if (App::Document* doc = getDocument()) {
+        eval = doc->semanticState().currentEval();
+        if (App::DocumentObject* profile = Profile.getValue()) {
+            req = collectProfileSemanticSeeds();
+        }
+    }
+    // Product: named OCCT indices from FeatureExtrude history only.
+    // allowSequentialFaceN stays false (I10 / I13). Never resetElementMap.
+    req.namedFaceIndices = lastNamedFaceIndices;
+    req.namedEdgeIndices = lastNamedEdgeIndices;
+    req.allowSequentialFaceN = false;
+    SemanticEmitter::afterExecute(graph, Opcode::Pad, fid, eval, req);
+    return ret;
 }

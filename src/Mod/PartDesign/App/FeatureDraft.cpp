@@ -42,17 +42,26 @@
 #include <gp_Pln.hxx>
 
 
+#include <deque>
+
 #include <App/Datums.h>
 #include <App/Document.h>
+#include <App/PropertyLinks.h>
+#include <App/SemanticDocumentState.h>
+#include <App/ElementNamingUtils.h>
+#include <boost/algorithm/string/predicate.hpp>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 #include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/App/TopoShapeOpCode.h>
+#include <Mod/Part/App/SemanticHistoryAdapter.h>
 
 #include "FeatureDraft.h"
 #include "DatumLine.h"
 #include "DatumPlane.h"
+#include "SemanticOpcode.h"
 
 
 using namespace PartDesign;
@@ -112,7 +121,41 @@ App::DocumentObjectExecReturn* Draft::execute()
         return new App::DocumentObjectExecReturn(e.what());
     }
 
-    // Faces where draft should be applied
+    App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
+    App::ObjectId fid = static_cast<App::ObjectId>(getID());
+    App::EvalSerial eval = 0;
+    AfterExecuteRequest req;
+    std::vector<App::SemanticReference> namedFaceReferences;
+    if (App::Document* doc = getDocument()) {
+        eval = doc->semanticState().currentEval();
+    }
+    // Draft.Base is faces, not edges.
+    for (const App::SemanticReference& ref : Base.getSemanticRefs()) {
+        if (!ref.seed.valid()) {
+            continue;
+        }
+        if ((ref.seed.kind == App::SemanticKind::Face || ref.kind == App::SemanticKind::Face)
+            && appendUniqueSemanticSeed(req.draftFaces, ref.seed)) {
+            namedFaceReferences.push_back(ref);
+        }
+    }
+    // R2: resolve DraftFace before the maker. Missing / Incompatible
+    // skips the maker. Do not pick a similar-angle neighbour (I10).
+    // Seeded refs: strict preflight (I13 — no similar-angle neighbour).
+    // Empty seeds → do not skip (I7 FaceN fallback via SubVals / getFaces).
+    const Part::FilletPreflight pre = Part::SemanticHistoryAdapter::preflightNamedReferences(
+        graph, namedFaceReferences, App::SemanticKind::Face
+    );
+    if (pre.makerSkipped) {
+        SemanticEmitter::afterExecute(graph, Opcode::Draft, fid, eval, req);
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+            "Exception",
+            "Draft face Missing; maker skipped. No similar-angle neighbour substitution."
+        ));
+    }
+
+    // Faces where draft should be applied (FaceN cache emptiness gate).
+    // Maker faces themselves come from getFaces → getFaceSubValues (Binding rewrite).
     // Note: Cannot be const reference currently because of BRepOffsetAPI_DraftAngle::Remove() bug,
     // see below
     std::vector<std::string> SubVals = Base.getSubValuesStartsWith("Face");
@@ -142,9 +185,26 @@ App::DocumentObjectExecReturn* Draft::execute()
             pullDirection = gp_Dir(d.x, d.y, d.z);
         }
         else if (refDirection->isDerivedFrom<Part::Feature>()) {
+            // D26-P1 / QUALITY-SWEEP: soft Binding rewrite for PullDirection Edge
+            // (same contract as DressUp getEdgeSubValues). Unique live Edge Binding
+            // rewrites EdgeN; 0/many → soft-retain stored EdgeN (D9-S1). Datum Line
+            // paths above need no sub resolve. Fail-closed invent stays TESTS-gated.
             std::vector<std::string> subStrings = PullDirection.getSubValues();
             if (subStrings.empty() || subStrings[0].empty()) {
                 throw Base::ValueError("No pull direction reference specified");
+            }
+            const auto& pullRefs = PullDirection.getSemanticRefs();
+            if (graph && !pullRefs.empty() && pullRefs[0].seed.valid()) {
+                const App::ObjectId linked = static_cast<App::ObjectId>(
+                    refDirection->semanticProjectionFeatureId());
+                const char* element = Data::findElementName(subStrings[0].c_str());
+                const std::string el = element ? element : subStrings[0];
+                if (boost::starts_with(el, "Edge")) {
+                    if (const auto unique =
+                            uniqueEdgeBindingOnFeature(graph, pullRefs[0].seed, linked)) {
+                        subStrings[0] = unique->index.toString();
+                    }
+                }
             }
 
             Part::Feature* refFeature = static_cast<Part::Feature*>(refDirection);
@@ -181,9 +241,14 @@ App::DocumentObjectExecReturn* Draft::execute()
     gp_Pln neutralPlane;
     App::DocumentObject* refPlane = NeutralPlane.getValue();
     if (!refPlane) {
-        // Try to guess a neutral plane from the first selected face
-        // Get edges of first selected face
-        TopoDS_Shape face = TopShape.getSubShape(SubVals[0].c_str());
+        // Try to guess a neutral plane from the first selected face.
+        // Prefer Binding-resolved Face index (same path as getFaces/maker) so a
+        // stale FaceN cache cannot steer NeutralPlane while Draft.Base seeds
+        // still drive the maker (I13). Fall back to SubVals[0] when empty.
+        const std::vector<std::string> resolvedFaces = getFaceSubValues(graph);
+        const std::string& guessFace =
+            !resolvedFaces.empty() ? resolvedFaces.front() : SubVals[0];
+        TopoDS_Shape face = TopShape.getSubShape(guessFace.c_str());
         TopTools_IndexedMapOfShape mapOfEdges;
         TopExp::MapShapes(face, TopAbs_EDGE, mapOfEdges);
         bool found = false;
@@ -244,9 +309,34 @@ App::DocumentObjectExecReturn* Draft::execute()
             neutralPlane = Feature::makePlnFromPlane(refPlane);
         }
         else if (refPlane->isDerivedFrom<Part::Feature>()) {
+            // D26-N1 / QUALITY-SWEEP: explicit NeutralPlane Part::Feature LinkSub now
+            // soft-rewrites Face/Edge via the same unique Binding helpers as Base
+            // (getFaceSubValues / D9-N1 auto-guess). Unique → Binding index; 0/many →
+            // soft-retain FaceN/EdgeN (D9-S1). Fail-closed invent stays TESTS-gated.
+            // PropertyLinkSub afterRestore/updateElementReference already rematch
+            // via applySemanticReadPolicy; this is the execute-time live path.
             std::vector<std::string> subStrings = NeutralPlane.getSubValues();
             if (subStrings.empty() || subStrings[0].empty()) {
                 throw Base::ValueError("No neutral plane reference specified");
+            }
+            const auto& planeRefs = NeutralPlane.getSemanticRefs();
+            if (graph && !planeRefs.empty() && planeRefs[0].seed.valid()) {
+                const App::ObjectId linked =
+                    static_cast<App::ObjectId>(refPlane->semanticProjectionFeatureId());
+                const char* element = Data::findElementName(subStrings[0].c_str());
+                const std::string el = element ? element : subStrings[0];
+                if (boost::starts_with(el, "Face")) {
+                    if (const auto unique =
+                            uniqueResolvedFaceReference(graph, planeRefs[0], linked)) {
+                        subStrings[0] = unique->index.toString();
+                    }
+                }
+                else if (boost::starts_with(el, "Edge")) {
+                    if (const auto unique =
+                            uniqueEdgeBindingOnFeature(graph, planeRefs[0].seed, linked)) {
+                        subStrings[0] = unique->index.toString();
+                    }
+                }
             }
 
             Part::Feature* refFeature = static_cast<Part::Feature*>(refPlane);
@@ -320,10 +410,53 @@ App::DocumentObjectExecReturn* Draft::execute()
     Part::TopoShape baseShape(TopShape);
     baseShape.setTransform(Base::Matrix4D());
     try {
-        std::vector<TopoShape> faces = getFaces(baseShape);
+        std::vector<TopoShape> faces = getFaces(baseShape, graph);
 
         TopoShape shape({}, getDocument()->getStringHasher());
-        shape.makeElementDraft(baseShape, faces, pullDirection, angle, neutralPlane, reversed);
+        // Keep the maker alive for fromMaker (makeElementDraft discards it).
+        // `reversed` is the existing retry flag passed to makeElementDraft.
+        BRepOffsetAPI_DraftAngle mkDraft;
+        bool done = true;
+        const bool retry = reversed;
+        do {
+            if (faces.empty()) {
+                return new App::DocumentObjectExecReturn(
+                    QT_TRANSLATE_NOOP("Exception", "no faces can be used")
+                );
+            }
+            mkDraft.Init(baseShape.getShape());
+            done = true;
+            for (auto it = faces.begin(); it != faces.end(); ++it) {
+                mkDraft.Add(TopoDS::Face(it->getShape()), pullDirection, angle, neutralPlane);
+                if (!mkDraft.AddDone()) {
+                    Base::Console().warning(
+                        "Failed to add some face for drafting, skip\n"
+                    );
+                    done = false;
+                    faces.erase(it);
+                    break;
+                }
+            }
+        } while (retry && !done);
+        // Failed Add: do not Build/fromMaker on a half-built maker (open item
+        // from the ef027fd0 GUI AV writeup). Not the upstream OCCT fault;
+        // keeps history off a maker whose Add already failed.
+        if (!done) {
+            SemanticEmitter::afterExecute(graph, Opcode::Draft, fid, eval, req);
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                "Exception",
+                "Failed to add some face for drafting"
+            ));
+        }
+        mkDraft.Build();
+        if (!mkDraft.IsDone()) {
+            SemanticEmitter::afterExecute(graph, Opcode::Draft, fid, eval, req);
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                "Exception",
+                "Failed to create draft"
+            ));
+        }
+        shape.makeElementShape(mkDraft, baseShape, Part::OpCodes::Draft);
 
         if (shape.isNull()) {
             return new App::DocumentObjectExecReturn(
@@ -338,11 +471,70 @@ App::DocumentObjectExecReturn* Draft::execute()
             ));
         }
 
-        this->Shape.setValue(getSolid(shape));
+        shape = getSolid(shape);
+        this->Shape.setValue(shape);
+        // Bind Generated draft faces from the maker history. Empty / unnamed
+        // -> leave Binding empty (I10). Never sequential FaceN.
+        // Does not resetElementMap. Does not replace Shape.setValue.
+        std::deque<TopoDS_Shape> held;
+        std::vector<std::pair<App::SemanticId, const void*>> inputs;
+        if (graph && Base.getValue()) {
+            const App::ObjectId baseFeature =
+                static_cast<App::ObjectId>(Base.getValue()->semanticProjectionFeatureId());
+            for (const App::SemanticId& face : req.draftFaces) {
+                const auto unique = uniqueFaceBindingOnFeature(graph, face, baseFeature);
+                if (!unique) {
+                    continue;
+                }
+                TopoDS_Shape fs = baseShape.findShape(TopAbs_FACE, unique->index.index);
+                if (fs.IsNull()) {
+                    continue;
+                }
+                held.push_back(fs);
+                inputs.push_back({face, &held.back()});
+            }
+        }
+        auto indexOf = [&shape](const void* occ) -> App::ElementIndex {
+            App::ElementIndex idx;
+            if (!occ) {
+                return idx;
+            }
+            const auto& sub = *static_cast<const TopoDS_Shape*>(occ);
+            if (sub.IsNull() || sub.ShapeType() != TopAbs_FACE) {
+                return idx;
+            }
+            const int n = shape.findShape(sub);
+            if (n <= 0) {
+                return idx;
+            }
+            idx.type = "Face";
+            idx.index = n;
+            return idx;
+        };
+        // fromMaker only: empty table -> applyHistory half-map, no sequential FaceN (I13).
+        Part::HistoryTable hist = Part::SemanticHistoryAdapter::fromMaker(&mkDraft, inputs, indexOf);
+        Part::HistoryTable toApply;
+        toApply.reserve(hist.size());
+        for (const auto& rec : hist) {
+            if (App::shouldRefuseDressUpMintKind(rec.kind, graph, fid, rec.toIndex)) {
+                continue;
+            }
+            toApply.push_back(rec);
+            if (Part::isNamedIndex(rec.toIndex)) {
+                req.namedFaceIndices.push_back(rec.toIndex);
+            }
+        }
+        const Part::ApplyResult applied = Part::SemanticHistoryAdapter::applyHistory(
+            graph, fid, eval, "Draft", req.draftFaces, toApply);
+        if (applied.boundCount == 0) {
+            SemanticEmitter::afterExecute(graph, Opcode::Draft, fid, eval, req);
+        }
         return App::DocumentObject::StdReturn;
     }
+    catch (Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
+    }
     catch (Standard_Failure& e) {
-
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 }

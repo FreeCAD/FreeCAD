@@ -23,90 +23,34 @@
  ***************************************************************************/
 
 #include <cmath>
+#include <deque>
 #include <map>
 #include <string>
 #include <vector>
 
-#include <BRepOffset_Mode.hxx>
+#include <BRepOffset.hxx>
+#include <BRepOffsetAPI_MakeThickSolid.hxx>
+#include <GeomAbs_JoinType.hxx>
 #include <Precision.hxx>
+#include <Standard_Failure.hxx>
+#include <TopTools_ListOfShape.hxx>
 #include <TopoDS.hxx>
 
 
+#include <App/Document.h>
+#include <App/PropertyLinks.h>
+#include <App/SemanticDocumentState.h>
 #include <Base/Exception.h>
 #include "FeatureThickness.h"
+#include <Mod/Part/App/SemanticHistoryAdapter.h>
+#include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/App/TopoShapeOpCode.h>
+
+#include "SemanticOpcode.h"
 
 FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
 using namespace PartDesign;
-
-namespace
-{
-void ensureValidWall(const Part::TopoShape& wall, const char* message)
-{
-    if (wall.isNull() || !wall.isValid() || wall.countSubShapes(TopAbs_SOLID) != 1) {
-        throw Base::CADKernelError(message);
-    }
-}
-
-/** Build a wall centered on the retained shell of a solid.
- *
- * The closing faces are removed by the ordinary skin-thickness operation.
- * Two exact one-sided walls are built at half the requested thickness in
- * each direction and regular-fused across their shared source shell.
- */
-Part::TopoShape makeRectoVersoThickness(
-    const Part::TopoShape& solid,
-    const std::vector<Part::TopoShape>& closingFaces,
-    double thickness,
-    double tolerance,
-    bool intersection,
-    Part::JoinType join,
-    long tag
-)
-{
-    const double distance = std::abs(thickness) / 2.0;
-    if (distance <= tolerance) {
-        throw Base::CADKernelError("Recto-verso half-thickness must exceed the modeling tolerance");
-    }
-
-    // Signed offsets are only meaningful for consistently oriented solids.
-    // Imported and programmatically constructed solids are not guaranteed to
-    // have that orientation, so normalize it without resetting element names.
-    Part::TopoShape orientedSolid = solid;
-    orientedSolid.fixSolidOrientation();
-
-    constexpr auto skinMode = static_cast<short>(BRepOffset_Skin);
-    Part::TopoShape recto = orientedSolid.makeElementThickSolid(
-        closingFaces,
-        distance,
-        tolerance,
-        intersection,
-        false,
-        skinMode,
-        join,
-        "RectoVersoRecto"
-    );
-    Part::TopoShape verso = orientedSolid.makeElementThickSolid(
-        closingFaces,
-        -distance,
-        tolerance,
-        intersection,
-        false,
-        skinMode,
-        join,
-        "RectoVersoVerso"
-    );
-    ensureValidWall(recto, "Recto-verso positive-side wall is invalid");
-    ensureValidWall(verso, "Recto-verso negative-side wall is invalid");
-
-    Part::TopoShape result(tag);
-    result.makeElementFuse({recto, verso}, "RectoVerso", tolerance);
-    if (result.isNull() || !result.isValid() || result.countSubShapes(TopAbs_SOLID) != 1) {
-        throw Base::CADKernelError("Recto-verso thickness produced an invalid solid");
-    }
-    return result;
-}
-}  // namespace
 
 const char* PartDesign::Thickness::ModeEnums[] = {"Skin", "Pipe", "RectoVerso", nullptr};
 const char* PartDesign::Thickness::JoinEnums[] = {"Arc", "Intersection", nullptr};
@@ -153,22 +97,53 @@ App::DocumentObjectExecReturn* Thickness::execute()
         return new App::DocumentObjectExecReturn(e.what());
     }
 
-    // Set transform to identity so occ will perform this operation
-    // in local coordinates
-    TopShape.setTransform(Base::Matrix4D());
-    if (auto* base = getBaseObject(/* silent = */ true)) {
-        Placement.setValue(base->Placement.getValue());
+    App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
+    App::ObjectId fid = static_cast<App::ObjectId>(getID());
+    App::EvalSerial eval = 0;
+    AfterExecuteRequest req;
+    std::vector<App::SemanticReference> namedFaceReferences;
+    if (App::Document* doc = getDocument()) {
+        eval = doc->semanticState().currentEval();
+    }
+    // Thickness.Base is faces to open, not edges.
+    for (const App::SemanticReference& ref : Base.getSemanticRefs()) {
+        if (!ref.seed.valid()) {
+            continue;
+        }
+        if ((ref.seed.kind == App::SemanticKind::Face || ref.kind == App::SemanticKind::Face)
+            && appendUniqueSemanticSeed(req.thicknessFaces, ref.seed)) {
+            namedFaceReferences.push_back(ref);
+        }
+    }
+    // R2: resolve ThicknessFace before the maker. Missing / Incompatible
+    // skips the maker. Do not pick a neighbour (I10).
+    // Empty seeds → do not skip (I7 FaceN fallback).
+    const Part::FilletPreflight pre = Part::SemanticHistoryAdapter::preflightNamedReferences(
+        graph, namedFaceReferences, App::SemanticKind::Face
+    );
+    if (pre.makerSkipped) {
+        SemanticEmitter::afterExecute(graph, Opcode::Thickness, fid, eval, req);
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+            "Exception",
+            "Thickness face Missing; maker skipped. No neighbour substitution."
+        ));
     }
 
-    const std::vector<std::string>& subStrings = Base.getSubValues(true);
+    const std::vector<std::string> subStrings = getFaceSubValues(graph);
 
     // If the base has no sub elements listed just return a copy of the base.
     if (subStrings.empty()) {
+        // We must set the placement of the feature in case it's empty.
+        this->positionByBaseFeature();
         this->Shape.setValue(TopShape);
         return App::DocumentObject::StdReturn;
     }
 
-    std::map<int, std::vector<TopoShape>> closeFaces;
+    /* If the feature was ever empty, then Placement was set by positionByBaseFeature.  However,
+     * makeThickSolid apparently requires the placement to be empty, so we have to clear it */
+    this->Placement.setValue(Base::Placement());
+
+    std::map<int, std::vector<Part::TopoShape>> closeFaces;
     for (const auto& it : subStrings) {
         TopoDS_Shape face;
         try {
@@ -197,7 +172,7 @@ App::DocumentObjectExecReturn* Thickness::execute()
     auto mode = static_cast<int16_t>(Mode.getValue());
     auto join = Join.getValue();
 
-    std::vector<TopoShape> shapes;
+    std::vector<Part::TopoShape> shapes;
     auto count = static_cast<int>(TopShape.countSubShapes(TopAbs_SOLID));
     if (!count) {
         return new App::DocumentObjectExecReturn("No solid");
@@ -207,68 +182,147 @@ App::DocumentObjectExecReturn* Thickness::execute()
         join = 2;
     }
 
-    if (fabs(thickness) > 2 * tol) {
-        auto mapIterator = closeFaces.begin();
-        for (auto loopIndex = 1; loopIndex <= count; ++loopIndex) {
-            std::vector<TopoShape> dummy;
-            const auto* faces = &dummy;
-            TopoShape solid = TopShape;
-            // expect the sub element indexes in the map to be in order and matching our loop index,
-            // and effectively ignore them if they are not.
-            if (mapIterator != closeFaces.end() && loopIndex >= mapIterator->first) {
-                faces = &mapIterator->second;
-                solid = TopShape.getSubTopoShape(TopAbs_SOLID, mapIterator->first);
-            }
-            TopoShape res(0);
-            try {
-                const auto joinType = static_cast<Part::JoinType>(join);
-                if (mode == BRepOffset_RectoVerso) {
-                    res = makeRectoVersoThickness(
-                        solid,
-                        *faces,
-                        thickness,
-                        tol,
-                        intersection,
-                        joinType,
-                        getID()
-                    );
+    // Keep the maker alive for fromMaker (makeElementThickSolid discards it).
+    BRepOffsetAPI_MakeThickSolid mkThick;
+    bool makerDone = false;
+    try {
+        if (fabs(thickness) > 2 * tol) {
+            auto mapIterator = closeFaces.begin();
+            for (auto loopIndex = 1; loopIndex <= count; ++loopIndex) {
+                std::vector<Part::TopoShape> dummy;
+                const auto* faces = &dummy;
+                Part::TopoShape solid = TopShape;
+                // expect the sub element indexes in the map to be in order and matching our loop index,
+                // and effectively ignore them if they are not.
+                if (mapIterator != closeFaces.end() && loopIndex >= mapIterator->first) {
+                    faces = &mapIterator->second;
+                    solid = TopShape.getSubTopoShape(TopAbs_SOLID, mapIterator->first);
                 }
-                else {
-                    res = solid.makeElementThickSolid(
-                        *faces,
-                        thickness,
-                        tol,
-                        intersection,
-                        false,
-                        mode,
-                        joinType
-                    );
+                if (faces->empty()) {
+                    if (mapIterator != closeFaces.end()) {
+                        ++mapIterator;
+                    }
+                    continue;
                 }
+                TopTools_ListOfShape remFace;
+                for (const auto& face : *faces) {
+                    if (face.isNull()) {
+                        return new App::DocumentObjectExecReturn(
+                            QT_TRANSLATE_NOOP("Exception", "Invalid face reference")
+                        );
+                    }
+                    remFace.Append(face.getShape());
+                }
+                mkThick.MakeThickSolidByJoin(
+                    solid.getShape(),
+                    remFace,
+                    thickness,
+                    tol,
+                    BRepOffset_Mode(mode),
+                    intersection ? Standard_True : Standard_False,
+                    Standard_False,
+                    GeomAbs_JoinType(join)
+                );
+                if (!mkThick.IsDone()) {
+                    SemanticEmitter::afterExecute(graph, Opcode::Thickness, fid, eval, req);
+                    return new App::DocumentObjectExecReturn("Failed to make thick solid");
+                }
+                Part::TopoShape res(0);
+                res.makeElementShape(mkThick, solid, Part::OpCodes::Thicken);
                 shapes.push_back(res);
-            }
-            catch (Standard_Failure& e) {
-                FC_ERR("Exception on making thick solid: " << e.GetMessageString());
-                return new App::DocumentObjectExecReturn("Failed to make thick solid");
-            }
-            if (mapIterator != closeFaces.end()) {
-                ++mapIterator;
+                makerDone = true;
+                if (mapIterator != closeFaces.end()) {
+                    ++mapIterator;
+                }
             }
         }
-    }
 
-    TopoShape result(0);
-    if (shapes.size() > 1) {
-        result.makeElementFuse(shapes);
+        Part::TopoShape result(0);
+        if (shapes.size() > 1) {
+            result.makeElementFuse(shapes);
+        }
+        else if (shapes.empty()) {
+            result = TopShape;
+        }
+        else {
+            result = shapes.front();
+        }
+        // store shape before refinement
+        this->rawShape = result;
+        result = refineShapeIfActive(result);
+        result = getSolid(result);
+        this->Shape.setValue(result);
+
+        // Bind Generated thickness faces from the maker history. Empty / unnamed
+        // -> leave Binding empty (I10). Never sequential FaceN.
+        // Multi-solid fuse: skip fromMaker (images would not match the fuse).
+        // Does not resetElementMap. Does not replace Shape.setValue.
+        if (makerDone && shapes.size() == 1) {
+            Part::TopoShape shape = result;
+            std::deque<TopoDS_Shape> held;
+            std::vector<std::pair<App::SemanticId, const void*>> inputs;
+            if (graph && Base.getValue()) {
+                const App::ObjectId baseFeature =
+                    static_cast<App::ObjectId>(Base.getValue()->semanticProjectionFeatureId());
+                for (const App::SemanticId& face : req.thicknessFaces) {
+                    const auto unique = uniqueFaceBindingOnFeature(graph, face, baseFeature);
+                    if (!unique) {
+                        continue;
+                    }
+                    TopoDS_Shape fs = TopShape.findShape(TopAbs_FACE, unique->index.index);
+                    if (fs.IsNull()) {
+                        continue;
+                    }
+                    held.push_back(fs);
+                    inputs.push_back({face, &held.back()});
+                }
+            }
+            auto indexOf = [&shape](const void* occ) -> App::ElementIndex {
+                App::ElementIndex idx;
+                if (!occ) {
+                    return idx;
+                }
+                const auto& sub = *static_cast<const TopoDS_Shape*>(occ);
+                if (sub.IsNull() || sub.ShapeType() != TopAbs_FACE) {
+                    return idx;
+                }
+                const int n = shape.findShape(sub);
+                if (n <= 0) {
+                    return idx;
+                }
+                idx.type = "Face";
+                idx.index = n;
+                return idx;
+            };
+            // fromMaker only: empty table -> applyHistory half-map, no sequential FaceN (I13).
+            Part::HistoryTable hist = Part::SemanticHistoryAdapter::fromMaker(&mkThick, inputs, indexOf);
+            Part::HistoryTable toApply;
+            toApply.reserve(hist.size());
+            for (const auto& rec : hist) {
+                if (App::shouldRefuseDressUpMintKind(rec.kind, graph, fid, rec.toIndex)) {
+                    continue;
+                }
+                toApply.push_back(rec);
+                if (Part::isNamedIndex(rec.toIndex)) {
+                    req.namedFaceIndices.push_back(rec.toIndex);
+                }
+            }
+            const Part::ApplyResult applied = Part::SemanticHistoryAdapter::applyHistory(
+                graph, fid, eval, "Thickness", req.thicknessFaces, toApply);
+            if (applied.boundCount == 0) {
+                SemanticEmitter::afterExecute(graph, Opcode::Thickness, fid, eval, req);
+            }
+        }
+        else {
+            SemanticEmitter::afterExecute(graph, Opcode::Thickness, fid, eval, req);
+        }
+        return App::DocumentObject::StdReturn;
     }
-    else if (shapes.empty()) {
-        result = TopShape;
+    catch (Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
     }
-    else {
-        result = shapes.front();
+    catch (Standard_Failure& e) {
+        FC_ERR("Exception on making thick solid: " << e.GetMessageString());
+        return new App::DocumentObjectExecReturn("Failed to make thick solid");
     }
-    // store shape before refinement
-    this->rawShape = result;
-    result = refineShapeIfActive(result);
-    this->Shape.setValue(getSolid(result));
-    return App::DocumentObject::StdReturn;
 }

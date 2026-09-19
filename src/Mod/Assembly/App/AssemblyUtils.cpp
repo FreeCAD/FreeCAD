@@ -30,11 +30,16 @@
 #include <gp_Sphere.hxx>
 
 
+#include <cctype>
+#include <optional>
+
 #include <App/Application.h>
 #include <App/Datums.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
+#include <App/PropertyLinks.h>
+#include <App/SemanticReference.h>
 #include <App/Link.h>
 
 #include <Base/Placement.h>
@@ -161,18 +166,55 @@ double getEdgeRadius(const App::DocumentObject* obj, const std::string& elt)
     return sf.GetType() == GeomAbs_Circle ? sf.Circle().Radius() : 0.0;
 }
 
+// Strip digits from a FaceN/EdgeN/VertexN (or Binding index toString) name.
+// ASCII-only; unsigned char cast avoids std::isalpha UB on signed char.
+static std::string elementTypeFromElementName(const std::string& elt)
+{
+    std::string elementType;
+    for (const unsigned char ch : elt) {
+        if (std::isalpha(ch)) {
+            elementType += static_cast<char>(ch);
+        }
+    }
+    return elementType;
+}
+
 DistanceType getDistanceType(App::DocumentObject* joint)
 {
+    // Convenience wrapper (AJ24-W1): discards post-swap elt/obj out-params.
+    // Prefer the overload with out-params when the caller needs elements (AJ16-D1).
+    std::string elt1;
+    std::string elt2;
+    App::DocumentObject* obj1 = nullptr;
+    App::DocumentObject* obj2 = nullptr;
+    return getDistanceType(joint, elt1, elt2, obj1, obj2);
+}
+
+DistanceType getDistanceType(
+    App::DocumentObject* joint,
+    std::string& elt1,
+    std::string& elt2,
+    App::DocumentObject*& obj1,
+    App::DocumentObject*& obj2)
+{
+    elt1.clear();
+    elt2.clear();
+    obj1 = nullptr;
+    obj2 = nullptr;
     if (!joint) {
         return DistanceType::Other;
     }
 
-    const auto type1 = getElementTypeFromProp(joint, "Reference1");
-    const auto type2 = getElementTypeFromProp(joint, "Reference2");
-    auto elt1 = getElementFromProp(joint, "Reference1");
-    auto elt2 = getElementFromProp(joint, "Reference2");
-    auto* obj1 = getLinkedObjFromRef(joint, "Reference1");
-    auto* obj2 = getLinkedObjFromRef(joint, "Reference2");
+    // Resolve each Reference once (Binding prefer + I7 FaceN/EdgeN fallback),
+    // then derive Face/Edge/Vertex type from the resolved name. Avoids a second
+    // uniqueBindingOnFeature walk via getElementTypeFromProp. Out-params expose the
+    // post-swap resolution so makeMbdJointDistance need not resolve again (AJ16-D1).
+    elt1 = getElementFromProp(joint, "Reference1");
+    elt2 = getElementFromProp(joint, "Reference2");
+    const auto type1 = elementTypeFromElementName(elt1);
+    const auto type2 = elementTypeFromElementName(elt2);
+    obj1 = getLinkedObjFromRef(joint, "Reference1");
+    obj2 = getLinkedObjFromRef(joint, "Reference2");
 
     if (type1 == "Vertex" && type2 == "Vertex") {
         return DistanceType::PointPoint;
@@ -474,10 +516,11 @@ std::vector<std::string> getSubAsList(const App::PropertyXLinkSub* prop)
     }
 
     const auto subs = prop->getSubValues();
-    if (subs.empty()) {
+    // AJ6-M1 / I13: product Joints are single-sub. Multi-sub is ambiguous —
+    // silence (empty) rather than first-wins on subs[0].
+    if (subs.size() != 1) {
         return {};
     }
-
     return Base::Tools::splitSubName(subs[0]);
 }
 
@@ -496,23 +539,66 @@ std::string getElementFromProp(const App::DocumentObject* obj, const char* pName
     }
 
     const auto names = getSubAsList(obj, pName);
-    if (names.empty()) {
-        return "";
-    }
+    const std::string fallback = names.empty() ? std::string() : names.back();
 
-    return names.back();
+    // Prefer a unique Binding index from dual-write seeds (I7 fallback to FaceN/EdgeN).
+    // AJ6-M1 / I13: exactly one valid seed → Binding prefer; 0 seeds → FaceN cache;
+    // >1 valid seeds → silence (cache fallback, no first-seed-wins). Binding
+    // uniqueness itself is uniqueBindingOnFeature (0 or >1 → fallback).
+    const auto* prop = obj->getPropertyByName<App::PropertyXLinkSub>(pName);
+    if (!prop) {
+        return fallback;
+    }
+    const auto& refs = prop->getSemanticRefs();
+    const App::SemanticReference* uniqueSeed = nullptr;
+    for (const auto& r : refs) {
+        if (!r.seed.valid()) {
+            continue;
+        }
+        if (uniqueSeed) {
+            // Multi-seed XLinkSub: fail-closed (I13), do not front()-pick.
+            return fallback;
+        }
+        uniqueSeed = &r;
+    }
+    if (!uniqueSeed) {
+        return fallback;
+    }
+    const App::SemanticReference& sref = *uniqueSeed;
+    App::DocumentObject* linked = getLinkedObjFromRef(obj, pName);
+    if (!linked) {
+        return fallback;
+    }
+    const App::SemanticGraph* graph = nullptr;
+    if (obj->getDocument()) {
+        graph = &obj->getDocument()->semanticGraph();
+    }
+    const char* indexType = "Face";
+    if (sref.seed.kind == App::SemanticKind::Edge || sref.kind == App::SemanticKind::Edge) {
+        indexType = "Edge";
+    }
+    else if (sref.seed.kind == App::SemanticKind::Vertex
+             || sref.kind == App::SemanticKind::Vertex) {
+        indexType = "Vertex";
+    }
+    // Consume uniqueness is all-eval (AG21-E1 / EM14-U1 lockstep): publishers
+    // clearBindings first; do not switch to max-eval here without TESTS coverage.
+    const std::optional<App::SemanticBinding> unique = App::uniqueBindingOnFeature(
+        graph, sref.seed, static_cast<App::ObjectId>(linked->getID()), indexType);
+    if (!unique.has_value() || unique->index.toString().empty()) {
+        return fallback;  // I7 / I10: 0 or >1 stays the cache; no mint
+    }
+    return unique->index.toString();
 }
 
 std::string getElementTypeFromProp(const App::DocumentObject* obj, const char* propName)
 {
-    // The prop is going to be something like 'Edge14' or 'Face7'. We need 'Edge' or 'Face'
-    std::string elementType;
-    for (const char ch : getElementFromProp(obj, propName)) {
-        if (std::isalpha(ch)) {
-            elementType += ch;
-        }
-    }
-    return elementType;
+    // Thin Face/Edge/Vertex classifier over getElementFromProp (Binding prefer + I7).
+    // After AJ16-D1, in-tree Joint distance uses getDistanceType out-params instead;
+    // keep this exported helper for other callers / future use (AJ24-T1) — do not
+    // delete without an API audit. Prefer getDistanceType(..., elt, ...) when both
+    // type and element are needed to avoid a second Binding walk.
+    return elementTypeFromElementName(getElementFromProp(obj, propName));
 }
 
 App::DocumentObject* getObjFromProp(const App::DocumentObject* joint, const char* pName)

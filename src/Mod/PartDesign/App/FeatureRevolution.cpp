@@ -23,6 +23,10 @@
  ***************************************************************************/
 
 #include "FeatureRevolution.h"
+#include "SemanticOpcode.h"
+
+#include <App/Document.h>
+#include <App/SemanticDocumentState.h>
 
 #include <Base/ProgramVersion.h>
 
@@ -105,7 +109,22 @@ short Revolution::mustExecute() const
 
 App::DocumentObjectExecReturn* Revolution::execute()
 {
-    return executeRevolved(Part::RevolMode::FuseWithBase);
+    App::DocumentObjectExecReturn* ret = executeRevolved(Part::RevolMode::FuseWithBase);
+    App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
+    App::ObjectId fid = static_cast<App::ObjectId>(getID());
+    App::EvalSerial eval = 0;
+    AfterExecuteRequest req;
+    if (App::Document* doc = getDocument()) {
+        eval = doc->semanticState().currentEval();
+        if (App::DocumentObject* profile = Profile.getValue()) {
+            req = collectProfileSemanticSeeds();
+        }
+    }
+    req.namedFaceIndices = lastNamedFaceIndices;
+    req.namedEdgeIndices = lastNamedEdgeIndices;
+    req.allowSequentialFaceN = false;
+    SemanticEmitter::afterExecute(graph, Opcode::Revolution, fid, eval, req);
+    return ret;
 }
 
 TopoShape Revolution::makeShape(const TopoShape& base, const TopoShape& revolve) const

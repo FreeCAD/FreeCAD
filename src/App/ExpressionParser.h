@@ -501,6 +501,11 @@ public:
         return var;
     }
 
+    ObjectIdentifier& path()
+    {
+        return var;
+    }
+
     void setPath(const ObjectIdentifier& path);
 
     /**
@@ -530,6 +535,9 @@ protected:
     void _importSubNames(const ObjectIdentifier::SubNameMap&) override;
     void _updateLabelReference(App::DocumentObject*, const std::string&, const char*) override;
     bool _updateElementReference(App::DocumentObject*, bool, ExpressionVisitor&) override;
+    void _promoteSemanticRefs(const SemanticGraph& graph) override;
+    bool _applySemanticReadPolicy(const SemanticGraph& graph) override;
+    void _restoreSemanticRef(const SemanticReference& restored) override;
     bool _relabeledDocument(const std::string&, const std::string&, ExpressionVisitor&) override;
     bool _renameObjectIdentifier(const std::map<ObjectIdentifier, ObjectIdentifier>&,
                                  const ObjectIdentifier&,

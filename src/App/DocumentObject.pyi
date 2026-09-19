@@ -341,6 +341,19 @@ class DocumentObject(ExtensionContainer):
         ...
 
     @constmethod
+    def getSemanticRefs(self, prop: str, /) -> list:
+        """
+        getSemanticRefs(prop) -> list of dicts
+
+        Parallel SemanticReference slots for a LinkSub / LinkSubList / XLink
+        property. Each dict has keys seed (hex handle), kind, fallback, and
+        resolved (unique Binding index on the linked feature, or fallback),
+        resolutionState (current live resolver state, or the persisted state
+        during the pre-recompute fallback window), and resolvedUnique.
+        """
+        ...
+
+    @constmethod
     def isAttachedToDocument(self) -> bool:
         """
         Return true if the object is part of a document, false otherwise.

@@ -34,6 +34,7 @@
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <App/DocumentObject.h>
+#include <App/SemanticLinkSub.h>
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>
 #include "Selection.h"
@@ -78,21 +79,39 @@ bool SelectionFilterGate::allow(App::Document* /*pDoc*/, App::DocumentObject* pO
     return Filter->test(pObj, sSubName);
 }
 
-std::unordered_set<std::string> SelectionFilterGate::getGatedTypes(
+namespace {
+// G28-N1: shared gated-types walk. Null filter / empty Ast → {} so BoxSelection
+// falls through to all element types (allow() still gates picks). PartDesign
+// ReferenceSelection / NoDependents / Combine construct SelectionFilterGate(nullPointer()).
+std::unordered_set<std::string> gatedTypesFromFilter(
+    const SelectionFilter* filter,
     const std::vector<const char*>& allTypesForGeometry
-) const
+)
 {
+    if (!filter) {
+        return {};
+    }
+    const auto ast = filter->getAst();
+    if (!ast) {
+        return {};
+    }
     std::unordered_set<std::string> allowedTypes;
     std::ranges::copy_if(
         allTypesForGeometry.begin(),
         allTypesForGeometry.end(),
         std::inserter(allowedTypes, allowedTypes.begin()),
         [&](const char* type) {
-            return std::ranges::any_of(Filter->getAst()->Objects, [type](const Node_ObjectPtr& node) {
+            return std::ranges::any_of(ast->Objects, [type](const Node_ObjectPtr& node) {
                 if (node->SubName.empty()) {
                     return true;
                 }
                 if (std::string_view(type).starts_with(node->SubName)) {
+                    return true;
+                }
+                // G10-G1 / G19: same I13 kind-match bridge as SelectionFilter::test /
+                // match (Wave 5). Geometry-type gates must accept kinds that allow()
+                // would accept. Users still pick Face/Edge; no new GUI vocabulary.
+                if (App::semanticSubNameMatchesKind(type, node->SubName)) {
                     return true;
                 }
                 return false;
@@ -100,6 +119,14 @@ std::unordered_set<std::string> SelectionFilterGate::getGatedTypes(
         }
     );
     return allowedTypes;
+}
+}  // namespace
+
+std::unordered_set<std::string> SelectionFilterGate::getGatedTypes(
+    const std::vector<const char*>& allTypesForGeometry
+) const
+{
+    return gatedTypesFromFilter(Filter, allTypesForGeometry);
 }
 
 // ----------------------------------------------------------------------------
@@ -156,6 +183,18 @@ SelectionFilterGatePython::~SelectionFilterGatePython()
 bool SelectionFilterGatePython::allow(App::Document*, App::DocumentObject* obj, const char* sub)
 {
     return filter->filter.test(obj, sub);
+}
+
+std::unordered_set<std::string> SelectionFilterGatePython::getGatedTypes(
+    const std::vector<const char*>& allTypesForGeometry
+) const
+{
+    // G28-P1: parity with SelectionFilterGate (G10-G1 kind-match). Base SelectionGate
+    // returned {} and BoxSelection skipped type filtering for Python SelectionFilter gates.
+    if (!filter) {
+        return {};
+    }
+    return gatedTypesFromFilter(&filter->filter, allTypesForGeometry);
 }
 
 // ----------------------------------------------------------------------------
@@ -223,7 +262,10 @@ bool SelectionFilter::match()
                     return false;
                 }
                 for (const auto& subName : subNames) {
-                    if (subName.find(it->SubName) != 0) {
+                    // G19: kind-match bridge (parity with test / getGatedTypes G10-G1).
+                    // Face/Edge labels stay user-facing; mapped tokens match by kind.
+                    if (subName.find(it->SubName) != 0
+                        && !App::semanticSubNameMatchesKind(subName, it->SubName)) {
                         return false;
                     }
                 }
@@ -255,6 +297,11 @@ bool SelectionFilter::test(App::DocumentObject* pObj, const char* sSubName)
                 return true;
             }
             if (std::string(sSubName).find(it->SubName) == 0) {
+                return true;
+            }
+            // Invisible Rev31 / G10-G1 bridge: Face/Edge kind via last cache label
+            // or decoded ;:ST (G19 docs). Users still pick FaceN/EdgeN; no new vocabulary.
+            if (App::semanticSubNameMatchesKind(sSubName, it->SubName)) {
                 return true;
             }
         }

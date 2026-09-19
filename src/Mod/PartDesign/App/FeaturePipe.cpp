@@ -24,6 +24,8 @@
 
 
 #include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
+#include <BRepAlgoAPI_BooleanOperation.hxx>
+#include <TopTools_ListOfShape.hxx>
 #include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Sewing.hxx>
@@ -31,6 +33,12 @@
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepClass3d_SolidClassifier.hxx>
 #include <BRepOffsetAPI_MakePipeShell.hxx>
+#include <BRepBuilderAPI_MakeShape.hxx>
+#include <memory>
+#include <cstring>
+#include <deque>
+#include <string>
+#include <vector>
 #include <gp_Ax2.hxx>
 #include <Law_Function.hxx>
 #include <Precision.hxx>
@@ -40,15 +48,23 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Wire.hxx>
 #include <TopTools_HSequenceOfShape.hxx>
+#include <TopTools_ListIteratorOfListOfShape.hxx>
 
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/IndexedName.h>
+#include <App/MappedName.h>
+#include <App/SemanticDocumentState.h>
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
+#include <Mod/Part/App/SemanticHistoryAdapter.h>
+#include <Mod/Part/App/SemanticSourceCollector.h>
 
 #include "FeaturePipe.h"
+#include "SemanticOpcode.h"
 #include "Mod/Part/App/TopoShapeOpCode.h"
 #include "Mod/Part/App/TopoShapeMapper.h"
 #include "FeatureLoft.h"
@@ -116,12 +132,22 @@ short Pipe::mustExecute() const
     if (Transition.isTouched()) {
         return 1;
     }
+
+    // Shared by additive and subtractive pipe restore republish.
+    if (isSemanticRepublishPass(SemanticEmitter::graphFor(this))) {
+        return 1;
+    }
+
     return ProfileBased::mustExecute();
 }
 
 App::DocumentObjectExecReturn* Pipe::execute()
 {
-    if (onlyHaveRefined()) {
+    // The Refine-only shortcut must not suppress restore republish: the maker
+    // is needed to recreate durable history for both pipe variants.
+    const bool semanticRepublish =
+        isSemanticRepublishPass(SemanticEmitter::graphFor(this));
+    if (!semanticRepublish && onlyHaveRefined()) {
         return App::DocumentObject::StdReturn;
     }
 
@@ -205,7 +231,9 @@ App::DocumentObjectExecReturn* Pipe::execute()
         }
 
         // setup the profile section
-        Part::TopoShape profileShape = getSectionShape(Profile.getValue(), Profile.getSubValues());
+        // Profile Face references must use the live semantic slot when available;
+        // otherwise a stale dual-write subname can feed the pipe maker.
+        Part::TopoShape profileShape = getSectionShape(Profile.getValue(), getProfileSubValuesForMaker());
         if (profileShape.isNull()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Pipe: Could not obtain profile shape")
@@ -354,45 +382,65 @@ App::DocumentObjectExecReturn* Pipe::execute()
         }
 
         std::vector<Part::TopoShape> frontwires, backwires;
+        std::unique_ptr<BRepOffsetAPI_MakePipeShell> livePipe;
+        std::vector<TopoDS_Shape> firstAddWires;
         for (auto& wires : wiresections) {
-            BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(path.getShape()));
-            setupAlgorithm(mkPS, auxpath.getShape());
+            auto mkPS = std::make_unique<BRepOffsetAPI_MakePipeShell>(
+                TopoDS::Wire(path.getShape())
+            );
+            setupAlgorithm(*mkPS, auxpath.getShape());
 
             if (!scalinglaw) {
                 if (!profilePoint.isNull()) {
-                    mkPS.Add(copyProfilePoint.getShape());
+                    if (firstAddWires.empty()) {
+                        firstAddWires.push_back(copyProfilePoint.getShape());
+                    }
+                    mkPS->Add(copyProfilePoint.getShape());
                 }
 
+                // Store the exact Add() TShapes (post-move) — Generated() keys.
+                // Do not use FaceMaker front.
+                const bool captureThis = firstAddWires.empty();
                 for (auto& wire : wires) {
                     wire.move(invObjLoc);
-                    mkPS.Add(wire.getShape());
+                    if (captureThis) {
+                        firstAddWires.push_back(wire.getShape());
+                    }
+                    mkPS->Add(wire.getShape());
                 }
             }
             else {
                 if (!profilePoint.isNull()) {
-                    mkPS.SetLaw(copyProfilePoint.getShape(), scalinglaw);
+                    if (firstAddWires.empty()) {
+                        firstAddWires.push_back(copyProfilePoint.getShape());
+                    }
+                    mkPS->SetLaw(copyProfilePoint.getShape(), scalinglaw);
                 }
 
+                const bool captureThis = firstAddWires.empty();
                 for (auto& wire : wires) {
                     wire.move(invObjLoc);
-                    mkPS.SetLaw(wire.getShape(), scalinglaw);
+                    if (captureThis) {
+                        firstAddWires.push_back(wire.getShape());
+                    }
+                    mkPS->SetLaw(wire.getShape(), scalinglaw);
                 }
             }
 
-            if (!mkPS.IsReady()) {
+            if (!mkPS->IsReady()) {
                 return new App::DocumentObjectExecReturn(
                     QT_TRANSLATE_NOOP("Exception", "Pipe could not be built")
                 );
             }
 
             Part::TopoShape shell = Part::TopoShape(0, this->getDocument()->getStringHasher());
-            shell.makeElementShape(mkPS, wires, Part::OpCodes::PipeShell);
+            shell.makeElementShape(*mkPS, wires, Part::OpCodes::PipeShell);
             shells.push_back(shell);
 
             if (!shell.isClosed()) {
                 // shell is not closed - use simulate to get the end wires
                 TopTools_ListOfShape sim;
-                mkPS.Simulate(2, sim);
+                mkPS->Simulate(2, sim);
 
                 if (wires.front().shapeType() != TopAbs_VERTEX) {
                     TopoShape front(sim.First());
@@ -419,12 +467,20 @@ App::DocumentObjectExecReturn* Pipe::execute()
                     backwires.push_back(back);
                 }
             }
+            if (!livePipe) {
+                livePipe = std::move(mkPS);
+            }
         }
+
+        // PipeShell makeElementShape shell sewer.Add receives, before
+        // front/back append and before sew / makeElementSolid.
+        const Part::TopoShape preSewShell = shells.empty() ? Part::TopoShape() : shells.front();
 
         Part::TopoShape result(0, getDocument()->getStringHasher());
 
+        BRepBuilderAPI_Sewing sewer;
+        bool sewRan = false;
         if (!frontwires.empty() || !backwires.empty()) {
-            BRepBuilderAPI_Sewing sewer;
             sewer.SetTolerance(Precision::Confusion());
             for (auto& s : shells) {
                 sewer.Add(s.getShape());
@@ -478,6 +534,7 @@ App::DocumentObjectExecReturn* Pipe::execute()
             }
 
             sewer.Perform();
+            sewRan = true;
             result = result
                          .makeShapeWithElementMap(
                              sewer.SewedShape(),
@@ -540,60 +597,343 @@ App::DocumentObjectExecReturn* Pipe::execute()
                 ));
             }
 
-            // store shape before refinement
+            // store shape before refinement. Skip refine while the pipe maker
+            // is live so fromMaker TShapes still match the published solid.
             this->rawShape = result;
 
-            result = refineShapeIfActive(result);
+            if (!livePipe) {
+                result = refineShapeIfActive(result);
+            }
             Shape.setValue(getSolid(result));
+            if (livePipe) {
+                emitCapturedPipe(
+                    livePipe.get(),
+                    preSewShell,
+                    Shape.getShape(),
+                    firstAddWires,
+                    sewRan ? &sewer : nullptr
+                );
+            }
             return App::DocumentObject::StdReturn;
         }
 
+        result.Tag = -getID();
         Part::TopoShape boolOp(0, getDocument()->getStringHasher());
+        std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkCut;
+        const TopoDS_Shape toolOcc = result.getShape();
 
-        result.Tag = -getID();  // invert tag to differentiate the pre-boolean pipe
-        //                        from the post-boolean pipe
-        //                        setting result to the negative tag is a bit confusing,
-        //                        because you would expect this to be set to the feature's shape,
-        //                        but boolOp is the topoShape that is actually being copied
-
-        boolOp.makeElementBoolean(getBooleanMaker(), {base, result}, nullptr, FuzzyTolerance.getValue());
-
+        try {
+            if (getAddSubType() == FeatureAddSub::Type::Subtractive) {
+                // Live Cut + ElementMap (Batch A / FeaturePrimitive parity) so
+                // Fillet can bind :M;CUT edges and stampElementMap can write ;:ST.
+                auto* fcCut = new FCBRepAlgoAPI_Cut;
+                mkCut.reset(fcCut);
+                TopTools_ListOfShape args;
+                TopTools_ListOfShape toolList;
+                args.Append(base.getShape());
+                toolList.Append(toolOcc);
+                fcCut->SetArguments(args);
+                fcCut->SetTools(toolList);
+                const double fuzzy = FuzzyTolerance.getValue();
+                if (fuzzy > 0.0) {
+                    fcCut->SetFuzzyValue(fuzzy);
+                }
+                fcCut->Build();
+                if (!fcCut->IsDone()) {
+                    return new App::DocumentObjectExecReturn(
+                        QT_TRANSLATE_NOOP("Exception", "Failed to perform boolean operation")
+                    );
+                }
+                boolOp.makeElementShape(*fcCut, {base, result}, Part::OpCodes::Cut);
+            }
+            else if (getAddSubType() == FeatureAddSub::Type::Additive) {
+                boolOp.makeElementBoolean(
+                    Part::OpCodes::Fuse, {base, result}, nullptr, FuzzyTolerance.getValue());
+            }
+            else {
+                return new App::DocumentObjectExecReturn(
+                    QT_TRANSLATE_NOOP("Exception", "Pipe: Invalid Boolean Type")
+                );
+            }
+        }
+        catch (Standard_Failure&) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Failed to perform boolean operation")
+            );
+        }
+        Part::TopoShape solid = getSolid(boolOp);
+        if (solid.isNull()) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid")
+            );
+        }
+        // store shape before refinement. Skip refine when live Cut/pipe makers
+        // are retained so fromMaker TShapes still match the published solid.
+        this->rawShape = boolOp;
+        if (!mkCut && !livePipe) {
+            boolOp = refineShapeIfActive(boolOp);
+        }
         if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
                 "Exception",
                 "Result has multiple solids: enable 'Allow Compound' in the active body."
             ));
         }
-
-        TopoShape solid = getSolid(boolOp);
-        // lets check if the result is a solid
-        if (solid.isNull()) {
-            return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid")
+        boolOp = getSolid(boolOp);
+        Shape.setValue(boolOp);
+        if (mkCut) {
+            App::DocumentObject* baseObj = getBaseObject(/* silent = */ true);
+            SemanticEmitter::publishSubtractiveCutHistory(
+                this,
+                mkCut.get(),
+                &toolOcc,
+                &base.getShape(),
+                baseObj,
+                Opcode::SubtractivePipe,
+                "subPipeDiag");
+            App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
+            // I8 dual-write after Cut Bindings publish; EM14-U1 fail-closed
+            // (lockstep uniqueBindingOnFeature / AG21-E1 — EM22-L1 / #30).
+            SemanticEmitter::stampElementMap(
+                Shape, graph, static_cast<App::ObjectId>(getID()));
+        }
+        else if (livePipe) {
+            emitCapturedPipe(
+                livePipe.get(),
+                preSewShell,
+                Shape.getShape(),
+                firstAddWires,
+                sewRan ? &sewer : nullptr
             );
         }
-
-        // store shape before refinement
-        this->rawShape = solid;
-        solid = refineShapeIfActive(solid);
-        if (!isSingleSolidRuleSatisfied(solid.getShape())) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
-                "Exception",
-                "Result has multiple solids: enable 'Allow Compound' in the active body."
-            ));
-        }
-
-        Shape.setValue(solid);
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());
+    }
+    catch (const Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
     }
     catch (...) {
         return new App::DocumentObjectExecReturn(
             QT_TRANSLATE_NOOP("Exception", "A fatal error occurred when making the pipe")
         );
     }
+}
+
+
+void Pipe::clearSemanticCapture()
+{
+    lastPipeGenerated.clear();
+    lastNamedFaceIndices.clear();
+    lastPipeGeneratedEdges.clear();
+    lastNamedEdgeIndices.clear();
+}
+
+void Pipe::capturePipeMaker(void* occMaker,
+                            const TopoShape& preSewShell,
+                            const TopoShape& published,
+                            const std::vector<TopoDS_Shape>& addWireShapes,
+                            BRepBuilderAPI_Sewing* sewer)
+{
+    int early = 0;
+    int genFaceRaw = 0;
+    int genEdgeRaw = 0;
+    int fromMaker = 0;
+    int fromHistN = 0;
+    int nCurve = 0;
+    int nVertex = 0;
+    int nEdges = 0;
+    int nVerts = 0;
+    int nZ = 0;
+    const int sew = sewer ? 1 : 0;
+
+    auto finishDiag = [&]() {
+        const std::size_t nf = Part::namedIndexCount(lastNamedFaceIndices);
+        const std::size_t ne = Part::namedIndexCount(lastNamedEdgeIndices);
+        lastPipeDiag =
+            std::string("pipeDiag early=") + std::to_string(early)
+            + " preCompat=1 sew=" + std::to_string(sew)
+            + " inputs=" + std::to_string(addWireShapes.size())
+            + " curveSeeds=" + std::to_string(nCurve)
+            + " vertexSeeds=" + std::to_string(nVertex)
+            + " edges=" + std::to_string(nEdges)
+            + " verts=" + std::to_string(nVerts)
+            + " genFaceRaw=" + std::to_string(genFaceRaw)
+            + " genFace=" + std::to_string(lastPipeGenerated.size())
+            + " genEdgeRaw=" + std::to_string(genEdgeRaw)
+            + " genEdge=" + std::to_string(lastPipeGeneratedEdges.size())
+            + " fromMaker=" + std::to_string(fromMaker)
+            + " fromHist=" + std::to_string(fromHistN)
+            + " namedFace=" + std::to_string(nf)
+            + " namedFaceMiss="
+            + std::to_string(lastNamedFaceIndices.size() - nf)
+            + " namedEdge=" + std::to_string(ne)
+            + " namedEdgeMiss="
+            + std::to_string(lastNamedEdgeIndices.size() - ne)
+            + " zEdge=" + std::to_string(nZ);
+    };
+
+    if (!occMaker) {
+        early = 1;
+        finishDiag();
+        return;
+    }
+    if (preSewShell.isNull()) {
+        early = 2;
+        finishDiag();
+        return;
+    }
+    if (addWireShapes.empty()) {
+        early = 3;
+        finishDiag();
+        return;
+    }
+
+    App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
+    AfterExecuteRequest seeds;
+    if (graph) {
+        if (App::DocumentObject* profile = Profile.getValue()) {
+            seeds = collectProfileSemanticSeeds();
+        }
+    }
+    nCurve = static_cast<int>(seeds.curveSeeds.size());
+    nVertex = static_cast<int>(seeds.vertexSeeds.size());
+
+    // Generated() keys are the AddWire/AddVertex TShapes kept alive from
+    // execute() (post-move). First shape is the profile wire.
+    const TopoShape profile(addWireShapes.front());
+    if (profile.isNull()) {
+        early = 4;
+        finishDiag();
+        return;
+    }
+    const auto edges = profile.getSubTopoShapes(TopAbs_EDGE);
+    const auto vertices = profile.getSubTopoShapes(TopAbs_VERTEX);
+    nEdges = static_cast<int>(edges.size());
+    nVerts = static_cast<int>(vertices.size());
+
+    auto* maker = static_cast<BRepBuilderAPI_MakeShape*>(occMaker);
+
+    auto alreadyHasEdge = [&](const TopoDS_Shape& s) -> bool {
+        for (const auto& existing : lastPipeGeneratedEdges) {
+            if (Part::sameOccShape(existing.shape, s)) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    // Direct maker->Generated(profileEdge) → unique side FACE on preSewShell.
+    for (std::size_t i = 0; i < seeds.curveSeeds.size() && i < edges.size(); ++i) {
+        genFaceRaw += Part::countGeneratedOf(maker, edges[i].getShape(), TopAbs_FACE);
+        const TopoDS_Shape face = Part::uniqueGeneratedFace(maker, edges[i].getShape());
+        if (!face.IsNull()) {
+            lastPipeGenerated.push_back({seeds.curveSeeds[i], face});
+        }
+    }
+
+    // Vertical corners: Generated EDGE from profile VERTEX, 1 image (Pad).
+    auto stashUniqueEdge = [&](const App::SemanticId& seed, const TopoDS_Shape& input) {
+        if (!seed.valid() || input.IsNull()) {
+            return;
+        }
+        genEdgeRaw += Part::countGeneratedOf(maker, input, TopAbs_EDGE);
+        const auto images = Part::uniqueGeneratedThenModifiedEdgeImages(maker, input);
+        if (images.size() == 1 && !alreadyHasEdge(images.front())) {
+            lastPipeGeneratedEdges.push_back({seed, images.front()});
+        }
+    };
+    if (!seeds.vertexSeeds.empty()) {
+        for (std::size_t i = 0; i < seeds.vertexSeeds.size() && i < vertices.size(); ++i) {
+            stashUniqueEdge(seeds.vertexSeeds[i], vertices[i].getShape());
+        }
+    }
+    else {
+        for (std::size_t i = 0; i < seeds.curveSeeds.size() && i < vertices.size(); ++i) {
+            stashUniqueEdge(seeds.curveSeeds[i], vertices[i].getShape());
+        }
+    }
+
+    // Pad uniqueEdgeImages: unique EDGE image of each profile EDGE.
+    for (std::size_t i = 0; i < seeds.curveSeeds.size() && i < edges.size(); ++i) {
+        genEdgeRaw += Part::countGeneratedOf(maker, edges[i].getShape(), TopAbs_EDGE);
+        const auto images = Part::uniqueGeneratedThenModifiedEdgeImages(maker, edges[i].getShape());
+        if (images.size() == 1 && !alreadyHasEdge(images.front())) {
+            lastPipeGeneratedEdges.push_back({seeds.curveSeeds[i], images.front()});
+        }
+    }
+
+    // Pad fallback: unique vertical EDGE of a Generated side face on preSewShell.
+    Part::appendUniqueZParallelFaceRailEdges(preSewShell, lastPipeGenerated, lastPipeGeneratedEdges);
+
+    // fromMaker fallback on preSewShell only (not published) if Generated walk
+    // produced no Faces — Pad lastPrismGenerated empty path. Index later.
+    {
+        bool usedFromMaker = false;
+        fromHistN = static_cast<int>(Part::appendFromMakerGeneratedWhenFacesEmpty(
+            maker,
+            preSewShell,
+            seeds.curveSeeds,
+            edges,
+            seeds.vertexSeeds,
+            vertices,
+            lastPipeGenerated,
+            lastPipeGeneratedEdges,
+            &usedFromMaker));
+        fromMaker = usedFromMaker ? 1 : 0;
+    }
+
+    Part::refreshNamedIndicesFromSeededShapes(
+        published,
+        preSewShell,
+        sewer,
+        lastPipeGenerated,
+        lastPipeGeneratedEdges,
+        lastNamedFaceIndices,
+        lastNamedEdgeIndices);
+
+    // Edge binding ALWAYS: unique Z-parallel of each published Face, even when
+    // vertexSeeds is non-empty (root cause 4). I13: 0 or N unnamed.
+    nZ = static_cast<int>(Part::mergeUniqueZParallelEdgesOntoNamed(
+        published, lastNamedFaceIndices, lastNamedEdgeIndices));
+    finishDiag();
+}
+
+void Pipe::emitCapturedPipe(void* occMaker,
+                            const TopoShape& preSewShell,
+                            const TopoShape& published,
+                            const std::vector<TopoDS_Shape>& addWireShapes,
+                            BRepBuilderAPI_Sewing* sewer)
+{
+    clearSemanticCapture();
+    capturePipeMaker(occMaker, preSewShell, published, addWireShapes, sewer);
+    App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
+    AfterExecuteRequest req;
+    App::ObjectId fid = static_cast<App::ObjectId>(getID());
+    App::EvalSerial eval = 0;
+    if (App::Document* doc = getDocument()) {
+        eval = doc->semanticState().currentEval();
+        if (App::DocumentObject* profile = Profile.getValue()) {
+            req = collectProfileSemanticSeeds();
+        }
+    }
+    req.namedFaceIndices = lastNamedFaceIndices;
+    req.namedEdgeIndices = lastNamedEdgeIndices;
+    req.allowSequentialFaceN = false;
+    SemanticEmitter::afterExecute(
+        graph,
+        getAddSubType() == FeatureAddSub::Type::Subtractive ? Opcode::SubtractivePipe : Opcode::Pipe,
+        fid,
+        eval,
+        req);
+    // I8 dual-write after Bindings publish; EM14-U1 fail-closed if multi-eval
+    // (lockstep uniqueBindingOnFeature / AG21-E1 — QUALITY-SWEEP #22/#30 EM22-L1).
+    SemanticEmitter::stampElementMap(Shape, graph, fid);
+    SemanticEmitter::appendAfterExecuteNote(lastPipeDiag);
+    Base::Console().message(
+        "TESTS pipeDiag %s\n",
+        SemanticEmitter::lastAfterExecuteNote().c_str());
 }
 
 void Pipe::setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, const TopoDS_Shape& auxshape)

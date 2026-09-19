@@ -72,10 +72,13 @@
 
 #include "Document.h"
 #include "private/DocumentP.h"
+#include "SemanticDocumentState.h"
+
 #include "Application.h"
 #include "AutoTransaction.h"
 #include "BackupPolicy.h"
 #include "ExpressionParser.h"
+#include "PropertyExpressionEngine.h"
 #include "GeoFeature.h"
 #include "License.h"
 #include "Link.h"
@@ -211,6 +214,8 @@ bool Document::undo(const int id)
         mUndoTransactions.pop_back();
     }
 
+    d->semanticState.undoGraph();
+
     for (const auto& obj : d->objectArray) {
         if (obj->testStatus(ObjectStatus::PendingTransactionUpdate)) {
             obj->onUndoRedoFinished();
@@ -260,6 +265,8 @@ bool Document::redo(const int id)
         delete mRedoTransactions.back();
         mRedoTransactions.pop_back();
     }
+
+    d->semanticState.redoGraph();
 
     for (const auto& obj : d->objectArray) {
         if (obj->testStatus(ObjectStatus::PendingTransactionUpdate)) {
@@ -424,6 +431,7 @@ int Document::_openTransaction(std::string name, int id)
         name = "<empty>";
     }
     d->activeUndoTransaction->Name = name;
+        d->semanticState.markUndoPoint();
     mUndoMap[d->activeUndoTransaction->getID()] = d->activeUndoTransaction;
     id = d->activeUndoTransaction->getID();
 
@@ -568,6 +576,8 @@ void Document::_clearRedos()
         delete mRedoTransactions.back();
         mRedoTransactions.pop_back();
     }
+    d->semanticState.clearRedoGraph();
+
 }
 
 void Document::commitTransaction() // NOLINT
@@ -640,6 +650,8 @@ bool Document::_commitTransaction(const bool notify)
 void Document::abortTransaction() const
 {
     if (isPerformingTransaction() || d->committing) {
+                d->semanticState.trimUndoGraph(d->UndoMaxStackSize);
+
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
             FC_WARN("Cannot abort transaction while transacting");
         }
@@ -711,6 +723,8 @@ int Document::getTransactionID(const bool undo, unsigned pos) const
     if (pos >= mRedoTransactions.size()) {
         return 0;
     }
+            d->semanticState.abortGraph();
+
     auto rit = mRedoTransactions.rbegin();
     for (; pos != 0U; ++rit, --pos) {}
     return (*rit)->getID();
@@ -734,6 +748,10 @@ bool Document::isTransactionEmpty() const
 void Document::clearDocument() // NOLINT
 {
     d->activeObject = nullptr;
+
+    // C3/G3/I2: drop previous graph + feature aliases BEFORE objects die.
+    // Owner binding survives (new document identity, not undo).
+    d->semanticState.reset();
 
     if (!d->objectArray.empty()) {
         GetApplication().signalDeleteDocument(*this);
@@ -784,6 +802,8 @@ void Document::clearUndos()
     // }
 
     _clearRedos();
+    d->semanticState.clearUndoGraph();
+
 }
 
 int Document::getAvailableUndos(const int id) const
@@ -956,6 +976,8 @@ Document::Document(const char* documentName)
     // Remark: We force the document Python object to own the DocumentPy instance, thus we don't
     // have to care about ref counting any more.
     setAutoCreated(false);
+    d->semanticState.bindOwner(this);
+
     Base::PyGILStateLocker lock;
     d->DocumentPythonObject = Py::Object(new DocumentPy(this), true);
 
@@ -1088,6 +1110,8 @@ Document::~Document()
     catch (const Base::Exception& e) {
         std::cerr << "Removing transient directory failed: " << e.what() << '\n';
     }
+    d->semanticState.unbindOwner();
+
     delete d;
 }
 
@@ -1121,7 +1145,7 @@ void Document::Save(Base::Writer& writer) const
                     << Application::Config()["BuildVersionMajor"] << "."
                     << Application::Config()["BuildVersionMinor"] << "R"
                     << Application::Config()["BuildRevision"] << "\" FileVersion=\""
-                    << writer.getFileVersion() << "\" StringHasher=\"1\">\n";
+                    << writer.getFileVersion() << "\" StringHasher=\"1\" SemanticGraph=\"1\">\n";
 
     writer.incInd();
 
@@ -1139,6 +1163,18 @@ void Document::Save(Base::Writer& writer) const
     beforeSave();
 
     d->Hasher->Save(writer);
+    // Optional SemanticGraph section (not a flag-day FCStd). Old files omit
+
+    // this element. Payload is hex-encoded STD1/STG1; bindings are omitted.
+
+    writer.Stream() << writer.ind()
+
+                    << "<SemanticGraph version=\"1\" encoding=\"STG1\" payload=\""
+
+                    << App::SemanticDocumentState::hexEncode(d->semanticState.serialize())
+
+                    << "\"></SemanticGraph>\n";
+
 
     writer.decInd();
 
@@ -1172,12 +1208,53 @@ void Document::Restore(Base::XMLReader& reader)
         reader.FileVersion = 0;
     }
 
+    // Capture Document-tag flags while the reader is still on <Document>.
+
+    // Hasher Restore advances to child elements, so hasAttribute after that
+
+    // would not see SemanticGraph="1" on the Document tag.
+
+    const bool hasSemanticGraph = reader.hasAttribute("SemanticGraph");
+
+
     if (reader.hasAttribute("StringHasher")) {
         d->Hasher->Restore(reader);
     }
     else {
         d->Hasher->clear();
     }
+    // Optional SemanticGraph child. Pre-migration files omit the attribute
+
+    // and the element. Does not mint from FaceN (I13).
+
+    if (hasSemanticGraph) {
+
+        reader.readElement("SemanticGraph");
+
+        if (reader.hasAttribute("payload")) {
+
+            d->semanticState.restoreOptionalHexPayload(
+
+                true,
+
+                reader.getAttribute<const char*>("payload"));
+
+        }
+
+        reader.readEndElement("SemanticGraph");
+
+    }
+
+    else {
+
+        // C3/I2: no STG1 in this file. Graph was reset in restore() before
+
+        // objects died; keep it empty. Do not inherit leftover Bindings.
+
+        d->semanticState.reset();
+
+    }
+
 
     // When this document was created the FileName and Label properties
     // were set to the absolute path or file name, respectively. To save
@@ -2147,6 +2224,11 @@ void Document::restore(const char* filename,
     clearUndos();
     d->activeObject = nullptr;
 
+    // C3/I2/G3: reset+unbind aliases BEFORE objects die / before loading the
+    // new file. If SemanticGraph attr is absent, graph stays empty (reset),
+    // not leftover events/identities/Bindings from the previous document.
+    d->semanticState.reset();
+
     bool signal = false;
     Document* activeDoc = GetApplication().getActiveDocument();
     if (!d->objectArray.empty()) {
@@ -2361,9 +2443,93 @@ bool Document::afterRestore(const std::vector<DocumentObject*>& objArray, bool c
         signalFinishRestoreObject(*obj);
     }
 
+    applySemanticRestorePolicy();
+
+
+
     d->touchedObjs.clear();
     return true;
 }
+
+void Document::applySemanticPromotePolicy(const SemanticGraph& graph)
+
+{
+
+    // C1: promote only empty/invalid-seed slots (never overwrite restored stSeed).
+
+    // D2 FaceN rewrite is a no-op until SemanticBinding exists. No mint from
+
+    // FaceN/EdgeN (I13). Not invoked from Save.
+
+    for (auto* obj : d->objectArray) {
+
+        if (!obj) {
+
+            continue;
+
+        }
+
+        std::vector<Property*> props;
+
+        obj->getPropertyList(props);
+
+        for (auto* prop : props) {
+
+            if (auto* link = freecad_cast<PropertyLinkSub*>(prop)) {
+
+                link->promoteWithGraph(graph);
+
+                link->applySemanticReadPolicy(graph);
+
+            }
+
+            if (auto* list = freecad_cast<PropertyLinkSubList*>(prop)) {
+
+                list->promoteWithGraph(graph);
+
+                list->applySemanticReadPolicy(graph);
+
+            }
+
+            if (auto* xlink = freecad_cast<PropertyXLink*>(prop)) {
+
+                xlink->promoteWithGraph(graph);
+
+                xlink->applySemanticReadPolicy(graph);
+
+            }
+
+            if (auto* exprs = freecad_cast<PropertyExpressionContainer*>(prop)) {
+
+                exprs->promoteWithGraph(graph);
+
+                exprs->applySemanticReadPolicy(graph);
+
+            }
+
+        }
+
+    }
+
+}
+
+
+
+void Document::applySemanticRestorePolicy()
+
+{
+
+    // V1/V2 mapped-name repair already ran in PropertyLinkSub::onContainerRestored
+
+    // / updateElementReference. STG1 omits SemanticBinding so this is usually a
+
+    // C1 no-op; Bindings appear after evaluate (see recompute).
+
+    applySemanticPromotePolicy(d->semanticState.graph());
+
+}
+
+
 
 bool Document::isSaved() const
 {
@@ -2464,6 +2630,46 @@ int Document::countObjects() const
 {
     return static_cast<int>(d->objectArray.size());
 }
+
+SemanticGraph& Document::semanticGraph()
+
+{
+
+    return d->semanticState.graph();
+
+}
+
+
+
+const SemanticGraph& Document::semanticGraph() const
+
+{
+
+    return d->semanticState.graph();
+
+}
+
+
+
+SemanticDocumentState& Document::semanticState()
+
+{
+
+    return d->semanticState;
+
+}
+
+
+
+const SemanticDocumentState& Document::semanticState() const
+
+{
+
+    return d->semanticState;
+
+}
+
+
 
 void Document::getLinksTo(std::set<DocumentObject*>& links,
                           const DocumentObject* obj,
@@ -2938,8 +3144,11 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
 
     tracker.checkpoint("pre-recompute & topo sort");
 
+    // Keep failures visible to the post-pass below. A dependent of a failed
+    // feature must not be used for semantic republish merely because it still
+    // has a cached Shape and reports mustExecute().
+    std::set<DocumentObject*> filter;
     try {
-        std::set<DocumentObject*> filter;
         size_t idx = 0;
         // maximum two passes to allow some form of dependency inversion
         for (int passes = 0; passes < 2 && idx < topoSortedObjects.size(); ++passes) {
@@ -2965,6 +3174,10 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
                             *hasError = true;
                         }
                         if (res < 0) {
+                            // A fatal failure must also quarantine its dependents
+                            // from the post-pass retry.
+                            obj->getInListEx(filter, true);
+                            filter.insert(obj);
                             passes = 2;
                             break;
                         }
@@ -3025,6 +3238,62 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
 
     tracker.checkpoint("Recompute");
 
+    // Upstream failures also filter dependents out of this retry. Features
+
+    // that still report mustExecute() (e.g. semantic republish on a valid
+
+    // cached shape) get one more dependency-ordered attempt before promote.
+
+    for (auto obj : topoSortedObjects) {
+
+        if (!obj->isAttachedToDocument() || filter.contains(obj)) {
+
+            continue;
+
+        }
+
+        if (!obj->mustRecompute()) {
+
+            continue;
+
+        }
+
+        ++objectCount;
+
+        int res = _recomputeFeature(obj);
+
+        if (res != 0) {
+
+            if (hasError) {
+
+                *hasError = true;
+
+            }
+
+            // Keep later dependents from consuming a result that this retry
+
+            // could not produce.
+
+            obj->getInListEx(filter, true);
+
+            filter.insert(obj);
+
+            continue;
+
+        }
+
+        if (obj->isTouched() || res == 0) {
+
+            signalRecomputedObject(*obj);
+
+            obj->purgeTouched();
+
+        }
+
+    }
+
+
+
     for (auto obj : topoSortedObjects) {
         if (!obj->isAttachedToDocument()) {
             continue;
@@ -3038,6 +3307,11 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
     // first would let re-entrant code see the document as stable before
     // recompute teardown has finished. signalBecameStable() is the first
     // point where observers may treat the document as stable again.
+    // Phase A: document-level promote once after dependency-ordered sweep.
+    if (d->semanticState.graph().hasBindings()) {
+        applySemanticPromotePolicy(d->semanticState.graph());
+    }
+
 
     signalRecomputed(*this, topoSortedObjects);
     recomputingStatus.reset();
@@ -3265,6 +3539,10 @@ int Document::_recomputeFeature(DocumentObject* Feat) // NOLINT
 {
     FC_LOG("Recomputing " << Feat->getFullName());
 
+    SemanticDocumentState::EvaluateScope semanticEval(d->semanticState);
+
+
+
     DocumentObjectExecReturn* returnCode = nullptr;
     try {
         returnCode = Feat->ExpressionEngine.execute(PropertyExpressionEngine::ExecuteNonOutput);
@@ -3308,6 +3586,18 @@ int Document::_recomputeFeature(DocumentObject* Feat) // NOLINT
 
     if (returnCode == DocumentObject::StdReturn) {
         Feat->resetError();
+        semanticEval.commit();
+
+        // Bindings from this feature are live. Fill empty PropertyLinkSub seeds
+
+        // (e.g. Fillet.Base) before later features in this pass execute. C1 / I13.
+
+        if (d->semanticState.graph().hasBindings()) {
+
+            applySemanticPromotePolicy(d->semanticState.graph());
+
+        }
+
     }
     else {
         returnCode->Which = Feat;
@@ -3334,6 +3624,9 @@ bool Document::recomputeFeature(DocumentObject* feature, bool recursive)
         return !hasError;
     }
     _recomputeFeature(feature);
+    if (d->semanticState.graph().hasBindings()) {
+        applySemanticPromotePolicy(d->semanticState.graph());
+    }
     signalRecomputedObject(*feature);
     return feature->isValid();
 }
@@ -3450,6 +3743,8 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName, Add
     }
     d->objectIdMap[pcObject->_Id] = pcObject;
     d->objectArray.push_back(pcObject);
+    d->semanticState.bindAlias(pcObject);
+
 
      // do no transactions if we do a rollback!
     if (!d->rollback) {
@@ -3577,6 +3872,8 @@ void Document::_removeObject(DocumentObject* pcObject, RemoveObjectOptions optio
             }
         }
     }
+    d->semanticState.unbindAlias(pcObject);
+
 
     if (d->activeObject == pcObject) {
         d->activeObject = nullptr;

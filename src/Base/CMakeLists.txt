@@ -278,9 +278,9 @@ SET(FreeCADBase_CPP_SRCS
     ${SWIG_SRCS}
     SystemHandler.cpp
     Tools.cpp
+    Translation.cpp
     Tools2D.cpp
     Tools3D.cpp
-    Translation.cpp
     ${Qt_MODULE_GENERATED_SRCS}
     Translate.cpp
     Type.cpp
@@ -352,9 +352,9 @@ SET(FreeCADBase_HPP_SRCS
     SystemHandler.h
     TimeInfo.h
     Tools.h
+    Translation.h
     Tools2D.h
     Tools3D.h
-    Translation.h
     Translate.h
     Type.h
     UnlimitedUnsigned.h

@@ -25,33 +25,53 @@
 #include <algorithm>
 #include <cmath>
 #include <cstring>
+#include <deque>
 #include <limits>
+#include <map>
+#include <memory>
+#include <unordered_set>
+#include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 #include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 #include <BRep_Builder.hxx>
 #include <BRepAdaptor_Surface.hxx>
+#include <BRepAlgoAPI_BooleanOperation.hxx>
+#include <BRepBuilderAPI_MakeShape.hxx>
 #include <BRepGProp.hxx>
 #include <BRepFeat_MakePrism.hxx>
 #include <BRepPrimAPI_MakePrism.hxx>
 #include <gp_Dir.hxx>
+#include <gp_Pln.hxx>
 #include <TopoDS.hxx>
 #include <gp_Ax2.hxx>
 #include <Precision.hxx>
 #include <TopExp_Explorer.hxx>
+#include <TopTools_ListIteratorOfListOfShape.hxx>
+#include <TopTools_ListOfShape.hxx>
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Shape.hxx>
 
 #include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <App/IndexedName.h>
+#include <App/MappedName.h>
 #include <App/ObjectIdentifier.h>
+#include <App/SemanticDocumentState.h>
 #include <Base/Converter.h>
-#include <Base/ProgramVersion.h>
 #include <Base/Tools.h>
+#include <Mod/Sketcher/App/SketchEntityId.h>
+#include <Base/Reader.h>
+#include <Base/ProgramVersion.h>
 #include <Mod/Part/App/ExtrusionHelper.h>
+#include <Mod/Part/App/SemanticHistoryAdapter.h>
+#include <Mod/Part/App/SemanticSourceCollector.h>
 #include <Mod/Part/App/Tools.h>
 #include "Mod/Part/App/TopoShapeOpCode.h"
 #include <Mod/Part/App/PartFeature.h>
 
 #include "FeatureExtrude.h"
+#include "SemanticOpcode.h"
+#include <Mod/Sketcher/App/SketchSemanticSeed.h>
 
 FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
@@ -77,6 +97,591 @@ FeatureExtrude::FeatureExtrude()
     );
 }
 
+namespace
+{
+
+/// Exactly one Face seed on Profile AttachmentSupport (sketch-on-cap).
+/// 0 or >1 Face seeds → unnamed (I13). Never first-Binding-wins.
+App::SemanticId uniqueNamedProfileFace(const App::DocumentObject* profile)
+{
+    if (!profile || !profile->isDerivedFrom<Part::Part2DObject>()) {
+        return {};
+    }
+    const auto* sketch = static_cast<const Part::Part2DObject*>(profile);
+    return uniqueNamedFace(sketch->AttachmentSupport.getSemanticRefs());
+}
+
+}  // namespace
+
+void FeatureExtrude::clearSemanticCapture()
+{
+    lastPrismGenerated.clear();
+    lastNamedFaceIndices.clear();
+    lastPrismGeneratedEdges.clear();
+    lastNamedEdgeIndices.clear();
+    lastCutRemnant = {};
+}
+
+void FeatureExtrude::refreshNamedIndices(const TopoShape& published)
+{
+    lastNamedFaceIndices.clear();
+    lastNamedFaceIndices.reserve(lastPrismGenerated.size());
+    for (const auto& p : lastPrismGenerated) {
+        lastNamedFaceIndices.push_back(Part::indexOnPublishedPartnerCoplanar(published, p.shape));
+    }
+    lastNamedEdgeIndices.clear();
+    lastNamedEdgeIndices.reserve(lastPrismGeneratedEdges.size());
+    for (const auto& p : lastPrismGeneratedEdges) {
+        lastNamedEdgeIndices.push_back(Part::indexOnPublishedPartnerCoplanar(published, p.shape));
+    }
+}
+
+void FeatureExtrude::capturePrismMaker(void* occMaker, const TopoShape& prism, const TopoShape& sketch)
+{
+    if (prism.isNull() || sketch.isNull()) {
+        return;
+    }
+    App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
+    AfterExecuteRequest seeds;
+    if (graph) {
+        if (App::DocumentObject* profile = Profile.getValue()) {
+            seeds = collectProfileSemanticSeeds();
+        }
+    }
+    const auto edges = sketch.getSubTopoShapes(TopAbs_EDGE);
+    const auto faces = sketch.getSubTopoShapes(TopAbs_FACE);
+    const auto vertices = sketch.getSubTopoShapes(TopAbs_VERTEX);
+
+    // Closed rectangle still has a profile region when MakeInternals is off
+    // (lastInternalRegionStamps empty). Mint the same regionKey internals
+    // would use (I8 reuse via ensureRegionSeed, not a second heap).
+    if (graph && seeds.regionSeeds.empty() && !faces.empty()) {
+        std::vector<std::string> names;
+        const unsigned long nEdges = faces[0].countSubShapes(TopAbs_EDGE);
+        names.reserve(static_cast<std::size_t>(nEdges));
+        for (unsigned long i = 1; i <= nEdges; ++i) {
+            Data::MappedName mapped = faces[0].getMappedName(
+                Data::IndexedName::fromConst("Edge", static_cast<int>(i)));
+            if (mapped) {
+                names.push_back(mapped.toString());
+            }
+        }
+        const auto ids = Sketcher::SketchEntityIdMap::entityIdsFromMappedNames(names);
+        if (!ids.empty()) {
+            App::ObjectId sketchObjectId = 0;
+            if (App::DocumentObject* profile = Profile.getValue()) {
+                sketchObjectId = static_cast<App::ObjectId>(profile->getID());
+            }
+            App::EvalSerial currentEval = 0;
+            if (App::Document* doc = getDocument()) {
+                currentEval = doc->semanticState().currentEval();
+            }
+            const std::string key = Sketcher::SketchEntityIdMap::regionKey(
+                ids, Sketcher::SketchEntityIdMap::RoleInterior);
+            const App::SemanticId region = Sketcher::SketchSemanticSeeds::ensureRegionSeed(
+                *graph, sketchObjectId, currentEval, key);
+            if (region.valid()) {
+                seeds.regionSeeds.push_back(region);
+            }
+        }
+    }
+
+    std::deque<TopoDS_Shape> held;
+    std::vector<std::pair<App::SemanticId, const void*>> inputs;
+    for (std::size_t i = 0; i < seeds.curveSeeds.size() && i < edges.size(); ++i) {
+        held.push_back(edges[i].getShape());
+        inputs.push_back({seeds.curveSeeds[i], &held.back()});
+    }
+    for (std::size_t i = 0; i < seeds.regionSeeds.size() && i < faces.size(); ++i) {
+        held.push_back(faces[i].getShape());
+        inputs.push_back({seeds.regionSeeds[i], &held.back()});
+    }
+    // Vertex seeds when present; else zip prism edges onto curve seeds 1:1.
+    if (!seeds.vertexSeeds.empty()) {
+        for (std::size_t i = 0; i < seeds.vertexSeeds.size() && i < vertices.size(); ++i) {
+            held.push_back(vertices[i].getShape());
+            inputs.push_back({seeds.vertexSeeds[i], &held.back()});
+        }
+    }
+    else {
+        for (std::size_t i = 0; i < seeds.curveSeeds.size() && i < vertices.size(); ++i) {
+            held.push_back(vertices[i].getShape());
+            inputs.push_back({seeds.curveSeeds[i], &held.back()});
+        }
+    }
+
+    auto indexOf = [&prism](const void* occ) -> App::ElementIndex {
+        if (!occ) {
+            return {};
+        }
+        return Part::indexOnPublishedPartnerCoplanar(prism, *static_cast<const TopoDS_Shape*>(occ));
+    };
+
+    if (occMaker) {
+        auto* maker = static_cast<BRepBuilderAPI_MakeShape*>(occMaker);
+        for (std::size_t i = 0; i < seeds.curveSeeds.size() && i < edges.size(); ++i) {
+            const TopoDS_Shape& e = edges[i].getShape();
+            for (TopTools_ListIteratorOfListOfShape it(maker->Generated(e)); it.More(); it.Next()) {
+                if (it.Value().ShapeType() == TopAbs_FACE) {
+                    lastPrismGenerated.push_back({seeds.curveSeeds[i], it.Value()});
+                }
+            }
+        }
+        // Vertical corners: Generated EDGE from sketch VERTEX, 1 image.
+        // Several images → leave unnamed (do not invent EdgeN).
+        auto stashUniqueEdge = [&](const App::SemanticId& seed, const TopoDS_Shape& input) {
+            if (!seed.valid() || input.IsNull()) {
+                return;
+            }
+            TopoDS_Shape unique;
+            int n = 0;
+            for (TopTools_ListIteratorOfListOfShape it(maker->Generated(input)); it.More();
+                 it.Next()) {
+                if (it.Value().ShapeType() == TopAbs_EDGE) {
+                    ++n;
+                    unique = it.Value();
+                }
+            }
+            if (n == 1 && !unique.IsNull()) {
+                lastPrismGeneratedEdges.push_back({seed, unique});
+            }
+        };
+        if (!seeds.vertexSeeds.empty()) {
+            for (std::size_t i = 0; i < seeds.vertexSeeds.size() && i < vertices.size(); ++i) {
+                stashUniqueEdge(seeds.vertexSeeds[i], vertices[i].getShape());
+            }
+        }
+        else {
+            for (std::size_t i = 0; i < seeds.curveSeeds.size() && i < vertices.size(); ++i) {
+                stashUniqueEdge(seeds.curveSeeds[i], vertices[i].getShape());
+            }
+        }
+        // Sketch EDGE images on the prism: Modified-first (top) via
+        // Part::uniqueModifiedThenGeneratedEdgeImages. :U bottom is a sibling Binding, not a fallback
+        // when images.empty() — do not put top+:U in the same vector
+        // (caller drops size!=1 and would unnamed both). 1 image → name it.
+        // 0 or N → unnamed (I13). Vertical corners stay on the vertex stash.
+        for (std::size_t i = 0; i < seeds.curveSeeds.size() && i < edges.size(); ++i) {
+            const auto images =
+                Part::uniqueModifiedThenGeneratedEdgeImages(maker, edges[i].getShape(), prism);
+            if (images.size() == 1) {
+                bool dup = false;
+                for (const auto& existing : lastPrismGeneratedEdges) {
+                    if (Part::sameOccShape(existing.shape, images.front())) {
+                        dup = true;
+                        break;
+                    }
+                }
+                if (!dup) {
+                    lastPrismGeneratedEdges.push_back({seeds.curveSeeds[i], images.front()});
+                }
+            }
+            std::vector<TopoDS_Shape> stashed;
+            stashed.reserve(lastPrismGeneratedEdges.size());
+            for (const auto& existing : lastPrismGeneratedEdges) {
+                stashed.push_back(existing.shape);
+            }
+            const TopoDS_Shape partner =
+                Part::uniquePartnerEdgeExcluding(edges[i].getShape(), prism, stashed);
+            if (!partner.IsNull()) {
+                lastPrismGeneratedEdges.push_back({seeds.curveSeeds[i], partner});
+            }
+        }
+        if (auto* mkPrism = dynamic_cast<BRepPrimAPI_MakePrism*>(maker)) {
+            if (!seeds.regionSeeds.empty()) {
+                const TopoDS_Shape first = mkPrism->FirstShape();
+                const TopoDS_Shape last = mkPrism->LastShape();
+                if (!first.IsNull() && first.ShapeType() == TopAbs_FACE) {
+                    lastPrismGenerated.push_back({seeds.regionSeeds.front(), first});
+                }
+                if (!last.IsNull() && last.ShapeType() == TopAbs_FACE) {
+                    lastPrismGenerated.push_back({seeds.regionSeeds.front(), last});
+                }
+            }
+        }
+        // BRepBuilderAPI_MakeShape has no History() on this OCCT. fromMaker
+        // (Generated/Modified/IsDeleted) only. Empty -> no invented FaceN (I13).
+        const Part::HistoryTable fromHist =
+            Part::SemanticHistoryAdapter::fromMaker(maker, inputs, indexOf);
+        if (lastPrismGenerated.empty()) {
+            for (const auto& rec : fromHist) {
+                if (rec.kind != App::EventKind::Generated
+                    || !Part::isNamedIndex(rec.toIndex)  // PD32-E1
+                    || rec.toIndex.type != "Face") {
+                    continue;
+                }
+                TopoDS_Shape s = prism.findShape(TopAbs_FACE, rec.toIndex.index);
+                if (!s.IsNull()) {
+                    lastPrismGenerated.push_back({rec.fromSeed, s});
+                }
+            }
+        }
+        // fromMaker Edge rows are extra named indices (GUI Edge13/17/14), not a
+        // fallback used only when vertex stash is empty. Dedup by IsSame.
+        // Generated and Modified unique EDGE; Split/N-image rows stay unnamed (I13).
+        // Do not sequential-name every EdgeN on the solid.
+        for (const auto& rec : fromHist) {
+            if ((rec.kind != App::EventKind::Generated && rec.kind != App::EventKind::Modified)
+                || !Part::isNamedIndex(rec.toIndex)  // PD32-E2
+                || rec.toIndex.type != "Edge") {
+                continue;
+            }
+            TopoDS_Shape s = prism.findShape(TopAbs_EDGE, rec.toIndex.index);
+            if (s.IsNull()) {
+                continue;
+            }
+            bool dup = false;
+            for (const auto& p : lastPrismGeneratedEdges) {
+                if (Part::sameOccShape(p.shape, s)) {
+                    dup = true;
+                    break;
+                }
+            }
+            if (!dup) {
+                lastPrismGeneratedEdges.push_back({rec.fromSeed, s});
+            }
+        }
+        // Fallback: unique EDGE of a Generated side face. Several images → unnamed.
+        if (lastPrismGeneratedEdges.empty()) {
+            for (const auto& p : lastPrismGenerated) {
+                if (p.shape.IsNull() || p.shape.ShapeType() != TopAbs_FACE) {
+                    continue;
+                }
+                TopoDS_Shape unique;
+                int n = 0;
+                for (TopExp_Explorer ex(p.shape, TopAbs_EDGE); ex.More(); ex.Next()) {
+                    ++n;
+                    unique = ex.Current();
+                }
+                if (n == 1 && !unique.IsNull()) {
+                    lastPrismGeneratedEdges.push_back({p.fromSeed, unique});
+                }
+            }
+        }
+    }
+    // UpTo* / taper: BRepFeat_MakePrism and draft makers keep history internal
+    // (makeElementPrismUntil). Cannot name Generated faces without inventing
+    // FaceN — leave lastPrismGenerated as-is (empty for this side).
+    refreshNamedIndices(prism);
+}
+
+void FeatureExtrude::captureBooleanHistory(void* occMaker,
+                                           const TopoShape& result,
+                                           const TopoShape& baseShape,
+                                           const TopoShape& tool)
+{
+    (void)tool;
+    if (result.isNull()) {
+        return;
+    }
+    // Prefer fromMaker: BRepAlgoAPI_BooleanOperation::History() is not
+    // guaranteed on this OCCT. Generated/Modified/IsDeleted only.
+    auto* maker = occMaker ? static_cast<BRepBuilderAPI_MakeShape*>(occMaker) : nullptr;
+    App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
+    if (maker) {
+        std::vector<PrismFaceSeed> next;
+        next.reserve(lastPrismGenerated.size());
+        for (const auto& p : lastPrismGenerated) {
+            if (p.shape.IsNull()) {
+                continue;
+            }
+            bool any = false;
+            for (TopTools_ListIteratorOfListOfShape it(maker->Modified(p.shape)); it.More();
+                 it.Next()) {
+                if (it.Value().ShapeType() == TopAbs_FACE) {
+                    next.push_back({p.fromSeed, it.Value()});
+                    any = true;
+                }
+            }
+            if (!any) {
+                for (TopTools_ListIteratorOfListOfShape it(maker->Generated(p.shape)); it.More();
+                     it.Next()) {
+                    if (it.Value().ShapeType() == TopAbs_FACE) {
+                        next.push_back({p.fromSeed, it.Value()});
+                        any = true;
+                    }
+                }
+            }
+            if (!any && result.findShape(p.shape) > 0) {
+                next.push_back(p);
+            }
+            else if (!any) {
+                // Refine hole: findShape/IsSame miss. Partner + unique
+                // coplanar (indexOnPublishedPartnerCoplanar) still names a unique cap.
+                // 0 or N stay dropped (I13).
+                const App::ElementIndex idx = Part::indexOnPublishedPartnerCoplanar(result, p.shape);
+                if (Part::isNamedIndex(idx) && idx.type == "Face") {  // PD23-E1
+                    const TopoDS_Shape located = result.findShape(TopAbs_FACE, idx.index);
+                    if (!located.IsNull()) {
+                        next.push_back({p.fromSeed, located});
+                    }
+                }
+            }
+        }
+        lastPrismGenerated.swap(next);
+
+        // Remap prism/tool EDGES (not only faces) onto the published solid.
+        // 1 image → keep. Several images → unnamed (I13). Pocket afterExecute
+        // then zips lastNamedEdgeIndices with this feature's getID().
+        std::vector<PrismFaceSeed> nextEdges;
+        nextEdges.reserve(lastPrismGeneratedEdges.size());
+        for (const auto& p : lastPrismGeneratedEdges) {
+            if (p.shape.IsNull()) {
+                continue;
+            }
+            const std::vector<TopoDS_Shape> images = Part::uniqueModifiedThenGeneratedEdgeImages(maker, p.shape, result);
+            if (images.size() == 1) {
+                nextEdges.push_back({p.fromSeed, images.front()});
+            }
+            // size 0 or >1 → leave unnamed (do not invent EdgeN).
+        }
+
+        // Body-tip Fillet.Base=(Pocket, EdgeN) picks surviving *base* corners
+        // (Automated: vertical outer pad edge on pocket.Shape), not the hole
+        // seam. Map unique base Edge Bindings through the same maker.
+        if (graph) {
+            Part::Feature* baseObj = getBaseObject(true);
+            if (baseObj) {
+                const App::ObjectId baseId = static_cast<App::ObjectId>(baseObj->getID());
+                std::unordered_set<App::SemanticHandle> seenEdge;
+                for (const App::SemanticBinding& b : graph->allBindings()) {
+                    if (b.feature != baseId || !Part::isNamedIndex(b.index)  // PD32-E3
+                        || b.index.type != "Edge"
+                        || !b.stid.valid() || !seenEdge.insert(b.stid.handle).second) {
+                        continue;
+                    }
+                    TopoDS_Shape edge = baseShape.findShape(TopAbs_EDGE, b.index.index);
+                    if (edge.IsNull()) {
+                        continue;
+                    }
+                    const std::vector<TopoDS_Shape> images =
+                        Part::uniqueModifiedThenGeneratedEdgeImages(maker, edge, result);
+                    if (images.size() != 1) {
+                        continue;
+                    }
+                    bool dup = false;
+                    for (const auto& p : nextEdges) {
+                        if (Part::sameOccShape(p.shape, images.front())) {
+                            dup = true;
+                            break;
+                        }
+                    }
+                    if (!dup) {
+                        nextEdges.push_back({b.stid, images.front()});
+                    }
+                }
+            }
+        }
+        lastPrismGeneratedEdges.swap(nextEdges);
+    }
+
+    if (maker && graph && !lastCutRemnant.valid()) {
+        Part::Feature* baseObj = getBaseObject(true);
+        if (baseObj) {
+            const App::ObjectId baseId = static_cast<App::ObjectId>(baseObj->getID());
+            std::deque<TopoDS_Shape> held;
+            std::vector<App::SemanticId> cutSeeds;
+            std::unordered_set<App::SemanticHandle> cutSeen;
+            std::unordered_set<App::SemanticHandle> seen;
+            for (const App::SemanticBinding& b : graph->allBindings()) {
+                if (b.feature != baseId || !Part::isNamedIndex(b.index)  // PD32-E4
+                    || b.index.type != "Face"
+                    || !b.stid.valid() || !seen.insert(b.stid.handle).second) {
+                    continue;
+                }
+                TopoDS_Shape face = baseShape.findShape(TopAbs_FACE, b.index.index);
+                if (face.IsNull()) {
+                    continue;
+                }
+                held.push_back(face);
+                // Remnant is a Face the boolean actually Modified/Split.
+                // Unmodified survivors (:U) are EventKind::Modified in
+                // fromMaker — counting them would always be >1 (I13).
+                if (maker->Modified(held.back()).Extent() < 1) {
+                    continue;
+                }
+                if (cutSeen.insert(b.stid.handle).second) {
+                    cutSeeds.push_back(b.stid);
+                }
+            }
+            // Cheap remnant: exactly one named base Face is Modified/Split.
+            // Several modified faces → unnamed unless the Profile sketch
+            // uniquely names one of those Faces (sketch-on-cap ThroughAll).
+            // Never first-Binding-wins. Never sequential FaceN.
+            if (cutSeeds.size() == 1) {
+                lastCutRemnant = cutSeeds.front();
+            }
+            else if (cutSeeds.size() > 1) {
+                const App::SemanticId namedCap = uniqueNamedProfileFace(Profile.getValue());
+                if (namedCap.valid() && cutSeen.count(namedCap.handle)) {
+                    for (const App::SemanticId& s : cutSeeds) {
+                        if (s.handle == namedCap.handle) {
+                            lastCutRemnant = s;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    refreshNamedIndices(result);
+}
+
+void FeatureExtrude::publishSemanticHistory(const TopoShape& published)
+{
+    // EM14-S1 / PD23-S1: Pad/Pocket Bindings publish via afterExecute only —
+    // no stampElementMap dual-write here (Loft/Pipe/Helix only). Do not broaden
+    // ElementMap stamp onto Extrude without TESTS re-gate.
+    refreshNamedIndices(published);
+    App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
+    if (!graph || published.isNull()
+        || (lastPrismGenerated.empty() && lastPrismGeneratedEdges.empty())) {
+        return;
+    }
+    App::EvalSerial eval = 0;
+    if (App::Document* doc = getDocument()) {
+        eval = doc->semanticState().currentEval();
+    }
+    // Keep the Pad/Pocket publisher aligned with afterExecute's 1:1 seed
+    // zipping. A two-sided prism can report two images for one curve (and a
+    // top edge plus its partner can do the same). Applying those rows as
+    // independent Generated events makes the first row win in the binding
+    // table, while the remaining rows are invisible to the request zipper.
+    // Region seeds intentionally remain 1:N for the two cap faces.
+    Part::HistoryTable faceSingles;
+    Part::HistoryTable regionRows;
+    Part::HistoryTable edgeRows;
+    faceSingles.reserve(lastPrismGenerated.size());
+    regionRows.reserve(lastPrismGenerated.size());
+    edgeRows.reserve(lastPrismGeneratedEdges.size());
+    for (const auto& p : lastPrismGenerated) {
+        Part::HistoryRecord rec;
+        rec.fromSeed = p.fromSeed;
+        rec.kind = App::EventKind::Generated;
+        rec.outputKind = App::SemanticKind::Face;
+        rec.toIndex = Part::indexOnPublishedPartnerCoplanar(published, p.shape);
+        if (p.fromSeed.kind == App::SemanticKind::Region) {
+            regionRows.push_back(rec);
+        }
+        else {
+            faceSingles.push_back(rec);
+        }
+    }
+    for (const auto& p : lastPrismGeneratedEdges) {
+        Part::HistoryRecord rec;
+        rec.fromSeed = p.fromSeed;
+        rec.kind = App::EventKind::Generated;
+        rec.outputKind = App::SemanticKind::Edge;
+        rec.toIndex = Part::indexOnPublishedPartnerCoplanar(published, p.shape);
+        edgeRows.push_back(rec);
+    }
+
+    const Part::HistoryTable uniqueFaces =
+        Part::SemanticHistoryAdapter::uniqueOneImageGenerated(faceSingles);
+    const Part::HistoryTable uniqueEdges =
+        Part::SemanticHistoryAdapter::uniqueOneImageGenerated(edgeRows);
+    Part::HistoryTable candidates;
+    candidates.reserve(uniqueFaces.size() + regionRows.size() + uniqueEdges.size());
+    candidates.insert(candidates.end(), uniqueFaces.begin(), uniqueFaces.end());
+    candidates.insert(candidates.end(), regionRows.begin(), regionRows.end());
+    candidates.insert(candidates.end(), uniqueEdges.begin(), uniqueEdges.end());
+
+    // A published slot still has exactly one semantic owner, including when
+    // a region cap and a side/edge history path converge on it. Same-owner
+    // duplicate rows are collapsed; conflicting owners are all refused.
+    std::map<std::string, App::SemanticHandle> slotOwner;
+    std::unordered_set<std::string> conflictedSlots;
+    for (const Part::HistoryRecord& rec : candidates) {
+        if (!rec.fromSeed.valid() || !Part::isNamedIndex(rec.toIndex)) {
+            continue;
+        }
+        const std::string slot = rec.toIndex.toString();
+        const auto [it, inserted] = slotOwner.emplace(slot, rec.fromSeed.handle);
+        if (!inserted && it->second != rec.fromSeed.handle) {
+            conflictedSlots.insert(slot);
+        }
+    }
+
+    Part::HistoryTable table;
+    std::unordered_set<std::string> emittedSlots;
+    table.reserve(candidates.size());
+    for (const Part::HistoryRecord& rec : candidates) {
+        if (!rec.fromSeed.valid() || !Part::isNamedIndex(rec.toIndex)) {
+            continue;
+        }
+        const std::string slot = rec.toIndex.toString();
+        if (conflictedSlots.count(slot) != 0 || !emittedSlots.insert(slot).second) {
+            continue;
+        }
+        table.push_back(rec);
+    }
+
+    // Keep the afterExecute request shape-aligned even when an ambiguous
+    // source was refused above. Empty placeholders are intentional: dropping
+    // them would shift the next curve/region onto the wrong published slot.
+    auto acceptedIndices = [&](App::SemanticHandle handle, const char* type) {
+        std::vector<App::ElementIndex> indices;
+        for (const Part::HistoryRecord& rec : table) {
+            if (rec.fromSeed.handle == handle && rec.toIndex.type == type) {
+                indices.push_back(rec.toIndex);
+            }
+        }
+        return indices;
+    };
+    lastNamedFaceIndices.clear();
+    std::unordered_set<App::SemanticHandle> seenFaceSeeds;
+    for (const auto& p : lastPrismGenerated) {
+        if (!p.fromSeed.valid() || !seenFaceSeeds.insert(p.fromSeed.handle).second) {
+            continue;
+        }
+        const auto indices = acceptedIndices(p.fromSeed.handle, "Face");
+        if (p.fromSeed.kind == App::SemanticKind::Region) {
+            for (std::size_t cap = 0; cap < 2; ++cap) {
+                lastNamedFaceIndices.push_back(cap < indices.size()
+                                                   ? indices[cap]
+                                                   : App::ElementIndex{});
+            }
+        }
+        else {
+            lastNamedFaceIndices.push_back(
+                indices.size() == 1 ? indices.front() : App::ElementIndex{}
+            );
+        }
+    }
+    lastNamedEdgeIndices.clear();
+    std::unordered_set<App::SemanticHandle> seenEdgeSeeds;
+    for (const auto& p : lastPrismGeneratedEdges) {
+        if (!p.fromSeed.valid() || !seenEdgeSeeds.insert(p.fromSeed.handle).second) {
+            continue;
+        }
+        const auto indices = acceptedIndices(p.fromSeed.handle, "Edge");
+        lastNamedEdgeIndices.push_back(
+            indices.size() == 1 ? indices.front() : App::ElementIndex{}
+        );
+    }
+
+    std::vector<App::SemanticId> seeds;
+    std::unordered_set<App::SemanticHandle> seenSeeds;
+    for (const auto& p : lastPrismGenerated) {
+        if (p.fromSeed.valid() && seenSeeds.insert(p.fromSeed.handle).second) {
+            seeds.push_back(p.fromSeed);
+        }
+    }
+    for (const auto& p : lastPrismGeneratedEdges) {
+        if (p.fromSeed.valid() && seenSeeds.insert(p.fromSeed.handle).second) {
+            seeds.push_back(p.fromSeed);
+        }
+    }
+    Part::SemanticHistoryAdapter::applyHistory(
+        graph,
+        static_cast<App::ObjectId>(getID()),
+        eval,
+        getAddSubType() == FeatureAddSub::Type::Subtractive ? "Pocket" : "Pad",
+        seeds,
+        table);
+}
+
+
 short FeatureExtrude::mustExecute() const
 {
     if (Placement.isTouched() || SideType.isTouched() || Type.isTouched() || Type2.isTouched()
@@ -86,6 +691,11 @@ short FeatureExtrude::mustExecute() const
         || Offset2.isTouched() || StartType.isTouched() || StartOffset.isTouched()
         || StartReference.isTouched() || UpToFace.isTouched() || UpToFace2.isTouched()
         || UpToShape.isTouched() || UpToShape2.isTouched() || UseLegacyTaperDirection.isTouched()) {
+        return 1;
+    }
+    if (const App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
+        graph && isValid() && !Shape.getShape().isNull()
+        && SemanticEmitter::needsSemanticRepublish(graph, static_cast<App::ObjectId>(getID()))) {
         return 1;
     }
     return ProfileBased::mustExecute();
@@ -110,10 +720,10 @@ Base::Vector3d FeatureExtrude::computeDirection(const Base::Vector3d& sketchVect
             Base::Vector3d dir;
             getAxis(pcReferenceAxis, subReferenceAxis, base, dir, ForbiddenAxis::NotPerpendicularWithNormal);
             switch (addSubType) {
-                case Type::Additive:
+                case FeatureAddSub::Type::Additive:
                     extrudeDirection = dir;
                     break;
-                case Type::Subtractive:
+                case FeatureAddSub::Type::Subtractive:
                     extrudeDirection = -dir;
                     break;
             }
@@ -375,6 +985,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
         return App::DocumentObject::StdReturn;
     }
 
+    clearSemanticCapture();
 
     bool makeface = options.testFlag(ExtrudeOption::MakeFace);
     bool fuse = options.testFlag(ExtrudeOption::MakeFuse);
@@ -383,6 +994,67 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
     std::string Sidemethod(SideType.getValueAsString());
     std::string method(Type.getValueAsString());
     std::string method2(Type2.getValueAsString());
+
+    // R1/R2: resolve each named UpToFace before its prism. Dual-write FaceN-only
+    // links (no semantic seed) keep the maker (I7). A seeded link must resolve to
+    // exactly one same-kind Binding on its linked feature; never run a maker with
+    // a stale FaceN fallback or an accepted set where one termination is required.
+    const OpcodeRoleId upToFaceRole = addSubType == FeatureAddSub::Type::Subtractive
+        ? OpcodeRoleId::PocketUpToFace
+        : OpcodeRoleId::PadUpToFace;
+    std::string resolvedUpToFace1;
+    std::string resolvedUpToFace2;
+    const auto upToFaceResolved = [&](const char* side,
+                                      const App::PropertyLinkSub& target,
+                                      std::string& resolvedSubname) {
+        resolvedSubname.clear();
+        if (std::strcmp(side, "UpToFace") != 0) {
+            return true;
+        }
+        App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
+        if (!graph) {
+            return true;
+        }
+        bool sawSeed = false;
+        bool sawFaceSeed = false;
+        for (const App::SemanticReference& ref : target.getSemanticRefs()) {
+            if (!ref.seed.valid()) {
+                continue;
+            }
+            sawSeed = true;
+            if (ref.seed.kind != App::SemanticKind::Face || ref.kind != App::SemanticKind::Face
+                || sawFaceSeed) {
+                return false;
+            }
+            sawFaceSeed = true;
+            if (!target.getValue()) {
+                return false;
+            }
+            App::ReferenceRequirement requirement = requirementFor(upToFaceRole);
+            requirement.acceptedReducers = {ref.reducer};
+            const App::ResolutionResult result =
+                App::SemanticResolver::resolve(ref, *graph, &requirement);
+            if (result.state != App::ResolutionState::Resolved || result.bindings.size() != 1) {
+                return false;
+            }
+            const App::SemanticBinding& binding = result.bindings.front();
+            if (binding.feature != static_cast<App::ObjectId>(target.getValue()->getID())
+                || binding.stid != ref.seed
+                || !Part::isNamedIndex(binding.index)  // PD32-E5
+                || binding.index.type != "Face") {
+                return false;
+            }
+            resolvedSubname = binding.index.toString();
+        }
+        return !sawSeed || sawFaceSeed;
+    };
+    if (!upToFaceResolved(method.c_str(), UpToFace, resolvedUpToFace1)
+        || !upToFaceResolved(method2.c_str(), UpToFace2, resolvedUpToFace2)) {
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+            "Exception",
+            "UpToFace Missing/Ambiguous/Incompatible; maker skipped. No FaceN fallback."
+        ));
+    }
 
     // Validate parameters
     double L = method == "ThroughAll" ? getThroughAllLength()
@@ -397,7 +1069,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
         || (Sidemethod == "Two sides" && method == "Length" && method2 == "Length")) {
 
         if (std::abs(L + L2) < Precision::Confusion()) {
-            if (addSubType == Type::Additive) {
+            if (addSubType == FeatureAddSub::Type::Additive) {
                 return new App::DocumentObjectExecReturn(
                     QT_TRANSLATE_NOOP("Exception", "Cannot create a pad with a total length of zero.")
                 );
@@ -420,7 +1092,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
         else {
             std::vector<TopoShape> shapes;
             bool hasEdges = false;
-            auto subs = Profile.getSubValues(false);
+            auto subs = getProfileSubValuesForMaker();
             if (subs.empty()) {
                 subs.emplace_back("");
             }
@@ -555,6 +1227,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                 L,
                 taper1,
                 UpToFace,
+                resolvedUpToFace1,
                 UpToShape,
                 dir,
                 offset1,
@@ -579,6 +1252,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                         L,
                         taper1,
                         UpToFace,
+                        resolvedUpToFace1,
                         UpToShape,
                         dir,
                         offset1,
@@ -598,6 +1272,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                         L,
                         taper1,
                         UpToFace,
+                        resolvedUpToFace1,
                         UpToShape,
                         dir2,
                         offset1,
@@ -616,7 +1291,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     gp_Trsf start_transform;
                     start_transform.SetTranslation(gp_Vec(dir).Reversed() * (L / 2.0));
 
-                    TopoShape moved_sketch = startSketch.makeElementCopy();
+                    TopoShape moved_sketch = profileForSide(startSketch);
                     moved_sketch.move(start_transform);
 
                     TopoShape prism1 = generateSingleExtrusionSide(
@@ -625,6 +1300,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                         L,
                         taper1,
                         UpToFace,
+                        resolvedUpToFace1,
                         UpToShape,
                         dir,
                         offset1,
@@ -645,6 +1321,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     L,
                     taper1,
                     UpToFace,
+                    resolvedUpToFace1,
                     UpToShape,
                     dir,
                     offset1,
@@ -691,6 +1368,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     L + L2,
                     0.0,
                     UpToFace2,
+                    resolvedUpToFace2,
                     UpToShape2,
                     dir2,
                     offset2,
@@ -714,6 +1392,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     L + L2,
                     0.0,
                     UpToFace,
+                    resolvedUpToFace1,
                     UpToShape,
                     dir,
                     offset1,
@@ -732,6 +1411,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     L,
                     taper1,
                     UpToFace,
+                    resolvedUpToFace1,
                     UpToShape,
                     dir,
                     offset1,
@@ -750,6 +1430,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     L2,
                     taper2,
                     UpToFace2,
+                    resolvedUpToFace2,
                     UpToShape2,
                     dir2,
                     offset2,
@@ -800,6 +1481,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
         prism = refineShapeIfActive(prism);
         // set the additive shape property for later usage in e.g. pattern
         this->AddSubShape.setValue(prism);
+        refreshNamedIndices(prism);
 
         if (base.shapeType(true) <= TopAbs_SOLID && fuse) {
             prism.Tag = -this->getID();
@@ -807,12 +1489,36 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             // Let's call algorithm computing a fuse operation:
             TopoShape result(0, getDocument()->getStringHasher());
             try {
-                result.makeElementBoolean(
-                    getBooleanMaker(),
-                    {base, prism},
-                    nullptr,
-                    FuzzyTolerance.getValue()
-                );
+                const char* maker;
+                switch (getAddSubType()) {
+                    case FeatureAddSub::Type::Subtractive:
+                        maker = Part::OpCodes::Cut;
+                        break;
+                    default:
+                        maker = Part::OpCodes::Fuse;
+                }
+                std::unique_ptr<BRepAlgoAPI_BooleanOperation> mk;
+                if (getAddSubType() == FeatureAddSub::Type::Subtractive) {
+                    mk.reset(new FCBRepAlgoAPI_Cut);
+                }
+                else {
+                    mk.reset(new FCBRepAlgoAPI_Fuse);
+                }
+                TopTools_ListOfShape shapeArguments;
+                TopTools_ListOfShape shapeTools;
+                shapeArguments.Append(base.getShape());
+                shapeTools.Append(prism.getShape());
+                mk->SetRunParallel(Standard_True);
+                mk->SetArguments(shapeArguments);
+                mk->SetTools(shapeTools);
+                const double fuzzy = FuzzyTolerance.getValue();
+                if (fuzzy > 0.0) {
+                    mk->SetFuzzyValue(fuzzy);
+                }
+                mk->Build();
+                result.makeElementShape(*mk, {base, prism}, maker);
+                result.makeElementShell(true);
+                captureBooleanHistory(mk.get(), result, base, prism);
             }
             catch (Standard_Failure&) {
                 return new App::DocumentObjectExecReturn(
@@ -838,7 +1544,9 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     "Result has multiple solids: enable 'Allow Compound' in the active body."
                 ));
             }
-            this->Shape.setValue(getSolid(solRes));
+            TopoShape published = getSolid(solRes);
+            this->Shape.setValue(published);
+            publishSemanticHistory(published);
         }
         else if (prism.hasSubShape(TopAbs_SOLID)) {
             if (prism.countSubShapes(TopAbs_SOLID) > 1) {
@@ -856,6 +1564,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             }
             prism = getSolid(prism);
             this->Shape.setValue(prism);
+            publishSemanticHistory(prism);
         }
         else {
             // store shape before refinement
@@ -868,6 +1577,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                 ));
             }
             this->Shape.setValue(prism);
+            publishSemanticHistory(prism);
         }
 
         // eventually disable some settings that are not valid for the current method
@@ -898,6 +1608,7 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(
     double length,
     double taperAngleDeg,
     App::PropertyLinkSub& upToFacePropHandle,
+    const std::string& resolvedUpToFaceSubname,
     App::PropertyLinkSubList& upToShapePropHandle,
     gp_Dir dir,
     double offsetVal,
@@ -922,7 +1633,11 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(
         int faceCount = 1;
         // Find a valid shape, face or datum plane to extrude up to
         if (method == "UpToFace") {
-            getUpToFaceFromLinkSub(upToShape, upToFacePropHandle);
+            getUpToFaceFromLinkSub(
+                upToShape,
+                upToFacePropHandle,
+                resolvedUpToFaceSubname.empty() ? nullptr : &resolvedUpToFaceSubname
+            );
             upToShape.move(invObjLoc);
         }
         else if (method == "UpToShape") {
@@ -951,6 +1666,10 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(
             if (addSubType != FeatureAddSub::Type::Subtractive) {
                 _base = base;  // avoid issue #16690
             }
+            // Main TopoShape::makeElementPrismUntil has no maker out-arg.
+            // BRepFeat_MakePrism keeps UpTo* history internal inside that helper;
+            // do not invent a 9th arg or FaceN (I10/I13). Length path still
+            // captures via BRepPrimAPI_MakePrism + capturePrismMaker.
             prism.makeElementPrismUntil(
                 _base,
                 sketchshape,
@@ -1010,7 +1729,9 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(
             // BRepFeat_MakePrism here even if we have a support because the resulting shape
             // creates problems with Pocket
             try {
-                prism.makeElementPrism(sketchshape, length * gp_Vec(dir));
+                BRepPrimAPI_MakePrism mkPrism(sketchshape.getShape(), length * gp_Vec(dir));
+                prism.makeElementShape(mkPrism, sketchshape, Part::OpCodes::Extrude);
+                capturePrismMaker(&mkPrism, prism, sketchshape);
             }
             catch (Standard_Failure&) {
                 throw Base::RuntimeError("FeatureExtrusion: Length: Could not extrude the sketch!");

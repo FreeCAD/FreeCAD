@@ -31,6 +31,10 @@
 #include <BRepBuilderAPI_Transform.hxx>
 #include <Precision.hxx>
 #include <TopExp_Explorer.hxx>
+#include <TopExp.hxx>
+#include <BRep_Tool.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Vertex.hxx>
 
 
 #include <array>
@@ -47,14 +51,285 @@
 #include "Body.h"
 #include "FeatureAddSub.h"
 #include "FeatureMultiTransform.h"
+#include "FeatureScaled.h"
 #include "FeatureMirrored.h"
 #include "FeatureLinearPattern.h"
 #include "FeaturePolarPattern.h"
 #include "FeatureSketchBased.h"
 #include "Mod/Part/App/TopoShapeOpCode.h"
 
+#include <deque>
+#include <memory>
+#include <optional>
+#include <unordered_set>
+#include <vector>
+
+#include <BRepAdaptor_Surface.hxx>
+#include <BRepAlgoAPI_BooleanOperation.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Face.hxx>
+#include <gp_Pln.hxx>
+#include <gp_Pnt.hxx>
+
+#include <App/Document.h>
+#include <App/SemanticDocumentState.h>
+#include <App/SemanticReference.h>
+#include <Mod/Part/App/FCBRepAlgoAPI_BooleanOperation.h>
+#include <Mod/Part/App/SemanticHistoryAdapter.h>
+#include <Mod/Part/App/SemanticSourceCollector.h>
+#include <TopTools_ListOfShape.hxx>
+
+#include "SemanticOpcode.h"
+
 
 using namespace PartDesign;
+
+namespace
+{
+
+
+
+/// A maker history row is usable only when its output still resolves on the
+/// exact shape that will be published. Keep stale or malformed rows out of
+/// applyHistory; no semantic binding is safer than a binding to another
+/// output (I13).
+bool isUsableTransformedHistory(const Part::TopoShape& published,
+                                const Part::HistoryRecord& record)
+{
+    if (!record.fromSeed.valid() || published.isNull() || record.toIndex.index <= 0) {
+        return false;
+    }
+    TopAbs_ShapeEnum type;
+    if (record.toIndex.type == "Face") {
+        type = TopAbs_FACE;
+    }
+    else if (record.toIndex.type == "Edge") {
+        type = TopAbs_EDGE;
+    }
+    else {
+        return false;
+    }
+    return !published.findShape(type, record.toIndex.index).IsNull();
+}
+
+const char* transformedOpcodeName(const App::DocumentObject* self)
+{
+    if (freecad_cast<const LinearPattern*>(self)) {
+        return opcodeName(Opcode::LinearPattern);
+    }
+    if (freecad_cast<const PolarPattern*>(self)) {
+        return opcodeName(Opcode::PolarPattern);
+    }
+    if (freecad_cast<const Mirrored*>(self)) {
+        return opcodeName(Opcode::Mirrored);
+    }
+    if (freecad_cast<const Scaled*>(self)) {
+        return opcodeName(Opcode::Scaled);
+    }
+    if (freecad_cast<const MultiTransform*>(self)) {
+        return opcodeName(Opcode::MultiTransform);
+    }
+    return "Transformed";
+}
+
+/// Independent TopoDS for a boolean argument, tagged as the Transformed feature.
+/// src.makeElementCopy() is TopoShape(src.Tag, Hasher).makeElementCopy(*this)
+/// so the copy would keep Pad's Tag. Element-boolean / hasher caches key off Tag;
+/// a Pad-tagged copy aliases back onto Pad.Shape (null support, smashed placement).
+Part::TopoShape copyTopoForBoolean(const Part::TopoShape& src, long selfTag)
+{
+    if (src.isNull()) {
+        return src;
+    }
+    Part::TopoShape dst(selfTag, src.Hasher);
+    dst.makeElementCopy(src);
+    return dst;
+}
+
+/// Side-maker for fromMaker only. makeElementBoolean does not keep the maker
+/// (local unique_ptr, destroyed on return). Product solid stays makeElementFuse/Cut.
+/// Arguments MUST already be retagged copies whose TopoDS is never live Pad.Shape.
+/// Never call FCBRepAlgoAPIHelper from PartDesign (LNK2019).
+std::unique_ptr<BRepAlgoAPI_BooleanOperation> sideMakerOnCopies(
+    bool fuse,
+    const std::vector<Part::TopoShape>& copies)
+{
+    if (copies.size() < 2) {
+        return nullptr;
+    }
+    std::unique_ptr<BRepAlgoAPI_BooleanOperation> mk;
+    if (fuse) {
+        mk.reset(new FCBRepAlgoAPI_Fuse);
+    }
+    else {
+        mk.reset(new FCBRepAlgoAPI_Cut);
+    }
+    TopTools_ListOfShape args;
+    TopTools_ListOfShape tools;
+    for (std::size_t i = 0; i < copies.size(); ++i) {
+        if (copies[i].isNull()) {
+            continue;
+        }
+        if (args.IsEmpty()) {
+            args.Append(copies[i].getShape());
+        }
+        else {
+            tools.Append(copies[i].getShape());
+        }
+    }
+    if (args.IsEmpty() || tools.IsEmpty()) {
+        return nullptr;
+    }
+    mk->SetRunParallel(Standard_True);
+    mk->SetArguments(args);
+    mk->SetTools(tools);
+    mk->Build();
+    if (!mk->IsDone()) {
+        return nullptr;
+    }
+    return mk;
+}
+
+App::DocumentObjectExecReturn* applyTransformedBoolean(
+    Part::TopoShape& supportShape,
+    bool fuse,
+    const std::vector<Part::TopoShape>& shapes,
+    std::unique_ptr<BRepAlgoAPI_BooleanOperation>& lastMk,
+    Part::TopoShape& lastSeedShape,
+    long selfTag)
+{
+    // Retagged copies (Transformed id, never Pad.Tag). Product prefers the
+    // side-maker Shape so fromMaker images are the stored TShape.
+    std::vector<Part::TopoShape> copies;
+    copies.reserve(shapes.size());
+    for (const auto& s : shapes) {
+        if (s.isNull()) {
+            continue;
+        }
+        copies.push_back(copyTopoForBoolean(s, selfTag));
+    }
+    if (copies.empty()) {
+        return nullptr;
+    }
+    // Patterned instance (last copy), not the support original. uniqueOneImage
+    // on the original drops 2-image Pad leftovers; Fillet picks the outer copy.
+    lastSeedShape = copies.size() >= 2 ? copies.back() : copies.front();
+    if (copies.size() < 2) {
+        supportShape = copies.front();
+        return nullptr;
+    }
+
+    // Product AND fromMaker must share one TShape. makeElementFuse then a
+    // second BOP made indexOnPublished miss → seedless LinearPattern Fillet.
+    auto mk = sideMakerOnCopies(fuse, copies);
+    if (mk) {
+        lastMk = std::move(mk);
+        Part::TopoShape named(selfTag, copies.front().Hasher);
+        named.setShape(lastMk->Shape(), false);
+        supportShape = named;
+        return nullptr;
+    }
+
+    try {
+        if (fuse) {
+            supportShape.makeElementFuse(copies);
+        }
+        else {
+            supportShape.makeElementCut(copies);
+        }
+    }
+    catch (Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
+    }
+    catch (const Standard_Failure& e) {
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
+    }
+    if (selfTag != 0 && supportShape.Tag != selfTag) {
+        supportShape.reTagElementMap(selfTag, supportShape.Hasher);
+    }
+    return nullptr;
+}
+
+void publishTransformedSemanticHistory(
+    App::DocumentObject* self,
+    BRepAlgoAPI_BooleanOperation* mkBool,
+    const Part::TopoShape& result,
+    App::DocumentObject* supportObj,
+    const Part::TopoShape& supportShape,
+    const std::vector<App::DocumentObject*>& originals)
+{
+    if (!self || !mkBool || !mkBool->IsDone() || result.isNull()) {
+        return;
+    }
+    App::SemanticGraph* graph = App::SemanticDocumentState::graphFor(self);
+    if (!graph && self->getDocument()) {
+        graph = &self->getDocument()->semanticGraph();
+    }
+    if (!graph) {
+        return;
+    }
+
+    std::deque<TopoDS_Shape> held;
+    std::vector<std::pair<App::SemanticId, const void*>> inputs;
+    std::unordered_set<App::SemanticHandle> seenSourceSeeds;
+    std::unordered_set<App::DocumentObject*> seen;
+    auto collect = [&](App::DocumentObject* obj) {
+        if (!obj || !seen.insert(obj).second) {
+            return;
+        }
+        Part::collectUniqueSourceSeeds(graph, obj, supportShape, held, inputs, seenSourceSeeds);
+    };
+    collect(supportObj);
+    for (App::DocumentObject* orig : originals) {
+        collect(orig);
+    }
+    if (inputs.empty()) {
+        return;
+    }
+
+    auto indexOf = [&result](const void* occ) -> App::ElementIndex {
+        App::ElementIndex idx;
+        if (!occ) {
+            return idx;
+        }
+        return Part::indexOnPublished(result, *static_cast<const TopoDS_Shape*>(occ));
+    };
+
+    const Part::HistoryTable raw =
+        Part::SemanticHistoryAdapter::fromMaker(mkBool, inputs, indexOf);
+    const Part::HistoryTable unique =
+        Part::SemanticHistoryAdapter::uniqueOneImageGenerated(raw);
+
+    const App::ObjectId selfId = static_cast<App::ObjectId>(self->getID());
+    App::EvalSerial eval = 0;
+    if (App::Document* doc = self->getDocument()) {
+        eval = doc->semanticState().currentEval();
+    }
+    Part::HistoryTable toApply;
+    std::vector<App::SemanticId> seeds;
+    toApply.reserve(unique.size());
+    seeds.reserve(unique.size());
+    for (const Part::HistoryRecord& rec : unique) {
+        if (!isUsableTransformedHistory(result, rec)) {
+            continue;
+        }
+        // I13 leave-unnamed / C1: already bound, conflicted slot, or unique owner.
+        if (App::shouldRefuseGeneratedMint(graph, rec.fromSeed, selfId, rec.toIndex)) {
+            continue;
+        }
+        toApply.push_back(rec);
+        seeds.push_back(rec.fromSeed);
+    }
+    if (toApply.empty()) {
+        return;
+    }
+
+    const char* opcode = transformedOpcodeName(self);
+    Part::SemanticHistoryAdapter::applyHistory(
+        graph, selfId, eval, opcode ? opcode : "", seeds, toApply);
+}
+
+}  // namespace
 
 namespace PartDesign
 {
@@ -253,6 +528,21 @@ short Transformed::mustExecute() const
     if (Originals.isTouched() || TransformMode.isTouched()) {
         return 1;
     }
+
+    // Restored documents may retain a valid transformed Shape while STG1 has
+    // no durable event/identity rows for this publisher. Schedule one normal
+    // execution so Linear/Polar/Mirrored (and the other Transformed variants)
+    // can republish their semantic history. MultiTransform children are not
+    // publishers and must remain owned by their parent.
+    if (!isMultiTransformChild()) {
+        if (const App::SemanticGraph* graph = SemanticEmitter::graphFor(this);
+            graph && isValid() && !Shape.getShape().isNull()
+            && SemanticEmitter::needsSemanticRepublish(
+                graph, static_cast<App::ObjectId>(getID()))) {
+            return 1;
+        }
+    }
+
     return PartDesign::Feature::mustExecute();
 }
 
@@ -380,16 +670,18 @@ App::DocumentObjectExecReturn* Transformed::execute()
         );
     }
 
-    // create an untransformed copy of the support shape
-    Part::TopoShape supportShape(supportTopShape);
+    // Deep-copy support before any OCC boolean. Destination Tag is this
+    // Transformed feature id, never Pad's — hasher caches key off Tag.
+    const long selfTag = this->getID();
+    Part::TopoShape supportShape = copyTopoForBoolean(supportTopShape, selfTag);
 
     gp_Trsf trsfInv = supportShape.getShape().Location().Transformation().Inverted();
 
     supportShape.setTransform(Base::Matrix4D());
 
     auto getTransformedCompShape = [&](const auto& supportShape, const auto& origShape) {
-        std::vector<TopoShape> shapes = {supportShape};
-        TopoShape shape(origShape);
+        std::vector<TopoShape> shapes = {copyTopoForBoolean(supportShape, selfTag)};
+        TopoShape shape = copyTopoForBoolean(origShape, selfTag);
         int idx = 1;
         auto transformIter = transformations.cbegin();
         transformIter++;
@@ -402,6 +694,9 @@ App::DocumentObjectExecReturn* Transformed::execute()
         }
         return shapes;
     };
+
+    std::unique_ptr<BRepAlgoAPI_BooleanOperation> lastMk;
+    Part::TopoShape lastSeedShape;
 
     switch (mode) {
         case Mode::Features:
@@ -432,9 +727,11 @@ App::DocumentObjectExecReturn* Transformed::execute()
                 }
                 gp_Trsf trsf = trsfInv.Multiplied(feature->getLocation().Transformation());
                 if (!fuseShape.isNull()) {
+                    fuseShape = copyTopoForBoolean(fuseShape, selfTag);
                     fuseShape = fuseShape.makeElementTransform(trsf);
                 }
                 if (!cutShape.isNull()) {
+                    cutShape = copyTopoForBoolean(cutShape, selfTag);
                     cutShape = cutShape.makeElementTransform(trsf);
                 }
                 if (!fuseShape.isNull()) {
@@ -442,14 +739,20 @@ App::DocumentObjectExecReturn* Transformed::execute()
                     if (Base::Sequencer().wasCanceled()) {
                         return new App::DocumentObjectExecReturn("User aborted");
                     }
-                    supportShape.makeElementFuse(shapes);
+                    if (auto* err = applyTransformedBoolean(
+                            supportShape, true, shapes, lastMk, lastSeedShape, selfTag)) {
+                        return err;
+                    }
                 }
                 if (!cutShape.isNull()) {
                     auto shapes = getTransformedCompShape(supportShape, cutShape);
                     if (Base::Sequencer().wasCanceled()) {
                         return new App::DocumentObjectExecReturn("User aborted");
                     }
-                    supportShape.makeElementCut(shapes);
+                    if (auto* err = applyTransformedBoolean(
+                            supportShape, false, shapes, lastMk, lastSeedShape, selfTag)) {
+                        return err;
+                    }
                 }
             }
             break;
@@ -458,12 +761,22 @@ App::DocumentObjectExecReturn* Transformed::execute()
             if (Base::Sequencer().wasCanceled()) {
                 return new App::DocumentObjectExecReturn("User aborted");
             }
-            supportShape.makeElementFuse(shapes);
+            if (auto* err = applyTransformedBoolean(
+                    supportShape, true, shapes, lastMk, lastSeedShape, selfTag)) {
+                return err;
+            }
             break;
         }
     }
 
-    supportShape = refineShapeIfActive((supportShape));
+    // Refine replaces TShapes; fromMaker images would miss. Skip when we
+    // have a side-maker product (isolate-4 emit). Fallback path still refines.
+    if (!lastMk) {
+        supportShape = refineShapeIfActive((supportShape));
+        if (selfTag != 0 && supportShape.Tag != selfTag) {
+            supportShape.reTagElementMap(selfTag, supportShape.Hasher);
+        }
+    }
 
     this->Shape.setValue(getSolid(supportShape));
     if (singleSolidRuleMode() == SingleSolidRuleMode::Enforced) {
@@ -472,6 +785,17 @@ App::DocumentObjectExecReturn* Transformed::execute()
     else {
         rejected.Nullify();
     }
+
+    // Unique 1-image Face/Edge Bindings on this Transformed feature (I13).
+    // Product is the side-maker Shape (same TShape as fromMaker). Inputs are
+    // Pad seeds on the patterned copy. allocatedBy is this feature, not Pad.
+    publishTransformedSemanticHistory(
+        this,
+        lastMk.get(),
+        this->Shape.getShape(),
+        supportFeature,
+        lastSeedShape.isNull() ? supportShape : lastSeedShape,
+        originals);
 
     return App::DocumentObject::StdReturn;
 }

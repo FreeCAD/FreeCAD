@@ -26,9 +26,13 @@
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
+#include <BRep_Tool.hxx>
 #include <GCPnts_AbscissaPoint.hxx>
+#include <Precision.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
+#include <TopoDS_Vertex.hxx>
+#include <gp_Pnt.hxx>
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/geometry/geometries/register/point.hpp>
@@ -43,6 +47,7 @@
 #include <App/FeaturePythonPyImp.h>
 #include <App/IndexedName.h>
 #include <App/MappedName.h>
+#include <App/ElementMap.h>
 #include <App/ObjectIdentifier.h>
 #include <Base/Console.h>
 #include <Base/ProgramVersion.h>
@@ -51,6 +56,7 @@
 #include <Base/Tools.h>
 #include <Base/Vector3D.h>
 #include <Mod/Part/App/PartPyCXX.h>
+#include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/GeometryMigrationExtension.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
 #include <Mod/Part/App/WireJoiner.h>
@@ -59,6 +65,8 @@
 
 #include "GeoEnum.h"
 #include "SketchObject.h"
+#include "SketchSemanticSeed.h"
+#include <App/SemanticDocumentState.h>
 #include "Constraint.h"
 #include "SketchObjectPy.h"
 #include "ExternalGeometryFacade.h"
@@ -270,6 +278,7 @@ App::DocumentObjectExecReturn* SketchObject::execute()
     // this is not necessary for sketch representation in edit mode, unless we want to trigger an
     // update of the objects that depend on this sketch (like pads)
     buildShape();
+    publishSemanticSeeds();
 
     return App::DocumentObject::StdReturn;
 }
@@ -355,6 +364,7 @@ void SketchObject::buildShape()
     }
 
     internalElementMap.clear();
+    lastInternalRegionStamps.clear();
 
     if (shapes.empty() && vertices.empty()) {
         InternalShape.setValue(Part::TopoShape());
@@ -420,6 +430,14 @@ const std::map<std::string,std::string> SketchObject::getInternalElementMap() co
             }
         }
     }
+    // v2: InternalFaceN is Binding. Identity is regionKey (wire IDs + role).
+    for (const auto &st : lastInternalRegionStamps) {
+        if (st.faceIndex <= 0 || !SketchEntityIdMap::isRegionKey(st.key))
+            continue;
+        std::string indexed = internalPrefix() + "Face" + std::to_string(st.faceIndex);
+        internalElementMap[indexed] = st.key;
+        internalElementMap[st.key] = indexed;
+    }
     return internalElementMap;
 }
 
@@ -430,6 +448,10 @@ Part::TopoShape SketchObject::buildInternals(const Part::TopoShape &edges) const
     try {
         // Old sketches keep FaceMakerRing: FaceMakerBuildFace names the internal
         // faces differently, breaking references from downstream features.
+        //
+        // v2: each FaceMaker face is named regionKey(outerWireIds, Interior|Hole).
+        // FaceN remains IndexedName/Binding only. Not "largest face of this evaluate."
+        lastInternalRegionStamps.clear();
         const bool legacy = _InternalFaceVersion.getValue() < 2;
 
         Part::TopoShape result(getID(), getDocument()->getStringHasher());
@@ -459,6 +481,10 @@ Part::TopoShape SketchObject::buildInternals(const Part::TopoShape &edges) const
             catch (const Part::NullShapeException&) {
                 // An open-only sketch has no bounded regions, so a null face result is expected.
             }
+        }
+
+        if (!result.isNull() && result.hasSubShape(TopAbs_FACE)) {
+            stampInternalFaceRegionKeys(result);
         }
 
         // Append open wires (edges not part of any closed face)
@@ -619,92 +645,12 @@ void SketchObject::updateGeoHistory() {
 // clang-format on
 void SketchObject::generateId(const Part::Geometry* geo)
 {
-    auto preReturn = [this, &geo](auto& newId) {
-        GeometryFacade::setId(geo, newId);
-        geoMap[Sketcher::GeometryFacade::getId(geo)] = (long)Geometry.getSize();
-    };
-
-    auto isNotInGeoMap = [this](auto& id) {
-        if (geoMap.find(id) == geoMap.end()) {
-            return true;
-        }
-        FC_TRACE("ignore " << id);
-        return false;
-    };
-
-    if (geoHistoryLevel == 0) {
-        preReturn(++geoLastId);
-        return;
-    }
-
-    if (!geoHistory) {
-        updateGeoHistory();
-    }
-
-    // Search geo history to see if the start point and end point belongs to
-    // some deleted geometries. Prefer matching both start and end point. If
-    // can't then try start and then end. Generate new id if none is found.
-    auto pstart = getPoint(geo, PointPos::start);
-    auto it = geoHistory->find(pstart, false);
-    auto pend = getPoint(geo, PointPos::end);
-    auto it2 = it;
-    if (pstart != pend) {
-        it2 = geoHistory->find(pend, false);
-        if (it2 == geoHistory->end()) {
-            it2 = it;
-        }
-    }
-    std::vector<long> found;
-
-    if (geoHistoryLevel <= 1 && (it == geoHistory->end() || it2 == it)) {
-        // level <= 1 means we only reuse id if both start and end matches
-        preReturn(++geoLastId);
-        return;
-    }
-
-    if (it != geoHistory->end()) {
-        // `find_if` avoids checking twice
-        auto iterOfId = std::ranges::find_if(*it, isNotInGeoMap);
-        if (iterOfId != it->end() && it2 == it) {
-            preReturn(*iterOfId);
-            return;
-        }
-        std::copy_if(iterOfId, it->end(), std::back_inserter(found), isNotInGeoMap);
-    }
-    if (found.empty()) {
-        // no candidate exists
-        if (it2 == it) {
-            preReturn(++geoLastId);
-            return;
-        }
-        auto iterOfId = std::ranges::find_if(*it, isNotInGeoMap);
-        if (iterOfId != it->end()) {
-            preReturn(*iterOfId);
-            return;
-        }
-        preReturn(++geoLastId);
-        return;
-    }
-
-    auto isInIt2 = [&it2](auto& id) {
-        if (it2->find(id) != it2->end()) {
-            return true;
-        }
-        FC_TRACE("ignore " << id);
-        return false;
-    };
-
-    // already some candidate exists, search for matching of both
-    // points
-    if (it2 != it) {
-        auto iterOfId = std::ranges::find_if(found, isInIt2);
-        if (iterOfId != found.end()) {
-            preReturn(*iterOfId);
-            return;
-        }
-    }
-    FC_TRACE("found " << found.front());
-    preReturn(found.front());
+    // I5: never recycle. geoHistory still records adjacency for diagnostics
+    // (updateGeoHistory) but is not an allocation oracle. Point-matching reuse
+    // of a Deleted id is TNP and is withdrawn.
+    const long newId = nextEntityId();
+    GeometryFacade::setId(geo, newId);
+    geoMap[newId] = (long)Geometry.getSize();
 }
 
 SketchSolveStatus SketchObject::setTextAndFont(
@@ -1065,7 +1011,7 @@ void SketchObject::onGeometryChanged()
         auto geo = vals[i];
         auto gf = GeometryFacade::getFacade(geo);
         if (gf->getId() == 0) {
-            gf->setId(++geoLastId);
+            gf->setId(nextEntityId());
         }
         else if (gf->getId() > geoLastId) {
             geoLastId = gf->getId();
@@ -1073,9 +1019,10 @@ void SketchObject::onGeometryChanged()
         while (!geoMap.insert(std::make_pair(gf->getId(), i)).second) {
             FC_WARN("duplicate geometry id " << gf->getId() << " -> "
                     << geoLastId + 1);  // NOLINT
-            gf->setId(++geoLastId);
+            gf->setId(nextEntityId());
         }
     }
+    rebuildEntityIdMapFromGeometry();
     updateGeoHistory();
 
     auto doc = getDocument();
@@ -1223,10 +1170,11 @@ void SketchObject::onExternalGeoChanged()
         if (egf->getId() > geoLastId) {
             geoLastId = egf->getId();
         }
+        entityIds.noteIssued(egf->getId());
         if (!externalGeoMap.emplace(egf->getId(), i).second) {
             FC_WARN("duplicate geometry id " << egf->getId() << " -> "
                     << geoLastId + 1);  // NOLINT
-            egf->setId(++geoLastId);
+            egf->setId(nextEntityId());
             externalGeoMap[egf->getId()] = i;
         }
         if (!egf->getRef().empty()) {
@@ -2298,3 +2246,337 @@ template class SketcherExport FeaturePythonT<Sketcher::SketchObject>;
 }// namespace App
 
 // clang-format on
+
+
+// --- Toponaming sketch entity / semantic seed helpers ---
+
+std::vector<SketchEntityHandle> SketchObject::entityIdsFromTopoWire(const Part::TopoShape &wire) const
+{
+    std::vector<std::string> names;
+    const unsigned long n = wire.countSubShapes(TopAbs_EDGE);
+    names.reserve(static_cast<std::size_t>(n));
+    for (unsigned long i = 1; i <= n; ++i) {
+        Data::MappedName mapped =
+            wire.getMappedName(Data::IndexedName::fromConst("Edge", static_cast<int>(i)));
+        if (mapped) {
+            names.push_back(mapped.toString());
+        }
+    }
+    return SketchEntityIdMap::entityIdsFromMappedNames(names);
+}
+
+void SketchObject::stampInternalFaceRegionKeys(Part::TopoShape &faces) const
+{
+    lastInternalRegionStamps.clear();
+    if (faces.isNull()) {
+        return;
+    }
+
+    const auto faceList = faces.getSubTopoShapes(TopAbs_FACE);
+    std::vector<SketchEntityIdMap::FaceWires> specs;
+    specs.reserve(faceList.size());
+    for (const auto &face : faceList) {
+        SketchEntityIdMap::FaceWires spec;
+        std::vector<Part::TopoShape> inners;
+        Part::TopoShape outer = face.splitWires(&inners, Part::TopoShape::NoReorient);
+        if (!outer.isNull()) {
+            outer.mapSubElement(face);
+            spec.outer = entityIdsFromTopoWire(outer);
+        }
+        spec.inners.reserve(inners.size());
+        for (auto &inner : inners) {
+            inner.mapSubElement(face);
+            spec.inners.push_back(entityIdsFromTopoWire(inner));
+        }
+        specs.push_back(std::move(spec));
+    }
+
+    lastInternalRegionStamps = SketchEntityIdMap::regionStampsForFaces(specs);
+    if (!faces.hasElementMap()) {
+        faces.resetElementMap(std::make_shared<Data::ElementMap>());
+    }
+    for (const auto &st : lastInternalRegionStamps) {
+        if (st.faceIndex <= 0 || st.key.empty()) {
+            continue;
+        }
+        faces.setElementName(Data::IndexedName::fromConst("Face", st.faceIndex),
+                             Data::MappedName(st.key),
+                             0L,
+                             nullptr,
+                             /*overwrite*/true);
+    }
+}
+
+long SketchObject::nextEntityId()
+{
+    const long id = entityIds.allocate();
+    geoLastId = entityIds.highWater() - 1;
+    return id;
+}
+
+void SketchObject::rebuildEntityIdMapFromGeometry()
+{
+    const auto& vals = getInternalGeometry();
+    std::vector<long> live;
+    live.reserve(vals.size());
+    geoMap.clear();
+    for (long i = 0; i < (long)vals.size(); ++i) {
+        auto gf = GeometryFacade::getFacade(vals[i]);
+        long id = gf->getId();
+        if (id <= 0 || !geoMap.insert(std::make_pair(id, (int)i)).second) {
+            id = nextEntityId();
+            gf->setId(id);
+            geoMap[id] = (int)i;
+        }
+        live.push_back(id);
+    }
+    entityIds.replaceLive(live);
+    geoLastId = entityIds.highWater() - 1;
+    publishSemanticSeeds();
+}
+
+namespace {
+bool hasProfileEndpoints(const Part::Geometry* geo)
+{
+    if (!geo) {
+        return false;
+    }
+    return geo->is<Part::GeomLineSegment>() || geo->is<Part::GeomArcOfCircle>()
+        || geo->is<Part::GeomArcOfEllipse>() || geo->is<Part::GeomArcOfHyperbola>()
+        || geo->is<Part::GeomArcOfParabola>() || geo->is<Part::GeomBSplineCurve>();
+}
+
+}  // namespace
+
+/// Unique start/end corners of live non-construction profile curves.
+/// Dedup by coincident (handle,pos) and Precision::Confusion. Not a vertex heap.
+/// Prefer Shape VERTEX explorer order when every explorer vertex matches one corner.
+std::vector<SketchVertexKey> SketchObject::uniqueProfileCornerKeys()
+{
+    const std::vector<Part::Geometry*>& geos = getInternalGeometry();
+    const SketchEntityIdMap& ids = getEntityIdMap();
+    std::vector<SketchVertexKey> endpoints;
+    std::vector<SketchVertexPoint> points;
+    endpoints.reserve(static_cast<std::size_t>(geos.size()) * 2);
+    points.reserve(static_cast<std::size_t>(geos.size()) * 2);
+    for (int slot = 0; slot < static_cast<int>(geos.size()); ++slot) {
+        const Part::Geometry* geo = geos[static_cast<std::size_t>(slot)];
+        if (!geo || GeometryFacade::getConstruction(geo) || !hasProfileEndpoints(geo)) {
+            continue;
+        }
+        const SketchEntityHandle handle = ids.idAt(slot);
+        if (handle <= 0) {
+            continue;
+        }
+        for (PointPos pos : {PointPos::start, PointPos::end}) {
+            SketchVertexKey key;
+            key.handle = handle;
+            key.pos = static_cast<int>(pos);
+            endpoints.push_back(key);
+            const Base::Vector3d p = SketchObject::getPoint(geo, pos);
+            points.push_back({p.x, p.y, p.z});
+        }
+    }
+    std::vector<std::pair<SketchVertexKey, SketchVertexKey>> coincidences;
+    const auto groups = getCoincidenceGroups();
+    for (const auto& group : groups) {
+        std::vector<SketchVertexKey> members;
+        members.reserve(group.size());
+        for (const auto& kv : group) {
+            if (kv.first < 0) {
+                continue;
+            }
+            if (kv.second != PointPos::start && kv.second != PointPos::end) {
+                continue;
+            }
+            const SketchEntityHandle handle = ids.idAt(kv.first);
+            if (handle <= 0) {
+                continue;
+            }
+            SketchVertexKey key;
+            key.handle = handle;
+            key.pos = static_cast<int>(kv.second);
+            members.push_back(key);
+        }
+        for (std::size_t i = 1; i < members.size(); ++i) {
+            coincidences.push_back({members[0], members[i]});
+        }
+    }
+    auto unique = SketchSemanticSeeds::uniqueProfileCorners(
+        endpoints, coincidences, points, Precision::Confusion());
+
+    const Part::TopoShape& shape = Shape.getShape();
+    if (shape.isNull() || unique.size() < 2) {
+        return unique;
+    }
+    const auto verts = shape.getSubTopoShapes(TopAbs_VERTEX);
+    if (verts.empty()) {
+        return unique;
+    }
+    const Base::Placement plm = Placement.getValue();
+    const double tol = Precision::Confusion();
+    const double tol2 = tol * tol;
+    auto worldPoint = [&](const SketchVertexKey& key) -> Base::Vector3d {
+        const int slot = ids.slotOf(key.handle);
+        if (slot < 0 || slot >= static_cast<int>(geos.size())) {
+            return Base::Vector3d(0.0, 0.0, 0.0);
+        }
+        Base::Vector3d local = SketchObject::getPoint(geos[static_cast<std::size_t>(slot)],
+                                                     static_cast<PointPos>(key.pos));
+        Base::Vector3d world;
+        plm.multVec(local, world);
+        return world;
+    };
+    std::vector<char> used(unique.size(), 0);
+    std::vector<SketchVertexKey> ordered;
+    ordered.reserve(unique.size());
+    bool allMatched = verts.size() == unique.size();
+    for (const auto& v : verts) {
+        const TopoDS_Shape s = v.getShape();
+        if (s.IsNull() || s.ShapeType() != TopAbs_VERTEX) {
+            allMatched = false;
+            continue;
+        }
+        const gp_Pnt gp = BRep_Tool::Pnt(TopoDS::Vertex(s));
+        int best = -1;
+        double bestD2 = tol2;
+        for (std::size_t i = 0; i < unique.size(); ++i) {
+            if (used[i]) {
+                continue;
+            }
+            const Base::Vector3d q = worldPoint(unique[i]);
+            const double dx = q.x - gp.X();
+            const double dy = q.y - gp.Y();
+            const double dz = q.z - gp.Z();
+            const double d2 = dx * dx + dy * dy + dz * dz;
+            if (d2 <= bestD2) {
+                bestD2 = d2;
+                best = static_cast<int>(i);
+            }
+        }
+        if (best < 0) {
+            allMatched = false;
+            continue;
+        }
+        used[static_cast<std::size_t>(best)] = 1;
+        ordered.push_back(unique[static_cast<std::size_t>(best)]);
+    }
+    if (!allMatched || ordered.size() != unique.size()) {
+        return unique;
+    }
+    return ordered;
+}
+
+
+App::SemanticId SketchObject::ensureSeedForEntity(SketchEntityHandle handle)
+{
+    App::Document* doc = getDocument();
+    if (!doc) {
+        return {};
+    }
+    return SketchSemanticSeeds::ensureSeedForEntity(doc->semanticGraph(),
+                                                    static_cast<App::ObjectId>(getID()),
+                                                    doc->semanticState().currentEval(),
+                                                    handle,
+                                                    App::SemanticKind::Edge);
+}
+
+std::vector<App::SemanticId> SketchObject::seedsForProfile()
+{
+    App::Document* doc = getDocument();
+    if (!doc) {
+        return {};
+    }
+    const auto live = entityIds.live();
+    const auto corners = uniqueProfileCornerKeys();
+    const auto profile = SketchSemanticSeeds::seedsForProfile(doc->semanticGraph(),
+                                                              static_cast<App::ObjectId>(getID()),
+                                                              doc->semanticState().currentEval(),
+                                                              live,
+                                                              {},
+                                                              corners);
+    return profile.curves;
+}
+
+std::vector<std::string> SketchObject::regionKeysFromStampsOrProfileWires() const
+{
+    std::vector<std::string> keys;
+    for (const auto& st : lastInternalRegionStamps) {
+        if (!st.key.empty()) {
+            keys.push_back(st.key);
+        }
+    }
+    std::sort(keys.begin(), keys.end());
+    keys.erase(std::unique(keys.begin(), keys.end()), keys.end());
+    if (!keys.empty()) {
+        return keys;
+    }
+    // MakeInternals off: still a closed-profile region. Wire entity IDs only
+    // (construction geometry is not in Shape wires). Same regionKey internals
+    // would stamp → I8 reuse via ensureRegionSeed, not FaceN / a second heap.
+    const Part::TopoShape& shape = Shape.getShape();
+    if (shape.isNull()) {
+        return keys;
+    }
+    std::vector<SketchEntityIdMap::FaceWires> specs;
+    for (const auto& wire : shape.getSubTopoShapes(TopAbs_WIRE)) {
+        SketchEntityIdMap::FaceWires spec;
+        spec.outer = entityIdsFromTopoWire(wire);
+        if (spec.outer.empty()) {
+            continue;
+        }
+        specs.push_back(std::move(spec));
+    }
+    return SketchEntityIdMap::regionKeysForFaces(specs);
+}
+
+std::vector<App::SemanticId> SketchObject::regionSeedsForProfile()
+{
+    App::Document* doc = getDocument();
+    if (!doc) {
+        return {};
+    }
+    const std::vector<std::string> keys = regionKeysFromStampsOrProfileWires();
+    const auto profile = SketchSemanticSeeds::seedsForProfile(doc->semanticGraph(),
+                                                              static_cast<App::ObjectId>(getID()),
+                                                              doc->semanticState().currentEval(),
+                                                              {},
+                                                              keys);
+    return profile.regions;
+}
+
+void SketchObject::publishSemanticSeeds()
+{
+    App::Document* doc = getDocument();
+    if (!doc) {
+        return;
+    }
+    App::SemanticGraph& graph = doc->semanticGraph();
+    const App::ObjectId sketch = static_cast<App::ObjectId>(getID());
+    const App::EvalSerial eval = doc->semanticState().currentEval();
+    const auto live = entityIds.live();
+    const std::vector<std::string> keys = regionKeysFromStampsOrProfileWires();
+    const auto corners = uniqueProfileCornerKeys();
+    SketchSemanticSeeds::seedsForProfile(graph, sketch, eval, live, keys, corners);
+    for (const RetiredSketchEntity& r : entityIds.retired()) {
+        SketchSemanticSeeds::recordRetired(graph, sketch, eval, r.id);
+    }
+}
+
+const Part::Geometry* SketchObject::getGeometryByEntityId(long entityId) const
+{
+    const int slot = entityIds.slotOf(entityId);
+    if (slot == SketchEntityIdMap::InvalidSlot) {
+        return nullptr;
+    }
+    return _getGeometry(slot);
+}
+
+int SketchObject::getGeoIdForEntity(long entityId) const
+{
+    const int slot = entityIds.slotOf(entityId);
+    if (slot == SketchEntityIdMap::InvalidSlot) {
+        return GeoEnum::GeoUndef;
+    }
+    return slot;
+}

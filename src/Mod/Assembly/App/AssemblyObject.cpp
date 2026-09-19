@@ -1893,12 +1893,13 @@ std::shared_ptr<ASMTJoint> AssemblyObject::makeMbdJointOfType(App::DocumentObjec
 
 std::shared_ptr<ASMTJoint> AssemblyObject::makeMbdJointDistance(App::DocumentObject* joint)
 {
-    DistanceType type = getDistanceType(joint);
-
-    std::string elt1 = getElementFromProp(joint, "Reference1");
-    std::string elt2 = getElementFromProp(joint, "Reference2");
-    auto* obj1 = getLinkedObjFromRef(joint, "Reference1");
-    auto* obj2 = getLinkedObjFromRef(joint, "Reference2");
+    // Reuse post-swap element / linked-obj resolution from getDistanceType (AJ16-D1):
+    // avoids a second uniqueBindingOnFeature walk after classification (and any swapJCS).
+    std::string elt1;
+    std::string elt2;
+    App::DocumentObject* obj1 = nullptr;
+    App::DocumentObject* obj2 = nullptr;
+    DistanceType type = getDistanceType(joint, elt1, elt2, obj1, obj2);
 
     switch (type) {
         case DistanceType::PointPoint: {

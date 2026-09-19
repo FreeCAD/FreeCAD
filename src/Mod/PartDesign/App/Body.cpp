@@ -409,7 +409,9 @@ App::DocumentObjectExecReturn* Body::execute()
             );
         }
 
-        // get the shape of the tip
+        // Shape presents Tip geometry to the outside (Through/Tip display).
+        // Binding projection scope is Part::BodyBase::semanticProjectionFeatureId
+        // (G10-B1 / G19 Tip-or-Body) — not minted here as Body FaceN.
         tipShape = static_cast<Part::Feature*>(tip)->Shape.getShape();
 
         if (tipShape.getShape().IsNull()) {

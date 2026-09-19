@@ -939,7 +939,8 @@ public:
      * @param[in] startPosition A byte offset to start the search at.
      *
      * @return The position of the target in this instance, or -1 if the target
-     * is not found.
+     * is not found. Do not compare to std::string::npos (POSTFIX_SEMANTIC /
+     * ;:ST consumers) — prefer contains() (QUALITY-SWEEP #30 EM30-C1).
      */
     int find(const char* searchTarget, int startPosition = 0) const
     {
@@ -970,6 +971,20 @@ public:
     int find(const std::string& searchTarget, int startPosition = 0) const
     {
         return find(searchTarget.c_str(), startPosition);
+    }
+
+    /// True if find(searchTarget) >= 0. Prefer this over comparing find() to
+    /// std::string::npos — MappedName::find returns int with -1 on miss
+    /// (Sweep #3 E1; POSTFIX_SEMANTIC / ;:ST consumers — QUALITY-SWEEP #30).
+    bool contains(const char* searchTarget) const
+    {
+        return find(searchTarget) >= 0;
+    }
+
+    /// @copydoc contains(const char*) const
+    bool contains(const std::string& searchTarget) const
+    {
+        return contains(searchTarget.c_str());
     }
 
     /**

@@ -6,9 +6,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/PropertyLinks.h>
-#include <src/App/InitApplication.h>
-
-#include "Gui/Application.h"
+#include <src/Gui/InitQtTest.h>
 #include "Gui/Dialogs/DlgObjectSelection.h"
 #include "Gui/MetaTypes.h"
 
@@ -19,11 +17,7 @@ class ObjectSelectionTest: public QObject
 public:
     ObjectSelectionTest()
     {
-        tests::initApplication();
-        // Gui::Application::Instance must not be nullptr when the dialog calls getViewProvider()
-        if (!Gui::Application::Instance) {
-            new Gui::Application(false);
-        }
+        tests::initQtGuiTest();
     }
 
 private Q_SLOTS:
@@ -171,5 +165,5 @@ private:
     App::DocumentObject* dependent = nullptr;
 };
 
-QTEST_MAIN(ObjectSelectionTest)
+QTEST_APPLESS_MAIN(ObjectSelectionTest)
 #include "ObjectSelection.moc"
