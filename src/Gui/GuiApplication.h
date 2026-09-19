@@ -29,6 +29,10 @@
 #include <QList>
 #include <memory>
 
+#define SYSTEM_THEMING_SUPPORTED \
+    QT_VERSION >= QT_VERSION_CHECK(6, 5, 0) || QT_VERSION >= QT_VERSION_CHECK(6, 4, 0) \
+        || FC_OS_MACOSX
+
 class QSessionManager;
 
 namespace Gui
@@ -49,6 +53,7 @@ public:
      * where an unhandled exception comes from.
      */
     bool notify(QObject* receiver, QEvent* event) override;
+    static bool isSystemInDarkMode();
 
     /// Pointer to exceptions caught in Qt event handler
     std::shared_ptr<Base::SystemExitException> caughtException;

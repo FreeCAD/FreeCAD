@@ -46,10 +46,12 @@
 #include <QThread>
 #include <QWindow>
 #include <QStyleFactory>
+#include <QStyleHints>
 
 #include <QLoggingCategory>
 #include <fmt/format.h>
 #include <list>
+#include <qguiapplication.h>
 #include <ranges>
 
 #include <App/Document.h>
@@ -2559,6 +2561,12 @@ void tryRunEventLoop(GUISingleApplication& mainApp)
         boost::interprocess::file_lock flock(filename.c_str());
         if (flock.try_lock()) {
             Base::Console().log("Init: Executing event loop…\n");
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+            // hack to get dark mode detected correctly at on startup
+            QGuiApplication::styleHints()->setColorScheme(Qt::ColorScheme::Dark);
+            QGuiApplication::styleHints()->unsetColorScheme();
+#endif
             QApplication::exec();
 
             // Qt can't handle exceptions thrown from event handlers, so we need
