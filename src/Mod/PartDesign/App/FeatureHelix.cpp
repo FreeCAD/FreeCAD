@@ -22,22 +22,33 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <cmath>
 #include <limits>
+#include <utility>
+#include <vector>
 #include <BRepAdaptor_Surface.hxx>
 #include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
 #include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 #include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 #include <BRepBndLib.hxx>
+#include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI_MakeSolid.hxx>
+#include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepBuilderAPI_Sewing.hxx>
 #include <BRepClass3d_SolidClassifier.hxx>
+#include <BRepTools_WireExplorer.hxx>
+#include <BRep_Tool.hxx>
+#include <BRep_Builder.hxx>
+#include <GeomAPI_ProjectPointOnCurve.hxx>
 #include <BRepOffsetAPI_MakePipe.hxx>
 #include <BRepOffsetAPI_MakePipeShell.hxx>
 #include <BRepPrimAPI_MakeRevol.hxx>
 #include <ShapeFix_ShapeTolerance.hxx>
 #include <ShapeFix_Solid.hxx>
+#include <ShapeBuild_Edge.hxx>
 #include <Precision.hxx>
 #include <TopoDS.hxx>
+#include <TopExp.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Wire.hxx>
 #include <gp_Ax1.hxx>
@@ -58,8 +69,72 @@
 
 using namespace PartDesign;
 
+namespace
+{
+// Split the longer path at the end of the shorter one. Sweeping the remaining segment avoids
+// subtracting nearly coincident approximations of the same helical surfaces.
+// Return the remaining segment in outerPath and its preceding segment in innerPath.
+void splitHelixPath(TopoDS_Shape& outerPath, TopoDS_Shape& innerPath)
+{
+    TopoDS_Vertex firstVertex, lastVertex;
+    TopExp::Vertices(TopoDS::Wire(innerPath), firstVertex, lastVertex);
+    const gp_Pnt endPoint = BRep_Tool::Pnt(lastVertex);
+    double distance = std::numeric_limits<double>::max();
+    double splitParameter = 0;
+    TopoDS_Edge splitEdge;
+    for (BRepTools_WireExplorer explorer(TopoDS::Wire(outerPath)); explorer.More(); explorer.Next()) {
+        double first, last;
+        auto curve = BRep_Tool::Curve(explorer.Current(), first, last);
+        GeomAPI_ProjectPointOnCurve projection(endPoint, curve, first, last);
+        if (projection.NbPoints() > 0 && projection.LowerDistance() < distance) {
+            distance = projection.LowerDistance();
+            splitParameter = projection.LowerDistanceParameter();
+            splitEdge = explorer.Current();
+        }
+    }
+    if (splitEdge.IsNull()) {
+        throw Base::CADKernelError("Could not locate the start of the trimmed helix");
+    }
+
+    BRepBuilderAPI_MakeWire outerWire, innerWire;
+    bool inPrefix = true;
+    for (BRepTools_WireExplorer explorer(TopoDS::Wire(outerPath)); explorer.More(); explorer.Next()) {
+        const auto& edge = explorer.Current();
+        if (edge.IsSame(splitEdge)) {
+            double first, last;
+            auto curve = BRep_Tool::Curve(edge, first, last);
+            const TopoDS_Vertex splitVertex = BRepBuilderAPI_MakeVertex(curve->Value(splitParameter));
+            // Retain the original surface curves and endpoint vertices. Rebuilding from
+            // the approximated 3D curve can disconnect endpoints on very large parts.
+            ShapeBuild_Edge edgeBuilder;
+            BRep_Builder builder;
+            if (splitParameter > first + Precision::PConfusion()) {
+                TopoDS_Edge prefix = edgeBuilder.CopyReplaceVertices(edge, {}, splitVertex);
+                builder.Range(prefix, first, splitParameter);
+                innerWire.Add(prefix);
+            }
+            if (splitParameter < last - Precision::PConfusion()) {
+                TopoDS_Edge suffix = edgeBuilder.CopyReplaceVertices(edge, splitVertex, {});
+                builder.Range(suffix, splitParameter, last);
+                outerWire.Add(suffix);
+            }
+            inPrefix = false;
+        }
+        else if (inPrefix) {
+            innerWire.Add(edge);
+        }
+        else {
+            outerWire.Add(edge);
+        }
+    }
+    outerPath = outerWire.Wire();
+    innerPath = innerWire.Wire();
+}
+}  // namespace
+
 const char* Helix::ModeEnums[]
     = {"pitch-height-angle", "pitch-turns-angle", "height-turns-angle", "height-turns-growth", nullptr};
+const char* Helix::SideTypesEnums[] = {"One side", "Two sides", "Symmetric", nullptr};
 
 PROPERTY_SOURCE(PartDesign::Helix, PartDesign::ProfileBased)
 
@@ -113,6 +188,17 @@ Helix::Helix()
     );
     Mode.setEnums(ModeEnums);
     ADD_PROPERTY_TYPE(
+        SideType,
+        (long(HelixSideMode::one_side)),
+        group,
+        App::Prop_None,
+        QT_TRANSLATE_NOOP(
+            "App::Property",
+            "Whether the helix extends on one side, two sides, or symmetrically."
+        )
+    );
+    SideType.setEnums(SideTypesEnums);
+    ADD_PROPERTY_TYPE(
         Pitch,
         (10.0),
         group,
@@ -129,6 +215,15 @@ Helix::Helix()
             "The height of the helix' path, not accounting for the extent of the profile."
         )
     );
+    Height.enableNegative(true);
+    ADD_PROPERTY_TYPE(
+        Height2,
+        (30.0),
+        "Side2",
+        App::Prop_None,
+        QT_TRANSLATE_NOOP("App::Property", "The height of the second helix side's path, not accounting for the extent of the profile.")
+    );
+    Height2.enableNegative(true);
     ADD_PROPERTY_TYPE(
         Turns,
         (3.0),
@@ -137,6 +232,14 @@ Helix::Helix()
         QT_TRANSLATE_NOOP("App::Property", "The number of turns in the helix.")
     );
     Turns.setConstraints(&floatTurns);
+    ADD_PROPERTY_TYPE(
+        Turns2,
+        (3.0),
+        "Side2",
+        App::Prop_None,
+        QT_TRANSLATE_NOOP("App::Property", "The number of turns in the second helix side.")
+    );
+    Turns2.setConstraints(&floatTurns);
     ADD_PROPERTY_TYPE(
         Angle,
         (0.0),
@@ -216,7 +319,10 @@ Helix::Helix()
 short Helix::mustExecute() const
 {
     if (Placement.isTouched() || ReferenceAxis.isTouched() || Axis.isTouched() || Base.isTouched()
-        || Angle.isTouched()) {
+        || SideType.isTouched() || Mode.isTouched() || Pitch.isTouched() || Height.isTouched()
+        || Height2.isTouched() || Turns.isTouched() || Turns2.isTouched() || Angle.isTouched()
+        || Growth.isTouched() || LeftHanded.isTouched() || Outside.isTouched()
+        || Tolerance.isTouched()) {
         return 1;
     }
     return ProfileBased::mustExecute();
@@ -228,67 +334,153 @@ App::DocumentObjectExecReturn* Helix::execute()
         return App::DocumentObject::StdReturn;
     }
 
+    struct HelixSideParameters
+    {
+        double height;
+        double turns;
+        double angle;
+        double growth;
+        bool reversed;
+    };
+
+    const auto heightMagnitude = [](double height) {
+        return std::abs(height);
+    };
+    const auto isNegativeHeight = [](double height) {
+        return height < -Precision::Confusion();
+    };
+    const auto reverseForSide = [&](double signedHeight, bool oppositeSide) {
+        bool reversed = Reversed.getValue();
+        if (oppositeSide) {
+            reversed = !reversed;
+        }
+        if (isNegativeHeight(signedHeight)) {
+            reversed = !reversed;
+        }
+        return reversed;
+    };
+    const auto angleGrowth = [](double pitch, double angle) {
+        return pitch * tan(Base::toRadians(angle));
+    };
+
+    const auto sideMode = static_cast<HelixSideMode>(SideType.getValue());
+    const bool twoSides = sideMode == HelixSideMode::two_sides;
+
     // Validate and normalize parameters
     auto mode = static_cast<HelixMode>(Mode.getValue());
+    double pitch = Pitch.getValue();
+    double height = Height.getValue();
+    double heightAbs = heightMagnitude(height);
+    double turns = Turns.getValue();
+    double height2 = Height2.getValue();
+    double height2Abs = heightMagnitude(height2);
+    double turns2 = Turns2.getValue();
+    double angle = Angle.getValue();
+    double growth = Growth.getValue();
+
+    const bool trimOverlap = twoSides && mode != HelixMode::pitch_turns_angle
+        && isNegativeHeight(height) != isNegativeHeight(height2);
+    if (trimOverlap && std::abs(height + height2) < Precision::Confusion()) {
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception", "Error: The two helix sides cancel each other!")
+        );
+    }
+
     if (mode == HelixMode::pitch_height_angle) {
-        if (Pitch.getValue() < Precision::Confusion()) {
+        if (pitch < Precision::Confusion()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Error: Pitch too small!")
             );
         }
-        if (Height.getValue() < Precision::Confusion()) {
+        if (heightAbs < Precision::Confusion()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Error: height too small!")
             );
         }
-        Turns.setValue(Height.getValue() / Pitch.getValue());
-        Growth.setValue(Pitch.getValue() * tan(Base::toRadians(Angle.getValue())));
+        turns = heightAbs / pitch;
+        growth = angleGrowth(pitch, angle);
+        Turns.setValue(turns);
+        Growth.setValue(growth);
+        if (twoSides) {
+            if (height2Abs < Precision::Confusion()) {
+                return new App::DocumentObjectExecReturn(
+                    QT_TRANSLATE_NOOP("Exception", "Error: height 2 too small!")
+                );
+            }
+            turns2 = height2Abs / pitch;
+            Turns2.setValue(turns2);
+        }
     }
     else if (mode == HelixMode::pitch_turns_angle) {
-        if (Pitch.getValue() < Precision::Confusion()) {
+        if (pitch < Precision::Confusion()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Error: pitch too small!")
             );
         }
-        if (Turns.getValue() < Precision::Confusion()) {
+        if (turns < Precision::Confusion()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Error: turns too small!")
             );
         }
-        Height.setValue(Turns.getValue() * Pitch.getValue());
-        Growth.setValue(Pitch.getValue() * tan(Base::toRadians(Angle.getValue())));
+        height = turns * pitch;
+        heightAbs = height;
+        growth = angleGrowth(pitch, angle);
+        Height.setValue(height);
+        Growth.setValue(growth);
+        if (twoSides) {
+            if (turns2 < Precision::Confusion()) {
+                return new App::DocumentObjectExecReturn(
+                    QT_TRANSLATE_NOOP("Exception", "Error: turns 2 too small!")
+                );
+            }
+            height2 = turns2 * pitch;
+            height2Abs = height2;
+            Height2.setValue(height2);
+        }
     }
     else if (mode == HelixMode::height_turns_angle) {
-        if (Height.getValue() < Precision::Confusion()) {
+        if (heightAbs < Precision::Confusion()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Error: height too small!")
             );
         }
-        if (Turns.getValue() < Precision::Confusion()) {
+        if (turns < Precision::Confusion()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Error: turns too small!")
             );
         }
-        Pitch.setValue(Height.getValue() / Turns.getValue());
-        Growth.setValue(Pitch.getValue() * tan(Base::toRadians(Angle.getValue())));
+        if (twoSides && height2Abs < Precision::Confusion()) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Error: height 2 too small!")
+            );
+        }
+        const double totalHeight = twoSides ? std::abs(height + height2) : heightAbs;
+        pitch = totalHeight / turns;
+        growth = angleGrowth(pitch, angle);
+        Pitch.setValue(pitch);
+        Growth.setValue(growth);
+        if (twoSides) {
+            Turns2.setValue(height2Abs / pitch);
+        }
     }
     else if (mode == HelixMode::height_turns_growth) {
-        if (Turns.getValue() < Precision::Confusion()) {
+        if (turns < Precision::Confusion()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Error: turns too small!")
             );
         }
-        if ((Height.getValue() < Precision::Confusion())
-            && (abs(Growth.getValue()) < Precision::Confusion()) && Turns.getValue() > 1.0) {
+        const double totalHeight = twoSides ? std::abs(height + height2) : heightAbs;
+        if ((totalHeight < Precision::Confusion()) && (std::abs(growth) < Precision::Confusion())
+            && turns > 1.0) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Error: either height or growth must not be zero!")
             );
         }
-        Pitch.setValue(Height.getValue() / Turns.getValue());
-        if (Height.getValue() > 0) {
-            Angle.setValue(
-                Base::toDegrees(atan(Turns.getValue() * Growth.getValue() / Height.getValue()))
-            );
+        pitch = totalHeight / turns;
+        Pitch.setValue(pitch);
+        if (totalHeight > 0) {
+            angle = Base::toDegrees(atan(turns * growth / totalHeight));
+            Angle.setValue(angle);
         }
         else {
             // On purpose, we're doing nothing here; the else-branch is just for this comment.
@@ -296,10 +488,60 @@ App::DocumentObjectExecReturn* Helix::execute()
             // - we don't void the angle (somehow) so that it keeps its value. This allows in
             //   interactive usage to just go back to another mode and everything keeps working
         }
+        if (twoSides) {
+            if ((height2Abs < Precision::Confusion()) && (std::abs(growth) < Precision::Confusion())
+                && turns > 1.0) {
+                return new App::DocumentObjectExecReturn(
+                    QT_TRANSLATE_NOOP("Exception", "Error: either height 2 or growth must not be zero!")
+                );
+            }
+            if (pitch > Precision::Confusion()) {
+                Turns2.setValue(height2Abs / pitch);
+            }
+            else {
+                Turns2.setValue(turns / 2.0);
+            }
+        }
     }
     else {
         return new App::DocumentObjectExecReturn(
             QT_TRANSLATE_NOOP("Exception", "Error: unsupported mode")
+        );
+    }
+
+    const bool heightTurnsMode = mode == HelixMode::height_turns_angle
+        || mode == HelixMode::height_turns_growth;
+    double side1Turns = turns;
+    if (twoSides && heightTurnsMode) {
+        side1Turns = pitch > Precision::Confusion() ? heightAbs / pitch : turns / 2.0;
+    }
+
+    std::vector<HelixSideParameters> helixSides;
+    helixSides.push_back({heightAbs, side1Turns, angle, growth, reverseForSide(height, false)});
+
+    if (sideMode == HelixSideMode::two_sides) {
+        double side2Turns = turns;
+        // Signed heights in the same physical direction bound one helix segment.
+        // Both paths must follow the same taper to locate the trimmed start.
+        double side2Angle = trimOverlap ? angle : -angle;
+        double side2Growth = trimOverlap ? growth : -growth;
+        if (mode == HelixMode::pitch_height_angle || mode == HelixMode::pitch_turns_angle) {
+            side2Turns = turns2;
+        }
+        else if (heightTurnsMode) {
+            side2Turns = pitch > Precision::Confusion() ? height2Abs / pitch : turns / 2.0;
+        }
+        helixSides.push_back(
+            {height2Abs, side2Turns, side2Angle, side2Growth, reverseForSide(height2, true)}
+        );
+    }
+    else if (sideMode == HelixSideMode::symmetric) {
+        helixSides.clear();
+        helixSides.push_back(
+            {heightAbs / 2.0, turns / 2.0, angle, growth, reverseForSide(height, false)}
+        );
+        helixSides.push_back(
+            {heightAbs / 2.0, turns / 2.0, angle, growth, reverseForSide(height, true)}
         );
     }
 
@@ -355,54 +597,108 @@ App::DocumentObjectExecReturn* Helix::execute()
 
         base.move(invObjLoc);
 
+        std::vector<TopoDS_Shape> overlappingPaths;
+        if (trimOverlap) {
+            for (const auto& side : helixSides) {
+                overlappingPaths.push_back(generateHelixPath(
+                    side.turns,
+                    side.height,
+                    side.angle,
+                    side.growth,
+                    side.reversed,
+                    side.angle == 0. ? 1. : 1000.
+                ));
+            }
+            const auto outerSide = heightAbs > height2Abs ? 0 : 1;
+            splitHelixPath(overlappingPaths[outerSide], overlappingPaths[1 - outerSide]);
+            // Sweep the prefix first to transport the profile to the trimmed start.
+            if (outerSide == 0) {
+                std::swap(overlappingPaths[0], overlappingPaths[1]);
+            }
+        }
+
         TopoDS_Shape result;
+        TopoDS_Shape endProfile;
+        std::vector<TopoShape> sideShapes;
+        for (const auto& side : helixSides) {
+            // generate the helix path
+            TopoDS_Shape path;
+            if (trimOverlap) {
+                path = overlappingPaths[sideShapes.size()];
+            }
+            else if (side.angle == 0.) {
+                // breaking the path at each turn prevents an OCC issue
+                path = generateHelixPath(side.turns, side.height, side.angle, side.growth, side.reversed);
+            }
+            else {
+                // don't break the path or the generated solid is invalid
+                path = generateHelixPath(
+                    side.turns,
+                    side.height,
+                    side.angle,
+                    side.growth,
+                    side.reversed,
+                    1000.
+                );
+            }
 
-        // generate the helix path
-        TopoDS_Shape path;
-        if (Angle.getValue() == 0.) {
-            // breaking the path at each turn prevents an OCC issue
-            path = generateHelixPath();
+            TopoDS_Shape face = sketchshape;
+            face.Move(invObjLoc);
+            if (trimOverlap && !endProfile.IsNull()) {
+                face = endProfile;
+            }
+
+            Bnd_Box bounds;
+            BRepBndLib::Add(path, bounds);
+            double size = sqrt(bounds.SquareExtent());
+            ShapeFix_ShapeTolerance fix;
+            fix.LimitTolerance(path, Precision::Confusion() * 1e-6 * size);  // needed to produce
+                                                                             // valid Pipe for very
+                                                                             // big parts
+            // We introduce final part tolerance with the second call to LimitTolerance below,
+            // however OCCT has a bug where the side-walls of the Pipe disappear with very large (km
+            // range) pieces increasing a tiny bit of extra tolerance to the path fixes this. This
+            // will in any case be less than the tolerance lower limit below, but sufficient to
+            // avoid the bug
+
+            BRepOffsetAPI_MakePipe mkPS(
+                TopoDS::Wire(path),
+                face,
+                GeomFill_Trihedron::GeomFill_IsFrenet,
+                Standard_False
+            );
+            result = mkPS.Shape();
+
+            BRepClass3d_SolidClassifier SC(result);
+            SC.PerformInfinitePoint(Precision::Confusion());
+            if (SC.State() == TopAbs_IN) {
+                result.Reverse();
+            }
+
+            fix.LimitTolerance(
+                result,
+                Precision::Confusion() * size * Tolerance.getValue()
+            );  // significant precision reduction due to helical approximation - needed to allow
+                // fusion to succeed
+
+            // try to auto-fix possible invalid result
+            ShapeFix_Solid fixer;
+            fixer.Init(TopoDS::Solid(result));
+            if (fixer.Perform()) {
+                result = fixer.Solid();
+            }
+            sideShapes.emplace_back(result, 0, getDocument()->getStringHasher());
+            if (trimOverlap) {
+                endProfile = mkPS.LastShape();
+            }
         }
-        else {
-            // don't break the path or the generated solid is invalid
-            path = generateHelixPath(1000.);
-        }
 
-        TopoDS_Shape face = sketchshape;
-        face.Move(invObjLoc);
-
-        Bnd_Box bounds;
-        BRepBndLib::Add(path, bounds);
-        double size = sqrt(bounds.SquareExtent());
-        ShapeFix_ShapeTolerance fix;
-        fix.LimitTolerance(path, Precision::Confusion() * 1e-6 * size);  // needed to produce valid
-                                                                         // Pipe for very big parts
-        // We introduce final part tolerance with the second call to LimitTolerance below, however
-        // OCCT has a bug where the side-walls of the Pipe disappear with very large (km range)
-        // pieces increasing a tiny bit of extra tolerance to the path fixes this. This will in any
-        // case be less than the tolerance lower limit below, but sufficient to avoid the bug
-
-        BRepOffsetAPI_MakePipe
-            mkPS(TopoDS::Wire(path), face, GeomFill_Trihedron::GeomFill_IsFrenet, Standard_False);
-        result = mkPS.Shape();
-
-        BRepClass3d_SolidClassifier SC(result);
-        SC.PerformInfinitePoint(Precision::Confusion());
-        if (SC.State() == TopAbs_IN) {
-            result.Reverse();
-        }
-
-        fix.LimitTolerance(
-            result,
-            Precision::Confusion() * size * Tolerance.getValue()
-        );  // significant precision reduction due to helical approximation - needed to allow fusion
-            // to succeed
-
-        // try to auto-fix possible invalid result
-        ShapeFix_Solid fixer;
-        fixer.Init(TopoDS::Solid(result));
-        if (fixer.Perform()) {
-            result = fixer.Solid();
+        // For overlapping sides, result already contains only the remaining segment.
+        // The prefix sweep was used solely to transport its starting profile.
+        if (sideShapes.size() > 1 && !trimOverlap) {
+            TopoShape combined(0, getDocument()->getStringHasher());
+            combined.makeElementFuse(sideShapes, Part::OpCodes::Sweep);
+            result = combined.getShape();
         }
 
         AddSubShape.setValue(result);
@@ -487,14 +783,16 @@ void Helix::updateAxis()
     Axis.setValue(dir.x, dir.y, dir.z);
 }
 
-TopoDS_Shape Helix::generateHelixPath(double breakAtTurn)
+TopoDS_Shape Helix::generateHelixPath(
+    double turns,
+    double height,
+    double angle,
+    double growth,
+    bool reversed,
+    double breakAtTurn
+)
 {
-    double turns = Turns.getValue();
-    double height = Height.getValue();
     bool leftHanded = LeftHanded.getValue();
-    bool reversed = Reversed.getValue();
-    double angle = Angle.getValue();
-    double growth = Growth.getValue();
 
     if (fabs(angle) < Precision::Confusion()) {
         angle = 0.0;
@@ -739,7 +1037,7 @@ void Helix::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeN
 
 void Helix::onChanged(const App::Property* prop)
 {
-    if (prop == &Mode) {
+    if (prop == &Mode || prop == &SideType) {
         // Depending on the mode, the derived properties are set read-only
         auto inputMode = static_cast<HelixMode>(Mode.getValue());
         setReadWriteStatusForMode(inputMode);
@@ -765,14 +1063,21 @@ void Helix::onDocumentRestored()
 
 void Helix::setReadWriteStatusForMode(HelixMode inputMode)
 {
+    const bool twoSides = static_cast<HelixSideMode>(SideType.getValue()) == HelixSideMode::two_sides;
+
+    Height2.setStatus(App::Property::ReadOnly, true);
+    Turns2.setStatus(App::Property::ReadOnly, true);
+
     switch (inputMode) {
         case HelixMode::pitch_height_angle:
             // primary input:
             Pitch.setStatus(App::Property::ReadOnly, false);
             Height.setStatus(App::Property::ReadOnly, false);
+            Height2.setStatus(App::Property::ReadOnly, !twoSides);
             Angle.setStatus(App::Property::ReadOnly, false);
             // derived props:
             Turns.setStatus(App::Property::ReadOnly, true);
+            Turns2.setStatus(App::Property::ReadOnly, true);
             Growth.setStatus(App::Property::ReadOnly, true);
             break;
 
@@ -780,36 +1085,44 @@ void Helix::setReadWriteStatusForMode(HelixMode inputMode)
             // primary input:
             Pitch.setStatus(App::Property::ReadOnly, false);
             Turns.setStatus(App::Property::ReadOnly, false);
+            Turns2.setStatus(App::Property::ReadOnly, !twoSides);
             Angle.setStatus(App::Property::ReadOnly, false);
             // derived props:
             Height.setStatus(App::Property::ReadOnly, true);
+            Height2.setStatus(App::Property::ReadOnly, true);
             Growth.setStatus(App::Property::ReadOnly, true);
             break;
 
         case HelixMode::height_turns_angle:
             // primary input:
             Height.setStatus(App::Property::ReadOnly, false);
+            Height2.setStatus(App::Property::ReadOnly, !twoSides);
             Turns.setStatus(App::Property::ReadOnly, false);
             Angle.setStatus(App::Property::ReadOnly, false);
             // derived props:
             Pitch.setStatus(App::Property::ReadOnly, true);
+            Turns2.setStatus(App::Property::ReadOnly, true);
             Growth.setStatus(App::Property::ReadOnly, true);
             break;
 
         case HelixMode::height_turns_growth:
             // primary input:
             Height.setStatus(App::Property::ReadOnly, false);
+            Height2.setStatus(App::Property::ReadOnly, !twoSides);
             Turns.setStatus(App::Property::ReadOnly, false);
             Growth.setStatus(App::Property::ReadOnly, false);
             // derived props:
             Pitch.setStatus(App::Property::ReadOnly, true);
             Angle.setStatus(App::Property::ReadOnly, true);
+            Turns2.setStatus(App::Property::ReadOnly, true);
             break;
 
         default:
             Pitch.setStatus(App::Property::ReadOnly, false);
             Height.setStatus(App::Property::ReadOnly, false);
+            Height2.setStatus(App::Property::ReadOnly, false);
             Turns.setStatus(App::Property::ReadOnly, false);
+            Turns2.setStatus(App::Property::ReadOnly, false);
             Angle.setStatus(App::Property::ReadOnly, false);
             Growth.setStatus(App::Property::ReadOnly, false);
             break;
