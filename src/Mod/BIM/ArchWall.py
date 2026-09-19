@@ -688,10 +688,7 @@ class _Wall(ArchComponent.Component):
         """
 
         if prop == "Length":
-            if (
-                obj.Base
-                and obj.Length.Value
-            ):
+            if obj.Base and obj.Length.Value:
                 if hasattr(obj.Base, "Shape"):
                     if len(obj.Base.Shape.Edges) == 1:
                         import DraftGeomUtils
