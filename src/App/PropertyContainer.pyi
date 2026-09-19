@@ -195,7 +195,12 @@ class PropertyContainer(Persistence):
         ...
 
     def addPropertyAlias(
-        self, property: str, alias: str, deprecated: bool = False, since: str = ""
+        self,
+        property: str,
+        alias: str,
+        deprecated: bool = False,
+        since: str = "",
+        removed_in: str = "",
     ) -> None:
         """
         Register an alias for a property name.
@@ -214,12 +219,15 @@ class PropertyContainer(Persistence):
             The current, authoritative name of the property.
         alias : str
             The old or alternative name to also accept.
-        deprecated : bool
+        ``deprecated`` : bool
             If True, a developer warning is emitted the first time the alias is resolved
             on each object, encouraging migration to the canonical name.
         since : str
-            The FreeCAD version in which the alias was introduced, e.g. "1.1". Included in
-            the deprecation warning.
+            FreeCAD version introducing the alias. For a deprecated alias this is the release
+            in which the alias became deprecated.
+        removed_in : str
+            Release in which the deprecated alias is scheduled for removal. Required when
+            ``deprecated`` is true.
         """
         ...
 
@@ -235,7 +243,8 @@ class PropertyContainer(Persistence):
 
         Returns a dict mapping each alias name to a dict with keys:
             canonical  : str  -- the current name of the property
-            deprecated : bool -- whether using the alias emits a warning
+            ``deprecated`` : bool -- whether using the alias emits a warning
             since      : str  -- the FreeCAD version introducing the alias, may be empty
+            removed_in : str  -- scheduled removal release, or an empty string
         """
         ...

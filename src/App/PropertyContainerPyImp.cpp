@@ -696,27 +696,36 @@ PyObject* PropertyContainerPy::addPropertyAlias(PyObject* args, PyObject* kwds)
     const char* alias {};
     PyObject* pyDeprecated = Py_False;
     const char* since = "";
-    static const std::array<const char*, 5> kwlist {"property",
+    const char* removedIn = "";
+    static const std::array<const char*, 6> kwlist {"property",
                                                      "alias",
                                                      "deprecated",
                                                      "since",
+                                                     "removed_in",
                                                      nullptr};
     if (!Base::Wrapped_ParseTupleAndKeywords(args,
                                              kwds,
-                                             "ss|O!s",
+                                             "ss|O!ss",
                                              kwlist,
                                              &canonicalName,
                                              &alias,
                                              &PyBool_Type,
                                              &pyDeprecated,
-                                             &since)) {
+                                             &since,
+                                             &removedIn)) {
         return nullptr;
     }
     PY_TRY
     {
         auto aliasType = PyObject_IsTrue(pyDeprecated) ? App::PropertyAliasType::Deprecated
                                                        : App::PropertyAliasType::Normal;
-        getPropertyContainerPtr()->addPropertyAlias(canonicalName, alias, aliasType, since);
+        getPropertyContainerPtr()->addPropertyAlias(
+            canonicalName,
+            alias,
+            aliasType,
+            since,
+            removedIn
+        );
         Py_Return;
     }
     PY_CATCH
@@ -733,6 +742,7 @@ PyObject* PropertyContainerPy::getPropertyAliases() const
             info.setItem("deprecated",
                          Py::Boolean(entry.type == App::PropertyAliasType::Deprecated));
             info.setItem("since", Py::String(entry.since));
+            info.setItem("removed_in", Py::String(entry.removedIn));
             dict.setItem(alias, info);
         }
         return Py::new_reference_to(dict);

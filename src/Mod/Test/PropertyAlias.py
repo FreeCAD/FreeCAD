@@ -5,7 +5,13 @@
 Renaming a property breaks add-ons and macros that used the old name. An alias keeps the
 old name working. In Python both steps happen at runtime, and the order matters:
 
-    obj.addPropertyAlias("SurfaceArea", "Area", deprecated=True, since="1.1")
+    obj.addPropertyAlias(
+        "SurfaceArea",
+        "Area",
+        deprecated=True,
+        since="26.3",
+        removed_in="27.2",
+    )
     obj.addProperty("App::PropertyArea", "SurfaceArea", "Geometry")
 
 addPropertyAlias() must run first, while "SurfaceArea" does not yet exist, so it can find
@@ -48,7 +54,13 @@ class LegacyAreaFeature:
 
     def registerAliases(self, obj):
         # Aliases are runtime state and are not saved, so this must run on every load.
-        obj.addPropertyAlias("SurfaceArea", "Area", deprecated=True, since="1.1")
+        obj.addPropertyAlias(
+            "SurfaceArea",
+            "Area",
+            deprecated=True,
+            since="26.3",
+            removed_in="27.2",
+        )
 
     @classmethod
     def attachToLegacyObject(cls, obj):
@@ -72,7 +84,7 @@ class PropertyAliasBasics(unittest.TestCase):
         self.obj = self.Doc.addObject("App::VarSet", "Vars")
         self.obj.addProperty("App::PropertyInteger", "NewName", "Variables")
         self.obj.NewName = 42
-        self.obj.addPropertyAlias("NewName", "OldName", True, "1.1")
+        self.obj.addPropertyAlias("NewName", "OldName", True, "26.3", "27.2")
 
     def tearDown(self):
         FreeCAD.closeDocument(self.Doc.Name)
@@ -93,13 +105,19 @@ class PropertyAliasBasics(unittest.TestCase):
         self.assertIn("NewName", self.obj.PropertiesList)
         self.assertNotIn("OldName", self.obj.PropertiesList)
 
-    def testGetPropertyAliasesReportsCanonicalDeprecatedAndSince(self):
+    def testGetPropertyAliasesReportsLifecycle(self):
         aliases = self.obj.getPropertyAliases()
 
         self.assertIn("OldName", aliases)
         self.assertEqual(aliases["OldName"]["canonical"], "NewName")
         self.assertTrue(aliases["OldName"]["deprecated"])
-        self.assertEqual(aliases["OldName"]["since"], "1.1")
+        self.assertEqual(aliases["OldName"]["since"], "26.3")
+        self.assertEqual(aliases["OldName"]["removed_in"], "27.2")
+
+    def testDeprecatedAliasRequiresRemovalRelease(self):
+        self.obj.addPropertyAlias("NewName", "InvalidLifecycle", deprecated=True, since="26.3")
+
+        self.assertNotIn("InvalidLifecycle", self.obj.getPropertyAliases())
 
     def testAddPropertyOnAliasNameIsNoOp(self):
         # The idiom add-ons use everywhere. Before aliases were tolerated this raised.
@@ -139,7 +157,7 @@ class PropertyAliasMigration(unittest.TestCase):
         obj.addProperty("App::PropertyInteger", "Area", "Geometry")
         obj.Area = 17
 
-        obj.addPropertyAlias("SurfaceArea", "Area", True, "1.1")
+        obj.addPropertyAlias("SurfaceArea", "Area", True, "26.3", "27.2")
 
         self.assertIn("SurfaceArea", obj.PropertiesList)
         self.assertNotIn("Area", obj.PropertiesList)
@@ -151,8 +169,8 @@ class PropertyAliasMigration(unittest.TestCase):
         obj.addProperty("App::PropertyInteger", "Area", "Geometry")
         obj.Area = 17
 
-        obj.addPropertyAlias("SurfaceArea", "Area", True, "1.1")
-        obj.addPropertyAlias("SurfaceArea", "Area", True, "1.1")
+        obj.addPropertyAlias("SurfaceArea", "Area", True, "26.3", "27.2")
+        obj.addPropertyAlias("SurfaceArea", "Area", True, "26.3", "27.2")
 
         self.assertEqual(obj.SurfaceArea, 17)
         self.assertIn("SurfaceArea", obj.PropertiesList)
@@ -163,7 +181,7 @@ class PropertyAliasMigration(unittest.TestCase):
         obj.addProperty("App::PropertyInteger", "MyOwnThing", "Geometry")
         obj.MyOwnThing = 5
 
-        obj.addPropertyAlias("SurfaceArea", "Area", True, "1.1")
+        obj.addPropertyAlias("SurfaceArea", "Area", True, "26.3", "27.2")
 
         self.assertIn("MyOwnThing", obj.PropertiesList)
         self.assertEqual(obj.MyOwnThing, 5)
@@ -317,7 +335,7 @@ class PropertyAliasDocument(unittest.TestCase):
 
     def testDocumentPropertyAlias(self):
         self.Doc.Comment = "hello"
-        self.Doc.addPropertyAlias("Comment", "OldComment", True, "1.1")
+        self.Doc.addPropertyAlias("Comment", "OldComment", True, "26.3", "27.2")
 
         self.assertEqual(self.Doc.OldComment, "hello")
         self.assertIn("OldComment", self.Doc.getPropertyAliases())

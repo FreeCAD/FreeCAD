@@ -94,6 +94,7 @@ enum class PropertyAliasType {
 struct PropertyAliasEntry {
     std::string canonicalName;
     std::string since;
+    std::string removedIn;
     PropertyAliasType type;
 };
 
@@ -247,9 +248,10 @@ struct AppExport PropertyData
    * @param[in] alias The old or alternative name to also accept.
    * @param[in] type Whether resolving through the alias warns.
    * @param[in] since The FreeCAD version introducing the alias, e.g. "1.1".
+   * @param[in] removedIn The FreeCAD release in which a deprecated alias is scheduled for removal.
    */
   void addAlias(const char* canonicalName, const char* alias, PropertyAliasType type,
-                const char* since);
+                const char* since, const char* removedIn = "");
 
   /**
    * @brief Find an alias by name, searching this class then its parents.
@@ -623,10 +625,15 @@ public:
    * @param[in] alias         The old or alternative name to also accept.
    * @param[in] aliasType     Whether to emit a warning when the alias is used.
    * @param[in] since         The FreeCAD version in which the alias was introduced.
+   *                          For a deprecated alias, this is the release in which
+   *                          the alias became deprecated.
+   * @param[in] removedIn     The FreeCAD release in which a deprecated alias is
+   *                          scheduled for removal.
    */
   void addPropertyAlias(const char* canonicalName, const char* alias,
                         PropertyAliasType aliasType = PropertyAliasType::Normal,
-                        const char* since = "");
+                        const char* since = "",
+                        const char* removedIn = "");
 
   /**
    * @brief Check whether this instance has ever registered a runtime alias.
@@ -815,8 +822,10 @@ protected:
   Property* resolveAlias(const char* name, AliasWarningPolicy warning) const;
 
   /// Emit the deprecation warning for an alias, at most once per alias per container.
-  void warnDeprecatedAlias(const char* alias, const char* canonicalName,
-                           const char* since) const;
+  void warnDeprecatedAlias(const char* alias,
+                           const char* canonicalName,
+                           const char* deprecatedIn,
+                           const char* removedIn) const;
 
   /**
    * @brief Handle a changed property name during restore.
@@ -907,10 +916,18 @@ private:
 
 /// Register a deprecated alias for a static property. Like ADD_PROPERTY_ALIAS but emits a
 /// developer warning when the alias is resolved, encouraging migration to the canonical name.
-#define ADD_PROPERTY_DEPRECATED_ALIAS(_prop_, _alias_, _since_) \
+/// _deprecatedIn_ and _removedIn_ form structured lifecycle metadata consumed both at runtime
+/// and by the source deprecation inventory.
+#define ADD_PROPERTY_DEPRECATED_ALIAS(_prop_, _alias_, _deprecatedIn_, _removedIn_) \
     do { \
         (void)&this->_prop_; \
-        propertyData.addAlias(#_prop_, _alias_, App::PropertyAliasType::Deprecated, _since_); \
+        propertyData.addAlias( \
+            #_prop_, \
+            _alias_, \
+            App::PropertyAliasType::Deprecated, \
+            _deprecatedIn_, \
+            _removedIn_ \
+        ); \
     } while (0)
 
 

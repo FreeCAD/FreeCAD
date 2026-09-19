@@ -50,6 +50,17 @@ using namespace std;
 
 TYPESYSTEM_SOURCE(App::PropertyContainer,Base::Persistence)
 
+namespace {
+
+// Release format and ordering are checked in the source tree by src/Tools/python_api, the same
+// as every other deprecation. At runtime the deprecation message only needs both releases.
+bool hasAliasLifecycle(const char* deprecatedIn, const char* removedIn)
+{
+    return !Base::Tools::isNullOrEmpty(deprecatedIn) && !Base::Tools::isNullOrEmpty(removedIn);
+}
+
+}
+
 
 PropertyContainer::PropertyContainer()
 {
@@ -83,15 +94,28 @@ App::Property* PropertyContainer::addDynamicProperty(
 }
 
 void PropertyContainer::addPropertyAlias(
-    const char* canonicalName, const char* alias, PropertyAliasType aliasType, const char* since)
+    const char* canonicalName,
+    const char* alias,
+    PropertyAliasType aliasType,
+    const char* since,
+    const char* removedIn)
 {
     if (Base::Tools::isNullOrEmpty(canonicalName) || Base::Tools::isNullOrEmpty(alias)) {
         FC_ERR("Ignoring property alias with an empty canonical name or alias");
         return;
     }
 
+    if (aliasType == PropertyAliasType::Deprecated
+        && !hasAliasLifecycle(since, removedIn)) {
+        FC_ERR("Ignoring deprecated property alias '"
+               << alias << "': deprecation and removal releases are required");
+        return;
+    }
+
     _propertyAliases[alias] = {.canonicalName = canonicalName,
                                .since = Base::Tools::isNullOrEmpty(since) ? "" : since,
+                               .removedIn =
+                                   Base::Tools::isNullOrEmpty(removedIn) ? "" : removedIn,
                                .type = aliasType};
 
     // Aliases cannot be registered before Restore() for Python-backed objects, because the
@@ -123,21 +147,18 @@ std::map<std::string, PropertyAliasEntry> PropertyContainer::getPropertyAliases(
     return aliases;
 }
 
-void PropertyContainer::warnDeprecatedAlias(const char* alias, const char* canonicalName,
-                                            const char* since) const
+void PropertyContainer::warnDeprecatedAlias(const char* alias,
+                                            const char* canonicalName,
+                                            const char* deprecatedIn,
+                                            const char* removedIn) const
 {
     if (!_warnedAliases.insert(alias).second) {
         return;
     }
 
-    if (!Base::Tools::isNullOrEmpty(since)) {
-        FC_WARN("Property '" << alias << "' in '" << getFullName() << "' is deprecated since "
-                             << since << ", use '" << canonicalName << "' instead.");
-    }
-    else {
-        FC_WARN("Property '" << alias << "' in '" << getFullName() << "' is deprecated, use '"
-                             << canonicalName << "' instead.");
-    }
+    FC_WARN("Property '" << alias << "' in '" << getFullName() << "' is deprecated since FreeCAD "
+                         << deprecatedIn << " and will be removed in FreeCAD " << removedIn
+                         << "; use '" << canonicalName << "' instead.");
 }
 
 Property* PropertyContainer::resolveAlias(const char* name, AliasWarningPolicy warning) const
@@ -156,7 +177,10 @@ Property* PropertyContainer::resolveAlias(const char* name, AliasWarningPolicy w
     }
 
     if (warning == AliasWarningPolicy::Emit && entry->type == PropertyAliasType::Deprecated) {
-        warnDeprecatedAlias(name, entry->canonicalName.c_str(), entry->since.c_str());
+        warnDeprecatedAlias(name,
+                            entry->canonicalName.c_str(),
+                            entry->since.c_str(),
+                            entry->removedIn.c_str());
     }
 
     // Resolve through the virtual entry point so subclasses that host properties elsewhere —
@@ -584,10 +608,16 @@ void PropertyData::addProperty(OffsetBase offsetBase,const char* PropName, Prope
 }
 
 void PropertyData::addAlias(const char* canonicalName, const char* alias, PropertyAliasType type,
-                            const char* since)
+                            const char* since, const char* removedIn)
 {
     if (Base::Tools::isNullOrEmpty(canonicalName) || Base::Tools::isNullOrEmpty(alias)) {
         FC_ERR("Ignoring property alias with an empty canonical name or alias");
+        return;
+    }
+
+    if (type == PropertyAliasType::Deprecated && !hasAliasLifecycle(since, removedIn)) {
+        FC_ERR("Ignoring deprecated property alias '"
+               << alias << "': deprecation and removal releases are required");
         return;
     }
 
@@ -600,6 +630,8 @@ void PropertyData::addAlias(const char* canonicalName, const char* alias, Proper
         alias,
         PropertyAliasEntry {.canonicalName = canonicalName,
                             .since = Base::Tools::isNullOrEmpty(since) ? "" : since,
+                            .removedIn =
+                                Base::Tools::isNullOrEmpty(removedIn) ? "" : removedIn,
                             .type = type}
     );
 }
@@ -798,4 +830,3 @@ void PropertyData::visitProperties(OffsetBase offsetBase,
         visitor(reinterpret_cast<Property*>(spec.Offset + offset));
     };
 }
-

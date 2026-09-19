@@ -490,12 +490,13 @@
  *
  * // in the constructor
  * ADD_PROPERTY_TYPE(Description, (""), group, App::Prop_None, "Object description");
- * ADD_PROPERTY_DEPRECATED_ALIAS(Description, "Label2", "1.1");
+ * ADD_PROPERTY_DEPRECATED_ALIAS(Description, "Label2", "26.3", "27.2");
  * @endcode
  *
- * The third argument is the FreeCAD version introducing the alias. It appears in the
- * deprecation warning and makes it possible to audit which aliases are old enough to
- * retire.
+ * The third and fourth arguments are the FreeCAD versions in which the alias was deprecated
+ * and is scheduled for removal. They appear in the deprecation warning. The API deprecation
+ * inventory in src/Tools/python_api checks their format and order, and
+ * `python -m src.Tools.python_api list --remove-by <release>` lists the aliases due to retire.
  *
  * No handleChangedPropertyName() override is needed. Restore() resolves aliases, so a
  * document saved under the old name restores into the renamed property, silently.
@@ -505,7 +506,7 @@
  * Python objects have no static properties, so both steps happen at runtime:
  *
  * @code{.py}
- * obj.addPropertyAlias("SurfaceArea", "Area", deprecated=True, since="1.1")
+ * obj.addPropertyAlias("SurfaceArea", "Area", deprecated=True, since="26.3", removed_in="27.2")
  * obj.addProperty("App::PropertyArea", "SurfaceArea", "Geometry")
  * @endcode
  *

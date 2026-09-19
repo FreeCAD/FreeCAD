@@ -244,7 +244,7 @@ public:
     HookRecordingContainer()
     {
         ADD_PROPERTY_TYPE(Renamed, (0), "Test", App::Prop_None, "Canonical property");
-        ADD_PROPERTY_DEPRECATED_ALIAS(Renamed, "OldName", "1.1");
+        ADD_PROPERTY_DEPRECATED_ALIAS(Renamed, "OldName", "26.3", "27.2");
     }
 
     void handleChangedPropertyName(Base::XMLReader& reader, const char* TypeName, const char* PropName) override
