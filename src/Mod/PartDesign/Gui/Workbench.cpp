@@ -50,6 +50,7 @@ namespace sp = std::placeholders;
     qApp->translate("Workbench", "Transformation Features");
     qApp->translate("Workbench", "Sprocket…");
     qApp->translate("Workbench", "Involute Gear");
+    qApp->translate("Workbench", "Start Part")
 
     qApp->translate("Workbench", "Shaft Design Wizard");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Face Tools");
@@ -259,9 +260,11 @@ void Workbench::activated()
     ));
 
     const char* NoSel[] = {"PartDesign_Body", nullptr};
-    Watcher.push_back(
-        new Gui::TaskView::TaskWatcherCommandsEmptySelection(NoSel, "Start Part", "Part_Box_Parametric")
-    );
+    Watcher.push_back(new Gui::TaskView::TaskWatcherCommandsEmptySelection(
+        NoSel,
+        translatedStartPart.c_str(),
+        "Part_Box_Parametric"
+    ));
 
     const char* Faces[] = {
         "PartDesign_Fillet",

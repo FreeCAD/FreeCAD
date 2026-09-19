@@ -34,8 +34,8 @@ class BIM_Fuse:
     def GetResources(self):
         return {
             "Pixmap": "Part_Fuse",
-            "MenuText": QT_TRANSLATE_NOOP("Part_Fuse", "Union"),
-            "ToolTip": QT_TRANSLATE_NOOP("Part_Fuse", "Creates a union of several shapes"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_Fuse", "Union"),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_Fuse", "Creates a union of several shapes"),
         }
 
     def IsActive(self):

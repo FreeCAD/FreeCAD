@@ -35,8 +35,8 @@ class BIM_Common:
     def GetResources(self):
         return {
             "Pixmap": "Part_Common",
-            "MenuText": QT_TRANSLATE_NOOP("Part_Common", "Intersection"),
-            "ToolTip": QT_TRANSLATE_NOOP("Part_Common", "Creates an intersection of two shapes"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_Common", "Intersection"),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_Common", "Creates an intersection of two shapes"),
         }
 
     def IsActive(self):
