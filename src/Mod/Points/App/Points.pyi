@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
-from typing import Any, Final
+from typing import Any, Final, Sequence
 
 from Base.Metadata import constmethod, export
+from Base.Vector import Vector
 from Data import object
 
 @export(
@@ -33,7 +34,7 @@ class Points(object):
         """Create a copy of this points object"""
         ...
 
-    def read(self) -> Any:
+    def read(self, filename: str, /) -> None:
         """Read in a points object from file."""
         ...
 
@@ -47,8 +48,8 @@ class Points(object):
         """Write the points in OpenInventor format to a string."""
         ...
 
-    def addPoints(self) -> Any:
-        """add one or more (list of) points to the object"""
+    def addPoints(self, points: Sequence[Vector | tuple[float, float, float]], /) -> None:
+        """Add one or more points or lists of points to the object"""
         ...
 
     @constmethod

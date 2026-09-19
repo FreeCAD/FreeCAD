@@ -477,9 +477,10 @@ class Document(PropertyContainer):
         """
         ...
 
-    def getTempFileName(self) -> str:
+    def getTempFileName(self, name: str, /) -> str:
         """
-        Returns a file name with path in the temp directory of the document.
+        Returns a unique file name, based on the given name, with a path in the temp directory of
+        the document.
         """
         ...
 
