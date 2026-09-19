@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #pragma once
 
-#include "TaskView/TaskDialog.h"
 #include "Selection/Selection.h"
+#include "TaskView/TaskDialog.h"
+#include "TransformSnap.h"
 #include "ViewProviderDragger.h"
 
 #include <Inventor/nodes/SoSeparator.h>
@@ -39,9 +39,12 @@
 #include <QWidget>
 
 #include <array>
+#include <limits>
 #include <memory>
 #include <optional>
 #include <string>
+#include <utility>
+#include <vector>
 
 class SoDragger;
 class SoTransform;
@@ -65,7 +68,9 @@ public:
         None,
         SelectTransformOrigin,
         SelectAlignTarget,
-        SelectCustomCS
+        SelectCustomCS,
+        SelectCumulativeSnapReference,
+        SelectCumulativeSnapTarget
     };
     enum class PlacementMode
     {
@@ -115,6 +120,7 @@ public:
     ~TaskTransform() override;
 
     std::array<QWidget*, 3> taskWidgets() const;
+    void onDocumentRestored();
 
 private:
     void onSelectionChanged(const SelectionChanges& msg) override;
@@ -129,6 +135,7 @@ private Q_SLOTS:
 
     void onAlignToOtherObject();
     void onFlip();
+    void onCumulativeSnap();
 
     void onCoordinateSystemChange(int mode);
 
@@ -177,6 +184,25 @@ private:
     void moveObjectToDragger(
         ViewProviderDragger::DraggerComponents components = ViewProviderDragger::DraggerComponent::All
     );
+    bool isCumulativeSnapMovingObjectSelection(
+        const SelectionChanges& msg,
+        const App::DocumentObject* object,
+        const App::DocumentObject* originalObject
+    ) const;
+    std::optional<Base::Placement> solveCumulativeSnapObjectPlacement(
+        const Base::Placement& candidate,
+        const TransformSnap::Constraint& constraint,
+        std::size_t historySize = std::numeric_limits<std::size_t>::max()
+    ) const;
+    void startCumulativeSnap();
+    void stopCumulativeSnap();
+    void appendCumulativeSnapStep(
+        const QString& referenceLabel,
+        const QString& targetLabel,
+        TransformSnap::Constraint constraint
+    );
+    void restoreCumulativeSnapPlacement(const Base::Placement& placement);
+    void updateCumulativeSnapUi() const;
 
     bool isDraggerAlignedToCoordinateSystem() const;
 
@@ -202,9 +228,25 @@ private:
 
     std::optional<Base::Placement> customTransformOrigin {};
     std::optional<Base::Placement> customCoordinateSystemPlacement {};
+    std::optional<Base::Placement> cumulativeSnapStartPlacement {};
     Base::Placement referencePlacement {};
     Base::Placement globalOrigin {};
     Base::Rotation referenceRotation {};
+    bool cumulativeSnapActive {false};
+    struct CumulativeSnapReference
+    {
+        std::string label;
+        Base::Placement localPlacement;
+        App::SubObjectPlacementProvider::SnapGeometryType type;
+    };
+    struct CumulativeSnapStep
+    {
+        std::string label;
+        Base::Placement objectPlacement;
+        TransformSnap::Constraint constraint;
+    };
+    std::optional<CumulativeSnapReference> currentCumulativeSnapReference {};
+    std::vector<CumulativeSnapStep> cumulativeSnapHistory;
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/History/Dragger"
@@ -232,7 +274,6 @@ public:
 
 private:
     void openCommand();
-    void updateDraggerPlacement();
 
 private:
     ViewProviderDragger* vp;
