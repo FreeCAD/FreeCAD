@@ -67,6 +67,8 @@ private:
     bool isManualSelection() const;
     void populateStandards();
     void populateSizes();
+    QStringList validSizes(const QString& standard) const;
+    void updateOrientationAvailability();
     void updatePreviewSize();
     QString findTemplateFile(const QString& standard, const QString& size, bool landscape) const;
 

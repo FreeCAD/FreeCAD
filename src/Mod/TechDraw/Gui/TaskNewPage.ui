@@ -115,7 +115,7 @@
    <item>
     <widget class="QPushButton" name="templateFolderButton">
      <property name="text">
-      <string>See template folder</string>
+      <string>Open Template Folder</string>
      </property>
      <property name="toolTip">
       <string>Opens the configured template folder in the file manager</string>
