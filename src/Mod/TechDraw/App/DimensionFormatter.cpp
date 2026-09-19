@@ -22,11 +22,14 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <cctype>
+#include <cstring>
+#include <format>
+#include <string>
+
 #include <QLocale>
 #include <QRegularExpression>
 #include <QString>
-
-#include <fmt/format.h>
 
 #include <Base/Console.h>
 #include <Base/UnitsApi.h>
@@ -38,6 +41,83 @@
 // TODO: Cyclic dependency issue with DrawViewDimension
 
 using namespace TechDraw;
+
+namespace
+{
+
+/// Translate the printf conversion \a spec into a std::format one.
+std::string toFormatSpec(const std::string& spec)
+{
+    auto character = spec.begin();
+    const auto end = spec.end();
+    const auto next = [&](const char* accepted) {
+        return character != end && std::strchr(accepted, *character) != nullptr;
+    };
+
+    if (!next("%")) {
+        throw std::format_error("conversion does not start with '%'");
+    }
+    ++character;
+
+    bool leftAlign = false;
+    std::string sign;
+    bool alternate = false;
+    bool zeroPad = false;
+    for (; next("-+ #0"); ++character) {
+        switch (*character) {
+            case '-':
+                leftAlign = true;
+                break;
+            case '#':
+                alternate = true;
+                break;
+            case '0':
+                zeroPad = true;
+                break;
+            default:  // '+' and ' ' are the sign of a std::format spec
+                sign = *character;
+        }
+    }
+
+    std::string digits;
+    for (; character != end && std::isdigit(static_cast<unsigned char>(*character)); ++character) {
+        digits += *character;
+    }
+    if (next(".")) {
+        digits += *character++;
+        for (; character != end && std::isdigit(static_cast<unsigned char>(*character));
+             ++character) {
+            digits += *character;
+        }
+    }
+
+    if (!next("aAeEfFgG")) {
+        throw std::format_error("not a floating point conversion");
+    }
+    const char conversion = *character++;
+    if (character != end) {
+        throw std::format_error("trailing characters after the conversion");
+    }
+
+    // a printf '-' takes precedence over '0', a std::format alignment does not
+    return std::string {"{:"} + (leftAlign ? "<" : "") + sign + (alternate ? "#" : "")
+        + (zeroPad && !leftAlign ? "0" : "") + digits + conversion + "}";
+}
+
+/// printf-style formatting of \a value used for the format string from the drawing.
+std::string printfFormat(const std::string& spec, double value)
+{
+    std::string text = std::vformat(toFormatSpec(spec), std::make_format_args(value));
+
+    if (const char conversion = spec.back(); conversion == 'a' || conversion == 'A') {
+        const auto digit = text.find_first_not_of(" +-");
+        text.insert(digit, conversion == 'a' ? "0x" : "0X");
+    }
+
+    return text;
+}
+
+}  // namespace
 
 bool DimensionFormatter::isMultiValueSchema() const
 {
@@ -279,7 +359,7 @@ QString DimensionFormatter::formatValueToSpec(const double value, QString format
     QString formattedValue;
 
     constexpr auto format = [](QString f, double value){
-        return QString::fromStdString(fmt::sprintf(f.toStdString(), value));
+        return QString::fromStdString(printfFormat(f.toStdString(), value));
     };
 
     QRegularExpression wrRegExp(QStringLiteral("%(?<dec>.*)(?<spec>[wWrR])"));
