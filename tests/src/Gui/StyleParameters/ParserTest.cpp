@@ -270,6 +270,84 @@ TEST_F(ParserTest, ParseFunctionCalls)
     }
 }
 
+// Test function parse
+TEST_F(ParserTest, ParseKeyword)
+{
+    const Value result = evaluate("middle");
+
+    ASSERT_THAT(result, IsString("middle"));
+}
+
+TEST_F(ParserTest, ParseIdentifierWithFunctionName)
+{
+    const Value result = evaluate("blend");
+
+    ASSERT_THAT(result, IsString("blend"));
+}
+
+TEST_F(ParserTest, ParseKeywordInsideTuple)
+{
+    const Value result = evaluate("(horizontal: left, vertical: middle)");
+
+    ASSERT_TRUE(result.holds<Tuple>());
+
+    const auto& tuple = result.get<Tuple>();
+    ASSERT_THAT(tuple, HasField("horizontal", IsString("left")));
+    ASSERT_THAT(tuple, HasField("vertical", IsString("middle")));
+}
+
+TEST_F(ParserTest, ParseKeywordSurroundedByWhitespace)
+{
+    const Value result = evaluate("  middle  ");
+
+    ASSERT_THAT(result, IsString("middle"));
+}
+
+TEST_F(ParserTest, ParsesDoubleQuotedStringLiteral)
+{
+    auto result = evaluate("\"DejaVu Sans Mono\"");
+
+    ASSERT_THAT(result, IsString("DejaVu Sans Mono"));
+}
+
+TEST_F(ParserTest, ParsesSingleQuotedStringLiteralWithComma)
+{
+    auto result = evaluate("'Inter, sans-serif'");
+
+    ASSERT_THAT(result, IsString("Inter, sans-serif"));
+}
+
+TEST_F(ParserTest, EvaluatesParamsInDoubleQuotedStringLiteral)
+{
+    auto result = evaluate("\"value: @TestParam\"");
+
+    ASSERT_THAT(result, IsString("value: 10px"));
+}
+
+TEST_F(ParserTest, PreservesParamsInDoubleQuotedStringLiteral)
+{
+    auto result = evaluate("'value: @TestParam'");
+
+    ASSERT_THAT(result, IsString("value: @TestParam"));
+}
+
+TEST_F(ParserTest, UnterminatedStringLiteralThrows)
+{
+    EXPECT_THROW(parse("\"unterminated"), Base::ParserError);
+}
+
+TEST_F(ParserTest, EscapedQuoteInStringLiteral)
+{
+    auto result = evaluate(R"("I have a \" inside")");
+
+    ASSERT_THAT(result, IsString(R"(I have a " inside)"));
+}
+
+TEST_F(ParserTest, ThrowsOnUndefinedEscapeSequence)
+{
+    EXPECT_THROW(parse(R"("Unknown \b escape sequence")"), Base::ParserError);
+}
+
 // Test error cases
 TEST_F(ParserTest, ParseErrors)
 {

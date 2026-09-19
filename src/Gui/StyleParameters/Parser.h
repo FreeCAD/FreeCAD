@@ -80,6 +80,25 @@ struct GuiExport Number: public Expr
     Value evaluate([[maybe_unused]] const EvaluationContext& context) const override;
 };
 
+struct GuiExport StringLiteral: public Expr
+{
+    enum class Type : std::uint8_t
+    {
+        Verbatim,
+        Evaluated
+    };
+
+    std::string value;
+    Type type;
+
+    explicit StringLiteral(std::string value, Type type = Type::Evaluated)
+        : value(std::move(value))
+        , type(std::move(type))
+    {}
+
+    Value evaluate([[maybe_unused]] const EvaluationContext& context) const override;
+};
+
 struct GuiExport Color: public Expr
 {
     Base::Color color;
@@ -181,8 +200,10 @@ private:
     std::unique_ptr<Expr> parseColor();
     bool peekParameter();
     std::unique_ptr<Expr> parseParameter();
-    bool peekFunction();
-    std::unique_ptr<Expr> parseFunctionCall();
+    bool peekIdentifier();
+    std::unique_ptr<Expr> parseIdentifier();
+    bool peekStringLiteral() const;
+    std::unique_ptr<Expr> parseStringLiteral();
     int parseInt();
     std::unique_ptr<Expr> parseNumber();
     std::string parseUnit();
