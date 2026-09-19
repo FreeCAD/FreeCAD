@@ -880,7 +880,7 @@ void Document::onChanged(const Property* prop)
         if (!TransDirNew.exists()) {
             if (TransDirOld.exists()) {
                 if (!TransDirOld.renameFile(new_dir.c_str())) {
-                    Base::Console().warning("Failed to rename '%s' to '%s'\n",
+                    Base::Console().warning("Failed to rename '{}' to '{}'\n",
                                             old_dir.c_str(),
                                             new_dir.c_str());
                 }
@@ -890,7 +890,7 @@ void Document::onChanged(const Property* prop)
             }
             else {
                 if (!TransDirNew.createDirectories()) {
-                    Base::Console().warning("Failed to create '%s'\n", new_dir.c_str());
+                    Base::Console().warning("Failed to create '{}'\n", new_dir);
                 }
                 else {
                     this->TransientDir.setValue(new_dir);
@@ -903,7 +903,7 @@ void Document::onChanged(const Property* prop)
             // make sure that the uuid is unique
             std::string uuid = this->Uid.getValueStr();
             Base::Uuid id;
-            Base::Console().warning("Document with the UUID '%s' already exists, change to '%s'\n",
+            Base::Console().warning("Document with the UUID '{}' already exists, change to '{}'\n",
                                     uuid.c_str(),
                                     id.getValue().c_str());
             // recursive call of onChanged()
@@ -960,7 +960,7 @@ Document::Document(const char* documentName)
     d->DocumentPythonObject = Py::Object(new DocumentPy(this), true);
 
 #ifdef FC_LOGUPDATECHAIN
-    Console().log("+App::Document: %p\n", this);
+    Console().log("+App::Document: {}\n", this);
 #endif
     std::string CreationDateString = Base::Tools::currentDateTimeString();
     std::string Author = GetApplication()
@@ -1055,7 +1055,7 @@ Document::Document(const char* documentName)
 Document::~Document()
 {
 #ifdef FC_LOGUPDATECHAIN
-    Console().log("-App::Document: %s %p\n", getName(), this);
+    Console().log("-App::Document: {} {}\n", getName(), this);
 #endif
 
     try {
@@ -1065,7 +1065,7 @@ Document::~Document()
     }
 
 #ifdef FC_LOGUPDATECHAIN
-    Console().log("-Delete Features of %s \n", getName());
+    Console().log("-Delete Features of {} \n", getName());
 #endif
 
     d->clearDocument();
@@ -1210,7 +1210,7 @@ void Document::Restore(Base::XMLReader& reader)
                 addObject(type.c_str(), name.c_str(), /*isNew=*/false);
             }
             catch (Base::Exception&) {
-                Base::Console().message("Cannot create object '%s'\n", name.c_str());
+                Base::Console().message("Cannot create object '{}'\n", name);
             }
         }
         reader.readEndElement("Features");
@@ -1695,7 +1695,7 @@ std::vector<DocumentObject*> Document::readObjects(Base::XMLReader& reader)
             }
         }
         catch (const Base::Exception& e) {
-            Base::Console().error("Cannot create object '%s': (%s)\n", name.c_str(), e.what());
+            Base::Console().error("Cannot create object '{}': ({})\n", name, e.what());
         }
     }
     if (!testStatus(Status::Importing)) {
@@ -1741,7 +1741,7 @@ std::vector<DocumentObject*> Document::readObjects(Base::XMLReader& reader)
             pObj->setStatus(ObjectStatus::Restore, false);
 
             if (reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInDocumentObject)) {
-                Base::Console().error("Object \"%s\" was subject to a partial restore. As a result "
+                Base::Console().error("Object \"{}\" was subject to a partial restore. As a result "
                                       "geometry may have changed or be incomplete.\n",
                                       name.c_str());
                 reader.clearPartialRestoreDocumentObject();
@@ -2204,7 +2204,7 @@ void Document::restore(const char* filename,
         Document::Restore(reader);
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("Invalid Document.xml: %s\n", e.what());
+        Base::Console().error("Invalid Document.xml: {}\n", e.what());
         setStatus(Document::RestoreError, true);
     }
 
@@ -3051,7 +3051,7 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
                 if (it->isError()) {
                     const char* text = getErrorDescription(it);
                     if (text) {
-                        Base::Console().error("%s: %s\n", it->Label.getValue(), text);
+                        Base::Console().error("{}: {}\n", it->Label.getValue(), text);
                     }
                 }
             }

@@ -786,7 +786,7 @@ PyObject* ApplicationPy::sOpen(PyObject* /*self*/, PyObject* args)
         FileHandler handler(fileName);
         if (!handler.openFile()) {
             QString ext = handler.extension();
-            Base::Console().error("File type '%s' not supported\n", ext.toLatin1().constData());
+            Base::Console().error("File type '{}' not supported\n", ext.toStdString());
         }
     }
     PY_CATCH;
@@ -811,7 +811,7 @@ PyObject* ApplicationPy::sInsert(PyObject* /*self*/, PyObject* args)
         FileHandler handler(fileName);
         if (!handler.importFile(std::string(DocName ? DocName : ""))) {
             QString ext = handler.extension();
-            Base::Console().error("File type '%s' not supported\n", ext.toLatin1().constData());
+            Base::Console().error("File type '{}' not supported\n", ext.toStdString());
         }
     }
     PY_CATCH;
@@ -912,7 +912,7 @@ PyObject* ApplicationPy::sExport(PyObject* /*self*/, PyObject* args)
             }
         }
         else {
-            Base::Console().error("File type '%s' not supported\n", ext.toLatin1().constData());
+            Base::Console().error("File type '{}' not supported\n", ext.toStdString());
         }
     }
     PY_CATCH;
@@ -945,7 +945,7 @@ PyObject* ApplicationPy::sSendMsgToActiveView(PyObject* /*self*/, PyObject* args
 
     if (!Application::Instance->sendMsgToActiveView(psCommandStr)) {
         if (!Base::asBoolean(suppress)) {
-            Base::Console().warning("Unknown view command: %s\n", psCommandStr);
+            Base::Console().warning("Unknown view command: {}\n", psCommandStr);
         }
     }
 
@@ -965,7 +965,7 @@ PyObject* ApplicationPy::sSendMsgToFocusView(PyObject* /*self*/, PyObject* args)
 
     if (!Application::Instance->sendMsgToFocusView(psCommandStr)) {
         if (!Base::asBoolean(suppress)) {
-            Base::Console().warning("Unknown view command: %s\n", psCommandStr);
+            Base::Console().warning("Unknown view command: {}\n", psCommandStr);
         }
     }
 

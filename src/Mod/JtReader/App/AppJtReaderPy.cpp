@@ -96,7 +96,7 @@ private:
         PyMem_Free(Name);
 
 
-        // Base::Console().log("Open in Mesh with %s",Name);
+        // Base::Console().log("Open in Mesh with {}",Name);
         Base::FileInfo file(EncodedName);
         if (file.hasExtension("jt")) {
             TestJtReader reader;
@@ -110,7 +110,7 @@ private:
             }
             catch (const Standard_Failure& e) {
                 Base::Console().warning(
-                    "JtReader: error reading '%s': %s\n",
+                    "JtReader: error reading '{}': {}\n",
                     file.fileName().c_str(),
                     e.GetMessageString()
                 );
@@ -118,7 +118,7 @@ private:
             }
             catch (const std::exception& e) {
                 Base::Console().warning(
-                    "JtReader: error reading '%s': %s\n",
+                    "JtReader: error reading '{}': {}\n",
                     file.fileName().c_str(),
                     e.what()
                 );
@@ -127,7 +127,7 @@ private:
 
             if (jtReader.shapeCount() == 0) {
                 Base::Console().warning(
-                    "JtReader: no geometry could be imported from '%s'. "
+                    "JtReader: no geometry could be imported from '{}'. "
                     "The file may use unsupported features.\n",
                     file.fileName().c_str()
                 );
@@ -175,7 +175,7 @@ private:
             }
             catch (const Standard_Failure& e) {
                 Base::Console().warning(
-                    "JtReader: error reading '%s': %s\n",
+                    "JtReader: error reading '{}': {}\n",
                     file.fileName().c_str(),
                     e.GetMessageString()
                 );
@@ -183,7 +183,7 @@ private:
             }
             catch (const std::exception& e) {
                 Base::Console().warning(
-                    "JtReader: error reading '%s': %s\n",
+                    "JtReader: error reading '{}': {}\n",
                     file.fileName().c_str(),
                     e.what()
                 );
@@ -192,7 +192,7 @@ private:
 
             if (jtReader.shapeCount() == 0) {
                 Base::Console().warning(
-                    "JtReader: no geometry could be imported from '%s'. "
+                    "JtReader: no geometry could be imported from '{}'. "
                     "The file may use unsupported features.\n",
                     file.fileName().c_str()
                 );

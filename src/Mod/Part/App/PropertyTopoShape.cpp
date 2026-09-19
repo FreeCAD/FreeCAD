@@ -612,13 +612,13 @@ void PropertyPartShape::saveToFile(Base::Writer& writer) const
         if (father && father->isDerivedFrom<App::DocumentObject>()) {
             App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
             Base::Console().error(
-                "Shape of '%s' cannot be written to BRep file '%s'\n",
+                "Shape of '{}' cannot be written to BRep file '{}'\n",
                 obj->Label.getValue(),
                 fi.filePath().c_str()
             );
         }
         else {
-            Base::Console().error("Cannot save BRep file '%s'\n", fi.filePath().c_str());
+            Base::Console().error("Cannot save BRep file '{}'\n", fi.filePath());
         }
 
         std::stringstream ss;
@@ -667,14 +667,14 @@ void PropertyPartShape::loadFromFile(Base::Reader& reader)
             if (father && father->isDerivedFrom<App::DocumentObject>()) {
                 App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
                 Base::Console().error(
-                    "BRep file '%s' with shape of '%s' seems to be empty\n",
+                    "BRep file '{}' with shape of '{}' seems to be empty\n",
                     fi.filePath().c_str(),
                     obj->Label.getValue()
                 );
             }
             else {
                 Base::Console().warning(
-                    "Loaded BRep file '%s' seems to be empty\n",
+                    "Loaded BRep file '{}' seems to be empty\n",
                     fi.filePath().c_str()
                 );
             }
@@ -704,7 +704,7 @@ void PropertyPartShape::loadFromStream(Base::Reader& reader)
     catch (const std::exception&) {
         reader.imbue(savedLocale);
         if (!reader.eof()) {
-            Base::Console().warning("Failed to load BRep file %s\n", reader.getFileName().c_str());
+            Base::Console().warning("Failed to load BRep file {}\n", reader.getFileName());
         }
     }
 }

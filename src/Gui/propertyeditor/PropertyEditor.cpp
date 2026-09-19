@@ -450,7 +450,7 @@ void PropertyEditor::recomputeDocument(App::Document* doc)
     catch (const std::exception& e) {
         Base::Console().error(
             "Unhandled std::exception caught in PropertyEditor::recomputeDocument.\n"
-            "The error message is: %s\n",
+            "The error message is: {}\n",
             e.what()
         );
     }

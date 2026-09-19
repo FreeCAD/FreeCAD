@@ -356,7 +356,7 @@ int main(int argc, char** argv)
         exit(1);
     }
     catch (const std::exception& e) {
-        Base::Console().error("Application unexpectedly terminated: %s\n", e.what());
+        Base::Console().error("Application unexpectedly terminated: {}\n", e.what());
         exit(1);
     }
     catch (...) {
@@ -369,12 +369,12 @@ int main(int argc, char** argv)
     std::cerr.rdbuf(oldcerr);
 
     // Destruction phase ===========================================================
-    Base::Console().log("%s terminating...\n", App::Application::getExecutableName().c_str());
+    Base::Console().log("{} terminating...\n", App::Application::getExecutableName());
 
     // cleans up
     App::Application::destruct();
 
-    Base::Console().log("%s completely terminated\n", App::Application::getExecutableName().c_str());
+    Base::Console().log("{} completely terminated\n", App::Application::getExecutableName());
 
     return 0;
 }

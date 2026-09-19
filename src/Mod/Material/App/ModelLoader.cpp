@@ -137,7 +137,7 @@ void ModelLoader::showYaml(const YAML::Node& yaml) const
 
     out << yaml;
     std::string logData = out.str();
-    Base::Console().log("%s\n", logData.c_str());
+    Base::Console().log("{}\n", logData);
 }
 
 void ModelLoader::dereference(const QString& uuid,
@@ -197,7 +197,7 @@ void ModelLoader::dereference(std::shared_ptr<ModelEntry> model,
                 dereference(model->getUUID(), model, child, inheritances);
             }
             catch (const std::out_of_range&) {
-                Base::Console().log("Unable to find '%s' in model map\n",
+                Base::Console().log("Unable to find '{}' in model map\n",
                                     nodeName.toStdString().c_str());
             }
         }
@@ -283,7 +283,7 @@ void ModelLoader::addToTree(std::shared_ptr<ModelEntry> model,
                 auto cols = yamlProp["Columns"];
                 for (const auto& col : cols) {
                     std::string colName = col.first.as<std::string>();
-                    // Base::Console().Log("\tColumns '%s'\n", colName.c_str());
+                    // Base::Console().Log("\tColumns '{}'\n", colName);
 
                     auto colProp = cols[colName];
                     auto colPropDisplayName = yamlValue(colProp, "DisplayName", "");
@@ -332,7 +332,7 @@ void ModelLoader::loadLibrary(std::shared_ptr<ModelLibraryLocal> library)
                     // showYaml(model->getModel());
                 }
                 catch (InvalidModel const&) {
-                    Base::Console().log("Invalid model '%s'\n", pathname.toStdString().c_str());
+                    Base::Console().log("Invalid model '{}'\n", pathname.toStdString());
                 }
             }
         }

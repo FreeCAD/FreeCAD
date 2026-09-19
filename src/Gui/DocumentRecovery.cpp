@@ -829,7 +829,7 @@ void DocumentRecoveryHandler::checkForPreviousCrashes(
                 callableFunc(tmp, dirs, it.fileName());
             }
             else {
-                Base::Console().log("Failed to lock file %s\n", fn.toUtf8().constData());
+                Base::Console().log("Failed to lock file {}\n", fn.toStdString());
             }
         }
     }

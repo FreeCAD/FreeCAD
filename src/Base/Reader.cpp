@@ -481,11 +481,11 @@ void Base::XMLReader::readFiles(zipios::ZipInputStream& zipstream) const
                 // All what we need to do is to notify the user about the
                 // failure.
                 if (entry->getSize() == 0) {
-                    Base::Console().log("Skipped empty embedded file: %s\n", entry->toString().c_str());
+                    Base::Console().log("Skipped empty embedded file: {}\n", entry->toString());
                 }
                 else {
                     Base::Console().error(
-                        "Reading failed from embedded file: %s\n",
+                        "Reading failed from embedded file: {}\n",
                         entry->toString().c_str()
                     );
                     FailedFiles.push_back(jt->FileName);

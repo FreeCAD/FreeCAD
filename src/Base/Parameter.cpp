@@ -355,7 +355,7 @@ DOMElement* ParameterGrp::CreateElement(DOMElement* Start, const char* Type, con
         && XMLString::compareString(Start->getNodeName(), XStrLiteral("FCParameters").unicodeForm())
             != 0) {
         Base::Console().warning(
-            "CreateElement: %s cannot have the element %s of type %s\n",
+            "CreateElement: {} cannot have the element {} of type {}\n",
             StrX(Start->getNodeName()).c_str(),
             Name,
             Type
@@ -1449,7 +1449,7 @@ DOMElement* ParameterGrp::FindElement(DOMElement* Start, const char* Type, const
         && XMLString::compareString(Start->getNodeName(), XStrLiteral("FCParameters").unicodeForm())
             != 0) {
         Base::Console().warning(
-            "FindElement: %s cannot have the element %s of type %s\n",
+            "FindElement: {} cannot have the element {} of type {}\n",
             StrX(Start->getNodeName()).c_str(),
             Name,
             Type
@@ -2109,7 +2109,7 @@ bool ParameterManager::CheckDocument() const
 
         if (parser.getErrorCount() > 0) {
             Base::Console().error(
-                "Unexpected XML structure detected: %zu errors\n",
+                "Unexpected XML structure detected: {} errors\n",
                 parser.getErrorCount()
             );
             return false;
@@ -2117,7 +2117,7 @@ bool ParameterManager::CheckDocument() const
     }
     catch (XMLException& e) {
         Base::Console().error(
-            "An error occurred while checking document:%s\n",
+            "An error occurred while checking document:{}\n",
             StrX(e.getMessage()).c_str()
         );
         return false;

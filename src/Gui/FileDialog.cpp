@@ -448,7 +448,7 @@ QStringList FileDialogInternal::nativeFileDialog(
     if (selectedFilterIndex < 0) {
         Base::Console().error(
             "Qt-backed nativeFileDialog returned a selected filter that wasn't in the original "
-            "list, defaulting to index 0\nProblem cause filter: \"%s\"\n",
+            "list, defaulting to index 0\nProblem cause filter: \"{}\"\n",
             selectedQtFilter.toStdString()
         );
         selectedFilterIndex = 0;
@@ -618,7 +618,7 @@ QString FileDialog::getSaveFileName(
             // Log an error since this happening means the code is incorrect
             Base::Console().error(
                 "Non-native FileDialog returned a selected filter that wasn't in the original "
-                "list, defaulting to index 0\nProblem cause filter: \"%s\"\n",
+                "list, defaulting to index 0\nProblem cause filter: \"{}\"\n",
                 dlg.selectedNameFilter().toStdString()
             );
             actuallySelectedFilterIndex = 0;
@@ -749,7 +749,7 @@ QString FileDialog::getOpenFileName(
             // Log an error since this happening means the code is incorrect
             Base::Console().error(
                 "Non-native FileDialog returned a selected filter that wasn't in the original "
-                "list, defaulting to index 0\nProblem cause filter: \"%s\"\n",
+                "list, defaulting to index 0\nProblem cause filter: \"{}\"\n",
                 dlg.selectedNameFilter().toStdString()
             );
             actuallySelectedFilterIndex = 0;
@@ -844,7 +844,7 @@ QStringList FileDialog::getOpenFileNames(
             // Log an error since this happening means the code is incorrect
             Base::Console().error(
                 "Non-native FileDialog returned a selected filter that wasn't in the original "
-                "list, defaulting to index 0\nProblem cause filter: \"%s\"\n",
+                "list, defaulting to index 0\nProblem cause filter: \"{}\"\n",
                 dlg.selectedNameFilter().toStdString()
             );
             actuallySelectedFilterIndex = 0;

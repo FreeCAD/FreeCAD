@@ -299,7 +299,7 @@ std::vector<std::string> Gui::PreferencePackManager::getPacksFromDirectory(const
         }
         catch (...) {
             // Failed to read the metadata, or to create the preferencePack based on it...
-            Base::Console().error(("Failed to read " + packageMetadataFile.string()).c_str());
+            Base::Console().error("Failed to read {}", packageMetadataFile.string());
         }
     }
     return results;
@@ -311,13 +311,13 @@ void Gui::PreferencePackManager::FindPreferencePacksInPackage(const fs::path& mo
         TryFindPreferencePacksInPackage(mod);
     }
     catch (const std::exception& e) {
-        Base::Console().error("%s\n", e.what());
+        Base::Console().error("{}\n", e.what());
     }
     catch (...) {
         // Failed to read the metadata, or to create the preferencePack based on it...
         auto packageMetadataFile = mod / "package.xml";
         Base::Console().error(
-            "Failed to read %s\n",
+            "Failed to read {}\n",
             Base::FileInfo::pathToString(packageMetadataFile).c_str()
         );
     }

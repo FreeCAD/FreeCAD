@@ -2494,7 +2494,7 @@ void MainWindow::insertFromMimeData(const QMimeData* mimeData)
         }
         else {
             Base::Console().error(
-                "Failed to save pasted image to temporary file: %s\n",
+                "Failed to save pasted image to temporary file: {}\n",
                 tempPath.c_str()
             );
         }
@@ -2624,7 +2624,7 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& urls)
             }
             else {
                 Base::Console().message(
-                    "No support to load file '%s'\n",
+                    "No support to load file '{}'\n",
                     (const char*)info.absoluteFilePath().toUtf8()
                 );
             }

@@ -124,7 +124,7 @@ ViewProviderInspection::~ViewProviderInspection()
     catch (Base::Exception& e) {
         Base::Console().destructorError(
             "ViewProviderInspection",
-            "ViewProviderInspection::deleteColorBar() threw an exception: %s\n",
+            "ViewProviderInspection::deleteColorBar() threw an exception: {}\n",
             e.what()
         );
     }

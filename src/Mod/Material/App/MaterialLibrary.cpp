@@ -160,7 +160,7 @@ void MaterialLibraryLocal::createFolder(const QString& path)
     QDir fileDir(filePath);
     if (!fileDir.exists()) {
         if (!fileDir.mkpath(filePath)) {
-            Base::Console().error("Unable to create directory path '%s'\n",
+            Base::Console().error("Unable to create directory path '{}'\n",
                                   filePath.toStdString().c_str());
         }
     }
@@ -174,7 +174,7 @@ void MaterialLibraryLocal::renameFolder(const QString& oldPath, const QString& n
     QDir fileDir(filePath);
     if (fileDir.exists()) {
         if (!fileDir.rename(filePath, newFilePath)) {
-            Base::Console().error("Unable to rename directory path '%s'\n",
+            Base::Console().error("Unable to rename directory path '{}'\n",
                                   filePath.toStdString().c_str());
         }
     }
@@ -293,14 +293,14 @@ MaterialLibraryLocal::saveMaterial(const std::shared_ptr<Material>& material,
     QDir fileDir(info.path());
     if (!fileDir.exists()) {
         if (!fileDir.mkpath(info.path())) {
-            Base::Console().error("Unable to create directory path '%s'\n",
+            Base::Console().error("Unable to create directory path '{}'\n",
                                   info.path().toStdString().c_str());
         }
     }
 
     if (info.exists()) {
         if (!overwrite) {
-            Base::Console().error("File already exists '%s'\n", info.path().toStdString().c_str());
+            Base::Console().error("File already exists '{}'\n", info.path().toStdString());
             throw MaterialExists();
         }
     }

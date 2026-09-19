@@ -590,7 +590,7 @@ ApplicationDirectories::MigrationResult ApplicationDirectories::migrateConfig(
         if (file.is_symlink(errorCode)) {
             auto target = fs::read_symlink(sourcePath, errorCode);
             if (errorCode || !fs::exists(target, errorCode)) {
-                Base::Console().warning("Migration: skipping broken symlink '%s'\n",
+                Base::Console().warning("Migration: skipping broken symlink '{}'\n",
                                         pathString.c_str());
                 result.failedPaths.push_back(sourcePath);
                 continue;
@@ -603,14 +603,14 @@ ApplicationDirectories::MigrationResult ApplicationDirectories::migrateConfig(
                      fs::copy_options::recursive | fs::copy_options::copy_symlinks);
         }
         catch (const fs::filesystem_error& error) {
-            Base::Console().warning("Migration: failed to copy '%s': %s\n",
+            Base::Console().warning("Migration: failed to copy '{}': {}\n",
                                     pathString.c_str(),
                                     error.what());
             result.failedPaths.push_back(sourcePath);
         }
     }
     if (errorCode) {
-        Base::Console().warning("Migration: error iterating '%s': %s\n",
+        Base::Console().warning("Migration: error iterating '{}': {}\n",
                                 Base::FileInfo::pathToString(oldPath).c_str(),
                                 errorCode.message().c_str());
     }
@@ -635,7 +635,7 @@ ApplicationDirectories::MigrationResult ApplicationDirectories::migrateAllPaths(
         else {
             newPath = path / versionStringForPath(major, minor);
         }
-        Base::Console().message("Migrating config from %s to %s\n",
+        Base::Console().message("Migrating config from {} to {}\n",
                                 Base::FileInfo::pathToString(path),
                                 Base::FileInfo::pathToString(newPath));
         if (fs::exists(newPath)) {
@@ -649,7 +649,7 @@ ApplicationDirectories::MigrationResult ApplicationDirectories::migrateAllPaths(
                                      result.failedPaths.end());
     }
     if (!allResult.failedPaths.empty()) {
-        Base::Console().warning("Migration completed with %d skipped file(s). "
+        Base::Console().warning("Migration completed with {} skipped file(s). "
                                 "See warnings above for details.\n",
                                 static_cast<int>(allResult.failedPaths.size()));
     }

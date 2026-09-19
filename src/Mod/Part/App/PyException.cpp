@@ -51,7 +51,7 @@ void pyThrowWrappedOccException(const Standard_Failure& e, PyObject* occErrorTyp
     const Standard_CString msg = e.GetMessageString();
     const auto what = fmt::format("{}: {}", demangled, msg ? msg : "No OCCT Exception Message");
     if (report) {
-        Base::Console().error("%s\n", what);
+        Base::Console().error("{}\n", what);
     }
     throw Py::Exception(occErrorType ? occErrorType : Base::PyExc_FC_GeneralError, what);
 }

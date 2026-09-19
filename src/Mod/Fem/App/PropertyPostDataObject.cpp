@@ -420,13 +420,13 @@ void PropertyPostDataObject::SaveDocFile(Base::Writer& writer) const
         if (father && father->isDerivedFrom<App::DocumentObject>()) {
             App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
             Base::Console().error(
-                "Dataset of '%s' cannot be written to vtk file '%s'\n",
+                "Dataset of '{}' cannot be written to vtk file '{}'\n",
                 obj->Label.getValue(),
                 fi.filePath().c_str()
             );
         }
         else {
-            Base::Console().error("Cannot save vtk file '%s'\n", fi.filePath().c_str());
+            Base::Console().error("Cannot save vtk file '{}'\n", fi.filePath());
         }
 
         std::stringstream ss;
@@ -513,7 +513,7 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader& reader)
                     auto safeName = Base::FileInfo::safeArchiveEntryPath(entry->getName());
                     if (!safeName) {
                         Base::Console().error(
-                            "Skipped dataset entry '%s': the name escapes the extraction "
+                            "Skipped dataset entry '{}': the name escapes the extraction "
                             "directory\n",
                             entry->getName()
                         );
@@ -565,14 +565,14 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader& reader)
                 if (father && father->isDerivedFrom<App::DocumentObject>()) {
                     App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
                     Base::Console().error(
-                        "Dataset file '%s' with data of '%s' seems to be empty\n",
+                        "Dataset file '{}' with data of '{}' seems to be empty\n",
                         fi.filePath().c_str(),
                         obj->Label.getValue()
                     );
                 }
                 else {
                     Base::Console().warning(
-                        "Loaded Dataset file '%s' seems to be empty\n",
+                        "Loaded Dataset file '{}' seems to be empty\n",
                         fi.filePath().c_str()
                     );
                 }
@@ -586,7 +586,7 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader& reader)
         }
         else {
             Base::Console().error(
-                "Dataset file '%s' is of unsupported type: %s. Data not loaded.\n",
+                "Dataset file '{}' is of unsupported type: {}. Data not loaded.\n",
                 fi.filePath().c_str(),
                 extension
             );
