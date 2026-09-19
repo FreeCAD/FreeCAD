@@ -3,6 +3,7 @@
 add_executable(Material_tests_run
         TestMaterialCards.cpp
         TestMaterialFilter.cpp
+        TestMaterialObserver.cpp
         TestMaterialProperties.cpp
         TestMaterials.cpp
         TestMaterialValue.cpp
