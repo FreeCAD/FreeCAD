@@ -100,6 +100,10 @@ def add_generation_args(parser: argparse.ArgumentParser) -> None:
         action="store_true",
         help="Do not apply curated stub overlays to the merged output.",
     )
+    parser.add_argument(
+        "--version-override",
+        help="Override the package version instead of reading version.json.",
+    )
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
@@ -206,6 +210,7 @@ def run_generate(args: argparse.Namespace) -> int:
             type_registrations,
             stub_signature_overrides,
             overlay_dir,
+            version_override=args.version_override,
         )
         summary = (
             f"Wrote {len(methods)} registrations and {len(classes)} class bindings to {out_dir} "
