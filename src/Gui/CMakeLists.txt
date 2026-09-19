@@ -521,6 +521,7 @@ SET(Dialog_CPP_SRCS
     Dialogs/DlgCheckableMessageBox.cpp
     TaskTransform.cpp
     TransformSnap.cpp
+    TranslationConstraintSolver.cpp
     TaskCommandLink.cpp
     Dialogs/DlgUndoRedo.cpp
     InputVector.cpp
@@ -566,6 +567,7 @@ SET(Dialog_HPP_SRCS
     TaskDlgRelocation.h
     TaskTransform.h
     TransformSnap.h
+    TranslationConstraintSolver.h
     TaskCommandLink.h
     Dialogs/DlgUndoRedo.h
     InputVector.h
