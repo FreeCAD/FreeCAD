@@ -112,9 +112,27 @@ App::InputPhase separates the two validation contracts:
 - `Commit` requires complete valid input and reports a diagnostic otherwise.
 
 Default units are applied at additive expression boundaries. Dimensionless
-additive terms acquire the field's default unit while their original expression
-subtrees and dependencies are preserved. Additive expressions nested under
-multiplication, division, or powers are not independently rewritten.
+additive terms acquire the field's implicit input unit while their original
+expression subtrees and dependencies are preserved. Additive expressions nested
+under multiplication, division, or powers are not independently rewritten. If
+the complete expression remains dimensionless, the whole expression tree is
+wrapped in the implicit unit before it is evaluated, so the retained expression
+and returned quantity always have the same meaning.
+
+`Base::Unit` and `App::QuantityInputUnit` answer different questions. A
+`Base::Unit` (usually supplied as `QuantityConstraints::requiredUnit`) answers
+"what dimension is this field allowed to contain?". `QuantityInputUnit`
+answers "what unit does an unqualified number mean at this input surface?". It
+carries both the scale-bearing quantity and its unit spelling. For example,
+`QuantityInputUnit(Base::Unit::Length, "in")` makes `5` mean `5 in`, or
+`127 mm`, while explicit `5 mm` remains `5 mm`.
+
+Interactive widgets derive `QuantityInputUnit` from the actual unit spelling
+currently displayed to the user. Display formatting can be
+magnitude-dependent, so a field displaying `2 m` interprets a bare replacement
+`3` as `3 m`; it does not fall back to a fixed schema base unit. Explicit units
+always take precedence. This keeps display formatting, input interpretation,
+and required-dimension validation as separate concerns.
 
 # GUI behavior
 
