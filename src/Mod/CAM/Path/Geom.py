@@ -345,6 +345,12 @@ def cmdsForEdge(edge, flip=False, approximation=False, hSpeed=0, vSpeed=0, tol=0
         # use original edge if list is empty
         edges = [edge]
 
+    # split arcs (circles) with angle greater than pi
+    for i in reversed(range(len(edges))):
+        e = edges[i]
+        if isinstance(e.Curve, Part.Circle) and abs(e.LastParameter - e.FirstParameter) > math.pi:
+            edges[i : i + 1] = splitArcAt(e, e.valueAt((e.FirstParameter + e.LastParameter) / 2))
+
     if flip:
         edges.reverse()
 
