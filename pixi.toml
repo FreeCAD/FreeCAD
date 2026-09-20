@@ -11,7 +11,7 @@ platforms = [
     { platform = "osx-arm64", macos = "14.0" },
     { platform = "win-64" },
 ]
-requires-pixi = ">=0.48"
+requires-pixi = ">=0.81.0"
 
 [dependencies]
 av = "*"
