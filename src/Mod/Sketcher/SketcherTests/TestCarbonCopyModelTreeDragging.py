@@ -89,13 +89,16 @@ class TestCarbonCopyModelTreeDragging(SketcherGuiTestCase):
 
         sketch1.addGeometry(Part.Circle(Base.Vector(-10, 10, 0), Base.Vector(0, 0, 1), 5), False)
         self.doc.recompute()
+        self.flush_gui(50)
 
         FreeCADGui.ActiveDocument.setEdit(sketch2.Name)
+        self.flush_gui(50)
         FreeCADGui.runCommand("Sketcher_CarbonCopy", 0)
-        self.flush_gui(0)
+        self.flush_gui(50)
 
         item1 = self.findModelTreeItem(sketch1.Label)
         self.tree.scrollToItem(item1)
+        self.flush_gui(50)
         rect = self.tree.visualItemRect(item1)
         pos = rect.center()
         self.sendMouseDragEvents(self.tree.viewport(), pos)
