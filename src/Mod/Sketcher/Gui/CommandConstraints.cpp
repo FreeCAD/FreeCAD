@@ -10343,7 +10343,7 @@ CmdSketcherConstrainGroup::CmdSketcherConstrainGroup()
     sPixmap = "Constraint_Group";
     sAccel = "K, G";
     eType = ForEdit;
-    eMaturity = Maturity::Development;
+    eMaturity = Base::Maturity::Development;
 }
 
 void CmdSketcherConstrainGroup::activated(int iMsg)

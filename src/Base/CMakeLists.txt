@@ -323,6 +323,7 @@ SET(FreeCADBase_HPP_SRCS
     InputSource.h
     Interpreter.h
     Matrix.h
+    Maturity.h
     NumericFormatting.h
     Observer.h
     Parameter.h

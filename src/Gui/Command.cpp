@@ -247,7 +247,7 @@ Command::Command(const char* name)
     sAppModule = "FreeCAD";
     sGroup = "Standard";
     eType = AlterDoc | Alter3DView | AlterSelection;
-    eMaturity = Maturity::Stable;
+    eMaturity = Base::Maturity::Stable;
     bEnabled = true;
     bCanLog = true;
 }
@@ -269,12 +269,12 @@ QString Command::getShortcut() const
     return ShortcutManager::instance()->getShortcut(getName());
 }
 
-void Command::setMaturity(Maturity m)
+void Command::setMaturity(Base::Maturity m)
 {
     eMaturity = m;
 }
 
-Command::Maturity Command::getMaturity() const
+Base::Maturity Command::getMaturity() const
 {
     return eMaturity;
 }
@@ -282,11 +282,11 @@ Command::Maturity Command::getMaturity() const
 bool Command::allowedByMaturity() const
 {
     switch (eMaturity) {
-        case Maturity::Stable:
+        case Base::Maturity::Stable:
             return true;
-        case Maturity::Experimental:
+        case Base::Maturity::Experimental:
             return GeneralParameter::instance()->getShowExperimentalFeatures();
-        case Maturity::Development:
+        case Base::Maturity::Development:
             return GeneralParameter::instance()->getShowDevelopmentPreviewFeatures();
     }
     return false;  // Really just to shut the compiler up, should never hit
@@ -1059,13 +1059,13 @@ void Command::applyCommandData(const char* context, Action* action)
 {
     QString textSuffix;
     QString toolTipPrefix;
-    if (eMaturity == Maturity::Experimental) {
+    if (eMaturity == Base::Maturity::Experimental) {
         textSuffix = " (" + QCoreApplication::translate("Gui::Command", "Experimental") + ")";
         toolTipPrefix
             = QCoreApplication::translate("Gui::Command", "EXPERIMENTAL: this command may change.")
             + " ";
     }
-    else if (eMaturity == Maturity::Development) {
+    else if (eMaturity == Base::Maturity::Development) {
         textSuffix = " (" + QCoreApplication::translate("Gui::Command", "Development preview") + ")";
         toolTipPrefix = QCoreApplication::translate(
                             "Gui::Command",

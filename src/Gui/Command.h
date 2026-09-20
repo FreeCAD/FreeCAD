@@ -23,13 +23,13 @@
 
 #pragma once
 
-#include <cstdint>
 #include <list>
 #include <map>
 #include <string>
 #include <vector>
 #include <fastsignals/signal.h>
 
+#include <Base/Maturity.h>
 #include <Base/Type.h>
 #include <Gui/Application.h>
 
@@ -702,17 +702,8 @@ public:
     };
     friend class LogDisabler;
 
-    /// A maturity marker for commands, controlling how and when a command is displayed in the UI.
-    enum class Maturity : std::uint8_t
-    {
-        Stable,        ///< Normal commands
-        Experimental,  ///< By default, shown to users, but labeled as experimental
-        Development    ///< Not shown at all unless the user opts in in preferences
-        // TODO: Consider also adding Deprecated?
-    };
-
-    void setMaturity(Maturity m);
-    Maturity getMaturity() const;
+    void setMaturity(Base::Maturity m);
+    Base::Maturity getMaturity() const;
     bool allowedByMaturity() const;
 
 private:
@@ -740,7 +731,7 @@ protected:
     const char* sName;
     const char* sHelpUrl;
     int eType;
-    Maturity eMaturity;
+    Base::Maturity eMaturity;
     /// Indicate if the command shall log to MacroManager
     bool bCanLog;
     //@}

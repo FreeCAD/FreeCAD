@@ -1403,7 +1403,7 @@ CmdSketcherCreateText::CmdSketcherCreateText()
     sPixmap = "Sketcher_CreateText";
     sAccel = "";
     eType = ForEdit;
-    eMaturity = Maturity::Experimental;
+    eMaturity = Base::Maturity::Experimental;
 }
 
 CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateText, "Sketcher_CreateText")
