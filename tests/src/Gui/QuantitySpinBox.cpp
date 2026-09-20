@@ -139,6 +139,7 @@ private Q_SLOTS:
 
     void test_BareValueUsesCurrentMagnitudeDependentDisplayUnit()  // NOLINT
     {
+        tests::ScopedLocaleEnvironment localeState;
         Base::UnitsApi::setSchema("Internal");
         QuantitySpinBoxWithLineEdit spinBox;
         spinBox.setUnit(Base::Unit::Length);
