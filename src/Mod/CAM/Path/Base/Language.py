@@ -22,6 +22,7 @@
 
 import Constants
 import FreeCAD
+from freecad.deprecation import deprecated
 import Path
 import math
 
@@ -287,5 +288,8 @@ class Maneuver(object):
         return maneuver
 
     @classmethod
+    @deprecated(
+        deprecated_in="26.3", removed_in="27.2", replacement="Path.Path([Path.Command(x) for x...])"
+    )
     def FromGCode(cls, gcode, begin=None):
         return cls.FromPath(Path.Path(gcode), begin)

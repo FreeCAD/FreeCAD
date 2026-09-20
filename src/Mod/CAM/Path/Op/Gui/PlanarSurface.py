@@ -238,9 +238,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.liftDistance.setText(
             FreeCAD.Units.Quantity(obj.LiftDistance.Value, FreeCAD.Units.Length).UserString
         )
-        self.form.keepToolDownThreshold.setText(
-            FreeCAD.Units.Quantity(obj.KeepToolDownThreshold.Value, FreeCAD.Units.Length).UserString
-        )
+        self.form.keepToolDownThreshold.setText(f"{obj.KeepToolDownThreshold.Value:.2f}")
 
         self.form.helixMaxRampAngle.setText(
             FreeCAD.Units.Quantity(obj.HelixMaxRampAngle, FreeCAD.Units.Angle).UserString

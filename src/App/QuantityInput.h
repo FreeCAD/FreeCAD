@@ -4,6 +4,7 @@
 
 #include <optional>
 #include <memory>
+#include <string>
 #include <string_view>
 
 #include <FCGlobal.h>
@@ -14,6 +15,46 @@ namespace App
 {
 class ObjectIdentifier;
 class Expression;
+
+/**
+ * The unit represented by an unqualified number at an interactive input surface.
+ *
+ * This is deliberately separate from Base::Unit: the latter describes the required dimension,
+ * while this type also carries the scale and spelling currently used by the input surface.
+ */
+class AppExport QuantityInputUnit
+{
+public:
+    /// Use one canonical/base unit of the supplied dimension.
+    QuantityInputUnit(const Base::Unit& unit);
+
+    /// Use displaySymbol when it parses to the supplied dimension, otherwise use the base unit.
+    QuantityInputUnit(const Base::Unit& unit, std::string_view displaySymbol);
+
+    const Base::Quantity& getScale() const
+    {
+        return scale;
+    }
+
+    const std::string& getSymbol() const
+    {
+        return symbol;
+    }
+
+    const Base::Unit& getUnit() const
+    {
+        return scale.getUnit();
+    }
+
+    bool isDimensionless() const
+    {
+        return scale.isDimensionless();
+    }
+
+private:
+    Base::Quantity scale;
+    std::string symbol;
+};
 
 /** Validation phase for user-entered quantity text. */
 enum class InputPhase
@@ -88,7 +129,7 @@ AppExport QuantityInputResult interpretQuantityInput(
     std::string_view input,
     QuantityInputGrammar grammar,
     const ObjectIdentifier& path,
-    const Base::Unit& defaultUnit,
+    const QuantityInputUnit& implicitUnit,
     const Base::NumericLocaleContext& locale,
     InputPhase phase,
     const QuantityConstraints& constraints

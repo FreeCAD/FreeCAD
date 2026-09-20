@@ -62,6 +62,11 @@ Matcher<Value> IsColor(const Base::Color& expected)
     return holding<Base::Color>(Eq(expected));
 }
 
+Matcher<Value> IsString(const std::string& expected)
+{
+    return holding<std::string>(Eq(expected));
+}
+
 Matcher<Value> IsColorNear(const Base::Color& expected, double tolerance)
 {
     return holding<Base::Color>(ColorNear(expected, tolerance));

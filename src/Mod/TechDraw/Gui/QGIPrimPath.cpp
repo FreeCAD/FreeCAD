@@ -59,7 +59,9 @@ QGIPrimPath::QGIPrimPath():
 
     multiselectActivated = false;
 
-    m_edgeFuzz = PreferencesGui::edgeFuzz();
+    m_edgeFuzzBase = PreferencesGui::screenMode() ? PreferencesGui::screenEdgeWidth() : PreferencesGui::edgeFuzz();
+    m_edgeFuzz = m_edgeFuzzBase;
+
     m_colNormal = getNormalColor();
     m_pen.setColor(m_colNormal);
     m_styleNormal = Qt::SolidLine;
