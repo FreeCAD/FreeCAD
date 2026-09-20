@@ -2168,6 +2168,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/vtk-9.7.0-py313ha8f0a75_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/vtk-base-9.7.0-py313h1714c97_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/vtk-io-ffmpeg-9.7.0-py313h4a57c1c_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/win-64/winpthreads-devel-12.0.0.r4.gg4f2fc60ca-h57928b3_10.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/x264-1!164.3095-hfd05255_3.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/x265-3.5-h3ee6617_4.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/xerces-c-3.3.0-hac47afa_2.conda
@@ -30433,6 +30434,18 @@ packages:
     - vtk-io-ffmpeg >=9.7.0,<9.7.1.0a0
   size: 100411
   timestamp: 1786915346714
+- conda: https://conda.anaconda.org/conda-forge/win-64/winpthreads-devel-12.0.0.r4.gg4f2fc60ca-h57928b3_10.conda
+  sha256: d640e8ef78f82cad1584a123f655f0e9fe9a143d8aa5ed503522b04255b0624f
+  md5: 95d8e9165c22fce5e2069e76828c81cf
+  depends:
+  - libwinpthread 12.0.0.r4.gg4f2fc60ca h57928b3_10
+  license: MIT AND BSD-3-Clause-Clear
+  purls: []
+  run_exports:
+    weak:
+    - libwinpthread >=12.0.0.r4.gg4f2fc60ca
+  size: 123860
+  timestamp: 1759768549765
 - conda: https://conda.anaconda.org/conda-forge/win-64/x264-1!164.3095-hfd05255_3.conda
   sha256: 78d3f5de77fc44ec761aa960b12c002340f9e3646266a200e50b41c435e1ba4a
   md5: 4871b189ce6e4d5ea1ef26dc6ab6a0ad

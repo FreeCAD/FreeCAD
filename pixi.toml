@@ -199,6 +199,12 @@ compilers = ">=1.10,<1.11"
 cpptrace = "*"
 ## pthreads-win32 dropped: libwinpthread >=12, pulled in by the smesh build
 ## against occt 8.0, declares "constrains: pthreads-win32 <0.0a0".
+## smesh's installed headers need pthread.h: Kernel/utilities.h, reached from
+## SMESH_MeshEditor.hxx, includes LocalTraceBufferPool.hxx, which includes
+## <pthread.h> and <semaphore.h> unconditionally. The smesh package depends on
+## libwinpthread, which ships only the DLL, so the headers come from
+## winpthreads-devel -- the same package smesh itself builds against.
+winpthreads-devel = "*"
 
 [pypi-dependencies]
 freecad-stubs = "*"
