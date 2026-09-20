@@ -86,7 +86,7 @@ def is_typable(obj):
     ifcfile = ifc_tools.get_ifcfile(obj)
     if not element or not ifcfile:
         return False
-    type_class = element.is_a() + "Type"
+    type_class = element.is_a().removesuffix("StandardCase") + "Type"
     schema = ifcfile.wrapped_data.schema_name()
     schema = ifc_tools.ifcopenshell.ifcopenshell_wrapper.schema_by_name(schema)
     try:
