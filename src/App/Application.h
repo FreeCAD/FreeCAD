@@ -582,7 +582,7 @@ public:
     ParameterManager* GetParameterSet(const char* sName) const;
 
     /// Get a list of all parameter sets.
-    const std::map<std::string,Base::Reference<ParameterManager>> &  GetParameterSetList() const;
+    const std::map<std::string,Base::Reference<ParameterManager>,std::less<>> &  GetParameterSetList() const;
 
     /**
      * @brief Add a new parameter set.
@@ -1037,7 +1037,7 @@ private:
     std::vector<FileTypeItem> _mExportTypes;
     std::map<std::string,Document*> DocMap;
     mutable std::map<std::string,Document*> DocFileMap;
-    std::map<std::string,Base::Reference<ParameterManager>> mpcPramManager;
+    std::map<std::string,Base::Reference<ParameterManager>,std::less<>> mpcPramManager;
     std::map<std::string,std::string> &_mConfig;
     App::Document* _pActiveDoc{nullptr};
 

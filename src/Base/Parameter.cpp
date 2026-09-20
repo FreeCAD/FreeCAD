@@ -26,18 +26,12 @@
 
 #include <algorithm>
 #include <format>
+#include <cassert>
+#include <cstdint>
 #include <iostream>
+#include <map>
 #include <memory>
-#include <xercesc/dom/DOM.hpp>
-#include <xercesc/framework/LocalFileFormatTarget.hpp>
-#include <xercesc/framework/LocalFileInputSource.hpp>
-#include <xercesc/framework/MemBufFormatTarget.hpp>
-#include <xercesc/framework/MemBufInputSource.hpp>
-#include <xercesc/parsers/XercesDOMParser.hpp>
-#include <xercesc/sax/EntityResolver.hpp>
-#include <xercesc/sax/ErrorHandler.hpp>
-#include <xercesc/sax/SAXParseException.hpp>
-#include <sstream>
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -54,210 +48,94 @@
 #include "Console.h"
 #include "Exception.h"
 #include "FileInfo.h"
+#include "XMLParser.h"
 #include "FileLock.h"
 #include "Tools.h"
 
 FC_LOG_LEVEL_INIT("Parameter", true, true)
 
-using namespace XERCES_CPP_NAMESPACE;
 using namespace Base;
-
-
-#include "XMLTools.h"
-
-//**************************************************************************
-//**************************************************************************
-// private classes declaration:
-// - DOMTreeErrorReporter
-// - StrX
-// - DOMPrintFilter
-// - DOMPrintErrorHandler
-// - XStr
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-class DOMTreeErrorReporter: public ErrorHandler
+namespace
 {
-public:
-    // -----------------------------------------------------------------------
-    //  Implementation of the error handler interface
-    // -----------------------------------------------------------------------
-    void warning(const SAXParseException& toCatch) override;
-    void error(const SAXParseException& toCatch) override;
-    void fatalError(const SAXParseException& toCatch) override;
-    void resetErrors() override;
+constexpr int BASE = 10;
+constexpr const char* PARAMETERS_TAG = "FCParameters";
+constexpr const char* PARAM_GROUP_TAG = "FCParamGroup";
+constexpr const char* BOOL_TAG = "FCBool";
+constexpr const char* INT_TAG = "FCInt";
+constexpr const char* UINT_TAG = "FCUInt";
+constexpr const char* TEXT_TAG = "FCText";
+constexpr const char* FLOAT_TAG = "FCFloat";
 
-    // -----------------------------------------------------------------------
-    //  Getter methods
-    // -----------------------------------------------------------------------
-    bool getSawErrors() const;
-
-    // -----------------------------------------------------------------------
-    //  Private data members
-    //
-    //  fSawErrors
-    //      This is set if we get any errors, and is queryable via a getter
-    //      method. Its used by the main code to suppress output if there are
-    //      errors.
-    // -----------------------------------------------------------------------
-    bool fSawErrors {false};
-};
-
-
-class DOMPrintFilter: public DOMLSSerializerFilter
+template<typename Value>
+void sortByName(std::vector<std::pair<std::string, Value>>& values)
 {
-public:
-    /** @name Constructors */
-    explicit DOMPrintFilter(ShowType whatToShow = DOMNodeFilter::SHOW_ALL);
-    //@{
+    std::sort(values.begin(), values.end(), [](const auto& left, const auto& right) {
+        return left.first < right.first;
+    });
+}
+}  // namespace
 
-    /** @name Destructors */
-    ~DOMPrintFilter() override = default;
-    //@{
+ParameterGrp::ParameterGrp()
+    : groupName("Root")
+{}
 
-    /** @ interface from DOMWriterFilter */
-    FilterAction acceptNode(const DOMNode* node) const override;
-    //@{
-
-    ShowType getWhatToShow() const override
-    {
-        return fWhatToShow;
-    }
-
-    // unimplemented copy ctor and assignment operator
-    DOMPrintFilter(const DOMPrintFilter&) = delete;
-    DOMPrintFilter(DOMPrintFilter&&) = delete;
-    DOMPrintFilter& operator=(const DOMPrintFilter&) = delete;
-    DOMPrintFilter& operator=(DOMPrintFilter&&) = delete;
-
-    ShowType fWhatToShow;
-};
-
-class DOMPrintErrorHandler: public DOMErrorHandler
+ParameterGrp::ParameterGrp(Base::XMLElement& GroupNode, const std::string& name, ParameterGrp& Parent)
+    : groupNode(&GroupNode)
+    , parent(&Parent)
+    , groupName(name)
+    , manager(Parent.manager)
 {
-public:
-    DOMPrintErrorHandler() = default;
-    ~DOMPrintErrorHandler() override = default;
-
-    /** @name The error handler interface */
-    bool handleError(const DOMError& domError) override;
-    void resetErrors()
-    {}
-
-    /* Unimplemented constructors and operators */
-    DOMPrintErrorHandler(const DOMPrintErrorHandler&) = delete;
-    DOMPrintErrorHandler(DOMPrintErrorHandler&&) = delete;
-    void operator=(const DOMPrintErrorHandler&) = delete;
-    void operator=(DOMPrintErrorHandler&&) = delete;
-};
-
-
-inline bool DOMTreeErrorReporter::getSawErrors() const
-{
-    return fSawErrors;
+    assert(manager != nullptr);
+    GroupNode.attrs["Name"] = name;
 }
 
-
-//**************************************************************************
-//**************************************************************************
-// ParameterManager
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-//**************************************************************************
-// Construction/Destruction
-
-
-/** Default construction
- */
-ParameterGrp::ParameterGrp(DOMElement* GroupNode, const char* sName, ParameterGrp* Parent)
-    : _pGroupNode(GroupNode)
-    , _Parent(Parent)
-{
-    if (sName) {
-        _cName = sName;
-    }
-    if (_Parent) {
-        _Manager = _Parent->_Manager;
-    }
-}
-
-
-/** Destruction
- * complete destruction of the object
- */
 ParameterGrp::~ParameterGrp()
 {
-    for (auto& v : _GroupMap) {
-        v.second->_Parent = nullptr;
-        v.second->_Manager = nullptr;
-    }
-    if (_Detached && _pGroupNode) {
-        _pGroupNode->release();
-    }
+    // Cached groups may outlive the XML document and their manager.
+    RebindGroupNodes(nullptr);
 }
 
-//**************************************************************************
-// Access methods
-
-void ParameterGrp::copyTo(const Base::Reference<ParameterGrp>& Grp)
+const char* ParameterGrp::GetGroupName() const
 {
-    if (Grp == this) {
+    return this->groupName.c_str();
+}
+
+
+void ParameterGrp::copyTo(const Base::Reference<ParameterGrp>& Group)
+{
+    if (Group == this) {
         return;
     }
 
     // delete previous content
-    Grp->Clear(true);
+    Group->Clear(true);
 
     // copy all
-    insertTo(Grp);
+    insertTo(Group);
 }
 
-void ParameterGrp::insertTo(const Base::Reference<ParameterGrp>& Grp)
+void ParameterGrp::insertTo(const Base::Reference<ParameterGrp>& Group)
 {
-    if (Grp == this) {
+    if (Group == this) {
         return;
     }
-
-    // copy group
-    std::vector<Base::Reference<ParameterGrp>> Grps = GetGroups();
-    std::vector<Base::Reference<ParameterGrp>>::iterator It1;
-    for (It1 = Grps.begin(); It1 != Grps.end(); ++It1) {
-        (*It1)->insertTo(Grp->GetGroup((*It1)->GetGroupName()));
+    for (const auto& group : GetGroups()) {
+        group->insertTo(Group->GetGroup(group->groupName.c_str()));
     }
-
-    // copy strings
-    std::vector<std::pair<std::string, std::string>> StringMap = GetASCIIMap();
-    std::vector<std::pair<std::string, std::string>>::iterator It2;
-    for (It2 = StringMap.begin(); It2 != StringMap.end(); ++It2) {
-        Grp->SetASCII(It2->first.c_str(), It2->second.c_str());
+    for (const auto& it : GetASCIIMap()) {
+        Group->SetASCII(it.first.c_str(), it.second);
     }
-
-    // copy bool
-    std::vector<std::pair<std::string, bool>> BoolMap = GetBoolMap();
-    std::vector<std::pair<std::string, bool>>::iterator It3;
-    for (It3 = BoolMap.begin(); It3 != BoolMap.end(); ++It3) {
-        Grp->SetBool(It3->first.c_str(), It3->second);
+    for (const auto& it : GetBoolMap()) {
+        Group->SetBool(it.first.c_str(), it.second);
     }
-
-    // copy int
-    std::vector<std::pair<std::string, long>> IntMap = GetIntMap();
-    std::vector<std::pair<std::string, long>>::iterator It4;
-    for (It4 = IntMap.begin(); It4 != IntMap.end(); ++It4) {
-        Grp->SetInt(It4->first.c_str(), It4->second);
+    for (const auto& it : GetIntMap()) {
+        Group->SetInt(it.first.c_str(), it.second);
     }
-
-    // copy float
-    std::vector<std::pair<std::string, double>> FloatMap = GetFloatMap();
-    std::vector<std::pair<std::string, double>>::iterator It5;
-    for (It5 = FloatMap.begin(); It5 != FloatMap.end(); ++It5) {
-        Grp->SetFloat(It5->first.c_str(), It5->second);
+    for (const auto& it : GetFloatMap()) {
+        Group->SetFloat(it.first.c_str(), it.second);
     }
-
-    // copy uint
-    std::vector<std::pair<std::string, unsigned long>> UIntMap = GetUnsignedMap();
-    std::vector<std::pair<std::string, unsigned long>>::iterator It6;
-    for (It6 = UIntMap.begin(); It6 != UIntMap.end(); ++It6) {
-        Grp->SetUnsigned(It6->first.c_str(), It6->second);
+    for (const auto& it : GetUnsignedMap()) {
+        Group->SetUnsigned(it.first.c_str(), it.second);
     }
 }
 
@@ -273,6 +151,17 @@ void ParameterGrp::exportTo(const char* FileName)
     Mngr->SaveDocument(FileName);
 }
 
+void ParameterGrp::insert(const char* FileName)
+{
+    auto Mngr = ParameterManager::Create();
+
+    if (Mngr->LoadDocument(FileName) != 1) {
+        throw FileException("ParameterGrp::insert() cannot load document", FileName);
+    }
+
+    Mngr->insertTo(Base::Reference<ParameterGrp>(this));
+}
+
 void ParameterGrp::importFrom(const char* FileName)
 {
     auto Mngr = ParameterManager::Create();
@@ -284,97 +173,103 @@ void ParameterGrp::importFrom(const char* FileName)
     Mngr->copyTo(Base::Reference<ParameterGrp>(this));
 }
 
-void ParameterGrp::insert(const char* FileName)
+void ParameterGrp::revert(const Base::Reference<ParameterGrp>& Group)
 {
-    auto Mngr = ParameterManager::Create();
-
-    if (Mngr->LoadDocument(FileName) != 1) {
-        throw FileException("ParameterGrp::import() cannot load document", FileName);
-    }
-
-    Mngr->insertTo(Base::Reference<ParameterGrp>(this));
-}
-
-void ParameterGrp::revert(const char* FileName)
-{
-    auto Mngr = ParameterManager::Create();
-
-    if (Mngr->LoadDocument(FileName) != 1) {
-        throw FileException("ParameterGrp::revert() cannot load document", FileName);
-    }
-
-    revert(Base::Reference<ParameterGrp>(Mngr));
-}
-
-void ParameterGrp::revert(const Base::Reference<ParameterGrp>& Grp)
-{
-    if (Grp == this) {
+    if (Group == this) {
         return;
     }
 
-    for (auto& grp : Grp->GetGroups()) {
-        if (HasGroup(grp->GetGroupName())) {
-            GetGroup(grp->GetGroupName())->revert(grp);
+    for (auto& grp : Group->GetGroups()) {
+        if (HasGroup(grp->groupName.c_str())) {
+            GetGroup(grp->groupName.c_str())->revert(grp);
         }
     }
 
-    for (const auto& v : Grp->GetASCIIMap()) {
+    for (const auto& v : Group->GetASCIIMap()) {
         if (GetASCII(v.first.c_str(), v.second.c_str()) == v.second) {
             RemoveASCII(v.first.c_str());
         }
     }
 
-    for (const auto& v : Grp->GetBoolMap()) {
+    for (const auto& v : Group->GetBoolMap()) {
         if (GetBool(v.first.c_str(), v.second) == v.second) {
             RemoveBool(v.first.c_str());
         }
     }
 
-    for (const auto& v : Grp->GetIntMap()) {
+    for (const auto& v : Group->GetIntMap()) {
         if (GetInt(v.first.c_str(), v.second) == v.second) {
             RemoveInt(v.first.c_str());
         }
     }
 
-    for (const auto& v : Grp->GetUnsignedMap()) {
+    for (const auto& v : Group->GetUnsignedMap()) {
         if (GetUnsigned(v.first.c_str(), v.second) == v.second) {
             RemoveUnsigned(v.first.c_str());
         }
     }
 
-    for (const auto& v : Grp->GetFloatMap()) {
+    for (const auto& v : Group->GetFloatMap()) {
         if (GetFloat(v.first.c_str(), v.second) == v.second) {
             RemoveFloat(v.first.c_str());
         }
     }
 }
 
-DOMElement* ParameterGrp::CreateElement(DOMElement* Start, const char* Type, const char* Name)
+const Base::XMLElement* ParameterGrp::GetRootNode() const
 {
-    if (XMLString::compareString(Start->getNodeName(), XStrLiteral("FCParamGroup").unicodeForm()) != 0
-        && XMLString::compareString(Start->getNodeName(), XStrLiteral("FCParameters").unicodeForm())
-            != 0) {
-        Base::Console().warning(
-            "CreateElement: {} cannot have the element {} of type {}\n",
-            StrX(Start->getNodeName()).c_str(),
-            Name,
-            Type
+    if (this->detached && this->parent) {
+        this->parent->GetGroup(this->groupName.c_str());  // Recreate the group
+    }
+    return this->groupNode;
+}
+
+Base::XMLElement* ParameterGrp::GetRootNode()
+{
+    return const_cast<Base::XMLElement*>(const_cast<const ParameterGrp*>(this)->GetRootNode());
+}
+
+void ParameterGrp::RebindGroupNodes(Base::XMLElement* root)
+{
+    for (auto& [name, group] : groupMap) {
+        Base::XMLElement* node = nullptr;
+        if (root) {
+            for (const auto& child : root->children) {
+                if (child->tag == PARAM_GROUP_TAG && child->attrs.contains("Name")
+                    && child->attrs.at("Name") == name) {
+                    node = child.get();
+                    break;
+                }
+            }
+        }
+
+        group->groupNode = node;
+        group->detached = node == nullptr;
+        group->RebindGroupNodes(node);
+        if (!root) {
+            group->parent = nullptr;
+            group->manager = nullptr;
+        }
+    }
+}
+
+Base::XMLElement* ParameterGrp::CreateElement(
+    Base::XMLElement* start,
+    const std::string& Type,
+    const std::string& Name
+)
+{
+    if (start->tag != PARAM_GROUP_TAG && start->tag != PARAMETERS_TAG) {
+        throw Base::TypeError(
+            std::format("CreateElement: {} cannot have the element {} of type {}\n", start->tag, Name, Type)
         );
-        return nullptr;
     }
 
-    if (_Detached && _Parent) {
-        // re-attach the group
-        _Parent->_GetGroup(_cName.c_str());
-    }
-
-    DOMDocument* pDocument = Start->getOwnerDocument();
-
-    auto pcElem = pDocument->createElement(XStr(Type).unicodeForm());
-    pcElem->setAttribute(XStrLiteral("Name").unicodeForm(), XStr(Name).unicodeForm());
-    Start->appendChild(pcElem);
-
-    return pcElem;
+    auto newElement = std::make_unique<XMLElement>();
+    newElement->tag = Type;
+    newElement->attrs = {{"Name", Name}};
+    start->children.emplace_back(std::move(newElement));
+    return start->children.back().get();
 }
 
 Base::Reference<ParameterGrp> ParameterGrp::GetGroup(const char* Name)
@@ -382,115 +277,100 @@ Base::Reference<ParameterGrp> ParameterGrp::GetGroup(const char* Name)
     if (!Name) {
         throw Base::ValueError("Empty group name");
     }
+    std::string_view NameView(Name);
+    if (NameView.empty()) {
+        throw Base::ValueError("Empty group name");
+    }
 
     Base::Reference<ParameterGrp> hGrp = this;
-    std::vector<std::string> tokens;
-    boost::split(tokens, Name, boost::is_any_of("/"));
-    for (auto& token : tokens) {
-        boost::trim(token);
-        if (token.empty()) {
-            continue;
+    std::string_view path = NameView;
+    while (!path.empty()) {
+        const auto pos = path.find('/');
+        auto token = path.substr(0, pos);
+
+        // trim
+        const auto first = token.find_first_not_of(" \t\n\r");
+        const auto last = token.find_last_not_of(" \t\n\r");
+
+        if (first != std::string_view::npos) {
+            token = token.substr(first, last - first + 1);
+            auto nextGroup = hGrp->GetOrCreateGroup(std::string(token));
+            if (!nextGroup.isValid()) {
+                return {};
+            }
+            hGrp = nextGroup;
         }
-        hGrp = hGrp->_GetGroup(token.c_str());
-        if (!hGrp) {
-            // The group is clearing. Return some dummy group to avoid caller
-            // crashing for backward compatibility.
-            hGrp = new ParameterGrp();
-            hGrp->_cName = Name;
+
+        if (pos == std::string_view::npos) {
             break;
         }
+
+        path.remove_prefix(pos + 1);
     }
+
     if (hGrp == this) {
         throw Base::ValueError("Empty group name");
     }
     return hGrp;
 }
 
-Base::Reference<ParameterGrp> ParameterGrp::_GetGroup(const char* Name)
+Base::Reference<ParameterGrp> ParameterGrp::GetOrCreateGroup(const std::string& Name)
 {
-    Base::Reference<ParameterGrp> rParamGrp;
-    if (!_pGroupNode) {
-        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-            FC_WARN("Adding group " << Name << " in an orphan group " << _cName);
-        }
-        return rParamGrp;
-    }
-    if (_Clearing) {
-        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-            FC_WARN("Adding group " << Name << " while clearing " << GetPath());
-        }
-        return rParamGrp;
+    if (clearing || !GetRootNode()) {
+        return {};
     }
 
-    DOMElement* pcTemp {};
-
-    // search if Group node already there
-    pcTemp = FindElement(_pGroupNode, "FCParamGroup", Name);
-
-    // already created?
-    if (!(rParamGrp = _GroupMap[Name]).isValid()) {
-        if (!pcTemp) {
-            pcTemp = CreateElement(_pGroupNode, "FCParamGroup", Name);
-        }
-        // create and register handle
-        rParamGrp = Base::Reference<ParameterGrp>(new ParameterGrp(pcTemp, Name, this));
-        _GroupMap[Name] = rParamGrp;
-    }
-    else if (!pcTemp) {
-        _pGroupNode->appendChild(rParamGrp->_pGroupNode);
-        rParamGrp->_Detached = false;
-        if (this->_Detached && this->_Parent) {
-            // Re-attach the group. Note that this may fail if the parent is
-            // clearing. That's why we check this->_Detached below.
-            this->_Parent->_GetGroup(_cName.c_str());
-        }
+    if (groupMap.contains(Name) && groupMap[Name].isValid() && !groupMap[Name]->detached) {
+        return groupMap[Name];
     }
 
-    if (!pcTemp && !this->_Detached) {
-        _Notify(ParamType::FCGroup, Name, Name);
+    Base::XMLElement* pcTemp = FindElement(GetRootNode(), PARAM_GROUP_TAG, Name);
+    const bool created = !pcTemp;
+    if (!pcTemp) {
+        Base::XMLElement* newGroup = CreateElement(GetRootNode(), PARAM_GROUP_TAG, Name);
+        pcTemp = newGroup;
     }
 
-    return rParamGrp;
+    // Reattach group
+    if (groupMap.contains(Name) && groupMap[Name]->detached) {
+        groupMap[Name]->groupNode = pcTemp;
+        groupMap[Name]->detached = false;
+    }
+
+    // create and register handle
+    if (!groupMap.contains(Name) || !groupMap[Name].isValid()) {
+        auto rParamGrp = Base::Reference<ParameterGrp>(new ParameterGrp(*pcTemp, Name, *this));
+        groupMap[Name] = rParamGrp;
+    }
+
+    if (created && !detached) {
+        NotifyChange(ParamType::FCGroup, Name, Name);
+    }
+
+    return groupMap[Name];
 }
 
 std::string ParameterGrp::GetPath() const
 {
     std::string path;
-    if (_Parent && _Parent != _Manager) {
-        path = _Parent->GetPath();
+    if (parent && parent != manager) {
+        path = parent->GetPath();
     }
-    if (!path.empty() && !_cName.empty()) {
+    if (!path.empty() && !groupName.empty()) {
         path += "/";
     }
-    path += _cName;
+    path += groupName;
     return path;
 }
 
+
 std::vector<Base::Reference<ParameterGrp>> ParameterGrp::GetGroups()
 {
-    Base::Reference<ParameterGrp> rParamGrp;
     std::vector<Base::Reference<ParameterGrp>> vrParamGrp;
-
-    if (!_pGroupNode) {
-        return vrParamGrp;
-    }
-
-    std::string Name;
-
-    DOMElement* pcTemp = FindElement(_pGroupNode, "FCParamGroup");
-    while (pcTemp) {
-        Name = StrX(pcTemp->getAttributes()
-                        ->getNamedItem(XStrLiteral("Name").unicodeForm())
-                        ->getNodeValue())
-                   .c_str();
-        // already created?
-        if (!(rParamGrp = _GroupMap[Name]).isValid()) {
-            rParamGrp = Base::Reference<ParameterGrp>(new ParameterGrp(pcTemp, Name.c_str(), this));
-            _GroupMap[Name] = rParamGrp;
-        }
-        vrParamGrp.push_back(rParamGrp);
-        // go to next
-        pcTemp = FindNextElement(pcTemp, "FCParamGroup");
+    auto groups = FindAllElements(GetRootNode(), PARAM_GROUP_TAG);
+    vrParamGrp.reserve(groups.size());
+    for (const auto& it : groups) {
+        vrParamGrp.push_back(GetOrCreateGroup(it->attrs["Name"]));
     }
 
     return vrParamGrp;
@@ -499,38 +379,36 @@ std::vector<Base::Reference<ParameterGrp>> ParameterGrp::GetGroups()
 /// test if this group is empty
 bool ParameterGrp::IsEmpty() const
 {
-    return !(_pGroupNode && _pGroupNode->getFirstChild());
+    const auto* root = GetRootNode();
+    return !root || root->children.empty();
 }
 
 /// test if a special sub group is in this group
 bool ParameterGrp::HasGroup(const char* Name) const
 {
-    if (_GroupMap.find(Name) != _GroupMap.end()) {
+    const auto it = groupMap.find(Name);
+    if (it != groupMap.end() && it->second.isValid()) {
         return true;
     }
 
-    if (_pGroupNode && FindElement(_pGroupNode, "FCParamGroup", Name) != nullptr) {
-        return true;
-    }
-
-    return false;
+    return FindElement(GetRootNode(), PARAM_GROUP_TAG, Name);
 }
 
 const char* ParameterGrp::TypeName(ParamType Type)
 {
     switch (Type) {
         case ParamType::FCBool:
-            return "FCBool";
+            return BOOL_TAG;
         case ParamType::FCInt:
-            return "FCInt";
+            return INT_TAG;
         case ParamType::FCUInt:
-            return "FCUInt";
+            return UINT_TAG;
         case ParamType::FCText:
-            return "FCText";
+            return TEXT_TAG;
         case ParamType::FCFloat:
-            return "FCFloat";
+            return FLOAT_TAG;
         case ParamType::FCGroup:
-            return "FCParamGroup";
+            return PARAM_GROUP_TAG;
         default:
             return nullptr;
     }
@@ -539,22 +417,22 @@ const char* ParameterGrp::TypeName(ParamType Type)
 ParameterGrp::ParamType ParameterGrp::TypeValue(const char* Name)
 {
     if (Name) {
-        if (boost::equals(Name, "FCBool")) {
+        if (boost::equals(Name, BOOL_TAG)) {
             return ParamType::FCBool;
         }
-        if (boost::equals(Name, "FCInt")) {
+        if (boost::equals(Name, INT_TAG)) {
             return ParamType::FCInt;
         }
-        if (boost::equals(Name, "FCUInt")) {
+        if (boost::equals(Name, UINT_TAG)) {
             return ParamType::FCUInt;
         }
-        if (boost::equals(Name, "FCText")) {
+        if (boost::equals(Name, TEXT_TAG)) {
             return ParamType::FCText;
         }
-        if (boost::equals(Name, "FCFloat")) {
+        if (boost::equals(Name, FLOAT_TAG)) {
             return ParamType::FCFloat;
         }
-        if (boost::equals(Name, "FCParamGroup")) {
+        if (boost::equals(Name, PARAM_GROUP_TAG)) {
             return ParamType::FCGroup;
         }
     }
@@ -568,32 +446,14 @@ void ParameterGrp::SetAttribute(ParamType Type, const char* Name, const char* Va
         case ParamType::FCInt:
         case ParamType::FCUInt:
         case ParamType::FCFloat:
-            return _SetAttribute(Type, Name, Value);
+            SetAttributeInternal(Type, Name, Value);
+            break;
         case ParamType::FCText:
-            return SetASCII(Name, Value);
+            SetASCII(Name, Value);
+            break;
         case ParamType::FCGroup:
             RenameGrp(Name, Value);
             break;
-        default:
-            break;
-    }
-}
-
-void ParameterGrp::RemoveAttribute(ParamType Type, const char* Name)
-{
-    switch (Type) {
-        case ParamType::FCBool:
-            return RemoveBool(Name);
-        case ParamType::FCInt:
-            return RemoveInt(Name);
-        case ParamType::FCUInt:
-            return RemoveUnsigned(Name);
-        case ParamType::FCText:
-            return RemoveASCII(Name);
-        case ParamType::FCFloat:
-            return RemoveFloat(Name);
-        case ParamType::FCGroup:
-            return RemoveGrp(Name);
         default:
             break;
     }
@@ -606,27 +466,23 @@ const char* ParameterGrp::GetAttribute(
     const char* Default
 ) const
 {
-    if (!_pGroupNode) {
-        return Default;
-    }
-
     const char* T = TypeName(Type);
     if (!T) {
-        Value = Default;
-        return Default;
+        Value = Default ? Default : "";
+        return Value.c_str();
     }
 
-    DOMElement* pcElem = FindElement(_pGroupNode, T, Name);
+    auto pcElem = FindElement(GetRootNode(), T, Name);
     if (!pcElem) {
-        Value = Default;
-        return Default;
+        Value = Default ? Default : "";
+        return Value.c_str();
     }
 
     if (Type == ParamType::FCText) {
         Value = GetASCII(Name, Default);
     }
     else if (Type != ParamType::FCGroup) {
-        Value = StrX(pcElem->getAttribute(XStrLiteral("Value").unicodeForm())).c_str();
+        Value = pcElem->attrs.at("Value");
     }
     return Value.c_str();
 }
@@ -637,208 +493,146 @@ std::vector<std::pair<std::string, std::string>> ParameterGrp::GetAttributeMap(
 ) const
 {
     std::vector<std::pair<std::string, std::string>> res;
-    if (!_pGroupNode) {
-        return res;
-    }
 
-    const char* T = TypeName(Type);
-    if (!T) {
+    const char* typeName = TypeName(Type);
+    if (!typeName) {
         return res;
     }
 
     std::string Name;
 
-    DOMElement* pcTemp = FindElement(_pGroupNode, T);
-    while (pcTemp) {
-        Name = StrX(
-                   static_cast<DOMElement*>(pcTemp)
-                       ->getAttributes()
-                       ->getNamedItem(XStrLiteral("Name").unicodeForm())
-                       ->getNodeValue()
-        )
-                   .c_str();
+    for (const auto& element : FindAllElements(GetRootNode(), typeName)) {
+        Name = element->attrs["Name"];
         // check on filter condition
         if (!sFilter || Name.find(sFilter) != std::string::npos) {
             if (Type == ParamType::FCGroup) {
-                res.emplace_back(Name, std::string());
+                res.emplace_back(Name, "");
             }
             else if (Type == ParamType::FCText) {
                 res.emplace_back(Name, GetASCII(Name.c_str()));
             }
             else {
-                res.emplace_back(
-                    Name,
-                    StrX(static_cast<DOMElement*>(pcTemp)->getAttribute(XStrLiteral("Value").unicodeForm()))
-                        .c_str()
-                );
+                res.emplace_back(Name, element->attrs["Value"]);
             }
         }
-        pcTemp = FindNextElement(pcTemp, T);
     }
+    sortByName(res);
     return res;
 }
 
-void ParameterGrp::_Notify(ParamType Type, const char* Name, const char* Value)
+void ParameterGrp::RemoveAttribute(ParamType Type, const char* Name)
 {
-    if (_Manager) {
-        _Manager->signalParamChanged(this, Type, Name, Value);
+    switch (Type) {
+        case ParamType::FCBool:
+            RemoveBool(Name);
+            break;
+        case ParamType::FCInt:
+            RemoveInt(Name);
+            break;
+        case ParamType::FCUInt:
+            RemoveUnsigned(Name);
+            break;
+        case ParamType::FCText:
+            RemoveASCII(Name);
+            break;
+        case ParamType::FCFloat:
+            RemoveFloat(Name);
+            break;
+        case ParamType::FCGroup:
+            RemoveGrp(Name);
+            break;
+        default:
+            break;
     }
 }
 
-void ParameterGrp::_SetAttribute(ParamType T, const char* Name, const char* Value)
+void ParameterGrp::NotifyChange(ParamType Type, const std::string& Name, const std::string& Value)
 {
+    this->Manager()->signalParamChanged(this, Type, Name.c_str(), Value.c_str());
+}
+
+void ParameterGrp::SetAttributeInternal(ParamType T, const std::string& Name, const std::string& Value)
+{
+    if (clearing || !GetRootNode()) {
+        return;
+    }
+
     const char* Type = TypeName(T);
     if (!Type) {
         return;
     }
-    if (!_pGroupNode) {
-        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-            FC_WARN("Setting attribute " << Type << ":" << Name << " in an orphan group " << _cName);
+
+    Base::XMLElement* pcElem = FindOrCreateElement(GetRootNode(), Type, Name);
+    if (!pcElem->attrs.contains("Value") || pcElem->attrs.at("Value") != Value) {
+        {
+            pcElem->attrs["Value"] = Value;
+            NotifyChange(T, Name, Value);
         }
-        return;
-    }
-    if (_Clearing) {
-        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-            FC_WARN("Adding attribute " << Type << ":" << Name << " while clearing " << GetPath());
-        }
-        return;
     }
 
-    // find or create the Element
-    DOMElement* pcElem = FindOrCreateElement(_pGroupNode, Type, Name);
-    if (pcElem) {
-        XStr attr("Value");
-        // set the value only if different
-        if (strcmp(StrX(pcElem->getAttribute(attr.unicodeForm())).c_str(), Value) != 0) {
-            pcElem->setAttribute(attr.unicodeForm(), XStr(Value).unicodeForm());
-            // trigger observer
-            _Notify(T, Name, Value);
-        }
-        // For backward compatibility, old observer gets notified regardless of
-        // value changes or not.
-        Notify(Name);
-    }
+    // For backward compatibility, old observer gets notified regardless of
+    // value changes or not.
+    Notify(Name.c_str());
 }
 
 bool ParameterGrp::GetBool(const char* Name, bool bPreset) const
 {
-    if (!_pGroupNode) {
-        return bPreset;
-    }
-
-    // check if Element in group
-    DOMElement* pcElem = FindElement(_pGroupNode, "FCBool", Name);
-    // if not return preset
-    if (!pcElem) {
-        return bPreset;
-    }
-
-    // if yes check the value and return
-    return (strcmp(StrX(pcElem->getAttribute(XStrLiteral("Value").unicodeForm())).c_str(), "1") == 0);
+    const Base::XMLElement* pcElem = FindElement(GetRootNode(), BOOL_TAG, Name);
+    return pcElem ? pcElem->attrs.at("Value") == "1" : bPreset;
 }
 
 void ParameterGrp::SetBool(const char* Name, bool bValue)
 {
-    _SetAttribute(ParamType::FCBool, Name, bValue ? "1" : "0");
+    SetAttributeInternal(ParamType::FCBool, Name, bValue ? "1" : "0");
 }
 
 std::vector<bool> ParameterGrp::GetBools(const char* sFilter) const
 {
     std::vector<bool> vrValues;
-    if (!_pGroupNode) {
-        return vrValues;
-    }
-
-    std::string Name;
-
-    DOMElement* pcTemp = FindElement(_pGroupNode, "FCBool");
-    while (pcTemp) {
-        Name = StrX(pcTemp->getAttribute(XStrLiteral("Name").unicodeForm())).c_str();
-        // check on filter condition
-        if (!sFilter || Name.find(sFilter) != std::string::npos) {
-            if (strcmp(StrX(pcTemp->getAttribute(XStrLiteral("Value").unicodeForm())).c_str(), "1")
-                != 0) {
-                vrValues.push_back(false);
-            }
-            else {
-                vrValues.push_back(true);
-            }
+    for (const auto& group : FindAllElements(GetRootNode(), BOOL_TAG)) {
+        std::string name = group->attrs.at("Name");
+        if (!sFilter || name.find(sFilter) != std::string::npos) {
+            vrValues.push_back(group->attrs.at("Value") == "1");
         }
-        pcTemp = FindNextElement(pcTemp, "FCBool");
     }
-
     return vrValues;
 }
 
 std::vector<std::pair<std::string, bool>> ParameterGrp::GetBoolMap(const char* sFilter) const
 {
     std::vector<std::pair<std::string, bool>> vrValues;
-    if (!_pGroupNode) {
-        return vrValues;
-    }
-
-    std::string Name;
-
-    DOMElement* pcTemp = FindElement(_pGroupNode, "FCBool");
-    while (pcTemp) {
-        Name = StrX(pcTemp->getAttribute(XStrLiteral("Name").unicodeForm())).c_str();
-        // check on filter condition
-        if (!sFilter || Name.find(sFilter) != std::string::npos) {
-            if (strcmp(StrX(pcTemp->getAttribute(XStrLiteral("Value").unicodeForm())).c_str(), "1")
-                != 0) {
-                vrValues.emplace_back(Name, false);
-            }
-            else {
-                vrValues.emplace_back(Name, true);
-            }
+    for (const auto& group : FindAllElements(GetRootNode(), BOOL_TAG)) {
+        std::string name = group->attrs.at("Name");
+        if (!sFilter || name.find(sFilter) != std::string::npos) {
+            vrValues.emplace_back(name, group->attrs.at("Value") == "1");
         }
-        pcTemp = FindNextElement(pcTemp, "FCBool");
     }
 
+    sortByName(vrValues);
     return vrValues;
 }
 
 long ParameterGrp::GetInt(const char* Name, long lPreset) const
 {
-    if (!_pGroupNode) {
-        return lPreset;
-    }
-
-    // check if Element in group
-    DOMElement* pcElem = FindElement(_pGroupNode, "FCInt", Name);
-    // if not return preset
-    if (!pcElem) {
-        return lPreset;
-    }
-    // if yes check the value and return
-    return atol(StrX(pcElem->getAttribute(XStrLiteral("Value").unicodeForm())).c_str());
+    const Base::XMLElement* pcElem = FindElement(GetRootNode(), INT_TAG, Name);
+    return pcElem ? atol(pcElem->attrs.at("Value").c_str()) : lPreset;
 }
 
 void ParameterGrp::SetInt(const char* Name, long lValue)
 {
     std::string buf = std::to_string(lValue);
-    _SetAttribute(ParamType::FCInt, Name, buf.c_str());
+    SetAttributeInternal(ParamType::FCInt, Name, buf);
 }
 
 std::vector<long> ParameterGrp::GetInts(const char* sFilter) const
 {
     std::vector<long> vrValues;
-    if (!_pGroupNode) {
-        return vrValues;
-    }
 
-    std::string Name;
-
-    DOMElement* pcTemp = FindElement(_pGroupNode, "FCInt");
-    while (pcTemp) {
-        Name = StrX(pcTemp->getAttribute(XStrLiteral("Name").unicodeForm())).c_str();
-        // check on filter condition
-        if (!sFilter || Name.find(sFilter) != std::string::npos) {
-            vrValues.push_back(
-                atol(StrX(pcTemp->getAttribute(XStrLiteral("Value").unicodeForm())).c_str())
-            );
+    for (const auto& group : FindAllElements(GetRootNode(), INT_TAG)) {
+        std::string name = group->attrs.at("Name");
+        if (!sFilter || name.find(sFilter) != std::string::npos) {
+            vrValues.emplace_back(atol(group->attrs.at("Value").c_str()));
         }
-        pcTemp = FindNextElement(pcTemp, "FCInt");
     }
 
     return vrValues;
@@ -847,74 +641,39 @@ std::vector<long> ParameterGrp::GetInts(const char* sFilter) const
 std::vector<std::pair<std::string, long>> ParameterGrp::GetIntMap(const char* sFilter) const
 {
     std::vector<std::pair<std::string, long>> vrValues;
-    if (!_pGroupNode) {
-        return vrValues;
-    }
 
-    std::string Name;
-
-    DOMElement* pcTemp = FindElement(_pGroupNode, "FCInt");
-    while (pcTemp) {
-        Name = StrX(pcTemp->getAttribute(XStrLiteral("Name").unicodeForm())).c_str();
-        // check on filter condition
-        if (!sFilter || Name.find(sFilter) != std::string::npos) {
-            vrValues.emplace_back(
-                Name,
-                (atol(StrX(pcTemp->getAttribute(XStrLiteral("Value").unicodeForm())).c_str()))
-            );
+    for (const auto& group : FindAllElements(GetRootNode(), INT_TAG)) {
+        std::string name = group->attrs.at("Name");
+        if (!sFilter || name.find(sFilter) != std::string::npos) {
+            vrValues.emplace_back(name, atol(group->attrs.at("Value").c_str()));
         }
-        pcTemp = FindNextElement(pcTemp, "FCInt");
     }
 
+    sortByName(vrValues);
     return vrValues;
 }
 
 unsigned long ParameterGrp::GetUnsigned(const char* Name, unsigned long lPreset) const
 {
-    if (!_pGroupNode) {
-        return lPreset;
-    }
-
-    // check if Element in group
-    DOMElement* pcElem = FindElement(_pGroupNode, "FCUInt", Name);
-    // if not return preset
-    if (!pcElem) {
-        return lPreset;
-    }
-
-    // if yes check the value and return
-    const int base = 10;
-    return strtoul(StrX(pcElem->getAttribute(XStrLiteral("Value").unicodeForm())).c_str(), nullptr, base);
+    const Base::XMLElement* pcElem = FindElement(GetRootNode(), UINT_TAG, Name);
+    return pcElem ? strtoul(pcElem->attrs.at("Value").c_str(), nullptr, ::BASE) : lPreset;
 }
 
 void ParameterGrp::SetUnsigned(const char* Name, unsigned long lValue)
 {
     std::string buf = std::to_string(lValue);
-    _SetAttribute(ParamType::FCUInt, Name, buf.c_str());
+    SetAttributeInternal(ParamType::FCUInt, Name, buf);
 }
 
 std::vector<unsigned long> ParameterGrp::GetUnsigneds(const char* sFilter) const
 {
     std::vector<unsigned long> vrValues;
-    if (!_pGroupNode) {
-        return vrValues;
-    }
 
-    std::string Name;
-    const int base = 10;
-
-    DOMElement* pcTemp = FindElement(_pGroupNode, "FCUInt");
-    while (pcTemp) {
-        Name = StrX(pcTemp->getAttribute(XStrLiteral("Name").unicodeForm())).c_str();
-        // check on filter condition
-        if (!sFilter || Name.find(sFilter) != std::string::npos) {
-            vrValues.push_back(strtoul(
-                StrX(pcTemp->getAttribute(XStrLiteral("Value").unicodeForm())).c_str(),
-                nullptr,
-                base
-            ));
+    for (const auto& group : FindAllElements(GetRootNode(), UINT_TAG)) {
+        std::string name = group->attrs.at("Name");
+        if (!sFilter || name.find(sFilter) != std::string::npos) {
+            vrValues.emplace_back(strtoul(group->attrs.at("Value").c_str(), nullptr, ::BASE));
         }
-        pcTemp = FindNextElement(pcTemp, "FCUInt");
     }
 
     return vrValues;
@@ -923,47 +682,22 @@ std::vector<unsigned long> ParameterGrp::GetUnsigneds(const char* sFilter) const
 std::vector<std::pair<std::string, unsigned long>> ParameterGrp::GetUnsignedMap(const char* sFilter) const
 {
     std::vector<std::pair<std::string, unsigned long>> vrValues;
-    if (!_pGroupNode) {
-        return vrValues;
-    }
 
-    std::string Name;
-    const int base = 10;
-
-    DOMElement* pcTemp = FindElement(_pGroupNode, "FCUInt");
-    while (pcTemp) {
-        Name = StrX(pcTemp->getAttribute(XStrLiteral("Name").unicodeForm())).c_str();
-        // check on filter condition
-        if (!sFilter || Name.find(sFilter) != std::string::npos) {
-            vrValues.emplace_back(
-                Name,
-                (strtoul(
-                    StrX(pcTemp->getAttribute(XStrLiteral("Value").unicodeForm())).c_str(),
-                    nullptr,
-                    base
-                ))
-            );
+    for (const auto& group : FindAllElements(GetRootNode(), UINT_TAG)) {
+        std::string name = group->attrs.at("Name");
+        if (!sFilter || name.find(sFilter) != std::string::npos) {
+            vrValues.emplace_back(name, strtoul(group->attrs.at("Value").c_str(), nullptr, ::BASE));
         }
-        pcTemp = FindNextElement(pcTemp, "FCUInt");
     }
 
+    sortByName(vrValues);
     return vrValues;
 }
 
 double ParameterGrp::GetFloat(const char* Name, double dPreset) const
 {
-    if (!_pGroupNode) {
-        return dPreset;
-    }
-
-    // check if Element in group
-    DOMElement* pcElem = FindElement(_pGroupNode, "FCFloat", Name);
-    // if not return preset
-    if (!pcElem) {
-        return dPreset;
-    }
-    // if yes check the value and return
-    return atof(StrX(pcElem->getAttribute(XStrLiteral("Value").unicodeForm())).c_str());
+    const Base::XMLElement* pcElem = FindElement(GetRootNode(), FLOAT_TAG, Name);
+    return pcElem ? atof(pcElem->attrs.at("Value").c_str()) : dPreset;
 }
 
 void ParameterGrp::SetFloat(const char* Name, double dValue)
@@ -971,28 +705,18 @@ void ParameterGrp::SetFloat(const char* Name, double dValue)
     // use 12 digits after the decimal point instead of the default 6
     // to handle values < 1.0e-6
     std::string buf = std::format("{:.12f}", dValue);
-    _SetAttribute(ParamType::FCFloat, Name, buf.c_str());
+    SetAttributeInternal(ParamType::FCFloat, Name, buf);
 }
 
 std::vector<double> ParameterGrp::GetFloats(const char* sFilter) const
 {
     std::vector<double> vrValues;
-    if (!_pGroupNode) {
-        return vrValues;
-    }
 
-    std::string Name;
-
-    DOMElement* pcTemp = FindElement(_pGroupNode, "FCFloat");
-    while (pcTemp) {
-        Name = StrX(pcTemp->getAttribute(XStrLiteral("Name").unicodeForm())).c_str();
-        // check on filter condition
-        if (!sFilter || Name.find(sFilter) != std::string::npos) {
-            vrValues.push_back(
-                atof(StrX(pcTemp->getAttribute(XStrLiteral("Value").unicodeForm())).c_str())
-            );
+    for (const auto& group : FindAllElements(GetRootNode(), FLOAT_TAG)) {
+        std::string name = group->attrs.at("Name");
+        if (!sFilter || name.find(sFilter) != std::string::npos) {
+            vrValues.emplace_back(atof(group->attrs.at("Value").c_str()));
         }
-        pcTemp = FindNextElement(pcTemp, "FCFloat");
     }
 
     return vrValues;
@@ -1001,117 +725,52 @@ std::vector<double> ParameterGrp::GetFloats(const char* sFilter) const
 std::vector<std::pair<std::string, double>> ParameterGrp::GetFloatMap(const char* sFilter) const
 {
     std::vector<std::pair<std::string, double>> vrValues;
-    if (!_pGroupNode) {
-        return vrValues;
-    }
 
-    std::string Name;
-
-    DOMElement* pcTemp = FindElement(_pGroupNode, "FCFloat");
-    while (pcTemp) {
-        Name = StrX(pcTemp->getAttribute(XStrLiteral("Name").unicodeForm())).c_str();
-        // check on filter condition
-        if (!sFilter || Name.find(sFilter) != std::string::npos) {
-            vrValues.emplace_back(
-                Name,
-                (atof(StrX(pcTemp->getAttribute(XStrLiteral("Value").unicodeForm())).c_str()))
-            );
+    for (const auto& group : FindAllElements(GetRootNode(), FLOAT_TAG)) {
+        std::string name = group->attrs.at("Name");
+        if (!sFilter || name.find(sFilter) != std::string::npos) {
+            vrValues.emplace_back(name, atof(group->attrs.at("Value").c_str()));
         }
-        pcTemp = FindNextElement(pcTemp, "FCFloat");
     }
 
+    sortByName(vrValues);
     return vrValues;
 }
 
 
 void ParameterGrp::SetASCII(const char* Name, const char* sValue)
 {
-    if (!_pGroupNode) {
-        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-            FC_WARN("Setting attribute " << "FCText:" << Name << " in an orphan group " << _cName);
-        }
-        return;
-    }
-    if (_Clearing) {
-        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-            FC_WARN("Adding attribute " << "FCText:" << Name << " while clearing " << GetPath());
-        }
+    if (clearing || !GetRootNode()) {
         return;
     }
 
-    bool isNew = false;
-    DOMElement* pcElem = FindElement(_pGroupNode, "FCText", Name);
+    Base::XMLElement* pcElem = FindElement(GetRootNode(), TEXT_TAG, Name);
     if (!pcElem) {
-        pcElem = CreateElement(_pGroupNode, "FCText", Name);
-        isNew = true;
+        pcElem = CreateElement(GetRootNode(), TEXT_TAG, Name);
     }
-    if (pcElem) {
-        // and set the value
-        DOMNode* pcElem2 = pcElem->getFirstChild();
-        if (!pcElem2) {
-            DOMDocument* pDocument = _pGroupNode->getOwnerDocument();
-            DOMText* pText = pDocument->createTextNode(XUTF8Str(sValue).unicodeForm());
-            pcElem->appendChild(pText);
-            if (isNew || sValue[0] != 0) {
-                _Notify(ParamType::FCText, Name, sValue);
-            }
-        }
-        else if (strcmp(StrXUTF8(pcElem2->getNodeValue()).c_str(), sValue) != 0) {
-            pcElem2->setNodeValue(XUTF8Str(sValue).unicodeForm());
-            _Notify(ParamType::FCText, Name, sValue);
-        }
-        // trigger observer
+    if (pcElem->content != sValue) {
+        pcElem->content = sValue;
+        NotifyChange(ParamType::FCText, Name, sValue);
         Notify(Name);
     }
 }
 
 std::string ParameterGrp::GetASCII(const char* Name, const char* pPreset) const
 {
-    if (!_pGroupNode) {
-        return pPreset ? pPreset : "";
-    }
-
-    // check if Element in group
-    DOMElement* pcElem = FindElement(_pGroupNode, "FCText", Name);
-    // if not return preset
-    if (!pcElem) {
-        if (!pPreset) {
-            return {};
-        }
-        return {pPreset};
-    }
-    // if yes check the value and return
-    DOMNode* pcElem2 = pcElem->getFirstChild();
-    if (pcElem2) {
-        return {StrXUTF8(pcElem2->getNodeValue()).c_str()};
-    }
-    return {};
+    const Base::XMLElement* pcElem = FindElement(GetRootNode(), TEXT_TAG, Name);
+    std::string preset = (pPreset ? std::string(pPreset) : "");  // Avoid conversion of nullptr to
+                                                                 // std::string
+    return pcElem ? pcElem->content : preset;
 }
 
 std::vector<std::string> ParameterGrp::GetASCIIs(const char* sFilter) const
 {
     std::vector<std::string> vrValues;
-    if (!_pGroupNode) {
-        return vrValues;
-    }
-
-    std::string Name;
-
-    DOMElement* pcTemp = FindElement(_pGroupNode, "FCText");
-    while (pcTemp) {
-        Name = StrXUTF8(pcTemp->getAttribute(XStrLiteral("Name").unicodeForm())).c_str();
-        // check on filter condition
-        if (!sFilter || Name.find(sFilter) != std::string::npos) {
-            // retrieve the text element
-            DOMNode* pcElem2 = pcTemp->getFirstChild();
-            if (pcElem2) {
-                vrValues.emplace_back(StrXUTF8(pcElem2->getNodeValue()).c_str());
-            }
-            else {
-                vrValues.emplace_back("");  // For a string, an empty value is possible and allowed
-            }
+    for (const auto& group : FindAllElements(GetRootNode(), TEXT_TAG)) {
+        std::string name = group->attrs.at("Name");
+        if (!sFilter || name.find(sFilter) != std::string::npos) {
+            vrValues.emplace_back(group->content);
         }
-        pcTemp = FindNextElement(pcTemp, "FCText");
     }
 
     return vrValues;
@@ -1120,32 +779,13 @@ std::vector<std::string> ParameterGrp::GetASCIIs(const char* sFilter) const
 std::vector<std::pair<std::string, std::string>> ParameterGrp::GetASCIIMap(const char* sFilter) const
 {
     std::vector<std::pair<std::string, std::string>> vrValues;
-    if (!_pGroupNode) {
-        return vrValues;
-    }
-
-    std::string Name;
-
-    DOMElement* pcTemp = FindElement(_pGroupNode, "FCText");
-    while (pcTemp) {
-        Name = StrXUTF8(pcTemp->getAttribute(XStrLiteral("Name").unicodeForm())).c_str();
-        // check on filter condition
-        if (!sFilter || Name.find(sFilter) != std::string::npos) {
-            // retrieve the text element
-            DOMNode* pcElem2 = pcTemp->getFirstChild();
-            if (pcElem2) {
-                vrValues.emplace_back(Name, std::string(StrXUTF8(pcElem2->getNodeValue()).c_str()));
-            }
-            else {
-                vrValues.emplace_back(
-                    Name,
-                    std::string()
-                );  // For a string, an empty value is possible and allowed
-            }
+    for (const auto& group : FindAllElements(GetRootNode(), TEXT_TAG)) {
+        std::string name = group->attrs.at("Name");
+        if (!sFilter || name.find(sFilter) != std::string::npos) {
+            vrValues.emplace_back(name, group->content);
         }
-        pcTemp = FindNextElement(pcTemp, "FCText");
     }
-
+    sortByName(vrValues);
     return vrValues;
 }
 
@@ -1154,108 +794,88 @@ std::vector<std::pair<std::string, std::string>> ParameterGrp::GetASCIIMap(const
 
 void ParameterGrp::RemoveASCII(const char* Name)
 {
-    if (!_pGroupNode) {
+    if (clearing || !GetRootNode()) {
         return;
     }
 
-    // check if Element in group
-    DOMElement* pcElem = FindElement(_pGroupNode, "FCText", Name);
-    // if not return
-    if (!pcElem) {
-        return;
+    for (size_t i = 0; i < GetRootNode()->children.size(); i++) {
+        if (GetRootNode()->children[i]->tag == TEXT_TAG
+            && GetRootNode()->children[i]->attrs.at("Name") == Name) {
+            GetRootNode()->children.erase(GetRootNode()->children.begin() + static_cast<int>(i));
+            NotifyChange(ParamType::FCText, Name, "");
+            Notify(Name);
+            return;
+        }
     }
-
-    DOMNode* node = _pGroupNode->removeChild(pcElem);
-    node->release();
-
-    // trigger observer
-    _Notify(ParamType::FCText, Name, nullptr);
-    Notify(Name);
 }
 
 void ParameterGrp::RemoveBool(const char* Name)
 {
-    if (!_pGroupNode) {
+    if (clearing || !GetRootNode()) {
         return;
     }
 
-    // check if Element in group
-    DOMElement* pcElem = FindElement(_pGroupNode, "FCBool", Name);
-    // if not return
-    if (!pcElem) {
-        return;
+    for (size_t i = 0; i < GetRootNode()->children.size(); i++) {
+        if (GetRootNode()->children[i]->tag == BOOL_TAG
+            && GetRootNode()->children[i]->attrs.at("Name") == Name) {
+            GetRootNode()->children.erase(GetRootNode()->children.begin() + static_cast<int>(i));
+            NotifyChange(ParamType::FCBool, Name, "");
+            Notify(Name);
+            return;
+        }
     }
-
-    DOMNode* node = _pGroupNode->removeChild(pcElem);
-    node->release();
-
-    // trigger observer
-    _Notify(ParamType::FCBool, Name, nullptr);
-    Notify(Name);
 }
 
 
 void ParameterGrp::RemoveFloat(const char* Name)
 {
-    if (!_pGroupNode) {
+    if (clearing || !GetRootNode()) {
         return;
     }
 
-    // check if Element in group
-    DOMElement* pcElem = FindElement(_pGroupNode, "FCFloat", Name);
-    // if not return
-    if (!pcElem) {
-        return;
+    for (size_t i = 0; i < GetRootNode()->children.size(); i++) {
+        if (GetRootNode()->children[i]->tag == FLOAT_TAG
+            && GetRootNode()->children[i]->attrs.at("Name") == Name) {
+            GetRootNode()->children.erase(GetRootNode()->children.begin() + static_cast<int>(i));
+            NotifyChange(ParamType::FCFloat, Name, "");
+            Notify(Name);
+            return;
+        }
     }
-
-    DOMNode* node = _pGroupNode->removeChild(pcElem);
-    node->release();
-
-    // trigger observer
-    _Notify(ParamType::FCFloat, Name, nullptr);
-    Notify(Name);
 }
 
 void ParameterGrp::RemoveInt(const char* Name)
 {
-    if (!_pGroupNode) {
+    if (clearing || !GetRootNode()) {
         return;
     }
 
-    // check if Element in group
-    DOMElement* pcElem = FindElement(_pGroupNode, "FCInt", Name);
-    // if not return
-    if (!pcElem) {
-        return;
+    for (size_t i = 0; i < GetRootNode()->children.size(); i++) {
+        if (GetRootNode()->children[i]->tag == INT_TAG
+            && GetRootNode()->children[i]->attrs.at("Name") == Name) {
+            GetRootNode()->children.erase(GetRootNode()->children.begin() + static_cast<int>(i));
+            NotifyChange(ParamType::FCInt, Name, "");
+            Notify(Name);
+            return;
+        }
     }
-
-    DOMNode* node = _pGroupNode->removeChild(pcElem);
-    node->release();
-
-    // trigger observer
-    _Notify(ParamType::FCInt, Name, nullptr);
-    Notify(Name);
 }
 
 void ParameterGrp::RemoveUnsigned(const char* Name)
 {
-    if (!_pGroupNode) {
+    if (clearing || !GetRootNode()) {
         return;
     }
 
-    // check if Element in group
-    DOMElement* pcElem = FindElement(_pGroupNode, "FCUInt", Name);
-    // if not return
-    if (!pcElem) {
-        return;
+    for (size_t i = 0; i < GetRootNode()->children.size(); i++) {
+        if (GetRootNode()->children[i]->tag == UINT_TAG
+            && GetRootNode()->children[i]->attrs.at("Name") == Name) {
+            GetRootNode()->children.erase(GetRootNode()->children.begin() + static_cast<int>(i));
+            NotifyChange(ParamType::FCUInt, Name, "");
+            Notify(Name);
+            return;
+        }
     }
-
-    DOMNode* node = _pGroupNode->removeChild(pcElem);
-    node->release();
-
-    // trigger observer
-    _Notify(ParamType::FCUInt, Name, nullptr);
-    Notify(Name);
 }
 
 Base::Color ParameterGrp::GetColor(const char* Name, Base::Color lPreset) const
@@ -1275,30 +895,20 @@ std::vector<Base::Color> ParameterGrp::GetColors(const char* sFilter) const
     auto packed = GetUnsigneds(sFilter);
     std::vector<Base::Color> result;
 
-    std::transform(
-        packed.begin(),
-        packed.end(),
-        std::back_inserter(result),
-        [](const unsigned long lValue) { return Color(static_cast<uint32_t>(lValue)); }
-    );
+    std::ranges::transform(packed, std::back_inserter(result), [](const unsigned long lValue) {
+        return Color(static_cast<uint32_t>(lValue));
+    });
 
     return result;
 }
 
 std::vector<std::pair<std::string, Base::Color>> ParameterGrp::GetColorMap(const char* sFilter) const
 {
-    auto packed = GetUnsignedMap(sFilter);
     std::vector<std::pair<std::string, Base::Color>> result;
-
-    std::transform(
-        packed.begin(),
-        packed.end(),
-        std::back_inserter(result),
-        [](const std::pair<std::string, unsigned long>& lValue) {
-            return std::make_pair(lValue.first, Color(static_cast<uint32_t>(lValue.second)));
-        }
-    );
-
+    for (const auto& color : GetUnsignedMap(sFilter)) {
+        result.emplace_back(color.first, Color(static_cast<uint32_t>(color.second)));
+    }
+    sortByName(result);
     return result;
 }
 
@@ -1309,29 +919,30 @@ void ParameterGrp::RemoveColor(const char* Name)
 
 void ParameterGrp::RemoveGrp(const char* Name)
 {
-    if (!_pGroupNode) {
+    if (clearing || !GetRootNode()) {
         return;
     }
 
-    auto it = _GroupMap.find(Name);
-    if (it == _GroupMap.end()) {
+    auto it = groupMap.find(Name);
+    if (it == groupMap.end()) {
         return;
     }
+    Base::Reference<ParameterGrp> removedGroup = it->second;
 
     // If this or any of its children is referenced by an observer we do not
     // delete the handle, just in case the group is later added again, or else
     // those existing observer won't get any notification. BUT, we DO delete
     // the underlying xml elements, so that we don't save the empty group
     // later.
-    it->second->Clear(false);
-    if (!it->second->_Detached) {
-        it->second->_Detached = true;
-        _pGroupNode->removeChild(it->second->_pGroupNode);
-    }
-    if (it->second->ShouldRemove()) {
-        it->second->_Parent = nullptr;
-        it->second->_Manager = nullptr;
-        _GroupMap.erase(it);
+    removedGroup->Clear();
+    removedGroup->detached = true;
+    removedGroup->groupNode = nullptr;
+    for (size_t i = 0; i < GetRootNode()->children.size(); i++) {
+        if (GetRootNode()->children[i]->tag == PARAM_GROUP_TAG
+            && GetRootNode()->children[i]->attrs.at("Name") == Name) {
+            GetRootNode()->children.erase(GetRootNode()->children.begin() + static_cast<int>(i));
+            break;
+        }
     }
 
     // trigger observer
@@ -1340,87 +951,84 @@ void ParameterGrp::RemoveGrp(const char* Name)
 
 bool ParameterGrp::RenameGrp(const char* OldName, const char* NewName)
 {
-    if (!_pGroupNode) {
+    if (clearing || !GetRootNode()) {
         return false;
     }
 
-    auto it = _GroupMap.find(OldName);
-    if (it == _GroupMap.end()) {
+    auto it = groupMap.find(OldName);
+    if (it == groupMap.end()) {
         return false;
     }
-    auto jt = _GroupMap.find(NewName);
-    if (jt != _GroupMap.end()) {
+    auto jt = groupMap.find(NewName);
+    if (jt != groupMap.end()) {
         return false;
     }
 
-    // rename group handle
-    _GroupMap[NewName] = _GroupMap[OldName];
-    _GroupMap.erase(OldName);
-    _GroupMap[NewName]->_cName = NewName;
+    // rename group handle and attribute
+    groupMap[NewName] = groupMap[OldName];
+    groupMap.erase(OldName);
+    groupMap[NewName]->groupName = NewName;
+    groupMap[NewName]->GetRootNode()->attrs["Name"] = NewName;
 
-    // check if Element in group
-    DOMElement* pcElem = FindElement(_pGroupNode, "FCParamGroup", OldName);
-    if (pcElem) {
-        pcElem->setAttribute(XStrLiteral("Name").unicodeForm(), XStr(NewName).unicodeForm());
-    }
-
-    _Notify(ParamType::FCGroup, NewName, OldName);
+    NotifyChange(ParamType::FCGroup, NewName, OldName);
     return true;
 }
 
 void ParameterGrp::Clear(bool notify)
 {
-    if (!_pGroupNode) {
+    if (clearing || !GetRootNode()) {
         return;
     }
 
-    Base::StateLocker guard(_Clearing);
+    Base::StateLocker guard(clearing);
+
 
     // early trigger notification of group removal when all its children
     // hierarchies are intact.
-    _Notify(ParamType::FCGroup, nullptr, nullptr);
+    NotifyChange(ParamType::FCGroup, "", "");
 
     // checking on references
-    for (auto it = _GroupMap.begin(); it != _GroupMap.end();) {
+    for (auto it = groupMap.begin(); it != groupMap.end();) {
         // If a group handle is referenced by some observer, then do not remove
         // it but clear it, so that any existing observer can still get
         // notification if the group is later on add back. We do remove the
         // underlying xml element from its parent so that we won't save this
         // empty group.
         it->second->Clear(notify);
-        if (!it->second->_Detached) {
-            it->second->_Detached = true;
-            _pGroupNode->removeChild(it->second->_pGroupNode);
+        if (!it->second->detached) {
+            it->second->detached = true;
+            it->second->groupNode = nullptr;
+            for (size_t i = 0; i < GetRootNode()->children.size(); i++) {
+                if (GetRootNode()->children[i]->tag == PARAM_GROUP_TAG
+                    && GetRootNode()->children[i]->attrs.at("Name") == it->second->groupName) {
+                    GetRootNode()->children.erase(
+                        GetRootNode()->children.begin() + static_cast<int>(i)
+                    );
+                    break;
+                }
+            }
         }
         if (!it->second->ShouldRemove()) {
             ++it;
         }
         else {
-            it->second->_Parent = nullptr;
-            it->second->_Manager = nullptr;
-            it = _GroupMap.erase(it);
+            it = groupMap.erase(it);
         }
     }
 
     // Remove the rest of non-group nodes;
     std::vector<std::pair<ParamType, std::string>> params;
-    for (DOMNode *child = _pGroupNode->getFirstChild(), *next = child; child != nullptr;
-         child = next) {
-        next = next->getNextSibling();
-        ParamType type = TypeValue(StrX(child->getNodeName()).c_str());
+    for (auto& child : GetRootNode()->children) {
+        ParamType type = TypeValue(child->tag.c_str());
         if (type != ParamType::FCInvalid && type != ParamType::FCGroup) {
-            params.emplace_back(
-                type,
-                StrX(child->getAttributes()->getNamedItem(XStrLiteral("Name").unicodeForm())->getNodeValue())
-                    .c_str()
-            );
+            params.emplace_back(type, child->attrs.at("Name"));
         }
-        DOMNode* node = _pGroupNode->removeChild(child);
-        node->release();
     }
 
-    for (auto& v : params) {
-        _Notify(v.first, v.second.c_str(), nullptr);
+    GetRootNode()->children.clear();
+
+    for (const auto& v : params) {
+        NotifyChange(v.first, v.second, "");
         if (notify) {
             Notify(v.second.c_str());
         }
@@ -1439,87 +1047,89 @@ bool ParameterGrp::ShouldRemove() const
         return false;
     }
 
-    return std::all_of(_GroupMap.cbegin(), _GroupMap.cend(), [](const auto& it) {
-        return it.second->ShouldRemove();
-    });
+    return std::ranges::all_of(groupMap, [](const auto& it) { return it.second->ShouldRemove(); });
 }
 
-DOMElement* ParameterGrp::FindElement(DOMElement* Start, const char* Type, const char* Name) const
+const Base::XMLElement* ParameterGrp::FindElement(
+    const Base::XMLElement* start,
+    const std::string& Type,
+    const std::string& Name
+) const
 {
-    if (XMLString::compareString(Start->getNodeName(), XStrLiteral("FCParamGroup").unicodeForm()) != 0
-        && XMLString::compareString(Start->getNodeName(), XStrLiteral("FCParameters").unicodeForm())
-            != 0) {
+    if (!start) {
+        return nullptr;
+    }
+
+    if (start->tag != PARAM_GROUP_TAG && start->tag != PARAMETERS_TAG) {
         Base::Console().warning(
             "FindElement: {} cannot have the element {} of type {}\n",
-            StrX(Start->getNodeName()).c_str(),
+            start->tag,
             Name,
             Type
         );
         return nullptr;
     }
-    const XStr xType(Type);
-    const XStr xName(Name);
-    for (DOMNode* clChild = Start->getFirstChild(); clChild != nullptr;
-         clChild = clChild->getNextSibling()) {
-        if (clChild->getNodeType() == DOMNode::ELEMENT_NODE) {
-            // the right node Type
-            if (!XMLString::compareString(xType.unicodeForm(), clChild->getNodeName())) {
-                auto attrs = clChild->getAttributes();
-                if (attrs->getLength() > 0) {
-                    if (Name) {
-                        DOMNode* attr = attrs->getNamedItem(XStrLiteral("Name").unicodeForm());
-                        if (attr
-                            && !XMLString::compareString(xName.unicodeForm(), attr->getNodeValue())) {
-                            return dynamic_cast<DOMElement*>(clChild);
-                        }
-                    }
-                    else {
-                        return dynamic_cast<DOMElement*>(clChild);
-                    }
-                }
-            }
+
+    for (const auto& childElem : start->children) {
+        if (childElem->tag == Type
+            && (Name.empty()
+                || (childElem->attrs.contains("Name") && childElem->attrs.at("Name") == Name))) {
+            return childElem.get();
         }
     }
+
     return nullptr;
 }
 
-DOMElement* ParameterGrp::FindNextElement(DOMNode* Prev, const char* Type) const
+Base::XMLElement* ParameterGrp::FindElement(
+    const Base::XMLElement* Start,
+    const std::string& Type,
+    const std::string& Name
+)
 {
-    DOMNode* clChild = Prev;
-    if (!clChild) {
-        return nullptr;
+    return const_cast<Base::XMLElement*>(
+        const_cast<const ParameterGrp*>(this)->FindElement(Start, Type, Name)
+    );
+}
+
+std::vector<Base::XMLElement*> ParameterGrp::FindAllElements(
+    const Base::XMLElement* start,
+    const std::string& Type
+) const
+{
+    std::vector<Base::XMLElement*> allElems;
+    if (!start) {
+        return allElems;
     }
 
-    const XStr xType(Type);
-    while ((clChild = clChild->getNextSibling()) != nullptr) {
-        if (clChild->getNodeType() == DOMNode::ELEMENT_NODE) {
-            // the right node Type
-            if (!XMLString::compareString(xType.unicodeForm(), clChild->getNodeName())) {
-                return dynamic_cast<DOMElement*>(clChild);
-            }
+    for (const auto& childElem : start->children) {
+        if (childElem->tag == Type) {
+            allElems.emplace_back(childElem.get());
         }
     }
-    return nullptr;
+    return allElems;
 }
 
-DOMElement* ParameterGrp::FindOrCreateElement(DOMElement* Start, const char* Type, const char* Name)
+Base::XMLElement* ParameterGrp::FindOrCreateElement(
+    Base::XMLElement* Start,
+    const std::string& Type,
+    const std::string& Name
+)
 {
-    // first try to find it
-    DOMElement* pcElem = FindElement(Start, Type, Name);
-    if (pcElem) {
-        return pcElem;
+    Base::XMLElement* pcElem = FindElement(Start, Type, Name);
+    if (!pcElem) {
+        pcElem = CreateElement(Start, Type, Name);
     }
-
-    return CreateElement(Start, Type, Name);
+    return pcElem ? pcElem : CreateElement(Start, Type, Name);
 }
 
-DOMNode* ParameterGrp::FindAttribute(DOMNode* Node, const char* Name) const
+
+std::optional<std::string> ParameterGrp::FindAttribute(Base::XMLElement& Node, const std::string& Name) const
 {
-    DOMNamedNodeMap* attr = Node->getAttributes();
-    if (attr) {
-        return attr->getNamedItem(XStr(Name).unicodeForm());
+    if (Node.attrs.contains("Name")) {
+        return Node.attrs[Name];
     }
-    return nullptr;
+    return std::nullopt;
 }
 
 std::vector<std::pair<ParameterGrp::ParamType, std::string>> ParameterGrp::GetParameterNames(
@@ -1527,27 +1137,21 @@ std::vector<std::pair<ParameterGrp::ParamType, std::string>> ParameterGrp::GetPa
 ) const
 {
     std::vector<std::pair<ParameterGrp::ParamType, std::string>> res;
-    if (!_pGroupNode) {
+    const auto* root = GetRootNode();
+    if (!root) {
         return res;
     }
 
-    std::string Name;
+    for (const auto& childElem : root->children) {
+        const auto type = TypeValue(childElem->tag.c_str());
+        if (type == ParamType::FCInvalid || type == ParamType::FCGroup) {
+            continue;
+        }
 
-    for (DOMNode* clChild = _pGroupNode->getFirstChild(); clChild != nullptr;
-         clChild = clChild->getNextSibling()) {
-        if (clChild->getNodeType() == DOMNode::ELEMENT_NODE) {
-            StrX type(clChild->getNodeName());
-            ParamType Type = TypeValue(type.c_str());
-            if (Type != ParamType::FCInvalid && Type != ParamType::FCGroup) {
-                if (clChild->getAttributes()->getLength() > 0) {
-                    StrX name(clChild->getAttributes()
-                                  ->getNamedItem(XStrLiteral("Name").unicodeForm())
-                                  ->getNodeValue());
-                    if (!sFilter || strstr(name.c_str(), sFilter)) {
-                        res.emplace_back(Type, name.c_str());
-                    }
-                }
-            }
+        const auto name = childElem->attrs.find("Name");
+        if (name != childElem->attrs.end()
+            && (!sFilter || name->second.find(sFilter) != std::string::npos)) {
+            res.emplace_back(type, name->second);
         }
     }
     return res;
@@ -1556,236 +1160,64 @@ std::vector<std::pair<ParameterGrp::ParamType, std::string>> ParameterGrp::GetPa
 void ParameterGrp::NotifyAll()
 {
     // get all ints and notify
-    std::vector<std::pair<std::string, long>> IntMap = GetIntMap();
+    auto IntMap = GetIntMap();
     for (const auto& it : IntMap) {
         Notify(it.first.c_str());
     }
 
     // get all booleans and notify
-    std::vector<std::pair<std::string, bool>> BoolMap = GetBoolMap();
+    auto BoolMap = GetBoolMap();
     for (const auto& it : BoolMap) {
         Notify(it.first.c_str());
     }
 
     // get all Floats and notify
-    std::vector<std::pair<std::string, double>> FloatMap = GetFloatMap();
+    auto FloatMap = GetFloatMap();
     for (const auto& it : FloatMap) {
         Notify(it.first.c_str());
     }
 
     // get all strings and notify
-    std::vector<std::pair<std::string, std::string>> StringMap = GetASCIIMap();
+    auto StringMap = GetASCIIMap();
     for (const auto& it : StringMap) {
         Notify(it.first.c_str());
     }
 
     // get all uints and notify
-    std::vector<std::pair<std::string, unsigned long>> UIntMap = GetUnsignedMap();
+    auto UIntMap = GetUnsignedMap();
     for (const auto& it : UIntMap) {
         Notify(it.first.c_str());
     }
 }
 
-void ParameterGrp::_Reset()
-{
-    _pGroupNode = nullptr;
-    for (auto& v : _GroupMap) {
-        v.second->_Reset();
-    }
-}
-
-//**************************************************************************
-//**************************************************************************
-// ParameterSerializer
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-ParameterSerializer::ParameterSerializer(std::string fn)
-    : filename(std::move(fn))
-{}
-
-ParameterSerializer::~ParameterSerializer() = default;
-
-void ParameterSerializer::SaveDocument(const ParameterManager& mgr)
-{
-    mgr.SaveDocument(filename.c_str());
-}
-
-int ParameterSerializer::LoadDocument(ParameterManager& mgr)
-{
-    return mgr.LoadDocument(filename.c_str());
-}
-
-bool ParameterSerializer::LoadOrCreateDocument(ParameterManager& mgr)
-{
-    return mgr.LoadOrCreateDocument(filename.c_str());
-}
-
-//**************************************************************************
-//**************************************************************************
-// ParameterManager
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-static XercesDOMParser::ValSchemes gValScheme = XercesDOMParser::Val_Auto;  // NOLINT
-
-//**************************************************************************
-// Construction/Destruction
-
-/** Default construction
- */
-ParameterManager::ParameterManager()
-{
-    _Manager = this;
-
-    // initialize the XML system
-    Init();
-
-    // ---------------------------------------------------------------------------
-    //  Local data
-    //
-    //  gXmlFile
-    //      The path to the file to parser. Set via command line.
-    //
-    //  gDoNamespaces
-    //      Indicates whether namespace processing should be done.
-    //
-    //  gDoSchema
-    //      Indicates whether schema processing should be done.
-    //
-    //  gSchemaFullChecking
-    //      Indicates whether full schema constraint checking should be done.
-    //
-    //  gDoCreate
-    //      Indicates whether entity reference nodes needs to be created or not.
-    //      Defaults to false.
-    //
-    //  gOutputEncoding
-    //      The encoding we are to output in. If not set on the command line,
-    //      then it is defaults to the encoding of the input XML file.
-    //
-    //  gMyEOLSequence
-    //      The end of line sequence we are to output.
-    //
-    //  gSplitCdataSections
-    //      Indicates whether split-cdata-sections is to be enabled or not.
-    //
-    //  gDiscardDefaultContent
-    //      Indicates whether default content is discarded or not.
-    //
-    //  gUseFilter
-    //      Indicates if user wants to plug in the DOMPrintFilter.
-    //
-    //  gValScheme
-    //      Indicates what validation scheme to use. It defaults to 'auto', but
-    //      can be set via the -v= command.
-    //
-    // ---------------------------------------------------------------------------
-
-    // NOLINTBEGIN
-    gIgnoreSave = false;
-    gDoNamespaces = false;
-    gDoSchema = false;
-    gSchemaFullChecking = false;
-    gDoCreate = true;
-
-    gOutputEncoding = nullptr;
-    gMyEOLSequence = nullptr;
-
-    gSplitCdataSections = true;
-    gDiscardDefaultContent = true;
-    gUseFilter = true;
-    gFormatPrettyPrint = true;
-    // NOLINTEND
-}
-
 /** Destruction
  * complete destruction of the object
  */
-ParameterManager::~ParameterManager()
+ParameterManager::~ParameterManager() = default;
+
+ParameterManager::ParameterManager()
 {
-    _Reset();
-    delete _pDocument;
-    delete paramSerializer;
+    manager = this;
 }
+
 
 Base::Reference<ParameterManager> ParameterManager::Create()
 {
-    return {new ParameterManager()};
+    auto mgr = new ParameterManager();
+    mgr->CreateDocument();
+    return mgr;
 }
 
-void ParameterManager::Init()
+void ParameterManager::SetFileName(const std::string& name)
 {
-    static bool Init = false;
-    if (!Init) {
-        try {
-            XMLPlatformUtils::Initialize();
-        }
-        catch (const XMLException& toCatch) {
-#if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN)
-            std::ostringstream err;
-#else
-            std::stringstream err;
-#endif
-            char* pMsg = XMLString::transcode(toCatch.getMessage());
-            err << "Error during Xerces-c Initialization.\n"
-                << "  Exception message:" << pMsg;
-            XMLString::release(&pMsg);
-            throw XMLBaseException(err.str().c_str());
-        }
-        Init = true;
-    }
+    fileName = name;
 }
 
-void ParameterManager::Terminate()
+bool ParameterManager::HasFileName() const
 {
-    XMLTools::terminate();
-    XMLPlatformUtils::Terminate();
+    return fileName.has_value();
 }
 
-//**************************************************************************
-// Serializer handling
-
-void ParameterManager::SetSerializer(ParameterSerializer* ps)
-{
-    if (paramSerializer != ps) {
-        delete paramSerializer;
-    }
-    paramSerializer = ps;
-}
-
-bool ParameterManager::HasSerializer() const
-{
-    return (paramSerializer != nullptr);
-}
-
-const std::string& ParameterManager::GetSerializeFileName() const
-{
-    static const std::string _dummy;
-    return paramSerializer ? paramSerializer->GetFileName() : _dummy;
-}
-
-int ParameterManager::LoadDocument()
-{
-    if (paramSerializer) {
-        return paramSerializer->LoadDocument(*this);
-    }
-
-    return -1;
-}
-
-bool ParameterManager::LoadOrCreateDocument()
-{
-    if (paramSerializer) {
-        return paramSerializer->LoadOrCreateDocument(*this);
-    }
-
-    return false;
-}
-
-void ParameterManager::SaveDocument() const
-{
-    if (paramSerializer) {
-        paramSerializer->SaveDocument(*this);
-    }
-}
 
 void ParameterManager::SetIgnoreSave(bool value)
 {
@@ -1818,7 +1250,7 @@ bool ParameterManager::LoadOrCreateDocument(const char* sFileName)
 {
     Base::FileInfo file(sFileName);
     if (file.exists()) {
-        LoadDocument(sFileName);
+        this->LoadDocument(sFileName);
         return false;
     }
 
@@ -1835,101 +1267,39 @@ int ParameterManager::LoadDocument(const char* sFileName)
             // Continue with empty config
             CreateDocument();
             SetIgnoreSave(true);
-            std::cerr << "Failed to access file for reading: " << sFileName << std::endl;
+            std::cerr << "Failed to access file for reading: " << sFileName << '\n';
             return 1;
         }
-#if defined(FC_OS_WIN32)
-        std::wstring name = file.toStdWString();
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-        LocalFileInputSource inputSource(reinterpret_cast<const XMLCh*>(name.c_str()));
-#else
-        LocalFileInputSource inputSource(XStr(file.filePath().c_str()).unicodeForm());
-#endif
-        return LoadDocument(inputSource);
+        auto document = Base::ParseXMLFile(std::string(sFileName));
+        if (!CheckDocument(*document)) {
+            throw XMLBaseException("Malformed Parameter document: XSD validation failed");
+        }
+
+        auto rootIt = std::find_if(
+            document->children.cbegin(),
+            document->children.cend(),
+            [](const auto& child) {
+                const auto name = child->attrs.find("Name");
+                return child->tag == PARAM_GROUP_TAG && name != child->attrs.end()
+                    && name->second == "Root";
+            }
+        );
+        if (rootIt == document->children.cend()) {
+            throw XMLBaseException("Malformed Parameter document: Root group not found");
+        }
+
+        auto* root = rootIt->get();
+        RebindGroupNodes(root);
+        this->XMLDocument = std::move(document);
     }
     catch (const Base::Exception& e) {
         std::cerr << e.what() << std::endl;
         throw;
     }
     catch (...) {
-        std::cerr << "An error occurred during parsing\n " << std::endl;
+        std::cerr << "An error occurred during parsing\n " << '\n';
         throw;
     }
-}
-
-class NoOpEntityResolver: public EntityResolver
-{
-public:
-    InputSource* resolveEntity(const XMLCh* const publicId, const XMLCh* const systemId) override
-    {
-        (void)publicId;
-        (void)systemId;
-        return nullptr;  // Block all external entity resolution
-    }
-};
-
-int ParameterManager::LoadDocument(const XERCES_CPP_NAMESPACE::InputSource& inputSource)
-{
-    //
-    //  Create our parser, then attach an error handler to the parser.
-    //  The parser will call back to methods of the ErrorHandler if it
-    //  discovers errors during the course of parsing the XML document.
-    //
-    auto parser = std::make_unique<XercesDOMParser>();
-    auto entityBlocker = std::make_unique<NoOpEntityResolver>();
-    parser->setValidationScheme(gValScheme);
-    parser->setDoNamespaces(gDoNamespaces);
-    parser->setDoSchema(gDoSchema);
-    parser->setValidationSchemaFullChecking(gSchemaFullChecking);
-    parser->setCreateEntityReferenceNodes(gDoCreate);
-    parser->setDisableDefaultEntityResolution(true);
-    parser->setEntityResolver(entityBlocker.get());
-
-    auto errReporter = std::make_unique<DOMTreeErrorReporter>();
-    parser->setErrorHandler(errReporter.get());
-
-    //
-    //  Parse the XML file, catching any XML exceptions that might propagate
-    //  out of it.
-    //
-    bool errorsOccurred = false;
-    try {
-        parser->parse(inputSource);
-    }
-    catch (const XMLException& e) {
-        std::cerr << "An error occurred during parsing\n   Message: " << StrX(e.getMessage()) << "\n";
-        errorsOccurred = true;
-    }
-    catch (const DOMException& e) {
-        std::cerr << "A DOM error occurred during parsing\n   DOMException code: " << e.code << "\n";
-        errorsOccurred = true;
-    }
-    catch (...) {
-        std::cerr << "An error occurred during parsing\n " << "\n";
-        errorsOccurred = true;
-    }
-
-    if (errorsOccurred) {
-        return 0;
-    }
-
-    _pDocument = parser->adoptDocument();
-
-    if (!_pDocument) {
-        throw XMLBaseException("Malformed Parameter document: Invalid document");
-    }
-
-    DOMElement* rootElem = _pDocument->getDocumentElement();
-    if (!rootElem) {
-        throw XMLBaseException("Malformed Parameter document: Root group not found");
-    }
-
-    _pGroupNode = FindElement(rootElem, "FCParamGroup", "Root");
-
-    if (!_pGroupNode) {
-        throw XMLBaseException("Malformed Parameter document: Root group not found");
-    }
-
     return 1;
 }
 
@@ -1939,161 +1309,79 @@ void ParameterManager::SaveDocument(const char* sFileName) const
         Base::FileInfo file(sFileName);
         Base::FileLock lock(getLockFile(file));
         if (!lock.tryLock(getTimeout())) {
-            std::cerr << "Failed to access file for writing: " << sFileName << std::endl;
+            std::cerr << "Failed to access file for writing: " << sFileName << "\n";
             return;
         }
-        //
-        // Plug in a format target to receive the resultant
-        // XML stream from the serializer.
-        //
-        // LocalFileFormatTarget prints the resultant XML stream
-        // to a file once it receives any thing from the serializer.
-        //
-        XMLFormatTarget* myFormTarget {};
-#if defined(FC_OS_WIN32)
-        std::wstring name = file.toStdWString();
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-        myFormTarget = new LocalFileFormatTarget(reinterpret_cast<const XMLCh*>(name.c_str()));
-#else
-        myFormTarget = new LocalFileFormatTarget(file.filePath().c_str());
-#endif
-        SaveDocument(myFormTarget);
-        delete myFormTarget;
+        Base::SaveXMLFile(std::string(sFileName), *XMLDocument);
     }
-    catch (XMLException& e) {
-        std::cerr << "An error occurred during creation of output transcoder. Msg is:" << std::endl
-                  << StrX(e.getMessage()) << std::endl;
+    catch (XMLBaseException& e) {
+        std::cerr << "An error occurred during creation of output transcoder. Msg is:" << '\n'
+                  << e.getMessage() << '\n';
     }
 }
 
-void ParameterManager::SaveDocument(XMLFormatTarget* pFormatTarget) const
+const std::string& ParameterManager::GetFileName() const
 {
-    try {
-        std::unique_ptr<DOMPrintFilter> myFilter;
-        std::unique_ptr<DOMErrorHandler> myErrorHandler;
+    static const std::string _dummy;
+    return fileName ? *fileName : _dummy;
+}
 
-        // NOLINTBEGIN
-        // get a serializer, an instance of DOMWriter
-        XMLCh tempStr[100];
-        XMLString::transcode("LS", tempStr, 99);
-        DOMImplementation* impl = DOMImplementationRegistry::getDOMImplementation(tempStr);
-        DOMLSSerializer* theSerializer = static_cast<DOMImplementationLS*>(impl)->createLSSerializer();
-        // NOLINTEND
-
-        // set user specified end of line sequence and output encoding
-        theSerializer->setNewLine(gMyEOLSequence);
-
-
-        //
-        // do the serialization through DOMWriter::writeNode();
-        //
-        if (_pDocument) {
-            DOMLSOutput* theOutput = static_cast<DOMImplementationLS*>(impl)->createLSOutput();
-            theOutput->setEncoding(gOutputEncoding);
-
-            if (gUseFilter) {
-                myFilter = std::make_unique<DOMPrintFilter>(
-                    DOMNodeFilter::SHOW_ELEMENT | DOMNodeFilter::SHOW_ATTRIBUTE
-                    | DOMNodeFilter::SHOW_DOCUMENT_TYPE | DOMNodeFilter::SHOW_TEXT
-                );
-                theSerializer->setFilter(myFilter.get());
-            }
-
-            // plug in user's own error handler
-            myErrorHandler = std::make_unique<DOMPrintErrorHandler>();
-            DOMConfiguration* config = theSerializer->getDomConfig();
-
-            // NOLINTBEGIN
-            config->setParameter(XMLUni::fgDOMErrorHandler, myErrorHandler.get());
-
-            // set feature if the serializer supports the feature/mode
-            if (config->canSetParameter(XMLUni::fgDOMWRTSplitCdataSections, gSplitCdataSections)) {
-                config->setParameter(XMLUni::fgDOMWRTSplitCdataSections, gSplitCdataSections);
-            }
-
-            if (config->canSetParameter(XMLUni::fgDOMWRTDiscardDefaultContent, gDiscardDefaultContent)) {
-                config->setParameter(XMLUni::fgDOMWRTDiscardDefaultContent, gDiscardDefaultContent);
-            }
-
-            if (config->canSetParameter(XMLUni::fgDOMWRTFormatPrettyPrint, gFormatPrettyPrint)) {
-                config->setParameter(XMLUni::fgDOMWRTFormatPrettyPrint, gFormatPrettyPrint);
-            }
-            // NOLINTEND
-
-            theOutput->setByteStream(pFormatTarget);
-            theSerializer->write(_pDocument, theOutput);
-
-            theOutput->release();
-        }
-
-        theSerializer->release();
+int ParameterManager::LoadDocument()
+{
+    if (fileName) {
+        return LoadDocument(fileName->c_str());
     }
-    catch (XMLException& e) {
-        std::cerr << "An error occurred during creation of output transcoder. Msg is:" << std::endl
-                  << StrX(e.getMessage()) << std::endl;
+
+    return -1;
+}
+
+bool ParameterManager::LoadOrCreateDocument()
+{
+    if (fileName) {
+        return LoadOrCreateDocument(fileName->c_str());
+    }
+
+    return false;
+}
+
+void ParameterManager::SaveDocument() const
+{
+    if (fileName) {
+        SaveDocument(fileName->c_str());
     }
 }
+
 
 void ParameterManager::CreateDocument()
 {
-    // creating a document from screatch
-    DOMImplementation* impl = DOMImplementationRegistry::getDOMImplementation(
-        XStrLiteral("Core").unicodeForm()
-    );
-    delete _pDocument;
-    _pDocument = impl->createDocument(
-        nullptr,                                    // root element namespace URI.
-        XStrLiteral("FCParameters").unicodeForm(),  // root element name
-        nullptr
-    );  // document type object (DTD).
+    auto document = std::make_unique<XMLElement>();
+    document->tag = PARAMETERS_TAG;
+    auto root = std::make_unique<XMLElement>();
+    root->tag = PARAM_GROUP_TAG;
+    root->attrs["Name"] = "Root";
+    document->children.emplace_back(std::move(root));
 
-    // creating the node for the root group
-    DOMElement* rootElem = _pDocument->getDocumentElement();
-    _pGroupNode = _pDocument->createElement(XStrLiteral("FCParamGroup").unicodeForm());
-    _pGroupNode->setAttribute(XStrLiteral("Name").unicodeForm(), XStrLiteral("Root").unicodeForm());
-    rootElem->appendChild(_pGroupNode);
+    RebindGroupNodes(document->children.front().get());
+    XMLDocument = std::move(document);
 }
 
 bool ParameterManager::CheckDocument() const
 {
-    if (!_pDocument) {
-        return false;
-    }
+    return CheckDocument(*XMLDocument);
+}
 
-    try {
-        //
-        // Plug in a format target to receive the resultant
-        // XML stream from the serializer.
-        //
-        // LocalFileFormatTarget prints the resultant XML stream
-        // to a file once it receives any thing from the serializer.
-        //
-        MemBufFormatTarget myFormTarget;
-        SaveDocument(&myFormTarget);
-
-        // Either use the file saved on disk or write the current XML into a buffer in memory
-        // const char* xmlFile = "...";
-        MemBufInputSource xmlFile(myFormTarget.getRawBuffer(), myFormTarget.getLen(), "(memory)");
-
-        // Either load the XSD file from disk or use the built-in string
-        // const char* xsdFile = "...";
-        std::string xsdStr(ParameterSchema);  // NOLINT
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-        MemBufInputSource xsdFile(
-            reinterpret_cast<const XMLByte*>(xsdStr.c_str()),
-            xsdStr.size(),
-            "Parameter.xsd"
-        );
-
-        // See
-        // http://apache-xml-project.6118.n7.nabble.com/validating-xml-with-xsd-schema-td17515.html
-        //
-        XercesDOMParser parser;
-        Grammar* grammar = parser.loadGrammar(xsdFile, Grammar::SchemaGrammarType, true);
-        if (!grammar) {
-            Base::Console().error("Grammar file cannot be loaded.\n");
-            return false;
+bool ParameterManager::CheckDocument(const Base::XMLElement& document) const
+{
+    auto res = Base::CheckXMLDocument(document, ParameterSchema);
+    if (res.has_value()) {
+        std::string errors;
+        for (const auto& error : res.value()) {
+            if (!errors.empty()) {
+                errors += '\n';
+            }
+            errors += error;
         }
+<<<<<<< HEAD
 
         parser.setExternalNoNamespaceSchemaLocation("Parameter.xsd");
         // parser.setExitOnFirstFatalError(true);
@@ -2116,112 +1404,25 @@ bool ParameterManager::CheckDocument() const
             return false;
         }
     }
-    catch (XMLException& e) {
+    catch (XMLException& e)
+    {
         Base::Console().error(
             "An error occurred while checking document:{}\n",
             StrX(e.getMessage()).c_str()
         );
+        == == ==
+            = Base::Console().error("Parameter document verification failed: %s\n", errors.c_str());
+>>>>>>> 2714d730ae (Parameter: use XMLParser abstraction)
         return false;
     }
 
     return true;
 }
 
-
-//**************************************************************************
-//**************************************************************************
-// DOMTreeErrorReporter
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-void DOMTreeErrorReporter::warning(const SAXParseException& /*exc*/)
+const Base::XMLElement* ParameterManager::GetRootNode() const
 {
-    //
-    // Ignore all warnings.
-    //
-}
-
-void DOMTreeErrorReporter::error(const SAXParseException& toCatch)
-{
-    fSawErrors = true;
-    std::cerr << "Error at file \"" << StrX(toCatch.getSystemId()) << "\", line "
-              << toCatch.getLineNumber() << ", column " << toCatch.getColumnNumber()
-              << "\n   Message: " << StrX(toCatch.getMessage()) << std::endl;
-}
-
-void DOMTreeErrorReporter::fatalError(const SAXParseException& toCatch)
-{
-    fSawErrors = true;
-    std::cerr << "Fatal Error at file \"" << StrX(toCatch.getSystemId()) << "\", line "
-              << toCatch.getLineNumber() << ", column " << toCatch.getColumnNumber()
-              << "\n   Message: " << StrX(toCatch.getMessage()) << std::endl;
-}
-
-void DOMTreeErrorReporter::resetErrors()
-{
-    // No-op in this case
-}
-
-
-//**************************************************************************
-//**************************************************************************
-// DOMPrintFilter
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-DOMPrintFilter::DOMPrintFilter(ShowType whatToShow)
-    : fWhatToShow(whatToShow)
-{}
-
-DOMPrintFilter::FilterAction DOMPrintFilter::acceptNode(const DOMNode* node) const
-{
-    if (XMLString::compareString(node->getNodeName(), XStrLiteral("FCParameters").unicodeForm())
-        == 0) {
-        // This node is supposed to have a single FCParamGroup and two text nodes.
-        // Over time it can happen that the text nodes collect extra newlines.
-        const DOMNodeList* children = node->getChildNodes();
-        for (XMLSize_t i = 0; i < children->getLength(); i++) {
-            DOMNode* child = children->item(i);
-            if (child->getNodeType() == DOMNode::TEXT_NODE) {
-                child->setNodeValue(XStrLiteral("\n").unicodeForm());
-            }
-        }
+    if (!XMLDocument || XMLDocument->children.empty()) {
+        throw Base::RuntimeError("Parameter document has not been created");
     }
-
-    // clang-format off
-    switch (node->getNodeType()) {
-        case DOMNode::TEXT_NODE: {
-            // Filter out text element if it is under a group node. Note text xml
-            // element is plain text in between tags, and we do not store any text
-            // there.
-            auto parent = node->getParentNode();
-            if (parent && XMLString::compareString(parent->getNodeName(),
-                                                   XStrLiteral("FCParamGroup").unicodeForm()) == 0) {
-                return DOMNodeFilter::FILTER_REJECT;
-            }
-            return DOMNodeFilter::FILTER_ACCEPT;
-        }
-        case DOMNode::DOCUMENT_TYPE_NODE:
-        case DOMNode::DOCUMENT_NODE: {
-            return DOMNodeFilter::FILTER_REJECT;  // no effect
-        }
-        default: {
-            return DOMNodeFilter::FILTER_ACCEPT;
-        }
-    }
-    // clang-format on
-}
-
-//**************************************************************************
-//**************************************************************************
-// DOMPrintErrorHandler
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-bool DOMPrintErrorHandler::handleError(const DOMError& domError)
-{
-    // Display whatever error message passed from the serializer
-    char* msg = XMLString::transcode(domError.getMessage());
-    std::cout << msg << std::endl;
-    XMLString::release(&msg);
-
-    // Instructs the serializer to continue serialization if possible.
-    return true;
+    return XMLDocument->children.front().get();
 }

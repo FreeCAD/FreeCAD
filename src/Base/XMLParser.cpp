@@ -157,7 +157,7 @@ void toDOMDocument(const Base::XMLElement& source, DOMElement* root)
         );
     }
     if (!source.content.empty()) {
-        root->setTextContent(XStr(source.content.c_str()).unicodeForm());
+        root->setTextContent(XUTF8Str(source.content.c_str()).unicodeForm());
     }
     for (const auto& child : source.children) {
         auto* childNode = root->getOwnerDocument()->createElement(
