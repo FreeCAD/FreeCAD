@@ -864,5 +864,3 @@ FreeCADGui.addPreferencePage(":/ui/preferences-webgl.ui", t)
 
 # Add unit tests
 FreeCAD.__unit_test__ += ["TestArchGui"]
-# The NativeIFC tests require internet connection and file download
-# FreeCAD.__unit_test__ += ["nativeifc.ifc_selftest"]
