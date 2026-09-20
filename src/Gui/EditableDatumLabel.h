@@ -122,6 +122,7 @@ Q_SIGNALS:
     void rightClicked(EditableDatumLabel* label, const QPoint& globalPos);
     void editFinished(double value);  ///< Emitted when editing is confirmed (e.g., Enter pressed).
     void focusLost();                 ///< Emitted when the spinbox looses focus.
+    void focusGained();               ///< Emitted when the spinbox gains focus.
 
 protected:
     bool eventFilter(QObject* watched, QEvent* event) override;

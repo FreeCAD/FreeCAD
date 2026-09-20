@@ -260,7 +260,7 @@ public:
     void setPosId(size_t index, PointPos pos);
     void setPosId(size_t index, int pos);
     void swapElements(size_t index1, size_t index2);
-    bool ensureElementExists(size_t index);
+    void ensureElementExists(size_t index);
     size_t getElementIndexForGeoId(int geoId) const;
 
     std::string getText() const;

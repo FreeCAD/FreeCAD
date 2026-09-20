@@ -439,7 +439,7 @@ class TestExport2Integration(unittest.TestCase):
         cls.job.OrderOutputBy = "Operation"
         cls.job.Fixtures = ["G54"]
 
-        cls.job.Machine = "Millstone"
+        cls.job.Machine = "linuxcnc"
 
         from Path.Tool.toolbit import ToolBit
 
@@ -731,15 +731,15 @@ class TestExport2Integration(unittest.TestCase):
                     "safetyblock": "(safety)",
                     "pre_operation": "(preoperation)",
                     "post_operation": "(postoperation)",
-                    "pre_tool_change": "(pretoolchange)",
-                    "post_tool_change": "(posttoolchange)",
                     "pre_job": "(prejob)",
                     "post_job": "(postjob)",
                     "pre_fixture_change": "(prefixture)",
                     "post_fixture_change": "(postfixture)",
                     "pre_rotary_move": "(prerotary)",
                     "post_rotary_move": "(Postrotary)",
-                    "tool_return": "(toolreturn)",
+                    "pre_tool_change": "(pretoolchange)",
+                    "post_tool_change": "(posttoolchange)",  # immediate after m6
+                    "tool_return": "(toolreturn)",  # at end of tool-change item
                 },
             },
             "processing": {
@@ -1161,6 +1161,60 @@ class TestExport2Integration(unittest.TestCase):
                 g1_count, 4, f"Should have at least 4 G1 commands, found {g1_count}"
             )
 
+    def test080_translate_no_engagement(self):
+        """
+        Test that _expand_translate_rapids converts G0 to G1
+        when TRANSLATE_NO_ENGAGEMENT_FEED && ANNOT_NO_ENGAGEMENT_FEED
+        """
+        config = self._get_full_machine_config()
+        machine = Machine.from_dict(config)
+
+        # Do G0->G1
+        machine.postprocessor_properties["translate_no_engagement_feed"] = True
+        with self._modify_operation_path(
+            [
+                Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}),  # not translated
+                Path.Command(
+                    "G0",
+                    {"X": 10.0, "Y": 10.0, "F": 100.0},  # should replace F
+                    {Constants.ANNOT_NO_ENGAGEMENT_FEED: "500"},
+                ),  # translated
+                Path.Command("G1", {"X": 20.0, "Y": 10.0, "F": 100.0}),
+            ]
+        ):
+            results = self._run_export2(machine)[0][1]
+            _, interested = results.split("(preoperation)\n")
+            interested, _ = interested.split("(postoperation)")
+            expected = """G0 X0.000 Y0.000 Z5.000
+G1 X10.000 Y10.000 F30000.000
+G1 X20.000 Y10.000 F6000.000
+"""
+
+            self.assertEqual(expected, interested)
+
+        # Don't G0->G1
+        machine.postprocessor_properties["translate_no_engagement_feed"] = False
+        with self._modify_operation_path(
+            [
+                Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}),
+                # not translated, and F is dropped ("f_for_rapid_moves")
+                Path.Command(
+                    "G0",
+                    {"X": 10.0, "Y": 10.0, "F": 500.0},
+                    {Constants.ANNOT_NO_ENGAGEMENT_FEED: "True"},
+                ),  # not translated
+                Path.Command("G1", {"X": 20.0, "Y": 10.0, "F": 100.0}),
+            ]
+        ):
+            results = self._run_export2(machine)[0][1]
+            _, interested = results.split("(preoperation)\n")
+            interested, _ = interested.split("(postoperation)")
+            expected = """G0 X0.000 Y0.000 Z5.000
+G0 X10.000 Y10.000
+G1 X20.000 Y10.000 F6000.000
+"""
+            self.assertEqual(interested, expected)
+
     # ===== 090-099: _expand_xy_before_z tests =====
 
     def test090_xy_before_z_after_tool_change(self):
@@ -1292,11 +1346,11 @@ class TestExport2Integration(unittest.TestCase):
                         lines[i + 2], "(Block-enable: 1)", "Block should be followed by enable: 1"
                     )
 
-    # ===== 110-119: _expand_tool_length_offset tests =====
+    # ===== 110-119: _expand_tool_change tests =====
 
     def test110_tool_length_offset_enabled(self):
         """
-        Test that _expand_tool_length_offset adds G43 after M6 in a tool controller path.
+        Test that _expand_tool_change adds G43 after M6 in a tool controller path.
 
         G43 (tool length offset) must be injected immediately after M6 in the tool
         controller postable's path.  M6 belongs in the tool_controller postable — not
@@ -1305,7 +1359,7 @@ class TestExport2Integration(unittest.TestCase):
 
         Given:  A tool_controller postable whose path is [M6 T1]
                 followed by an operation postable [G0 ...]
-        When:   _expand_tool_length_offset is called with output_tool_length_offset=True
+        When:   _expand_tool_change is called with output_tool_length_offset=True
         Then:   The tool_controller path becomes [M6 T1, G43 H1]
 
         Example:
@@ -1339,16 +1393,16 @@ class TestExport2Integration(unittest.TestCase):
         )
         postables = [("allitems", [tc_item, op_item])]
 
-        post._expand_tool_length_offset(postables)
+        post._expand_tool_change(postables)
 
         tc_commands = [cmd.Name for cmd in tc_item.path.Commands]
         self.assertIn("G43", tc_commands, "G43 should be injected into TC path after M6")
 
         m6_idx = tc_commands.index("M6")
+        g43_cmd = tc_item.path.Commands[m6_idx + 2]
         self.assertEqual(
-            tc_commands[m6_idx + 1], "G43", "G43 must immediately follow M6 in TC path"
+            g43_cmd.Name, "G43", "G43 must immediately follow M6\n(posttoolchange) in TC path"
         )
-        g43_cmd = tc_item.path.Commands[m6_idx + 1]
         self.assertIn("H", g43_cmd.Parameters, "G43 should carry an H (tool number) parameter")
         self.assertEqual(g43_cmd.Parameters["H"], 1, "G43 H value must match the T number in M6")
 
@@ -1896,9 +1950,9 @@ class TestExport2Integration(unittest.TestCase):
 
     # ===== 140-149: G-code blocks insertion tests =====
 
-    def test140_gcode_blocks_insertion(self):
+    def test140_blocks_insertion(self):
         """
-        Test that all G-code blocks from machine config are properly inserted.
+        Test that all blocks from machine config are properly inserted.
 
         Expected: safety, preamble, prejob, preoperation, postoperation,
                   postjob, and postamble all appear in output.

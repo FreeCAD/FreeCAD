@@ -100,6 +100,11 @@ private Q_SLOTS:
         Base::UnitsApi::setSchema("Internal");
     }
 
+    void cleanup()
+    {
+        Base::UnitsApi::setSchema("Internal");
+    }
+
     void test_MismatchedFormatterAndWidgetLocaleEditPreservesEnteredValue()  // NOLINT
     {
         tests::ScopedLocaleEnvironment localeState {
@@ -245,6 +250,68 @@ private Q_SLOTS:
 
         QVERIFY(input.hasValidInput());
         QCOMPARE(input.rawValue(), 3.0);
+    }
+
+    void test_BareValueUsesDisplayedUnit()  // NOLINT
+    {
+        Base::UnitsApi::setSchema("ImperialDecimal");
+
+        Gui::InputField input;
+        input.setUnit(Base::Unit::Length);
+        input.setText(QStringLiteral("5"));
+
+        QVERIFY(input.hasValidInput());
+        QCOMPARE(input.rawValue(), 127.0);
+
+        input.setText(QStringLiteral("5 mm"));
+        QCOMPARE(input.rawValue(), 5.0);
+    }
+
+    void test_BareValueUsesCurrentMagnitudeDependentDisplayUnit()  // NOLINT
+    {
+        Base::UnitsApi::setSchema("Internal");
+
+        Gui::InputField input;
+        input.setUnit(Base::Unit::Length);
+        Base::Quantity quantity(20000.0, "mm");
+        Base::QuantityFormat format(Base::QuantityFormat::Fixed, 1);
+        format.option = Base::QuantityFormat::None;
+        quantity.setFormat(format);
+        input.setValue(quantity);
+
+        QCOMPARE(input.text(), QStringLiteral("20.0 m"));
+        input.setText(QStringLiteral("3"));
+        QVERIFY(input.hasValidInput());
+        QCOMPARE(input.rawValue(), 3000.0);
+    }
+
+    void test_BareValueUsesDisplayedUnitWithLocalizedDecimalSeparator()  // NOLINT
+    {
+        tests::ScopedLocaleEnvironment localeState {
+            {.qtLocale = "de_DE",
+             .formattingLocale = "de_DE",
+             .icuLocale = "de_DE",
+             .useQtSeparators = true}
+        };
+
+        Base::UnitsApi::setSchema("ImperialDecimal");
+        Gui::InputField input;
+        input.setLocale(QLocale(QStringLiteral("de_DE")));
+        input.setUnit(Base::Unit::Length);
+        Base::Quantity quantity(127.0, "mm");
+        Base::QuantityFormat format(Base::QuantityFormat::Fixed, 1);
+        format.option = Base::QuantityFormat::None;
+        quantity.setFormat(format);
+        input.setValue(quantity);
+
+        QCOMPARE(input.text(), QStringLiteral("5,0 in"));
+        input.setText(QStringLiteral("5,5"));
+        QVERIFY(input.hasValidInput());
+        QCOMPARE(input.rawValue(), 139.7);
+
+        input.setText(QStringLiteral("5,5 mm"));
+        QVERIFY(input.hasValidInput());
+        QCOMPARE(input.rawValue(), 5.5);
     }
 
     void test_GroupedLocaleNumberIsNormalizedBeforeParse()  // NOLINT

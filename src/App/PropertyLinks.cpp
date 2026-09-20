@@ -614,7 +614,7 @@ PropertyLinkBase::tryReplaceLink(const PropertyContainer* owner,
         }
         return res;
     }
-    else if (newObj == obj) {
+    if (newObj == obj) {
         // This means the new object is already sub-object of this parent
         // (consider a case of swapping the tool and base object of the Cut
         // feature). We'll swap the old and new object.
@@ -653,10 +653,10 @@ PropertyLinkBase::tryReplaceLink(const PropertyContainer* owner,
             }
             break;
         }
-        else if (sobj == newObj) {
+        if (sobj == newObj) {
             return tryReplaceLink(owner, obj, parent, newObj, oldObj, subname);
         }
-        else if (prev == parent) {
+        if (prev == parent) {
             break;
         }
         prev = sobj;
@@ -796,9 +796,7 @@ PyObject* PropertyLink::getPyObject()
     if (_pcLink) {
         return _pcLink->getPyObject();
     }
-    else {
-        Py_Return;
-    }
+    Py_Return;
 }
 
 void PropertyLink::setPyObject(PyObject* value)
@@ -1496,9 +1494,7 @@ PyObject* PropertyLinkSub::getPyObject()
         tup[1] = list;
         return Py::new_reference_to(tup);
     }
-    else {
-        return Py::new_reference_to(Py::None());
-    }
+    return Py::new_reference_to(Py::None());
 }
 
 void PropertyLinkSub::setPyObject(PyObject* value)
@@ -2974,7 +2970,7 @@ bool PropertyLinkSubList::upgrade(Base::XMLReader& reader, const char* typeName)
         setValue(prop.getValue());
         return true;
     }
-    else if (type.isDerivedFrom(PropertyLinkList::getClassTypeId())) {
+    if (type.isDerivedFrom(PropertyLinkList::getClassTypeId())) {
         PropertyLinkList prop;
         prop.setContainer(getContainer());
         prop.Restore(reader);
@@ -2983,7 +2979,7 @@ bool PropertyLinkSubList::upgrade(Base::XMLReader& reader, const char* typeName)
         setValues(prop.getValues(), subnames);
         return true;
     }
-    else if (type.isDerivedFrom(PropertyLinkSub::getClassTypeId())) {
+    if (type.isDerivedFrom(PropertyLinkSub::getClassTypeId())) {
         PropertyLinkSub prop;
         prop.setContainer(getContainer());
         prop.Restore(reader);
@@ -3405,9 +3401,7 @@ public:
         if (relative) {
             return std::string(docDir.relativeFilePath(path).toUtf8().constData());
         }
-        else {
-            return std::string(path.toUtf8().constData());
-        }
+        return std::string(path.toUtf8().constData());
     }
 
     static DocInfoPtr
@@ -3467,9 +3461,7 @@ public:
         if (path.startsWith(QLatin1String("https://"))) {
             return path;
         }
-        else {
-            return QFileInfo(path).absoluteFilePath();
-        }
+        return QFileInfo(path).absoluteFilePath();
     }
 
     QString getFullPath() const
@@ -3478,9 +3470,7 @@ public:
         if (path.startsWith(QLatin1String("https://"))) {
             return path;
         }
-        else {
-            return QFileInfo(myPos->first).absoluteFilePath();
-        }
+        return QFileInfo(myPos->first).absoluteFilePath();
     }
 
     const char* filePath() const
@@ -4660,7 +4650,7 @@ void PropertyXLink::setPyObject(PyObject* value)
             setValue(nullptr);
             return;
         }
-        else if (!PyObject_TypeCheck(pyObj.ptr(), &DocumentObjectPy::Type)) {
+        if (!PyObject_TypeCheck(pyObj.ptr(), &DocumentObjectPy::Type)) {
             throw Base::TypeError("Expect the first element to be of 'DocumentObject'");
         }
         PropertyString propString;
@@ -5612,11 +5602,9 @@ bool PropertyXLinkSubList::upgrade(Base::XMLReader& reader, const char* typeName
         setValues(linkProp.getValues());
         return true;
     }
-    else if (
-        typeName == PropertyLinkSubListGlobal::getClassTypeId().getName()
+    if (typeName == PropertyLinkSubListGlobal::getClassTypeId().getName()
         || typeName == PropertyLinkSubList::getClassTypeId().getName()
-        || typeName == PropertyLinkSubListChild::getClassTypeId().getName()
-    ) {
+        || typeName == PropertyLinkSubListChild::getClassTypeId().getName()) {
         PropertyLinkSubList linkProp;
         linkProp.setContainer(getContainer());
         linkProp.Restore(reader);

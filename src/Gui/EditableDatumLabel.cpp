@@ -371,6 +371,10 @@ bool EditableDatumLabel::eventFilter(QObject* watched, QEvent* event)
             return false;
         }
     }
+    else if (event->type() == QEvent::FocusIn) {
+        // Emit focusGained whenever the spinbox or its child QLineEdit receives focus
+        Q_EMIT focusGained();
+    }
     else if (event->type() == QEvent::FocusOut) {
         if (watched == spinBox) {
             Q_EMIT focusLost();

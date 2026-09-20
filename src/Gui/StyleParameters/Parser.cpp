@@ -48,7 +48,7 @@ namespace
 {
 /// Returns the named argument of type T, throwing Base::ExpressionError when it is not.
 template<typename T>
-const T& requireArgument(const Tuple& args, const std::string& name, const char* function)
+const T& requireArgument(const Tuple& args, std::string_view name, std::string_view function)
 {
     if (const T* value = args.tryGet<T>(name)) {
         return *value;
@@ -443,6 +443,11 @@ Value Number::evaluate([[maybe_unused]] const EvaluationContext& context) const
     return value;
 }
 
+Value StringLiteral::evaluate([[maybe_unused]] const EvaluationContext& context) const
+{
+    return value;
+}
+
 Value Color::evaluate([[maybe_unused]] const EvaluationContext& context) const
 {
     return color;
@@ -641,8 +646,8 @@ std::unique_ptr<Expr> Parser::parseFactor()
     else if (peekParameter()) {
         expr = parseParameter();
     }
-    else if (peekFunction()) {
-        expr = parseFunctionCall();
+    else if (peekIdentifier()) {
+        expr = parseIdentifier();
     }
     else {
         expr = parseNumber();
@@ -761,27 +766,28 @@ std::unique_ptr<Expr> Parser::parseParameter()
     return std::make_unique<ParameterReference>(input.substr(start, pos - start));
 }
 
-bool Parser::peekFunction()
+bool Parser::peekIdentifier()
 {
     skipWhitespace();
     return pos < input.size() && isAlphaChar(input[pos]);
 }
 
-std::unique_ptr<Expr> Parser::parseFunctionCall()
+std::unique_ptr<Expr> Parser::parseIdentifier()
 {
     skipWhitespace();
     size_t start = pos;
     while (pos < input.size() && (isAlnumChar(input[pos]) || input[pos] == '_')) {
         ++pos;
     }
-    std::string functionName = input.substr(start, pos - start);
+    std::string identifier = input.substr(start, pos - start);
 
-    if (!match('(')) {
-        THROWM(Base::ParserError, fmt::format("Expected '(' after function name, got '{}'", input[pos]));
+    // An argument list makes the word a call
+    if (match('(')) {
+        auto arguments = parseTuple();
+        return std::make_unique<FunctionCall>(identifier, std::move(*arguments));
     }
 
-    auto arguments = parseTuple();
-    return std::make_unique<FunctionCall>(functionName, std::move(*arguments));
+    return std::make_unique<StringLiteral>(identifier);
 }
 
 bool Parser::peekNamedElement()

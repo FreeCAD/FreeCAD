@@ -198,7 +198,14 @@ protected:
     void paintEvent(QPaintEvent* event) override;
 
 private:
+    enum class TextPolicy
+    {
+        PreserveEditorText,
+        ReformatEditor
+    };
+
     void validateInput() override;
+    void commitQuantity(Base::Quantity quantity, TextPolicy textPolicy, bool notify);
     void updateText(const Base::Quantity&);
     void updateEdit(const QString& text);
     void updateFromCache(bool notify, bool updateUnit = true);
