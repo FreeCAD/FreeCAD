@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
+from Part.TopoShapeWire import TopoShapeWire
 
 @export(
     PythonName="Part.ShapeFix.WireVertex",
@@ -19,7 +20,7 @@ class ShapeFix_WireVertex(PyObjectBase):
     Licence: LGPL
     """
 
-    def init(self) -> None:
+    def init(self, wire: TopoShapeWire, precision: float, /) -> None:
         """
         Loads the wire, ininializes internal analyzer with the given precision
         """

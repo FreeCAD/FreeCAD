@@ -21,7 +21,7 @@ class AxisOrigin(BaseClass):
     """
 
     @constmethod
-    def getElementPicked(self, pickedPoint: Any, /) -> str:
+    def getElementPicked(self, pickedPoint: Any, /) -> str | None:
         """
         Returns the picked element name.
 
