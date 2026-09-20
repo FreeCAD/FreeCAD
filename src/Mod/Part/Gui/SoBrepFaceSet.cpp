@@ -568,11 +568,13 @@ bool SoBrepFaceSet::setupVertexColorMaterial(
     }
 
     if (vaGeomDirty || vaPartOfVertex.empty()) {
-        if (!buildPartOfVertex(vaPartOfVertex,
-                               this->coordIndex.getValues(0),
-                               this->coordIndex.getNum(),
-                               this->partIndex.getValues(0),
-                               this->partIndex.getNum())) {
+        if (!buildPartOfVertex(
+                vaPartOfVertex,
+                this->coordIndex.getValues(0),
+                this->coordIndex.getNum(),
+                this->partIndex.getValues(0),
+                this->partIndex.getNum()
+            )) {
             return false;
         }
         vaGeomDirty = false;
@@ -695,9 +697,12 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction* action, SelContext
 
     if (singleColor > 0 && !partialRender) {
         packedColors.push_back(diffuseColor);
-        if (setupVertexColorMaterial(state, packedColors,
-                                     std::vector<int32_t>(static_cast<size_t>(partCount), 0),
-                                     this->coordIndex.getNum())) {
+        if (setupVertexColorMaterial(
+                state,
+                packedColors,
+                std::vector<int32_t>(static_cast<size_t>(partCount), 0),
+                this->coordIndex.getNum()
+            )) {
             return true;
         }
         SoMaterialBindingElement::set(state, SoMaterialBindingElement::OVERALL);
@@ -820,9 +825,10 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction* action, SelContext
     // Prefer per-vertex colors so that Coin renders through vertex arrays.
     // Transparency masking (partial secondary selection) still needs the
     // per-face remap below.
-    if (!partialRender
-        && setupVertexColorMaterial(state, packedColors, perPartMaterialIndex,
-                                    this->coordIndex.getNum())) {
+    if (
+        !partialRender
+        && setupVertexColorMaterial(state, packedColors, perPartMaterialIndex, this->coordIndex.getNum())
+    ) {
         return true;
     }
 

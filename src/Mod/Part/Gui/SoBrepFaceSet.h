@@ -143,10 +143,12 @@ private:
     // through its vertex-array path instead of the legacy immediate-mode
     // path. Returns false when the current colors cannot be expressed that
     // way (mixed per-part transparency, tiny geometry, ...).
-    bool setupVertexColorMaterial(SoState* state,
-                                  const std::vector<uint32_t>& colors,
-                                  const std::vector<int32_t>& perPartMaterialIndex,
-                                  int numCoordIndices);
+    bool setupVertexColorMaterial(
+        SoState* state,
+        const std::vector<uint32_t>& colors,
+        const std::vector<int32_t>& perPartMaterialIndex,
+        int numCoordIndices
+    );
 
 #ifdef RENDER_GLARRAYS
     void renderSimpleArray();
