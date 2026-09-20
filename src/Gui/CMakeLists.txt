@@ -1225,14 +1225,16 @@ SET(Params_CPP_SRCS
     ParamHandler.cpp
     ViewParams.cpp
     SpaceMouseParameter.cpp
+    GeneralParameter.cpp
 )
 
 SET(Params_HPP_SRCS
     TreeParams.h
     OverlayParams.h
-    ParamHandler.cpp
+    ParamHandler.h
     ViewParams.h
     SpaceMouseParameter.h
+    GeneralParameter.h
 )
 
 SET(Params_SRCS
