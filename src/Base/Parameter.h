@@ -48,8 +48,13 @@ using PyObject = struct _object;
 # undef isalnum
 #endif
 
+#include <concepts>
 #include <map>
+#include <string>
+#include <string_view>
+#include <type_traits>
 #include <vector>
+
 #include <fastsignals/signal.h>
 #include <xercesc/util/XercesDefs.hpp>
 
@@ -75,6 +80,10 @@ class InputSource;
 }  // namespace XERCES_CPP_NAMESPACE
 
 class ParameterManager;
+
+template<class T>
+concept NonPointerStringView = std::convertible_to<T, std::string_view>
+    && !std::is_pointer_v<std::remove_reference_t<T>>;
 
 /** The parameter container class
  *  This is the base class of all classes handle parameter.
@@ -377,25 +386,54 @@ public:
 
     /** @name methods for String handling */
     //@{
-    /// set a string value
-    void SetASCII(const char* Name, const char* sValue);
-    /// set a string value
-    void SetASCII(const char* Name, const std::string& sValue)
-    {
-        SetASCII(Name, sValue.c_str());
-    }
-    /// read a string values
-    std::string GetASCII(const char* Name, const char* pPreset = nullptr) const;
-    /// remove a string value from this group
-    void RemoveASCII(const char* Name);
-    /** Return all string elements in this group as a vector of strings
-     *  Its also possible to set a filter criteria.
-     *  @param sFilter only strings which name includes sFilter are put in the vector
-     *  @return std::vector of std::strings
+    /** Set a string parameter's value.
+     * @param name Name of the parameter.
+     * @param value Value string to assign.
      */
-    std::vector<std::string> GetASCIIs(const char* sFilter = nullptr) const;
-    /// Same as GetASCIIs() but with key,value map
-    std::vector<std::pair<std::string, std::string>> GetASCIIMap(const char* sFilter = nullptr) const;
+    template<NonPointerStringView N = std::string_view, NonPointerStringView V = std::string_view>
+    inline void setString(N&& name, V&& value)
+    {
+        _setString({std::forward<N>(name)}, {std::forward<V>(value)});
+    }
+    /** Read a string parameter's value.
+     * @param name Name of the parameter.
+     * @param fallback Value to return if the parameter is not found.
+     * @returns Parameter value or its fallback.
+     */
+    template<NonPointerStringView N = std::string_view, NonPointerStringView F = std::string_view>
+    [[nodiscard]]
+    inline std::string getString(N&& name, F&& fallback = {}) const
+    {
+        return _getString({std::forward<N>(name)}, {std::forward<F>(fallback)});
+    }
+    /** Remove a string parameter from this group.
+     * @param name Name of the parameter to remove.
+     */
+    template<NonPointerStringView N = std::string_view>
+    inline void removeString(N&& name)
+    {
+        _removeString({std::forward<N>(name)});
+    }
+    /** Get the values of all string parameters in this group.
+     * @param filter String a parameter must contain to be considered.
+     * @return Vector of parameters' values.
+     */
+    template<NonPointerStringView F = std::string_view>
+    [[nodiscard]]
+    std::vector<std::string> getAllStrings(F&& filter = {}) const
+    {
+        return _getAllStrings({std::forward<F>(filter)});
+    }
+    /** Get the names and values of all string parameters in this group.
+     * @param filter String a parameter must contain to be considered.
+     * @return Vector of pairs of parameters' names (first) and values (second).
+     */
+    template<NonPointerStringView F = std::string_view>
+    [[nodiscard]]
+    std::vector<std::pair<std::string, std::string>> getAllStringsMap(F&& filter = {}) const
+    {
+        return _getAllStringsMap({std::forward<F>(filter)});
+    }
     //@}
 
     friend class ParameterManager;
@@ -441,6 +479,14 @@ protected:
     void _SetAttribute(ParamType Type, const char* Name, const char* Value);
     void _Notify(ParamType Type, const char* Name, const char* Value);
 
+    void _setString(std::string_view name, std::string_view value);
+    std::string _getString(std::string_view name, std::string_view fallback = {}) const;
+    void _removeString(std::string_view name);
+    std::vector<std::string> _getAllStrings(std::string_view filter = {}) const;
+    std::vector<std::pair<std::string, std::string>> _getAllStringsMap(
+        std::string_view filter = {}
+    ) const;
+
     XERCES_CPP_NAMESPACE::DOMElement* FindNextElement(
         XERCES_CPP_NAMESPACE::DOMNode* Prev,
         const char* Type
@@ -453,9 +499,9 @@ protected:
      *  If the names not given it returns the first occurrence of Type.
      */
     XERCES_CPP_NAMESPACE::DOMElement* FindElement(
-        XERCES_CPP_NAMESPACE::DOMElement* Start,
-        const char* Type,
-        const char* Name = nullptr
+        XERCES_CPP_NAMESPACE::DOMElement* start,
+        std::string_view type,
+        std::string_view name = {}
     ) const;
 
     /** Find an element specified by Type and Name or create it if not found
@@ -470,9 +516,9 @@ protected:
     );
 
     XERCES_CPP_NAMESPACE::DOMElement* CreateElement(
-        XERCES_CPP_NAMESPACE::DOMElement* Start,
-        const char* Type,
-        const char* Name
+        XERCES_CPP_NAMESPACE::DOMElement* start,
+        std::string_view type,
+        std::string_view name
     );
 
     /** Find an attribute specified by Name

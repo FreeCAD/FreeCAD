@@ -174,11 +174,12 @@ bool DlgSettingsGeneral::setLanguage()
 {
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
     QString lang = QLocale::languageToString(QLocale().language());
-    QByteArray language = hGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str();
-    QByteArray current = ui->Languages->itemData(ui->Languages->currentIndex()).toByteArray();
+    const auto language = hGrp->getString("Language", lang.toStdString());
+    const auto current
+        = ui->Languages->itemData(ui->Languages->currentIndex()).toByteArray().toStdString();
     if (current != language) {
-        hGrp->SetASCII("Language", current.constData());
-        Translator::instance()->activateLanguage(current.constData());
+        hGrp->setString("Language", current);
+        Translator::instance()->activateLanguage(current);
         return true;
     }
     return false;
@@ -313,7 +314,7 @@ void DlgSettingsGeneral::loadSettings()
     // search for the language files
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
     auto langToStr = Translator::instance()->activeLanguage();
-    QByteArray language = hGrp->GetASCII("Language", langToStr.c_str()).c_str();
+    auto language = QByteArray::fromStdString(hGrp->getString("Language", langToStr));
 
     localeIndex = ui->UseLocaleFormatting->currentIndex();
 
@@ -381,7 +382,7 @@ void DlgSettingsGeneral::resetSettingsToDefaults()
         "User parameter:BaseApp/Preferences/MainWindow"
     );
     // reset "Theme" parameter
-    hGrp->RemoveASCII("Theme");
+    hGrp->removeString("Theme");
     // reset "TiledBackground" parameter
     hGrp->RemoveBool("TiledBackground");
 
@@ -398,7 +399,7 @@ void DlgSettingsGeneral::resetSettingsToDefaults()
 
     hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
     // reset "Language" parameter
-    hGrp->RemoveASCII("Language");
+    hGrp->removeString("Language");
     // reset "ToolbarIconSize" parameter
     hGrp->RemoveInt("ToolbarIconSize");
 
@@ -413,7 +414,7 @@ void DlgSettingsGeneral::saveThemes()
     );
 
     // First we check if the theme has actually changed.
-    std::string previousTheme = hGrp->GetASCII("Theme", "").c_str();
+    std::string previousTheme = hGrp->getString("Theme", "");
     std::string newTheme = ui->themesCombobox->currentText().toStdString();
 
     if (previousTheme == newTheme) {
@@ -422,7 +423,7 @@ void DlgSettingsGeneral::saveThemes()
     }
 
     // Save the name of the theme
-    hGrp->SetASCII("Theme", newTheme);
+    hGrp->setString("Theme", newTheme);
 
     // Then we apply the themepack.
     Application::Instance->prefPackManager()->rescan();
@@ -452,11 +453,11 @@ void DlgSettingsGeneral::loadThemes()
         "User parameter:BaseApp/Preferences/MainWindow"
     );
 
-    QString currentTheme = QString::fromLatin1(hGrp->GetASCII("Theme", "").c_str());
+    QString currentTheme = QString::fromStdString(hGrp->getString("Theme", ""));
 
     Application::Instance->prefPackManager()->rescan();
     auto packs = Application::Instance->prefPackManager()->preferencePacks();
-    QString currentStyleSheet = QString::fromLatin1(hGrp->GetASCII("StyleSheet", "").c_str());
+    QString currentStyleSheet = QString::fromStdString(hGrp->getString("StyleSheet", ""));
     QFileInfo fi(currentStyleSheet);
     currentStyleSheet = fi.baseName();
     QString themeClassic = QStringLiteral("classic");  // handle the upcoming name change
@@ -478,12 +479,12 @@ void DlgSettingsGeneral::loadThemes()
     if (currentTheme.isEmpty()) {
         if (!currentStyleSheet.isEmpty() && !similarTheme.isEmpty()) {  // a user upgrading from
                                                                         // 0.21 or earlier
-            hGrp->SetASCII("Theme", similarTheme.toStdString());
-            currentTheme = QString::fromLatin1(hGrp->GetASCII("Theme", "").c_str());
+            hGrp->setString("Theme", similarTheme.toStdString());
+            currentTheme = QString::fromStdString(hGrp->getString("Theme", ""));
         }
         else {  // a brand new user
-            hGrp->SetASCII("Theme", themeClassic.toStdString());
-            currentTheme = QString::fromLatin1(hGrp->GetASCII("Theme", "").c_str());
+            hGrp->setString("Theme", themeClassic.toStdString());
+            currentTheme = QString::fromStdString(hGrp->getString("Theme", ""));
         }
     }
 

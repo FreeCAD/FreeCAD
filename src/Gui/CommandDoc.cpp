@@ -302,7 +302,7 @@ void StdCmdImport::activated(int iMsg)
                                               .GetGroup("BaseApp")
                                               ->GetGroup("Preferences")
                                               ->GetGroup("General");
-    const auto lastImportFilterName = QString::fromStdString(hPath->GetASCII("FileImportFilter"));
+    const auto lastImportFilterName = QString::fromStdString(hPath->getString("FileImportFilter"));
     qsizetype selectedFilterIndex = -1;
     for (qsizetype i = 0; i < formatList.size(); ++i) {
         if (formatList[i].name == lastImportFilterName) {
@@ -320,7 +320,7 @@ void StdCmdImport::activated(int iMsg)
     );
     if (!fileList.isEmpty()) {
         const auto& selectedFilter = formatList[selectedFilterIndex];
-        hPath->SetASCII("FileImportFilter", selectedFilter.name.toUtf8());
+        hPath->setString("FileImportFilter", selectedFilter.name.toStdString());
         SelectModule::Dict dict
             = SelectModule::importHandler(fileList, selectedFilter.toFilterString());
 
@@ -330,7 +330,7 @@ void StdCmdImport::activated(int iMsg)
             getGuiApplication()->importFrom(
                 it.key().toUtf8(),
                 getActiveGuiDocument()->getDocument()->getName(),
-                it.value().toLatin1()
+                it.value().toUtf8()
             );
         }
 
@@ -399,14 +399,14 @@ QString createDefaultExportBasename()
         exportFormatString = QString::fromStdString(
             App::GetApplication()
                 .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
-                ->GetASCII("ExportDefaultFilenameSingle", "%F-%P-")
+                ->getString("ExportDefaultFilenameSingle", "%F-%P-")
         );
     }
     else {
         exportFormatString = QString::fromStdString(
             App::GetApplication()
                 .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
-                ->GetASCII("ExportDefaultFilenameMultiple", "%F")
+                ->getString("ExportDefaultFilenameMultiple", "%F")
         );
     }
 
@@ -544,7 +544,7 @@ void StdCmdExport::activated(int iMsg)
                                               ->GetGroup("Preferences")
                                               ->GetGroup("General");
     const auto lastExportFilterName = QString::fromStdString(
-        !exportInfo.filterName.empty() ? exportInfo.filterName : hPath->GetASCII("FileExportFilter")
+        !exportInfo.filterName.empty() ? exportInfo.filterName : hPath->getString("FileExportFilter")
     );
     qsizetype selectedFilterIndex = -1;
     for (qsizetype i = 0; i < filterList.size(); ++i) {
@@ -607,13 +607,13 @@ void StdCmdExport::activated(int iMsg)
     );
     if (!filename.isEmpty()) {
         const auto& selectedFilter = filterList[selectedFilterIndex];
-        hPath->SetASCII("FileExportFilter", selectedFilter.name.toLatin1().constData());
+        hPath->setString("FileExportFilter", selectedFilter.name.toStdString());
 
         SelectModule::Dict dict
             = SelectModule::exportHandler(filename, selectedFilter.toFilterString());
         // export the files with the associated modules
         for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
-            getGuiApplication()->exportTo(it.key().toUtf8(), doc->getName(), it.value().toLatin1());
+            getGuiApplication()->exportTo(it.key().toUtf8(), doc->getName(), it.value().toUtf8());
         }
 
         // Keep a record of if the user used our suggested generated filename. If they

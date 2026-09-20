@@ -166,7 +166,10 @@ void DlgSettingsUI::populateStylesheets(
         combo->addItem(it.key(), it.value());
     }
 
-    QString selectedStyleSheet = QString::fromUtf8(hGrp->GetASCII(key).c_str());
+    // TODO: make populateStylesheets take string_views and remove the conversion
+    QString selectedStyleSheet = QString::fromStdString(
+        hGrp->getString(std::string_view {key ? key : ""})
+    );
     int index = combo->findData(selectedStyleSheet);
 
     // might be an absolute path name
