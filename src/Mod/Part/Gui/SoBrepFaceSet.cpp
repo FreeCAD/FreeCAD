@@ -22,8 +22,11 @@
  ******************************************************************************/
 
 #include <algorithm>
+#include <algorithm>
 #include <cmath>
+#include <functional>
 #include <limits>
+#include <numeric>
 #include <set>
 #include <vector>
 #include <Inventor/SoPickedPoint.h>
@@ -33,13 +36,16 @@
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/details/SoFaceDetail.h>
+#include <Inventor/details/SoPointDetail.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoDepthBufferElement.h>
 #include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
+#include <Inventor/elements/SoNormalElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoTextureEnabledElement.h>
 #include <Inventor/elements/SoPolygonOffsetElement.h>
@@ -296,11 +302,322 @@ SoBrepFaceSet::~SoBrepFaceSet()
 void SoBrepFaceSet::markVAGeometryDirty()
 {
     vaGeomDirty = true;
+    pickBVHDirty = true;
 }
 
 void SoBrepFaceSet::vaGeometryChangedCB(void* data, SoSensor* /*sensor*/)
 {
     static_cast<SoBrepFaceSet*>(data)->markVAGeometryDirty();
+}
+
+bool SoBrepFaceSet::buildPickBVH(SoState* state)
+{
+    const SoCoordinateElement* coordElem = SoCoordinateElement::getInstance(state);
+    const int numCoords = coordElem->getNum();
+    if (numCoords <= 0 || !coordElem->is3D()) {
+        return false;
+    }
+    const SbVec3f* coords = coordElem->getArrayPtr3();
+    if (!coords) {
+        return false;
+    }
+
+    if (!pickBVHDirty
+        && pickCoordsPtr == static_cast<const void*>(coords)
+        && pickCoordsNum == numCoords) {
+        return !pickNodes.empty();
+    }
+
+    pickNodes.clear();
+    pickTriVerts.clear();
+    pickTriPart.clear();
+    pickTriOrig.clear();
+    pickCoordsPtr = coords;
+    pickCoordsNum = numCoords;
+    pickBVHDirty = false;
+
+    const int32_t* ci = this->coordIndex.getValues(0);
+    const int ciCount = this->coordIndex.getNum();
+    const int32_t* partCounts = this->partIndex.getValues(0);
+    const int partCount = this->partIndex.getNum();
+    if (!ci || !partCounts) {
+        return false;
+    }
+
+    // Original-order triangle list (polygon groups are fan-triangulated like
+    // generatePrimitives()).
+    std::vector<uint32_t> verts;    // 3 coordinate indices per triangle
+    std::vector<uint32_t> parts;    // part index per triangle
+    std::vector<float> centroids;   // centroid per triangle, 3 components
+    verts.reserve(ciCount);
+    parts.reserve(ciCount / 3);
+    centroids.reserve(ciCount);
+
+    auto emitTriangle = [&](int32_t a, int32_t b, int32_t c, uint32_t part) -> bool {
+        if (a < 0 || b < 0 || c < 0 || a >= numCoords || b >= numCoords || c >= numCoords) {
+            return false;
+        }
+        const SbVec3f& pa = coords[a];
+        const SbVec3f& pb = coords[b];
+        const SbVec3f& pc = coords[c];
+        verts.push_back(a);
+        verts.push_back(b);
+        verts.push_back(c);
+        parts.push_back(part);
+        centroids.push_back((pa[0] + pb[0] + pc[0]) / 3.0f);
+        centroids.push_back((pa[1] + pb[1] + pc[1]) / 3.0f);
+        centroids.push_back((pa[2] + pb[2] + pc[2]) / 3.0f);
+        return true;
+    };
+
+    std::vector<int32_t> face;
+    face.reserve(8);
+
+    int pos = 0;
+    for (int part = 0; part < partCount && pos < ciCount; ++part) {
+        const int triangles = std::max(partCounts[part], 0);
+        for (int t = 0; t < triangles && pos < ciCount; ++t) {
+            while (pos < ciCount && ci[pos] < 0) {
+                pos++;
+            }
+            face.clear();
+            while (pos < ciCount && ci[pos] >= 0) {
+                face.push_back(ci[pos]);
+                pos++;
+            }
+            if (pos < ciCount && ci[pos] < 0) {
+                pos++;  // consume one delimiter
+            }
+            // Fan-triangulate (triangles in the common case).
+            for (size_t k = 2; k < face.size(); ++k) {
+                if (!emitTriangle(face[0], face[k - 1], face[k], static_cast<uint32_t>(part))) {
+                    return false;  // malformed data: use the stock pick path
+                }
+            }
+        }
+    }
+
+    const size_t triCount = verts.size() / 3;
+    if (triCount == 0) {
+        return false;
+    }
+
+    std::vector<uint32_t> order(triCount);
+    std::iota(order.begin(), order.end(), 0u);
+
+    constexpr uint32_t InvalidNode = std::numeric_limits<uint32_t>::max();
+    constexpr size_t LeafSize = 6;
+    constexpr int MaxDepth = 34;
+
+    pickNodes.reserve(2 * (triCount / LeafSize + 1));
+    pickTriVerts.reserve(verts.size());
+    pickTriPart.reserve(triCount);
+    pickTriOrig.reserve(triCount);
+
+    // Pre-order recursive build with median split on the longest axis.
+    std::function<uint32_t(size_t, size_t, int)> build =
+        [&](size_t begin, size_t end, int depth) -> uint32_t {
+        float bmin[3] = {std::numeric_limits<float>::max(),
+                         std::numeric_limits<float>::max(),
+                         std::numeric_limits<float>::max()};
+        float bmax[3] = {-std::numeric_limits<float>::max(),
+                         -std::numeric_limits<float>::max(),
+                         -std::numeric_limits<float>::max()};
+        for (size_t i = begin; i < end; ++i) {
+            const uint32_t tri = order[i];
+            for (int k = 0; k < 3; ++k) {
+                const SbVec3f& p = coords[verts[3 * tri + k]];
+                for (int a = 0; a < 3; ++a) {
+                    bmin[a] = std::min(bmin[a], p[a]);
+                    bmax[a] = std::max(bmax[a], p[a]);
+                }
+            }
+        }
+
+        const uint32_t slot = static_cast<uint32_t>(pickNodes.size());
+        pickNodes.emplace_back();
+
+        if ((end - begin) <= LeafSize || depth >= MaxDepth) {
+            const auto start = static_cast<uint32_t>(pickTriVerts.size() / 3);
+            for (size_t i = begin; i < end; ++i) {
+                const uint32_t tri = order[i];
+                pickTriVerts.push_back(verts[3 * tri + 0]);
+                pickTriVerts.push_back(verts[3 * tri + 1]);
+                pickTriVerts.push_back(verts[3 * tri + 2]);
+                pickTriPart.push_back(parts[tri]);
+                pickTriOrig.push_back(tri);
+            }
+            PickNode& node = pickNodes[slot];
+            for (int a = 0; a < 3; ++a) {
+                node.bmin[a] = bmin[a];
+                node.bmax[a] = bmax[a];
+            }
+            node.left = InvalidNode;
+            node.right = InvalidNode;
+            node.start = start;
+            node.count = static_cast<uint32_t>(end - begin);
+            return slot;
+        }
+
+        int axis = 0;
+        float extent = bmax[0] - bmin[0];
+        for (int a = 1; a < 3; ++a) {
+            const float e = bmax[a] - bmin[a];
+            if (e > extent) {
+                extent = e;
+                axis = a;
+            }
+        }
+        const size_t mid = begin + (end - begin) / 2;
+        std::nth_element(order.begin() + static_cast<long>(begin),
+                         order.begin() + static_cast<long>(mid),
+                         order.begin() + static_cast<long>(end),
+                         [&, axis](uint32_t a, uint32_t b) {
+                             return centroids[3 * a + axis] < centroids[3 * b + axis];
+                         });
+
+        const uint32_t left = build(begin, mid, depth + 1);
+        const uint32_t right = build(mid, end, depth + 1);
+
+        PickNode& node = pickNodes[slot];
+        for (int a = 0; a < 3; ++a) {
+            node.bmin[a] = bmin[a];
+            node.bmax[a] = bmax[a];
+        }
+        node.left = left;
+        node.right = right;
+        node.start = 0;
+        node.count = 0;
+        return slot;
+    };
+
+    build(0, triCount, 0);
+    return !pickNodes.empty();
+}
+
+void SoBrepFaceSet::rayPick(SoRayPickAction* action)
+{
+    // Below the threshold the stock sweep is fast enough and a BVH would
+    // only add build cost and memory.
+    if (this->coordIndex.getNum() < 3000) {
+        inherited::rayPick(action);
+        return;
+    }
+
+    if (!this->shouldRayPick(action)) {
+        return;
+    }
+    this->computeObjectSpaceRay(action);
+    SoState* state = action->getState();
+
+    if (!buildPickBVH(state)) {
+        // Coordinates or indices are not in a form the BVH can handle.
+        this->generatePrimitives(action);
+        return;
+    }
+    if (pickNodes.empty()) {
+        return;
+    }
+
+    const SbVec3f* coords = static_cast<const SbVec3f*>(pickCoordsPtr);
+
+    // Whole-shape cull with the same radius-aware box test the stock path
+    // uses for its bbox check.
+    {
+        const PickNode& root = pickNodes[0];
+        const SbBox3f rootBox(SbVec3f(root.bmin[0], root.bmin[1], root.bmin[2]),
+                              SbVec3f(root.bmax[0], root.bmax[1], root.bmax[2]));
+        if (!action->intersect(rootBox, TRUE)) {
+            return;
+        }
+    }
+
+    const bool flipFront =
+        SoShapeHintsElement::getVertexOrdering(state) == SoShapeHintsElement::CLOCKWISE;
+    const SoNormalElement* normElem = SoNormalElement::getInstance(state);
+    const int numNormals = normElem ? normElem->getNum() : 0;
+
+    constexpr int StackSize = 128;
+    uint32_t stack[StackSize];
+    int sp = 0;
+    stack[sp++] = 0;
+
+    while (sp > 0) {
+        const uint32_t ni = stack[--sp];
+        const PickNode& node = pickNodes[ni];
+
+        if (ni != 0) {
+            const SbBox3f box(SbVec3f(node.bmin[0], node.bmin[1], node.bmin[2]),
+                              SbVec3f(node.bmax[0], node.bmax[1], node.bmax[2]));
+            if (!action->intersect(box, TRUE)) {
+                continue;
+            }
+        }
+
+        if (node.count == 0) {
+            if (sp + 2 <= StackSize) {
+                stack[sp++] = node.left;
+                stack[sp++] = node.right;
+            }
+            continue;
+        }
+
+        for (uint32_t t = 0; t < node.count; ++t) {
+            const size_t o = node.start + t;
+            const uint32_t vi0 = pickTriVerts[3 * o + 0];
+            const uint32_t vi1 = pickTriVerts[3 * o + 1];
+            const uint32_t vi2 = pickTriVerts[3 * o + 2];
+            const SbVec3f& p0 = coords[vi0];
+            const SbVec3f& p1 = coords[vi1];
+            const SbVec3f& p2 = coords[vi2];
+
+            SbVec3f isect;
+            SbVec3f barycentric;
+            SbBool front = FALSE;
+            if (!action->intersect(p0, p1, p2, isect, barycentric, front)) {
+                continue;
+            }
+            if (!action->isBetweenPlanes(isect)) {
+                continue;
+            }
+            if (flipFront) {
+                front = !front;
+            }
+
+            SoPickedPoint* pp = action->addIntersection(isect, front);
+            if (!pp) {
+                continue;
+            }
+
+            auto* faceDetail = new SoFaceDetail;
+            faceDetail->setNumPoints(3);
+            for (int k = 0; k < 3; ++k) {
+                SoPointDetail point;
+                point.setCoordinateIndex(static_cast<int>(pickTriVerts[3 * o + k]));
+                faceDetail->setPoint(k, &point);
+            }
+            faceDetail->setFaceIndex(static_cast<int>(pickTriOrig[o]));
+            faceDetail->setPartIndex(static_cast<int>(pickTriPart[o]));
+            pp->setDetail(faceDetail, this);
+
+            // Barycentric vertex-normal interpolation like the stock path,
+            // with a geometric fallback when no normals are in the state.
+            SbVec3f normal;
+            if (numNormals > 0) {
+                auto normalAt = [&](uint32_t vi) {
+                    return normElem->get(
+                        static_cast<int>(std::min<uint32_t>(vi, numNormals - 1)));
+                };
+                normal = normalAt(vi0) * barycentric[0] + normalAt(vi1) * barycentric[1]
+                    + normalAt(vi2) * barycentric[2];
+            }
+            else {
+                normal = (p1 - p0).cross(p2 - p0);
+            }
+            normal.normalize();
+            pp->setObjectNormal(normal);
+        }
+    }
 }
 
 void SoBrepFaceSet::doAction(SoAction* action)

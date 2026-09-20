@@ -117,6 +117,7 @@ protected:
     ) override;
     void generatePrimitives(SoAction* action) override;
     void getBoundingBox(SoGetBoundingBoxAction* action) override;
+    void rayPick(SoRayPickAction* action) override;
 
 private:
     enum Binding
@@ -181,6 +182,25 @@ private:
     std::vector<uint32_t> vaPackedKey;
     std::vector<int32_t> vaPartKey;
     SoMaterial* vaMaterial {nullptr};
+
+    // BVH-accelerated ray picking: replaces Coin's O(n) generatePrimitives
+    // sweep over all triangles with an O(log n) box-tree traversal per pick.
+    struct PickNode {
+        float bmin[3];
+        float bmax[3];
+        uint32_t left;   // node indices; invalid for leaves
+        uint32_t right;
+        uint32_t start;  // leaf: first triangle in the BVH-ordered arrays
+        uint32_t count;  // leaf: triangle count (0 for internal nodes)
+    };
+    bool pickBVHDirty {true};
+    std::vector<PickNode> pickNodes;
+    std::vector<uint32_t> pickTriVerts;  // 3 coordinate indices per triangle (BVH order)
+    std::vector<uint32_t> pickTriPart;   // part index per triangle (BVH order)
+    std::vector<uint32_t> pickTriOrig;   // original triangle ordinal (BVH order)
+    const void* pickCoordsPtr {nullptr};
+    int pickCoordsNum {0};
+    bool buildPickBVH(SoState* state);
 
     uint32_t packedColor;
     Gui::SoFCSelectionCounter selCounter;
