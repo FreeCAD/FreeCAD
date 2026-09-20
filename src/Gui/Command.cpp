@@ -1223,7 +1223,7 @@ void GroupCommand::activated(int iMsg)
 
     Action* cmdAction = v.first->getAction();
     if (_pcAction && cmdAction) {
-        _pcAction->setProperty("defaultAction", QVariant((int)v.second));
+        _pcAction->setProperty("defaultAction", QVariant(doesRememberLast() ? (int)v.second : 0));
         setup(_pcAction);
     }
 }
