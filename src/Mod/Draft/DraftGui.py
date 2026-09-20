@@ -2103,7 +2103,9 @@ class DraftToolBar:
                 FreeCAD.activeDraftCommand.finish()
             elif hasattr(FreeCAD.activeDraftCommand, "reject"):
                 FreeCAD.activeDraftCommand.reject()
-            elif hasattr(FreeCADGui, "draftToolBar") and getattr(FreeCADGui.draftToolBar, "cancel", None):
+            elif hasattr(FreeCADGui, "draftToolBar") and getattr(
+                FreeCADGui.draftToolBar, "cancel", None
+            ):
                 FreeCADGui.draftToolBar.cancel()
         FreeCADGui.Control.clearTaskWatcher()
         # self.tray = None
