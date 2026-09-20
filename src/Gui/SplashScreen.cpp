@@ -228,7 +228,7 @@ static void renderDevBuildWarning(
  * Constructs a splash screen that will display the pixmap.
  */
 SplashScreen::SplashScreen(const QPixmap& pixmap, Qt::WindowFlags f)
-    : QSplashScreen(pixmap, f)
+    : QSplashScreen(pixmap, f | Qt::NoDropShadowWindowHint)
 {
     // write the messages to splasher
     messages = new SplashObserver(this);
@@ -257,8 +257,6 @@ bool SplashScreen::event(QEvent* e)
 
 void SplashScreen::show()
 {
-    setWindowFlags(Qt::FramelessWindowHint | Qt::Window | Qt::NoDropShadowWindowHint);
-
     QSplashScreen::show();
 
     // Our repaint will call processEvents later on, no need to waste time here
