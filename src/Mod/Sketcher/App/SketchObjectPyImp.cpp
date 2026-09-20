@@ -24,6 +24,7 @@
 
 #include <memory>
 #include <sstream>
+#include <utility>
 
 #include <Geom_TrimmedCurve.hxx>
 
@@ -62,7 +63,7 @@ PyObject* SketchObjectPy::solve(PyObject* args)
         return nullptr;
     }
     const auto status = this->getSketchObjectPtr()->solve();
-    return Py_BuildValue("i", Base::to_underlying(status));
+    return Py_BuildValue("i", std::to_underlying(status));
 }
 
 PyObject* SketchObjectPy::addGeometry(PyObject* args)
