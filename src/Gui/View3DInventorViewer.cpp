@@ -1257,8 +1257,13 @@ void View3DInventorViewer::init()
 #endif
 
     // set the transparency and antialiasing settings
+    // NOTE: SORTED_OBJECT_BLEND instead of SORTED_OBJECT_SORTED_TRIANGLE_BLEND:
+    // the latter sorts every triangle of transparent shapes on the CPU per
+    // frame (SoPrimitiveVertexCache::depthSortTriangles), which pegs the GUI
+    // thread on complex models. Object-level sorting keeps correct ordering
+    // between bodies and only forgoes within-body triangle order.
     getSoRenderManager()->getGLRenderAction()->setTransparencyType(
-        SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND
+        SoGLRenderAction::SORTED_OBJECT_BLEND
     );
 
     // Settings
