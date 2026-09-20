@@ -34,6 +34,7 @@
 
 class SoFieldSensor;
 class SoSensor;
+class SoMaterial;
 
 
 namespace PartGui
@@ -139,11 +140,12 @@ private:
 
     bool overrideMaterialBinding(SoGLRenderAction* action, SelContextPtr ctx, SelContextPtr ctx2);
 
-    // Installs per-vertex diffuse colors so that Coin renders this shape
-    // through its vertex-array path instead of the legacy immediate-mode
-    // path. Returns false when the current colors cannot be expressed that
-    // way (mixed per-part transparency, tiny geometry, ...).
-    bool setupVertexColorMaterial(SoState* state,
+    // Installs per-vertex diffuse colors (through an internal SoMaterial
+    // that registers a color VBO with per-vertex alpha) so that Coin renders
+    // this shape through its vertex-array path instead of the legacy
+    // immediate-mode path. Returns false when the current colors cannot be
+    // expressed that way (tiny geometry, no VBO support, ...).
+    bool setupVertexColorMaterial(SoGLRenderAction* action,
                                   const std::vector<uint32_t>& colors,
                                   const std::vector<int32_t>& perPartMaterialIndex,
                                   int numCoordIndices);
@@ -175,10 +177,10 @@ private:
     SoFieldSensor* vaPartSensor {nullptr};
     std::vector<int32_t> vaPartOfVertex;  // coordinate index -> part index (-1 = unreferenced)
     std::vector<SbColor> vaVertexColors;
+    std::vector<float> vaVertexTransparencies;  // only filled when per-part alphas differ
     std::vector<uint32_t> vaPackedKey;
     std::vector<int32_t> vaPartKey;
-    SoColorPacker vaColorPacker;
-    float vaSingleTransparency {0.0f};
+    SoMaterial* vaMaterial {nullptr};
 
     uint32_t packedColor;
     Gui::SoFCSelectionCounter selCounter;

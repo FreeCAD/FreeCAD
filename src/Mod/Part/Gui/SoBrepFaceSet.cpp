@@ -35,6 +35,7 @@
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoDepthBufferElement.h>
+#include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
@@ -45,6 +46,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/nodes/SoMaterial.h>
 
 #include <Base/Profiler.h>
 
@@ -252,6 +254,13 @@ SoBrepFaceSet::SoBrepFaceSet()
     overlayFaceSet = new SoIndexedFaceSet;
     overlayFaceSet->ref();
 
+    // Publishes per-vertex colors for the vertex-array path. Rendering this
+    // node makes Coin register a color VBO (packed RGBA, per-vertex alpha) in
+    // SoGLVBOElement, which SoShape::startVertexArray() then binds instead of
+    // the alpha-less glColorPointer(3, GL_FLOAT) fallback.
+    vaMaterial = new SoMaterial;
+    vaMaterial->ref();
+
     // Track geometry changes for the per-vertex color cache. Coin declares
     // SoIndexedFaceSet::notify() private, so field sensors are used instead.
     vaCoordSensor = new SoFieldSensor(vaGeometryChangedCB, this);
@@ -277,6 +286,10 @@ SoBrepFaceSet::~SoBrepFaceSet()
     if (overlayFaceSet) {
         overlayFaceSet->unref();
         overlayFaceSet = nullptr;
+    }
+    if (vaMaterial) {
+        vaMaterial->unref();
+        vaMaterial = nullptr;
     }
 }
 
@@ -528,7 +541,7 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction* action, SelContextPtr ctx,
 }
 
 bool SoBrepFaceSet::setupVertexColorMaterial(
-    SoState* state,
+    SoGLRenderAction* action,
     const std::vector<uint32_t>& colors,
     const std::vector<int32_t>& perPartMaterialIndex,
     int numCoordIndices
@@ -539,33 +552,26 @@ bool SoBrepFaceSet::setupVertexColorMaterial(
     if (numCoordIndices < 20 || colors.empty() || perPartMaterialIndex.empty()) {
         return false;
     }
+    auto* state = action->getState();
 
-    // Unpack the few distinct colors and require a single transparency value:
-    // without a color VBO Coin's vertex-array path carries alpha in the
-    // material state, not per vertex.
+    // Unpack the few distinct colors with their per-part transparency.
     std::vector<SbColor> lookup(colors.size());
-    float transparency = 0.0f;
+    std::vector<float> lookupTransparency(colors.size());
+    bool uniformTransparency = true;
     for (size_t i = 0; i < colors.size(); ++i) {
-        float value = 0.0f;
-        lookup[i].setPackedValue(colors[i], value);
-        if (i == 0) {
-            transparency = value;
-        }
-        else if (std::fabs(value - transparency) > 1e-6f) {
-            // Mixed per-part transparency cannot ride the single-alpha
-            // vertex-array path; keep the per-face remap instead.
-            return false;
+        lookup[i].setPackedValue(colors[i], lookupTransparency[i]);
+        if (i > 0 && std::fabs(lookupTransparency[i] - lookupTransparency[0]) > 1e-6f) {
+            uniformTransparency = false;
         }
     }
 
-    // Coin always enables GL_COLOR_MATERIAL(GL_DIFFUSE) and the non-VBO
+    // Coin always enables GL_COLOR_MATERIAL(GL_DIFFUSE), and the non-VBO
     // vertex-array color path sends glColorPointer(3, GL_FLOAT): RGB only,
-    // per-vertex alpha implicitly 1.0. A transparent material would render
-    // opaque and hide geometry behind it, so keep transparent materials on
-    // the per-face remap, whose glColor4ub carries the alpha per face.
-    if (transparency > 1e-6f) {
-        return false;
-    }
+    // per-vertex alpha implicitly 1.0. Transparent materials therefore need
+    // the color VBO registered by SoMaterial (packed RGBA, per-vertex alpha
+    // from SoGLLazyElement::packColors). If that is unavailable, keep them on
+    // the per-face remap whose glColor4ub carries the alpha per face.
+    const bool hasTransparency = lookupTransparency[0] > 1e-6f || !uniformTransparency;
 
     if (vaGeomDirty || vaPartOfVertex.empty()) {
         if (!buildPartOfVertex(vaPartOfVertex,
@@ -581,8 +587,16 @@ bool SoBrepFaceSet::setupVertexColorMaterial(
     }
     const auto numVertices = static_cast<int>(vaPartOfVertex.size());
 
+    if (hasTransparency
+        && !SoGLVBOElement::shouldCreateVBO(state, numVertices)) {
+        return false;
+    }
+
     if (vaPackedKey != colors || vaPartKey != perPartMaterialIndex) {
         vaVertexColors.resize(numVertices);
+        if (!uniformTransparency) {
+            vaVertexTransparencies.resize(numVertices);
+        }
         for (int v = 0; v < numVertices; ++v) {
             const int part = vaPartOfVertex[v];
             int colorIndex = (part >= 0 && part < static_cast<int>(perPartMaterialIndex.size()))
@@ -592,10 +606,27 @@ bool SoBrepFaceSet::setupVertexColorMaterial(
                 colorIndex = 0;
             }
             vaVertexColors[v] = lookup[colorIndex];
+            if (!uniformTransparency) {
+                vaVertexTransparencies[v] = lookupTransparency[colorIndex];
+            }
         }
         vaPackedKey = colors;
         vaPartKey = perPartMaterialIndex;
-        vaSingleTransparency = transparency;
+
+        // Publish through the internal material (adopts our buffers, zero
+        // copy). The touch() bumps its node id so Coin's lazy element and
+        // color VBO notice the changed data. The setNum(0) first makes sure
+        // SoMaterial::notify() resets its cached transparency flag even when
+        // setValuesPointer() adopts the same pointer as before.
+        vaMaterial->transparency.setNum(0);
+        vaMaterial->diffuseColor.setValuesPointer(numVertices, vaVertexColors.data());
+        if (uniformTransparency) {
+            vaMaterial->transparency.setValue(lookupTransparency[0]);
+        }
+        else {
+            vaMaterial->transparency.setValuesPointer(numVertices, vaVertexTransparencies.data());
+        }
+        vaMaterial->touch();
     }
 
     // Coin picks the vertex-array path only when materialIndex is empty, in
@@ -608,10 +639,10 @@ bool SoBrepFaceSet::setupVertexColorMaterial(
         }
     }
 
+    // Sets the lazy material state and registers the color VBO (per-vertex
+    // RGBA) in SoGLVBOElement for Coin's vertex-array renderer.
+    vaMaterial->doAction(action);
     SoMaterialBindingElement::set(state, this, SoMaterialBindingElement::PER_VERTEX_INDEXED);
-    SoLazyElement::setDiffuse(state, this, numVertices, vaVertexColors.data(), &vaColorPacker);
-    const float transparencyValue = vaSingleTransparency;
-    SoLazyElement::setTransparency(state, this, 1, &transparencyValue, &vaColorPacker);
     SoTextureEnabledElement::set(state, this, false);
     return true;
 }
@@ -695,7 +726,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction* action, SelContext
 
     if (singleColor > 0 && !partialRender) {
         packedColors.push_back(diffuseColor);
-        if (setupVertexColorMaterial(state, packedColors,
+        if (setupVertexColorMaterial(action, packedColors,
                                      std::vector<int32_t>(static_cast<size_t>(partCount), 0),
                                      this->coordIndex.getNum())) {
             return true;
@@ -821,7 +852,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction* action, SelContext
     // Transparency masking (partial secondary selection) still needs the
     // per-face remap below.
     if (!partialRender
-        && setupVertexColorMaterial(state, packedColors, perPartMaterialIndex,
+        && setupVertexColorMaterial(action, packedColors, perPartMaterialIndex,
                                     this->coordIndex.getNum())) {
         return true;
     }
