@@ -13,6 +13,28 @@
 #include <Base/NumericFormatting.h>
 #include <Base/NumericInput.h>
 
+App::QuantityInputUnit::QuantityInputUnit(const Base::Unit& unit)
+    : scale {1.0, unit}
+    , symbol {unit == Base::Unit::One ? std::string {} : unit.getString()}
+{}
+
+App::QuantityInputUnit::QuantityInputUnit(
+    const Base::Unit& unit,
+    const std::string_view displaySymbol
+)
+    : QuantityInputUnit {unit}
+{
+    if (unit == Base::Unit::One || displaySymbol.empty()) {
+        return;
+    }
+
+    const Base::Quantity displayed {1.0, std::string {displaySymbol}};
+    if (!displayed.isDimensionless() && displayed.isValid() && displayed.getUnit() == unit) {
+        scale = displayed;
+        symbol = std::string {displaySymbol};
+    }
+}
+
 namespace
 {
 std::size_t firstInputCharacter(std::string_view input)
@@ -218,7 +240,7 @@ App::QuantityInputResult incomplete(
 
 App::Expression* applyDefaultUnitToDimensionlessTerm(
     App::Expression* expression,
-    const Base::Unit& defaultUnit
+    const App::QuantityInputUnit& implicitUnit
 )
 {
     if (!expression) {
@@ -232,7 +254,9 @@ App::Expression* applyDefaultUnitToDimensionlessTerm(
             // Keep the original subtree intact. In particular, replacing a variable
             // expression with its current value would silently remove its dependency.
             auto unit = std::make_unique<App::UnitExpression>(
-                expression->getOwner(), Base::Quantity(1.0, defaultUnit), defaultUnit.getString()
+                expression->getOwner(),
+                implicitUnit.getScale(),
+                implicitUnit.getSymbol()
             );
             return new App::OperatorExpression(
                 expression->getOwner(),
@@ -255,7 +279,7 @@ App::Expression* applyDefaultUnitToDimensionlessTerm(
 
 void applyDefaultUnitPolicyToExpression(
     App::Expression& expression,
-    const Base::Unit& defaultUnit
+    const App::QuantityInputUnit& implicitUnit
 )
 {
     auto* operation = freecad_cast<App::OperatorExpression*>(&expression);
@@ -279,7 +303,7 @@ void applyDefaultUnitPolicyToExpression(
             // A complete dimensionless operand inherits the field unit at this additive
             // boundary. Do not descend into multiplicative, divisive, power, or explicit-unit
             // subtrees: their internal arithmetic must retain its canonical dimensional meaning.
-            if (auto* replacement = applyDefaultUnitToDimensionlessTerm(operand, defaultUnit)) {
+            if (auto* replacement = applyDefaultUnitToDimensionlessTerm(operand, implicitUnit)) {
                 if (left) {
                     operation->setLeft(replacement);
                 }
@@ -296,7 +320,7 @@ void applyDefaultUnitPolicyToExpression(
             const auto* nested = freecad_cast<const App::OperatorExpression*>(operand);
             if (nested && (nested->getOperator() == App::OperatorExpression::ADD
                            || nested->getOperator() == App::OperatorExpression::SUB)) {
-                applyDefaultUnitPolicyToExpression(*operand, defaultUnit);
+                applyDefaultUnitPolicyToExpression(*operand, implicitUnit);
             }
         };
 
@@ -306,13 +330,31 @@ void applyDefaultUnitPolicyToExpression(
     }
 }
 
-void applyDefaultUnitPolicy(App::Expression& expression, const Base::Unit& defaultUnit)
+void applyDefaultUnitPolicy(App::Expression& expression, const App::QuantityInputUnit& implicitUnit)
 {
-    if (defaultUnit == Base::Unit::One) {
+    if (implicitUnit.isDimensionless()) {
         return;
     }
 
-    applyDefaultUnitPolicyToExpression(expression, defaultUnit);
+    applyDefaultUnitPolicyToExpression(expression, implicitUnit);
+}
+
+std::unique_ptr<App::Expression> applyWholeInputUnitToExpression(
+    const App::Expression& expression,
+    const App::QuantityInputUnit& implicitUnit
+)
+{
+    auto unit = std::make_unique<App::UnitExpression>(
+        expression.getOwner(),
+        implicitUnit.getScale(),
+        implicitUnit.getSymbol()
+    );
+    return std::make_unique<App::OperatorExpression>(
+        expression.getOwner(),
+        expression.copy().release(),
+        App::OperatorExpression::UNIT,
+        unit.release()
+    );
 }
 
 }  // namespace
@@ -321,7 +363,7 @@ App::QuantityInputResult App::interpretQuantityInput(
     const std::string_view input,
     const QuantityInputGrammar grammar,
     const ObjectIdentifier& path,
-    const Base::Unit& defaultUnit,
+    const QuantityInputUnit& implicitUnit,
     const Base::NumericLocaleContext& locale,
     const InputPhase phase,
     const QuantityConstraints& constraints
@@ -377,13 +419,28 @@ App::QuantityInputResult App::interpretQuantityInput(
             // Apply the field-unit policy before evaluation. Dimensionless additive terms are
             // replaced as complete expressions; explicit units and multiplicative terms remain
             // untouched.
-            applyDefaultUnitPolicy(*parsedExpression, defaultUnit);
-            const auto evaluated = parsedExpression->eval();
+            applyDefaultUnitPolicy(*parsedExpression, implicitUnit);
+            auto evaluated = parsedExpression->eval();
             auto* number = freecad_cast<NumberExpression*>(evaluated.get());
             if (!number) {
                 return invalid(InputDiagnosticKind::Evaluation);
             }
             quantity = number->getQuantity();
+
+            // A complete dimensionless expression has no additive boundary at which to inherit
+            // the field unit. Wrap the complete tree so the retained expression and the returned
+            // quantity have identical semantics (for example, `(2 * 3) in`).
+            if (quantity.isDimensionless() && !implicitUnit.isDimensionless()) {
+                parsedExpression = std::shared_ptr<Expression>(
+                    applyWholeInputUnitToExpression(*parsedExpression, implicitUnit).release()
+                );
+                evaluated = parsedExpression->eval();
+                number = freecad_cast<NumberExpression*>(evaluated.get());
+                if (!number) {
+                    return invalid(InputDiagnosticKind::Evaluation);
+                }
+                quantity = number->getQuantity();
+            }
             if (!owner) {
                 parsedExpression.reset();
             }
@@ -402,8 +459,10 @@ App::QuantityInputResult App::interpretQuantityInput(
         return invalid(InputDiagnosticKind::Evaluation);
     }
 
-    if (quantity.isDimensionless()) {
-        quantity.setUnit(defaultUnit);
+    if (grammar == QuantityInputGrammar::Quantity && quantity.isDimensionless()
+        && !implicitUnit.isDimensionless()) {
+        quantity.setValue(quantity.getValue() * implicitUnit.getScale().getValue());
+        quantity.setUnit(implicitUnit.getUnit());
     }
 
     if (constraints.requiredUnit && !quantity.isDimensionlessOrUnit(*constraints.requiredUnit)) {

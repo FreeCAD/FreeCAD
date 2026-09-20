@@ -4992,9 +4992,9 @@ GCS::SolveStatus Sketch::internalSolve(std::string& solvername, int level)
         clearTemporaryConstraints();
     }
 
-    GCS::SolveStatus status;
     bool valid_solution;
     int defaultsoltype = -1;
+    GCS::SolveStatus status = GCS::SolveStatus::Failed;
 
     if (isInitMove) {
         solvername = "DogLeg";  // DogLeg is used for dragging (same as before)
@@ -5002,17 +5002,17 @@ GCS::SolveStatus Sketch::internalSolve(std::string& solvername, int level)
     }
     else {
         switch (defaultSolver) {
-            case 0:
+            case GCS::BFGS:
                 solvername = "BFGS";
                 status = GCSsys.solve(GCS::BFGS);
                 defaultsoltype = 2;
                 break;
-            case 1:  // solving with the LevenbergMarquardt solver
+            case GCS::LevenbergMarquardt:
                 solvername = "LevenbergMarquardt";
                 status = GCSsys.solve(GCS::LevenbergMarquardt);
                 defaultsoltype = 1;
                 break;
-            case 2:  // solving with the BFGS solver
+            case GCS::DogLeg:
                 solvername = "DogLeg";
                 status = GCSsys.solve(GCS::DogLeg);
                 defaultsoltype = 0;
