@@ -54,8 +54,10 @@
 // FreeCADGui
 #ifdef FreeCADGui_EXPORTS
 #  define GuiExport   FREECAD_DECL_EXPORT
+#  define QtTestingExport    FREECAD_DECL_EXPORT
 #else
 #  define GuiExport   FREECAD_DECL_IMPORT
+#  define QtTestingExport    FREECAD_DECL_IMPORT
 #endif
 
 // Disable copy/move
