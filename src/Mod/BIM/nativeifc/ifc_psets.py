@@ -159,7 +159,7 @@ def show_psets(obj):
             if pname in obj.PropertiesList:
                 if (
                     ftype == "App::PropertyString"
-                    and obj.getTypeOfProperty(pname) == "App::PropertyStringList"
+                    and obj.getTypeIdOfProperty(pname) == "App::PropertyStringList"
                 ):
                     ftype = "App::PropertyStringList"
                     value = [value]
