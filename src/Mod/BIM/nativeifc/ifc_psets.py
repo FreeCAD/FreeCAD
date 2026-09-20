@@ -166,7 +166,7 @@ def show_psets(obj):
             else:
                 # print(pname, gname, obj.PropertiesList)
                 obj.addProperty(ftype, pname, gname, ttip, locked=True)
-            if obj.getTypeOfProperty(pname) == ftype and obj.getGroupOfProperty(pname) == gname:
+            if obj.getTypeIdOfProperty(pname) == ftype and obj.getGroupOfProperty(pname) == gname:
                 setattr(obj, pname, value)
 
 
