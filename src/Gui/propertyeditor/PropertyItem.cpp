@@ -3067,22 +3067,22 @@ void PropertyEnumItem::setValue(const QVariant& value)
     std::ostringstream ss;
 
     if (value.userType() == QMetaType::QStringList) {
-        QStringList values = value.toStringList();
+        const QStringList values = value.toStringList();
         ss << "[";
         for (const auto& it : values) {
             QString text(it);
             text.replace(QStringLiteral("'"), QStringLiteral("\\'"));
 
-            std::string str = Base::Tools::escapedUnicodeFromUtf8(text.toUtf8());
-            str = Base::InterpreterSingleton::strToPython(str);
-            ss << "u\"" << str << "\", ";
+            const std::string str = Base::InterpreterSingleton::strToPython(text.toStdString());
+            ss << Base::Tools::quoted(str) << ", ";
         }
+
         ss << "]";
         setPropertyValue(ss.str());
     }
     else if (value.canConvert<QString>()) {
-        std::string str = Base::Tools::escapedUnicodeFromUtf8(value.toString().toUtf8());
-        ss << "u\"" << str << "\"";
+        const std::string str = Base::InterpreterSingleton::strToPython(value.toString().toStdString());
+        ss << Base::Tools::quoted(str);
         setPropertyValue(ss.str());
     }
 }
