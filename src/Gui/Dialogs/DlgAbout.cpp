@@ -118,9 +118,9 @@ AboutDialog::AboutDialog(QWidget* parent)
     // See if we have a custom About screen image set
     QPixmap image = aboutImage();
 
-    // Fallback to the splashscreen image
+    // Fallback to the static splash screen image
     if (image.isNull()) {
-        image = SplashScreen::splashImage();
+        image = SplashScreen::defaultSplashImage();
     }
 
     // Make sure the image is not too big

@@ -229,7 +229,7 @@ static void renderDevBuildWarning(
     painter.drawText(box, Qt::AlignCenter, devWarning);
 }
 
-static QPixmap defaultSplashImage()
+QPixmap SplashScreen::defaultSplashImage()
 {
     constexpr QSizeF splashSize(480.0, 220.0);
     return BitmapFactory().pixmapFromSvg(":/icons/freecadsplash.svg", splashSize);
