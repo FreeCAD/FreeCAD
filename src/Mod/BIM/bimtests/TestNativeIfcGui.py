@@ -35,7 +35,9 @@ class TestNativeIfcGui(TestArchBaseGui.TestArchBaseGui):
     def test12_RemoveObject(self):
         from nativeifc import ifc_observer
 
-        ifc_observer.add_observer()
+        if not hasattr(FreeCAD, "BIMobserver"):
+            ifc_observer.add_observer()
+            self.addCleanup(ifc_observer.remove_observer)
         FreeCAD.Console.PrintMessage("NativeIFC 12: Remove object...")
         fp = getIfcFilePath()
         ifc_import.insert(
