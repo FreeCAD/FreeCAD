@@ -667,6 +667,13 @@ void ToolBarManager::setupToolBarIconSize()
 
 void ToolBarManager::setToolBarIconSize(QToolBar* toolbar)
 {
+    // Toolbars registered as status-bar items are direct children of QStatusBar,
+    // and own their icon size. Toolbars hosted in statusBarAreaWidget still use
+    // the StatusBarIconSize preference through toolBarIconSize().
+    if (toolbar->parentWidget() == getMainWindow()->statusBar()) {
+        return;
+    }
+
     int s = toolBarIconSize(toolbar);
     toolbar->setIconSize(QSize(s, s));
     if (toolbar->parentWidget() == menuBarLeftAreaWidget) {
