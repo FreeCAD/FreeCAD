@@ -271,18 +271,61 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         return -1;
     }
 
-    // two geometries can only get filleted if they have a coincident point
-    std::vector<int> GeoIdList;
-    std::vector<PointPos> PosIdList;
-    getDirectlyCoincidentPoints(GeoId1, GeoId2, GeoIdList, PosIdList);
+    // clang-format on
+    const Part::Geometry* geo1 = getGeometry(GeoId1);
+    const Part::Geometry* geo2 = getGeometry(GeoId2);
+    bool success = false;
+    const auto deferredBsplineMessage = Defer {
+        [this,
+         chamfer,
+         &success,
+         touchesBspline = geo1->isDerivedFrom<Part::GeomBSplineCurve>()
+             || geo2->isDerivedFrom<Part::GeomBSplineCurve>()]() {
+            if (!touchesBspline) {
+                return;
+            }
+            if (success) {
+                Base::Console().userWarning(
+                    getFullName(),
+                    chamfer
+                        ? QT_TRANSLATE_NOOP(
+                              "Notifications",
+                              "Chamfering B-Splines is partially implemented and is likely to "
+                              "result in splines that cannot be controlled or constrained any more."
+                          )
+                        : QT_TRANSLATE_NOOP(
+                              "Notifications",
+                              "Filleting B-Splines is partially implemented and is likely to "
+                              "result in splines that cannot be controlled or constrained any more."
+                          )
+                );
+            }
+            else {
+                Base::Console().userError(
+                    getFullName(),
+                    chamfer
+                        ? QT_TRANSLATE_NOOP(
+                              "Notifications",
+                              "Chamfering B-Splines is partially implemented and only succeeds in "
+                              "specific geometric setups."
+                          )
+                        : QT_TRANSLATE_NOOP(
+                              "Notifications",
+                              "Filleting B-Splines is partially implemented and only succeeds in "
+                              "specific geometric setups."
+                          )
+                );
+            }
+        }
+    };
+    // clang-format off
 
-    if (GeoIdList.size() < 1) {
+    // two geometries can only get filleted if they have a coincident point
+    if (!hasDirectlyCoincidentPoints(GeoId1, GeoId2)) {
         return -1;
     }
 
     // If either of the two input lines are locked, don't try to trim since it won't work anyway
-    const Part::Geometry* geo1 = getGeometry(GeoId1);
-    const Part::Geometry* geo2 = getGeometry(GeoId2);
     if (trim && (GeometryFacade::getBlocked(geo1) || GeometryFacade::getBlocked(geo2))) {
         trim = false;
     }
@@ -496,6 +539,8 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
     if (noRecomputes) {
         solve();
     }
+
+    success = true;
 
     return 0;
 }

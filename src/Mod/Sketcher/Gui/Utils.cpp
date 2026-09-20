@@ -45,6 +45,7 @@
 
 
 using namespace std;
+using namespace std::string_view_literals;
 using namespace SketcherGui;
 using namespace Sketcher;
 
@@ -215,34 +216,33 @@ bool SketcherGui::ReleaseHandler(Gui::Document* doc)
 }
 
 void SketcherGui::getIdsFromName(
-    const std::string& name,
-    const Sketcher::SketchObject* Obj,
-    int& GeoId,
-    PointPos& PosId
+    std::string_view name,
+    const Sketcher::SketchObject* obj,
+    int& geoId,
+    PointPos& posId
 )
 {
-    GeoId = GeoEnum::GeoUndef;
-    PosId = Sketcher::PointPos::none;
+    geoId = GeoEnum::GeoUndef;
+    posId = Sketcher::PointPos::none;
 
-    if (name.size() > 4 && name.substr(0, 4) == "Edge") {
-        GeoId = std::atoi(name.substr(4, 4000).c_str()) - 1;
+    if (const auto edgeId = getEdgeId(name)) {
+        geoId = edgeId.value();
     }
-    else if (name.size() == 9 && name.substr(0, 9) == "RootPoint") {
-        GeoId = Sketcher::GeoEnum::RtPnt;
-        PosId = Sketcher::PointPos::start;
+    else if (name == "RootPoint"sv) {
+        geoId = Sketcher::GeoEnum::RtPnt;
+        posId = Sketcher::PointPos::start;
     }
-    else if (name.size() == 6 && name.substr(0, 6) == "H_Axis") {
-        GeoId = Sketcher::GeoEnum::HAxis;
+    else if (name == "H_Axis"sv) {
+        geoId = Sketcher::GeoEnum::HAxis;
     }
-    else if (name.size() == 6 && name.substr(0, 6) == "V_Axis") {
-        GeoId = Sketcher::GeoEnum::VAxis;
+    else if (name == "V_Axis"sv) {
+        geoId = Sketcher::GeoEnum::VAxis;
     }
-    else if (name.size() > 12 && name.substr(0, 12) == "ExternalEdge") {
-        GeoId = Sketcher::GeoEnum::RefExt + 1 - std::atoi(name.substr(12, 4000).c_str());
+    else if (const auto edgeId = getExternalEdgeId(name)) {
+        geoId = edgeId.value();
     }
-    else if (name.size() > 6 && name.substr(0, 6) == "Vertex") {
-        int VtId = std::atoi(name.substr(6, 4000).c_str()) - 1;
-        Obj->getGeoVertexIndex(VtId, GeoId, PosId);
+    else if (const auto vertexId = getVertexId(name)) {
+        obj->getGeoVertexIndex(vertexId.value(), geoId, posId);
     }
 }
 
