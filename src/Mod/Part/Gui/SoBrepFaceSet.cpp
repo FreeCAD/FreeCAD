@@ -22,6 +22,7 @@
  ******************************************************************************/
 
 #include <algorithm>
+#include <cmath>
 #include <limits>
 #include <set>
 #include <vector>
@@ -42,6 +43,7 @@
 #include <Inventor/elements/SoTextureEnabledElement.h>
 #include <Inventor/elements/SoPolygonOffsetElement.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/misc/SoState.h>
 
 #include <Base/Profiler.h>
@@ -178,6 +180,52 @@ static void expandPartMaterialIndexToFaceMaterialIndex(
     }
 }
 
+// Maps every referenced coordinate index to the part (topological face) that
+// references it. OCCT tessellation emits vertices per face, so indices are
+// not shared between parts; if a shared index still occurs, the last part wins.
+static bool buildPartOfVertex(
+    std::vector<int32_t>& out,
+    const int32_t* coordIndex,
+    int coordIndexCount,
+    const int32_t* partTriCounts,
+    int partCount
+)
+{
+    if (!coordIndex || coordIndexCount <= 0 || !partTriCounts || partCount <= 0) {
+        return false;
+    }
+
+    int32_t maxIndex = -1;
+    for (int i = 0; i < coordIndexCount; ++i) {
+        if (coordIndex[i] > maxIndex) {
+            maxIndex = coordIndex[i];
+        }
+    }
+    if (maxIndex < 0) {
+        return false;
+    }
+
+    out.assign(static_cast<size_t>(maxIndex) + 1, -1);
+
+    int pos = 0;
+    for (int part = 0; part < partCount && pos < coordIndexCount; ++part) {
+        const int triangles = std::max(partTriCounts[part], 0);
+        for (int t = 0; t < triangles && pos < coordIndexCount; ++t) {
+            while (pos < coordIndexCount && coordIndex[pos] < 0) {
+                pos++;
+            }
+            while (pos < coordIndexCount && coordIndex[pos] >= 0) {
+                out[coordIndex[pos]] = static_cast<int32_t>(part);
+                pos++;
+            }
+            if (pos < coordIndexCount && coordIndex[pos] < 0) {
+                pos++;
+            }
+        }
+    }
+    return true;
+}
+
 }  // namespace
 
 void SoBrepFaceSet::initClass()
@@ -203,14 +251,43 @@ SoBrepFaceSet::SoBrepFaceSet()
 
     overlayFaceSet = new SoIndexedFaceSet;
     overlayFaceSet->ref();
+
+    // Track geometry changes for the per-vertex color cache. Coin declares
+    // SoIndexedFaceSet::notify() private, so field sensors are used instead.
+    vaCoordSensor = new SoFieldSensor(vaGeometryChangedCB, this);
+    vaCoordSensor->setPriority(0);
+    vaCoordSensor->attach(&this->coordIndex);
+    vaPartSensor = new SoFieldSensor(vaGeometryChangedCB, this);
+    vaPartSensor->setPriority(0);
+    vaPartSensor->attach(&this->partIndex);
 }
 
 SoBrepFaceSet::~SoBrepFaceSet()
 {
+    if (vaCoordSensor) {
+        vaCoordSensor->detach();
+        delete vaCoordSensor;
+        vaCoordSensor = nullptr;
+    }
+    if (vaPartSensor) {
+        vaPartSensor->detach();
+        delete vaPartSensor;
+        vaPartSensor = nullptr;
+    }
     if (overlayFaceSet) {
         overlayFaceSet->unref();
         overlayFaceSet = nullptr;
     }
+}
+
+void SoBrepFaceSet::markVAGeometryDirty()
+{
+    vaGeomDirty = true;
+}
+
+void SoBrepFaceSet::vaGeometryChangedCB(void* data, SoSensor* /*sensor*/)
+{
+    static_cast<SoBrepFaceSet*>(data)->markVAGeometryDirty();
 }
 
 void SoBrepFaceSet::doAction(SoAction* action)
@@ -450,6 +527,95 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction* action, SelContextPtr ctx,
     renderOverlayFaces(action, overlayFaceSet, overlayCoordIndex, ctx->selectionColor, false);
 }
 
+bool SoBrepFaceSet::setupVertexColorMaterial(
+    SoState* state,
+    const std::vector<uint32_t>& colors,
+    const std::vector<int32_t>& perPartMaterialIndex,
+    int numCoordIndices
+)
+{
+    // Matches Coin's DEFAULT_MIN_LIMIT: below it Coin renders immediate-mode
+    // anyway, so don't pay for the per-vertex expansion.
+    if (numCoordIndices < 20 || colors.empty() || perPartMaterialIndex.empty()) {
+        return false;
+    }
+
+    // Unpack the few distinct colors and require a single transparency value:
+    // without a color VBO Coin's vertex-array path carries alpha in the
+    // material state, not per vertex.
+    std::vector<SbColor> lookup(colors.size());
+    float transparency = 0.0f;
+    for (size_t i = 0; i < colors.size(); ++i) {
+        float value = 0.0f;
+        lookup[i].setPackedValue(colors[i], value);
+        if (i == 0) {
+            transparency = value;
+        }
+        else if (std::fabs(value - transparency) > 1e-6f) {
+            // Mixed per-part transparency cannot ride the single-alpha
+            // vertex-array path; keep the per-face remap instead.
+            return false;
+        }
+    }
+
+    // Coin always enables GL_COLOR_MATERIAL(GL_DIFFUSE) and the non-VBO
+    // vertex-array color path sends glColorPointer(3, GL_FLOAT): RGB only,
+    // per-vertex alpha implicitly 1.0. A transparent material would render
+    // opaque and hide geometry behind it, so keep transparent materials on
+    // the per-face remap, whose glColor4ub carries the alpha per face.
+    if (transparency > 1e-6f) {
+        return false;
+    }
+
+    if (vaGeomDirty || vaPartOfVertex.empty()) {
+        if (!buildPartOfVertex(vaPartOfVertex,
+                               this->coordIndex.getValues(0),
+                               this->coordIndex.getNum(),
+                               this->partIndex.getValues(0),
+                               this->partIndex.getNum())) {
+            return false;
+        }
+        vaGeomDirty = false;
+        vaPackedKey.clear();
+        vaPartKey.clear();
+    }
+    const auto numVertices = static_cast<int>(vaPartOfVertex.size());
+
+    if (vaPackedKey != colors || vaPartKey != perPartMaterialIndex) {
+        vaVertexColors.resize(numVertices);
+        for (int v = 0; v < numVertices; ++v) {
+            const int part = vaPartOfVertex[v];
+            int colorIndex = (part >= 0 && part < static_cast<int>(perPartMaterialIndex.size()))
+                ? perPartMaterialIndex[part]
+                : 0;
+            if (colorIndex < 0 || colorIndex >= static_cast<int>(lookup.size())) {
+                colorIndex = 0;
+            }
+            vaVertexColors[v] = lookup[colorIndex];
+        }
+        vaPackedKey = colors;
+        vaPartKey = perPartMaterialIndex;
+        vaSingleTransparency = transparency;
+    }
+
+    // Coin picks the vertex-array path only when materialIndex is empty, in
+    // which case the coord indices double as material indices.
+    if (this->materialIndex.getNum() != 0) {
+        SbBool notifyEnabled = this->enableNotify(FALSE);
+        this->materialIndex.setNum(0);
+        if (notifyEnabled) {
+            this->enableNotify(notifyEnabled);
+        }
+    }
+
+    SoMaterialBindingElement::set(state, this, SoMaterialBindingElement::PER_VERTEX_INDEXED);
+    SoLazyElement::setDiffuse(state, this, numVertices, vaVertexColors.data(), &vaColorPacker);
+    const float transparencyValue = vaSingleTransparency;
+    SoLazyElement::setTransparency(state, this, 1, &transparencyValue, &vaColorPacker);
+    SoTextureEnabledElement::set(state, this, false);
+    return true;
+}
+
 bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction* action, SelContextPtr ctx, SelContextPtr ctx2)
 {
     // SoBrepFaceSet groups rendered triangles into topological faces via
@@ -528,9 +694,14 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction* action, SelContext
     const bool partialRender = ctx2 && !ctx2->selectionIndex.empty() && !ctx2->isSelectAll();
 
     if (singleColor > 0 && !partialRender) {
+        packedColors.push_back(diffuseColor);
+        if (setupVertexColorMaterial(state, packedColors,
+                                     std::vector<int32_t>(static_cast<size_t>(partCount), 0),
+                                     this->coordIndex.getNum())) {
+            return true;
+        }
         SoMaterialBindingElement::set(state, SoMaterialBindingElement::OVERALL);
         SoOverrideElement::setMaterialBindingOverride(state, this, true);
-        packedColors.push_back(diffuseColor);
         SoLazyElement::setPacked(state, this, 1, packedColors.data(), hasBaseTransparency);
         SoTextureEnabledElement::set(state, this, false);
         return true;
@@ -644,6 +815,15 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction* action, SelContext
     if (matIndex.empty()) {
         state->pop();
         return false;
+    }
+
+    // Prefer per-vertex colors so that Coin renders through vertex arrays.
+    // Transparency masking (partial secondary selection) still needs the
+    // per-face remap below.
+    if (!partialRender
+        && setupVertexColorMaterial(state, packedColors, perPartMaterialIndex,
+                                    this->coordIndex.getNum())) {
+        return true;
     }
 
     const size_t num = materialIndex.getNum();

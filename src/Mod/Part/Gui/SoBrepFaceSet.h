@@ -23,6 +23,7 @@
 
 #pragma once
 
+#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/fields/SoMFInt32.h>
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
@@ -30,6 +31,9 @@
 #include <vector>
 #include <Gui/Selection/SoFCSelectionContext.h>
 #include <Mod/Part/PartGlobal.h>
+
+class SoFieldSensor;
+class SoSensor;
 
 
 namespace PartGui
@@ -135,6 +139,15 @@ private:
 
     bool overrideMaterialBinding(SoGLRenderAction* action, SelContextPtr ctx, SelContextPtr ctx2);
 
+    // Installs per-vertex diffuse colors so that Coin renders this shape
+    // through its vertex-array path instead of the legacy immediate-mode
+    // path. Returns false when the current colors cannot be expressed that
+    // way (mixed per-part transparency, tiny geometry, ...).
+    bool setupVertexColorMaterial(SoState* state,
+                                  const std::vector<uint32_t>& colors,
+                                  const std::vector<int32_t>& perPartMaterialIndex,
+                                  int numCoordIndices);
+
 #ifdef RENDER_GLARRAYS
     void renderSimpleArray();
     void renderColoredArray(SoMaterialBundle* const materials);
@@ -149,6 +162,24 @@ private:
     SelContextPtr selContext2;
     std::vector<int32_t> matIndex;
     std::vector<uint32_t> packedColors;
+
+    // Cached state for setupVertexColorMaterial(). Coin's vertex-array
+    // renderer only engages for PER_VERTEX_INDEXED materials with an empty
+    // materialIndex field, so per-part colors are expanded per vertex here.
+    // Geometry changes are tracked with field sensors because Coin declares
+    // SoIndexedFaceSet::notify() private.
+    void markVAGeometryDirty();
+    static void vaGeometryChangedCB(void* data, SoSensor* sensor);
+    bool vaGeomDirty {true};
+    SoFieldSensor* vaCoordSensor {nullptr};
+    SoFieldSensor* vaPartSensor {nullptr};
+    std::vector<int32_t> vaPartOfVertex;  // coordinate index -> part index (-1 = unreferenced)
+    std::vector<SbColor> vaVertexColors;
+    std::vector<uint32_t> vaPackedKey;
+    std::vector<int32_t> vaPartKey;
+    SoColorPacker vaColorPacker;
+    float vaSingleTransparency {0.0f};
+
     uint32_t packedColor;
     Gui::SoFCSelectionCounter selCounter;
 
