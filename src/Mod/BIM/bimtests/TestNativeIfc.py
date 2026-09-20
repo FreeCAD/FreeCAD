@@ -21,7 +21,6 @@
 
 """Unit test for the Native IFC module"""
 
-import difflib
 import os
 import tempfile
 import unittest
@@ -47,7 +46,6 @@ from nativeifc import ifc_generator
 from nativeifc import ifc_types
 
 IFC_FILE_PATH = None  # downloaded IFC file path
-FCSTD_FILE_PATH = None  # saved FreeCAD file
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
 SINGLEDOC = False  # This allows one to force singledoc mode for all tests
 SDU = int(SINGLEDOC)  # number of objects is different in singledoc
@@ -72,17 +70,22 @@ def getIfcFilePath():
     return IFC_FILE_PATH
 
 
-def compare(file1, file2):
-    with open(file1) as f1:
-        f1_text = f1.readlines()
-    with open(file2) as f2:
-        f2_text = f2.readlines()
-    res = [
-        l for l in difflib.unified_diff(f1_text, f2_text, fromfile=file1, tofile=file2, lineterm="")
-    ]
-    res = [l for l in res if l.startswith("+") or l.startswith("-")]
-    res = [l for l in res if not l.startswith("+++") and not l.startswith("---")]
-    return res
+def compare(first_path, second_path):
+    """Returns the sorted ids of the entities that differ between two IFC files.
+
+    An entity differs if its id exists in only one of the files (it was added or removed), or if
+    its id exists in both files but its attributes are different."""
+
+    first_file = ifcopenshell.open(first_path)
+    second_file = ifcopenshell.open(second_path)
+    first_ids = {entity.id() for entity in first_file}
+    second_ids = {entity.id() for entity in second_file}
+    changed_ids = {
+        entity_id
+        for entity_id in first_ids & second_ids
+        if str(first_file.by_id(entity_id)) != str(second_file.by_id(entity_id))
+    }
+    return sorted(changed_ids | (first_ids ^ second_ids))
 
 
 def get_schema_descendant_names(schema_name, root_name):
@@ -98,6 +101,26 @@ def get_schema_descendant_names(schema_name, root_name):
 
 
 class TestNativeIfc(TestArchBase.TestArchBase):
+
+    def createFreeCADFile(self):
+        """Saves the sample IFC file, imported with display-only geometry, as a FreeCAD file.
+
+        The file is deleted when the test ends. Returns its path."""
+
+        source_document = ifc_import.insert(
+            getIfcFilePath(),
+            "IfcSource",
+            strategy=2,
+            shapemode=1,
+            switchwb=0,
+            silent=True,
+            singledoc=SINGLEDOC,
+        )
+        freecad_path = tempfile.mkstemp(suffix=".FCStd")[1]
+        self.addCleanup(os.remove, freecad_path)
+        source_document.saveAs(freecad_path)
+        FreeCAD.closeDocument(source_document.Name)
+        return freecad_path
 
     def assertClassEnumMatchesFamily(self, obj, root_name):
         ifcfile = ifc_tools.get_ifcfile(obj)
@@ -137,10 +160,9 @@ class TestNativeIfc(TestArchBase.TestArchBase):
         self.assertTrue(fco == 4 - SDU, "ImportCoinStructure failed")
 
     def test03_ImportCoinFull(self):
-        global FCSTD_FILE_PATH
         FreeCAD.Console.PrintMessage("NativeIFC 03: Importing full model, coin mode...")
         fp = getIfcFilePath()
-        d = ifc_import.insert(
+        ifc_import.insert(
             fp,
             self.doc_name,
             strategy=2,
@@ -149,9 +171,6 @@ class TestNativeIfc(TestArchBase.TestArchBase):
             silent=True,
             singledoc=SINGLEDOC,
         )
-        path = tempfile.mkstemp(suffix=".FCStd")[1]
-        d.saveAs(path)
-        FCSTD_FILE_PATH = path
         fco = len(self.document.Objects)
         self.assertTrue(fco > 4 - SDU, "ImportCoinFull failed")
 
@@ -172,26 +191,28 @@ class TestNativeIfc(TestArchBase.TestArchBase):
 
     def test05_ImportFreeCAD(self):
         FreeCAD.Console.PrintMessage("NativeIFC 05: FreeCAD import of NativeIFC coin file...")
-        doc = FreeCAD.open(FCSTD_FILE_PATH)
+        doc = FreeCAD.open(self.createFreeCADFile())
+        self.addCleanup(FreeCAD.closeDocument, doc.Name)
         obj = doc.Objects[-1]
         proj = ifc_tools.get_project(obj)
         ifcfile = ifc_tools.get_ifcfile(proj)
         print(ifcfile)
         self.assertTrue(ifcfile, "ImportFreeCAD failed")
 
-    @unittest.expectedFailure
     def test06_ModifyObjects(self):
         FreeCAD.Console.PrintMessage("NativeIFC 06: Modifying IFC document...")
-        doc = FreeCAD.open(FCSTD_FILE_PATH)
+        doc = FreeCAD.open(self.createFreeCADFile())
+        self.addCleanup(FreeCAD.closeDocument, doc.Name)
         obj = doc.Objects[-1]
         obj.Label = "Modified name"
         proj = ifc_tools.get_project(obj)
         proj.IfcFilePath = proj.IfcFilePath[:-4] + "_modified.ifc"
         ifc_tools.save_ifc(proj)
-        ifc_diff = compare(IFC_FILE_PATH, proj.IfcFilePath)
+        # The renamed window, and the new IfcOwnerHistory entity that records the change
+        ifc_diff = compare(getIfcFilePath(), proj.IfcFilePath)
         obj.ShapeMode = 0
         obj.Proxy.execute(obj)
-        self.assertTrue(obj.Shape.Volume > 2 and len(ifc_diff) <= 5, "ModifyObjects failed")
+        self.assertTrue(obj.Shape.Volume > 2 and len(ifc_diff) <= 2, "ModifyObjects failed")
 
     def test07_CreateDocument(self):
         FreeCAD.Console.PrintMessage("NativeIFC 07: Creating new IFC document...")
@@ -269,7 +290,6 @@ class TestNativeIfc(TestArchBase.TestArchBase):
         )
         self.assertClassEnumMatchesFamily(wall.Type, "IfcTypeProduct")
 
-    @unittest.expectedFailure
     def test09_CreateBIMObjects(self):
         FreeCAD.Console.PrintMessage("NativeIFC 09: Creating BIM objects...")
         doc = self.document
@@ -296,7 +316,9 @@ class TestNativeIfc(TestArchBase.TestArchBase):
         fco = len(self.document.Objects)
         ifco = len(proj.Proxy.ifcfile.by_type("IfcRoot"))
         print(ifco, "IFC objects created")
-        self.assertTrue(fco == 8 - SDU and ifco == 12, "CreateDocument failed")
+        # The 12 entities for the objects and their relationships, plus the property set
+        # of the storey and its relationship
+        self.assertTrue(fco == 8 - SDU and ifco == 14, "CreateDocument failed")
 
     def test09b_AggregatedStoreyKeepsLevelData(self):
         FreeCAD.Console.PrintMessage("NativeIFC 09b: Aggregated storey keeps level data...")
@@ -382,7 +404,6 @@ class TestNativeIfc(TestArchBase.TestArchBase):
         target = "[[1.0.0.100.][0.1.0.200.][0.0.1.300.][0.0.0.1.]]"
         self.assertTrue(new_plac == target, "ChangePlacement failed")
 
-    @unittest.expectedFailure
     def test11_ChangeGeometry(self):
         FreeCAD.Console.PrintMessage("NativeIFC 11: Changing Geometry...")
         fp = getIfcFilePath()
@@ -395,7 +416,7 @@ class TestNativeIfc(TestArchBase.TestArchBase):
             silent=True,
             singledoc=SINGLEDOC,
         )
-        obj = self.document.getObject("IfcObject004")
+        obj = self.document.getObjectsByLabel("South wall")[0]
         ifc_geometry.add_geom_properties(obj)
         obj.ExtrusionDepth = "6000 mm"
         self.document.recompute()
