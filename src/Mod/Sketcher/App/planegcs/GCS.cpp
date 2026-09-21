@@ -53,6 +53,7 @@
 #include <iostream>
 #include <limits>
 #include <numbers>
+#include <utility>
 
 #include <Base/Tools.h>
 
@@ -1955,7 +1956,7 @@ SolveStatus System::solve(SubSystem* subsys, Algorithm alg, bool isRedundantsolv
         case Algorithm::DogLeg:
             return solve_DL(subsys, isRedundantsolving);
         default:
-            Base::unreachable();
+            std::unreachable();
     }
 }
 

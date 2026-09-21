@@ -159,20 +159,6 @@ static void unhandled_exception_handler()
 {
     std::cerr << "Terminating..." << '\n';
 }
-
-static void unexpected_error_handler()
-{
-    std::cerr << "Unexpected error occurred..." << '\n';
-    // try to throw an exception and give the user chance to save their work
-# if !defined(_DEBUG)
-    throw Base::AbnormalProgramTermination(
-        "Unexpected error occurred! Please save your work under "
-        "a new file name and restart the application!"
-    );
-# else
-    terminate();
-# endif
-}
 #endif
 
 #if defined(FC_SE_TRANSLATOR)  // Microsoft compiler
@@ -212,7 +198,6 @@ void SystemHandler::installSegfaultHandler()
     std::signal(SIGSEGV, segmentation_fault_handler);
     std::signal(SIGABRT, segmentation_fault_handler);
     std::set_terminate(unhandled_exception_handler);
-    ::set_unexpected(unexpected_error_handler);
 #elif defined(FC_OS_LINUX)
     std::signal(SIGSEGV, segmentation_fault_handler);
 #endif
