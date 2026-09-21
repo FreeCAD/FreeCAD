@@ -3215,7 +3215,7 @@ ghreille má mheaitseálann siad ais X, Y nó Z an chórais chomhordanáidí dho
     </message>
     <message>
       <location filename="../../DraftGui.py" line="709"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="228"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="282"/>
       <source>Angle</source>
       <translation>Uillinn</translation>
     </message>
@@ -3456,19 +3456,20 @@ Ní bheidh sé ar fáil má tá an rogha 'Úsáid Bunphrionsabail Chuid' cumasai
     <message>
       <location filename="../../DraftGui.py" line="1098"/>
       <location filename="../../DraftGui.py" line="1118"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="224"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="278"/>
       <source>Distance</source>
       <translation>Fad</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1099"/>
       <location filename="../../DraftGui.py" line="1119"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="225"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="279"/>
       <source>Offset distance</source>
       <translation>Fad fritháireamh</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1115"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="63"/>
       <source>Trimex</source>
       <translation>Trimex</translation>
     </message>
@@ -3639,7 +3640,7 @@ nó bain triail as é a shábháil chuig leagan níos óige de DWG.</translation
       <location filename="../../draftmake/make_patharray.py" line="328"/>
       <location filename="../../draftfunctions/cut.py" line="60"/>
       <location filename="../../draftutils/gui_utils.py" line="924"/>
-      <location filename="../../draftutils/utils.py" line="1143"/>
+      <location filename="../../draftutils/utils.py" line="1135"/>
       <location filename="../../draftutils/groups.py" line="101"/>
       <source>No active document. Aborting.</source>
       <translation>Gan aon doiciméad gníomhach. Ag cur as oifig.</translation>
@@ -3681,83 +3682,83 @@ nó bain triail as é a shábháil chuig leagan níos óige de DWG.</translation
       <translation>Níl 'ViewObject.RootNode' ann.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="637"/>
+      <location filename="../../draftutils/utils.py" line="629"/>
       <source>Solids:</source>
       <translation>Solaid:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="638"/>
+      <location filename="../../draftutils/utils.py" line="630"/>
       <source>Faces:</source>
       <translation>Aghaidheanna:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="639"/>
+      <location filename="../../draftutils/utils.py" line="631"/>
       <source>Wires:</source>
       <translation>Sreanga:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="640"/>
+      <location filename="../../draftutils/utils.py" line="632"/>
       <source>Edges:</source>
       <translation>Imeall:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="641"/>
+      <location filename="../../draftutils/utils.py" line="633"/>
       <source>Vertices:</source>
       <translation>Buaicphointí:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="645"/>
+      <location filename="../../draftutils/utils.py" line="637"/>
       <source>Face</source>
       <translation>Aghaidh</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="650"/>
+      <location filename="../../draftutils/utils.py" line="642"/>
       <source>Wire</source>
       <translation>Sreang</translation>
     </message>
     <message>
+      <location filename="../../draftutils/utils.py" line="675"/>
       <location filename="../../draftutils/utils.py" line="683"/>
-      <location filename="../../draftutils/utils.py" line="691"/>
       <source>different types</source>
       <translation>cineálacha éagsúla</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="705"/>
+      <location filename="../../draftutils/utils.py" line="697"/>
       <source>Objects have different placements. Distance between the two base points:</source>
       <translation>Tá suíomhanna difriúla ag rudaí. An fad idir an dá phointe bonn:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="969"/>
+      <location filename="../../draftutils/utils.py" line="961"/>
       <source>%s cannot be modified because its placement is readonly</source>
       <translation>Ní féidir %s a mhodhnú mar go bhfuil a shuíomh inléite amháin</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1184"/>
+      <location filename="../../draftutils/utils.py" line="1176"/>
       <source>This function will be deprecated in {}. Please use '{}'.</source>
       <translation>Beidh an fheidhm seo as feidhm i {}. Bain úsáid as '{}' le do thoil.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1190"/>
+      <location filename="../../draftutils/utils.py" line="1182"/>
       <source>This function will be deprecated. Please use '{}'.</source>
       <translation>Beidh an fheidhm seo as feidhm. Bain úsáid as '{}' le do thoil.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="708"/>
+      <location filename="../../draftutils/utils.py" line="700"/>
       <source>has a different value</source>
       <translation>tá luach difriúil aige</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="710"/>
+      <location filename="../../draftutils/utils.py" line="702"/>
       <source>doesn't exist in one of the objects</source>
       <translation>níl sé ann i gceann de na rudaí</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="960"/>
+      <location filename="../../draftutils/utils.py" line="952"/>
       <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
       <translation>Tá bonn comhroinnte ag %s le %d réad eile. Seiceáil le do thoil más mian leat é seo a mhodhnú.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1106"/>
+      <location filename="../../draftutils/utils.py" line="1098"/>
       <source>Wrong input: unknown document {}</source>
       <translation>Ionchur mícheart: doiciméad anaithnid {}</translation>
     </message>
@@ -4285,14 +4286,19 @@ nó bain triail as é a shábháil chuig leagan níos óige de DWG.</translation
       <translation>Comhad JSON (*.json)</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_shape2dview.py" line="77"/>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="80"/>
       <source>Select an object to project</source>
       <translation>Roghnaigh réad le teilgean</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_shape2dview.py" line="123"/>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="126"/>
       <source>Create 2D View</source>
       <translation>Cruthaigh Radharc 2T</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="156"/>
+      <source>Update</source>
+      <translation>Nuashonrú</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_points.py" line="140"/>
@@ -4488,7 +4494,7 @@ Is é an uillinn deiridh an uillinn bhunáite móide an méid seo.</translation>
       <translation>Cruthaigh Polagán</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="96"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="65"/>
       <source>Select objects to trim or extend</source>
       <translation>Roghnaigh réada le bearradh nó le síneadh</translation>
     </message>
@@ -4498,55 +4504,71 @@ Is é an uillinn deiridh an uillinn bhunáite móide an méid seo.</translation>
       <translation>Ní thacaítear leis an réad seo</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="137"/>
-      <location filename="../../draftutils/utils.py" line="393"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="189"/>
       <source>Only a single face can be extruded</source>
       <translation>Ní féidir ach aghaidh amháin a easbhrú</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="156"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="138"/>
+      <location filename="../../draftutils/utils.py" line="385"/>
+      <location filename="../../draftutils/utils.py" line="388"/>
+      <location filename="../../draftutils/utils.py" line="391"/>
       <location filename="../../draftutils/utils.py" line="396"/>
-      <location filename="../../draftutils/utils.py" line="399"/>
-      <location filename="../../draftutils/utils.py" line="404"/>
-      <location filename="../../draftutils/utils.py" line="410"/>
-      <location filename="../../draftutils/utils.py" line="425"/>
+      <location filename="../../draftutils/utils.py" line="402"/>
+      <location filename="../../draftutils/utils.py" line="417"/>
       <source>Trimex does not support this object type</source>
       <translation>Ní thacaíonn Trimex leis an gcineál réada seo</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="505"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="178"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="694"/>
+      <source>Select a single face to extrude</source>
+      <translation>Roghnaigh aghaidh amháin le heis-easbhrú</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="568"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported</source>
       <translation>Ní féidir na rudaí seo a bhearradh, ní thacaítear ach le sreanga dréachta agus stuaiceanna</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="525"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="588"/>
       <source>These objects do not intersect</source>
       <translation>Ní thrasnaíonn na rudaí seo a chéile</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="528"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="591"/>
       <source>Too many intersection points</source>
       <translation>An iomarca pointí trasnaithe</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="604"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="667"/>
       <source>%1 pick target</source>
       <translation>%1 roghnaigh sprioc</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="606"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="669"/>
       <source>Hold %1 free direction</source>
       <translation>Coinnigh %1 treo saor</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="609"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="672"/>
       <source>Hold %1 keep active endpoint</source>
       <translation>Coinnigh %1 coinnigh críochphointe gníomhach</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="612"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="675"/>
       <source>Hold %1 invert trim direction</source>
       <translation>Coinnigh %1 inbhéartaithe treo bearrtha</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="684"/>
+      <source>Extrude Face</source>
+      <translation>Easbhrúigh Aghaidh</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="685"/>
+      <source>Select a face to extrude</source>
+      <translation>Roghnaigh aghaidh le heis-easbhrú</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="92"/>
@@ -4564,18 +4586,18 @@ Is é an uillinn deiridh an uillinn bhunáite móide an méid seo.</translation>
       <translation>%1 fad piocadh</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="183"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="168"/>
       <location filename="../../draftguitools/gui_offset.py" line="152"/>
       <source>Pick distance</source>
       <translation>Roghnaigh achar</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="229"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="283"/>
       <source>Offset angle</source>
       <translation>Uillinn fhritháireamh</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="508"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="571"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>Ní féidir na rudaí seo a bhearradh, an iomarca sreanga</translation>
     </message>
@@ -6675,14 +6697,14 @@ Má tá an rogha "Cóipeáil" gníomhach, cruthófar cóipeanna rothlaithe.</tra
   <context>
     <name>Draft_Trimex</name>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="78"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="71"/>
       <source>Trimex</source>
       <translation>Trimex</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="81"/>
-      <source>Trims or extends the selected object, or extrudes single faces</source>
-      <translation>Bearrtar nó síneann sé an réad roghnaithe, nó easbhrúitear aghaidheanna aonair</translation>
+      <location filename="../../draftguitools/gui_trimex.py" line="72"/>
+      <source>Trims or extends the selected object</source>
+      <translation>Bearrann nó síneann sé an réad roghnaithe</translation>
     </message>
   </context>
   <context>
@@ -8151,10 +8173,10 @@ thar an líne toise</translation>
       <translation>Dréacht</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="253"/>
-      <location filename="../../InitGui.py" line="256"/>
-      <location filename="../../InitGui.py" line="259"/>
       <location filename="../../InitGui.py" line="262"/>
+      <location filename="../../InitGui.py" line="265"/>
+      <location filename="../../InitGui.py" line="268"/>
+      <location filename="../../InitGui.py" line="271"/>
       <source>Import-Export</source>
       <translation>Iompórtáil-Easpórtáil</translation>
     </message>
@@ -8571,12 +8593,12 @@ Athróidh an fána an luach Z i gcónaí, dá bhrí sin ní oibríonn an t-ordú
   <context>
     <name>Draft_Shape2DView</name>
     <message>
-      <location filename="../../draftguitools/gui_shape2dview.py" line="63"/>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="66"/>
       <source>Shape 2D View</source>
       <translation>Cruth Radharc 2T</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_shape2dview.py" line="67"/>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="70"/>
       <source>Creates a 2D projection of the selected objects on the XY-plane.
 The initial projection direction is the opposite of the current active view direction.</source>
       <translation>Cruthaíonn sé teilgean 2T de na réada roghnaithe ar an eitleán XY.
@@ -8976,6 +8998,21 @@ de chruth an tsraithe. Is fearr é seo chun comhaid an-mhóra a fheiceáil leis 
       <location filename="../../Init.py" line="35"/>
       <source>Flattened SVG</source>
       <translation>SVG cothrom</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_UpdateShape2DView</name>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="140"/>
+      <source>Force 2D View Update</source>
+      <translation>Cuir Nuashonrú Amhairc 2T i bhFeidhm</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="144"/>
+      <source>Forces an update of the selected 2D Views or all 2D Views in the document.
+The 'Auto Update' property of the views is ignored.</source>
+      <translation>Cuirtear iallach ar na radhairc 2D roghnaithe, nó ar gach radharc 2D sa doiciméad, nuashonrú a dhéanamh.
+Déantar neamhaird ar airí 'Nuashonrú Uathoibríoch' na radharcanna.</translation>
     </message>
   </context>
 </TS>

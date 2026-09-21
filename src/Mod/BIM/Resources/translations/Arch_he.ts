@@ -4216,32 +4216,32 @@ The default template is located at:
       <translation>לא ניתן היה לפתור את גיאומטריית הבסיס.</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="1588"/>
+      <location filename="../../ArchCoveringGui.py" line="1589"/>
       <source>%1 pick tile origin</source>
       <translation>%1 בחר מקור אריח</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="1592"/>
+      <location filename="../../ArchCoveringGui.py" line="1593"/>
       <source>%1 rotate tile CW / Shift+%1 rotate tile CCW</source>
       <translation>%1 לסובב אריח CW / Shift+%1 לסובב אריח CCW</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="1600"/>
+      <location filename="../../ArchCoveringGui.py" line="1601"/>
       <source>%1 pick new base face or object</source>
       <translation>% 1 בחר פנים או אובייקט בסיס חדשים</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="1604"/>
+      <location filename="../../ArchCoveringGui.py" line="1605"/>
       <source>%1+%2 add face or object</source>
       <translation>%1+%2 הוסף פנים או אובייקט</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="1611"/>
+      <location filename="../../ArchCoveringGui.py" line="1612"/>
       <source>%1 pick planar face or object</source>
       <translation>%1 בחר פנים או אובייקט מישוריים</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="1615"/>
+      <location filename="../../ArchCoveringGui.py" line="1616"/>
       <source>%1+%2 add planar face or object</source>
       <translation>%1+%2 הוסף פנים או אובייקט מישוריים</translation>
     </message>
@@ -5138,7 +5138,7 @@ The ladybug or pysolar Python module is required.</source>
       <location filename="../../ArchComponent.py" line="2539"/>
       <location filename="../../ArchCommands.py" line="1730"/>
       <location filename="../../ArchWindow.py" line="1717"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="479"/>
       <source>Type</source>
       <translation>סוג</translation>
     </message>
@@ -6358,7 +6358,7 @@ The ladybug or pysolar Python module is required.</source>
       <location filename="../../ArchCommands.py" line="1731"/>
       <location filename="../../ArchSchedule.py" line="988"/>
       <location filename="../../ArchSchedule.py" line="1013"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="479"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="480"/>
       <source>Value</source>
       <translation>ערך</translation>
     </message>
@@ -6578,7 +6578,7 @@ Floor creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2538"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="477"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
       <source>Property</source>
       <translation>נֶכֶס</translation>
     </message>
@@ -6609,13 +6609,13 @@ Floor creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2700"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="634"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="635"/>
       <source>New property</source>
       <translation>נכס חדש</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2737"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="683"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="684"/>
       <source>New property set</source>
       <translation>סט נכסים חדש</translation>
     </message>
@@ -7142,43 +7142,43 @@ Building creation aborted.</source>
       <translation>צור תצוגה דו-ממדית</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1155"/>
+      <location filename="../../ArchBuildingPart.py" line="1156"/>
       <source>Active</source>
       <translation>פָּעִיל</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1166"/>
+      <location filename="../../ArchBuildingPart.py" line="1167"/>
       <source>Set Working Plane</source>
       <translation>הגדר מטוס עבודה</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1176"/>
+      <location filename="../../ArchBuildingPart.py" line="1177"/>
       <source>Save Camera View</source>
       <translation type="unfinished">Save Camera View</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1218"/>
+      <location filename="../../ArchBuildingPart.py" line="1219"/>
       <source>Active working plane set to Top</source>
       <translation>מטוס עבודה פעיל מוגדר למעלה</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1223"/>
+      <location filename="../../ArchBuildingPart.py" line="1224"/>
       <source>Active working plane set to {self.Object.Label}</source>
       <translation>מישור עבודה פעיל מוגדר ל-{self.Object.Label}</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1182"/>
+      <location filename="../../ArchBuildingPart.py" line="1183"/>
       <source>New Group</source>
       <translation>קבוצה חדשה</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="100"/>
-      <location filename="../../ArchBuildingPart.py" line="1186"/>
+      <location filename="../../ArchBuildingPart.py" line="1187"/>
       <source>Reorder Children Alphabetically</source>
       <translation>סדר את הילדים בסדר אלפביתי</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1190"/>
+      <location filename="../../ArchBuildingPart.py" line="1191"/>
       <source>Clone Level Up</source>
       <translation>שיבוט רמה למעלה</translation>
     </message>
@@ -7589,147 +7589,147 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1221"/>
-      <location filename="../../ArchBuildingPart.py" line="547"/>
+      <location filename="../../ArchBuildingPart.py" line="548"/>
       <source>The line width of this object</source>
       <translation>רוחב הקו של אובייקט זה</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="556"/>
+      <location filename="../../ArchBuildingPart.py" line="557"/>
       <source>An optional unit to express levels</source>
       <translation>יחידה אופציונלית להבעת רמות</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="564"/>
+      <location filename="../../ArchBuildingPart.py" line="565"/>
       <source>A transformation to apply to the level mark</source>
       <translation>טרנספורמציה שתחול על סימן הרמה</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="575"/>
+      <location filename="../../ArchBuildingPart.py" line="576"/>
       <source>If true, show the level</source>
       <translation>אם זה נכון, הראה את הרמה</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="584"/>
+      <location filename="../../ArchBuildingPart.py" line="585"/>
       <source>If true, show the unit on the level tag</source>
       <translation>אם זה נכון, הצג את היחידה על תג הרמה</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="594"/>
+      <location filename="../../ArchBuildingPart.py" line="595"/>
       <source>If true, display offset will affect the origin mark too</source>
       <translation>אם נכון, היסט בתצוגה ישפיע גם על סימן המקור</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="602"/>
+      <location filename="../../ArchBuildingPart.py" line="603"/>
       <source>If true, the object's label is displayed</source>
       <translation>אם נכון, תווית האובייקט מוצגת</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="611"/>
+      <location filename="../../ArchBuildingPart.py" line="612"/>
       <source>The font to be used for texts</source>
       <translation>הגופן שישמש לטקסטים</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="620"/>
+      <location filename="../../ArchBuildingPart.py" line="621"/>
       <source>The font size of texts</source>
       <translation>גודל הגופן של טקסטים</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="631"/>
+      <location filename="../../ArchBuildingPart.py" line="632"/>
       <source>The individual face colors</source>
       <translation>צבעי הפנים האישיים</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="644"/>
+      <location filename="../../ArchBuildingPart.py" line="645"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
       <translation>אם זה נכון, כאשר הוא מופעל, מטוס העבודה יסתגל אוטומטית לרמה זו</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="655"/>
+      <location filename="../../ArchBuildingPart.py" line="656"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
       <translation>אם מוגדר כ-True, מישור העבודה יישמר במצב אוטומטי</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="665"/>
+      <location filename="../../ArchBuildingPart.py" line="666"/>
       <source>Camera position data associated with this object</source>
       <translation>נתוני מיקום המצלמה המשויכים לאובייקט זה</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="677"/>
+      <location filename="../../ArchBuildingPart.py" line="678"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
       <translation>אם מוגדר, התצוגה המאוחסנת באובייקט זה תשוחזר בלחיצה כפולה</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="687"/>
+      <location filename="../../ArchBuildingPart.py" line="688"/>
       <source>If True, double-clicking this object in the tree activates it</source>
       <translation>אם נכון, לחיצה כפולה על אובייקט זה בעץ מפעילה אותו</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="701"/>
+      <location filename="../../ArchBuildingPart.py" line="702"/>
       <source>If this is enabled, the OpenInventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
       <translation>אם זה מופעל, ייצוג OpenInventor של אובייקט זה יישמר בקובץ FreeCAD, מה שיאפשר להפנות אליו בקבצים אחרים במצב קל משקל.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="712"/>
+      <location filename="../../ArchBuildingPart.py" line="713"/>
       <source>A slot to save the OpenInventor representation of this object, if enabled</source>
       <translation>משבצת לשמירת ייצוג OpenInventor של אובייקט זה, אם מופעל</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="726"/>
+      <location filename="../../ArchBuildingPart.py" line="727"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
       <translation>אם זה נכון, הצג את האובייקטים הכלולים בחלק הבניין הזה יאמצו את הגדרות הקו, הצבע והשקיפות האלה</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="734"/>
+      <location filename="../../ArchBuildingPart.py" line="735"/>
       <source>The line width of child objects</source>
       <translation>רוחב הקו של אובייקטים צאצאים</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="743"/>
+      <location filename="../../ArchBuildingPart.py" line="744"/>
       <source>The line color of child objects</source>
       <translation>צבע הקו של חפצי ילדים</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="752"/>
+      <location filename="../../ArchBuildingPart.py" line="753"/>
       <source>The shape appearance of child objects</source>
       <translation>מראה הצורה של חפצי ילדים</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="762"/>
+      <location filename="../../ArchBuildingPart.py" line="763"/>
       <source>The transparency of child objects</source>
       <translation>השקיפות של חפצי ילדים</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="773"/>
+      <location filename="../../ArchBuildingPart.py" line="774"/>
       <source>Cut the view above this level</source>
       <translation>חתוך את התצוגה מעל רמה זו</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="783"/>
+      <location filename="../../ArchBuildingPart.py" line="784"/>
       <source>The distance between the level plane and the cut line</source>
       <translation>המרחק בין מישור הרמה לקו החיתוך</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="792"/>
+      <location filename="../../ArchBuildingPart.py" line="793"/>
       <source>Turn cutting on when activating this level</source>
       <translation>הפעל את החיתוך בעת הפעלת רמה זו</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="805"/>
+      <location filename="../../ArchBuildingPart.py" line="806"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
       <translation>תיבת הלכידה עבור אובייקטים חדשים שנוצרו המבוטאים כ-[XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="813"/>
+      <location filename="../../ArchBuildingPart.py" line="814"/>
       <source>Turns auto group box on/off</source>
       <translation>מפעיל/כיבוי תיבת קבוצה אוטומטית</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="821"/>
+      <location filename="../../ArchBuildingPart.py" line="822"/>
       <source>Automatically set size from contents</source>
       <translation>הגדר אוטומטית גודל מהתוכן</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="829"/>
+      <location filename="../../ArchBuildingPart.py" line="830"/>
       <source>A margin to use when autosize is turned on</source>
       <translation>A margin to use when autosize is turned on</translation>
     </message>
@@ -7936,7 +7936,7 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="744"/>
-      <location filename="../../ArchIFC.py" line="87"/>
+      <location filename="../../ArchIFC.py" line="88"/>
       <source>The type of this object</source>
       <translation>סוג האובייקט הזה</translation>
     </message>
@@ -8624,14 +8624,14 @@ Building creation aborted.</source>
       <translation>נתוני IFC</translation>
     </message>
     <message>
-      <location filename="../../ArchIFC.py" line="97"/>
+      <location filename="../../ArchIFC.py" line="98"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="412"/>
       <source>IFC properties of this object</source>
       <translation>מאפייני IFC של אובייקט זה</translation>
     </message>
     <message>
-      <location filename="../../ArchIFC.py" line="322"/>
-      <location filename="../../ArchIFC.py" line="333"/>
+      <location filename="../../ArchIFC.py" line="324"/>
+      <location filename="../../ArchIFC.py" line="335"/>
       <source>Description of IFC attributes are not yet implemented</source>
       <translation>תיאור תכונות IFC עדיין לא מיושם</translation>
     </message>
@@ -9865,7 +9865,7 @@ Building creation aborted.</source>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1233"/>
+      <location filename="../../ArchBuildingPart.py" line="1234"/>
       <source>Writing camera position</source>
       <translation>כתיבה של עמדת מצלמה</translation>
     </message>
@@ -9873,102 +9873,102 @@ Building creation aborted.</source>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../InitGui.py" line="529"/>
+      <location filename="../../InitGui.py" line="535"/>
       <source>&amp;2D Drafting</source>
       <translation>שרטוט 2D</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="530"/>
+      <location filename="../../InitGui.py" line="536"/>
       <source>&amp;3D/BIM</source>
       <translation>&amp;3D/BIM</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="508"/>
+      <location filename="../../InitGui.py" line="514"/>
       <source>Drafting Tools</source>
       <translation>כלי שרטוט</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="509"/>
+      <location filename="../../InitGui.py" line="515"/>
       <source>Draft Snap</source>
       <translation>הצמדת טיוטה</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="510"/>
+      <location filename="../../InitGui.py" line="516"/>
       <source>3D/BIM Tools</source>
       <translation>כלי תלת מימד/BIM</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="511"/>
+      <location filename="../../InitGui.py" line="517"/>
       <source>Annotation Tools</source>
       <translation>כלים להערות</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="512"/>
+      <location filename="../../InitGui.py" line="518"/>
       <source>2D Tools</source>
       <translation>כלים דו מימדיים</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="513"/>
+      <location filename="../../InitGui.py" line="519"/>
       <source>Manage Tools</source>
       <translation>נהל כלים</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="514"/>
+      <location filename="../../InitGui.py" line="520"/>
       <source>General Tools</source>
       <translation>כלים כלליים</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="515"/>
+      <location filename="../../InitGui.py" line="521"/>
       <source>Object Tools</source>
       <translation>כלי אובייקט</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="516"/>
+      <location filename="../../InitGui.py" line="522"/>
       <source>3D Tools</source>
       <translation>כלים תלת מימדיים</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="531"/>
+      <location filename="../../InitGui.py" line="537"/>
       <source>&amp;Reinforcement Tools</source>
       <translation>&amp;כלי חיזוק</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="534"/>
+      <location filename="../../InitGui.py" line="540"/>
       <source>M&amp;odify</source>
       <translation>לְשַׁנוֹת</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="536"/>
+      <location filename="../../InitGui.py" line="542"/>
       <source>Ma&amp;nage</source>
       <translation>לְנַהֵל</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="538"/>
+      <location filename="../../InitGui.py" line="544"/>
       <source>Fas&amp;teners</source>
       <translation>מהדקים</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="532"/>
+      <location filename="../../InitGui.py" line="538"/>
       <source>&amp;Annotation</source>
       <translation>&amp;הערות</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="533"/>
+      <location filename="../../InitGui.py" line="539"/>
       <source>&amp;Snapping</source>
       <translation>&amp;הצמדה</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="537"/>
+      <location filename="../../InitGui.py" line="543"/>
       <source>&amp;Flamingo</source>
       <translation>&amp;פלָמִינגוֹ</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="539"/>
+      <location filename="../../InitGui.py" line="545"/>
       <source>&amp;Utils</source>
       <translation>&amp;כלי עזר</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="544"/>
+      <location filename="../../InitGui.py" line="550"/>
       <source>Nudge</source>
       <translation>דְחִיפָה</translation>
     </message>
@@ -10614,17 +10614,17 @@ Building creation aborted.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../InitGui.py" line="596"/>
+      <location filename="../../InitGui.py" line="602"/>
       <source>BIM</source>
       <translation>BIM</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="597"/>
+      <location filename="../../InitGui.py" line="603"/>
       <source>Draft</source>
       <translation>שרטוט</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="843"/>
+      <location filename="../../InitGui.py" line="859"/>
       <source>Import-Export</source>
       <translation>ייבוא-ייצוא</translation>
     </message>
@@ -10675,7 +10675,7 @@ Alt+PgUp להרחבת שחול Alt+PgDown כדי לכווץ שחול Alt+/ כד�
       <translation>BIM</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="806"/>
+      <location filename="../../InitGui.py" line="784"/>
       <source>Snapping</source>
       <translation>מצלמת</translation>
     </message>
@@ -10718,57 +10718,57 @@ Alt+PgUp להרחבת שחול Alt+PgDown כדי לכווץ שחול Alt+/ כד�
       <translation>המסמך הנוכחי חייב להיות הראשי. השני מכיל אובייקטים חדשים יותר להתמזג לתוכו. ודא שרק האובייקטים המיועדים להשוואה גלויים בשני המסמכים. לְהִתְקַדֵם?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="321"/>
+      <location filename="../../bimcommands/BimDiff.py" line="328"/>
       <source>objects still have the same shape but have a different material. Update them in the main document?</source>
       <translation>לחפצים יש עדיין אותה צורה אבל יש להם חומר שונה. לעדכן אותם במסמך הראשי?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="376"/>
+      <location filename="../../bimcommands/BimDiff.py" line="383"/>
       <source>objects have no IFC ID in the main document, but an identical object with an ID exists in the new document. Transfer these IDs to the original objects?</source>
       <translation>לאובייקטים אין מזהה IFC במסמך הראשי, אבל אובייקט זהה עם מזהה קיים במסמך החדש. להעביר את המזהים האלה לאובייקטים המקוריים?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="395"/>
+      <location filename="../../bimcommands/BimDiff.py" line="400"/>
       <source>objects had their name changed. Rename them?</source>
       <translation>שמם שונה לחפצים. לשנות את שמם?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="412"/>
+      <location filename="../../bimcommands/BimDiff.py" line="417"/>
       <source>objects had their properties changed. Update?</source>
       <translation>תכונותיהם השתנו לאובייקטים. לְעַדְכֵּן?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="431"/>
+      <location filename="../../bimcommands/BimDiff.py" line="436"/>
       <source>objects have their location changed. Move them to their new position?</source>
       <translation>מיקומם של עצמים שונה. להעביר אותם לתפקידם החדש?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="450"/>
+      <location filename="../../bimcommands/BimDiff.py" line="455"/>
       <source>Colorize the objects that have moved in yellow in the other file (to serve as a diff)?</source>
       <translation>לצבוע את האובייקטים שזזו בצהוב בקובץ השני (כדי לשמש הבדל)?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="471"/>
+      <location filename="../../bimcommands/BimDiff.py" line="476"/>
       <source>Colorize the objects that have been modified in orange in the other file (to serve as a diff)?</source>
       <translation>לצבוע את האובייקטים ששונו בכתום בקובץ השני (כדי לשמש הבדל)?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="494"/>
+      <location filename="../../bimcommands/BimDiff.py" line="499"/>
       <source>objects do not exist anymore in the new document. Move them to a 'To Delete' group?</source>
       <translation>אובייקטים אינם קיימים יותר במסמך החדש. להעביר אותם לקבוצת 'למחיקה'?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="509"/>
+      <location filename="../../bimcommands/BimDiff.py" line="514"/>
       <source>Colorize the objects that have been removed in red in the other file (to serve as a diff)?</source>
       <translation>לצבוע את האובייקטים שהוסרו באדום בקובץ השני (כדי לשמש הבדל)?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="528"/>
+      <location filename="../../bimcommands/BimDiff.py" line="534"/>
       <source>Colorize the objects that have been added in green in the other file (to serve as a diff)?</source>
       <translation>לצבוע את האובייקטים שנוספו בירוק בקובץ השני (כדי לשמש הבדל)?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="549"/>
+      <location filename="../../bimcommands/BimDiff.py" line="555"/>
       <source>Two documents are required to be open to run this tool. One which is the main document, and one that contains new objects to compare against the existing one. Make sure only the objects to compare in both documents are visible.</source>
       <translation>שני מסמכים נדרשים להיות פתוחים כדי להפעיל כלי זה. אחד שהוא המסמך הראשי, ואחד שמכיל אובייקטים חדשים להשוואה מול הקיים. ודא שרק האובייקטים להשוואה בשני המסמכים גלויים.</translation>
     </message>
@@ -10931,17 +10931,17 @@ Alt+PgUp להרחבת שחול Alt+PgDown כדי לכווץ שחול Alt+/ כד�
       <translation>אזהרה: לאובייקט %1 יש IfcProperties בסגנון ישן ולא ניתן לעדכן אותו</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="670"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="671"/>
       <source>Please select or create a property set first in which the new property should be placed.</source>
       <translation>אנא בחר או צור תחילה ערכת נכסים שבה יש למקם את הנכס החדש.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="685"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="686"/>
       <source>New Property Set</source>
       <translation>סט נכסים חדש</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="686"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="687"/>
       <source>Property set name:</source>
       <translation>שם ערכת נכסים:</translation>
     </message>
@@ -11562,17 +11562,17 @@ Alt+PgUp להרחבת שחול Alt+PgDown כדי לכווץ שחול Alt+/ כד�
       <translation>יש צורך ב- IfcOpenShell כדי לייבא ולייצא קבצי IFC. נראה שהוא חסר במערכת. להוריד ולהתקין עכשיו? הוא יותקן בספריית פקודות המאקרו של FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="62"/>
+      <location filename="../../bimcommands/BimSlab.py" line="59"/>
       <source>Select a planar object</source>
       <translation>בחר אובייקט מישורי</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="65"/>
+      <location filename="../../bimcommands/BimSlab.py" line="62"/>
       <source>%1 select a planar object</source>
       <translation type="unfinished">%1 select a planar object</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="81"/>
+      <location filename="../../bimcommands/BimSlab.py" line="85"/>
       <source>Slab</source>
       <translation>לוּחַ</translation>
     </message>
@@ -12011,12 +12011,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>Arch_RebarTools</name>
     <message>
-      <location filename="../../InitGui.py" line="414"/>
+      <location filename="../../InitGui.py" line="420"/>
       <source>Reinforcement Tools</source>
       <translation>כלי חיזוק</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="415"/>
+      <location filename="../../InitGui.py" line="421"/>
       <source>Reinforcement tools</source>
       <translation>כלי חיזוק</translation>
     </message>
@@ -12523,12 +12523,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Slab</name>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="43"/>
+      <location filename="../../bimcommands/BimSlab.py" line="42"/>
       <source>Slab</source>
       <translation>לוּחַ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="44"/>
+      <location filename="../../bimcommands/BimSlab.py" line="43"/>
       <source>Creates a slab from a planar shape</source>
       <translation>יוצר לוח מצורה מישורית</translation>
     </message>
@@ -13177,7 +13177,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_GenericTools</name>
     <message>
-      <location filename="../../InitGui.py" line="369"/>
+      <location filename="../../InitGui.py" line="370"/>
       <source>Generic 3D Tools</source>
       <translation>כלים 3D גנריים</translation>
     </message>
@@ -13185,7 +13185,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Create2DViews</name>
     <message>
-      <location filename="../../InitGui.py" line="382"/>
+      <location filename="../../InitGui.py" line="388"/>
       <source>Create 2D Views</source>
       <translation>צור תצוגות דו-ממדיות</translation>
     </message>
@@ -13667,7 +13667,7 @@ select both the view and the page before executing the command.</source>
       <translation>ערוך כיסוי</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="1757"/>
+      <location filename="../../ArchCoveringGui.py" line="1758"/>
       <location filename="../../bimcommands/BimCovering.py" line="83"/>
       <source>Create Covering</source>
       <translation>צור כיסוי</translation>
@@ -13707,7 +13707,7 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_ArcTools</name>
     <message>
-      <location filename="../../InitGui.py" line="239"/>
+      <location filename="../../InitGui.py" line="240"/>
       <source>Arc Tools</source>
       <translation>כלי קשת</translation>
     </message>
@@ -13715,7 +13715,7 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_SplineTools</name>
     <message>
-      <location filename="../../InitGui.py" line="251"/>
+      <location filename="../../InitGui.py" line="252"/>
       <source>Spline Tools</source>
       <translation>כלי ספליין</translation>
     </message>
@@ -13723,7 +13723,7 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_AxisTools</name>
     <message>
-      <location filename="../../InitGui.py" line="263"/>
+      <location filename="../../InitGui.py" line="264"/>
       <source>Axis Tools</source>
       <translation>כלי ציר</translation>
     </message>
@@ -13731,7 +13731,7 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_OffsetTools</name>
     <message>
-      <location filename="../../InitGui.py" line="276"/>
+      <location filename="../../InitGui.py" line="277"/>
       <source>Offset Tools</source>
       <translation>כלי אופסט</translation>
     </message>
@@ -13739,7 +13739,7 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_ArrayTools</name>
     <message>
-      <location filename="../../InitGui.py" line="294"/>
+      <location filename="../../InitGui.py" line="295"/>
       <source>Array Tools</source>
       <translation>כלי מערך</translation>
     </message>
@@ -13747,7 +13747,7 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_BooleanTools</name>
     <message>
-      <location filename="../../InitGui.py" line="307"/>
+      <location filename="../../InitGui.py" line="308"/>
       <source>Boolean Tools</source>
       <translation>כלים בוליאניים</translation>
     </message>
@@ -13755,7 +13755,7 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_IfcManageTools</name>
     <message>
-      <location filename="../../InitGui.py" line="324"/>
+      <location filename="../../InitGui.py" line="325"/>
       <source>IFC Management</source>
       <translation>ניהול IFC</translation>
     </message>
@@ -13763,7 +13763,7 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_ReportTools</name>
     <message>
-      <location filename="../../InitGui.py" line="336"/>
+      <location filename="../../InitGui.py" line="337"/>
       <source>Report Tools</source>
       <translation>כלי דיווח</translation>
     </message>
@@ -13771,9 +13771,22 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_CloneTools</name>
     <message>
-      <location filename="../../InitGui.py" line="348"/>
+      <location filename="../../InitGui.py" line="349"/>
       <source>Cloning Tools</source>
       <translation>כלי שיבוט</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_ExtrudeFace</name>
+    <message>
+      <location filename="../../bimcommands/BimExtrudeFace.py" line="17"/>
+      <source>Extrude Face</source>
+      <translation type="unfinished">Extrude Face</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimExtrudeFace.py" line="20"/>
+      <source>Extrudes a selected face into a solid</source>
+      <translation type="unfinished">Extrudes a selected face into a solid</translation>
     </message>
   </context>
   <context>

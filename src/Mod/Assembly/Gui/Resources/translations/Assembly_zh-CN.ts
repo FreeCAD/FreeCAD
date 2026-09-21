@@ -48,7 +48,7 @@
       <translation>装配</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="146"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="155"/>
       <source>Active object</source>
       <translation>活动对象</translation>
     </message>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="2051"/>
+      <location filename="../../../JointObject.py" line="2061"/>
       <source>Distance</source>
       <translation>距离</translation>
     </message>
@@ -175,32 +175,32 @@
       <translation>失效链接：</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1238"/>
+      <location filename="../../../JointObject.py" line="1248"/>
       <source>Edit Joint</source>
       <translation>编辑接合点</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1420"/>
+      <location filename="../../../JointObject.py" line="1430"/>
       <source>Update Stored Positions</source>
       <translation>更新存储的位置</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1859"/>
+      <location filename="../../../JointObject.py" line="1869"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>从两个独立的零件中选择两个元素</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2053"/>
+      <location filename="../../../JointObject.py" line="2063"/>
       <source>Radius 1</source>
       <translation>半径 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2055"/>
+      <location filename="../../../JointObject.py" line="2065"/>
       <source>Thread pitch</source>
       <translation>螺距</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2057"/>
+      <location filename="../../../JointObject.py" line="2067"/>
       <source>Pitch radius</source>
       <translation>节距半径</translation>
     </message>
@@ -717,12 +717,12 @@ SLOPE 定义了在 time = T1 和 T2 附近，从 0 到 H1、从 H2 到 0 之间�
       <translation>配合的第 {order} 参考</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1284"/>
+      <location filename="../../../JointObject.py" line="1294"/>
       <source>List of references to compnents to group together</source>
       <translation>要组合在一起的组件的引用列表</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1443"/>
+      <location filename="../../../JointObject.py" line="1453"/>
       <source>The object to ground</source>
       <translation>要固定的对象</translation>
     </message>
@@ -1018,59 +1018,59 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="214"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="223"/>
       <source>The object is associated to one or more joints.</source>
       <translation>该对象与一个或多个配合有关联。</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="216"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="225"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>您想要移动对象并删除关联的配合吗？</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1095"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1142"/>
       <source>Move part</source>
       <translation>移动零件</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1815"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1897"/>
       <source>Empty Assembly</source>
       <translation>空装配体</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1827"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1909"/>
       <source>Over-constrained:</source>
       <translation>过度约束：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1835"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1917"/>
       <source>Malformed joints:</source>
       <translation>错误配合：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1800"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1882"/>
       <source>and %1 more</source>
       <translation>还有%1个</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1859"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1941"/>
       <source>Solver failed to converge</source>
       <translation>求解器未能收敛</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1867"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1949"/>
       <source>Under-constrained:</source>
       <translation>约束不足：</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1869"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1951"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n 自由度</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1873"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1955"/>
       <source>Fully constrained</source>
       <translation>完全约束</translation>
     </message>
@@ -1598,7 +1598,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>已部分加载</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="615"/>
+      <location filename="../../../CommandInsertLink.py" line="613"/>
       <source>Fully load document</source>
       <translation>完全加载文档</translation>
     </message>

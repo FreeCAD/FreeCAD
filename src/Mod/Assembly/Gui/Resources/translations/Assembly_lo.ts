@@ -48,7 +48,7 @@
       <translation type="unfinished">Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="146"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="155"/>
       <source>Active object</source>
       <translation>ວັດຖຸທີ່ກຳລັງເຮັດວຽກ</translation>
     </message>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="2051"/>
+      <location filename="../../../JointObject.py" line="2061"/>
       <source>Distance</source>
       <translation>ໄລຍະຫ່າງ</translation>
     </message>
@@ -175,32 +175,32 @@
       <translation>ການເຊື່ອມໂຍງເສຍຢູ່ທີ່: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1238"/>
+      <location filename="../../../JointObject.py" line="1248"/>
       <source>Edit Joint</source>
       <translation>ແກ້ໄຂຂໍ້ຕໍ່</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1420"/>
+      <location filename="../../../JointObject.py" line="1430"/>
       <source>Update Stored Positions</source>
       <translation>ອັບເດດຕຳແໜ່ງທີ່ບັນທຶກໄວ້</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1859"/>
+      <location filename="../../../JointObject.py" line="1869"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>ເລືອກ 2 ອົງປະກອບຈາກ 2 ຊິ້ນສ່ວນທີ່ແຍກກັນ</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2053"/>
+      <location filename="../../../JointObject.py" line="2063"/>
       <source>Radius 1</source>
       <translation>ລັດສະໝີ 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2055"/>
+      <location filename="../../../JointObject.py" line="2065"/>
       <source>Thread pitch</source>
       <translation>ໄລຍະກຽວ</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2057"/>
+      <location filename="../../../JointObject.py" line="2067"/>
       <source>Pitch radius</source>
       <translation>ລັດສະໝີໄລຍະຫ່າງ</translation>
     </message>
@@ -717,12 +717,12 @@ SLOPE ກຳນົດຄວາມຊັນຂອງການປ່ຽນລະ�
       <translation>ການອ້າງອີງທີ {order} ຂອງຂໍ້ຕໍ່</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1284"/>
+      <location filename="../../../JointObject.py" line="1294"/>
       <source>List of references to compnents to group together</source>
       <translation>ລາຍການອ້າງອີງເຖິງສ່ວນປະກອບທີ່ຈະຈັດກຸ່ມເຂົ້າກັນ</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1443"/>
+      <location filename="../../../JointObject.py" line="1453"/>
       <source>The object to ground</source>
       <translation>ວັດຖຸທີ່ຈະຍຶດຕິດກັບພື້ນ</translation>
     </message>
@@ -1014,59 +1014,59 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="214"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="223"/>
       <source>The object is associated to one or more joints.</source>
       <translation>ວັດຖຸນີ້ກ່ຽວຂ້ອງກັບຂໍ້ຕໍ່ໜຶ່ງອັນ ຫຼື ຫຼາຍກວ່ານັ້ນ.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="216"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="225"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>ທ່ານຕ້ອງການຍ້າຍວັດຖຸ ແລະ ລຶບຂໍ້ຕໍ່ທີ່ກ່ຽວຂ້ອງອອກບໍ?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1095"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1142"/>
       <source>Move part</source>
       <translation>ຍ້າຍຊິ້ນສ່ວນ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1815"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1897"/>
       <source>Empty Assembly</source>
       <translation>ຊຸດປະກອບຫວ່າງເປົ່າ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1827"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1909"/>
       <source>Over-constrained:</source>
       <translation>ຂໍ້ກຳນົດເກີນຂອບເຂດ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1835"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1917"/>
       <source>Malformed joints:</source>
       <translation>ຂໍ້ຕໍ່ທີ່ຜິດຮູບແບບ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1800"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1882"/>
       <source>and %1 more</source>
       <translation>ແລະ ອີກ %1 ລາຍການ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1859"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1941"/>
       <source>Solver failed to converge</source>
       <translation>ຕົວປະມວນຜົນບໍ່ສາມາດຊອກຫາຄຳຕອບທີ່ເໝາະສົມໄດ້</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1867"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1949"/>
       <source>Under-constrained:</source>
       <translation>ຂໍ້ກຳນົດບໍ່ພຽງພໍ:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1869"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1951"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n ອົງສາອິດສະລະ</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1873"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1955"/>
       <source>Fully constrained</source>
       <translation>ກຳນົດຂໍ້ບັງຄັບຄົບຖ້ວນ</translation>
     </message>
@@ -1594,7 +1594,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>ໂຫຼດມາບາງສ່ວນ</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="615"/>
+      <location filename="../../../CommandInsertLink.py" line="613"/>
       <source>Fully load document</source>
       <translation>ໂຫຼດເອກະສານທັງໝົດ</translation>
     </message>

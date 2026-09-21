@@ -87,7 +87,7 @@ Poté by měl uživatel kliknout na tlačítko "Přepočítat" na hlavním panel
   <context>
     <name>LinkParams</name>
     <message>
-      <location filename="../../Link.cpp" line="119"/>
+      <location filename="../../Link.cpp" line="131"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
       <translation>Uloží poslední volbu uživatele, pokud se má nastavení "Kopírovat při změně" použít na všechny odkazy, které odkazují na stejný konfigurovatelný objekt</translation>

@@ -87,7 +87,7 @@ Zatim korisnik treba da klikne na dugme Osveži koje se nalzi na glavnoj paleti 
   <context>
     <name>LinkParams</name>
     <message>
-      <location filename="../../Link.cpp" line="119"/>
+      <location filename="../../Link.cpp" line="131"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
       <translation>Čuva poslednji korisnički izbor o tome da li da se primeni podešavanje CopyOnChange na sve veze koje vode do istog podesivog objekta</translation>

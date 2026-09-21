@@ -48,7 +48,7 @@
       <translation>Скупштина</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="146"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="155"/>
       <source>Active object</source>
       <translation>Активни објекат</translation>
     </message>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="2051"/>
+      <location filename="../../../JointObject.py" line="2061"/>
       <source>Distance</source>
       <translation>Растојање</translation>
     </message>
@@ -175,32 +175,32 @@
       <translation>Неисправна веза у: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1238"/>
+      <location filename="../../../JointObject.py" line="1248"/>
       <source>Edit Joint</source>
       <translation type="unfinished">Edit Joint</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1420"/>
+      <location filename="../../../JointObject.py" line="1430"/>
       <source>Update Stored Positions</source>
       <translation type="unfinished">Update Stored Positions</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1859"/>
+      <location filename="../../../JointObject.py" line="1869"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Потребно је изабрати 2 елемента са 2 различита дела</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2053"/>
+      <location filename="../../../JointObject.py" line="2063"/>
       <source>Radius 1</source>
       <translation>Полупречник 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2055"/>
+      <location filename="../../../JointObject.py" line="2065"/>
       <source>Thread pitch</source>
       <translation>Корак навоја</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2057"/>
+      <location filename="../../../JointObject.py" line="2067"/>
       <source>Pitch radius</source>
       <translation>Подеони полупречник</translation>
     </message>
@@ -717,12 +717,12 @@ SLOPE дефинише нагиб прелаза између 0 и H1, и H2 д�
       <translation>{order} референци споја</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1284"/>
+      <location filename="../../../JointObject.py" line="1294"/>
       <source>List of references to compnents to group together</source>
       <translation type="unfinished">List of references to compnents to group together</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1443"/>
+      <location filename="../../../JointObject.py" line="1453"/>
       <source>The object to ground</source>
       <translation>Објекат који треба направити непокретним</translation>
     </message>
@@ -1014,52 +1014,52 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="214"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="223"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Објекту су придружени један или више спојева.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="216"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="225"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Да ли желиш померити објекат и обрисати придружене спојеве?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1095"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1142"/>
       <source>Move part</source>
       <translation>Помеи део</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1815"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1897"/>
       <source>Empty Assembly</source>
       <translation>Празан склоп</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1827"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1909"/>
       <source>Over-constrained:</source>
       <translation>Превише ограничена скица:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1835"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1917"/>
       <source>Malformed joints:</source>
       <translation>Оштећени спојеви:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1800"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1882"/>
       <source>and %1 more</source>
       <translation>и %1 више</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1859"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1941"/>
       <source>Solver failed to converge</source>
       <translation>Солвер није успео да се приближи</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1867"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1949"/>
       <source>Under-constrained:</source>
       <translation>Недовољно ограничена скица:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1869"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1951"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
         <numerusform>%n Степени слободе</numerusform>
@@ -1068,7 +1068,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1873"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1955"/>
       <source>Fully constrained</source>
       <translation>Потпуно ограничена скица</translation>
     </message>
@@ -1596,7 +1596,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>Делимично учитан</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="615"/>
+      <location filename="../../../CommandInsertLink.py" line="613"/>
       <source>Fully load document</source>
       <translation>Потпуно учитан документ</translation>
     </message>
