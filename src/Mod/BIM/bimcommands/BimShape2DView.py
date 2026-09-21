@@ -42,7 +42,7 @@ class BIM_Shape2DView(gui_shape2dview.Shape2DView):
         d["Accel"] = "V, V"
         d["ToolTip"] = QT_TRANSLATE_NOOP(
             "BIM_Shape2DView",
-            "Creates a 2D projection of the selected objects on the XY-plane. The initial projection direction is the opposite of the current active view direction",
+            "Creates a 2D projection of the selected objects on the XY-plane.\nThe initial projection direction is the opposite of the current active view direction.",
         )
         return d
 
@@ -118,7 +118,7 @@ class BIM_Shape2DCut(BIM_Shape2DView):
         d["Accel"] = "V, C"
         d["ToolTip"] = QT_TRANSLATE_NOOP(
             "BIM_Shape2DCut",
-            "creates a 2D projection of only the intersecting faces of selected objects on the XY-plane",
+            "Creates a 2D projection of only the intersecting faces of the selected objects on the XY-plane.",
         )
         return d
 
