@@ -36,7 +36,6 @@
 # include <BRepLProp_CLProps.hxx>
 # include <BRepTools.hxx>
 # include <BRepTools_WireExplorer.hxx>
-# include <BRepLProp_CurveTool.hxx>
 # include <GC_MakeArcOfCircle.hxx>
 # include <GC_MakeEllipse.hxx>
 # include <GC_MakeCircle.hxx>
