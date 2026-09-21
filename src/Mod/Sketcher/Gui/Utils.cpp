@@ -1097,7 +1097,13 @@ std::vector<std::unique_ptr<Part::Geometry>> SketcherGui::readBlockGeometry(
 {
     Base::PyGILStateLocker lock;
     try {
-        Py::Module blocks("SketcherBlock");
+        // Py::Module(name) uses PyImport_AddModule, which creates an empty module
+        // when SketcherBlock has not been imported yet, so import it explicitly.
+        PyObject* module = PyImport_ImportModule("SketcherBlock");
+        if (!module) {
+            throw Py::Exception();
+        }
+        Py::Module blocks(module, true);
         Py::Tuple args(1);
         args.setItem(0, Py::String(filename));
         Py::List list(blocks.callMemberFunction("read", args));
