@@ -45,17 +45,15 @@
 
 // FreeCAD header
 #include <App/Application.h>
-#include <App/ProgramInformation.h>
+#include <App/CommandLine.h>
+#include <App/ProcessArguments.h>
 #include <Base/ConsoleObserver.h>
 #include <Base/CrashReporter/WindowsCrashReporter.h>
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
 #include <Gui/Application.h>
-#include <Gui/ProgramInformation.h>
 
-
-void PrintInitHelp();
 
 const auto sBanner = fmt::format(
     "(C) 2001-{} FreeCAD contributors\n"
@@ -114,23 +112,6 @@ static bool desktopFileIsAvailable(const QString&)
 }
 #endif
 
-static void displayInfo(const std::string& msg, bool preformatted = true)
-{
-    if (inGuiMode()) {
-        QString qMsg = QString::fromStdString(msg);
-        QString appName = QString::fromStdString(App::Application::getExecutableName());
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Information);
-        msgBox.setWindowTitle(appName);
-        msgBox.setDetailedText(qMsg);
-        msgBox.setText(preformatted ? QStringLiteral("<pre>%1</pre>").arg(qMsg) : qMsg);
-        msgBox.exec();
-    }
-    else {
-        std::cout << msg;
-    }
-}
-
 static void displayCritical(const QString& msg, bool preformatted = true)
 {
     if (inGuiMode()) {
@@ -142,6 +123,26 @@ static void displayCritical(const QString& msg, bool preformatted = true)
     else {
         std::cerr << msg.toStdString();
     }
+}
+
+static App::ProcessArguments captureProcessArguments(int argc, char** argv)
+{
+#if defined(FC_OS_WIN32)
+    // QCoreApplication provides the Unicode Windows command line.  Copy it
+    // while the temporary application is alive; ProcessArguments will keep
+    // an owned UTF-8 argument list for the later startup stages.
+    int qtArgc = argc;
+    QCoreApplication app(qtArgc, argv);
+    std::vector<std::string> arguments;
+    const QStringList qtArguments = app.arguments();
+    arguments.reserve(qtArguments.size());
+    for (const auto& argument : qtArguments) {
+        arguments.push_back(argument.toUtf8().toStdString());
+    }
+    return App::ProcessArguments(std::move(arguments));
+#else
+    return App::ProcessArguments(std::vector<std::string>(argv, argv + argc));
+#endif
 }
 
 int main(int argc, char** argv)
@@ -185,21 +186,10 @@ int main(int argc, char** argv)
     // see https://forum.freecad.org/viewtopic.php?p=485142#p485016
     _putenv("COIN_FORCE_FREETYPE_OFF=1");
 
-    int argc_ = argc;
-    QVector<QByteArray> data;
-    QVector<char*> argv_;
-
-    // get the command line arguments as unicode string
-    {
-        QCoreApplication app(argc, argv);
-        QStringList args = app.arguments();
-        for (QStringList::iterator it = args.begin(); it != args.end(); ++it) {
-            data.push_back(it->toUtf8());
-            argv_.push_back(data.back().data());
-        }
-        argv_.push_back(0);  // 0-terminated string
-    }
 #endif
+
+    const App::ProcessArguments processArguments = captureProcessArguments(argc, argv);
+    auto pythonArguments = processArguments;
 
     // Name and Version of the Application
     App::Application::Config()["ExeName"] = "FreeCAD";
@@ -230,17 +220,26 @@ int main(int argc, char** argv)
         App::Application::Config()["Console"] = "0";
         App::Application::Config()["LoggingConsole"] = "1";
 
-        // Inits the Application
+        const auto options
+            = App::parseCommandLine(processArguments, App::Application::Config()["ExeName"]);
+        if (options.console) {
+            App::Application::Config()["Console"] = "1";
+            App::Application::Config()["RunMode"] = "Cmd";
+        }
+
+        // Inits the Application from the already parsed command line.
+        const App::StartupResult startup = App::Application::init(options, pythonArguments);
+        if (startup.shouldExit()) {
+            std::cout << startup.message;
+            exit(0);
+        }
 #if defined(FC_OS_WIN32)
-        App::Application::init(argc_, argv_.data());
 # ifdef _MSC_VER
         // *Not* installed on mingw, etc.
         Base::CrashReporter::WindowsCrashReporter::install(
             App::Application::getUserAppDataDir() + "CrashReports"
         );
 # endif
-#else
-        App::Application::init(argc, argv);
 #endif
         // To set the window icon on Wayland, the desktop file has to be available to the
         // compositor. Qt also uses the desktop file name to register with the portal registry.
@@ -271,24 +270,13 @@ int main(int argc, char** argv)
         }
     }
     catch (const Base::UnknownProgramOption& e) {
-        QApplication app(argc, argv);
-        QString msg = QString::fromLatin1(e.what());
-        displayCritical(msg);
+        std::cerr << e.what();
         exit(1);
-    }
-    catch (const Base::ProgramInformation& e) {
-        QApplication app(argc, argv);
-        if (std::strcmp(e.what(), App::ProgramInformation::verboseVersionEmitMessage) == 0) {
-            displayInfo(Gui::ProgramInformation::collect());
-        }
-        else {
-            displayInfo(e.what());
-        }
-        exit(0);
     }
     catch (const Base::Exception& e) {
         // Popup an own dialog box instead of that one of Windows
-        QApplication app(argc, argv);
+        auto qtArguments = processArguments;
+        QApplication app(qtArguments.argc(), qtArguments.argv());
         QString appName = QString::fromStdString(App::Application::getExecutableName());
         QString msg = QObject::tr("While initializing %1 the following exception occurred: '%2'\n\n")
                           .arg(appName, QString::fromUtf8(e.what()));
@@ -321,7 +309,8 @@ int main(int argc, char** argv)
     }
     catch (...) {
         // Popup an own dialog box instead of that one of Windows
-        QApplication app(argc, argv);
+        auto qtArguments = processArguments;
+        QApplication app(qtArguments.argc(), qtArguments.argv());
         QString appName = QString::fromStdString(App::Application::getExecutableName());
         QString msg = QObject::tr(
                           "Unknown runtime error occurred while initializing %1.\n\n"
@@ -342,7 +331,8 @@ int main(int argc, char** argv)
 
     try {
         if (inGuiMode()) {
-            Gui::Application::runApplication();
+            auto qtArguments = processArguments;
+            Gui::Application::runApplication(qtArguments);
         }
         else {
             App::Application::runApplication();

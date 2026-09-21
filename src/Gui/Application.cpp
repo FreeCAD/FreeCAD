@@ -2617,7 +2617,7 @@ void runEventLoop(GUISingleApplication& mainApp)
 }
 }  // namespace
 
-void Application::runApplication()
+void Application::runApplication(App::ProcessArguments& arguments)
 {
     StartupProcess::setupApplication();
 
@@ -2649,8 +2649,7 @@ void Application::runApplication()
     // A new QApplication
     Base::Console().log("Init: Creating Gui::Application and QApplication\n");
 
-    int argc = App::Application::GetARGC();
-    GUISingleApplication mainApp(argc, App::Application::GetARGV());
+    GUISingleApplication mainApp(arguments.argc(), arguments.argv());
 
 #if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 406) \
     && (defined(FC_OS_LINUX) || defined(FC_OS_BSD))

@@ -44,7 +44,7 @@
 class TestMaterialCards : public ::testing::Test {
 protected:
     static void SetUpTestSuite() {
-        if (App::Application::GetARGC() == 0) {
+        if (!App::Application::isInitialized()) {
             tests::initApplication();
         }
     }

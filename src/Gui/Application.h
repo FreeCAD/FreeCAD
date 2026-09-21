@@ -278,7 +278,7 @@ public:
     static void initTypes();
     static void initOpenInventor();
     static void runInitGuiScript();
-    static void runApplication();
+    static void runApplication(App::ProcessArguments& arguments);
     void tryClose(QCloseEvent* e);
     //@}
 

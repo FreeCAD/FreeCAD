@@ -47,6 +47,8 @@
 #include <Base/PyObjectBase.h>
 #include <Base/Sequencer.h>
 #include <App/Application.h>
+#include <App/CommandLine.h>
+#include <App/ProcessArguments.h>
 
 #if defined(FC_OS_WIN32)
 
@@ -158,13 +160,12 @@ PyMOD_INIT_FUNC(FreeCAD)
 #else
 # error "Implement: Retrieve the path of the module for your platform."
 #endif
-    int argc = 1;
-    std::vector<char*> argv;
-    argv.push_back(path.data());
+    App::ProcessArguments processArguments(std::vector<std::string> {path.toStdString()});
 
     try {
-        // Inits the Application
-        App::Application::init(argc, argv.data());
+        // Importing FreeCAD has no command line of its own, but historically loads FreeCAD.cfg.
+        const auto options = App::loadStartupConfiguration(App::Application::Config()["ExeName"]);
+        App::Application::init(options, processArguments);
     }
     catch (const Base::Exception& e) {
         std::string appName = App::Application::getExecutableName();
