@@ -4,17 +4,17 @@
   <context>
     <name>CmdMeshAddFacet</name>
     <message>
-      <location filename="../../Command.cpp" line="750"/>
+      <location filename="../../Command.cpp" line="751"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="751"/>
+      <location filename="../../Command.cpp" line="752"/>
       <source>Add Triangle</source>
       <translation>Přidat trojúhelník</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="752"/>
+      <location filename="../../Command.cpp" line="753"/>
       <source>Adds a triangle manually to a mesh</source>
       <translation>Manuálně přidává trojúhelník do sítě</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdMeshBoundingBox</name>
     <message>
-      <location filename="../../Command.cpp" line="1487"/>
+      <location filename="../../Command.cpp" line="1488"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1488"/>
+      <location filename="../../Command.cpp" line="1489"/>
       <source>Bounding Box Info</source>
       <translation>Informace o ohraničujícím rámečku</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1489"/>
+      <location filename="../../Command.cpp" line="1490"/>
       <source>Shows the bounding box coordinates of the selected mesh</source>
       <translation>Zobrazí souřadnice ohraničujícího obdélníku vybrané sítě</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdMeshBuildRegularSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1542"/>
+      <location filename="../../Command.cpp" line="1543"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1543"/>
+      <location filename="../../Command.cpp" line="1544"/>
       <source>Regular Solid</source>
       <translation>Pravidelné těleso</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1544"/>
+      <location filename="../../Command.cpp" line="1545"/>
       <source>Builds a regular solid</source>
       <translation>Vytvoří pravidelné těleso</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdMeshCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="992"/>
+      <location filename="../../Command.cpp" line="993"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="993"/>
+      <location filename="../../Command.cpp" line="994"/>
       <source>Cross-Sections</source>
       <translation>Průřezy</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="994"/>
+      <location filename="../../Command.cpp" line="995"/>
       <source>Creates cross-sections of the mesh</source>
       <translation>Vytvoří řezy sítí</translation>
     </message>
@@ -76,17 +76,17 @@
   <context>
     <name>CmdMeshDecimating</name>
     <message>
-      <location filename="../../Command.cpp" line="1377"/>
+      <location filename="../../Command.cpp" line="1378"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1378"/>
+      <location filename="../../Command.cpp" line="1379"/>
       <source>Decimate</source>
       <translation>Zdecimovat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1379"/>
+      <location filename="../../Command.cpp" line="1380"/>
       <source>Decimates a mesh</source>
       <translation>Zredukuje síť</translation>
     </message>
@@ -112,17 +112,17 @@
   <context>
     <name>CmdMeshEvaluateFacet</name>
     <message>
-      <location filename="../../Command.cpp" line="1125"/>
+      <location filename="../../Command.cpp" line="1126"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1126"/>
+      <location filename="../../Command.cpp" line="1127"/>
       <source>Face Info</source>
       <translation>Informace o ploše</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1127"/>
+      <location filename="../../Command.cpp" line="1128"/>
       <source>Displays information about the selected faces</source>
       <translation>Zobrazuje informace o vybraných plochách</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdMeshEvaluateSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1306"/>
+      <location filename="../../Command.cpp" line="1307"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1307"/>
+      <location filename="../../Command.cpp" line="1308"/>
       <source>Evaluate Solid</source>
       <translation>Vyhodnotit pevnost</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1308"/>
+      <location filename="../../Command.cpp" line="1309"/>
       <source>Checks whether the mesh is a solid</source>
       <translation>Zkontroluje, zda je síť uzavřená</translation>
     </message>
@@ -148,17 +148,17 @@
   <context>
     <name>CmdMeshEvaluation</name>
     <message>
-      <location filename="../../Command.cpp" line="1079"/>
+      <location filename="../../Command.cpp" line="1080"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1081"/>
+      <location filename="../../Command.cpp" line="1082"/>
       <source>Evaluate and Repair</source>
       <translation>Vyhodnotit a opravit</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1082"/>
+      <location filename="../../Command.cpp" line="1083"/>
       <source>Opens a dialog to analyze and repair a mesh</source>
       <translation>Otevře dialog pro analýzu a opravu sítě</translation>
     </message>
@@ -166,17 +166,17 @@
   <context>
     <name>CmdMeshExport</name>
     <message>
-      <location filename="../../Command.cpp" line="401"/>
+      <location filename="../../Command.cpp" line="402"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="402"/>
+      <location filename="../../Command.cpp" line="403"/>
       <source>Export Mesh…</source>
       <translation>Exportovat síť…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="403"/>
+      <location filename="../../Command.cpp" line="404"/>
       <source>Exports a mesh to a file</source>
       <translation>Exportuje síť do souboru</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdMeshFillInteractiveHole</name>
     <message>
-      <location filename="../../Command.cpp" line="1629"/>
+      <location filename="../../Command.cpp" line="1630"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1630"/>
+      <location filename="../../Command.cpp" line="1631"/>
       <source>Close Hole</source>
       <translation>Uzavřít otvor</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1631"/>
+      <location filename="../../Command.cpp" line="1632"/>
       <source>Closes a hole interactively in the mesh</source>
       <translation>Interaktivně uzavře otvor v síti</translation>
     </message>
@@ -202,17 +202,17 @@
   <context>
     <name>CmdMeshFillupHoles</name>
     <message>
-      <location filename="../../Command.cpp" line="1574"/>
+      <location filename="../../Command.cpp" line="1575"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1575"/>
+      <location filename="../../Command.cpp" line="1576"/>
       <source>Fill Holes</source>
       <translation>Vyplnit otvory</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1576"/>
+      <location filename="../../Command.cpp" line="1577"/>
       <source>Fills holes in the mesh</source>
       <translation>Vyplňuje otvory v síti</translation>
     </message>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdMeshFlipNormals</name>
     <message>
-      <location filename="../../Command.cpp" line="1448"/>
+      <location filename="../../Command.cpp" line="1449"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1449"/>
+      <location filename="../../Command.cpp" line="1450"/>
       <source>Flip Normals</source>
       <translation>Obrátit normály</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1450"/>
+      <location filename="../../Command.cpp" line="1451"/>
       <source>Flips the normals of the selected mesh</source>
       <translation>Obrátí normály vybrané sítě</translation>
     </message>
@@ -238,17 +238,17 @@
   <context>
     <name>CmdMeshFromGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="482"/>
+      <location filename="../../Command.cpp" line="483"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="483"/>
+      <location filename="../../Command.cpp" line="484"/>
       <source>Mesh From Geometry</source>
       <translation>Síť z geometrie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="484"/>
+      <location filename="../../Command.cpp" line="485"/>
       <source>Creates a mesh from the selected geometry</source>
       <translation>Vytvoří síť z vybrané geometrie</translation>
     </message>
@@ -256,17 +256,17 @@
   <context>
     <name>CmdMeshFromPartShape</name>
     <message>
-      <location filename="../../Command.cpp" line="555"/>
+      <location filename="../../Command.cpp" line="556"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="556"/>
+      <location filename="../../Command.cpp" line="557"/>
       <source>Mesh From Shape</source>
       <translation>Síť z tvaru</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="557"/>
+      <location filename="../../Command.cpp" line="558"/>
       <source>Tessellates the selected shape to a mesh</source>
       <translation>Vytvoří z vybraného tvaru mozaiku na síti</translation>
     </message>
@@ -274,17 +274,17 @@
   <context>
     <name>CmdMeshHarmonizeNormals</name>
     <message>
-      <location filename="../../Command.cpp" line="1409"/>
+      <location filename="../../Command.cpp" line="1410"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1410"/>
+      <location filename="../../Command.cpp" line="1411"/>
       <source>Harmonize Normals</source>
       <translation>Sladit normály</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1411"/>
+      <location filename="../../Command.cpp" line="1412"/>
       <source>Harmonizes the normals of the mesh</source>
       <translation>Uspořádá normály sítě</translation>
     </message>
@@ -328,17 +328,17 @@
   <context>
     <name>CmdMeshMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="1751"/>
+      <location filename="../../Command.cpp" line="1752"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1752"/>
+      <location filename="../../Command.cpp" line="1753"/>
       <source>Merge</source>
       <translation>Sloučit</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1753"/>
+      <location filename="../../Command.cpp" line="1754"/>
       <source>Merges selected meshes into one</source>
       <translation>Sloučí vybrané sítě do jedné</translation>
     </message>
@@ -346,17 +346,17 @@
   <context>
     <name>CmdMeshPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="800"/>
+      <location filename="../../Command.cpp" line="801"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="801"/>
+      <location filename="../../Command.cpp" line="802"/>
       <source>Cut</source>
       <translation>Oříznout</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="802"/>
+      <location filename="../../Command.cpp" line="803"/>
       <source>Cuts the mesh with a selected polygon</source>
       <translation>Vyřízne síť pomocí vybraného mnohoúhelníku</translation>
     </message>
@@ -364,17 +364,17 @@
   <context>
     <name>CmdMeshPolySegm</name>
     <message>
-      <location filename="../../Command.cpp" line="689"/>
+      <location filename="../../Command.cpp" line="690"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="690"/>
+      <location filename="../../Command.cpp" line="691"/>
       <source>Segment</source>
       <translation>Segment</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="691"/>
+      <location filename="../../Command.cpp" line="692"/>
       <source>Creates a mesh segment</source>
       <translation>Vytvoří segment sítě</translation>
     </message>
@@ -382,17 +382,17 @@
   <context>
     <name>CmdMeshPolySplit</name>
     <message>
-      <location filename="../../Command.cpp" line="1020"/>
+      <location filename="../../Command.cpp" line="1021"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1021"/>
+      <location filename="../../Command.cpp" line="1022"/>
       <source>Split</source>
       <translation>Rozdělit</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1022"/>
+      <location filename="../../Command.cpp" line="1023"/>
       <source>Splits a mesh into 2 meshes</source>
       <translation>Rozdělí síť na 2 sítě</translation>
     </message>
@@ -400,22 +400,22 @@
   <context>
     <name>CmdMeshPolyTrim</name>
     <message>
-      <location filename="../../Command.cpp" line="867"/>
+      <location filename="../../Command.cpp" line="868"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="868"/>
+      <location filename="../../Command.cpp" line="869"/>
       <source>Trim</source>
       <translation>Oříznout</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="869"/>
+      <location filename="../../Command.cpp" line="870"/>
       <source>Trims a mesh with a selected polygon</source>
       <translation>Ořízne síť podle vybraného mnohoúhelníku</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="871"/>
+      <location filename="../../Command.cpp" line="872"/>
       <source>Trims a mesh with a picked polygon</source>
       <translation>Oříznout síť vybraným mnohoúhelníkem</translation>
     </message>
@@ -423,17 +423,17 @@
   <context>
     <name>CmdMeshRemeshGmsh</name>
     <message>
-      <location filename="../../Command.cpp" line="1222"/>
+      <location filename="../../Command.cpp" line="1223"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1223"/>
+      <location filename="../../Command.cpp" line="1224"/>
       <source>Refinement</source>
       <translation>Zpřesnění</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1224"/>
+      <location filename="../../Command.cpp" line="1225"/>
       <source>Refines an existing mesh</source>
       <translation>Vylepší stávající síť</translation>
     </message>
@@ -441,17 +441,17 @@
   <context>
     <name>CmdMeshRemoveCompByHand</name>
     <message>
-      <location filename="../../Command.cpp" line="1256"/>
+      <location filename="../../Command.cpp" line="1257"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1257"/>
+      <location filename="../../Command.cpp" line="1258"/>
       <source>Remove Components Manually</source>
       <translation>Manuálně odstranit komponenty</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1258"/>
+      <location filename="../../Command.cpp" line="1259"/>
       <source>Marks a component to remove it from the mesh</source>
       <translation>Označí komponentu, aby byla odstraněna ze sítě</translation>
     </message>
@@ -459,17 +459,17 @@
   <context>
     <name>CmdMeshRemoveComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="1174"/>
+      <location filename="../../Command.cpp" line="1175"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1175"/>
+      <location filename="../../Command.cpp" line="1176"/>
       <source>Remove Components</source>
       <translation>Odstranit komponenty</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1176"/>
+      <location filename="../../Command.cpp" line="1177"/>
       <source>Removes topologically independent components from the mesh</source>
       <translation>Odstraní z sítě topologicky nezávislé komponenty</translation>
     </message>
@@ -477,17 +477,17 @@
   <context>
     <name>CmdMeshScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1846"/>
+      <location filename="../../Command.cpp" line="1847"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1847"/>
+      <location filename="../../Command.cpp" line="1848"/>
       <source>Scale</source>
       <translation>Změna velikosti</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1848"/>
+      <location filename="../../Command.cpp" line="1849"/>
       <source>Scales the selected mesh objects</source>
       <translation>Změní měřítko vybraných síťových objektů</translation>
     </message>
@@ -495,17 +495,17 @@
   <context>
     <name>CmdMeshSectionByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="963"/>
+      <location filename="../../Command.cpp" line="964"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="964"/>
+      <location filename="../../Command.cpp" line="965"/>
       <source>Section From Plane</source>
       <translation>Řez v rovině</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="965"/>
+      <location filename="../../Command.cpp" line="966"/>
       <source>Sections the mesh with the selected plane</source>
       <translation>Rozdělí síť na části pomocí vybrané roviny</translation>
     </message>
@@ -513,17 +513,17 @@
   <context>
     <name>CmdMeshSegmentation</name>
     <message>
-      <location filename="../../Command.cpp" line="1677"/>
+      <location filename="../../Command.cpp" line="1678"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1678"/>
+      <location filename="../../Command.cpp" line="1679"/>
       <source>Segmentation</source>
       <translation>Segmentace</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1679"/>
+      <location filename="../../Command.cpp" line="1680"/>
       <source>Creates new mesh segments from the mesh</source>
       <translation>Vytvoří nové segmenty sítě z dané sítě</translation>
     </message>
@@ -531,17 +531,17 @@
   <context>
     <name>CmdMeshSegmentationBestFit</name>
     <message>
-      <location filename="../../Command.cpp" line="1714"/>
+      <location filename="../../Command.cpp" line="1715"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1715"/>
+      <location filename="../../Command.cpp" line="1716"/>
       <source>Segmentation From Best-Fit Surfaces</source>
       <translation>Segmentovat na základě nejvhodnějších povrchů</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1716"/>
+      <location filename="../../Command.cpp" line="1717"/>
       <source>Creates new mesh segments from the best-fit surfaces</source>
       <translation>Vytvoří nové segmenty sítě na základě nejlépe padnoucích ploch</translation>
     </message>
@@ -549,17 +549,17 @@
   <context>
     <name>CmdMeshSmoothing</name>
     <message>
-      <location filename="../../Command.cpp" line="1348"/>
+      <location filename="../../Command.cpp" line="1349"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1349"/>
+      <location filename="../../Command.cpp" line="1350"/>
       <source>Smooth</source>
       <translation>Vyhladit</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1350"/>
+      <location filename="../../Command.cpp" line="1351"/>
       <source>Smoothes the selected meshes</source>
       <translation>Vyhladí vybrané sítě</translation>
     </message>
@@ -567,17 +567,17 @@
   <context>
     <name>CmdMeshSplitComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="1797"/>
+      <location filename="../../Command.cpp" line="1798"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1798"/>
+      <location filename="../../Command.cpp" line="1799"/>
       <source>Split by Components</source>
       <translation>Rozdělit podle komponent</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1799"/>
+      <location filename="../../Command.cpp" line="1800"/>
       <source>Splits the selected mesh into its components</source>
       <translation>Rozdělí vybranou síť na její jednotlivé součásti</translation>
     </message>
@@ -585,17 +585,17 @@
   <context>
     <name>CmdMeshTrimByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="934"/>
+      <location filename="../../Command.cpp" line="935"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="935"/>
+      <location filename="../../Command.cpp" line="936"/>
       <source>Trim With Plane</source>
       <translation>Ořezání pomocí roviny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="936"/>
+      <location filename="../../Command.cpp" line="937"/>
       <source>Trims a mesh by removing faces on one side of a selected plane</source>
       <translation>Ořízne síť odstraněním ploch na jedné straně vybrané roviny</translation>
     </message>
@@ -621,17 +621,17 @@
   <context>
     <name>CmdMeshVertexCurvature</name>
     <message>
-      <location filename="../../Command.cpp" line="581"/>
+      <location filename="../../Command.cpp" line="582"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="582"/>
+      <location filename="../../Command.cpp" line="583"/>
       <source>Curvature Plot</source>
       <translation>Graf zakřivení</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="583"/>
+      <location filename="../../Command.cpp" line="584"/>
       <source>Calculates the curvature of the vertices of a mesh</source>
       <translation>Vypočte zakřivení vrcholů sítě</translation>
     </message>
@@ -639,17 +639,17 @@
   <context>
     <name>CmdMeshVertexCurvatureInfo</name>
     <message>
-      <location filename="../../Command.cpp" line="638"/>
+      <location filename="../../Command.cpp" line="639"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="639"/>
+      <location filename="../../Command.cpp" line="640"/>
       <source>Curvature Info</source>
       <translation>Informace o zakřivení</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="640"/>
+      <location filename="../../Command.cpp" line="641"/>
       <source>Displays information about the curvature</source>
       <translation>Zobrazuje informace o zakřivení</translation>
     </message>
@@ -672,12 +672,12 @@
       <translation>Průnik sítě</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="380"/>
+      <location filename="../../Command.cpp" line="381"/>
       <source>Import Mesh</source>
       <translation>Importovat síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="599"/>
+      <location filename="../../Command.cpp" line="600"/>
       <source>Mesh VertexCurvature</source>
       <translation>Křivost vrcholů sítě</translation>
     </message>
@@ -687,32 +687,32 @@
       <translation>Vyhlazení sítě</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1422"/>
+      <location filename="../../Command.cpp" line="1423"/>
       <source>Harmonize mesh normals</source>
       <translation>Sladit normály sítě</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1461"/>
+      <location filename="../../Command.cpp" line="1462"/>
       <source>Flip mesh normals</source>
       <translation>Obrátit normály sítě</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1602"/>
+      <location filename="../../Command.cpp" line="1603"/>
       <source>Fill up holes</source>
       <translation>Vyplnit otvory</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1766"/>
+      <location filename="../../Command.cpp" line="1767"/>
       <source>Mesh merge</source>
       <translation>Sloučit síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1812"/>
+      <location filename="../../Command.cpp" line="1813"/>
       <source>Mesh split</source>
       <translation>Rozdělit síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1877"/>
+      <location filename="../../Command.cpp" line="1878"/>
       <source>Mesh scale</source>
       <translation>Škálovat síť</translation>
     </message>
@@ -2031,7 +2031,7 @@ k hladšímu vzhledu.
   <context>
     <name>Mesh_BoundingBox</name>
     <message>
-      <location filename="../../Command.cpp" line="1514"/>
+      <location filename="../../Command.cpp" line="1515"/>
       <source>Boundings of %1:</source>
       <translation>Hranice %1:</translation>
     </message>
@@ -2092,32 +2092,32 @@ Navštivte https://openscad.org/ a nainstalujte ho.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="359"/>
-      <location filename="../../Command.cpp" line="424"/>
+      <location filename="../../Command.cpp" line="425"/>
       <source>Binary STL</source>
       <translation>Binární STL</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="360"/>
-      <location filename="../../Command.cpp" line="425"/>
       <location filename="../../Command.cpp" line="426"/>
+      <location filename="../../Command.cpp" line="427"/>
       <source>ASCII STL</source>
       <translation>ASCII STL</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="361"/>
-      <location filename="../../Command.cpp" line="427"/>
+      <location filename="../../Command.cpp" line="428"/>
       <source>Binary Mesh</source>
       <translation>Binární síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="362"/>
-      <location filename="../../Command.cpp" line="428"/>
+      <location filename="../../Command.cpp" line="429"/>
       <source>Alias Mesh</source>
       <translation>Alias sítě</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="363"/>
-      <location filename="../../Command.cpp" line="430"/>
+      <location filename="../../Command.cpp" line="431"/>
       <source>Object File Format</source>
       <translation>Formát souboru objektu</translation>
     </message>
@@ -2128,117 +2128,118 @@ Navštivte https://openscad.org/ a nainstalujte ho.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="365"/>
-      <location filename="../../Command.cpp" line="435"/>
+      <location filename="../../Command.cpp" line="436"/>
       <source>Stanford Polygon</source>
       <translation>Mnohoúhelník Stanford</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="373"/>
+      <location filename="../../Command.cpp" line="374"/>
       <source>Import Mesh</source>
       <translation>Importovat síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="429"/>
+      <location filename="../../Command.cpp" line="430"/>
       <source>Simple Model Format</source>
       <translation>Jednoduchá formát modelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="431"/>
+      <location filename="../../Command.cpp" line="432"/>
       <source>Inventor V2.1 ascii</source>
       <translation>Inventor V2.1 ASCII</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="432"/>
+      <location filename="../../Command.cpp" line="433"/>
       <source>X3D Extensible 3D</source>
       <translation>X3D rozšířitelné 3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="433"/>
+      <location filename="../../Command.cpp" line="434"/>
       <source>Compressed X3D</source>
       <translation>Komprimované X3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="434"/>
+      <location filename="../../Command.cpp" line="435"/>
       <source>WebGL/X3D</source>
       <translation>WebGL/X3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="436"/>
+      <location filename="../../Command.cpp" line="437"/>
       <source>VRML V2.0</source>
       <translation>VRML V2.0</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="437"/>
+      <location filename="../../Command.cpp" line="438"/>
       <source>Compressed VRML 2.0</source>
       <translation>Komprimované VRML 2.0</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="439"/>
+      <location filename="../../Command.cpp" line="440"/>
       <source>Python module def</source>
       <translation>Definice Python modulu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="440"/>
+      <location filename="../../Command.cpp" line="441"/>
       <source>Asymptote Format</source>
       <translation>Asymptotický formát</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="441"/>
+      <location filename="../../Command.cpp" line="366"/>
+      <location filename="../../Command.cpp" line="442"/>
       <source>3D Manufacturing Format</source>
       <translation>3D výrobní formát</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="452"/>
+      <location filename="../../Command.cpp" line="453"/>
       <source>Export Mesh</source>
       <translation>Exportovat síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="494"/>
+      <location filename="../../Command.cpp" line="495"/>
       <source>Meshing Tolerance</source>
       <translation>Tolerance sítě</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="495"/>
+      <location filename="../../Command.cpp" line="496"/>
       <source>Enter tolerance for meshing geometry:</source>
       <translation>Vložit toleranci pro síťovou geometrii:</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1323"/>
+      <location filename="../../Command.cpp" line="1324"/>
       <source>The mesh '%1' is not a solid.</source>
       <translation>Síť '%1' netvoří těleso.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1327"/>
+      <location filename="../../Command.cpp" line="1328"/>
       <source>The mesh '%1' is a solid.</source>
       <translation>Síť '%1' je pevná.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1330"/>
+      <location filename="../../Command.cpp" line="1331"/>
       <source>Solid Mesh</source>
       <translation>Síť tělesa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1523"/>
+      <location filename="../../Command.cpp" line="1524"/>
       <source>Boundings</source>
       <translation>Hraniční</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1590"/>
+      <location filename="../../Command.cpp" line="1591"/>
       <source>Fill Holes</source>
       <translation>Vyplnit otvory</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1591"/>
+      <location filename="../../Command.cpp" line="1592"/>
       <source>Fill holes with maximum number of edges</source>
       <translation>Vyplní otvory s maximálním počtem hran</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1864"/>
+      <location filename="../../Command.cpp" line="1865"/>
       <source>Scaling</source>
       <translation>Škálování</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1865"/>
+      <location filename="../../Command.cpp" line="1866"/>
       <source>Enter scaling factor:</source>
       <translation>Vložte měřítko:</translation>
     </message>

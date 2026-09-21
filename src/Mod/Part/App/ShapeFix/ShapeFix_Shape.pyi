@@ -41,13 +41,13 @@ class ShapeFix_Shape(ShapeFix_Root):
     FixVertexTolMode: bool = ...
     """Mode for fixing tolerances of vertices on whole shape"""
 
-    def init(self) -> None:
+    def init(self, shape: TopoShape, /) -> None:
         """
         Initializes by shape
         """
         ...
 
-    def perform(self) -> None:
+    def perform(self) -> bool:
         """
         Iterates on sub- shape and performs fixes
         """

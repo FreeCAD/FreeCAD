@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="522"/>
       <source>Align &amp;Bottom</source>
-      <translation>Justera &amp;botten</translation>
+      <translation>Justera mot &amp;nederkant</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="523"/>
       <source>Aligns cell contents to the bottom</source>
-      <translation>Justerar cellinnehållet till botten</translation>
+      <translation>Justerar cellinnehållet mot nederkanten</translation>
     </message>
   </context>
   <context>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../Command.cpp" line="348"/>
       <source>Align Horizontal &amp;Center</source>
-      <translation>Justera horisontellt &amp;centrum</translation>
+      <translation>&amp;Centrera horisontellt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="349"/>
       <source>Aligns cell contents to the horizontal center</source>
-      <translation>Justerar cellinnehållet till den horisontella mitten</translation>
+      <translation>Centrerar cellinnehållet horisontellt</translation>
     </message>
   </context>
   <context>
@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="464"/>
       <source>Align &amp;Top</source>
-      <translation>Justera &amp;topp</translation>
+      <translation>Justera mot över&amp;kant</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="465"/>
       <source>Aligns cell contents to the top</source>
-      <translation>Justerar cellinnehållet till toppen</translation>
+      <translation>Justerar cellinnehållet mot överkanten</translation>
     </message>
   </context>
   <context>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="580"/>
       <source>Align &amp;Vertical Center</source>
-      <translation>Rikta in &amp;Vertikal Center</translation>
+      <translation>Centrera ver&amp;tikalt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="581"/>
       <source>Aligns cell contents to the vertical center</source>
-      <translation>Justerar cellinnehållet till den vertikala mitten</translation>
+      <translation>Centrerar cellinnehållet vertikalt</translation>
     </message>
   </context>
   <context>
@@ -191,7 +191,7 @@
     <message>
       <location filename="../../Command.cpp" line="896"/>
       <source>Set Alias</source>
-      <translation>Definiera alias</translation>
+      <translation>Ange alias</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="897"/>
@@ -214,7 +214,7 @@
     <message>
       <location filename="../../Command.cpp" line="125"/>
       <source>Splits a previously merged cell</source>
-      <translation>Delar en tidigare sammanslagen cell</translation>
+      <translation>Delar en tidigare sammanfogad cell</translation>
     </message>
   </context>
   <context>
@@ -319,12 +319,12 @@
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <source>Top-align cell</source>
-      <translation>Toppjusterad cell</translation>
+      <translation>Justera cell mot överkant</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="544"/>
       <source>Bottom-align cell</source>
-      <translation>Bottenjusterad cell</translation>
+      <translation>Justera cell mot nederkant</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="602"/>
@@ -352,7 +352,7 @@
       <translation>Skapa kalkylblad</translation>
     </message>
     <message>
-      <location filename="../../PropertiesDialog.cpp" line="315"/>
+      <location filename="../../PropertiesDialog.cpp" line="387"/>
       <source>Set cell properties</source>
       <translation>Ange cellens egenskaper</translation>
     </message>
@@ -384,7 +384,7 @@
     <message>
       <location filename="../../SheetTableView.cpp" line="226"/>
       <source>Recompute Cells</source>
-      <translation>Omräkna celler</translation>
+      <translation>Räkna om celler</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="327"/>
@@ -410,22 +410,22 @@
       <location filename="../../SpreadsheetView.cpp" line="179"/>
       <location filename="../../SheetTableView.cpp" line="582"/>
       <source>Clear Cells</source>
-      <translation>Klara celler</translation>
+      <translation>Rensa celler</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="228"/>
       <source>Setup conf table</source>
-      <translation>Konfigurera konfigurationstabell</translation>
+      <translation>Skapa konfigurationstabell</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="391"/>
       <source>Unsetup conf table</source>
-      <translation>Avkonfigurera konfigurationstabell</translation>
+      <translation>Ta bort konfigurationstabellens inställningar</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="243"/>
       <source>Bind cells</source>
-      <translation>Binda celler</translation>
+      <translation>Bind celler</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="297"/>
@@ -458,7 +458,7 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="62"/>
       <source>End cell address</source>
-      <translation>Cellens slutadress</translation>
+      <translation>Slutcellens adress</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="82"/>
@@ -472,7 +472,7 @@ Uttrycket måste utvärderas till en sträng med någon celladress.</translation
     <message>
       <location filename="../../DlgBindSheet.ui" line="36"/>
       <source>Bind cells</source>
-      <translation>Binda celler</translation>
+      <translation>Bind celler</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="69"/>
@@ -491,7 +491,7 @@ Uttrycket måste utvärderas till en sträng med någon celladress.</translation
     <message>
       <location filename="../../DlgBindSheet.ui" line="110"/>
       <source>Which spread sheet to bind to</source>
-      <translation>Vilket kalkylblad att binda till</translation>
+      <translation>Kalkylblad att binda till</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="117"/>
@@ -503,7 +503,7 @@ Uttrycket måste utvärderas till en sträng med någon celladress.</translation
       <source>The dependency with the referenced spreadsheet will
 be hidden to the dependency checking.
 Useful to avoid cyclic dependencies, but use with caution!</source>
-      <translation>Beroendet med det refererade kalkylbladet kommer att
+      <translation>Beroendet av det refererade kalkylbladet kommer att
 döljas för beroendekontrollen.
 Användbart för att undvika cykliska beroenden, men använd med försiktighet!</translation>
     </message>
@@ -515,7 +515,7 @@ Användbart för att undvika cykliska beroenden, men använd med försiktighet!<
     <message>
       <location filename="../../DlgBindSheet.ui" line="140"/>
       <source>Unbind</source>
-      <translation>Bind upp</translation>
+      <translation>Ta bort bindning</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="147"/>
@@ -533,7 +533,7 @@ Användbart för att undvika cykliska beroenden, men använd med försiktighet!<
     <message>
       <location filename="../../DlgSheetConf.ui" line="14"/>
       <source>Setup Configuration Table</source>
-      <translation>Tabell för konfiguration av inställningar</translation>
+      <translation>Skapa konfigurationstabell</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="27"/>
@@ -548,12 +548,12 @@ by that property.
 </source>
       <translation>Startcellens adress.
 
-Den första kolumnen i intervallet antas innehålla en lista med konfigurationsnamn, 
-som kommer att användas för att generera en stränglista och binda till den givna
+Den första kolumnen i cellområdet antas innehålla en lista med konfigurationsnamn
+som används för att skapa en stränglista och binda den till den angivna
 egenskapen så att användaren kan byta konfiguration dynamiskt.
 
-Den första raden i intervallet kommer att bindas till den rad som (indirekt) väljs
-av den egenskapen.
+Den första raden i området binds till den rad som (indirekt) väljs
+av egenskapen.
 </translation>
     </message>
     <message>
@@ -567,22 +567,22 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation>Adress till slutcellen.
+      <translation>Slutcellens adress.
 
-Den första kolumnen i intervallet antas innehålla en lista med konfigurationsnamn, 
-som kommer att användas för att generera en stränglista och binda till den givna
+Den första kolumnen i cellområdet antas innehålla en lista med konfigurationsnamn
+som används för att skapa en stränglista och binda den till den angivna
 egenskapen så att användaren kan byta konfiguration dynamiskt.
 
-Den första raden i intervallet kommer att bindas till den rad som (indirekt) väljs
-av den egenskapen.
+Den första raden i området binds till den rad som (indirekt) väljs
+av egenskapen.
 </translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="64"/>
       <source>Type in an expression to specify the object and property name to dynamically
 switch the design configuration. The property will be created if not exist.</source>
-      <translation>Skriv in ett uttryck för att ange objekt- och egenskapsnamn för att dynamiskt
-dynamiskt byta designkonfiguration. Egenskapen kommer att skapas om den inte finns.</translation>
+      <translation>Ange ett uttryck med objektets och egenskapens namn för att dynamiskt
+byta modellkonfiguration. Egenskapen skapas om den inte finns.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="20"/>
@@ -592,7 +592,7 @@ dynamiskt byta designkonfiguration. Egenskapen kommer att skapas om den inte fin
     <message>
       <location filename="../../DlgSheetConf.ui" line="57"/>
       <source>Property</source>
-      <translation>Fastighet</translation>
+      <translation>Egenskap</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="72"/>
@@ -602,7 +602,7 @@ dynamiskt byta designkonfiguration. Egenskapen kommer att skapas om den inte fin
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
       <source>Optional property group name</source>
-      <translation>Valfritt namn på fastighetsgrupp</translation>
+      <translation>Valfritt namn på egenskapsgruppen</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="86"/>
@@ -617,12 +617,12 @@ dynamiskt byta designkonfiguration. Egenskapen kommer att skapas om den inte fin
     <message>
       <location filename="../../DlgSheetConf.ui" line="103"/>
       <source>Vertical</source>
-      <translation>Lodrät</translation>
+      <translation>Vertikal</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="115"/>
       <source>Unsetup</source>
-      <translation>Återställer</translation>
+      <translation>Ta bort inställningar</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="122"/>
@@ -640,7 +640,7 @@ dynamiskt byta designkonfiguration. Egenskapen kommer att skapas om den inte fin
     <message>
       <location filename="../../PropertiesDialog.ui" line="14"/>
       <source>Cell Properties</source>
-      <translation>Egenskaper för celler</translation>
+      <translation>Cellegenskaper</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="27"/>
@@ -691,12 +691,12 @@ dynamiskt byta designkonfiguration. Egenskapen kommer att skapas om den inte fin
     <message>
       <location filename="../../PropertiesDialog.ui" line="148"/>
       <source>Top</source>
-      <translation>Topp</translation>
+      <translation>Överkant</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="162"/>
       <source>Bottom</source>
-      <translation>Botten</translation>
+      <translation>Nederkant</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="188"/>
@@ -721,7 +721,7 @@ dynamiskt byta designkonfiguration. Egenskapen kommer att skapas om den inte fin
     <message>
       <location filename="../../PropertiesDialog.ui" line="233"/>
       <source>&amp;Display unit</source>
-      <translation>&amp;Displayenhet</translation>
+      <translation>&amp;Visningsenhet</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="239"/>
@@ -737,6 +737,13 @@ dynamiskt byta designkonfiguration. Egenskapen kommer att skapas om den inte fin
       <location filename="../../PropertiesDialog.ui" line="269"/>
       <source>Alias for this cell</source>
       <translation>Alias för denna cell</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="47"/>
+      <source>Allows referring to a cell by an alias name, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Gör det möjligt att referera till en cell med ett alias, till exempel
+Spreadsheet.my_alias_name i stället för Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -756,7 +763,7 @@ dynamiskt byta designkonfiguration. Egenskapen kommer att skapas om den inte fin
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Referera till cellen med alias, till exempel
-Kalkylblad.mitt_alias_namn istället för Kalkylblad.B1</translation>
+Spreadsheet.my_alias_name i stället för Spreadsheet.B1</translation>
     </message>
     <message>
       <location filename="../../AppSpreadsheetGui.cpp" line="151"/>
@@ -917,7 +924,7 @@ Kalkylblad.mitt_alias_namn istället för Kalkylblad.B1</translation>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Referera till cellen med alias, till exempel
-Kalkylblad.mitt_alias_namn istället för Kalkylblad.B1</translation>
+Spreadsheet.my_alias_name i stället för Spreadsheet.B1</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="131"/>
@@ -947,7 +954,7 @@ Kalkylblad.mitt_alias_namn istället för Kalkylblad.B1</translation>
       <source>Source and target cell count mismatch. Partial binding may still work.
 
 Continue?</source>
-      <translation>Felaktigt cellantal mellan källa och mål. Partiell bindning kan fortfarande fungera.
+      <translation>Antalet källceller och målceller skiljer sig åt. En partiell bindning kan ändå fungera.
 
 Fortsätta?</translation>
     </message>
@@ -1032,12 +1039,12 @@ Standardvärde: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="26"/>
       <source>Import/Export Settings</source>
-      <translation>Import/Export-inställningar</translation>
+      <translation>Import-/exportinställningar</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="235"/>
       <source>Default zoom level</source>
-      <translation>Standard zoomnivå</translation>
+      <translation>Standardzoomnivå</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="38"/>
@@ -1047,12 +1054,12 @@ Standardvärde: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="58"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tecken som ska användas som fältavgränsare.  Standard är tabb, men vanliga är också kommatecken (,) och semikolon (;). Välj från listan eller ange ditt eget i fältet. Måste vara ett enstaka tecken eller orden &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;kommatecken&lt;/span&gt; eller &lt;span style=" font-style:italic;"&gt;semikolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tecken som används som fältavgränsare. Standard är tabb, men kommatecken (,) och semikolon (;) är också vanliga. Välj ett tecken i listan eller ange ett eget i fältet. Ange ett enda tecken eller orden &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt; eller &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="74"/>
       <source>tab</source>
-      <translation>flik</translation>
+      <translation>tab</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="98"/>
@@ -1072,7 +1079,7 @@ Standardvärde: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="137"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape-tecken, vanligtvis backslash (\), som används för att ange speciella tecken som inte kan skrivas ut, t.ex. \t = tab. Måste vara ett enda tecken.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape-tecken, vanligtvis omvänt snedstreck (\), som används för att ange specialtecken som inte kan skrivas ut, t.ex. \t = tabb. Måste vara ett enda tecken.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -1081,14 +1088,14 @@ Standardvärde: %V = %A
       <location filename="../../SheetTableView.cpp" line="188"/>
       <location filename="../../SheetTableView.cpp" line="564"/>
       <source>Recompute</source>
-      <translation>Beräkna på nytt</translation>
+      <translation>Räkna om</translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="149"/>
       <source>Insert %n Non-Contiguous Rows</source>
       <translation>
-        <numerusform>Infoga %n ej sammanhängande rader</numerusform>
-        <numerusform>Infoga %n ej sammanhängande rader</numerusform>
+        <numerusform>Infoga %n icke-sammanhängande rad</numerusform>
+        <numerusform>Infoga %n icke-sammanhängande rader</numerusform>
       </translation>
     </message>
     <message>
@@ -1100,8 +1107,8 @@ Standardvärde: %V = %A
       <location filename="../../SheetTableView.cpp" line="169"/>
       <source>Insert %n Non-Contiguous Columns</source>
       <translation>
-        <numerusform>Infoga %n icke angränsande kolumner</numerusform>
-        <numerusform>Infoga %n icke angränsande kolumner</numerusform>
+        <numerusform>Infoga %n icke-sammanhängande kolumn</numerusform>
+        <numerusform>Infoga %n icke-sammanhängande kolumner</numerusform>
       </translation>
     </message>
     <message>
@@ -1124,7 +1131,7 @@ Standardvärde: %V = %A
       <location filename="../../SheetTableView.cpp" line="194"/>
       <location filename="../../SheetTableView.cpp" line="566"/>
       <source>Merge Cells</source>
-      <translation>Slå samman celler</translation>
+      <translation>Sammanfoga celler</translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="143"/>
@@ -1254,7 +1261,7 @@ Standardvärde: %V = %A
     <message>
       <location filename="../../ZoomableView.cpp" line="118"/>
       <source>Zoom Level</source>
-      <translation>Zoom Nivå</translation>
+      <translation>Zoomnivå</translation>
     </message>
   </context>
   <context>
@@ -1262,12 +1269,75 @@ Standardvärde: %V = %A
     <message>
       <location filename="../../DlgSheetConf.cpp" line="363"/>
       <source>Setup Configuration Table</source>
-      <translation>Tabell för konfiguration av inställningar</translation>
+      <translation>Skapa konfigurationstabell</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="430"/>
       <source>Unsetup Configuration Table</source>
       <translation>Avkonfigurera konfigurationstabell</translation>
+    </message>
+  </context>
+  <context>
+    <name>SpreadsheetGui::PropertiesDialog</name>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="342"/>
+      <source>Alias conflicts with a reserved unit token used by expressions</source>
+      <translation>Aliaset står i konflikt med en reserverad enhetssymbol som används i uttryck</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="343"/>
+      <source>Invalid: reserved unit token</source>
+      <translation>Ogiltigt: reserverad enhetssymbol</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="346"/>
+      <source>Alias conflicts with a reserved constant token used by expressions</source>
+      <translation>Aliaset står i konflikt med en reserverad konstantsymbol som används i uttryck</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="347"/>
+      <source>Invalid: reserved constant token</source>
+      <translation>Ogiltigt: reserverad konstantsymbol</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="350"/>
+      <source>Alias already defined</source>
+      <translation>Aliaset är redan definierat</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="351"/>
+      <source>Invalid: alias already exists</source>
+      <translation>Ogiltigt: aliaset finns redan</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="354"/>
+      <source>Alias cannot look like a cell address such as A1 or C12</source>
+      <translation>Aliaset får inte likna en celladress, till exempel A1 eller C12</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="355"/>
+      <source>Invalid: alias matches cell address pattern</source>
+      <translation>Ogiltigt: aliaset matchar celladressmönstret</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="358"/>
+      <source>Alias conflicts with an existing spreadsheet property name</source>
+      <translation>Aliaset står i konflikt med namnet på en befintlig kalkylbladsegenskap</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="359"/>
+      <source>Invalid: conflicts with existing property name</source>
+      <translation>Ogiltigt: står i konflikt med namnet på en befintlig egenskap</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="362"/>
+      <source>Alias must start with a letter and contain only letters, digits, and '_'</source>
+      <translation>Aliaset måste börja med en bokstav och får bara innehålla bokstäver, siffror och '_'</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="363"/>
+      <source>Invalid: bad alias syntax</source>
+      <translation>Ogiltigt: felaktig aliassyntax</translation>
     </message>
   </context>
 </TS>

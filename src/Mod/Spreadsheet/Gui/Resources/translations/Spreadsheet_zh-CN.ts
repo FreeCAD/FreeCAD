@@ -352,7 +352,7 @@
       <translation>创建电子表格</translation>
     </message>
     <message>
-      <location filename="../../PropertiesDialog.cpp" line="315"/>
+      <location filename="../../PropertiesDialog.cpp" line="387"/>
       <source>Set cell properties</source>
       <translation>设置单元格属性</translation>
     </message>
@@ -731,6 +731,13 @@ switch the design configuration. The property will be created if not exist.</sou
       <location filename="../../PropertiesDialog.ui" line="269"/>
       <source>Alias for this cell</source>
       <translation>此单元格的别名</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="47"/>
+      <source>Allows referring to a cell by an alias name, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>允许通过别名引用单元格，例如
+Spreadsheet.my_alias_name 而不是 Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -1256,6 +1263,69 @@ Defaults to: %V = %A
       <location filename="../../DlgSheetConf.cpp" line="430"/>
       <source>Unsetup Configuration Table</source>
       <translation>取消设置配置表</translation>
+    </message>
+  </context>
+  <context>
+    <name>SpreadsheetGui::PropertiesDialog</name>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="342"/>
+      <source>Alias conflicts with a reserved unit token used by expressions</source>
+      <translation>别名与表达式使用的保留单位标记冲突</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="343"/>
+      <source>Invalid: reserved unit token</source>
+      <translation>无效：保留单位标记</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="346"/>
+      <source>Alias conflicts with a reserved constant token used by expressions</source>
+      <translation>别名与表达式使用的保留常量标记冲突</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="347"/>
+      <source>Invalid: reserved constant token</source>
+      <translation>无效：保留常量标记</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="350"/>
+      <source>Alias already defined</source>
+      <translation>别名已定义</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="351"/>
+      <source>Invalid: alias already exists</source>
+      <translation>无效：别名已存在</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="354"/>
+      <source>Alias cannot look like a cell address such as A1 or C12</source>
+      <translation>别名不能类似于单元格地址（如 A1 或 C12）</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="355"/>
+      <source>Invalid: alias matches cell address pattern</source>
+      <translation>无效：别名匹配单元格地址模式</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="358"/>
+      <source>Alias conflicts with an existing spreadsheet property name</source>
+      <translation>别名与现有的电子表格属性名称冲突</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="359"/>
+      <source>Invalid: conflicts with existing property name</source>
+      <translation>无效：与现有属性名称冲突</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="362"/>
+      <source>Alias must start with a letter and contain only letters, digits, and '_'</source>
+      <translation>别名必须以字母开头，且仅能包含字母、数字和下划线“_”</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="363"/>
+      <source>Invalid: bad alias syntax</source>
+      <translation>无效：别名语法错误</translation>
     </message>
   </context>
 </TS>

@@ -2250,7 +2250,7 @@ della proiezione.</translation>
       <translation>Cambia i colori della faccia</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="226"/>
+      <location filename="../../TaskLoft.cpp" line="214"/>
       <source>Loft</source>
       <translation>Loft</translation>
     </message>
@@ -4916,37 +4916,37 @@ verrà utilizzato il vettore normale del piano di schizzo</translation>
   <context>
     <name>PartGui::LoftWidget</name>
     <message>
-      <location filename="../../TaskLoft.cpp" line="74"/>
+      <location filename="../../TaskLoft.cpp" line="77"/>
       <source>Available profiles</source>
       <translation>Profili disponibili</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="75"/>
+      <location filename="../../TaskLoft.cpp" line="78"/>
       <source>Selected profiles</source>
       <translation>Profili selezionati</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="200"/>
+      <location filename="../../TaskLoft.cpp" line="188"/>
       <source>Too Few Elements</source>
       <translation>Elementi insufficienti</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="201"/>
+      <location filename="../../TaskLoft.cpp" line="189"/>
       <source>At least 2 vertices, edges, wires, or faces are required.</source>
       <translation>Sono richiesti almeno 2 vertici, spigoli, poli linee o facce.</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="240"/>
+      <location filename="../../TaskLoft.cpp" line="228"/>
       <source>Input error</source>
       <translation>Errore di input</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="275"/>
+      <location filename="../../TaskLoft.cpp" line="263"/>
       <source>Vertex/Edge/Wire/Face</source>
       <translation>Vertice/Spigolo/Polilinea/Faccia</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="276"/>
+      <location filename="../../TaskLoft.cpp" line="264"/>
       <source>Loft</source>
       <translation>Loft</translation>
     </message>
@@ -7733,35 +7733,35 @@ I volumi delle forme che si sovrappongono verranno rimossi.</translation>
       <translation>Occorrenze</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="78"/>
+      <location filename="../../PatternParametersWidget.cpp" line="79"/>
       <source>Axis</source>
       <translation>Asse</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="79"/>
-      <location filename="../../PatternParametersWidget.cpp" line="81"/>
+      <location filename="../../PatternParametersWidget.cpp" line="80"/>
+      <location filename="../../PatternParametersWidget.cpp" line="82"/>
       <source>Total Angle</source>
       <translation>Angolo totale</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="80"/>
-      <location filename="../../PatternParametersWidget.cpp" line="82"/>
+      <location filename="../../PatternParametersWidget.cpp" line="81"/>
+      <location filename="../../PatternParametersWidget.cpp" line="83"/>
       <source>Angular Spacing</source>
       <translation>Spaziatura angolare</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="425"/>
-      <location filename="../../PatternParametersWidget.cpp" line="521"/>
+      <location filename="../../PatternParametersWidget.cpp" line="371"/>
+      <location filename="../../PatternParametersWidget.cpp" line="467"/>
       <source>Spacing %1</source>
       <translation>Spaziatura %1</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="441"/>
+      <location filename="../../PatternParametersWidget.cpp" line="387"/>
       <source>Remove this spacing definition.</source>
       <translation>Rimuovi questa definizione di spaziatura.</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="942"/>
+      <location filename="../../PatternParametersWidget.cpp" line="894"/>
       <source>Reset spacing</source>
       <translation>Ripristina spaziatura</translation>
     </message>
@@ -7794,6 +7794,122 @@ I volumi delle forme che si sovrappongono verranno rimossi.</translation>
     </message>
   </context>
   <context>
+    <name>PartGui::PatternCircularParametersWidget</name>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="29"/>
+      <source>Circular Pattern</source>
+      <translation>Motivo Circolare</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="35"/>
+      <source>Axis</source>
+      <translation>Asse</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="48"/>
+      <source>Radial distance</source>
+      <translation>Distanza radiale</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="65"/>
+      <source>Tangential distance</source>
+      <translation>Distanza tangenziale</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="82"/>
+      <source>Concentric circles</source>
+      <translation>Cerchi concentrici</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="95"/>
+      <source>Symmetry</source>
+      <translation>Simmetria</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::PatternPointParametersWidget</name>
+    <message>
+      <location filename="../../PatternPointParametersWidget.ui" line="8"/>
+      <source>Point object</source>
+      <translation>Oggetto punto</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPointParametersWidget.ui" line="14"/>
+      <location filename="../../PatternPointParametersWidget.cpp" line="48"/>
+      <source>Select Point Object</source>
+      <translation>Seleziona oggetto Punto</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::PatternPathParametersWidget</name>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="6"/>
+      <source>Path</source>
+      <translation>Percorso</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="7"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="145"/>
+      <source>Select Path</source>
+      <translation>Seleziona percorso</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="8"/>
+      <source>Spacing mode</source>
+      <translation>Modalità spaziatura</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="10"/>
+      <source>Occurrences</source>
+      <translation>Occorrenze</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="12"/>
+      <source>Spacing</source>
+      <translation>Spaziatura</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="14"/>
+      <source>Start offset</source>
+      <translation>Offset iniziale</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="16"/>
+      <source>End offset</source>
+      <translation>Offset finale</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="18"/>
+      <source>Reverse path</source>
+      <translation>Inverti percorso</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="19"/>
+      <source>Align to path</source>
+      <translation>Allinea al tracciato</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <source>Fixed count</source>
+      <translation>Conteggio fisso</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <source>Fixed spacing</source>
+      <translation>Spaziatura fissa</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <source>Fixed count and spacing</source>
+      <translation>Conteggio e spaziatura fissi</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.cpp" line="157"/>
+      <source>(+%1)</source>
+      <translation type="unfinished">(+%1)</translation>
+    </message>
+  </context>
+  <context>
     <name>Part::FaceMakerBuildFace</name>
     <message>
       <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
@@ -7817,6 +7933,19 @@ I volumi delle forme che si sovrappongono verranno rimossi.</translation>
       <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
       <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
       <translation>Unificato: gestisce fori nidificati, linee sovrapposte e superfici curve</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::PatternInstanceControls</name>
+    <message>
+      <location filename="../../PatternInstanceControls.cpp" line="226"/>
+      <source>Restores this instance</source>
+      <translation>Ripristina questa istanza</translation>
+    </message>
+    <message>
+      <location filename="../../PatternInstanceControls.cpp" line="231"/>
+      <source>Suppresses this instance</source>
+      <translation>Sopprime questa istanza</translation>
     </message>
   </context>
 </TS>

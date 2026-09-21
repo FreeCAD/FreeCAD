@@ -4207,32 +4207,32 @@ The default template is located at:
       <translation type="unfinished">Could not resolve base geometry.</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="1588"/>
+      <location filename="../../ArchCoveringGui.py" line="1589"/>
       <source>%1 pick tile origin</source>
       <translation type="unfinished">%1 pick tile origin</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="1592"/>
+      <location filename="../../ArchCoveringGui.py" line="1593"/>
       <source>%1 rotate tile CW / Shift+%1 rotate tile CCW</source>
       <translation type="unfinished">%1 rotate tile CW / Shift+%1 rotate tile CCW</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="1600"/>
+      <location filename="../../ArchCoveringGui.py" line="1601"/>
       <source>%1 pick new base face or object</source>
       <translation type="unfinished">%1 pick new base face or object</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="1604"/>
+      <location filename="../../ArchCoveringGui.py" line="1605"/>
       <source>%1+%2 add face or object</source>
       <translation type="unfinished">%1+%2 add face or object</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="1611"/>
+      <location filename="../../ArchCoveringGui.py" line="1612"/>
       <source>%1 pick planar face or object</source>
       <translation type="unfinished">%1 pick planar face or object</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="1615"/>
+      <location filename="../../ArchCoveringGui.py" line="1616"/>
       <source>%1+%2 add planar face or object</source>
       <translation type="unfinished">%1+%2 add planar face or object</translation>
     </message>
@@ -5130,7 +5130,7 @@ The ladybug or pysolar Python module is required.</translation>
       <location filename="../../ArchComponent.py" line="2539"/>
       <location filename="../../ArchCommands.py" line="1730"/>
       <location filename="../../ArchWindow.py" line="1717"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="479"/>
       <source>Type</source>
       <translation>Vrsta</translation>
     </message>
@@ -6350,7 +6350,7 @@ The ladybug or pysolar Python module is required.</translation>
       <location filename="../../ArchCommands.py" line="1731"/>
       <location filename="../../ArchSchedule.py" line="988"/>
       <location filename="../../ArchSchedule.py" line="1013"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="479"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="480"/>
       <source>Value</source>
       <translation>Vrednost</translation>
     </message>
@@ -6575,7 +6575,7 @@ Ustvarjanje etaže prekinjeno.</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2538"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="477"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
       <source>Property</source>
       <translation>Lastnost</translation>
     </message>
@@ -6606,13 +6606,13 @@ Ustvarjanje etaže prekinjeno.</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2700"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="634"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="635"/>
       <source>New property</source>
       <translation>Nova lastnost</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2737"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="683"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="684"/>
       <source>New property set</source>
       <translation>Nov nabor lastnosti</translation>
     </message>
@@ -7137,43 +7137,43 @@ Ustvarjanj stavbe prekinjeno.</translation>
       <translation type="unfinished">Create 2D View</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1155"/>
+      <location filename="../../ArchBuildingPart.py" line="1156"/>
       <source>Active</source>
       <translation type="unfinished">Active</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1166"/>
+      <location filename="../../ArchBuildingPart.py" line="1167"/>
       <source>Set Working Plane</source>
       <translation>Nastavi delavno ravnino</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1176"/>
+      <location filename="../../ArchBuildingPart.py" line="1177"/>
       <source>Save Camera View</source>
       <translation type="unfinished">Save Camera View</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1218"/>
+      <location filename="../../ArchBuildingPart.py" line="1219"/>
       <source>Active working plane set to Top</source>
       <translation type="unfinished">Active working plane set to Top</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1223"/>
+      <location filename="../../ArchBuildingPart.py" line="1224"/>
       <source>Active working plane set to {self.Object.Label}</source>
       <translation type="unfinished">Active working plane set to {self.Object.Label}</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1182"/>
+      <location filename="../../ArchBuildingPart.py" line="1183"/>
       <source>New Group</source>
       <translation>Nova skupina</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="100"/>
-      <location filename="../../ArchBuildingPart.py" line="1186"/>
+      <location filename="../../ArchBuildingPart.py" line="1187"/>
       <source>Reorder Children Alphabetically</source>
       <translation type="unfinished">Reorder Children Alphabetically</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1190"/>
+      <location filename="../../ArchBuildingPart.py" line="1191"/>
       <source>Clone Level Up</source>
       <translation type="unfinished">Clone Level Up</translation>
     </message>
@@ -7584,147 +7584,147 @@ Ustvarjanj stavbe prekinjeno.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1221"/>
-      <location filename="../../ArchBuildingPart.py" line="547"/>
+      <location filename="../../ArchBuildingPart.py" line="548"/>
       <source>The line width of this object</source>
       <translation>Debelina črt tega predmeta</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="556"/>
+      <location filename="../../ArchBuildingPart.py" line="557"/>
       <source>An optional unit to express levels</source>
       <translation>Nadomestna enota za ravní</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="564"/>
+      <location filename="../../ArchBuildingPart.py" line="565"/>
       <source>A transformation to apply to the level mark</source>
       <translation>Preoblikovanje, ki bo uporabljeno na oznaki ravni</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="575"/>
+      <location filename="../../ArchBuildingPart.py" line="576"/>
       <source>If true, show the level</source>
       <translation>Če drži, prikaži ravèn</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="584"/>
+      <location filename="../../ArchBuildingPart.py" line="585"/>
       <source>If true, show the unit on the level tag</source>
       <translation>Če drži, prikaži enoto na znački ravní</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="594"/>
+      <location filename="../../ArchBuildingPart.py" line="595"/>
       <source>If true, display offset will affect the origin mark too</source>
       <translation>Če drži, bo odmik prikazovalnika vplival tudi na oznako izhodišča</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="602"/>
+      <location filename="../../ArchBuildingPart.py" line="603"/>
       <source>If true, the object's label is displayed</source>
       <translation>Če drži, bo prikazana oznaka predmeta</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="611"/>
+      <location filename="../../ArchBuildingPart.py" line="612"/>
       <source>The font to be used for texts</source>
       <translation>Pisava za besedila</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="620"/>
+      <location filename="../../ArchBuildingPart.py" line="621"/>
       <source>The font size of texts</source>
       <translation>Velikost pisave za besedila</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="631"/>
+      <location filename="../../ArchBuildingPart.py" line="632"/>
       <source>The individual face colors</source>
       <translation>Barve posamičnih ploskev</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="644"/>
+      <location filename="../../ArchBuildingPart.py" line="645"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
       <translation>Če drži, se bo delavna ravnina ob omogočitvi samodejno prilagodila tej rávni</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="655"/>
+      <location filename="../../ArchBuildingPart.py" line="656"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
       <translation>Če je nastavjeno na Drži, bo delovna ravnina ostala v samodejnem načinu</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="665"/>
+      <location filename="../../ArchBuildingPart.py" line="666"/>
       <source>Camera position data associated with this object</source>
       <translation>Podatki o mestu kamere vezani na ta predmet</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="677"/>
+      <location filename="../../ArchBuildingPart.py" line="678"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
       <translation>Če je nastavljeno, se ob dvokliku obnovi pogled, shranjen v tem predmetu</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="687"/>
+      <location filename="../../ArchBuildingPart.py" line="688"/>
       <source>If True, double-clicking this object in the tree activates it</source>
       <translation>Če drži, z dvoklikom na predmet v drevesu ta postane dejaven</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="701"/>
+      <location filename="../../ArchBuildingPart.py" line="702"/>
       <source>If this is enabled, the OpenInventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
       <translation type="unfinished">If this is enabled, the OpenInventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="712"/>
+      <location filename="../../ArchBuildingPart.py" line="713"/>
       <source>A slot to save the OpenInventor representation of this object, if enabled</source>
       <translation type="unfinished">A slot to save the OpenInventor representation of this object, if enabled</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="726"/>
+      <location filename="../../ArchBuildingPart.py" line="727"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
       <translation>Če drži, prikaži predmete, zajete v tej stavbi, ki bodo prevzeli te nastavitve črt, barv in prozornosti</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="734"/>
+      <location filename="../../ArchBuildingPart.py" line="735"/>
       <source>The line width of child objects</source>
       <translation>Debelina črte podrejenega predmeta</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="743"/>
+      <location filename="../../ArchBuildingPart.py" line="744"/>
       <source>The line color of child objects</source>
       <translation>Barva črt podrejenih predmetov</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="752"/>
+      <location filename="../../ArchBuildingPart.py" line="753"/>
       <source>The shape appearance of child objects</source>
       <translation type="unfinished">The shape appearance of child objects</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="762"/>
+      <location filename="../../ArchBuildingPart.py" line="763"/>
       <source>The transparency of child objects</source>
       <translation>Prozornost podrejenih predmetov</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="773"/>
+      <location filename="../../ArchBuildingPart.py" line="774"/>
       <source>Cut the view above this level</source>
       <translation>Odreži pogled nad to ravnjo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="783"/>
+      <location filename="../../ArchBuildingPart.py" line="784"/>
       <source>The distance between the level plane and the cut line</source>
       <translation>Razdalja med ravnino ravní in rezalni črto</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="792"/>
+      <location filename="../../ArchBuildingPart.py" line="793"/>
       <source>Turn cutting on when activating this level</source>
       <translation>Pri uporabi te ravní vključi rezanje</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="805"/>
+      <location filename="../../ArchBuildingPart.py" line="806"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
       <translation>Orisni kvader novoustvarjenih predmetov izražen kot [Xnajm,Ynajm,Znajm,Xnajv,Ynajv,Znajv]</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="813"/>
+      <location filename="../../ArchBuildingPart.py" line="814"/>
       <source>Turns auto group box on/off</source>
       <translation>Vključi/izključi kvader samodejnih skupin</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="821"/>
+      <location filename="../../ArchBuildingPart.py" line="822"/>
       <source>Automatically set size from contents</source>
       <translation>Samodejno nastavi velikost po vsebini</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="829"/>
+      <location filename="../../ArchBuildingPart.py" line="830"/>
       <source>A margin to use when autosize is turned on</source>
       <translation>Rob, uporabljen pri vključenem samodejnem nastavljanju velikosti</translation>
     </message>
@@ -7931,7 +7931,7 @@ Ustvarjanj stavbe prekinjeno.</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="744"/>
-      <location filename="../../ArchIFC.py" line="87"/>
+      <location filename="../../ArchIFC.py" line="88"/>
       <source>The type of this object</source>
       <translation>Vrsta tega predmeta</translation>
     </message>
@@ -8619,14 +8619,14 @@ Ustvarjanj stavbe prekinjeno.</translation>
       <translation>IFC podatki</translation>
     </message>
     <message>
-      <location filename="../../ArchIFC.py" line="97"/>
+      <location filename="../../ArchIFC.py" line="98"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="412"/>
       <source>IFC properties of this object</source>
       <translation>IFC lastnosti tega predmeta</translation>
     </message>
     <message>
-      <location filename="../../ArchIFC.py" line="322"/>
-      <location filename="../../ArchIFC.py" line="333"/>
+      <location filename="../../ArchIFC.py" line="324"/>
+      <location filename="../../ArchIFC.py" line="335"/>
       <source>Description of IFC attributes are not yet implemented</source>
       <translation>Opisi IFC značilk niso še podprti</translation>
     </message>
@@ -9860,7 +9860,7 @@ Ustvarjanj stavbe prekinjeno.</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1233"/>
+      <location filename="../../ArchBuildingPart.py" line="1234"/>
       <source>Writing camera position</source>
       <translation>Zapisovanje položaja kamere</translation>
     </message>
@@ -9868,102 +9868,102 @@ Ustvarjanj stavbe prekinjeno.</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../InitGui.py" line="529"/>
+      <location filename="../../InitGui.py" line="535"/>
       <source>&amp;2D Drafting</source>
       <translation>&amp;2D Risanje</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="530"/>
+      <location filename="../../InitGui.py" line="536"/>
       <source>&amp;3D/BIM</source>
       <translation type="unfinished">&amp;3D/BIM</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="508"/>
+      <location filename="../../InitGui.py" line="514"/>
       <source>Drafting Tools</source>
       <translation type="unfinished">Drafting Tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="509"/>
+      <location filename="../../InitGui.py" line="515"/>
       <source>Draft Snap</source>
       <translation type="unfinished">Draft Snap</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="510"/>
+      <location filename="../../InitGui.py" line="516"/>
       <source>3D/BIM Tools</source>
       <translation type="unfinished">3D/BIM Tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="511"/>
+      <location filename="../../InitGui.py" line="517"/>
       <source>Annotation Tools</source>
       <translation type="unfinished">Annotation Tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="512"/>
+      <location filename="../../InitGui.py" line="518"/>
       <source>2D Tools</source>
       <translation type="unfinished">2D Tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="513"/>
+      <location filename="../../InitGui.py" line="519"/>
       <source>Manage Tools</source>
       <translation type="unfinished">Manage Tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="514"/>
+      <location filename="../../InitGui.py" line="520"/>
       <source>General Tools</source>
       <translation type="unfinished">General Tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="515"/>
+      <location filename="../../InitGui.py" line="521"/>
       <source>Object Tools</source>
       <translation type="unfinished">Object Tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="516"/>
+      <location filename="../../InitGui.py" line="522"/>
       <source>3D Tools</source>
       <translation type="unfinished">3D Tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="531"/>
+      <location filename="../../InitGui.py" line="537"/>
       <source>&amp;Reinforcement Tools</source>
       <translation type="unfinished">&amp;Reinforcement Tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="534"/>
+      <location filename="../../InitGui.py" line="540"/>
       <source>M&amp;odify</source>
       <translation type="unfinished">M&amp;odify</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="536"/>
+      <location filename="../../InitGui.py" line="542"/>
       <source>Ma&amp;nage</source>
       <translation type="unfinished">Ma&amp;nage</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="538"/>
+      <location filename="../../InitGui.py" line="544"/>
       <source>Fas&amp;teners</source>
       <translation type="unfinished">Fas&amp;teners</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="532"/>
+      <location filename="../../InitGui.py" line="538"/>
       <source>&amp;Annotation</source>
       <translation>&amp;Pripisi</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="533"/>
+      <location filename="../../InitGui.py" line="539"/>
       <source>&amp;Snapping</source>
       <translation>P&amp;ripenjanje</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="537"/>
+      <location filename="../../InitGui.py" line="543"/>
       <source>&amp;Flamingo</source>
       <translation type="unfinished">&amp;Flamingo</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="539"/>
+      <location filename="../../InitGui.py" line="545"/>
       <source>&amp;Utils</source>
       <translation>Pripo&amp;močki</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="544"/>
+      <location filename="../../InitGui.py" line="550"/>
       <source>Nudge</source>
       <translation>Dregljaj</translation>
     </message>
@@ -10609,17 +10609,17 @@ Ustvarjanj stavbe prekinjeno.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../InitGui.py" line="596"/>
+      <location filename="../../InitGui.py" line="602"/>
       <source>BIM</source>
       <translation type="unfinished">BIM</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="597"/>
+      <location filename="../../InitGui.py" line="603"/>
       <source>Draft</source>
       <translation>Nagib</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="843"/>
+      <location filename="../../InitGui.py" line="859"/>
       <source>Import-Export</source>
       <translation>Uvoz - Izvoz</translation>
     </message>
@@ -10670,7 +10670,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation type="unfinished">BIM</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="806"/>
+      <location filename="../../InitGui.py" line="784"/>
       <source>Snapping</source>
       <translation>Pripenjanje</translation>
     </message>
@@ -10713,57 +10713,57 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation type="unfinished">The current document must be the main one. The other contains newer objects to merge into it. Ensure that only the objects intended for comparison are visible in both documents. Proceed?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="321"/>
+      <location filename="../../bimcommands/BimDiff.py" line="328"/>
       <source>objects still have the same shape but have a different material. Update them in the main document?</source>
       <translation type="unfinished">objects still have the same shape but have a different material. Update them in the main document?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="376"/>
+      <location filename="../../bimcommands/BimDiff.py" line="383"/>
       <source>objects have no IFC ID in the main document, but an identical object with an ID exists in the new document. Transfer these IDs to the original objects?</source>
       <translation>predmeti v glavnem dokumentu nimajo IFC-jevega določilnika, enaki predmeti v novem dokumentu pa ga imajo. Ali želite prenesti določilnike na izvorne predmete?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="395"/>
+      <location filename="../../bimcommands/BimDiff.py" line="400"/>
       <source>objects had their name changed. Rename them?</source>
       <translation>predmetom so bila spremenjena imena. Ali jih želite preimenovati?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="412"/>
+      <location filename="../../bimcommands/BimDiff.py" line="417"/>
       <source>objects had their properties changed. Update?</source>
       <translation>predmetom so bile spremenjene lastnosti. Posodobi?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="431"/>
+      <location filename="../../bimcommands/BimDiff.py" line="436"/>
       <source>objects have their location changed. Move them to their new position?</source>
       <translation>predmetom je bilo spremenjeno mesto. Ali jih želite premakniti na novo mesto?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="450"/>
+      <location filename="../../bimcommands/BimDiff.py" line="455"/>
       <source>Colorize the objects that have moved in yellow in the other file (to serve as a diff)?</source>
       <translation type="unfinished">Colorize the objects that have moved in yellow in the other file (to serve as a diff)?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="471"/>
+      <location filename="../../bimcommands/BimDiff.py" line="476"/>
       <source>Colorize the objects that have been modified in orange in the other file (to serve as a diff)?</source>
       <translation type="unfinished">Colorize the objects that have been modified in orange in the other file (to serve as a diff)?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="494"/>
+      <location filename="../../bimcommands/BimDiff.py" line="499"/>
       <source>objects do not exist anymore in the new document. Move them to a 'To Delete' group?</source>
       <translation type="unfinished">objects do not exist anymore in the new document. Move them to a 'To Delete' group?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="509"/>
+      <location filename="../../bimcommands/BimDiff.py" line="514"/>
       <source>Colorize the objects that have been removed in red in the other file (to serve as a diff)?</source>
       <translation type="unfinished">Colorize the objects that have been removed in red in the other file (to serve as a diff)?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="528"/>
+      <location filename="../../bimcommands/BimDiff.py" line="534"/>
       <source>Colorize the objects that have been added in green in the other file (to serve as a diff)?</source>
       <translation type="unfinished">Colorize the objects that have been added in green in the other file (to serve as a diff)?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="549"/>
+      <location filename="../../bimcommands/BimDiff.py" line="555"/>
       <source>Two documents are required to be open to run this tool. One which is the main document, and one that contains new objects to compare against the existing one. Make sure only the objects to compare in both documents are visible.</source>
       <translation type="unfinished">Two documents are required to be open to run this tool. One which is the main document, and one that contains new objects to compare against the existing one. Make sure only the objects to compare in both documents are visible.</translation>
     </message>
@@ -10926,17 +10926,17 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>Opozorilo: predmet %1 ima zastarele IfcLastnosti - IfcProperties in ga ni mogoče posodobiti</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="670"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="671"/>
       <source>Please select or create a property set first in which the new property should be placed.</source>
       <translation>Izberite ali ustvarite najprej nabor lastnosti, v katerega želite vstaviti novo lastnost.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="685"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="686"/>
       <source>New Property Set</source>
       <translation type="unfinished">New Property Set</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="686"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="687"/>
       <source>Property set name:</source>
       <translation>Ime nabora lastnosti:</translation>
     </message>
@@ -11557,17 +11557,17 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation type="unfinished">IfcOpenShell is needed to import and export IFC files. It appears to be missing on the system. Download and install it now? It will be installed in FreeCAD's macros directory.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="62"/>
+      <location filename="../../bimcommands/BimSlab.py" line="59"/>
       <source>Select a planar object</source>
       <translation>Izberite ravninski predmet</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="65"/>
+      <location filename="../../bimcommands/BimSlab.py" line="62"/>
       <source>%1 select a planar object</source>
       <translation type="unfinished">%1 select a planar object</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="81"/>
+      <location filename="../../bimcommands/BimSlab.py" line="85"/>
       <source>Slab</source>
       <translation>Plošča</translation>
     </message>
@@ -12006,12 +12006,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>Arch_RebarTools</name>
     <message>
-      <location filename="../../InitGui.py" line="414"/>
+      <location filename="../../InitGui.py" line="420"/>
       <source>Reinforcement Tools</source>
       <translation type="unfinished">Reinforcement Tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="415"/>
+      <location filename="../../InitGui.py" line="421"/>
       <source>Reinforcement tools</source>
       <translation>Armaturna orodja</translation>
     </message>
@@ -12518,12 +12518,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Slab</name>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="43"/>
+      <location filename="../../bimcommands/BimSlab.py" line="42"/>
       <source>Slab</source>
       <translation>Plošča</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="44"/>
+      <location filename="../../bimcommands/BimSlab.py" line="43"/>
       <source>Creates a slab from a planar shape</source>
       <translation>Ustvari ploščo iz ravninske oblike</translation>
     </message>
@@ -13172,7 +13172,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_GenericTools</name>
     <message>
-      <location filename="../../InitGui.py" line="369"/>
+      <location filename="../../InitGui.py" line="370"/>
       <source>Generic 3D Tools</source>
       <translation type="unfinished">Generic 3D Tools</translation>
     </message>
@@ -13180,7 +13180,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Create2DViews</name>
     <message>
-      <location filename="../../InitGui.py" line="382"/>
+      <location filename="../../InitGui.py" line="388"/>
       <source>Create 2D Views</source>
       <translation type="unfinished">Create 2D Views</translation>
     </message>
@@ -13662,7 +13662,7 @@ select both the view and the page before executing the command.</translation>
       <translation type="unfinished">Edit Covering</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="1757"/>
+      <location filename="../../ArchCoveringGui.py" line="1758"/>
       <location filename="../../bimcommands/BimCovering.py" line="83"/>
       <source>Create Covering</source>
       <translation type="unfinished">Create Covering</translation>
@@ -13702,7 +13702,7 @@ Do you want to proceed?</translation>
   <context>
     <name>BIM_ArcTools</name>
     <message>
-      <location filename="../../InitGui.py" line="239"/>
+      <location filename="../../InitGui.py" line="240"/>
       <source>Arc Tools</source>
       <translation type="unfinished">Arc Tools</translation>
     </message>
@@ -13710,7 +13710,7 @@ Do you want to proceed?</translation>
   <context>
     <name>BIM_SplineTools</name>
     <message>
-      <location filename="../../InitGui.py" line="251"/>
+      <location filename="../../InitGui.py" line="252"/>
       <source>Spline Tools</source>
       <translation type="unfinished">Spline Tools</translation>
     </message>
@@ -13718,7 +13718,7 @@ Do you want to proceed?</translation>
   <context>
     <name>BIM_AxisTools</name>
     <message>
-      <location filename="../../InitGui.py" line="263"/>
+      <location filename="../../InitGui.py" line="264"/>
       <source>Axis Tools</source>
       <translation type="unfinished">Axis Tools</translation>
     </message>
@@ -13726,7 +13726,7 @@ Do you want to proceed?</translation>
   <context>
     <name>BIM_OffsetTools</name>
     <message>
-      <location filename="../../InitGui.py" line="276"/>
+      <location filename="../../InitGui.py" line="277"/>
       <source>Offset Tools</source>
       <translation type="unfinished">Offset Tools</translation>
     </message>
@@ -13734,7 +13734,7 @@ Do you want to proceed?</translation>
   <context>
     <name>BIM_ArrayTools</name>
     <message>
-      <location filename="../../InitGui.py" line="294"/>
+      <location filename="../../InitGui.py" line="295"/>
       <source>Array Tools</source>
       <translation type="unfinished">Array Tools</translation>
     </message>
@@ -13742,7 +13742,7 @@ Do you want to proceed?</translation>
   <context>
     <name>BIM_BooleanTools</name>
     <message>
-      <location filename="../../InitGui.py" line="307"/>
+      <location filename="../../InitGui.py" line="308"/>
       <source>Boolean Tools</source>
       <translation type="unfinished">Boolean Tools</translation>
     </message>
@@ -13750,7 +13750,7 @@ Do you want to proceed?</translation>
   <context>
     <name>BIM_IfcManageTools</name>
     <message>
-      <location filename="../../InitGui.py" line="324"/>
+      <location filename="../../InitGui.py" line="325"/>
       <source>IFC Management</source>
       <translation type="unfinished">IFC Management</translation>
     </message>
@@ -13758,7 +13758,7 @@ Do you want to proceed?</translation>
   <context>
     <name>BIM_ReportTools</name>
     <message>
-      <location filename="../../InitGui.py" line="336"/>
+      <location filename="../../InitGui.py" line="337"/>
       <source>Report Tools</source>
       <translation type="unfinished">Report Tools</translation>
     </message>
@@ -13766,9 +13766,22 @@ Do you want to proceed?</translation>
   <context>
     <name>BIM_CloneTools</name>
     <message>
-      <location filename="../../InitGui.py" line="348"/>
+      <location filename="../../InitGui.py" line="349"/>
       <source>Cloning Tools</source>
       <translation type="unfinished">Cloning Tools</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_ExtrudeFace</name>
+    <message>
+      <location filename="../../bimcommands/BimExtrudeFace.py" line="17"/>
+      <source>Extrude Face</source>
+      <translation type="unfinished">Extrude Face</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimExtrudeFace.py" line="20"/>
+      <source>Extrudes a selected face into a solid</source>
+      <translation type="unfinished">Extrudes a selected face into a solid</translation>
     </message>
   </context>
   <context>

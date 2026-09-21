@@ -48,7 +48,7 @@
       <translation type="unfinished">Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="146"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="155"/>
       <source>Active object</source>
       <translation>אובייקט פעיל</translation>
     </message>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="2051"/>
+      <location filename="../../../JointObject.py" line="2061"/>
       <source>Distance</source>
       <translation>מֶרְחָק</translation>
     </message>
@@ -175,32 +175,32 @@
       <translation>קישור שבור ב:</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1238"/>
+      <location filename="../../../JointObject.py" line="1248"/>
       <source>Edit Joint</source>
       <translation>ערוך ג'וינט</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1420"/>
+      <location filename="../../../JointObject.py" line="1430"/>
       <source>Update Stored Positions</source>
       <translation type="unfinished">Update Stored Positions</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1859"/>
+      <location filename="../../../JointObject.py" line="1869"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>בחר 2 אלמנטים מ-2 חלקים נפרדים</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2053"/>
+      <location filename="../../../JointObject.py" line="2063"/>
       <source>Radius 1</source>
       <translation>רדיוס 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2055"/>
+      <location filename="../../../JointObject.py" line="2065"/>
       <source>Thread pitch</source>
       <translation>גובה חוט</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2057"/>
+      <location filename="../../../JointObject.py" line="2067"/>
       <source>Pitch radius</source>
       <translation>רדיוס גובה</translation>
     </message>
@@ -717,12 +717,12 @@ SLOPE מגדיר את תלילות המעבר בין 0 ל-H1 ו-H2 ל-0 בערך
       <translation>הפניה {סדר} של המפרק</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1284"/>
+      <location filename="../../../JointObject.py" line="1294"/>
       <source>List of references to compnents to group together</source>
       <translation type="unfinished">List of references to compnents to group together</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1443"/>
+      <location filename="../../../JointObject.py" line="1453"/>
       <source>The object to ground</source>
       <translation>החפץ לקרקע</translation>
     </message>
@@ -1015,52 +1015,52 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="214"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="223"/>
       <source>The object is associated to one or more joints.</source>
       <translation>האובייקט משויך למפרק אחד או יותר.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="216"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="225"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>האם ברצונך להזיז את האובייקט ולמחוק את המפרקים המשויכים?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1095"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1142"/>
       <source>Move part</source>
       <translation>הזז חלק</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1815"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1897"/>
       <source>Empty Assembly</source>
       <translation>הרכבה ריקה</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1827"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1909"/>
       <source>Over-constrained:</source>
       <translation>מוגבל מדי:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1835"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1917"/>
       <source>Malformed joints:</source>
       <translation>מפרקים מעוותים:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1800"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1882"/>
       <source>and %1 more</source>
       <translation>ועוד %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1859"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1941"/>
       <source>Solver failed to converge</source>
       <translation>פותר לא הצליח להתכנס</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1867"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1949"/>
       <source>Under-constrained:</source>
       <translation>תחת הגבלה:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1869"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1951"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Degrees of Freedom</numerusform>
@@ -1069,7 +1069,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1873"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1955"/>
       <source>Fully constrained</source>
       <translation>מוגבל לחלוטין</translation>
     </message>
@@ -1597,7 +1597,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>טעון חלקית</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="615"/>
+      <location filename="../../../CommandInsertLink.py" line="613"/>
       <source>Fully load document</source>
       <translation>טען את המסמך במלואו</translation>
     </message>

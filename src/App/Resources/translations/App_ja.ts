@@ -87,7 +87,7 @@ The user should then click the Refresh button in the main toolbar.
   <context>
     <name>LinkParams</name>
     <message>
-      <location filename="../../Link.cpp" line="119"/>
+      <location filename="../../Link.cpp" line="131"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
       <translation>同じ設定可能オブジェクトにリンクするすべてのリンクにCopyOnChange設定を適用するかどうかについて、最後にユーザーがした選択を保持します。</translation>
