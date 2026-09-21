@@ -132,6 +132,7 @@ namespace {
 constexpr double ShadedPixelsPerMillimetre = 12.0;  // approximately 300 dpi
 constexpr int ShadedMaxImageDimension = 4096;
 constexpr double ShadedAngularDeflection = 0.20;
+constexpr int ShadedMeshRetries = 6;
 
 struct ShadedImage
 {
@@ -187,11 +188,25 @@ std::optional<ShadedImage> makeShadedImage(DrawViewPart* viewPart, QColor baseCo
     double xMin, yMin, zMin, xMax, yMax, zMax;
     shapeBox.Get(xMin, yMin, zMin, xMax, yMax, zMax);
     const double extent = std::max({xMax - xMin, yMax - yMin, zMax - zMin});
-    BRepMesh_IncrementalMesh mesher(displayShape,
-        std::max(Precision::Confusion(), extent / 500.0), false,
+    const double deflection = std::max(Precision::Confusion(), extent / 500.0);
+    BRepMesh_IncrementalMesh mesher(displayShape, deflection, false,
         ShadedAngularDeflection, true);
     if (!mesher.IsDone()) {
         return {};
+    }
+    // The deflection is relative to the whole view, so it can be coarse compared to
+    // small faces. BRepMesh (seen with OCCT 8.0) then fails on some of them and leaves
+    // them without triangulation, which shows up as see-through holes. Retry those
+    // faces alone with a finer deflection.
+    for (TopExp_Explorer explorer(displayShape, TopAbs_FACE); explorer.More(); explorer.Next()) {
+        const TopoDS_Face& face = TopoDS::Face(explorer.Current());
+        TopLoc_Location location;
+        double faceDeflection = deflection;
+        for (int attempt = 0; attempt < ShadedMeshRetries
+             && BRep_Tool::Triangulation(face, location).IsNull(); ++attempt) {
+            faceDeflection = std::max(Precision::Confusion(), faceDeflection / 2.0);
+            BRepMesh_IncrementalMesh(face, faceDeflection, false, ShadedAngularDeflection, false);
+        }
     }
 
     auto unref = [](SoSeparator* node) { node->unref(); };
