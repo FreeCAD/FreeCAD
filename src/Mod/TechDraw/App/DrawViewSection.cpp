@@ -668,7 +668,7 @@ void DrawViewSection::postHlrTasks()
         BRepTools::Write(faceIntersections, "DVSFaceIntersections.brep");// debug
     }
 
-    TopoDS_Shape centeredFaces = ShapeUtils::moveShape(faceIntersections, m_saveCentroid * -1.0);
+    TopoDS_Shape centeredFaces = ShapeUtils::moveShape(faceIntersections, SectionOrigin.getValue() * -1.0);
 
     TopoDS_Shape scaledSection = ShapeUtils::scaleShape(centeredFaces, getScale());
     if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
@@ -765,7 +765,7 @@ TopoDS_Compound DrawViewSection::alignSectionFaces(const TopoDS_Shape& faceInter
 {
     TopoDS_Compound sectionFaces;
     TopoDS_Shape centeredShape =
-        ShapeUtils::moveShape(faceIntersections, getOriginalCentroid() * -1.0);
+        ShapeUtils::moveShape(faceIntersections, SectionOrigin.getValue() * -1.0);
 
     TopoDS_Shape scaledSection = ShapeUtils::scaleShape(centeredShape, getScale());
     if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
