@@ -25,6 +25,7 @@
 #include <cstring>
 #include <QAbstractButton>
 #include <QSignalBlocker>
+#include <gp_Pln.hxx>
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -138,6 +139,10 @@ void TaskRevolutionParameters::setupDialog()
     ui->checkBoxMidplane->hide();
     ui->checkBoxReversed->setChecked(propReversed->getValue());
     ui->checkBoxProjectAxis->setChecked(revolved->ProjectAxis.getValue());
+    gp_Pln profilePlane;
+    ui->checkBoxProjectAxis->setEnabled(
+        revolved->getTopoShapeVerifiedFace(true).findPlane(profilePlane)
+    );
     ui->lineStartReference->setPlaceholderText(tr("No start reference selected"));
     ui->startOffsetEdit->setToolTip(tr("Angular offset from the profile or selected start reference"));
     ui->startMode->setCurrentIndex(revolved->StartType.getValue());
