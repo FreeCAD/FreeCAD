@@ -5,6 +5,9 @@ on:
   schedule:
     - cron: "0 0 * * 1"
 
+env:
+  TRANSLATION_REF: "main"
+
 permissions:
   contents: read
 
@@ -22,7 +25,7 @@ jobs:
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
           fetch-depth: 0
-          ref: main
+          ref: ${{ env.TRANSLATION_REF }}
 
       - name: Install Qt ≥ 6.8
         uses: jurplel/install-qt-action@48d3ad6db93f3627c8ee7a0454bc6f3744f7e730
