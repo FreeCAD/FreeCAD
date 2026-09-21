@@ -854,7 +854,7 @@ void collectConicEdges(const TopoDS_Shell& shell, TopTools_IndexedMapOfShape& ma
 // A seam is walked twice by its face's wire, with a pcurve for each pass. Fusing it
 // rebuilds only one of them, leaving the wire unable to close.
 // This is similar to collectConicEdges but for seam edges, which are always closed in their face.
-void collectSeamEdges(const TopoDS_Shell& shell, TopTools_IndexedMapOfShape& map)
+static void collectSeamEdges(const TopoDS_Shell& shell, TopTools_IndexedMapOfShape& map)
 {
     for (TopExp_Explorer fx(shell, TopAbs_FACE); fx.More(); fx.Next()) {
         const TopoDS_Face& face = TopoDS::Face(fx.Current());

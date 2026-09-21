@@ -11,6 +11,7 @@
 #include <BRepPrimAPI_MakeCylinder.hxx>
 #include <GProp_GProps.hxx>
 #include <TopExp_Explorer.hxx>
+#include <TopTools_ListOfShape.hxx>
 #include <TopoDS.hxx>
 #include <gp_Pnt.hxx>
 
