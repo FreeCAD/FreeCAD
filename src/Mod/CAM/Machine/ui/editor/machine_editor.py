@@ -952,14 +952,11 @@ class MachineEditorDialog(QtGui.QDialog):
             self.template_model.appendRow(custom_item)
 
             # User's saved machines — document icon
-            user_machines = MachineFactory.list_configuration_files()
-            if len(user_machines) > 1:
-                for name, filename in user_machines:
-                    if filename:
-                        user_path = MachineFactory.get_config_directory() / filename
-                        item = QtGui.QStandardItem(doc_icon, name)
-                        item.setData(str(user_path), QtCore.Qt.UserRole)
-                        self.template_model.appendRow(item)
+            for name, filename in MachineFactory.list_configuration_files():
+                user_path = MachineFactory.get_config_directory() / filename
+                item = QtGui.QStandardItem(doc_icon, name)
+                item.setData(str(user_path), QtCore.Qt.UserRole)
+                self.template_model.appendRow(item)
 
             # Built-in templates — document icon
             for name, filepath in MachineFactory.list_builtin_templates():
