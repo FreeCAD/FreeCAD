@@ -26,6 +26,8 @@ from .generator import (
     markdown_report,
     write_outputs,
 )
+from .index import DEFAULT_INDEX_URL, next_patch_number, published_versions
+from .project import Project
 from .model import DEFAULT_OVERLAY_DIR, DEFAULT_SOURCE_DIR, DEFAULT_STUBS_OUT_DIR
 from .parsing import load_source_files
 from .source_inputs import (
@@ -104,6 +106,17 @@ def add_generation_args(parser: argparse.ArgumentParser) -> None:
         "--version-override",
         help="Override the package version instead of reading version.json.",
     )
+    parser.add_argument(
+        "--patch-number",
+        type=int,
+        default=0,
+        help="Patch component of the package version. Use the next-patch command to assign it.",
+    )
+    parser.add_argument(
+        "--dev-build",
+        type=int,
+        help="Mark the package as a development build by appending .devN to the version.",
+    )
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
@@ -117,7 +130,29 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
             type=Path,
             help="Optional directory for individual generator and checker logs.",
         )
+        parser.add_argument(
+            "--no-pyright",
+            action="store_true",
+            help="Run pyrefly only. Pyright needs a provisioned pixi environment.",
+        )
         parser.set_defaults(command="check")
+        return parser.parse_args(argv[1:])
+
+    if argv and argv[0] == "next-patch":
+        parser = argparse.ArgumentParser(
+            description="Print the patch number to publish next on the current API version line."
+        )
+        add_common_path_args(parser)
+        parser.add_argument(
+            "--index-url",
+            default=DEFAULT_INDEX_URL,
+            help=(
+                "Simple index to count published releases on. Always the index that holds the "
+                f"real release line, even when building for a test index. Defaults to "
+                f"{DEFAULT_INDEX_URL}."
+            ),
+        )
+        parser.set_defaults(command="next-patch")
         return parser.parse_args(argv[1:])
 
     if argv and argv[0] == "lint-docs":
@@ -211,6 +246,8 @@ def run_generate(args: argparse.Namespace) -> int:
             stub_signature_overrides,
             overlay_dir,
             version_override=args.version_override,
+            patch_number=args.patch_number,
+            dev_build=args.dev_build,
         )
         summary = (
             f"Wrote {len(methods)} registrations and {len(classes)} class bindings to {out_dir} "
@@ -226,6 +263,14 @@ def run_generate(args: argparse.Namespace) -> int:
     return 0
 
 
+def run_next_patch(args: argparse.Namespace) -> int:
+    project = Project(args.root.resolve())
+    major, minor = project.api_version
+    versions = published_versions(project.package_name, args.index_url)
+    print(next_patch_number(major, minor, versions))
+    return 0
+
+
 def run_check(args: argparse.Namespace) -> int:
     root = args.root.resolve()
     if args.out_dir is None:
@@ -237,12 +282,14 @@ def run_check(args: argparse.Namespace) -> int:
     stubs_dir = root / "src/Tools/typing"
     log_dir = args.log_dir.resolve() if args.log_dir else None
 
-    pyright_code, _ = run_logged_command(
-        "python-stubs-pyright",
-        ["pixi", "run", "pyright", "-p", "smoke/pyrightconfig.json"],
-        stubs_dir,
-        log_dir,
-    )
+    pyright_code = 0
+    if not args.no_pyright:
+        pyright_code, _ = run_logged_command(
+            "python-stubs-pyright",
+            ["pixi", "run", "pyright", "-p", "smoke/pyrightconfig.json"],
+            stubs_dir,
+            log_dir,
+        )
     pyrefly_code, _ = run_logged_command(
         "python-stubs-pyrefly",
         [
@@ -293,6 +340,8 @@ def main(argv: list[str] | None = None) -> int:
     args = parse_args(sys.argv[1:] if argv is None else argv)
     if args.command == "check":
         return run_check(args)
+    if args.command == "next-patch":
+        return run_next_patch(args)
     if args.command == "lint-docs":
         return run_lint_docs(args)
     return run_generate(args)
