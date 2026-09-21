@@ -41,8 +41,6 @@ from nativeifc import ifc_geometry
 from nativeifc import ifc_materials
 from nativeifc import ifc_layers
 from nativeifc import ifc_psets
-from nativeifc import ifc_objects
-from nativeifc import ifc_generator
 from nativeifc import ifc_types
 
 IFC_FILE_PATH = None  # downloaded IFC file path
