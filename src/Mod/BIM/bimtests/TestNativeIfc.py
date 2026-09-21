@@ -116,7 +116,9 @@ class TestNativeIfc(TestArchBase.TestArchBase):
             silent=True,
             singledoc=SINGLEDOC,
         )
-        freecad_path = tempfile.mkstemp(suffix=".FCStd")[1]
+        file_descriptor, freecad_path = tempfile.mkstemp(suffix=".FCStd")
+        # Windows refuses to write to or delete a file that still has an open handle
+        os.close(file_descriptor)
         self.addCleanup(os.remove, freecad_path)
         source_document.saveAs(freecad_path)
         FreeCAD.closeDocument(source_document.Name)
