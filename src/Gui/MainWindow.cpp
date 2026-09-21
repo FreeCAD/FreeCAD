@@ -1887,7 +1887,9 @@ void MainWindow::delayedStartup()
         return;
     }
 
-    Q_EMIT guiInitialized();
+    if (!Application::hiddenMainWindow()) {
+        Q_EMIT guiInitialized();
+    }
 
     // processing all command line files
     try {
