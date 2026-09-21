@@ -104,7 +104,10 @@ def add_generation_args(parser: argparse.ArgumentParser) -> None:
     )
     parser.add_argument(
         "--version-override",
-        help="Override the package version instead of reading version.json.",
+        help=(
+            "Override the package version instead of composing it from api_version.json and "
+            "the patch number."
+        ),
     )
     parser.add_argument(
         "--patch-number",
