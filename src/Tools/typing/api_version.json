@@ -1,0 +1,9 @@
+{
+    "api_version_major": 1,
+    "api_version_minor": 0,
+    "api_version_note":
+        "Version of the FreeCAD Python API described by the generated stubs, independent of the FreeCAD release version. Bump the minor for additive API changes and the major for breaking ones. On a release branch this tracks the API of the release that branch builds; on every other branch it is the API version being worked towards. The patch number is not stored here: it is assigned from the package index at publish time.",
+    "package_name": "freecad-typings",
+    "package_name_note":
+        "Distribution name on PyPI, used to look up already-published versions when assigning a patch number."
+}

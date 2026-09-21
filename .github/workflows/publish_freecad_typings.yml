@@ -21,10 +21,17 @@
 # *                                                                         *
 # ***************************************************************************
 
-# Publish freecad-typings to PyPI via trusted publishing (OIDC).
-# Manual dispatch only. Stable releases (empty suffix) go to PyPI.
-# Pre-releases (dev, RC, etc.) go to TestPyPI with a run-number
-# suffix (e.g. 26.3.0.dev42) so each upload has a unique version.
+# Publish freecad-typings to PyPI via trusted publishing (OIDC). Manual dispatch only.
+#
+# The target index is chosen by the dispatched ref: a release branch publishes to PyPI, every
+# other branch publishes to TestPyPI as a .devN build. The environment deployment branch
+# policies enforce the same rule independently, so this routing is for clarity and a fast
+# failure, not for security.
+#
+# The version is major.minor from src/Tools/typing/api_version.json, which versions the FreeCAD
+# Python API rather than the FreeCAD release, plus a patch number counted from the releases
+# already on PyPI. Counting published releases rather than CI runs is what keeps the patch
+# sequence gapless: a dispatch abandoned at the approval gate consumes nothing.
 
 name: Publish freecad-typings
 
@@ -34,6 +41,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: publish-freecad-typings
+  cancel-in-progress: false
+
 jobs:
   build:
     name: Build package
@@ -41,8 +52,10 @@ jobs:
     permissions:
       contents: read
     outputs:
-      is_stable: ${{ steps.version.outputs.is_stable }}
-      version_override: ${{ steps.version.outputs.version_override }}
+      index_name: ${{ steps.target.outputs.index_name }}
+      environment: ${{ steps.target.outputs.environment }}
+      repository_url: ${{ steps.target.outputs.repository_url }}
+      skip_existing: ${{ steps.target.outputs.skip_existing }}
 
     steps:
       - name: Harden the runner (Audit all outbound calls)
@@ -61,56 +74,74 @@ jobs:
       - name: Set up uv
         uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
 
-      - name: Determine release type
+      - name: Determine target index
+        id: target
+        env:
+          REF_NAME: ${{ github.ref_name }}
+          RUN_NUMBER: ${{ github.run_number }}
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          import os
+          import sys
+
+          if os.environ["REF_NAME"].startswith("releases/"):
+              with open("version.json", encoding="utf-8") as f:
+                  suffix = json.load(f)["version_suffix"].strip().lstrip(".")
+              if suffix.lower() == "dev":
+                  sys.exit(
+                      "Refusing to publish to PyPI: this release branch still carries the 'dev' "
+                      "version suffix. Run sync_version.py on the branch first."
+                  )
+              print("index_name=PyPI")
+              print("environment=pypi")
+              print("repository_url=https://upload.pypi.org/legacy/")
+              print("skip_existing=false")
+              print("dev_build=")
+          else:
+              print("index_name=TestPyPI")
+              print("environment=testpypi")
+              print("repository_url=https://test.pypi.org/legacy/")
+              print("skip_existing=true")
+              print(f"dev_build={os.environ['RUN_NUMBER']}")
+          PY
+
+      - name: Assign patch number
         id: version
         run: |
-          suffix=$(python3 -c "import json; print(json.load(open('version.json'))['version_suffix'])")
-          if [ -n "$suffix" ]; then
-            echo "is_stable=false" >> "$GITHUB_OUTPUT"
-            version_override=$(python3 -c "
-          import json
-          d = json.load(open('version.json'))
-          v = f\"{d['version_major']}.{d['version_minor']}.{d['version_patch']}\"
-          s = d['version_suffix'].lstrip('.')
-          if s.lower() == 'dev':
-              print(f'{v}.dev${{ github.run_number }}')
-          elif s:
-              print(f'{v}{s}')
-          else:
-              print(v)
-          ")
-            echo "version_override=${version_override}" >> "$GITHUB_OUTPUT"
-            echo "Pre-release (suffix='${suffix}') — will publish to TestPyPI as ${version_override}."
-          else
-            echo "is_stable=true" >> "$GITHUB_OUTPUT"
-            echo "Stable release — will publish to PyPI."
-          fi
+          echo "patch=$(python3 src/Tools/typing/generate_stubs.py next-patch --root .)" \
+            >> "$GITHUB_OUTPUT"
 
-      - name: Generate stubs
+      - name: Generate and validate stubs
+        env:
+          PATCH: ${{ steps.version.outputs.patch }}
+          DEV_BUILD: ${{ steps.target.outputs.dev_build }}
         run: |
-          args="--root . --out-dir src/Tools/typing/generated"
-          if [ -n "${{ steps.version.outputs.version_override }}" ]; then
-            args="$args --version-override ${{ steps.version.outputs.version_override }}"
+          args=(check --root . --out-dir src/Tools/typing/generated --no-pyright
+                --patch-number "$PATCH")
+          if [ -n "$DEV_BUILD" ]; then
+            args+=(--dev-build "$DEV_BUILD")
           fi
-          python3 src/Tools/typing/generate_stubs.py $args
+          python3 src/Tools/typing/generate_stubs.py "${args[@]}"
 
       - name: Build package
-        run: uv build
         working-directory: src/Tools/typing/generated
+        run: |
+          uv build
+          echo "Built: $(ls dist | tr '\n' ' ')" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload dist artifacts
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: dist
           path: src/Tools/typing/generated/dist
-          retention-days: 1
+          retention-days: 7
 
   publish:
-    name: Publish to PyPI
+    name: Publish to ${{ needs.build.outputs.index_name }}
     needs: build
-    if: needs.build.outputs.is_stable == 'true'
     runs-on: ubuntu-latest
-    environment: pypi
+    environment: ${{ needs.build.outputs.environment }}
     permissions:
       id-token: write
       contents: read
@@ -122,40 +153,14 @@ jobs:
           egress-policy: audit
 
       - name: Download dist artifacts
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: dist
           path: dist
 
-      - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@a892a5a61159132606e93a2fa6f4358831b04d26 # v1.14.2
+      - name: Publish to ${{ needs.build.outputs.index_name }}
+        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
         with:
           packages-dir: dist
-
-  publish_testpypi:
-    name: Publish to TestPyPI
-    needs: build
-    if: needs.build.outputs.is_stable == 'false'
-    runs-on: ubuntu-latest
-    environment: testpypi
-    permissions:
-      id-token: write
-      contents: read
-
-    steps:
-      - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
-        with:
-          egress-policy: audit
-
-      - name: Download dist artifacts
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
-        with:
-          name: dist
-          path: dist
-
-      - name: Publish to TestPyPI
-        uses: pypa/gh-action-pypi-publish@a892a5a61159132606e93a2fa6f4358831b04d26 # v1.14.2
-        with:
-          packages-dir: dist
-          repository-url: https://test.pypi.org/legacy/
+          repository-url: ${{ needs.build.outputs.repository_url }}
+          skip-existing: ${{ needs.build.outputs.skip_existing }}
