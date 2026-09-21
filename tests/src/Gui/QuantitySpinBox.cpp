@@ -3,8 +3,10 @@
 #include <QDebug>
 #include <QKeyEvent>
 #include <QLineEdit>
+#include <QSignalBlocker>
 #include <QTest>
 #include <QSignalSpy>
+#include <QWheelEvent>
 
 #include <App/Application.h>
 #include <Base/UnitsApi.h>
@@ -117,6 +119,61 @@ private Q_SLOTS:
     {
         auto result = qsb->valueFromText("1mm");
         QCOMPARE(result, Base::Quantity(1, "mm"));
+    }
+
+    void test_BareValueUsesDisplayedUnit()  // NOLINT
+    {
+        Base::UnitsApi::setSchema("ImperialDecimal");
+        auto spinBox = lengthSpinBox(QStringLiteral("5"));
+
+        QVERIFY(spinBox->hasValidInput());
+        QCOMPARE(spinBox->valueFromText(QStringLiteral("5")), Base::Quantity(127, "mm"));
+        QCOMPARE(spinBox->valueFromText(QStringLiteral("5 mm")), Base::Quantity(5, "mm"));
+
+        Base::UnitsApi::setSchema("Internal");
+        QuantitySpinBoxWithLineEdit customSchemaSpinBox;
+        customSchemaSpinBox.setUnit(Base::Unit::Length);
+        customSchemaSpinBox.setSchema(3);
+        QCOMPARE(customSchemaSpinBox.valueFromText(QStringLiteral("5")), Base::Quantity(127, "mm"));
+    }
+
+    void test_BareValueUsesCurrentMagnitudeDependentDisplayUnit()  // NOLINT
+    {
+        Base::UnitsApi::setSchema("Internal");
+        QuantitySpinBoxWithLineEdit spinBox;
+        spinBox.setUnit(Base::Unit::Length);
+        Base::Quantity quantity(20000.0, "mm");
+        Base::QuantityFormat format(Base::QuantityFormat::Fixed, 1);
+        format.option = Base::QuantityFormat::None;
+        quantity.setFormat(format);
+        spinBox.setValue(quantity);
+
+        QCOMPARE(spinBox.text(), QStringLiteral("20.0 m"));
+        QCOMPARE(spinBox.valueFromText(QStringLiteral("3")), Base::Quantity(3000.0, "mm"));
+    }
+
+    void test_BareValueUsesDisplayedUnitWithLocalizedDecimalSeparator()  // NOLINT
+    {
+        tests::ScopedLocaleEnvironment localeState {
+            {.qtLocale = "de_DE",
+             .formattingLocale = "de_DE",
+             .icuLocale = "de_DE",
+             .useQtSeparators = true}
+        };
+
+        Base::UnitsApi::setSchema(imperialDecimalSchema.toStdString());
+        QuantitySpinBoxWithLineEdit spinBox;
+        spinBox.setLocale(QLocale(QStringLiteral("de_DE")));
+        spinBox.setUnit(Base::Unit::Length);
+        Base::Quantity quantity(127.0, "mm");
+        Base::QuantityFormat format(Base::QuantityFormat::Fixed, 1);
+        format.option = Base::QuantityFormat::None;
+        quantity.setFormat(format);
+        spinBox.setValue(quantity);
+
+        QCOMPARE(spinBox.text(), QStringLiteral("5,0 in"));
+        QCOMPARE(spinBox.valueFromText(QStringLiteral("5,5")), Base::Quantity(139.7, "mm"));
+        QCOMPARE(spinBox.valueFromText(QStringLiteral("5,5 mm")), Base::Quantity(5.5, "mm"));
     }
 
     void test_UnitInNumerator()  // NOLINT
@@ -475,6 +532,250 @@ private Q_SLOTS:
 
         QCOMPARE(textChanged.count(), 1);
         QCOMPARE(textChanged.at(0).at(0).toString(), QStringLiteral("11 mm"));
+    }
+
+    void test_StepByCommitsTheCanonicalQuantity()  // NOLINT
+    {
+        tests::ScopedLocaleEnvironment localeState {
+            {.qtLocale = "en_US",
+             .formattingLocale = "en_US",
+             .icuLocale = "en_US",
+             .useQtSeparators = true}
+        };
+
+        Base::UnitsApi::setSchema(imperialDecimalSchema.toStdString());
+        Gui::QuantitySpinBox spinBox;
+        spinBox.setUnit(Base::Unit::Length);
+        spinBox.setSingleStep(1.0);
+        spinBox.setValue(Base::Quantity(127.0, "mm"));
+        spinBox.show();
+        spinBox.setFocus();
+
+        QSignalSpy changed(
+            &spinBox,
+            qOverload<const Base::Quantity&>(&Gui::QuantitySpinBox::valueChanged)
+        );
+
+        QTest::keyClick(&spinBox, Qt::Key_Up);
+        QCOMPARE(spinBox.rawValue(), 152.4);
+        QCOMPARE(changed.count(), 1);
+
+        const QPoint center = spinBox.rect().center();
+        QWheelEvent wheel(
+            center,
+            spinBox.mapToGlobal(center),
+            QPoint(),
+            QPoint(0, 120),
+            Qt::NoButton,
+            Qt::NoModifier,
+            Qt::NoScrollPhase,
+            false
+        );
+        QCoreApplication::sendEvent(&spinBox, &wheel);
+
+        QCOMPARE(spinBox.rawValue(), 177.8);
+        QCOMPARE(changed.count(), 2);
+    }
+
+    void test_ProgrammaticSetValueEmitsChanged()  // NOLINT
+    {
+        tests::ScopedLocaleEnvironment localeState {
+            {.qtLocale = "en_US",
+             .formattingLocale = "en_US",
+             .icuLocale = "en_US",
+             .useQtSeparators = true}
+        };
+
+        Base::UnitsApi::setSchema(standardSchema.toStdString());
+        Gui::QuantitySpinBox spinBox;
+        spinBox.setUnit(Base::Unit::Length);
+        spinBox.setValue(10.0);
+
+        QSignalSpy changed(&spinBox, qOverload<double>(&Gui::QuantitySpinBox::valueChanged));
+
+        spinBox.setValue(11.0);
+
+        QCOMPARE(spinBox.rawValue(), 11.0);
+        QCOMPARE(changed.count(), 1);
+        QCOMPARE(changed.at(0).at(0).toDouble(), 11.0);
+
+        spinBox.setValue(11.0);
+        QCOMPARE(changed.count(), 1);
+
+        {
+            const QSignalBlocker blocker(&spinBox);
+            spinBox.setValue(12.0);
+        }
+
+        QCOMPARE(spinBox.rawValue(), 12.0);
+        QCOMPARE(changed.count(), 1);
+    }
+
+    void test_SteppingSurvivesFocusLoss()  // NOLINT
+    {
+        tests::ScopedLocaleEnvironment localeState {
+            {.qtLocale = "en_US",
+             .formattingLocale = "en_US",
+             .icuLocale = "en_US",
+             .useQtSeparators = true}
+        };
+
+        Base::UnitsApi::setSchema(standardSchema.toStdString());
+        QWidget parent;
+        Gui::QuantitySpinBox first(&parent);
+        Gui::QuantitySpinBox second(&parent);
+        first.setUnit(Base::Unit::Length);
+        first.setSingleStep(1.0);
+        first.setValue(Base::Quantity(10.0, "mm"));
+        second.setValue(Base::Quantity(0.0, "mm"));
+        parent.show();
+        first.show();
+        second.show();
+        first.setFocus();
+
+        QTest::keyClick(&first, Qt::Key_Up);
+        QCOMPARE(first.rawValue(), 11.0);
+
+        second.setFocus();
+        QCoreApplication::processEvents();
+        QCOMPARE(first.rawValue(), 11.0);
+    }
+
+    void test_WheelSteppingSurvivesFocusLoss()  // NOLINT
+    {
+        tests::ScopedLocaleEnvironment localeState {
+            {.qtLocale = "en_US",
+             .formattingLocale = "en_US",
+             .icuLocale = "en_US",
+             .useQtSeparators = true}
+        };
+
+        Base::UnitsApi::setSchema(standardSchema.toStdString());
+        QWidget parent;
+        Gui::QuantitySpinBox first(&parent);
+        Gui::QuantitySpinBox second(&parent);
+        first.setUnit(Base::Unit::Length);
+        first.setSingleStep(1.0);
+        first.setValue(Base::Quantity(10.0, "mm"));
+        second.setValue(Base::Quantity(0.0, "mm"));
+        parent.show();
+        first.show();
+        second.show();
+        first.setFocus();
+
+        const QPoint center = first.rect().center();
+        QWheelEvent wheel(
+            center,
+            first.mapToGlobal(center),
+            QPoint(),
+            QPoint(0, 120),
+            Qt::NoButton,
+            Qt::NoModifier,
+            Qt::NoScrollPhase,
+            false
+        );
+        QCoreApplication::sendEvent(&first, &wheel);
+        QCOMPARE(first.rawValue(), 11.0);
+
+        second.setFocus();
+        QCoreApplication::processEvents();
+        QCOMPARE(first.rawValue(), 11.0);
+    }
+
+    void test_SteppingPersistsThroughReturn()  // NOLINT
+    {
+        tests::ScopedLocaleEnvironment localeState {
+            {.qtLocale = "en_US",
+             .formattingLocale = "en_US",
+             .icuLocale = "en_US",
+             .useQtSeparators = true}
+        };
+
+        Base::UnitsApi::setSchema(standardSchema.toStdString());
+        Gui::QuantitySpinBox spinBox;
+        spinBox.setUnit(Base::Unit::Length);
+        spinBox.setSingleStep(1.0);
+        spinBox.setValue(Base::Quantity(5.0, "mm"));
+        spinBox.show();
+        spinBox.setFocus();
+
+        QTest::keyClick(&spinBox, Qt::Key_Up);
+        const double steppedUp = spinBox.rawValue();
+        QCOMPARE(steppedUp, 6.0);
+        QTest::keyClick(&spinBox, Qt::Key_Return);
+        QCOMPARE(spinBox.rawValue(), steppedUp);
+
+        QTest::keyClick(&spinBox, Qt::Key_Down);
+        const double steppedDown = spinBox.rawValue();
+        QCOMPARE(steppedDown, 5.0);
+        QTest::keyClick(&spinBox, Qt::Key_Return);
+        QCOMPARE(spinBox.rawValue(), steppedDown);
+    }
+
+    void test_SteppingUsesAValidPendingEditorValue()  // NOLINT
+    {
+        tests::ScopedLocaleEnvironment localeState {
+            {.qtLocale = "en_US",
+             .formattingLocale = "en_US",
+             .icuLocale = "en_US",
+             .useQtSeparators = true}
+        };
+
+        Base::UnitsApi::setSchema(imperialDecimalSchema.toStdString());
+        QuantitySpinBoxWithLineEdit spinBox;
+        spinBox.setUnit(Base::Unit::Length);
+        spinBox.setSingleStep(1.0);
+        spinBox.setKeyboardTracking(false);
+        Base::Quantity quantity(127.0, "mm");
+        Base::QuantityFormat format(Base::QuantityFormat::Fixed, 1);
+        format.option = Base::QuantityFormat::None;
+        quantity.setFormat(format);
+        spinBox.setValue(quantity);
+        spinBox.show();
+
+        // This is a valid candidate (8 in), but it has not been committed because tracking is
+        // disabled. Stepping should treat it as the user's intended current value.
+        spinBox.lineEdit()->setText(QStringLiteral("8"));
+        QCOMPARE(spinBox.rawValue(), 127.0);
+
+        spinBox.stepBy(1);
+
+        QCOMPARE(spinBox.rawValue(), 228.6);
+        QCOMPARE(spinBox.text(), QStringLiteral("9.0 in"));
+        QVERIFY(spinBox.hasValidInput());
+    }
+
+    void test_SteppingReevaluatesThePendingDisplayUnit()  // NOLINT
+    {
+        tests::ScopedLocaleEnvironment localeState {
+            {.qtLocale = "en_US",
+             .formattingLocale = "en_US",
+             .icuLocale = "en_US",
+             .useQtSeparators = true}
+        };
+
+        Base::UnitsApi::setSchema(standardSchema.toStdString());
+        QuantitySpinBoxWithLineEdit spinBox;
+        spinBox.setUnit(Base::Unit::Length);
+        spinBox.setSingleStep(1.0);
+        spinBox.setKeyboardTracking(false);
+        Base::Quantity quantity(10.0, "mm");
+        Base::QuantityFormat format(Base::QuantityFormat::Fixed, 1);
+        format.option = Base::QuantityFormat::None;
+        quantity.setFormat(format);
+        spinBox.setValue(quantity);
+        spinBox.show();
+
+        QCOMPARE(spinBox.text(), QStringLiteral("10.0 mm"));
+        spinBox.lineEdit()->setText(QStringLiteral("20000"));
+        QCOMPARE(spinBox.rawValue(), 10.0);
+
+        // The pending value displays as 20 m, so one step means 21 m. Using the previous mm
+        // display unit would incorrectly produce 20001 mm.
+        spinBox.stepBy(1);
+
+        QCOMPARE(spinBox.rawValue(), 21000.0);
+        QCOMPARE(spinBox.text(), QStringLiteral("21.0 m"));
     }
 
     void test_UnboundQuantityGrammarPreservesComments()  // NOLINT

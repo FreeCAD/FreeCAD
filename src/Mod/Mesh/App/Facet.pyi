@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
-from typing import Any, Final
+from typing import Final
 
 from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
+from Base.Vector import Vector
+from Edge import Edge
 
 @export(
     Include="Mod/Mesh/App/Facet.h",
@@ -26,7 +28,7 @@ class Facet(PyObjectBase):
     License: LGPL-2.1-or-later
     """
 
-    def unbound(self) -> Any:
+    def unbound(self) -> None:
         """method unbound()
         Cut the connection to a MeshObject. The facet becomes
         free and is more or less a simple facet.
@@ -34,17 +36,17 @@ class Facet(PyObjectBase):
         work!"""
         ...
 
-    def intersect(self) -> Any:
+    def intersect(self, facet: Facet, /) -> list[tuple[float, float, float]]:
         """intersect(Facet) -> list
         Get a list of intersection points with another triangle."""
         ...
 
-    def isDegenerated(self) -> Any:
+    def isDegenerated(self, epsilon: float = ..., /) -> bool:
         """isDegenerated([float]) -> boolean
         Returns true if the facet is degenerated, otherwise false."""
         ...
 
-    def isDeformed(self) -> Any:
+    def isDeformed(self, min_angle: float, max_angle: float, /) -> bool:
         """isDegenerated(MinAngle, MaxAngle) -> boolean
         Returns true if the facet is deformed, otherwise false.
         A triangle is considered deformed if an angle is less than MinAngle
@@ -52,7 +54,7 @@ class Facet(PyObjectBase):
         The two angles are given in radian."""
         ...
 
-    def getEdge(self) -> Any:
+    def getEdge(self, index: int, /) -> Edge:
         """getEdge(int) -> Edge
         Returns the edge of the facet."""
         ...
@@ -62,7 +64,7 @@ class Facet(PyObjectBase):
     Bound: Final[bool]
     """Bound state of the facet"""
 
-    Normal: Final[Any]
+    Normal: Final[Vector]
     """Normal vector of the facet."""
 
     Points: Final[list]

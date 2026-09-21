@@ -15,7 +15,7 @@ Base::NumericLocaleContext locale(
     int secondary = 3
 )
 {
-    return {localeId, decimal, grouping, "+", "-", primary, secondary};
+    return {localeId, decimal, grouping, "+", "-", primary, secondary, "0"};
 }
 
 void expectComplete(
@@ -185,7 +185,7 @@ TEST(NumericInputTest, positiveSignsAreAcceptedByCanonicalConversion)
         5
     );
 
-    const Base::NumericLocaleContext custom {"custom", ".", ",", "plus", "minus", 3, 3};
+    const Base::NumericLocaleContext custom {"custom", ".", ",", "plus", "minus", 3, 3, "0"};
     expectComplete(
         Base::scanLocalizedNumber("plus1.25 mm", custom, Base::NumericSyntaxContext::Standalone),
         1.25,

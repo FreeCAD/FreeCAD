@@ -87,7 +87,7 @@ Der Benutzer sollte dann auf die Schaltfläche Aktualisieren in der Haupt-Symbol
   <context>
     <name>LinkParams</name>
     <message>
-      <location filename="../../Link.cpp" line="119"/>
+      <location filename="../../Link.cpp" line="131"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
       <translation>Speichert die letzte Benutzerwahl, ob die CopyOnChange-Einstellungen auf alle Verknüpfungen

@@ -5,6 +5,7 @@ from __future__ import annotations
 from Base.Metadata import export
 from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
 from Part.App.TopoShape import TopoShape
+from Part.TopoShapeFace import TopoShapeFace
 
 @export(
     PythonName="Part.ShapeFix.FixSmallFace",
@@ -20,7 +21,7 @@ class ShapeFix_FixSmallFace(ShapeFix_Root):
     Licence: LGPL
     """
 
-    def init(self) -> None:
+    def init(self, shape: TopoShape, /) -> None:
         """
         Initializes by shape
         """
@@ -32,50 +33,50 @@ class ShapeFix_FixSmallFace(ShapeFix_Root):
         """
         ...
 
-    def fixSpotFace(self) -> None:
+    def fixSpotFace(self) -> TopoShape:
         """
         Fixing case of spot face, if tol = -1 used local tolerance
         """
         ...
 
-    def replaceVerticesInCaseOfSpot(self) -> None:
+    def replaceVerticesInCaseOfSpot(self, face: TopoShapeFace, /) -> TopoShape:
         """
         Compute average vertex and replacing vertices by new one
         """
         ...
 
-    def removeFacesInCaseOfSpot(self) -> None:
+    def removeFacesInCaseOfSpot(self, face: TopoShapeFace, /) -> bool:
         """
         Remove spot face from compound
         """
         ...
 
-    def fixStripFace(self) -> None:
+    def fixStripFace(self, wasdone: bool = False, /) -> TopoShape:
         """
         Fixing case of strip face, if tol = -1 used local tolerance
         """
         ...
 
-    def removeFacesInCaseOfStrip(self) -> None:
+    def removeFacesInCaseOfStrip(self, face: TopoShapeFace, /) -> bool:
         """
         Remove strip face from compound
         """
         ...
 
-    def fixSplitFace(self) -> TopoShape:
+    def fixSplitFace(self, shape: TopoShape, /) -> TopoShape:
         """
         Fixes cases related to split faces within the given shape.
         It may return a modified shape after fixing the issues.
         """
         ...
 
-    def fixFace(self) -> None:
+    def fixFace(self, face: TopoShapeFace, /) -> TopoShape:
         """
         Fixes issues related to the specified face and returns the modified face.
         """
         ...
 
-    def fixShape(self) -> None:
+    def fixShape(self) -> TopoShape:
         """
         Fixes issues in the overall geometric shape.
         This function likely encapsulates higher-level fixes that involve multiple faces or elements.

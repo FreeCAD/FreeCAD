@@ -483,16 +483,8 @@ class ObjectSurface(PathOp.ObjectOp):
                 "Optimization",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Max length of keep tool down path compared to direct distance between points",
-                ),
-            ),
-            (
-                "App::PropertyDistance",
-                "GapThreshold",
-                "Optimization",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Collinear and co-radial artifact gaps that are smaller than this threshold are closed in the path.",
+                    "Max transition length for keeping the tool down, as a multiple of the tool "
+                    "diameter (e.g. 2.0 = twice the tool diameter).",
                 ),
             ),
             # -- LeadInOut --
@@ -577,7 +569,9 @@ class ObjectSurface(PathOp.ObjectOp):
                 "AdaptivePatternSettings",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Max length of keep tool down path compared to direct distance between points",
+                    "Max length of a keep-tool-down linking path as a multiple of "
+                    "the direct distance between its end points (e.g. 3.0). Not related to tool "
+                    "diameter. Longer links retract to clearance height.",
                 ),
             ),
             (
@@ -747,7 +741,6 @@ class ObjectSurface(PathOp.ObjectOp):
             "AvoidFacesOverlap": 0.0,
             "HandleMultipleFeatures": "Collectively",
             "ProfileEdges": "None",
-            "GapThreshold": 0.005,
             "AngularDeflection": 0.2,
             "LinearDeflection": 0.025,
             "MeshSimplification": 4,
@@ -788,14 +781,13 @@ class ObjectSurface(PathOp.ObjectOp):
         A = show if is_surface_scan else hide
         B = show if is_zlevel else hide
         C, D, E = hide, hide, hide
-        F = hide if is_zlevel else show
+        F = hide if is_waterline else show
 
         # SurfaceScan specific contexts
         obj.setEditorMode("AvoidLastX_Faces", A)
         obj.setEditorMode("AvoidFacesOverlap", A)
         obj.setEditorMode("HandleMultipleFeatures", A)
         obj.setEditorMode("CutPattern", A)
-        obj.setEditorMode("CutPatternAngle", A)
         obj.setEditorMode("LayerMode", A)
         obj.setEditorMode("ProfileEdges", A)
         obj.setEditorMode("LeadInOut", A)
@@ -852,7 +844,6 @@ class ObjectSurface(PathOp.ObjectOp):
         obj.setEditorMode("OptimizeLinearPaths", D)
         obj.setEditorMode("OptimizeMeshConversion", D)
         obj.setEditorMode("SampleInterval", D)
-        obj.setEditorMode("GapThreshold", D)
 
         # Apply Visibility to Common/Contextual Group (E-F)
         obj.setEditorMode("StepOver", E)
@@ -969,10 +960,10 @@ class ObjectSurface(PathOp.ObjectOp):
         # Limit min sample interval
         if obj.MinSampleInterval.Value < 0.001:
             obj.MinSampleInterval.Value = 0.001
-            Path.Log.error("Min sample interval must be between 0.0001 to 25.4 millimeters.")
+            Path.Log.error("Min sample interval must be between 0.001 to 25.4 millimeters.")
         if obj.MinSampleInterval.Value > 25.4:
             obj.MinSampleInterval.Value = 25.4
-            Path.Log.error("Min sample interval must be between 0.0001 to 25.4 millimeters.")
+            Path.Log.error("Min sample interval must be between 0.001 to 25.4 millimeters.")
 
         # Limit cut pattern angle
         if obj.CutPatternAngle < -360.0 or obj.CutPatternAngle >= 360.0:
@@ -1416,7 +1407,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # Filter collinear points if optimization is enabled
         if obj.OptimizeLinearPaths:
-            tolerance = obj.GapThreshold.Value if hasattr(obj.GapThreshold, "Value") else 0.005
+            tolerance = 0.005
             for zh in wl_data:
                 filter_loop = []
                 for loop in wl_data[zh]:
@@ -1521,7 +1512,7 @@ class ObjectSurface(PathOp.ObjectOp):
         adaptive_params = {
             "op_type": "ClearingInside",
             "adaptive_accuracy": getattr(obj, "AdaptiveAccuracy", 0.1),
-            "stock_to_leave": stock_to_leave,
+            "stock_to_leave": 0.0,
             "lift_distance": getattr(obj, "LiftDistance", 0.05),
             "keep_tool_down": getattr(obj, "KeepToolDownThreshold", 3.0),
             "force_insideout": getattr(obj, "ForceInsideOut", False),
@@ -1529,7 +1520,7 @@ class ObjectSurface(PathOp.ObjectOp):
             "helix_angle": getattr(obj, "HelixMaxRampAngle", 3.0),
             "helix_cone_angle": 0.0,
             "helix_diameter": getattr(obj, "HelixMaxDiameterPercent", 75),
-            "helix_min_diameter": tool_diam * 0.10,
+            "helix_min_diameter": 10.0,  # Percent of tool diameter
         }
 
         # 3. Fill selected holes
@@ -1950,7 +1941,6 @@ def SetupProperties():
     setup.append("AvoidFacesOverlap")
     setup.append("KeepToolDown")
     setup.append("KeepToolDownRatio")
-    setup.append("GapThreshold")
     setup.append("UseStartPoint")
     setup.append("StartPoint")
     setup.append("LeadInOut")

@@ -616,10 +616,12 @@ TEST_F(CrashReporterTests, FC_REAL_CAPTURE_TEST)  // NOLINT
     EXPECT_FALSE(report.partialWrite);
 }
 
-// This test is always disabled in CI runs: to run it, use a direct manual call:
-// Base_tests_run.exe --gtest_also_run_disabled_tests \
-//                    --gtest_catch_exceptions=0 \
-//                    --gtest_filter=*DeliberateSegfaultRoundTrip*
+
+/* This test is always disabled in CI runs: to run it, use a direct manual call:
+   Base_tests_run.exe --gtest_also_run_disabled_tests \
+                      --gtest_catch_exceptions=0 \
+                      --gtest_filter=*DeliberateSegfaultRoundTrip*
+*/
 TEST_F(CrashReporterTests, DISABLED_DeliberateSegfaultRoundTrip)  // NOLINT
 {
     const std::string crashDir = resolveCrashDir(tempDir);

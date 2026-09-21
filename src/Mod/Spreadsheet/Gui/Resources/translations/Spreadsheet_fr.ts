@@ -352,7 +352,7 @@
       <translation>Créer une feuille de calcul</translation>
     </message>
     <message>
-      <location filename="../../PropertiesDialog.cpp" line="315"/>
+      <location filename="../../PropertiesDialog.cpp" line="387"/>
       <source>Set cell properties</source>
       <translation>Modifier les propriétés des cellules</translation>
     </message>
@@ -736,6 +736,12 @@ créée si elle n'existe pas.</translation>
       <location filename="../../PropertiesDialog.ui" line="269"/>
       <source>Alias for this cell</source>
       <translation>Alias pour cette cellule</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="47"/>
+      <source>Allows referring to a cell by an alias name, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Cela permet de faire référence à une cellule à l'aide d'un alias, par exemple Spreadsheet.my_alias_name au lieu de Spreadsheet.B1.</translation>
     </message>
   </context>
   <context>
@@ -1266,6 +1272,69 @@ caractère est autorisé.</translation>
       <location filename="../../DlgSheetConf.cpp" line="430"/>
       <source>Unsetup Configuration Table</source>
       <translation>Désinstaller la table de configuration</translation>
+    </message>
+  </context>
+  <context>
+    <name>SpreadsheetGui::PropertiesDialog</name>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="342"/>
+      <source>Alias conflicts with a reserved unit token used by expressions</source>
+      <translation>L'alias entre en conflit avec un jeton d'unité réservé utilisé par les expressions.</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="343"/>
+      <source>Invalid: reserved unit token</source>
+      <translation>Invalide : jeton d'unité réservé</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="346"/>
+      <source>Alias conflicts with a reserved constant token used by expressions</source>
+      <translation>L'alias entre en conflit avec un jeton de constante réservé utilisé par les expressions.</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="347"/>
+      <source>Invalid: reserved constant token</source>
+      <translation>Invalide : jeton constant réservé</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="350"/>
+      <source>Alias already defined</source>
+      <translation>L'alias est déjà défini.</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="351"/>
+      <source>Invalid: alias already exists</source>
+      <translation>Invalide : l'alias existe déjà.</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="354"/>
+      <source>Alias cannot look like a cell address such as A1 or C12</source>
+      <translation>L'alias ne peut pas ressembler à une adresse de cellule comme A1 ou C12.</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="355"/>
+      <source>Invalid: alias matches cell address pattern</source>
+      <translation>Invalide : l'alias correspond au modèle de l'adresse de la cellule.</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="358"/>
+      <source>Alias conflicts with an existing spreadsheet property name</source>
+      <translation>L'alias entre en conflit avec un nom de propriété du tableur existant.</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="359"/>
+      <source>Invalid: conflicts with existing property name</source>
+      <translation>Invalide : conflit avec le nom de la propriété existante</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="362"/>
+      <source>Alias must start with a letter and contain only letters, digits, and '_'</source>
+      <translation>L'alias doit commencer par une lettre et ne contenir que des lettres, des chiffres et le caractère « _ ».</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="363"/>
+      <source>Invalid: bad alias syntax</source>
+      <translation>Invalide : syntaxe d'alias incorrecte</translation>
     </message>
   </context>
 </TS>

@@ -55,6 +55,7 @@
 #include "PreferencePages/DlgSettingsWorkbenchesImp.h"
 #include "Document.h"
 #include "frameobject.h"
+#include "GeneralParameter.h"
 #include "Macro.h"
 #include "MainWindow.h"
 #include "Python.h"
@@ -246,6 +247,7 @@ Command::Command(const char* name)
     sAppModule = "FreeCAD";
     sGroup = "Standard";
     eType = AlterDoc | Alter3DView | AlterSelection;
+    eMaturity = Base::Maturity::Stable;
     bEnabled = true;
     bCanLog = true;
 }
@@ -265,6 +267,29 @@ QString Command::getShortcut() const
         return _pcAction->shortcut().toString();
     }
     return ShortcutManager::instance()->getShortcut(getName());
+}
+
+void Command::setMaturity(Base::Maturity m)
+{
+    eMaturity = m;
+}
+
+Base::Maturity Command::getMaturity() const
+{
+    return eMaturity;
+}
+
+bool Command::allowedByMaturity() const
+{
+    switch (eMaturity) {
+        case Base::Maturity::Stable:
+            return true;
+        case Base::Maturity::Experimental:
+            return GeneralParameter::instance()->getShowExperimentalFeatures();
+        case Base::Maturity::Development:
+            return GeneralParameter::instance()->getShowDevelopmentPreviewFeatures();
+    }
+    return false;  // Really just to shut the compiler up, should never hit
 }
 
 bool Command::isViewOfType(Base::Type t) const
@@ -294,7 +319,10 @@ void Command::initAction()
         //
         // printConflictingAccelerators();
 #endif
-        setShortcut(ShortcutManager::instance()->getShortcut(getName(), getAccel()));
+
+        if (allowedByMaturity()) {
+            setShortcut(ShortcutManager::instance()->getShortcut(getName(), getAccel()));
+        }
         testActive();
     }
 }
@@ -1029,8 +1057,25 @@ const char* Command::endCmdHelp()
 
 void Command::applyCommandData(const char* context, Action* action)
 {
-    action->setText(QCoreApplication::translate(context, getMenuText()));
-    action->setToolTip(QCoreApplication::translate(context, getToolTipText()));
+    QString textSuffix;
+    QString toolTipPrefix;
+    if (eMaturity == Base::Maturity::Experimental) {
+        textSuffix = " (" + QCoreApplication::translate("Gui::Command", "Experimental") + ")";
+        toolTipPrefix
+            = QCoreApplication::translate("Gui::Command", "EXPERIMENTAL: this command may change.")
+            + " ";
+    }
+    else if (eMaturity == Base::Maturity::Development) {
+        textSuffix = " (" + QCoreApplication::translate("Gui::Command", "Development preview") + ")";
+        toolTipPrefix = QCoreApplication::translate(
+                            "Gui::Command",
+                            "DEVELOPMENT PREVIEW: this command may change or be removed."
+                        )
+            + " ";
+    }
+    action->setText(QCoreApplication::translate(context, getMenuText()) + textSuffix);
+    action->setToolTip(toolTipPrefix + QCoreApplication::translate(context, getToolTipText()));
+
     action->setWhatsThis(QCoreApplication::translate(context, getWhatsThis()));
     if (sStatusTip) {
         action->setStatusTip(QCoreApplication::translate(context, getStatusTip()));
@@ -1223,7 +1268,7 @@ void GroupCommand::activated(int iMsg)
 
     Action* cmdAction = v.first->getAction();
     if (_pcAction && cmdAction) {
-        _pcAction->setProperty("defaultAction", QVariant((int)v.second));
+        _pcAction->setProperty("defaultAction", QVariant(doesRememberLast() ? (int)v.second : 0));
         setup(_pcAction);
     }
 }
@@ -2124,6 +2169,9 @@ bool CommandManager::addTo(const char* Name, QWidget* pcWidget)
     }
     else {
         Command* pCom = _sCommands[Name];
+        if (!pCom->allowedByMaturity()) {
+            return false;
+        }
         pCom->addTo(pcWidget);
         return true;
     }

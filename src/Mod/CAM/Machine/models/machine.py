@@ -650,22 +650,24 @@ class Toolhead:
             focus_data = data["laser_focus_range"]
             laser_focus_range = (focus_data[0], focus_data[1])
 
+        # Keyword arguments so that adding or reordering a dataclass field
+        # cannot silently shift every loaded value onto the wrong field.
         return cls(
-            data["name"],
-            toolhead_type,
-            data.get("id"),
-            data.get("max_power_kw", 0),
-            data.get("max_rpm", 0),
-            data.get("min_rpm", 0),
-            data.get("tool_change", "manual"),
-            data.get("coolant_flood", False),
-            data.get("coolant_mist", False),
-            data.get("coolant_delay", 0.0),
-            data.get("toolhead_wait", data.get("spindle_wait", 0.0)),
-            data.get("laser_wavelength"),
-            laser_focus_range,
-            data.get("waterjet_pressure"),
-            data.get("plasma_amperage"),
+            name=data["name"],
+            toolhead_type=toolhead_type,
+            id=data.get("id"),
+            max_power_kw=data.get("max_power_kw", 0),
+            max_rpm=data.get("max_rpm", 0),
+            min_rpm=data.get("min_rpm", 0),
+            tool_change=data.get("tool_change", "manual"),
+            coolant_flood=data.get("coolant_flood", False),
+            coolant_mist=data.get("coolant_mist", False),
+            coolant_delay=data.get("coolant_delay", 0.0),
+            toolhead_wait=data.get("toolhead_wait", data.get("spindle_wait", 0.0)),
+            laser_wavelength=data.get("laser_wavelength"),
+            laser_focus_range=laser_focus_range,
+            waterjet_pressure=data.get("waterjet_pressure"),
+            plasma_amperage=data.get("plasma_amperage"),
         )
 
 
@@ -878,7 +880,18 @@ class Machine:
         tool_change="manual",
     ):
         """Add a toolhead to the configuration"""
-        self.toolheads.append(Toolhead(name, id, max_power_kw, max_rpm, min_rpm, tool_change))
+        # Keyword arguments: Toolhead takes toolhead_type as its second
+        # positional field, so a positional call here shifts every value.
+        self.toolheads.append(
+            Toolhead(
+                name=name,
+                id=id,
+                max_power_kw=max_power_kw,
+                max_rpm=max_rpm,
+                min_rpm=min_rpm,
+                tool_change=tool_change,
+            )
+        )
         return self
 
     def save(self, filepath):

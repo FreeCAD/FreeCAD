@@ -17,27 +17,27 @@
   <context>
     <name>CmdSketcherCompConstrainRadDia</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9818"/>
+      <location filename="../../CommandConstraints.cpp" line="8937"/>
       <source>Radius/Diameter Dimension</source>
       <translation>ஆரம்/விட்டம் பரிமாணம்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9819"/>
+      <location filename="../../CommandConstraints.cpp" line="8938"/>
       <source>Constrains the radius or diameter of an arc or a circle</source>
       <translation>ஒரு வில் அல்லது வட்டத்தின் ஆரம் அல்லது விட்டத்தைக் கட்டுப்படுத்துகிறது</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9929"/>
+      <location filename="../../CommandConstraints.cpp" line="9048"/>
       <source>Constrain radius</source>
       <translation>கட்டுப்பாடு ஆரம்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9935"/>
+      <location filename="../../CommandConstraints.cpp" line="9054"/>
       <source>Constrain diameter</source>
       <translation>கட்டுப்படுத்தப்பட்ட விட்டம்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9941"/>
+      <location filename="../../CommandConstraints.cpp" line="9060"/>
       <source>Constrain auto radius/diameter</source>
       <translation>தன்னியக்க ஆரம்/விட்டத்தைக் கட்டுப்படுத்தவும்</translation>
     </message>
@@ -159,17 +159,17 @@
   <context>
     <name>CmdSketcherMapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="653"/>
+      <location filename="../../Command.cpp" line="652"/>
       <source>Attach Sketch</source>
       <translation>ச்கெட்சை இணைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="654"/>
+      <location filename="../../Command.cpp" line="653"/>
       <source>Attaches a sketch to the selected geometry element</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட வடிவியல் உறுப்புக்கு ஒரு ஓவியத்தை இணைக்கிறது</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="745"/>
+      <location filename="../../Command.cpp" line="744"/>
       <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட சில பொருள்கள் வரைபடமாக்கப்பட வேண்டிய ஓவியத்தைப் பொறுத்தது. வட்ட சார்புகள் அனுமதிக்கப்படாது.</translation>
     </message>
@@ -177,48 +177,48 @@
   <context>
     <name>CmdSketcherMergeSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="1162"/>
+      <location filename="../../Command.cpp" line="1161"/>
       <source>Skipping external geometry #%1
 </source>
       <translation type="unfinished">Skipping external geometry #%1
 </translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1205"/>
+      <location filename="../../Command.cpp" line="1204"/>
       <source>External geometry '%1' is out of scope:
 </source>
       <translation type="unfinished">External geometry '%1' is out of scope:
 </translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1256"/>
+      <location filename="../../Command.cpp" line="1255"/>
       <source>Merge Sketches</source>
       <translation>ஓவியங்களை ஒன்றிணைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1257"/>
+      <location filename="../../Command.cpp" line="1256"/>
       <source>Creates a new sketch by merging at least 2 selected sketches</source>
       <translation>குறைந்தது 2 தேர்ந்தெடுக்கப்பட்ட ஓவியங்களை இணைப்பதன் மூலம் புதிய ஓவியத்தை உருவாக்குகிறது</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1272"/>
+      <location filename="../../Command.cpp" line="1271"/>
       <source>Wrong selection</source>
       <translation>தவறான தேர்வு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1273"/>
+      <location filename="../../Command.cpp" line="1272"/>
       <source>Select at least 2 sketches</source>
       <translation>குறைந்தது 2 ஓவியங்களைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1362"/>
+      <location filename="../../Command.cpp" line="1361"/>
       <source>Copied %1 of %2 constraints from '%3'. Some were skipped.
 </source>
       <translation type="unfinished">Copied %1 of %2 constraints from '%3'. Some were skipped.
 </translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1378"/>
+      <location filename="../../Command.cpp" line="1377"/>
       <source>Skipping constraint #%1 of '%2': references unmerged geometry.
 </source>
       <translation type="unfinished">Skipping constraint #%1 of '%2': references unmerged geometry.
@@ -228,12 +228,12 @@
   <context>
     <name>CmdSketcherMirrorSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="949"/>
+      <location filename="../../Command.cpp" line="948"/>
       <source>Mirror Sketch</source>
       <translation>மிரர் ச்கெட்ச்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="950"/>
+      <location filename="../../Command.cpp" line="949"/>
       <source>Creates a new mirrored sketch for each selected sketch
 by using the X or Y axes, or the origin point,
 as mirroring reference</source>
@@ -242,12 +242,12 @@ X அல்லது ஒய் அச்சுகள் அல்லது ம�
 பிரதிபலிப்பு குறிப்பாக</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="967"/>
+      <location filename="../../Command.cpp" line="966"/>
       <source>Wrong selection</source>
       <translation>தவறான தேர்வு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="968"/>
+      <location filename="../../Command.cpp" line="967"/>
       <source>Select at least 1 sketch</source>
       <translation>குறைந்தது 1 ஓவியத்தைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
@@ -294,24 +294,24 @@ X அல்லது ஒய் அச்சுகள் அல்லது ம�
   <context>
     <name>CmdSketcherValidateSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="909"/>
+      <location filename="../../Command.cpp" line="908"/>
       <source>Validate Sketch</source>
       <translation>ச்கெட்சை சரிபார்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="910"/>
+      <location filename="../../Command.cpp" line="909"/>
       <source>Validates a sketch by checking for missing coincidences,
 invalid constraints, and degenerate geometry</source>
       <translation>விடுபட்ட தற்செயல் நிகழ்வுகளைச் சரிபார்ப்பதன் மூலம் ஒரு ஓவியத்தை சரிபார்க்கிறது, 
 தவறான கட்டுப்பாடுகள் மற்றும் சிதைந்த வடிவவியல்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="926"/>
+      <location filename="../../Command.cpp" line="925"/>
       <source>Wrong selection</source>
       <translation>தவறான தேர்வு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="927"/>
+      <location filename="../../Command.cpp" line="926"/>
       <source>Select only 1 sketch.</source>
       <translation>1 ஓவியத்தை மட்டும் தேர்ந்தெடுக்கவும்.</translation>
     </message>
@@ -319,365 +319,356 @@ invalid constraints, and degenerate geometry</source>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4634"/>
+      <location filename="../../CommandConstraints.cpp" line="4620"/>
       <source>Add 'Lock' constraint</source>
       <translation>'லாக்' தடையைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4688"/>
+      <location filename="../../CommandConstraints.cpp" line="4674"/>
       <source>Add relative 'Lock' constraint</source>
       <translation>தொடர்புடைய 'பூட்டு' தடையைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4754"/>
+      <location filename="../../CommandConstraints.cpp" line="4734"/>
       <source>Add fixed constraint</source>
       <translation>நிலையான தடையைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4973"/>
+      <location filename="../../CommandConstraints.cpp" line="4930"/>
       <source>Add block constraint</source>
       <translation>தொகுதி தடையைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5313"/>
-      <location filename="../../CommandConstraints.cpp" line="5496"/>
+      <location filename="../../CommandConstraints.cpp" line="5296"/>
+      <location filename="../../CommandConstraints.cpp" line="5483"/>
       <source>Add coincident constraint</source>
       <translation>தற்செயல் தடையைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5732"/>
-      <location filename="../../CommandConstraints.cpp" line="6055"/>
+      <location filename="../../CommandConstraints.cpp" line="5972"/>
+      <location filename="../../CommandConstraints.cpp" line="6226"/>
       <source>Add distance from horizontal axis constraint</source>
       <translation>கிடைமட்ட அச்சு தடையிலிருந்து தூரத்தைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5744"/>
-      <location filename="../../CommandConstraints.cpp" line="6069"/>
+      <location filename="../../CommandConstraints.cpp" line="5984"/>
+      <location filename="../../CommandConstraints.cpp" line="6240"/>
       <source>Add distance from vertical axis constraint</source>
       <translation>செங்குத்து அச்சு தடையிலிருந்து தூரத்தைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5756"/>
-      <location filename="../../CommandConstraints.cpp" line="6082"/>
+      <location filename="../../CommandConstraints.cpp" line="5996"/>
+      <location filename="../../CommandConstraints.cpp" line="6253"/>
       <source>Add point to point distance constraint</source>
       <translation>புள்ளிக்கு புள்ளி தூரக் கட்டுப்பாட்டைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3039"/>
+      <location filename="../../CommandConstraints.cpp" line="3051"/>
       <source>Add point to line Distance constraint</source>
       <translation>புள்ளிக்கு வரி தூரக் கட்டுப்பாட்டைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5880"/>
-      <location filename="../../CommandConstraints.cpp" line="6231"/>
+      <location filename="../../CommandConstraints.cpp" line="6085"/>
+      <location filename="../../CommandConstraints.cpp" line="6377"/>
       <source>Add circle to circle distance constraint</source>
       <translation>வட்டத்திற்கு வட்டம் தூரக் கட்டுப்பாட்டைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5923"/>
+      <location filename="../../CommandConstraints.cpp" line="6116"/>
       <source>Add circle to line distance constraint</source>
       <translation>வரி தூரக் கட்டுப்பாட்டில் வட்டத்தைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3137"/>
-      <location filename="../../CommandConstraints.cpp" line="3160"/>
-      <location filename="../../CommandConstraints.cpp" line="3228"/>
-      <location filename="../../CommandConstraints.cpp" line="3312"/>
-      <location filename="../../CommandConstraints.cpp" line="5971"/>
-      <location filename="../../CommandConstraints.cpp" line="5998"/>
-      <location filename="../../CommandConstraints.cpp" line="6126"/>
+      <location filename="../../CommandConstraints.cpp" line="3149"/>
+      <location filename="../../CommandConstraints.cpp" line="3172"/>
+      <location filename="../../CommandConstraints.cpp" line="3240"/>
+      <location filename="../../CommandConstraints.cpp" line="3324"/>
+      <location filename="../../CommandConstraints.cpp" line="6164"/>
+      <location filename="../../CommandConstraints.cpp" line="6180"/>
+      <location filename="../../CommandConstraints.cpp" line="6289"/>
       <source>Add length constraint</source>
       <translation>நீளக் கட்டுப்பாட்டைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2266"/>
-      <location filename="../../CommandConstraints.cpp" line="2531"/>
-      <location filename="../../CommandConstraints.cpp" line="4024"/>
+      <location filename="../../CommandConstraints.cpp" line="2278"/>
+      <location filename="../../CommandConstraints.cpp" line="2543"/>
+      <location filename="../../CommandConstraints.cpp" line="4036"/>
       <source>Dimension</source>
       <translation>பரிமாணம்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3008"/>
+      <location filename="../../CommandConstraints.cpp" line="3020"/>
       <source>Add lock constraint</source>
       <translation>பூட்டு தடையைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3004"/>
+      <location filename="../../CommandConstraints.cpp" line="3016"/>
       <source>Add 'Distance to origin' constraint</source>
       <translation>'தொலைவிலிருந்து தோற்றம்' தடையைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3020"/>
-      <location filename="../../CommandConstraints.cpp" line="3634"/>
-      <location filename="../../CommandConstraints.cpp" line="3871"/>
+      <location filename="../../CommandConstraints.cpp" line="3032"/>
+      <location filename="../../CommandConstraints.cpp" line="3646"/>
+      <location filename="../../CommandConstraints.cpp" line="3883"/>
       <source>Add Distance constraint</source>
       <translation>தூரக் கட்டுப்பாட்டைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3025"/>
-      <location filename="../../CommandConstraints.cpp" line="3054"/>
-      <location filename="../../CommandConstraints.cpp" line="3088"/>
+      <location filename="../../CommandConstraints.cpp" line="3037"/>
+      <location filename="../../CommandConstraints.cpp" line="3066"/>
+      <location filename="../../CommandConstraints.cpp" line="3100"/>
       <source>Add 'Horizontal' constraints</source>
       <translation>'கிடைமட்ட' கட்டுப்பாடுகளைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3029"/>
-      <location filename="../../CommandConstraints.cpp" line="3061"/>
-      <location filename="../../CommandConstraints.cpp" line="3095"/>
+      <location filename="../../CommandConstraints.cpp" line="3041"/>
+      <location filename="../../CommandConstraints.cpp" line="3073"/>
+      <location filename="../../CommandConstraints.cpp" line="3107"/>
       <source>Add 'Vertical' constraints</source>
       <translation>'செங்குத்து' கட்டுப்பாடுகளைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3044"/>
-      <location filename="../../CommandConstraints.cpp" line="3107"/>
+      <location filename="../../CommandConstraints.cpp" line="3056"/>
+      <location filename="../../CommandConstraints.cpp" line="3119"/>
       <source>Add Symmetry constraint</source>
       <translation>சமச்சீர் தடையைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3067"/>
-      <location filename="../../CommandConstraints.cpp" line="3239"/>
+      <location filename="../../CommandConstraints.cpp" line="3079"/>
+      <location filename="../../CommandConstraints.cpp" line="3251"/>
       <source>Add Symmetry constraints</source>
       <translation>சமச்சீர் கட்டுப்பாடுகளைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3112"/>
       <location filename="../../CommandConstraints.cpp" line="3124"/>
+      <location filename="../../CommandConstraints.cpp" line="3136"/>
       <source>Add Distance constraints</source>
       <translation>தூரக் கட்டுப்பாடுகளைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3170"/>
+      <location filename="../../CommandConstraints.cpp" line="3182"/>
       <source>Add Horizontal constraint</source>
       <translation>கிடைமட்ட தடையைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3175"/>
+      <location filename="../../CommandConstraints.cpp" line="3187"/>
       <source>Add Vertical constraint</source>
       <translation>செங்குத்து தடையைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3179"/>
-      <location filename="../../CommandConstraints.cpp" line="4925"/>
+      <location filename="../../CommandConstraints.cpp" line="3191"/>
+      <location filename="../../CommandConstraints.cpp" line="4882"/>
       <source>Add Block constraint</source>
       <translation>பிளாக் தடையைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3194"/>
+      <location filename="../../CommandConstraints.cpp" line="3206"/>
       <source>Add Angle constraint</source>
       <translation>கோணக் கட்டுப்பாட்டைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3204"/>
-      <location filename="../../CommandConstraints.cpp" line="3327"/>
-      <location filename="../../CommandConstraints.cpp" line="3337"/>
-      <location filename="../../CommandConstraints.cpp" line="3375"/>
+      <location filename="../../CommandConstraints.cpp" line="3216"/>
+      <location filename="../../CommandConstraints.cpp" line="3339"/>
+      <location filename="../../CommandConstraints.cpp" line="3349"/>
+      <location filename="../../CommandConstraints.cpp" line="3387"/>
       <source>Add Equality constraint</source>
       <translation>சமத்துவக் கட்டுப்பாட்டைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3215"/>
+      <location filename="../../CommandConstraints.cpp" line="3227"/>
       <source>Add Equality constraints</source>
       <translation>சமத்துவக் கட்டுப்பாடுகளைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11442"/>
+      <location filename="../../CommandConstraints.cpp" line="10405"/>
       <source>Add Group constraint</source>
       <translation type="unfinished">Add Group constraint</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11866"/>
+      <location filename="../../CommandConstraints.cpp" line="10825"/>
       <source>Activate/Deactivate constraints</source>
       <translation>தடைகளை இயக்கு/முடக்கு</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3263"/>
-      <location filename="../../CommandConstraints.cpp" line="3296"/>
+      <location filename="../../CommandConstraints.cpp" line="3275"/>
+      <location filename="../../CommandConstraints.cpp" line="3308"/>
       <source>Add arc angle constraint</source>
       <translation>ஆர்க் கோணக் கட்டுப்பாட்டைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3317"/>
+      <location filename="../../CommandConstraints.cpp" line="3329"/>
       <source>Add concentric and length constraint</source>
       <translation>செறிவு மற்றும் நீளக் கட்டுப்பாட்டைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3851"/>
+      <location filename="../../CommandConstraints.cpp" line="3863"/>
       <source>Add DistanceX constraint</source>
       <translation>DistanceX தடையைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3861"/>
+      <location filename="../../CommandConstraints.cpp" line="3873"/>
       <source>Add DistanceY constraint</source>
       <translation>DistanceY தடையைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5233"/>
-      <location filename="../../CommandConstraints.cpp" line="5412"/>
+      <location filename="../../CommandConstraints.cpp" line="5214"/>
+      <location filename="../../CommandConstraints.cpp" line="5400"/>
       <source>Add point on object constraint</source>
       <translation>பொருளின் தடையில் புள்ளியைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3268"/>
-      <location filename="../../CommandConstraints.cpp" line="3300"/>
+      <location filename="../../CommandConstraints.cpp" line="3280"/>
+      <location filename="../../CommandConstraints.cpp" line="3312"/>
       <source>Add arc length constraint</source>
       <translation>வில் நீளக் கட்டுப்பாட்டைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5799"/>
-      <location filename="../../CommandConstraints.cpp" line="6176"/>
+      <location filename="../../CommandConstraints.cpp" line="6028"/>
+      <location filename="../../CommandConstraints.cpp" line="6330"/>
       <source>Add point to line distance constraint</source>
       <translation>புள்ளிக்கு வரி தூரக் கட்டுப்பாட்டைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5829"/>
+      <location filename="../../CommandConstraints.cpp" line="6046"/>
       <source>Add point to circle distance constraint</source>
       <translation>வட்டத்தின் தூரக் கட்டுப்பாட்டில் புள்ளியைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6417"/>
-      <location filename="../../CommandConstraints.cpp" line="6543"/>
+      <location filename="../../CommandConstraints.cpp" line="6526"/>
+      <location filename="../../CommandConstraints.cpp" line="6647"/>
       <source>Add point to point horizontal distance constraint</source>
       <translation>புள்ளிக்கு புள்ளி கிடைமட்ட தூரக் கட்டுப்பாட்டைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6458"/>
+      <location filename="../../CommandConstraints.cpp" line="6560"/>
       <source>Add fixed x-coordinate constraint</source>
       <translation>நிலையான x-கோர்டினேட் தடையைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6717"/>
-      <location filename="../../CommandConstraints.cpp" line="6839"/>
+      <location filename="../../CommandConstraints.cpp" line="6527"/>
+      <location filename="../../CommandConstraints.cpp" line="6648"/>
       <source>Add point to point vertical distance constraint</source>
       <translation>புள்ளிக்கு புள்ளி செங்குத்து தூரக் கட்டுப்பாட்டைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6755"/>
+      <location filename="../../CommandConstraints.cpp" line="6561"/>
       <source>Add fixed y-coordinate constraint</source>
       <translation>நிலையான y-கோர்டினேட் தடையைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6987"/>
-      <location filename="../../CommandConstraints.cpp" line="7031"/>
+      <location filename="../../CommandConstraints.cpp" line="6817"/>
+      <location filename="../../CommandConstraints.cpp" line="6856"/>
       <source>Add parallel constraint</source>
       <translation>இணையான தடையைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7152"/>
-      <location filename="../../CommandConstraints.cpp" line="7190"/>
-      <location filename="../../CommandConstraints.cpp" line="7291"/>
-      <location filename="../../CommandConstraints.cpp" line="7455"/>
-      <location filename="../../CommandConstraints.cpp" line="7505"/>
-      <location filename="../../CommandConstraints.cpp" line="7654"/>
-      <location filename="../../CommandConstraints.cpp" line="7703"/>
-      <location filename="../../CommandConstraints.cpp" line="7759"/>
+      <location filename="../../CommandConstraints.cpp" line="6949"/>
+      <location filename="../../CommandConstraints.cpp" line="6985"/>
+      <location filename="../../CommandConstraints.cpp" line="7082"/>
+      <location filename="../../CommandConstraints.cpp" line="7240"/>
+      <location filename="../../CommandConstraints.cpp" line="7287"/>
+      <location filename="../../CommandConstraints.cpp" line="7434"/>
+      <location filename="../../CommandConstraints.cpp" line="7479"/>
+      <location filename="../../CommandConstraints.cpp" line="7533"/>
       <source>Add perpendicular constraint</source>
       <translation>செங்குத்து தடையைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7330"/>
+      <location filename="../../CommandConstraints.cpp" line="7118"/>
       <source>Add perpendicularity constraint</source>
       <translation>செங்குத்தாகத் தடையைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7895"/>
+      <location filename="../../CommandConstraints.cpp" line="7666"/>
       <source>Swap coincident+tangency with ptp tangency</source>
       <translation>தற்செயல்+தொடுநிலையை ptp டேன்சென்சியுடன் மாற்றவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8025"/>
-      <location filename="../../CommandConstraints.cpp" line="8126"/>
-      <location filename="../../CommandConstraints.cpp" line="8175"/>
-      <location filename="../../CommandConstraints.cpp" line="8384"/>
-      <location filename="../../CommandConstraints.cpp" line="8577"/>
-      <location filename="../../CommandConstraints.cpp" line="8647"/>
-      <location filename="../../CommandConstraints.cpp" line="8680"/>
+      <location filename="../../CommandConstraints.cpp" line="7770"/>
+      <location filename="../../CommandConstraints.cpp" line="7869"/>
+      <location filename="../../CommandConstraints.cpp" line="7915"/>
+      <location filename="../../CommandConstraints.cpp" line="8121"/>
+      <location filename="../../CommandConstraints.cpp" line="8311"/>
+      <location filename="../../CommandConstraints.cpp" line="8380"/>
+      <location filename="../../CommandConstraints.cpp" line="8410"/>
       <source>Add tangent constraint</source>
       <translation>தொடுகோடு தடையைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8221"/>
-      <location filename="../../CommandConstraints.cpp" line="8235"/>
-      <location filename="../../CommandConstraints.cpp" line="8249"/>
-      <location filename="../../CommandConstraints.cpp" line="8276"/>
-      <location filename="../../CommandConstraints.cpp" line="8291"/>
-      <location filename="../../CommandConstraints.cpp" line="8318"/>
-      <location filename="../../CommandConstraints.cpp" line="8333"/>
-      <location filename="../../CommandConstraints.cpp" line="8361"/>
-      <location filename="../../CommandConstraints.cpp" line="8464"/>
-      <location filename="../../CommandConstraints.cpp" line="8478"/>
-      <location filename="../../CommandConstraints.cpp" line="8493"/>
-      <location filename="../../CommandConstraints.cpp" line="8520"/>
-      <location filename="../../CommandConstraints.cpp" line="8535"/>
-      <location filename="../../CommandConstraints.cpp" line="8562"/>
+      <location filename="../../CommandConstraints.cpp" line="7958"/>
+      <location filename="../../CommandConstraints.cpp" line="7972"/>
+      <location filename="../../CommandConstraints.cpp" line="7986"/>
+      <location filename="../../CommandConstraints.cpp" line="8013"/>
+      <location filename="../../CommandConstraints.cpp" line="8028"/>
+      <location filename="../../CommandConstraints.cpp" line="8055"/>
+      <location filename="../../CommandConstraints.cpp" line="8070"/>
+      <location filename="../../CommandConstraints.cpp" line="8098"/>
+      <location filename="../../CommandConstraints.cpp" line="8198"/>
+      <location filename="../../CommandConstraints.cpp" line="8212"/>
+      <location filename="../../CommandConstraints.cpp" line="8227"/>
+      <location filename="../../CommandConstraints.cpp" line="8254"/>
+      <location filename="../../CommandConstraints.cpp" line="8269"/>
+      <location filename="../../CommandConstraints.cpp" line="8296"/>
       <source>Add tangent constraint point</source>
       <translation>தொடுகோடு தடைப் புள்ளியைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3272"/>
-      <location filename="../../CommandConstraints.cpp" line="3276"/>
-      <location filename="../../CommandConstraints.cpp" line="3283"/>
+      <location filename="../../CommandConstraints.cpp" line="3284"/>
       <location filename="../../CommandConstraints.cpp" line="3288"/>
-      <location filename="../../CommandConstraints.cpp" line="8899"/>
-      <location filename="../../CommandConstraints.cpp" line="8943"/>
-      <location filename="../../CommandConstraints.cpp" line="8972"/>
-      <location filename="../../CommandConstraints.cpp" line="9049"/>
+      <location filename="../../CommandConstraints.cpp" line="3295"/>
+      <location filename="../../CommandConstraints.cpp" line="3300"/>
+      <location filename="../../CommandConstraints.cpp" line="8483"/>
       <source>Add radius constraint</source>
       <translation>ஆரம் தடையைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9250"/>
-      <location filename="../../CommandConstraints.cpp" line="9282"/>
-      <location filename="../../CommandConstraints.cpp" line="9303"/>
-      <location filename="../../CommandConstraints.cpp" line="9379"/>
+      <location filename="../../CommandConstraints.cpp" line="8485"/>
       <source>Add diameter constraint</source>
       <translation>விட்டம் தடையைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9575"/>
-      <location filename="../../CommandConstraints.cpp" line="9623"/>
-      <location filename="../../CommandConstraints.cpp" line="9658"/>
-      <location filename="../../CommandConstraints.cpp" line="9747"/>
+      <location filename="../../CommandConstraints.cpp" line="8487"/>
       <source>Add radiam constraint</source>
       <translation>ரேடியம் தடையைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="547"/>
-      <location filename="../../CommandConstraints.cpp" line="10082"/>
-      <location filename="../../CommandConstraints.cpp" line="10198"/>
-      <location filename="../../CommandConstraints.cpp" line="10224"/>
-      <location filename="../../CommandConstraints.cpp" line="10313"/>
-      <location filename="../../CommandConstraints.cpp" line="10352"/>
+      <location filename="../../CommandConstraints.cpp" line="568"/>
+      <location filename="../../CommandConstraints.cpp" line="9183"/>
+      <location filename="../../CommandConstraints.cpp" line="9287"/>
+      <location filename="../../CommandConstraints.cpp" line="9302"/>
+      <location filename="../../CommandConstraints.cpp" line="9380"/>
+      <location filename="../../CommandConstraints.cpp" line="9409"/>
       <source>Add angle constraint</source>
       <translation>கோணக் கட்டுப்பாட்டைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7918"/>
+      <location filename="../../CommandConstraints.cpp" line="7689"/>
       <source>Swap point on object and tangency with point to curve tangency</source>
       <translation>பொருளின் மீது புள்ளி மற்றும் தொடுநிலையை புள்ளி முதல் வளைவு தொடுநிலையுடன் மாற்றவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10614"/>
-      <location filename="../../CommandConstraints.cpp" line="10669"/>
+      <location filename="../../CommandConstraints.cpp" line="9633"/>
+      <location filename="../../CommandConstraints.cpp" line="9683"/>
       <source>Add equality constraint</source>
       <translation>சமத்துவக் கட்டுப்பாட்டைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10838"/>
-      <location filename="../../CommandConstraints.cpp" line="10897"/>
-      <location filename="../../CommandConstraints.cpp" line="10918"/>
-      <location filename="../../CommandConstraints.cpp" line="11034"/>
-      <location filename="../../CommandConstraints.cpp" line="11075"/>
-      <location filename="../../CommandConstraints.cpp" line="11149"/>
+      <location filename="../../CommandConstraints.cpp" line="9829"/>
+      <location filename="../../CommandConstraints.cpp" line="9883"/>
+      <location filename="../../CommandConstraints.cpp" line="9899"/>
+      <location filename="../../CommandConstraints.cpp" line="10010"/>
+      <location filename="../../CommandConstraints.cpp" line="10049"/>
+      <location filename="../../CommandConstraints.cpp" line="10120"/>
       <source>Add symmetric constraint</source>
       <translation>சமச்சீர் தடையைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11311"/>
+      <location filename="../../CommandConstraints.cpp" line="10277"/>
       <source>Add Snell's law constraint</source>
       <translation>ச்னெல்லின் சட்டக் கட்டுப்பாட்டைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11779"/>
+      <location filename="../../CommandConstraints.cpp" line="10738"/>
       <source>Toggle constraint to driving/reference</source>
       <translation>ஓட்டுநர்/குறிப்புக்கான தடையை மாற்றவும்</translation>
     </message>
@@ -687,32 +678,32 @@ invalid constraints, and degenerate geometry</source>
       <translation>முகத்தில் ஒரு புதிய ஓவியத்தை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="291"/>
+      <location filename="../../Command.cpp" line="290"/>
       <source>Create a new sketch</source>
       <translation>புதிய ஓவியத்தை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="626"/>
+      <location filename="../../Command.cpp" line="625"/>
       <source>Reorient sketch</source>
       <translation>மறுசீரமைப்பு ஓவியம்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="835"/>
+      <location filename="../../Command.cpp" line="834"/>
       <source>Attach sketch</source>
       <translation>ஓவியத்தை இணைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="844"/>
+      <location filename="../../Command.cpp" line="843"/>
       <source>Detach sketch</source>
       <translation>ஓவியத்தை பிரிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="983"/>
+      <location filename="../../Command.cpp" line="982"/>
       <source>Create a mirrored sketch for each selected sketch</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட ஒவ்வொரு ஓவியத்திற்கும் பிரதிபலித்த ஓவியத்தை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1282"/>
+      <location filename="../../Command.cpp" line="1281"/>
       <source>Merge sketches</source>
       <translation>ஓவியங்களை ஒன்றிணைக்கவும்</translation>
     </message>
@@ -779,7 +770,7 @@ invalid constraints, and degenerate geometry</source>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerExternal.h" line="181"/>
-      <location filename="../../CommandConstraints.cpp" line="2008"/>
+      <location filename="../../CommandConstraints.cpp" line="2020"/>
       <source>Add external geometry</source>
       <translation>வெளிப்புற வடிவவியலைச் சேர்க்கவும்</translation>
     </message>
@@ -905,13 +896,13 @@ invalid constraints, and degenerate geometry</source>
       <translation>வடிவவியலை இழுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1410"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1411"/>
       <source>Drag Constraint</source>
       <translation>இழுத்தல் கட்டுப்பாடு</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1659"/>
-      <location filename="../../CommandConstraints.cpp" line="11644"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1660"/>
+      <location filename="../../CommandConstraints.cpp" line="10603"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1345"/>
       <source>Modify sketch constraints</source>
       <translation>ச்கெட்ச் கட்டுப்பாடுகளை மாற்றவும்</translation>
@@ -978,7 +969,7 @@ invalid constraints, and degenerate geometry</source>
       <translation>கட்டுமான வடிவவியலை மாற்றவும்</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandler.cpp" line="1606"/>
+      <location filename="../../DrawSketchHandler.cpp" line="1613"/>
       <location filename="../../DrawSketchDefaultHandler.h" line="717"/>
       <source>Add Auto-Constraints</source>
       <translation>தானியங்கு கட்டுப்பாடுகளைச் சேர்க்கவும்</translation>
@@ -1017,54 +1008,54 @@ invalid constraints, and degenerate geometry</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2994"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3006"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>முடிச்சுப் பெருக்கத்தில் எந்த மாற்றத்தையும் நீங்கள் கோரவில்லை.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2986"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3164"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2998"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3176"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>B-spline Geometry குறியெண் (GeoID) எல்லைக்கு வெளியே உள்ளது.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3003"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3180"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3015"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3192"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>வழங்கப்பட்ட சியோமெட்ரி இன்டெக்ச் (சியோஐடி) பி-ச்ப்லைன் அல்ல.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3015"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3027"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>முடிச்சு குறியீட்டு எல்லைக்கு வெளியே உள்ளது. OCC குறியீட்டின்படி, முதல் முடிச்சு குறியீட்டு 1 ஐக் கொண்டுள்ளது மற்றும் பூச்சியமாக இல்லை.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3031"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3043"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>பி-ச்ப்லைனின் அளவைத் தாண்டி பெருக்கத்தை அதிகரிக்க முடியாது.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3042"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3054"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>பூச்சியத்திற்கு மேல் பெருக்கத்தை குறைக்க முடியாது.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3058"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3070"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC ஆல் அதிகபட்ச சகிப்புத்தன்மைக்குள் பெருக்கத்தைக் குறைக்க முடியவில்லை.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3171"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3183"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>முடிச்சு சுழிய பெருக்கத்தைக் கொண்டிருக்க முடியாது.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3193"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3205"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>முடிச்சுப் பெருக்கம் பி-ச்ப்லைனின் அளவை விட அதிகமாக இருக்க முடியாது.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3203"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3215"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>B-spline அளவுரு வரம்பிற்கு வெளியே முடிச்சைச் செருக முடியாது.</translation>
     </message>
@@ -1088,32 +1079,32 @@ invalid constraints, and degenerate geometry</source>
       <translation>தன்னியக்கக் கட்டுப்பாடு பிழை: தற்செயலான கட்டுப்பாடுகளைப் பயன்படுத்தும்போது தீர்க்க முடியாத ஓவியம்.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="728"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="740"/>
       <source>Autoconstraint error: Unsolvable sketch while applying vertical/horizontal constraints.</source>
       <translation>தன்னியக்கக் கட்டுப்பாடு பிழை: செங்குத்து/கிடைமட்டக் கட்டுப்பாடுகளைப் பயன்படுத்தும்போது தீர்க்க முடியாத ஓவியம்.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="825"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="837"/>
       <source>Autoconstraint error: Unsolvable sketch while applying equality constraints.</source>
       <translation>தன்னியக்கக் கட்டுப்பாடு பிழை: சமத்துவக் கட்டுப்பாடுகளைப் பயன்படுத்தும்போது தீர்க்க முடியாத ஓவியம்.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="869"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="881"/>
       <source>Autoconstraint error: Unsolvable sketch without constraints.</source>
       <translation>தன்னியக்கக் கட்டுப்பாடு பிழை: தடைகள் இல்லாமல் தீர்க்க முடியாத ஓவியம்.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="883"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="895"/>
       <source>Autoconstraint error: Unsolvable sketch after applying horizontal and vertical constraints.</source>
       <translation>தன்னியக்கக் கட்டுப்பாடு பிழை: கிடைமட்ட மற்றும் செங்குத்து தடைகளைப் பயன்படுத்திய பிறகு தீர்க்க முடியாத ஓவியம்.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="900"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="912"/>
       <source>Autoconstraint error: Unsolvable sketch after applying point-on-point constraints.</source>
       <translation>தன்னியக்கக் கட்டுப்பாடு பிழை: பாயிண்ட்-ஆன்-பாயின்ட் கட்டுப்பாடுகளைப் பயன்படுத்திய பிறகு தீர்க்க முடியாத ஓவியம்.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="923"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="935"/>
       <source>Autoconstraint error: Unsolvable sketch after applying equality constraints.</source>
       <translation>தன்னியக்கக் கட்டுப்பாடு பிழை: சமத்துவக் கட்டுப்பாடுகளைப் பயன்படுத்திய பிறகு தீர்க்க முடியாத ஓவியம்.</translation>
     </message>
@@ -1184,7 +1175,7 @@ invalid constraints, and degenerate geometry</source>
     </message>
     <message>
       <location filename="../../Command.cpp" line="205"/>
-      <location filename="../../Command.cpp" line="774"/>
+      <location filename="../../Command.cpp" line="773"/>
       <source>Do not attach</source>
       <translation>இணைக்க வேண்டாம்</translation>
     </message>
@@ -1203,135 +1194,109 @@ invalid constraints, and degenerate geometry</source>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="127"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
-      <location filename="../../CommandConstraints.cpp" line="457"/>
-      <location filename="../../CommandConstraints.cpp" line="464"/>
-      <location filename="../../CommandConstraints.cpp" line="3613"/>
-      <location filename="../../CommandConstraints.cpp" line="3772"/>
-      <location filename="../../CommandConstraints.cpp" line="3788"/>
-      <location filename="../../CommandConstraints.cpp" line="4172"/>
-      <location filename="../../CommandConstraints.cpp" line="4579"/>
-      <location filename="../../CommandConstraints.cpp" line="4606"/>
-      <location filename="../../CommandConstraints.cpp" line="4611"/>
-      <location filename="../../CommandConstraints.cpp" line="4865"/>
-      <location filename="../../CommandConstraints.cpp" line="4898"/>
-      <location filename="../../CommandConstraints.cpp" line="4903"/>
-      <location filename="../../CommandConstraints.cpp" line="5197"/>
-      <location filename="../../CommandConstraints.cpp" line="5227"/>
-      <location filename="../../CommandConstraints.cpp" line="5250"/>
-      <location filename="../../CommandConstraints.cpp" line="5280"/>
-      <location filename="../../CommandConstraints.cpp" line="5297"/>
-      <location filename="../../CommandConstraints.cpp" line="5427"/>
-      <location filename="../../CommandConstraints.cpp" line="5449"/>
-      <location filename="../../CommandConstraints.cpp" line="5478"/>
-      <location filename="../../CommandConstraints.cpp" line="5689"/>
-      <location filename="../../CommandConstraints.cpp" line="5701"/>
-      <location filename="../../CommandConstraints.cpp" line="5950"/>
-      <location filename="../../CommandConstraints.cpp" line="5958"/>
-      <location filename="../../CommandConstraints.cpp" line="6024"/>
-      <location filename="../../CommandConstraints.cpp" line="6150"/>
-      <location filename="../../CommandConstraints.cpp" line="6255"/>
-      <location filename="../../CommandConstraints.cpp" line="6340"/>
-      <location filename="../../CommandConstraints.cpp" line="6353"/>
-      <location filename="../../CommandConstraints.cpp" line="6386"/>
-      <location filename="../../CommandConstraints.cpp" line="6448"/>
-      <location filename="../../CommandConstraints.cpp" line="6484"/>
-      <location filename="../../CommandConstraints.cpp" line="6519"/>
-      <location filename="../../CommandConstraints.cpp" line="6641"/>
-      <location filename="../../CommandConstraints.cpp" line="6654"/>
-      <location filename="../../CommandConstraints.cpp" line="6685"/>
-      <location filename="../../CommandConstraints.cpp" line="6747"/>
-      <location filename="../../CommandConstraints.cpp" line="6781"/>
-      <location filename="../../CommandConstraints.cpp" line="6815"/>
-      <location filename="../../CommandConstraints.cpp" line="6937"/>
-      <location filename="../../CommandConstraints.cpp" line="6972"/>
-      <location filename="../../CommandConstraints.cpp" line="6981"/>
-      <location filename="../../CommandConstraints.cpp" line="7020"/>
-      <location filename="../../CommandConstraints.cpp" line="7119"/>
-      <location filename="../../CommandConstraints.cpp" line="7131"/>
-      <location filename="../../CommandConstraints.cpp" line="7185"/>
-      <location filename="../../CommandConstraints.cpp" line="7263"/>
-      <location filename="../../CommandConstraints.cpp" line="7273"/>
-      <location filename="../../CommandConstraints.cpp" line="7314"/>
-      <location filename="../../CommandConstraints.cpp" line="7325"/>
+      <location filename="../../CommandConstraints.cpp" line="478"/>
+      <location filename="../../CommandConstraints.cpp" line="485"/>
+      <location filename="../../CommandConstraints.cpp" line="3625"/>
+      <location filename="../../CommandConstraints.cpp" line="3784"/>
+      <location filename="../../CommandConstraints.cpp" line="3800"/>
+      <location filename="../../CommandConstraints.cpp" line="4185"/>
+      <location filename="../../CommandConstraints.cpp" line="4599"/>
+      <location filename="../../CommandConstraints.cpp" line="4861"/>
+      <location filename="../../CommandConstraints.cpp" line="5208"/>
+      <location filename="../../CommandConstraints.cpp" line="5231"/>
+      <location filename="../../CommandConstraints.cpp" line="5261"/>
+      <location filename="../../CommandConstraints.cpp" line="5278"/>
+      <location filename="../../CommandConstraints.cpp" line="5415"/>
+      <location filename="../../CommandConstraints.cpp" line="5436"/>
+      <location filename="../../CommandConstraints.cpp" line="5465"/>
+      <location filename="../../CommandConstraints.cpp" line="5590"/>
+      <location filename="../../CommandConstraints.cpp" line="5597"/>
+      <location filename="../../CommandConstraints.cpp" line="5604"/>
+      <location filename="../../CommandConstraints.cpp" line="5941"/>
+      <location filename="../../CommandConstraints.cpp" line="6143"/>
+      <location filename="../../CommandConstraints.cpp" line="6151"/>
+      <location filename="../../CommandConstraints.cpp" line="6195"/>
+      <location filename="../../CommandConstraints.cpp" line="6304"/>
+      <location filename="../../CommandConstraints.cpp" line="6392"/>
+      <location filename="../../CommandConstraints.cpp" line="6459"/>
+      <location filename="../../CommandConstraints.cpp" line="6494"/>
+      <location filename="../../CommandConstraints.cpp" line="6548"/>
+      <location filename="../../CommandConstraints.cpp" line="6578"/>
+      <location filename="../../CommandConstraints.cpp" line="6622"/>
+      <location filename="../../CommandConstraints.cpp" line="6802"/>
+      <location filename="../../CommandConstraints.cpp" line="6811"/>
+      <location filename="../../CommandConstraints.cpp" line="6845"/>
+      <location filename="../../CommandConstraints.cpp" line="6928"/>
+      <location filename="../../CommandConstraints.cpp" line="6980"/>
+      <location filename="../../CommandConstraints.cpp" line="7054"/>
+      <location filename="../../CommandConstraints.cpp" line="7064"/>
+      <location filename="../../CommandConstraints.cpp" line="7102"/>
+      <location filename="../../CommandConstraints.cpp" line="7113"/>
+      <location filename="../../CommandConstraints.cpp" line="7140"/>
+      <location filename="../../CommandConstraints.cpp" line="7161"/>
+      <location filename="../../CommandConstraints.cpp" line="7334"/>
       <location filename="../../CommandConstraints.cpp" line="7355"/>
-      <location filename="../../CommandConstraints.cpp" line="7376"/>
-      <location filename="../../CommandConstraints.cpp" line="7554"/>
-      <location filename="../../CommandConstraints.cpp" line="7575"/>
-      <location filename="../../CommandConstraints.cpp" line="7754"/>
-      <location filename="../../CommandConstraints.cpp" line="7974"/>
-      <location filename="../../CommandConstraints.cpp" line="7986"/>
-      <location filename="../../CommandConstraints.cpp" line="8020"/>
-      <location filename="../../CommandConstraints.cpp" line="8091"/>
-      <location filename="../../CommandConstraints.cpp" line="8111"/>
-      <location filename="../../CommandConstraints.cpp" line="8120"/>
-      <location filename="../../CommandConstraints.cpp" line="8149"/>
-      <location filename="../../CommandConstraints.cpp" line="8158"/>
-      <location filename="../../CommandConstraints.cpp" line="8169"/>
-      <location filename="../../CommandConstraints.cpp" line="8197"/>
-      <location filename="../../CommandConstraints.cpp" line="8378"/>
-      <location filename="../../CommandConstraints.cpp" line="8421"/>
-      <location filename="../../CommandConstraints.cpp" line="8438"/>
-      <location filename="../../CommandConstraints.cpp" line="8630"/>
-      <location filename="../../CommandConstraints.cpp" line="8675"/>
-      <location filename="../../CommandConstraints.cpp" line="8800"/>
-      <location filename="../../CommandConstraints.cpp" line="8813"/>
-      <location filename="../../CommandConstraints.cpp" line="8879"/>
-      <location filename="../../CommandConstraints.cpp" line="8887"/>
-      <location filename="../../CommandConstraints.cpp" line="9043"/>
-      <location filename="../../CommandConstraints.cpp" line="9163"/>
+      <location filename="../../CommandConstraints.cpp" line="7528"/>
+      <location filename="../../CommandConstraints.cpp" line="7731"/>
+      <location filename="../../CommandConstraints.cpp" line="7765"/>
+      <location filename="../../CommandConstraints.cpp" line="7834"/>
+      <location filename="../../CommandConstraints.cpp" line="7854"/>
+      <location filename="../../CommandConstraints.cpp" line="7863"/>
+      <location filename="../../CommandConstraints.cpp" line="7889"/>
+      <location filename="../../CommandConstraints.cpp" line="7898"/>
+      <location filename="../../CommandConstraints.cpp" line="7909"/>
+      <location filename="../../CommandConstraints.cpp" line="7934"/>
+      <location filename="../../CommandConstraints.cpp" line="8115"/>
+      <location filename="../../CommandConstraints.cpp" line="8155"/>
+      <location filename="../../CommandConstraints.cpp" line="8172"/>
+      <location filename="../../CommandConstraints.cpp" line="8363"/>
+      <location filename="../../CommandConstraints.cpp" line="8405"/>
+      <location filename="../../CommandConstraints.cpp" line="8528"/>
+      <location filename="../../CommandConstraints.cpp" line="8578"/>
+      <location filename="../../CommandConstraints.cpp" line="8602"/>
+      <location filename="../../CommandConstraints.cpp" line="8610"/>
+      <location filename="../../CommandConstraints.cpp" line="8736"/>
+      <location filename="../../CommandConstraints.cpp" line="8744"/>
+      <location filename="../../CommandConstraints.cpp" line="9140"/>
       <location filename="../../CommandConstraints.cpp" line="9176"/>
-      <location filename="../../CommandConstraints.cpp" line="9221"/>
-      <location filename="../../CommandConstraints.cpp" line="9239"/>
-      <location filename="../../CommandConstraints.cpp" line="9365"/>
-      <location filename="../../CommandConstraints.cpp" line="9373"/>
-      <location filename="../../CommandConstraints.cpp" line="9481"/>
-      <location filename="../../CommandConstraints.cpp" line="9494"/>
-      <location filename="../../CommandConstraints.cpp" line="9555"/>
-      <location filename="../../CommandConstraints.cpp" line="9563"/>
-      <location filename="../../CommandConstraints.cpp" line="9741"/>
-      <location filename="../../CommandConstraints.cpp" line="10026"/>
-      <location filename="../../CommandConstraints.cpp" line="10039"/>
-      <location filename="../../CommandConstraints.cpp" line="10075"/>
-      <location filename="../../CommandConstraints.cpp" line="10173"/>
-      <location filename="../../CommandConstraints.cpp" line="10186"/>
-      <location filename="../../CommandConstraints.cpp" line="10251"/>
-      <location filename="../../CommandConstraints.cpp" line="10345"/>
-      <location filename="../../CommandConstraints.cpp" line="10499"/>
-      <location filename="../../CommandConstraints.cpp" line="10513"/>
-      <location filename="../../CommandConstraints.cpp" line="10531"/>
-      <location filename="../../CommandConstraints.cpp" line="10538"/>
-      <location filename="../../CommandConstraints.cpp" line="10559"/>
-      <location filename="../../CommandConstraints.cpp" line="10592"/>
+      <location filename="../../CommandConstraints.cpp" line="9262"/>
+      <location filename="../../CommandConstraints.cpp" line="9275"/>
+      <location filename="../../CommandConstraints.cpp" line="9318"/>
+      <location filename="../../CommandConstraints.cpp" line="9402"/>
+      <location filename="../../CommandConstraints.cpp" line="9532"/>
+      <location filename="../../CommandConstraints.cpp" line="9550"/>
+      <location filename="../../CommandConstraints.cpp" line="9557"/>
+      <location filename="../../CommandConstraints.cpp" line="9578"/>
+      <location filename="../../CommandConstraints.cpp" line="9611"/>
+      <location filename="../../CommandConstraints.cpp" line="9627"/>
+      <location filename="../../CommandConstraints.cpp" line="9677"/>
+      <location filename="../../CommandConstraints.cpp" line="9765"/>
+      <location filename="../../CommandConstraints.cpp" line="9798"/>
+      <location filename="../../CommandConstraints.cpp" line="9809"/>
+      <location filename="../../CommandConstraints.cpp" line="9822"/>
+      <location filename="../../CommandConstraints.cpp" line="9845"/>
+      <location filename="../../CommandConstraints.cpp" line="9876"/>
+      <location filename="../../CommandConstraints.cpp" line="9916"/>
+      <location filename="../../CommandConstraints.cpp" line="9947"/>
+      <location filename="../../CommandConstraints.cpp" line="9962"/>
+      <location filename="../../CommandConstraints.cpp" line="10003"/>
+      <location filename="../../CommandConstraints.cpp" line="10025"/>
+      <location filename="../../CommandConstraints.cpp" line="10087"/>
+      <location filename="../../CommandConstraints.cpp" line="10097"/>
+      <location filename="../../CommandConstraints.cpp" line="10107"/>
+      <location filename="../../CommandConstraints.cpp" line="10178"/>
+      <location filename="../../CommandConstraints.cpp" line="10188"/>
+      <location filename="../../CommandConstraints.cpp" line="10213"/>
+      <location filename="../../CommandConstraints.cpp" line="10223"/>
+      <location filename="../../CommandConstraints.cpp" line="10241"/>
+      <location filename="../../CommandConstraints.cpp" line="10366"/>
+      <location filename="../../CommandConstraints.cpp" line="10376"/>
       <location filename="../../CommandConstraints.cpp" line="10608"/>
-      <location filename="../../CommandConstraints.cpp" line="10663"/>
-      <location filename="../../CommandConstraints.cpp" line="10759"/>
-      <location filename="../../CommandConstraints.cpp" line="10774"/>
+      <location filename="../../CommandConstraints.cpp" line="10684"/>
+      <location filename="../../CommandConstraints.cpp" line="10696"/>
+      <location filename="../../CommandConstraints.cpp" line="10732"/>
       <location filename="../../CommandConstraints.cpp" line="10807"/>
-      <location filename="../../CommandConstraints.cpp" line="10818"/>
-      <location filename="../../CommandConstraints.cpp" line="10831"/>
-      <location filename="../../CommandConstraints.cpp" line="10859"/>
-      <location filename="../../CommandConstraints.cpp" line="10890"/>
-      <location filename="../../CommandConstraints.cpp" line="10940"/>
-      <location filename="../../CommandConstraints.cpp" line="10971"/>
-      <location filename="../../CommandConstraints.cpp" line="10986"/>
-      <location filename="../../CommandConstraints.cpp" line="11027"/>
-      <location filename="../../CommandConstraints.cpp" line="11051"/>
-      <location filename="../../CommandConstraints.cpp" line="11116"/>
-      <location filename="../../CommandConstraints.cpp" line="11126"/>
-      <location filename="../../CommandConstraints.cpp" line="11136"/>
-      <location filename="../../CommandConstraints.cpp" line="11212"/>
-      <location filename="../../CommandConstraints.cpp" line="11222"/>
-      <location filename="../../CommandConstraints.cpp" line="11247"/>
-      <location filename="../../CommandConstraints.cpp" line="11257"/>
-      <location filename="../../CommandConstraints.cpp" line="11275"/>
-      <location filename="../../CommandConstraints.cpp" line="11403"/>
-      <location filename="../../CommandConstraints.cpp" line="11413"/>
-      <location filename="../../CommandConstraints.cpp" line="11649"/>
-      <location filename="../../CommandConstraints.cpp" line="11725"/>
-      <location filename="../../CommandConstraints.cpp" line="11737"/>
-      <location filename="../../CommandConstraints.cpp" line="11773"/>
-      <location filename="../../CommandConstraints.cpp" line="11848"/>
-      <location filename="../../CommandConstraints.cpp" line="11860"/>
+      <location filename="../../CommandConstraints.cpp" line="10819"/>
       <location filename="../../CommandSketcherTools.cpp" line="468"/>
       <location filename="../../CommandSketcherTools.cpp" line="1118"/>
       <location filename="../../CommandSketcherTools.cpp" line="1447"/>
@@ -1364,557 +1329,526 @@ invalid constraints, and degenerate geometry</source>
       <translation>பரிமாணக் கட்டுப்பாடு</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="458"/>
+      <location filename="../../CommandConstraints.cpp" line="479"/>
       <source>Cannot add a constraint between two external geometries.</source>
       <translation>இரண்டு வெளிப்புற வடிவவியலுக்கு இடையில் ஒரு தடையைச் சேர்க்க முடியாது.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="465"/>
+      <location filename="../../CommandConstraints.cpp" line="486"/>
       <source>Cannot add a constraint between two fixed geometries. Fixed geometries include external geometry, blocked geometry, and special points such as B-spline knot points.</source>
       <translation>இரண்டு நிலையான வடிவவியலுக்கு இடையில் ஒரு தடையைச் சேர்க்க முடியாது. நிலையான வடிவவியலில் வெளிப்புற வடிவியல், தடுக்கப்பட்ட வடிவியல் மற்றும் பி-ச்ப்லைன் முடிச்சுப் புள்ளிகள் போன்ற சிறப்புப் புள்ளிகள் அடங்கும்.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1037"/>
+      <location filename="../../CommandConstraints.cpp" line="1049"/>
       <source>Sketcher Constraint Substitution</source>
       <translation>ச்கெட்சர் கட்டுப்பாடு மாற்று</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1149"/>
+      <location filename="../../CommandConstraints.cpp" line="1161"/>
       <source>One of the selected has to be on the sketch.</source>
       <translation>தேர்ந்தெடுக்கப்பட்டவற்றில் ஒன்று ஓவியத்தில் இருக்க வேண்டும்.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4173"/>
-      <source>Select an edge from the sketch.</source>
-      <translation>ஓவியத்திலிருந்து ஒரு விளிம்பைத் தேர்ந்தெடுக்கவும்.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="4137"/>
-      <location filename="../../CommandConstraints.cpp" line="4146"/>
-      <location filename="../../CommandConstraints.cpp" line="4198"/>
-      <location filename="../../CommandConstraints.cpp" line="4222"/>
-      <location filename="../../CommandConstraints.cpp" line="4276"/>
-      <location filename="../../CommandConstraints.cpp" line="4310"/>
+      <location filename="../../CommandConstraints.cpp" line="4149"/>
+      <location filename="../../CommandConstraints.cpp" line="4158"/>
+      <location filename="../../CommandConstraints.cpp" line="4218"/>
+      <location filename="../../CommandConstraints.cpp" line="4242"/>
+      <location filename="../../CommandConstraints.cpp" line="4296"/>
+      <location filename="../../CommandConstraints.cpp" line="4325"/>
       <source>Impossible constraint</source>
       <translation>சாத்தியமற்ற கட்டுப்பாடு</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4199"/>
-      <location filename="../../CommandConstraints.cpp" line="4311"/>
+      <location filename="../../CommandConstraints.cpp" line="4219"/>
+      <location filename="../../CommandConstraints.cpp" line="4326"/>
       <source>The selected edge is not a line segment.</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட விளிம்பு ஒரு கோடு பிரிவு அல்ல.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4129"/>
-      <location filename="../../CommandConstraints.cpp" line="4915"/>
-      <location filename="../../CommandConstraints.cpp" line="4967"/>
+      <location filename="../../CommandConstraints.cpp" line="4141"/>
+      <location filename="../../CommandConstraints.cpp" line="4872"/>
+      <location filename="../../CommandConstraints.cpp" line="4924"/>
       <source>Double constraint</source>
       <translation>இரட்டைக் கட்டுப்பாடு</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4130"/>
+      <location filename="../../CommandConstraints.cpp" line="4142"/>
       <source>The selected edge already has a horizontal constraint!</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட விளிம்பில் ஏற்கனவே கிடைமட்ட தடை உள்ளது!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4138"/>
+      <location filename="../../CommandConstraints.cpp" line="4150"/>
       <source>The selected edge already has a vertical constraint!</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட விளிம்பில் ஏற்கனவே செங்குத்து தடை உள்ளது!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4277"/>
+      <location filename="../../CommandConstraints.cpp" line="4297"/>
       <source>There are more than one fixed points selected. Select a maximum of one fixed point!</source>
       <translation>ஒன்றுக்கும் மேற்பட்ட நிலையான புள்ளிகள் தேர்ந்தெடுக்கப்பட்டுள்ளன. அதிகபட்சமாக ஒரு நிலையான புள்ளியைத் தேர்ந்தெடுக்கவும்!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4580"/>
-      <location filename="../../CommandConstraints.cpp" line="4866"/>
-      <location filename="../../CommandConstraints.cpp" line="5690"/>
-      <source>Select vertices from the sketch.</source>
-      <translation>ஓவியத்திலிருந்து செங்குத்துகளைத் தேர்ந்தெடுக்கவும்.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="4607"/>
+      <location filename="../../CommandConstraints.cpp" line="4600"/>
       <source>Select one vertex from the sketch other than the origin.</source>
       <translation>தோற்றம் தவிர ஓவியத்திலிருந்து ஒரு உச்சியைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4612"/>
-      <source>Select only vertices from the sketch. The last selected vertex may be the origin.</source>
-      <translation>ச்கெட்சிலிருந்து செங்குத்துகளை மட்டும் தேர்ந்தெடுக்கவும். கடைசியாக தேர்ந்தெடுக்கப்பட்ட உச்சியானது தோற்றமாக இருக்கலாம்.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="4879"/>
+      <location filename="../../CommandConstraints.cpp" line="4843"/>
       <source>Wrong solver status</source>
       <translation>தவறான தீர்வு நிலை</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4899"/>
+      <location filename="../../CommandConstraints.cpp" line="4862"/>
       <source>Select one edge from the sketch.</source>
       <translation>ஓவியத்திலிருந்து ஒரு விளிம்பைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4904"/>
-      <source>Select only edges from the sketch.</source>
-      <translation>ஓவியத்திலிருந்து விளிம்புகளை மட்டும் தேர்ந்தெடுக்கவும்.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="5281"/>
+      <location filename="../../CommandConstraints.cpp" line="5262"/>
       <source>None of the selected points were constrained onto the respective curves, because they are part of the same element, they are both external geometry, or the edge is not eligible.</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட புள்ளிகள் எதுவும் அந்தந்த வளைவுகளில் கட்டுப்படுத்தப்படவில்லை, ஏனெனில் அவை ஒரே உறுப்பின் பகுதியாகும், அவை இரண்டும் வெளிப்புற வடிவியல் அல்லது விளிம்பு தகுதியற்றது.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8379"/>
+      <location filename="../../CommandConstraints.cpp" line="8116"/>
       <source>Only tangent-via-point is supported with a B-spline.</source>
       <translation>B-spline உடன் டேன்சென்ட்-வயா-பாயின்ட் மட்டுமே ஆதரிக்கப்படுகிறது.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8888"/>
-      <location filename="../../CommandConstraints.cpp" line="9564"/>
+      <location filename="../../CommandConstraints.cpp" line="8611"/>
       <source>Select either only one or more B-spline poles or only one or more arcs or circles from the sketch, but not mixed.</source>
       <translation>ஓவியத்திலிருந்து ஒன்று அல்லது அதற்கு மேற்பட்ட பி-ச்ப்லைன் துருவங்களை அல்லது ஒன்று அல்லது அதற்கு மேற்பட்ட வளைவுகள் அல்லது வட்டங்களை மட்டும் தேர்ந்தெடுக்கவும், ஆனால் கலக்கவில்லை.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10760"/>
-      <location filename="../../CommandConstraints.cpp" line="10775"/>
-      <location filename="../../CommandConstraints.cpp" line="10860"/>
-      <location filename="../../CommandConstraints.cpp" line="10941"/>
-      <location filename="../../CommandConstraints.cpp" line="11052"/>
+      <location filename="../../CommandConstraints.cpp" line="9766"/>
+      <location filename="../../CommandConstraints.cpp" line="9846"/>
+      <location filename="../../CommandConstraints.cpp" line="9917"/>
+      <location filename="../../CommandConstraints.cpp" line="10026"/>
       <source>Select two points and a symmetry line, two points and a symmetry point, an element and a symmetry line or an element and a symmetry point from the sketch.</source>
       <translation type="unfinished">Select two points and a symmetry line, two points and a symmetry point, an element and a symmetry line or an element and a symmetry point from the sketch.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10808"/>
-      <location filename="../../CommandConstraints.cpp" line="10987"/>
-      <location filename="../../CommandConstraints.cpp" line="11127"/>
+      <location filename="../../CommandConstraints.cpp" line="9799"/>
+      <location filename="../../CommandConstraints.cpp" line="9963"/>
+      <location filename="../../CommandConstraints.cpp" line="10098"/>
       <source>Cannot add a symmetry constraint because the first selected element has no endpoints. Select a line or an open curve instead.</source>
       <translation type="unfinished">Cannot add a symmetry constraint because the first selected element has no endpoints. Select a line or an open curve instead.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10819"/>
-      <location filename="../../CommandConstraints.cpp" line="11137"/>
+      <location filename="../../CommandConstraints.cpp" line="9810"/>
+      <location filename="../../CommandConstraints.cpp" line="10108"/>
       <source>Cannot add a symmetry constraint because the second selected element is not a line. Select a line or an axis instead.</source>
       <translation type="unfinished">Cannot add a symmetry constraint because the second selected element is not a line. Select a line or an axis instead.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10832"/>
-      <location filename="../../CommandConstraints.cpp" line="10972"/>
+      <location filename="../../CommandConstraints.cpp" line="9823"/>
+      <location filename="../../CommandConstraints.cpp" line="9948"/>
       <source>Cannot add a symmetry constraint between an element and its end points!</source>
       <translation type="unfinished">Cannot add a symmetry constraint between an element and its end points!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11117"/>
+      <location filename="../../CommandConstraints.cpp" line="10088"/>
       <source>Cannot add a symmetry constraint between an element and itself.</source>
       <translation type="unfinished">Cannot add a symmetry constraint between an element and itself.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11197"/>
+      <location filename="../../CommandConstraints.cpp" line="10163"/>
       <source>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second to n2, and the value sets the ratio n2/n1.</source>
       <comment>Constraint_SnellsLaw</comment>
       <translation>கதிர்களாகச் செயல்பட கோடுகளின் இரண்டு முனைப்புள்ளிகளையும், எல்லையைக் குறிக்கும் விளிம்பையும் தேர்ந்தெடுக்கவும். முதலில் தேர்ந்தெடுக்கப்பட்ட புள்ளி குறியீட்டு n1 உடன் ஒத்துள்ளது, இரண்டாவது n2, மற்றும் மதிப்பு n2/n1 விகிதத்தை அமைக்கிறது.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11223"/>
+      <location filename="../../CommandConstraints.cpp" line="10189"/>
       <source>Number of selected objects is not 3</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருட்களின் எண்ணிக்கை 3 அல்ல</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="623"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1185"/>
-      <location filename="../../CommandConstraints.cpp" line="1066"/>
+      <location filename="../../CommandConstraints.cpp" line="1078"/>
       <source>Error</source>
       <translation>பிழை</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5130"/>
+      <location filename="../../CommandConstraints.cpp" line="5128"/>
       <source>Endpoint to endpoint tangency was applied instead.</source>
       <translation>அதற்குப் பதிலாக எண்ட்பாயிண்ட் முதல் எண்ட்பாயிண்ட் டேன்சென்சி பயன்படுத்தப்பட்டது.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5298"/>
+      <location filename="../../CommandConstraints.cpp" line="5279"/>
       <source>Select two or more vertices from the sketch for a coincident constraint, or two or more circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
       <translation>தற்செயலான தடைக்கு ஓவியத்திலிருந்து இரண்டு அல்லது அதற்கு மேற்பட்ட செங்குத்துகளைத் தேர்ந்தெடுக்கவும், அல்லது ஒரு செறிவுத் தடைக்கு இரண்டு அல்லது அதற்கு மேற்பட்ட வட்டங்கள், நீள்வட்டங்கள், வளைவுகள் அல்லது நீள்வட்டத்தின் வளைவுகளைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5479"/>
+      <location filename="../../CommandConstraints.cpp" line="5466"/>
       <source>Select two vertices from the sketch for a coincident constraint, or two circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
       <translation>தற்செயலான தடைக்கு ஓவியத்திலிருந்து இரண்டு செங்குத்துகளைத் தேர்ந்தெடுக்கவும், அல்லது ஒரு செறிவுத் தடைக்கு இரண்டு வட்டங்கள், நீள்வட்டங்கள், வளைவுகள் அல்லது நீள்வட்டத்தின் வளைவுகளைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5702"/>
+      <location filename="../../CommandConstraints.cpp" line="5942"/>
       <source>Select exactly one line or one point and one line or two points from the sketch.</source>
       <translation>ச்கெட்சிலிருந்து சரியாக ஒரு வரி அல்லது ஒரு புள்ளி மற்றும் ஒரு வரி அல்லது இரண்டு புள்ளிகளைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5959"/>
+      <location filename="../../CommandConstraints.cpp" line="6152"/>
       <source>Cannot add a length constraint on an axis!</source>
       <translation>ஒரு அச்சில் நீளக் கட்டுப்பாட்டைச் சேர்க்க முடியாது!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6025"/>
-      <location filename="../../CommandConstraints.cpp" line="6256"/>
+      <location filename="../../CommandConstraints.cpp" line="6196"/>
+      <location filename="../../CommandConstraints.cpp" line="6393"/>
       <source>Select exactly one line or one point and one line or two points or two circles from the sketch.</source>
       <translation>ச்கெட்சிலிருந்து ஒரு வரி அல்லது ஒரு புள்ளி மற்றும் ஒரு வரி அல்லது இரண்டு புள்ளிகள் அல்லது இரண்டு வட்டங்களைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6151"/>
+      <location filename="../../CommandConstraints.cpp" line="6305"/>
       <source>This constraint does not make sense for non-linear curves.</source>
       <translation>நேரியல் அல்லாத வளைவுகளுக்கு இந்தக் கட்டுப்பாடு அர்த்தமல்ல.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5082"/>
+      <location filename="../../CommandConstraints.cpp" line="5080"/>
       <source>Endpoint to edge tangency was applied instead.</source>
       <translation>அதற்குப் பதிலாக எண்ட்பாயிண்ட் டு எட்ச் டேன்சென்சி பயன்படுத்தப்பட்டது.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6341"/>
-      <location filename="../../CommandConstraints.cpp" line="6642"/>
-      <location filename="../../CommandConstraints.cpp" line="8801"/>
-      <location filename="../../CommandConstraints.cpp" line="9164"/>
-      <location filename="../../CommandConstraints.cpp" line="9482"/>
-      <location filename="../../CommandConstraints.cpp" line="10027"/>
-      <source>Select the right things from the sketch.</source>
-      <translation>ஓவியத்திலிருந்து சரியான விசயங்களைத் தேர்ந்தெடுக்கவும்.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="5251"/>
-      <location filename="../../CommandConstraints.cpp" line="5428"/>
-      <location filename="../../CommandConstraints.cpp" line="7186"/>
-      <location filename="../../CommandConstraints.cpp" line="7326"/>
-      <location filename="../../CommandConstraints.cpp" line="7377"/>
-      <location filename="../../CommandConstraints.cpp" line="7576"/>
-      <location filename="../../CommandConstraints.cpp" line="7755"/>
-      <location filename="../../CommandConstraints.cpp" line="8021"/>
-      <location filename="../../CommandConstraints.cpp" line="8170"/>
-      <location filename="../../CommandConstraints.cpp" line="8198"/>
-      <location filename="../../CommandConstraints.cpp" line="8439"/>
-      <location filename="../../CommandConstraints.cpp" line="8676"/>
-      <location filename="../../CommandConstraints.cpp" line="9222"/>
-      <location filename="../../CommandConstraints.cpp" line="9374"/>
-      <location filename="../../CommandConstraints.cpp" line="10076"/>
-      <location filename="../../CommandConstraints.cpp" line="10174"/>
-      <location filename="../../CommandConstraints.cpp" line="10346"/>
-      <location filename="../../CommandConstraints.cpp" line="11276"/>
+      <location filename="../../CommandConstraints.cpp" line="5232"/>
+      <location filename="../../CommandConstraints.cpp" line="5416"/>
+      <location filename="../../CommandConstraints.cpp" line="6981"/>
+      <location filename="../../CommandConstraints.cpp" line="7114"/>
+      <location filename="../../CommandConstraints.cpp" line="7162"/>
+      <location filename="../../CommandConstraints.cpp" line="7356"/>
+      <location filename="../../CommandConstraints.cpp" line="7529"/>
+      <location filename="../../CommandConstraints.cpp" line="7766"/>
+      <location filename="../../CommandConstraints.cpp" line="7910"/>
+      <location filename="../../CommandConstraints.cpp" line="7935"/>
+      <location filename="../../CommandConstraints.cpp" line="8173"/>
+      <location filename="../../CommandConstraints.cpp" line="8406"/>
+      <location filename="../../CommandConstraints.cpp" line="8579"/>
+      <location filename="../../CommandConstraints.cpp" line="8745"/>
+      <location filename="../../CommandConstraints.cpp" line="9177"/>
+      <location filename="../../CommandConstraints.cpp" line="9263"/>
+      <location filename="../../CommandConstraints.cpp" line="9403"/>
+      <location filename="../../CommandConstraints.cpp" line="10242"/>
       <source>Select an edge that is not a B-spline weight.</source>
       <translation>பி-ச்ப்லைன் எடை இல்லாத விளிம்பைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5172"/>
+      <location filename="../../CommandConstraints.cpp" line="5168"/>
       <source>Select either several points, or several conics for concentricity.</source>
       <translation>செறிவூட்டலுக்கு பல புள்ளிகள் அல்லது பல கூம்புகளைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5175"/>
+      <location filename="../../CommandConstraints.cpp" line="5171"/>
       <source>Select either one point and several curves, or one curve and several points</source>
       <translation>ஒரு புள்ளி மற்றும் பல வளைவுகள் அல்லது ஒரு வளைவு மற்றும் பல புள்ளிகளைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5178"/>
+      <location filename="../../CommandConstraints.cpp" line="5174"/>
       <source>Select either one point and several curves or one curve and several points for pointOnObject, or several points for coincidence, or several conics for concentricity.</source>
       <translation>pointOnObject க்கு ஒரு புள்ளி மற்றும் பல வளைவுகள் அல்லது ஒரு வளைவு மற்றும் பல புள்ளிகள் அல்லது தற்செயலுக்கு பல புள்ளிகள் அல்லது செறிவுக்கான பல கூம்புகளை தேர்ந்தெடுக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5450"/>
+      <location filename="../../CommandConstraints.cpp" line="5437"/>
       <source>None of the selected points were constrained onto the respective curves, either because they are parts of the same element, or because they are both external geometry.</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட புள்ளிகள் எதுவும் அந்தந்த வளைவுகளுக்குள் கட்டுப்படுத்தப்படவில்லை, அவை ஒரே தனிமத்தின் பகுதிகளாக இருப்பதால் அல்லது அவை இரண்டும் வெளிப்புற வடிவவியலாக இருப்பதால்.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5951"/>
+      <location filename="../../CommandConstraints.cpp" line="6144"/>
       <source>Cannot add a length constraint on this selection!</source>
       <translation>இந்தத் தேர்வில் நீளக் கட்டுப்பாட்டைச் சேர்க்க முடியாது!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6354"/>
-      <location filename="../../CommandConstraints.cpp" line="6485"/>
-      <location filename="../../CommandConstraints.cpp" line="6655"/>
-      <location filename="../../CommandConstraints.cpp" line="6782"/>
+      <location filename="../../CommandConstraints.cpp" line="6460"/>
+      <location filename="../../CommandConstraints.cpp" line="6579"/>
       <source>Select exactly one line or up to two points from the sketch.</source>
       <translation>ச்கெட்சில் இருந்து சரியாக ஒரு வரி அல்லது இரண்டு புள்ளிகள் வரை தேர்ந்தெடுக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6387"/>
+      <location filename="../../CommandConstraints.cpp" line="6495"/>
       <source>Cannot add a horizontal length constraint on an axis!</source>
       <translation>அச்சில் கிடைமட்ட நீளக் கட்டுப்பாட்டைச் சேர்க்க முடியாது!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6449"/>
+      <location filename="../../CommandConstraints.cpp" line="6549"/>
       <source>Cannot add a fixed x-coordinate constraint on the origin point!</source>
       <translation>மூலப் புள்ளியில் நிலையான x-ஆயக் கட்டுப்பாட்டைச் சேர்க்க முடியாது!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6520"/>
-      <location filename="../../CommandConstraints.cpp" line="6816"/>
+      <location filename="../../CommandConstraints.cpp" line="6623"/>
       <source>This constraint only makes sense on a line segment or a pair of points.</source>
       <translation>இந்தக் கட்டுப்பாடு ஒரு வரிப் பிரிவில் அல்லது ஒரு இணை புள்ளிகளில் மட்டுமே அர்த்தமுள்ளதாக இருக்கும்.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6686"/>
+      <location filename="../../CommandConstraints.cpp" line="6496"/>
       <source>Cannot add a vertical length constraint on an axis!</source>
       <translation>அச்சில் செங்குத்து நீளக் கட்டுப்பாட்டைச் சேர்க்க முடியாது!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6748"/>
+      <location filename="../../CommandConstraints.cpp" line="6550"/>
       <source>Cannot add a fixed y-coordinate constraint on the origin point!</source>
       <translation>மூலப் புள்ளியில் நிலையான y-ஒருங்கிணைந்த தடையைச் சேர்க்க முடியாது!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6938"/>
-      <source>Select two or more lines from the sketch.</source>
-      <translation>ஓவியத்திலிருந்து இரண்டு அல்லது அதற்கு மேற்பட்ட வரிகளைத் தேர்ந்தெடுக்கவும்.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="6973"/>
+      <location filename="../../CommandConstraints.cpp" line="6803"/>
       <source>One selected edge is not a valid line.</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட ஒரு விளிம்பு சரியான வரி அல்ல.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6982"/>
-      <location filename="../../CommandConstraints.cpp" line="10514"/>
+      <location filename="../../CommandConstraints.cpp" line="6812"/>
+      <location filename="../../CommandConstraints.cpp" line="9533"/>
       <source>Select at least two lines from the sketch.</source>
       <translation>ஓவியத்திலிருந்து குறைந்தது இரண்டு வரிகளைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7021"/>
+      <location filename="../../CommandConstraints.cpp" line="6846"/>
       <source>The selected edge is not a valid line.</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட விளிம்பு சரியான வரி அல்ல.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7110"/>
-      <source>There is a number of ways this constraint can be applied.
-
-Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
-      <comment>perpendicular constraint</comment>
-      <translation>இந்த தடையைப் பயன்படுத்துவதற்கு பல வழிகள் உள்ளன. 
-
-ஏற்றுக்கொள்ளப்பட்ட சேர்க்கைகள்: இரண்டு வளைவுகள்; ஒரு முனைப்புள்ளி மற்றும் ஒரு வளைவு; இரண்டு முனைப்புள்ளிகள்; இரண்டு வளைவுகள் மற்றும் ஒரு புள்ளி.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="7115"/>
-      <source>Select some geometry from the sketch.</source>
-      <comment>perpendicular constraint</comment>
-      <translation>ஓவியத்திலிருந்து சில வடிவவியலைத் தேர்ந்தெடுக்கவும்.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="7274"/>
-      <location filename="../../CommandConstraints.cpp" line="7315"/>
+      <location filename="../../CommandConstraints.cpp" line="7065"/>
+      <location filename="../../CommandConstraints.cpp" line="7103"/>
       <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
       <translation>இணைக்கப்படாத புள்ளியில் செங்குத்தாகத் தடையைச் சேர்க்க முடியாது!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7356"/>
-      <location filename="../../CommandConstraints.cpp" line="7555"/>
+      <location filename="../../CommandConstraints.cpp" line="7141"/>
+      <location filename="../../CommandConstraints.cpp" line="7335"/>
       <source>One of the selected edges should be a line.</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட விளிம்புகளில் ஒன்று ஒரு கோடாக இருக்க வேண்டும்.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7906"/>
+      <location filename="../../CommandConstraints.cpp" line="7677"/>
       <source>Endpoint to endpoint tangency was applied. The coincident constraint was deleted.</source>
       <translation>எண்ட்பாயிண்ட் முதல் எண்ட்பாயிண்ட் டேன்சென்சி பயன்படுத்தப்பட்டது. தற்செயல் தடை நீக்கப்பட்டது.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7934"/>
+      <location filename="../../CommandConstraints.cpp" line="7705"/>
       <source>Endpoint to edge tangency was applied. The point on object constraint was deleted.</source>
       <translation>எண்ட்பாயிண்ட் டு எட்ச் டேன்சென்சி பயன்படுத்தப்பட்டது. பொருள் தடையின் புள்ளி நீக்கப்பட்டது.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7965"/>
-      <source>There are a number of ways this constraint can be applied.
-
-Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
-      <comment>tangent constraint</comment>
-      <translation>இந்த தடையைப் பயன்படுத்துவதற்கு பல வழிகள் உள்ளன. 
-
-ஏற்றுக்கொள்ளப்பட்ட சேர்க்கைகள்: இரண்டு வளைவுகள்; ஒரு முனைப்புள்ளி மற்றும் ஒரு வளைவு; இரண்டு முனைப்புள்ளிகள்; இரண்டு வளைவுகள் மற்றும் ஒரு புள்ளி.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="7970"/>
-      <source>Select some geometry from the sketch.</source>
-      <comment>tangent constraint</comment>
-      <translation>ஓவியத்திலிருந்து சில வடிவவியலைத் தேர்ந்தெடுக்கவும்.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="8121"/>
-      <location filename="../../CommandConstraints.cpp" line="8159"/>
-      <location filename="../../CommandConstraints.cpp" line="8631"/>
+      <location filename="../../CommandConstraints.cpp" line="7864"/>
+      <location filename="../../CommandConstraints.cpp" line="7899"/>
+      <location filename="../../CommandConstraints.cpp" line="8364"/>
       <source>Cannot add a tangency constraint at an unconnected point!</source>
       <translation>இணைக்கப்படாத புள்ளியில் தொடுநிலைக் கட்டுப்பாட்டைச் சேர்க்க முடியாது!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8112"/>
-      <location filename="../../CommandConstraints.cpp" line="8150"/>
+      <location filename="../../CommandConstraints.cpp" line="7855"/>
+      <location filename="../../CommandConstraints.cpp" line="7890"/>
       <source>Tangent constraint at B-spline knot is only supported with lines!</source>
       <translation>பி-ச்ப்லைன் முடிச்சில் உள்ள தொடுநிலைக் கட்டுப்பாடு கோடுகளுடன் மட்டுமே ஆதரிக்கப்படுகிறது!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="513"/>
+      <location filename="../../CommandConstraints.cpp" line="534"/>
       <source>One or two point-on-object constraints were deleted, since the latest constraint being applied internally applies point-on-object as well.</source>
       <translation>ஒன்று அல்லது இரண்டு புள்ளி-ஆன்-ஆப்செக்ட் கட்டுப்பாடுகள் நீக்கப்பட்டன, ஏனெனில் அண்மைக் கால கட்டுப்பாடு உள்நாட்டில் பயன்படுத்தப்படும் புள்ளி-ஆன்-ஆப்செக்டும் பொருந்தும்.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1043"/>
+      <location filename="../../CommandConstraints.cpp" line="1055"/>
       <source>Keep notifying about constraint substitutions</source>
       <translation>கட்டுப்பாடு மாற்றீடுகள் பற்றி தொடர்ந்து அறிவிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1067"/>
+      <location filename="../../CommandConstraints.cpp" line="1079"/>
       <source>Unexpected error. More information may be available in the report view.</source>
       <translation>எதிர்பாராத பிழை. அறிக்கைப் பார்வையில் கூடுதல் தகவல்கள் கிடைக்கலாம்.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1117"/>
+      <location filename="../../CommandConstraints.cpp" line="1129"/>
       <source>Only the sketch and its support are allowed to be selected</source>
       <translation>ச்கெட்ச் மற்றும் அதன் ஆதரவை மட்டுமே தேர்ந்தெடுக்க அனுமதிக்கப்படுகிறது</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1128"/>
+      <location filename="../../CommandConstraints.cpp" line="1140"/>
       <source>Only the sketch and its support may be selected</source>
       <translation>ச்கெட்ச் மற்றும் அதன் உதவி மட்டுமே தேர்ந்தெடுக்கப்படலாம்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1140"/>
+      <location filename="../../CommandConstraints.cpp" line="1152"/>
       <source>Only the sketch and its support  may be selected</source>
       <translation>ச்கெட்ச் மற்றும் அதன் உதவி மட்டுமே தேர்ந்தெடுக்கப்படலாம்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4147"/>
-      <location filename="../../CommandConstraints.cpp" line="4916"/>
-      <location filename="../../CommandConstraints.cpp" line="4968"/>
+      <location filename="../../CommandConstraints.cpp" line="4159"/>
+      <location filename="../../CommandConstraints.cpp" line="4873"/>
+      <location filename="../../CommandConstraints.cpp" line="4925"/>
       <source>The selected edge already has a block constraint!</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட விளிம்பில் ஏற்கனவே தடுப்புக் கட்டுப்பாடு உள்ளது!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4223"/>
+      <location filename="../../CommandConstraints.cpp" line="4186"/>
+      <source>Select geometry from a single sketch.</source>
+      <translation type="unfinished">Select geometry from a single sketch.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="4243"/>
       <source>The selected items cannot be constrained horizontally or vertically!</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட உருப்படிகளை கிடைமட்டமாக அல்லது செங்குத்தாக கட்டுப்படுத்த முடியாது!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4880"/>
+      <location filename="../../CommandConstraints.cpp" line="4844"/>
       <source>A block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</source>
       <translation>ச்கெட்ச் தீர்க்கப்படாமல் இருந்தாலோ அல்லது தேவையற்ற மற்றும் முரண்பட்ட கட்டுப்பாடுகள் இருந்தாலோ ஒரு தொகுதிக் கட்டுப்பாட்டைச் சேர்க்க முடியாது.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5150"/>
+      <location filename="../../CommandConstraints.cpp" line="5147"/>
       <source>B-spline knot to endpoint tangency was applied instead.</source>
       <translation>பி-ச்ப்லைன் முடிச்சு முதல் எண்ட்பாயிண்ட் டேன்சென்சிக்கு பதிலாக பயன்படுத்தப்பட்டது.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7132"/>
-      <location filename="../../CommandConstraints.cpp" line="7987"/>
+      <location filename="../../CommandConstraints.cpp" line="5547"/>
+      <location filename="../../CommandConstraints.cpp" line="5553"/>
+      <location filename="../../CommandConstraints.cpp" line="5569"/>
+      <location filename="../../CommandConstraints.cpp" line="5576"/>
+      <location filename="../../CommandConstraints.cpp" line="5583"/>
+      <source>Coincident constraint not added</source>
+      <translation type="unfinished">Coincident constraint not added</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="5548"/>
+      <source>The selected points are already coincident.</source>
+      <translation type="unfinished">The selected points are already coincident.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="5554"/>
+      <source>Cannot add a coincident constraint because it would collapse geometry to zero length.</source>
+      <translation type="unfinished">Cannot add a coincident constraint because it would collapse geometry to zero length.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="5570"/>
+      <source>Cannot add the coincident constraint because it would create redundant constraints.</source>
+      <translation type="unfinished">Cannot add the coincident constraint because it would create redundant constraints.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="5577"/>
+      <source>Cannot add the coincident constraint because it would conflict with existing constraints.</source>
+      <translation type="unfinished">Cannot add the coincident constraint because it would conflict with existing constraints.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="5584"/>
+      <source>Cannot add the coincident constraint because it would over-constrain the sketch.</source>
+      <translation type="unfinished">Cannot add the coincident constraint because it would over-constrain the sketch.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="5591"/>
+      <source>Cannot add the coincident constraint because the sketch has malformed constraints.</source>
+      <translation type="unfinished">Cannot add the coincident constraint because the sketch has malformed constraints.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="5598"/>
+      <source>Cannot add the coincident constraint because the solver failed to converge.</source>
+      <translation type="unfinished">Cannot add the coincident constraint because the solver failed to converge.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="5605"/>
+      <source>Cannot add the coincident constraint because the sketch contains constraints that refer to invalid geometry.</source>
+      <translation type="unfinished">Cannot add the coincident constraint because the sketch contains constraints that refer to invalid geometry.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="6929"/>
+      <location filename="../../CommandConstraints.cpp" line="7732"/>
       <source>Wrong number of selected objects!</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருட்களின் தவறான எண்ணிக்கை!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7264"/>
-      <location filename="../../CommandConstraints.cpp" line="8092"/>
+      <location filename="../../CommandConstraints.cpp" line="7055"/>
+      <location filename="../../CommandConstraints.cpp" line="7835"/>
       <source>With 3 objects, there must be 2 curves and 1 point.</source>
       <translation>3 பொருள்களுடன், 2 வளைவுகளும் 1 புள்ளியும் இருக்க வேண்டும்.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8422"/>
+      <location filename="../../CommandConstraints.cpp" line="8156"/>
       <source>Geometry cannot be tangent to itself</source>
       <translation type="unfinished">Geometry cannot be tangent to itself</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8814"/>
-      <location filename="../../CommandConstraints.cpp" line="8880"/>
-      <location filename="../../CommandConstraints.cpp" line="9177"/>
-      <location filename="../../CommandConstraints.cpp" line="9240"/>
-      <location filename="../../CommandConstraints.cpp" line="9495"/>
-      <location filename="../../CommandConstraints.cpp" line="9556"/>
+      <location filename="../../CommandConstraints.cpp" line="8529"/>
+      <location filename="../../CommandConstraints.cpp" line="8603"/>
       <source>Select one or more arcs or circles from the sketch.</source>
       <translation>ஓவியத்திலிருந்து ஒன்று அல்லது அதற்கு மேற்பட்ட வளைவுகள் அல்லது வட்டங்களைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9044"/>
-      <location filename="../../CommandConstraints.cpp" line="9366"/>
-      <location filename="../../CommandConstraints.cpp" line="9742"/>
+      <location filename="../../CommandConstraints.cpp" line="8737"/>
       <source>Constraint only applies to arcs or circles.</source>
       <translation>கட்டுப்பாடு வளைவுகள் அல்லது வட்டங்களுக்கு மட்டுமே பொருந்தும்.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10040"/>
-      <location filename="../../CommandConstraints.cpp" line="10252"/>
+      <location filename="../../CommandConstraints.cpp" line="9141"/>
+      <location filename="../../CommandConstraints.cpp" line="9319"/>
       <source>Select one or two lines from the sketch. Or select two edges and a point.</source>
       <translation>ஓவியத்திலிருந்து ஒன்று அல்லது இரண்டு வரிகளைத் தேர்ந்தெடுக்கவும். அல்லது இரண்டு விளிம்புகள் மற்றும் ஒரு புள்ளியைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="541"/>
+      <location filename="../../CommandConstraints.cpp" line="562"/>
       <source>Parallel lines</source>
       <translation>இணையான கோடுகள்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="542"/>
+      <location filename="../../CommandConstraints.cpp" line="563"/>
       <source>An angle constraint cannot be set for two parallel lines.</source>
       <translation>இரண்டு இணையான கோடுகளுக்கு ஒரு கோணக் கட்டுப்பாட்டை அமைக்க முடியாது.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10187"/>
+      <location filename="../../CommandConstraints.cpp" line="9276"/>
       <source>Cannot add an angle constraint on an axis!</source>
       <translation>ஒரு அச்சில் கோணக் கட்டுப்பாட்டைச் சேர்க்க முடியாது!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10500"/>
-      <source>Select two edges from the sketch.</source>
-      <translation>ஓவியத்திலிருந்து இரண்டு விளிம்புகளைத் தேர்ந்தெடுக்கவும்.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="10532"/>
+      <location filename="../../CommandConstraints.cpp" line="9551"/>
       <source>Select two or more compatible edges.</source>
       <translation>இரண்டு அல்லது அதற்கு மேற்பட்ட இணக்கமான விளிம்புகளைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10539"/>
+      <location filename="../../CommandConstraints.cpp" line="9558"/>
       <source>Sketch axes cannot be used in equality constraints.</source>
       <translation>ச்கெட்ச் அச்சுகளை சமத்துவக் கட்டுப்பாடுகளில் பயன்படுத்த முடியாது.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10560"/>
+      <location filename="../../CommandConstraints.cpp" line="9579"/>
       <source>Equality for B-spline edge currently unsupported.</source>
       <translation>B-spline விளிம்பிற்கான ஒரு நிகர் தற்போது ஆதரிக்கப்படவில்லை.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3614"/>
-      <location filename="../../CommandConstraints.cpp" line="10593"/>
-      <location filename="../../CommandConstraints.cpp" line="10609"/>
-      <location filename="../../CommandConstraints.cpp" line="10664"/>
+      <location filename="../../CommandConstraints.cpp" line="3626"/>
+      <location filename="../../CommandConstraints.cpp" line="9612"/>
+      <location filename="../../CommandConstraints.cpp" line="9628"/>
+      <location filename="../../CommandConstraints.cpp" line="9678"/>
       <source>Select two or more edges of similar type.</source>
       <translation>ஒரே மாதிரியான இரண்டு அல்லது அதற்கு மேற்பட்ட விளிம்புகளைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11028"/>
+      <location filename="../../CommandConstraints.cpp" line="10004"/>
       <source>Cannot add a symmetry constraint between a line and its end points.</source>
       <translation>ஒரு கோட்டிற்கும் அதன் இறுதிப் புள்ளிகளுக்கும் இடையில் சமச்சீர் தடையைச் சேர்க்க முடியாது.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3773"/>
-      <location filename="../../CommandConstraints.cpp" line="3789"/>
-      <location filename="../../CommandConstraints.cpp" line="10891"/>
+      <location filename="../../CommandConstraints.cpp" line="3785"/>
+      <location filename="../../CommandConstraints.cpp" line="3801"/>
+      <location filename="../../CommandConstraints.cpp" line="9877"/>
       <source>Cannot add a symmetry constraint between a line and its end points!</source>
       <translation>ஒரு கோட்டிற்கும் அதன் இறுதிப் புள்ளிகளுக்கும் இடையில் சமச்சீர் தடையைச் சேர்க்க முடியாது!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11206"/>
-      <location filename="../../CommandConstraints.cpp" line="11398"/>
+      <location filename="../../CommandConstraints.cpp" line="10172"/>
+      <location filename="../../CommandConstraints.cpp" line="10361"/>
       <source>Selected objects are not just geometry from one sketch.</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருள்கள் ஒரு ஓவியத்திலிருந்து வடிவியல் மட்டுமல்ல.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11248"/>
+      <location filename="../../CommandConstraints.cpp" line="10214"/>
       <source>Cannot create constraint with external geometry only.</source>
       <translation>வெளிப்புற வடிவவியலால் மட்டும் தடையை உருவாக்க முடியாது.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11258"/>
+      <location filename="../../CommandConstraints.cpp" line="10224"/>
       <source>Incompatible geometry is selected.</source>
       <translation>பொருந்தாத வடிவியல் தேர்ந்தெடுக்கப்பட்டது.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11414"/>
+      <location filename="../../CommandConstraints.cpp" line="10377"/>
       <source>No geometries selected</source>
       <translation type="unfinished">No geometries selected</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11650"/>
+      <location filename="../../CommandConstraints.cpp" line="10609"/>
       <source>Select one dimensional constraint from the sketch.</source>
       <translation>ச்கெட்சிலிருந்து ஒரு பரிமாணக் கட்டுப்பாட்டைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
@@ -1922,11 +1856,11 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="117"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="128"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="158"/>
-      <location filename="../../CommandConstraints.cpp" line="11726"/>
-      <location filename="../../CommandConstraints.cpp" line="11738"/>
-      <location filename="../../CommandConstraints.cpp" line="11774"/>
-      <location filename="../../CommandConstraints.cpp" line="11849"/>
-      <location filename="../../CommandConstraints.cpp" line="11861"/>
+      <location filename="../../CommandConstraints.cpp" line="10685"/>
+      <location filename="../../CommandConstraints.cpp" line="10697"/>
+      <location filename="../../CommandConstraints.cpp" line="10733"/>
+      <location filename="../../CommandConstraints.cpp" line="10808"/>
+      <location filename="../../CommandConstraints.cpp" line="10820"/>
       <source>Select constraints from the sketch.</source>
       <translation>ச்கெட்சிலிருந்து கட்டுப்பாடுகளைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
@@ -2549,12 +2483,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>விகிதம் n2/n1:</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11287"/>
+      <location filename="../../CommandConstraints.cpp" line="10253"/>
       <source>Refractive Index Ratio</source>
       <translation>ஒளிவிலகல் குறியீட்டு விகிதம்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11288"/>
+      <location filename="../../CommandConstraints.cpp" line="10254"/>
       <source>Ratio n2/n1:</source>
       <translation>விகிதம் n2/n1:</translation>
     </message>
@@ -4121,112 +4055,112 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4168"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4173"/>
       <source>A dialog is already open in the task panel</source>
       <translation type="unfinished">A dialog is already open in the task panel</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4192"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4197"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>ச்கெட்ச் தவறானது மற்றும் திருத்த முடியாது.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4396"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4401"/>
       <source>The following constraint is partially redundant:</source>
       <translation>பின்வரும் கட்டுப்பாடு ஓரளவு தேவையற்றது:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4397"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4402"/>
       <source>The following constraints are partially redundant:</source>
       <translation>பின்வரும் கட்டுப்பாடுகள் ஓரளவு தேவையற்றவை:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4140"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4145"/>
       <source>Edit Sketch</source>
       <translation>ச்கெட்சைத் திருத்தவும்</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4169"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4174"/>
       <source>Close this dialog?</source>
       <translation>இந்த உரையாடலை மூடவா?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4190"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4195"/>
       <source>Invalid Sketch</source>
       <translation>தவறான ச்கெட்ச்</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4191"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4196"/>
       <source>Open the sketch validation tool?</source>
       <translation>ச்கெட்ச் சரிபார்ப்புக் கருவியைத் திறக்கவா?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4382"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4387"/>
       <source>Remove the following constraint:</source>
       <translation>பின்வரும் தடையை நீக்கவும்:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4383"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4388"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>பின்வரும் கட்டுப்பாடுகளில் ஒன்றையாவது நீக்கவும்:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4389"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4394"/>
       <source>Remove the following redundant constraint:</source>
       <translation>பின்வரும் தேவையற்ற தடையை நீக்கவும்:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4390"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4395"/>
       <source>Remove the following redundant constraints:</source>
       <translation>பின்வரும் தேவையற்ற கட்டுப்பாடுகளை அகற்றவும்:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4403"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4408"/>
       <source>Remove the following malformed constraint:</source>
       <translation>பின்வரும் தவறான தடையை நீக்கவும்:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4404"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4409"/>
       <source>Remove the following malformed constraints:</source>
       <translation>பின்வரும் தவறான தடைகளை நீக்கவும்:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4463"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4468"/>
       <source>Empty sketch</source>
       <translation>வெற்று ஓவியம்</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4468"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4473"/>
       <source>Over-constrained:</source>
       <translation>அதிகப்படியான கட்டுப்பாடு:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4474"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4479"/>
       <source>Malformed constraints:</source>
       <translation>தவறான கட்டுப்பாடுகள்:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4482"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4487"/>
       <source>Redundant constraints:</source>
       <translation>தேவையற்ற கட்டுப்பாடுகள்:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4488"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4493"/>
       <source>Partially redundant:</source>
       <translation>பகுதி தேவையற்றது:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4495"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4500"/>
       <source>Solver failed to converge</source>
       <translation>கரைப்பான் ஒன்றிணைக்க முடியவில்லை</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4501"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4506"/>
       <source>Under-constrained:</source>
       <translation>கீழ்-கட்டுப்படுத்தப்பட்டவை:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4503"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4508"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
         <numerusform>%n Degrees of Freedom</numerusform>
@@ -4234,9 +4168,14 @@ This is done by analyzing the sketch geometries and constraints.</source>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4507"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4512"/>
       <source>Fully constrained</source>
       <translation>முழுமையாக கட்டுப்படுத்தப்பட்டது</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSketch.cpp" line="5038"/>
+      <source>Missing external geometry</source>
+      <translation type="unfinished">Missing external geometry</translation>
     </message>
   </context>
   <context>
@@ -4287,8 +4226,8 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>Sketcher_ConstrainDiameter</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9936"/>
-      <location filename="../../CommandConstraints.cpp" line="9938"/>
+      <location filename="../../CommandConstraints.cpp" line="9055"/>
+      <location filename="../../CommandConstraints.cpp" line="9057"/>
       <source>Fix the diameter of a circle or an arc</source>
       <translation>ஒரு வட்டம் அல்லது வளைவின் விட்டத்தை சரிசெய்யவும்</translation>
     </message>
@@ -4318,74 +4257,74 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>Sketcher_MapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="699"/>
+      <location filename="../../Command.cpp" line="698"/>
       <source>No sketch found</source>
       <translation>ஓவியம் எதுவும் கிடைக்கவில்லை</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="701"/>
+      <location filename="../../Command.cpp" line="700"/>
       <source>Cannot attach sketch to itself!</source>
       <translation>ஓவியத்தை அதனுடன் இணைக்க முடியாது!</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="702"/>
+      <location filename="../../Command.cpp" line="701"/>
       <source>The document does not contain a sketch</source>
       <translation>ஆவணத்தில் ச்கெட்ச் இல்லை</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="718"/>
+      <location filename="../../Command.cpp" line="717"/>
       <source>Select Sketch</source>
       <translation>ச்கெட்ச் என்பதைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="720"/>
+      <location filename="../../Command.cpp" line="719"/>
       <source>Select a sketch (some sketches not shown to prevent a circular dependency)</source>
       <translation>ஒரு ஓவியத்தைத் தேர்ந்தெடுக்கவும் (வட்ட சார்புநிலையைத் தடுக்க சில ஓவியங்கள் காட்டப்படவில்லை)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="722"/>
+      <location filename="../../Command.cpp" line="721"/>
       <source>Select a sketch from the list</source>
       <translation>பட்டியலிலிருந்து ஒரு ஓவியத்தைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="787"/>
+      <location filename="../../Command.cpp" line="786"/>
       <source> (incompatible with selection)</source>
       <translation>(தேர்வுடன் பொருந்தாது)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="788"/>
+      <location filename="../../Command.cpp" line="787"/>
       <source> (current)</source>
       <translation>(தற்போதைய)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="796"/>
+      <location filename="../../Command.cpp" line="795"/>
       <source> (suggested)</source>
       <translation>(பரிந்துரைக்கப்பட்டது)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="803"/>
+      <location filename="../../Command.cpp" line="802"/>
       <source>Sketch Attachment</source>
       <translation>ச்கெட்ச் இணைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="805"/>
+      <location filename="../../Command.cpp" line="804"/>
       <source>Current attachment mode is incompatible with the new selection.
 Select the method to attach this sketch to selected objects.</source>
       <translation>தற்போதைய இணைப்பு முறை புதிய தேர்வுடன் பொருந்தாது. 
 தேர்ந்தெடுக்கப்பட்ட பொருட்களுடன் இந்த ஓவியத்தை இணைக்கும் முறையைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="809"/>
+      <location filename="../../Command.cpp" line="808"/>
       <source>Select the method to attach this sketch to selected objects.</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருட்களுடன் இந்த ஓவியத்தை இணைக்கும் முறையைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="855"/>
+      <location filename="../../Command.cpp" line="854"/>
       <source>Map sketch</source>
       <translation>வரைபட ஓவியம்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="856"/>
+      <location filename="../../Command.cpp" line="855"/>
       <source>Can't map a sketch to support:
 %1</source>
       <translation>ஆதரிக்க ச்கெட்சை வரைபடமாக்க முடியவில்லை: 
@@ -4417,12 +4356,12 @@ Select the method to attach this sketch to selected objects.</source>
   <context>
     <name>Sketcher_ReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="531"/>
+      <location filename="../../Command.cpp" line="530"/>
       <source>Sketch Has Support</source>
       <translation>ச்கெட்ச் உதவி உள்ளது</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="532"/>
+      <location filename="../../Command.cpp" line="531"/>
       <source>Sketch with a support face cannot be reoriented.
 Detach it from the support?</source>
       <translation>உதவி முகத்துடன் கூடிய ச்கெட்சை மறுசீரமைக்க முடியாது. 
@@ -4725,7 +4664,7 @@ Eigen Sparse QR அல்காரிதம் ச்பேர்ச் மெ�
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4446"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4451"/>
       <source>and %1 more</source>
       <translation>மேலும் % 1</translation>
     </message>
@@ -4892,8 +4831,13 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="246"/>
-      <source>Distance between two subsequent grid lines</source>
-      <translation>இரண்டு அடுத்தடுத்த கட்டக் கோடுகளுக்கு இடையே உள்ள தூரம்</translation>
+      <source>Minor grid line width in pixels</source>
+      <translation type="unfinished">Minor grid line width in pixels</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="384"/>
+      <source>Major grid line width in pixels</source>
+      <translation type="unfinished">Major grid line width in pixels</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="271"/>
@@ -4921,11 +4865,6 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <source>Line pattern used for grid division</source>
       <translation>கட்டம் பிரிப்பதற்குப் பயன்படுத்தப்படும் கோடு முறை</translation>
     </message>
-    <message>
-      <location filename="../../SketcherSettingsGrid.ui" line="384"/>
-      <source>Distance between two subsequent division lines</source>
-      <translation>இரண்டு அடுத்தடுத்த பிரிவுக் கோடுகளுக்கு இடையே உள்ள தூரம்</translation>
-    </message>
   </context>
   <context>
     <name>Notifications</name>
@@ -4940,13 +4879,13 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation type="unfinished">"%1" has partially redundant constraint(s).</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1088"/>
-      <location filename="../../../App/SketchObject.cpp" line="1132"/>
+      <location filename="../../../App/SketchObject.cpp" line="1116"/>
+      <location filename="../../../App/SketchObject.cpp" line="1160"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
       <translation>கட்டுப்படுத்தப்படாத சொத்துக்களின் நிர்வகிக்கப்படாத மாற்றம் தவறான கட்டுப்பாட்டு குறியீடுகளில் விளைகிறது</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1644"/>
+      <location filename="../../../App/SketchObject.cpp" line="1672"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>பரபோலாக்கள் இடம்பெயர்ந்தனர். FreeCAD இன் முந்தைய பதிப்புகளில் இடம்பெயர்ந்த கோப்புகள் திறக்கப்படாது!!
@@ -4968,9 +4907,9 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <location filename="../../DrawSketchHandlerLineSet.h" line="511"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="1384"/>
       <location filename="../../DrawSketchHandlerExternal.h" line="209"/>
-      <location filename="../../CommandConstraints.cpp" line="2018"/>
-      <location filename="../../CommandConstraints.cpp" line="2025"/>
-      <location filename="../../CommandConstraints.cpp" line="3952"/>
+      <location filename="../../CommandConstraints.cpp" line="2030"/>
+      <location filename="../../CommandConstraints.cpp" line="2037"/>
+      <location filename="../../CommandConstraints.cpp" line="3964"/>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="200"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="225"/>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="212"/>
@@ -5029,18 +4968,18 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <location filename="../../CommandSketcherBSpline.cpp" line="519"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="662"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="910"/>
-      <location filename="../../CommandConstraints.cpp" line="734"/>
-      <location filename="../../CommandConstraints.cpp" line="811"/>
-      <location filename="../../CommandConstraints.cpp" line="903"/>
-      <location filename="../../CommandConstraints.cpp" line="987"/>
-      <location filename="../../CommandConstraints.cpp" line="7490"/>
-      <location filename="../../CommandConstraints.cpp" line="7692"/>
+      <location filename="../../CommandConstraints.cpp" line="746"/>
+      <location filename="../../CommandConstraints.cpp" line="823"/>
+      <location filename="../../CommandConstraints.cpp" line="915"/>
+      <location filename="../../CommandConstraints.cpp" line="999"/>
+      <location filename="../../CommandConstraints.cpp" line="7275"/>
+      <location filename="../../CommandConstraints.cpp" line="7470"/>
       <location filename="../../CommandSketcherTools.cpp" line="1182"/>
       <source>Invalid Constraint</source>
       <translation>தவறான கட்டுப்பாடு</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1057"/>
+      <location filename="../../CommandConstraints.cpp" line="1069"/>
       <source>Invalid constraint</source>
       <translation>தவறான கட்டுப்பாடு</translation>
     </message>
@@ -5087,9 +5026,9 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
     </message>
     <message>
       <location filename="../../DrawSketchHandlerExternal.h" line="210"/>
-      <location filename="../../CommandConstraints.cpp" line="2019"/>
-      <location filename="../../CommandConstraints.cpp" line="2026"/>
-      <location filename="../../CommandConstraints.cpp" line="3953"/>
+      <location filename="../../CommandConstraints.cpp" line="2031"/>
+      <location filename="../../CommandConstraints.cpp" line="2038"/>
+      <location filename="../../CommandConstraints.cpp" line="3965"/>
       <source>Failed to add external geometry</source>
       <translation>வெளிப்புற வடிவவியலைச் சேர்ப்பதில் தோல்வி</translation>
     </message>
@@ -5166,7 +5105,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>மதிப்பு பிழை</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandler.cpp" line="1535"/>
+      <location filename="../../DrawSketchHandler.cpp" line="1542"/>
       <source>Autoconstraints cause redundancy. Removing them</source>
       <translation>தன்னியக்க கட்டுப்பாடுகள் பணிநீக்கத்தை ஏற்படுத்துகின்றன. அவற்றை நீக்குதல்</translation>
     </message>
@@ -5254,12 +5193,12 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
   <context>
     <name>CmdSketcherDimension</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4039"/>
+      <location filename="../../CommandConstraints.cpp" line="4051"/>
       <source>Dimension</source>
       <translation>பரிமாணம்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4040"/>
+      <location filename="../../CommandConstraints.cpp" line="4052"/>
       <source>Constrains contextually based on the selection. The type can be changed with the M key.</source>
       <translation>தேர்வின் அடிப்படையில் சூழல் சார்ந்த கட்டுப்பாடுகள். M விசையைப் பயன்படுத்தி வகையை மாற்றலாம்.</translation>
     </message>
@@ -5267,12 +5206,12 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
   <context>
     <name>CmdSketcherCompDimensionTools</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2047"/>
+      <location filename="../../CommandConstraints.cpp" line="2059"/>
       <source>Dimension</source>
       <translation>பரிமாணம்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2048"/>
+      <location filename="../../CommandConstraints.cpp" line="2060"/>
       <source>Dimension tools</source>
       <translation>பரிமாண கருவிகள்</translation>
     </message>
@@ -5846,12 +5785,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>CmdSketcherCompConstrainTools</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2120"/>
+      <location filename="../../CommandConstraints.cpp" line="2132"/>
       <source>Constrain</source>
       <translation>கட்டுப்படுத்து</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2121"/>
+      <location filename="../../CommandConstraints.cpp" line="2133"/>
       <source>Constrain tools</source>
       <translation>கருவிகளைக் கட்டுப்படுத்துங்கள்</translation>
     </message>
@@ -5968,8 +5907,8 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>Sketcher_ConstrainRadius</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9930"/>
-      <location filename="../../CommandConstraints.cpp" line="9932"/>
+      <location filename="../../CommandConstraints.cpp" line="9049"/>
+      <location filename="../../CommandConstraints.cpp" line="9051"/>
       <source>Fix the radius of an arc or a circle</source>
       <translation>ஒரு வில் அல்லது வட்டத்தின் ஆரத்தை சரிசெய்யவும்</translation>
     </message>
@@ -5977,8 +5916,8 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>Sketcher_ConstrainRadiam</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9943"/>
-      <location filename="../../CommandConstraints.cpp" line="9945"/>
+      <location filename="../../CommandConstraints.cpp" line="9062"/>
+      <location filename="../../CommandConstraints.cpp" line="9064"/>
       <source>Fix the radius/diameter of an arc or a circle</source>
       <translation>ஒரு வில் அல்லது வட்டத்தின் ஆரம்/விட்டத்தை சரிசெய்யவும்</translation>
     </message>
@@ -6014,12 +5953,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>CmdSketcherEditSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="340"/>
+      <location filename="../../Command.cpp" line="339"/>
       <source>Edit Sketch</source>
       <translation>ச்கெட்சைத் திருத்தவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="341"/>
+      <location filename="../../Command.cpp" line="340"/>
       <source>Opens the selected sketch for editing</source>
       <translation>திருத்துவதற்காக தேர்ந்தெடுக்கப்பட்ட ஓவியத்தைத் திறக்கும்</translation>
     </message>
@@ -6027,12 +5966,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="371"/>
+      <location filename="../../Command.cpp" line="370"/>
       <source>Leave Sketch</source>
       <translation>ச்கெட்சை விடுங்கள்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="372"/>
+      <location filename="../../Command.cpp" line="371"/>
       <source>Finishes editing the active sketch. Press Escape to exit.</source>
       <translation type="unfinished">Finishes editing the active sketch. Press Escape to exit.</translation>
     </message>
@@ -6040,12 +5979,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>CmdSketcherStopOperation</name>
     <message>
-      <location filename="../../Command.cpp" line="479"/>
+      <location filename="../../Command.cpp" line="478"/>
       <source>Stop Operation</source>
       <translation>செயல்பாட்டை நிறுத்து</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="480"/>
+      <location filename="../../Command.cpp" line="479"/>
       <source>Stops the active operation while in edit mode</source>
       <translation>திருத்து பயன்முறையில் இருக்கும்போது செயலில் உள்ள செயல்பாட்டை நிறுத்துகிறது</translation>
     </message>
@@ -6053,12 +5992,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>CmdSketcherReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="515"/>
+      <location filename="../../Command.cpp" line="514"/>
       <source>Reorient Sketch</source>
       <translation>மறுசீரமைப்பு ச்கெட்ச்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="516"/>
+      <location filename="../../Command.cpp" line="515"/>
       <source>Places the selected sketch on one of the global coordinate planes.
 This will clear the AttachmentSupport property.</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட ஓவியத்தை உலகளாவிய ஒருங்கிணைப்பு விமானங்களில் ஒன்றில் வைக்கிறது. 
@@ -6068,12 +6007,12 @@ This will clear the AttachmentSupport property.</source>
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="877"/>
+      <location filename="../../Command.cpp" line="876"/>
       <source>Align View to Sketch</source>
       <translation>பார்வையை ச்கெட்சிற்கு சீரமைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="878"/>
+      <location filename="../../Command.cpp" line="877"/>
       <source>Aligns the camera orientation perpendicular to the active sketch plane</source>
       <translation>செயலில் உள்ள ச்கெட்ச் விமானத்திற்கு செங்குத்தாக கேமரா நோக்குநிலையை சீரமைக்கிறது</translation>
     </message>
@@ -6081,12 +6020,12 @@ This will clear the AttachmentSupport property.</source>
   <context>
     <name>CmdSketcherViewSection</name>
     <message>
-      <location filename="../../Command.cpp" line="1423"/>
+      <location filename="../../Command.cpp" line="1422"/>
       <source>Toggle Section View</source>
       <translation>பிரிவு காட்சியை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1424"/>
+      <location filename="../../Command.cpp" line="1423"/>
       <source>Toggles between section view and full view</source>
       <translation>பகுதி பார்வைக்கும் முழு பார்வைக்கும் இடையில் மாறுகிறது</translation>
     </message>
@@ -6094,42 +6033,42 @@ This will clear the AttachmentSupport property.</source>
   <context>
     <name>SketcherGui::GridSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1501"/>
+      <location filename="../../Command.cpp" line="1500"/>
       <source>Display grid</source>
       <translation>காட்சி கட்டம்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../Command.cpp" line="1501"/>
       <source>Toggles the visibility of the grid in the active sketch</source>
       <translation>செயலில் உள்ள ச்கெட்சில் கட்டத்தின் தெரிவுநிலையை மாற்றுகிறது</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1505"/>
+      <location filename="../../Command.cpp" line="1504"/>
       <source>Grid auto-spacing</source>
       <translation>கட்டம் தானாக இடைவெளி</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1506"/>
+      <location filename="../../Command.cpp" line="1505"/>
       <source>Automatically adjusts the grid spacing based on the zoom level</source>
       <translation>சூம் நிலையின் அடிப்படையில் கட்ட இடைவெளியை தானாக சரிசெய்கிறது</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1509"/>
+      <location filename="../../Command.cpp" line="1508"/>
       <source>Spacing</source>
       <translation>இடைவெளி</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1510"/>
+      <location filename="../../Command.cpp" line="1509"/>
       <source>Distance between two subsequent grid lines</source>
       <translation>இரண்டு அடுத்தடுத்த கட்டக் கோடுகளுக்கு இடையே உள்ள தூரம்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1512"/>
+      <location filename="../../Command.cpp" line="1511"/>
       <source>Snap to grid</source>
       <translation>கட்டத்திற்கு ச்னாப்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1514"/>
+      <location filename="../../Command.cpp" line="1513"/>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid spacing to a grid line to snap.</source>
       <translation>புதிய புள்ளிகள் அருகிலுள்ள கட்டக் கோட்டிற்குச் செல்லும். 
@@ -6139,12 +6078,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherGrid</name>
     <message>
-      <location filename="../../Command.cpp" line="1639"/>
+      <location filename="../../Command.cpp" line="1638"/>
       <source>Toggle Grid</source>
       <translation>கட்டத்தை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1641"/>
+      <location filename="../../Command.cpp" line="1640"/>
       <source>Toggles the grid display in the active sketch</source>
       <translation>செயலில் உள்ள ச்கெட்சில் கட்டம் காட்சியை நிலைமாற்றுகிறது</translation>
     </message>
@@ -6152,22 +6091,22 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::SnapSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1746"/>
+      <location filename="../../Command.cpp" line="1745"/>
       <source>Snap to objects</source>
       <translation>பொருள்களுக்கு ச்னாப்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1747"/>
+      <location filename="../../Command.cpp" line="1746"/>
       <source>New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</source>
       <translation>தற்போது முன்தேர்ந்தெடுக்கப்பட்ட பொருளுக்கு புதிய புள்ளிகள் வரும். இது கோடுகள் மற்றும் வளைவுகளின் நடுவிலும் ஒடிவிடும்.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1751"/>
+      <location filename="../../Command.cpp" line="1750"/>
       <source>Snap angle</source>
       <translation>ச்னாப் கோணம்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1753"/>
+      <location filename="../../Command.cpp" line="1752"/>
       <source>Angular step for tools that use 'Snap at angle'. Hold Ctrl to enable 'Snap at angle'. The angle starts from the positive X axis of the sketch.</source>
       <translation>'ச்னாப் அட் ஆங்கிள்' பயன்படுத்தும் கருவிகளுக்கான கோணப் படி. 'ச்னாப் அட் ஆங்கிள்' என்பதை இயக்க கட்டுப்பாடு ஐ அழுத்திப் பிடிக்கவும். கோணமானது ஓவியத்தின் நேர்மறை ஃச் அச்சில் இருந்து தொடங்குகிறது.</translation>
     </message>
@@ -6175,12 +6114,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherSnap</name>
     <message>
-      <location filename="../../Command.cpp" line="1839"/>
+      <location filename="../../Command.cpp" line="1838"/>
       <source>Toggle Snap</source>
       <translation>ச்னாப்பை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1841"/>
+      <location filename="../../Command.cpp" line="1840"/>
       <source>Toggles snapping</source>
       <translation>ச்னாப்பிங்கை மாற்றுகிறது</translation>
     </message>
@@ -6188,27 +6127,27 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::RenderingOrderAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1948"/>
+      <location filename="../../Command.cpp" line="1947"/>
       <source>Normal geometry</source>
       <translation>சாதாரண வடிவியல்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1950"/>
+      <location filename="../../Command.cpp" line="1949"/>
       <source>Construction geometry</source>
       <translation>கட்டுமான வடிவியல்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1952"/>
+      <location filename="../../Command.cpp" line="1951"/>
       <source>External geometry</source>
       <translation>வெளிப்புற வடிவியல்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1955"/>
+      <location filename="../../Command.cpp" line="1954"/>
       <source>Unknown geometry</source>
       <translation>அறியப்படாத வடிவியல்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1996"/>
+      <location filename="../../Command.cpp" line="1995"/>
       <source>Rendering order</source>
       <translation>வழங்குதல் ஆர்டர்</translation>
     </message>
@@ -6216,12 +6155,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdRenderingOrder</name>
     <message>
-      <location filename="../../Command.cpp" line="2081"/>
+      <location filename="../../Command.cpp" line="2080"/>
       <source>Rendering Order</source>
       <translation>வழங்குதல் ஆர்டர்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2082"/>
+      <location filename="../../Command.cpp" line="2081"/>
       <source>Reorders items in the rendering order</source>
       <translation>வழங்குதல் வரிசையில் பொருட்களை மறுவரிசைப்படுத்துகிறது</translation>
     </message>
@@ -6242,12 +6181,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherCompToggleConstraints</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2151"/>
+      <location filename="../../CommandConstraints.cpp" line="2163"/>
       <source>Toggle Constraints</source>
       <translation>கட்டுப்பாடுகளை மாற்றவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2152"/>
+      <location filename="../../CommandConstraints.cpp" line="2164"/>
       <source>Toggle constrain tools</source>
       <translation>கட்டுப்பாட்டு கருவிகளை நிலைமாற்று</translation>
     </message>
@@ -6255,12 +6194,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherCompHorizontalVertical</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4093"/>
+      <location filename="../../CommandConstraints.cpp" line="4105"/>
       <source>Horizontal/Vertical Constraint</source>
       <translation>கிடைமட்ட/செங்குத்து கட்டுப்பாடு</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4094"/>
+      <location filename="../../CommandConstraints.cpp" line="4106"/>
       <source>Constrains the selected elements either horizontally or vertically</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட உறுப்புகளை கிடைமட்டமாக அல்லது செங்குத்தாக கட்டுப்படுத்துகிறது</translation>
     </message>
@@ -6268,12 +6207,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainHorVer</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4411"/>
+      <location filename="../../CommandConstraints.cpp" line="4422"/>
       <source>Horizontal/Vertical Constraint</source>
       <translation>கிடைமட்ட/செங்குத்து கட்டுப்பாடு</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4412"/>
+      <location filename="../../CommandConstraints.cpp" line="4423"/>
       <source>Constrains the selected elements either horizontally or vertically, based on their closest alignment</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட உறுப்புகளை கிடைமட்டமாகவோ அல்லது செங்குத்தாகவோ, அவற்றின் நெருங்கிய சீரமைப்பின் அடிப்படையில் கட்டுப்படுத்துகிறது</translation>
     </message>
@@ -6281,12 +6220,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4457"/>
+      <location filename="../../CommandConstraints.cpp" line="4468"/>
       <source>Horizontal Constraint</source>
       <translation>கிடைமட்ட கட்டுப்பாடு</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4458"/>
+      <location filename="../../CommandConstraints.cpp" line="4469"/>
       <source>Constrains the selected elements horizontally</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட கூறுகளை கிடைமட்டமாக கட்டுப்படுத்துகிறது</translation>
     </message>
@@ -6294,12 +6233,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainVertical</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4502"/>
+      <location filename="../../CommandConstraints.cpp" line="4513"/>
       <source>Vertical Constraint</source>
       <translation>செங்குத்து கட்டுப்பாடு</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4503"/>
+      <location filename="../../CommandConstraints.cpp" line="4514"/>
       <source>Constrains the selected elements vertically</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட கூறுகளை செங்குத்தாக கட்டுப்படுத்துகிறது</translation>
     </message>
@@ -6307,12 +6246,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainLock</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4548"/>
+      <location filename="../../CommandConstraints.cpp" line="4559"/>
       <source>Lock Position</source>
       <translation>பூட்டு நிலை</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4549"/>
+      <location filename="../../CommandConstraints.cpp" line="4560"/>
       <source>Constrains the selected vertices by adding horizontal and vertical distance constraints</source>
       <translation>கிடைமட்ட மற்றும் செங்குத்து தூரக் கட்டுப்பாடுகளைச் சேர்ப்பதன் மூலம் தேர்ந்தெடுக்கப்பட்ட செங்குத்துகளைக் கட்டுப்படுத்துகிறது</translation>
     </message>
@@ -6320,12 +6259,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainBlock</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4834"/>
+      <location filename="../../CommandConstraints.cpp" line="4815"/>
       <source>Block Constraint</source>
       <translation>தடை கட்டுப்பாடு</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4835"/>
+      <location filename="../../CommandConstraints.cpp" line="4816"/>
       <source>Constrains the selected edges as fixed</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட விளிம்புகளை நிலையானதாகக் கட்டுப்படுத்துகிறது</translation>
     </message>
@@ -6333,12 +6272,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainCoincidentUnified</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5035"/>
+      <location filename="../../CommandConstraints.cpp" line="5033"/>
       <source>Coincident Constraint</source>
       <translation>தற்செயல் கட்டுப்பாடு</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5036"/>
+      <location filename="../../CommandConstraints.cpp" line="5034"/>
       <source>Constrains the selected elements to be coincident</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட உறுப்புகள் தற்செயலாக இருக்கக் கட்டுப்படுத்துகிறது</translation>
     </message>
@@ -6346,12 +6285,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainCoincident</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5550"/>
+      <location filename="../../CommandConstraints.cpp" line="5808"/>
       <source>Coincident Constraint</source>
       <translation>தற்செயல் கட்டுப்பாடு</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5551"/>
+      <location filename="../../CommandConstraints.cpp" line="5809"/>
       <source>Constrains the selected elements to be coincident</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட உறுப்புகள் தற்செயலாக இருக்கக் கட்டுப்படுத்துகிறது</translation>
     </message>
@@ -6359,12 +6298,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainPointOnObject</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5600"/>
+      <location filename="../../CommandConstraints.cpp" line="5858"/>
       <source>Point-On-Object Constraint</source>
       <translation>பாயிண்ட்-ஆன்-ஆப்செக்ட் கட்டுப்பாடு</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5601"/>
+      <location filename="../../CommandConstraints.cpp" line="5859"/>
       <source>Constrains the selected point onto the selected object</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருளின் மீது தேர்ந்தெடுக்கப்பட்ட புள்ளியை கட்டுப்படுத்துகிறது</translation>
     </message>
@@ -6372,12 +6311,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainDistance</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5652"/>
+      <location filename="../../CommandConstraints.cpp" line="5910"/>
       <source>Distance Dimension</source>
       <translation>தொலைவு பரிமாணம்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5653"/>
+      <location filename="../../CommandConstraints.cpp" line="5911"/>
       <source>Constrains the vertical distance between two points, or from a point to the origin if one is selected</source>
       <translation>இரண்டு புள்ளிகளுக்கு இடையே உள்ள செங்குத்து தூரத்தை கட்டுப்படுத்துகிறது, அல்லது ஒரு புள்ளியில் இருந்து தோற்றம் தேர்ந்தெடுக்கப்பட்டால்</translation>
     </message>
@@ -6385,12 +6324,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainDistanceX</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6306"/>
+      <location filename="../../CommandConstraints.cpp" line="6431"/>
       <source>Horizontal Dimension</source>
       <translation>கிடைமட்ட அளவு</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6307"/>
+      <location filename="../../CommandConstraints.cpp" line="6432"/>
       <source>Constrains the horizontal distance between two points, or from a point to the origin if only one is selected</source>
       <translation>இரண்டு புள்ளிகளுக்கு இடையே உள்ள கிடைமட்ட தூரத்தை கட்டுப்படுத்துகிறது, அல்லது ஒரு புள்ளியில் இருந்து தோற்றம் மட்டும் தேர்ந்தெடுக்கப்பட்டால்</translation>
     </message>
@@ -6398,12 +6337,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainDistanceY</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6607"/>
+      <location filename="../../CommandConstraints.cpp" line="6697"/>
       <source>Vertical Dimension</source>
       <translation>செங்குத்து பரிமாணம்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6608"/>
+      <location filename="../../CommandConstraints.cpp" line="6698"/>
       <source>Constrains the vertical distance between two points, or from a point to the origin if only one is selected</source>
       <translation type="unfinished">Constrains the vertical distance between two points, or from a point to the origin if only one is selected</translation>
     </message>
@@ -6411,12 +6350,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainParallel</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6902"/>
+      <location filename="../../CommandConstraints.cpp" line="6750"/>
       <source>Parallel Constraint</source>
       <translation>இணை கட்டுப்பாடு</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6903"/>
+      <location filename="../../CommandConstraints.cpp" line="6751"/>
       <source>Constrains the selected lines to be parallel</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட கோடுகள் இணையாக இருக்கும்படி கட்டுப்படுத்துகிறது</translation>
     </message>
@@ -6424,12 +6363,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainPerpendicular</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7065"/>
+      <location filename="../../CommandConstraints.cpp" line="6889"/>
       <source>Perpendicular Constraint</source>
       <translation>செங்குத்து கட்டுப்பாடு</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7066"/>
+      <location filename="../../CommandConstraints.cpp" line="6890"/>
       <source>Constrains the selected lines to be perpendicular</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட வரிகளை செங்குத்தாக இருக்குமாறு கட்டுப்படுத்துகிறது</translation>
     </message>
@@ -6437,12 +6376,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainTangent</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7849"/>
+      <location filename="../../CommandConstraints.cpp" line="7620"/>
       <source>Tangent/Collinear Constraint</source>
       <translation>தொடுகோடு/கோலினியர் கட்டுப்பாடு</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7850"/>
+      <location filename="../../CommandConstraints.cpp" line="7621"/>
       <source>Constrains the selected elements to be tangent or collinear</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட உறுப்புகளை தொடுகோடு அல்லது கோலினியர் என்று கட்டுப்படுத்துகிறது</translation>
     </message>
@@ -6450,12 +6389,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainRadius</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8769"/>
+      <location filename="../../CommandConstraints.cpp" line="8799"/>
       <source>Radius Dimension</source>
       <translation>ஆரம் பரிமாணம்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8770"/>
+      <location filename="../../CommandConstraints.cpp" line="8800"/>
       <source>Constrains the radius of the selected circle or arc</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட வட்டம் அல்லது வளைவின் ஆரத்தைக் கட்டுப்படுத்துகிறது</translation>
     </message>
@@ -6463,12 +6402,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainDiameter</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9132"/>
+      <location filename="../../CommandConstraints.cpp" line="8850"/>
       <source>Diameter Dimension</source>
       <translation>விட்டம் பரிமாணம்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9133"/>
+      <location filename="../../CommandConstraints.cpp" line="8851"/>
       <source>Constrains the diameter of the selected circle or arc</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட வட்டம் அல்லது வளைவின் விட்டம் கட்டுப்படுத்துகிறது</translation>
     </message>
@@ -6476,12 +6415,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainRadiam</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9450"/>
+      <location filename="../../CommandConstraints.cpp" line="8901"/>
       <source>Radius/Diameter Dimension</source>
       <translation>ஆரம்/விட்டம் பரிமாணம்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9451"/>
+      <location filename="../../CommandConstraints.cpp" line="8902"/>
       <source>Constrains the radius of the selected arc or the diameter of the selected circle</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட வளைவின் ஆரம் அல்லது தேர்ந்தெடுக்கப்பட்ட வட்டத்தின் விட்டம் ஆகியவற்றைக் கட்டுப்படுத்துகிறது</translation>
     </message>
@@ -6489,12 +6428,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9978"/>
+      <location filename="../../CommandConstraints.cpp" line="9097"/>
       <source>Angle Dimension</source>
       <translation>கோண பரிமாணம்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9979"/>
+      <location filename="../../CommandConstraints.cpp" line="9098"/>
       <source>Constrains the angle between two straight lines or between one line and the X-axis of the sketch if only one is selected</source>
       <translation>இரண்டு நேர் கோடுகளுக்கு இடையில் அல்லது ஒரு கோடு மற்றும் ச்கெட்சின் X- அச்சுக்கு இடையே உள்ள கோணத்தைக் கட்டுப்படுத்துகிறது.</translation>
     </message>
@@ -6502,12 +6441,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainEqual</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10466"/>
+      <location filename="../../CommandConstraints.cpp" line="9502"/>
       <source>Equal Constraint</source>
       <translation>சமமான கட்டுப்பாடு</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10468"/>
+      <location filename="../../CommandConstraints.cpp" line="9504"/>
       <source>Constrains the selected edges or circles to be equal</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட விளிம்புகள் அல்லது வட்டங்கள் சமமாக இருக்கும்படி கட்டுப்படுத்துகிறது</translation>
     </message>
@@ -6515,12 +6454,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainSymmetric</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10716"/>
+      <location filename="../../CommandConstraints.cpp" line="9728"/>
       <source>Symmetric Constraint</source>
       <translation>சமச்சீர் கட்டுப்பாடு</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10717"/>
+      <location filename="../../CommandConstraints.cpp" line="9729"/>
       <source>Constrains the selected elements to be symmetric</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட உறுப்புகள் சமச்சீராக இருக்க வேண்டும்</translation>
     </message>
@@ -6528,12 +6467,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainSnellsLaw</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11178"/>
+      <location filename="../../CommandConstraints.cpp" line="10143"/>
       <source>Refraction Constraint</source>
       <translation>ஒளிவிலகல் கட்டுப்பாடு</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11179"/>
+      <location filename="../../CommandConstraints.cpp" line="10144"/>
       <source>Constrains the selected elements based on the refraction law (Snell's Law)</source>
       <translation>ஒளிவிலகல் விதியின் அடிப்படையில் தேர்ந்தெடுக்கப்பட்ட கூறுகளைக் கட்டுப்படுத்துகிறது (ச்னெல் விதி)</translation>
     </message>
@@ -6541,12 +6480,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherChangeDimensionConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11614"/>
+      <location filename="../../CommandConstraints.cpp" line="10573"/>
       <source>Edit Value</source>
       <translation>மதிப்பைத் திருத்தவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11615"/>
+      <location filename="../../CommandConstraints.cpp" line="10574"/>
       <source>Edits the value of a dimensional constraint</source>
       <translation>பரிமாணக் கட்டுப்பாட்டின் மதிப்பைத் திருத்துகிறது</translation>
     </message>
@@ -6554,12 +6493,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherToggleDrivingConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11668"/>
+      <location filename="../../CommandConstraints.cpp" line="10627"/>
       <source>Toggle Driving/Reference Constraints</source>
       <translation>டிரைவிங்/குறிப்புக் கட்டுப்பாடுகளை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11669"/>
+      <location filename="../../CommandConstraints.cpp" line="10628"/>
       <source>Toggles between driving and reference mode of the selected constraints and commands</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட கட்டுப்பாடுகள் மற்றும் கட்டளைகளின் ஓட்டுநர் மற்றும் குறிப்பு பயன்முறைக்கு இடையில் மாறுகிறது</translation>
     </message>
@@ -6567,12 +6506,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherToggleActiveConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11823"/>
+      <location filename="../../CommandConstraints.cpp" line="10782"/>
       <source>Toggle Constraints</source>
       <translation>கட்டுப்பாடுகளை மாற்றவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11824"/>
+      <location filename="../../CommandConstraints.cpp" line="10783"/>
       <source>Toggles the state of the selected constraints</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட கட்டுப்பாடுகளின் நிலையை மாற்றுகிறது</translation>
     </message>
@@ -8467,12 +8406,12 @@ Note: While the Text constraint is active, any constraints applied directly to t
   <context>
     <name>CmdSketcherCancelSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="411"/>
+      <location filename="../../Command.cpp" line="410"/>
       <source>Cancel Editing</source>
       <translation type="unfinished">Cancel Editing</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="412"/>
+      <location filename="../../Command.cpp" line="411"/>
       <source>Leaves 'edit' mode and reverts any changes</source>
       <translation type="unfinished">Leaves 'edit' mode and reverts any changes</translation>
     </message>
@@ -8480,12 +8419,12 @@ Note: While the Text constraint is active, any constraints applied directly to t
   <context>
     <name>CmdSketcherLeaveGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="456"/>
+      <location filename="../../Command.cpp" line="455"/>
       <source>Leave</source>
       <translation type="unfinished">Leave</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="457"/>
+      <location filename="../../Command.cpp" line="456"/>
       <source>Leaves the sketch editing mode</source>
       <translation type="unfinished">Leaves the sketch editing mode</translation>
     </message>
@@ -8557,98 +8496,98 @@ Note: While the Text constraint is active, any constraints applied directly to t
   <context>
     <name>SketcherGui::DrawSketchHandlerDimension</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2629"/>
-      <location filename="../../CommandConstraints.cpp" line="2634"/>
-      <location filename="../../CommandConstraints.cpp" line="2640"/>
-      <location filename="../../CommandConstraints.cpp" line="2655"/>
-      <location filename="../../CommandConstraints.cpp" line="2678"/>
-      <location filename="../../CommandConstraints.cpp" line="2697"/>
+      <location filename="../../CommandConstraints.cpp" line="2641"/>
+      <location filename="../../CommandConstraints.cpp" line="2646"/>
+      <location filename="../../CommandConstraints.cpp" line="2652"/>
+      <location filename="../../CommandConstraints.cpp" line="2667"/>
+      <location filename="../../CommandConstraints.cpp" line="2690"/>
+      <location filename="../../CommandConstraints.cpp" line="2709"/>
       <source>%1 switch to distance</source>
       <translation type="unfinished">%1 switch to distance</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2630"/>
+      <location filename="../../CommandConstraints.cpp" line="2642"/>
       <source>%1 switch to lock</source>
       <translation type="unfinished">%1 switch to lock</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2635"/>
-      <location filename="../../CommandConstraints.cpp" line="2645"/>
-      <location filename="../../CommandConstraints.cpp" line="2662"/>
-      <location filename="../../CommandConstraints.cpp" line="2778"/>
+      <location filename="../../CommandConstraints.cpp" line="2647"/>
+      <location filename="../../CommandConstraints.cpp" line="2657"/>
+      <location filename="../../CommandConstraints.cpp" line="2674"/>
+      <location filename="../../CommandConstraints.cpp" line="2790"/>
       <source>%1 switch to horizontal</source>
       <translation type="unfinished">%1 switch to horizontal</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2636"/>
-      <location filename="../../CommandConstraints.cpp" line="2646"/>
-      <location filename="../../CommandConstraints.cpp" line="2663"/>
-      <location filename="../../CommandConstraints.cpp" line="2779"/>
+      <location filename="../../CommandConstraints.cpp" line="2648"/>
+      <location filename="../../CommandConstraints.cpp" line="2658"/>
+      <location filename="../../CommandConstraints.cpp" line="2675"/>
+      <location filename="../../CommandConstraints.cpp" line="2791"/>
       <source>%1 switch to vertical</source>
       <translation type="unfinished">%1 switch to vertical</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2641"/>
-      <location filename="../../CommandConstraints.cpp" line="2647"/>
-      <location filename="../../CommandConstraints.cpp" line="2654"/>
+      <location filename="../../CommandConstraints.cpp" line="2653"/>
+      <location filename="../../CommandConstraints.cpp" line="2659"/>
+      <location filename="../../CommandConstraints.cpp" line="2666"/>
       <source>%1 switch to symmetry</source>
       <translation type="unfinished">%1 switch to symmetry</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2661"/>
+      <location filename="../../CommandConstraints.cpp" line="2673"/>
       <source>%1 switch to length</source>
       <translation type="unfinished">%1 switch to length</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2664"/>
+      <location filename="../../CommandConstraints.cpp" line="2676"/>
       <source>%1 switch to block</source>
       <translation type="unfinished">%1 switch to block</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2669"/>
+      <location filename="../../CommandConstraints.cpp" line="2681"/>
       <source>%1 switch to equal length</source>
       <translation type="unfinished">%1 switch to equal length</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2680"/>
-      <location filename="../../CommandConstraints.cpp" line="2714"/>
+      <location filename="../../CommandConstraints.cpp" line="2692"/>
+      <location filename="../../CommandConstraints.cpp" line="2726"/>
       <source>%1 switch to equal radius</source>
       <translation type="unfinished">%1 switch to equal radius</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2700"/>
+      <location filename="../../CommandConstraints.cpp" line="2712"/>
       <source>%1 switch to angle</source>
       <translation type="unfinished">%1 switch to angle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2717"/>
+      <location filename="../../CommandConstraints.cpp" line="2729"/>
       <source>%1 switch to concentric distance</source>
       <translation type="unfinished">%1 switch to concentric distance</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2729"/>
-      <location filename="../../CommandConstraints.cpp" line="2739"/>
+      <location filename="../../CommandConstraints.cpp" line="2741"/>
+      <location filename="../../CommandConstraints.cpp" line="2751"/>
       <source>%1 switch to arc angle</source>
       <translation type="unfinished">%1 switch to arc angle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2730"/>
-      <location filename="../../CommandConstraints.cpp" line="2740"/>
+      <location filename="../../CommandConstraints.cpp" line="2742"/>
+      <location filename="../../CommandConstraints.cpp" line="2752"/>
       <source>%1 switch to arc length</source>
       <translation type="unfinished">%1 switch to arc length</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2757"/>
+      <location filename="../../CommandConstraints.cpp" line="2769"/>
       <source>%1 switch to weight</source>
       <translation type="unfinished">%1 switch to weight</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2770"/>
+      <location filename="../../CommandConstraints.cpp" line="2782"/>
       <source>%1 switch to radius</source>
       <translation type="unfinished">%1 switch to radius</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2773"/>
+      <location filename="../../CommandConstraints.cpp" line="2785"/>
       <source>%1 switch to diameter</source>
       <translation type="unfinished">%1 switch to diameter</translation>
     </message>
@@ -8656,12 +8595,12 @@ Note: While the Text constraint is active, any constraints applied directly to t
   <context>
     <name>CmdSketcherConstrainGroup</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11375"/>
+      <location filename="../../CommandConstraints.cpp" line="10337"/>
       <source>Group Constraint</source>
       <translation type="unfinished">Group Constraint</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11376"/>
+      <location filename="../../CommandConstraints.cpp" line="10338"/>
       <source>Constrains the selected geometries together as a single entity.The position and size of the grouped geometries can be defined by constraining the construction line that is generated.Constraints applied to grouped edges are ignored as long as the Group constraint is here.</source>
       <translation type="unfinished">Constrains the selected geometries together as a single entity.The position and size of the grouped geometries can be defined by constraining the construction line that is generated.Constraints applied to grouped edges are ignored as long as the Group constraint is here.</translation>
     </message>

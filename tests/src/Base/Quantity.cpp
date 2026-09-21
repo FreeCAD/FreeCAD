@@ -31,8 +31,8 @@ TEST(BaseQuantity, TestParse)
 
 TEST(BaseQuantity, TestLocalizedUserInput)
 {
-    const Base::NumericLocaleContext enUs {"en_US", ".", ",", "+", "-", 3, 3};
-    const Base::NumericLocaleContext enIn {"en_IN", ".", ",", "+", "-", 3, 2};
+    const Base::NumericLocaleContext enUs {"en_US", ".", ",", "+", "-", 3, 3, "0"};
+    const Base::NumericLocaleContext enIn {"en_IN", ".", ",", "+", "-", 3, 2, "0"};
 
     EXPECT_EQ(Quantity::parseUserInput("12,345.67 mm", enUs), Quantity(12345.67, Unit::Length));
     EXPECT_THROW(Quantity::parseUserInput("12,34,567 mm", enUs), ParserError);
@@ -41,7 +41,7 @@ TEST(BaseQuantity, TestLocalizedUserInput)
 
 TEST(BaseQuantity, TestLocalizedUserInputPreservesComments)
 {
-    const Base::NumericLocaleContext enUs {"en_US", ".", ",", "+", "-", 3, 3};
+    const Base::NumericLocaleContext enUs {"en_US", ".", ",", "+", "-", 3, 3, "0"};
 
     EXPECT_EQ(
         Quantity::parseUserInput("1 mm [original input 12,34,567]", enUs),

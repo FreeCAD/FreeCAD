@@ -124,7 +124,8 @@
          <th align = 'left' > <a href = 'https://github.com/coin3d/pivy' > Pivy </a> </th>
          <td> <code> ${PIVY_VERSION} </code> (${FREECAD_PIVY_SOURCE}) </td>
          <th colspan = '5' ></th>
-         <th colspan = '2' ></th>
+         <th align = 'left' > <a href = 'https://www.urwpp.de/en/' > URW Gothic </a> </th>
+         <td> <code> 2.00 </code> (<a href = 'URWGothic-LICENSE.OFL' > SIL OFL 1.1 </a>) </td>
       </tr>
 
    </tbody>
