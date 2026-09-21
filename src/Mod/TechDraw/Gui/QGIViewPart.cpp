@@ -643,9 +643,11 @@ void QGIViewPart::drawShaded()
         return;
     }
 
+    // Shaded styles always render opaque. FaceTransparency (initialised from the
+    // "Transparent faces" preference) is meant for the edge styles, where it would
+    // otherwise make the shaded image fully invisible.
     QColor faceColor = viewProvider->FaceColor.getValue().asValue<QColor>();
-    faceColor.setAlpha(
-        (100 - viewProvider->FaceTransparency.getValue()) * 255 / 100);
+    faceColor.setAlpha(255);
 
     std::optional<ShadedImage> shaded;
     try {
