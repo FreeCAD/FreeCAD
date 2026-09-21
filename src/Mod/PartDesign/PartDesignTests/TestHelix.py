@@ -22,7 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-from math import pi, radians, tan
+from math import hypot, pi, radians, tan
 from pathlib import Path
 import tempfile
 import unittest
@@ -161,25 +161,127 @@ class TestHelix(unittest.TestCase):
         self.assertAlmostEqual(helix.Turns2, 2)
         self.assertAlmostEqual(helix.Shape.Volume, pi * 25 * 5 * 5, delta=0.01)
 
-    def testTwoSidedAngleShrinksSecondSide(self):
-        """Test two-sided cone angle uses opposite growth for the second side"""
-        twoSided = self.createRectangleHelix("TwoSidedAngleBody")
-        twoSided.SideType = "Two sides"
-        twoSided.Mode = 0
-        twoSided.Pitch = 50
-        twoSided.Height = 100
-        twoSided.Height2 = 100
-        twoSided.Angle = 20
+    def createOffsetSquareHelix(self, bodyName):
+        """Sweep a 1 mm square lying 10 mm to 11 mm from the Z axis.
 
-        symmetric = self.createRectangleHelix("SymmetricAngleBody")
+        Keeping the profile away from the axis lets the tapered sides shrink without
+        degenerating, and gives each side a closed-form volume.
+        """
+        body = self.Doc.addObject("PartDesign::Body", bodyName)
+        sketch = body.newObject("Sketcher::SketchObject", bodyName + "Sketch")
+        TestSketcherApp.CreateRectangleSketch(sketch, (10, 0), (1, 1))
+        sketch.AttachmentSupport = body.Origin.OriginFeatures[4]
+        sketch.MapMode = "FlatFace"
+        self.Doc.recompute()
+        helix = body.newObject("PartDesign::AdditiveHelix", bodyName + "Helix")
+        helix.Profile = sketch
+        helix.ReferenceAxis = (sketch, "V_Axis")
+        helix.Pitch = 2
+        helix.Angle = 0
+        helix.Growth = 0
+        helix.Mode = 0
+        return helix
+
+    @staticmethod
+    def offsetSquareVolume(growth, firstTurn, lastTurn):
+        """Volume swept by the offset square between two turns of a tapered helix.
+
+        At turn t the square spans radii 10 + growth * t to 11 + growth * t, so each
+        turn sweeps an annulus of area pi * (21 + 2 * growth * t) through the 1 mm height.
+        """
+        return pi * (21 * (lastTurn - firstTurn) + growth * (lastTurn**2 - firstTurn**2))
+
+    def assertRadialExtent(self, shape, innerRadius, outerRadius):
+        """Check the closest and farthest vertices from the Z axis."""
+        radii = [hypot(vertex.X, vertex.Y) for vertex in shape.Vertexes]
+        self.assertAlmostEqual(min(radii), innerRadius, places=3)
+        self.assertAlmostEqual(max(radii), outerRadius, places=3)
+
+    def testTwoSidedAngle(self):
+        """Taper a two-sided helix as one continuous cone through the profile.
+
+        The first side runs 3 turns up the cone and the second side 1 turn down it,
+        so a positive angle grows the first side and shrinks the second side.
+        """
+        for mode in (0, 1, 2):
+            for angle in (15, -15):
+                with self.subTest(mode=mode, angle=angle):
+                    helix = self.createOffsetSquareHelix("TwoSidedAngleBody")
+                    helix.SideType = "Two sides"
+                    helix.Mode = mode
+                    helix.Angle = angle
+                    if mode == 1:
+                        helix.Turns = 3
+                        helix.Turns2 = 1
+                    else:
+                        helix.Height = 6
+                        helix.Height2 = 2
+                        # Height-turns-angle counts the turns across both sides.
+                        helix.Turns = 4
+                    self.Doc.recompute()
+
+                    self.assertNotIn("Invalid", helix.State)
+                    self.assertTrue(helix.Shape.isValid())
+                    self.assertEqual(len(helix.Shape.Solids), 1)
+                    growth = 2 * tan(radians(angle))
+                    self.assertAlmostEqual(helix.Pitch.Value, 2)
+                    self.assertAlmostEqual(helix.Height.Value, 6)
+                    self.assertAlmostEqual(helix.Height2.Value, 2)
+                    self.assertAlmostEqual(helix.Turns2, 1)
+                    self.assertAlmostEqual(helix.Growth.Value, growth)
+
+                    expected = self.offsetSquareVolume(growth, 0, 3) + self.offsetSquareVolume(
+                        -growth, 0, 1
+                    )
+                    self.assertAlmostEqual(helix.Shape.Volume, expected, delta=0.01)
+                    # The path runs from z = -2 to z = 6 and the profile adds 1 mm on top.
+                    self.assertAlmostEqual(helix.Shape.BoundBox.ZMin, -2, places=5)
+                    self.assertAlmostEqual(helix.Shape.BoundBox.ZMax, 7, places=5)
+                    # The top face is offset by 3 turns of growth, the bottom by -1.
+                    self.assertRadialExtent(
+                        helix.Shape,
+                        10 + min(3 * growth, -growth),
+                        11 + max(3 * growth, -growth),
+                    )
+
+    def testTwoSidedAngleShrinksSecondSide(self):
+        """Two sides continue one cone while symmetric widens both halves outwards."""
+        twoSided = self.createOffsetSquareHelix("TwoSidedAngleBody")
+        twoSided.SideType = "Two sides"
+        twoSided.Height = 4
+        twoSided.Height2 = 4
+        twoSided.Angle = 15
+
+        symmetric = self.createOffsetSquareHelix("SymmetricAngleBody")
         symmetric.SideType = "Symmetric"
-        symmetric.Mode = 0
-        symmetric.Pitch = 50
-        symmetric.Height = 200
-        symmetric.Angle = 20
+        symmetric.Height = 8
+        symmetric.Angle = 15
 
         self.Doc.recompute()
-        self.assertLess(twoSided.Shape.Volume, symmetric.Shape.Volume)
+        growth = 2 * tan(radians(15))
+        for helix in (twoSided, symmetric):
+            with self.subTest(helix=helix.Name):
+                self.assertNotIn("Invalid", helix.State)
+                self.assertTrue(helix.Shape.isValid())
+                self.assertEqual(len(helix.Shape.Solids), 1)
+                self.assertAlmostEqual(helix.Growth.Value, growth)
+                self.assertAlmostEqual(helix.Shape.BoundBox.ZMin, -4, places=5)
+                self.assertAlmostEqual(helix.Shape.BoundBox.ZMax, 5, places=5)
+
+        # Growing 2 turns up and shrinking 2 turns down cancel out to the untapered volume.
+        self.assertAlmostEqual(
+            twoSided.Shape.Volume,
+            self.offsetSquareVolume(growth, 0, 2) + self.offsetSquareVolume(-growth, 0, 2),
+            delta=0.01,
+        )
+        self.assertAlmostEqual(twoSided.Shape.Volume, pi * 21 * 4, delta=0.01)
+        self.assertRadialExtent(twoSided.Shape, 10 - 2 * growth, 11 + 2 * growth)
+
+        # Both symmetric halves grow away from the profile.
+        self.assertAlmostEqual(
+            symmetric.Shape.Volume, 2 * self.offsetSquareVolume(growth, 0, 2), delta=0.01
+        )
+        self.assertRadialExtent(symmetric.Shape, 10, 11 + 2 * growth)
 
     def testSymmetricPitchHeightAngle(self):
         """Test symmetric helix in pitch-height-angle mode"""
