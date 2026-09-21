@@ -854,7 +854,7 @@ void collectConicEdges(const TopoDS_Shell& shell, TopTools_IndexedMapOfShape& ma
 // A seam is walked twice by its face's wire, with a pcurve for each pass. Fusing it
 // rebuilds only one of them, leaving the wire unable to close.
 // This is similar to collectConicEdges but for seam edges, which are always closed in their face.
-void collectSeamEdges(const TopoDS_Shell& shell, TopTools_IndexedMapOfShape& map)
+static void collectSeamEdges(const TopoDS_Shell& shell, TopTools_IndexedMapOfShape& map)
 {
     for (TopExp_Explorer fx(shell, TopAbs_FACE); fx.More(); fx.Next()) {
         const TopoDS_Face& face = TopoDS::Face(fx.Current());
@@ -1325,11 +1325,11 @@ bool FaceUniter::process()
 
         BRepLib_FuseEdges edgeFuse(workShell);
         TopTools_IndexedMapOfShape map;
-// TODO: change this version after occ fix. Freecad Mantis 1450
-#if OCC_VERSION_HEX <= 0x7fffff
+
+        // TODO: #ifdef protect after occt fix. https://tracker.freecad.org/view.php?id=1450
         collectConicEdges(workShell, map);
-#endif
         collectSeamEdges(workShell, map);
+
         edgeFuse.AvoidEdges(map);
         TopTools_DataMapOfShapeShape affectedFaces;
         edgeFuse.Faces(affectedFaces);
