@@ -217,8 +217,9 @@ void TaskProjGroup::saveGroupState()
         m_saveAutoDistribute = multiView->AutoDistribute.getValue();
         m_saveSpacingX = multiView->spacingX.getValue();
         m_saveSpacingY = multiView->spacingY.getValue();
-        DrawProjGroupItem* anchor = multiView->getAnchor();
-        m_saveDirection = anchor->Direction.getValue();
+        if (DrawProjGroupItem* anchor = multiView->getAnchor()) {
+            m_saveDirection = anchor->Direction.getValue();
+        }
 
         for( const auto it : multiView->Views.getValues() ) {
             auto view( dynamic_cast<DrawProjGroupItem *>(it) );
@@ -349,6 +350,9 @@ void TaskProjGroup::turnViewToProjGroup()
 void TaskProjGroup::turnProjGroupToView()
 {
     TechDraw::DrawViewPart* viewPart = multiView->getAnchor();
+    if (!viewPart) {
+        return;
+    }
     viewPart->Scale.setValue(multiView->Scale.getValue());
     viewPart->ScaleType.setValue(multiView->ScaleType.getValue());
     viewPart->Scale.setStatus(App::Property::Hidden, false);
@@ -384,8 +388,10 @@ void TaskProjGroup::customDirectionClicked()
     auto* dirEditDlg = new DirectionEditDialog();
 
     if (multiView) {
-        dirEditDlg->setDirection(multiView->getAnchor()->Direction.getValue());
-        dirEditDlg->setAngle(0.0);
+        if (DrawProjGroupItem* item = multiView->getAnchor()) {
+            dirEditDlg->setDirection(item->Direction.getValue());
+            dirEditDlg->setAngle(0.0);
+        }
     }
     else {
         auto* viewPart = static_cast<TechDraw::DrawViewPart*>(view);
@@ -395,8 +401,10 @@ void TaskProjGroup::customDirectionClicked()
 
     if (dirEditDlg->exec() == QDialog::Accepted) {
         if (multiView) {
-            multiView->getAnchor()->Direction.setValue(dirEditDlg->getDirection());
-            multiView->spin(Base::toRadians(dirEditDlg->getAngle()));
+            if (DrawProjGroupItem* item = multiView->getAnchor()) {
+                item->Direction.setValue(dirEditDlg->getDirection());
+                multiView->spin(Base::toRadians(dirEditDlg->getAngle()));
+            }
         }
         else {
             auto* viewPart = static_cast<TechDraw::DrawViewPart*>(view);
@@ -448,17 +456,21 @@ void TaskProjGroup::rotateButtonClicked()
             else if (clicked == ui->butCWRotate) multiView->spin(SpinDirection::CW);
             else if (clicked == ui->butCCWRotate) multiView->spin(SpinDirection::CCW);
             else if (clicked == ui->butFront) {
-                multiView->getAnchor()->Direction.setValue(Base::Vector3d(0.0, -1.0, 0.0));
-                multiView->getAnchor()->RotationVector.setValue(Base::Vector3d(1.0, 0.0, 0.0));
-                multiView->getAnchor()->XDirection.setValue(Base::Vector3d(1.0, 0.0, 0.0));
-                multiView->updateSecondaryDirs();
+                if (DrawProjGroupItem* item = multiView->getAnchor()) {
+                    item->Direction.setValue(Base::Vector3d(0.0, -1.0, 0.0));
+                    item->RotationVector.setValue(Base::Vector3d(1.0, 0.0, 0.0));
+                    item->XDirection.setValue(Base::Vector3d(1.0, 0.0, 0.0));
+                    multiView->updateSecondaryDirs();
+                }
             }
             else if (clicked == ui->butCam) {
                 std::pair<Base::Vector3d, Base::Vector3d> dirs = handleCameraButton();
-                multiView->getAnchor()->Direction.setValue(dirs.first);
-                multiView->getAnchor()->RotationVector.setValue(dirs.second);
-                multiView->getAnchor()->XDirection.setValue(dirs.second);
-                multiView->updateSecondaryDirs();
+                if (DrawProjGroupItem* item = multiView->getAnchor()) {
+                    item->Direction.setValue(dirs.first);
+                    item->RotationVector.setValue(dirs.second);
+                    item->XDirection.setValue(dirs.second);
+                    multiView->updateSecondaryDirs();
+                }
             }
         }
         else {

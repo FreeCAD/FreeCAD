@@ -559,10 +559,6 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawProjGroup::getDirsFromFront(DrawPr
 
 std::pair<Base::Vector3d, Base::Vector3d> DrawProjGroup::getDirsFromFront(ProjDirection viewType)
 {
-    //    Base::Console().message("DPG::getDirsFromFront(%s)\n", viewType.c_str());
-    std::pair<Base::Vector3d, Base::Vector3d> result;
-
-    Base::Vector3d projDir, rotVec;
     DrawProjGroupItem* anch = getAnchor();
     if (!anch) {
         Base::Console().warning("DPG::getDirsFromFront - %s - No Anchor!\n", Label.getValue());
@@ -1048,39 +1044,25 @@ App::Enumeration DrawProjGroup::usedProjectionType()
     return ret;
 }
 
-bool DrawProjGroup::hasAnchor()
+TechDraw::DrawProjGroupItem* DrawProjGroup::getAnchor() const
 {
-    App::DocumentObject* docObj = Anchor.getValue();
-    if (docObj) {
-        return true;
-    }
-    return false;
+    return Anchor.getValue<DrawProjGroupItem*>();
 }
 
-TechDraw::DrawProjGroupItem* DrawProjGroup::getAnchor()
+void DrawProjGroup::setAnchorDirection(const Base::Vector3d& dir)
 {
-    App::DocumentObject* docObj = Anchor.getValue();
-    if (docObj) {
-        return static_cast<DrawProjGroupItem*>(docObj);
+    if (auto* item = Anchor.getValue<DrawProjGroupItem*>()) {
+        item->Direction.setValue(dir);
     }
-    return nullptr;
 }
 
-void DrawProjGroup::setAnchorDirection(const Base::Vector3d dir)
+Base::Vector3d DrawProjGroup::getAnchorDirection() const
 {
-    App::DocumentObject* docObj = Anchor.getValue();
-    auto* item = static_cast<DrawProjGroupItem*>(docObj);
-    item->Direction.setValue(dir);
-}
-
-Base::Vector3d DrawProjGroup::getAnchorDirection()
-{
-    App::DocumentObject* docObj = Anchor.getValue();
-    if (!docObj) {
-        return Base::Vector3d();
+    if (auto* item = Anchor.getValue<DrawProjGroupItem*>()) {
+        return item->Direction.getValue();
     }
-    auto* item = static_cast<DrawProjGroupItem*>(docObj);
-    return item->Direction.getValue();
+
+    return Base::Vector3d();
 }
 
 //*************************************
@@ -1092,6 +1074,9 @@ Base::Vector3d DrawProjGroup::getAnchorDirection()
 void DrawProjGroup::updateSecondaryDirs()
 {
     DrawProjGroupItem* anchor = getAnchor();
+    if (!anchor) {
+        return;
+    }
     Base::Vector3d anchDir = anchor->Direction.getValue();
     Base::Vector3d anchRot = anchor->getXDirection();
 
@@ -1124,8 +1109,10 @@ void DrawProjGroup::updateSecondaryDirs()
 
 void DrawProjGroup::rotate(const RotationMotion& motion)
 {
-    getAnchor()->rotate(motion);
-    updateSecondaryDirs();
+    if (DrawProjGroupItem* anchor = getAnchor()) {
+        anchor->rotate(motion);
+        updateSecondaryDirs();
+    }
 }
 
 // TODO: should these functions identical to those
@@ -1143,14 +1130,15 @@ void DrawProjGroup::spin(const SpinDirection& spindirection)
 
 void DrawProjGroup::spin(double angle)
 {
-    DrawProjGroupItem* anchor = getAnchor();
-    Base::Vector3d org(0.0, 0.0, 0.0);
-    Base::Vector3d curRot = anchor->getXDirection();
-    Base::Vector3d curDir = anchor->Direction.getValue();
-    Base::Vector3d newRot = DrawUtil::vecRotate(curRot, angle, curDir, org);
-    anchor->XDirection.setValue(newRot);
+    if (DrawProjGroupItem* anchor = getAnchor()) {
+        Base::Vector3d org(0.0, 0.0, 0.0);
+        Base::Vector3d curRot = anchor->getXDirection();
+        Base::Vector3d curDir = anchor->Direction.getValue();
+        Base::Vector3d newRot = DrawUtil::vecRotate(curRot, angle, curDir, org);
+        anchor->XDirection.setValue(newRot);
 
-    updateSecondaryDirs();
+        updateSecondaryDirs();
+    }
 }
 
 std::vector<DrawProjGroupItem*> DrawProjGroup::getViewsAsDPGI()
@@ -1163,7 +1151,10 @@ std::vector<DrawProjGroupItem*> DrawProjGroup::getViewsAsDPGI()
     return result;
 }
 
-int DrawProjGroup::getDefProjConv() const { return Preferences::projectionAngle(); }
+int DrawProjGroup::getDefProjConv() const
+{
+    return Preferences::projectionAngle();
+}
 
 /*!
  *dumps the current iso DPGI's
