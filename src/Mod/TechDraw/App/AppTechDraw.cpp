@@ -51,6 +51,7 @@
 #include "DrawViewDraft.h"
 #include "DrawView.h"
 #include "DrawViewImage.h"
+#include "DrawViewMulti.h"
 #include "DrawViewPart.h"
 #include "DrawViewSection.h"
 #include "DrawViewSpreadsheet.h"
@@ -115,6 +116,7 @@ PyMOD_INIT_FUNC(TechDraw)
     TechDraw::DrawViewDraft       ::init();
     TechDraw::DrawViewArch        ::init();
     TechDraw::DrawViewImage       ::init();
+    TechDraw::DrawViewMulti       ::init();
     TechDraw::DrawTile            ::init();
     TechDraw::DrawTileWeld        ::init();
     TechDraw::DrawWeldSymbol      ::init();
@@ -138,17 +140,28 @@ PyMOD_INIT_FUNC(TechDraw)
    // Python Types
     TechDraw::DrawPagePython      ::init();
     TechDraw::DrawViewPython      ::init();
+    TechDraw::DrawViewAnnotationPython::init();
     TechDraw::DrawViewPartPython  ::init();
     TechDraw::DrawViewSectionPython::init();
     TechDraw::DrawComplexSectionPython ::init();
+    TechDraw::DrawViewDetailPython::init();
+    TechDraw::DrawViewMultiPython ::init();
     TechDraw::DrawTemplatePython  ::init();
+    TechDraw::DrawParametricTemplatePython::init();
+    TechDraw::DrawSVGTemplatePython::init();
     TechDraw::DrawViewSymbolPython::init();
+    TechDraw::DrawViewDraftPython ::init();
+    TechDraw::DrawViewSpreadsheetPython::init();
     TechDraw::DrawLeaderLinePython::init();
     TechDraw::DrawRichAnnoPython  ::init();
     TechDraw::DrawTilePython      ::init();
     TechDraw::DrawTileWeldPython  ::init();
     TechDraw::DrawWeldSymbolPython::init();
     TechDraw::DrawBrokenViewPython::init();
+    TechDraw::DrawViewClipPython  ::init();
+    TechDraw::DrawViewImagePython ::init();
+    TechDraw::DrawHatchPython     ::init();
+    TechDraw::DrawGeomHatchPython ::init();
 
     TechDraw::LineFormat::initCurrentLineFormat();
 
