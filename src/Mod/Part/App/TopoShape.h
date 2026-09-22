@@ -27,6 +27,7 @@
 #include <iosfwd>
 #include <list>
 #include <unordered_map>
+#include <vector>
 
 #include <QVector>
 
@@ -1699,13 +1700,13 @@ public:
     void cacheRelatedElements(
         const Data::MappedName& name,
         HistoryTraceType sameType,
-        const QVector<Data::MappedElement>& names
+        const std::vector<Data::MappedElement>& names
     ) const;
 
     bool getRelatedElementsCached(
         const Data::MappedName& name,
         HistoryTraceType sameType,
-        QVector<Data::MappedElement>& names
+        std::vector<Data::MappedElement>& names
     ) const;
 
     void mapSubElement(const TopoShape& other, const char* op = nullptr, bool forceHasher = false);

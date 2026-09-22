@@ -6390,7 +6390,7 @@ void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const cha
 void TopoShape::cacheRelatedElements(
     const Data::MappedName& name,
     HistoryTraceType sameType,
-    const QVector<Data::MappedElement>& names
+    const std::vector<Data::MappedElement>& names
 ) const
 {
     initCache();
@@ -6400,7 +6400,7 @@ void TopoShape::cacheRelatedElements(
 bool TopoShape::getRelatedElementsCached(
     const Data::MappedName& name,
     HistoryTraceType sameType,
-    QVector<Data::MappedElement>& names
+    std::vector<Data::MappedElement>& names
 ) const
 {
     if (!_cache) {
