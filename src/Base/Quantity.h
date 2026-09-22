@@ -337,6 +337,7 @@ public:
     static const Quantity MilliJoule;
     static const Quantity KiloJoule;
     static const Quantity NewtonMeter;
+    static const Quantity NewtonMilliMeter;
     static const Quantity VoltAmpereSecond;
     static const Quantity WattSecond;
     static const Quantity KiloWattHour;
