@@ -64,6 +64,38 @@ class MaterialTestCases(unittest.TestCase):
                             "Precision" : 6 }
         return quantity
 
+    def testDimensionlessQuantity(self):
+        """
+        Set a property from a dimensionless quantity (as the material editor property
+        value fields produce when the entry has no unit).
+
+        The value must survive the assignment un-mangled: before issue #25804 small
+        values such as 0.0001 were truncated to 0 and values such as 1.23456 to 1.23,
+        because the value was round-tripped through a precision-limited user string.
+        """
+        steel = self.MaterialManager.getMaterial("92589471-a6cb-4bbc-b748-d425a17dea7d")
+        self.assertIsNotNone(steel)
+        for value in ["0.0001", "0.000011", "1.23456"]:
+            steel.setValue("Density", value)
+            density = steel.getPhysicalValue("Density")
+            expected = parseQuantity(value + " kg/m^3")
+            self.assertAlmostEqual(
+                density.Value, expected.Value, delta=1e-15, msg=f"truncated value: {value}"
+            )
+
+    def testUnitfulQuantity(self):
+        """
+        Set a property from an explicitly unitful quantity (as the material editor
+        produces once a property already carries units).
+        """
+        steel = self.MaterialManager.getMaterial("92589471-a6cb-4bbc-b748-d425a17dea7d")
+        self.assertIsNotNone(steel)
+        steel.setValue("Density", "0.0001 kg/m^3")
+        density = steel.getPhysicalValue("Density")
+        self.assertAlmostEqual(
+            density.Value, parseQuantity("0.0001 kg/m^3").Value, delta=1e-15
+        )
+
     def testCalculiXSteel(self):
         """
         Test a representative material card for CalculX Steel

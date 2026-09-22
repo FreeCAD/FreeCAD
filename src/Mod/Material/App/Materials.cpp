@@ -401,11 +401,9 @@ void MaterialProperty::setQuantity(const Base::Quantity& value)
 {
     auto quantity = value;
     if (quantity.isDimensionless()) {
-        // Assign the default units when none are provided.
-        //
-        // This needs to be parsed rather than just setting units. Otherwise we get mm->m conversion
-        // errors, etc
-        quantity = Base::Quantity::parse(quantity.getUserString() + getUnits().toStdString());
+        // Assign the default units when none are provided. Use the constructor,
+        // not parse(): a string round-trip would truncate precision (0.0001 -> "0.00" -> 0).
+        quantity = Base::Quantity(quantity.getValue(), getUnits().toStdString());
     }
     else {
         auto propertyUnit = Base::Quantity::parse(getUnits().toStdString()).getUnit();
