@@ -2,9 +2,5 @@
 
 from __future__ import annotations
 
-try:
-    from PySide6.QtUiTools import *
-    from PySide6.QtUiTools import QUiLoader as QUiLoader
-except ImportError:
-    from PySide2.QtUiTools import *
-    from PySide2.QtUiTools import QUiLoader as QUiLoader
+from PySide6.QtUiTools import *
+from PySide6.QtUiTools import QUiLoader as QUiLoader

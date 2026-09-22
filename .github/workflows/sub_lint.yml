@@ -150,6 +150,8 @@ jobs:
       - name: Set up pixi for stub smoke checks
         if: always()
         uses: prefix-dev/setup-pixi@d3f436a425481402e6a95a1d1fc10331c708cd9e # v0.10.2
+        with:
+          locked: true
 
       - name: Install Python stub smoke-check dependencies
         if: always()

@@ -279,21 +279,6 @@ void DlgSettingsEditor::loadSettings()
     ui->fontSize->setValue(hGrp->GetInt("FontSize", ui->fontSize->value()));
 
     QByteArray defaultMonospaceFont = getMonospaceFont().family().toLatin1();
-
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QStringList familyNames = QFontDatabase().families(QFontDatabase::Any);
-    QStringList fixedFamilyNames;
-    for (const auto& name : familyNames) {
-        if (QFontDatabase().isFixedPitch(name)) {
-            // cursor.pcf was removed to cope with a problem with the Qt Font Manager
-            // See https://github.com/FreeCAD/FreeCAD/issues/10514 for details
-            if (name.compare(QLatin1String("8514oem"), Qt::CaseInsensitive) != 0
-                && name.compare(QLatin1String("cursor.pcf"), Qt::CaseInsensitive) != 0) {
-                fixedFamilyNames.append(name);
-            }
-        }
-    }
-#else
     QStringList familyNames = QFontDatabase::families(QFontDatabase::Any);
     QStringList fixedFamilyNames;
     for (const auto& name : familyNames) {
@@ -306,7 +291,6 @@ void DlgSettingsEditor::loadSettings()
             }
         }
     }
-#endif
     ui->fontFamily->addItems(fixedFamilyNames);
 
     // mark this combobox to be excluded from preference search

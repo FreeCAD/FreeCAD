@@ -1,5 +1,4 @@
-# This workflow will triage pull requests and apply a label based on the
-# paths that are modified in the pull request.
+# Triage pull requests, inherit issue labels, and label modified paths.
 #
 # For more information, see:
 # https://github.com/actions/labeler
@@ -7,17 +6,20 @@
 name: Labeler
 on:
   pull_request_target:
-    types: [opened, reopened]
+    types: [opened, reopened, edited]
 
 concurrency:
   group: labeler-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 permissions:
   contents: read
 
 jobs:
   label:
+    if: >-
+      github.event.pull_request.state == 'open'
+      && (github.event.action != 'edited' || github.event.changes.body)
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -31,10 +33,14 @@ jobs:
         egress-policy: audit
 
     - name: 'Add "Status: Needs triage" label'
+      if: github.event.action != 'edited'
       uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
       with:
         script: |
-          const pr = context.payload.pull_request;
+          const { data: pr } = await github.rest.issues.get({
+            ...context.repo,
+            issue_number: context.payload.pull_request.number
+          });
           const typeLabels = new Set(['Type: Bug', 'Type: Feature', 'Type: Other']);
           const existing = pr.labels
             .map(label => label.name)
@@ -52,14 +58,19 @@ jobs:
             labels: ['Status: Needs triage']
           });
 
-    - name: 'Add issue type label'
+    - name: 'Apply labels from referenced issues'
       uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
       with:
         script: |
           const owner = context.repo.owner;
           const repo = context.repo.repo;
-          const pr = context.payload.pull_request;
+          const { data: pr } = await github.rest.issues.get({
+            owner,
+            repo,
+            issue_number: context.payload.pull_request.number
+          });
           const typeLabels = ['Type: Bug', 'Type: Feature', 'Type: Other'];
+          const regressionLabel = 'Type: Regression';
           const issueNumbers = new Set();
 
           const escapedOwner = owner.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -90,6 +101,7 @@ jobs:
           }
 
           const linkedIssueTypes = new Set();
+          let hasRegression = false;
 
           for (const issue_number of issueNumbers) {
             try {
@@ -105,6 +117,7 @@ jobs:
               }
 
               linkedIssueTypes.add(issue.type?.name || 'Other');
+              hasRegression ||= issue.labels.some(label => label.name === regressionLabel);
             } catch (error) {
               core.warning(`Could not read issue #${issue_number}: ${error.message}`);
             }
@@ -139,18 +152,25 @@ jobs:
             }
           }
 
-          if (!currentLabels.has(targetLabel)) {
+          const labelsToAdd = [targetLabel];
+          if (hasRegression) {
+            labelsToAdd.push(regressionLabel);
+          }
+
+          const missingLabels = labelsToAdd.filter(label => !currentLabels.has(label));
+          if (missingLabels.length > 0) {
             await github.rest.issues.addLabels({
               owner,
               repo,
               issue_number: pr.number,
-              labels: [targetLabel]
+              labels: missingLabels
             });
           }
 
-          core.info(`Applied ${targetLabel} based on linked issue types: ${[...linkedIssueTypes].join(', ')}`);
+          core.info(`Applied ${labelsToAdd.join(', ')} based on referenced issues.`);
 
     - name: 'Assign "tbd" milestone'
+      if: github.event.action != 'edited'
       uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
       with:
         script: |
@@ -180,6 +200,17 @@ jobs:
             return;
           }
 
+          const { data: currentPr } = await github.rest.issues.get({
+            owner,
+            repo,
+            issue_number: pr.number
+          });
+
+          if (currentPr.milestone) {
+            core.info(`Pull request already has milestone "${currentPr.milestone.title}", leaving it untouched.`);
+            return;
+          }
+
           await github.rest.issues.update({
             owner,
             repo,
@@ -190,6 +221,7 @@ jobs:
           core.info(`Assigned milestone "${milestone.title}" (#${milestone.number}).`);
 
     - uses: actions/labeler@f27b608878404679385c85cfa523b85ccb86e213 # v6.1.0
+      if: github.event.action != 'edited'
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         configuration-path: ".github/labels.yml"
