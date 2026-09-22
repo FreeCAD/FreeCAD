@@ -90,6 +90,47 @@ class TestPathCore(PathTestBase):
         c3.setFromGCode("G1X1Y-1.2345e-06Z10")
         self.assertEqual(str(c3), "Command G1 [ X:1 Y:-1.2345e-06 Z:10 ]")
 
+    def test01(self):
+        """Test that assigning Parameters replaces the parameter set"""
+        c = Path.Command("G1", {"X": 1, "Y": 2, "Z": 3})
+
+        # keys missing from the assigned dictionary are removed
+        c.Parameters = {"X": 5}
+        self.assertEqual(c.Parameters, {"X": 5.0})
+        self.assertEqual(c.toGCode(), "G1 X5.000000")
+
+        # the removed parameters no longer feed the placement
+        self.assertEqual(c.Placement.Base, FreeCAD.Vector(5, 0, 0))
+
+        # an empty dictionary clears every parameter
+        c.Parameters = {}
+        self.assertEqual(c.Parameters, {})
+        self.assertEqual(c.toGCode(), "G1")
+
+        # keys are normalised to upper case and values to float
+        c.Parameters = {"x": 1, "f": 2}
+        self.assertEqual(c.Parameters, {"X": 1.0, "F": 2.0})
+
+        # read-modify-write of a single parameter keeps the others
+        params = c.Parameters
+        params["Y"] = 7
+        c.Parameters = params
+        self.assertEqual(c.Parameters, {"X": 1.0, "F": 2.0, "Y": 7.0})
+
+        # a bad value leaves the existing parameters untouched
+        with self.assertRaises(TypeError):
+            c.Parameters = {"X": "one"}
+        self.assertEqual(c.Parameters, {"X": 1.0, "F": 2.0, "Y": 7.0})
+        with self.assertRaises(TypeError):
+            c.Parameters = {1: 1.0}
+        self.assertEqual(c.Parameters, {"X": 1.0, "F": 2.0, "Y": 7.0})
+
+        # a replaced command round-trips through a Path
+        c.Parameters = {"Z": -1}
+        p = Path.Path([c])
+        self.assertEqual(p.Commands[0].Parameters, {"Z": -1.0})
+        self.assertEqual(p.toGCode(), "G1 Z-1.000000\n")
+
     def test10(self):
         """Test Path Object core functionality"""
 
