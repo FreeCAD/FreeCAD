@@ -87,6 +87,7 @@ SetupSanitizers()
 SetupYamlCpp()
 SetupZipIos()
 SetupClipper2()
+SetupCoverage()
 find_package(fmt REQUIRED)
 
 find_package(Qt6 REQUIRED COMPONENTS Core)
