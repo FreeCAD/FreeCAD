@@ -1111,12 +1111,8 @@ void SketchObject::onGeometryChanged()
         acceptGeometry();
     }
     else {
-        Base::Console().send<
-            Base::LogStyle::Error,
-            Base::IntendedRecipient::All,
-            Base::ContentType::Untranslated>(
+        Base::Console().error(
             this->getFullLabel() + " SketchObject::onChanged ",
-            "{}",
             QT_TRANSLATE_NOOP("Notifications", "Unmanaged change of Constraint "
                 "Property results in invalid constraint indices") "\n");
     }
@@ -1159,12 +1155,8 @@ void SketchObject::onConstraintsChanged()
         }
     }
     else {
-        Base::Console().send<
-            Base::LogStyle::Error,
-            Base::IntendedRecipient::All,
-            Base::ContentType::Untranslated>(
+        Base::Console().error(
             this->getFullLabel() + " SketchObject::onChanged ",
-            "{}",
             QT_TRANSLATE_NOOP("Notifications", "Unmanaged change of Constraint "
                               "Property results in invalid constraint indices") "\n");
     }
@@ -1675,9 +1667,8 @@ void SketchObject::migrateSketch()
 
     Constraints.setValues(std::move(newConstraints));
 
-    Base::Console().send<Base::LogStyle::Critical>(
+    Base::Console().critical(
         this->getFullName(),
-        "{}",
         QT_TRANSLATE_NOOP(
             "Notifications",
             "Parabolas were migrated. Migrated files won't open in previous "
