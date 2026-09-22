@@ -54,6 +54,7 @@
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
 
+#include <App/FeaturePythonPyImp.h>
 #include "DrawGeomHatch.h"
 #include "DrawGeomHatchPy.h" // generated from DrawGeomHatchPy.xml
 #include "DrawUtil.h"
@@ -617,6 +618,15 @@ namespace App {
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawGeomHatchPython, TechDraw::DrawGeomHatch)
 template<> const char* TechDraw::DrawGeomHatchPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderGeomHatch";
+}
+template<>
+PyObject* TechDraw::DrawGeomHatchPython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawGeomHatchPy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 
