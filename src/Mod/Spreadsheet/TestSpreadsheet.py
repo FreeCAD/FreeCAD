@@ -1816,6 +1816,20 @@ class SpreadsheetCases(unittest.TestCase):
         with self.assertRaises(AttributeError):
             self.assertEqual(ss1.B1, "fail")
 
+    def testIssue24481(self):
+        # Setting an explicit foreground color must stick, including black.
+        # Regression test: PropertySheet::setForeground(Range) used to clear
+        # the "used" flag for opaque black, so getForeground() reported the
+        # color as unset and the view fell back to the default text color.
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
+        sheet.set("A1", "test")
+        sheet.setForeground("A1", (0.0, 0.0, 0.0, 1.0))
+        self.doc.recompute()
+        self.assertEqual(sheet.getForeground("A1"), (0.0, 0.0, 0.0, 1.0))
+        sheet.clearForeground("A1")
+        self.doc.recompute()
+        self.assertIsNone(sheet.getForeground("A1"))
+
     def testGetUsedCells(self):
         sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
         test_cells = ["B13", "C14", "D15"]
