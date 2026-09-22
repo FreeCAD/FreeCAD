@@ -702,7 +702,6 @@ class _Wall(ArchComponent.Component):
                             v.multiply(obj.Length.Value)
                             p2 = e.Vertexes[0].Point.add(v)
                             if Draft.getType(obj.Base) == "Wire":
-                                # print("modifying p2")
                                 obj.Base.End = p2
                             elif Draft.getType(obj.Base) in [
                                 "Sketcher::SketchObject",
