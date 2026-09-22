@@ -263,12 +263,12 @@ void MaterialYamlEntry::addToTree(
                             }
                             catch (const Base::ValueError&) {
                                 // Units mismatch
-                                Base::Console().log("Units mismatch in material '%s':'%s' = '%s', "
-                                                    "setting to default property units '%s'\n",
-                                                    name.toStdString().c_str(),
+                                Base::Console().log("Units mismatch in material '{}':'{}' = '{}', "
+                                                    "setting to default property units '{}'\n",
+                                                    name.toStdString(),
                                                     propertyName,
-                                                    propertyValue.toStdString().c_str(),
-                                                    prop->getUnits().toStdString().c_str());
+                                                    propertyValue.toStdString(),
+                                                    prop->getUnits().toStdString());
                                 auto quantity = Base::Quantity::parse(propertyValue.toStdString());
                                 finalModel->setPhysicalValue(
                                     QString::fromStdString(propertyName),
@@ -278,15 +278,15 @@ void MaterialYamlEntry::addToTree(
                         }
                     }
                     catch (const YAML::BadConversion& e) {
-                        Base::Console().log("Exception %s <%s:%s> - ignored\n",
+                        Base::Console().log("Exception {} <{}:{}> - ignored\n",
                                             e.what(),
-                                            name.toStdString().c_str(),
-                                            propertyName.c_str());
+                                            name.toStdString(),
+                                            propertyName);
                     }
                 }
                 else if (propertyName != "UUID") {
-                    Base::Console().log("\tProperty '%s' is not described by any model. Ignored\n",
-                                        propertyName.c_str());
+                    Base::Console().log("\tProperty '{}' is not described by any model. Ignored\n",
+                                        propertyName);
                 }
             }
         }
@@ -345,15 +345,15 @@ void MaterialYamlEntry::addToTree(
                         }
                     }
                     catch (const YAML::BadConversion& e) {
-                        Base::Console().log("Exception %s <%s:%s> - ignored\n",
+                        Base::Console().log("Exception {} <{}:{}> - ignored\n",
                                             e.what(),
-                                            name.toStdString().c_str(),
-                                            propertyName.c_str());
+                                            name.toStdString(),
+                                            propertyName);
                     }
                 }
                 else if (propertyName != "UUID") {
-                    Base::Console().log("\tProperty '%s' is not described by any model. Ignored\n",
-                                        propertyName.c_str());
+                    Base::Console().log("\tProperty '{}' is not described by any model. Ignored\n",
+                                        propertyName);
                 }
             }
         }
@@ -404,8 +404,8 @@ MaterialLoader::getMaterialFromYAML(const std::shared_ptr<MaterialLibraryLocal>&
                                                     yamlroot);
     }
     catch (YAML::Exception const& e) {
-        Base::Console().error("YAML parsing error: '%s'\n", path.toStdString().c_str());
-        Base::Console().error("\t'%s'\n", e.what());
+        Base::Console().error("YAML parsing error: '{}'\n", path.toStdString());
+        Base::Console().error("\t'{}'\n", e.what());
         showYaml(yamlroot);
     }
 
@@ -438,7 +438,7 @@ MaterialLoader::getMaterialFromPath(const std::shared_ptr<MaterialLibraryLocal>&
     Base::FileInfo info(pathName);
     Base::ifstream fin(info);
     if (!fin) {
-        Base::Console().error("YAML file open error: '%s'\n", pathName.c_str());
+        Base::Console().error("YAML file open error: '{}'\n", pathName);
         return model;
     }
 
@@ -449,8 +449,8 @@ MaterialLoader::getMaterialFromPath(const std::shared_ptr<MaterialLibraryLocal>&
         model = getMaterialFromYAML(materialLibrary, yamlroot, path);
     }
     catch (YAML::Exception const& e) {
-        Base::Console().error("YAML parsing error: '%s'\n", pathName.c_str());
-        Base::Console().error("\t'%s'\n", e.what());
+        Base::Console().error("YAML parsing error: '{}'\n", pathName);
+        Base::Console().error("\t'{}'\n", e.what());
         showYaml(yamlroot);
     }
 
@@ -464,7 +464,7 @@ void MaterialLoader::showYaml(const YAML::Node& yaml)
 
     out << yaml;
     std::string logData = out.str();
-    Base::Console().log("%s\n", logData.c_str());
+    Base::Console().log("{}\n", logData);
 }
 
 
@@ -485,9 +485,9 @@ void MaterialLoader::dereference(
         }
         catch (std::out_of_range&) {
             Base::Console().log(
-                "Unable to apply inheritance for material '%s', parent '%s' not found.\n",
-                material->getName().toStdString().c_str(),
-                parentUUID.toStdString().c_str());
+                "Unable to apply inheritance for material '{}', parent '{}' not found.\n",
+                material->getName().toStdString(),
+                parentUUID.toStdString());
             return;
         }
 

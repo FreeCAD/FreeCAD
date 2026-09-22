@@ -103,7 +103,7 @@ void AutoSaver::flushPendingSave(const QString& documentName)
         saveDocument(it->first, *it->second);
     }
     catch (...) {
-        Base::Console().error("Failed to auto-save document '%s'\n", it->first.c_str());
+        Base::Console().error("Failed to auto-save document '{}'\n", it->first);
     }
 }
 
@@ -197,7 +197,7 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
     }
 
     Base::Console().log(
-        "Save auto-recovery file in %fs\n",
+        "Save auto-recovery file in {:f}s\n",
         Base::TimeElapsed::diffTimeF(startTime, Base::TimeElapsed())
     );
     saver.scheduleQueuedRetry();
@@ -213,7 +213,7 @@ void AutoSaver::timerEvent(QTimerEvent* event)
                 break;
             }
             catch (...) {
-                Base::Console().error("Failed to auto-save document '%s'\n", it.first.c_str());
+                Base::Console().error("Failed to auto-save document '{}'\n", it.first);
             }
         }
     }

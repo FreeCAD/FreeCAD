@@ -21,7 +21,7 @@
 
 #include <CXX/Python3/Objects.hxx>
 
-#include <fmt/format.h>
+#include <format>
 
 #include <string>
 #include <string_view>
@@ -36,7 +36,7 @@ std::string CrashFramePy::representation() const
 {
     const PointerType frame = getParsedFramePtr();
     const std::string& module = frame->modulePath;
-    return fmt::format(
+    return std::format(
         "<CrashFrame 0x{:016X} in {}: {}>",
         frame->rawAddress,
         module.empty() ? "<unknown module>"sv : module,
