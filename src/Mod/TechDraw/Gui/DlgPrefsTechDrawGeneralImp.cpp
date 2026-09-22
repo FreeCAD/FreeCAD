@@ -25,10 +25,13 @@
  ***************************************************************************/
 
 
+#include <QComboBox>
+
 #include "DlgPrefsTechDrawGeneralImp.h"
 #include "ui_DlgPrefsTechDrawGeneral.h"
 #include "PreferencesGui.h"
 #include "DrawGuiUtil.h"
+#include "HatchPatterns.h"
 
 
 using namespace TechDrawGui;
@@ -48,6 +51,14 @@ DlgPrefsTechDrawGeneralImp::DlgPrefsTechDrawGeneralImp( QWidget* parent )
     ui->pfc_DefDir->setMode(Gui::FileChooser::Mode::Directory);
     ui->pfc_Welding->setMode(Gui::FileChooser::Mode::Directory);
     ui->fcSymbolDir->setMode(Gui::FileChooser::Mode::Directory);
+
+    HatchPatterns::populate(ui->patternComboBox);
+    ui->patternComboBox->addItem(tr("Last used"));
+
+    connect(ui->openPatternsFolder,
+            &QPushButton::clicked,
+            this,
+            &HatchPatterns::openUserDirectory);
 }
 
 DlgPrefsTechDrawGeneralImp::~DlgPrefsTechDrawGeneralImp()
@@ -70,11 +81,8 @@ void DlgPrefsTechDrawGeneralImp::saveSettings()
 
     ui->pfc_DefTemp->onSave();
     ui->pfc_DefDir->onSave();
-    ui->pfc_HatchFile->onSave();
     ui->pfc_LineGroup->onSave();
     ui->pfc_Welding->onSave();
-    ui->pfc_FilePattern->onSave();
-    ui->le_NamePattern->onSave();
     ui->fcSymbolDir->onSave();
 
     ui->cb_ShowGrid->onSave();
@@ -88,6 +96,8 @@ void DlgPrefsTechDrawGeneralImp::saveSettings()
     ui->psb_SnapFactor->onSave();
     ui->cb_SnapHighlights->onSave();
     ui->psb_HighlightSnapFactor->onSave();
+
+    HatchPatterns::saveDefaultPattern(ui->patternComboBox->currentData().value<PatternEntry>());
 }
 
 void DlgPrefsTechDrawGeneralImp::loadSettings()
@@ -110,11 +120,8 @@ void DlgPrefsTechDrawGeneralImp::loadSettings()
 
     ui->pfc_DefTemp->onRestore();
     ui->pfc_DefDir->onRestore();
-    ui->pfc_HatchFile->onRestore();
     ui->pfc_LineGroup->onRestore();
     ui->pfc_Welding->onRestore();
-    ui->pfc_FilePattern->onRestore();
-    ui->le_NamePattern->onRestore();
     ui->fcSymbolDir->onRestore();
 
 
@@ -138,7 +145,10 @@ void DlgPrefsTechDrawGeneralImp::loadSettings()
 
     ui->cb_SnapHighlights->onRestore();
     ui->psb_HighlightSnapFactor->onRestore();
+
+    HatchPatterns::select(ui->patternComboBox, HatchPatterns::defaultPattern());
 }
+
 
 /**
  * Sets the strings of the subwidgets using the current language.
@@ -147,6 +157,11 @@ void DlgPrefsTechDrawGeneralImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
+        for (int i = 0; i < ui->patternComboBox->count(); ++i) {
+            if (!ui->patternComboBox->itemData(i).isValid()) {
+                ui->patternComboBox->setItemText(i, tr("Last used"));
+            }
+        }
     }
     else {
         QWidget::changeEvent(e);
