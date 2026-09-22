@@ -892,10 +892,7 @@ def restore_storey_data(obj, ifcentity, ifcfile):
         return
 
     elevation = getattr(ifcentity, "Elevation", None)
-    if (
-        elevation is not None
-        and "Placement" in obj.PropertiesList
-    ):
+    if elevation is not None and "Placement" in obj.PropertiesList:
         obj.Placement.Base.z = elevation * (1 / get_scale(ifcfile))
 
     if "LevelOffset" in obj.PropertiesList:
