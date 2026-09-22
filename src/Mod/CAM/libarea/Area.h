@@ -130,8 +130,15 @@ struct ConversionMetadata
     // the order and orientation of open curves.
     std::map<std::pair<int64_t, int64_t>, SegmentData> edgeData;
 
+    // Maps each endpoint z-value to the z-values of all edges' other endpoints that touch it.
+    // A single z may map to multiple edges when two input points share x,y coordinates.
+    std::map<int64_t, std::vector<int64_t>> edges;
+
     // Deduplication cache: maps (x,y) in Clipper coordinates to the z-label already assigned there
     std::map<std::pair<int64_t, int64_t>, int64_t> xy_to_z;
+
+    // Reverse of xy_to_z: maps z-label to its (x,y) in Clipper coordinates
+    std::map<int64_t, std::pair<int64_t, int64_t>> z_to_xy;
 
     // Track the next z-value available for allocation
     int64_t z_next;
@@ -232,8 +239,20 @@ public:
     void ReorderOpenPaths(Clipper2Lib::Paths64& paths, const ConversionMetadata& metadata);
 
 private:
-    // Returns (minZ, maxZ) of the vertices of the parent edge
-    static std::pair<int64_t, int64_t> getParentEdge(
+    static std::optional<std::pair<int64_t, int64_t>> getParentEdge(
+        const Clipper2Lib::Point64& p1,
+        const Clipper2Lib::Point64& p2,
+        const ConversionMetadata& metadata
+    );
+
+    static SegmentData getParentMetadataFallback(
+        const Clipper2Lib::Point64& p1,
+        const Clipper2Lib::Point64& p2,
+        const ConversionMetadata& metadata
+    );
+
+    // Returns metadata for the parent edge of the clipper edge (p1, p2)
+    static SegmentData getParentMetadata(
         const Clipper2Lib::Point64& p1,
         const Clipper2Lib::Point64& p2,
         const ConversionMetadata& metadata
