@@ -10,7 +10,6 @@
 #include <algorithm>
 #include <cassert>
 #include <cmath>
-#include <limits>
 #include <optional>
 #include <stdexcept>
 #include <vector>
@@ -185,9 +184,6 @@ void CArea::_Clip(
         const int64_t e2min = std::min(e2bot.z, e2top.z);
         const int64_t e2max = std::max(e2bot.z, e2top.z);
         metadata.intersections.insert({pt.z, std::make_tuple(e1min, e1max, e2min, e2max)});
-        // std::cerr << " intersection z=" << pt.z << " e1=(" << e1min << "," << e1max << ")"
-        //           << " e2=(" << e2min << "," << e2max << ")"
-        //           << " pt=(" << pt.x << "," << pt.y << "," << pt.z << ")\n";
     });
 
     // Execute the operation, potentially producing both closed and open path results
@@ -609,8 +605,7 @@ Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
 
             // Save metadata for the new segment
             const auto key = std::make_pair(std::min(pPrev.z, newPt.z), std::max(pPrev.z, newPt.z));
-            const SegmentData seg {vertex, edgeTag, curveIndex, vertexIndex};
-            metadata.edgeData[key] = seg;
+            metadata.edgeData[key] = SegmentData {vertex, edgeTag, curveIndex, vertexIndex};
             metadata.edges[pPrev.z].push_back(newPt.z);
             metadata.edges[newPt.z].push_back(pPrev.z);
             pPrev = newPt;
@@ -669,8 +664,7 @@ Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
                 }
 
                 const auto key = std::make_pair(std::min(pPrev.z, newPt.z), std::max(pPrev.z, newPt.z));
-                const SegmentData seg {vertex, edgeTag, curveIndex, vertexIndex};
-                metadata.edgeData[key] = seg;
+                metadata.edgeData[key] = SegmentData {vertex, edgeTag, curveIndex, vertexIndex};
                 metadata.edges[pPrev.z].push_back(newPt.z);
                 metadata.edges[newPt.z].push_back(pPrev.z);
                 pPrev = newPt;
@@ -707,8 +701,6 @@ void CArea::SetFromResult(
     if (!isClosed) {
         ReorderOpenPaths(paths, metadata);
     }
-
-    // std::cerr << "\n\nSetFromResult: output vertices\n";
 
     // Convert each path back to a CCurve
     for (const Path64& path : paths) {
@@ -772,9 +764,9 @@ void CArea::SetFromResult(
             const Point64& v0 = path[iEdge];
             const Point64& v1 = path[(iEdge + 1) % path.size()];
 
-            // Parent edge (either the same edge, or the edge that was shortened to create this
-            // edge) Check for/handle tag sentinel value. The sentinel value is provided only when
-            // the parent edge lookup fails. We handle this by assuming the tag is unchanged.
+            // Look up the segment data of the parent edge. Check for and handle the tag sentinel
+            // value. The sentinel value is provided only when the parent edge lookup fails.
+            // We handle this by assuming the tag is unchanged.
             SegmentData parentData = getParentMetadata(v0, v1, metadata);
             if (parentData.edgeTag == -2) {
                 parentData.edgeTag = tag;
@@ -820,18 +812,6 @@ void CArea::SetFromResult(
                 const bool fullLoop = std::prev(c.m_vertices.end(), 2)->m_p == edge.m_p;
                 if (!fullLoop) {
                     prev.m_p = edge.m_p;
-                    {
-                        // const double dx = v1.x - v0.x, dy = v1.y - v0.y;
-                        // const double lc = sqrt(dx * dx + dy * dy);
-                        // std::cerr << " z=(" << v0.z << "," << v1.z << ")"
-                        //           << " clipper=(" << v0.x << "," << v0.y << ")->(" << v1.x << ","
-                        //           << v1.y << ")"
-                        //           << " type=" << edge.m_type << " p=(" << edge.m_p.x << ","
-                        //           << edge.m_p.y << ")"
-                        //           << " c=(" << edge.m_c.x << "," << edge.m_c.y << ")"
-                        //           << " len=" << lc << " (" << lc / CArea::m_clipper_scale << ")"
-                        //           << " [update]\n";
-                    }
                 }
                 else {
                     // The edge cannot be extended, because it would complete a circle and CVertex
@@ -839,46 +819,12 @@ void CArea::SetFromResult(
                     // circle as 2 semi circles
                     const heeks::Point mid {2 * edge.m_c.x - edge.m_p.x, 2 * edge.m_c.y - edge.m_p.y};
                     prev.m_p = mid;
-                    {
-                        // const double dx = v1.x - v0.x, dy = v1.y - v0.y;
-                        // const double lc = sqrt(dx * dx + dy * dy);
-                        // std::cerr << " z=(" << v0.z << "," << v1.z << ")"
-                        //           << " clipper=(" << v0.x << "," << v0.y << ")->(" << v1.x << ","
-                        //           << v1.y << ")"
-                        //           << " type=" << edge.m_type << " p=(" << mid.x << "," << mid.y
-                        //           << ")"
-                        //           << " c=(" << edge.m_c.x << "," << edge.m_c.y << ")"
-                        //           << " len=" << lc << " (" << lc / CArea::m_clipper_scale << ")"
-                        //           << " [update]\n";
-                    }
                     c.m_vertices.push_back(edge);
-                    {
-                        // const double dx = v1.x - v0.x, dy = v1.y - v0.y;
-                        // const double lc = sqrt(dx * dx + dy * dy);
-                        // std::cerr << " z=(" << v0.z << "," << v1.z << ")"
-                        //           << " clipper=(" << v0.x << "," << v0.y << ")->(" << v1.x << ","
-                        //           << v1.y << ")"
-                        //           << " type=" << edge.m_type << " p=(" << edge.m_p.x << ","
-                        //           << edge.m_p.y << ")"
-                        //           << " c=(" << edge.m_c.x << "," << edge.m_c.y << ")"
-                        //           << " len=" << lc << " (" << lc / CArea::m_clipper_scale << ")\n";
-                    }
                 }
             }
             else {
                 // The edge is not an extension of the previous CVertex; just add it
                 c.m_vertices.push_back(edge);
-                {
-                    // const double dx = v1.x - v0.x, dy = v1.y - v0.y;
-                    // const double lc = sqrt(dx * dx + dy * dy);
-                    // std::cerr << " z=(" << v0.z << "," << v1.z << ")"
-                    //           << " clipper=(" << v0.x << "," << v0.y << ")->(" << v1.x << ","
-                    //           << v1.y << ")"
-                    //           << " type=" << edge.m_type << " p=(" << edge.m_p.x << ","
-                    //           << edge.m_p.y << ")"
-                    //           << " c=(" << edge.m_c.x << "," << edge.m_c.y << ")"
-                    //           << " len=" << lc << " (" << lc / CArea::m_clipper_scale << ")\n";
-                }
             }
         }
 
@@ -1030,9 +976,7 @@ void CArea::Offset(double offset)
 
     // I'm preserving this Reorder() call to preserve old behavior, but imo this should not be part
     // of Offset's spec
-    // std::cerr << "Starting Reorder nonsense\n";
     this->Reorder();
-    // std::cerr << "Ending Reorder nonsense\n";
 }
 
 CArea CArea::OpenOffset(double offset)
@@ -1100,7 +1044,6 @@ SegmentData CArea::getParentMetadataFallback(
     // Loop over them, and find the closest one to the provided edge. We require
     // distance less than half the diagnal of a square, since rounding to the
     // nearest integer never produces error larger than that.
-    double debugBestDistSq = std::numeric_limits<double>::max();
     double bestDistSq = 0.5;  // (sqrt(2)/2)^2
     std::optional<SegmentData> best;
     for (const auto& [zMin, zMax] : edges) {
@@ -1130,9 +1073,6 @@ SegmentData CArea::getParentMetadataFallback(
             PerpendicDistFromLineSqrd(p2, ptA, ptB)
         );
 
-        if (distSq < debugBestDistSq) {
-            debugBestDistSq = distSq;
-        }
         if (distSq < bestDistSq) {
             const auto parentEdge = getParentEdge(ptA, ptB, metadata);
             if (parentEdge) {
@@ -1141,40 +1081,21 @@ SegmentData CArea::getParentMetadataFallback(
                     bestDistSq = distSq;
                     best = it->second;
                 }
-                else {
-                    std::cerr << "MISSING METADATA!!!: dist=" << sqrt(distSq) << " p1=(" << p1.x
-                              << "," << p1.y << "," << p1.z << ")"
-                              << " p2=(" << p2.x << "," << p2.y << "," << p2.z << ")"
-                              << " ptA=(" << ptA.x << "," << ptA.y << "," << ptA.z << ")"
-                              << " ptB=(" << ptB.x << "," << ptB.y << "," << ptB.z << ")\n";
-                }
-            }
-            else {
-                std::cerr << "MISSING METADATA!!!: dist=" << sqrt(distSq) << " p1=(" << p1.x << ","
-                          << p1.y << "," << p1.z << ")"
-                          << " p2=(" << p2.x << "," << p2.y << "," << p2.z << ")"
-                          << " ptA=(" << ptA.x << "," << ptA.y << "," << ptA.z << ")"
-                          << " ptB=(" << ptB.x << "," << ptB.y << "," << ptB.z << ")\n";
             }
         }
     }
 
     if (best) {
-        std::cerr << "(TODO delete this): dist " << sqrt(bestDistSq) << " for z=(" << p1.z << ","
-                  << p2.z << ")\n";
         return *best;
     }
 
-    // Ultimate fallback: pretend it's a line
-    // This requires sentinel values for unknown/missing data.
+    // Ultimate fallback: pretend it's a line.
+    // This is not a desirable fallback. Hopefully the previous process finds the correct parent
+    // edge. This requires sentinel values for unknown/missing data.
     //   edgeTag = -2, to indicate we don't know the tag
     //   curveIndex = vertexIndex = -1, acceptable when used for sorting open paths
-    const int64_t minIntersectionZ = metadata.intersections.empty()
-        ? metadata.z_next
-        : metadata.intersections.begin()->first;
     std::cerr << "Warning: getParentMetadataFallback: no parent edge found for z=(" << p1.z << ","
-              << p2.z << "), min intersection z=" << minIntersectionZ
-              << ", best dist=" << sqrt(debugBestDistSq) << ", falling back to line\n";
+              << p2.z << "), falling back to line\n";
     const PointD pt = ToPointD(p2);
     return {{{pt.x, pt.y}}, -2, -1, -1};
 }

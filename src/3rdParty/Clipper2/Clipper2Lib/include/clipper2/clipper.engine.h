@@ -211,7 +211,6 @@ namespace Clipper2Lib {
 		inline bool PopScanline(int64_t &y);
 		inline bool PopLocalMinima(int64_t y, LocalMinima*& local_minima);
 		void DisposeAllOutRecs();
-		void PrintOutRecs();
 		void DisposeVerticesAndLocalMinima();
 		void DeleteEdges(Active*& e);
 		inline void AddLocMin(Vertex &vert, PathType polytype, bool is_open);
