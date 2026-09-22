@@ -26,6 +26,7 @@
 #pragma once
 
 #include <type_traits>
+#include <utility>
 
 /*!
  Using enum classes as type-safe bitmasks.
@@ -59,32 +60,23 @@ template<> struct enum_traits<void> {
     template<class T, class R = T>
     using t = typename std::enable_if<std::is_enum<T>::value &&
         enum_traits<T>::allow_bitops, R>::type;
-
-    template<class T>
-    using u = typename std::underlying_type<T>::type;
 };
 
 template<class T>
 constexpr enum_traits<>::t<T> operator~(T a) {
-    return static_cast<T>(~static_cast<enum_traits<>::u<T>>(a));
+    return static_cast<T>(~std::to_underlying(a));
 }
 template<class T>
 constexpr enum_traits<>::t<T> operator|(T a, T b) {
-    return static_cast<T>(
-        static_cast<enum_traits<>::u<T>>(a) |
-        static_cast<enum_traits<>::u<T>>(b));
+    return static_cast<T>(std::to_underlying(a) | std::to_underlying(b));
 }
 template<class T>
 constexpr enum_traits<>::t<T> operator&(T a, T b) {
-    return static_cast<T>(
-        static_cast<enum_traits<>::u<T>>(a) &
-        static_cast<enum_traits<>::u<T>>(b));
+    return static_cast<T>(std::to_underlying(a) & std::to_underlying(b));
 }
 template<class T>
 constexpr enum_traits<>::t<T> operator^(T a, T b) {
-    return static_cast<T>(
-        static_cast<enum_traits<>::u<T>>(a) ^
-        static_cast<enum_traits<>::u<T>>(b));
+    return static_cast<T>(std::to_underlying(a) ^ std::to_underlying(b));
 }
 template<class T>
 constexpr enum_traits<>::t<T, T&> operator|=(T& a, T b) {
@@ -117,15 +109,13 @@ public:
     // Linter seems wrong on next line, don't want explicit here forcing downstream changes
     constexpr inline Flags(Enum f = Enum()) : i(f) {}   // NOLINT (runtime/explicit)
     constexpr bool testFlag(Enum f) const {
-        using u = typename std::underlying_type<Enum>::type;
-        return (i & f) == f && (static_cast<u>(f) != 0 || i == f);
+        return (i & f) == f && (std::to_underlying(f) != 0 || i == f);
     }
     constexpr inline void setFlag(Enum f, bool on = true) {
         on ? (i |= f) : (i &= ~f);
     }
     constexpr bool isEqual(Flags f) const {
-        using u = typename std::underlying_type<Enum>::type;
-        return static_cast<u>(i) == static_cast<u>(f.i);
+        return std::to_underlying(i) == std::to_underlying(f.i);
     }
     constexpr Enum getFlags() const {
         return i;
@@ -169,8 +159,8 @@ public:
     explicit operator bool() const {
         return toUnderlyingType() != 0;
     }
-    typename std::underlying_type<Enum>::type toUnderlyingType() const {
-        return static_cast<typename std::underlying_type<Enum>::type>(i);
+    std::underlying_type_t<Enum> toUnderlyingType() const {
+        return std::to_underlying(i);
     }
 };
 }
