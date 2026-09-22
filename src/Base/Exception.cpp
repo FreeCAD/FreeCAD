@@ -501,12 +501,6 @@ PyObject* UnknownProgramOption::getPyExceptionType() const
 
 // ---------------------------------------------------------
 
-ProgramInformation::ProgramInformation(const std::string& message)
-    : Exception(message)
-{}
-
-// ---------------------------------------------------------
-
 TypeError::TypeError(const std::string& message)
     : Exception(message)
 {}

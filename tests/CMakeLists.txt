@@ -125,6 +125,27 @@ add_subdirectory(src)
 include(GoogleTest)
 set(CMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE PRE_TEST)
 
+set(_command_line_characterization_args
+    --freecadcmd "$<TARGET_FILE:FreeCADMainCmd>"
+)
+if(BUILD_GUI)
+    list(APPEND _command_line_characterization_args
+        --freecad "$<TARGET_FILE:FreeCADMain>"
+    )
+endif()
+add_test(
+    NAME CommandLine_characterization
+    COMMAND
+        "${Python3_EXECUTABLE}"
+        "${CMAKE_CURRENT_SOURCE_DIR}/command_line_characterization.py"
+        ${_command_line_characterization_args}
+)
+unset(_command_line_characterization_args)
+if(WIN32)
+    set_tests_properties(CommandLine_characterization PROPERTIES
+        ENVIRONMENT_MODIFICATION "${_test_env_mod}")
+endif()
+
 foreach (exe ${TestExecutables})
     if(WIN32)
         if(CMAKE_CONFIGURATION_TYPES)

@@ -3,17 +3,19 @@
 #pragma once
 
 #include <App/Application.h>
+#include <App/CommandLine.h>
+#include <App/ProcessArguments.h>
 
 namespace tests
 {
 
 static void initApplication()
 {
-    if (App::Application::GetARGC() == 0) {
-        constexpr int argc = 1;
-        std::array<const char*, argc> argv {"FreeCAD"};
+    if (!App::Application::isInitialized()) {
         App::Application::Config()["ExeName"] = "FreeCAD";
-        App::Application::init(argc, const_cast<char**>(argv.data()));  // NOLINT
+        App::ProcessArguments arguments(std::vector<std::string> {"FreeCAD"});
+        const auto options = App::loadStartupConfiguration(App::Application::Config()["ExeName"]);
+        App::Application::init(options, arguments);
     }
 }
 

@@ -62,14 +62,6 @@ public:
         std::stringstream& str,
         const std::map<std::string, std::string>& mConfig);
 
-    /**
-     * Constant that request verbose version information to be printed.
-     *
-     * If an exception has this message, it means that we will print verbose
-     * version information.
-     */
-    static constexpr const char* verboseVersionEmitMessage{"verbose_version"};
-
 private:
     static void getSystemInformation(std::stringstream& str);
     static void getVersionInformation(

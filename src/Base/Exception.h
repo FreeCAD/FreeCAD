@@ -393,12 +393,6 @@ public:
     PyObject* getPyExceptionType() const override;
 };
 
-class BaseExport ProgramInformation: public Exception
-{
-public:
-    explicit ProgramInformation(const std::string& message = "Program information");
-};
-
 class BaseExport TypeError: public Exception
 {
 public:

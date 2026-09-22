@@ -40,7 +40,7 @@
 namespace App::Util
 {
 
-std::pair<std::string, std::string> customSyntax(std::string_view strIn)
+inline std::pair<std::string, std::string> customSyntax(std::string_view strIn)
 {
     if (strIn.size() < 2) {
         return {};

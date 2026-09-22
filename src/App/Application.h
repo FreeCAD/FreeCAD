@@ -48,6 +48,7 @@
 
 #include <Base/Observer.h>
 #include <Base/Parameter.h>
+#include "ProcessArguments.h"
 #include "TransactionDefs.h"
 
 // forward declarations
@@ -62,6 +63,9 @@ class ConsoleObserverFile;
 
 namespace App
 {
+
+struct StartupOptions;
+struct StartupResult;
 
 class Document;
 class DocumentObject;
@@ -732,13 +736,11 @@ public:
      * @{
      */
 
-    /**
-     * @brief Initialize the application.
+    /** Initialize from options parsed by the process entry point.
      *
-     * @param[in] argc The argument count.
-     * @param[in] argv The argument values.
+     * The caller keeps the argument buffers alive through startup.
      */
-    static void init(int argc, char ** argv);
+    static StartupResult init(const StartupOptions& options, ProcessArguments& arguments);
 
     /// Initialize FreeCAD's type system for objects, properties, etc.
     static void initTypes();
@@ -772,11 +774,8 @@ public:
     /// Get the application configuration map.
     static std::map<std::string, std::string> &Config(){return mConfig;}
 
-    /// Get the argument count that was provided at the start of the application.
-    static int GetARGC(){return _argc;}
-
-    /// Get the argument values that were provided at the start of the application.
-    static char** GetARGV(){return _argv;}
+    /// Whether the application singleton has been created.
+    static bool isInitialized();
 
     /// Get a constant unique ID specific to this application instance.
     static int64_t uniqueInstanceId();
@@ -997,7 +996,8 @@ private:
     friend class ApplicationObserver;
 
     /* Private Init, Destruct, and Access methods */
-    static void initConfig(int argc, char ** argv);
+    static StartupResult initConfig(const StartupOptions& options, ProcessArguments& arguments);
+    static void initStartupConfig(const ProcessArguments& arguments);
     static void initCrashReporter();
     static void initApplication();
     static void logStatus();
@@ -1022,8 +1022,6 @@ private:
     static std::map<std::string,std::string> mConfig;
     // Management of and access to applications directories
     static std::unique_ptr<ApplicationDirectories> _appDirs;
-    static int _argc;
-    static char ** _argv;
 
     struct FileTypeItem {
         std::string filter;
