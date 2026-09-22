@@ -24,19 +24,14 @@ bool CArea::HolesLinked()
 
 double CArea::m_clipper_scale = 10000.0;
 
-static const int min_arc_points = 1;
+static const int min_arc_points = 4;
 
 // Convert between PointD (double) and Point64 (int64) with scaling
-//
-// Clipper seems to silently remove adjacent points during clipping operations. To
-// prevent this from ruining the map from clipper edges back to CVertex edges,
-// this function rounds all points to an even number, so no distinct points are
-// adjacent
 static Point64 ToPoint64(const PointD& p)
 {
     return Point64(
-        (int64_t)(floor(p.x * CArea::m_clipper_scale / 2 + 0.5)) * 2,
-        (int64_t)(floor(p.y * CArea::m_clipper_scale / 2 + 0.5)) * 2,
+        (int64_t)(floor(p.x * CArea::m_clipper_scale + 0.5)),
+        (int64_t)(floor(p.y * CArea::m_clipper_scale + 0.5)),
         p.z
     );
 }
@@ -547,105 +542,12 @@ void CArea::NaiveOffset(double offset)
     m_curves = std::move(offset_curves);
 }
 
-// Remove CVertex segments shorter than minLen, keeping m_edgeTags in sync.
-static CCurve filterShortSegments(const CCurve& in, double minLen)
-{
-    if (in.m_vertices.size() <= 1) {
-        return in;
-    }
-
-    const bool isClosed = in.IsClosed();
-    const bool hasTags = !in.m_edgeTags.empty();
-
-    // Build a doubly-linked list of (CVertex, tag) pairs from the input vertices/tags.
-    // For closed curves, omit the dummy start-position node
-    std::list<std::pair<CVertex, int>> edges;
-    if (!isClosed) {
-        edges.push_back({in.m_vertices.front(), 1});
-    }
-
-    {
-        auto tagIt = in.m_edgeTags.cbegin();
-        for (auto vIt = std::next(in.m_vertices.cbegin()); vIt != in.m_vertices.cend(); ++vIt) {
-            const int tag = (hasTags && tagIt != in.m_edgeTags.cend()) ? *tagIt++ : 1;
-            edges.push_back({*vIt, tag});
-        }
-    }
-
-    // Loop through the list, deleting short edges
-    auto cursor = edges.begin();
-    while (cursor != edges.end()) {
-        // Never delete the first edge of an open curve
-        if (!isClosed && cursor == edges.begin()) {
-            ++cursor;
-            continue;
-        }
-
-        // Compute the edge length
-        const auto pred = (cursor == edges.begin()) ? std::prev(edges.end()) : std::prev(cursor);
-        const heeks::Point& prevPt = pred->first.m_p;
-        const CVertex& v = cursor->first;
-
-        const double segdx = v.m_p.x - prevPt.x;
-        const double segdy = v.m_p.y - prevPt.y;
-        double len = sqrt(segdx * segdx + segdy * segdy);
-
-        if (v.m_type != 0 && len < minLen) {
-            // Chord is short; compute exact arc length = radius * |sweep|
-            const double dx = prevPt.x - v.m_c.x;
-            const double dy = prevPt.y - v.m_c.y;
-            const double radius = sqrt(dx * dx + dy * dy);
-            const double phi0 = atan2(prevPt.y - v.m_c.y, prevPt.x - v.m_c.x);
-            double phi1 = atan2(v.m_p.y - v.m_c.y, v.m_p.x - v.m_c.x);
-            if (v.m_type == -1 && phi1 > phi0) {
-                phi1 -= 2 * M_PI;
-            }
-            else if (v.m_type == 1 && phi1 < phi0) {
-                phi1 += 2 * M_PI;
-            }
-            len = radius * std::abs(phi1 - phi0);
-        }
-
-        // If the edge is short, delete it. Expand the previous edge to end at its end point
-        if (len < minLen) {
-            std::cerr << "filterShortSegments: skipping short segment len=" << len << "\n";
-            pred->first.m_p = v.m_p;
-            cursor = edges.erase(cursor);
-        }
-        else {
-            // Otherwise advance
-            ++cursor;
-        }
-    }
-
-    // For closed curves, add back the dummy start-position node
-    if (isClosed) {
-        edges.push_front({CVertex(0, edges.back().first.m_p, {0, 0}), 1});
-    }
-
-    // Reconstruct: first node has no incoming tag, the rest do.
-    CCurve out;
-    bool first = true;
-    for (const auto& [vertex, tag] : edges) {
-        out.m_vertices.push_back(vertex);
-        if (hasTags && !first) {
-            out.m_edgeTags.push_back(tag);
-        }
-        first = false;
-    }
-    return out;
-}
-
 // Convert the input CCurve to clipper, populating metadata.
 //
 // Edge tags are read from curve.m_edgeTags. If that list is empty, all edges
 // are treated as if they were tagged 1 (positive offset edge).
-Path64 CArea::MakePoly(const CCurve& rawCurve, ConversionMetadata& metadata) const
+Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
 {
-    // filter out all segment shorter than the diagonal of a 2x2 square, to ensure there is a pixel
-    // available in the middle of every edge
-    const CCurve curve = filterShortSegments(rawCurve, 2.0 * sqrt(2) / CArea::m_clipper_scale);
-
     if (!curve.m_vertices.size()) {
         return {};
     }
