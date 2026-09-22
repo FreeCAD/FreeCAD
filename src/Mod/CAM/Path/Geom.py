@@ -107,6 +107,12 @@ def isRoughly(float1, float2, error=Tolerance):
     return math.fabs(float1 - float2) <= error
 
 
+def isStrictlyGreater(float1, float2, error=Tolerance):
+    """isStrictlyGreater(float1, float2, [error=Tolerance])
+    Returns true if float1 is greater than float2 by more than a given error."""
+    return float1 > float2 and not isRoughly(float1, float2, error)
+
+
 def pointsCoincide(p1, p2, error=Tolerance):
     """pointsCoincide(p1, p2, [error=Tolerance])
     Return True if two points are roughly identical (see also isRoughly)."""
