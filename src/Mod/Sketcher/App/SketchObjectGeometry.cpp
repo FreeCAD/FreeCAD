@@ -1053,8 +1053,6 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomBSplineCurve>(const in
         icon.push_back(newConstr);
     }
 
-    Q_UNUSED(isfirstweightconstrained);
-
     addAndCleanup(igeo, icon);
     return incrgeo;  // number of added elements
 }
