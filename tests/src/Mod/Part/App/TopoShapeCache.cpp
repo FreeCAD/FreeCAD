@@ -93,7 +93,7 @@ TEST_F(TopoShapeCacheTest, InsertRelationIntoEmptyTableCompacts)
     auto mappedName = Data::MappedName::fromRawData("#94;:G0;XTR;:H19:8,F;:H1a,F;BND:-1:0;:H1b:10,F");
     ASSERT_TRUE(mappedName.isRaw());
     Data::MappedElement mappedElement1 {indexedName, mappedName};
-    QVector<Data::MappedElement> vectorOfElements {mappedElement1};
+    std::vector<Data::MappedElement> vectorOfElements {mappedElement1};
     TopoDS_Vertex vertex;
     Part::TopoShapeCache cache(vertex);
     Part::ShapeRelationKey key {mappedName, Part::HistoryTraceType::followTypeChange};
@@ -113,14 +113,14 @@ TEST_F(TopoShapeCacheTest, InsertAlreadyExistsUpdatesExisting)
     Data::IndexedName indexedName {"EDGE1"};
     Data::MappedName mappedName("#94;:G0;XTR;:H19:8,F;:H1a,F;BND:-1:0;:H1b:10,F");
     Data::MappedElement mappedElement1 {indexedName, mappedName};
-    QVector<Data::MappedElement> vectorOfElements {mappedElement1};
+    std::vector<Data::MappedElement> vectorOfElements {mappedElement1};
     TopoDS_Vertex vertex;
     Part::TopoShapeCache cache(vertex);
     Part::ShapeRelationKey key {mappedName, Part::HistoryTraceType::followTypeChange};
 
     // Act
     cache.insertRelation(key, vectorOfElements);
-    QVector<Data::MappedElement> emptyVector;
+    std::vector<Data::MappedElement> emptyVector;
     cache.insertRelation(key, emptyVector);
 
     // Assert
