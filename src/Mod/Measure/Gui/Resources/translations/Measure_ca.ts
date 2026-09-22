@@ -196,7 +196,7 @@
       <location filename="../../Command.cpp" line="52"/>
       <location filename="../../Command.cpp" line="54"/>
       <source>Measures a feature</source>
-      <translation type="unfinished">Measures a feature</translation>
+      <translation>Mesura una característica</translation>
     </message>
   </context>
   <context>
@@ -482,17 +482,17 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="650"/>
       <source>J1</source>
-      <translation type="unfinished">J1</translation>
+      <translation>J1</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="677"/>
       <source>J2</source>
-      <translation type="unfinished">J2</translation>
+      <translation>J2</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="704"/>
       <source>J3</source>
-      <translation type="unfinished">J3</translation>
+      <translation>J3</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="749"/>
@@ -533,22 +533,22 @@
       <translation>Inèrcia</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="425"/>
+      <location filename="../../TaskMassProperties.cpp" line="434"/>
       <source>Close</source>
       <translation>Tanca</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="428"/>
+      <location filename="../../TaskMassProperties.cpp" line="437"/>
       <source>Save</source>
       <translation>Desa</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="432"/>
+      <location filename="../../TaskMassProperties.cpp" line="441"/>
       <source>Reset</source>
       <translation>Reinicia</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="1217"/>
+      <location filename="../../TaskMassProperties.cpp" line="1222"/>
       <source> (Average)</source>
       <translation> (Mitjana)</translation>
     </message>

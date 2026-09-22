@@ -72,13 +72,18 @@
 
 FC_LOG_LEVEL_INIT("Tree", false, true, true)
 
+#define TREE_SEND_MSG(notifier, msg) Base::Console().notify<Base::LogStyle::Message>(notifier, msg)
+#define TREE_SEND_WARN(notifier, msg) Base::Console().notify<Base::LogStyle::Warning>(notifier, msg)
+#define TREE_SEND_ERR(notifier, msg) Base::Console().notify<Base::LogStyle::Error>(notifier, msg)
+#define TREE_SEND_LOG(notifier, msg) Base::Console().notify<Base::LogStyle::Log>(notifier, msg)
+
 #define _TREE_PRINT(_level, _func, _msg) \
     _FC_PRINT(FC_LOG_INSTANCE, _level, _func, '[' << getTreeName() << "] " << _msg)
-#define TREE_MSG(_msg) _TREE_PRINT(FC_LOGLEVEL_MSG, notify<Base::LogStyle::Message>, _msg)
-#define TREE_WARN(_msg) _TREE_PRINT(FC_LOGLEVEL_WARN, notify<Base::LogStyle::Warning>, _msg)
-#define TREE_ERR(_msg) _TREE_PRINT(FC_LOGLEVEL_ERR, notify<Base::LogStyle::Error>, _msg)
-#define TREE_LOG(_msg) _TREE_PRINT(FC_LOGLEVEL_LOG, notify<Base::LogStyle::Log>, _msg)
-#define TREE_TRACE(_msg) _TREE_PRINT(FC_LOGLEVEL_TRACE, notify<Base::LogStyle::Log>, _msg)
+#define TREE_MSG(_msg) _TREE_PRINT(FC_LOGLEVEL_MSG, TREE_SEND_MSG, _msg)
+#define TREE_WARN(_msg) _TREE_PRINT(FC_LOGLEVEL_WARN, TREE_SEND_WARN, _msg)
+#define TREE_ERR(_msg) _TREE_PRINT(FC_LOGLEVEL_ERR, TREE_SEND_ERR, _msg)
+#define TREE_LOG(_msg) _TREE_PRINT(FC_LOGLEVEL_LOG, TREE_SEND_LOG, _msg)
+#define TREE_TRACE(_msg) _TREE_PRINT(FC_LOGLEVEL_TRACE, TREE_SEND_LOG, _msg)
 
 using namespace Gui;
 namespace sp = std::placeholders;
@@ -1672,14 +1677,9 @@ int TreeWidget::getIconSize()
     if (defaultSize == 0) {
         auto tree = instance();
         if (tree) {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-            QStyleOptionViewItem opt = tree->viewOptions();
-            defaultSize = opt.decorationSize.width();
-#else
             QStyleOptionViewItem opt;
             tree->initViewItemOption(&opt);
             defaultSize = opt.decorationSize.width();
-#endif
         }
         else {
             defaultSize = QApplication::style()->pixelMetric(QStyle::PM_SmallIconSize);
@@ -2152,13 +2152,24 @@ void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
             auto lines = manager->getLines();
 
             std::ostringstream ss;
-            ss << Command::getObjectCmd(vp->getObject()) << ".ViewObject.doubleClicked()";
+            App::DocumentObject* root = nullptr;
+            std::ostringstream subname;
+            objitem->getSubName(subname, root);
+            if (root) {
+                subname << vp->getObject()->getNameInDocument() << '.';
+            }
+            else {
+                root = vp->getObject();
+            }
+            const App::SubObjectT reference(root, subname.str().c_str());
+            ss << Command::getObjectCmd(vp->getObject()) << ".ViewObject.doubleClicked("
+               << Command::getObjectCmd(root) << ", '" << reference.getSubName() << "')";
 
             const char* commandText = vp->getTransactionText();
             if (commandText) {
                 appdoc->openTransaction(commandText);
 
-                if (!vp->doubleClicked()) {
+                if (!vp->doubleClickedObject(reference)) {
                     QTreeWidget::mouseDoubleClickEvent(event);
                 }
                 else if (lines == manager->getLines()) {
@@ -2166,7 +2177,7 @@ void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
                 }
             }
             else {
-                if (!vp->doubleClicked()) {
+                if (!vp->doubleClickedObject(reference)) {
                     QTreeWidget::mouseDoubleClickEvent(event);
                 }
                 else if (lines == manager->getLines()) {
@@ -2322,19 +2333,11 @@ public:
 QPoint getPos(QEvent* event)
 {
     if (auto* dragMoveEvent = dynamic_cast<QDragMoveEvent*>(event)) {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        return dragMoveEvent->pos();
-#else
         return dragMoveEvent->position().toPoint();
-#endif
     }
 
-    else if (auto* dropEvent = dynamic_cast<QDropEvent*>(event)) {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        return dropEvent->pos();
-#else
+    if (auto* dropEvent = dynamic_cast<QDropEvent*>(event)) {
         return dropEvent->position().toPoint();
-#endif
     }
 
     // For unsupported event types or if casting fails
@@ -6387,14 +6390,9 @@ void DocumentObjectItem::generateIcon(int currentStatus, QIcon::Mode mode, QIcon
     // get the original icon set
     QIcon icon_org = object()->getIcon();
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QStyleOptionViewItem opt = getTree()->viewOptions();
-    int w = opt.decorationSize.width();
-#else
     QStyleOptionViewItem opt;
     getTree()->initViewItemOption(&opt);
     int w = opt.decorationSize.width();
-#endif
 
     QPixmap pxOn, pxOff;
 
@@ -6557,6 +6555,17 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
     }
 
     this->setIcon(0, icon);
+}
+
+QVariant DocumentObjectItem::data(int column, int role) const
+{
+    if (column == 0 && role == Qt::ToolTipRole && object()) {
+        const QString tip = object()->getToolTip();
+        if (!tip.isEmpty()) {
+            return tip;
+        }
+    }
+    return QTreeWidgetItem::data(column, role);
 }
 
 void DocumentObjectItem::displayStatusInfo()

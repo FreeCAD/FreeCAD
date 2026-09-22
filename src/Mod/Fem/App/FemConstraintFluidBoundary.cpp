@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jan Rheinländer                                    *
  *                                   <jrheinlaender@users.sourceforge.net> *
@@ -129,7 +131,7 @@ void ConstraintFluidBoundary::onChanged(const App::Property* prop)
             Subtype.setEnums(OutletSubtypes);
         }
         else {
-            Base::Console().message(boundaryType.c_str());
+            Base::Console().message("{}", boundaryType);
             Base::Console().message(" Error: this boundaryType is not defined\n");
         }
 

@@ -525,7 +525,7 @@ void DlgPreferencesImp::createPageInGroup(PreferencesPageItem* groupItem, const 
             = createPreferencePage(pageName, groupItem->data(GroupNameRole).toString().toStdString());
 
         if (!page) {
-            Base::Console().warning("%s is not a preference page\n", pageName.c_str());
+            Base::Console().warning("{} is not a preference page\n", pageName);
             return;
         }
 
@@ -551,11 +551,11 @@ void DlgPreferencesImp::createPageInGroup(PreferencesPageItem* groupItem, const 
         addSizeHint(page);
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("Base exception thrown for '%s'\n", pageName.c_str());
+        Base::Console().error("Base exception thrown for '{}'\n", pageName);
         e.reportException();
     }
     catch (const std::exception& e) {
-        Base::Console().error("C++ exception thrown for '%s' (%s)\n", pageName.c_str(), e.what());
+        Base::Console().error("C++ exception thrown for '{}' ({})\n", pageName, e.what());
     }
 }
 
@@ -831,6 +831,13 @@ void DlgPreferencesImp::restoreDefaults()
 
         ParameterManager* mgr = App::GetApplication().GetParameterSet("User parameter");
         mgr->Clear();
+
+        // Restore the default preferences template if any
+        const char* templatePath = App::Application::getUserParameterTemplatePath();
+        if (templatePath) {
+            mgr->LoadDocument(templatePath);
+            restartRequired = true;  // the reloaded preferences are not applied until restart.
+        }
 
         App::GetApplication()
             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
@@ -2029,11 +2036,7 @@ bool PreferencesSearchController::handlePopupKeyPress(const QKeyEvent* keyEvent)
 
 bool PreferencesSearchController::isClickOutsidePopup(const QMouseEvent* mouseEvent) const
 {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QPoint globalPos = mouseEvent->globalPos();
-#else
     const QPoint globalPos = mouseEvent->globalPosition().toPoint();
-#endif
     const auto searchBoxRect = QRect(m_searchBox->mapToGlobal(QPoint(0, 0)), m_searchBox->size());
     auto popupRect = QRect(m_searchResultsList->mapToGlobal(QPoint(0, 0)), m_searchResultsList->size());
 

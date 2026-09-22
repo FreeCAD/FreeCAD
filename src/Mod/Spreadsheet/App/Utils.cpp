@@ -42,16 +42,15 @@
 
 std::string Spreadsheet::columnName(int col)
 {
-    std::stringstream s;
-
-    if (col < 26) {
-        s << ((char)('A' + col));
-    }
-    else {
-        s << ((char)('A' + (col - 26) / 26)) << ((char)('A' + (col - 26) % 26));
+    if (col < 0) {
+        return {};
     }
 
-    return s.str();
+    std::string result;
+    for (int value = col + 1; value > 0; value = (value - 1) / 26) {
+        result.insert(result.begin(), static_cast<char>('A' + (value - 1) % 26));
+    }
+    return result;
 }
 
 /**

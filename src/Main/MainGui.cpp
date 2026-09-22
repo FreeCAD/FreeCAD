@@ -35,6 +35,7 @@
 #include <Build/Version.h>  // For FCCopyrightYear
 
 #include <cstdio>
+#include <format>
 #include <map>
 #include <stdexcept>
 
@@ -51,14 +52,13 @@
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
-#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/ProgramInformation.h>
 
 
 void PrintInitHelp();
 
-const auto sBanner = fmt::format(
+const auto sBanner = std::format(
     "(C) 2001-{} FreeCAD contributors\n"
     "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n\n",
     FCCopyrightYear
@@ -148,11 +148,7 @@ static void displayCritical(const QString& msg, bool preformatted = true)
 int main(int argc, char** argv)
 {
 #if defined(FC_OS_LINUX) || defined(FC_OS_BSD)
-    setlocale(LC_ALL, "");  // use native environment settings
-    // Preserve the resolved numeric locale before forcing LC_NUMERIC=C for XML parsing.
-    if (const char* localeName = setlocale(LC_NUMERIC, nullptr)) {
-        Base::Tools::setOperatingSystemNumericLocale(localeName);
-    }
+    setlocale(LC_ALL, "");       // use native environment settings
     setlocale(LC_NUMERIC, "C");  // except for numbers to not break XML import
     // See https://github.com/FreeCAD/FreeCAD/issues/16724
 
@@ -216,15 +212,12 @@ int main(int argc, char** argv)
     App::Application::Config()["CopyrightInfo"] = sBanner;
     App::Application::Config()["AppIcon"] = "freecad";
     App::Application::Config()["SplashScreen"] = "freecadsplash";
-    App::Application::Config()["AboutImage"] = App::Application::isDevelopmentVersion()
-        ? "freecadaboutdev"
-        : "freecadabout";
     App::Application::Config()["StartWorkbench"] = "PartDesignWorkbench";
     // App::Application::Config()["HiddenDockWindow"] = "Property editor";
     App::Application::Config()["SplashAlignment"] = "Bottom|Left";
     App::Application::Config()["SplashTextColor"] = "#418FDE";
     App::Application::Config()["SplashWarningColor"] = "#CA333B";
-    App::Application::Config()["SplashInfoColor"] = "#000000";
+    App::Application::Config()["SplashInfoColor"] = "#212529";
     App::Application::Config()["SplashInfoPosition"] = "6,75";
     App::Application::Config()["DesktopFileName"] = "org.freecad.FreeCAD";
 
@@ -361,7 +354,7 @@ int main(int argc, char** argv)
         exit(1);
     }
     catch (const std::exception& e) {
-        Base::Console().error("Application unexpectedly terminated: %s\n", e.what());
+        Base::Console().error("Application unexpectedly terminated: {}\n", e.what());
         exit(1);
     }
     catch (...) {
@@ -374,12 +367,12 @@ int main(int argc, char** argv)
     std::cerr.rdbuf(oldcerr);
 
     // Destruction phase ===========================================================
-    Base::Console().log("%s terminating...\n", App::Application::getExecutableName().c_str());
+    Base::Console().log("{} terminating...\n", App::Application::getExecutableName());
 
     // cleans up
     App::Application::destruct();
 
-    Base::Console().log("%s completely terminated\n", App::Application::getExecutableName().c_str());
+    Base::Console().log("{} completely terminated\n", App::Application::getExecutableName());
 
     return 0;
 }

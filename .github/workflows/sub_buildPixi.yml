@@ -133,15 +133,16 @@ jobs:
         echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
 
     - if: "!inputs.skipBuild"
-      uses: prefix-dev/setup-pixi@a09b6247153796b190642a2b53fac4241043cf6f # v0.10.0
+      uses: prefix-dev/setup-pixi@d3f436a425481402e6a95a1d1fc10331c708cd9e # v0.10.2
       with:
-        pixi-version: v0.68.1
+        pixi-version: v0.81.0
         cache: false
+        locked: true
 
     - name: Restore Compiler Cache
       id: cache-restore
       if: "!inputs.skipBuild"
-      uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:
         path: ${{ env.CCACHE_DIR }}
         key: FC-${{ env.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
@@ -260,7 +261,7 @@ jobs:
     - name: Save Compiler Cache
       id: cache-save
       if: "!inputs.skipBuild"
-      uses: actions/cache/save@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:
         path: ${{ env.CCACHE_DIR }}
         key: FC-${{ env.cacheKey }}-${{ github.ref }}-${{ github.run_id }}

@@ -1,26 +1,24 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2016 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileCopyrightText: 2021 Schildkroet
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
-# *   Copyright (c) 2021 Schildkroet                                        *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
 import Path
@@ -713,14 +711,18 @@ def combineConnectedShapes(shapes):
         combined = []
         Path.Log.debug("shapes: {}".format(shapes))
         for shape in shapes:
-            connected = [f for f in combined if isRoughly(shape.distToShape(f)[0], 0.0)]
-            Path.Log.debug(
-                "  {}: connected: {} dist: {}".format(
-                    len(combined),
-                    connected,
-                    [shape.distToShape(f)[0] for f in combined],
-                )
-            )
+            connected = [
+                f
+                for f in combined
+                if shape.BoundBox.intersect(f.BoundBox) and isRoughly(shape.distToShape(f)[0], 0.0)
+            ]
+            # Path.Log.debug(
+            #     "  {}: connected: {} dist: {}".format(
+            #         len(combined),
+            #         connected,
+            #         [shape.distToShape(f)[0] for f in combined],
+            #     )
+            # )
             if connected:
                 combined = [f for f in combined if f not in connected]
                 connected.append(shape)
@@ -732,6 +734,21 @@ def combineConnectedShapes(shapes):
     return shapes
 
 
+def uncompound(shape):
+    """uncompound(shape)
+    Go through the compound and return list of shapes
+    Can be useful to process shape Compound1(shape1, Compound2(shape2, Compound3(...)))"""
+    if not isinstance(shape, Part.Compound):
+        return [shape]
+    result = []
+    for sh in shape.SubShapes:
+        if isinstance(sh, Part.Compound):
+            result.extend(uncompound(sh))
+        else:
+            result.append(sh)
+    return result
+
+
 def removeDuplicateEdges(wire):
     unique = []
     for e in wire.Edges:
@@ -740,7 +757,7 @@ def removeDuplicateEdges(wire):
     return Part.Wire(unique)
 
 
-def flipEdge(edge):
+def _flipEdge(edge):
     """flipEdge(edge)
     Flips given edge around so the new Vertexes[0] was the old Vertexes[-1] and vice versa, without changing the shape.
     Currently only lines, line segments, circles, arcs and ellipses are supported."""
@@ -765,8 +782,7 @@ def flipEdge(edge):
             )
         )
         # Now the edge always starts at 0 and LastParameter is the value range
-        arc = Part.Edge(circle, 0, edge.LastParameter - edge.FirstParameter)
-        return arc
+        return Part.Edge(circle, 0, edge.LastParameter - edge.FirstParameter)
     elif isinstance(edge.Curve, Part.Ellipse):
         # Ellipse has no (center, normal, radii) constructor to build the
         # inverted curve directly the way Circle does above, so build it
@@ -821,6 +837,22 @@ def flipEdge(edge):
         return edge.reversed()
 
     Path.Log.warning(translate("PathGeom", "%s not supported for flipping") % type(edge.Curve))
+    return None
+
+
+def flipEdge(edge):
+    """flipEdge(edge)
+    Flips given edge around so the new Vertexes[0] was the old Vertexes[-1] and vice versa, without changing the shape.
+    """
+
+    flipped = _flipEdge(edge)
+
+    # Preserve vertex tolerances (reversed order)
+    if flipped and len(edge.Vertexes) >= 2 and len(flipped.Vertexes) >= 2:
+        flipped.Vertexes[0].Tolerance = edge.Vertexes[-1].Tolerance
+        flipped.Vertexes[-1].Tolerance = edge.Vertexes[0].Tolerance
+
+    return flipped
 
 
 def flipWire(wire):
@@ -940,7 +972,9 @@ def combineHorizontalFaces(faces, keepOrder=False):
         ordered = [None] * len(faces)
         for face in horizontal:
             for i, f in enumerate(faces):
-                if face.isInside(f.Vertexes[0].Point, Tolerance, False):
+                if face.BoundBox.intersect(f.BoundBox) and face.isInside(
+                    f.Vertexes[0].Point, Tolerance, False
+                ):
                     ordered[i] = face
                     break
         ordered = [x for x in ordered if x]

@@ -40,3 +40,6 @@ class ViewProviderFemConstraint(ViewProviderGeometryObject):
 
     RotateSymbol: bool
     """Apply rotation on copies of the constraint symbol"""
+
+    ResourceSymbolDir: Final[str] = ""
+    """Path to system resource symbol directory"""

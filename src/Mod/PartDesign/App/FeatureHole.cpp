@@ -552,7 +552,7 @@ const App::PropertyQuantityConstraint::Constraints clearanceRange
 
 Hole::Hole()
 {
-    addSubType = FeatureAddSub::Subtractive;
+    defineSubtractive();
 
     readCutDefinitions();
 
@@ -1831,7 +1831,7 @@ App::DocumentObjectExecReturn* Hole::execute()
                                                           StartOffset.getValue(),
                                                           invObjLoc
                                                       );
-        profileshape = moveProfileToStart(profileshape, holeDirection, startOffset);
+        profileshape = moveProfileToStart(profileshape, holeDirection, startOffset, true);
 
         if (method == "Dimension") {
             length = Depth.getValue();
@@ -2079,14 +2079,7 @@ App::DocumentObjectExecReturn* Hole::execute()
         // First try cutting with compound which will be faster as it is done in
         // parallel
         bool retry = true;
-        const char* maker;
-        switch (getAddSubType()) {
-            case Additive:
-                maker = Part::OpCodes::Fuse;
-                break;
-            default:
-                maker = Part::OpCodes::Cut;
-        }
+        const char* maker = getBooleanMaker();
         try {
             if (base.isNull()) {
                 result = compound;
@@ -2756,7 +2749,7 @@ int Hole::baseProfileOption_idxToBitmask(int index)
     if (index == 2) {
         return PartDesign::Hole::BaseProfileTypeOptions::OnPoints;
     }
-    Base::Console().error("Unexpected hole base profile combobox index: %i", index);
+    Base::Console().error("Unexpected hole base profile combobox index: {}", index);
     return 0;
 }
 int Hole::baseProfileOption_bitmaskToIdx(int bitmask)
@@ -2771,7 +2764,7 @@ int Hole::baseProfileOption_bitmaskToIdx(int bitmask)
         return 2;
     }
 
-    Base::Console().error("Unexpected hole base profile bitmask: %i", bitmask);
+    Base::Console().error("Unexpected hole base profile bitmask: {}", bitmask);
     return -1;
 }
 

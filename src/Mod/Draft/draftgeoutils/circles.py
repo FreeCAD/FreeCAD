@@ -30,6 +30,7 @@
 # \brief Provides various functions to work with circles.
 
 import math
+import sys
 import lazy_loader.lazy_loader as lz
 
 import FreeCAD as App
@@ -49,7 +50,7 @@ Part = lz.LazyLoader("Part", globals(), "Part")
 
 def findClosestCircle(point, circles):
     """Return the circle with closest center to a given point."""
-    dist = 1000000
+    dist = sys.float_info.max
     closest = None
     for c in circles:
         if c.Center.sub(point).Length < dist:

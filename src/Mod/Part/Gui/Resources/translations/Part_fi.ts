@@ -2250,7 +2250,7 @@ of the projection.</translation>
       <translation>Muuta pintojen värejä</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="226"/>
+      <location filename="../../TaskLoft.cpp" line="214"/>
       <source>Loft</source>
       <translation>Profiilivenytys</translation>
     </message>
@@ -4920,37 +4920,37 @@ the sketch plane's normal vector will be used</translation>
   <context>
     <name>PartGui::LoftWidget</name>
     <message>
-      <location filename="../../TaskLoft.cpp" line="74"/>
+      <location filename="../../TaskLoft.cpp" line="77"/>
       <source>Available profiles</source>
       <translation>Käytettävissä olevat profiilit</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="75"/>
+      <location filename="../../TaskLoft.cpp" line="78"/>
       <source>Selected profiles</source>
       <translation>Valitut profiilit</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="200"/>
+      <location filename="../../TaskLoft.cpp" line="188"/>
       <source>Too Few Elements</source>
       <translation type="unfinished">Too Few Elements</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="201"/>
+      <location filename="../../TaskLoft.cpp" line="189"/>
       <source>At least 2 vertices, edges, wires, or faces are required.</source>
       <translation type="unfinished">At least 2 vertices, edges, wires, or faces are required.</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="240"/>
+      <location filename="../../TaskLoft.cpp" line="228"/>
       <source>Input error</source>
       <translation>Syötteen virhe</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="275"/>
+      <location filename="../../TaskLoft.cpp" line="263"/>
       <source>Vertex/Edge/Wire/Face</source>
       <translation>Kärkipiste/reuna/lanka/pintatahko</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="276"/>
+      <location filename="../../TaskLoft.cpp" line="264"/>
       <source>Loft</source>
       <translation>Profiilivenytys</translation>
     </message>
@@ -6105,8 +6105,8 @@ in the 3D view for the sweep path.</translation>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="51"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="59"/>
-      <location filename="../../ViewProvider.cpp" line="53"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="55"/>
+      <location filename="../../ViewProvider.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>Muokkaa %1</translation>
     </message>
@@ -6534,7 +6534,7 @@ Continue?</translation>
       <translation type="unfinished">Enter distance:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="994"/>
+      <location filename="../../ViewProviderExt.cpp" line="1011"/>
       <source>Appearance per Face</source>
       <translation type="unfinished">Appearance per Face</translation>
     </message>
@@ -7360,7 +7360,7 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6723"/>
+      <location filename="../../../App/Geometry.cpp" line="6726"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation type="unfinished">Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</translation>
     </message>
@@ -7393,7 +7393,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2598"/>
       <source>Datum Line</source>
-      <translation type="unfinished">Datum Line</translation>
+      <translation>Datumiviiva</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2599"/>
@@ -7737,35 +7737,35 @@ Overlapping volumes of the shapes will be removed.</translation>
       <translation>Tapahtumaa</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="78"/>
+      <location filename="../../PatternParametersWidget.cpp" line="79"/>
       <source>Axis</source>
       <translation>Akseli</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="79"/>
-      <location filename="../../PatternParametersWidget.cpp" line="81"/>
+      <location filename="../../PatternParametersWidget.cpp" line="80"/>
+      <location filename="../../PatternParametersWidget.cpp" line="82"/>
       <source>Total Angle</source>
       <translation type="unfinished">Total Angle</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="80"/>
-      <location filename="../../PatternParametersWidget.cpp" line="82"/>
+      <location filename="../../PatternParametersWidget.cpp" line="81"/>
+      <location filename="../../PatternParametersWidget.cpp" line="83"/>
       <source>Angular Spacing</source>
       <translation type="unfinished">Angular Spacing</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="425"/>
-      <location filename="../../PatternParametersWidget.cpp" line="521"/>
+      <location filename="../../PatternParametersWidget.cpp" line="371"/>
+      <location filename="../../PatternParametersWidget.cpp" line="467"/>
       <source>Spacing %1</source>
       <translation type="unfinished">Spacing %1</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="441"/>
+      <location filename="../../PatternParametersWidget.cpp" line="387"/>
       <source>Remove this spacing definition.</source>
       <translation type="unfinished">Remove this spacing definition.</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="942"/>
+      <location filename="../../PatternParametersWidget.cpp" line="894"/>
       <source>Reset spacing</source>
       <translation type="unfinished">Reset spacing</translation>
     </message>
@@ -7773,7 +7773,17 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="236"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="159"/>
+      <source>Preview requires a Part-based view provider; none found for %1.</source>
+      <translation type="unfinished">Preview requires a Part-based view provider; none found for %1.</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
+      <source>unknown object</source>
+      <translation type="unfinished">unknown object</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="303"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation type="unfinished">Failure while rendering preview: %1. That usually indicates an error with model.</translation>
     </message>
@@ -7785,6 +7795,122 @@ Overlapping volumes of the shapes will be removed.</translation>
       <source>STEP with colors</source>
       <extracomment>Translation note: "STEP" is a file type end should not be translated</extracomment>
       <translation type="unfinished">STEP with colors</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::PatternCircularParametersWidget</name>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="29"/>
+      <source>Circular Pattern</source>
+      <translation type="unfinished">Circular Pattern</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="35"/>
+      <source>Axis</source>
+      <translation>Akseli</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="48"/>
+      <source>Radial distance</source>
+      <translation>Kehien etäisyys</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="65"/>
+      <source>Tangential distance</source>
+      <translation>Objektien etäisyys kehällä</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="82"/>
+      <source>Concentric circles</source>
+      <translation type="unfinished">Concentric circles</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="95"/>
+      <source>Symmetry</source>
+      <translation>Symmetria</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::PatternPointParametersWidget</name>
+    <message>
+      <location filename="../../PatternPointParametersWidget.ui" line="8"/>
+      <source>Point object</source>
+      <translation type="unfinished">Point object</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPointParametersWidget.ui" line="14"/>
+      <location filename="../../PatternPointParametersWidget.cpp" line="48"/>
+      <source>Select Point Object</source>
+      <translation type="unfinished">Select Point Object</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::PatternPathParametersWidget</name>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="6"/>
+      <source>Path</source>
+      <translation>Rata</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="7"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="145"/>
+      <source>Select Path</source>
+      <translation type="unfinished">Select Path</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="8"/>
+      <source>Spacing mode</source>
+      <translation type="unfinished">Spacing mode</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="10"/>
+      <source>Occurrences</source>
+      <translation>Tapahtumaa</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="12"/>
+      <source>Spacing</source>
+      <translation>Tiheys</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="14"/>
+      <source>Start offset</source>
+      <translation type="unfinished">Start offset</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="16"/>
+      <source>End offset</source>
+      <translation type="unfinished">End offset</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="18"/>
+      <source>Reverse path</source>
+      <translation type="unfinished">Reverse path</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="19"/>
+      <source>Align to path</source>
+      <translation type="unfinished">Align to path</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <source>Fixed count</source>
+      <translation type="unfinished">Fixed count</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <source>Fixed spacing</source>
+      <translation type="unfinished">Fixed spacing</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <source>Fixed count and spacing</source>
+      <translation type="unfinished">Fixed count and spacing</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.cpp" line="157"/>
+      <source>(+%1)</source>
+      <translation type="unfinished">(+%1)</translation>
     </message>
   </context>
   <context>
@@ -7811,6 +7937,19 @@ Overlapping volumes of the shapes will be removed.</translation>
       <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
       <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
       <translation type="unfinished">Unified: handles nested holes, overlapping wires, and curved surfaces</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::PatternInstanceControls</name>
+    <message>
+      <location filename="../../PatternInstanceControls.cpp" line="226"/>
+      <source>Restores this instance</source>
+      <translation type="unfinished">Restores this instance</translation>
+    </message>
+    <message>
+      <location filename="../../PatternInstanceControls.cpp" line="231"/>
+      <source>Suppresses this instance</source>
+      <translation type="unfinished">Suppresses this instance</translation>
     </message>
   </context>
 </TS>

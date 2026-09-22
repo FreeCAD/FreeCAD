@@ -36,7 +36,7 @@ endif(FREECAD_USE_PCH)
 
 target_compile_warn_error(Web)
 
-SET_BIN_DIR(Web Web /Mod/Web)
+SET_BIN_DIR(Web)
 SET_PYTHON_PREFIX_SUFFIX(Web)
 
 install(TARGETS Web DESTINATION ${CMAKE_INSTALL_LIBDIR})

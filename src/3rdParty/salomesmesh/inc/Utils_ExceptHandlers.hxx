@@ -38,16 +38,12 @@ typedef void (*PVF)();
 class UTILS_EXPORT Unexpect { //save / retrieve unexpected exceptions treatment
   PVF old;
   public :
-#ifndef _MSC_VER
-  // std::set_unexpected has been removed in C++17
-    Unexpect( PVF f ) 
+  // std::set_unexpected has been removed in C++17, and MSVC's ::set_unexpected
+  // is gone in C++23, where the name is taken by std::unexpected<E>. Dynamic
+  // exception specifications no longer exist, so the handler is never called.
+    Unexpect( PVF f )
       { /*old = std::set_unexpected(f);*/old = f; }
   ~Unexpect() { /*std::set_unexpected(old);*/ }
-#else
-    Unexpect( PVF f ) 
-      { old = ::set_unexpected(f); }
-  ~Unexpect() { ::set_unexpected(old); }
-#endif
 };
 
 class UTILS_EXPORT Terminate {//save / retrieve terminate function

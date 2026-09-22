@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2017 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -67,7 +69,7 @@ void TaskGeomHatch::initUi()
     if (nameIndex > -1) {
         ui->cbName->setCurrentIndex(nameIndex);
     } else {
-        Base::Console().warning("Warning - Pattern name *%s* not found in current PAT file\n", m_name.c_str());
+        Base::Console().warning("Warning - Pattern name *{}* not found in current PAT file\n", m_name);
     }
     connect(ui->cbName, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskGeomHatch::onNameChanged);
 

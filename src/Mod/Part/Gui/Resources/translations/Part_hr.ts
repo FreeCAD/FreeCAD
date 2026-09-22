@@ -2251,7 +2251,7 @@ Pogled kamere određuje smjer projekcije.</translation>
       <translation>Promijeni boju lica</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="226"/>
+      <location filename="../../TaskLoft.cpp" line="214"/>
       <source>Loft</source>
       <translation>Tuba</translation>
     </message>
@@ -4924,37 +4924,37 @@ u suprotnom koristit će se normalni vektor ravnine skice
   <context>
     <name>PartGui::LoftWidget</name>
     <message>
-      <location filename="../../TaskLoft.cpp" line="74"/>
+      <location filename="../../TaskLoft.cpp" line="77"/>
       <source>Available profiles</source>
       <translation>Dostupni profili</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="75"/>
+      <location filename="../../TaskLoft.cpp" line="78"/>
       <source>Selected profiles</source>
       <translation>Odabrani profili</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="200"/>
+      <location filename="../../TaskLoft.cpp" line="188"/>
       <source>Too Few Elements</source>
       <translation type="unfinished">Too Few Elements</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="201"/>
+      <location filename="../../TaskLoft.cpp" line="189"/>
       <source>At least 2 vertices, edges, wires, or faces are required.</source>
       <translation>Najmanje su potrebna 2 vrha, ruba, žice, ili naličja.</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="240"/>
+      <location filename="../../TaskLoft.cpp" line="228"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="275"/>
+      <location filename="../../TaskLoft.cpp" line="263"/>
       <source>Vertex/Edge/Wire/Face</source>
       <translation>Vrh/Rub/Žice/Naličja</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="276"/>
+      <location filename="../../TaskLoft.cpp" line="264"/>
       <source>Loft</source>
       <translation>Tuba</translation>
     </message>
@@ -6113,8 +6113,8 @@ u 3D prikazu za putanju vodilju pomicanja.</translation>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="51"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="59"/>
-      <location filename="../../ViewProvider.cpp" line="53"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="55"/>
+      <location filename="../../ViewProvider.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>Uređivanje %1</translation>
     </message>
@@ -6542,7 +6542,7 @@ Nastaviti?</translation>
       <translation>Unesite udaljenost:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="994"/>
+      <location filename="../../ViewProviderExt.cpp" line="1011"/>
       <source>Appearance per Face</source>
       <translation>Izgled po licu</translation>
     </message>
@@ -7393,7 +7393,7 @@ Skalira odabrani oblik</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6723"/>
+      <location filename="../../../App/Geometry.cpp" line="6726"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Nije moguće odrediti sjecište krivulje. Pokušajte dodati podudarno ograničenje između vrhova krivulje koju namjeravate obrubiti.</translation>
     </message>
@@ -7771,35 +7771,35 @@ Spaja oblike, pazeći da se sačuvaju praznine</translation>
       <translation>Ponavljanja</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="78"/>
+      <location filename="../../PatternParametersWidget.cpp" line="79"/>
       <source>Axis</source>
       <translation>Osi</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="79"/>
-      <location filename="../../PatternParametersWidget.cpp" line="81"/>
+      <location filename="../../PatternParametersWidget.cpp" line="80"/>
+      <location filename="../../PatternParametersWidget.cpp" line="82"/>
       <source>Total Angle</source>
       <translation type="unfinished">Total Angle</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="80"/>
-      <location filename="../../PatternParametersWidget.cpp" line="82"/>
+      <location filename="../../PatternParametersWidget.cpp" line="81"/>
+      <location filename="../../PatternParametersWidget.cpp" line="83"/>
       <source>Angular Spacing</source>
       <translation type="unfinished">Angular Spacing</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="425"/>
-      <location filename="../../PatternParametersWidget.cpp" line="521"/>
+      <location filename="../../PatternParametersWidget.cpp" line="371"/>
+      <location filename="../../PatternParametersWidget.cpp" line="467"/>
       <source>Spacing %1</source>
       <translation>Razmak %1</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="441"/>
+      <location filename="../../PatternParametersWidget.cpp" line="387"/>
       <source>Remove this spacing definition.</source>
       <translation>Uklonite ovu definiciju razmaka.</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="942"/>
+      <location filename="../../PatternParametersWidget.cpp" line="894"/>
       <source>Reset spacing</source>
       <translation type="unfinished">Reset spacing</translation>
     </message>
@@ -7807,7 +7807,17 @@ Spaja oblike, pazeći da se sačuvaju praznine</translation>
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="236"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="159"/>
+      <source>Preview requires a Part-based view provider; none found for %1.</source>
+      <translation type="unfinished">Preview requires a Part-based view provider; none found for %1.</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
+      <source>unknown object</source>
+      <translation type="unfinished">unknown object</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="303"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>Greška prilikom iscrtavanja pregleda: %1. To obično ukazuje na grešku s modelom.</translation>
     </message>
@@ -7819,6 +7829,122 @@ Spaja oblike, pazeći da se sačuvaju praznine</translation>
       <source>STEP with colors</source>
       <extracomment>Translation note: "STEP" is a file type end should not be translated</extracomment>
       <translation type="unfinished">STEP with colors</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::PatternCircularParametersWidget</name>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="29"/>
+      <source>Circular Pattern</source>
+      <translation type="unfinished">Circular Pattern</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="35"/>
+      <source>Axis</source>
+      <translation>Osi</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="48"/>
+      <source>Radial distance</source>
+      <translation>Radijalna udaljenost</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="65"/>
+      <source>Tangential distance</source>
+      <translation>Tangencijalna udaljenost</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="82"/>
+      <source>Concentric circles</source>
+      <translation type="unfinished">Concentric circles</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="95"/>
+      <source>Symmetry</source>
+      <translation>Simetrija</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::PatternPointParametersWidget</name>
+    <message>
+      <location filename="../../PatternPointParametersWidget.ui" line="8"/>
+      <source>Point object</source>
+      <translation type="unfinished">Point object</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPointParametersWidget.ui" line="14"/>
+      <location filename="../../PatternPointParametersWidget.cpp" line="48"/>
+      <source>Select Point Object</source>
+      <translation type="unfinished">Select Point Object</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::PatternPathParametersWidget</name>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="6"/>
+      <source>Path</source>
+      <translation>Staza</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="7"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="145"/>
+      <source>Select Path</source>
+      <translation type="unfinished">Select Path</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="8"/>
+      <source>Spacing mode</source>
+      <translation type="unfinished">Spacing mode</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="10"/>
+      <source>Occurrences</source>
+      <translation>Ponavljanja</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="12"/>
+      <source>Spacing</source>
+      <translation>Razmak</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="14"/>
+      <source>Start offset</source>
+      <translation type="unfinished">Start offset</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="16"/>
+      <source>End offset</source>
+      <translation type="unfinished">End offset</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="18"/>
+      <source>Reverse path</source>
+      <translation type="unfinished">Reverse path</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="19"/>
+      <source>Align to path</source>
+      <translation type="unfinished">Align to path</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <source>Fixed count</source>
+      <translation type="unfinished">Fixed count</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <source>Fixed spacing</source>
+      <translation type="unfinished">Fixed spacing</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <source>Fixed count and spacing</source>
+      <translation type="unfinished">Fixed count and spacing</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.cpp" line="157"/>
+      <source>(+%1)</source>
+      <translation type="unfinished">(+%1)</translation>
     </message>
   </context>
   <context>
@@ -7845,6 +7971,19 @@ Spaja oblike, pazeći da se sačuvaju praznine</translation>
       <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
       <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
       <translation type="unfinished">Unified: handles nested holes, overlapping wires, and curved surfaces</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::PatternInstanceControls</name>
+    <message>
+      <location filename="../../PatternInstanceControls.cpp" line="226"/>
+      <source>Restores this instance</source>
+      <translation type="unfinished">Restores this instance</translation>
+    </message>
+    <message>
+      <location filename="../../PatternInstanceControls.cpp" line="231"/>
+      <source>Suppresses this instance</source>
+      <translation type="unfinished">Suppresses this instance</translation>
     </message>
   </context>
 </TS>

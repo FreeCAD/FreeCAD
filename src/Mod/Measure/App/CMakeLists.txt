@@ -30,6 +30,8 @@ SET(MeasureModule_SRCS
     MeasureBase.h
     MeasureAngle.cpp
     MeasureAngle.h
+    MeasureCOM.cpp
+    MeasureCOM.h
     MeasureDistance.cpp
     MeasureDistance.h
     MeasurePosition.cpp
@@ -84,7 +86,7 @@ target_include_directories(
 target_link_libraries(Measure ${Measure_LIBS})
 target_compile_warn_error(Measure)
 
-SET_BIN_DIR(Measure Measure /Mod/Measure)
+SET_BIN_DIR(Measure)
 SET_PYTHON_PREFIX_SUFFIX(Measure)
 
 INSTALL(TARGETS Measure DESTINATION ${CMAKE_INSTALL_LIBDIR})

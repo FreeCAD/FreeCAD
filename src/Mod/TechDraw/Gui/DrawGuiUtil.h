@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -86,6 +88,8 @@ class TechDrawGuiExport DrawGuiUtil {
     static QIcon iconForLine(size_t lineNumber, TechDraw::LineGenerator* generator);
 
     static double roundToDigits(double original, int digits);
+
+    static double screenWidth(double sceneWidth);
 
     static bool isSelectedInTree(QGraphicsItem* item);
     static void setSelectedTree(QGraphicsItem* item, bool selected);

@@ -3,6 +3,23 @@
 add_library(FreeCADBase SHARED)
 add_dependencies(FreeCADBase fc_version)
 
+check_cxx_source_compiles(
+    "#include <charconv>
+int main()
+{
+    double value {};
+    const auto result = std::from_chars(\"\", \"\", value, std::chars_format::general);
+    return result.ec == std::errc {};
+}"
+    FREECAD_HAS_FLOATING_POINT_FROM_CHARS
+)
+
+if(FREECAD_HAS_FLOATING_POINT_FROM_CHARS)
+    target_compile_definitions(FreeCADBase PRIVATE FC_HAS_FLOATING_POINT_FROM_CHARS=1)
+else()
+    target_compile_definitions(FreeCADBase PRIVATE FC_HAS_FLOATING_POINT_FROM_CHARS=0)
+endif()
+
 if(WIN32)
     add_definitions(-DFCBase)
     add_definitions(-DPYCXX_DLL)
@@ -87,7 +104,7 @@ if(BUILD_TRACY_FRAME_PROFILER)
     list(APPEND FreeCADBase_LIBS TracyClient)
 endif()
 
-list(APPEND FreeCADBase_LIBS libfastsignals fmt::fmt)
+list(APPEND FreeCADBase_LIBS libfastsignals)
 
 if(cpptrace_FOUND)
     list(APPEND FreeCADBase_LIBS cpptrace::cpptrace)
@@ -120,6 +137,8 @@ generate_from_py(Axis)
 generate_from_py(Unit)
 generate_from_py(Quantity)
 generate_from_py(Precision)
+generate_from_py(CrashReporter/CrashFrame)
+generate_from_py(CrashReporter/CrashReport)
 generate_module_from_py(
     FreeCAD.Qt
     Qt_MODULE_GENERATED_SRCS
@@ -132,7 +151,7 @@ generate_module_from_py(
     FreeCAD.Units
     Units_MODULE_GENERATED_SRCS
 )
-generate_from_any(Parameter.xsd Parameter.inl xmlSchemeString)
+generate_from_any(Resources/schemas/Parameter.xsd ParameterSchema.h ParameterSchema)
 
 if(SWIG_FOUND)
     # Create the file swigpyrun.hh and then compare with the file swigpyrun.h.
@@ -163,6 +182,8 @@ SET(FreeCADBase_Pyi_SRCS
     Type.pyi
     Unit.pyi
     Precision.pyi
+    CrashReporter/CrashFrame.pyi
+    CrashReporter/CrashReport.pyi
     FreeCAD.Qt.module.pyi
     FreeCAD.Console.module.pyi
     FreeCAD.Units.module.pyi
@@ -181,6 +202,10 @@ SET(FreeCADBase_UNITAPI_SRCS
     UnitsSchemas.h
     UnitsSchemasData.h
     UnitsSchemasSpecs.h
+    NumericInput.h
+    NumericInput.cpp
+    NumericInputLocale.h
+    NumericInputLocale.cpp
     Quantity.h
     Quantity.cpp
     QuantityPyImp.cpp
@@ -189,6 +214,7 @@ SET(FreeCADBase_UNITAPI_SRCS
     Unit.h
     Unit.cpp
     UnitPyImp.cpp
+    ${CMAKE_CURRENT_BINARY_DIR}/ParameterSchema.h
 )
 SOURCE_GROUP("Units" FILES ${FreeCADBase_UNITAPI_SRCS})
 
@@ -209,6 +235,7 @@ SET(FreeCADBase_CPP_SRCS
     ${Console_MODULE_GENERATED_SRCS}
     ConsoleObserver.cpp
     Color.cpp
+    OkLch.cpp
     CoordinateSystem.cpp
     CoordinateSystemPyImp.cpp
     DualQuaternion.cpp
@@ -224,7 +251,7 @@ SET(FreeCADBase_CPP_SRCS
     Matrix.cpp
     MatrixPyImp.cpp
     Observer.cpp
-    Parameter.xsd
+    Resources/schemas/Parameter.xsd
     Parameter.cpp
     ParameterObserver.cpp
     ParameterPy.cpp
@@ -247,6 +274,7 @@ SET(FreeCADBase_CPP_SRCS
     Stream.cpp
     StringUtils.cpp
     Swap.cpp
+    NumericFormatting.cpp
     ${SWIG_SRCS}
     SystemHandler.cpp
     Tools.cpp
@@ -264,6 +292,7 @@ SET(FreeCADBase_CPP_SRCS
     ViewProj.cpp
     Writer.cpp
     XMLTools.cpp
+    XMLParser.cpp
     ZipHeader.cpp
 )
 
@@ -284,6 +313,7 @@ SET(FreeCADBase_HPP_SRCS
     ConsoleObserver.h
     Converter.h
     Color.h
+    OkLch.h
     CoordinateSystem.h
     DualNumber.h
     DualQuaternion.h
@@ -297,6 +327,8 @@ SET(FreeCADBase_HPP_SRCS
     InputSource.h
     Interpreter.h
     Matrix.h
+    Maturity.h
+    NumericFormatting.h
     Observer.h
     Parameter.h
     ParameterObserver.h
@@ -333,10 +365,15 @@ SET(FreeCADBase_HPP_SRCS
     ViewProj.h
     Writer.h
     XMLTools.h
+    XMLParser.h
     ZipHeader.h
 )
 
 SET (FreeCADBase_CrashReporter_SRCS
+    CrashReporter/CrashFramePyImp.cpp
+    CrashReporter/CrashReportPyImp.cpp
+    CrashReporter/FaultCodes.h
+    CrashReporter/FaultCodes.cpp
     CrashReporter/Format.h
     CrashReporter/Manager.h
     CrashReporter/Manager.cpp
@@ -391,7 +428,7 @@ endif()
 
 target_compile_warn_error(FreeCADBase)
 
-SET_BIN_DIR(FreeCADBase FreeCADBase)
+SET_BIN_DIR(FreeCADBase)
 
 if(WIN32)
     INSTALL(TARGETS FreeCADBase

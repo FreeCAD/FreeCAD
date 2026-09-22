@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -114,7 +116,7 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
     } else if (geomType == "Vertex") {
         m_type = Type::VERTEX;
     } else {
-        Base::Console().error("TaskCenterLine - unknown geometry type: %s.  Cannot proceed.\n", geomType.c_str());
+        Base::Console().error("TaskCenterLine - unknown geometry type: {}.  Cannot proceed.\n", geomType);
         return;
     }
 

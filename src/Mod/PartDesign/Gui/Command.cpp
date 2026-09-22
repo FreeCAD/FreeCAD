@@ -438,7 +438,13 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
     }
 
     std::string FeatName;
-    PartDesign::Body* pcActiveBody = PartDesignGui::getBody(false, true, true, &parent, &parentSub);
+    PartDesign::Body* pcActiveBody = PartDesignGui::getBody(
+        /*messageIfNot=*/false,
+        /*autoActivate=*/false,
+        /*assertModern=*/true,
+        &parent,
+        &parentSub
+    );
     FeatName = getUniqueObjectName("Binder", pcActiveBody);
     if (parent) {
         decltype(values) links;
@@ -546,6 +552,15 @@ void CmdPartDesignClone::activated(int iMsg)
             obj,
             std::stringstream() << "addObject('PartDesign::Body','" << bodyName << "')"
         );
+
+        App::Part* actPart = PartDesignGui::getActivePart();
+        if (actPart && actPart->getDocument() == obj->getDocument()) {
+            Gui::cmdAppDocument(
+                obj,
+                std::stringstream() << actPart->getNameInDocument() << ".addObject(App.getDocument('"
+                                    << obj->getDocument()->getName() << "')." << bodyName << ")"
+            );
+        }
         Gui::cmdAppDocument(
             obj,
             std::stringstream() << "addObject('PartDesign::FeatureBase','" << cloneName << "')"
@@ -722,13 +737,13 @@ unsigned validateSketches(
             continue;
         }
 
-        // Base::Console().error("Checking sketch %s\n", (*s)->getNameInDocument());
+        // Base::Console().error("Checking sketch {}\n", (*s)->getNameInDocument());
         //  Check whether this sketch is already being used by another feature
         //  Body features don't count...
         std::vector<App::DocumentObject*> inList = (*s)->getInList();
         std::vector<App::DocumentObject*>::iterator o = inList.begin();
         while (o != inList.end()) {
-            // Base::Console().error("Inlist: %s\n", (*o)->getNameInDocument());
+            // Base::Console().error("Inlist: {}\n", (*o)->getNameInDocument());
             if ((*o)->isDerivedFrom<PartDesign::Body>()) {
                 o = inList.erase(o);  // ignore bodies
             }

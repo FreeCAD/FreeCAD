@@ -7,6 +7,7 @@
         <file>icons/CAM_Adaptive.svg</file>
         <file>icons/CAM_3DPocket.svg</file>
         <file>icons/CAM_3DSurface.svg</file>
+        <file>icons/CAM_PlanarSurface.svg</file>
         <file>icons/CAM_Area_View.svg</file>
         <file>icons/CAM_Area_Workplane.svg</file>
         <file>icons/CAM_Area.svg</file>
@@ -149,6 +150,7 @@
         <file>panels/PageOpSlotEdit.ui</file>
         <file>panels/PageOpRotarySurfaceEdit.ui</file>
         <file>panels/PageOpSurfaceEdit.ui</file>
+        <file>panels/PageOpPlanarSurfaceEdit.ui</file>
         <file>panels/PageOpTappingEdit.ui</file>
         <file>panels/PageOpThreadMillingEdit.ui</file>
         <file>panels/PageOpWaterlineEdit.ui</file>

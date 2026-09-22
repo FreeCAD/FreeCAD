@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 Peter McB                                          *
  *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
@@ -23,7 +25,7 @@
 #include <fstream>
 
 #include <boost/algorithm/string.hpp>
-#include <fmt/ostream.h>
+#include <format>
 
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/nodes/SoCamera.h>
@@ -230,14 +232,10 @@ void myCopyResultsMesh(std::string oldName, std::string newName)
 {
     int error = 0;
 
-    Base::Console().warning("copy: %s and %s\n", oldName.c_str(), newName.c_str());
+    Base::Console().warning("copy: {} and {}\n", oldName, newName);
     if (oldName.compare(newName) == 0 && error == 0) {
         error = 1;
-        Base::Console().warning(
-            "Cannot copy ResultMesh to ResultMesh: %s and %s\n",
-            oldName.c_str(),
-            newName.c_str()
-        );
+        Base::Console().warning("Cannot copy ResultMesh to ResultMesh: {} and {}\n", oldName, newName);
         QMessageBox::warning(
             Gui::getMainWindow(),
             //        QMessageBox::warning(Gui::MainWindow(),
@@ -248,7 +246,7 @@ void myCopyResultsMesh(std::string oldName, std::string newName)
     if ((oldName.find("Result") == std::string::npos || newName.find("Result") == std::string::npos)
         && error == 0) {
         error = 1;
-        Base::Console().warning("Mesh must be results: %s\n", oldName.c_str());
+        Base::Console().warning("Mesh must be results: {}\n", oldName);
         QMessageBox::warning(
             Gui::getMainWindow(),
             //        QMessageBox::warning(Gui::MainWindow(),
@@ -401,18 +399,17 @@ void writeToFile(
     if (!out) {
         return;
     }
-    fmt::print(out, "** written by Erase Elements inp file writer for CalculiX,Abaqus meshes\n");
-    fmt::print(out, "** all mesh elements.\n");
+    out << "** written by Erase Elements inp file writer for CalculiX,Abaqus meshes\n";
+    out << "** all mesh elements.\n";
 
-    fmt::print(out, "\n");
-    fmt::print(out, "\n");
-    fmt::print(out, "** Nodes\n");
-    fmt::print(out, "*Node, NSET=Nall\n");
+    out << "\n";
+    out << "\n";
+    out << "** Nodes\n";
+    out << "*Node, NSET=Nall\n";
 
     for (int i = 1; i < rows + 1; i++) {
         if (nodeNumbers[i] > 0) {
-            fmt::print(
-                out,
+            out << std::format(
                 "{}, {:e}, {:e}, {:e}\n",
                 nodeNumbers[i],
                 nodeCoords[i][0],
@@ -442,37 +439,37 @@ void writeToFile(
 
         if (numberNodes != elem->NbNodes()) {
             if (requiredType == 4) {
-                fmt::print(out, "\n");
-                fmt::print(out, "\n");
-                fmt::print(out, "** Volume elements\n");
-                fmt::print(out, "*Element, TYPE={}, ELSET=Evolumes\n", elType3D[elem->NbNodes()]);
+                out << "\n";
+                out << "\n";
+                out << "** Volume elements\n";
+                out << std::format("*Element, TYPE={}, ELSET=Evolumes\n", elType3D[elem->NbNodes()]);
             }
             else if (requiredType == 3) {
-                fmt::print(out, "** Face elements\n");
-                fmt::print(out, "*Element, TYPE={}, ELSET=Efaces\n", elType2D[elem->NbNodes()]);
+                out << "** Face elements\n";
+                out << std::format("*Element, TYPE={}, ELSET=Efaces\n", elType2D[elem->NbNodes()]);
             }
             numberNodes = elem->NbNodes();
         }
         SMDS_ElemIteratorPtr nIt = elem->nodesIterator();
-        fmt::print(out, "{}", EID);
+        out << EID;
         while (nIt->more()) {
             nSrc = static_cast<const SMDS_MeshNode*>(nIt->next());
             NID = nSrc->GetID();
-            fmt::print(out, ", {}", NID);
+            out << ", " << NID;
         }
-        fmt::print(out, "\n");
+        out << "\n";
     }  // while print
     if (requiredType == 4) {
-        fmt::print(out, "\n");
-        fmt::print(out, "\n");
-        fmt::print(out, "** Define element set Eall\n");
-        fmt::print(out, "*ELSET, ELSET=Eall\n");
-        fmt::print(out, "Evolumes\n");
+        out << "\n";
+        out << "\n";
+        out << "** Define element set Eall\n";
+        out << "*ELSET, ELSET=Eall\n";
+        out << "Evolumes\n";
     }
     else if (requiredType == 3) {
-        fmt::print(out, "** Define element set Eall\n");
-        fmt::print(out, "*ELSET, ELSET=Eall\n");
-        fmt::print(out, "Efaces\n");
+        out << "** Define element set Eall\n";
+        out << "*ELSET, ELSET=Eall\n";
+        out << "Efaces\n";
     }
 }
 }  // namespace
@@ -798,7 +795,7 @@ void TaskCreateElementSet::DefineNodes(
     }
     if (keepElement > 0) {
         Base::Console().warning(
-            "Number of Elements Kept: %d, Number of Elements Erased: %d\n",
+            "Number of Elements Kept: {}, Number of Elements Erased: {}\n",
             keepElement,
             erase
         );

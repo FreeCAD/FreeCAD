@@ -93,38 +93,28 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="510"/>
-      <source>Remove annotations</source>
-      <translation>Bain anótálacha</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderInspection.cpp" line="511"/>
-      <source>Do you want to remove all annotations?</source>
-      <translation>Ar mhaith leat na nótaí go léir a bhaint?</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderInspection.cpp" line="569"/>
+      <location filename="../../ViewProviderInspection.cpp" line="505"/>
       <source>Annotation</source>
       <translation>Anótáil</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="572"/>
+      <location filename="../../ViewProviderInspection.cpp" line="508"/>
       <source>Leave Info Mode</source>
       <translation>Fág Mód Faisnéise</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="709"/>
+      <location filename="../../ViewProviderInspection.cpp" line="649"/>
       <source>Distance: &gt; %1</source>
       <translation>Fad: &gt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="712"/>
+      <location filename="../../ViewProviderInspection.cpp" line="652"/>
       <source>Distance: &lt; %1</source>
       <translation>Fad: &lt;%1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="731"/>
-      <location filename="../../ViewProviderInspection.cpp" line="749"/>
+      <location filename="../../ViewProviderInspection.cpp" line="671"/>
+      <location filename="../../ViewProviderInspection.cpp" line="689"/>
       <source>Distance: %1</source>
       <translation>Fad: %1</translation>
     </message>

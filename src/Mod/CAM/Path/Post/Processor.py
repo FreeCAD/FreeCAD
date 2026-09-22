@@ -45,11 +45,11 @@ from Path.Post import PostList
 import Path.Post.Utils as PostUtils
 from Path.Post.PostList import Postable
 from Path.Post.DrillCycleExpander import DrillCycleExpander
-from Path.Post.CAMErrors import CAMError, CAMValueError, CAMAttributeError
 from Path.Post.UtilsParse import format_command_line
 from Path.Post.PathOptimizationUtils import modal_gcode, modal_axis
+from Path.Post.CAMErrors import CAMError, CAMValueError, CAMAttributeError, CAMNotImplementedError
 from Path.Base.MachineState import MachineState
-from Machine.models.machine import MachineFactory, OutputUnits
+from Machine.models.machine import MachineFactory, OutputUnits, ToolheadType
 
 translate = FreeCAD.Qt.translate
 
@@ -321,6 +321,9 @@ class PostProcessorFactory:
         # Iterate all the paths to find the module
         for path in paths:
             module_path = os.path.join(path, f"{module_name}.py")
+            if not os.path.isfile(module_path):
+                continue
+
             spec = importlib.util.spec_from_file_location(module_name, module_path)
 
             if spec and spec.loader:
@@ -329,39 +332,40 @@ class PostProcessorFactory:
                     spec.loader.exec_module(module)
                     Path.Log.debug(f"found module {module_name} at {module_path}")
 
-                except (FileNotFoundError, ImportError, ModuleNotFoundError) as e:
+                except ModuleNotFoundError as e:
+                    # skips if module actually doesn't exist
+                    # throws if some error in executing it
                     Path.Log.debug(f"Failed to load {module_path}: {e}")
-                    continue  # with other paths
+                    if f"'{module_name}'" not in str(e):
+                        raise
+                    continue
 
                 try:
                     PostClass = getattr(module, class_name)
+                except AttributeError as e:
+                    # Return an instance of WrapperPost if no valid class is found
+                    Path.Log.debug(f"Post processor {postname} is a script")
+                    return WrapperPost(job, module_path, module_name)
+
+                try:
                     Path.Log.debug(f"Found class {class_name} in module {module_name}")
                     return PostClass(job)
-                except AttributeError as e:
-                    if f"has no attribute '{class_name}'" in str(e):
-                        # Return an instance of WrapperPost if no valid class is found
-                        Path.Log.debug(f"Post processor {postname} is a script")
-                        return WrapperPost(job, module_path, module_name)
-                    raise e
                 except Exception as e:
                     # Log any other exception during instantiation
                     Path.Log.debug(f"Error instantiating {class_name}: {e}")
                     # If job is None (filtering context), try to return the class itself
                     # so the machine editor can check its schema methods
                     if job is None:
-                        try:
-                            PostClass = getattr(module, class_name)
-                            Path.Log.debug(
-                                f"Returning uninstantiated class {class_name} for schema inspection"
-                            )
-                            # Return a mock instance that can be used for schema inspection
-                            return PostClass.__new__(PostClass)
-                        except:
-                            pass  # try other paths
+
+                        Path.Log.debug(
+                            f"Returning uninstantiated class {class_name} for schema inspection"
+                        )
+                        # Return a mock instance that can be used for schema inspection
+                        return PostClass.__new__(PostClass)
                     raise
 
         Path.Log.warning(
-            f"Post processor '{postname}' not found in any search path. "
+            f"Post processor '{postname}' found not in any search path. "
             f"Searched for '{module_name}.py' in {len(paths)} paths."
         )
         return CAMError(
@@ -434,15 +438,28 @@ class PostProcessor:
                 ),
             },
             {
+                "name": "ignored_commands",
+                "scope": SCOPE_MACHINE,
+                "type": "text",
+                "label": translate("CAM", "Ignore G-code Commands"),
+                "default": "",
+                "help": translate(
+                    "CAM",
+                    "List of G-code commands, "
+                    "tolerated but ignored by this post-processor (one per line). "
+                    "Commands in this list will be filtered out.",
+                ),
+            },
+            {
                 "name": "drill_cycles_to_translate",
                 "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Drill Cycles to Translate"),
-                "default": "\n".join(Constants.GCODE_MOVE_DRILL),
+                "default": "\n".join(Constants.EXPANDABLE_DRILL_CYCLES),
                 "help": translate(
                     "CAM",
                     "List of drill cycle commands to translate to G0/G1 moves (one per line). "
-                    f"Standard drill cycles: {', '.join(Constants.GCODE_MOVE_DRILL)}. "
+                    f"Standard drill cycles: {', '.join(Constants.EXPANDABLE_DRILL_CYCLES)}. "
                     "Leave empty if postprocessor supports drill cycles natively.",
                 ),
             },
@@ -537,7 +554,10 @@ class PostProcessor:
                 "type": "text",
                 "label": translate("CAM", "Post-Tool Change"),
                 "default": "",
-                "help": translate("CAM", "G-code commands inserted after tool changes."),
+                "help": translate(
+                    "CAM",
+                    "G-code to execute immediately after a tool change (M6), before the spindle is turned on. Use for a custom tool length offset routine, custom cutter compensation, or a return motion before the spindle starts.",
+                ),
             },
             {
                 "name": "tool_return",
@@ -545,7 +565,10 @@ class PostProcessor:
                 "type": "text",
                 "label": translate("CAM", "Tool Return after tool changes"),
                 "default": "",
-                "help": translate("CAM", "G-code commands inserted after tool changes."),
+                "help": translate(
+                    "CAM",
+                    "G-code to execute immediately after the spindle is turned on after a tool change.",
+                ),
             },
             {
                 "name": "pre_rotary_move",
@@ -580,7 +603,7 @@ class PostProcessor:
                 "scope": SCOPE_MACHINE,
                 "type": "text",  # one line
                 "label": translate("CAM", "Generated Parameter Order for GCode"),
-                "default": "XYZABCFSIJTQRPH",  # FIXME: only list `supported`
+                "default": Constants.PARAMETER_ORDER,
                 "help": translate("CAM", "Generated Parameter Order for GCode for output"),
             },
             {
@@ -603,17 +626,6 @@ class PostProcessor:
                 "help": translate(
                     "CAM",
                     "Unchecked to suppress tool-change (M6)",
-                ),
-            },
-            {
-                "name": "output_units",
-                "scope": SCOPE_MACHINE,
-                "type": "str",
-                "label": translate("CAM", "Unit-command in output"),
-                "default": OutputUnits.METRIC,
-                "help": translate(
-                    "CAM",
-                    "Unit-command in output",
                 ),
             },
             {
@@ -658,6 +670,19 @@ class PostProcessor:
                 "help": translate(
                     "CAM",
                     "Whether to output the F parameter for G0 (rapid moves)",
+                ),
+            },
+            {
+                "name": "translate_no_engagement_feed",
+                "scope": SCOPE_MACHINE,
+                "type": "bool",
+                "label": translate(
+                    "CAM", "Output non-engaging moves at the no-engagement feed rate"
+                ),
+                "default": False,
+                "help": translate(
+                    "CAM",
+                    'Certain G0\'s become G1 for operations that have "No-Engagement Feedrate"',
                 ),
             },
         ]
@@ -750,7 +775,7 @@ class PostProcessor:
                         )
         else:
             self._jobs = [job]
-            self._job = job  # FIXME: MS move to the loop
+            self._job = job
 
         # Get machine
         if self._job is None:
@@ -954,6 +979,51 @@ class PostProcessor:
             " "
         ):
             self.values[option.upper()] = getattr(self._machine.processing, option)
+
+        # Toolhead limits
+        self._merge_toolhead_limits()
+
+    def _merge_toolhead_limits(self):
+        """Merge the machine's spindle speed limits into the values dict.
+
+        The limits live on Toolhead in the machine model, so every
+        machine-based postprocessor gets them without redeclaring them in its
+        own property schema.
+
+        The model has no notion of an active toolhead, so the limits are only
+        merged when the machine defines exactly one.  Machines with several
+        toolheads leave them unset, and the checks that read them are skipped
+        rather than guessing which toolhead a job uses.
+
+        A limit of 0 in the model means "not specified".  It is stored here as
+        None so consumers can tell it apart from a real limit of zero.
+        """
+        self.values["MIN_SPINDLE_SPEED"] = None
+        self.values["MAX_SPINDLE_SPEED"] = None
+
+        toolheads = getattr(self._machine, "toolheads", None) or []
+        if len(toolheads) != 1:
+            Path.Log.debug(
+                f"Machine has {len(toolheads)} toolheads; spindle speed limits not merged"
+            )
+            return
+
+        toolhead = toolheads[0]
+        if toolhead.toolhead_type is not ToolheadType.ROTARY:
+            # On laser, plasma and waterjet heads S is power, not rpm.
+            Path.Log.debug(
+                f"Toolhead is {toolhead.toolhead_type.value}; spindle speed limits not merged"
+            )
+            return
+
+        for key, attribute in (
+            ("MIN_SPINDLE_SPEED", "min_rpm"),
+            ("MAX_SPINDLE_SPEED", "max_rpm"),
+        ):
+            limit = getattr(toolhead, attribute, 0)
+            if isinstance(limit, (int, float)) and limit > 0:
+                self.values[key] = float(limit)
+                Path.Log.debug(f"Set {key} to: {self.values[key]}")
 
     def _apply_schema_defaults(self):
         """Populate postprocessor_properties with schema defaults for missing keys.
@@ -1260,20 +1330,9 @@ class PostProcessor:
             for item in sublist:
                 has_drill_cycles = False
                 if item.path:
-                    drill_commands = [
-                        "G73",
-                        "G74",
-                        "G81",
-                        "G82",
-                        "G83",
-                        "G84",
-                        "G85",
-                        "G86",
-                        "G87",
-                        "G88",
-                        "G89",
-                    ]
-                    has_drill_cycles = any(cmd.Name in drill_commands for cmd in item.path.Commands)
+                    has_drill_cycles = any(
+                        cmd.Name in Constants.GCODE_DRILL_COMMANDS for cmd in item.path.Commands
+                    )
 
                 if has_drill_cycles:
                     item.path = PostUtils.cannedCycleTerminator(item.path)
@@ -1303,7 +1362,7 @@ class PostProcessor:
         Subclasses can override to customize spindle wait behavior.
         """
 
-        spindle = self._machine.get_spindle_by_index(0)  # FIXME: should be an annotation
+        spindle = self._machine.get_spindle_by_index(0)
         if not (spindle and spindle.spindle_wait > 0):
             return
 
@@ -1343,14 +1402,15 @@ class PostProcessor:
                     item.path = Path.Path(new_commands)
 
     def _expand_translate_rapids(self, postables):
-        """Replace G0 rapid moves with G1 linear moves.
-
-        When machine processing.translate_rapid_moves is True, replaces
-        G0/G00 commands with G1 using the tool controller rapid rate.
+        """Replace G0 rapid moves with G1 linear moves for TRANSLATE_RAPID_MOVES.
+        Replace G0 with G1 if ANNOT_NO_ENGAGEMENT_FEED and TRANSLATE_NO_ENGAGEMENT_FEED.
 
         Subclasses can override to customize rapid move translation.
         """
-        if not self.values["TRANSLATE_RAPID_MOVES"]:
+        if (
+            not self.values["TRANSLATE_RAPID_MOVES"]
+            and not self.values["TRANSLATE_NO_ENGAGEMENT_FEED"]
+        ):
             return
 
         for section_name, sublist in postables:
@@ -1359,8 +1419,47 @@ class PostProcessor:
                     new_commands = []
                     Path.Log.debug(f"Translating rapid moves for {item.label}")
                     for cmd in item.path.Commands:
-                        if cmd.Name in Constants.GCODE_MOVE_RAPID:
+
+                        # Modify to G1?
+                        if (
+                            self.values["TRANSLATE_RAPID_MOVES"]
+                            and cmd.Name in Constants.GCODE_MOVE_RAPID
+                        ):
                             cmd.Name = "G1"
+
+                        # G0->G1 for non-engagement-feed
+                        elif (
+                            self.values["TRANSLATE_NO_ENGAGEMENT_FEED"]
+                            and (
+                                feed_str := cmd.Annotations.get(
+                                    Constants.ANNOT_NO_ENGAGEMENT_FEED, None
+                                )
+                            )
+                            is not None
+                        ):
+                            if not isinstance(feed_str, str):
+                                raise CAMAttributeError(
+                                    f"Expected ANNOT_NO_ENGAGEMENT_FEED to be a string convertable to a float, saw {feed_str.__class__.__name__} '{feed_str}'",
+                                    job=self._job,
+                                    operation=self._operation,
+                                    command=cmd,
+                                    pp=self.values["MACHINE_NAME"],
+                                )
+
+                            cmd.Name = "G1"
+                            try:
+                                feed = float(feed_str)
+                            except:
+                                # any conversion error
+                                raise CAMAttributeError(
+                                    f"Expected ANNOT_NO_ENGAGEMENT_FEED to be convertable to a float, saw '{feed_str}'",
+                                    job=self._job,
+                                    operation=self._operation,
+                                    command=cmd,
+                                    pp=self.values["MACHINE_NAME"],
+                                )
+                            cmd.Parameters = {**cmd.Parameters, **{"F": feed}}
+
                         new_commands.append(cmd)
                     item.path = Path.Path(new_commands)
 
@@ -1494,9 +1593,7 @@ class PostProcessor:
                             # Not the first move or not a move command
                             new_commands.append(cmd)
 
-                    if len(new_commands) != len(
-                        item.path.Commands
-                    ):  # FIXME: if ! changed, or just do always
+                    if len(new_commands) != len(item.path.Commands):
                         item.path = Path.Path(new_commands)
                         Path.Log.debug(f"Updated path for {item.label}")
 
@@ -1566,36 +1663,58 @@ class PostProcessor:
                             item.path = Path.Path(filtered_commands)
             return postables
 
-    def _expand_tool_length_offset(self, postables):
-        """Inject or remove G43 tool length offset commands.
-
-        When OUTPUT_TOOL_LENGTH_OFFSET is True, adds G43 commands after M6
-        tool change commands in operations and tool change items.
-
-        When OUTPUT_TOOL_LENGTH_OFFSET is False, removes any existing G43
-        commands from operation paths.
-
-        Simplified single-pass implementation.
+    def _expand_tool_length_offset_post_command(self, item, command):
+        """override in a PP if your TLO is different.
+        return a list of Path.Commands
         """
+        tool_num = command.Parameters["T"]
+        Path.Log.debug(f"Added G43 H{tool_num} after M6 in operation {item.label}")
+        return [Path.Command("G43", {"H": tool_num}, {Constants.ANNOT_ADDED_TLO: True})]
+
+    def _expand_tool_change(self, postables):
+        """Expand what follows a tool change (M6).
+        Immediately after each M6, inserts in order:
+          1. POST_TOOL_CHANGE lines, verbatim, if non-empty
+          2. G43 H<tool>, if OUTPUT_TOOL_LENGTH_OFFSET
+        When OUTPUT_TOOL_LENGTH_OFFSET is off, existing G43 commands are
+        replaced with a comment.
+        """
+
         output_tool_length_offset = self.values["OUTPUT_TOOL_LENGTH_OFFSET"]
         Path.Log.debug(f"OUTPUT_TOOL_LENGTH_OFFSET value: {output_tool_length_offset}")
 
         def edit(section_name, item, cmd, section_state):
-            # suppress
-            if not output_tool_length_offset:
-                if cmd.Name in Constants.GCODE_TOOL_LENGTH_OFFSET:
+            # suppress G43
+            if cmd.Name in Constants.GCODE_TOOL_LENGTH_OFFSET:
+                if not output_tool_length_offset:
                     return 0, [Path.Command(f"(TLO suppressed {cmd.toGCode()})")]
                 else:
                     return None, None
 
-            # add
-            else:
-                if cmd.Name in Constants.MCODE_TOOL_CHANGE and "T" in cmd.Parameters:
+            # append things after M6
+            elif cmd.Name in Constants.MCODE_TOOL_CHANGE:
+                # accumulate changes
+                changes = []
+
+                # POST_TOOL_CHANGE
+                if (block := self.values["POST_TOOL_CHANGE"]) != "":
+                    # instead of inserting an item of type=='str'
+                    for l in block.split("\n"):
+                        if l != "":
+                            changes.append(Path.Command("", {}, {Constants.ANNOT_AS_IS: l}))
+
+                # add G43
+                if output_tool_length_offset and "T" in cmd.Parameters:
                     tool_num = cmd.Parameters["T"]
                     Path.Log.debug(f"Added G43 H{tool_num} after M6 in operation {item.label}")
-                    return 1, [Path.Command("G43", {"H": tool_num}, {"tool_length_offset": True})]
+                    changes.extend(self._expand_tool_length_offset_post_command(item, cmd))
+
+                if changes:
+                    return 1, changes
                 else:
                     return None, None
+            else:
+                return None, None
 
         self._edit_command_list(postables, edit)
 
@@ -1648,7 +1767,10 @@ class PostProcessor:
             return Path.Command("G20")
         else:
             raise CAMAttributeError(
-                f"Must have _machine.output.units (in {self._machine.name}) as one of [{OutputUnits.METRIC},{OutputUnits.IMPERIAL}], someone replaced the default with: {self.values['OUTPUT_UNITS'].__class__.__name__} {self.values['OUTPUT_UNITS']}"
+                f"Must have _machine.output.units (in {self._machine.name}) as one of [{OutputUnits.METRIC},{OutputUnits.IMPERIAL}], someone replaced the default with: {self.values['OUTPUT_UNITS'].__class__.__name__} {self.values['OUTPUT_UNITS']}",
+                job=self._job,
+                operation=self._operation,
+                pp=self.values["MACHINE_NAME"],
             )
 
     def _expand_pre_job(self, postables):
@@ -1753,7 +1875,7 @@ class PostProcessor:
 
         self._edit_item_list(postables, wrap_rotary)
 
-    def _expand_tool_change(self, postables):
+    def _suppress_tool_change(self, postables):
         """Suppress M6 if not TOOL_CHANGE"""
 
         def suppress_m6(section_name: str, item, section_state: dict):
@@ -1863,7 +1985,7 @@ class PostProcessor:
 
             # item -> 'str' Postable's
             if item.item_type == "tool_controller":
-                return 1, [pblock("POST_TOOL_CHANGE"), pblock("TOOL_RETURN")]
+                return 1, [pblock("TOOL_RETURN")]
             elif item.item_type == "fixture":
                 return 1, [pblock("POST_FIXTURE_CHANGE")]
             elif item.item_type == "operation":
@@ -2094,16 +2216,16 @@ class PostProcessor:
 
             else:
 
-                # Modal GCode
-                if not self.values["OUTPUT_DUPLICATE_COMMANDS"]:
-                    next_previous, new_command = modal_gcode(cmd, section_state["previous"])
-                else:
-                    new_command = cmd
-                    next_previous = cmd
+                # Modal Axis always runs on the original command, so "previous"
+                # accumulates the axis state under the command's real name.
+                # Deriving it from a name-stripped command instead makes every
+                # other duplicate compare unequal and re-emit its gcode word.
+                next_previous, axis_command = modal_axis(cmd, section_state["previous"])
+                new_command = axis_command if not self.values["OUTPUT_DOUBLES"] else cmd
 
-                # Modal Axis
-                if not self.values["OUTPUT_DOUBLES"]:
-                    next_previous, new_command = modal_axis(new_command, section_state["previous"])
+                # Modal GCode
+                if not self.values["OUTPUT_DUPLICATE_COMMANDS"] and new_command is not None:
+                    _, new_command = modal_gcode(new_command, section_state["previous"])
 
                 section_state["previous"] = next_previous
 
@@ -2227,12 +2349,17 @@ class PostProcessor:
         if not getattr(self, "_bundle_applied", False):
             self.apply_configuration_bundle()
 
-        # ===== STAGE 1: ORDERING =====
-        all_job_sections = []
+        # ===== STAGE 1: Postable List =====
+        # FreeCAD "supported" g-code
         postables = self._buildPostList()
         self._expand_postprocessor_commands(postables)
 
         # ===== STAGE 2: COMMAND EXPANSION =====
+        # and block insertion
+        # Postable world:
+        # Either a_Postable.item.path of Path.Commands,
+        # or a_Postable.item.type == "str" for opaque "blob" of text
+        # Path.Commands can become "Non-Conforming"
 
         self._expand_prefix(postables)
         # postables = self._expand_pre_job(postables) # FIXME: need an item for a job, handled by _expand_prefix for now
@@ -2246,11 +2373,11 @@ class PostProcessor:
         self._expand_translate_rapids(postables)
         self._expand_xy_before_z(postables)
         self._expand_bcnc_commands(postables)
-        self._expand_tool_length_offset(postables)
+        self._expand_tool_change(postables)
+        self._suppress_tool_change(postables)
 
         postables = self._expand_post_item(postables)
         self._expand_trailing_lines(postables)
-        self._expand_tool_change(postables)
         self._expand_rotary_move(postables)
 
         # must be last expansion
@@ -2266,26 +2393,26 @@ class PostProcessor:
         Path.Log.debug(postables)
 
         # ===== STAGE 3: COMMAND CONVERSION =====
+        # String world
 
         # convert postables to machine-specific gcode
+        # [ gcode-stringified ]
         job_sections = self._convert_job_sections(postables)
-
-        all_job_sections.extend(job_sections)
 
         # ===== STAGE 5: OUTPUT PRODUCTION =====
 
-        Path.Log.debug(f"Returning {len(all_job_sections)} sections")
-        Path.Log.debug(f"Sections: {all_job_sections}")
+        Path.Log.debug(f"Returning {len(job_sections)} sections")
+        Path.Log.debug(f"Sections: {job_sections}")
 
         # ===== STAGE 6: REMOTE POSTING =====
         try:
-            self.remote_post(all_job_sections)
+            self.remote_post(job_sections)
         except Exception as e:
             # Our output still might be interesting, so continue
             # FIXME: can we make the user notice this situation?
             Path.Log.error(f"Remote posting failed: {e}")
 
-        return all_job_sections
+        return job_sections
 
     def export(self) -> Union[None, GCodeSections]:
         """Process the parser arguments, then postprocess the 'postables'."""
@@ -2494,12 +2621,17 @@ class PostProcessor:
 
     def get_sanity_checks(self, job):
         """
-        Hook for postprocessor-specific sanity checks.
+        Run the sanity checks for this postprocessor.
 
-        This method allows postprocessors to define custom validation rules
-        specific to their machine capabilities, configuration requirements,
-        or operational constraints. These checks are integrated into the
-        CAM_QuickValidation system and displayed alongside generic checks.
+        The checks themselves live in the methods returned by
+        sanity_check_methods().  A postprocessor that needs to change one
+        check should override that check, and one that needs to add or drop a
+        check should override sanity_check_methods(); overriding this method
+        is rarely necessary.  A subclass that does override it should call
+        super() so the machine-level checks still run.
+
+        A failing check is logged and skipped so that one broken check does
+        not suppress the rest of the report.
 
         Args:
             job: FreeCAD CAM job object to validate
@@ -2507,21 +2639,133 @@ class PostProcessor:
         Returns:
             list: List of squawk dictionaries following the same format as CAMSanity
                   Each squawk should have: Date, Operator, Note, squawkType, squawkIcon
-
-        Example:
-            def get_sanity_checks(self, job):
-                squawks = []
-
-                # Check plasma cutter specific settings
-                if self.values['PIERCE_DELAY'] < 300:
-                    squawks.append(self._create_squawk(
-                        "WARNING",
-                        "Pierce delay may be too short for material piercing"
-                    ))
-
-                return squawks
         """
-        return []  # Default implementation: no custom checks
+        squawks = []
+        for check in self.sanity_check_methods():
+            try:
+                squawks.extend(check(job))
+            except Exception as e:
+                Path.Log.warning(f"Sanity check {check.__name__} failed: {e}")
+        return squawks
+
+    def sanity_check_methods(self):
+        """
+        The checks run by get_sanity_checks(), in report order.
+
+        Each takes the job and returns a list of squawks.
+
+        Returns:
+            list: List of bound methods.
+        """
+        return [self._sanity_spindle_speed]
+
+    def _sanity_spindle_speed(self, job):
+        """
+        Squawk for commanded spindle speeds outside the machine's range.
+
+        The limits come from the machine's toolhead by way of
+        _merge_toolhead_limits().  When neither limit is known the speeds are
+        not checked, so a machine that has not specified them is not squawked
+        at.  A machine whose limits could not be resolved gets a NOTE instead.
+
+        Args:
+            job: FreeCAD CAM job object to validate
+
+        Returns:
+            list: List of squawk dictionaries.
+        """
+        min_speed = self.values.get("MIN_SPINDLE_SPEED")
+        max_speed = self.values.get("MAX_SPINDLE_SPEED")
+        if min_speed is None and max_speed is None:
+            return self._sanity_spindle_speed_unresolved()
+
+        squawks = []
+        for label, speed in self._commanded_spindle_speeds(job):
+            if speed == 0:
+                # Zero is "spindle not running".  CAMSanity already squawks
+                # about tool controllers with no spindle speed.
+                continue
+            if min_speed is not None and speed < min_speed:
+                squawks.append(
+                    self._create_squawk(
+                        "WARNING",
+                        translate(
+                            "CAM_Post",
+                            "'{}' commands spindle speed {} rpm, below the machine minimum of {} rpm",
+                        ).format(label, f"{speed:g}", f"{min_speed:g}"),
+                    )
+                )
+            # Not elif: a machine misconfigured with min_rpm > max_rpm
+            # should report both violations, not hide the second.
+            if max_speed is not None and speed > max_speed:
+                squawks.append(
+                    self._create_squawk(
+                        "WARNING",
+                        translate(
+                            "CAM_Post",
+                            "'{}' commands spindle speed {} rpm, above the machine maximum of {} rpm",
+                        ).format(label, f"{speed:g}", f"{max_speed:g}"),
+                    )
+                )
+        return squawks
+
+    def _sanity_spindle_speed_unresolved(self):
+        """
+        Squawk when spindle speed limits exist but could not be applied.
+
+        With several toolheads there is no rule for which one a job uses, so
+        _merge_toolhead_limits() leaves the limits unset.  Say so, rather
+        than let the check silently do nothing.
+
+        Returns:
+            list: List of squawk dictionaries.
+        """
+        toolheads = getattr(getattr(self, "_machine", None), "toolheads", None) or []
+        if len(toolheads) > 1:
+            return [
+                self._create_squawk(
+                    "NOTE",
+                    translate(
+                        "CAM_Post",
+                        "Machine defines {} toolheads; spindle speed was not checked against their limits",
+                    ).format(len(toolheads)),
+                )
+            ]
+        return []
+
+    def _commanded_spindle_speeds(self, job):
+        """
+        The distinct spindle speeds commanded by a job.
+
+        Speeds are read from the commands rather than from
+        ToolController.SpindleSpeed so that anything rewriting the spindle
+        command is accounted for.  Tool controllers are the usual source, but
+        operations are scanned too in case a generator emits its own M3/M4.
+
+        Args:
+            job: FreeCAD CAM job object to scan
+
+        Returns:
+            list: List of (label, speed) tuples, without duplicates.
+        """
+        sources = list(getattr(getattr(job, "Tools", None), "Group", None) or [])
+        sources += list(getattr(getattr(job, "Operations", None), "Group", None) or [])
+
+        seen = []
+        for source in sources:
+            path = getattr(source, "Path", None)
+            if not path:
+                continue
+            for command in path.Commands:
+                if command.Name not in Constants.MCODE_SPINDLE_ON:
+                    continue
+                speed = command.Parameters.get("S")
+                if speed is None:
+                    continue
+                entry = (getattr(source, "Label", ""), float(speed))
+                if entry not in seen:
+                    seen.append(entry)
+        return seen
 
     def _create_squawk(self, squawk_type, note):
         """
@@ -2588,21 +2832,40 @@ class PostProcessor:
 
         # Pass through G-code as-is
         if "as-is" in command.Annotations:
+            # and we no longer know the MachineState
+            self.machine_state.setState(None)
             return command.Annotations[Constants.ANNOT_AS_IS]
+
+        # "ignored" commands need not be in "SUPPORTED_COMMANDS"
+        if command.Name != "" and command.Name in self.values["IGNORED_COMMANDS"]:
+            Path.Log.debug(f"ignored {command}")
+            return None
 
         # Validate command is supported
         supported = self.values.get(
             "SUPPORTED_COMMANDS",
             Constants.GCODE_SUPPORTED + Constants.GCODE_FIXTURES + Constants.MCODE_SUPPORTED,
         )
-        if (
-            command.Name not in supported
-            and not command.Name.startswith("(")
-            and not command.Name.startswith("T")
-            and not command.Annotations.get(Constants.ANNOT_ALLOW_UNSUPPORTED, False)
+        if not (
+            command.Name in supported
+            or (len(command.Name) > 0 and command.Name[0] in Constants.GCODE_NON_CONFORMING_BARE)
+            or command.Name.startswith("(")
+            or command.Annotations.get(Constants.ANNOT_ALLOW_UNSUPPORTED, False)
         ):
+            # Try to help them if it is Custom op
+            extra = ""
+            if (
+                self._operation
+                and getattr(self._operation, "source", None)
+                and getattr(self._operation.source, "Proxy")
+                and isinstance(self._operation.source.Proxy, Path.Op.Custom.ObjectCustom)
+            ):
+                extra = translate(
+                    "CAM",
+                    " (in the Custom op, uncheck Post Process Output, or put '!' in front of specific command)",
+                )
             raise CAMValueError(
-                f"Unsupported command: {command.Name}",
+                f"Unsupported command: {command.Name}{extra}",
                 job=self._job,
                 operation=self._operation,
                 command=command,
@@ -2638,7 +2901,7 @@ class PostProcessor:
             return self._convert_arc_move(command)
 
         # Drill cycles
-        if command_name in Constants.GCODE_MOVE_DRILL + Constants.GCODE_DRILL_EXTENDED:
+        if command_name in Constants.EXPANDABLE_DRILL_CYCLES + Constants.GCODE_DRILL_EXTENDED:
             return self._convert_drill_cycle(command)
 
         # Probe
@@ -2780,6 +3043,7 @@ class PostProcessor:
             return format_axis_param(value)
 
         # Parameter type mappings
+        # Should cover Constants.PARAMETER_ORDER
         param_formatters = {
             # Axis parameters
             "X": format_axis_param,
@@ -2837,14 +3101,14 @@ class PostProcessor:
             prefix = self.values["LINE_NUMBER_PREFIX"]
             command_line.append(f"{prefix}{ int(params['N']):d}")
 
-        command_line.append(command_name)
+        # A modal-stripped command has no name. Appending it anyway leaves an
+        # empty leading element, which format_command_line renders as a leading
+        # separator: "G1 X1.0 Y2.0" followed by " X3.0 Y4.0".
+        if command_name:
+            command_line.append(command_name)
 
         # Format parameters with clean, stateless implementation
-        parameter_order = self.values.get(
-            "PARAMETER_ORDER",
-            # FIXME: dry
-            ["X", "Y", "Z", "A", "B", "C", "F", "I", "J", "K", "R", "Q", "P", "S", "T"],
-        )
+        parameter_order = list(self.values.get("PARAMETER_ORDER", Constants.PARAMETER_ORDER))
 
         # Suppress commands where all parameters were removed by duplicate suppression
         # or parameter_order exclusion (e.g., Z suppression for wire EDM).
@@ -2879,6 +3143,11 @@ class PostProcessor:
                 formatted_value = self.format_parameter(parameter, current_value, command_name)
                 command_line.append(f"{parameter}{formatted_value}")
 
+        # Nothing left to emit, e.g. a modal command whose parameters were all
+        # suppressed as duplicates.
+        if not command_line:
+            return None
+
         # Format the command line
         formatted_line = format_command_line(self.values, command_line)
 
@@ -2911,13 +3180,53 @@ class PostProcessor:
         """
         return self._convert_move(command)
 
+    def _tapping_to_speed(self, command: Path.Command) -> Path.Command:
+        """Updates F to the speed, not pitch, if appropriate
+        Returns original command, or modified command
+        Override in the PP if the logic is completely different
+        """
+        # Tapping F is pitch, convert to speed
+        if (
+            command.Name in Constants.GCODE_MOVE_TAP
+            and "tapping" == command.Annotations.get("operation", "")
+            and "F" in command.Parameters
+        ):
+            # we are still FreeCAD units: mm and secs, so mm/min -> mm/sec
+            spindle_speed = command.Parameters.get("S", None)
+            if spindle_speed is None:
+                raise CAMAttributeError(
+                    translate("CAM", "S parameter is required for a tapping operation"),
+                    job=self._job,
+                    operation=self._operation,
+                    command=command,
+                    pp=self.values["MACHINE_NAME"],
+                )
+            if spindle_speed <= 0:
+                raise CAMValueError(
+                    translate("CAM", "S parameter must be > 0 for a tapping operation"),
+                    job=self._job,
+                    operation=self._operation,
+                    command=command,
+                    pp=self.values["MACHINE_NAME"],
+                )
+            f = command.Parameters["F"] * spindle_speed / 60.0
+            new_command = Path.Command(
+                command.Name, {**command.Parameters, "F": f}, command.Annotations
+            )
+            return new_command
+        else:
+            return command
+
     def _convert_drill_cycle(self, command: Path.Command) -> str:
         """
         Converts a drill cycle command to gcode.
 
         This method can be overridden by derived postprocessors to customize drill cycle handling.
         """
-        return self._convert_move(command)
+
+        new_command = self._tapping_to_speed(command)
+
+        return self._convert_move(new_command)
 
     def _convert_probe(self, command: Path.Command) -> str:
         """
@@ -3033,7 +3342,7 @@ class WrapperPost(PostProcessor):
             self.script_module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(self.script_module)
         except Exception as e:
-            raise ImportError(f"Failed to load script: {e}")
+            raise ImportError(f"Failed to load script as module '{self.module_name}': {e}")
 
         if not hasattr(self.script_module, "export"):
             raise AttributeError("The script does not have an 'export' function.")

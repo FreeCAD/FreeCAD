@@ -40,7 +40,7 @@ standardplatsen ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="123"/>
       <source>FreeCAD Wiki (online)</source>
-      <translation>FreeCAD Wiki (online)</translation>
+      <translation>FreeCADs wiki (online)</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="33"/>
@@ -61,11 +61,11 @@ Documentation can be downloaded for offline use via the Addon Manager and instal
 &quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
 automatically search for the help files at the default location
 ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation>Ställ in detta till en anpassad URL eller den mapp där hjälpfilerna finns.
-Dokumentation kan laddas ner för offline-användning via Tilläggshanterare och installation av tillägget
-&quot; offline-documentation &quot;. Om det här fältet lämnas tomt kommer FreeCAD
-automatiskt söka efter hjälpfilerna på standardplatsen
-($USERAPPDATADIR/Mod/offline-dokumentation).</translation>
+      <translation>Ange en anpassad URL eller den mapp där hjälpfilerna finns.
+Dokumentationen kan hämtas för användning utan internet via tilläggshanteraren genom att installera
+tillägget ”offline-documentation”. Om fältet lämnas tomt söker FreeCAD
+automatiskt efter hjälpfilerna på standardplatsen
+($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="112"/>
@@ -76,8 +76,8 @@ automatiskt söka efter hjälpfilerna på standardplatsen
       <location filename="../../dlgPreferencesHelp.ui" line="119"/>
       <source>The documentation pages will be fetched from the official
 FreeCADwiki at https://wiki.freecad.org</source>
-      <translation>Dokumentationssidorna kommer att hämtas från den officiella
-FreeCADwiki på https://wiki.freecad.org</translation>
+      <translation>Dokumentationssidorna hämtas från FreeCADs officiella
+wiki på https://wiki.freecad.org</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="139"/>
@@ -85,10 +85,10 @@ FreeCADwiki på https://wiki.freecad.org</translation>
 of the FreeCAD wiki,hosted on FreeCAD&apos;s GitHub account. This can be styled with a
 custom stylesheet below and can look nicer than the wiki option. The &apos;Markdown&apos; or
 &apos;Pandoc&apos; Python module should be installed for optimal results.</source>
-      <translation>Dokumentationssidorna kommer att hämtas från en automatisk Markdown-konvertering
-av FreeCAD wiki, värd på FreeCADs GitHub-konto. Detta kan utformas med en
-anpassad stilmall nedan och kan se trevligare ut än wiki-alternativet. Python-modulen 'Markdown' eller
-'Pandoc' Python-modulen bör installeras för optimala resultat.</translation>
+      <translation>Dokumentationssidorna hämtas från en automatisk Markdown-konvertering
+av FreeCADs wiki som finns på FreeCADs GitHub-konto. Utseendet kan anpassas med en
+egen stilmall nedan och kan bli snyggare än wiki-alternativet. Python-modulen ”Markdown” eller
+”Pandoc” bör installeras för bästa resultat.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="145"/>
@@ -98,7 +98,7 @@ anpassad stilmall nedan och kan se trevligare ut än wiki-alternativet. Python-m
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="164"/>
       <source>Display</source>
-      <translation>Visa</translation>
+      <translation>Visning</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
@@ -136,7 +136,7 @@ Kräver komponenten PySide QtWebengineWidgets.</translation>
       <location filename="../../dlgPreferencesHelp.ui" line="256"/>
       <source>Specify the path to an alternative CSS file for styling Markdown pages.
 This only applies if Markdown is selected above.</source>
-      <translation>Ange sökvägen till en alternativ CSS-fil för styling av Markdown-sidor.
+      <translation>Ange sökvägen till en alternativ CSS-fil för att formge Markdown-sidor.
 Detta gäller endast om Markdown har valts ovan.</translation>
     </message>
     <message>
@@ -170,12 +170,12 @@ Detta gäller endast om Markdown har valts ovan.</translation>
     <message>
       <location filename="../../Help.py" line="82"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
-      <translation>PySide QtWebEngineWidgets-modulen är inte tillgänglig. Rendering av hjälp görs med systemets webbläsare</translation>
+      <translation>Modulen PySide QtWebEngineWidgets är inte tillgänglig. Hjälpen visas i systemets webbläsare</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="86"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
-      <translation>Det finns ingen Markdown-återgivare installerad på ditt system, så den här hjälpsidan återges som den är. Installera Markdown- eller Pandoc Python-modulerna för att förbättra återgivningen av den här sidan.</translation>
+      <translation>Det finns ingen Markdown-återgivare installerad på systemet, så den här hjälpsidan återges som den är. Installera Python-modulerna Markdown eller Pandoc för att förbättra sidans återgivning.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="118"/>

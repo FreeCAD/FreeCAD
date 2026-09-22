@@ -397,12 +397,12 @@ QStringList FileDialogInternal::nativeFileDialog(
             for (DWORD i = 0; i < itemCount; ++i) {
                 ComPointer<IShellItem> item;
                 if (FAILED(results->GetItemAt(i, &item.ptr))) {
-                    Base::Console().error("Failed to get IShellItemArray item #%d", i);
+                    Base::Console().error("Failed to get IShellItemArray item #{}", i);
                     return selectedFiles;
                 }
                 PWSTR itemPath;
                 if (FAILED(item->GetDisplayName(SIGDN_FILESYSPATH, &itemPath))) {
-                    Base::Console().error("Failed to get path of IShellItemArray item #%d", i);
+                    Base::Console().error("Failed to get path of IShellItemArray item #{}", i);
                     return selectedFiles;
                 }
                 selectedFiles.append(QDir::cleanPath(QString::fromWCharArray(itemPath)));

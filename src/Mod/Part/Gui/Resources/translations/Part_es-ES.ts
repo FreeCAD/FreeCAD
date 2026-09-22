@@ -582,13 +582,13 @@
       <location filename="../../AttacherTexts.cpp" line="364"/>
       <source>Midplane between faces</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Midplane between faces</translation>
+      <translation>Plano medio entre caras</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="365"/>
       <source>Plane origin is midway between two planar faces and its orientation equally bisects their angle. For non-parallel faces the plane contains their intersection line.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane origin is midway between two planar faces and its orientation equally bisects their angle. For non-parallel faces the plane contains their intersection line.</translation>
+      <translation>El origen del plano se sitúa en el medio de dos caras planas y su orientación biseca por igual al ángulo entre ellas. Para caras no paralelas el plano contiene su línea de intersección</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="375"/>
@@ -895,13 +895,13 @@
       <location filename="../../AttacherTexts.cpp" line="111"/>
       <source>Midplane between faces</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Midplane between faces</translation>
+      <translation>Plano medio entre caras</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="112"/>
       <source>Plane origin is midway between two planar faces and its orientation equally bisects their angle. For non-parallel faces the plane contains their intersection line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Plane origin is midway between two planar faces and its orientation equally bisects their angle. For non-parallel faces the plane contains their intersection line.</translation>
+      <translation>El origen del plano se sitúa en el medio de dos caras planas y su orientación biseca por igual al ángulo entre ellas. Para caras no paralelas el plano contiene su línea de intersección</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="200"/>
@@ -1301,7 +1301,7 @@
     <message>
       <location filename="../../Command.cpp" line="134"/>
       <source>Box Fix 1</source>
-      <translation type="unfinished">Box Fix 1</translation>
+      <translation>Corrección de caja 1</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="135"/>
@@ -1319,7 +1319,7 @@
     <message>
       <location filename="../../Command.cpp" line="177"/>
       <source>Box Fix 2</source>
-      <translation type="unfinished">Box Fix 2</translation>
+      <translation>Corrección de caja 2</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="178"/>
@@ -1704,7 +1704,7 @@
     <message>
       <location filename="../../Command.cpp" line="1734"/>
       <source>Lofts the selected profiles</source>
-      <translation type="unfinished">Lofts the selected profiles</translation>
+      <translation>Crea una superficie entre los perfiles seleccionados</translation>
     </message>
   </context>
   <context>
@@ -1962,7 +1962,7 @@ de la proyección.</translation>
     <message>
       <location filename="../../Command.cpp" line="998"/>
       <source>Sections 2 selected shapes</source>
-      <translation type="unfinished">Sections 2 selected shapes</translation>
+      <translation>Secciona 2 formas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -2162,7 +2162,7 @@ de la proyección.</translation>
     <message>
       <location filename="../../Command.cpp" line="1214"/>
       <source>Import Curve Net</source>
-      <translation type="unfinished">Import Curve Net</translation>
+      <translation>Importar Red de Curvas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1348"/>
@@ -2250,7 +2250,7 @@ de la proyección.</translation>
       <translation>Cambiar colores de cara</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="226"/>
+      <location filename="../../TaskLoft.cpp" line="214"/>
       <source>Loft</source>
       <translation>Proyección</translation>
     </message>
@@ -4542,7 +4542,7 @@ Primero seleccione una o más aristas.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="427"/>
       <source>Enables larger snapping increments while  manipulating draggers</source>
-      <translation type="unfinished">Enables larger snapping increments while  manipulating draggers</translation>
+      <translation>Permite incrementos de snap mayores al manipular arrastrables</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="445"/>
@@ -4552,7 +4552,7 @@ Primero seleccione una o más aristas.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="452"/>
       <source>Defines the modifier key used for fine snapping while dragging</source>
-      <translation type="unfinished">Defines the modifier key used for fine snapping while dragging</translation>
+      <translation>Define la tecla modificadora para el snap preciso durante el arrastre</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="472"/>
@@ -4572,7 +4572,7 @@ Primero seleccione una o más aristas.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="515"/>
       <source>Multiplies the base movement increment when coarse snapping is active</source>
-      <translation type="unfinished">Multiplies the base movement increment when coarse snapping is active</translation>
+      <translation>Multiplica el movimiento base cuando está activo el snap grueso</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="532"/>
@@ -4582,7 +4582,7 @@ Primero seleccione una o más aristas.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="548"/>
       <source>Sets the rotation step in degrees applied when coarse snapping is active</source>
-      <translation type="unfinished">Sets the rotation step in degrees applied when coarse snapping is active</translation>
+      <translation>Define el intérvalo de rotación, en grados, cuando se activa el snap grueso</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="233"/>
@@ -4915,37 +4915,37 @@ se utilizará el vector normal del plano de croquis</translation>
   <context>
     <name>PartGui::LoftWidget</name>
     <message>
-      <location filename="../../TaskLoft.cpp" line="74"/>
+      <location filename="../../TaskLoft.cpp" line="77"/>
       <source>Available profiles</source>
       <translation>Perfiles disponibles</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="75"/>
+      <location filename="../../TaskLoft.cpp" line="78"/>
       <source>Selected profiles</source>
       <translation>Perfiles seleccionados</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="200"/>
+      <location filename="../../TaskLoft.cpp" line="188"/>
       <source>Too Few Elements</source>
       <translation>Elementos insuficientes</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="201"/>
+      <location filename="../../TaskLoft.cpp" line="189"/>
       <source>At least 2 vertices, edges, wires, or faces are required.</source>
       <translation>Se requieren al menos 2 vértices, aristas, cables o caras.</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="240"/>
+      <location filename="../../TaskLoft.cpp" line="228"/>
       <source>Input error</source>
       <translation>Error de entrada</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="275"/>
+      <location filename="../../TaskLoft.cpp" line="263"/>
       <source>Vertex/Edge/Wire/Face</source>
       <translation>Vértice/Arista/Alambre/Cara</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="276"/>
+      <location filename="../../TaskLoft.cpp" line="264"/>
       <source>Loft</source>
       <translation>Proyección</translation>
     </message>
@@ -5840,7 +5840,7 @@ Comprobación de operaciones booleanas individuales:</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1498"/>
       <source>%1 select and confirm</source>
-      <translation type="unfinished">%1 select and confirm</translation>
+      <translation>%1 seleccionar y confirmar</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1648"/>
@@ -6092,8 +6092,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="51"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="59"/>
-      <location filename="../../ViewProvider.cpp" line="53"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="55"/>
+      <location filename="../../ViewProvider.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>Editar %1</translation>
     </message>
@@ -6288,17 +6288,17 @@ Continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="116"/>
       <source>Invalid same range flag</source>
-      <translation type="unfinished">Invalid same range flag</translation>
+      <translation>Marcador de mismo rango no válido</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="117"/>
       <source>Invalid same parameter flag</source>
-      <translation type="unfinished">Invalid same parameter flag</translation>
+      <translation>Marcador de mismo parámetro no válido</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="118"/>
       <source>Invalid degenerated flag</source>
-      <translation type="unfinished">Invalid degenerated flag</translation>
+      <translation>Modificador de degeneración no válido</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="119"/>
@@ -6383,7 +6383,7 @@ Continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="135"/>
       <source>Sub-shape not in shape</source>
-      <translation type="unfinished">Sub-shape not in shape</translation>
+      <translation>Subforma no está en la forma</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="136"/>
@@ -6521,7 +6521,7 @@ Continue?</source>
       <translation>Ingrese la distancia:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="994"/>
+      <location filename="../../ViewProviderExt.cpp" line="1011"/>
       <source>Appearance per Face</source>
       <translation>Apariencia por cara</translation>
     </message>
@@ -6543,7 +6543,7 @@ Continue?</source>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="72"/>
       <source>The %1 '%2' has %3. Do you want to delete them as well?</source>
-      <translation type="unfinished">The %1 '%2' has %3. Do you want to delete them as well?</translation>
+      <translation>O %1 '%2' tiene %3. ¿Eliminarlos también?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="236"/>
@@ -6594,7 +6594,7 @@ Continue?</source>
     <message>
       <location filename="../../ViewProviderAttachExtension.cpp" line="101"/>
       <source>Edit Attachment</source>
-      <translation type="unfinished">Edit Attachment</translation>
+      <translation>Editar adjunto</translation>
     </message>
   </context>
   <context>
@@ -6622,7 +6622,7 @@ Continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
       <source>Part Tools</source>
-      <translation type="unfinished">Part Tools</translation>
+      <translation>Herramientas de pieza</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
@@ -6775,10 +6775,7 @@ Continue?</source>
 area, or length, or by choosing specific items.
 If a second object is selected, it will be used as reference, for example,
 for collision or distance filtering.</source>
-      <translation type="unfinished">Filters out objects from the selected compound by characteristics like volume,
-area, or length, or by choosing specific items.
-If a second object is selected, it will be used as reference, for example,
-for collision or distance filtering.</translation>
+      <translation>Filtra los objetos del compuesto seleccionado por características como el volumen, superficie, o largo; o eligiendo elementos específicos. Por ejemplo, si se selecciona un segundo objeto se utilizará como referencia para filtrar colisión o distancia.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="88"/>
@@ -7346,7 +7343,7 @@ Se eliminarán los volúmenes superpuestos de las figuras.</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6723"/>
+      <location filename="../../../App/Geometry.cpp" line="6726"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>No se puede determinar la intersección de las curvas. Intente añadir una restricción de coincidencia entre los vértices de las curvas que desea redondear.</translation>
     </message>
@@ -7723,43 +7720,53 @@ Se eliminarán los volúmenes superpuestos de las figuras.</translation>
       <translation>Apariciones</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="78"/>
+      <location filename="../../PatternParametersWidget.cpp" line="79"/>
       <source>Axis</source>
       <translation>Eje</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="79"/>
-      <location filename="../../PatternParametersWidget.cpp" line="81"/>
+      <location filename="../../PatternParametersWidget.cpp" line="80"/>
+      <location filename="../../PatternParametersWidget.cpp" line="82"/>
       <source>Total Angle</source>
       <translation>Ángulo total</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="80"/>
-      <location filename="../../PatternParametersWidget.cpp" line="82"/>
+      <location filename="../../PatternParametersWidget.cpp" line="81"/>
+      <location filename="../../PatternParametersWidget.cpp" line="83"/>
       <source>Angular Spacing</source>
       <translation>Espaciado angular</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="425"/>
-      <location filename="../../PatternParametersWidget.cpp" line="521"/>
+      <location filename="../../PatternParametersWidget.cpp" line="371"/>
+      <location filename="../../PatternParametersWidget.cpp" line="467"/>
       <source>Spacing %1</source>
       <translation>Espaciado</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="441"/>
+      <location filename="../../PatternParametersWidget.cpp" line="387"/>
       <source>Remove this spacing definition.</source>
       <translation>Elimine esta definición de espaciado.</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="942"/>
+      <location filename="../../PatternParametersWidget.cpp" line="894"/>
       <source>Reset spacing</source>
-      <translation type="unfinished">Reset spacing</translation>
+      <translation>Reiniciar espaciado</translation>
     </message>
   </context>
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="236"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="159"/>
+      <source>Preview requires a Part-based view provider; none found for %1.</source>
+      <translation>Para la vista preliminar se necesita un proveedor de vista, y no se encuentra para %1.</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
+      <source>unknown object</source>
+      <translation>objeto desconocido</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="303"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>Error al renderizar la vista previa. Esto suele indicar un error en el modelo.</translation>
     </message>
@@ -7771,6 +7778,122 @@ Se eliminarán los volúmenes superpuestos de las figuras.</translation>
       <source>STEP with colors</source>
       <extracomment>Translation note: "STEP" is a file type end should not be translated</extracomment>
       <translation>STEP con colores</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::PatternCircularParametersWidget</name>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="29"/>
+      <source>Circular Pattern</source>
+      <translation type="unfinished">Circular Pattern</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="35"/>
+      <source>Axis</source>
+      <translation>Eje</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="48"/>
+      <source>Radial distance</source>
+      <translation>Distancia Radial</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="65"/>
+      <source>Tangential distance</source>
+      <translation>Distancia tangencial</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="82"/>
+      <source>Concentric circles</source>
+      <translation type="unfinished">Concentric circles</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="95"/>
+      <source>Symmetry</source>
+      <translation>Simetría</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::PatternPointParametersWidget</name>
+    <message>
+      <location filename="../../PatternPointParametersWidget.ui" line="8"/>
+      <source>Point object</source>
+      <translation type="unfinished">Point object</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPointParametersWidget.ui" line="14"/>
+      <location filename="../../PatternPointParametersWidget.cpp" line="48"/>
+      <source>Select Point Object</source>
+      <translation type="unfinished">Select Point Object</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::PatternPathParametersWidget</name>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="6"/>
+      <source>Path</source>
+      <translation>Trayectoria</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="7"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="145"/>
+      <source>Select Path</source>
+      <translation type="unfinished">Select Path</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="8"/>
+      <source>Spacing mode</source>
+      <translation type="unfinished">Spacing mode</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="10"/>
+      <source>Occurrences</source>
+      <translation>Apariciones</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="12"/>
+      <source>Spacing</source>
+      <translation>Espaciado</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="14"/>
+      <source>Start offset</source>
+      <translation type="unfinished">Start offset</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="16"/>
+      <source>End offset</source>
+      <translation type="unfinished">End offset</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="18"/>
+      <source>Reverse path</source>
+      <translation type="unfinished">Reverse path</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="19"/>
+      <source>Align to path</source>
+      <translation type="unfinished">Align to path</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <source>Fixed count</source>
+      <translation type="unfinished">Fixed count</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <source>Fixed spacing</source>
+      <translation type="unfinished">Fixed spacing</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <source>Fixed count and spacing</source>
+      <translation type="unfinished">Fixed count and spacing</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.cpp" line="157"/>
+      <source>(+%1)</source>
+      <translation type="unfinished">(+%1)</translation>
     </message>
   </context>
   <context>
@@ -7791,12 +7914,25 @@ Se eliminarán los volúmenes superpuestos de las figuras.</translation>
     <message>
       <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
       <source>Unified facemaker</source>
-      <translation type="unfinished">Unified facemaker</translation>
+      <translation>Facemaker unificado</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
       <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
-      <translation type="unfinished">Unified: handles nested holes, overlapping wires, and curved surfaces</translation>
+      <translation>Unificado: gestionas agujeros anidados, contornos superpuestos y superficies curvas</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::PatternInstanceControls</name>
+    <message>
+      <location filename="../../PatternInstanceControls.cpp" line="226"/>
+      <source>Restores this instance</source>
+      <translation type="unfinished">Restores this instance</translation>
+    </message>
+    <message>
+      <location filename="../../PatternInstanceControls.cpp" line="231"/>
+      <source>Suppresses this instance</source>
+      <translation type="unfinished">Suppresses this instance</translation>
     </message>
   </context>
 </TS>

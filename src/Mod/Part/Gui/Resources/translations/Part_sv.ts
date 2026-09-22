@@ -7,7 +7,7 @@
       <location filename="../../AttacherTexts.cpp" line="864"/>
       <source>Any</source>
       <comment>Attacher reference type</comment>
-      <translation>Alla</translation>
+      <translation>Valfri</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="865"/>
@@ -49,7 +49,7 @@
       <location filename="../../AttacherTexts.cpp" line="872"/>
       <source>Conic</source>
       <comment>Attacher reference type</comment>
-      <translation>Konisk</translation>
+      <translation>Kägelsnitt</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="873"/>
@@ -136,13 +136,13 @@
       <location filename="../../AttacherTexts.cpp" line="750"/>
       <source>Attachment is disabled. Point can be moved by editing Placement property.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Attachment är inaktiverat. Punkten kan flyttas genom att redigera egenskapen Placement.</translation>
+      <translation>Fästningen är inaktiverad. Punkten kan flyttas genom att redigera egenskapen Placering.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="758"/>
       <source>Object's origin</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Objekts origo</translation>
+      <translation>Objektets origo</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="759"/>
@@ -154,19 +154,19 @@
       <location filename="../../AttacherTexts.cpp" line="768"/>
       <source>Focus1</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Fokus 1</translation>
+      <translation>Brännpunkt 1</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="769"/>
       <source>Focus of ellipse, parabola, hyperbola.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Fokus på ellips, parabel och hyperbel.</translation>
+      <translation>Brännpunkt för ellips, parabel eller hyperbel.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="777"/>
       <source>Focus2</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Fokus 2</translation>
+      <translation>Brännpunkt 2</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="778"/>
@@ -184,7 +184,7 @@
       <location filename="../../AttacherTexts.cpp" line="787"/>
       <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Punkten placeras på kanten, MapPathParameter styr var. Dessutom kan vertex länkas in för att göra en projektion.</translation>
+      <translation>Punkten placeras på kanten. MapPathParameter styr var. Dessutom kan en hörnpunkt länkas för att göra en projektion.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="796"/>
@@ -196,7 +196,7 @@
       <location filename="../../AttacherTexts.cpp" line="797"/>
       <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Centrum för oscillerande cirkel för en kant. Valfri vertexlänk definierar var.</translation>
+      <translation>Centrum för en kants krökningscirkel. En valfri länk till en hörnpunkt anger var.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="806"/>
@@ -271,7 +271,7 @@
       <location filename="../../AttacherTexts.cpp" line="560"/>
       <source>Attachment is disabled. Line can be moved by editing Placement property.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Attachment är inaktiverat. Linjen kan flyttas genom att redigera Placement-egenskapen.</translation>
+      <translation>Fästningen är inaktiverad. Linjen kan flyttas genom att redigera egenskapen Placering.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="568"/>
@@ -314,7 +314,7 @@
       <location filename="../../AttacherTexts.cpp" line="599"/>
       <source>Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Linje som är en axel i en oscillerande cirkel av en krökt kant. Valfritt vertex definierar var.</translation>
+      <translation>Linje som utgör axeln för en krökt kants krökningscirkel. En valfri hörnpunkt anger var.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="608"/>
@@ -326,7 +326,7 @@
       <location filename="../../AttacherTexts.cpp" line="609"/>
       <source>Directrix line for ellipse, parabola, hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Directrixlinje för ellips, parabel, hyperbel.</translation>
+      <translation>Ledlinje för ellips, parabel eller hyperbel.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="617"/>
@@ -338,7 +338,7 @@
       <location filename="../../AttacherTexts.cpp" line="618"/>
       <source>Second directrix line for ellipse and hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Andra direktrislinjen för ellips och hyperbel.</translation>
+      <translation>Den andra ledlinjen för ellips och hyperbel.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="626"/>
@@ -374,7 +374,7 @@
       <location filename="../../AttacherTexts.cpp" line="637"/>
       <source>Line tangent to an edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Linje som tangerar en kant. Valfri vertexlänk definierar var.</translation>
+      <translation>Linje som tangerar en kant. En valfri länk till en hörnpunkt anger var.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="645"/>
@@ -386,7 +386,7 @@
       <location filename="../../AttacherTexts.cpp" line="646"/>
       <source>Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Rikta in mot N-vektorn i Frenet-Serrets koordinatsystem för den böjda kanten. Valfri vertexlänk definierar var.</translation>
+      <translation>Rikta in mot N-vektorn i Frenet–Serrets koordinatsystem för den krökta kanten. En valfri länk till en hörnpunkt anger var.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="655"/>
@@ -398,7 +398,7 @@
       <location filename="../../AttacherTexts.cpp" line="656"/>
       <source>Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Rikta in mot B-vektorn i Frenet-Serrets koordinatsystem för den krökta kanten. Valfri vertexlänk definierar var.</translation>
+      <translation>Rikta in mot B-vektorn i Frenet–Serrets koordinatsystem för den krökta kanten. En valfri länk till en hörnpunkt anger var.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="665"/>
@@ -411,7 +411,7 @@
       <location filename="../../AttacherTexts.cpp" line="675"/>
       <source>Tangent to surface, along U parameter. Vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Tangent till ytan, längs U-parametern. Vertexlänk definierar var.</translation>
+      <translation>Tangent till ytan längs U-parametern. En länk till en hörnpunkt anger var.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="674"/>
@@ -429,7 +429,7 @@
       <location filename="../../AttacherTexts.cpp" line="684"/>
       <source>Line that passes through two vertices.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Linje som går genom två hörn.</translation>
+      <translation>Linje som går genom två hörnpunkter.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="692"/>
@@ -441,7 +441,7 @@
       <location filename="../../AttacherTexts.cpp" line="693"/>
       <source>Intersection of two faces.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Skärningspunkt mellan två ytor.</translation>
+      <translation>Skärning mellan två ytor.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="697"/>
@@ -501,7 +501,7 @@
       <location filename="../../AttacherTexts.cpp" line="734"/>
       <source>Line perpendicular to surface at point set by vertex.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Linje vinkelrät mot ytan i den punkt som anges av toppunkten.</translation>
+      <translation>Linje vinkelrät mot ytan i den punkt som anges av hörnpunkten.</translation>
     </message>
   </context>
   <context>
@@ -516,7 +516,7 @@
       <location filename="../../AttacherTexts.cpp" line="308"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Attachment är inaktiverat. Objektet kan flyttas genom att redigera egenskapen Placement.</translation>
+      <translation>Fästningen är inaktiverad. Objektet kan flyttas genom att redigera egenskapen Placering.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="317"/>
@@ -528,7 +528,7 @@
       <location filename="../../AttacherTexts.cpp" line="318"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Origin är inriktat för att matcha Vertex. Orienteringen styrs av egenskapen Placement.</translation>
+      <translation>Origo placeras så att det sammanfaller med hörnpunkten. Orienteringen styrs av egenskapen Placering.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="327"/>
@@ -570,13 +570,13 @@
       <location filename="../../AttacherTexts.cpp" line="354"/>
       <source>XY parallel to plane</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>XY parallell med planet</translation>
+      <translation>XY parallellt med planet</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="355"/>
       <source>X' Y' plane is parallel to the plane (object's XY) and passes through the vertex</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>X' Y' planet är parallellt med planet (objektets XY) och passerar genom toppunkten</translation>
+      <translation>X'Y'-planet är parallellt med planet (objektets XY) och går genom hörnpunkten</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="364"/>
@@ -594,7 +594,7 @@
       <location filename="../../AttacherTexts.cpp" line="375"/>
       <source>Plane face</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Planets framsida</translation>
+      <translation>Plan yta</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="376"/>
@@ -612,7 +612,7 @@
       <location filename="../../AttacherTexts.cpp" line="385"/>
       <source>Plane is made tangent to surface at vertex.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Plana görs tangent till ytan vid toppunkten.</translation>
+      <translation>Planet görs tangent till ytan vid hörnpunkten.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="393"/>
@@ -624,7 +624,7 @@
       <location filename="../../AttacherTexts.cpp" line="394"/>
       <source>Plane is made tangent to edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Planet görs tangent mot kanten. Valfri vertexlänk definierar var.</translation>
+      <translation>Planet görs tangent till kanten. En valfri länk till en hörnpunkt anger var.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="402"/>
@@ -638,7 +638,7 @@
       <location filename="../../AttacherTexts.cpp" line="423"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Inriktning mot Frenet-Serret-koordinatsystemet för den böjda kanten. Valfri vertexlänk definierar var.</translation>
+      <translation>Rikta in mot Frenet–Serrets koordinatsystem för den krökta kanten. En valfri länk till en hörnpunkt anger var.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="412"/>
@@ -662,7 +662,7 @@
       <location filename="../../AttacherTexts.cpp" line="433"/>
       <source>Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Rikta in planet mot en kants oscillerande cirkel. Ursprunget är inriktat mot krökningspunkten. Valfri vertexlänk definierar var.</translation>
+      <translation>Rikta in planet mot en kants krökningscirkel. Origo placeras i krökningspunkten. En valfri länk till en hörnpunkt anger var.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="442"/>
@@ -674,7 +674,7 @@
       <location filename="../../AttacherTexts.cpp" line="443"/>
       <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Planet är vinkelrätt mot kanten och Y-axeln är matchad med den oscillerande cirkelns axel. Valfri vertexlänk definierar var.</translation>
+      <translation>Planet är vinkelrätt mot kanten, och Y-axeln sammanfaller med krökningscirkelns axel. En valfri länk till en hörnpunkt anger var.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="452"/>
@@ -698,7 +698,7 @@
       <location filename="../../AttacherTexts.cpp" line="462"/>
       <source>Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Planet passerar genom de två första hörnen och är vinkelrätt mot det plan som passerar genom tre hörn.</translation>
+      <translation>Planet går genom de två första hörnpunkterna och är vinkelrätt mot det plan som går genom alla tre hörnpunkterna.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="471"/>
@@ -722,7 +722,7 @@
       <location filename="../../AttacherTexts.cpp" line="483"/>
       <source>Plane constructed on second and third principal axes of inertia (passes through center of mass).</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Plan konstruerat på andra och tredje tröghetsaxeln (går genom masscentrum).</translation>
+      <translation>Plan konstruerat utifrån den andra och tredje huvudtröghetsaxeln (går genom masscentrum).</translation>
     </message>
   </context>
   <context>
@@ -761,7 +761,7 @@
       <location filename="../../AttacherTexts.cpp" line="75"/>
       <source>Placement is made equal to Placement of linked object.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Placering görs lika med Placering av länkat objekt.</translation>
+      <translation>Placeringen sätts till samma placering som det länkade objektet.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="83"/>
@@ -773,7 +773,7 @@
       <location filename="../../AttacherTexts.cpp" line="84"/>
       <source>X', Y', Z' axes are matched with object's local X, Z, -Y, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>X', Y', Z' axlarna matchas med objektets lokala X, Z, -Y, respektive.</translation>
+      <translation>X'-, Y'- och Z'-axlarna riktas in efter objektets lokala X-, Z- respektive -Y-axel.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="92"/>
@@ -785,7 +785,7 @@
       <location filename="../../AttacherTexts.cpp" line="93"/>
       <source>X', Y', Z' axes are matched with object's local Y, Z, X, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>X', Y', Z' axlarna matchas med objektets lokala Y, Z, X, respektive.</translation>
+      <translation>X'-, Y'- och Z'-axlarna riktas in efter objektets lokala Y-, Z- respektive X-axel.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="101"/>
@@ -797,7 +797,7 @@
       <location filename="../../AttacherTexts.cpp" line="102"/>
       <source>X' Y' plane is parallel to the plane (object's XY) and passes through the vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>X' Y' planet är parallellt med planet (objektets XY) och går genom toppunkten.</translation>
+      <translation>X'Y'-planet är parallellt med planet (objektets XY) och går genom hörnpunkten.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="122"/>
@@ -809,7 +809,7 @@
       <location filename="../../AttacherTexts.cpp" line="123"/>
       <source>X' Y' plane is aligned to coincide planar face.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>X' Y'-planet är inriktat för att sammanfalla med den plana ytan.</translation>
+      <translation>X'Y'-planet riktas in så att det sammanfaller med den plana ytan.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="131"/>
@@ -821,7 +821,7 @@
       <location filename="../../AttacherTexts.cpp" line="132"/>
       <source>X' Y' plane is made tangent to surface at vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>X' Y' planet görs tangent till ytan vid toppunkten.</translation>
+      <translation>X'Y'-planet görs tangent till ytan vid hörnpunkten.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="140"/>
@@ -833,7 +833,7 @@
       <location filename="../../AttacherTexts.cpp" line="141"/>
       <source>Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Z-axeln är inriktad på att vara tangent till kanten. Valfri vertexlänk definierar var.</translation>
+      <translation>Z'-axeln riktas in så att den tangerar kanten. En valfri länk till en hörnpunkt anger var.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="150"/>
@@ -877,7 +877,7 @@
       <location filename="../../AttacherTexts.cpp" line="191"/>
       <source>Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Rikta in Y'-axeln så att den matchar axeln för den oscillerande cirkeln på en kant. Valfri vertexlänk definierar var.</translation>
+      <translation>Rikta in Y'-axeln så att den sammanfaller med axeln för en kants krökningscirkel. En valfri länk till en hörnpunkt anger var.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="219"/>
@@ -889,7 +889,7 @@
       <location filename="../../AttacherTexts.cpp" line="181"/>
       <source>Align XY-plane to osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Rikta in XY-planet mot en kants oscillerande cirkel. Valfri vertexlänk definierar var.</translation>
+      <translation>Rikta in XY-planet mot en kants krökningscirkel. En valfri länk till en hörnpunkt anger var.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="111"/>
@@ -937,7 +937,7 @@
       <location filename="../../AttacherTexts.cpp" line="230"/>
       <source>Inertial CS</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Tröghets-CS</translation>
+      <translation>Tröghetskoordinatsystem</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="231"/>
@@ -955,7 +955,7 @@
       <location filename="../../AttacherTexts.cpp" line="241"/>
       <source>Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha ursprunget med första vertexen. Rikta in Z'- och X'-axlarna mot toppunkten/längs linjen.</translation>
+      <translation>Låt origo sammanfalla med den första hörnpunkten. Rikta Z'- och X'-axlarna mot en hörnpunkt eller längs en linje.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="250"/>
@@ -967,7 +967,7 @@
       <location filename="../../AttacherTexts.cpp" line="251"/>
       <source>Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha ursprunget med första vertexen. Rikta in Z'- och Y'-axlarna mot toppunkten/längs linjen.</translation>
+      <translation>Låt origo sammanfalla med den första hörnpunkten. Rikta Z'- och Y'-axlarna mot en hörnpunkt eller längs en linje.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="260"/>
@@ -980,7 +980,7 @@
       <location filename="../../AttacherTexts.cpp" line="261"/>
       <source>Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha ursprunget med första vertexen. Rikta in X'- och Y'-axlarna mot toppunkten/längs linjen.</translation>
+      <translation>Låt origo sammanfalla med den första hörnpunkten. Rikta X'- och Y'-axlarna mot en hörnpunkt eller längs en linje.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="270"/>
@@ -992,7 +992,7 @@
       <location filename="../../AttacherTexts.cpp" line="271"/>
       <source>Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha ursprunget med första vertexen. Rikta in X'- och Z'-axlarna mot toppunkten/längs linjen.</translation>
+      <translation>Låt origo sammanfalla med den första hörnpunkten. Rikta X'- och Z'-axlarna mot en hörnpunkt eller längs en linje.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="280"/>
@@ -1004,7 +1004,7 @@
       <location filename="../../AttacherTexts.cpp" line="281"/>
       <source>Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha ursprunget med första vertexen. Rikta in Y'- och Z'-axlarna mot toppunkten/längs linjen.</translation>
+      <translation>Låt origo sammanfalla med den första hörnpunkten. Rikta Y'- och Z'-axlarna mot en hörnpunkt eller längs en linje.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="290"/>
@@ -1017,7 +1017,7 @@
       <location filename="../../AttacherTexts.cpp" line="291"/>
       <source>Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha ursprunget med första vertexen. Rikta in Y'- och X'-axlarna mot toppunkten/längs linjen.</translation>
+      <translation>Låt origo sammanfalla med den första hörnpunkten. Rikta Y'- och X'-axlarna mot en hörnpunkt eller längs en linje.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="492"/>
@@ -1029,7 +1029,7 @@
       <location filename="../../AttacherTexts.cpp" line="493"/>
       <source>Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha ursprung med första vertex. Rikta in normal- och horisontalplanets axel mot vertex/ längs linjen.</translation>
+      <translation>Låt origo sammanfalla med den första hörnpunkten. Rikta normalen och planets horisontella axel mot en hörnpunkt eller längs en linje.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="502"/>
@@ -1041,13 +1041,13 @@
       <location filename="../../AttacherTexts.cpp" line="503"/>
       <source>Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha ursprung med första vertex. Rikta in normal- och vertikalplanets axel mot toppunkten/längs linjen.</translation>
+      <translation>Låt origo sammanfalla med den första hörnpunkten. Rikta normalen och planets vertikala axel mot en hörnpunkt eller längs en linje.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="513"/>
       <source>Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha ursprung med första vertex. Rikta in horisontella och vertikala planaxlar mot toppunkten/längs linjen.</translation>
+      <translation>Låt origo sammanfalla med den första hörnpunkten. Rikta planets horisontella och vertikala axlar mot en hörnpunkt eller längs en linje.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="522"/>
@@ -1059,7 +1059,7 @@
       <location filename="../../AttacherTexts.cpp" line="523"/>
       <source>Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha ursprung med första vertex. Rikta in horisontalplanets axel och normal mot toppunkten/längs linjen.</translation>
+      <translation>Låt origo sammanfalla med den första hörnpunkten. Rikta planets horisontella axel och normal mot en hörnpunkt eller längs en linje.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="532"/>
@@ -1071,13 +1071,13 @@
       <location filename="../../AttacherTexts.cpp" line="533"/>
       <source>Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha ursprung med första vertex. Rikta in vertikalplanets axel och normal mot toppunkten/längs linjen.</translation>
+      <translation>Låt origo sammanfalla med den första hörnpunkten. Rikta planets vertikala axel och normal mot en hörnpunkt eller längs en linje.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="543"/>
       <source>Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha ursprung med första vertex. Rikta in vertikala och horisontella planaxlar mot toppunkten/längs linjen.</translation>
+      <translation>Låt origo sammanfalla med den första hörnpunkten. Rikta planets vertikala och horisontella axlar mot en hörnpunkt eller längs en linje.</translation>
     </message>
   </context>
   <context>
@@ -1210,7 +1210,7 @@
     <message>
       <location filename="../../Command.cpp" line="2396"/>
       <source>Selects elements in the 3D view using a box selection</source>
-      <translation>Väljer element i 3D-vyn med hjälp av en boxmarkering</translation>
+      <translation>Markerar element i 3D-vyn med hjälp av en rektangelmarkering</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2398"/>
@@ -1301,12 +1301,12 @@
     <message>
       <location filename="../../Command.cpp" line="134"/>
       <source>Box Fix 1</source>
-      <translation>Lådfixering 1</translation>
+      <translation>Fördefinierat rätblock 1</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="135"/>
       <source>Creates a solid box</source>
-      <translation>Skapar en kropp låda</translation>
+      <translation>Skapar ett solitt rätblock</translation>
     </message>
   </context>
   <context>
@@ -1319,7 +1319,7 @@
     <message>
       <location filename="../../Command.cpp" line="177"/>
       <source>Box Fix 2</source>
-      <translation>Lådfixering 2</translation>
+      <translation>Fördefinierat rätblock 2</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="178"/>
@@ -1360,7 +1360,7 @@
     <message>
       <location filename="../../Command.cpp" line="1609"/>
       <source>Chamfers the selected edges of a shape</source>
-      <translation>Avfasning av de valda kanterna på en form</translation>
+      <translation>Fasar av de markerade kanterna på en form</translation>
     </message>
   </context>
   <context>
@@ -1378,7 +1378,7 @@
     <message>
       <location filename="../../Command.cpp" line="392"/>
       <source>Intersects the selected shapes</source>
-      <translation>Skär de markerade formerna</translation>
+      <translation>Skapar snittet av de markerade formerna</translation>
     </message>
   </context>
   <context>
@@ -1391,12 +1391,12 @@
     <message>
       <location filename="../../Command.cpp" line="818"/>
       <source>Compound Tools</source>
-      <translation>Sammansatta verktyg</translation>
+      <translation>Verktyg för sammansatta objekt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="819"/>
       <source>Compound tools for working with multiple shapes</source>
-      <translation>Sammansatta verktyg för arbete med flera former</translation>
+      <translation>Verktyg för sammansatta objekt som innehåller flera former</translation>
     </message>
   </context>
   <context>
@@ -1414,7 +1414,7 @@
     <message>
       <location filename="../../Command.cpp" line="571"/>
       <source>Joins the selected walled shapes</source>
-      <translation>Fogar de utvalda väggformade formerna</translation>
+      <translation>Fogar samman de markerade formerna med väggar</translation>
     </message>
   </context>
   <context>
@@ -1445,12 +1445,12 @@
     <message>
       <location filename="../../Command.cpp" line="683"/>
       <source>Split Shapes</source>
-      <translation>Delade former</translation>
+      <translation>Dela former</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="685"/>
       <source>Shape splitting and compsolid creation tools</source>
-      <translation>Verktyg för formdelning och skapande av compsolid</translation>
+      <translation>Verktyg för att dela former och skapa sammansatta solider</translation>
     </message>
   </context>
   <context>
@@ -1468,7 +1468,7 @@
     <message>
       <location filename="../../Command.cpp" line="936"/>
       <source>Compounds the selected shapes</source>
-      <translation>Förstärker de valda formerna</translation>
+      <translation>Samlar de markerade formerna i ett sammansatt objekt</translation>
     </message>
   </context>
   <context>
@@ -1523,7 +1523,7 @@
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Cuts 2 selected shapes</source>
-      <translation>Kapar 2 utvalda former</translation>
+      <translation>Subtraherar den ena markerade formen från den andra</translation>
     </message>
   </context>
   <context>
@@ -1555,12 +1555,12 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="462"/>
       <source>Defeaturing</source>
-      <translation>Förlust</translation>
+      <translation>Ta bort formdetaljer</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="463"/>
       <source>Removes the selected features from a shape</source>
-      <translation>Tar bort de markerade funktionerna från en form</translation>
+      <translation>Tar bort de markerade formdetaljerna från en form</translation>
     </message>
   </context>
   <context>
@@ -1573,7 +1573,7 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="359"/>
       <source>Shape Element Copy</source>
-      <translation>Form Element Kopia</translation>
+      <translation>Kopia av formelement</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="360"/>
@@ -1627,12 +1627,12 @@
     <message>
       <location filename="../../Command.cpp" line="1580"/>
       <source>Fillet</source>
-      <translation>Filé</translation>
+      <translation>Avrundning</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1581"/>
       <source>Fillets the selected edges of a shape</source>
-      <translation>Filetera de markerade kanterna på en form</translation>
+      <translation>Rundar av de markerade kanterna på en form</translation>
     </message>
   </context>
   <context>
@@ -1681,7 +1681,7 @@
     <message>
       <location filename="../../Command.cpp" line="1189"/>
       <source>Import Curve Network</source>
-      <translation>Importkurva Nätverk</translation>
+      <translation>Importera kurvnätverk</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1191"/>
@@ -1704,7 +1704,7 @@
     <message>
       <location filename="../../Command.cpp" line="1734"/>
       <source>Lofts the selected profiles</source>
-      <translation>Lofts de utvalda profilerna</translation>
+      <translation>Skapar ett loft genom de valda profilerna</translation>
     </message>
   </context>
   <context>
@@ -1735,12 +1735,12 @@
     <message>
       <location filename="../../Command.cpp" line="1242"/>
       <source>Convert to Solid</source>
-      <translation>Konvertera till Solid</translation>
+      <translation>Konvertera till solid</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1243"/>
       <source>Converts the selected shell or compound to a solid</source>
-      <translation>Omvandlar det valda skalet eller föreningen till en fast substans</translation>
+      <translation>Konverterar det valda skalet eller sammansatta objektet till en solid</translation>
     </message>
   </context>
   <context>
@@ -1753,7 +1753,7 @@
     <message>
       <location filename="../../Command.cpp" line="1636"/>
       <source>Mirror</source>
-      <translation>Spegel</translation>
+      <translation>Spegling</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1637"/>
@@ -1794,7 +1794,7 @@
     <message>
       <location filename="../../Command.cpp" line="1859"/>
       <source>Offsets planar shapes in 2D</source>
-      <translation>Utjämnar plana former i 2D</translation>
+      <translation>Förskjuter plana former i 2D</translation>
     </message>
   </context>
   <context>
@@ -1807,7 +1807,7 @@
     <message>
       <location filename="../../Command.cpp" line="88"/>
       <source>Pick Curve Network</source>
-      <translation>Pick Curve-nätverket</translation>
+      <translation>Välj kurvnätverk</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="89"/>
@@ -1825,12 +1825,12 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="143"/>
       <source>Points From Shape</source>
-      <translation>Punkter från formen</translation>
+      <translation>Punkter från form</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="144"/>
       <source>Creates distributed points from the selected shape</source>
-      <translation>Skapar distribuerade punkter från den markerade formen</translation>
+      <translation>Skapar punkter fördelade över den markerade formen</translation>
     </message>
   </context>
   <context>
@@ -1861,7 +1861,7 @@
     <message>
       <location filename="../../Command.cpp" line="2425"/>
       <source>Project on Surface</source>
-      <translation>Projekt på ytan</translation>
+      <translation>Projicera på yta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2426"/>
@@ -1869,10 +1869,10 @@
 onto a face of another shape.
 The camera view determines the direction
 of the projection.</source>
-      <translation>Projicerar kanter, trådar eller ytor av en form
-på en yta av en annan form.
-Kameravyn bestämmer riktningen för
-för projektionen.</translation>
+      <translation>Projicerar kanter, trådar eller ytor från en form
+på en yta i en annan form.
+Kameravyn bestämmer
+projektionens riktning.</translation>
     </message>
   </context>
   <context>
@@ -1885,7 +1885,7 @@ för projektionen.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="387"/>
       <source>Refine Shape</source>
-      <translation>Förfina formen</translation>
+      <translation>Förfina form</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="388"/>
@@ -1903,7 +1903,7 @@ för projektionen.</translation>
     <message>
       <location filename="../../Command.cpp" line="1335"/>
       <source>Reverse Shapes</source>
-      <translation>Omvända former</translation>
+      <translation>Vänd former</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1336"/>
@@ -1926,7 +1926,7 @@ för projektionen.</translation>
     <message>
       <location filename="../../Command.cpp" line="1553"/>
       <source>Revolves the selected shape</source>
-      <translation>Roterar den valda formen</translation>
+      <translation>Skapar ett rotationssvep av den markerade formen</translation>
     </message>
   </context>
   <context>
@@ -1939,12 +1939,12 @@ för projektionen.</translation>
     <message>
       <location filename="../../Command.cpp" line="2173"/>
       <source>Ruled Surface</source>
-      <translation>Linjerad yta</translation>
+      <translation>Regelyta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2174"/>
       <source>Creates a ruled surface between 2 selected wires</source>
-      <translation>Skapar en linjär yta mellan 2 utvalda trådar</translation>
+      <translation>Skapar en regelyta mellan 2 markerade trådar</translation>
     </message>
   </context>
   <context>
@@ -1962,7 +1962,7 @@ för projektionen.</translation>
     <message>
       <location filename="../../Command.cpp" line="998"/>
       <source>Sections 2 selected shapes</source>
-      <translation>Sektioner 2 utvalda former</translation>
+      <translation>Skapar skärningskurvor mellan 2 markerade former</translation>
     </message>
   </context>
   <context>
@@ -2053,7 +2053,7 @@ för projektionen.</translation>
     <message>
       <location filename="../../Command.cpp" line="1763"/>
       <source>Sweeps profiles along a wire</source>
-      <translation>Sveper profiler längs en kabel</translation>
+      <translation>Sveper profiler längs en tråd</translation>
     </message>
   </context>
   <context>
@@ -2113,12 +2113,12 @@ för projektionen.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="329"/>
       <source>Transformed Copy</source>
-      <translation>Förvandlad kopia</translation>
+      <translation>Transformerad kopia</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="330"/>
       <source>Creates a non-parametric copy with transformed placement of the selected shapes</source>
-      <translation>Skapar en icke-parametrisk kopia med transformerad placering av de valda figurerna</translation>
+      <translation>Skapar en icke-parametrisk kopia med transformerad placering av de markerade formerna</translation>
     </message>
   </context>
   <context>
@@ -2127,22 +2127,22 @@ för projektionen.</translation>
       <location filename="../../Command.cpp" line="144"/>
       <location filename="../../Command.cpp" line="187"/>
       <source>Part Box Create</source>
-      <translation>Part Box Skapa</translation>
+      <translation>Skapa rätblock</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="367"/>
       <source>Part Cut</source>
-      <translation>Styckning</translation>
+      <translation>Differens</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="444"/>
       <source>Common</source>
-      <translation>Standard</translation>
+      <translation>Snitt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="544"/>
       <source>Fusion</source>
-      <translation>Fusion</translation>
+      <translation>Union</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="974"/>
@@ -2162,7 +2162,7 @@ för projektionen.</translation>
     <message>
       <location filename="../../Command.cpp" line="1214"/>
       <source>Import Curve Net</source>
-      <translation>Importkurva Netto</translation>
+      <translation>Importera kurvnätverk</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1348"/>
@@ -2182,7 +2182,7 @@ för projektionen.</translation>
     <message>
       <location filename="../../Command.cpp" line="1885"/>
       <source>Make 2D Offset</source>
-      <translation>Gör 2D-offset</translation>
+      <translation>Skapa 2D-förskjutning</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2094"/>
@@ -2250,7 +2250,7 @@ för projektionen.</translation>
       <translation>Ändra ytfärger</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="226"/>
+      <location filename="../../TaskLoft.cpp" line="214"/>
       <source>Loft</source>
       <translation>Loft</translation>
     </message>
@@ -2293,7 +2293,7 @@ för projektionen.</translation>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="213"/>
       <source>Edit mirror</source>
-      <translation>Redigera spegel</translation>
+      <translation>Redigera spegling</translation>
     </message>
   </context>
   <context>
@@ -2326,7 +2326,7 @@ för projektionen.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="124"/>
       <source>Attachment Offset in its Local Coordinate System</source>
-      <translation>Förskjutning av tillbehöret i dess lokala koordinatsystem</translation>
+      <translation>Fästförskjutning i det lokala koordinatsystemet</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="235"/>
@@ -2338,7 +2338,7 @@ för projektionen.</translation>
       <source>Rotation around the X-axis
 Note: The placement is expressed in local space of object being attached.</source>
       <translation>Rotation runt X-axeln
-Anmärkning: Placeringen uttrycks i det lokala utrymmet för det objekt som fästs.</translation>
+Obs! Placeringen uttrycks i det lokala koordinatsystemet för det objekt som fästs.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="280"/>
@@ -2350,7 +2350,7 @@ Anmärkning: Placeringen uttrycks i det lokala utrymmet för det objekt som fäs
       <source>Rotation around the Y-axis
 Note: The placement is expressed in local space of object being attached.</source>
       <translation>Rotation runt Y-axeln
-Anmärkning: Placeringen uttrycks i det lokala utrymmet för det objekt som fästs.</translation>
+Obs! Placeringen uttrycks i det lokala koordinatsystemet för det objekt som fästs.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="325"/>
@@ -2362,7 +2362,7 @@ Anmärkning: Placeringen uttrycks i det lokala utrymmet för det objekt som fäs
       <source>Rotation around the Z-axis
 Note: The placement is expressed in local space of object being attached.</source>
       <translation>Rotation runt Z-axeln
-Anmärkning: Placeringen uttrycks i det lokala utrymmet för det objekt som fästs.</translation>
+Obs! Placeringen uttrycks i det lokala koordinatsystemet för det objekt som fästs.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="158"/>
@@ -2520,7 +2520,7 @@ Anmärkning: Placeringen uttrycks i det lokala utrymmet för det objekt som fäs
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="155"/>
       <source>Swap Selection</source>
-      <translation>Val av byte</translation>
+      <translation>Byt plats på markeringarna</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="425"/>
@@ -2576,7 +2576,7 @@ Anmärkning: Placeringen uttrycks i det lokala utrymmet för det objekt som fäs
     <message>
       <location filename="../../DlgExportHeaderStep.ui" line="23"/>
       <source>If not empty, field contents will be used in the STEP file header</source>
-      <translation>Om fältet inte är tomt kommer innehållet i fältet att användas i STEP-filens rubrik</translation>
+      <translation>Om fältet inte är tomt används dess innehåll i STEP-filens huvud</translation>
     </message>
     <message>
       <location filename="../../DlgExportHeaderStep.ui" line="26"/>
@@ -2591,7 +2591,7 @@ Anmärkning: Placeringen uttrycks i det lokala utrymmet för det objekt som fäs
     <message>
       <location filename="../../DlgExportHeaderStep.ui" line="42"/>
       <source>Author</source>
-      <translation>Upphovsman</translation>
+      <translation>Upphovsperson</translation>
     </message>
     <message>
       <location filename="../../DlgExportHeaderStep.ui" line="52"/>
@@ -2609,7 +2609,7 @@ Anmärkning: Placeringen uttrycks i det lokala utrymmet för det objekt som fäs
     <message>
       <location filename="../../DlgExportStep.ui" line="36"/>
       <source>Units for export of STEP</source>
-      <translation>Enheter för exportering av STEP</translation>
+      <translation>Enheter för STEP-export</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="44"/>
@@ -2632,25 +2632,25 @@ Anmärkning: Placeringen uttrycks i det lokala utrymmet för det objekt som fäs
 a single object. When importing back the STEP file, the
 placement will be encoded into the shape geometry, instead of keeping
 it inside the placement property.</source>
-      <translation>Behåller placeringsinformationen när du exporterar
-ett enda objekt. När STEP-filen importeras tillbaka kommer
-kodas placeringen in i formgeometrin, istället för att behålla den
-den i placeringsegenskapen.</translation>
+      <translation>Behåller placeringsinformationen vid export
+av ett enskilt objekt. När STEP-filen importeras igen
+kodas placeringen in i formens geometri i stället för
+att lagras i placeringsegenskapen.</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="139"/>
       <source>Write out curves in parametric space of surface</source>
-      <translation>Skriv ut kurvor i ytans parametriska rum</translation>
+      <translation>Skriv kurvor i ytans parametriska rum</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="123"/>
       <source>Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</source>
-      <translation>Avmarkera detta om du vill hoppa över osynliga objekt vid export, vilket är användbart för CAD-system som inte stöder osynlig STEP-styling.</translation>
+      <translation>Avmarkera detta för att hoppa över osynliga objekt vid export. Det är användbart för CAD-system som inte stöder STEP-formatets inställningar för osynlighet.</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="14"/>
       <source>STEP Export Settings</source>
-      <translation>Inställningar för STEP Export</translation>
+      <translation>Inställningar för STEP-export</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="126"/>
@@ -2665,7 +2665,7 @@ den i placeringsegenskapen.</translation>
     <message>
       <location filename="../../DlgExportStep.ui" line="91"/>
       <source>Use legacy export function</source>
-      <translation>Använd funktionen för export av äldre produkter</translation>
+      <translation>Använd äldre exportfunktion</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="29"/>
@@ -2677,8 +2677,8 @@ den i placeringsegenskapen.</translation>
       <source>This parameter indicates whether parametric curves (curves in parametric space of surface)
 should be written into the STEP file. This parameter can be set to off in order to minimize
 the size of the resulting STEP file.</source>
-      <translation>Denna parameter anger om parametriska kurvor (kurvor i ytans parametriska utrymme)
-ska skrivas in i STEP-filen. Denna parameter kan sättas till off för att minimera
+      <translation>Denna parameter anger om parametriska kurvor (kurvor i ytans parametriska rum)
+ska skrivas till STEP-filen. Parametern kan inaktiveras för att minimera
 storleken på den resulterande STEP-filen.</translation>
     </message>
   </context>
@@ -2702,7 +2702,7 @@ storleken på den resulterande STEP-filen.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="45"/>
       <source>Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</source>
-      <translation>Ställ in riktningen så att den matchar riktningen på den raka eggen. Tips: för att även ta hänsyn till längden på kanten, sätt båda längderna till noll.</translation>
+      <translation>Ställ in riktningen så att den följer en rak kants riktning. Tips: Ange noll för båda längderna för att även använda kantens längd.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="58"/>
@@ -2724,8 +2724,8 @@ storleken på den resulterande STEP-filen.</translation>
       <location filename="../../DlgExtrusion.ui" line="204"/>
       <source>Length to extrude along direction (can be negative).
 If both lengths are zero, magnitude of direction is used.</source>
-      <translation>Längd för extrudering längs riktningen (kan vara negativ).
-Om båda längderna är noll används riktningens magnitud.</translation>
+      <translation>Extruderingslängd längs riktningen (kan vara negativ).
+Om båda längderna är noll används riktningsvektorns längd.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="32"/>
@@ -2785,7 +2785,7 @@ Om båda längderna är noll används riktningens magnitud.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="243"/>
       <source>Length to extrude against the direction (can be negative)</source>
-      <translation>Längd som ska strängsprutas mot riktningen (kan vara negativ)</translation>
+      <translation>Extruderingslängd mot riktningen (kan vara negativ)</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="262"/>
@@ -2820,7 +2820,7 @@ Om båda längderna är noll används riktningens magnitud.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="337"/>
       <source>Results in solids if wires are closed, otherwise in shells</source>
-      <translation>Resultat i fasta ämnen om ledningarna är stängda, annars i skal</translation>
+      <translation>Ger solider om trådarna är slutna, annars skal</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="340"/>
@@ -2830,7 +2830,7 @@ Om båda längderna är noll används riktningens magnitud.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="360"/>
       <source>Select shape(s) that should be extruded</source>
-      <translation>Välj form(ar) som ska extruderas</translation>
+      <translation>Välj de former som ska extruderas</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="373"/>
@@ -2902,12 +2902,12 @@ Om båda längderna är noll används riktningens magnitud.</translation>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="794"/>
       <source>Extrusion direction vector is zero-length. It must be non-zero.</source>
-      <translation>Vektorn för extruderingsriktningen är noll-lång. Den måste vara icke-noll.</translation>
+      <translation>Extruderingsriktningens vektor har längden noll. Längden måste vara skild från noll.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="812"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
-      <translation>Profilens totala längd är noll (längd1 == -längd2). Den måste vara skild från noll.</translation>
+      <translation>Den totala extruderingslängden är noll (length1 == -length2). Den måste vara skild från noll.</translation>
     </message>
   </context>
   <context>
@@ -3020,12 +3020,12 @@ Om båda längderna är noll används riktningens magnitud.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="301"/>
       <source>Fillet parameter</source>
-      <translation>Parameter för filé</translation>
+      <translation>Avrundningsparameter</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="302"/>
       <source>Fillet type</source>
-      <translation>Typ av filé</translation>
+      <translation>Avrundningstyp</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="303"/>
@@ -3101,7 +3101,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="26"/>
       <source>Units for export of IGES</source>
-      <translation>Enheter för exportering av IGES</translation>
+      <translation>Enheter för IGES-export</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="47"/>
@@ -3121,7 +3121,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
       <source>Solids and shells will be exported as trimmed surface</source>
-      <translation>Solider och skal kommer att exporteras som trimmad yta</translation>
+      <translation>Solider och skal exporteras som trimmade ytor</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="74"/>
@@ -3131,17 +3131,17 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="65"/>
       <source>Export Solids and Shells As</source>
-      <translation>Lägg till "Solider och skal" som</translation>
+      <translation>Exportera solider och skal som</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="84"/>
       <source>Solids will be exported as manifold solid B-rep object, shells as shell</source>
-      <translation>Solider kommer att exporteras som manifold kropp B-rep-objekt, skal som skal</translation>
+      <translation>Solider exporteras som solida B-rep-objekt med mångfaldstopologi, och skal som skal</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="87"/>
       <source>Solids (type 186) and shells (type 514) / B-rep mode</source>
-      <translation>Fasta ämnen (typ 186) och skal (typ 514) / B-rep-läge</translation>
+      <translation>Solider (typ 186) och skal (typ 514) / B-rep-läge</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="100"/>
@@ -3151,12 +3151,12 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="106"/>
       <source>Blank entities will not be imported</source>
-      <translation>Tomma enheter kommer inte att importeras</translation>
+      <translation>Dolda entiteter importeras inte</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="109"/>
       <source>Skip blank entities</source>
-      <translation>Hoppa över tomma entiteter</translation>
+      <translation>Hoppa över dolda entiteter</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="119"/>
@@ -3204,12 +3204,12 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="29"/>
       <source>Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</source>
-      <translation>Sammanfogar alla former till en enda sammansättning vid import, löser upp delinstanser och tillämpar transformationer. Importtiden ökar, men geometrins noggrannhet och renderingskvaliteten påverkas inte.</translation>
+      <translation>Sammanfogar alla former till ett enda sammansatt objekt vid import, löser upp delinstanser och tillämpar transformationer. Importtiden ökar, men geometrins noggrannhet och renderingskvaliteten påverkas inte.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="32"/>
       <source>Enable STEP compound merge</source>
-      <translation>Aktivera sammanslagning av STEP-föreningar</translation>
+      <translation>Aktivera sammanslagning av sammansatta STEP-objekt</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="45"/>
@@ -3229,7 +3229,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="77"/>
       <source>Reduce number of objects using Link array</source>
-      <translation>Minska antalet objekt med hjälp av Link-array</translation>
+      <translation>Minska antalet objekt med hjälp av en länkmatris</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="80"/>
@@ -3265,7 +3265,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="152"/>
       <source>CodePage</source>
-      <translation>Kodsidor</translation>
+      <translation>Kodsida</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="179"/>
@@ -3275,17 +3275,17 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="199"/>
       <source>Single document</source>
-      <translation>Enstaka dokument</translation>
+      <translation>Ett dokument</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="204"/>
       <source>Assembly per document</source>
-      <translation>Montering enligt dokument</translation>
+      <translation>Sammanställning per dokument</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="209"/>
       <source>Assembly per document in sub-directory</source>
-      <translation>Montering per dokument i underkatalog</translation>
+      <translation>Sammanställning per dokument i underkatalog</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="214"/>
@@ -3519,12 +3519,12 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="347"/>
       <source>Length of the box in the local X direction</source>
-      <translation>Lådans längd i den lokala X-riktningen</translation>
+      <translation>Rätblockets längd i den lokala X-riktningen</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="370"/>
       <source>Width of the box in the local Y direction</source>
-      <translation>Lådans bredd i den lokala Y-riktningen</translation>
+      <translation>Rätblockets bredd i den lokala Y-riktningen</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="386"/>
@@ -3538,7 +3538,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="393"/>
       <source>Height of the box in the local Z direction</source>
-      <translation>Lådans höjd i den lokala Z-riktningen</translation>
+      <translation>Rätblockets höjd i den lokala Z-riktningen</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="463"/>
@@ -3732,12 +3732,12 @@ Kontrollera först en eller flera kantentiteter.</translation>
       <location filename="../../DlgPrimitives.ui" line="1486"/>
       <location filename="../../DlgPrimitives.ui" line="2642"/>
       <source>Circumradius</source>
-      <translation>Omkretsradie</translation>
+      <translation>Omskrivna cirkelns radie</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1493"/>
       <source>Circumradius of the polygon cross-section</source>
-      <translation>Omskriven radie för det polygonala tvärsnittet</translation>
+      <translation>Radie för den omskrivna cirkeln till det polygonala tvärsnittet</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1516"/>
@@ -3877,7 +3877,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2035"/>
       <source>Number of rotations</source>
-      <translation>Antal rotationer</translation>
+      <translation>Antal varv</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2042"/>
@@ -3929,22 +3929,22 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2231"/>
       <source>Major radius</source>
-      <translation>Större radie</translation>
+      <translation>Stora halvaxeln</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2238"/>
       <source>Major radius of the ellipse</source>
-      <translation>Ellipsens största radie</translation>
+      <translation>Längden på ellipsens stora halvaxel</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2254"/>
       <source>Minor radius</source>
-      <translation>Mindre radie</translation>
+      <translation>Lilla halvaxeln</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2261"/>
       <source>Minor radius of the ellipse</source>
-      <translation>Mindre radie för ellipsen</translation>
+      <translation>Längden på ellipsens lilla halvaxel</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2284"/>
@@ -4017,12 +4017,12 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2623"/>
       <source>Number of sides of the regular polygon</source>
-      <translation>Antal sidor i den regelbundna polygonen</translation>
+      <translation>Antal sidor i den reguljära polygonen</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2649"/>
       <source>Circumradius of the regular polygon</source>
-      <translation>Den regelbundna polygonens omskrivna radie</translation>
+      <translation>Radie för den reguljära polygonens omskrivna cirkel</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="509"/>
@@ -4135,7 +4135,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="116"/>
       <source>Solid depth</source>
-      <translation>Solitt djup</translation>
+      <translation>Solidens djup</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="141"/>
@@ -4245,7 +4245,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="315"/>
       <source>Extends the revolution forwards and backwards by half the angle</source>
-      <translation>Förlänger revolutionen framåt och bakåt med halva vinkeln</translation>
+      <translation>Utsträcker rotationssvepet framåt och bakåt med halva vinkeln</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="325"/>
@@ -4270,7 +4270,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgRevolution.cpp" line="285"/>
       <source>Select a shape for revolution.</source>
-      <translation>Välj en form för revolution.</translation>
+      <translation>Välj en form för rotationssvepet.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="304"/>
@@ -4279,7 +4279,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
       <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation>Länken till revolveraxeln är ogiltig.
+      <translation>Länken till rotationsaxeln är ogiltig.
 
 %1</translation>
     </message>
@@ -4291,12 +4291,12 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgRevolution.cpp" line="336"/>
       <source>Revolution axis direction is zero-length. It must be non-zero.</source>
-      <translation>Rotationsaxelns riktning är noll-längd. Den måste vara icke-noll.</translation>
+      <translation>Rotationsaxelns riktningsvektor har längden noll. Längden måste vara skild från noll.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="349"/>
       <source>Revolution angle span is zero. It must be non-zero.</source>
-      <translation>Spännvidden för rotationsvinkeln är noll. Den måste vara icke-noll.</translation>
+      <translation>Rotationsvinkelns omfång är noll. Det måste vara skilt från noll.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="516"/>
@@ -4304,14 +4304,14 @@ Kontrollera först en eller flera kantentiteter.</translation>
       <source>Creating Revolve failed.
 
 %1</source>
-      <translation>Skapandet av Revolve misslyckades.
+      <translation>Det gick inte att skapa rotationssvepet.
 
 %1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="538"/>
       <source>Selecting… (Line or Arc)</source>
-      <translation>Väljer … (linje eller båge)</translation>
+      <translation>Väljer… (linje eller båge)</translation>
     </message>
   </context>
   <context>
@@ -4319,7 +4319,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="14"/>
       <source>Shape View</source>
-      <translation>Form vy</translation>
+      <translation>Formvisning</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="26"/>
@@ -4354,7 +4354,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="89"/>
       <source>Setting a too small deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
-      <translation>Om du ställer in en för liten avvikelse tar tesselleringen längre tid, vilket leder till att GUI fryser eller blir långsammare.</translation>
+      <translation>Om avvikelsen anges till ett för litet värde tar tesselleringen längre tid. Då kan användargränssnittet låsa sig eller bli långsammare.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="113"/>
@@ -4364,7 +4364,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="114"/>
       <source>Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
-      <translation>Om du ställer in en för liten vinkelavvikelse tar tesselleringen längre tid, vilket gör att GUI fryser eller blir långsammare.</translation>
+      <translation>Om vinkelavvikelsen anges till ett för litet värde tar tesselleringen längre tid. Då kan användargränssnittet låsa sig eller bli långsammare.</translation>
     </message>
   </context>
   <context>
@@ -4407,7 +4407,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="80"/>
       <source>Automatically refine model after applying operations</source>
-      <translation>Automatisk förfining av modellen efter tillämpning av operationer</translation>
+      <translation>Förfina modellen automatiskt efter operationer</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="83"/>
@@ -4417,7 +4417,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="108"/>
       <source>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</source>
-      <translation>Anger att nya kroppar får innehålla flera frånkopplade solider (sammansättningar). Om alternativet avmarkeras begränsas en kropp strikt till en enda sammanhängande solid.</translation>
+      <translation>Anger att nya kroppar får innehålla flera separata solider (sammansatta objekt). Om alternativet avmarkeras begränsas en kropp till en enda sammanhängande solid.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="133"/>
@@ -4432,7 +4432,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="164"/>
       <source>Features Settings</source>
-      <translation>Funktioner Inställningar</translation>
+      <translation>Inställningar för formelement</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="178"/>
@@ -4467,7 +4467,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="236"/>
       <source>Switch to task panel when entering Part Design workbench</source>
-      <translation>Växla till uppgiftspanel när du går in i arbetsbänken för detaljkonstruktion</translation>
+      <translation>Växla till uppgiftspanelen när arbetsbänken Part Design aktiveras</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="258"/>
@@ -4482,7 +4482,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="292"/>
       <source>Show final result by default when editing features</source>
-      <translation>Visa slutresultat som standard vid redigering av funktioner</translation>
+      <translation>Visa slutresultatet som standard vid redigering av formelement</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="295"/>
@@ -4492,7 +4492,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="314"/>
       <source>Show transparent preview overlay by default when editing features</source>
-      <translation>Visa transparent förhandsgranskningsöverlägg som standard när du redigerar funktioner</translation>
+      <translation>Visa genomskinligt förhandsvisningsöverlägg som standard vid redigering av formelement</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="317"/>
@@ -4502,7 +4502,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="339"/>
       <source>Highlight the profile used to create features</source>
-      <translation>Markera den profil som används för att skapa funktioner</translation>
+      <translation>Framhäv den profil som används för att skapa formelement</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="342"/>
@@ -4512,7 +4512,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="361"/>
       <source>Experimental</source>
-      <translation>Experiment</translation>
+      <translation>Experimentellt</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="367"/>
@@ -4522,37 +4522,37 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="383"/>
       <source>Show interactive draggers when editing features</source>
-      <translation>Visa interaktiva draggers när du redigerar funktioner</translation>
+      <translation>Visa interaktiva dragverktyg vid redigering av formelement</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="386"/>
       <source>Enables on-screen handles (draggers) in the 3D view for interactively modifying dimensions and parameters of the feature being edited by dragging</source>
-      <translation>Aktiverar skärmhandtag (dragreglage) i 3D-vyn för interaktiv ändring av dimensioner och parametrar för formelementet som redigeras genom dragning</translation>
+      <translation>Aktiverar dragverktyg i 3D-vyn så att dimensioner och parametrar för formelementet som redigeras kan ändras interaktivt genom att dra</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="408"/>
       <source>Disable recompute while dragging</source>
-      <translation>Inaktivera omräkning när du drar</translation>
+      <translation>Inaktivera omberäkning vid dragning</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="411"/>
       <source>Prevents the model from recalculating while manipulating draggers. The shape updates only after release of the mouse button.</source>
-      <translation>Förhindrar att modellen beräknas om medan dragreglage används. Formen uppdateras först när musknappen släpps.</translation>
+      <translation>Förhindrar att modellen beräknas om medan dragverktygen används. Formen uppdateras först när musknappen släpps.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="424"/>
       <source>Enable coarse snapping while dragging</source>
-      <translation>Aktivera grov fästning vid dragning</translation>
+      <translation>Aktivera grovsnäppning vid dragning</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="427"/>
       <source>Enables larger snapping increments while  manipulating draggers</source>
-      <translation>Aktiverar större snäppsteg när draghandtag manipuleras</translation>
+      <translation>Aktiverar större snäppsteg när dragverktygen används</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="445"/>
       <source>Fine snap modifier</source>
-      <translation>Modifierartangent för fin fästning</translation>
+      <translation>Modifierartangent för finsnäppning</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="452"/>
@@ -4592,17 +4592,17 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="233"/>
       <source>Automatically switch to the task panel when the Part Design workbench is activated</source>
-      <translation>Växla automatiskt till uppgiftspanelen när arbetsbänken för detaljkonstruktion aktiveras</translation>
+      <translation>Växla automatiskt till uppgiftspanelen när arbetsbänken Part Design aktiveras</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="280"/>
       <source>Preview</source>
-      <translation>Förhandsvisa</translation>
+      <translation>Förhandsvisning</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="105"/>
       <source>Allow multiple solids in Part Design bodies by default</source>
-      <translation>Tillåt flera solider i partdesignkroppar som standard</translation>
+      <translation>Tillåt flera solider i Part Design-kroppar som standard</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.cpp" line="53"/>
@@ -4636,7 +4636,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="20"/>
       <source>Default Shape Appearance Properties</source>
-      <translation>Egenskaper för standardformens utseende</translation>
+      <translation>Standardegenskaper för formers utseende</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="34"/>
@@ -4661,37 +4661,37 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="83"/>
       <source>Ambient shape color</source>
-      <translation>Färg på omgivande form</translation>
+      <translation>Formens omgivningsfärg</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="90"/>
       <source>The default ambient color for new shapes</source>
-      <translation>Standardfärg för omgivningen för nya former</translation>
+      <translation>Standardvärde för omgivningsfärg för nya former</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="116"/>
       <source>Emissive shape color</source>
-      <translation>Emissiv form färg</translation>
+      <translation>Formens emissiva färg</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="123"/>
       <source>The default emissive color for new shapes</source>
-      <translation>Standardfärg för emissiv färg för nya former</translation>
+      <translation>Standardvärde för emissiv färg för nya former</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="149"/>
       <source>Specular shape color</source>
-      <translation>Speculär form färg</translation>
+      <translation>Formens spegelfärg</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="156"/>
       <source>The default specular color for new shapes</source>
-      <translation>Standardspegelblank färg för nya former</translation>
+      <translation>Standardvärde för spegelfärg för nya former</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="182"/>
       <source>Shape transparency</source>
-      <translation>Genomskinlig form</translation>
+      <translation>Formens genomskinlighet</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="189"/>
@@ -4701,7 +4701,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="217"/>
       <source>Shape shininess</source>
-      <translation>Formens glansighet</translation>
+      <translation>Formens glans</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="224"/>
@@ -4731,7 +4731,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="323"/>
       <source>Vertex color</source>
-      <translation>Vertex färg</translation>
+      <translation>Hörnpunktsfärg</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="330"/>
@@ -4741,32 +4741,32 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="356"/>
       <source>Vertex size</source>
-      <translation>Vertex storlek</translation>
+      <translation>Hörnpunktsstorlek</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="363"/>
       <source>The default size for new vertices</source>
-      <translation>Standardstorleken för nya hörn</translation>
+      <translation>Standardstorleken för nya hörnpunkter</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="391"/>
       <source>Bounding box color</source>
-      <translation>Färg på begränsningsrutan</translation>
+      <translation>Avgränsningsrutans färg</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="398"/>
       <source>The color of bounding boxes in the 3D view</source>
-      <translation>Färgen på begränsningsrutorna i 3D-vyn</translation>
+      <translation>Färgen på avgränsningsrutorna i 3D-vyn</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="424"/>
       <source>Bounding box font size</source>
-      <translation>Fontstorlek för begränsningsrutan</translation>
+      <translation>Avgränsningsrutans teckenstorlek</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="431"/>
       <source>The font size of bounding boxes in the 3D view</source>
-      <translation>Teckenstorlek för begränsningsrutor i 3D-vyn</translation>
+      <translation>Teckenstorlek för avgränsningsrutor i 3D-vyn</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="465"/>
@@ -4774,15 +4774,15 @@ Kontrollera först en eller flera kantentiteter.</translation>
 If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</source>
-      <translation>Den nedre sidan av ytan kommer att återges på samma sätt som den övre.
-Om det inte är markerat beror det på alternativet "Bakgrundsbelysningens färg"
-(inställningar avsnitt Display -&gt; 3D View); antingen används bakgrundsbelysningens färg
-kommer att användas eller svart.</translation>
+      <translation>Ytans undersida återges på samma sätt som ovansidan.
+Om alternativet är avmarkerat beror det på inställningen ”Bakgrundsbelysningens färg”
+(under Visning -&gt; 3D-vy); antingen används bakgrundsbelysningens färg
+eller svart.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="471"/>
       <source>Two-side rendering</source>
-      <translation>Rendering på två sidor</translation>
+      <translation>Dubbelsidig rendering</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="505"/>
@@ -4892,8 +4892,8 @@ kommer att användas eller svart.</translation>
       <location filename="../../Location.ui" line="133"/>
       <source>Use custom vector for pad direction otherwise
 the sketch plane's normal vector will be used</source>
-      <translation>Använd anpassad vektor för pad-riktning annars
-kommer skissplanets normalvektor att användas</translation>
+      <translation>Använd en anpassad vektor för extruderingsriktningen, annars
+används skissplanets normalvektor</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="111"/>
@@ -4920,37 +4920,37 @@ kommer skissplanets normalvektor att användas</translation>
   <context>
     <name>PartGui::LoftWidget</name>
     <message>
-      <location filename="../../TaskLoft.cpp" line="74"/>
+      <location filename="../../TaskLoft.cpp" line="77"/>
       <source>Available profiles</source>
       <translation>Tillgängliga profiler</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="75"/>
+      <location filename="../../TaskLoft.cpp" line="78"/>
       <source>Selected profiles</source>
       <translation>Utvalda profiler</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="200"/>
+      <location filename="../../TaskLoft.cpp" line="188"/>
       <source>Too Few Elements</source>
       <translation>För få element</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="201"/>
+      <location filename="../../TaskLoft.cpp" line="189"/>
       <source>At least 2 vertices, edges, wires, or faces are required.</source>
-      <translation>Minst 2 hörn, kanter, trådar eller ytor krävs.</translation>
+      <translation>Minst 2 hörnpunkter, kanter, trådar eller ytor krävs.</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="240"/>
+      <location filename="../../TaskLoft.cpp" line="228"/>
       <source>Input error</source>
       <translation>Inmatningsfel</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="275"/>
+      <location filename="../../TaskLoft.cpp" line="263"/>
       <source>Vertex/Edge/Wire/Face</source>
       <translation>Vertex/kant/tråd/yta</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="276"/>
+      <location filename="../../TaskLoft.cpp" line="264"/>
       <source>Loft</source>
       <translation>Loft</translation>
     </message>
@@ -5070,12 +5070,12 @@ kommer skissplanets normalvektor att användas</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="20"/>
       <source>Persistent Section Cut</source>
-      <translation>Ihållande sektionsavskärning</translation>
+      <translation>Beständigt snitt</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="32"/>
       <source>Cutting X</source>
-      <translation>Kapning X</translation>
+      <translation>Snitt i X-led</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="44"/>
@@ -5094,12 +5094,12 @@ kommer skissplanets normalvektor att användas</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="106"/>
       <source>Cutting Y</source>
-      <translation>Skärande Y</translation>
+      <translation>Snitt i Y-led</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="174"/>
       <source>Cutting Z</source>
-      <translation>Skärande Z</translation>
+      <translation>Snitt i Z-led</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="242"/>
@@ -5110,7 +5110,7 @@ kommer skissplanets normalvektor att användas</translation>
       <location filename="../../SectionCutting.ui" line="254"/>
       <location filename="../../SectionCutting.ui" line="394"/>
       <source>Color of the cut face</source>
-      <translation>Färg på den skurna ytan</translation>
+      <translation>Snittytans färg</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="302"/>
@@ -5119,21 +5119,21 @@ kommer skissplanets normalvektor att användas</translation>
 from the cut objects.
 Works only properly if all objects
 have the same values.</source>
-      <translation>Tar bort färg och transparens
-från de utskurna objekten.
-Fungerar bara korrekt om alla objekt
+      <translation>Hämtar färg och genomskinlighet
+från de snittade objekten.
+Fungerar endast korrekt om alla objekt
 har samma värden.</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="330"/>
       <location filename="../../SectionCutting.ui" line="473"/>
       <source>Transparency of the cut face</source>
-      <translation>Genomskinlighet hos den skurna ytan</translation>
+      <translation>Snittytans genomskinlighet</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="376"/>
       <source>Cut Intersecting Objects</source>
-      <translation>Klipp ut korsande objekt</translation>
+      <translation>Snitta överlappande objekt</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="514"/>
@@ -5163,9 +5163,9 @@ har samma värden.</translation>
       <source>Allows cutting objects intersecting each other
 for the price that all cut objects
 will get the same color</source>
-      <translation>Tillåter skärande objekt som korsar varandra
-för priset att alla klippta objekt
-kommer att få samma färg</translation>
+      <translation>Tillåter snittning av objekt som överlappar varandra,
+vilket medför att alla snittade objekt
+får samma färg</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="419"/>
@@ -5187,12 +5187,12 @@ kommer endast skapade snitt att vara synliga</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="548"/>
       <source>Keep only cuts visible when closing</source>
-      <translation>Håll endast delar synliga vid stängning</translation>
+      <translation>Visa endast snitt när dialogrutan stängs</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.cpp" line="1126"/>
       <source>Sliders are disabled for assemblies</source>
-      <translation>Skjutreglagen är inaktiverade för sammansättningar</translation>
+      <translation>Skjutreglagen är inaktiverade för sammanställningar</translation>
     </message>
   </context>
   <context>
@@ -5205,7 +5205,7 @@ kommer endast skapade snitt att vara synliga</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="224"/>
       <source>Box selection for shells is not supported</source>
-      <translation>Boxval för snäckor stöds inte</translation>
+      <translation>Rektangelmarkering av skal stöds inte</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="233"/>
@@ -5253,7 +5253,7 @@ kommer endast skapade snitt att vara synliga</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="323"/>
       <source>Select three or more vertices</source>
-      <translation>Välj tre eller fler hörn</translation>
+      <translation>Välj tre eller fler hörnpunkter</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="556"/>
@@ -5316,7 +5316,7 @@ kommer endast skapade snitt att vara synliga</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="395"/>
       <source>'%1' cannot be used as profile and path.</source>
-      <translation>'%1' kan inte användas som profil och sökväg.</translation>
+      <translation>”%1” kan inte användas som både profil och bana.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="432"/>
@@ -5331,7 +5331,7 @@ kommer endast skapade snitt att vara synliga</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="476"/>
       <source>Select one or more connected edges in the 3D view and press 'Done'</source>
-      <translation>Välj en eller flera anslutna kanter i 3D-vyn och tryck på "Done</translation>
+      <translation>Välj en eller flera sammanhängande kanter i 3D-vyn och tryck på ”Klar”</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="500"/>
@@ -5456,7 +5456,7 @@ för det objekt som fästs.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="358"/>
       <source>Flip side of attachment and offset</source>
-      <translation>Baksidan av förankring och förskjutning</translation>
+      <translation>Vänd sida för fästning och förskjutning</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="361"/>
@@ -5476,7 +5476,7 @@ för det objekt som fästs.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="419"/>
       <source>Attachment mode failed: %1</source>
-      <translation>Attachment mode misslyckades: %1</translation>
+      <translation>Fästläget misslyckades: %1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="424"/>
@@ -5486,7 +5486,7 @@ för det objekt som fästs.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="432"/>
       <source>Attached with mode %1</source>
-      <translation>Ansluten med läge %1</translation>
+      <translation>Fäst med läget %1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1027"/>
@@ -5506,7 +5506,7 @@ för det objekt som fästs.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="437"/>
       <source>Attachment Offset (inactive - not attached):</source>
-      <translation>Attachment Offset (inaktiv - inte ansluten):</translation>
+      <translation>Fästförskjutning (inaktiv – inte fäst):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="937"/>
@@ -5573,13 +5573,13 @@ för det objekt som fästs.</translation>
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
       <translation>Extra kontroll av booleska operationer som ibland kan hitta fel som
-som standardkontrollen för BRep-geometri missar. Dessa fel behöver inte alltid
-betyder inte alltid att det kontrollerade objektet är oanvändbart.  Standard: false</translation>
+standardkontrollen av BRep-geometri missar. Dessa fel innebär inte alltid
+att det kontrollerade objektet är oanvändbart. Standard: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1229"/>
       <source>Single-threaded</source>
-      <translation>Enkel trådad</translation>
+      <translation>Enkeltrådad</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1231"/>
@@ -5601,7 +5601,7 @@ men mer stabilt.  Standard: false</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1256"/>
       <source>Expand shape content</source>
-      <translation>Utöka formens innehåll</translation>
+      <translation>Expandera forminnehåll</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1258"/>
@@ -5632,12 +5632,12 @@ Individuella booleska operationskontroller:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1288"/>
       <source>Bad type</source>
-      <translation>Dålig typ</translation>
+      <translation>Felaktig typ</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1300"/>
       <source>Self-intersect</source>
-      <translation>Självskärande</translation>
+      <translation>Självskärning</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1312"/>
@@ -5647,7 +5647,7 @@ Individuella booleska operationskontroller:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1324"/>
       <source>Nonrecoverable face</source>
-      <translation>Ej återvinningsbar yta</translation>
+      <translation>Yta som inte kan återställas</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1336"/>
@@ -5662,12 +5662,12 @@ Individuella booleska operationskontroller:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1360"/>
       <source>Incompatibility of vertex</source>
-      <translation>Inkompatibilitet för toppunkt</translation>
+      <translation>Inkompatibel hörnpunkt</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1372"/>
       <source>Incompatibility of edge</source>
-      <translation>Inkompatibilitet hos kanten</translation>
+      <translation>Inkompatibel kant</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1384"/>
@@ -5682,7 +5682,7 @@ Individuella booleska operationskontroller:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1289"/>
       <source>Check for bad argument types.  Default: true</source>
-      <translation>Kontrollera för felaktiga argumenttyper.  Standard: true</translation>
+      <translation>Kontrollera om argumenttyper är felaktiga. Standard: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1208"/>
@@ -5697,7 +5697,7 @@ Individuella booleska operationskontroller:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1301"/>
       <source>Check for self-intersections.  Default: true</source>
-      <translation>Kontrollera om det finns självskärande korsningar.  Standard: true</translation>
+      <translation>Kontrollera om det finns självskärningar. Standard: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1313"/>
@@ -5722,7 +5722,7 @@ Individuella booleska operationskontroller:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1361"/>
       <source>Check for incompatible vertices.  Default: true</source>
-      <translation>Kontrollera om det finns inkompatibla hörn.  Standard: true</translation>
+      <translation>Kontrollera om det finns inkompatibla hörnpunkter. Standard: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1373"/>
@@ -5745,17 +5745,17 @@ Individuella booleska operationskontroller:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="403"/>
       <source>Check Geometry Results</source>
-      <translation>Kontrollera geometri-resultat</translation>
+      <translation>Resultat av geometrikontroll</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="426"/>
       <source>Check is running…</source>
-      <translation>Kontrollen är igång..</translation>
+      <translation>Kontrollen pågår…</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="455"/>
       <source>Boolean operation check…</source>
-      <translation>Boolesk operationskontroll..</translation>
+      <translation>Kontroll av booleska operationer…</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="458"/>
@@ -5771,7 +5771,7 @@ Individuella booleska operationskontroller:</translation>
       <location filename="../../TaskCheckGeometry.cpp" line="491"/>
       <location filename="../../TaskCheckGeometry.cpp" line="503"/>
       <source>Skipped</source>
-      <translation>Överhoppade</translation>
+      <translation>Överhoppad</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="502"/>
@@ -5796,14 +5796,14 @@ Individuella booleska operationskontroller:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="591"/>
       <source>%1 processed out of %2 selected</source>
-      <translation>%1 bearbetad ur %2 svald</translation>
+      <translation>%1 bearbetade av %2 markerade</translation>
     </message>
     <message numerus="yes">
       <location filename="../../TaskCheckGeometry.cpp" line="592"/>
       <source>%n invalid shapes.</source>
       <translation>
-        <numerusform>%n ogiltiga former.</numerusform>
-        <numerusform>%n ogiltiga former.</numerusform>
+        <numerusform>%n ogiltig form.</numerusform>
+        <numerusform>%n ogiltiga geometrier.</numerusform>
       </translation>
     </message>
     <message>
@@ -5814,7 +5814,7 @@ Individuella booleska operationskontroller:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="740"/>
       <source>Global minimum</source>
-      <translation>Global miniminivå</translation>
+      <translation>Globalt minimum</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="748"/>
@@ -5842,7 +5842,7 @@ Individuella booleska operationskontroller:</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1471"/>
       <source>Attachment</source>
-      <translation>Bilaga</translation>
+      <translation>Fästning</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1492"/>
@@ -5880,7 +5880,7 @@ Individuella booleska operationskontroller:</translation>
     <message>
       <location filename="../../TaskLoft.ui" line="40"/>
       <source>Closed</source>
-      <translation>Stängd</translation>
+      <translation>Sluten</translation>
     </message>
   </context>
   <context>
@@ -5899,7 +5899,7 @@ Individuella booleska operationskontroller:</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="42"/>
       <source>Skin</source>
-      <translation>Tema</translation>
+      <translation>Ytskikt</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="47"/>
@@ -5940,7 +5940,7 @@ Individuella booleska operationskontroller:</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="100"/>
       <source>Fill offset</source>
-      <translation>Offset för fyllning</translation>
+      <translation>Fyll förskjutningen</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="114"/>
@@ -6105,15 +6105,15 @@ i 3D-vyn för svepbanan.</translation>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="51"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="59"/>
-      <location filename="../../ViewProvider.cpp" line="53"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="55"/>
+      <location filename="../../ViewProvider.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>Redigera %1</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="252"/>
       <source>Part and Part Design workbench</source>
-      <translation>Arbetsbänk för konstruktion av delar och komponenter</translation>
+      <translation>Arbetsbänkarna Part och Part Design</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="253"/>
@@ -6133,7 +6133,7 @@ i 3D-vyn för svepbanan.</translation>
       <location filename="../../Command.cpp" line="427"/>
       <location filename="../../Command.cpp" line="527"/>
       <source>Non-solids selected</source>
-      <translation>Icke fasta ämnen utvalda</translation>
+      <translation>Markerade objekt är inte solider</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="334"/>
@@ -6157,18 +6157,18 @@ i 3D-vyn för svepbanan.</translation>
       <location filename="../../Command.cpp" line="528"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Continue?</source>
-      <translation>Användning av icke-fasta ämnen för booleska operationer kan leda till oväntade resultat.
-Fortsättning?</translation>
+      <translation>Booleska operationer på objekt som inte är solider kan ge oväntade resultat.
+Fortsätt?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="411"/>
       <source>Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to compute the intersection between.</source>
-      <translation>Välj minst 2 former. Alternativt kan du välja 1 förening som innehåller 2 eller fler former att beräkna skärningspunkten mellan.</translation>
+      <translation>Välj minst 2 former. Du kan också välja 1 sammansatt objekt med minst 2 former för att beräkna snittet mellan dem.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="511"/>
       <source>Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to be fused.</source>
-      <translation>Välj minst 2 former. Alternativt kan du välja 1 förening som innehåller 2 eller fler former som ska fusioneras.</translation>
+      <translation>Välj minst 2 former. Du kan också välja 1 sammansatt objekt med minst 2 former som ska förenas.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="953"/>
@@ -6226,7 +6226,7 @@ Fortsättning?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="79"/>
       <source>Compound solid</source>
-      <translation>Sammansättning fast</translation>
+      <translation>Sammansatt solid</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="80"/>
@@ -6311,7 +6311,7 @@ Fortsättning?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="118"/>
       <source>Invalid degenerated flag</source>
-      <translation>Ogiltig degenererad flagga</translation>
+      <translation>Ogiltig degenereringsflagga</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="119"/>
@@ -6321,7 +6321,7 @@ Fortsättning?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="120"/>
       <source>Invalid multi-connexity</source>
-      <translation>Ogiltig multi-konnexitet</translation>
+      <translation>Ogiltig multikonnexitet</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="121"/>
@@ -6331,7 +6331,7 @@ Fortsättning?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="122"/>
       <source>Empty wire</source>
-      <translation>Tom kabel</translation>
+      <translation>Tom tråd</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="123"/>
@@ -6341,7 +6341,7 @@ Fortsättning?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="124"/>
       <source>Self-intersecting wire</source>
-      <translation>Självskärande kabel</translation>
+      <translation>Självskärande tråd</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="125"/>
@@ -6351,22 +6351,22 @@ Fortsättning?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="126"/>
       <source>Invalid wire</source>
-      <translation>Ogiltig kabel</translation>
+      <translation>Ogiltig tråd</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="127"/>
       <source>Redundant wire</source>
-      <translation>Redundant kabel</translation>
+      <translation>Redundant tråd</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="128"/>
       <source>Intersecting wires</source>
-      <translation>Korsande ledningar</translation>
+      <translation>Korsande trådar</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="129"/>
       <source>Invalid imbrication of wires</source>
-      <translation>Ogiltig imbricering av kablar</translation>
+      <translation>Ogiltig nästning av trådar</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="130"/>
@@ -6386,22 +6386,22 @@ Fortsättning?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="133"/>
       <source>Not closed</source>
-      <translation>Inte stängt</translation>
+      <translation>Inte sluten</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="134"/>
       <source>Not connected</source>
-      <translation>Ej ansluten</translation>
+      <translation>Inte sammanhängande</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="135"/>
       <source>Sub-shape not in shape</source>
-      <translation>Underform inte i form</translation>
+      <translation>Delformen ingår inte i formen</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="136"/>
       <source>Bad orientation</source>
-      <translation>Dålig orientering</translation>
+      <translation>Felaktig orientering</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="137"/>
@@ -6436,7 +6436,7 @@ Fortsättning?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
       <source>Boolean operation: bad type</source>
-      <translation>Boolesk operation: dålig typ</translation>
+      <translation>Boolesk operation: felaktig typ</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="165"/>
@@ -6456,12 +6456,12 @@ Fortsättning?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="169"/>
       <source>Boolean operation: incompatibility of vertex</source>
-      <translation>Boolesk operation: inkompatibilitet för toppunkt</translation>
+      <translation>Boolesk operation: inkompatibel hörnpunkt</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="172"/>
       <source>Boolean operation: incompatibility of edge</source>
-      <translation>Boolesk operation: inkompatibilitet mellan kanter</translation>
+      <translation>Boolesk operation: inkompatibel kant</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="175"/>
@@ -6501,7 +6501,7 @@ Fortsättning?</translation>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="307"/>
       <source>Edit Fillet</source>
-      <translation>Redigera Filé</translation>
+      <translation>Redigera avrundning</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="428"/>
@@ -6534,7 +6534,7 @@ Fortsättning?</translation>
       <translation>Ange avstånd:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="994"/>
+      <location filename="../../ViewProviderExt.cpp" line="1011"/>
       <source>Appearance per Face</source>
       <translation>Utseende per yta</translation>
     </message>
@@ -6566,7 +6566,7 @@ Fortsättning?</translation>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="239"/>
       <source>base object</source>
-      <translation>grundobjekt</translation>
+      <translation>basobjekt</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="242"/>
@@ -6691,7 +6691,7 @@ Fortsättning?</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="93"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Klicka på "Fortsätt" för att skapa funktionen ändå, eller på "Avbryt" för att avbryta.</translation>
+      <translation>Klicka på ”Fortsätt” för att skapa formelementet ändå, eller på ”Avbryt” för att avbryta.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="94"/>
@@ -6709,7 +6709,7 @@ Fortsättning?</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="242"/>
       <source>Select at least two objects, or one or more compounds</source>
-      <translation>Välj minst två objekt, eller en eller flera föreningar</translation>
+      <translation>Välj minst två objekt eller ett eller flera sammansatta objekt</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="357"/>
@@ -6761,7 +6761,7 @@ Fortsättning?</translation>
       <location filename="../../../BOPTools/SplitFeatures.py" line="244"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="692"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation>Välj minst två objekt, eller en eller flera sammansättningar. Om endast en sammansättning väljs kommer de sammansatta formerna att korsa varandra (annars är sammansättningar med självkorsningar ogiltiga).</translation>
+      <translation>Välj minst två objekt eller ett eller flera sammansatta objekt. Om bara ett sammansatt objekt är markerat beräknas skärningarna mellan formerna i det (annars är sammansatta objekt med självskärningar ogiltiga).</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="465"/>
@@ -6775,12 +6775,12 @@ Fortsättning?</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="57"/>
       <source>Compound Filter</source>
-      <translation>Sammansatt filter</translation>
+      <translation>Filter för sammansatta objekt</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="87"/>
       <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
-      <translation>Välj först en form som är en sammansättning. Om ett andra objekt väljs (valfritt) kommer det att behandlas som en stencil.</translation>
+      <translation>Välj först en form som är ett sammansatt objekt. Om du även väljer ett andra objekt används det som en schablon.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="67"/>
@@ -6788,9 +6788,9 @@ Fortsättning?</translation>
 area, or length, or by choosing specific items.
 If a second object is selected, it will be used as reference, for example,
 for collision or distance filtering.</source>
-      <translation>Filtrerar ut objekt från den valda föreningen genom egenskaper som volym,
-area eller längd, eller genom att välja specifika objekt.
-Om ett andra objekt väljs kommer det att användas som referens, t.ex,
+      <translation>Filtrerar ut objekt från det markerade sammansatta objektet efter egenskaper som volym,
+area eller längd, eller genom att välja enskilda objekt.
+Om ett andra objekt är markerat används det som referens, till exempel
 för kollisions- eller avståndsfiltrering.</translation>
     </message>
     <message>
@@ -6815,17 +6815,17 @@ för kollisions- eller avståndsfiltrering.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="58"/>
       <source>Explode Compound</source>
-      <translation>Explodera sammansatt</translation>
+      <translation>Dela upp sammansatt objekt</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="63"/>
       <source>Splits up a compound of shapes into separate objects, creating a compound filter for each shape</source>
-      <translation>Delar upp en sammansättning av former i separata objekt och skapar ett sammansatt filter för varje form</translation>
+      <translation>Delar upp ett sammansatt objekt i separata objekt och skapar ett filter för varje form</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="74"/>
       <source>First select a shape that is a compound.</source>
-      <translation>Välj först en form som är en förening.</translation>
+      <translation>Välj först en form som är ett sammansatt objekt.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="75"/>
@@ -6853,13 +6853,13 @@ för kollisions- eller avståndsfiltrering.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="264"/>
       <source>{} is not attachable. The attachment editor can still be used to align the object, but the attachment will not be parametric.</source>
-      <translation>{} är inte fästbart. Attachmentredigeraren kan fortfarande användas för att rikta in objektet, men attachmentet kommer inte att vara parametriskt.</translation>
+      <translation>{} går inte att fästa. Fästredigeraren kan ändå användas för att rikta in objektet, men fästningen blir inte parametrisk.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="266"/>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="283"/>
       <source>Attachment</source>
-      <translation>Bilaga</translation>
+      <translation>Fästning</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="269"/>
@@ -6875,12 +6875,12 @@ för kollisions- eller avståndsfiltrering.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="471"/>
       <source>Ignored. Can't attach object to itself!</source>
-      <translation>Ignorerad. Kan inte koppla objekt till sig själv!</translation>
+      <translation>Ignorerat. Ett objekt kan inte fästas vid sig självt!</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="479"/>
       <source>{} depends on object being attached, can't use it for attachment</source>
-      <translation>{} beror på att objektet fästs, kan inte användas för att fästa</translation>
+      <translation>{} är beroende av objektet som ska fästas och kan därför inte användas som fäste.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="631"/>
@@ -6920,7 +6920,7 @@ för kollisions- eller avståndsfiltrering.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="736"/>
       <source>Attached with mode {}</source>
-      <translation>Bifogad med läge {}</translation>
+      <translation>Fäst med läget {}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="746"/>
@@ -6930,7 +6930,7 @@ för kollisions- eller avståndsfiltrering.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="752"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation>Attachment Offset (i lokala koordinater):</translation>
+      <translation>Fästförskjutning (i lokala koordinater):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="757"/>
@@ -6948,7 +6948,7 @@ för kollisions- eller avståndsfiltrering.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="32"/>
       <source>Vertices</source>
-      <translation>Hörn</translation>
+      <translation>Hörnpunkter</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="34"/>
@@ -6978,7 +6978,7 @@ för kollisions- eller avståndsfiltrering.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="41"/>
       <source>CompSolids</source>
-      <translation>CompSolids</translation>
+      <translation>Sammansatta solider</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="46"/>
@@ -6993,7 +6993,7 @@ för kollisions- eller avståndsfiltrering.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="75"/>
       <source>Area</source>
-      <translation>Område</translation>
+      <translation>Area</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="88"/>
@@ -7033,7 +7033,7 @@ för kollisions- eller avståndsfiltrering.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="151"/>
       <source>Is closed</source>
-      <translation>Är stängd</translation>
+      <translation>Är sluten</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="158"/>
@@ -7043,7 +7043,7 @@ för kollisions- eller avståndsfiltrering.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="176"/>
       <source>Global center of mass</source>
-      <translation>Global tyngdpunkt</translation>
+      <translation>Globalt masscentrum</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="194"/>
@@ -7061,16 +7061,16 @@ för kollisions- eller avståndsfiltrering.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="668"/>
       <source>Boolean XOR</source>
-      <translation>Booleansk XOR</translation>
+      <translation>Boolesk XOR</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="675"/>
       <source>Performs an 'exclusive OR' boolean operation with two or more selected objects,
 or with the shapes inside a compound.
 Overlapping volumes of the shapes will be removed.</source>
-      <translation>Utför en boolesk operation av typen "exclusive OR" med två eller flera valda objekt,
-eller med formerna i en förening.
-Överlappande volymer av formerna kommer att tas bort.</translation>
+      <translation>Utför en boolesk exklusiv ELLER-operation med två eller flera markerade objekt
+eller med formerna i ett sammansatt objekt.
+Formernas överlappande volymer tas bort.</translation>
     </message>
   </context>
   <context>
@@ -7103,7 +7103,7 @@ eller med formerna i en förening.
     <message>
       <location filename="../../DlgScale.ui" line="74"/>
       <source>Uniform scaling</source>
-      <translation>Enhetlig skalning</translation>
+      <translation>Likformig skalning</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="112"/>
@@ -7113,12 +7113,12 @@ eller med formerna i en förening.
     <message>
       <location filename="../../DlgScale.ui" line="119"/>
       <source>Specify a different scale factor for each cardinal direction</source>
-      <translation>Ange en annan skalfaktor för varje kardinalriktning</translation>
+      <translation>Ange en separat skalfaktor för varje koordinatriktning</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="122"/>
       <source>Non-uniform scaling</source>
-      <translation>Icke-uniform skalning</translation>
+      <translation>Olikformig skalning</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="195"/>
@@ -7145,7 +7145,7 @@ eller med formerna i en förening.
       <location filename="../../DlgScale.cpp" line="283"/>
       <source>Creating scale failed.
 %1</source>
-      <translation>Skapandet av skalan misslyckades.
+      <translation>Det gick inte att skapa skalningen.
 %1</translation>
     </message>
   </context>
@@ -7172,7 +7172,7 @@ eller med formerna i en förening.
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="82"/>
       <source>Shape must be a wire, edge or compound. Something else was supplied.</source>
-      <translation>Formen måste vara en tråd, kant eller förening. Något annat levererades.</translation>
+      <translation>Formen måste vara en tråd, kant eller ett sammansatt objekt. Något annat angavs.</translation>
     </message>
   </context>
   <context>
@@ -7193,7 +7193,7 @@ eller med formerna i en förening.
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="60"/>
       <source>Bull's-eye facemaker</source>
-      <translation>Facemaker för bull's-eye</translation>
+      <translation>Bull’s-eye-ytskapare</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="65"/>
@@ -7206,7 +7206,7 @@ eller med formerna i en förening.
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="257"/>
       <source>Cheese facemaker</source>
-      <translation>Facemaker för ost</translation>
+      <translation>Cheese-ytskapare</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="262"/>
@@ -7219,12 +7219,12 @@ eller med formerna i en förening.
     <message>
       <location filename="../../../App/FeatureExtrusion.cpp" line="427"/>
       <source>Part Extrude facemaker</source>
-      <translation>Del Extrudera facemaker</translation>
+      <translation>Ytskapare för Part-extrudering</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrusion.cpp" line="432"/>
       <source>Supports making faces with holes, does not support nesting.</source>
-      <translation>Stöder tillverkning av ytor med hål, stöder inte nesting.</translation>
+      <translation>Stöder skapande av ytor med hål, men inte nästning.</translation>
     </message>
   </context>
   <context>
@@ -7257,7 +7257,7 @@ eller med formerna i en förening.
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="88"/>
       <source>Resets color for all faces of the part</source>
-      <translation>Återställer färgen för alla ytor på detaljen</translation>
+      <translation>Återställer färgen för alla ytor på delen</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="91"/>
@@ -7318,7 +7318,7 @@ eller med formerna i en förening.
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="248"/>
       <source>Select at least one object or compounds</source>
-      <translation>Välj minst ett objekt eller en förening</translation>
+      <translation>Välj minst ett objekt eller sammansatta objekt</translation>
     </message>
   </context>
   <context>
@@ -7336,7 +7336,7 @@ eller med formerna i en förening.
     <message>
       <location filename="../../Command.cpp" line="2526"/>
       <source>Creates a coordinate system that can be attached to other objects</source>
-      <translation>Skapar ett koordinatsystem som kan kopplas till andra objekt</translation>
+      <translation>Skapar ett koordinatsystem som kan fästas vid andra objekt</translation>
     </message>
   </context>
   <context>
@@ -7360,9 +7360,9 @@ eller med formerna i en förening.
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6723"/>
+      <location filename="../../../App/Geometry.cpp" line="6726"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
-      <translation>Det går inte att gissa skärningspunkten mellan kurvor. Försök att lägga till en sammanfallande begränsning mellan hörnen på de kurvor som du tänker falsa.</translation>
+      <translation>Det går inte att bestämma kurvornas skärningspunkt. Försök lägga till en sammanfallande begränsning mellan hörnpunkterna på de kurvor som ska avrundas.</translation>
     </message>
   </context>
   <context>
@@ -7416,7 +7416,7 @@ eller med formerna i en förening.
     <message>
       <location filename="../../Command.cpp" line="2633"/>
       <source>Creates a datum point that can be attached to other objects</source>
-      <translation>Skapar en referenspunkt som kan kopplas till andra objekt</translation>
+      <translation>Skapar en referenspunkt som kan fästas vid andra objekt</translation>
     </message>
   </context>
   <context>
@@ -7424,12 +7424,12 @@ eller med formerna i en förening.
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="90"/>
       <source>Attachment</source>
-      <translation>Bilaga</translation>
+      <translation>Fästning</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="95"/>
       <source>Opens the attachment editor to change the attachment of the selected object</source>
-      <translation>Öppnar bilageredigeraren för att ändra bilagan för det markerade objektet</translation>
+      <translation>Öppnar fästredigeraren för att ändra det markerade objektets fästning</translation>
     </message>
   </context>
   <context>
@@ -7437,12 +7437,12 @@ eller med formerna i en förening.
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="223"/>
       <source>Connect Shapes</source>
-      <translation>Ansluta former</translation>
+      <translation>Anslut former</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="227"/>
       <source>Fuses shapes, taking care to preserve voids</source>
-      <translation>Fogar samman formerna, var noga med att bevara tomrummen</translation>
+      <translation>Fogar samman former och bevarar hålrummen</translation>
     </message>
   </context>
   <context>
@@ -7455,7 +7455,7 @@ eller med formerna i en förening.
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="342"/>
       <source>Fuses one shape into another, taking care to preserve voids</source>
-      <translation>Smälter samman en form till en annan, var noga med att bevara tomrummen</translation>
+      <translation>Fogar in en form i en annan och bevarar hålrummen</translation>
     </message>
   </context>
   <context>
@@ -7463,7 +7463,7 @@ eller med formerna i en förening.
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="454"/>
       <source>Cutout Shape</source>
-      <translation>Utskuren form</translation>
+      <translation>Gör utskärning</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="458"/>
@@ -7481,7 +7481,7 @@ eller med formerna i en förening.
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="227"/>
       <source>Creates a boolean union which is sliced at the intersections of the selected shapes</source>
-      <translation>Skapar en boolesk union som skärs i skärningspunkterna mellan de valda formerna</translation>
+      <translation>Skapar en boolesk union som delas där de markerade formerna skär varandra</translation>
     </message>
   </context>
   <context>
@@ -7489,12 +7489,12 @@ eller med formerna i en förening.
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="443"/>
       <source>Slice to Compound</source>
-      <translation>Skiva till kompound</translation>
+      <translation>Skiva till sammansatt objekt</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="448"/>
       <source>Slices the selected object by using other objects as cutting tools and storing the results in one compound</source>
-      <translation>Skivar det valda objektet genom att använda andra objekt som skärverktyg och lagrar resultaten i en sammansättning</translation>
+      <translation>Skivar det markerade objektet med andra objekt som skärverktyg och lagrar resultatet i ett sammansatt objekt</translation>
     </message>
   </context>
   <context>
@@ -7507,7 +7507,7 @@ eller med formerna i en förening.
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="487"/>
       <source>Slices the selected object by other objects, and splits it apart, creating a compound filter for each slide</source>
-      <translation>Skivar det markerade objektet genom andra objekt och delar upp det, vilket skapar ett sammansatt filter för varje bild</translation>
+      <translation>Skivar det markerade objektet med hjälp av andra objekt och delar upp det genom att skapa ett filter för varje skiva</translation>
     </message>
   </context>
   <context>
@@ -7515,7 +7515,7 @@ eller med formerna i en förening.
     <message>
       <location filename="../../DlgPartBox.ui" line="14"/>
       <source>Box Definition</source>
-      <translation>Definition av box</translation>
+      <translation>Definition av rätblock</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="20"/>
@@ -7573,12 +7573,12 @@ eller med formerna i en förening.
     <message>
       <location filename="../../ShapeFromMesh.ui" line="20"/>
       <source>Sew Shape</source>
-      <translation>Sy form</translation>
+      <translation>Sy ihop form</translation>
     </message>
     <message>
       <location filename="../../ShapeFromMesh.ui" line="32"/>
       <source>Tolerance for sewing the shape</source>
-      <translation>Tolerans för sömnad av formen</translation>
+      <translation>Tolerans för hopsyning av formen</translation>
     </message>
   </context>
   <context>
@@ -7586,7 +7586,7 @@ eller med formerna i en förening.
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="367"/>
       <source>Ring facemaker</source>
-      <translation>Ringformad ytskapare</translation>
+      <translation>Ring-ytskapare</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="372"/>
@@ -7599,12 +7599,12 @@ eller med formerna i en förening.
     <message>
       <location filename="../../Command.cpp" line="2460"/>
       <source>Persiste&amp;nt Section Cut</source>
-      <translation>Beständigt &amp;sektionssnitt</translation>
+      <translation>Beständigt &amp;snitt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2461"/>
       <source>Creates a new object as a boolean intersection of all visible shapes and the selected axis planes</source>
-      <translation>Skapar ett nytt objekt som en boolesk skärningspunkt mellan alla synliga former och de valda axelplanen</translation>
+      <translation>Skapar ett nytt objekt som ett booleskt snitt mellan alla synliga former och de valda axelplanen</translation>
     </message>
   </context>
   <context>
@@ -7625,7 +7625,7 @@ eller med formerna i en förening.
     <message>
       <location filename="../../CommandFilter.cpp" line="193"/>
       <source>Vertex Selection</source>
-      <translation>Val av vertex</translation>
+      <translation>Hörnpunktsmarkering</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="194"/>
@@ -7638,7 +7638,7 @@ eller med formerna i en förening.
     <message>
       <location filename="../../CommandFilter.cpp" line="218"/>
       <source>Edge Selection</source>
-      <translation>Val av kant</translation>
+      <translation>Kantmarkering</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="219"/>
@@ -7713,7 +7713,7 @@ eller med formerna i en förening.
     <message>
       <location filename="../../PatternParametersWidget.ui" line="76"/>
       <source>Extent</source>
-      <translation>Omfattning</translation>
+      <translation>Utbredning</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="81"/>
@@ -7734,38 +7734,38 @@ eller med formerna i en förening.
     <message>
       <location filename="../../PatternParametersWidget.ui" line="158"/>
       <source>Occurrences</source>
-      <translation>Tillfällen</translation>
+      <translation>Förekomster</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="78"/>
+      <location filename="../../PatternParametersWidget.cpp" line="79"/>
       <source>Axis</source>
       <translation>Axel</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="79"/>
-      <location filename="../../PatternParametersWidget.cpp" line="81"/>
+      <location filename="../../PatternParametersWidget.cpp" line="80"/>
+      <location filename="../../PatternParametersWidget.cpp" line="82"/>
       <source>Total Angle</source>
       <translation>Total vinkel</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="80"/>
-      <location filename="../../PatternParametersWidget.cpp" line="82"/>
+      <location filename="../../PatternParametersWidget.cpp" line="81"/>
+      <location filename="../../PatternParametersWidget.cpp" line="83"/>
       <source>Angular Spacing</source>
       <translation>Vinkelavstånd</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="425"/>
-      <location filename="../../PatternParametersWidget.cpp" line="521"/>
+      <location filename="../../PatternParametersWidget.cpp" line="371"/>
+      <location filename="../../PatternParametersWidget.cpp" line="467"/>
       <source>Spacing %1</source>
       <translation>Avstånd %1</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="441"/>
+      <location filename="../../PatternParametersWidget.cpp" line="387"/>
       <source>Remove this spacing definition.</source>
       <translation>Ta bort denna definition av avstånd.</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="942"/>
+      <location filename="../../PatternParametersWidget.cpp" line="894"/>
       <source>Reset spacing</source>
       <translation>Återställ avstånd</translation>
     </message>
@@ -7773,7 +7773,17 @@ eller med formerna i en förening.
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="236"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="159"/>
+      <source>Preview requires a Part-based view provider; none found for %1.</source>
+      <translation>Förhandsvisning kräver en Part-baserad vyhanterare; ingen hittades för %1.</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
+      <source>unknown object</source>
+      <translation>okänt objekt</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="303"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>Fel vid återgivning av förhandsgranskning: %1. Det indikerar vanligtvis ett fel med modellen.</translation>
     </message>
@@ -7785,6 +7795,122 @@ eller med formerna i en förening.
       <source>STEP with colors</source>
       <extracomment>Translation note: "STEP" is a file type end should not be translated</extracomment>
       <translation>STEP med färger</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::PatternCircularParametersWidget</name>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="29"/>
+      <source>Circular Pattern</source>
+      <translation>Cirkulärt mönster</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="35"/>
+      <source>Axis</source>
+      <translation>Axel</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="48"/>
+      <source>Radial distance</source>
+      <translation>Radiellt avstånd</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="65"/>
+      <source>Tangential distance</source>
+      <translation>Tangentiellt avstånd</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="82"/>
+      <source>Concentric circles</source>
+      <translation>Koncentriska cirklar</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="95"/>
+      <source>Symmetry</source>
+      <translation>Symmetri</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::PatternPointParametersWidget</name>
+    <message>
+      <location filename="../../PatternPointParametersWidget.ui" line="8"/>
+      <source>Point object</source>
+      <translation>Punktobjekt</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPointParametersWidget.ui" line="14"/>
+      <location filename="../../PatternPointParametersWidget.cpp" line="48"/>
+      <source>Select Point Object</source>
+      <translation>Välj punktobjekt</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::PatternPathParametersWidget</name>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="6"/>
+      <source>Path</source>
+      <translation>Bana</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="7"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="145"/>
+      <source>Select Path</source>
+      <translation>Välj bana</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="8"/>
+      <source>Spacing mode</source>
+      <translation>Avståndsläge</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="10"/>
+      <source>Occurrences</source>
+      <translation>Förekomster</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="12"/>
+      <source>Spacing</source>
+      <translation>Avstånd</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="14"/>
+      <source>Start offset</source>
+      <translation>Startförskjutning</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="16"/>
+      <source>End offset</source>
+      <translation>Slutförskjutning</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="18"/>
+      <source>Reverse path</source>
+      <translation>Vänd bana</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="19"/>
+      <source>Align to path</source>
+      <translation>Rikta in efter banan</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <source>Fixed count</source>
+      <translation>Fast antal</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <source>Fixed spacing</source>
+      <translation>Fast avstånd</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <source>Fixed count and spacing</source>
+      <translation>Fast antal och avstånd</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.cpp" line="157"/>
+      <source>(+%1)</source>
+      <translation>(+%1)</translation>
     </message>
   </context>
   <context>
@@ -7810,7 +7936,20 @@ eller med formerna i en förening.
     <message>
       <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
       <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
-      <translation>Enhetlig: hanterar kapslade hål, överlappande trådar och krökta ytor</translation>
+      <translation>Enhetlig: hanterar nästlade hål, överlappande trådar och krökta ytor</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::PatternInstanceControls</name>
+    <message>
+      <location filename="../../PatternInstanceControls.cpp" line="226"/>
+      <source>Restores this instance</source>
+      <translation>Återställer den här instansen</translation>
+    </message>
+    <message>
+      <location filename="../../PatternInstanceControls.cpp" line="231"/>
+      <source>Suppresses this instance</source>
+      <translation>Undertrycker den här instansen</translation>
     </message>
   </context>
 </TS>

@@ -40,6 +40,7 @@
 # include <boost/date_time/posix_time/posix_time.hpp>
 # include <boost/scope_exit.hpp>
 # include <chrono>
+#include <format>
 # include <optional>
 # include <memory>
 # include <utility>
@@ -51,8 +52,6 @@
 # include <map>
 # include <tuple>
 # include <vector>
-# include <fmt/format.h>
-# include <fmt/ranges.h>
 
 #ifdef FC_OS_WIN32
 # include <Shlobj.h>
@@ -87,8 +86,11 @@
 #include <Base/ExceptionFactory.h>
 #include <Base/FileInfo.h>
 #include <Base/GeometryPyCXX.h>
+#include <Base/CrashReporter/CrashFramePy.h>
+#include <Base/CrashReporter/CrashReportPy.h>
 #include <Base/Interpreter.h>
 #include <Base/MatrixPy.h>
+#include <Base/NumericFormatting.h>
 #include <Base/QuantityPy.h>
 #include <Base/ParameterPy.h>
 #include <Base/Persistence.h>
@@ -458,6 +460,8 @@ void Application::setupPythonTypes()
     Base::InterpreterSingleton::addType(&Base::PlacementPy::Type, pAppModule, "Placement");
     Base::InterpreterSingleton::addType(&Base::RotationPy::Type, pAppModule, "Rotation");
     Base::InterpreterSingleton::addType(&Base::AxisPy::Type, pAppModule, "Axis");
+    Base::InterpreterSingleton::addType(&Base::CrashReportPy::Type, pAppModule, "CrashReport");
+    Base::InterpreterSingleton::addType(&Base::CrashFramePy::Type, pAppModule, "CrashFrame");
 
     // Note: Create an own module 'Base' which should provide the python
     // binding classes from the base module. At a later stage we should
@@ -724,12 +728,7 @@ Document* Application::getDocument(const char *Name) const
 }
 Document* Application::getDocumentOrActive(const char *Name) const
 {
-    if (!Base::Tools::isNullOrEmpty(Name)) {
-        return getDocument(Name);
-    }
-    else {
-        return getActiveDocument();
-    }
+    return !Base::Tools::isNullOrEmpty(Name) ? getDocument(Name) : getActiveDocument();
 }
 
 const char * Application::getDocumentName(const Document* doc) const
@@ -1048,7 +1047,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                 if (errs && isMainDoc)
                     (*errs)[count] = e.what();
                 else
-                    Base::Console().error("Exception opening file: %s [%s]\n", name.c_str(), e.what());
+                    Base::Console().error("Exception opening file: {} [{}]\n", name, e.what());
             }
             catch (const std::exception &e) {
                 if (!errs && isMainDoc)
@@ -1056,7 +1055,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                 if (errs && isMainDoc)
                     (*errs)[count] = e.what();
                 else
-                    Base::Console().error("Exception opening file: %s [%s]\n", name.c_str(), e.what());
+                    Base::Console().error("Exception opening file: {} [{}]\n", name, e.what());
             }
             catch (...) {
                 if (errs) {
@@ -1158,8 +1157,8 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
 
     for (auto &doc : openedDocs) {
         auto &timing = timings[doc];
-        Base::Console().log("%s restore time: %f\n", doc.getDocumentName(), timing.d1.count());
-        Base::Console().log("%s postprocess time: %f\n", doc.getDocumentName(), timing.d2.count());
+        Base::Console().log("{} restore time: {}\n", doc.getDocumentName(), timing.d1.count());
+        Base::Console().log("{} postprocess time: {}\n", doc.getDocumentName(), timing.d2.count());
     }
     PropertyLinkBase::updateAllElementReferences();
     _isRestoring = false;
@@ -1378,7 +1377,7 @@ std::string Application::getNameWithVersion()
     auto minor = config["BuildVersionMinor"];
     auto point = config["BuildVersionPoint"];
     auto suffix = config["BuildVersionSuffix"];
-    return fmt::format("{} {}.{}.{}{}", appname, major, minor, point, suffix);
+    return std::format("{} {}.{}.{}{}", appname, major, minor, point, suffix);
 }
 
 bool Application::isDevelopmentVersion()
@@ -1731,7 +1730,7 @@ namespace {
     // Given a description string and a list of extensions, construct a type string that Qt's file
     // dialogs will recognize
     void appendTypeString(std::string &description, const std::vector<std::string> &extensions) {
-        description = fmt::format("{} (*.{})", description, fmt::join(extensions, " *."));
+        description = std::format("{} (*.{})", description, Base::Tools::joinFormatted(extensions, " *."));
     }
 }
 
@@ -2024,9 +2023,9 @@ void Application::destruct()
     for (const auto &it : paramMgr) {
         if ((it.second != _pcSysParamMngr) && (it.second != _pcUserParamMngr)) {
             if (it.second->HasSerializer() && !it.second->IgnoreSave()) {
-                Base::Console().log("Saving %s...\n", it.first.c_str());
+                Base::Console().log("Saving {}...\n", it.first);
                 it.second->SaveDocument();
-                Base::Console().log("Saving %s...done\n", it.first.c_str());
+                Base::Console().log("Saving {}...done\n", it.first);
             }
         }
     }
@@ -2117,6 +2116,11 @@ void initExceptions()
 void Application::init(int argc, char ** argv)
 {
     try {
+        // Establish the initial Base snapshot before application or GUI preferences can override it.
+        Base::publishNumericLocaleContext(
+            Base::createNumericLocaleContext()
+        );
+
         Base::SystemHandler::installNewHandler();
         Base::SystemHandler::installSegfaultHandler();
 
@@ -2170,6 +2174,7 @@ void Application::initTypes()
     App::PropertyPercent            ::init();
     App::PropertyEnumeration        ::init();
     App::PropertyIntegerList        ::init();
+    App::PropertyIntPairList        ::init();
     App::PropertyIntegerSet         ::init();
     App::PropertyMap                ::init();
     App::PropertyString             ::init();
@@ -2875,24 +2880,24 @@ void Application::initConfig(int argc, char ** argv)
         // Remove banner if FreeCAD is invoked via the -c command as regular
         // Python interpreter
         if (mConfig["Verbose"] != "Strict")
-            Base::Console().message("%s %s, Libs: %s.%s.%s%sR%s\n%s",
-                              mConfig["ExeName"].c_str(),
-                              mConfig["ExeVersion"].c_str(),
-                              mConfig["BuildVersionMajor"].c_str(),
-                              mConfig["BuildVersionMinor"].c_str(),
-                              mConfig["BuildVersionPoint"].c_str(),
-                              mConfig["BuildVersionSuffix"].c_str(),
-                              mConfig["BuildRevision"].c_str(),
-                              mConfig["CopyrightInfo"].c_str());
+            Base::Console().message("{} {}, Libs: {}.{}.{}{}R{}\n{}",
+                              mConfig["ExeName"],
+                              mConfig["ExeVersion"],
+                              mConfig["BuildVersionMajor"],
+                              mConfig["BuildVersionMinor"],
+                              mConfig["BuildVersionPoint"],
+                              mConfig["BuildVersionSuffix"],
+                              mConfig["BuildRevision"],
+                              mConfig["CopyrightInfo"]);
         else
-            Base::Console().message("%s %s, Libs: %s.%s.%s%sR%s\n",
-                              mConfig["ExeName"].c_str(),
-                              mConfig["ExeVersion"].c_str(),
-                              mConfig["BuildVersionMajor"].c_str(),
-                              mConfig["BuildVersionMinor"].c_str(),
-                              mConfig["BuildVersionPoint"].c_str(),
-                              mConfig["BuildVersionSuffix"].c_str(),
-                              mConfig["BuildRevision"].c_str());
+            Base::Console().message("{} {}, Libs: {}.{}.{}{}R{}\n",
+                              mConfig["ExeName"],
+                              mConfig["ExeVersion"],
+                              mConfig["BuildVersionMajor"],
+                              mConfig["BuildVersionMinor"],
+                              mConfig["BuildVersionPoint"],
+                              mConfig["BuildVersionSuffix"],
+                              mConfig["BuildRevision"]);
 
         if (SafeMode::SafeModeEnabled()) {
             Base::Console().message("FreeCAD is running in _SAFE_MODE_.\n"
@@ -3008,11 +3013,14 @@ void Application::initCrashReporter()
         const std::string crashReportsDirectory {getUserAppDataDir() + "CrashReports"};
         Base::CrashReporter::Writer::prewarm();
         Base::CrashReporter::Writer::install(crashReportsDirectory);
-        Base::CrashReporter::Manager::scan(crashReportsDirectory);
+        Base::CrashReporter::Manager::scan(
+            crashReportsDirectory,
+            {},
+            App::ProgramInformation::prettyProductInfoWrapper());
     } catch (Base::Exception &e) {
-        Base::Console().warning("Crash reporting failed during startup:\n%s\n", e.getMessage());
+        Base::Console().warning("Crash reporting failed during startup:\n{}\n", e.getMessage());
     } catch (std::exception &e) {
-        Base::Console().warning("Crash reporting failed during startup:\n%s\n", e.what());
+        Base::Console().warning("Crash reporting failed during startup:\n{}\n", e.what());
     } catch (...) {
         Base::Console().warning("Crash reporting failed during startup\n");
     }
@@ -3088,11 +3096,11 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
             if (auto cannonicalPath = file.getCannonicalPath()) {
                 file = Base::FileInfo(*cannonicalPath);
             } else {
-                Base::Console().error("Failed to process symlink file: %s\n", file.filePath());
+                Base::Console().error("Failed to process symlink file: {}\n", file.filePath());
             }
         }
 
-        Base::Console().log("Init:     Processing file: %s\n",file.filePath().c_str());
+        Base::Console().log("Init:     Processing file: {}\n",file.filePath());
 
         try {
             if (file.hasExtension("fcstd") || file.hasExtension("fcbak")
@@ -3128,10 +3136,10 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
                     Base::Interpreter().runStringArg("%s.open(u\"%s\")",mods.front().c_str(),
                             escapedstr.c_str());
                     processed.push_back(it);
-                    Base::Console().log("Command line open: %s.open(u\"%s\")\n",mods.front().c_str(),escapedstr.c_str());
+                    Base::Console().log("Command line open: {}.open(u\"{}\")\n",mods.front(),escapedstr);
                 }
                 else if (file.exists()) {
-                    Base::Console().warning("File format not supported: %s \n", file.filePath().c_str());
+                    Base::Console().warning("File format not supported: {} \n", file.filePath());
                 }
             }
         }
@@ -3139,10 +3147,10 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
             throw; // re-throw to main() function
         }
         catch (const Base::Exception& e) {
-            Base::Console().error("Exception while processing file: %s [%s]\n", file.filePath().c_str(), e.what());
+            Base::Console().error("Exception while processing file: {} [{}]\n", file.filePath(), e.what());
         }
         catch (...) {
-            Base::Console().error("Unknown exception while processing file: %s \n", file.filePath().c_str());
+            Base::Console().error("Unknown exception while processing file: {} \n", file.filePath());
         }
     }
 
@@ -3184,14 +3192,14 @@ void Application::processCmdLineFiles()
                     ,mods.front().c_str(),output.c_str());
             }
             else {
-                Base::Console().warning("File format not supported: %s \n", output.c_str());
+                Base::Console().warning("File format not supported: {} \n", output);
             }
         }
         catch (const Base::Exception& e) {
-            Base::Console().error("Exception while saving to file: %s [%s]\n", output.c_str(), e.what());
+            Base::Console().error("Exception while saving to file: {} [{}]\n", output, e.what());
         }
         catch (...) {
-            Base::Console().error("Unknown exception while saving to file: %s \n", output.c_str());
+            Base::Console().error("Unknown exception while saving to file: {} \n", output);
         }
     }
 }
@@ -3215,7 +3223,7 @@ void Application::runApplication()
         Base::Console().log("Exiting on purpose\n");
     }
     else {
-        Base::Console().log("Unknown Run mode (%d) in main()?!?\n\n", mConfig["RunMode"].c_str());
+        Base::Console().log("Unknown Run mode ({}) in main()?!?\n\n", mConfig["RunMode"]);
     }
 }
 
@@ -3265,10 +3273,10 @@ void Application::logStatus()
 {
     const std::string time_str = boost::posix_time::to_simple_string(
         boost::posix_time::second_clock::local_time());
-    Base::Console().log("Time = %s\n", time_str.c_str());
+    Base::Console().log("Time = {}\n", time_str);
 
     for (const auto & It : mConfig) {
-        Base::Console().log("%s = %s\n", It.first.c_str(), It.second.c_str());
+        Base::Console().log("{} = {}\n", It.first, It.second);
     }
 }
 
@@ -3301,9 +3309,9 @@ void Application::LoadParameters()
     }
     catch (const Base::Exception& e) {
         // try to proceed with an empty XML document
-        Base::Console().error("%s in file %s.\n"
+        Base::Console().error("{} in file {}.\n"
                               "Continue with an empty configuration.\n",
-                              e.what(), mConfig["SystemParameter"].c_str());
+                              e.what(), mConfig["SystemParameter"]);
         _pcSysParamMngr->CreateDocument();
     }
 
@@ -3311,17 +3319,9 @@ void Application::LoadParameters()
         if (_pcUserParamMngr->LoadOrCreateDocument() && mConfig["Verbose"] != "Strict") {
             // The user parameter file doesn't exist. When an alternative parameter file is offered
             // this will be used.
-            const auto it = mConfig.find("UserParameterTemplate");
-            if (it != mConfig.end()) {
-                QString path = QString::fromUtf8(it->second.c_str());
-                if (QDir(path).isRelative()) {
-                    const QString home = QString::fromUtf8(mConfig["AppHomePath"].c_str());
-                    path = QFileInfo(QDir(home), path).absoluteFilePath();
-                }
-                const QFileInfo fi(path);
-                if (fi.exists()) {
-                    _pcUserParamMngr->LoadDocument(path.toUtf8().constData());
-                }
+            const char* userParamPath = getUserParameterTemplatePath();
+            if (userParamPath) {
+                _pcUserParamMngr->LoadDocument(userParamPath);
             }
 
             // Configuration file optional when using as Python module
@@ -3335,11 +3335,29 @@ void Application::LoadParameters()
     }
     catch (const Base::Exception& e) {
         // try to proceed with an empty XML document
-        Base::Console().error("%s in file %s.\n"
+        Base::Console().error("{} in file {}.\n"
                               "Continue with an empty configuration.\n",
-                              e.what(), mConfig["UserParameter"].c_str());
+                              e.what(), mConfig["UserParameter"]);
         _pcUserParamMngr->CreateDocument();
     }
+}
+
+const char* Application::getUserParameterTemplatePath()
+{
+    const auto it = mConfig.find("UserParameterTemplate");
+    if (it != mConfig.end()) {
+        QString path = QString::fromUtf8(it->second.c_str());
+        if (QDir(path).isRelative()) {
+            const QString home = QString::fromUtf8(mConfig["AppHomePath"].c_str());
+            path = QFileInfo(QDir(home), path).absoluteFilePath();
+        }
+        const QFileInfo fi(path);
+        if (fi.exists()) {
+            const char* templatePath = path.toUtf8().constData();
+            return templatePath;
+        }
+    }
+    return nullptr;
 }
 
 #if defined(_MSC_VER) && BOOST_VERSION < 108200

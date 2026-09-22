@@ -1958,7 +1958,7 @@ class ViewProviderComponent:
         ----------
         vobj: <Gui.ViewProviderDocumentObject>
             The component's view provider object.
-        menu: <PySide2.QtWidgets.QMenu>
+        menu: <PySide6.QtWidgets.QMenu>
             The context menu already assembled prior to this method being
             called.
         """
@@ -2288,7 +2288,7 @@ class ComponentTaskPanel:
 
         Parameters
         ----------
-        wid: <PySide2.QtWidgets.QTreeWidgetItem>
+        wid: <PySide6.QtWidgets.QTreeWidgetItem>
             Qt object the user has selected in the tree widget.
         """
 
@@ -2439,7 +2439,7 @@ class ComponentTaskPanel:
 
         Parameters
         ----------
-        wid: <PySide2.QtWidgets.QTreeWidgetItem>
+        wid: <PySide6.QtWidgets.QTreeWidgetItem>
             Qt object the user has selected in the tree widget.
         """
 
@@ -2967,7 +2967,7 @@ if FreeCAD.GuiUp:
 
         Parameters
         ----------
-        parent: <PySide2.QtWidgets.QWidget>
+        parent: <PySide6.QtWidgets.QWidget>
             Unclear.
         dialog: <ArchComponent.ComponentTaskPanel>
             The dialog box this delegate was created in.
@@ -2993,16 +2993,16 @@ if FreeCAD.GuiUp:
 
             Parameters
             ----------
-            parent: <pyside2.qtwidgets.qwidget>
+            parent: <PySide6.qtwidgets.qwidget>
                 The table cell that is being edited.
             option:
                 Unused?
-            index: <PySide2.QtCore.QModelIndex>
+            index: <PySide6.QtCore.QModelIndex>
                 The index object of the table of the IFC editor.
 
             Returns
             -------
-            <pyside2.qtwidgets.qwidget>
+            <PySide6.qtwidgets.qwidget>
                 The editor widget this method has created.
             """
 
@@ -3037,9 +3037,9 @@ if FreeCAD.GuiUp:
 
             Parameters
             ----------
-            editor: <pyside2.qtwidgets.qwidget>
+            editor: <PySide6.qtwidgets.qwidget>
                 The editor widget.
-            index: <PySide2.QtCore.QModelIndex>
+            index: <PySide6.QtCore.QModelIndex>
                 The index object of the table, of the IFC editor
             """
 
@@ -3079,11 +3079,11 @@ if FreeCAD.GuiUp:
 
             Parameters
             ----------
-            editor: <pyside2.qtwidgets.qwidget>
+            editor: <PySide6.qtwidgets.qwidget>
                 The editor widget.
             model:
                 The table object of the IFC editor.
-            index: <PySide2.QtCore.QModelIndex>
+            index: <PySide6.QtCore.QModelIndex>
                 The index object of the table, of the IFC editor
             """
 

@@ -63,87 +63,87 @@
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="217"/>
+      <location filename="../../StartView.cpp" line="227"/>
       <source>Open File</source>
       <translation>Oscail Comhad</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="227"/>
+      <location filename="../../StartView.cpp" line="237"/>
       <source>Assembly</source>
       <translation>Tionól</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="232"/>
+      <location filename="../../StartView.cpp" line="242"/>
       <source>2D Draft</source>
       <translation>Dréacht 2T</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="232"/>
+      <location filename="../../StartView.cpp" line="242"/>
       <source>Creates a 2D Draft document</source>
       <translation>Cruthaíonn sé doiciméad Dréachta 2T</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="235"/>
+      <location filename="../../StartView.cpp" line="245"/>
       <source>BIM/Architecture</source>
       <translation>BIM/Ailtireacht</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="212"/>
+      <location filename="../../StartView.cpp" line="222"/>
       <source>Empty File</source>
       <translation>Comhad Folamh</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="213"/>
+      <location filename="../../StartView.cpp" line="223"/>
       <source>Creates a new empty FreeCAD file</source>
       <translation>Cruthaíonn comhad FreeCAD folamh nua</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="218"/>
+      <location filename="../../StartView.cpp" line="228"/>
       <source>Opens an existing CAD file or 3D model</source>
       <translation>Osclaíonn comhad CAD nó samhail 3T atá ann cheana féin</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="222"/>
+      <location filename="../../StartView.cpp" line="232"/>
       <source>Parametric Body</source>
       <translation>Comhlacht Paraiméadrach</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="223"/>
+      <location filename="../../StartView.cpp" line="233"/>
       <source>Creates a body with the Part Design workbench</source>
       <translation>Cruthaíonn sé corp leis an mbinse oibre Dearaidh Páirteanna</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="228"/>
+      <location filename="../../StartView.cpp" line="238"/>
       <source>Creates an assembly project</source>
       <translation>Cruthaíonn tionscadal tionóil</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="236"/>
+      <location filename="../../StartView.cpp" line="246"/>
       <source>Creates an architectural project</source>
       <translation>Cruthaíonn tionscadal ailtireachta</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="520"/>
+      <location filename="../../StartView.cpp" line="538"/>
       <source>New File</source>
       <translation>Comhad Nua</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="522"/>
+      <location filename="../../StartView.cpp" line="540"/>
       <source>Examples</source>
       <translation>Samplaí</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="524"/>
+      <location filename="../../StartView.cpp" line="542"/>
       <source>Recent Files</source>
       <translation>Comhaid Le Déanaí</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="539"/>
+      <location filename="../../StartView.cpp" line="557"/>
       <source>Open First Start Setup</source>
       <translation>Oscail an Socrú Tosaigh ar dtús</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="540"/>
+      <location filename="../../StartView.cpp" line="558"/>
       <source>Do not show this Start page again (start with blank screen)</source>
       <translation>Ná taispeáin an leathanach Tosaigh seo arís (tosaigh le scáileán bán)</translation>
     </message>
@@ -151,7 +151,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="514"/>
+      <location filename="../../StartView.cpp" line="532"/>
       <source>Start</source>
       <translation>Tosaigh</translation>
     </message>
@@ -261,7 +261,7 @@ Is féidir fillteáin iolracha a chur leis ag baint úsáide as ";;" chun cosái
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppStartGui.cpp" line="139"/>
+      <location filename="../../AppStartGui.cpp" line="140"/>
       <source>Start</source>
       <translation>Tosaigh</translation>
     </message>

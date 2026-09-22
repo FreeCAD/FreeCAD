@@ -1,4 +1,6 @@
-﻿/***************************************************************************
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
+/***************************************************************************
  *   Copyright (c) 2012-2013 Luke Parry <l.parry@warwick.ac.uk>            *
  *   Copyright (c) 2024 Benjamin Bræstrup Sayoc <benj5378@outlook.com>     *
  *                                                                         *
@@ -626,6 +628,12 @@ void QGIView::updateView(bool forceUpdate)
     drawBorder();
 
     QGIView::draw();
+
+    if (PreferencesGui::screenMode()) {
+        if (auto* scenePage = dynamic_cast<QGSPage*>(scene())) {
+            scenePage->updateScreenScale();
+        }
+    }
 }
 
 //QGIVP derived classes do not need a rotate view method as rotation is handled on App side.
@@ -1041,7 +1049,7 @@ int QGIView::calculateFontPixelWidth(const QFont &font)
 const double QGIView::DefaultFontSizeInMM = 5.0;
 
 void QGIView::dumpRect(const char* text, QRectF rect) {
-    Base::Console().message("DUMP - %s - rect: (%.3f, %.3f) x (%.3f, %.3f)\n", text,
+    Base::Console().message("DUMP - {} - rect: ({:.3f}, {:.3f}) x ({:.3f}, {:.3f})\n", text,
                             rect.left(), rect.top(), rect.right(), rect.bottom());
 }
 

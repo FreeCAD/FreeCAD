@@ -592,10 +592,10 @@ void TaskMassProperties::update(const Gui::SelectionChanges& msg)
         tryUpdate();
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("Mass Properties update failed: %s\n", e.what());
+        Base::Console().error("Mass Properties update failed: {}\n", e.what());
     }
     catch (const std::exception& e) {
-        Base::Console().error("Mass Properties update failed: %s\n", e.what());
+        Base::Console().error("Mass Properties update failed: {}\n", e.what());
     }
 }
 
@@ -855,6 +855,10 @@ void TaskMassProperties::tryUpdate()
                          const Base::Placement& placement,
                          std::unordered_set<std::string>& objectKeys) {
         if (!obj) {
+            return false;
+        }
+
+        if (obj->Visibility.getValue() == false) {
             return false;
         }
 
@@ -1342,10 +1346,10 @@ void TaskMassProperties::createDatum(
         doc->recompute();
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("Datum Creation failed: %s\n", e.what());
+        Base::Console().error("Datum Creation failed: {}\n", e.what());
     }
     catch (const std::exception& e) {
-        Base::Console().error("Datum Creation failed: %s", e.what());
+        Base::Console().error("Datum Creation failed: {}", e.what());
     }
 }
 
@@ -1403,10 +1407,10 @@ void TaskMassProperties::createLCS(std::string name, bool removeExisting)
         doc->recompute();
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("LCS Creation failed: %s\n", e.what());
+        Base::Console().error("LCS Creation failed: {}\n", e.what());
     }
     catch (const std::exception& e) {
-        Base::Console().error("LCS Creation failed: %s", e.what());
+        Base::Console().error("LCS Creation failed: {}", e.what());
     }
 }
 

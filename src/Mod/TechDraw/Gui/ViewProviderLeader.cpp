@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2019 Wanderer Fan <wandererfan@gmail.com>               *
@@ -77,7 +79,7 @@ ViewProviderLeader::ViewProviderLeader()
 
 bool ViewProviderLeader::setEdit(int ModNum)
 {
-//    Base::Console().message("VPL::setEdit(%d)\n", ModNum);
+//    Base::Console().message("VPL::setEdit({})\n", ModNum);
     if (ModNum != ViewProvider::Default) {
         return ViewProviderDrawingView::setEdit(ModNum);
     }

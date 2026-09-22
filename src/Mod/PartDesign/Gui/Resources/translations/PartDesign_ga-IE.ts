@@ -4,44 +4,44 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="82"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="84"/>
       <source>The center point of the helix' start; derived from the reference axis.</source>
       <translation>Lárphointe thús an héilics; díorthaithe ón ais tagartha.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="92"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="94"/>
       <source>The helix' direction; derived from the reference axis.</source>
       <translation>Treo an héilics; díorthaithe ón ais tagartha.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="99"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="101"/>
       <source>The reference axis of the helix.</source>
       <translation>Ais tagartha an héilics.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="106"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="108"/>
       <source>The helix input mode specifies which properties are set by the user.
 Dependent properties are then calculated.</source>
       <translation>Sonraíonn an modh ionchuir héilics cé na hairíonna a shocraíonn an t-úsáideoir.
 Ríomhtar airíonna spleácha ansin.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="118"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="120"/>
       <source>The axial distance between two turns.</source>
       <translation>An fad aiseach idir dhá chasadh.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="125"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="127"/>
       <source>The height of the helix' path, not accounting for the extent of the profile.</source>
       <translation>Airde chonair an héilics, gan fairsinge na próifíle a chur san áireamh.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="135"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="137"/>
       <source>The number of turns in the helix.</source>
       <translation>Líon na gcasadh sa héilics.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="143"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="145"/>
       <source>The angle of the cone that forms a hull around the helix.
 Non-zero values turn the helix into a conical spiral.
 Positive values make the radius grow, negative shrinks.</source>
@@ -50,38 +50,38 @@ Déanann luachanna neamh-nialasacha bíseach cónúil den héilics.
 Fásann an ga le luachanna dearfacha, crapadh an ga le luachanna diúltacha.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="156"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="158"/>
       <source>The growth of the helix' radius per turn.
 Non-zero values turn the helix into a conical spiral.</source>
       <translation>Fás ga an héilics in aghaidh an chasadh.
 Déanann luachanna neamh-nialasacha bíseach cónúil den héilics.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="167"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="169"/>
       <source>Sets the turning direction to left handed,
 i.e. counter-clockwise when moving along its axis.</source>
       <translation>Socraíonn sé an treo casadh go clé,
 i.e. tuathal agus é ag bogadh feadh a ais.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="178"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="180"/>
       <source>Determines whether the helix points in the opposite direction of the axis.</source>
       <translation>Cinneann sé an bhfuil an héilics ag pointeáil sa treo eile ón ais.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="188"/>
-      <source>If set, the result will be the intersection of the profile and the preexisting body.</source>
-      <translation>Más socraithe é, is é an toradh a bheidh ann ná trasnú na próifíle agus an choirp atá ann cheana.</translation>
+      <location filename="../../../App/FeatureHelix.cpp" line="210"/>
+      <source>deprecated, do not use</source>
+      <translation>as feidhm, ná húsáid</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="198"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="190"/>
       <source>If false, the tool will propose an initial value for the pitch based on the profile bounding box,
 so that self intersection is avoided.</source>
       <translation>Mura bhfuil sé bréagach, molfaidh an uirlis luach tosaigh don pháirc bunaithe ar an mbosca teorannaithe próifíle,
 ionas go seachnófar féin-trasnú.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="210"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="202"/>
       <source>Fusion Tolerance for the Helix, increase if helical shape does not merge nicely with part.</source>
       <translation>Caoinfhulaingt Chomhleá don Héilics, méadaigh mura gcomhcheanglaíonn cruth an héilics go deas leis an gcuid.</translation>
     </message>
@@ -152,35 +152,35 @@ ionas go seachnófar féin-trasnú.</translation>
   <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1601"/>
+      <location filename="../../Command.cpp" line="1602"/>
       <source>PartDesign</source>
       <translation>DearadhPáirteanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1602"/>
+      <location filename="../../Command.cpp" line="1603"/>
       <source>Additive Loft</source>
       <translation>Loft Breiseáin</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1603"/>
-      <source>Lofts the selected sketch or profile along a path and adds it to the body</source>
-      <translation>Cuireann sé an sceitse nó an phróifíl roghnaithe ar feadh cosáin agus cuireann sé leis an gcorp é</translation>
+      <location filename="../../Command.cpp" line="1604"/>
+      <source>Lofts the selected sketch or profile through one or more sections and adds it to the body</source>
+      <translation>Ardaíonn an sceitse nó an phróifíl roghnaithe trí chuid amháin nó níos mó agus cuireann sé leis an gcorp é</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignAdditivePipe</name>
     <message>
-      <location filename="../../Command.cpp" line="1501"/>
+      <location filename="../../Command.cpp" line="1502"/>
       <source>PartDesign</source>
       <translation>DearadhPáirteanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../Command.cpp" line="1503"/>
       <source>Additive Pipe</source>
       <translation>Píopa Breiseáin</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1503"/>
+      <location filename="../../Command.cpp" line="1504"/>
       <source>Sweeps the selected sketch or profile along a path and adds it to the body</source>
       <translation>Scuabann an sceitse nó an phróifíl roghnaithe feadh cosáin agus cuireann sé leis an gcorp é</translation>
     </message>
@@ -206,17 +206,17 @@ ionas go seachnófar féin-trasnú.</translation>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2622"/>
+      <location filename="../../Command.cpp" line="2710"/>
       <source>PartDesign</source>
       <translation>DearadhPáirteanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2623"/>
+      <location filename="../../Command.cpp" line="2711"/>
       <source>Boolean Operation</source>
       <translation>Oibríocht Booleánach</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2624"/>
+      <location filename="../../Command.cpp" line="2712"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation>Cuireann sé oibríochtaí booléacha i bhfeidhm leis na réada roghnaithe agus leis an gcorp gníomhach</translation>
     </message>
@@ -224,17 +224,17 @@ ionas go seachnófar féin-trasnú.</translation>
   <context>
     <name>CmdPartDesignCS</name>
     <message>
-      <location filename="../../Command.cpp" line="305"/>
+      <location filename="../../Command.cpp" line="306"/>
       <source>PartDesign</source>
       <translation>DearadhPáirteanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="306"/>
+      <location filename="../../Command.cpp" line="307"/>
       <source>Local Coordinate System</source>
       <translation>Córas Comhordanáidí Áitiúil</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="307"/>
+      <location filename="../../Command.cpp" line="308"/>
       <source>Creates a new local coordinate system</source>
       <translation>Cruthaíonn córas comhordanáidí áitiúil nua</translation>
     </message>
@@ -260,17 +260,17 @@ ionas go seachnófar féin-trasnú.</translation>
   <context>
     <name>CmdPartDesignClone</name>
     <message>
-      <location filename="../../Command.cpp" line="515"/>
+      <location filename="../../Command.cpp" line="516"/>
       <source>PartDesign</source>
       <translation>DearadhPáirteanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="516"/>
+      <location filename="../../Command.cpp" line="517"/>
       <source>Clone</source>
       <translation>Clónáil</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="517"/>
+      <location filename="../../Command.cpp" line="518"/>
       <source>Copies a solid object parametrically as the base feature of a new body</source>
       <translation>Cóipeálann réad soladach go paraiméadrach mar ghné bhunúsach coirp nua</translation>
     </message>
@@ -278,17 +278,17 @@ ionas go seachnófar féin-trasnú.</translation>
   <context>
     <name>CmdPartDesignDraft</name>
     <message>
-      <location filename="../../Command.cpp" line="2057"/>
+      <location filename="../../Command.cpp" line="2145"/>
       <source>PartDesign</source>
       <translation>DearadhPáirteanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2058"/>
+      <location filename="../../Command.cpp" line="2146"/>
       <source>Draft</source>
       <translation>Dréacht</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2059"/>
+      <location filename="../../Command.cpp" line="2147"/>
       <source>Applies a draft to the selected faces</source>
       <translation>Cuireann dréacht i bhfeidhm ar na haghaidheanna roghnaithe</translation>
     </message>
@@ -332,17 +332,17 @@ ionas go seachnófar féin-trasnú.</translation>
   <context>
     <name>CmdPartDesignGroove</name>
     <message>
-      <location filename="../../Command.cpp" line="1431"/>
+      <location filename="../../Command.cpp" line="1432"/>
       <source>PartDesign</source>
       <translation>DearadhPáirteanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1432"/>
+      <location filename="../../Command.cpp" line="1433"/>
       <source>Groove</source>
       <translation>Eitre</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1433"/>
+      <location filename="../../Command.cpp" line="1434"/>
       <source>Revolves the sketch or profile around a line or axis and removes it from the body</source>
       <translation>Casann sé an sceitse nó an phróifíl timpeall líne nó ais agus baintear den chorp é</translation>
     </message>
@@ -350,17 +350,17 @@ ionas go seachnófar féin-trasnú.</translation>
   <context>
     <name>CmdPartDesignHole</name>
     <message>
-      <location filename="../../Command.cpp" line="1324"/>
+      <location filename="../../Command.cpp" line="1325"/>
       <source>PartDesign</source>
       <translation>DearadhPáirteanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1325"/>
+      <location filename="../../Command.cpp" line="1326"/>
       <source>Hole</source>
       <translation>Poll</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1327"/>
+      <location filename="../../Command.cpp" line="1328"/>
       <source>Creates holes in the active body at the center points of circles or arcs of the selected sketch or profile</source>
       <translation>Cruthaíonn sé poill sa chorp gníomhach ag pointí lárnacha ciorcail nó áirsí an sceitse nó an phróifíl roghnaithe</translation>
     </message>
@@ -368,17 +368,17 @@ ionas go seachnófar féin-trasnú.</translation>
   <context>
     <name>CmdPartDesignLine</name>
     <message>
-      <location filename="../../Command.cpp" line="245"/>
+      <location filename="../../Command.cpp" line="246"/>
       <source>PartDesign</source>
       <translation>DearadhPáirteanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="246"/>
+      <location filename="../../Command.cpp" line="247"/>
       <source>Datum Line</source>
       <translation>Líne Dáta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="247"/>
+      <location filename="../../Command.cpp" line="248"/>
       <source>Creates a new datum line</source>
       <translation>Cruthaíonn líne sonraí nua</translation>
     </message>
@@ -386,17 +386,17 @@ ionas go seachnófar féin-trasnú.</translation>
   <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2312"/>
+      <location filename="../../Command.cpp" line="2400"/>
       <source>PartDesign</source>
       <translation>DearadhPáirteanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2313"/>
+      <location filename="../../Command.cpp" line="2401"/>
       <source>Linear Pattern</source>
       <translation>Patrún Líneach</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2314"/>
+      <location filename="../../Command.cpp" line="2402"/>
       <source>Duplicates the selected features or the active body in a linear pattern</source>
       <translation>Déanann sé na gnéithe roghnaithe nó an corp gníomhach a dhúbailt i bpatrún líneach</translation>
     </message>
@@ -422,17 +422,17 @@ ionas go seachnófar féin-trasnú.</translation>
   <context>
     <name>CmdPartDesignMirrored</name>
     <message>
-      <location filename="../../Command.cpp" line="2255"/>
+      <location filename="../../Command.cpp" line="2343"/>
       <source>PartDesign</source>
       <translation>DearadhPáirteanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2256"/>
+      <location filename="../../Command.cpp" line="2344"/>
       <source>Mirror</source>
       <translation>Scáthán</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2257"/>
+      <location filename="../../Command.cpp" line="2345"/>
       <source>Mirrors the selected features or active body</source>
       <translation>Scáthánaíonn sé na gnéithe roghnaithe nó an corp gníomhach</translation>
     </message>
@@ -494,17 +494,17 @@ ionas go seachnófar féin-trasnú.</translation>
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2491"/>
+      <location filename="../../Command.cpp" line="2579"/>
       <source>PartDesign</source>
       <translation>DearadhPáirteanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2492"/>
+      <location filename="../../Command.cpp" line="2580"/>
       <source>Multi-Transform</source>
       <translation>Il-Chlaochlú</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2493"/>
+      <location filename="../../Command.cpp" line="2581"/>
       <source>Applies multiple transformations to the selected features or active body</source>
       <translation>Cuireann sé ilchlaochluithe i bhfeidhm ar na gnéithe nó ar an gcorp gníomhach roghnaithe</translation>
     </message>
@@ -512,17 +512,17 @@ ionas go seachnófar féin-trasnú.</translation>
   <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="596"/>
+      <location filename="../../Command.cpp" line="597"/>
       <source>PartDesign</source>
       <translation>DearadhPáirteanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="597"/>
+      <location filename="../../Command.cpp" line="598"/>
       <source>New Sketch</source>
       <translation>Sceitse Nua</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="598"/>
+      <location filename="../../Command.cpp" line="599"/>
       <source>Creates a new sketch</source>
       <translation>Cruthaíonn sceitse nua</translation>
     </message>
@@ -530,17 +530,17 @@ ionas go seachnófar féin-trasnú.</translation>
   <context>
     <name>CmdPartDesignPad</name>
     <message>
-      <location filename="../../Command.cpp" line="1266"/>
+      <location filename="../../Command.cpp" line="1267"/>
       <source>PartDesign</source>
       <translation>DearadhPáirteanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1267"/>
+      <location filename="../../Command.cpp" line="1268"/>
       <source>Pad</source>
       <translation>Ceap</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1268"/>
+      <location filename="../../Command.cpp" line="1269"/>
       <source>Extrudes the selected sketch or profile and adds it to the body</source>
       <translation>Easbhrúitear an sceitse nó an phróifíl roghnaithe agus cuirtear leis an gcorp é</translation>
     </message>
@@ -548,17 +548,17 @@ ionas go seachnófar féin-trasnú.</translation>
   <context>
     <name>CmdPartDesignPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="215"/>
+      <location filename="../../Command.cpp" line="216"/>
       <source>PartDesign</source>
       <translation>DearadhPáirteanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="216"/>
+      <location filename="../../Command.cpp" line="217"/>
       <source>Datum Plane</source>
       <translation>Plána Dáta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="217"/>
+      <location filename="../../Command.cpp" line="218"/>
       <source>Creates a new datum plane</source>
       <translation>Cruthaíonn sé plána sonraí nua</translation>
     </message>
@@ -566,17 +566,17 @@ ionas go seachnófar féin-trasnú.</translation>
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
-      <location filename="../../Command.cpp" line="1295"/>
+      <location filename="../../Command.cpp" line="1296"/>
       <source>PartDesign</source>
       <translation>DearadhPáirteanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1296"/>
+      <location filename="../../Command.cpp" line="1297"/>
       <source>Pocket</source>
       <translation>Póca</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1297"/>
+      <location filename="../../Command.cpp" line="1298"/>
       <source>Extrudes the selected sketch or profile and removes it from the body</source>
       <translation>Easbhrúitear an sceitse nó an phróifíl roghnaithe agus baintear den chorp é</translation>
     </message>
@@ -584,17 +584,17 @@ ionas go seachnófar féin-trasnú.</translation>
   <context>
     <name>CmdPartDesignPoint</name>
     <message>
-      <location filename="../../Command.cpp" line="275"/>
+      <location filename="../../Command.cpp" line="276"/>
       <source>PartDesign</source>
       <translation>DearadhPáirteanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="276"/>
+      <location filename="../../Command.cpp" line="277"/>
       <source>Datum Point</source>
       <translation>Pointe Sonraí</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="277"/>
+      <location filename="../../Command.cpp" line="278"/>
       <source>Creates a new datum point</source>
       <translation>Cruthaíonn pointe sonraí nua</translation>
     </message>
@@ -602,17 +602,17 @@ ionas go seachnófar féin-trasnú.</translation>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2386"/>
+      <location filename="../../Command.cpp" line="2474"/>
       <source>PartDesign</source>
       <translation>DearadhPáirteanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2387"/>
+      <location filename="../../Command.cpp" line="2475"/>
       <source>Polar Pattern</source>
       <translation>Patrún Polar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2388"/>
+      <location filename="../../Command.cpp" line="2476"/>
       <source>Duplicates the selected features or the active body in a circular pattern</source>
       <translation>Déanann sé na gnéithe roghnaithe nó an corp gníomhach a dhúbailt i bpatrún ciorclach</translation>
     </message>
@@ -620,17 +620,17 @@ ionas go seachnófar féin-trasnú.</translation>
   <context>
     <name>CmdPartDesignRevolution</name>
     <message>
-      <location filename="../../Command.cpp" line="1369"/>
+      <location filename="../../Command.cpp" line="1370"/>
       <source>PartDesign</source>
       <translation>DearadhPáirteanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1370"/>
+      <location filename="../../Command.cpp" line="1371"/>
       <source>Revolve</source>
       <translation>Rothlaigh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1371"/>
+      <location filename="../../Command.cpp" line="1372"/>
       <source>Revolves the selected sketch or profile around a line or axis and adds it to the body</source>
       <translation>Casann sé an sceitse nó an phróifíl roghnaithe timpeall líne nó ais agus cuireann sé leis an gcorp é</translation>
     </message>
@@ -638,17 +638,17 @@ ionas go seachnófar féin-trasnú.</translation>
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2448"/>
+      <location filename="../../Command.cpp" line="2536"/>
       <source>PartDesign</source>
       <translation>DearadhPáirteanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2449"/>
+      <location filename="../../Command.cpp" line="2537"/>
       <source>Scale</source>
       <translation>Scála</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2450"/>
+      <location filename="../../Command.cpp" line="2538"/>
       <source>Scales the selected features or the active body</source>
       <translation>Scálaíonn sé na gnéithe roghnaithe nó an corp gníomhach</translation>
     </message>
@@ -656,17 +656,17 @@ ionas go seachnófar féin-trasnú.</translation>
   <context>
     <name>CmdPartDesignShapeBinder</name>
     <message>
-      <location filename="../../Command.cpp" line="339"/>
+      <location filename="../../Command.cpp" line="340"/>
       <source>PartDesign</source>
       <translation>DearadhPáirteanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="340"/>
+      <location filename="../../Command.cpp" line="341"/>
       <source>Shape Binder</source>
       <translation>Ceanglóir Cruthanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="341"/>
+      <location filename="../../Command.cpp" line="342"/>
       <source>Creates a new shape binder</source>
       <translation>Cruthaíonn ceanglóir cruthanna nua</translation>
     </message>
@@ -674,17 +674,17 @@ ionas go seachnófar féin-trasnú.</translation>
   <context>
     <name>CmdPartDesignSubShapeBinder</name>
     <message>
-      <location filename="../../Command.cpp" line="409"/>
+      <location filename="../../Command.cpp" line="410"/>
       <source>PartDesign</source>
       <translation>DearadhPáirteanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="410"/>
+      <location filename="../../Command.cpp" line="411"/>
       <source>Sub-Shape Binder</source>
       <translation>Ceanglóir Fo-Chruth</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="411"/>
+      <location filename="../../Command.cpp" line="412"/>
       <source>Creates a reference to geometry from one or more objects, allowing it to be used inside or outside a body. It tracks relative placements, supports multiple geometry types (solids, faces, edges, vertices), and can work with objects in the same or external documents.</source>
       <translation>Cruthaíonn sé tagairt do gheoiméadracht ó réad amháin nó níos mó, rud a ligeann dó a bheith in úsáid laistigh nó lasmuigh de chorp. Rianaíonn sé suíomhanna coibhneasta, tacaíonn sé le cineálacha geoiméadrachta iolracha (solaid, aghaidheanna, imill, buaicphointí), agus is féidir leis oibriú le réada sna doiciméid chéanna nó i ndoiciméid sheachtracha.</translation>
     </message>
@@ -710,35 +710,35 @@ ionas go seachnófar féin-trasnú.</translation>
   <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1651"/>
+      <location filename="../../Command.cpp" line="1652"/>
       <source>PartDesign</source>
       <translation>DearadhPáirteanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1652"/>
+      <location filename="../../Command.cpp" line="1653"/>
       <source>Subtractive Loft</source>
       <translation>Loft Dealaitheach</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1653"/>
-      <source>Lofts the selected sketch or profile along a path and removes it from the body</source>
-      <translation>Cuireann sé an sceitse nó an phróifíl roghnaithe ar feadh cosáin agus baintear den chorp é</translation>
+      <location filename="../../Command.cpp" line="1655"/>
+      <source>Lofts the selected sketch or profile through one or more sections and removes it from the body</source>
+      <translation>Ardaíonn an sceitse nó an phróifíl roghnaithe trí chuid amháin nó níos mó agus baintear den chorp é</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignSubtractivePipe</name>
     <message>
-      <location filename="../../Command.cpp" line="1551"/>
+      <location filename="../../Command.cpp" line="1552"/>
       <source>PartDesign</source>
       <translation>DearadhPáirteanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1552"/>
+      <location filename="../../Command.cpp" line="1553"/>
       <source>Subtractive Pipe</source>
       <translation>Píopa Dealaitheach</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1553"/>
+      <location filename="../../Command.cpp" line="1554"/>
       <source>Sweeps the selected sketch or profile along a path and removes it from the body</source>
       <translation>Scuabann sé an sceitse nó an phróifíl roghnaithe feadh cosáin agus baintear den chorp é</translation>
     </message>
@@ -746,17 +746,17 @@ ionas go seachnófar féin-trasnú.</translation>
   <context>
     <name>CmdPartDesignThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="2127"/>
+      <location filename="../../Command.cpp" line="2215"/>
       <source>PartDesign</source>
       <translation>DearadhPáirteanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2128"/>
+      <location filename="../../Command.cpp" line="2216"/>
       <source>Thickness</source>
       <translation>Tiús</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2129"/>
+      <location filename="../../Command.cpp" line="2217"/>
       <source>Applies thickness and removes the selected faces</source>
       <translation>Cuireann sé tiús i bhfeidhm agus baintear na haghaidheanna roghnaithe</translation>
     </message>
@@ -880,32 +880,32 @@ ionas go seachnófar féin-trasnú.</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="361"/>
+      <location filename="../../Command.cpp" line="362"/>
       <source>Edit Shape Binder</source>
       <translation>Cuir Ceanglóir Cruthanna in Eagar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="372"/>
+      <location filename="../../Command.cpp" line="373"/>
       <source>Create Shape Binder</source>
       <translation>Cruthaigh Ceanglóir Cruthanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="465"/>
+      <location filename="../../Command.cpp" line="466"/>
       <source>Create Sub-Shape Binder</source>
       <translation>Cruthaigh Ceanglóir Fo-Chrutha</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="535"/>
+      <location filename="../../Command.cpp" line="536"/>
       <source>Create Clone</source>
       <translation>Cruthaigh Clón</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1150"/>
+      <location filename="../../Command.cpp" line="1151"/>
       <source>Make Copy</source>
       <translation>Déan Cóip</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2546"/>
+      <location filename="../../Command.cpp" line="2634"/>
       <source>Convert to Multi-Transform feature</source>
       <translation>Tiontaigh go gné Il-Chlaochlaithe</translation>
     </message>
@@ -921,18 +921,18 @@ ionas go seachnófar féin-trasnú.</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="530"/>
-      <location filename="../../SketchWorkflow.cpp" line="807"/>
+      <location filename="../../SketchWorkflow.cpp" line="798"/>
       <source>New Sketch</source>
       <translation>Sceitse Nua</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2643"/>
+      <location filename="../../Command.cpp" line="2731"/>
       <source>Create Boolean</source>
       <translation>Cruthaigh Booleánach</translation>
     </message>
     <message>
-      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <location filename="../../CommandBody.cpp" line="225"/>
+      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <source>Add a Body</source>
       <translation>Cuir Corp leis</translation>
     </message>
@@ -1339,6 +1339,21 @@ Más nialas é, is ionann é agus Ga2</translation>
       <translation>Z</translation>
     </message>
     <message>
+      <location filename="../../TaskPrimitiveParameters.ui" line="2354"/>
+      <source>Operation</source>
+      <translation>Oibríocht</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPrimitiveParameters.ui" line="2365"/>
+      <source>Subtraction</source>
+      <translation>Dealú</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPrimitiveParameters.ui" line="2370"/>
+      <source>Common</source>
+      <translation>Coitianta</translation>
+    </message>
+    <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1645"/>
       <source>Right-handed</source>
       <translation>Deaslámhach</translation>
@@ -1390,7 +1405,7 @@ Más nialas é, is ionann é agus Ga2</translation>
   <context>
     <name>PartDesignGui::NoDependentsSelection</name>
     <message>
-      <location filename="../../ReferenceSelection.cpp" line="287"/>
+      <location filename="../../ReferenceSelection.cpp" line="290"/>
       <source>Selecting this will cause circular dependency.</source>
       <translation>Má roghnaíonn tú é seo, beidh spleáchas ciorclach mar thoradh air.</translation>
     </message>
@@ -1423,12 +1438,12 @@ Más nialas é, is ionann é agus Ga2</translation>
       <translation>Coitianta</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="53"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="97"/>
       <source>Boolean Parameters</source>
       <translation>Paraiméadair Booleánacha</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="84"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="128"/>
       <source>Remove</source>
       <translation>Bain</translation>
     </message>
@@ -1436,129 +1451,129 @@ Más nialas é, is ionann é agus Ga2</translation>
   <context>
     <name>PartDesignGui::TaskBoxPrimitives</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="98"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="99"/>
       <source>Subtractive Box Parameters</source>
       <translation>Paraiméadair Bosca Dealaitheacha</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="99"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="100"/>
       <source>Additive Box Parameters</source>
       <translation>Paraiméadair Bosca Breiseáin</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="101"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="102"/>
       <source>Subtractive Cylinder Parameters</source>
       <translation>Paraiméadair Sorcóra Dealaitheacha</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="102"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="103"/>
       <source>Additive Cylinder Parameters</source>
       <translation>Paraiméadair Sorcóra Breiseáin</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="104"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="105"/>
       <source>Subtractive Sphere Parameters</source>
       <translation>Paraiméadair Sféir Dealaitheacha</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="105"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="106"/>
       <source>Additive Sphere Parameters</source>
       <translation>Paraiméadair Sféir Bhreiseánacha</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="107"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="108"/>
       <source>Subtractive Cone Parameters</source>
       <translation>Paraiméadair Chón Dealaitheacha</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="108"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="109"/>
       <source>Additive Cone Parameters</source>
       <translation>Paraiméadair Chón Breiseánacha</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="110"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="111"/>
       <source>Subtractive Ellipsoid Parameters</source>
       <translation>Paraiméadair Eilipsóideacha Dealaitheacha</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="111"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="112"/>
       <source>Additive Ellipsoid Parameters</source>
       <translation>Paraiméadair Eilipsóideacha Breiseánacha</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="113"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="114"/>
       <source>Subtractive Torus Parameters</source>
       <translation>Paraiméadair Tórais Dealaitheacha</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="114"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="115"/>
       <source>Additive Torus Parameters</source>
       <translation>Paraiméadair Tórais Bhreiseánacha</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="116"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="117"/>
       <source>Subtractive Prism Parameters</source>
       <translation>Paraiméadair Phriosma Dealaitheacha</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="117"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="118"/>
       <source>Additive Prism Parameters</source>
       <translation>Paraiméadair Phriosma Breiseánacha</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="119"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="120"/>
       <source>Subtractive Wedge Parameters</source>
       <translation>Paraiméadair Dingeacha Dealaitheacha</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="120"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="121"/>
       <source>Additive Wedge Parameters</source>
       <translation>Paraiméadair Dingeacha Breiseáin</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="123"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="124"/>
       <source>Subtractive Primitive Parameters</source>
       <translation>Paraiméadair Bhunaidh Dealaitheacha</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="124"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="125"/>
       <source>Additive Primitive Parameters</source>
       <translation>Paraiméadair Phríomhshuimiúla Breiseánacha</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="1024"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="1032"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="1040"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1044"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1052"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1060"/>
       <source>Invalid wedge parameters</source>
       <translation>Paraiméadair ding neamhbhailí</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="1025"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1045"/>
       <source>X min must not be equal to X max!</source>
       <translation>Ní féidir le X min a bheith cothrom le X max!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="1033"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1053"/>
       <source>Y min must not be equal to Y max!</source>
       <translation>Ní féidir go mbeadh Y min cothrom le Y max!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="1041"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1061"/>
       <source>Z min must not be equal to Z max!</source>
       <translation>Ní mór Z min a bheith cothrom le Z max!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="1083"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1104"/>
       <source>Create primitive</source>
       <translation>Cruthaigh primitive</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="1128"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1149"/>
       <source>%1 fine dragging</source>
       <translation>%1 tarraingt mhín</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="1131"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1152"/>
       <source>%1 coarse dragging</source>
       <translation>%1 tarraingt gharbh</translation>
     </message>
@@ -1638,17 +1653,17 @@ Más nialas é, is ionann é agus Ga2</translation>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="386"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="437"/>
       <source>The body list cannot be empty</source>
       <translation>Ní féidir an liosta coirp a bheith folamh</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="386"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="437"/>
       <source>Empty Body List</source>
       <translation>Liosta Comhlachta Folamh</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="407"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="458"/>
       <source>Boolean: Accept: Input error</source>
       <translation>Booleanach: Glac leis: Earráid ionchuir</translation>
     </message>
@@ -1744,107 +1759,106 @@ Más nialas é, is ionann é agus Ga2</translation>
   <context>
     <name>PartDesignGui::TaskExtrudeParameters</name>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1496"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1480"/>
       <source>No face selected</source>
       <translation>Níor roghnaíodh aon aghaidh</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="183"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="236"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1260"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="184"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1243"/>
       <source>Face</source>
       <translation>Aghaidh</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="80"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="81"/>
       <source>Remove</source>
       <translation>Bain</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="418"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="401"/>
       <source>Preview</source>
       <translation>Réamhamharc</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="422"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="405"/>
       <source>Select Faces</source>
       <translation>Roghnaigh Aghaidheanna</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="797"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="780"/>
       <source>Select reference…</source>
       <translation>Roghnaigh tagairt…</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="684"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="667"/>
       <source>No shape selected</source>
       <translation>Níl aon chruth roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="67"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="230"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1197"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="68"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="226"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1180"/>
       <source>No start reference selected</source>
       <translation>Níl aon tagairt tosaigh roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="68"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="69"/>
       <source>Offset from the profile or selected start reference</source>
       <translation>Fritháireamh ón bpróifíl nó ón tagairt tosaigh roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="790"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="773"/>
       <source>Sketch normal</source>
       <translation>Sceitseáil gnáth</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="793"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="776"/>
       <source>Face normal</source>
       <translation>Aghaidh gnáth</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="801"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="804"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="784"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="787"/>
       <source>Custom direction</source>
       <translation>Treo saincheaptha</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1191"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1174"/>
       <source>Cancel</source>
       <translation>Cealaigh</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1192"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1175"/>
       <source>Select face, plane...</source>
       <translation>Roghnaigh aghaidh, plána...</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1196"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1179"/>
       <source>Pick Reference</source>
       <translation>Roghnaigh Tagairt</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1207"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1190"/>
       <source>Click on a shape in the model</source>
       <translation>Cliceáil ar chruth sa mhúnla</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1483"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1467"/>
       <source>One sided</source>
       <translation>Aon taobh</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1484"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1468"/>
       <source>Two sided</source>
       <translation>Dhá thaobh</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1485"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1469"/>
       <source>Symmetric</source>
       <translation>Siméadrach</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1491"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1475"/>
       <source>Face selection active</source>
       <translation>Roghnú aghaidhe gníomhach</translation>
     </message>
@@ -1981,37 +1995,37 @@ Más nialas é, is ionann é agus Ga2</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="48"/>
-      <location filename="../../TaskHelixParameters.cpp" line="261"/>
+      <location filename="../../TaskHelixParameters.cpp" line="259"/>
       <source>Base X-axis</source>
       <translation>Bonn-ais X</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="53"/>
-      <location filename="../../TaskHelixParameters.cpp" line="262"/>
+      <location filename="../../TaskHelixParameters.cpp" line="260"/>
       <source>Base Y-axis</source>
       <translation>Bonn-ais Y</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="58"/>
-      <location filename="../../TaskHelixParameters.cpp" line="263"/>
+      <location filename="../../TaskHelixParameters.cpp" line="261"/>
       <source>Base Z-axis</source>
       <translation>Bonn-ais Z</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="63"/>
-      <location filename="../../TaskHelixParameters.cpp" line="245"/>
+      <location filename="../../TaskHelixParameters.cpp" line="243"/>
       <source>Horizontal sketch axis</source>
       <translation type="unfinished">Horizontal sketch axis</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="68"/>
-      <location filename="../../TaskHelixParameters.cpp" line="244"/>
+      <location filename="../../TaskHelixParameters.cpp" line="242"/>
       <source>Vertical sketch axis</source>
       <translation type="unfinished">Vertical sketch axis</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="73"/>
-      <location filename="../../TaskHelixParameters.cpp" line="243"/>
+      <location filename="../../TaskHelixParameters.cpp" line="241"/>
       <source>Normal sketch axis</source>
       <translation type="unfinished">Normal sketch axis</translation>
     </message>
@@ -2027,7 +2041,7 @@ Más nialas é, is ionann é agus Ga2</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="78"/>
-      <location filename="../../TaskHelixParameters.cpp" line="228"/>
+      <location filename="../../TaskHelixParameters.cpp" line="226"/>
       <source>Select reference…</source>
       <translation>Roghnaigh tagairt…</translation>
     </message>
@@ -2082,7 +2096,22 @@ Más nialas é, is ionann é agus Ga2</translation>
       <translation>Fás gathach</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.ui" line="289"/>
+      <location filename="../../TaskHelixParameters.ui" line="274"/>
+      <source>Operation</source>
+      <translation>Oibríocht</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHelixParameters.ui" line="285"/>
+      <source>Subtraction</source>
+      <translation>Dealú</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHelixParameters.ui" line="290"/>
+      <source>Common</source>
+      <translation>Coitianta</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHelixParameters.ui" line="307"/>
       <source>Recompute on change</source>
       <translation>Athríomh ar athrú</translation>
     </message>
@@ -2097,11 +2126,6 @@ Más nialas é, is ionann é agus Ga2</translation>
       <translation>Droim ar ais</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.ui" line="272"/>
-      <source>Remove outside of profile</source>
-      <translation>Bain lasmuigh den phróifíl</translation>
-    </message>
-    <message>
       <location filename="../../TaskHelixParameters.cpp" line="71"/>
       <source>Subtractive Helix Parameters</source>
       <translation>Paraiméadair Héilics Dealaitheacha</translation>
@@ -2112,22 +2136,22 @@ Más nialas é, is ionann é agus Ga2</translation>
       <translation>Paraiméadair Héilics Breiseánacha</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="247"/>
+      <location filename="../../TaskHelixParameters.cpp" line="245"/>
       <source>Construction line %1</source>
       <translation>Líne tógála %1</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="315"/>
+      <location filename="../../TaskHelixParameters.cpp" line="313"/>
       <source>Warning: helix might be self intersecting</source>
       <translation>Rabhadh: d'fhéadfadh an héilics a bheith ag trasnú a chéile féin</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="320"/>
+      <location filename="../../TaskHelixParameters.cpp" line="318"/>
       <source>Error: helix touches itself</source>
       <translation>Earráid: déanann an héilics teagmháil leis féin</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="372"/>
+      <location filename="../../TaskHelixParameters.cpp" line="364"/>
       <source>Error: unsupported mode</source>
       <translation>Earráid: mód gan tacaíocht</translation>
     </message>
@@ -2155,144 +2179,139 @@ Más nialas é, is ionann é agus Ga2</translation>
       <translation>Paraiméadair Phoill</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="74"/>
+      <location filename="../../TaskHoleParameters.cpp" line="75"/>
       <source>None</source>
       <translation>Dada</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="75"/>
+      <location filename="../../TaskHoleParameters.cpp" line="76"/>
       <source>ISO metric regular</source>
       <translation>ISO méadrach rialta</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="76"/>
+      <location filename="../../TaskHoleParameters.cpp" line="77"/>
       <source>ISO metric fine</source>
       <translation>Fíneáil mhéadrach ISO</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="77"/>
+      <location filename="../../TaskHoleParameters.cpp" line="78"/>
       <source>UTS coarse</source>
       <translation>UTS garbh</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="78"/>
+      <location filename="../../TaskHoleParameters.cpp" line="79"/>
       <source>UTS fine</source>
       <translation>Fíneáil UTS</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="79"/>
+      <location filename="../../TaskHoleParameters.cpp" line="80"/>
       <source>UTS extra fine</source>
       <translation>Fíneáil bhreise UTS</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="80"/>
+      <location filename="../../TaskHoleParameters.cpp" line="81"/>
       <source>ANSI pipes</source>
       <translation>Píopaí ANSI</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="81"/>
+      <location filename="../../TaskHoleParameters.cpp" line="82"/>
       <source>ISO/BSP pipes</source>
       <translation>Píopaí ISO/BSP</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="82"/>
+      <location filename="../../TaskHoleParameters.cpp" line="83"/>
       <source>BSW whitworth</source>
       <translation>BSW Whitworth</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="83"/>
+      <location filename="../../TaskHoleParameters.cpp" line="84"/>
       <source>BSF whitworth fine</source>
       <translation>Fíneáil BSF Whitworth</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="84"/>
+      <location filename="../../TaskHoleParameters.cpp" line="85"/>
       <source>ISO tyre valves</source>
       <translation>Comhlaí boinn ISO</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="202"/>
+      <location filename="../../TaskHoleParameters.cpp" line="203"/>
       <source>Offset from the profile or selected start reference</source>
       <translation>Fritháireamh ón bpróifíl nó ón tagairt tosaigh roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="701"/>
+      <location filename="../../TaskHoleParameters.cpp" line="702"/>
       <source>Cancel</source>
       <translation>Cealaigh</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="702"/>
+      <location filename="../../TaskHoleParameters.cpp" line="703"/>
       <source>Select face, plane...</source>
       <translation>Roghnaigh aghaidh, plána...</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="707"/>
+      <location filename="../../TaskHoleParameters.cpp" line="708"/>
       <source>Pick Reference</source>
       <translation>Roghnaigh Tagairt</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="708"/>
-      <location filename="../../TaskHoleParameters.cpp" line="1134"/>
+      <location filename="../../TaskHoleParameters.cpp" line="709"/>
+      <location filename="../../TaskHoleParameters.cpp" line="1130"/>
       <source>No start reference selected</source>
       <translation>Níl aon tagairt tosaigh roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="771"/>
+      <location filename="../../TaskHoleParameters.cpp" line="772"/>
       <source>Medium</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>Meánach</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="775"/>
+      <location filename="../../TaskHoleParameters.cpp" line="776"/>
       <source>Fine</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>Fíneálta</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="779"/>
+      <location filename="../../TaskHoleParameters.cpp" line="780"/>
       <source>Coarse</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>Garbh</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="785"/>
+      <location filename="../../TaskHoleParameters.cpp" line="786"/>
       <source>Normal</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>Gnáth</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="789"/>
+      <location filename="../../TaskHoleParameters.cpp" line="790"/>
       <source>Close</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>Dún</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="793"/>
+      <location filename="../../TaskHoleParameters.cpp" line="794"/>
       <source>Loose</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>Scaoilte</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="797"/>
+      <location filename="../../TaskHoleParameters.cpp" line="798"/>
       <source>Normal</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Gnáth</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="798"/>
+      <location filename="../../TaskHoleParameters.cpp" line="799"/>
       <source>Close</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Dún</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="799"/>
+      <location filename="../../TaskHoleParameters.cpp" line="800"/>
       <source>Wide</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Leathan</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.cpp" line="1140"/>
-      <source>Face</source>
-      <translation>Aghaidh</translation>
     </message>
   </context>
   <context>
@@ -2333,22 +2352,37 @@ Más nialas é, is ionann é agus Ga2</translation>
       <translation>Is féidir an liosta a athordú trí tharraingt</translation>
     </message>
     <message>
-      <location filename="../../TaskLoftParameters.ui" line="120"/>
+      <location filename="../../TaskLoftParameters.ui" line="115"/>
+      <source>Operation</source>
+      <translation>Oibríocht</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLoftParameters.ui" line="126"/>
+      <source>Subtraction</source>
+      <translation>Dealú</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLoftParameters.ui" line="131"/>
+      <source>Common</source>
+      <translation>Coitianta</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLoftParameters.ui" line="148"/>
       <source>Recompute on change</source>
       <translation>Athríomh ar athrú</translation>
     </message>
     <message>
-      <location filename="../../TaskLoftParameters.cpp" line="64"/>
+      <location filename="../../TaskLoftParameters.cpp" line="65"/>
       <source>Subtractive Loft Parameters</source>
       <translation>Paraiméadair Loft Dealaitheacha</translation>
     </message>
     <message>
-      <location filename="../../TaskLoftParameters.cpp" line="65"/>
+      <location filename="../../TaskLoftParameters.cpp" line="66"/>
       <source>Additive Loft Parameters</source>
       <translation>Paraiméadair Loft Breiseáin</translation>
     </message>
     <message>
-      <location filename="../../TaskLoftParameters.cpp" line="94"/>
+      <location filename="../../TaskLoftParameters.cpp" line="96"/>
       <source>Remove</source>
       <translation>Bain</translation>
     </message>
@@ -2670,7 +2704,22 @@ fad a thomhas feadh an treo shonraithe</translation>
       <translation>Roghnaíonn sé gach aghaidh den chruth</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="760"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="762"/>
+      <source>Operation</source>
+      <translation>Oibríocht</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPadPocketParameters.ui" line="773"/>
+      <source>Subtraction</source>
+      <translation>Dealú</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPadPocketParameters.ui" line="778"/>
+      <source>Common</source>
+      <translation>Coitianta</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPadPocketParameters.ui" line="788"/>
       <source>Recompute on change</source>
       <translation>Athríomh ar athrú</translation>
     </message>
@@ -2763,7 +2812,7 @@ fad a thomhas feadh an treo shonraithe</translation>
       <translation>Treoshuíomh na Rannóige Píopa Breiseáin</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="658"/>
+      <location filename="../../TaskPipeParameters.cpp" line="668"/>
       <source>Remove</source>
       <translation>Bain</translation>
     </message>
@@ -2812,6 +2861,21 @@ fad a thomhas feadh an treo shonraithe</translation>
       <translation>Bain an imeall</translation>
     </message>
     <message>
+      <location filename="../../TaskPipeParameters.ui" line="158"/>
+      <source>Operation</source>
+      <translation>Oibríocht</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPipeParameters.ui" line="169"/>
+      <source>Subtraction</source>
+      <translation>Dealú</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPipeParameters.ui" line="174"/>
+      <source>Common</source>
+      <translation>Coitianta</translation>
+    </message>
+    <message>
       <location filename="../../TaskPipeParameters.ui" line="65"/>
       <source>Transformed</source>
       <translation>Claochlaithe</translation>
@@ -2827,23 +2891,23 @@ fad a thomhas feadh an treo shonraithe</translation>
       <translation>Paraiméadair Phíopa Breiseáin</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="112"/>
+      <location filename="../../TaskPipeParameters.cpp" line="113"/>
       <source>Select All</source>
       <translation>Roghnaigh Uile</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="130"/>
+      <location filename="../../TaskPipeParameters.cpp" line="131"/>
       <source>Remove</source>
       <translation>Bain</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="495"/>
-      <location filename="../../TaskPipeParameters.cpp" line="616"/>
+      <location filename="../../TaskPipeParameters.cpp" line="504"/>
+      <location filename="../../TaskPipeParameters.cpp" line="626"/>
       <source>Input Error</source>
       <translation>Earráid Ionchuir</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="495"/>
+      <location filename="../../TaskPipeParameters.cpp" line="504"/>
       <source>No active body</source>
       <translation>Gan aon chorp gníomhach</translation>
     </message>
@@ -2891,7 +2955,7 @@ fad a thomhas feadh an treo shonraithe</translation>
       <translation>Claochlú Rannóg Píopa Breiseáin</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="948"/>
+      <location filename="../../TaskPipeParameters.cpp" line="958"/>
       <source>Remove</source>
       <translation>Bain</translation>
     </message>
@@ -2947,142 +3011,207 @@ fad a thomhas feadh an treo shonraithe</translation>
   <context>
     <name>PartDesignGui::TaskRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="103"/>
-      <location filename="../../TaskRevolutionParameters.ui" line="205"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="194"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="296"/>
       <source>Type</source>
       <translation>Cineál</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="40"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="270"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="131"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="307"/>
       <source>Base X-axis</source>
       <translation>Bonn-ais X</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="22"/>
-      <source>Mode</source>
-      <translation>Mód</translation>
+      <source>Start</source>
+      <translation>Tosaigh</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="45"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="271"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="30"/>
+      <source>Profile plane</source>
+      <translation>Plána próifíle</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="35"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="87"/>
+      <source>Offset</source>
+      <translation>Fritháireamh</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="40"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="48"/>
+      <source>Reference</source>
+      <translation>Tagairt</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="77"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="489"/>
+      <source>Pick Reference</source>
+      <translation>Roghnaigh Tagairt</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="113"/>
+      <source>Direction</source>
+      <translation>Treo</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="136"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="308"/>
       <source>Base Y-axis</source>
       <translation>Bonn-ais Y</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="50"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="272"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="141"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="309"/>
       <source>Base Z-axis</source>
       <translation>Bonn-ais Z</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="55"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="146"/>
       <source>Horizontal sketch axis</source>
       <translation>Ais sceitse cothrománach</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="60"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="151"/>
       <source>Vertical sketch axis</source>
       <translation>Ais sceitse ingearach</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="87"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="178"/>
       <source>Side 1</source>
       <translation>Taobh 1</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="156"/>
-      <location filename="../../TaskRevolutionParameters.ui" line="252"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="247"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="343"/>
       <source>Select Face</source>
       <translation>Roghnaigh Aghaidh</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="189"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="280"/>
       <source>Side 2</source>
       <translation>Taobh 2</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="276"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="367"/>
       <source>Symmetric to plane</source>
       <translation type="unfinished">Symmetric to plane</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="283"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="374"/>
       <source>Reversed</source>
       <translation>Droim ar ais</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="32"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="383"/>
+      <source>Operation</source>
+      <translation>Oibríocht</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="394"/>
+      <source>Subtraction</source>
+      <translation>Dealú</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="399"/>
+      <source>Common</source>
+      <translation>Coitianta</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="123"/>
       <source>Axis</source>
       <translation>Ais</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="65"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="280"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="156"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="317"/>
       <source>Select reference…</source>
       <translation>Roghnaigh tagairt…</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="119"/>
-      <location filename="../../TaskRevolutionParameters.ui" line="215"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="215"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="210"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="306"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="252"/>
       <source>Angle</source>
       <translation>Uillinn</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="192"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="534"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="229"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="622"/>
       <source>Face</source>
       <translation>Aghaidh</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="297"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="416"/>
       <source>Recompute on change</source>
       <translation>Athríomh ar athrú</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="217"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="140"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="176"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="490"/>
+      <source>No start reference selected</source>
+      <translation>Níl aon tagairt tosaigh roghnaithe</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="141"/>
+      <source>Angular offset from the profile or selected start reference</source>
+      <translation>Fritháireamh uilleach ón bpróifíl nó ón tagairt tosaigh roghnaithe</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="254"/>
       <source>To last</source>
       <translation>Chun deireanach</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="220"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="257"/>
       <source>Through all</source>
       <translation>Tríd an uile rud</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="222"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="259"/>
       <source>To first</source>
       <translation>Chun tosaigh</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="223"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="260"/>
       <source>Up to face</source>
       <translation>Suas chun aghaidh</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="230"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="267"/>
       <source>One sided</source>
       <translation>Aon taobh</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="231"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="268"/>
       <source>Two sided</source>
       <translation>Dhá thaobh</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="232"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="269"/>
       <source>Symmetric</source>
       <translation>Siméadrach</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="555"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="498"/>
+      <source>Cancel</source>
+      <translation>Cealaigh</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="499"/>
+      <source>Select face, plane...</source>
+      <translation>Roghnaigh aghaidh, plána...</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="643"/>
       <source>Face selection active</source>
       <translation>Roghnú aghaidhe gníomhach</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="203"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="560"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="240"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="648"/>
       <source>No face selected</source>
       <translation>Níor roghnaíodh aon aghaidh</translation>
     </message>
@@ -3131,7 +3260,8 @@ fad a thomhas feadh an treo shonraithe</translation>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="210"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="127"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="242"/>
       <source>Face</source>
       <translation>Aghaidh</translation>
     </message>
@@ -3202,7 +3332,17 @@ fad a thomhas feadh an treo shonraithe</translation>
       <translation>Déan tiús isteach</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="269"/>
+      <location filename="../../TaskThicknessParameters.cpp" line="216"/>
+      <source>Recto verso applies the thickness equally to both sides</source>
+      <translation>Cuireann Recto verso an tiús i bhfeidhm go cothrom ar an dá thaobh</translation>
+    </message>
+    <message>
+      <location filename="../../TaskThicknessParameters.cpp" line="219"/>
+      <source>Total wall thickness; half is applied to each side</source>
+      <translation>Tiús iomlán an bhalla; cuirtear leath ar gach taobh</translation>
+    </message>
+    <message>
+      <location filename="../../TaskThicknessParameters.cpp" line="293"/>
       <source>Empty thickness created!
 </source>
       <translation>Tiús folamh cruthaithe!
@@ -3343,117 +3483,149 @@ fad a thomhas feadh an treo shonraithe</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="173"/>
+      <location filename="../../Command.cpp" line="174"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
       <translation>Níl aon mhodhanna ceangail ann a oireann do na rudaí roghnaithe. Roghnaigh rud éigin eile.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="186"/>
-      <location filename="../../Command.cpp" line="194"/>
-      <location filename="../../Command.cpp" line="201"/>
+      <location filename="../../Command.cpp" line="187"/>
+      <location filename="../../Command.cpp" line="195"/>
+      <location filename="../../Command.cpp" line="202"/>
       <source>Error</source>
       <translation>Earráid</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="845"/>
+      <location filename="../../SketchWorkflow.cpp" line="836"/>
       <source>Several sub-elements selected</source>
       <translation>Roinnt fo-eilimintí roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="846"/>
+      <location filename="../../SketchWorkflow.cpp" line="837"/>
       <source>Select a single face as support for a sketch!</source>
       <translation>Roghnaigh aghaidh amháin mar thacaíocht do sceitse!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="853"/>
+      <location filename="../../SketchWorkflow.cpp" line="844"/>
       <source>Select a face as support for a sketch!</source>
       <translation>Roghnaigh aghaidh mar thacaíocht do sceitse!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="860"/>
+      <location filename="../../SketchWorkflow.cpp" line="851"/>
       <source>Need a planar face as support for a sketch!</source>
       <translation>Teastaíonn aghaidh phlánach mar thaca le sceitse!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="867"/>
+      <location filename="../../SketchWorkflow.cpp" line="858"/>
       <source>Create a plane first or select a face to sketch on</source>
       <translation>Cruthaigh plána ar dtús nó roghnaigh aghaidh le sceitseáil air</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="852"/>
+      <location filename="../../SketchWorkflow.cpp" line="843"/>
       <source>No support face selected</source>
       <translation>Níl aon aghaidh tacaíochta roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="859"/>
+      <location filename="../../SketchWorkflow.cpp" line="850"/>
       <source>No planar support</source>
       <translation>Gan tacaíocht phlánach</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="866"/>
+      <location filename="../../SketchWorkflow.cpp" line="857"/>
       <source>No valid planes in this document</source>
       <translation>Níl aon eitleáin bhailí sa cháipéis seo</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="259"/>
-      <location filename="../../ViewProvider.cpp" line="137"/>
-      <location filename="../../SketchWorkflow.cpp" line="763"/>
-      <location filename="../../Command.cpp" line="1178"/>
+      <location filename="../../Command.cpp" line="1179"/>
+      <location filename="../../ViewProvider.cpp" line="164"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
+      <location filename="../../SketchWorkflow.cpp" line="763"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Tá dialóg oscailte cheana féin sa phainéal tascanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1032"/>
+      <location filename="../../Command.cpp" line="1033"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
       <translation>Ní féidir an t-ordú seo a úsáid mar níl aon solad ann le baint uaidh.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1035"/>
+      <location filename="../../Command.cpp" line="1036"/>
       <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
       <translation>Cinntigh go bhfuil gné sa chorp sula ndéanann tú iarracht ordú dealaitheach a úsáid.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1059"/>
+      <location filename="../../Command.cpp" line="1060"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
       <translation>Ní féidir an réad roghnaithe a úsáid. Caithfidh an réad roghnaithe a bheith mar chuid den chorp gníomhach</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="187"/>
+      <location filename="../../Command.cpp" line="188"/>
       <source>There is no active body. Please activate a body before inserting a datum entity.</source>
       <translation>Níl aon chorp gníomhach ann. Gníomhachtaigh corp le do thoil sula gcuirtear eintiteas sonraí isteach.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="172"/>
+      <location filename="../../Command.cpp" line="173"/>
       <source>Invalid Selection</source>
       <translation>Rogha Neamhbhailí</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="493"/>
+      <location filename="../../Command.cpp" line="494"/>
       <source>Sub-shape binder</source>
       <translation>Ceanglóir fo-chrutha</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1091"/>
+      <location filename="../../Command.cpp" line="1092"/>
       <source>No sketch to work on</source>
       <translation>Gan aon sceitse le hobair air</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1092"/>
+      <location filename="../../Command.cpp" line="1093"/>
       <source>No sketch is available in the document</source>
       <translation>Níl aon sceitse ar fáil sa doiciméad</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2233"/>
+      <location filename="../../Command.cpp" line="2070"/>
+      <location filename="../../Command.cpp" line="2098"/>
+      <source>Wrong Selection</source>
+      <translation>Rogha Mícheart</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2071"/>
+      <source>Select faces from a single body</source>
+      <translation>Roghnaigh aghaidheanna ó chorp amháin</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2078"/>
+      <source>Selection Outside Active Body</source>
+      <translation>Roghnú Lasmuigh den Chomhlacht Gníomhach</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2079"/>
+      <source>Select faces from the active body</source>
+      <translation>Roghnaigh aghaidheanna ón gcorp gníomhach</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2087"/>
+      <source>Wrong Object Type</source>
+      <translation>Cineál Réada Mícheart</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2088"/>
+      <location filename="../../Command.cpp" line="2099"/>
+      <source>Defeaturing works only on faces</source>
+      <translation>Ní oibríonn an scriosadh ach ar aghaidheanna</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2321"/>
       <source>Select only one feature in an active body.</source>
       <translation>Roghnaigh gné amháin i gcorp gníomhach.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="260"/>
-      <location filename="../../ViewProvider.cpp" line="138"/>
-      <location filename="../../SketchWorkflow.cpp" line="764"/>
-      <location filename="../../Command.cpp" line="1179"/>
+      <location filename="../../Command.cpp" line="1180"/>
+      <location filename="../../ViewProvider.cpp" line="165"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
+      <location filename="../../SketchWorkflow.cpp" line="764"/>
       <source>Close this dialog?</source>
       <translation>An bhfuil tú ag iarraidh an dialóg seo a dhúnadh?</translation>
     </message>
@@ -3470,7 +3642,7 @@ fad a thomhas feadh an treo shonraithe</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1869"/>
-      <location filename="../../Command.cpp" line="2232"/>
+      <location filename="../../Command.cpp" line="2320"/>
       <source>Selection is not in the active body</source>
       <translation>Níl an roghnú sa chorp gníomhach</translation>
     </message>
@@ -3485,7 +3657,7 @@ fad a thomhas feadh an treo shonraithe</translation>
       <translation>Roghnaigh imeall, aghaidh, nó corp ó chorp gníomhach.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1062"/>
+      <location filename="../../Command.cpp" line="1063"/>
       <source>Consider using a shape binder or a base feature to reference external geometry in a body</source>
       <translation>Smaoinigh ar úsáid a bhaint as ceanglóir cruthanna nó gné bhunúsach chun tagairt a dhéanamh do gheoiméadracht sheachtrach i gcorp</translation>
     </message>
@@ -3681,23 +3853,23 @@ D’fhéadfadh torthaí gan choinne a bheith mar thoradh air seo.</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="433"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="256"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="293"/>
       <source>Vertical sketch axis</source>
       <translation>Ais sceitse ingearach</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="434"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="257"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="294"/>
       <source>Horizontal sketch axis</source>
       <translation>Ais sceitse cothrománach</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="259"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="296"/>
       <source>Construction line %1</source>
       <translation>Líne tógála %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="96"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="97"/>
       <source>Face</source>
       <translation>Aghaidh</translation>
     </message>
@@ -3741,15 +3913,15 @@ I gcás doiciméad oidhreachta nach bhfuil corp ag réada Dearaidh Cuid iontu, b
       <translation>Chun an ghné seo a úsáid ní mór di a bheith bainteach le réad páirteach sa doiciméad.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTransformed.cpp" line="67"/>
       <location filename="../../ViewProviderDressUp.cpp" line="64"/>
-      <location filename="../../ViewProvider.cpp" line="94"/>
+      <location filename="../../ViewProvider.cpp" line="121"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="228"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="67"/>
       <source>Edit %1</source>
       <translation>Cuir %1 in Eagar</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="107"/>
+      <location filename="../../ViewProvider.cpp" line="134"/>
       <source>Set Face Colors</source>
       <translation>Socraigh Dathanna Aghaidhe</translation>
     </message>
@@ -3843,7 +4015,7 @@ Cé go mbeidh tú in ann aistriú aon nóiméad níos déanaí le 'Part Design -
       <translation>Imirce de Láimh</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBoolean.cpp" line="350"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="351"/>
       <source>Edit Boolean</source>
       <translation>Cuir in Eagar Booleánach</translation>
     </message>
@@ -3936,6 +4108,11 @@ Cé go mbeidh tú in ann aistriú aon nóiméad níos déanaí le 'Part Design -
       <location filename="../../ViewProviderThickness.cpp" line="42"/>
       <source>Edit Thickness</source>
       <translation>Cuir Tiús in Eagar</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderDefeaturing.cpp" line="39"/>
+      <source>Edit Defeaturing</source>
+      <translation>Cuir in Eagar Defeatúcháin</translation>
     </message>
   </context>
   <context>
@@ -4369,6 +4546,21 @@ Ar fáil do phoill gan snáithe amháin</translation>
       <translation>Athraigh treo</translation>
     </message>
     <message>
+      <location filename="../../TaskHoleParameters.ui" line="1210"/>
+      <source>Operation</source>
+      <translation>Oibríocht</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="1221"/>
+      <source>Subtraction</source>
+      <translation>Dealú</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="1226"/>
+      <source>Common</source>
+      <translation>Coitianta</translation>
+    </message>
+    <message>
       <location filename="../../TaskHoleParameters.ui" line="868"/>
       <source>Thread</source>
       <translation>Snáithe</translation>
@@ -4714,23 +4906,23 @@ os cionn 90: ga poill níos mó ag an mbun</translation>
       <translation>Ní féidir oibríocht Boole a dhéanamh le cruth bonn neamhbhailí</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureRevolved.cpp" line="535"/>
       <location filename="../../../App/FeatureFillet.cpp" line="142"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="266"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="822"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="838"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="851"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="334"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="378"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="420"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="442"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="488"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="537"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="571"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="600"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="387"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="422"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2142"/>
       <location filename="../../../App/FeatureDraft.cpp" line="335"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2149"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="433"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="419"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="435"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="453"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="537"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="562"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="580"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="836"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="852"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="865"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Tá il-sholaid sa toradh: cumasaigh 'Ceadaigh Comhdhúil' sa chorp gníomhach.</translation>
     </message>
@@ -4745,30 +4937,31 @@ os cionn 90: ga poill níos mó ag an mbun</translation>
       <translation>Oibríocht Booleanach gan tacaíocht</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="392"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="402"/>
       <source>Cannot create a pad with a total length of zero.</source>
       <translation>Ní féidir ceap a chruthú le fad iomlán nialas.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="397"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="407"/>
       <source>Cannot create a pocket with a total length of zero.</source>
       <translation>Ní féidir póca a chruthú le fad iomlán nialas.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="753"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="770"/>
       <source>No extrusion geometry was generated.</source>
       <translation>Níor gineadh aon gheoiméadracht easbhrúite.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="777"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="794"/>
       <source>Resulting fused extrusion is null.</source>
       <translation>Is nialas an easbhrú comhleáite mar thoradh air sin.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="813"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="371"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="592"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="415"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="132"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="445"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="572"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="827"/>
       <source>Resulting shape is not a solid</source>
       <translation>Ní cruth soladach é an cruth a eascraíonn as</translation>
     </message>
@@ -4834,115 +5027,98 @@ os cionn 90: ga poill níos mó ag an mbun</translation>
 - ní bhaineann an sceitse roghnaithe leis an gCorp gníomhach.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="441"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="451"/>
       <source>Failed to obtain profile shape</source>
       <translation>Theip ar chruth na próifíle a fháil</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="495"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="505"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation>Theip ar an gcruthú mar go bhfuil an treo ortagónach le veicteoir gnáth an sceitse</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="518"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="208"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="298"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="528"/>
       <source>Creating a face from sketch failed</source>
       <translation>Theip ar aghaidh a chruthú ó sceitse</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="231"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="333"/>
       <source>Revolve axis intersects the sketch</source>
       <translation>Trasnaíonn ais rothlach an sceitse</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="392"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="494"/>
       <source>No revolution geometry was generated</source>
       <translation>Níor gineadh aon gheoiméadracht réabhlóideach</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="418"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="520"/>
       <source>Could not revolve the sketch!</source>
       <translation>Níorbh fhéidir an sceitse a rothlú!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="118"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="208"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Níorbh fhéidir aghaidh a chruthú ón sceitse.
 Ní cheadaítear eintitis sceitse a thrasnaíonn i sceitse.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="237"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="236"/>
       <source>Error: Pitch too small!</source>
       <translation>Earráid: An pháirc róbheag!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="242"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="265"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="241"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="264"/>
       <source>Error: height too small!</source>
       <translation>Earráid: airde róbheag!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="251"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="250"/>
       <source>Error: pitch too small!</source>
       <translation>Earráid: an pháirc róbheag!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="256"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="270"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="279"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="255"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="269"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="278"/>
       <source>Error: turns too small!</source>
       <translation>Earráid: casann sé róbheag!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="285"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="284"/>
       <source>Error: either height or growth must not be zero!</source>
       <translation>Earráid: ní mór nach mbeadh airde ná fás nialas!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="303"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="302"/>
       <source>Error: unsupported mode</source>
       <translation>Earráid: mód gan tacaíocht</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="317"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="316"/>
       <source>Error: No valid sketch or face</source>
       <translation>Earráid: Níl aon sceitse ná aghaidh bailí ann</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="330"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="329"/>
       <source>Error: Face must be planar</source>
       <translation>Earráid: Ní mór don aghaidh a bheith cothrom</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="454"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="499"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2512"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2505"/>
       <source>Error: Result is not a solid</source>
       <translation>Earráid: Ní soladach an toradh</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="415"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="414"/>
       <source>Error: There is nothing to subtract</source>
       <translation>Earráid: Níl aon rud le baint</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="437"/>
-      <source>Error: Adding the helix failed</source>
-      <translation>Earráid: Theip ar an héilics a chur leis</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="472"/>
-      <source>Error: Intersecting the helix failed</source>
-      <translation>Earráid: Theip ar an héilics a thrasnú</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="481"/>
-      <source>Error: Subtracting the helix failed</source>
-      <translation>Earráid: Theip ar an héilics a bhaint</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="515"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="466"/>
       <source>Error: Could not create face from sketch</source>
       <translation>Earráid: Níorbh fhéidir aghaidh a chruthú ón sceitse</translation>
     </message>
@@ -5017,13 +5193,13 @@ Ní cheadaítear eintitis sceitse a thrasnaíonn i sceitse.</translation>
       <translation>Earráid phoill: Theip ar ais a aimsiú</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2121"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2129"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2114"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2122"/>
       <source>Boolean operation failed on profile Edge</source>
       <translation>Theip ar oibríocht Boole ar Imeall an phróifíl</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2136"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2129"/>
       <source>Boolean operation produced non-solid on profile Edge</source>
       <translation>Oibríocht Boole neamh-sholadach arna táirgeadh ar Imeall próifíle</translation>
     </message>
@@ -5033,50 +5209,50 @@ Ní cheadaítear eintitis sceitse a thrasnaíonn i sceitse.</translation>
       <translation>Theip ar oibríocht Booleanach</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2162"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2155"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>Níorbh fhéidir aghaidh a chruthú ón sceitse.
 Ní cheadaítear eintitis sceitse trasnacha nó il-aghaidheanna i sceitse chun póca a dhéanamh suas go dtí aghaidh.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2335"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2328"/>
       <source>Thread type out of range</source>
       <translation>Cineál snáithe lasmuigh den raon</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2338"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2331"/>
       <source>Thread size out of range</source>
       <translation>Méid an snáithe lasmuigh den raon</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2486"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2479"/>
       <source>Error: Thread could not be built</source>
       <translation>Earráid: Níorbh fhéidir an snáithe a thógáil</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="193"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="246"/>
       <source>Loft: At least one section is needed</source>
       <translation>Loft: Tá cuid amháin ar a laghad ag teastáil</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="395"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="439"/>
       <source>Loft: A fatal error occurred when making the loft</source>
       <translation>Loft: Tharla earráid mharfach agus an loft á dhéanamh</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="240"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="293"/>
       <source>Loft: Creating a face from sketch failed</source>
       <translation>Loft: Theip ar aghaidh a chruthú ó sceitse</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="304"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="357"/>
       <location filename="../../../App/FeaturePipe.cpp" line="500"/>
       <source>Loft: Failed to create shell</source>
       <translation>Loft: Theip ar bhlaosc a chruthú</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="866"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="880"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>Níorbh fhéidir aghaidh a chruthú ón sceitse.
@@ -5143,32 +5319,27 @@ Ní cheadaítear eintitis sceitse nó il-aghaidheanna a thrasnaíonn a chéile i
       <translation>Píopa: Níl aon rud le baint as</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="584"/>
-      <source>Pipe: Invalid Boolean Type</source>
-      <translation>Píopa: Cineál Booleánach Neamhbhailí</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="614"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="594"/>
       <source>A fatal error occurred when making the pipe</source>
       <translation>Tharla earráid mharfach agus an píopa á dhéanamh</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="741"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="721"/>
       <source>Invalid element in spine.</source>
       <translation>Eilimint neamhbhailí sa spine.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="746"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="726"/>
       <source>Element in spine is neither an edge nor a wire.</source>
       <translation>Ní imeall ná sreang é an eilimint sa dromlach.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="759"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="739"/>
       <source>Spine is neither an edge nor a wire.</source>
       <translation>Ní imeall ná sreang an dromlach.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="764"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="744"/>
       <source>Invalid spine.</source>
       <translation>Droim neamhbhailí.</translation>
     </message>
@@ -5178,133 +5349,127 @@ Ní cheadaítear eintitis sceitse nó il-aghaidheanna a thrasnaíonn a chéile i
       <translation>Ní féidir gné phríomhúil a bhaint gan ghné bhunúsach</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="356"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
-      <source>Unknown operation type</source>
-      <translation>Cineál oibríochta anaithnid</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="364"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="408"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="124"/>
       <source>Failed to perform boolean operation</source>
       <translation>Theip ar an oibríocht Booleánach a dhéanamh</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="217"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="208"/>
       <source>Length of box too small</source>
       <translation>Fad an bhosca róbheag</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="222"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="213"/>
       <source>Width of box too small</source>
       <translation>Leithead an bhosca róbheag</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="227"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="218"/>
       <source>Height of box too small</source>
       <translation>Airde an bhosca róbheag</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="275"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="266"/>
       <source>Radius of cylinder too small</source>
       <translation>Ga an tsorcóra róbheag</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="280"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="271"/>
       <source>Height of cylinder too small</source>
       <translation>Airde an tsorcóra róbheag</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="285"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="276"/>
       <source>Rotation angle of cylinder too small</source>
       <translation>Uillinn rothlaithe an tsorcóra róbheag</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="342"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="333"/>
       <source>Radius of sphere too small</source>
       <translation>Ga an sféir róbheag</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="394"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="399"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="385"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="390"/>
       <source>Radius of cone cannot be negative</source>
       <translation>Ní féidir ga an chóin a bheith diúltach</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="404"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="395"/>
       <source>Height of cone too small</source>
       <translation>Airde an chóin róbheag</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="484"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="489"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="475"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="480"/>
       <source>Radius of ellipsoid too small</source>
       <translation>Ga an eilipsóide róbheag</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="583"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="588"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="574"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="579"/>
       <source>Radius of torus too small</source>
       <translation>Ga an tórais róbheag</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="673"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="664"/>
       <source>Polygon of prism is invalid, must have 3 or more sides</source>
       <translation>Tá polagán an phriosma neamhbhailí, ní mór 3 thaobh nó níos mó a bheith ann</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="678"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="669"/>
       <source>Circumradius of the polygon, of the prism, is too small</source>
       <translation>Tá ciorcalghais an pholagáin, an phriosma, róbheag</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="683"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="674"/>
       <source>Height of prism is too small</source>
       <translation>Tá airde an phriosma róbheag</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="770"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="761"/>
       <source>delta x of wedge too small</source>
       <translation>delta x na dinge róbheag</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="776"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="767"/>
       <source>delta y of wedge too small</source>
       <translation>delta y na dinge róbheag</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="782"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="773"/>
       <source>delta z of wedge too small</source>
       <translation>delta z an ding róbheag</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="788"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="779"/>
       <source>delta z2 of wedge is negative</source>
       <translation>tá delta z2 na dinge diúltach</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="794"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="785"/>
       <source>delta x2 of wedge is negative</source>
       <translation>tá delta x2 den ding diúltach</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="156"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="171"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="246"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="261"/>
       <source>Angle of revolution too large</source>
       <translation>Uillinn réabhlóide ró-mhór</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="164"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="254"/>
       <source>Angle of revolution too small</source>
       <translation>Uillinn an réabhlóide róbheag</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="202"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="292"/>
       <source>Reference axis is invalid</source>
       <translation>Tá an ais tagartha neamhbhailí</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="805"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="819"/>
       <source>Fusion with base feature failed</source>
       <translation>Theip ar chomhleá le gné bhunúsach</translation>
     </message>
@@ -5344,9 +5509,19 @@ Ní cheadaítear eintitis sceitse nó il-aghaidheanna a thrasnaíonn a chéile i
       <translation>Ní féidir ach gnéithe breiseacha agus dealaitheacha a chlaochlú</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureThickness.cpp" line="109"/>
+      <location filename="../../../App/FeatureThickness.cpp" line="181"/>
       <source>Invalid face reference</source>
       <translation>Tagairt aghaidhe neamhbhailí</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureDefeaturing.cpp" line="75"/>
+      <source>Defeaturing failed: result is null</source>
+      <translation>Theip ar an ruaig a chur ar an toradh: tá sé nialasach</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureDefeaturing.cpp" line="84"/>
+      <source>Defeaturing did not produce a single solid</source>
+      <translation>Níor tháirg an ruaig aon solad amháin</translation>
     </message>
   </context>
   <context>
@@ -5409,12 +5584,12 @@ Ní cheadaítear eintitis sceitse nó il-aghaidheanna a thrasnaíonn a chéile i
   <context>
     <name>PartDesign::FeatureAddSub</name>
     <message>
-      <location filename="../../../App/FeatureAddSub.cpp" line="87"/>
+      <location filename="../../../App/FeatureAddSub.cpp" line="140"/>
       <source>Failure while computing removed volume preview: %1</source>
       <translation>Theip agus réamhamharc imleabhair á bhaint le linn ríomha: %1</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureAddSub.cpp" line="125"/>
+      <location filename="../../../App/FeatureAddSub.cpp" line="179"/>
       <source>Resulting shape is empty. That may indicate that no material will be removed or a problem with the model.</source>
       <translation>Tá an cruth mar thoradh folamh. D’fhéadfadh sé sin a léiriú nach mbainfear aon ábhar nó go bhfuil fadhb leis an tsamhail.</translation>
     </message>
@@ -5422,12 +5597,12 @@ Ní cheadaítear eintitis sceitse nó il-aghaidheanna a thrasnaíonn a chéile i
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2690"/>
+      <location filename="../../Command.cpp" line="2778"/>
       <source>Create Datum</source>
       <translation>Cruthaigh Dáta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2691"/>
+      <location filename="../../Command.cpp" line="2779"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Cruthaíonn réad sonraí nó córas comhordanáidí áitiúil</translation>
     </message>
@@ -5435,12 +5610,12 @@ Ní cheadaítear eintitis sceitse nó il-aghaidheanna a thrasnaíonn a chéile i
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2725"/>
+      <location filename="../../Command.cpp" line="2813"/>
       <source>Create Datum</source>
       <translation>Cruthaigh Dáta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2726"/>
+      <location filename="../../Command.cpp" line="2814"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Cruthaíonn réad sonraí nó córas comhordanáidí áitiúil</translation>
     </message>
@@ -5534,7 +5709,7 @@ Ní cheadaítear eintitis sceitse nó il-aghaidheanna a thrasnaíonn a chéile i
   <context>
     <name>PartDesignGui::TaskDlgPrimitiveParameters</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="1180"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1201"/>
       <source>Attachment</source>
       <translation>Ceangaltán</translation>
     </message>
@@ -5542,7 +5717,7 @@ Ní cheadaítear eintitis sceitse nó il-aghaidheanna a thrasnaíonn a chéile i
   <context>
     <name>PartDesignGui::TaskDlgRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="946"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="1098"/>
       <source>Revolution Parameters</source>
       <translation>Paraiméadair Réabhlóid</translation>
     </message>
@@ -5550,7 +5725,7 @@ Ní cheadaítear eintitis sceitse nó il-aghaidheanna a thrasnaíonn a chéile i
   <context>
     <name>PartDesignGui::TaskDlgGrooveParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="956"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="1108"/>
       <source>Groove Parameters</source>
       <translation>Paraiméadair Groove</translation>
     </message>
@@ -5674,14 +5849,71 @@ Ní cheadaítear eintitis sceitse nó il-aghaidheanna a thrasnaíonn a chéile i
       <translation>Treo 2</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="267"/>
+      <location filename="../../TaskPatternParameters.cpp" line="272"/>
       <source>Select a direction reference (edge, face, datum line)</source>
       <translation>Roghnaigh tagairt treorach (imeall, aghaidh, líne sonraí)</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="355"/>
+      <location filename="../../TaskPatternParameters.cpp" line="360"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>Rogha neamhbhailí. Roghnaigh imeall, aghaidh phlánach, nó líne sonraí.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDefeaturingParameters</name>
+    <message>
+      <location filename="../../TaskDefeaturingParameters.ui" line="20"/>
+      <source>Toggles selection mode</source>
+      <translation>Athraíonn an modh roghnúcháin</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDefeaturingParameters.ui" line="23"/>
+      <source>Select</source>
+      <translation>Roghnaigh</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDefeaturingParameters.ui" line="33"/>
+      <source>Select an item in the 3D view to highlight it</source>
+      <translation>Roghnaigh mír san amharc 3T chun í a aibhsiú</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDefeaturingParameters.cpp" line="118"/>
+      <source>Empty defeaturing created</source>
+      <translation>Cruthaíodh bua folamh</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderDefeaturing</name>
+    <message>
+      <location filename="../../ViewProviderDefeaturing.h" line="40"/>
+      <source>Defeaturing Parameters</source>
+      <translation>Paraiméadair a Shárú</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="443"/>
+      <source>Input Error</source>
+      <translation>Earráid Ionchuir</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartDesignDefeaturing</name>
+    <message>
+      <location filename="../../Command.cpp" line="2117"/>
+      <source>PartDesign</source>
+      <translation>DearadhPáirteanna</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2118"/>
+      <source>Defeaturing</source>
+      <translation>Ag ruaigeadh</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2119"/>
+      <source>Removes selected faces from a solid</source>
+      <translation>Baintear aghaidheanna roghnaithe as soladach</translation>
     </message>
   </context>
   <context>
@@ -5710,11 +5942,11 @@ Coigeartaigh na paraiméadair agus déan iarracht arís.</translation>
     </message>
   </context>
   <context>
-    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <name>BooleanToolSelection</name>
     <message>
-      <location filename="../../TaskShapeBinder.cpp" line="443"/>
-      <source>Input Error</source>
-      <translation>Earráid Ionchuir</translation>
+      <location filename="../../TaskBooleanParameters.cpp" line="83"/>
+      <source>The result Body cannot be used as a Boolean tool.</source>
+      <translation>Ní féidir an toradh Corp a úsáid mar uirlis Booleanach.</translation>
     </message>
   </context>
 </TS>

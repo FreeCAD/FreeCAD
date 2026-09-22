@@ -28,6 +28,7 @@
 #include <list>
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 #include <boost/dynamic_bitset.hpp>
 #include <Base/Uuid.h>
@@ -401,9 +402,27 @@ protected:
     long getPyValue(PyObject* item) const override;
 };
 
-/** Integer list properties
- *
- */
+/** A list of signed integer pairs, exposed to Python as a list of tuples. */
+class AppExport PropertyIntPairList: public PropertyListsT<std::pair<long, long>>
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    using IntPair = std::pair<long, long>;
+
+    PyObject* getPyObject() override;
+    void setPyObject(PyObject* value) override;
+    void Save(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
+    Property* Copy() const override;
+    void Paste(const Property& from) override;
+    unsigned int getMemSize() const override;
+
+protected:
+    IntPair getPyValue(PyObject* item) const override;
+};
+
+/** Integer set property. */
 class AppExport PropertyIntegerSet: public Property
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();

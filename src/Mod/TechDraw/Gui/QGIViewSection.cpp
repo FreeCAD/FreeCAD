@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -114,7 +116,7 @@ void QGIViewSection::drawSectionFace()
                 }
             }
         } else {
-            Base::Console().warning("QGIVS::draw - unknown CutSurfaceDisplay: %d\n",
+            Base::Console().warning("QGIVS::draw - unknown CutSurfaceDisplay: {}\n",
                                     section->CutSurfaceDisplay.getValue());
         }
 

@@ -344,3 +344,74 @@ class TestGuiDocument(unittest.TestCase):
 
         self.assertTrue(self._processEventsUntil(lambda: os.path.exists(self._recoveryArchive())))
         self._assertRecoveryArchiveContains(expected_label="AutoSaveBurst7")
+
+    def testSaveDispatchesToFocusedMacroEditor(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+
+            self.doc.saveAs(os.path.join(temp_dir, "TestDoc.FCStd"))
+            doc_path = self.doc.FileName
+
+            macro_path = os.path.join(temp_dir, "test_macro.FCMacro")
+            with open(macro_path, "w", encoding="utf-8") as macro_file:
+                macro_file.write("# original\n")
+
+            FreeCADGui.open(macro_path)
+
+            main_window = FreeCADGui.getMainWindow()
+
+            def active_type_id():
+                view = main_window.getActiveWindow()
+                return view.getTypeId() if view else ""
+
+            self.assertTrue(self._processEventsUntil(lambda: "EditorView" in active_type_id()))
+
+            editor = main_window.getActiveWindow()
+
+            self.assertIn("EditorView", editor.getTypeId())
+
+            text_edits = [
+                widget
+                for widget in main_window.findChildren(QtWidgets.QPlainTextEdit)
+                if widget.toPlainText().startswith("# original")
+            ]
+
+            self.assertEqual(len(text_edits), 1)
+
+            text_edit = text_edits[0]
+
+            def closeEditor():
+                text_edit.document().setModified(False)
+                main_window.removeWindow(editor)
+
+            self.addCleanup(closeEditor)
+
+            text_edit.insertPlainText("# modified\n")
+
+            QtWidgets.QApplication.processEvents(
+                QtCore.QEventLoop.ProcessEventsFlag.AllEvents,
+                50,
+            )
+
+            self.assertTrue(editor.supportMessage("Save"))
+
+            gui_doc = FreeCADGui.getDocument(self.doc.Name)
+
+            self.doc.addObject("App::FeaturePython", "ModifiedObject")
+
+            self.assertTrue(gui_doc.Modified)
+
+            doc_mtime_before = os.stat(doc_path).st_mtime_ns
+
+            FreeCADGui.runCommand("Std_Save", 0)
+
+            with open(macro_path, encoding="utf-8") as macro_file:
+                macro_contents = macro_file.read()
+
+            self.assertIn("# modified", macro_contents)
+            self.assertTrue(gui_doc.Modified)
+
+            doc_mtime_after = os.stat(doc_path).st_mtime_ns
+
+            # Std_Save must reach the focused macro editor, not the active document,
+            # the macro is written and the document is left untouched
+            self.assertEqual(doc_mtime_after, doc_mtime_before)

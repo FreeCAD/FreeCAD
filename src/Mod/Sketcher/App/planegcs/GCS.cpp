@@ -53,6 +53,9 @@
 #include <iostream>
 #include <limits>
 #include <numbers>
+#include <utility>
+
+#include <Base/Tools.h>
 
 #include "GCS.h"
 #include "qp_eq.h"
@@ -302,7 +305,7 @@ SolverReportingManager& SolverReportingManager::Manager()
 
 void SolverReportingManager::LogToConsole(const std::string& str)
 {
-    Base::Console().log(str.c_str());
+    Base::Console().log("{}", str);
 }
 
 void SolverReportingManager::LogToFile(const std::string& str)
@@ -1753,7 +1756,7 @@ void System::initSolution(Algorithm alg)
     }
 
     // storing reference configuration
-    setReference();
+    saveReference();
 
     // diagnose conflicting or redundant constraints
     if (!hasDiagnosis) {
@@ -1875,7 +1878,7 @@ void System::initSolution(Algorithm alg)
     isInit = true;
 }
 
-void System::setReference()
+void System::saveReference()
 {
     reference.clear();
     reference.reserve(plist.size());
@@ -1884,7 +1887,7 @@ void System::setReference()
     }
 }
 
-void System::resetToReference()
+void System::restoreReference()
 {
     if (reference.size() == plist.size()) {
         VEC_D::const_iterator ref = reference.begin();
@@ -1895,39 +1898,39 @@ void System::resetToReference()
     }
 }
 
-int System::solve(VEC_pD& params, bool isFine, Algorithm alg, bool isRedundantsolving)
+SolveStatus System::solve(VEC_pD& params, Algorithm alg, bool isRedundantsolving)
 {
     declareUnknowns(params);
     initSolution();
-    return solve(isFine, alg, isRedundantsolving);
+    return solve(alg, isRedundantsolving);
 }
 
-int System::solve(bool isFine, Algorithm alg, bool isRedundantsolving)
+SolveStatus System::solve(Algorithm alg, bool isRedundantsolving)
 {
     if (!isInit) {
-        return Failed;
+        return SolveStatus::Failed;
     }
 
-    bool isReset = false;
+    bool referenceRestored = false;
     // return success by default in order to permit coincidence constraints to be applied
     // even if no other system has to be solved
-    int res = Success;
-    for (int cid = 0; cid < int(subSystems.size()); cid++) {
-        if ((subSystems[cid] || subSystemsAux[cid]) && !isReset) {
-            resetToReference();
-            isReset = true;
+    auto status = SolveStatus::Success;
+    for (size_t cid = 0; cid < subSystems.size(); cid++) {
+        if ((subSystems[cid] || subSystemsAux[cid]) && !referenceRestored) {
+            restoreReference();
+            referenceRestored = true;
         }
         if (subSystems[cid] && subSystemsAux[cid]) {
-            res = std::max(res, solve(subSystems[cid], subSystemsAux[cid], isFine, isRedundantsolving));
+            status = solve(subSystems[cid], subSystemsAux[cid], isRedundantsolving);
         }
         else if (subSystems[cid]) {
-            res = std::max(res, solve(subSystems[cid], isFine, alg, isRedundantsolving));
+            status = solve(subSystems[cid], alg, isRedundantsolving);
         }
         else if (subSystemsAux[cid]) {
-            res = std::max(res, solve(subSystemsAux[cid], isFine, alg, isRedundantsolving));
+            status = solve(subSystemsAux[cid], alg, isRedundantsolving);
         }
     }
-    if (res == Success) {
+    if (status == SolveStatus::Success) {
         for (std::set<Constraint*>::const_iterator constr = redundant.begin();
              constr != redundant.end();
              ++constr) {
@@ -1936,31 +1939,28 @@ int System::solve(bool isFine, Algorithm alg, bool isRedundantsolving)
             // chances are low I've broken anything.
             double err = (*constr)->error();
             if (err * err > (isRedundantsolving ? convergenceRedundant : convergence)) {
-                res = Converged;
-                return res;
+                return SolveStatus::Converged;
             }
         }
     }
-    return res;
+    return status;
 }
 
-int System::solve(SubSystem* subsys, bool isFine, Algorithm alg, bool isRedundantsolving)
+SolveStatus System::solve(SubSystem* subsys, Algorithm alg, bool isRedundantsolving)
 {
-    if (alg == BFGS) {
-        return solve_BFGS(subsys, isFine, isRedundantsolving);
-    }
-    else if (alg == LevenbergMarquardt) {
-        return solve_LM(subsys, isRedundantsolving);
-    }
-    else if (alg == DogLeg) {
-        return solve_DL(subsys, isRedundantsolving);
-    }
-    else {
-        return Failed;
+    switch (alg) {
+        case Algorithm::BFGS:
+            return solve_BFGS(subsys, isRedundantsolving);
+        case Algorithm::LevenbergMarquardt:
+            return solve_LM(subsys, isRedundantsolving);
+        case Algorithm::DogLeg:
+            return solve_DL(subsys, isRedundantsolving);
+        default:
+            std::unreachable();
     }
 }
 
-int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolving)
+SolveStatus System::solve_BFGS(SubSystem* subsys, bool isRedundantsolving)
 {
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
     extractSubsystem(subsys, isRedundantsolving);
@@ -1968,7 +1968,7 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
 
     int xsize = subsys->pSize();
     if (xsize == 0) {
-        return Success;
+        return SolveStatus::Success;
     }
 
     subsys->redirectParams();
@@ -1994,7 +1994,6 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
     subsys->getParams(x);
     h = x - h;  // = x - xold
 
-    // double convergence = isFine ? convergence : XconvergenceRough;
     int maxIterNumber = (sketchSizeMultiplier ? maxIter * xsize : maxIter);
     double convCriterion = convergence;
     if (isRedundantsolving) {
@@ -2008,7 +2007,7 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
                << ", maxIter: " << maxIterNumber << "\n";
 
         const std::string tmp = stream.str();
-        Base::Console().log(tmp.c_str());
+        Base::Console().log("{}", tmp);
     }
 
     double divergingLim = 1e6 * err + 1e12;
@@ -2023,7 +2022,7 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
                        << ", err: " << err << ", h_norm: " << h_norm << "\n";
 
                 const std::string tmp = stream.str();
-                Base::Console().log(tmp.c_str());
+                Base::Console().log("{}", tmp);
             }
             break;
         }
@@ -2035,7 +2034,7 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
                        << ", err: " << err << ", divergingLim: " << divergingLim << "\n";
 
                 const std::string tmp = stream.str();
-                Base::Console().log(tmp.c_str());
+                Base::Console().log("{}", tmp);
             }
             break;
         }
@@ -2072,22 +2071,22 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
                    << "\n";
 
             const std::string tmp = stream.str();
-            Base::Console().log(tmp.c_str());
+            Base::Console().log("{}", tmp);
         }
     }
 
     subsys->revertParams();
 
     if (err <= smallF) {
-        return Success;
+        return SolveStatus::Success;
     }
     if (h.norm() <= convCriterion) {
-        return Converged;
+        return SolveStatus::Converged;
     }
-    return Failed;
+    return SolveStatus::Failed;
 }
 
-int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
+SolveStatus System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
 {
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
     extractSubsystem(subsys, isRedundantsolving);
@@ -2097,7 +2096,7 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
     int csize = subsys->cSize();
 
     if (xsize == 0) {
-        return Success;
+        return SolveStatus::Success;
     }
 
     Eigen::VectorXd e(csize),
@@ -2134,7 +2133,7 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
                << ", xsize: " << xsize << ", maxIter: " << maxIterNumber << "\n";
 
         const std::string tmp = stream.str();
-        Base::Console().log(tmp.c_str());
+        Base::Console().log("{}", tmp);
     }
 
     double nu = 2, mu = 0;
@@ -2253,7 +2252,7 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
                    << ", g_inf(eps1): " << g_inf << ", h_norm: " << h_norm << "\n";
 
             const std::string tmp = stream.str();
-            Base::Console().log(tmp.c_str());
+            Base::Console().log("{}", tmp);
         }
     }
 
@@ -2263,10 +2262,10 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
 
     subsys->revertParams();
 
-    return (stop == 1) ? Success : Failed;
+    return (stop == 1) ? SolveStatus::Success : SolveStatus::Failed;
 }
 
-int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
+SolveStatus System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
 {
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
     extractSubsystem(subsys, isRedundantsolving);
@@ -2276,7 +2275,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
     int csize = subsys->cSize();
 
     if (xsize == 0) {
-        return Success;
+        return SolveStatus::Success;
     }
 
     double tolg = DL_tolg;
@@ -2305,7 +2304,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
                << "\n";
 
         const std::string tmp = stream.str();
-        Base::Console().log(tmp.c_str());
+        Base::Console().log("{}", tmp);
     }
 
     Eigen::VectorXd x(xsize), x_new(xsize);
@@ -2462,7 +2461,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
                    << ", err(divergingLim): " << err << "\n";
 
             const std::string tmp = stream.str();
-            Base::Console().log(tmp.c_str());
+            Base::Console().log("{}", tmp);
         }
 
         // count this iteration and start again
@@ -2476,10 +2475,10 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
         stream << "DL: stopcode: " << stop << ((stop == 1) ? ", Success" : ", Failed") << "\n";
 
         const std::string tmp = stream.str();
-        Base::Console().log(tmp.c_str());
+        Base::Console().log("{}", tmp);
     }
 
-    return (stop == 1) ? Success : Failed;
+    return (stop == 1) ? SolveStatus::Success : SolveStatus::Failed;
 }
 
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
@@ -4528,7 +4527,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
 // The following solver variant solves a system compound of two subsystems
 // treating the first of them as of higher priority than the second
-int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool isRedundantsolving)
+SolveStatus System::solve(SubSystem* subsysA, SubSystem* subsysB, bool isRedundantsolving)
 {
     int xsizeA = subsysA->pSize();
     int xsizeB = subsysB->pSize();
@@ -4679,20 +4678,20 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
         }
     }
 
-    int ret;
+    SolveStatus status;
     if (subsysA->error() <= smallF) {
-        ret = Success;
+        status = SolveStatus::Success;
     }
     else if (h.norm() <= (isRedundantsolving ? convergenceRedundant : convergence)) {
-        ret = Converged;
+        status = SolveStatus::Converged;
     }
     else {
-        ret = Failed;
+        status = SolveStatus::Failed;
     }
 
     subsysA->revertParams();
     subsysB->revertParams();
-    return ret;
+    return status;
 }
 
 void System::applySolution()
@@ -4721,7 +4720,7 @@ void System::evaluateDrivenConstraints()
 
 void System::undoSolution()
 {
-    resetToReference();
+    restoreReference();
 }
 
 void System::makeReducedJacobian(
@@ -4985,7 +4984,7 @@ int System::diagnose(Algorithm alg)
 
         auto SolveTime = Base::TimeElapsed::diffTimeF(DenseQR_start_time, DenseQR_end_time);
 
-        Base::Console().log("\nDenseQR - Lapsed Time: %f seconds\n", SolveTime);
+        Base::Console().log("\nDenseQR - Lapsed Time: {} seconds\n", SolveTime);
 #endif
     }
 
@@ -5066,7 +5065,7 @@ int System::diagnose(Algorithm alg)
 
         auto SolveTime = Base::TimeElapsed::diffTimeF(SparseQR_start_time, SparseQR_end_time);
 
-        Base::Console().log("\nSparseQR - Lapsed Time: %f seconds\n", SolveTime);
+        Base::Console().log("\nSparseQR - Lapsed Time: {} seconds\n", SolveTime);
 # endif
     }
 #endif
@@ -5595,7 +5594,7 @@ void System::identifyConflictingRedundantConstraints(
     });
 
     SubSystem* subSysTmp = new SubSystem(clistTmp, pdiagnoselist);
-    int res = solve(subSysTmp, true, alg, true);
+    auto status = solve(subSysTmp, alg, true);
 
     if (debugMode == Minimal || debugMode == IterationLevel) {
         std::string solvername;
@@ -5611,10 +5610,10 @@ void System::identifyConflictingRedundantConstraints(
                 break;
         }
 
-        Base::Console().log("Sketcher::RedundantSolving-%s-\n", solvername.c_str());
+        Base::Console().log("Sketcher::RedundantSolving-{}-\n", solvername);
     }
 
-    if (res == Success) {
+    if (status == SolveStatus::Success) {
         subSysTmp->applySolution();
         std::ranges::copy_if(
             skipped,
@@ -5624,10 +5623,10 @@ void System::identifyConflictingRedundantConstraints(
                 return (err * err < this->convergenceRedundant);
             }
         );
-        resetToReference();
+        restoreReference();
 
         if (debugMode == Minimal || debugMode == IterationLevel) {
-            Base::Console().log("Sketcher Redundant solving: %d redundants\n", redundant.size());
+            Base::Console().log("Sketcher Redundant solving: {} redundants\n", redundant.size());
         }
 
         // TODO: Figure out why we need to iterate in reverse order and add explanation here.
@@ -5646,7 +5645,7 @@ void System::identifyConflictingRedundantConstraints(
 
             if (debugMode == IterationLevel) {
                 Base::Console().log(
-                    "(Partially) Redundant, Group %d, index %d, Tag: %d\n",
+                    "(Partially) Redundant, Group {}, index {}, Tag: {}\n",
                     i,
                     iterRedundantEntry - conflictGroupsOrig[i].begin(),
                     (*iterRedundantEntry)->getTag()

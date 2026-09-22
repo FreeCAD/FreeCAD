@@ -30,42 +30,46 @@ class ComplexGeoData(Persistence):
         ...
 
     @constmethod
-    def countSubElements(self) -> int:
+    def countSubElements(self, type: str, /) -> int:
         """
         Return the number of elements of a type.
         """
         ...
 
     @constmethod
-    def getFacesFromSubElement(self, ) -> tuple[list[Vector], list[tuple[int, int, int]]]:
+    def getFacesFromSubElement(
+        self, type: str, index: int, /
+    ) -> tuple[list[Vector], list[tuple[int, int, int]]]:
         """
         Return vertexes and faces from a sub-element.
         """
         ...
 
     @constmethod
-    def getLinesFromSubElement(self, ) -> tuple[list[Vector], list[tuple[int, int]]]:
+    def getLinesFromSubElement(
+        self, type: str, index: int, /
+    ) -> tuple[list[Vector], list[tuple[int, int]]]:
         """
         Return vertexes and lines from a sub-element.
         """
         ...
 
     @constmethod
-    def getPoints(self) -> tuple[list[Vector], list[Vector]]:
+    def getPoints(self, accuracy: float, /) -> tuple[list[Vector], list[Vector]]:
         """
         Return a tuple of points and normals with a given accuracy
         """
         ...
 
     @constmethod
-    def getLines(self) -> tuple[list[Vector], list[tuple[int, int]]]:
+    def getLines(self, accuracy: float, /) -> tuple[list[Vector], list[tuple[int, int]]]:
         """
         Return a tuple of points and lines with a given accuracy
         """
         ...
 
     @constmethod
-    def getFaces(self) -> tuple[list[Vector], list[tuple[int, int, int]]]:
+    def getFaces(self, accuracy: float, /) -> tuple[list[Vector], list[tuple[int, int, int]]]:
         """
         Return a tuple of points and triangles with a given accuracy
         """
@@ -93,11 +97,12 @@ class ComplexGeoData(Persistence):
         self,
         *,
         element: str,
-        name: str = None,
-        postfix: str = None,
-        overwrite: bool = False,
-        sid: Any = None,
-    ) -> None:
+        name: str = ...,
+        postfix: str = ...,
+        overwrite: bool = ...,
+        sid: Any = ...,
+        tag: int = ...,
+    ) -> str:
         """
         Set an element name.
 
@@ -121,14 +126,18 @@ class ComplexGeoData(Persistence):
         ...
 
     @constmethod
-    def getElementIndexedName(self, name: str, /) -> str | tuple[str, list[int]]:
+    def getElementIndexedName(
+        self, name: str, return_id: bool = ..., /
+    ) -> str | tuple[str, list[int]]:
         """
         Return the indexed element name.
         """
         ...
 
     @constmethod
-    def getElementMappedName(self, name: str, /) -> str | tuple[str, list[int]]:
+    def getElementMappedName(
+        self, name: str, return_id: bool = ..., /
+    ) -> str | tuple[str, list[int]]:
         """
         Return the mapped element name
         """

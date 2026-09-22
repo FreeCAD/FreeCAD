@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from Base.Metadata import export
 from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
+from Part.TopoShape import TopoShape
 
 @export(
     PythonName="Part.ShapeFix.Wireframe",
@@ -33,22 +34,22 @@ class ShapeFix_Wireframe(ShapeFix_Root):
         """
         ...
 
-    def load(self) -> None:
+    def load(self, shape: TopoShape, /) -> None:
         """
         Loads a shape, resets statuses
         """
         ...
 
-    def fixWireGaps(self) -> None:
+    def fixWireGaps(self) -> bool:
         """
         Fixes gaps between ends of curves of adjacent edges
         """
         ...
 
-    def fixSmallEdges(self) -> None:
+    def fixSmallEdges(self) -> bool:
         """
         Fixes small edges in shape by merging adjacent edges
         """
         ...
 
-    def shape(self) -> None: ...
+    def shape(self) -> TopoShape: ...

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -125,6 +127,7 @@ public Q_SLOTS:
     void slotContextExportPdf();
     void toggleFrame();
     void toggleGrid();
+    void toggleScreenMode();
     void toggleKeepUpdated();
     void sceneSelectionChanged();
     void printAll();
@@ -162,6 +165,7 @@ private:
 
     QAction *m_toggleFrameAction;
     QAction *m_toggleGridAction;
+    QAction *m_toggleScreenModeAction;
     QAction *m_toggleKeepUpdatedAction;
     QAction *m_exportSVGAction;
     QAction *m_exportDXFAction;

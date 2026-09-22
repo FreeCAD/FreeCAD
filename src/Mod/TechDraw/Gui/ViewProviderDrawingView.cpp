@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2012 Luke Parry <l.parry@warwick.ac.uk>                 *
@@ -388,7 +390,7 @@ void ViewProviderDrawingView::showProgressMessage(const std::string featureName,
 //        Gui::getMainWindow()->showStatus(Gui::MainWindow::Msg, msg);
         //Temporary implementation. This works, but the messages are queued up and
         //not displayed in the report window in real time??
-        Base::Console().message("%s\n", qPrintable(msg));
+        Base::Console().message("{}\n", qPrintable(msg));
     }
 }
 

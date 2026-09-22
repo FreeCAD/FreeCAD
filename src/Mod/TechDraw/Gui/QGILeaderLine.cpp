@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -145,7 +147,7 @@ void QGILeaderLine::setLeaderFeature(TechDraw::DrawLeaderLine* feat)
 
 QVariant QGILeaderLine::itemChange(GraphicsItemChange change, const QVariant& value)
 {
-    //    Base::Console().message("QGILL::itemChange(%d)\n", change);
+    //    Base::Console().message("QGILL::itemChange({})\n", change);
     if (change == ItemSelectedHasChanged && scene()) {
         if (isSelected()) {
             setPrettySel();
@@ -189,7 +191,7 @@ void QGILeaderLine::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
 
 void QGILeaderLine::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
 {
-    //    Base::Console().message("QGILL::hoverEnter() - selected; %d\n", isSelected());
+    //    Base::Console().message("QGILL::hoverEnter() - selected; {}\n", isSelected());
     m_hasHover = true;
     if (!isSelected()) {
         setPrettyPre();
@@ -199,7 +201,7 @@ void QGILeaderLine::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
 
 void QGILeaderLine::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
 {
-    //    Base::Console().message("QGILL::hoverLeave() - selected; %d\n", isSelected());
+    //    Base::Console().message("QGILL::hoverLeave() - selected; {}\n", isSelected());
     m_hasHover = false;
     if (!isSelected()) {
         setPrettyNormal();
@@ -209,7 +211,7 @@ void QGILeaderLine::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
 
 void QGILeaderLine::setNormalColorAll()
 {
-    //    Base::Console().message("QGILL::setNormalColorAll - normal color: %s\n", qPrintable(getNormalColor().name()));
+    //    Base::Console().message("QGILL::setNormalColorAll - normal color: {}\n", qPrintable(getNormalColor().name()));
     QColor qc = prefNormalColor();
     m_line->setNormalColor(qc);
     m_editPath->setNormalColor(qc);
@@ -257,7 +259,7 @@ void QGILeaderLine::closeEdit()
 //! signaled from QEPath
 void QGILeaderLine::onLineEditFinished(QPointF tipDisplace, std::vector<QPointF> scenePoints)
 {
-    // Base::Console().message("QGILL::onLineEditFinished(%s, %d)\n",
+    // Base::Console().message("QGILL::onLineEditFinished({}, {})\n",
     //                        TechDraw::DrawUtil::formatVector(tipDisplace).c_str(),
     //                        scenePoints.size());
 
