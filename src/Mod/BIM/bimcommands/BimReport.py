@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-#
-# Copyright (c) 2025 The FreeCAD Project
+# SPDX-FileCopyrightText: 2025 The FreeCAD Project
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 
 import FreeCAD
 import FreeCADGui
@@ -12,7 +13,7 @@ class BIM_Report:
     def GetResources(self):
         return {
             "Pixmap": "BIM_Report",
-            "MenuText": "BIM Report",
+            "MenuText": "Report",
             "ToolTip": "Create a new BIM Report to query model data with SQL",
         }
 

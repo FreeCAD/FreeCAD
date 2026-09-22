@@ -146,10 +146,11 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
 
     Base::Vector3d rotCenter = tp.getCenter();
     Base::Vector3d last(startPosition);
-    Base::Rotation lrot;
     double A = 0.0;
     double B = 0.0;
     double C = 0.0;
+    Base::Rotation lrot(yawPitchRoll(A, B, C));
+    Base::Vector3d rlast(compensateRotation(startPosition, lrot, rotCenter));
 
     bool absolute = true;
     bool absolutecenter = false;
@@ -221,13 +222,14 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
             }
 
             if ("G0" == name || "G00" == name) {
-                cb.g0(i, last, rnext, points);
+                cb.g0(i, rlast, rnext, points);
             }
             else {
-                cb.g1(i, last, rnext, points);
+                cb.g1(i, rlast, rnext, points);
             }
 
             last = next;
+            rlast = rnext;
             A = a;
             B = b;
             C = c;
@@ -300,9 +302,10 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
                 points.push_back(rinter);
             }
 
-            cb.g23(i, last, rnext, points, center);
+            cb.g23(i, rlast, rnext, points, center);
 
             last = next;
+            rlast = rnext;
             A = a;
             B = b;
             C = c;
@@ -409,9 +412,10 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
             // Calculate rotation-compensated next point for the hole bottom
             Base::Vector3d nextr = compensateRotation(next, nrot, rotCenter);
 
-            cb.g8x(i, last, nextr, points, plist, qlist);
+            cb.g8x(i, rlast, nextr, points, plist, qlist);
 
             last = p3;
+            rlast = p3r;
             A = a;
             B = b;
             C = c;

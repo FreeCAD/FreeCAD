@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2013 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 # Unit tests for the Arch wall module
 
@@ -678,4 +675,43 @@ class TestArchWall(TestArchBase.TestArchBase):
         self.assertAlmostEqual(bb.YMin, offset, delta=1e-6, msg="Right: YMin should be offset")
         self.assertAlmostEqual(
             bb.YMax, width + offset, delta=1e-6, msg="Right: YMax should be width+offset"
+        )
+
+    def test_line_based_wall_with_length_expression(self):
+        """Test that a line based wall correctly handles an expression for its Length property.
+
+        Regression test for https://github.com/FreeCAD/FreeCAD/issues/32584.
+        """
+        self.printTestMessage("Checking line based wall with length expression")
+
+        line = Draft.make_line(App.Vector(0, 0, 0), App.Vector(1000, 0, 0))
+        wall = Arch.makeWall(line)
+        self.document.recompute()
+
+        # 1st test: Change the length of the line.
+        new_line_length = 2000
+        line.Length = new_line_length
+        self.document.recompute()
+        self.assertAlmostEqual(
+            wall.Length.Value,
+            new_line_length,
+            delta=1e-6,
+            msg="New length of line did not correctly update wall",
+        )
+
+        # 2nd test: Change the length of the wall by applying an expression.
+        new_wall_length = 3000
+        wall.setExpression("Length", "3 m")
+        self.document.recompute()
+        self.assertAlmostEqual(
+            wall.Length.Value,
+            new_wall_length,
+            delta=1e-6,
+            msg="Length expression of wall did not correctly update wall",
+        )
+        self.assertAlmostEqual(
+            line.Length.Value,
+            new_wall_length,
+            delta=1e-6,
+            msg="Length expression of wall did not correctly update line",
         )

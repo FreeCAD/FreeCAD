@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -57,7 +59,9 @@ QGIPrimPath::QGIPrimPath():
 
     multiselectActivated = false;
 
-    m_edgeFuzz = PreferencesGui::edgeFuzz();
+    m_edgeFuzzBase = PreferencesGui::screenMode() ? PreferencesGui::screenEdgeWidth() : PreferencesGui::edgeFuzz();
+    m_edgeFuzz = m_edgeFuzzBase;
+
     m_colNormal = getNormalColor();
     m_pen.setColor(m_colNormal);
     m_styleNormal = Qt::SolidLine;
@@ -113,12 +117,12 @@ void QGIPrimPath::setPrettyNormal() {
 
 void QGIPrimPath::setPrettyPre() {
     m_pen.setColor(getPreColor());
-    m_brush.setColor(getPreColor());
+    m_brush.setColor(m_highlightFill ? getPreColor() : m_colNormalFill);
 }
 
 void QGIPrimPath::setPrettySel() {
     m_pen.setColor(getSelectColor());
-    m_brush.setColor(getSelectColor());
+    m_brush.setColor(m_highlightFill ? getSelectColor() : m_colNormalFill);
 }
 
 //wf: why would a face use its parent's normal colour?

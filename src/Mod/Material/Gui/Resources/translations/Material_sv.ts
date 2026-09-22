@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="173"/>
       <source>Inspect Material</source>
-      <translation>Inspektera materialet</translation>
+      <translation>Inspektera material</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="174"/>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Array2D.cpp" line="79"/>
       <source>Delete Row</source>
-      <translation>Radera rad</translation>
+      <translation>Ta bort rad</translation>
     </message>
     <message>
       <location filename="../../Array2D.cpp" line="138"/>
@@ -66,7 +66,7 @@
       <location filename="../../Array3D.cpp" line="77"/>
       <location filename="../../Array3D.cpp" line="81"/>
       <source>Delete Row</source>
-      <translation>Radera rad</translation>
+      <translation>Ta bort rad</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="231"/>
@@ -123,7 +123,7 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="14"/>
       <source>Display Properties</source>
-      <translation>Egenskaper för display</translation>
+      <translation>Visningsegenskaper</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="20"/>
@@ -138,12 +138,12 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="87"/>
       <source>Plot mode</source>
-      <translation>Plot-läge</translation>
+      <translation>Ritläge</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="106"/>
       <source>Display</source>
-      <translation>Visa</translation>
+      <translation>Visning</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="144"/>
@@ -163,7 +163,7 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="289"/>
       <source>Line transparency</source>
-      <translation>Transparenta linjer</translation>
+      <translation>Linjegenomskinlighet</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="365"/>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="382"/>
       <source>Point color</source>
-      <translation>Punktens färg</translation>
+      <translation>Punktfärg</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="389"/>
@@ -221,12 +221,12 @@
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="74"/>
       <source>Sub.Shape / Type</source>
-      <translation>Sub.form / typ</translation>
+      <translation>Delform / typ</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="81"/>
       <source>Shape.TypeID / TypeID</source>
-      <translation>Shape.TypeID / TypID</translation>
+      <translation>Shape.TypeID / TypeID</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="100"/>
@@ -251,17 +251,17 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="204"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
-      <translation type="unfinished">Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</translation>
+      <translation>Definierar grundfärgen på en yta när den belyses. Den anger hur objektet sprider ljuset jämnt i alla riktningar, oberoende av betraktarens vinkel. Den här egenskapen påverkar materialets färg mest.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="215"/>
       <source>Ambient color</source>
-      <translation>Omgivande färg</translation>
+      <translation>Omgivningsfärg</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="217"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
-      <translation type="unfinished">Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</translation>
+      <translation>Definierar färgen på en yta vid indirekt, jämn belysning och anger hur den ser ut när den endast belyses av omgivningsljus i en scen, utan riktat ljus, skuggning eller högdagrar.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="228"/>
@@ -271,17 +271,17 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="230"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
-      <translation type="unfinished">Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</translation>
+      <translation>Definierar färgen på en yta som ser ut att avge ljus som om den vore en ljuskälla, oberoende av extern belysning, så att objektet ser självlysande ut. Ställ in svart för att inte använda någon emissiv färg.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="241"/>
       <source>Specular color</source>
-      <translation>Speculär färg</translation>
+      <translation>Spegelfärg</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="243"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
-      <translation type="unfinished">Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</translation>
+      <translation>Definierar färgen och intensiteten hos de ljusa, spegelliknande högdagrar som visas på blanka eller reflekterande ytor när ljus träffar dem direkt. Använd ljusa färger för blanka objekt.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="254"/>
@@ -291,7 +291,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="256"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
-      <translation type="unfinished">Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</translation>
+      <translation>Definierar storleken och skärpan på spegelblänk på en yta. Högre värden ger små, skarpa blänk, medan lägre värden ger breda, mjuka blänk. Observera att blänkets intensitet definieras av spegelfärgen.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="268"/>
@@ -301,7 +301,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="269"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
-      <translation type="unfinished">Defines how much light passes through an object, making it partially or fully see-through</translation>
+      <translation>Definierar hur mycket ljus som passerar genom ett objekt och gör det delvis eller helt genomskinligt.</translation>
     </message>
   </context>
   <context>
@@ -334,12 +334,12 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="74"/>
       <source>Sub.Shape / Type</source>
-      <translation>Sub.form / typ</translation>
+      <translation>Delform / typ</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="81"/>
       <source>Shape.TypeID / TypeID</source>
-      <translation>Shape.TypeID / TypID</translation>
+      <translation>Shape.TypeID / TypeID</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="94"/>
@@ -375,7 +375,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="192"/>
       <source>TypeID: </source>
-      <translation>TypID: </translation>
+      <translation>TypeID: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="221"/>
@@ -425,17 +425,17 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="365"/>
       <source>Appearance models:</source>
-      <translation>Utseende modeller:</translation>
+      <translation>Utseendemodeller:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="371"/>
       <source>Physical models:</source>
-      <translation>Fysiska modeller:</translation>
+      <translation>Fysikaliska modeller:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="377"/>
       <source>Appearance properties:</source>
-      <translation>Utseendemässiga egenskaper:</translation>
+      <translation>Utseendeegenskaper:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="383"/>
@@ -451,7 +451,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="329"/>
       <source>Model UUID: </source>
-      <translation>Modell UUID: </translation>
+      <translation>Modellens UUID: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="333"/>
@@ -488,7 +488,7 @@
     <message>
       <location filename="../../DlgSettingsDefaultMaterial.cpp" line="52"/>
       <source>Physical</source>
-      <translation>Fysisk</translation>
+      <translation>Fysikaliskt</translation>
     </message>
   </context>
   <context>
@@ -506,7 +506,7 @@
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="53"/>
       <source>Use materials from external workbenches</source>
-      <translation>Använda material från externa arbetsbänkar</translation>
+      <translation>Använd material från externa arbetsbänkar</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="118"/>
@@ -531,7 +531,7 @@
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="69"/>
       <source>Cards from FreeCAD’s preferences directory are also listed as available</source>
-      <translation>Kort från FreeCADs preferences-katalog listas också som tillgängliga</translation>
+      <translation>Kort från FreeCADs inställningskatalog listas också som tillgängliga</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="72"/>
@@ -556,7 +556,7 @@
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="160"/>
       <source>Duplicate cards will be deleted from the displayed material card list</source>
-      <translation>Duplicerade kort raderas från den visade materialkortlistan</translation>
+      <translation>Kortdubbletter tas bort från den visade materialkortslistan</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="163"/>
@@ -671,7 +671,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     <message>
       <location filename="../../ListEdit.ui" line="41"/>
       <source>Delete Row</source>
-      <translation>Radera rad</translation>
+      <translation>Ta bort rad</translation>
     </message>
   </context>
   <context>
@@ -707,7 +707,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     <message>
       <location filename="../../MaterialSave.ui" line="104"/>
       <source>Save as inherited</source>
-      <translation>Spara som nedärvd</translation>
+      <translation>Spara som ärvt material</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="59"/>
@@ -737,7 +737,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     <message>
       <location filename="../../MaterialSave.cpp" line="221"/>
       <source>Confirm Save as New Material</source>
-      <translation>Bekräfta Spara som nytt material</translation>
+      <translation>Bekräfta att materialet ska sparas som nytt</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="226"/>
@@ -747,7 +747,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     <message>
       <location filename="../../MaterialSave.cpp" line="248"/>
       <source>Confirm Save as Copy</source>
-      <translation>Bekräfta Spara som kopia</translation>
+      <translation>Bekräfta att materialet ska sparas som kopia</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="250"/>
@@ -767,7 +767,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     <message>
       <location filename="../../MaterialSave.cpp" line="257"/>
       <source>Save As New</source>
-      <translation>Spara som ny</translation>
+      <translation>Spara som nytt</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="489"/>
@@ -826,7 +826,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="91"/>
       <source>Source URL</source>
-      <translation>URL källa</translation>
+      <translation>Källans URL</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="101"/>
@@ -851,7 +851,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="202"/>
       <source>Adds or removes to/from favorites</source>
-      <translation>Lägger till eller tar bort till/från favoriter</translation>
+      <translation>Lägger till i eller tar bort från favoriter</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="205"/>
@@ -871,22 +871,22 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="195"/>
       <source>Inherit New</source>
-      <translation>Ärv ny</translation>
+      <translation>Skapa nytt genom arv</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="215"/>
       <source>Physical</source>
-      <translation>Fysisk</translation>
+      <translation>Fysikaliskt</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="236"/>
       <source>Add physical model</source>
-      <translation>Lägg till fysisk modell</translation>
+      <translation>Lägg till fysikalisk modell</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="246"/>
       <source>Delete physical model</source>
-      <translation>Ta bort fysisk modell</translation>
+      <translation>Ta bort fysikalisk modell</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="262"/>
@@ -970,12 +970,12 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1320"/>
       <source>Inherit From</source>
-      <translation>Ärva från</translation>
+      <translation>Ärv från</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1324"/>
       <source>Inherit New Material</source>
-      <translation>Ärva nytt material</translation>
+      <translation>Skapa nytt material genom arv</translation>
     </message>
   </context>
   <context>
@@ -1015,12 +1015,12 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     <message>
       <location filename="../../ModelSelect.ui" line="159"/>
       <source>Adds or removes to/from favorites</source>
-      <translation>Lägger till eller tar bort till/från favoriter</translation>
+      <translation>Lägger till i eller tar bort från favoriter</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="162"/>
       <source>Toggle Favorites</source>
-      <translation>Växla mellan favoriter</translation>
+      <translation>Växla favoritstatus</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="172"/>
@@ -1078,7 +1078,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="22"/>
       <source>Material Card</source>
-      <translation>Material kort</translation>
+      <translation>Materialkort</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="40"/>
@@ -1118,12 +1118,12 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="126"/>
       <source>Add Property</source>
-      <translation>Nytt objekt</translation>
+      <translation>Lägg till egenskap</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="133"/>
       <source>Delete Property</source>
-      <translation>Radera bostadsobjekt</translation>
+      <translation>Ta bort egenskap</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="77"/>
@@ -1195,15 +1195,15 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
       <translation>Annars kommer alla ändringar att gå förlorade.</translation>
     </message>
     <message>
+      <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../Array2D.cpp" line="170"/>
       <location filename="../../MaterialSave.cpp" line="568"/>
-      <location filename="../../ListEdit.cpp" line="142"/>
       <source>Confirm Delete</source>
       <translation>Bekräfta borttagning</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="172"/>
       <location filename="../../ListEdit.cpp" line="144"/>
+      <location filename="../../Array2D.cpp" line="172"/>
       <source>Delete the row?</source>
       <translation>Ta bort raden?</translation>
     </message>
@@ -1254,7 +1254,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="14"/>
       <source>Materials Migration</source>
-      <translation>Migration av material</translation>
+      <translation>Migrering av material</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="27"/>
@@ -1312,13 +1312,13 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="91"/>
       <source>Model cache size</source>
-      <translation>Storlek på modellens cache</translation>
+      <translation>Storlek på modellcache</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="98"/>
       <location filename="../../DlgSettingsExternal.ui" line="124"/>
       <source>Hit rate</source>
-      <translation>Träfffrekvens</translation>
+      <translation>Träffrekvens</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="134"/>
@@ -1336,7 +1336,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="75"/>
       <source>Migrating models…</source>
-      <translation>Migrering av modeller…</translation>
+      <translation>Migrerar modeller…</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="81"/>
@@ -1357,17 +1357,17 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="87"/>
       <source>Validating models…</source>
-      <translation>Validering av modeller…</translation>
+      <translation>Validerar modeller…</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="99"/>
       <source>Migrating materials…</source>
-      <translation>Migrerande material…</translation>
+      <translation>Migrerar material…</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="111"/>
       <source>Validating materials…</source>
-      <translation>Validering av material…</translation>
+      <translation>Validerar material…</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="145"/>

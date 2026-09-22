@@ -75,6 +75,114 @@ namespace bio = boost::iostreams;
 
 FC_LOG_LEVEL_INIT("Sketch", true, true)
 
+namespace bg = boost::geometry;
+namespace bgi = boost::geometry::index;
+
+// NOLINTNEXTLINE
+BOOST_GEOMETRY_REGISTER_POINT_3D(Base::Vector3d, double, bg::cs::cartesian, x, y, z)
+
+class SketchObject::GeoHistory
+{
+private:
+    static constexpr int bgiMaxElements = 16;
+
+    using Parameters = bgi::linear<bgiMaxElements>;
+    using IdSet = std::set<long>;
+    using IdSets = std::pair<IdSet, IdSet>;
+    using AdjList = std::list<IdSet>;
+
+    // associate a geo with connected ones on both points
+    using AdjMap = std::map<long, IdSets>;
+
+    // maps start/end points to all existing geo to query and update adjacencies
+    using Value = std::pair<Base::Vector3d, AdjList::iterator>;
+
+    AdjList adjlist;
+    AdjMap adjmap;
+    bgi::rtree<Value,Parameters> rtree;
+
+public:
+    AdjList::iterator find(const Base::Vector3d &pt,bool strict=true){
+        std::vector<Value> ret;
+        rtree.query(bgi::nearest(pt, 1), std::back_inserter(ret));
+        if (!ret.empty()) {
+            // NOTE: we are using square distance here, the 1e-6 threshold is
+            // very forgiving. We should have used Precision::SquareConfisuion(),
+            // which is 1e-14. However, there is a problem with current
+            // commandGeoCreate. They create new geometry with initial point of
+            // the exact mouse position, instead of the preselected point
+            // position, and rely on auto constraint to snap in the new
+            // geometry. So, we cannot use a very strict threshold here.
+            double tol = strict?Precision::SquareConfusion()*10:1e-6;
+            double d = Base::DistanceP2(ret[0].first,pt);
+            if(d<tol) {
+                return ret[0].second;
+            }
+        }
+        return adjlist.end();
+    }
+
+    void clear() {
+        rtree.clear();
+        adjlist.clear();
+    }
+
+    void update(const Base::Vector3d &pt, long id) {
+        FC_TRACE("update " << id << ", " << FC_xyz(pt));
+        auto it = find(pt);
+        if(it==adjlist.end()) {
+            adjlist.emplace_back();
+            it = adjlist.end();
+            --it;
+            rtree.insert(std::make_pair(pt,it));
+        }
+        it->insert(id);
+    }
+
+    void finishUpdate(const std::map<long,int> &geomap) {
+        IdSet oldset;
+        for(auto &idset : adjlist) {
+            oldset.clear();
+            for(long _id : idset) {
+                long id = abs(_id);
+                auto& v = adjmap[id];
+                auto& adj = _id > 0 ? v.first : v.second;
+                for (auto it = adj.begin(); it != adj.end(); /* don't advance here */) {
+                    long other = *it;
+                    auto removeId = it++;  // grab ID we might erase, and advance
+                    if (geomap.find(other) == geomap.end()) {
+                        // remember those deleted IDs to swap in below
+                        oldset.insert(other);
+                    }
+                    else if (idset.find(other) == idset.end()) {
+                        // delete any existing IDs that are no longer in the adj list
+                        adj.erase(removeId);
+                    }
+                }
+                // now merge the current ones
+                for(long _id2 : idset) {
+                    long id2 = abs(_id2);
+                    if(id!=id2) {
+                        adj.insert(id2);
+                    }
+                }
+            }
+            // now reset the adjacency list with only those deleted id's,
+            // because the whole purpose of this history is to try to reuse
+            // deleted id.
+            idset.swap(oldset);
+        }
+    }
+
+    AdjList::iterator end() {
+        return adjlist.end();
+    }
+
+    size_t size() {
+        return rtree.size();
+    }
+};
+
 PROPERTY_SOURCE(Sketcher::SketchObject, Part::Part2DObject)
 
 SketchObject::SketchObject() : geoLastId(0)
@@ -141,7 +249,7 @@ SketchObject::SketchObject() : geoLastId(0)
     lastHasRedundancies = false;
     lastHasPartialRedundancies = false;
     lastHasMalformedConstraints = false;
-    lastSolverStatus = 0;
+    lastSolverStatus = GCS::SolveStatus::Success;
     lastSolveTime = 0;
 
     solverNeedsUpdate = false;
@@ -194,6 +302,19 @@ short SketchObject::mustExecute() const
     return Part2DObject::mustExecute();
 }
 
+namespace {
+GCS::Algorithm getDefaultSolver()
+{
+    auto preferences = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/SolverAdvanced");
+    int solver = preferences->GetInt("DefaultSolver", GCS::DogLeg);
+    if (solver < GCS::BFGS || solver > GCS::DogLeg) {
+        throw Base::ValueError("Invalid Sketcher DefaultSolver preference: expected a value from 0 to 2");
+    }
+    return static_cast<GCS::Algorithm>(solver);
+}
+} // namespace
+
 App::DocumentObjectExecReturn* SketchObject::execute()
 {
     try {
@@ -219,31 +340,38 @@ App::DocumentObjectExecReturn* SketchObject::execute()
         //  delConstraintsToExternal();
     }
 
+    try {
+        solvedSketch.defaultSolver = getDefaultSolver();
+    }
+    catch (const Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what(), this);
+    }
+
     // This includes a regular solve including full geometry update, except when an error
     // ensues
-    int err = this->solve(true);
-
-    if (err == -4) {// over-constrained sketch
-        std::string msg = "Over-constrained sketch\n";
+    std::string msg;
+    switch (solve(true)) {
+    case SketchSolveStatus::Success:
+        break;
+    case SketchSolveStatus::Overconstrained:
+        msg = "Over-constrained sketch\n";
         appendConflictMsg(lastConflicting, msg);
-        return new App::DocumentObjectExecReturn(msg.c_str(), this);
-    }
-    else if (err == -3) {// conflicting constraints
-        std::string msg = "Sketch with conflicting constraints\n";
+        // TODO: std::move(msg) when DocumentObjectExecReturn takes string by value
+        return new App::DocumentObjectExecReturn(msg, this);
+    case SketchSolveStatus::ConflictingConstraints:
+        msg = "Sketch with conflicting constraints\n";
         appendConflictMsg(lastConflicting, msg);
-        return new App::DocumentObjectExecReturn(msg.c_str(), this);
-    }
-    else if (err == -2) {// redundant constraints
-        std::string msg = "Sketch with redundant constraints\n";
+        return new App::DocumentObjectExecReturn(msg, this);
+    case SketchSolveStatus::RedundantConstraints:
+        msg = "Sketch with redundant constraints\n";
         appendRedundantMsg(lastRedundant, msg);
-        return new App::DocumentObjectExecReturn(msg.c_str(), this);
-    }
-    else if (err == -5) {
-        std::string msg = "Sketch with malformed constraints\n";
+        return new App::DocumentObjectExecReturn(msg, this);
+    case SketchSolveStatus::MalformedConstraints:
+        msg = "Sketch with malformed constraints\n";
         appendMalformedConstraintsMsg(lastMalformedConstraints, msg);
-        return new App::DocumentObjectExecReturn(msg.c_str(), this);
-    }
-    else if (err == -1) {// Solver failed
+        return new App::DocumentObjectExecReturn(msg, this);
+    case SketchSolveStatus::SolverError:
+    case SketchSolveStatus::InvalidGeometry:
         return new App::DocumentObjectExecReturn("Solving the sketch failed", this);
     }
 
@@ -467,114 +595,6 @@ static const char *hasSketchMarker(const char *name) {
     return strstr(name,marker.c_str());
 }
 
-namespace bg = boost::geometry;
-namespace bgi = boost::geometry::index;
-
-// NOLINTNEXTLINE
-BOOST_GEOMETRY_REGISTER_POINT_3D(Base::Vector3d, double, bg::cs::cartesian, x, y, z)
-
-class SketchObject::GeoHistory
-{
-private:
-    static constexpr int bgiMaxElements = 16;
-
-    using Parameters = bgi::linear<bgiMaxElements>;
-    using IdSet = std::set<long>;
-    using IdSets = std::pair<IdSet, IdSet>;
-    using AdjList = std::list<IdSet>;
-
-    // associate a geo with connected ones on both points
-    using AdjMap = std::map<long, IdSets>;
-
-    // maps start/end points to all existing geo to query and update adjacencies
-    using Value = std::pair<Base::Vector3d, AdjList::iterator>;
-
-    AdjList adjlist;
-    AdjMap adjmap;
-    bgi::rtree<Value,Parameters> rtree;
-
-public:
-    AdjList::iterator find(const Base::Vector3d &pt,bool strict=true){
-        std::vector<Value> ret;
-        rtree.query(bgi::nearest(pt, 1), std::back_inserter(ret));
-        if (!ret.empty()) {
-            // NOTE: we are using square distance here, the 1e-6 threshold is
-            // very forgiving. We should have used Precision::SquareConfisuion(),
-            // which is 1e-14. However, there is a problem with current
-            // commandGeoCreate. They create new geometry with initial point of
-            // the exact mouse position, instead of the preselected point
-            // position, and rely on auto constraint to snap in the new
-            // geometry. So, we cannot use a very strict threshold here.
-            double tol = strict?Precision::SquareConfusion()*10:1e-6;
-            double d = Base::DistanceP2(ret[0].first,pt);
-            if(d<tol) {
-                return ret[0].second;
-            }
-        }
-        return adjlist.end();
-    }
-
-    void clear() {
-        rtree.clear();
-        adjlist.clear();
-    }
-
-    void update(const Base::Vector3d &pt, long id) {
-        FC_TRACE("update " << id << ", " << FC_xyz(pt));
-        auto it = find(pt);
-        if(it==adjlist.end()) {
-            adjlist.emplace_back();
-            it = adjlist.end();
-            --it;
-            rtree.insert(std::make_pair(pt,it));
-        }
-        it->insert(id);
-    }
-
-    void finishUpdate(const std::map<long,int> &geomap) {
-        IdSet oldset;
-        for(auto &idset : adjlist) {
-            oldset.clear();
-            for(long _id : idset) {
-                long id = abs(_id);
-                auto& v = adjmap[id];
-                auto& adj = _id > 0 ? v.first : v.second;
-                for (auto it = adj.begin(); it != adj.end(); /* don't advance here */) {
-                    long other = *it;
-                    auto removeId = it++;  // grab ID we might erase, and advance
-                    if (geomap.find(other) == geomap.end()) {
-                        // remember those deleted IDs to swap in below
-                        oldset.insert(other);
-                    }
-                    else if (idset.find(other) == idset.end()) {
-                        // delete any existing IDs that are no longer in the adj list
-                        adj.erase(removeId);
-                    }
-                }
-                // now merge the current ones
-                for(long _id2 : idset) {
-                    long id2 = abs(_id2);
-                    if(id!=id2) {
-                        adj.insert(id2);
-                    }
-                }
-            }
-            // now reset the adjacency list with only those deleted id's,
-            // because the whole purpose of this history is to try to reuse
-            // deleted id.
-            idset.swap(oldset);
-        }
-    }
-
-    AdjList::iterator end() {
-        return adjlist.end();
-    }
-
-    size_t size() {
-        return rtree.size();
-    }
-};
-
 void SketchObject::updateGeoHistory() {
     if(!geoHistoryLevel) return;
 
@@ -686,25 +706,30 @@ void SketchObject::generateId(const Part::Geometry* geo)
     FC_TRACE("found " << found.front());
     preReturn(found.front());
 }
-// clang-format off
 
-int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string& newFont, bool isHeight, bool isConstruction)
+SketchSolveStatus SketchObject::setTextAndFont(
+    int ConstrId,
+    std::string& newText,
+    std::string& newFont,
+    bool isHeight,
+    bool isConstruction
+)
 {
-;    // no need to check input data validity as this is an sketchobject managed operation.
+    // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
     // set the changed value for the constraint
     if (this->Constraints.hasInvalidGeometry()) {
-        return -6;
+        return SketchSolveStatus::InvalidGeometry;
     }
     const std::vector<Constraint*>& vals = this->Constraints.getValues();
     if (ConstrId < 0 || ConstrId >= int(vals.size())) {
-        return -1;
+        return SketchSolveStatus::SolverError;
     }
 
     auto* constr = vals[ConstrId];
     if (constr->Type != Text || !constr->hasElement(0)) {
-        return -1;
+        return SketchSolveStatus::SolverError;
     }
 
     // First we replace the old geometries by the new text.
@@ -729,7 +754,7 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
             }
             geoIdsToDelete.push_back(constr->getGeoId(i));
             if (handleLast) {
-                --handleGeoId; // handle line is added after all text geos.
+                --handleGeoId;  // handle line is added after all text geos.
             }
         }
 
@@ -738,17 +763,19 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
 
     auto* line = dynamic_cast<const Part::GeomLineSegment*>(getGeometry(handleGeoId));
     if (!line) {
-        return -1;
+        return SketchSolveStatus::SolverError;
     }
 
     // Generate text geos based on new text/font :
     std::vector<std::unique_ptr<Part::Geometry>> newGeos;
     std::vector<TopoDS_Shape> shapes = Part::makeTextWires(newText, newFont);
-    Part::transformAndConvertToGeometry(newGeos,
-                                    shapes,
-                                    line->getStartPoint(),
-                                    line->getEndPoint(),
-                                    isHeight);
+    Part::transformAndConvertToGeometry(
+        newGeos,
+        shapes,
+        line->getStartPoint(),
+        line->getEndPoint(),
+        isHeight
+    );
 
     // Add the geometries to sketch
     int lastGeoid = getHighestCurveIndex();
@@ -775,7 +802,7 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
     if (hasExistingText) {
         constr = new Constraint();
         constr->Type = Text;
-        constr->truncateElements(0); // remove the First/Second/Third that are created automatically
+        constr->truncateElements(0);  // remove the First/Second/Third that are created automatically
         constr->addElement(GeoElementId(handleGeoId));
     }
     for (int i = lastGeoid + 1; i <= newLastGeoid; ++i) {
@@ -789,16 +816,17 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
         addConstraint(constr);
     }
 
-    int err = solve();
+    auto status = solve();
 
-    if (err) {
+    if (status == SketchSolveStatus::Success) {
         constr->setText(oldText);
         constr->setFont(oldFont);
         constr->setIsTextHeight(oldIsHeight);
     }
 
-    return err;
+    return status;
 }
+// clang-format off
 
 void SketchObject::acceptGeometry()
 {
@@ -1396,11 +1424,16 @@ void SketchObject::onSketchRestore()
         }else
             acceptGeometry();
 
+        // Must run after the external geometry above: the orientations are derived from the
+        // geometry the constraints reference, and projected external geometry does not exist
+        // before it is rebuilt or accepted.
+        migrateConstraintOrientations();
+
         synchroniseGeometryState();
         // this may happen when saving a sketch directly in edit mode
         // but never performed a recompute before
         if (Shape.getValue().IsNull() && hasConflicts() == 0) {
-            if (this->solve(true) == 0)
+            if (this->solve(true) == SketchSolveStatus::Success)
                 Shape.setValue(solvedSketch.toShape());
         }
 
@@ -1433,6 +1466,19 @@ void SketchObject::onSketchRestore()
 }
 
 // clang-format on
+void SketchObject::migrateConstraintOrientations()
+{
+    // Migrate point-line and circle-line distance and tangency from unsigned to signed. Documents
+    // written before signed constraints existed carry no orientation at all, so the side each
+    // constraint was solved on has to be read back out of the geometry stored in the file.
+    auto constraints = Constraints.getValues();
+    for (auto& constr : constraints) {
+        setOrientation(constr, false);
+    }
+
+    Constraints.setValues(std::move(constraints));
+}
+
 void SketchObject::migrateSketch()
 {
     // Old documents lack _InternalFaceVersion; infer it from the saving version (still the
@@ -1499,16 +1545,6 @@ void SketchObject::migrateSketch()
 
             g->deleteExtension(Part::GeometryMigrationExtension::getClassTypeId());
         }
-    }
-
-    {
-        // Migrate point-line, circle-circle and circle-line distance from abs to signed
-        auto constraints = Constraints.getValues();
-        for (auto& constr : constraints) {
-            setOrientation(constr, false);
-        }
-
-        Constraints.setValues(std::move(constraints));
     }
 
     /* parabola axis as internal geometry */

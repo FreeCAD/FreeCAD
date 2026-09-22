@@ -1757,9 +1757,7 @@ class _ViewProviderSite:
 
         if not hasattr(self, "terrain_switches"):
             if vobj.RootNode.getNumChildren():
-                main_switch = gui_utils.find_coin_node(
-                    vobj.RootNode, coin.SoSwitch
-                )  # The display mode switch.
+                main_switch = vobj.SwitchNode  # The display mode switch.
                 if (
                     main_switch is not None and main_switch.getNumChildren() == 4
                 ):  # Check if all display modes are available.
@@ -2102,7 +2100,11 @@ class _ViewProviderSite:
 
     def updateSunPosition(self, vobj):
         """Calculates sun position and updates the sphere, path arc, and ray object."""
-        if not hasattr(vobj, "ShowSunPosition"):
+        try:
+            vobj.ShowSunPosition
+        except (ReferenceError, AttributeError):
+            # ReferenceError: vobj no longer exists
+            # see https://github.com/FreeCAD/FreeCAD/issues/24543
             return
 
         import math

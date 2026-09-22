@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # **************************************************************************
 #   Copyright (c) 2022 WandererFan <wandererfan@gmail.com>                *
 #                                                                         *
@@ -26,4 +28,5 @@ from TDTest.DrawViewSectionTest import DrawViewSectionTest  # noqa: F401
 from TDTest.DrawViewPartTest import DrawViewPartTest  # noqa: F401
 from TDTest.DrawViewDetailTest import DrawViewDetailTest  # noqa: F401
 from TDTest.DrawViewDimensionTest import DrawViewDimensionTest  # noqa: F401
+from TDTest.TechDrawTaskTest import TechDrawTaskTest  # noqa: F401
 

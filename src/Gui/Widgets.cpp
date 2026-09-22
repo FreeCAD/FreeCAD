@@ -1348,15 +1348,24 @@ void PropertyListEditor::resizeEvent(QResizeEvent* e)
     lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
 }
 
+void PropertyListEditor::changeEvent(QEvent* event)
+{
+    QPlainTextEdit::changeEvent(event);
+
+    if (event->type() == QEvent::PaletteChange || event->type() == QEvent::StyleChange) {
+        highlightCurrentLine();
+        lineNumberArea->update();
+    }
+}
+
 void PropertyListEditor::highlightCurrentLine()
 {
     QList<QTextEdit::ExtraSelection> extraSelections;
     if (!isReadOnly()) {
         QTextEdit::ExtraSelection selection;
 
-        QPalette palette = style()->standardPalette();
-        selection.format.setBackground(palette.highlight().color());
-        selection.format.setForeground(palette.highlightedText().color());
+        selection.format.setBackground(palette().highlight());
+        selection.format.setForeground(palette().highlightedText());
 
         selection.format.setProperty(QTextFormat::FullWidthSelection, true);
         selection.cursor = textCursor();
@@ -1370,7 +1379,7 @@ void PropertyListEditor::highlightCurrentLine()
 void PropertyListEditor::lineNumberAreaPaintEvent(QPaintEvent* event)
 {
     QPainter painter(lineNumberArea);
-    painter.fillRect(event->rect(), Qt::lightGray);
+    painter.setPen(palette().windowText().color());
 
     QTextBlock block = firstVisibleBlock();
     int blockNumber = block.blockNumber();
@@ -1380,7 +1389,6 @@ void PropertyListEditor::lineNumberAreaPaintEvent(QPaintEvent* event)
     while (block.isValid() && top <= event->rect().bottom()) {
         if (block.isVisible() && bottom >= event->rect().top()) {
             QString number = QString::number(blockNumber + 1);
-            painter.setPen(Qt::black);
             painter.drawText(0, top, lineNumberArea->width(), fontMetrics().height(), Qt::AlignRight, number);
         }
 

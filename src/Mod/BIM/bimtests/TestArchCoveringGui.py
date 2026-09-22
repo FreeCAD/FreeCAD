@@ -1,9 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-#
-# Copyright (c) 2026 Furgo
-#
-# This file is part of the FreeCAD BIM workbench.
-# You can find the full license text in the LICENSE file in the root directory.
+# SPDX-FileCopyrightText: 2026 Furgo
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import Arch
 import Draft
@@ -343,18 +357,12 @@ class TestArchCoveringGui(TestArchBaseGui.TestArchBaseGui):
             # Trigger Update
             vp.updateTexture(covering)
 
-            # Traverse Scene Graph
-            root = covering.ViewObject.RootNode
-            flat_root = None
-
             # Find FlatRoot inside the Switch
-            switch = gui_utils.find_coin_node(root, coin.SoSwitch)
+            switch = covering.ViewObject.SwitchNode
             if switch:
-                for i in range(switch.getNumChildren()):
-                    child = switch.getChild(i)
-                    if child.getName().getString() == "FlatRoot":
-                        flat_root = child
-                        break
+                flat_root = gui_utils.find_coin_node_by_name(switch, "FlatRoot")
+            else:
+                flat_root = None
 
             self.assertIsNotNone(flat_root, "Could not find FlatRoot node in scene graph")
 

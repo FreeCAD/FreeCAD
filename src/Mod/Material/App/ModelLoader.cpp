@@ -57,7 +57,7 @@ std::unique_ptr<std::map<QString, std::shared_ptr<ModelEntry>>> ModelLoader::_mo
     nullptr;
 
 ModelLoader::ModelLoader(std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> modelMap,
-                         std::shared_ptr<std::list<std::shared_ptr<ModelLibraryLocal>>> libraryList)
+                         std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> libraryList)
     : _modelMap(modelMap)
     , _libraryList(libraryList)
 {
@@ -352,8 +352,13 @@ void ModelLoader::loadLibraries()
 {
     getModelLibraries();
     if (_libraryList) {
-        for (auto it = _libraryList->begin(); it != _libraryList->end(); it++) {
-            loadLibrary(*it);
+        for (auto& it : *_libraryList) {
+            if (it->isLocal()) {
+                auto modelLibrary = std::dynamic_pointer_cast<Materials::ModelLibraryLocal>(it);
+                if (modelLibrary) {
+                    loadLibrary(modelLibrary);
+                }
+            }
         }
     }
 }

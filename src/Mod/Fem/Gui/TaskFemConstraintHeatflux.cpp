@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 FreeCAD Developers                                 *
  *   Authors: Michael Hindley <hindlemp@eskom.co.za>                       *
@@ -263,7 +265,7 @@ void TaskFemConstraintHeatflux::onConstrTypeChanged(int item)
     auto obj = ConstraintView->getObject<Fem::ConstraintHeatflux>();
     obj->ConstraintType.setValue(item);
     const char* type = obj->ConstraintType.getValueAsString();
-    if (strcmp(type, "DistributedHeatFlux") == 0) {
+    if (strcmp(type, "Flux") == 0) {
         this->Flux();
     }
     else if (strcmp(type, "Convection") == 0) {

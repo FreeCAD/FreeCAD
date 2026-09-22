@@ -160,8 +160,7 @@ Handle(Geom_Surface) Part::Tools::makeSurface(
 
     TColStd_ListIteratorOfListOfTransient anIt(theBoundaries);
     if (anIt.More()) {
-        int i = 1;
-        for (; anIt.More(); anIt.Next(), i++) {
+        for (; anIt.More(); anIt.Next()) {
             const Handle(Standard_Transient) & aCur = anIt.Value();
             if (aCur.IsNull()) {
                 assert(0);
@@ -715,6 +714,10 @@ Handle(Poly_Polygon3D) Part::Tools::polygonOfEdge(const TopoDS_Edge& edge, TopLo
 
     double uv;
     Handle(Geom_Curve) curve = BRep_Tool::Curve(edge, uv, uv);
+
+    if (curve.IsNull()) {
+        return nullptr;
+    }
 
     BRepBuilderAPI_MakeEdge mkBuilder(curve, u, v);
     TopoDS_Shape shape = mkBuilder.Shape();

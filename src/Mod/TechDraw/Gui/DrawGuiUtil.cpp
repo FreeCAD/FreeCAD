@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *   Copyright (c) 2024 Benjamin Bræstrup Sayoc <benj5378@outlook.com>     *
@@ -76,6 +78,7 @@
 #include "QGIEdge.h"
 #include "QGIVertex.h"
 #include "QGIViewPart.h"
+#include "PreferencesGui.h"
 #include "QGSPage.h"
 #include "ViewProviderPage.h"
 #include "Rez.h"
@@ -670,6 +673,19 @@ double DrawGuiUtil::roundToDigits(double original, int digits)
     double rounded = std::round(temp);
     temp = rounded / factor;
     return temp;
+}
+
+double DrawGuiUtil::screenWidth(double sceneWidth)
+{
+    if (!PreferencesGui::screenMode()) {
+        return sceneWidth;
+    }
+
+    int lineGroup = Preferences::lineGroup();
+    double normalWidth = Rez::guiX(LineGroup::getDefaultWidth("Thick", lineGroup));
+    double width = PreferencesGui::screenEdgeWidth() * (sceneWidth / normalWidth);
+
+    return width;
 }
 
 // Returns true if the item or any of its descendants is selected

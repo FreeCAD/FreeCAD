@@ -560,6 +560,7 @@ class _ArchPipeConnector(ArchComponent.Component):
                 order.append("end")
             else:
                 FreeCAD.Console.PrintError(translate("Arch", "Common vertex not found") + "\n")
+                return
             if order[2] == "start":
                 v3 = wires[2].Vertexes[1].Point.sub(wires[2].Vertexes[0].Point).normalize()
             else:

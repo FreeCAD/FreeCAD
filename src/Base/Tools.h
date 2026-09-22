@@ -27,6 +27,7 @@
 
 #include <FCGlobal.h>
 #include <algorithm>
+#include <functional>
 #include <cmath>
 #include <numbers>
 #include <ostream>
@@ -310,6 +311,25 @@ private:
 
 // ----------------------------------------------------------------------------
 
+class ScopeGuard
+{
+public:
+    explicit ScopeGuard(std::function<void()> onExitScope)
+        : onExitScope(std::move(onExitScope))
+    {}
+    ~ScopeGuard()
+    {
+        onExitScope();
+    }
+    ScopeGuard(const ScopeGuard&) = delete;
+    ScopeGuard& operator=(const ScopeGuard&) = delete;
+    ScopeGuard(ScopeGuard&&) = default;
+    ScopeGuard& operator=(ScopeGuard&&) = default;
+
+private:
+    std::function<void()> onExitScope;
+};
+
 template<typename T>
 class BitsetLocker
 {
@@ -416,11 +436,6 @@ BaseExport std::string joinList(const std::vector<std::string>& vec, const std::
  * @return Current time formatted as an ISO 8601 UTC timestamp, ending in 'Z'.
  */
 BaseExport std::string currentDateTimeString();
-
-BaseExport bool isCLocaleName(std::string_view localeName);
-BaseExport void setOperatingSystemNumericLocale(std::string_view localeName);
-BaseExport std::string getOperatingSystemNumericLocale();
-BaseExport void setIcuDefaultLocale(std::string_view icuLocaleId);
 
 BaseExport std::vector<std::string> splitSubName(const std::string& subname);
 

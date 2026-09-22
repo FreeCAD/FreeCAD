@@ -27,10 +27,13 @@
 #include <App/Document.h>
 #include <App/MeasureManager.h>
 #include <Base/Tools.h>
+#include <Base/Converter.h>
 #include <Base/Precision.h>
+#include <BRepAdaptor_Surface.hxx>
 #include <GeomAPI_ProjectPointOnCurve.hxx>
 #include <Geom_Line.hxx>
 #include <Geom_Plane.hxx>
+#include <gp_Lin.hxx>
 #include <GeomAPI_IntSS.hxx>
 #include <GeomAPI_ExtremaCurveCurve.hxx>
 #include <TopExp_Explorer.hxx>
@@ -45,6 +48,7 @@
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/Tools.h>
+#include <Mod/Part/App/Datums.h>
 #include <TopTools_IndexedMapOfShape.hxx>
 
 using namespace Measure;
@@ -95,8 +99,8 @@ bool MeasureAngle::isValidSelection(const App::MeasureSelection& selection)
         }
 
         if (!(type == App::MeasureElementType::LINE || type == App::MeasureElementType::PLANE
-              || type == App::MeasureElementType::LINESEGMENT
-              || type == App::MeasureElementType::DISC)) {
+              || type == App::MeasureElementType::LINESEGMENT || type == App::MeasureElementType::DISC
+              || type == App::MeasureElementType::CYLINDER || type == App::MeasureElementType::CONE)) {
             return false;
         }
     }
@@ -115,18 +119,23 @@ bool MeasureAngle::isPrioritizedSelection(const App::MeasureSelection& selection
     App::DocumentObject* ob1 = objT1.getObject();
     std::string sub1 = objT1.getSubName();
     Base::Vector3d vec1;
-    getVec(*ob1, sub1, vec1);
+    if (!getVec(*ob1, sub1, vec1)) {
+        return false;
+    }
 
     auto element2 = selection.at(1);
     auto objT2 = element2.object;
     App::DocumentObject* ob2 = objT2.getObject();
     std::string sub2 = objT2.getSubName();
     Base::Vector3d vec2;
-    getVec(*ob2, sub2, vec2);
+    if (!getVec(*ob2, sub2, vec2)) {
+        return false;
+    }
 
-
-    double angle = std::fmod(vec1.GetAngle(vec2), std::numbers::pi);
-    return angle > Base::Precision::Angular();
+    // Fold to the acute angle so anti-parallel reads as parallel.
+    const double angle = vec1.GetAngle(vec2);
+    const double acuteAngle = std::min(angle, std::numbers::pi - angle);
+    return acuteAngle > Base::Precision::Angular();
 }
 
 
@@ -278,7 +287,9 @@ bool MeasureAngle::computeOriginFaceFace(TopoDS_Shape& s1, TopoDS_Shape& s2)
         }
     }
 
-    _isImgOrigin = true;
+    if (!isMeasuringDatum() || !areLocationsEqual()) {
+        _isImgOrigin = true;
+    }
 
     gp_Pln pln1(gp_Pnt(location1().XYZ()), gp_Dir(vector1()));
     gp_Pln pln2(gp_Pnt(location2().XYZ()), gp_Dir(vector2()));
@@ -299,36 +310,41 @@ bool MeasureAngle::computeOriginFaceFace(TopoDS_Shape& s1, TopoDS_Shape& s2)
 
 bool MeasureAngle::computeOriginEdgeEdge(TopoDS_Shape& s1, TopoDS_Shape& s2)
 {
-    TopoDS_Edge e1 = TopoDS::Edge(s1);
-    TopoDS_Edge e2 = TopoDS::Edge(s2);
-    TopoDS_Vertex common;
+    if (!isMeasuringDatum()) {
+        TopoDS_Edge e1 = TopoDS::Edge(s1);
+        TopoDS_Edge e2 = TopoDS::Edge(s2);
+        TopoDS_Vertex common;
 
-    if (TopExp::CommonVertex(e1, e2, common)) {
-        outOrigin = BRep_Tool::Pnt(common);
-        return true;
+        if (TopExp::CommonVertex(e1, e2, common)) {
+            outOrigin = BRep_Tool::Pnt(common);
+            return true;
+        }
+
+        // get geometrically same vertex
+        TopoDS_Vertex v1_1, v1_2, v2_1, v2_2;
+        TopExp::Vertices(e1, v1_1, v1_2);
+        TopExp::Vertices(e2, v2_1, v2_2);
+
+        gp_Pnt p1_1 = BRep_Tool::Pnt(v1_1);
+        gp_Pnt p1_2 = BRep_Tool::Pnt(v1_2);
+        gp_Pnt p2_1 = BRep_Tool::Pnt(v2_1);
+        gp_Pnt p2_2 = BRep_Tool::Pnt(v2_2);
+
+        double tol = Precision::Confusion();
+        if (p1_1.IsEqual(p2_1, tol) || p1_1.IsEqual(p2_2, tol)) {
+            outOrigin = p1_1;
+            return true;
+        }
+        if (p1_2.IsEqual(p2_1, tol) || p1_2.IsEqual(p2_2, tol)) {
+            outOrigin = p1_2;
+            return true;
+        }
+
+        _isImgOrigin = true;
     }
-
-    // get geometrically same vertex
-    TopoDS_Vertex v1_1, v1_2, v2_1, v2_2;
-    TopExp::Vertices(e1, v1_1, v1_2);
-    TopExp::Vertices(e2, v2_1, v2_2);
-
-    gp_Pnt p1_1 = BRep_Tool::Pnt(v1_1);
-    gp_Pnt p1_2 = BRep_Tool::Pnt(v1_2);
-    gp_Pnt p2_1 = BRep_Tool::Pnt(v2_1);
-    gp_Pnt p2_2 = BRep_Tool::Pnt(v2_2);
-
-    double tol = Precision::Confusion();
-    if (p1_1.IsEqual(p2_1, tol) || p1_1.IsEqual(p2_2, tol)) {
-        outOrigin = p1_1;
-        return true;
+    else if (!areLocationsEqual()) {
+        _isImgOrigin = true;
     }
-    if (p1_2.IsEqual(p2_1, tol) || p1_2.IsEqual(p2_2, tol)) {
-        outOrigin = p1_2;
-        return true;
-    }
-
-    _isImgOrigin = true;
 
     gp_Lin lin1(gp_Pnt(location1().XYZ()), gp_Dir(vector1()));
     gp_Lin lin2(gp_Pnt(location2().XYZ()), gp_Dir(vector2()));
@@ -340,7 +356,9 @@ bool MeasureAngle::computeOriginEdgeEdge(TopoDS_Shape& s1, TopoDS_Shape& s2)
 
 bool MeasureAngle::computeOriginFaceEdge(TopoDS_Shape& s1)
 {
-    _isImgOrigin = true;
+    if (!isMeasuringDatum() || !areLocationsEqual()) {
+        _isImgOrigin = true;
+    }
 
     bool faceIsS1 = (s1.ShapeType() == TopAbs_FACE);
     gp_Vec faceNormal = ((faceIsS1) ? vector1() : vector2()).Normalized();
@@ -352,6 +370,16 @@ bool MeasureAngle::computeOriginFaceEdge(TopoDS_Shape& s1)
     Base::Vector3d edgeDirVec(edgeDir.X(), edgeDir.Y(), edgeDir.Z());
     Base::Vector3d normalVec(faceNormal.X(), faceNormal.Y(), faceNormal.Z());
     edgeDirVec.ProjectToPlane(Base::Vector3d(0, 0, 0), normalVec);
+
+    if (edgeDirVec.Length() < Precision::Confusion()) {
+        if (faceIsS1) {
+            outOrigin = faceLoc;
+        }
+        else {
+            outOrigin = edgeLoc;
+        }
+        return true;
+    }
 
     gp_Vec projection(edgeDirVec.x, edgeDirVec.y, edgeDirVec.z);
     projection.Normalize();
@@ -373,6 +401,33 @@ bool MeasureAngle::computeOriginFaceEdge(TopoDS_Shape& s1)
     return true;
 }
 
+namespace
+{
+bool isDatum(App::DocumentObject* ob, const std::vector<std::string>& subNames)
+{
+    if (!ob || !ob->isValid() || subNames.empty()) {
+        return false;
+    }
+
+    App::SubObjectT subject {ob, subNames.at(0).c_str()};
+    App::DocumentObject* subObject = subject.getSubObjectList().back();
+    if (!subObject || !subObject->isValid()) {
+        return false;
+    }
+    return Measure::isDatum(*subObject);
+}
+}  // namespace
+
+bool Measure::MeasureAngle::isMeasuringDatum()
+{
+    return ::isDatum(Element1.getValue(), Element1.getSubValues())
+        || ::isDatum(Element2.getValue(), Element2.getSubValues());
+}
+
+bool Measure::MeasureAngle::areLocationsEqual()
+{
+    return gp_Pnt(location1().XYZ()).IsEqual(gp_Pnt(location2().XYZ()), Precision::Confusion());
+}
 
 bool MeasureAngle::getOrigin(gp_Pnt& outOrigin)
 {
@@ -426,6 +481,10 @@ bool MeasureAngle::setDirections(TopoDS_Shape& s1)
         Base::Vector3d normalVec(faceNormal.X(), faceNormal.Y(), faceNormal.Z());
         edgeDirVec.ProjectToPlane(Base::Vector3d(0, 0, 0), normalVec);
 
+        if (edgeDirVec.Length() < Precision::Confusion()) {
+            return true;
+        }
+
         gp_Vec projection(edgeDirVec.x, edgeDirVec.y, edgeDirVec.z);
         projection.Normalize();
 
@@ -466,6 +525,81 @@ bool MeasureAngle::isImgOrigin()
     return _isImgOrigin;
 }
 
+bool MeasureAngle::isAxisBearingFace(const TopoDS_Shape& shape)
+{
+    if (shape.IsNull() || shape.ShapeType() != TopAbs_FACE) {
+        return false;
+    }
+    BRepAdaptor_Surface surf(TopoDS::Face(shape));
+    return surf.GetType() == GeomAbs_Cylinder || surf.GetType() == GeomAbs_Cone;
+}
+
+// A cylinder/cone axis is a line, so compute the acute line-to-line angle (or the
+// line-to-plane complement) directly; the edge/face paths flip an infinite axis to 180.
+App::DocumentObjectExecReturn* MeasureAngle::executeAxisCase(
+    const TopoDS_Shape& s1,
+    const TopoDS_Shape& s2,
+    bool s1Axis,
+    bool s2Axis
+)
+{
+    const gp_Vec d1 = vector1();
+    const gp_Vec d2 = vector2();
+    if (d1.Magnitude() < Precision::Confusion() || d2.Magnitude() < Precision::Confusion()) {
+        return new App::DocumentObjectExecReturn("Could not get element directions");
+    }
+
+    const bool s1Line = s1Axis || s1.ShapeType() == TopAbs_EDGE;
+    const bool s2Line = s2Axis || s2.ShapeType() == TopAbs_EDGE;
+
+    auto acute = [](double angle) {
+        angle = std::fabs(angle);
+        return (angle > std::numbers::pi / 2.0) ? std::numbers::pi - angle : angle;
+    };
+
+    // The arc is swept by Angle from direction1, so the drawn directions must span
+    // exactly the reported angle or it ends up beside the geometry.
+    double angleRad {};
+    direction1 = d1;
+    direction2 = d2;
+    if (s1Line && s2Line) {
+        angleRad = acute(d1.Angle(d2));
+        if (d1.Angle(d2) > std::numbers::pi / 2.0) {
+            direction2.Reverse();
+        }
+        mCase = MeasurementCase::EdgeEdge;
+    }
+    else {
+        const gp_Vec lineDir = s1Line ? d1 : d2;
+        const gp_Vec planeNormal = s1Line ? d2 : d1;
+        angleRad = std::numbers::pi / 2.0 - acute(lineDir.Angle(planeNormal));
+        mCase = MeasurementCase::FaceEdge;
+
+        // Swap the normal for the line's in-plane projection so the arc closes on
+        // the plane rather than on its normal.
+        Base::Vector3d projected = Base::convertTo<Base::Vector3d>(lineDir);
+        projected.ProjectToPlane(Base::Vector3d(0, 0, 0), Base::convertTo<Base::Vector3d>(planeNormal));
+        if (projected.Length() >= Precision::Confusion()) {
+            gp_Vec inPlane = Base::convertTo<gp_Vec>(projected);
+            inPlane.Normalize();
+            (s1Line ? direction2 : direction1) = inPlane;
+        }
+    }
+
+    // The axis stands in for the shape, so the origin is imaginary unless a datum
+    // puts both elements at the same location.
+    _isImgOrigin = !isMeasuringDatum() || !areLocationsEqual();
+    const gp_Lin lin1(gp_Pnt(location1().XYZ()), gp_Dir(d1));
+    const gp_Lin lin2(gp_Pnt(location2().XYZ()), gp_Dir(d2));
+    gp_Pnt onA;
+    gp_Pnt onB;
+    Part::closestPointsOnLines(lin1, lin2, onA, onB);
+    outOrigin = onA;
+
+    Angle.setValue(Base::toDegrees(angleRad));
+    return DocumentObject::StdReturn;
+}
+
 App::DocumentObjectExecReturn* MeasureAngle::execute()
 {
     App::DocumentObject* ob1 = Element1.getValue();
@@ -496,6 +630,12 @@ App::DocumentObjectExecReturn* MeasureAngle::execute()
             | Part::ShapeOption::Transform,
         subs2.at(0).c_str()
     );
+    const bool s1Axis = isAxisBearingFace(s1);
+    const bool s2Axis = isAxisBearingFace(s2);
+    if (s1Axis || s2Axis) {
+        return executeAxisCase(s1, s2, s1Axis, s2Axis);
+    }
+
     if (s1.ShapeType() == TopAbs_FACE && s2.ShapeType() == TopAbs_FACE) {
         mCase = MeasurementCase::FaceFace;
     }

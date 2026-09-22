@@ -23,18 +23,10 @@ include_directories(${pybind11_INCLUDE_DIR})
 
 # this defines the source-files for library
 set(AREA_SRC_COMMON
-    Arc.cpp
     Area.cpp
-    AreaDxf.cpp
     AreaOrderer.cpp
     AreaPocket.cpp
-    Circle.cpp
     Curve.cpp
-    kurve/Construction.cpp
-    kurve/Finite.cpp
-    kurve/kurve.cpp
-    kurve/Matrix.cpp
-    kurve/offset.cpp
 )
 
 set(AREA_SRC_CLIPPER
@@ -56,7 +48,6 @@ else(DEFINED INCLUDE_INSTALL_DIR)
     set(includedir ${CMAKE_INSTALL_PREFIX}/${INCLUDE_INSTALL_DIR})
 endif(DEFINED INCLUDE_INSTALL_DIR)
 
-file(GLOB headers "${CMAKE_CURRENT_SOURCE_DIR}/kurve/*.h")
 file(GLOB headers "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 
 # this makes the Python module
@@ -122,9 +113,11 @@ else(MSVC)
 endif(MSVC)
 
 target_link_libraries(area-native ${area_native_LIBS} Import Clipper2::Clipper2Z)
-SET_BIN_DIR(area-native area-native /Mod/CAM)
+SET_BIN_DIR(area-native)
 
 target_link_libraries(area area-native ${area_LIBS} ${area_native_LIBS})
+target_compile_warn_error(area)
+target_compile_warn_error(area-native)
 
 # TODO why CMAKE_SHARED_LINKER_FLAGS is not used here?
 # This is a dirty workaround!
@@ -136,7 +129,7 @@ if(NOT BUILD_DYNAMIC_LINK_PYTHON AND CMAKE_COMPILER_IS_CLANGXX)
     endif()
 endif()
 
-SET_BIN_DIR(area area /Mod/CAM)
+SET_BIN_DIR(area)
 SET_PYTHON_PREFIX_SUFFIX(area)
 
 EXECUTE_PROCESS(COMMAND ${Python3_EXECUTABLE} -c

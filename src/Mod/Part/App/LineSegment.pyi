@@ -4,8 +4,9 @@ from __future__ import annotations
 
 from Base.Metadata import export
 from Base.Type import Type
+from Base.Vector import Vector
 from TrimmedCurve import TrimmedCurve
-from Point import Point
+from Line import Line
 from typing import overload
 
 @export(
@@ -26,7 +27,7 @@ class LineSegment(TrimmedCurve):
     Part.LineSegment(LineSegment)
         Creates a copy of the given line segment
 
-    Part.LineSegment(Point1,Point2)
+    Part.LineSegment(Vector1,Vector2)
         Creates a line segment that goes through two given points
     """
 
@@ -39,10 +40,14 @@ class LineSegment(TrimmedCurve):
     @overload
     def __init__(self) -> None: ...
     @overload
-    def __init__(self, line_segment: "LineSegment") -> None: ...
+    def __init__(self, line_segment: "LineSegment", /) -> None: ...
     @overload
-    def __init__(self, point1: Point, point2: Point) -> None: ...
-    def setParameterRange(self) -> None:
+    def __init__(self, line_segment: "LineSegment", first: float, last: float, /) -> None: ...
+    @overload
+    def __init__(self, line: Line, first: float, last: float, /) -> None: ...
+    @overload
+    def __init__(self, point1: Vector, point2: Vector, /) -> None: ...
+    def setParameterRange(self, first: float, last: float, /) -> None:
         """
         Set the parameter range of the underlying line geometry
         """

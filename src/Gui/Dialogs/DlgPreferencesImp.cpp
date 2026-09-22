@@ -832,6 +832,13 @@ void DlgPreferencesImp::restoreDefaults()
         ParameterManager* mgr = App::GetApplication().GetParameterSet("User parameter");
         mgr->Clear();
 
+        // Restore the default preferences template if any
+        const char* templatePath = App::Application::getUserParameterTemplatePath();
+        if (templatePath) {
+            mgr->LoadDocument(templatePath);
+            restartRequired = true;  // the reloaded preferences are not applied until restart.
+        }
+
         App::GetApplication()
             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
             ->SetBool("SaveUserParameter", saveParameter);
@@ -2029,11 +2036,7 @@ bool PreferencesSearchController::handlePopupKeyPress(const QKeyEvent* keyEvent)
 
 bool PreferencesSearchController::isClickOutsidePopup(const QMouseEvent* mouseEvent) const
 {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QPoint globalPos = mouseEvent->globalPos();
-#else
     const QPoint globalPos = mouseEvent->globalPosition().toPoint();
-#endif
     const auto searchBoxRect = QRect(m_searchBox->mapToGlobal(QPoint(0, 0)), m_searchBox->size());
     auto popupRect = QRect(m_searchResultsList->mapToGlobal(QPoint(0, 0)), m_searchResultsList->size());
 

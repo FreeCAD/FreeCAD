@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="248"/>
       <source>Approximates a cylinder</source>
-      <translation>Närmar sig en cylinder</translation>
+      <translation>Approximerar en cylinder</translation>
     </message>
   </context>
   <context>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="143"/>
       <source>Approximates a plane</source>
-      <translation>Närmar sig ett plan</translation>
+      <translation>Approximerar ett plan</translation>
     </message>
   </context>
   <context>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../Command.cpp" line="363"/>
       <source>Polynomial Surface</source>
-      <translation>Polynomisk yta</translation>
+      <translation>Polynomyta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="364"/>
       <source>Approximates a polynomial surface</source>
-      <translation>Approximerar en polynomisk yta</translation>
+      <translation>Approximerar en polynomyta</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Approximates a sphere</source>
-      <translation>Närmar sig en sfär</translation>
+      <translation>Approximerar en sfär</translation>
     </message>
   </context>
   <context>
@@ -83,7 +83,7 @@
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Approximate B-Spline Surface…</source>
-      <translation>Ungefärlig B-Spline-yta…</translation>
+      <translation>Approximera B-spline-yta…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="104"/>
@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="532"/>
       <source>Wire From Mesh Boundary…</source>
-      <translation>Tråd från nätbegränsning…</translation>
+      <translation>Tråd från nätets gräns…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="533"/>
       <source>Creates a wire from mesh boundaries</source>
-      <translation>Skapar en tråd från mesh-gränserna</translation>
+      <translation>Skapar en tråd från nätets gränser</translation>
     </message>
   </context>
   <context>
@@ -142,7 +142,7 @@
     <message>
       <location filename="../../Command.cpp" line="421"/>
       <source>Creates separate mesh segments based on surface types</source>
-      <translation>Skapar separata mesh-segment baserat på yttyper</translation>
+      <translation>Skapar separata nätsegment baserat på yttyper</translation>
     </message>
   </context>
   <context>
@@ -160,7 +160,7 @@
     <message>
       <location filename="../../Command.cpp" line="483"/>
       <source>Creates mesh segments from components</source>
-      <translation>Skapar mesh-segment från komponenter</translation>
+      <translation>Skapar nätsegment från komponenter</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../Command.cpp" line="453"/>
       <source>Creates mesh segments manually</source>
-      <translation>Skapar mesh-segment manuellt</translation>
+      <translation>Skapar nätsegment manuellt</translation>
     </message>
   </context>
   <context>
@@ -209,17 +209,17 @@
     <message>
       <location filename="../../Command.cpp" line="224"/>
       <source>Fit plane</source>
-      <translation>Passa plan</translation>
+      <translation>Anpassa plan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="256"/>
       <source>Fit cylinder</source>
-      <translation>Passa cylinder</translation>
+      <translation>Anpassa cylinder</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="324"/>
       <source>Fit sphere</source>
-      <translation>Passa sfär</translation>
+      <translation>Anpassa sfär</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="373"/>
@@ -237,8 +237,8 @@
       <translation>Placering</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="242"/>
       <location filename="../../FitBSplineCurve.cpp" line="152"/>
+      <location filename="../../FitBSplineSurface.cpp" line="242"/>
       <source>Fit B-spline</source>
       <translation>Anpassa B-spline</translation>
     </message>
@@ -270,7 +270,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="14"/>
       <source>Fit B-Spline Surface</source>
-      <translation>Anpassa B-Spline yta</translation>
+      <translation>Anpassa B-spline-yta</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="20"/>
@@ -372,7 +372,7 @@
     <message>
       <location filename="../../Poisson.ui" line="46"/>
       <source>Solver divide</source>
-      <translation>Lösare dividera</translation>
+      <translation>Lösarindelning</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="66"/>
@@ -415,7 +415,7 @@
     <message>
       <location filename="../../Command.cpp" line="671"/>
       <source>View triangulation failed</source>
-      <translation>Triangulering av vy misslyckades</translation>
+      <translation>Kunde inte visa trianguleringen</translation>
     </message>
   </context>
   <context>
@@ -428,7 +428,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="20"/>
       <source>Smooth mesh</source>
-      <translation>Slät mesh</translation>
+      <translation>Jämna ut nätet</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="37"/>
@@ -458,7 +458,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="107"/>
       <source>Create compound</source>
-      <translation>Skapa förening</translation>
+      <translation>Skapa sammansatt objekt</translation>
     </message>
   </context>
   <context>
@@ -486,12 +486,12 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="88"/>
       <source>&lt; faces than</source>
-      <translation>&lt; ytor än</translation>
+      <translation>Färre ytor än</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="14"/>
       <source>Manual Mesh Segmentation</source>
-      <translation>Manuell segmentering av maskor</translation>
+      <translation>Manuell nätsegmentering</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="98"/>
@@ -547,17 +547,17 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="281"/>
       <source>Region Options</source>
-      <translation>Alternativ för region</translation>
+      <translation>Alternativ för område</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="297"/>
       <source>Respect only triangles with screen-facing normals</source>
-      <translation>Respektera endast trianglar med normaler som vetter mot skärmen</translation>
+      <translation>Ta endast hänsyn till trianglar med normaler som vetter mot skärmen</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="287"/>
       <source>Respect only visible triangles</source>
-      <translation>Respektera endast synliga trianglar</translation>
+      <translation>Ta endast hänsyn till synliga trianglar</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="310"/>
@@ -567,7 +567,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="316"/>
       <source>Cut segment from mesh</source>
-      <translation>Skär bort segment från maskan</translation>
+      <translation>Skär bort segment från nätet</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="326"/>
@@ -593,12 +593,12 @@
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>&amp;Reverse Engineering</source>
-      <translation type="unfinished">&amp;Reverse Engineering</translation>
+      <translation>&amp;Rekonstruktion</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
       <source>Surface Reconstruction</source>
-      <translation type="unfinished">Surface Reconstruction</translation>
+      <translation>Ytrekonstruktion</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
@@ -608,7 +608,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>Approximation</source>
-      <translation type="unfinished">Approximation</translation>
+      <translation>Approximation</translation>
     </message>
   </context>
   <context>
@@ -616,7 +616,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="14"/>
       <source>Fit B-Spline Curve</source>
-      <translation>Anpassa B-Spline-kurva</translation>
+      <translation>Anpassa B-spline-kurva</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="20"/>
@@ -631,7 +631,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="37"/>
       <source>Chord length</source>
-      <translation>Ackordlängd</translation>
+      <translation>Kordalängd</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="42"/>
@@ -641,7 +641,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="47"/>
       <source>Equidistant</source>
-      <translation type="unfinished">Equidistant</translation>
+      <translation>Ekvidistant</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="55"/>
@@ -691,7 +691,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="134"/>
       <source>Minimum degree</source>
-      <translation>Minst examen</translation>
+      <translation>Lägsta grad</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="141"/>
@@ -729,7 +729,7 @@
     <message>
       <location filename="../../Command.cpp" line="68"/>
       <source>Approximate B-Spline Curve…</source>
-      <translation>Ungefärlig B-Spline-kurva…</translation>
+      <translation>Approximera B-spline-kurva…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="69"/>

@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2024 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2024 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """BIM window command"""
 
@@ -111,17 +108,17 @@ class Arch_Window:
                     FreeCADGui.doCommand(
                         "win = Arch.makeWindow(FreeCAD.ActiveDocument." + obj.Name + ")"
                     )
-                    if host and self.Include:
+                    if self.Include and host is not None and Draft.getType(host) in ALLOWEDHOSTS:
                         FreeCADGui.doCommand(
                             "win.Hosts = [FreeCAD.ActiveDocument." + host.Name + "]"
                         )
-                        siblings = host.Proxy.getSiblings(host)
+                        siblings = self._get_host_siblings(host)
                         sibs = [host]
                         for sibling in siblings:
                             if not sibling in sibs:
                                 sibs.append(sibling)
                                 FreeCADGui.doCommand(
-                                    "win.Hosts = win.Hosts+[FreeCAD.ActiveDocument."
+                                    "win.Hosts = win.Hosts + [FreeCAD.ActiveDocument."
                                     + sibling.Name
                                     + "]"
                                 )
@@ -344,16 +341,15 @@ class Arch_Window:
                 )
                 SketchArch = False
 
-        if self.Include:
-            if Draft.getType(host) in ALLOWEDHOSTS:
-                FreeCADGui.doCommand("win.Hosts = [FreeCAD.ActiveDocument." + host.Name + "]")
-                siblings = host.Proxy.getSiblings(host)
-                for sibling in siblings:
-                    FreeCADGui.doCommand(
-                        "win.Hosts = win.Hosts + [FreeCAD.ActiveDocument." + sibling.Name + "]"
-                    )
-                if SketchArch:
-                    ArchSketchObject.attachToHost(w, target=host, pl=wPl)
+        if self.Include and host is not None and Draft.getType(host) in ALLOWEDHOSTS:
+            FreeCADGui.doCommand("win.Hosts = [FreeCAD.ActiveDocument." + host.Name + "]")
+            siblings = self._get_host_siblings(host)
+            for sibling in siblings:
+                FreeCADGui.doCommand(
+                    "win.Hosts = win.Hosts + [FreeCAD.ActiveDocument." + sibling.Name + "]"
+                )
+            if SketchArch:
+                ArchSketchObject.attachToHost(w, target=host, pl=wPl)
 
         self.doc.commitTransaction()
         self.doc.recompute()
@@ -606,6 +602,22 @@ class Arch_Window:
             self.im.hide()
             for param in self.wparams:
                 getattr(self, "val" + param).setEnabled(False)
+
+    def _get_host_siblings(self, host):
+        box_host = host.Shape.BoundBox
+        min_overlap = box_host.ZLength / 5  # Minimum Z-direction overlap: 20%.
+        siblings = []
+        for sibling in host.Proxy.getSiblings(host):
+            box_sib = sibling.Shape.BoundBox
+            if box_sib.ZLength < min_overlap:
+                pass
+            elif box_host.ZMin <= box_sib.ZMin <= box_host.ZMax - min_overlap:
+                siblings.append(sibling)
+            elif box_host.ZMin + min_overlap <= box_sib.ZMax <= box_host.ZMax:
+                siblings.append(sibling)
+            elif box_sib.ZMin < box_host.ZMin and box_sib.ZMax > box_host.ZMax:
+                siblings.append(sibling)
+        return siblings
 
 
 FreeCADGui.addCommand("Arch_Window", Arch_Window())

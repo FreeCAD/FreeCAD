@@ -308,11 +308,7 @@ void ToolBarGrip::mouseMoveEvent(QMouseEvent* me)
         return;
     }
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QPoint pos = me->globalPos();
-#else
     QPoint pos = me->globalPosition().toPoint();
-#endif
     QRect rect(toolbar->mapToGlobal(QPoint(0, 0)), toolbar->size());
 
     // if mouse did not leave the area of toolbar do not continue with undocking it
@@ -667,6 +663,13 @@ void ToolBarManager::setupToolBarIconSize()
 
 void ToolBarManager::setToolBarIconSize(QToolBar* toolbar)
 {
+    // Toolbars registered as status-bar items are direct children of QStatusBar,
+    // and own their icon size. Toolbars hosted in statusBarAreaWidget still use
+    // the StatusBarIconSize preference through toolBarIconSize().
+    if (toolbar->parentWidget() == getMainWindow()->statusBar()) {
+        return;
+    }
+
     int s = toolBarIconSize(toolbar);
     toolbar->setIconSize(QSize(s, s));
     if (toolbar->parentWidget() == menuBarLeftAreaWidget) {

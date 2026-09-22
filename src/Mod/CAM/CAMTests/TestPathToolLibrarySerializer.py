@@ -48,7 +48,14 @@ class TestCamoticsLibrarySerializer(TestPathToolLibrarySerializerBase):
 
     def test_camotics_serialize(self):
         serializer = CamoticsLibrarySerializer
-        serialized_data = serializer.serialize(self.test_library)
+        # serialize() follows the active schema, so pin a metric one.  Without
+        # this the fixed expectations below fail on an imperial profile.
+        original = FreeCAD.Units.getSchema()
+        try:
+            FreeCAD.Units.setSchema(0)  # Internal (mm)
+            serialized_data = serializer.serialize(self.test_library)
+        finally:
+            FreeCAD.Units.setSchema(original)
         self.assertIsInstance(serialized_data, bytes)
 
         # Verify the content structure (basic check)
@@ -132,6 +139,67 @@ class TestCamoticsLibrarySerializer(TestPathToolLibrarySerializerBase):
         )
         self.assertEqual(
             tool_20._tool_bit_shape.get_parameter("Length"), FreeCAD.Units.Quantity("30 mm")
+        )
+
+    def test_camotics_imperial_label_matches_value(self):
+        """The emitted unit label must agree with the emitted number.
+
+        getUserPreferred() names the unit by magnitude, so a small length on a
+        U.S. Customary schema comes back as thou rather than in.  Camotics only
+        understands mm and inch, so the value has to be written in one of those.
+        """
+        serializer = CamoticsLibrarySerializer
+        # serialize() rounds to the user's Decimals preference, so round the
+        # expected value the same way rather than assuming a fixed precision.
+        decimals = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt(
+            "Decimals", 2
+        )
+        schemas = FreeCAD.Units.listSchemas()
+        original = FreeCAD.Units.getSchema()
+        try:
+            for schema in range(len(schemas)):
+                FreeCAD.Units.setSchema(schema)
+                # Decide the expected label from the schema itself, not from
+                # what the serializer emitted, or a misclassified schema would
+                # agree with its own wrong answer and pass.
+                expected_units = "imperial" if schemas[schema].startswith("Imperial") else "metric"
+                data = json.loads(serializer.serialize(self.test_library).decode("utf-8"))
+                for tool_no, item in data.items():
+                    self.assertEqual(
+                        item["units"],
+                        expected_units,
+                        msg=f"schema {schemas[schema]} tool {tool_no}: "
+                        f'labelled {item["units"]}',
+                    )
+                    expected = 6.0 if tool_no == "1" else (3.0 if tool_no == "2" else 5.0)
+                    if expected_units == "imperial":
+                        expected /= 25.4
+                    self.assertAlmostEqual(
+                        item["diameter"],
+                        round(expected, decimals),
+                        places=6,
+                        msg=f"schema {schemas[schema]} tool {tool_no}: "
+                        f'{item["diameter"]} does not match label {item["units"]}',
+                    )
+        finally:
+            FreeCAD.Units.setSchema(original)
+
+    def test_camotics_deserialize_honours_units(self):
+        """An imperial library must not be read as millimetres."""
+        serializer = CamoticsLibrarySerializer
+        data = {
+            "1": {
+                "units": "imperial",
+                "shape": "Cylindrical",
+                "length": 1.5,
+                "diameter": 0.25,
+                "description": "1/4 Endmill",
+            }
+        }
+        library = serializer.deserialize(json.dumps(data).encode("utf-8"), "imp", {})
+        bit = library._bit_nos[1]
+        self.assertAlmostEqual(
+            bit._tool_bit_shape.get_parameter("Diameter").getValueAs("mm").Value, 6.35, places=3
         )
 
 

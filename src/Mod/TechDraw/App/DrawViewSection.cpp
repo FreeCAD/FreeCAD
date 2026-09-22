@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
@@ -578,7 +580,11 @@ TopoDS_Shape DrawViewSection::prepareShape(const TopoDS_Shape& uncenteredCutShap
         Base::Vector3d centroid(inputCenter.X(), inputCenter.Y(), inputCenter.Z());
 
         m_cutShapeRaw = uncenteredCutShape;
-        preparedShape = ShapeUtils::moveShape(uncenteredCutShape, centroid * -1.0);
+        // move the cut shape to the origin.  Note this is slightly different than the move to
+        // origin in regular views. Here we move by the SectionOrigin instead of by the geo center
+        // (shape centroid).
+        Base::Vector3d moveToOrigin{SectionOrigin.getValue() * -1};
+        preparedShape = ShapeUtils::moveShape(uncenteredCutShape, moveToOrigin);
         m_cutShape = preparedShape;
         m_saveCentroid = centroid;
 
@@ -662,7 +668,7 @@ void DrawViewSection::postHlrTasks()
         BRepTools::Write(faceIntersections, "DVSFaceIntersections.brep");// debug
     }
 
-    TopoDS_Shape centeredFaces = ShapeUtils::moveShape(faceIntersections, m_saveCentroid * -1.0);
+    TopoDS_Shape centeredFaces = ShapeUtils::moveShape(faceIntersections, SectionOrigin.getValue() * -1.0);
 
     TopoDS_Shape scaledSection = ShapeUtils::scaleShape(centeredFaces, getScale());
     if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
@@ -759,7 +765,7 @@ TopoDS_Compound DrawViewSection::alignSectionFaces(const TopoDS_Shape& faceInter
 {
     TopoDS_Compound sectionFaces;
     TopoDS_Shape centeredShape =
-        ShapeUtils::moveShape(faceIntersections, getOriginalCentroid() * -1.0);
+        ShapeUtils::moveShape(faceIntersections, SectionOrigin.getValue() * -1.0);
 
     TopoDS_Shape scaledSection = ShapeUtils::scaleShape(centeredShape, getScale());
     if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
@@ -1251,8 +1257,6 @@ void DrawViewSection::handleChangedPropertyType(Base::XMLReader &reader, const c
         }
         return;
     }
-
-    DrawViewPart::handleChangedPropertyType(reader, TypeName, prop);
 }
 
 // checks that SectionNormal and XDirection are perpendicular and that Direction is the same as

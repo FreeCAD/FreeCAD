@@ -321,15 +321,13 @@ PyObject* ComplexGeoDataPy::getElementName(PyObject* args) const
     if (direction == 1) {
         return Py::new_reference_to(Py::String(res.name.appendToBuffer(s)));
     }
-    else if (direction == 0) {
+    if (direction == 0) {
         return Py::new_reference_to(Py::String(res.index.appendToStringBuffer(s)));
     }
-    else if (Data::IndexedName(input)) {
+    if (Data::IndexedName(input)) {
         return Py::new_reference_to(Py::String(res.name.appendToBuffer(s)));
     }
-    else {
-        return Py::new_reference_to(Py::String(res.index.appendToStringBuffer(s)));
-    }
+    return Py::new_reference_to(Py::String(res.index.appendToStringBuffer(s)));
 }
 
 PyObject* ComplexGeoDataPy::getElementIndexedName(PyObject* args) const
@@ -607,11 +605,9 @@ int ComplexGeoDataPy::setCustomAttributes(const char* attr, PyObject* obj)
             getComplexGeoDataPtr()->setTransform(mat);
             return 1;
         }
-        else {
-            std::string error = std::string("type must be 'Matrix', not ");
-            error += obj->ob_type->tp_name;
-            throw Py::TypeError(error);
-        }
+        std::string error = std::string("type must be 'Matrix', not ");
+        error += obj->ob_type->tp_name;
+        throw Py::TypeError(error);
     }
     return 0;
 }

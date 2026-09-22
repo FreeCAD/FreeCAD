@@ -34,6 +34,7 @@ from .presets import (
     derive_preset_label,
     get_presets,
     make_preset,
+    preset_key,
     set_presets,
 )
 
@@ -50,6 +51,7 @@ __all__ = (
     "derive_preset_label",
     "get_presets",
     "make_preset",
+    "preset_key",
     "resolve",
     "set_presets",
 )

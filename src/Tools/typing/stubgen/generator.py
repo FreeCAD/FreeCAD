@@ -19,6 +19,7 @@ of growing this file again.
 from __future__ import annotations
 
 from collections import Counter
+from dataclasses import dataclass
 from pathlib import Path
 import shutil
 
@@ -26,11 +27,20 @@ from .class_merge import (
     append_class_stubs,
     validate_public_class_aliases,
 )
+from .cpp_properties import (
+    CppPropertyDiagnostic,
+    CppPropertyReport,
+    TypedCppProperty,
+    add_cpp_properties,
+    discover_cpp_properties,
+    typed_cpp_properties,
+)
 from .module_merge import (
     copy_module_support_stubs,
     copy_overlay_stubs,
     copy_type_support_stubs,
     ensure_parent_package_stubs,
+    merge_module_support_nodes,
     module_stub_path,
     public_module_names,
     public_stub_symbols,
@@ -40,8 +50,31 @@ from .discovery import (
     group_type_methods_by_public_module,
     module_names_from_type_methods,
 )
+from .document_object_types import (
+    add_document_add_object_overloads,
+    direct_python_types,
+    document_object_python_types,
+)
+from .init_exports import ModuleExport, load_init_exports, render_init_exports
 from .model import BindingClass, BindingMethod, PublicTypeGroup, StubSignatureOverrides
+from .property_contracts import (
+    PropertyCatalog,
+    conversion_metadata_issues,
+    load_property_catalog,
+    render_property_aliases,
+)
+from .property_hierarchy import property_hierarchy_from
 from .render import type_stub_lines, write_stub_file
+from .type_hierarchy import TypeHierarchy, discover_type_hierarchy
+from .project import Project
+
+
+@dataclass(frozen=True)
+class GenerationResult:
+    """Results from generating the public stub tree."""
+
+    overlay_count: int
+    cpp_property_report: CppPropertyReport
 
 
 def write_public_module_stubs(
@@ -111,6 +144,84 @@ def append_type_stubs(
     return count
 
 
+def append_property_aliases(
+    out_dir: Path,
+    module_names: set[str],
+    catalog: PropertyCatalog,
+) -> None:
+    """Add generated ``App::Property*`` aliases to the public FreeCAD stub."""
+
+    target = module_stub_path(out_dir, "FreeCAD", module_names)
+    if not target.exists():
+        raise FileNotFoundError(f"Expected generated FreeCAD module stub: {target}")
+
+    original = target.read_text(encoding="utf-8")
+    merged = merge_module_support_nodes(original, render_property_aliases(catalog))
+    if merged != original:
+        target.write_text(merged, encoding="utf-8")
+
+
+def append_cpp_properties(
+    out_dir: Path,
+    module_names: set[str],
+    root: Path,
+    classes: list[BindingClass],
+    hierarchy: TypeHierarchy,
+    property_catalog: PropertyCatalog,
+) -> CppPropertyReport:
+    """Add C++ property-container members to generated public class stubs."""
+
+    diagnostics: list[CppPropertyDiagnostic] = []
+    discovered_properties = discover_cpp_properties(root, hierarchy, diagnostics)
+    public_types = direct_python_types(
+        classes,
+        type_ids={property_.owner_type_id for property_ in discovered_properties},
+    )
+    properties = typed_cpp_properties(
+        discovered_properties,
+        hierarchy,
+        property_catalog,
+        public_types,
+        diagnostics,
+    )
+    by_module: dict[str, list[TypedCppProperty]] = {}
+    for property_ in properties:
+        by_module.setdefault(property_.owner.module_name, []).append(property_)
+
+    for module_name, module_properties in sorted(by_module.items()):
+        target = module_stub_path(out_dir, module_name, module_names)
+        if not target.exists():
+            raise FileNotFoundError(f"Expected generated {module_name} stub: {target}")
+        original = target.read_text(encoding="utf-8")
+        merged = add_cpp_properties(original, tuple(module_properties))
+        if merged != original:
+            target.write_text(merged, encoding="utf-8")
+    return CppPropertyReport(len(discovered_properties), len(properties), tuple(diagnostics))
+
+
+def append_init_exports(
+    out_dir: Path,
+    module_names: set[str],
+    root: Path,
+) -> None:
+    """Add structured Python-bootstrap exports to their public module stub."""
+
+    exports = load_init_exports(root)
+    by_module: dict[str, list[ModuleExport]] = {}
+    for export in exports:
+        by_module.setdefault(export.module, []).append(export)
+
+    for module_name, module_exports in by_module.items():
+        target = module_stub_path(out_dir, module_name, module_names)
+        if not target.exists():
+            raise FileNotFoundError(f"Expected generated {module_name} stub: {target}")
+
+        original = target.read_text(encoding="utf-8")
+        merged = merge_module_support_nodes(original, render_init_exports(tuple(module_exports)))
+        if merged != original:
+            target.write_text(merged, encoding="utf-8")
+
+
 def markdown_report(methods: list[BindingMethod]) -> str:
     by_family = Counter(method.family for method in methods)
     by_context = Counter(
@@ -149,6 +260,35 @@ def markdown_report(methods: list[BindingMethod]) -> str:
     return "\n".join(lines) + "\n"
 
 
+def append_document_add_object_overloads(
+    out_dir: Path,
+    module_names: set[str],
+    classes: list[BindingClass],
+    hierarchy: TypeHierarchy,
+) -> None:
+    """Add TypeId-derived overloads to the generated public Document class."""
+
+    target = module_stub_path(out_dir, "FreeCAD", module_names)
+    if not target.exists():
+        raise FileNotFoundError(f"Expected generated FreeCAD module stub: {target}")
+
+    registrations = document_object_python_types(
+        hierarchy,
+        direct_python_types(classes, hierarchy),
+    )
+    original = target.read_text(encoding="utf-8")
+    merged = add_document_add_object_overloads(original, registrations)
+    if merged != original:
+        target.write_text(merged, encoding="utf-8")
+
+
+def write_pep561_markers(out_dir: Path, module_names: set[str]) -> None:
+    top_level = {name.split(".", 1)[0] for name in module_names}
+    for pkg in sorted(top_level):
+        (out_dir / pkg).mkdir(parents=True, exist_ok=True)
+        (out_dir / pkg / "py.typed").touch()
+
+
 def write_outputs(
     out_dir: Path,
     root: Path,
@@ -158,18 +298,26 @@ def write_outputs(
     type_registrations: dict[str, list[str]],
     stub_signature_overrides: StubSignatureOverrides,
     overlay_dir: Path | None = None,
-) -> int:
+) -> GenerationResult:
     validate_public_class_aliases(classes)
     out_dir.mkdir(parents=True, exist_ok=True)
     for generated_dir in ("stubs",):
         shutil.rmtree(out_dir / generated_dir, ignore_errors=True)
 
     module_names = public_module_names(methods, classes, type_registrations, overlay_dir)
+    type_hierarchy = discover_type_hierarchy(root)
+    property_catalog = load_property_catalog(root)
+    property_hierarchy = property_hierarchy_from(type_hierarchy)
+    conversion_issues = conversion_metadata_issues(root, property_hierarchy, property_catalog)
+    if conversion_issues:
+        formatted = "\n".join(issue.format() for issue in conversion_issues)
+        raise ValueError("Core property conversion metadata is incomplete:\n" + formatted)
     write_public_module_stubs(out_dir / "stubs", methods, module_names, stub_signature_overrides)
     overlay_count = (
         copy_overlay_stubs(overlay_dir, out_dir / "stubs", module_names) if overlay_dir else 0
     )
     copy_module_support_stubs(root, source_dir, out_dir / "stubs", module_names)
+    append_property_aliases(out_dir / "stubs", module_names, property_catalog)
     append_type_stubs(
         out_dir / "stubs",
         methods,
@@ -179,4 +327,29 @@ def write_outputs(
     )
     append_class_stubs(out_dir / "stubs", root, classes, module_names)
     copy_type_support_stubs(root, source_dir, out_dir / "stubs", module_names)
-    return overlay_count
+    cpp_property_report = append_cpp_properties(
+        out_dir / "stubs",
+        module_names,
+        root,
+        classes,
+        type_hierarchy,
+        property_catalog,
+    )
+    append_document_add_object_overloads(
+        out_dir / "stubs",
+        module_names,
+        classes,
+        type_hierarchy,
+    )
+    append_init_exports(
+        out_dir / "stubs",
+        module_names,
+        root,
+    )
+
+    write_pep561_markers(out_dir / "stubs", module_names)
+    project = Project(root)
+    project.write_pyproject(out_dir)
+    project.write_readme(out_dir)
+
+    return GenerationResult(overlay_count, cpp_property_report)

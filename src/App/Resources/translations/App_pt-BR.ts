@@ -4,7 +4,7 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="621"/>
+      <location filename="../../Application.cpp" line="609"/>
       <source>Unnamed</source>
       <translation>Sem nome</translation>
     </message>
@@ -21,7 +21,7 @@
     <message>
       <location filename="../../Expression.cpp" line="587"/>
       <source>Null</source>
-      <translation type="unfinished">Null</translation>
+      <translation>Nulo</translation>
     </message>
   </context>
   <context>
@@ -35,7 +35,7 @@
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../Document.cpp" line="1230"/>
+      <location filename="../../Document.cpp" line="1248"/>
       <source>
 It is recommended that the user right-click the root of the document and select Mark to recompute.
 The user should then click the Refresh button in the main toolbar.
@@ -87,7 +87,7 @@ O usuário deve então clicar no botão Atualizar na barra de ferramentas princi
   <context>
     <name>LinkParams</name>
     <message>
-      <location filename="../../Link.cpp" line="119"/>
+      <location filename="../../Link.cpp" line="131"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
       <translation>Armazena a escolha mais recente do usuário a respeito da aplicação da configuração Copiar ao alterar em todos os links que direcionam para o mesmo objeto configurável</translation>

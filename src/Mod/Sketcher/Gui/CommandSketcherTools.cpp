@@ -914,6 +914,8 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
                     ss.str(std::string());
 
                     switch (vals[ConstrId]->FirstPos) {
+                        case Sketcher::PointPos::NumPointPos:
+                            break;
                         case Sketcher::PointPos::none:
                             ss << "Edge" << vals[ConstrId]->First + 1;
                             break;
@@ -933,6 +935,8 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
                     ss.str(std::string());
 
                     switch (vals[ConstrId]->SecondPos) {
+                        case Sketcher::PointPos::NumPointPos:
+                            break;
                         case Sketcher::PointPos::none:
                             ss << "Edge" << vals[ConstrId]->Second + 1;
                             break;
@@ -953,6 +957,8 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
                     ss.str(std::string());
 
                     switch (vals[ConstrId]->ThirdPos) {
+                        case Sketcher::PointPos::NumPointPos:
+                            break;
                         case Sketcher::PointPos::none:
                             ss << "Edge" << vals[ConstrId]->Third + 1;
                             break;

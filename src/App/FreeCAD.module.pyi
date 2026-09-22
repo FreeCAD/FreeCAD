@@ -10,7 +10,7 @@ those signatures use.
 from __future__ import annotations
 
 from collections.abc import Sequence
-from typing import TYPE_CHECKING, Literal, TypeAlias, overload
+from typing import Any, Literal, TypeAlias, overload
 
 from Base.Metadata import module
 from . import Console as Console  # pylint: disable=no-name-in-module,unused-import
@@ -24,13 +24,12 @@ module(
     CallbackPrefix="s",
 )
 
-if TYPE_CHECKING:
-    from Part import Feature as _PartFeature
-
 _FileTypeModules: TypeAlias = dict[str, str | list[str] | None]
 _LogLevelName: TypeAlias = Literal["Default", "Error", "Warning", "Message", "Log", "Trace"]
 GuiUp: int
 ActiveDocument: Document | None
+Gui: Any
+"""Optional GUI module alias installed by GUI initialization; use FreeCADGui for typed APIs."""
 
 # Parameter and configuration access
 def ParamGet(path: str, /) -> ParameterGrp:
@@ -283,4 +282,16 @@ def checkAbort() -> None:
     such as during document restore or recomputation. Users usually request the
     abort by pressing Esc.
     """
+    ...
+
+def getLastCrashReport() -> CrashReport | None:
+    """If the last run of FreeCAD crashed, this will return the most recent crash report."""
+    ...
+
+def getCrashReports() -> list[CrashReport]:
+    """Get all "live" crash reports (retained according to the retention policy)."""
+    ...
+
+def clearCrashReports() -> None:
+    """Clear all existing crash reports. Safe to call while holding a crash report."""
     ...

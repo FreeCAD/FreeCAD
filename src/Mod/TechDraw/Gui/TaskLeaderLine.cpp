@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -85,8 +87,7 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
 
     m_basePage = m_lineFeat->findParentPage();
     if (!m_basePage) {
-        Base::Console().error("TaskRichAnno - bad parameters (2).  Cannot proceed.\n");
-        return;
+        throw Base::RuntimeError("TaskLeaderLine - Parent page not found");
     }
     App::DocumentObject* obj = m_lineFeat->LeaderParent.getValue();
     if (obj) {

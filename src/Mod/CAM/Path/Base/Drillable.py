@@ -3,8 +3,6 @@
 import FreeCAD as App
 import Part
 import Path
-import numpy
-import math
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -52,49 +50,46 @@ def isDrillableCylinder(
         "\n match tool diameter {} \n match vector {}".format(matchToolDiameter, matchVector)
     )
 
-    def getSeam(candidate):
-        # Finds the vertical seam edge in a cylinder
-
-        for e in candidate.Edges:
-            if isinstance(e.Curve, Part.Line):  # found the seam
-                return e
-
     if not candidate.ShapeType == "Face":
         raise TypeError("expected a Face")
 
-    if not isinstance(candidate.Surface, Part.Cylinder):
-        raise TypeError("expected a cylinder")
+    if not isinstance(candidate.Surface, (Part.Cylinder, Part.Cone)):
+        raise TypeError("expected a cylinder or cone")
 
     if not (len(candidate.Edges) == 3 or allowPartial):
         raise TypeError("cylinder does not have 3 edges.  Not supported yet")
 
-    if obj.isInside(candidate.BoundBox.Center, Path.Geom.Tolerance, False):
+    if candidate.Volume > 0:
         Path.Log.debug("The cylindrical face is a raised feature")
         return False
 
     if not matchToolDiameter and not matchVector:
         return True
 
-    if matchToolDiameter and tooldiameter / 2 > candidate.Surface.Radius:
-        Path.Log.debug("The tool is larger than the target")
-        return False
+    if matchToolDiameter:
+        if edges := [e for e in candidate.Edges if isinstance(e.Curve, Part.Circle)]:
+            edge = sorted(edges, key=lambda e: e.Curve.Radius)[0]  # edge with smaller radius
+            holediameter = edge.Curve.Radius * 2
+            if tooldiameter > holediameter and not Path.Geom.isRoughly(tooldiameter, holediameter):
+                Path.Log.debug("The tool is larger than the target")
+                return False
 
     bottomface = checkForBlindHole(obj, candidate)
     Path.Log.track("candidate is a blind hole")
 
     if bottomface and matchVector:  # blind holes only drillable at exact vector
-        result = compareVecs(bottomface.normalAt(0, 0), vector, exact=True)
+        result = Path.Geom.compareVecs(bottomface.normalAt(0, 0), vector, exact=True)
         Path.Log.track(result)
         return result
 
-    elif matchVector and not (compareVecs(getSeam(candidate).Curve.Direction, vector)):
+    elif matchVector and not (Path.Geom.compareVecs(candidate.Surface.Axis, vector)):
         Path.Log.debug("The feature is not aligned with the given vector")
         return False
     else:
         return True
 
 
-def isDrillableFace(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1)):
+def isDrillableFace(candidate, tooldiameter=None, vector=App.Vector(0, 0, 1)):
     """
     checks if a flat face or edge is drillable
     """
@@ -129,7 +124,7 @@ def isDrillableFace(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1
         )
         return False
     if vector is not None:  # Check for blind hole alignment
-        if not compareVecs(candidate.normalAt(0, 0), vector, exact=True):
+        if not Path.Geom.compareVecs(candidate.normalAt(0, 0), vector, exact=True):
             Path.Log.debug("Vector not aligned")
             return False
     if matchToolDiameter and edge.Curve.Radius < tooldiameter / 2:
@@ -174,7 +169,7 @@ def isDrillableEdge(
         Path.Log.debug("The tool is larger than the target")
         return False
 
-    if matchVector and not (compareVecs(edge.Curve.Axis, vector)):
+    if matchVector and not (Path.Geom.compareVecs(edge.Curve.Axis, vector)):
         Path.Log.debug("The feature is not aligned with the given vector")
         return False
     else:
@@ -218,10 +213,10 @@ def isDrillable(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1), a
 
     try:
         if candidate.ShapeType == "Face":
-            if isinstance(candidate.Surface, Part.Cylinder):
+            if isinstance(candidate.Surface, (Part.Cylinder, Part.Cone)):
                 return isDrillableCylinder(obj, candidate, tooldiameter, vector, allowPartial)
             else:
-                return isDrillableFace(obj, candidate, tooldiameter, vector)
+                return isDrillableFace(candidate, tooldiameter, vector)
         if candidate.ShapeType == "Edge":
             return isDrillableEdge(obj, candidate, tooldiameter, vector, allowPartial)
         else:
@@ -231,39 +226,6 @@ def isDrillable(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1), a
         Path.Log.debug(e)
         return False
         # raise TypeError("{}".format(e))
-
-
-def compareVecs(vec1, vec2, exact=False):
-    """
-    compare the two vectors to see if they are aligned for drilling.
-    if exact is True, vectors must match direction. Otherwise,
-    alignment can indicate the vectors are the same or exactly opposite
-    """
-
-    angle = vec1.getAngle(vec2)
-    angle = 0 if math.isnan(angle) else math.degrees(angle)
-    Path.Log.debug("vector angle: {}".format(angle))
-    if exact:
-        return numpy.isclose(angle, 0, rtol=1e-05, atol=1e-04)
-    else:
-        return numpy.isclose(angle, 0, rtol=1e-05, atol=1e-04) or numpy.isclose(
-            angle, 180, rtol=1e-05, atol=1e-04
-        )
-
-
-def getStraightEdge(candidate):
-    # Finds the seam edge in a cylinder
-    for e in candidate.Edges:
-        if isinstance(e.Curve, Part.Line):
-            return e
-    for e in candidate.Edges:
-        if isinstance(e.Curve, Part.BSplineCurve):
-            p0 = e.Vertexes[0].Point
-            p1 = e.Vertexes[-1].Point
-            length = p0.distanceToPoint(p1)
-            if Path.Geom.isRoughly(e.Length, length):
-                return Part.Edge(Part.LineSegment(p0, p1))
-    return App.Vector(0, 0, 1)
 
 
 def getDrillableTargets(obj, toolDiameter=None, vector=App.Vector(0, 0, 1)):
@@ -337,9 +299,9 @@ def getDrillableTargets(obj, toolDiameter=None, vector=App.Vector(0, 0, 1)):
                 bottomFace = face
                 break
         if bottomFace:  # blind holes only drillable at exact vector
-            if compareVecs(bottomFace.normalAt(0, 0), vector, exact=True):
+            if Path.Geom.compareVecs(bottomFace.normalAt(0, 0), vector, exact=True):
                 drillables.append(candidate)
-        elif compareVecs(getStraightEdge(candidate).Curve.Direction, vector):
+        elif Path.Geom.compareVecs(candidate.Surface.Axis, vector):
             drillables.append(candidate)
 
     if drillables:

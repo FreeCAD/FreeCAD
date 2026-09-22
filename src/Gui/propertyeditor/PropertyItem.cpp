@@ -923,11 +923,7 @@ QWidget* PropertyFontItem::createEditor(
 void PropertyFontItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
     auto cb = qobject_cast<QComboBox*>(editor);
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QStringList familyNames = QFontDatabase().families(QFontDatabase::Any);
-#else
     QStringList familyNames = QFontDatabase::families(QFontDatabase::Any);
-#endif
     cb->addItems(familyNames);
     int index = familyNames.indexOf(data.toString());
     cb->setCurrentIndex(index);
@@ -1122,7 +1118,8 @@ PropertyFloatItem::PropertyFloatItem() = default;
 QString PropertyFloatItem::toString(const QVariant& prop) const
 {
     double value = prop.toDouble();
-    QString data = QLocale().toString(value, 'f', decimals());
+    // show the actual value, not the 2 decimal UI version
+    QString data = QLocale().toString(value, 'g', highPrec);
 
     if (hasExpression()) {
         data += QStringLiteral("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
@@ -1157,7 +1154,8 @@ QWidget* PropertyFloatItem::createEditor(
 {
     auto sb = new Gui::DoubleSpinBox(parent);
     sb->setFrame(static_cast<bool>(frameOption));
-    sb->setDecimals(decimals());
+    sb->setDecimals(highPrec);  // let users type in the full number, not just 2 decimals. Dont
+                                // truncate what they type.
     QObject::connect(sb, qOverload<double>(&Gui::DoubleSpinBox::valueChanged), method);
 
     if (isBound()) {
@@ -1299,7 +1297,8 @@ PropertyFloatConstraintItem::PropertyFloatConstraintItem() = default;
 QString PropertyFloatConstraintItem::toString(const QVariant& prop) const
 {
     double value = prop.toDouble();
-    return QLocale().toString(value, 'f', decimals());
+    // same as above, show the real value not 2 decimals
+    return QLocale().toString(value, 'g', highPrec);
 }
 
 QVariant PropertyFloatConstraintItem::value(const App::Property* prop) const
@@ -1327,7 +1326,8 @@ QWidget* PropertyFloatConstraintItem::createEditor(
 ) const
 {
     auto sb = new Gui::DoubleSpinBox(parent);
-    sb->setDecimals(decimals());
+    sb->setDecimals(highPrec);  // let users type in the full number, not just 2 decimals. Dont
+                                // truncate what they type.
     sb->setFrame(static_cast<bool>(frameOption));
     QObject::connect(sb, qOverload<double>(&Gui::DoubleSpinBox::valueChanged), method);
 

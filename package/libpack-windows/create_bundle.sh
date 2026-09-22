@@ -19,7 +19,11 @@
 #   MAKE_INSTALLER    "true" to also build the NSIS installer (x64 only for now)
 #   UPLOAD_RELEASE    "true" to upload artifacts to the release with "gh release upload"
 # Optional (code signing, all must be present to sign):
-#   WINDOWS_SIGN_RELEASE            "1" to attempt Azure Trusted Signing
+#   WINDOWS_SIGN_RELEASE            "1" to sign with Azure Trusted Signing. Signing is then
+#                                   mandatory: any failure aborts before an artifact is uploaded.
+#   WINDOWS_SIGNING_REQUIRED        "1" when signing credentials are configured for this build, so
+#                                   that an unsigned bundle is an error even if the Azure login
+#                                   itself failed and WINDOWS_SIGN_RELEASE ended up "0".
 #   WINDOWS_AZURE_ENDPOINT
 #   WINDOWS_AZURE_CERTIFICATE_PROFILE
 #   WINDOWS_AZURE_SIGNING_ACCOUNT
@@ -134,27 +138,50 @@ fi
 sign_dir="${copy_dir}"
 sign_available=0
 if [[ "${WINDOWS_SIGN_RELEASE:-0}" == "1" ]]; then
-    tenant="$(az account show --query tenantId -o tsv)"
+    # Once signing is requested it is mandatory: an unusable signer aborts before anything is
+    # uploaded. Losing the artifact is deliberate, because a silently unsigned bundle published
+    # under a green job is far worse than a red job and no bundle at all.
+    if ! command -v sign >/dev/null 2>&1; then
+        echo "ERROR: signing was requested but the 'sign' tool was not found on PATH." >&2
+        exit 1
+    fi
+    if ! tenant="$(az account show --query tenantId -o tsv)"; then
+        echo "ERROR: signing was requested but the Azure tenant could not be determined." >&2
+        exit 1
+    fi
+
     export AZURE_IDENTITY_DISABLE_WORKLOAD_IDENTITY=true
     export AZURE_IDENTITY_DISABLE_MANAGED_IDENTITY=true
     unset AZURE_IDENTITY_LOGGING_ENABLED || true
 
-    if az account get-access-token --tenant "${tenant}" \
-           --scope "https://codesigning.azure.net/.default" >/dev/null 2>&1; then
-        sign_available=1
+    if ! az account get-access-token --tenant "${tenant}" \
+             --scope "https://codesigning.azure.net/.default" >/dev/null 2>&1; then
+        echo "ERROR: signing was requested but no Azure code signing token could be obtained." >&2
+        exit 1
     fi
+    sign_available=1
+elif [[ "${WINDOWS_SIGNING_REQUIRED:-0}" == "1" ]]; then
+    # Signing credentials are configured for this build, so the Azure login failing (its workflow
+    # step is continue-on-error) must not quietly downgrade a real release to an unsigned bundle.
+    echo "ERROR: signing credentials are configured but the Azure login did not succeed." >&2
+    exit 1
 fi
 
 sign_file() {
-    sign code artifact-signing \
+    # Output is captured rather than shown because Azure authentication is extremely noisy with
+    # misleading Managed Identity "failure" messages that do not affect the real signing result.
+    # It is printed when signing actually fails, so real errors are not swallowed.
+    local output
+    if ! output="$(sign code artifact-signing \
         --artifact-signing-endpoint "${WINDOWS_AZURE_ENDPOINT}" \
         --artifact-signing-certificate-profile "${WINDOWS_AZURE_CERTIFICATE_PROFILE}" \
         --artifact-signing-account "${WINDOWS_AZURE_SIGNING_ACCOUNT}" \
         --timestamp-url https://timestamp.acs.microsoft.com \
         --timestamp-digest sha256 \
-        "$1" >/dev/null 2>&1
-    # Output is silenced because Azure authentication is extremely noisy with misleading Managed
-    # Identity "failure" messages that do not affect the real signing result.
+        "$1" 2>&1)"; then
+        printf '%s\n' "${output}" >&2
+        return 1
+    fi
 }
 
 if [[ "${sign_available}" == "1" ]]; then
@@ -172,7 +199,10 @@ if [[ "${sign_available}" == "1" ]]; then
     for f in "${files[@]}"; do
         count=$((count + 1))
         echo "Signing [${count}/${total}]: ${f}"
-        sign_file "${f}"
+        if ! sign_file "${f}"; then
+            echo "Signing failed for ${f}"
+            exit 1
+        fi
     done
     signtool verify -pa "${sign_dir}/bin/FreeCAD.exe" || echo "signtool verify failed (continuing)"
     echo "Signing completed."

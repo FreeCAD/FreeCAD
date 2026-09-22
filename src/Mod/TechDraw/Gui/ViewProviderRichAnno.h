@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2019 Wanderer Fan <wandererfan@gmail.com>               *
@@ -56,6 +58,7 @@ public:
     void onChanged(const App::Property* prop) override;
     bool onDelete(const std::vector<std::string>&) override;
     bool doubleClicked() override;
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
     bool canDelete(App::DocumentObject* obj) const override;
     bool setEdit(int ModNum) override;
 

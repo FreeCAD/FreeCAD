@@ -1,26 +1,24 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2016 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileCopyrightText: 2021 Schildkroet
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
-# *   Copyright (c) 2021 Schildkroet                                        *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
 import Path
@@ -93,6 +91,7 @@ CmdMoveDrill = Constants.GCODE_MOVE_DRILL
 CmdMoveArc = Constants.GCODE_MOVE_ARC
 CmdMoveMill = Constants.GCODE_MOVE_MILL
 CmdMove = Constants.GCODE_MOVE
+CmdMoveTap = Constants.GCODE_MOVE_TAP
 CmdMoveAll = Constants.GCODE_MOVE_ALL
 
 
@@ -165,6 +164,20 @@ def diffAngle(a1, a2, direction="CW"):
             a2 += 2 * math.pi
         a = a2 - a1
     return a
+
+
+def compareVecs(vec1, vec2, exact=False, error=Tolerance):
+    """compareVecs(vec1, vec2, [exact=False, error=Tolerance])
+    Returns True if two vectors are aligned within a given error.
+    If exact is True, vectors must match direction.
+    Otherwise, alignment can indicate the vectors are the same or exactly opposite.
+    """
+    angle = vec1.getAngle(vec2)
+    angle = 0 if math.isnan(angle) else angle
+    if exact:
+        return Path.Geom.isRoughly(angle, 0, error)
+    else:
+        return Path.Geom.isRoughly(angle, 0, error) or Path.Geom.isRoughly(angle, math.pi, error)
 
 
 def isVertical(obj):
@@ -545,6 +558,44 @@ def wiresForPath(path, startPoint=Vector(0, 0, 0)):
     return wires
 
 
+def edgesToPoints(edges, chord, startPoint=None, error=Tolerance):
+    """edgesToPoints(edges, chord, [startPoint=None, error=Tolerance])
+    Extract an ordered list of Vector waypoints from a sequence of connected edges
+    (e.g. wire.Edges, or a hand-ordered edge list).
+
+    Straight Line and LineSegment edges contribute only their two endpoints.
+    All other curve types (arcs, splines, etc.) are discretized at the given
+    chord spacing (mm) so their shape is preserved.
+
+    Each edge's samples are oriented to continue from the previous point, so the
+    edges need not share a consistent parametric direction (they only need to
+    connect end-to-end).  startPoint, when given, orients the first edge so its
+    nearest end leads.  Consecutive points closer than error are suppressed.
+
+    Returns a list of FreeCAD.Vector.
+    """
+    pts = []
+    for edge in edges:
+        if isinstance(edge.Curve, (Part.Line, Part.LineSegment)):
+            raw = [
+                edge.valueAt(edge.FirstParameter),
+                edge.valueAt(edge.LastParameter),
+            ]
+        else:
+            raw = edge.discretize(Distance=chord)
+        if not raw:
+            continue
+        # Orient this edge's samples to continue from the running end (or, for
+        # the first edge, from startPoint if supplied).
+        anchor = pts[-1] if pts else startPoint
+        if anchor is not None and anchor.distanceToPoint(raw[0]) > anchor.distanceToPoint(raw[-1]):
+            raw = list(reversed(raw))
+        for p in raw:
+            if not pts or not pointsCoincide(pts[-1], p, error):
+                pts.append(p)
+    return pts
+
+
 def arcToHelix(edge, z0, z1):
     """arcToHelix(edge, z0, z1)
     Assuming edge is an arc it'll return a helix matching the arc starting at z0 and rising/falling to z1.
@@ -660,14 +711,18 @@ def combineConnectedShapes(shapes):
         combined = []
         Path.Log.debug("shapes: {}".format(shapes))
         for shape in shapes:
-            connected = [f for f in combined if isRoughly(shape.distToShape(f)[0], 0.0)]
-            Path.Log.debug(
-                "  {}: connected: {} dist: {}".format(
-                    len(combined),
-                    connected,
-                    [shape.distToShape(f)[0] for f in combined],
-                )
-            )
+            connected = [
+                f
+                for f in combined
+                if shape.BoundBox.intersect(f.BoundBox) and isRoughly(shape.distToShape(f)[0], 0.0)
+            ]
+            # Path.Log.debug(
+            #     "  {}: connected: {} dist: {}".format(
+            #         len(combined),
+            #         connected,
+            #         [shape.distToShape(f)[0] for f in combined],
+            #     )
+            # )
             if connected:
                 combined = [f for f in combined if f not in connected]
                 connected.append(shape)
@@ -679,6 +734,21 @@ def combineConnectedShapes(shapes):
     return shapes
 
 
+def uncompound(shape):
+    """uncompound(shape)
+    Go through the compound and return list of shapes
+    Can be useful to process shape Compound1(shape1, Compound2(shape2, Compound3(...)))"""
+    if not isinstance(shape, Part.Compound):
+        return [shape]
+    result = []
+    for sh in shape.SubShapes:
+        if isinstance(sh, Part.Compound):
+            result.extend(uncompound(sh))
+        else:
+            result.append(sh)
+    return result
+
+
 def removeDuplicateEdges(wire):
     unique = []
     for e in wire.Edges:
@@ -687,10 +757,10 @@ def removeDuplicateEdges(wire):
     return Part.Wire(unique)
 
 
-def flipEdge(edge):
+def _flipEdge(edge):
     """flipEdge(edge)
     Flips given edge around so the new Vertexes[0] was the old Vertexes[-1] and vice versa, without changing the shape.
-    Currently only lines, line segments, circles and arcs are supported."""
+    Currently only lines, line segments, circles, arcs and ellipses are supported."""
 
     if isinstance(edge.Curve, Part.Line) and not edge.Vertexes:
         return Part.Edge(
@@ -712,7 +782,29 @@ def flipEdge(edge):
             )
         )
         # Now the edge always starts at 0 and LastParameter is the value range
-        arc = Part.Edge(circle, 0, edge.LastParameter - edge.FirstParameter)
+        return Part.Edge(circle, 0, edge.LastParameter - edge.FirstParameter)
+    elif isinstance(edge.Curve, Part.Ellipse):
+        # Ellipse has no (center, normal, radii) constructor to build the
+        # inverted curve directly the way Circle does above, so build it
+        # from explicit points instead: keep the same center and major-axis
+        # point (S1), but mirror the minor-axis reference point (S2) to the
+        # other side of the major axis. That flips the sign of the plane
+        # normal implied by (Center, S1, S2), which works out to
+        # newpoint(t) = point(-t) -- the same points, reverse direction,
+        # with parameter 0 still at the same physical point as before.
+        #
+        # Unlike a circle, an ellipse is NOT rotationally symmetric, so
+        # rotating it to shift the start point (the Circle branch's trick)
+        # would tilt it into a different ellipse entirely. Instead, trim to
+        # the mirrored parameter range [-LastParameter, -FirstParameter]:
+        # newpoint(-LastParameter) = point(LastParameter) (old end, now the
+        # new start) and newpoint(-FirstParameter) = point(FirstParameter)
+        # (old start, now the new end).
+        c = edge.Curve
+        s1 = c.Center + c.XAxis * c.MajorRadius
+        s2 = c.Center - c.YAxis * c.MinorRadius
+        ellipse = Part.Ellipse(s1, s2, c.Center)
+        arc = Part.Edge(ellipse, -edge.LastParameter, -edge.FirstParameter)
         return arc
     elif isinstance(edge.Curve, (Part.BSplineCurve, Part.BezierCurve)):
         if isinstance(edge.Curve, Part.BSplineCurve):
@@ -745,6 +837,22 @@ def flipEdge(edge):
         return edge.reversed()
 
     Path.Log.warning(translate("PathGeom", "%s not supported for flipping") % type(edge.Curve))
+    return None
+
+
+def flipEdge(edge):
+    """flipEdge(edge)
+    Flips given edge around so the new Vertexes[0] was the old Vertexes[-1] and vice versa, without changing the shape.
+    """
+
+    flipped = _flipEdge(edge)
+
+    # Preserve vertex tolerances (reversed order)
+    if flipped and len(edge.Vertexes) >= 2 and len(flipped.Vertexes) >= 2:
+        flipped.Vertexes[0].Tolerance = edge.Vertexes[-1].Tolerance
+        flipped.Vertexes[-1].Tolerance = edge.Vertexes[0].Tolerance
+
+    return flipped
 
 
 def flipWire(wire):
@@ -864,7 +972,9 @@ def combineHorizontalFaces(faces, keepOrder=False):
         ordered = [None] * len(faces)
         for face in horizontal:
             for i, f in enumerate(faces):
-                if face.isInside(f.Vertexes[0].Point, Tolerance, False):
+                if face.BoundBox.intersect(f.BoundBox) and face.isInside(
+                    f.Vertexes[0].Point, Tolerance, False
+                ):
                     ordered[i] = face
                     break
         ordered = [x for x in ordered if x]

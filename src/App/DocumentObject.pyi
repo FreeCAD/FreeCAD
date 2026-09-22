@@ -10,6 +10,9 @@ from DocumentObjectGroup import DocumentObjectGroup
 from ExtensionContainer import ExtensionContainer
 from typing import TYPE_CHECKING, Any, Final, List, Optional, Union, Tuple
 
+if TYPE_CHECKING:
+    from FreeCADGui import ViewProviderDocumentObject as _ViewProviderDocumentObject
+
 
 class DocumentObject(ExtensionContainer):
     """
@@ -17,10 +20,6 @@ class DocumentObject(ExtensionContainer):
     Author: Juergen Riegel (FreeCAD@juergen-riegel.net)
     Licence: LGPL
     """
-
-    if TYPE_CHECKING:
-        Label: str = ...
-        Label2: str = ...
 
     OutListProp: Final[List[DepEdge]] = []
     """A list of all objects which link to this object with properties."""
@@ -52,7 +51,7 @@ class DocumentObject(ExtensionContainer):
     State: Final[List[Any]] = []
     """State of the object in the document"""
 
-    ViewObject: Final[Any] = None
+    ViewObject: Final[_ViewProviderDocumentObject | None] = None
     """
     If the GUI is loaded the associated view provider is returned
     or None if the GUI is not up
@@ -86,10 +85,21 @@ class DocumentObject(ExtensionContainer):
         read_only: bool = False,
         hidden: bool = False,
         locked: bool = False,
-        enum_vals: list = [],
+        enum_vals: list[str] | None = None,
     ) -> "DocumentObject":
         """
         Add a generic property.
+
+        Args:
+            type: The type of the property to add.
+            name: The name of the property.
+            group: The group to which the property belongs. Defaults to "".
+            doc: The documentation string for the property. Defaults to "".
+            attr: Attribute flags for the property. Defaults to 0.
+            read_only: Whether the property is read-only. Defaults to False.
+            hidden: Whether the property is hidden. Defaults to False.
+            locked: Whether the property is locked. Defaults to False.
+            enum_vals: Initial values for an enumeration property. Defaults to None.
         """
         ...
 
@@ -341,5 +351,19 @@ class DocumentObject(ExtensionContainer):
         """
         Return the placement of the sub-object relative to the link object.
         getPlacementOf(subname, [targetObj]) -> Base.Placement
+        """
+        ...
+
+    @constmethod
+    def moveProperty(self, name: str, targetObj: DocumentObject, /) -> None:
+        """
+        moveProperty(name, targetObj) -> None
+
+        Move a property to the target container.
+
+        name : str
+            The name of the property to move.
+        targetObj : DocumentObject
+            The target object to move the property to.
         """
         ...

@@ -52,10 +52,11 @@ class TestMarlinPost(PathTestUtils.PathTestBase):
         pass
 
     def setUp(self):
-        self.maxDiff = None
         self.post.reinitialize()
+        self.maxDiff = None
         self.post._machine = Machine.create_3axis_config()
         self.post._machine.name = "Test Marlin Machine"
+        self.post.apply_configuration_bundle()
         toolhead = Toolhead(
             name="Default Toolhead",
             toolhead_type=ToolheadType.ROTARY,
