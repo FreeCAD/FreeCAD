@@ -665,34 +665,11 @@ class _Wall(ArchComponent.Component):
             l = l / 2
             if self.layersNum:
                 l = l / self.layersNum
-            if obj.Length.Value != l:
+            if not math.isclose(l, obj.Length.Value, rel_tol=0, abs_tol=1e-7):
                 obj.Length = l
-                self.oldLength = (
-                    None  # delete the stored value to prevent triggering base change below
-                )
 
         # set the Area property
         obj.Area = obj.Length.Value * obj.Height.Value
-
-    def onBeforeChange(self, obj, prop):
-        """Method called before the object has a property changed.
-
-        Specifically, this method is called before the value changes.
-
-        If "Length" has changed, record the old length so that .onChanged() can
-        be sure that the base needs to be changed.
-
-        Also call ArchComponent.Component.onBeforeChange().
-
-        Parameters
-        ----------
-        prop: string
-            The name of the property that has changed.
-        """
-
-        if prop == "Length":
-            self.oldLength = obj.Length.Value
-        ArchComponent.Component.onBeforeChange(self, obj, prop)
 
     def onChanged(self, obj, prop):
         """Method called when the object has a property changed.
@@ -711,43 +688,37 @@ class _Wall(ArchComponent.Component):
         """
 
         if prop == "Length":
-            if (
-                obj.Base
-                and obj.Length.Value
-                and hasattr(self, "oldLength")
-                and (self.oldLength is not None)
-                and (self.oldLength != obj.Length.Value)
-            ):
+            if obj.Base and obj.Length.Value:
                 if hasattr(obj.Base, "Shape"):
                     if len(obj.Base.Shape.Edges) == 1:
                         import DraftGeomUtils
 
                         e = obj.Base.Shape.Edges[0]
                         if DraftGeomUtils.geomType(e) == "Line":
-                            if e.Length != obj.Length.Value:
-                                v = e.Vertexes[-1].Point.sub(e.Vertexes[0].Point)
-                                v.normalize()
-                                v.multiply(obj.Length.Value)
-                                p2 = e.Vertexes[0].Point.add(v)
-                                if Draft.getType(obj.Base) == "Wire":
-                                    # print "modifying p2"
-                                    obj.Base.End = p2
-                                elif Draft.getType(obj.Base) in [
-                                    "Sketcher::SketchObject",
-                                    "ArchSketch",
-                                ]:
-                                    # obj.Base.recompute() # Fix for the 'GeoId index out range' error. Not required in V1.1.
-                                    obj.Base.moveGeometry(
-                                        0, 2, obj.Base.Placement.inverse().multVec(p2)
+                            if math.isclose(e.Length, obj.Length.Value, rel_tol=0, abs_tol=1e-7):
+                                return
+                            v = e.Vertexes[-1].Point.sub(e.Vertexes[0].Point)
+                            v.normalize()
+                            v.multiply(obj.Length.Value)
+                            p2 = e.Vertexes[0].Point.add(v)
+                            if Draft.getType(obj.Base) == "Wire":
+                                obj.Base.End = p2
+                            elif Draft.getType(obj.Base) in [
+                                "Sketcher::SketchObject",
+                                "ArchSketch",
+                            ]:
+                                # obj.Base.recompute() # Fix for the 'GeoId index out range' error. Not required in V1.1.
+                                obj.Base.moveGeometry(
+                                    0, 2, obj.Base.Placement.inverse().multVec(p2)
+                                )
+                            else:
+                                FreeCAD.Console.PrintError(
+                                    translate(
+                                        "Arch",
+                                        "Error: Unable to modify the base object of this wall",
                                     )
-                                else:
-                                    FreeCAD.Console.PrintError(
-                                        translate(
-                                            "Arch",
-                                            "Error: Unable to modify the base object of this wall",
-                                        )
-                                        + "\n"
-                                    )
+                                    + "\n"
+                                )
 
         if prop == "ArchSketchPropertySet" and Draft.getType(obj.Base) == "ArchSketch":
             baseProxy = obj.Base.Proxy
