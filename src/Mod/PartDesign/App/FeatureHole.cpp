@@ -1880,6 +1880,15 @@ App::DocumentObjectExecReturn* Hole::execute()
             );
         }
 
+        if (Tapered.getValue() && radiusBottom < 0.0) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP(
+                    "Exception",
+                    "Hole error: Taper intersects the axis before the specified depth"
+                )
+            );
+        }
+
         if (isCountersink || isCounterbore || isCounterdrill) {
             double holeCutRadius = HoleCutDiameter.getValue() / 2.0;
             double holeCutDepth = HoleCutDepth.getValue();
