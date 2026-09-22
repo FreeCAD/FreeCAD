@@ -90,6 +90,27 @@ TEST_F(PropertyFloatTest, testWriteRead)
     EXPECT_DOUBLE_EQ(prop2.getValue(), value);
 }
 
+#define DoTest(tpe, name, val1, val2) \
+    tpe name; \
+    name.setValue(val1); \
+    name.purgeTouched(); \
+    EXPECT_DOUBLE_EQ(name.isTouched(), false); \
+    name.setValue(val1); \
+    EXPECT_DOUBLE_EQ(name.isTouched(), false); \
+    name.setValue(val2); \
+    EXPECT_DOUBLE_EQ(name.isTouched(), true); \
+    
+    
+TEST_F(PropertyFloatTest, testTouched)
+{
+    GTEST_LOG_(INFO) << "Testing testTouched";
+
+    DoTest(App::PropertyFloat, fProp, 1.2345, 2.3456);
+    DoTest(App::PropertyInteger, iProp, 5, 6);
+    DoTest(App::PropertyBool, bProp, true, false)
+    DoTest(App::PropertyColor, cProp, 0xffffffff, 0x00000000)
+}
+
 App::Document* RenameProperty::doc {nullptr};
 
 // Tests whether we can rename a property
