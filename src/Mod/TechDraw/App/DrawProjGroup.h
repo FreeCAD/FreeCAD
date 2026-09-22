@@ -129,10 +129,9 @@ public:
     /// Allowed projection types - either Document, First angle or Third angle
     static const char* ProjectionTypeEnums[];
 
-    bool hasAnchor();
-    void setAnchorDirection(Base::Vector3d dir);
-    Base::Vector3d getAnchorDirection();
-    TechDraw::DrawProjGroupItem* getAnchor();
+    void setAnchorDirection(const Base::Vector3d& dir);
+    Base::Vector3d getAnchorDirection() const;
+    TechDraw::DrawProjGroupItem* getAnchor() const;
     std::pair<Base::Vector3d, Base::Vector3d> getDirsFromFront(DrawProjGroupItem* view);
     std::pair<Base::Vector3d, Base::Vector3d> getDirsFromFront(TechDraw::ProjDirection viewType);
 
