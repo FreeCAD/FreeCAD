@@ -3,7 +3,10 @@
 #include <gtest/gtest.h>
 #include "src/App/InitApplication.h"
 
+#include <cstdint>
 #include <memory>
+
+#include <QByteArray>
 
 #include <Mod/Start/App/FileUtilities.h>
 
@@ -93,4 +96,85 @@ TEST_F(FileUtilitiesTest, humanReadableSizePB)
 TEST_F(FileUtilitiesTest, humanReadableSizeEB)
 {
     EXPECT_EQ("7.3 EB", Start::humanReadableSize(7.3e18));
+}
+
+namespace
+{
+QByteArray pngSignature()
+{
+    return {"\x89PNG\r\n\x1a\n", 8};
+}
+
+QByteArray makeChunk(const QByteArray& type, const QByteArray& payload)
+{
+    QByteArray chunk;
+    const auto length = static_cast<std::uint32_t>(payload.size());
+    for (const auto shift : {24U, 16U, 8U, 0U}) {
+        chunk.append(static_cast<char>((length >> shift) & 0xFFU));
+    }
+    chunk.append(type);
+    chunk.append(payload);
+    chunk.append(4, '\0');  // isValidPNG() walks the chunk list, so the CRC value is irrelevant
+    return chunk;
+}
+
+QByteArray makeMinimalPng()
+{
+    return pngSignature() + makeChunk("IHDR", QByteArray(13, '\0'))
+        + makeChunk("IDAT", QByteArray(16, '\x01')) + makeChunk("IEND", {});
+}
+}  // namespace
+
+TEST_F(FileUtilitiesTest, isValidPNGAcceptsCompletePNG)
+{
+    EXPECT_TRUE(Start::isValidPNG(makeMinimalPng()));
+}
+
+TEST_F(FileUtilitiesTest, isValidPNGRejectsEmptyData)
+{
+    EXPECT_FALSE(Start::isValidPNG({}));
+}
+
+TEST_F(FileUtilitiesTest, isValidPNGRejectsWrongSignature)
+{
+    QByteArray notAPng("GIF89a");
+    notAPng.append(makeMinimalPng().mid(8));
+    EXPECT_FALSE(Start::isValidPNG(notAPng));
+}
+
+TEST_F(FileUtilitiesTest, isValidPNGRejectsSignatureFollowedByZeroes)
+{
+    EXPECT_FALSE(Start::isValidPNG(pngSignature() + QByteArray(200, '\0')));
+}
+
+TEST_F(FileUtilitiesTest, isValidPNGRejectsTruncatedFile)
+{
+    const auto complete = makeMinimalPng();
+    EXPECT_FALSE(Start::isValidPNG(complete.left(complete.size() / 2)));
+}
+
+TEST_F(FileUtilitiesTest, isValidPNGRejectsMissingEndChunk)
+{
+    const auto withoutEnd = pngSignature() + makeChunk("IHDR", QByteArray(13, '\0'))
+        + makeChunk("IDAT", QByteArray(16, '\x01'));
+    EXPECT_FALSE(Start::isValidPNG(withoutEnd));
+}
+
+TEST_F(FileUtilitiesTest, isValidPNGRejectsHeaderChunkOutOfOrder)
+{
+    const auto headerLast = pngSignature() + makeChunk("IDAT", QByteArray(16, '\x01'))
+        + makeChunk("IHDR", QByteArray(13, '\0')) + makeChunk("IEND", {});
+    EXPECT_FALSE(Start::isValidPNG(headerLast));
+}
+
+TEST_F(FileUtilitiesTest, isValidPNGRejectsTrailingDataAfterEndChunk)
+{
+    EXPECT_FALSE(Start::isValidPNG(makeMinimalPng() + QByteArray(32, '\x7f')));
+}
+
+TEST_F(FileUtilitiesTest, isValidPNGRejectsChunkLengthLargerThanFile)
+{
+    const auto overlongChunk = pngSignature() + makeChunk("IHDR", QByteArray(13, '\0'))
+        + QByteArray("\x7f\xff\xff\xff", 4) + QByteArray("IDAT", 4) + QByteArray(8, '\0');
+    EXPECT_FALSE(Start::isValidPNG(overlongChunk));
 }

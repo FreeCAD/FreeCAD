@@ -27,6 +27,7 @@
 #include "Mod/Start/StartGlobal.h"
 
 #include <qglobal.h>
+#include <QByteArray>
 #include <QDir>
 #include <QStandardPaths>
 
@@ -55,6 +56,14 @@ StartExport QString getMD5Hash(const QString& path);
 StartExport QString getPathToCachedThumbnail(const QString& path);
 
 StartExport bool useCachedThumbnail(const QString& image, const QString& project);
+
+/**
+ * @brief Check whether a data chunk holds a (reasonably) valid-looking PNG.
+ *
+ * @param[in] data The byte buffer to check.
+ * @return true when the data starts seems basically like a good PNG.
+ */
+StartExport bool isValidPNG(const QByteArray& data);
 
 StartExport std::string humanReadableSize(std::uint64_t bytes);
 
