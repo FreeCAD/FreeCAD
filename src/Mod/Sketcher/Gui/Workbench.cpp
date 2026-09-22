@@ -457,9 +457,9 @@ inline void SketcherAddWorkbenchGeometries(T& geom)
     SketcherAddWorkspaceRegularPolygon(geom);
     SketcherAddWorkspaceslots(geom);
     geom << "Sketcher_CreateText"
+         << "Sketcher_CompBlocks"
          << "Separator"
          << "Sketcher_ToggleConstruction";
-    /*<< "Sketcher_CreateText"*/
     /*<< "Sketcher_CreateDraftLine"*/;
 }
 

@@ -22,6 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QFileInfo>
 #include <QContextMenuEvent>
 #include <QMenu>
 #include <QPainter>
@@ -120,6 +121,17 @@ public:
     {
         const Sketcher::Constraint* constraint = sketch->Constraints[ConstraintNbr];
 
+        if (constraint->Type == Sketcher::Group) {
+            const QString suffix = QFileInfo(QString::fromStdString(constraint->getFile())).suffix();
+            const QString kind = suffix.compare(QStringLiteral("svg"), Qt::CaseInsensitive) == 0
+                ? QCoreApplication::translate("SketcherGui::ConstraintView", "SVG")
+                : suffix.compare(QStringLiteral("txt"), Qt::CaseInsensitive) == 0
+                    ? QCoreApplication::translate("SketcherGui::ConstraintView", "Block")
+                    : QCoreApplication::translate("SketcherGui::ConstraintView", "Group");
+            return constraint->Name.empty()
+                ? QStringLiteral("%1-%2").arg(ConstraintNbr + 1).arg(kind)
+                : QStringLiteral("%1 - %2").arg(kind, QString::fromStdString(constraint->Name));
+        }
         if (!constraint->Name.empty()) {
             return QString::fromStdString(constraint->Name);
         }
@@ -661,6 +673,28 @@ void ConstraintView::contextMenuEvent(QContextMenuEvent* event)
     QAction* change = menu.addAction(tr("Edit Value"), this, &ConstraintView::modifyCurrentItem);
     change->setEnabled(isQuantity);
     menu.setDefaultAction(change);
+
+    if (it && items.size() == 1) {
+        const auto* constraint = it->sketch->Constraints[it->ConstraintNbr];
+        if (constraint && constraint->Type == Sketcher::Group && !constraint->getFile().empty()) {
+            auto* view = dynamic_cast<ViewProviderSketch*>(doc->getViewProvider(it->sketch));
+            const int index = it->ConstraintNbr;
+            const bool isBlock = QFileInfo(QString::fromStdString(constraint->getFile()))
+                                     .suffix().compare(QStringLiteral("txt"), Qt::CaseInsensitive) == 0;
+            if (isBlock) {
+                menu.addAction(Gui::BitmapFactory().iconFromTheme("Sketcher_BlockEdit"),
+                               tr("Edit Block"), this, [view, index]() {
+                    SketcherGui::editFileBlock(view, index);
+                });
+            }
+            auto* reload = menu.addAction(tr("Reload From File"), this, [view, index]() {
+                SketcherGui::reloadFileGroup(view, index);
+            });
+            if (isBlock) {
+                reload->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_BlockReload"));
+            }
+        }
+    }
 
     QAction* driven =
         menu.addAction(tr("Toggle Driving/Reference"), this, &ConstraintView::updateDrivingStatus);

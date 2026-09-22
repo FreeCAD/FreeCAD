@@ -10469,7 +10469,8 @@ bool SketcherGui::addListConstraint(Sketcher::SketchObject* Obj,
                        Base::Vector2d frame_p2,
                        bool isTextHeight,
                        const std::string& text,
-                       const std::string& font)
+                       const std::string& font,
+                       const std::string& file)
 {
 
     std::vector<int> geoIdsWithInternalGeos;
@@ -10500,8 +10501,8 @@ bool SketcherGui::addListConstraint(Sketcher::SketchObject* Obj,
     // Actually erase the elements that were moved to the end.
     elts.erase(new_end, elts.end());
 
-    if (elts.size() < 2) {
-        Base::Console().warning("Cannot create %s constraint: minimum 2 geometries.\n", constraintType.c_str());
+    if (elts.empty()) {
+        Base::Console().warning("Cannot create %s constraint without geometry.\n", constraintType.c_str());
         return false;
     }
 
@@ -10553,8 +10554,10 @@ bool SketcherGui::addListConstraint(Sketcher::SketchObject* Obj,
     if (constraintType == "Group") {
         Gui::cmdAppObjectArgs(
             Obj,
-            "addConstraint(Sketcher.Constraint('Group', %s))",
-            elements_list_string.c_str());
+            "addConstraint(Sketcher.Constraint('Group', %s, '%s', %s))",
+            elements_list_string.c_str(),
+            escapeForPython(file).c_str(),
+            isTextHeight ? "True" : "False");
     }
     else if (constraintType == "Text") {
         std::string escaped_text = escapeForPython(text);

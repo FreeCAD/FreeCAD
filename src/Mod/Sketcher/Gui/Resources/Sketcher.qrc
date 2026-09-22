@@ -193,6 +193,11 @@
         <file>icons/geometry/Sketcher_CreateSlot_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateSquare.svg</file>
         <file>icons/geometry/Sketcher_CreateSquare_Constr.svg</file>
+        <file>icons/geometry/Sketcher_BlockCreate.svg</file>
+        <file>icons/geometry/Sketcher_BlockEdit.svg</file>
+        <file>icons/geometry/Sketcher_BlockInsert.svg</file>
+        <file>icons/geometry/Sketcher_BlockInsert_Constr.svg</file>
+        <file>icons/geometry/Sketcher_BlockReload.svg</file>
         <file>icons/geometry/Sketcher_CreateText.svg</file>
         <file>icons/geometry/Sketcher_CreateText_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateTriangle.svg</file>
@@ -269,6 +274,7 @@
         <file>icons/pointers/Sketcher_Pointer_Create_RectangleSlot.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Slot.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Splitting.svg</file>
+        <file>icons/pointers/Sketcher_Pointer_Block.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Text.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Triangle.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Trimming.svg</file>

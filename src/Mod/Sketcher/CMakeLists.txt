@@ -12,6 +12,7 @@ set(Sketcher_Scripts
     SketcherExample.py
     TestSketcherApp.py
     Profiles.py
+    SketcherBlock.py
 )
 
 set(Sketcher_TestScripts
@@ -24,6 +25,7 @@ set(Sketcher_TestScripts
     SketcherTests/TestSketchCarbonCopyReverseMapping.FCStd
     SketcherTests/TestSketchInternalFaces.py
     SketcherTests/TestSketcherEllipse.py
+    SketcherTests/TestSketchBlocks.py
 )
 
 if(BUILD_GUI)
@@ -37,6 +39,7 @@ if(BUILD_GUI)
           SketcherTests/TestConstraintCommandsGui.py
           SketcherTests/TestCoincidentCommandGui.py
           SketcherTests/GuiTestCase.py
+          SketcherTests/TestSketchBlocksGui.py
           SketcherTests/TestPlacementUpdate.py
           SketcherTests/TestOnViewParameterGui.py
           SketcherTests/TestExternalFacePreselection.py
@@ -48,6 +51,27 @@ set(Sketcher_Profiles
     ProfileLib/RegularPolygon.py
     ProfileLib/__init__.py
 )
+
+set(Sketcher_Blocks
+    "Blocks/README.md"
+    "Blocks/CE.txt"
+    "Blocks/FCC.txt"
+    "Blocks/Open hardware (no text).txt"
+    "Blocks/Open hardware.txt"
+    "Blocks/Recycling.txt"
+    "Blocks/Sign - Attention.txt"
+    "Blocks/Sign - High voltage.txt"
+    "Blocks/Tidyman.txt"
+    "Blocks/WEEE.txt"
+)
+
+add_custom_target(SketcherBlocks ALL SOURCES ${Sketcher_Blocks})
+fc_target_copy_resource(SketcherBlocks
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Sketcher
+    ${Sketcher_Blocks}
+)
+install(FILES ${Sketcher_Blocks} DESTINATION ${CMAKE_INSTALL_DATADIR}/Mod/Sketcher/Blocks)
 
 add_custom_target(SketcherScripts ALL
     SOURCES ${Sketcher_Scripts} ${Sketcher_Profiles} ${Sketcher_TestScripts}

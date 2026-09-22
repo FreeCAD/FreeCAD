@@ -68,6 +68,7 @@
 #include "DrawSketchHandlerPolygon.h"
 #include "DrawSketchHandlerRectangle.h"
 #include "DrawSketchHandlerSlot.h"
+#include "DrawSketchHandlerBlock.h"
 #include "DrawSketchHandlerSplitting.h"
 #include "DrawSketchHandlerText.h"
 #include "DrawSketchHandlerTrimming.h"
@@ -1419,6 +1420,42 @@ bool CmdSketcherCreateText::isActive()
     return isCommandActive(getActiveGuiDocument());
 }
 
+// Block ================================================================
+
+DEF_STD_CMD_AU(CmdSketcherInsertBlock)
+
+CmdSketcherInsertBlock::CmdSketcherInsertBlock()
+    : Command("Sketcher_InsertBlock")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Insert Block");
+    sToolTipText = QT_TR_NOOP(
+        "Inserts a block from a Sketcher geometry text file as a Group.\n"
+        "Position is controlled by the group handle; line handles also control size and "
+        "orientation.\n"
+        "Constraints on grouped geometry are ignored while the Group is active."
+    );
+    sWhatsThis = "Sketcher_InsertBlock";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_BlockInsert";
+    sAccel = "G, U";
+    eType = ForEdit;
+}
+
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherInsertBlock, "Sketcher_BlockInsert")
+
+void CmdSketcherInsertBlock::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerBlock>());
+}
+
+bool CmdSketcherInsertBlock::isActive()
+{
+    return isCommandActive(getActiveGuiDocument());
+}
+
 // B-spline ================================================================
 
 DEF_STD_CMD_AU(CmdSketcherCreateBSpline)
@@ -2001,6 +2038,7 @@ void CreateSketcherCommandsCreateGeo()
     rcCmdMgr.addCommand(new CmdSketcherCreateSlot());
     rcCmdMgr.addCommand(new CmdSketcherCreateArcSlot());
     rcCmdMgr.addCommand(new CmdSketcherCreateText());
+    rcCmdMgr.addCommand(new CmdSketcherInsertBlock());
     rcCmdMgr.addCommand(new CmdSketcherCreateFillet());
     rcCmdMgr.addCommand(new CmdSketcherCreateChamfer());
     // rcCmdMgr.addCommand(new CmdSketcherCreateText());
