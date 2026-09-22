@@ -37,6 +37,7 @@
 #include <Base/Tools.h>
 #include <Mod/TechDraw/App/DrawViewPy.h>  // generated from DrawViewPy.xml
 
+#include <App/FeaturePythonPyImp.h>
 #include "DrawView.h"
 #include "DrawLeaderLine.h"
 #include "DrawPage.h"
@@ -761,6 +762,15 @@ namespace App {
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewPython, TechDraw::DrawView)
 template<> const char* TechDraw::DrawViewPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderDrawingView";
+}
+template<>
+PyObject* TechDraw::DrawViewPython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawViewPy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

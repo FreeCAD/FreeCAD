@@ -85,6 +85,7 @@
 #include "ShapeExtractor.h"
 #include "ShapeUtils.h"
 
+#include <App/FeaturePythonPyImp.h>
 #include "DrawBrokenView.h"
 #include "DrawBrokenViewPy.h"
 
@@ -1223,6 +1224,15 @@ template<>
 const char* TechDraw::DrawBrokenViewPython::getViewProviderName() const
 {
     return "TechDrawGui::ViewProviderViewPart";
+}
+template<>
+PyObject* TechDraw::DrawBrokenViewPython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawBrokenViewPy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

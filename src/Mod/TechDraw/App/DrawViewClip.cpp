@@ -26,6 +26,7 @@
 
 #include <App/Link.h>
 
+#include <App/FeaturePythonPyImp.h>
 #include "DrawViewClip.h"
 #include "DrawPage.h"
 #include <Mod/TechDraw/App/DrawViewClipPy.h>  // generated from DrawViewClipPy.xml
@@ -204,6 +205,15 @@ namespace App {
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewClipPython, TechDraw::DrawViewClip)
 template<> const char* TechDraw::DrawViewClipPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderViewClip";
+}
+template<>
+PyObject* TechDraw::DrawViewClipPython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawViewClipPy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 
