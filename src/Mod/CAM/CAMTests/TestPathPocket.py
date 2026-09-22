@@ -759,7 +759,7 @@ class TestPathPocket(PathTestBase):
             )
 
     def testPocketRegression01(self):
-        v = lambda x, y, z: FreeCAD.Vector(x, y, z)
+        v = FreeCAD.Vector
         box_edges = [
             Part.makeLine(v(0, 0, 0), v(0, 100, 0)),
             Part.makeLine(v(0, 100, 0), v(100, 100, 0)),
@@ -827,7 +827,7 @@ class TestPathPocket(PathTestBase):
         self.assertGreater(len(pocket.Path.Commands), 50)
 
     def testPocketRegression02(self):
-        v = lambda x, y, z: FreeCAD.Vector(x, y, z)
+        v = FreeCAD.Vector
 
         wires = []
         wires.append(
@@ -909,7 +909,7 @@ class TestPathPocket(PathTestBase):
         self.assertGreater(len(pocket.Path.Commands), 50)
 
     def testMillFaceRegression03(self):
-        v = lambda x, y, z: FreeCAD.Vector(x, y, z)
+        v = FreeCAD.Vector
 
         def _bs(poles, mults, knots, periodic, degree, u1, u2):
             c = Part.BSplineCurve()
@@ -1521,6 +1521,56 @@ class TestPathPocket(PathTestBase):
         self.doc.recompute()
 
         self.assertGreater(len(op.Path.Commands), 10)
+
+    def testPocketPancake04(self):
+        v = FreeCAD.Vector
+        box_edges = [
+            Part.makeLine(v(-100, -100, 0), v(-100, 100, 0)),
+            Part.makeLine(v(-100, 100, 0), v(100, 100, 0)),
+            Part.makeLine(v(100, -100, 0), v(100, 100, 0)),
+            Part.makeLine(v(-100, -100, 0), v(100, -100, 0)),
+        ]
+        box_wire = Part.Wire(box_edges)
+        box_face = Part.Face(box_wire)
+        box = box_face.extrude(v(0, 0, 5))
+
+        cut_edges = [
+            Part.Arc(
+                v(-26.124492, -42.7890488, 2),
+                v(-46.425036, -42.6018578, 2),
+                v(-66.643016, -42.3401452, 2),
+            ).toShape(),
+            Part.makeLine(v(-66.643016, -42.3401452, 2), v(-75.438384, -48.2753298, 2)),
+            Part.makeLine(v(-75.438384, -48.2753298, 2), v(-66.643016, -42.3401454, 2)),
+            Part.Arc(
+                v(-66.643016, -42.3401454, 2),
+                v(-82.043978, -42.0799932, 2),
+                v(-97.327170, -41.7577888, 2),
+            ).toShape(),
+            Part.makeLine(v(-97.327170, -41.7577888, 2), v(-26.124492, -41.7577888, 2)),
+            Part.makeLine(v(-26.124492, -41.7577888, 2), v(-26.124492, -42.7890488, 2)),
+        ]
+        cutout_wire = Part.Wire(cut_edges)
+        cutout_face = Part.Face(cutout_wire)
+        cutout = cutout_face.extrude(v(0, 0, box.BoundBox.ZMax + 1))
+
+        solid = box.cut(cutout)
+        pocket_bottom_z = cutout.BoundBox.ZMin
+
+        part_obj = FreeCAD.ActiveDocument.addObject("Part::Feature", "Regression04Part")
+        part_obj.Shape = solid
+
+        pocket = self.createPocketOperation(
+            part_obj,
+            pocket_bottom_z,
+            "regression04",
+            tool_diameter=3.0,
+            ClearingPattern="Offset",
+            StartAt="Edge",
+        )
+
+        # assert that there is a meaningful amount of output commands
+        self.assertGreater(len(pocket.Path.Commands), 50)
 
 
 def _addViewProvider(pocketOp):

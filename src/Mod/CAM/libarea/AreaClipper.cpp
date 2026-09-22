@@ -175,6 +175,9 @@ void CArea::_Clip(
         const int64_t e2min = std::min(e2bot.z, e2top.z);
         const int64_t e2max = std::max(e2bot.z, e2top.z);
         metadata.intersections.insert({pt.z, std::make_tuple(e1min, e1max, e2min, e2max)});
+        std::cerr << " intersection z=" << pt.z << " e1=(" << e1min << "," << e1max << ")"
+                  << " e2=(" << e2min << "," << e2max << ")"
+                  << " pt=(" << pt.x << "," << pt.y << "," << pt.z << ")\n";
     });
 
     // Execute the operation, potentially producing both closed and open path results
@@ -848,33 +851,33 @@ Path64 CArea::MakePoly(const CCurve& rawCurve, ConversionMetadata& metadata) con
     //         << " c=(" << edgeData.orig.m_c.x << "," << edgeData.orig.m_c.y << ")\n\n";
     // }
 
-    // // Print edge data in path order before removing the duplicate endpoint
-    // std::cerr << "\nMakePoly: edges in path order (curve=" << curveIndex << ")\n";
-    // for (size_t i = 0; i + 1 < result.size(); i++) {
-    //     const auto& v0 = result[i];
-    //     const auto& v1 = result[i + 1];
-    //     const double dx = v1.x - v0.x;
-    //     const double dy = v1.y - v0.y;
-    //     const double lenClipper = sqrt(dx * dx + dy * dy);
-    //     const double lenWorld = lenClipper / CArea::m_clipper_scale;
-    //     const auto k = std::make_pair(std::min(v0.z, v1.z), std::max(v0.z, v1.z));
-    //     auto it = metadata.edgeData.find(k);
-    //     if (it != metadata.edgeData.end()) {
-    //         const SegmentData& d = it->second;
-    //         std::cerr << " z=(" << v0.z << "," << v1.z << ")"
-    //             << " clipper=(" << v0.x << "," << v0.y << ")->(" << v1.x << "," << v1.y << ")"
-    //             << " curve=" << d.curveIndex << " vtx=" << d.vertexIndex
-    //             << " type=" << d.orig.m_type
-    //             << " p=(" << d.orig.m_p.x << "," << d.orig.m_p.y << ")"
-    //             << " c=(" << d.orig.m_c.x << "," << d.orig.m_c.y << ")"
-    //             << " len=" << lenClipper << " (" << lenWorld << ")\n";
-    //     }
-    //     else {
-    //         std::cerr << "  edge " << i << ": z=(" << v0.z << "," << v1.z << ")"
-    //             << " len=" << lenClipper << "cu/" << lenWorld << "wu NO METADATA\n";
-    //     }
-    // }
-    // std::cerr << "\n";
+    // Print edge data in path order before removing the duplicate endpoint
+    std::cerr << "\nMakePoly: edges in path order (curve=" << curveIndex << ")\n";
+    for (size_t i = 0; i + 1 < result.size(); i++) {
+        const auto& v0 = result[i];
+        const auto& v1 = result[i + 1];
+        const double dx = v1.x - v0.x;
+        const double dy = v1.y - v0.y;
+        const double lenClipper = sqrt(dx * dx + dy * dy);
+        const double lenWorld = lenClipper / CArea::m_clipper_scale;
+        const auto k = std::make_pair(std::min(v0.z, v1.z), std::max(v0.z, v1.z));
+        auto it = metadata.edgeData.find(k);
+        if (it != metadata.edgeData.end()) {
+            const SegmentData& d = it->second;
+            std::cerr << " z=(" << v0.z << "," << v1.z << ")"
+                      << " clipper=(" << v0.x << "," << v0.y << ")->(" << v1.x << "," << v1.y << ")"
+                      << " curve=" << d.curveIndex << " vtx=" << d.vertexIndex
+                      << " type=" << d.orig.m_type << " p=(" << d.orig.m_p.x << "," << d.orig.m_p.y
+                      << ")"
+                      << " c=(" << d.orig.m_c.x << "," << d.orig.m_c.y << ")"
+                      << " len=" << lenClipper << " (" << lenWorld << ")\n";
+        }
+        else {
+            std::cerr << "  edge " << i << ": z=(" << v0.z << "," << v1.z << ")"
+                      << " len=" << lenClipper << "cu/" << lenWorld << "wu NO METADATA\n";
+        }
+    }
+    std::cerr << "\n";
 
     // std::cerr << "MakePoly: z-to-xy map (curve=" << curveIndex << ", "
     //     << metadata.xy_to_z.size() << " entries)\n";
@@ -915,6 +918,8 @@ void CArea::SetFromResult(
     if (!isClosed) {
         ReorderOpenPaths(paths, metadata);
     }
+
+    std::cerr << "\n\nSetFromResult: output vertices\n";
 
     // Convert each path back to a CCurve
     for (const Path64& path : paths) {
@@ -1021,6 +1026,18 @@ void CArea::SetFromResult(
                 const bool fullLoop = std::prev(c.m_vertices.end(), 2)->m_p == edge.m_p;
                 if (!fullLoop) {
                     prev.m_p = edge.m_p;
+                    {
+                        const double dx = v1.x - v0.x, dy = v1.y - v0.y;
+                        const double lc = sqrt(dx * dx + dy * dy);
+                        std::cerr << " z=(" << v0.z << "," << v1.z << ")"
+                                  << " clipper=(" << v0.x << "," << v0.y << ")->(" << v1.x << ","
+                                  << v1.y << ")"
+                                  << " type=" << edge.m_type << " p=(" << edge.m_p.x << ","
+                                  << edge.m_p.y << ")"
+                                  << " c=(" << edge.m_c.x << "," << edge.m_c.y << ")"
+                                  << " len=" << lc << " (" << lc / CArea::m_clipper_scale << ")"
+                                  << " [update]\n";
+                    }
                 }
                 else {
                     // The edge cannot be extended, because it would complete a circle and CVertex
@@ -1028,12 +1045,45 @@ void CArea::SetFromResult(
                     // circle as 2 semi circles
                     const heeks::Point mid {2 * edge.m_c.x - edge.m_p.x, 2 * edge.m_c.y - edge.m_p.y};
                     prev.m_p = mid;
+                    {
+                        const double dx = v1.x - v0.x, dy = v1.y - v0.y;
+                        const double lc = sqrt(dx * dx + dy * dy);
+                        std::cerr << " z=(" << v0.z << "," << v1.z << ")"
+                                  << " clipper=(" << v0.x << "," << v0.y << ")->(" << v1.x << ","
+                                  << v1.y << ")"
+                                  << " type=" << edge.m_type << " p=(" << mid.x << "," << mid.y << ")"
+                                  << " c=(" << edge.m_c.x << "," << edge.m_c.y << ")"
+                                  << " len=" << lc << " (" << lc / CArea::m_clipper_scale << ")"
+                                  << " [update]\n";
+                    }
                     c.m_vertices.push_back(edge);
+                    {
+                        const double dx = v1.x - v0.x, dy = v1.y - v0.y;
+                        const double lc = sqrt(dx * dx + dy * dy);
+                        std::cerr << " z=(" << v0.z << "," << v1.z << ")"
+                                  << " clipper=(" << v0.x << "," << v0.y << ")->(" << v1.x << ","
+                                  << v1.y << ")"
+                                  << " type=" << edge.m_type << " p=(" << edge.m_p.x << ","
+                                  << edge.m_p.y << ")"
+                                  << " c=(" << edge.m_c.x << "," << edge.m_c.y << ")"
+                                  << " len=" << lc << " (" << lc / CArea::m_clipper_scale << ")\n";
+                    }
                 }
             }
             else {
                 // The edge is not an extension of the previous CVertex; just add it
                 c.m_vertices.push_back(edge);
+                {
+                    const double dx = v1.x - v0.x, dy = v1.y - v0.y;
+                    const double lc = sqrt(dx * dx + dy * dy);
+                    std::cerr << " z=(" << v0.z << "," << v1.z << ")"
+                              << " clipper=(" << v0.x << "," << v0.y << ")->(" << v1.x << ","
+                              << v1.y << ")"
+                              << " type=" << edge.m_type << " p=(" << edge.m_p.x << ","
+                              << edge.m_p.y << ")"
+                              << " c=(" << edge.m_c.x << "," << edge.m_c.y << ")"
+                              << " len=" << lc << " (" << lc / CArea::m_clipper_scale << ")\n";
+                }
             }
         }
 
@@ -1185,7 +1235,9 @@ void CArea::Offset(double offset)
 
     // I'm preserving this Reorder() call to preserve old behavior, but imo this should not be part
     // of Offset's spec
+    std::cerr << "Starting Reorder nonsense\n";
     this->Reorder();
+    std::cerr << "Ending Reorder nonsense\n";
 }
 
 CArea CArea::OpenOffset(double offset)

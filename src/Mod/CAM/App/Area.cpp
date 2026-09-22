@@ -2222,6 +2222,7 @@ void Area::build()
                 myArea->m_curves.splice(myArea->m_curves.end(), areaClip.m_curves);
             }
             else {
+                std::cerr << "XX Build shape clip op " << (int)toClipperOp(op) << "\n";
                 myArea->Clip(toClipperOp(op), areaClip, myParams.SubjectFill);
             }
         }
@@ -2309,6 +2310,7 @@ TopoDS_Shape Area::toShape(CArea& area, short fill, int reorient)
 
 TopoDS_Shape Area::getShape(int index)
 {
+    std::cerr << "XX getShape\n";
     build();
     AREA_SECTION(getShape, index);
 
@@ -2476,18 +2478,23 @@ void Area::makeOffset(
 
     for (int i = 0; count < 0 || i < count; ++i, offset += stepover) {
         double prevOffset = offset - stepover;
+        std::cerr << "XX performSingleOffset i=" << i << " offset=" << offset << "\n";
         auto area = performSingleOffset(offset);
+        std::cerr << "...done with performSingleOffset i=" << i << " offset=" << offset << "\n";
 
         // Check for gaps if needed
         if (previous_area_offset && check_gaps) {
             // Offset backwards by tool radius and subtract to find a gap
+            std::cerr << "gap detection offset operation\n";
             CArea curr_offset_opposite = *area;
             curr_offset_opposite.Offset(-sign_stepover * tool_radius);
+            std::cerr << "gap detection subtract operation\n";
             CArea gap = *previous_area_offset;
             gap.Subtract(curr_offset_opposite);
             bool has_gap = !gap.m_curves.empty();
 
             if (has_gap) {
+                std::cerr << "gap detected\n";
                 // Gap exists, binary search for the largest offset that doesn't leave a gap
                 // Offsets less than tool radius are guaranteed not to have a gap, so we start there
                 double offset_min = prevOffset + sign_stepover * tool_radius;
@@ -2495,11 +2502,15 @@ void Area::makeOffset(
 
                 while (fabs(offset_max - offset_min) > gap_tolerance) {
                     double offset_mid = (offset_min + offset_max) / 2.0;
+                    std::cerr << " gap elimination performSingleOffset i=" << i
+                              << " offset=" << offset_mid << "\n";
                     auto test_area = performSingleOffset(offset_mid);
 
                     // Recompute gap check
                     CArea test_offset_opposite = *test_area;
+                    std::cerr << " gap elimination, gap check offset\n";
                     test_offset_opposite.Offset(-sign_stepover * tool_radius);
+                    std::cerr << " gap elimination, gap check subtract\n";
                     gap = *previous_area_offset;
                     gap.Subtract(test_offset_opposite);
 
@@ -2514,6 +2525,8 @@ void Area::makeOffset(
                 // Leave a little extra space to ensure connectivity when the offset vanishes. This
                 // is important because our circular arcs are discretized.
                 offset = offset_min - sign_stepover * myParams.Accuracy;
+                std::cerr << " gap elimination final offset at different size :P offset=" << offset
+                          << "\n";
                 area = performSingleOffset(offset);
             }
 
@@ -2550,6 +2563,7 @@ void Area::makeOffset(
 
         // Compute and cache the offset of current area for next iteration's gap check
         if (check_gaps && !previous_area_offset) {
+            std::cerr << " compute/cache for next gap check\n";
             previous_area_offset = *area;
             previous_area_offset->Offset(sign_stepover * tool_radius);
         }

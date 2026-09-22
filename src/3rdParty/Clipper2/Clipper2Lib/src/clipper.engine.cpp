@@ -9,6 +9,7 @@
 
 #include "clipper2/clipper.engine.h"
 #include "clipper2/clipper.h"
+#include <iomanip>
 #include <stdexcept>
 
 // https://github.com/AngusJohnson/Clipper2/discussions/334
@@ -1329,9 +1330,36 @@ namespace Clipper2Lib {
   }
 
 
+  void ClipperBase::PrintOutRecs()
+  {
+    auto edge_str = [](const Active* e) -> std::string {
+      if (!e) return "null";
+      return "(" + std::to_string(e->bot.z) + "->" + std::to_string(e->top.z) + ")";
+    };
+    std::cerr << "  [outrecs: " << outrec_list_.size() << "]\n";
+    for (size_t i = 0; i < outrec_list_.size(); ++i) {
+      OutRec* or_ = outrec_list_[i];
+      std::cerr << "    [" << i << "]: ";
+      if (!or_->pts) { std::cerr << "null\n"; continue; }
+      std::cerr << "fe=" << edge_str(or_->front_edge)
+                << " be=" << edge_str(or_->back_edge) << " pts=[ ";
+      OutPt* op = or_->pts;
+      do {
+        std::cerr << "(" << op->pt.x << "," << op->pt.y << "," << op->pt.z << ") ";
+        op = op->next;
+      } while (op != or_->pts);
+      std::cerr << "]\n";
+    }
+  }
+
   OutPt* ClipperBase::AddLocalMinPoly(Active& e1, Active& e2,
     const Point64& pt, bool is_new)
   {
+    std::cerr << "\n [AddLocalMinPoly pt=(" << pt.x << "," << pt.y << "," << pt.z << ")"
+      << " e1=(" << e1.bot.z << "->" << e1.top.z << ")"
+      << " e2=(" << e2.bot.z << "->" << e2.top.z << ")"
+      << " isNew=" << is_new << "]\n";
+    PrintOutRecs();
     OutRec* outrec = NewOutRec();
     e1.outrec = outrec;
     e2.outrec = outrec;
@@ -1373,12 +1401,17 @@ namespace Clipper2Lib {
 
     OutPt* op = new OutPt(pt, outrec);
     outrec->pts = op;
+    PrintOutRecs();
     return op;
   }
 
 
   OutPt* ClipperBase::AddLocalMaxPoly(Active& e1, Active& e2, const Point64& pt)
   {
+    std::cerr << "\n [AddLocalMaxPoly pt=(" << pt.x << "," << pt.y << "," << pt.z << ")"
+      << " e1=(" << e1.bot.z << "->" << e1.top.z << ")"
+      << " e2=(" << e2.bot.z << "->" << e2.top.z << ")]\n";
+    PrintOutRecs();
     if (IsJoined(e1)) Split(e1, pt);
     if (IsJoined(e2)) Split(e2, pt);
 
@@ -1429,11 +1462,15 @@ namespace Clipper2Lib {
       JoinOutrecPaths(e1, e2);
     else
       JoinOutrecPaths(e2, e1);
+    PrintOutRecs();
     return result;
   }
 
   void ClipperBase::JoinOutrecPaths(Active& e1, Active& e2)
   {
+    std::cerr << "\n [JoinOutrecPaths e1=(" << e1.bot.z << "->" << e1.top.z << ")"
+      << " e2=(" << e2.bot.z << "->" << e2.top.z << ")]\n";
+    PrintOutRecs();
     //join e2 outrec path onto e1 outrec path and then delete e2 outrec path
     //pointers. (NB Only very rarely do the joining ends share the same coords.)
     OutPt* p1_st = e1.outrec->pts;
@@ -1478,6 +1515,7 @@ namespace Clipper2Lib {
     //and e1 and e2 are maxima and are about to be dropped from the Actives list.
     e1.outrec = nullptr;
     e2.outrec = nullptr;
+    PrintOutRecs();
   }
 
   OutRec* ClipperBase::NewOutRec()
@@ -1496,6 +1534,10 @@ namespace Clipper2Lib {
 
   OutPt* ClipperBase::AddOutPt(const Active& e, const Point64& pt)
   {
+    std::cerr << "\n [AddOutPt pt=(" << pt.x << "," << pt.y << "," << pt.z << ")"
+      << " e=(" << e.bot.z << "->" << e.top.z << ")"
+      << (IsFront(e) ? " front" : " back") << "]\n";
+    PrintOutRecs();
     OutPt* new_op = nullptr;
 
     //Outrec.OutPts: a circular doubly-linked-list of POutPt where ...
@@ -1519,6 +1561,7 @@ namespace Clipper2Lib {
     new_op->next = op_back;
     op_front->next = new_op;
     if (to_front) outrec->pts = new_op;
+    PrintOutRecs();
     return new_op;
   }
 
@@ -1572,6 +1615,7 @@ namespace Clipper2Lib {
       splitOp->next->pt, nextNextOp->pt, ip);
 
 #ifdef USINGZ
+    std::cerr << " [zCallback site 1575]\n";
     if (zCallback_) zCallback_(prevOp->pt, splitOp->pt,
       splitOp->next->pt, nextNextOp->pt, ip);
 #endif
@@ -1869,6 +1913,7 @@ namespace Clipper2Lib {
 #endif
 
 #ifdef USINGZ
+      std::cerr << " [zCallback site 1872]\n";
       if (zCallback_) SetZ(*edge_o, *edge_c, resultOp->pt);
 #endif
       return;
@@ -1956,6 +2001,7 @@ namespace Clipper2Lib {
       {
 #ifdef USINGZ
         resultOp = AddLocalMaxPoly(e1, e2, pt);
+        std::cerr << " [zCallback site 1959]\n";
         if (zCallback_ && resultOp) SetZ(e1, e2, resultOp->pt);
 #else
         AddLocalMaxPoly(e1, e2, pt);
@@ -1970,7 +2016,9 @@ namespace Clipper2Lib {
 #ifdef USINGZ
         resultOp = AddLocalMaxPoly(e1, e2, pt);
         OutPt* op2 = AddLocalMinPoly(e1, e2, pt);
+        std::cerr << " [zCallback site 1973]\n";
         if (zCallback_ && resultOp) SetZ(e1, e2, resultOp->pt);
+        std::cerr << " [zCallback site 1974]\n";
         if (zCallback_) SetZ(e1, e2, op2->pt);
 #else
         AddLocalMaxPoly(e1, e2, pt);
@@ -1984,7 +2032,9 @@ namespace Clipper2Lib {
         OutPt* op2 = AddOutPt(e2, pt);
         if (zCallback_)
         {
+          std::cerr << " [zCallback site 1987]\n";
           SetZ(e1, e2, resultOp->pt);
+          std::cerr << " [zCallback site 1988]\n";
           SetZ(e1, e2, op2->pt);
         }
 #else
@@ -1998,6 +2048,7 @@ namespace Clipper2Lib {
     {
 #ifdef USINGZ
       resultOp = AddOutPt(e1, pt);
+      std::cerr << " [zCallback site 2001]\n";
       if (zCallback_) SetZ(e1, e2, resultOp->pt);
 #else
       AddOutPt(e1, pt);
@@ -2008,6 +2059,7 @@ namespace Clipper2Lib {
     {
 #ifdef USINGZ
       resultOp = AddOutPt(e2, pt);
+      std::cerr << " [zCallback site 2011]\n";
       if (zCallback_) SetZ(e1, e2, resultOp->pt);
 #else
       AddOutPt(e2, pt);
@@ -2042,6 +2094,7 @@ namespace Clipper2Lib {
       {
 #ifdef USINGZ
         resultOp = AddLocalMinPoly(e1, e2, pt, false);
+        std::cerr << " [zCallback site 2045]\n";
         if (zCallback_) SetZ(e1, e2, resultOp->pt);
 #else
         AddLocalMinPoly(e1, e2, pt, false);
@@ -2090,6 +2143,7 @@ namespace Clipper2Lib {
           break;
         }
 #ifdef USINGZ
+        std::cerr << " [zCallback site 2093]\n";
         if (resultOp && zCallback_) SetZ(e1, e2, resultOp->pt);
 #endif
       }
@@ -2147,6 +2201,7 @@ namespace Clipper2Lib {
       }
       bot_y_ = y;  // bot_y_ == bottom of scanbeam
       if (!PopScanline(y)) break;  // y new top of scanbeam
+      std::cerr << "\n [scanbeam y=" << y << ".." << bot_y_ << "]\n";
       DoIntersections(y);
       DoTopOfScanbeam(y);
       while (PopHorz(e)) DoHorizontal(*e);
@@ -2817,6 +2872,9 @@ namespace Clipper2Lib {
       !IsHotEdge(e) || !IsHotEdge(*prev) ||
       IsHorizontal(e) || IsHorizontal(*prev) ||
       IsOpen(e) || IsOpen(*prev) ) return;
+    std::cerr << " [CheckJoinLeft e=(" << e.bot.z << "->" << e.top.z << ")"
+      << " prev=(" << prev->bot.z << "->" << prev->top.z << ")"
+      << " pt=(" << pt.x << "," << pt.y << ")]\n";
     if ((pt.y < e.top.y + 2 || pt.y < prev->top.y + 2) &&
       ((e.bot.y > pt.y) || (prev->bot.y > pt.y))) return; // avoid trivial joins
 
@@ -2845,6 +2903,21 @@ namespace Clipper2Lib {
       !IsHotEdge(e) || !IsHotEdge(*next) ||
       IsHorizontal(e) || IsHorizontal(*next) ||
       IsOpen(e) || IsOpen(*next)) return;
+    {
+      bool trivA = (pt.y < e.top.y+2 || pt.y < next->top.y+2);
+      bool trivB = (e.bot.y > pt.y || next->bot.y > pt.y);
+      double perpdist = check_curr_x ? PerpendicDistFromLineSqrd(pt, next->bot, next->top) : -1.0;
+      bool same_x = !check_curr_x && (e.curr_x == next->curr_x);
+      bool collinear = IsCollinear(e.top, pt, next->top);
+      std::cerr << " [CheckJoinRight e=(" << e.bot.z << "->" << e.top.z << ")"
+        << " next=(" << next->bot.z << "->" << next->top.z << ")"
+        << " pt=(" << pt.x << "," << pt.y << ")"
+        << " trivA=" << trivA << " trivB=" << trivB
+        << " check_curr_x=" << check_curr_x;
+      if (check_curr_x) std::cerr << " perpdist=" << std::setprecision(17) << perpdist;
+      else              std::cerr << " same_x=" << same_x;
+      std::cerr << " collinear=" << collinear << "]\n";
+    }
     if ((pt.y < e.top.y +2 || pt.y < next->top.y +2) &&
       ((e.bot.y > pt.y) || (next->bot.y > pt.y))) return; // avoid trivial joins
 
