@@ -176,6 +176,8 @@ def setStatusIcons(show=True):
                 gnudge = QtGui.QActionGroup(menu)
 
                 def updateNudgeMenu():
+                    # Update the tooltip when the menu is updated:
+                    nudge.setToolTip(_get_nudge_tooltip())
                     menu.clear()
                     labels = (
                         [translate("BIM", "Custom…")]
@@ -183,7 +185,7 @@ def setStatusIcons(show=True):
                         + [translate("BIM", "Auto")]
                     )
                     for label in labels:
-                        action = QtGui.QAction(gnudge)
+                        action = QtGui.QAction(menu)
                         action.setText(label)
                         menu.addAction(action)
 
