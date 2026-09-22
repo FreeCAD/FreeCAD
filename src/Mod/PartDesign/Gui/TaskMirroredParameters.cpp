@@ -98,7 +98,7 @@ void TaskMirroredParameters::setupParameterUI(QWidget* widget)
             vpOrigin->setTemporaryVisibility(Gui::DatumElement::Planes);
         }
         catch (const Base::Exception& ex) {
-            Base::Console().error("%s\n", ex.what());
+            Base::Console().error("{}\n", ex.what());
         }
     }
 
@@ -237,7 +237,7 @@ TaskMirroredParameters::~TaskMirroredParameters()
         }
     }
     catch (const Base::Exception& ex) {
-        Base::Console().error("%s\n", ex.what());
+        Base::Console().error("{}\n", ex.what());
     }
 }
 

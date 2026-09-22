@@ -293,7 +293,7 @@ void TaskDressUpParameters::tryAddSelection(
         e.reportException();
     }
     catch (const Standard_Failure& e) {
-        Base::Console().error("OCC error: %s\n", e.GetMessageString());
+        Base::Console().error("OCC error: {}\n", e.GetMessageString());
     }
 }
 

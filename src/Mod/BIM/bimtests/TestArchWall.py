@@ -676,3 +676,42 @@ class TestArchWall(TestArchBase.TestArchBase):
         self.assertAlmostEqual(
             bb.YMax, width + offset, delta=1e-6, msg="Right: YMax should be width+offset"
         )
+
+    def test_line_based_wall_with_length_expression(self):
+        """Test that a line based wall correctly handles an expression for its Length property.
+
+        Regression test for https://github.com/FreeCAD/FreeCAD/issues/32584.
+        """
+        self.printTestMessage("Checking line based wall with length expression")
+
+        line = Draft.make_line(App.Vector(0, 0, 0), App.Vector(1000, 0, 0))
+        wall = Arch.makeWall(line)
+        self.document.recompute()
+
+        # 1st test: Change the length of the line.
+        new_line_length = 2000
+        line.Length = new_line_length
+        self.document.recompute()
+        self.assertAlmostEqual(
+            wall.Length.Value,
+            new_line_length,
+            delta=1e-6,
+            msg="New length of line did not correctly update wall",
+        )
+
+        # 2nd test: Change the length of the wall by applying an expression.
+        new_wall_length = 3000
+        wall.setExpression("Length", "3 m")
+        self.document.recompute()
+        self.assertAlmostEqual(
+            wall.Length.Value,
+            new_wall_length,
+            delta=1e-6,
+            msg="Length expression of wall did not correctly update wall",
+        )
+        self.assertAlmostEqual(
+            line.Length.Value,
+            new_wall_length,
+            delta=1e-6,
+            msg="Length expression of wall did not correctly update line",
+        )

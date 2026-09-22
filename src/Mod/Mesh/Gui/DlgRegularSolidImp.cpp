@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 
+#include <format>
 #include <qmessagebox.h>
 
 #include <App/Document.h>
@@ -125,7 +126,7 @@ void DlgRegularSolidImp::onCreateSolidButtonClicked()
         switch (ui->comboBox1->currentIndex()) {
             case 0:
                 name = doc->getUniqueObjectName("Cube");
-                cmd = fmt::format(
+                cmd = std::format(
                     "App.ActiveDocument.addObject(\"Mesh::Cube\",\"{0}\")\n"
                     "App.ActiveDocument.{0}.Length={1}\n"
                     "App.ActiveDocument.{0}.Width={2}\n"
@@ -136,7 +137,7 @@ void DlgRegularSolidImp::onCreateSolidButtonClicked()
                 break;
             case 1:
                 name = doc->getUniqueObjectName("Cylinder");
-                cmd = fmt::format(
+                cmd = std::format(
                     "App.ActiveDocument.addObject(\"Mesh::Cylinder\",\"{0}\")\n"
                     "App.ActiveDocument.{0}.Radius={1}\n"
                     "App.ActiveDocument.{0}.Length={2}\n"
@@ -151,7 +152,7 @@ void DlgRegularSolidImp::onCreateSolidButtonClicked()
                 break;
             case 2:
                 name = doc->getUniqueObjectName("Cone");
-                cmd = fmt::format(
+                cmd = std::format(
                     "App.ActiveDocument.addObject(\"Mesh::Cone\",\"{0}\")\n"
                     "App.ActiveDocument.{0}.Radius1={1}\n"
                     "App.ActiveDocument.{0}.Radius2={2}\n"
@@ -168,7 +169,7 @@ void DlgRegularSolidImp::onCreateSolidButtonClicked()
                 break;
             case 3:
                 name = doc->getUniqueObjectName("Sphere");
-                cmd = fmt::format(
+                cmd = std::format(
                     "App.ActiveDocument.addObject(\"Mesh::Sphere\",\"{0}\")\n"
                     "App.ActiveDocument.{0}.Radius={1}\n"
                     "App.ActiveDocument.{0}.Sampling={2}\n", name,
@@ -177,7 +178,7 @@ void DlgRegularSolidImp::onCreateSolidButtonClicked()
                 break;
             case 4:
                 name = doc->getUniqueObjectName("Ellipsoid");
-                cmd = fmt::format(
+                cmd = std::format(
                     "App.ActiveDocument.addObject(\"Mesh::Ellipsoid\",\"{0}\")\n"
                     "App.ActiveDocument.{0}.Radius1={1}\n"
                     "App.ActiveDocument.{0}.Radius2={2}\n"
@@ -188,7 +189,7 @@ void DlgRegularSolidImp::onCreateSolidButtonClicked()
                 break;
             case 5:
                 name = doc->getUniqueObjectName("Torus");
-                cmd = fmt::format(
+                cmd = std::format(
                     "App.ActiveDocument.addObject(\"Mesh::Torus\",\"{0}\")\n"
                     "App.ActiveDocument.{0}.Radius1={1}\n"
                     "App.ActiveDocument.{0}.Radius2={2}\n"

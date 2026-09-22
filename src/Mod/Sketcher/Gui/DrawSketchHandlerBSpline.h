@@ -884,7 +884,10 @@ private:
                 // Since it happens very frequently that the interpolation fails
                 // it's sufficient to report this as log message to avoid to pollute
                 // the output window
-                Base::Console().log(std::string("drawBSplineToPosition"), "interpolation failed\n");
+                Base::Console().send<Base::LogStyle::Log>(
+                    "drawBSplineToPosition",
+                    "interpolation failed\n"
+                );
             }
         }
     }
