@@ -304,7 +304,7 @@ private:
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "deleteAllGeometry(True)");
             }
             catch (const Base::Exception& e) {
-                Base::Console().error("%s\n", e.what());
+                Base::Console().error("{}\n", e.what());
             }
         }
         else {
@@ -321,7 +321,7 @@ private:
                 );
             }
             catch (const Base::Exception& e) {
-                Base::Console().error("%s\n", e.what());
+                Base::Console().error("{}\n", e.what());
             }
         }
     }
@@ -342,7 +342,7 @@ private:
             Gui::cmdAppObjectArgs(sketchgui->getObject(), "setGeometryIds([%s])", stream.str().c_str());
         }
         catch (const Base::Exception& e) {
-            Base::Console().error("%s\n", e.what());
+            Base::Console().error("{}\n", e.what());
         }
     }
     void scaleLabels(int constraintIndexOffset)

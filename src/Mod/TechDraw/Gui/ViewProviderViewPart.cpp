@@ -217,7 +217,7 @@ void ViewProviderViewPart::onChanged(const App::Property* prop)
 
 void ViewProviderViewPart::attach(App::DocumentObject *pcFeat)
 {
-//    Base::Console().message("VPVP::attach(%s)\n", pcFeat->getNameInDocument());
+//    Base::Console().message("VPVP::attach({})\n", pcFeat->getNameInDocument());
     auto* dvm = dynamic_cast<TechDraw::DrawViewMulti*>(pcFeat);
     auto* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(pcFeat);
     if (dvm) {
@@ -303,7 +303,7 @@ bool ViewProviderViewPart::setEdit(int ModNum)
     auto* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(dvp);
     if (dvd) {
         if (!dvd->BaseView.getValue()) {
-            throw Base::RuntimeError(fmt::format("DrawViewDetail - {} - has no BaseView!",
+            throw Base::RuntimeError(std::format("DrawViewDetail - {} - has no BaseView!",
                                                  dvd->getNameInDocument()));
         }
         return setDetailEdit(ModNum, dvd);

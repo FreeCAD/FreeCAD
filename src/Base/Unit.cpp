@@ -23,13 +23,12 @@
 #include <array>
 #include <cmath>
 #include <cstring>
+#include <format>
 #include <limits>
 #include <ranges>
 #include <vector>
 
-#include <fmt/format.h>
-#include <fmt/ranges.h>
-
+#include "Tools.h"
 #include "Unit.h"
 
 using namespace Base;
@@ -243,14 +242,14 @@ std::string Unit::getString() const
         const auto absol {abs(_exps.at(index))};
 
         return absol <= 1 ? unitStrString
-                          : fmt::format("{}^{}", unitStrString, std::to_string(absol));
+                          : std::format("{}^{}", unitStrString, std::to_string(absol));
     };
 
     auto buildStr = [&](auto indexes) {
         std::vector<std::string> subStrings {};
         std::transform(indexes.begin(), indexes.end(), std::back_inserter(subStrings), buildSubStr);
 
-        return fmt::format("{}", fmt::join(subStrings, "*"));
+        return Base::Tools::joinFormatted(subStrings, "*");
     };
 
     //------------------------------------------------------------------------------
@@ -263,18 +262,18 @@ std::string Unit::getString() const
 
     auto denominatorStr = buildStr(negValIndexes);
 
-    return fmt::format(
+    return std::format(
         "{}/{}",
         numeratorStr.empty() ? "1" : numeratorStr,
-        negValIndexes.size() > 1 ? fmt::format("({})", denominatorStr) : denominatorStr
+        negValIndexes.size() > 1 ? std::format("({})", denominatorStr) : denominatorStr
     );
 }
 
 std::string Unit::representation() const
 {
     auto name = getTypeString();
-    auto inParen = fmt::format("Unit: {} ({})", getString(), fmt::join(_exps, ","));
-    return name.empty() ? inParen : fmt::format("{} [{}]", inParen, name);
+    auto inParen = std::format("Unit: {} ({})", getString(), Base::Tools::joinFormatted(_exps, ","));
+    return name.empty() ? inParen : std::format("{} [{}]", inParen, name);
 }
 
 std::string Unit::getTypeString() const

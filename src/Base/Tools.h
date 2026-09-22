@@ -27,6 +27,7 @@
 
 #include <FCGlobal.h>
 #include <algorithm>
+#include <format>
 #include <functional>
 #include <cmath>
 #include <numbers>
@@ -430,6 +431,26 @@ BaseExport constexpr bool isNullOrEmpty(const char* str)
  * @return
  */
 BaseExport std::string joinList(const std::vector<std::string>& vec, const std::string& sep = ", ");
+
+/**
+ * @brief joinFormatted
+ * Join the elements of any range with the infix separator \a sep, formatting
+ * each element with std::format.  Unlike joinList() no separator follows the
+ * last element.  Replaces fmt::join until std::format formats a range on
+ * every supported compiler, which libstdc++ does from version 15 on.
+ */
+template<typename Range>
+std::string joinFormatted(const Range& range, std::string_view sep)
+{
+    std::string result;
+    for (const auto& element : range) {
+        if (!result.empty()) {
+            result += sep;
+        }
+        result += std::format("{}", element);
+    }
+    return result;
+}
 
 /**
  * @brief currentDateTimeString
