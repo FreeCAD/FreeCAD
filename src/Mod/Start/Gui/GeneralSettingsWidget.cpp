@@ -26,12 +26,14 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QLayout>
+#include <QLayoutItem>
 #include <QToolButton>
 #include <QVBoxLayout>
 #include <QWidget>
 
 
 #include <algorithm>
+#include "FlowLayout.h"
 #include "GeneralSettingsWidget.h"
 #include <gsl/pointers>
 #include <App/Application.h>
@@ -74,16 +76,24 @@ void GeneralSettingsWidget::setupUi()
 
 void GeneralSettingsWidget::createHorizontalUi()
 {
-    auto mainLayout = gsl::owner<QHBoxLayout*>(new QHBoxLayout(this));
-    const int extraSpace {36};
-    mainLayout->addWidget(_languageLabel);
-    mainLayout->addWidget(_languageComboBox);
-    mainLayout->addSpacing(extraSpace);
-    mainLayout->addWidget(_unitSystemLabel);
-    mainLayout->addWidget(_unitSystemComboBox);
-    mainLayout->addSpacing(extraSpace);
-    mainLayout->addWidget(_navigationStyleLabel);
-    mainLayout->addWidget(_navigationStyleComboBox);
+    auto mainLayout = gsl::owner<StartGui::FlowLayout*>(new StartGui::FlowLayout(this));
+    mainLayout->setSpacing(12);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
+
+    mainLayout->addItem(pairWidget(_languageLabel, _languageComboBox));
+    mainLayout->addItem(pairWidget(_unitSystemLabel, _unitSystemComboBox));
+    mainLayout->addItem(pairWidget(_navigationStyleLabel, _navigationStyleComboBox));
+}
+
+QLayoutItem* GeneralSettingsWidget::pairWidget(QLabel* label, QComboBox* combo)
+{
+    auto container = gsl::owner<QWidget*>(new QWidget(this));
+    auto layout = gsl::owner<QHBoxLayout*>(new QHBoxLayout(container));
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(6);
+    layout->addWidget(label);
+    layout->addWidget(combo);
+    return new QWidgetItem(container);
 }
 
 

@@ -28,6 +28,7 @@
 
 class QLabel;
 class QComboBox;
+class QLayoutItem;
 
 namespace StartGui
 {
@@ -45,6 +46,8 @@ private:
 
     void setupUi();
     void createHorizontalUi();
+
+    QLayoutItem* pairWidget(QLabel* label, QComboBox* combo);
 
     QString createLabelText(const QString& translatedText) const;
     gsl::owner<QComboBox*> createLanguageComboBox();
