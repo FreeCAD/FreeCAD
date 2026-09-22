@@ -93,7 +93,9 @@
 #include "GeometryObject.h"
 #include "Preferences.h"
 
+#include <App/FeaturePythonPyImp.h>
 #include "DrawViewSection.h"
+#include "DrawViewPartPy.h"
 
 using namespace TechDraw;
 
@@ -1404,6 +1406,15 @@ template<>
 const char* TechDraw::DrawViewSectionPython::getViewProviderName() const
 {
     return "TechDrawGui::ViewProviderDrawingView";
+}
+template<>
+PyObject* TechDraw::DrawViewSectionPython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawViewPartPy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 
