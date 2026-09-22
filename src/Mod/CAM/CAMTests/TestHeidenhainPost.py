@@ -383,7 +383,7 @@ class TestHeidenhainPost(PathTestUtils.PathTestBase):
                     if not continued.rstrip().endswith("~"):
                         break
                 return block
-        self.fail(f"no CYCL DEF {title} in\n{EOL.join(lines)}")
+        raise self.failureException(f"no CYCL DEF {title} in\n{EOL.join(lines)}")
 
     def test_g81_cycle_200(self):
         """G81 is CYCL DEF 200; feed starts at R because Q203 = R - Q200."""
