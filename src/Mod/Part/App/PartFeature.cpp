@@ -691,7 +691,7 @@ std::list<Data::HistoryItem> Feature::getElementHistory(
     return ret;
 }
 
-QVector<Data::MappedElement> Feature::getElementFromSource(
+std::vector<Data::MappedElement> Feature::getElementFromSource(
     App::DocumentObject* obj,
     const char* subname,
     App::DocumentObject* src,
@@ -699,7 +699,7 @@ QVector<Data::MappedElement> Feature::getElementFromSource(
     bool single
 )
 {
-    QVector<Data::MappedElement> res;
+    std::vector<Data::MappedElement> res;
     if (!obj || !src) {
         return res;
     }
@@ -792,7 +792,7 @@ QVector<Data::MappedElement> Feature::getElementFromSource(
             Data::MappedElement e;
             e.index = Data::IndexedName(name.c_str());
             e.name = shape.getMappedName(e.index, true);
-            res.append(e);
+            res.push_back(e);
             if (single) {
                 break;
             }
@@ -820,7 +820,7 @@ QVector<Data::MappedElement> Feature::getElementFromSource(
     return res;
 }
 
-QVector<Data::MappedElement> Feature::getRelatedElements(
+std::vector<Data::MappedElement> Feature::getRelatedElements(
     App::DocumentObject* obj,
     const char* name,
     HistoryTraceType sameType,
@@ -830,7 +830,7 @@ QVector<Data::MappedElement> Feature::getRelatedElements(
     auto owner = obj;
     auto shape
         = getTopoShape(obj, ShapeOption::ResolveLink | ShapeOption::Transform, nullptr, nullptr, &owner);
-    QVector<Data::MappedElement> ret;
+    std::vector<Data::MappedElement> ret;
     Data::MappedElement mapped = shape.getElementName(name);
     if (!mapped.name) {
         return ret;
@@ -860,7 +860,7 @@ QVector<Data::MappedElement> Feature::getRelatedElements(
         }
     }
 
-    std::map<int, QVector<Data::MappedElement>> retMap;
+    std::map<int, std::vector<Data::MappedElement>> retMap;
 
     const char* shapetype = TopoShape::shapeName(type).c_str();
     std::ostringstream ss;
