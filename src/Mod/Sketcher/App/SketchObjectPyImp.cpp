@@ -33,6 +33,7 @@
 #include <Base/QuantityPy.h>
 #include <Base/Tools.h>
 #include <Base/VectorPy.h>
+#include <Base/Translation.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/LinePy.h>
 
