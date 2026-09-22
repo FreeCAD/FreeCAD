@@ -229,7 +229,7 @@ static void renderDevBuildWarning(
     painter.drawText(box, Qt::AlignCenter, devWarning);
 }
 
-static QPixmap defaultSplashImage()
+QPixmap SplashScreen::defaultSplashImage()
 {
     constexpr QSizeF splashSize(480.0, 220.0);
     return BitmapFactory().pixmapFromSvg(":/icons/freecadsplash.svg", splashSize);
@@ -266,7 +266,7 @@ static QFont defaultSplashFont(const QFont& fallback)
  * Constructs a splash screen that will display the pixmap.
  */
 SplashScreen::SplashScreen(const QPixmap& pixmap, Qt::WindowFlags f)
-    : QSplashScreen(pixmap, f)
+    : QSplashScreen(pixmap, f | Qt::NoDropShadowWindowHint)
 {
     // write the messages to splasher
     messages = new SplashObserver(this);
@@ -295,8 +295,6 @@ bool SplashScreen::event(QEvent* e)
 
 void SplashScreen::show()
 {
-    setWindowFlags(Qt::FramelessWindowHint | Qt::Window | Qt::NoDropShadowWindowHint);
-
     QSplashScreen::show();
 
     // Our repaint will call processEvents later on, no need to waste time here

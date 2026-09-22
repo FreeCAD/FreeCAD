@@ -123,14 +123,18 @@ QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Select Vertical Axis");
 /// FUNC is the name of the member function to be executed on selection of the menu item
 /// ACTSONSELECTION is a true/false value to activate the command only if a selection is made
 #define CONTEXT_ITEM(ICONSTR, NAMESTR, CMDSTR, FUNC, ACTSONSELECTION)                              \
-    QIcon icon_##FUNC(Gui::BitmapFactory().pixmap(ICONSTR));                                       \
-    QAction* constr_##FUNC = menu.addAction(icon_##FUNC, tr(NAMESTR), this, SLOT(FUNC()));         \
-    constr_##FUNC->setShortcut(QKeySequence(QString::fromUtf8(                                     \
-        Gui::Application::Instance->commandManager().getCommandByName(CMDSTR)->getAccel())));      \
-    if (ACTSONSELECTION)                                                                           \
-        constr_##FUNC->setEnabled(!items.isEmpty());                                               \
-    else                                                                                           \
-        constr_##FUNC->setEnabled(true);
+    if (auto* cmd_##FUNC = Gui::Application::Instance->commandManager().getCommandByName(CMDSTR);  \
+        cmd_##FUNC && cmd_##FUNC->allowedByMaturity()) {                                           \
+        QIcon icon_##FUNC(Gui::BitmapFactory().pixmap(ICONSTR));                                   \
+        QAction* constr_##FUNC = menu.addAction(icon_##FUNC, tr(NAMESTR), this, SLOT(FUNC()));     \
+        constr_##FUNC->setShortcut(QKeySequence(QString::fromUtf8(cmd_##FUNC->getAccel())));       \
+        if (ACTSONSELECTION) {                                                                     \
+            constr_##FUNC->setEnabled(!items.isEmpty());                                           \
+        }                                                                                          \
+        else {                                                                                     \
+            constr_##FUNC->setEnabled(true);                                                       \
+        }                                                                                          \
+    }
 
 /// Defines the member function corresponding to the CONTEXT_ITEM macro
 #define CONTEXT_MEMBER_DEF(CMDSTR, FUNC)                                                           \

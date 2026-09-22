@@ -1672,14 +1672,9 @@ int TreeWidget::getIconSize()
     if (defaultSize == 0) {
         auto tree = instance();
         if (tree) {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-            QStyleOptionViewItem opt = tree->viewOptions();
-            defaultSize = opt.decorationSize.width();
-#else
             QStyleOptionViewItem opt;
             tree->initViewItemOption(&opt);
             defaultSize = opt.decorationSize.width();
-#endif
         }
         else {
             defaultSize = QApplication::style()->pixelMetric(QStyle::PM_SmallIconSize);
@@ -2333,19 +2328,11 @@ public:
 QPoint getPos(QEvent* event)
 {
     if (auto* dragMoveEvent = dynamic_cast<QDragMoveEvent*>(event)) {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        return dragMoveEvent->pos();
-#else
         return dragMoveEvent->position().toPoint();
-#endif
     }
 
-    else if (auto* dropEvent = dynamic_cast<QDropEvent*>(event)) {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        return dropEvent->pos();
-#else
+    if (auto* dropEvent = dynamic_cast<QDropEvent*>(event)) {
         return dropEvent->position().toPoint();
-#endif
     }
 
     // For unsupported event types or if casting fails
@@ -6398,14 +6385,9 @@ void DocumentObjectItem::generateIcon(int currentStatus, QIcon::Mode mode, QIcon
     // get the original icon set
     QIcon icon_org = object()->getIcon();
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QStyleOptionViewItem opt = getTree()->viewOptions();
-    int w = opt.decorationSize.width();
-#else
     QStyleOptionViewItem opt;
     getTree()->initViewItemOption(&opt);
     int w = opt.decorationSize.width();
-#endif
 
     QPixmap pxOn, pxOff;
 

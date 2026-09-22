@@ -87,7 +87,7 @@ Man bør derefter klikke på Opdater knappen i hovedværktøjslinjen.
   <context>
     <name>LinkParams</name>
     <message>
-      <location filename="../../Link.cpp" line="119"/>
+      <location filename="../../Link.cpp" line="131"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
       <translation>Gemmer det sidste brugervalg om, hvorvidt CopyOnChange opsætning skal anvendes på alle links, der refererer til det samme konfigurerbare objekt</translation>
