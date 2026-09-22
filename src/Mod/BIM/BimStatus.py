@@ -97,7 +97,7 @@ def setStatusIcons(show=True):
             if not result:
                 return
             utext = form.spinBox.text()
-        action.parent().parent().parent().setText(utext)
+        action.parent().parent().setText(utext)
 
     # main code
 
@@ -173,7 +173,6 @@ def setStatusIcons(show=True):
                 statuswidget.addWidget(nudge)
                 statuswidget.nudge = nudge
                 menu = QtGui.QMenu(nudge)
-                gnudge = QtGui.QActionGroup(menu)
 
                 def updateNudgeMenu():
                     # Update the tooltip when the menu is updated:
@@ -192,7 +191,7 @@ def setStatusIcons(show=True):
                 updateNudgeMenu()
                 menu.aboutToShow.connect(updateNudgeMenu)
                 nudge.setMenu(menu)
-                gnudge.triggered.connect(setNudge)
+                menu.triggered.connect(setNudge)
                 statuswidget.show()
 
         else:
