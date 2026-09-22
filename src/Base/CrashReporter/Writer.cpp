@@ -357,7 +357,7 @@ void Writer::handleException(_EXCEPTION_POINTERS* exceptionInfo)
 void Writer::setMinidumpPath(const std::string& path)
 {
     if (path.length() > MaxPathLength) {
-        Console().warning("CrashReporter: Path too long: %s\n", path);
+        Console().warning("CrashReporter: Path too long: {}\n", path);
         return;
     }
     header.minidumpPathStringOffset = addToStringTable(path);
@@ -438,7 +438,7 @@ void Writer::install(const std::string& crashReportDirectory)
     constexpr char separator = PATHSEP;
 
     if (FileInfo info(crashReportDirectory); !info.createDirectories()) {
-        Console().warning("CrashReporter: Failed to create %s\n", crashReportDirectory);
+        Console().warning("CrashReporter: Failed to create {}\n", crashReportDirectory);
         return;
     }
 
@@ -446,7 +446,7 @@ void Writer::install(const std::string& crashReportDirectory)
     std::string fcrash = crashReportDirectory + separator + "crash-" + std::to_string(timestamp)
         + "-" + std::to_string(header.processID) + ".fcrash";
     if (fcrash.length() > MaxPathLength - 1) {
-        Console().warning("CrashReporter: Crash file path too long: %s\n", fcrash);
+        Console().warning("CrashReporter: Crash file path too long: {}\n", fcrash);
         return;
     }
     resolvedCrashFilePath = fcrash;

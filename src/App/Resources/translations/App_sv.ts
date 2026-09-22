@@ -81,16 +81,17 @@ Användaren bör sedan klicka på knappen Uppdatera i huvudverktygsfältet.
     <message>
       <location filename="../../Datums.cpp" line="273"/>
       <source>Origin-Point</source>
-      <translation>Ursprungspunkt</translation>
+      <translation>Origopunkt</translation>
     </message>
   </context>
   <context>
     <name>LinkParams</name>
     <message>
-      <location filename="../../Link.cpp" line="119"/>
+      <location filename="../../Link.cpp" line="131"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
-      <translation>Lagra användarens senaste val om huruvida CopyOnChange ska appliceras på alla länkar som länkar till samma konfigurerbara objekt</translation>
+      <translation>Sparar användarens senaste val om huruvida CopyOnChange ska tillämpas på alla länkar
+som länkar till samma konfigurerbara objekt</translation>
     </message>
   </context>
 </TS>

@@ -369,7 +369,13 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
             QtCore.QPoint(drawing_point.x() + 100, drawing_point.y() + 80),
         )
         FreeCADGui.runCommand("Sketcher_CreateLine")
-        self.pump(100)
+        self.assertTrue(
+            self.wait_until(
+                lambda: self.origin_marker_is("CIRCLE_LINE"),
+                timeout_ms=3000,
+            ),
+            "Expected the second line tool activation to switch the origin marker appearance",
+        )
         self.move(viewport, drawing_point)
         self.click(viewport, drawing_point)
         self.move(viewport, second_point)

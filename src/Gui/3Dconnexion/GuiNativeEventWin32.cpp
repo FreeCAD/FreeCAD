@@ -397,11 +397,7 @@ unsigned short HidToVirtualKey(unsigned long pid, unsigned short hidKeyCode)
     return virtualkey;
 }
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-bool Gui::GuiNativeEvent::RawInputEventFilter(void* msg, long* result)
-#else
 bool Gui::GuiNativeEvent::RawInputEventFilter(void* msg, qintptr* result)
-#endif
 {
     if (gMouseInput == 0) {
         return false;
@@ -547,7 +543,7 @@ bool Gui::GuiNativeEvent::Is3dmouseAttached()
                 if (devicesToRegister[j].usUsage == rdi.hid.usUsage
                     && devicesToRegister[j].usUsagePage == rdi.hid.usUsagePage) {
                     Base::Console().log(
-                        "Found 3D mouse device ID {%04X:%04X}.\n",
+                        "Found 3D mouse device ID {{{:04X}:{:04X}}}.\n",
                         rdi.hid.dwVendorId,
                         rdi.hid.dwProductId
                     );

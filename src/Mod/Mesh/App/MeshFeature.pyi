@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, overload
 
 from Base.Metadata import export
 
@@ -38,11 +38,15 @@ class MeshFeature(GeoFeature):
         """Adjust wrong oriented facets"""
         ...
 
-    def smooth(self) -> Any:
+    def smooth(self, iteration: int = 1, max_error: float = ..., /) -> None:
         """Smooth the mesh data"""
         ...
 
-    def decimate(self) -> Any:
+    @overload
+    def decimate(self, tolerance: float, reduction: float, /) -> None: ...
+    @overload
+    def decimate(self, target_size: int, /) -> None: ...
+    def decimate(self, *args) -> None:
         """
         Decimate the mesh
         decimate(tolerance(Float), reduction(Float))
@@ -71,7 +75,7 @@ class MeshFeature(GeoFeature):
         """Repair any invalid indices"""
         ...
 
-    def fixDegenerations(self) -> Any:
+    def fixDegenerations(self, epsilon: float = ..., /) -> None:
         """Remove degenerated facets"""
         ...
 

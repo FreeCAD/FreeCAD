@@ -240,5 +240,5 @@ PyMOD_INIT_FUNC(Measure)
 // debug print for sketchsolv
 void debugprint(const std::string& text)
 {
-    Base::Console().log("%s", text.c_str());
+    Base::Console().log("{}", text);
 }

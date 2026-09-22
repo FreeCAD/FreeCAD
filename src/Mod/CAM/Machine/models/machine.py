@@ -389,6 +389,18 @@ class ToolheadType(Enum):
     LASER = "laser"  # Laser cutting/engraving
     WATERJET = "waterjet"  # Waterjet cutting
     PLASMA = "plasma"  # Plasma cutting
+    WIRE_EDM = "wire_edm"  # Wire electrical discharge machining
+
+    @property
+    def display_name(self) -> str:
+        """Human-readable label for UI display."""
+        return {
+            ToolheadType.ROTARY: "Rotary",
+            ToolheadType.LASER: "Laser",
+            ToolheadType.WATERJET: "Waterjet",
+            ToolheadType.PLASMA: "Plasma",
+            ToolheadType.WIRE_EDM: "Wire EDM",
+        }[self]
 
 
 @dataclass
@@ -475,6 +487,20 @@ class ToolheadCapabilities:
                 has_probing=False,
                 has_auto_focus=False,
             ),
+            ToolheadType.WIRE_EDM: cls(
+                can_rotate=False,
+                can_move_z=True,
+                can_move_xy=False,
+                has_power_control=True,
+                has_speed_control=False,
+                has_pulse_control=True,
+                uses_coolant=False,
+                uses_assist_gas=False,
+                uses_water=True,
+                can_turn_on_off=True,
+                has_probing=False,
+                has_auto_focus=False,
+            ),
         }
         return capabilities.get(toolhead_type, capabilities[ToolheadType.ROTARY])
 
@@ -543,6 +569,10 @@ class Toolhead:
     def is_plasma(self) -> bool:
         """Check if this is a plasma toolhead."""
         return self.toolhead_type == ToolheadType.PLASMA
+
+    def is_wire_edm(self) -> bool:
+        """Check if this is a wire EDM toolhead."""
+        return self.toolhead_type == ToolheadType.WIRE_EDM
 
     def can_use_coolant(self) -> bool:
         """Check if this toolhead can use coolant."""
@@ -620,22 +650,24 @@ class Toolhead:
             focus_data = data["laser_focus_range"]
             laser_focus_range = (focus_data[0], focus_data[1])
 
+        # Keyword arguments so that adding or reordering a dataclass field
+        # cannot silently shift every loaded value onto the wrong field.
         return cls(
-            data["name"],
-            toolhead_type,
-            data.get("id"),
-            data.get("max_power_kw", 0),
-            data.get("max_rpm", 0),
-            data.get("min_rpm", 0),
-            data.get("tool_change", "manual"),
-            data.get("coolant_flood", False),
-            data.get("coolant_mist", False),
-            data.get("coolant_delay", 0.0),
-            data.get("toolhead_wait", data.get("spindle_wait", 0.0)),
-            data.get("laser_wavelength"),
-            laser_focus_range,
-            data.get("waterjet_pressure"),
-            data.get("plasma_amperage"),
+            name=data["name"],
+            toolhead_type=toolhead_type,
+            id=data.get("id"),
+            max_power_kw=data.get("max_power_kw", 0),
+            max_rpm=data.get("max_rpm", 0),
+            min_rpm=data.get("min_rpm", 0),
+            tool_change=data.get("tool_change", "manual"),
+            coolant_flood=data.get("coolant_flood", False),
+            coolant_mist=data.get("coolant_mist", False),
+            coolant_delay=data.get("coolant_delay", 0.0),
+            toolhead_wait=data.get("toolhead_wait", data.get("spindle_wait", 0.0)),
+            laser_wavelength=data.get("laser_wavelength"),
+            laser_focus_range=laser_focus_range,
+            waterjet_pressure=data.get("waterjet_pressure"),
+            plasma_amperage=data.get("plasma_amperage"),
         )
 
 
@@ -848,7 +880,18 @@ class Machine:
         tool_change="manual",
     ):
         """Add a toolhead to the configuration"""
-        self.toolheads.append(Toolhead(name, id, max_power_kw, max_rpm, min_rpm, tool_change))
+        # Keyword arguments: Toolhead takes toolhead_type as its second
+        # positional field, so a positional call here shifts every value.
+        self.toolheads.append(
+            Toolhead(
+                name=name,
+                id=id,
+                max_power_kw=max_power_kw,
+                max_rpm=max_rpm,
+                min_rpm=min_rpm,
+                tool_change=tool_change,
+            )
+        )
         return self
 
     def save(self, filepath):

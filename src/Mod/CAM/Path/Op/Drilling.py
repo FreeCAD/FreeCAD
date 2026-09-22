@@ -130,6 +130,10 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             # Any other stored value ("None") is still valid in the new list and is
             # preserved by the list swap above -- nothing to reassign.
 
+        # Migration: remove unused AddTipLength property
+        if hasattr(obj, "AddTipLength"):
+            obj.removeProperty("AddTipLength")
+
         if hasattr(obj, "chipBreakEnabled"):
             obj.renameProperty("chipBreakEnabled", "ChipBreakEnabled")
         elif not hasattr(obj, "ChipBreakEnabled"):
@@ -299,15 +303,6 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 "G82: pause at the bottom of each hole before retracting",
-            ),
-        )
-        obj.addProperty(
-            "App::PropertyBool",
-            "AddTipLength",
-            "Drill",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "Calculate the tip length and subtract from final depth",
             ),
         )
         obj.addProperty(
@@ -740,7 +735,6 @@ def SetupProperties():
     setup.append("PeckEnabled")
     setup.append("DwellTime")
     setup.append("DwellEnabled")
-    setup.append("AddTipLength")
     setup.append("PeckRetract")
     setup.append("ExtraOffset")
     setup.append("KeepToolDown")

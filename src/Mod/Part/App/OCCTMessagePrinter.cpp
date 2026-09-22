@@ -36,17 +36,17 @@ void OCCTMessagePrinter::send(const TCollection_AsciiString& message, const Mess
     switch (gravity) {
         case Message_Fail:
         case Message_Alarm:
-            Base::Console().error("OCCT: %s\n", txt);
+            Base::Console().error("OCCT: {}\n", txt);
             break;
         case Message_Warning:
-            Base::Console().warning("OCCT: %s\n", txt);
+            Base::Console().warning("OCCT: {}\n", txt);
             break;
         case Message_Info:
-            Base::Console().message("OCCT: %s\n", txt);
+            Base::Console().message("OCCT: {}\n", txt);
             break;
         case Message_Trace:
         default:
-            Base::Console().message("OCCT(trace): %s\n", txt);
+            Base::Console().message("OCCT(trace): {}\n", txt);
             break;
     }
 }

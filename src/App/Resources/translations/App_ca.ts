@@ -87,7 +87,7 @@ L'usuari hauria de fer clic al botó Actualitza a la barra d'eines principal.
   <context>
     <name>LinkParams</name>
     <message>
-      <location filename="../../Link.cpp" line="119"/>
+      <location filename="../../Link.cpp" line="131"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
       <translation>Emmagatzema l'última tria de l'usuari sobre si aplicar la configuració de CopyOnChange a tots els enllaços que apunten al mateix objecte configurable</translation>

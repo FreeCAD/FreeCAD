@@ -438,3 +438,31 @@ function(disable_occt8_deprecation_warnings)
         add_compile_definitions(-DOCCT_NO_DEPRECATED)
     endif()
 endfunction()
+
+# Remove any _FORTIFY_SOURCE defines inherited from targets listed in ${ARGN},
+# as this makes compilers emit loads of warnings when building in Debug mode
+# since _FORTIFY_SOURCE is not usable without optimization.
+function(debug_clean_fortify_source)
+    foreach(_target IN LISTS ARGN)
+        if(TARGET "${_target}")
+            # Resolve alias targets in case our FindHDF5.cmake found a packaged target whose
+            # name wasn't hdf5::hdf5 from the get go.
+            get_target_property(_hdf5_alias_target "${_target}" ALIASED_TARGET)
+            # Variable value will be "_hdf5_alias_target-NOTFOUND" if not an alias, which `if` considers falsy
+            if(_hdf5_alias_target)
+                set(_target "${_hdf5_alias_target}")
+            endif()
+            get_target_property(_hdf5_compile_defs "${_target}" INTERFACE_COMPILE_DEFINITIONS)
+            list(REMOVE_ITEM _hdf5_compile_defs "_FORTIFY_SOURCE=1" "_FORTIFY_SOURCE=2" "_FORTIFY_SOURCE=3")
+            set_target_properties("${_target}" PROPERTIES INTERFACE_COMPILE_DEFINITIONS "${_hdf5_compile_defs}")
+        endif()
+    endforeach()
+endfunction()
+
+function(hdf5_clean_fortify_source)
+    debug_clean_fortify_source(
+        HDF5::HDF5 hdf5::hdf5 hdf5::hdf5_cpp hdf5::hdf5_fortran
+        hdf5::hdf5_hl hdf5::hdf5_hl_cpp hdf5::hdf5_hl_fortran
+        hdf5-static hdf5-shared
+    )
+endfunction()

@@ -51,10 +51,9 @@
 
 #include <algorithm>
 #include <cmath>
+#include <format>
 #include <limits>
 #include <numbers>
-
-#include <fmt/format.h>
 
 #include <Base/BaseClass.h>
 #include <Base/Console.h>
@@ -277,7 +276,7 @@ void ViewProviderSketch::ParameterObserver::subscribeToParameters()
     catch (const Base::ValueError& e) {// ensure that if parameter strings are not well-formed, the
                                        // exception is not propagated
         Base::Console().developerError(
-            "ViewProviderSketch", "Malformed parameter string: %s\n", e.what());
+            "ViewProviderSketch", "Malformed parameter string: {}\n", e.what());
     }
 }
 
@@ -299,7 +298,7 @@ void ViewProviderSketch::ParameterObserver::unsubscribeToParameters()
     catch (const Base::ValueError& e) {// ensure that if parameter strings are not well-formed, the
                                        // exception is not propagated
         Base::Console().developerError(
-            "ViewProviderSketch", "Malformed parameter string: %s\n", e.what());
+            "ViewProviderSketch", "Malformed parameter string: {}\n", e.what());
     }
 }
 
@@ -1611,7 +1610,7 @@ bool ViewProviderSketch::mouseWheelEvent(int delta, const SbVec2s& cursorPos,
 void ViewProviderSketch::editDoubleClicked()
 {
     if (preselection.isPreselectPointValid()) {
-        Base::Console().log("double click point:%d\n", preselection.PreselectPoint);
+        Base::Console().log("double click point:{}\n", preselection.PreselectPoint);
     }
     else if (preselection.isPreselectCurveValid()) {
         int geoId = preselection.PreselectCurve;
@@ -1641,7 +1640,7 @@ void ViewProviderSketch::editDoubleClicked()
         }
     }
     else if (preselection.isCrossPreselected()) {
-        Base::Console().log("double click cross:%d\n",
+        Base::Console().log("double click cross:{}\n",
                             static_cast<int>(preselection.PreselectCross));
     }
     else if (!preselection.PreselectConstraintSet.empty()) {
@@ -2275,7 +2274,7 @@ void ViewProviderSketch::commitDragMove(double x, double y)
     }
     catch (const Base::Exception& e) {
         getDocument()->abortCommand();
-        Base::Console().developerError("ViewProviderSketch", "Drag: %s\n", e.what());
+        Base::Console().developerError("ViewProviderSketch", "Drag: {}\n", e.what());
         if (dragAutoConstraintHandler) {
             dragAutoConstraintHandler->clear();
         }
@@ -3461,15 +3460,15 @@ bool ViewProviderSketch::selectAll()
 
         auto selectVertex = [this, &addConvertedName](int geoId, Sketcher::PointPos pos) {
             int vertexId = this->getSketchObject()->getVertexIndexGeoPos(geoId, pos);
-            addConvertedName(fmt::format("Vertex{}", vertexId + 1));
+            addConvertedName(std::format("Vertex{}", vertexId + 1));
         };
 
         auto selectEdge = [&addConvertedName](int GeoId) {
             if (GeoId >= 0) {
-                addConvertedName(fmt::format("Edge{}", GeoId + 1));
+                addConvertedName(std::format("Edge{}", GeoId + 1));
             }
             else {
-                addConvertedName(fmt::format("ExternalEdge{}", GeoEnum::RefExt - GeoId + 1));
+                addConvertedName(std::format("ExternalEdge{}", GeoEnum::RefExt - GeoId + 1));
             }
         };
 
@@ -3525,7 +3524,7 @@ bool ViewProviderSketch::selectAll()
             if (focusedList && std::ranges::find(ids, i) == ids.end()) {
                 continue;
             }
-            addConvertedName(fmt::format("Constraint{}", i + 1));
+            addConvertedName(std::format("Constraint{}", i + 1));
         }
     }
 
@@ -4333,7 +4332,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
         e.reportException();
     }
     catch (const Standard_Failure& e) {
-        Base::Console().error("ViewProviderSketch::setEdit: %s\n", e.GetMessageString());
+        Base::Console().error("ViewProviderSketch::setEdit: {}\n", e.GetMessageString());
     }
 
     // intercept del key press from main app
@@ -4589,7 +4588,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     catch (Base::PyException& e) {
         Base::Console().developerError(
             "ViewProviderSketch",
-            "unsetEdit: visibility automation failed with an error: %s \n",
+            "unsetEdit: visibility automation failed with an error: {} \n",
             e.what());
     }
 }
@@ -4620,7 +4619,7 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
         catch (Base::PyException& e) {
             Base::Console().developerError(
                 "ViewProviderSketch",
-                "setEdit: visibility automation failed with an error: %s \n",
+                "setEdit: visibility automation failed with an error: {} \n",
                 e.what());
         }
     }
@@ -4759,7 +4758,7 @@ void ViewProviderSketch::onCameraChanged(SoCamera* cam)
     auto tmpFactor = orientation.z < 0 ? -1 : 1;
 
     if (tmpFactor != viewOrientationFactor) {// redraw only if viewing side changed
-        Base::Console().log("Switching side, now %s, redrawing\n",
+        Base::Console().log("Switching side, now {}, redrawing\n",
                             tmpFactor < 0 ? "back" : "front");
         viewOrientationFactor = tmpFactor;
         draw();
@@ -4913,7 +4912,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
                 Gui::cmdAppObjectArgs(getObject(), "delConstraint(%d, True)", *rit);
             }
             catch (const Base::Exception& e) {
-                Base::Console().developerError("ViewProviderSketch", "%s\n", e.what());
+                Base::Console().developerError("ViewProviderSketch", "{}\n", e.what());
             }
         }
 
@@ -4941,7 +4940,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
                                 getObject(), "delConstraintOnPoint(%d,%d)", GeoId, (int)PosId);
                         }
                         catch (const Base::Exception& e) {
-                            Base::Console().developerError("ViewProviderSketch", "%s\n", e.what());
+                            Base::Console().developerError("ViewProviderSketch", "{}\n", e.what());
                         }
                         break;
                     }
@@ -4965,7 +4964,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
                 Gui::cmdAppObjectArgs(getObject(), "delGeometries([%s], True)", stream.str().c_str());
             }
             catch (const Base::Exception& e) {
-                Base::Console().developerError("ViewProviderSketch", "%s\n", e.what());
+                Base::Console().developerError("ViewProviderSketch", "{}\n", e.what());
             }
 
             stream.str(std::string());
@@ -4983,7 +4982,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
                 Gui::cmdAppObjectArgs(getObject(), "delExternals([%s])", stream.str().c_str());
             }
             catch (const Base::Exception& e) {
-                Base::Console().developerError("ViewProviderSketch", "%s\n", e.what());
+                Base::Console().developerError("ViewProviderSketch", "{}\n", e.what());
             }
         }
 

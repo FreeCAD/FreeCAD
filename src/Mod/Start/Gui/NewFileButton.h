@@ -34,17 +34,13 @@
 namespace StartGui
 {
 
-struct NewButton
-{
-    QString heading;
-    QString description;
-    QString iconPath;
-};
-
 class NewFileButton: public QPushButton
 {
 public:
-    explicit NewFileButton(const NewButton& newButton);
+    explicit NewFileButton(QWidget* parent, const QString& iconPath);
+
+    void setHeadingText(const QString&);
+    void setDescriptionText(const QString&);
 
 private:
     int iconSize;

@@ -373,9 +373,6 @@ void DocumentRecoveryPrivate::writeRecoveryInfo(const DocumentRecoveryPrivate::I
     QFile file(info.xmlFile);
     if (file.open(QFile::WriteOnly)) {
         QTextStream str(&file);
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        str.setCodec("UTF-8");
-#endif
         str << "<?xml version='1.0' encoding='utf-8'?>\n"
             << "<AutoRecovery SchemaVersion=\"1\">\n";
         switch (info.status) {
@@ -829,7 +826,7 @@ void DocumentRecoveryHandler::checkForPreviousCrashes(
                 callableFunc(tmp, dirs, it.fileName());
             }
             else {
-                Base::Console().log("Failed to lock file %s\n", fn.toUtf8().constData());
+                Base::Console().log("Failed to lock file {}\n", fn.toStdString());
             }
         }
     }

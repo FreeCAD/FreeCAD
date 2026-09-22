@@ -74,7 +74,11 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewPart* base) :
     m_doc = m_base->getDocument();
 
     m_saveBaseName = m_base->getNameInDocument();
-    m_savePageName = m_base->findParentPage()->getNameInDocument();
+    TechDraw::DrawPage* page = m_base->findParentPage();
+    if (!page) {
+        throw Base::RuntimeError("TaskSectionView - Parent page not found");
+    }
+    m_savePageName = page->getNameInDocument();
 
     ui->setupUi(this);
     setUiPrimary();
@@ -109,7 +113,11 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
     }
 
     m_saveBaseName = m_base->getNameInDocument();
-    m_savePageName = m_base->findParentPage()->getNameInDocument();
+    TechDraw::DrawPage* page = m_base->findParentPage();
+    if (!page) {
+        throw Base::RuntimeError("TaskSectionView - Parent page not found");
+    }
+    m_savePageName = page->getNameInDocument();
 
     ui->setupUi(this);
 
@@ -436,7 +444,7 @@ bool TaskSectionView::apply(bool forceUpdate)
         //this should never happen
         std::string msg =
             tr("Nothing to apply. No section direction picked yet").toStdString();
-        Base::Console().error((msg + "\n").c_str());
+        Base::Console().error("{}\n", msg);
         return false;
     }
     if (!m_section) {

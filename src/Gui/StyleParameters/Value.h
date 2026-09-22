@@ -25,15 +25,15 @@
 #define STYLEPARAMETERS_VALUE_H
 
 #include <concepts>
+#include <format>
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <type_traits>
 #include <variant>
 #include <vector>
 #include <cstdint>
-
-#include <fmt/format.h>
 
 #include <Base/Color.h>
 #include <FCGlobal.h>
@@ -208,7 +208,7 @@ struct GuiExport Tuple
      * @brief Finds an element by name.
      * @return Pointer to the value if found, nullptr otherwise.
      */
-    const Value* find(const std::string& name) const;
+    const Value* find(std::string_view name) const;
 
     /**
      * @brief Returns the number of elements in the tuple.
@@ -220,25 +220,25 @@ struct GuiExport Tuple
      *        another type.
      */
     template<typename T>
-    const T* tryGet(const std::string& name) const;
+    const T* tryGet(std::string_view name) const;
 
     /**
      * @brief Returns the named element, or the empty value of type T when it cannot be produced.
      */
     template<typename T>
-    const T& get(const std::string& name) const;
+    const T& get(std::string_view name) const;
 
     /**
      * @brief Returns the named element, or the given fallback when it cannot be produced.
      */
     template<typename T>
-    T get(const std::string& name, const T& fallback) const;
+    T get(std::string_view name, const T& fallback) const;
 
     /**
      * @brief Returns the named element of type T, reporting when it is absent or of another type.
      */
     template<typename T>
-    const T* tryGetOrReport(const std::string& name) const;
+    const T* tryGetOrReport(std::string_view name) const;
 };
 
 /// Convenience alias for Tuple::Element, used pervasively by tuple-shaped wrappers.
@@ -381,7 +381,7 @@ inline const Tuple& styleDefault<Tuple>()
 }
 
 template<typename T>
-const T* Tuple::tryGetOrReport(const std::string& name) const
+const T* Tuple::tryGetOrReport(std::string_view name) const
 {
     if (const T* value = tryGet<T>(name)) {
         return value;
@@ -398,14 +398,14 @@ const T* Tuple::tryGetOrReport(const std::string& name) const
 }
 
 template<typename T>
-const T* Tuple::tryGet(const std::string& name) const
+const T* Tuple::tryGet(std::string_view name) const
 {
     const Value* value = find(name);
     return value ? value->tryGet<T>() : nullptr;
 }
 
 template<typename T>
-const T& Tuple::get(const std::string& name) const
+const T& Tuple::get(std::string_view name) const
 {
     if (const T* value = tryGetOrReport<T>(name)) {
         return *value;
@@ -415,7 +415,7 @@ const T& Tuple::get(const std::string& name) const
 }
 
 template<typename T>
-T Tuple::get(const std::string& name, const T& fallback) const
+T Tuple::get(std::string_view name, const T& fallback) const
 {
     if (const T* value = tryGetOrReport<T>(name)) {
         return *value;
@@ -513,11 +513,11 @@ std::optional<T> valueAs(const std::optional<Value>& value)
 }  // namespace Gui::StyleParameters
 
 template<>
-struct fmt::formatter<Gui::StyleParameters::Value>: fmt::formatter<std::string>
+struct std::formatter<Gui::StyleParameters::Value>: std::formatter<std::string>
 {
-    auto format(const Gui::StyleParameters::Value& value, fmt::format_context& ctx) const
+    auto format(const Gui::StyleParameters::Value& value, std::format_context& ctx) const
     {
-        return fmt::formatter<std::string>::format(value.toString(), ctx);
+        return std::formatter<std::string>::format(value.toString(), ctx);
     }
 };
 
