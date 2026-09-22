@@ -678,7 +678,7 @@ class TestArchWall(TestArchBase.TestArchBase):
         )
 
     def test_line_based_wall_with_length_expression(self):
-        """Test that a line based wall correctly handles an expresssion for its Length property.
+        """Test that a line based wall correctly handles an expression for its Length property.
 
         Regression test for https://github.com/FreeCAD/FreeCAD/issues/32584.
         """
