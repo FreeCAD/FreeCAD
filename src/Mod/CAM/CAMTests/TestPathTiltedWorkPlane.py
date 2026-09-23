@@ -414,6 +414,122 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
         self.assertEqual(shape[6:], ["G53.1", "operation", "G69"])
         self.assertNotIn(CLEAR, shape[4:], "no rotary move, so no block")
 
+    # the plane's fixture
+
+    @staticmethod
+    def _job_fixture(word="G54"):
+        return Postable(
+            item_type="fixture", label="Fixture", path=Path.Path([Path.Command(word)]), source=None
+        )
+
+    def _fixture_words(self, items):
+        return [i.path.Commands[0].Name for i in items if i.item_type == "fixture"]
+
+    def test_aPlaneFixtureIsSelectedBeforeThePlaneIsDeclared(self):
+        plane = self._plane()
+        plane.Fixture = "G55"
+        op = self._op("Tilted", plane)
+        items = self._expand([self._job_fixture(), self._item(op)], self._processor(pre=CLEAR))
+        self.assertEqual(
+            self._shape(items), ["fixture", CLEAR, "fixture", DECLARE, "G53.1", "operation", "G69"]
+        )
+        self.assertEqual(self._fixture_words(items), ["G54", "G55"])
+        self.assertTrue(items[2].data.get("work_plane_fixture"))
+
+    def test_aPlaneFixtureUnderDwoPrecedesTheRotaryMove(self):
+        self.machine = _machineCA(RotationStrategy.DWO)
+        plane = self._plane()
+        plane.Fixture = "G55"
+        op = self._op("Tilted", plane)
+        items = self._expand([self._item(op)], self._processor(pre=CLEAR, post="M11"))
+        shape = self._shape(items)
+        self.assertEqual(shape[:2], [CLEAR, "fixture"])
+        self.assertTrue(shape[2].startswith("rotation:G0"), shape)
+        self.assertEqual(shape[3:], ["M11", "operation"])
+
+    def test_theJobFixtureIsSelectedAgainAfterAPlaneWithItsOwn(self):
+        plane = self._plane()
+        plane.Fixture = "G55"
+        tilted = self._op("Tilted", plane)
+        plain = self._op("Plain", None)
+        items = self._expand(
+            [self._job_fixture(), self._item(tilted), self._item(plain)], self._processor(pre=CLEAR)
+        )
+        shape = self._shape(items)
+        self.assertEqual(
+            shape[:7], ["fixture", CLEAR, "fixture", DECLARE, "G53.1", "operation", CLEAR]
+        )
+        self.assertEqual(shape[7:9], ["G69", "fixture"], "cancel the plane, then the Job's fixture")
+        self.assertTrue(shape[9].startswith("rotation:G0"), shape)
+        self.assertEqual(shape[10:], ["operation"])
+        self.assertEqual(self._fixture_words(items), ["G54", "G55", "G54"])
+
+    def test_operationsOnOnePlaneSelectItsFixtureOnce(self):
+        plane = self._plane()
+        plane.Fixture = "G55"
+        a, b = self._op("A", plane), self._op("B", plane)
+        items = self._expand([self._job_fixture(), self._item(a), self._item(b)])
+        self.assertEqual(self._fixture_words(items), ["G54", "G55"])
+
+    def test_aFixtureChangeAloneRedeclaresThePlaneWithoutMovingTheRotaries(self):
+        axis = _tiltedAboutX()
+        first, second = self._plane(axis), self._plane(axis)
+        second.Fixture = "G56"
+        a, b = self._op("A", first), self._op("B", second)
+        shape = self._shape(
+            self._expand([self._item(a), self._item(b)], self._processor(pre=CLEAR))
+        )
+        self.assertEqual(shape[:4], [CLEAR, DECLARE, "G53.1", "operation"])
+        self.assertEqual(shape[4:6], ["G69", "fixture"], "cancel before the fixture changes")
+        self.assertEqual(shape[6:], [DECLARE, "G53.1", "operation", "G69"])
+        self.assertEqual(shape.count(CLEAR), 1, "no rotary move, so no second block")
+
+    def test_aDatumPlaneFixtureWorksWithoutARotaryMachine(self):
+        plane = self._plane(Z, origin=Vector(30, 10, 5))
+        plane.Fixture = "G55"
+        datum = self._op("Datum", plane)
+        plain = self._op("Plain", None)
+        plain.RotaryPositions = {}
+        datum.Path = Path.Path(list(PATH))  # the second op's recompute rebuilt the first
+        items = self._expand(
+            [self._job_fixture(), self._item(datum), self._item(plain)],
+            self._processor(machine=Machine(name="3 axis")),
+        )
+        self.assertEqual(
+            self._shape(items), ["fixture", "fixture", "operation", "fixture", "operation"]
+        )
+        self.assertEqual(self._fixture_words(items), ["G54", "G55", "G54"])
+        self.assertEqual(_xyz(items[2].path.Commands[1]), (40, 10, 3), "still placed")
+
+    def test_aMalformedPlaneFixtureIsRefused(self):
+        plane = self._plane()
+        plane.Fixture = "vise 2"
+        op = self._op("Tilted", plane)
+        with self.assertRaises(CAMValueError) as raised:
+            self._expand([self._item(op)])
+        self.assertIn(plane.Label, str(raised.exception))
+        self.assertIn("vise 2", str(raised.exception))
+
+    def test_aRealPostSelectsThePlaneFixture(self):
+        from Path.Post.Processor import PostProcessorFactory
+
+        self.machine.output.comments.enabled = False
+        self.machine.output.output_header = False
+        self.machine.postprocessor_properties = {"pre_rotary_move": "G53 G0 Z0"}
+        plane = self._plane()
+        plane.Fixture = "G55"
+        self._op("Tilted", plane)
+        post = PostProcessorFactory.get_post_processor(self.job, "generic")
+        post.reinitialize()
+        post._machine = self.machine
+        gcode = "\n".join(g for _, g in post.export2())
+        lines = [line.strip() for line in gcode.splitlines()]
+        self.assertIn("G55", lines)
+        self.assertLess(lines.index("G54"), lines.index("G55"), "the Job's fixture comes first")
+        self.assertLess(
+            lines.index("G55"), lines.index(DECLARE), "then the plane's, then the plane"
+        )
+
     # the other strategies
 
     def test_dwoCommandsTheRotariesAndRotatesThePath(self):
@@ -632,6 +748,29 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
         self._op("A", None)
         self.machine = Machine(name="3 axis")
         self.assertEqual(self._sanity_post("").get_sanity_checks(self.job), [])
+
+    def test_sanityWarnsAboutAMalformedPlaneFixture(self):
+        plane = self._plane()
+        plane.Fixture = "vise 2"
+        self._op("A", plane)
+        squawks = self._sanity_post("G53 G0 Z0").get_sanity_checks(self.job)
+        self.assertEqual([s["squawkType"] for s in squawks], ["WARNING"])
+        self.assertIn("vise 2", squawks[0]["Note"])
+
+    def test_sanityWarnsWhenThePlaneFixtureIsOneTheJobRepeatsFor(self):
+        self.job.Fixtures = ["G54", "G55"]
+        plane = self._plane()
+        plane.Fixture = "G55"
+        self._op("A", plane)
+        squawks = self._sanity_post("G53 G0 Z0").get_sanity_checks(self.job)
+        self.assertEqual([s["squawkType"] for s in squawks], ["WARNING"])
+        self.assertIn("G55", squawks[0]["Note"])
+
+    def test_sanityIsQuietForAPlaneFixtureTheJobDoesNotRepeatFor(self):
+        plane = self._plane()
+        plane.Fixture = "G55"
+        self._op("A", plane)
+        self.assertEqual(self._sanity_post("G53 G0 Z0").get_sanity_checks(self.job), [])
 
 
 class TestMachineRotationStrategy(unittest.TestCase):

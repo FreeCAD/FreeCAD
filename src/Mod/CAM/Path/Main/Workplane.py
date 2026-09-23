@@ -34,6 +34,7 @@ import Path
 import Path.Base.Util as PathUtil
 
 translate = FreeCAD.Qt.translate
+QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
 __title__ = "CAM Workplane"
 __author__ = "sliptonic (Brad Collette)"
@@ -59,8 +60,8 @@ def resolveToJobModel(job, obj):
     return None
 
 
-def createWorkplane(job, base=None, sub=None, label=None, placement=None, check_machine=True):
-    """createWorkplane(job, base=None, sub=None, label=None, placement=None, check_machine=True)
+def createWorkplane(job, base=None, sub=None, label=None, placement=None):
+    """createWorkplane(job, base=None, sub=None, label=None, placement=None)
     ... add a named work plane to job and return it.
 
     With *base* and *sub* naming a planar face, the plane is attached to it in
@@ -72,15 +73,18 @@ def createWorkplane(job, base=None, sub=None, label=None, placement=None, check_
     placement. With neither it sits at the Job origin, aligned with the Job's
     axes, for the user to position by hand.
 
-    On a Job whose machine has no rotary axes the plane must be parallel to
-    the table; a tilted one is refused with ValueError and not created, since
-    nothing could point the tool along it. Parallel planes are useful there
-    too: a datum for depths, and a turned X. *check_machine* False skips
-    that, for migrating a frame an older document already holds: the
-    operation, not the migration, is where an unreachable plane fails."""
+    Any plane can be created on any Job. Whether the machine can reach it
+    is not decided here: the operation refuses to solve a tilted plane
+    without rotary axes, and the post refuses to emit one, each at the
+    moment it matters and naming what is missing. A plane parallel to the
+    table - a datum for depths, a turned X - is useful on every machine.
+
+    The plane carries an optional Fixture, empty by default: see
+    ensureFixtureProperty()."""
     doc = job.Document
     workplane = doc.addObject("Part::LocalCoordinateSystem", "Workplane")
     workplane.Label = label or "Workplane"
+    ensureFixtureProperty(workplane)
 
     if base is not None and sub:
         model = resolveToJobModel(job, base)
@@ -114,21 +118,44 @@ def createWorkplane(job, base=None, sub=None, label=None, placement=None, check_
         except Exception as e:
             Path.Log.warning("Could not place the work plane origin on the face: %s" % e)
 
-    if check_machine and not PathUtil.jobHasRotaryMachine(job) and not _parallelToTable(workplane):
-        doc.removeObject(workplane.Name)
-        raise ValueError(
-            translate(
-                "CAM",
-                "{plane} is tilted, and the Job's machine has no rotary axes to point the "
-                "tool along it. Without rotary axes a work plane must be parallel to the table.",
-            ).format(plane=label or (sub and base and "%s.%s" % (base.Label, sub)) or "The plane")
+    return workplane
+
+
+FixtureProperty = "Fixture"
+
+
+def ensureFixtureProperty(workplane):
+    """ensureFixtureProperty(workplane) ... give workplane its Fixture property
+    if it lacks one, as a plane from an older document does.
+
+    A work plane may name the Fixture - the work coordinate system, G54 to
+    G59.9 or G54.1 Pn - the control is to have selected while its
+    operations run. Empty, the default, means the Job's own Fixture: the
+    plane is expressed in whatever coordinate system the Job's output is
+    in. Set, the post selects it before positioning for the plane and
+    returns to the Job's Fixture afterwards. The Job's Fixtures list is
+    untouched by this: that list repeats the program for several parts,
+    and a plane's Fixture is selected inside each repetition."""
+    if not hasattr(workplane, FixtureProperty):
+        workplane.addProperty(
+            "App::PropertyString",
+            FixtureProperty,
+            "Workplane",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Work coordinate system (G54-G59.9, G54.1 Pn) selected while operations on "
+                "this plane run. Empty: the Job's own fixture.",
+            ),
         )
     return workplane
 
 
-def _parallelToTable(workplane):
-    z_up = FreeCAD.Vector(0, 0, 1)
-    return workplane.Placement.Rotation.multVec(z_up).isEqual(z_up, 1e-6)
+def fixtureOf(workplane):
+    """fixtureOf(workplane) ... the Fixture a work plane names, or None."""
+    if workplane is None:
+        return None
+    value = (getattr(workplane, FixtureProperty, "") or "").strip()
+    return value or None
 
 
 def configureView(workplane):
