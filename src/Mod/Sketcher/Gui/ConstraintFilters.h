@@ -26,6 +26,7 @@
 
 #include <array>
 #include <bitset>
+#include <utility>
 
 namespace SketcherGui
 {
@@ -71,9 +72,7 @@ enum class FilterValue
     NumFilterValue  // SpecialFilterValue shall start at the same index as this
 };
 
-constexpr auto FilterValueLength = static_cast<std::underlying_type_t<FilterValue>>(
-    FilterValue::NumFilterValue
-);
+constexpr auto FilterValueLength = std::to_underlying(FilterValue::NumFilterValue);
 
 enum class SpecialFilterValue
 {
@@ -82,9 +81,7 @@ enum class SpecialFilterValue
     NumSpecialFilterValue
 };
 
-constexpr auto SpecialFilterValue = static_cast<std::underlying_type_t<FilterValue>>(
-    SpecialFilterValue::NumSpecialFilterValue
-);
+constexpr auto SpecialFilterValue = std::to_underlying(SpecialFilterValue::NumSpecialFilterValue);
 
 /// A std::bitset sized to provide one bit per FilterValue value
 using FilterValueBitset = std::bitset<FilterValueLength>;
@@ -93,13 +90,13 @@ using FilterValueBitset = std::bitset<FilterValueLength>;
 template<typename T>
 inline auto getFilterIntegral(T filterValue)
 {
-    return static_cast<std::underlying_type_t<T>>(filterValue);
+    return std::to_underlying(filterValue);
 }
 
 /// Helper function to test whether a FilterValue value is set in a FilterValueBitset
 inline bool checkFilterBitset(FilterValueBitset set, FilterValue filter)
 {
-    auto underlyingFilterValue = static_cast<std::underlying_type_t<FilterValue>>(filter);
+    auto underlyingFilterValue = std::to_underlying(filter);
 
     return set[underlyingFilterValue];
 }
@@ -109,7 +106,7 @@ inline bool checkFilterBitset(FilterValueBitset set, FilterValue filter)
 template<typename... Args>
 constexpr decltype(auto) buildBitset(Args... args)
 {
-    return (... | (1 << static_cast<std::underlying_type_t<Args>>(args)));
+    return (... | (1 << std::to_underlying(args)));
 }
 
 /// Array of FilterValue bit sets of size of the number of FilterValues indicating for each
