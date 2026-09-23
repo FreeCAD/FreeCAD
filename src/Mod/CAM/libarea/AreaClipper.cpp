@@ -682,6 +682,10 @@ Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
 }
 
 
+// In getParentMetadataFallback, we may need to reconstruct a fake parent node for unknown parent
+// edges (fall back to connecting with a line). We use this tag sentinel value in that case.
+const int tagSentinel = -2;
+
 // Convert the provided clipper paths back to CArea/CCurve data, using metadata to correctly
 // infer edge type (arc/line) and arc center information. Only edges tagged 1 (i.e. positive offset
 // segments from NaiveOffset) are kept in `this` CArea. If cNeg is provided, edges tagged -1 are
@@ -721,7 +725,7 @@ void CArea::SetFromResult(
         // Initialize state variables: the current curve and its tag, and (for final joining of
         // closed curves) the first curve and its tag.
         CCurve c;
-        int tag = 0;
+        int tag = tagSentinel;
         CCurve* firstCurve = nullptr;
         std::optional<int> firstTag;
 
@@ -768,8 +772,11 @@ void CArea::SetFromResult(
             // value. The sentinel value is provided only when the parent edge lookup fails.
             // We handle this by assuming the tag is unchanged.
             SegmentData parentData = getParentMetadata(v0, v1, metadata);
-            if (parentData.edgeTag == -2) {
+            if (parentData.edgeTag == tagSentinel) {
                 parentData.edgeTag = tag;
+            }
+            if (tag == tagSentinel) {
+                tag = parentData.edgeTag;
             }
 
 
@@ -1092,12 +1099,12 @@ SegmentData CArea::getParentMetadataFallback(
     // Ultimate fallback: pretend it's a line.
     // This is not a desirable fallback. Hopefully the previous process finds the correct parent
     // edge. This requires sentinel values for unknown/missing data.
-    //   edgeTag = -2, to indicate we don't know the tag
+    //   edgeTag = tagSentinel, to indicate we don't know the tag
     //   curveIndex = vertexIndex = -1, acceptable when used for sorting open paths
     std::cerr << "Warning: getParentMetadataFallback: no parent edge found for z=(" << p1.z << ","
               << p2.z << "), falling back to line\n";
     const PointD pt = ToPointD(p2);
-    return {{{pt.x, pt.y}}, -2, -1, -1};
+    return {{{pt.x, pt.y}}, tagSentinel, -1, -1};
 }
 
 // Return the parent of the provided edge, specified as (zMin, zMax) of its endpoints
