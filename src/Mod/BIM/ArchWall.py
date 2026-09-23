@@ -1826,7 +1826,9 @@ if FreeCAD.GuiUp:
             FreeCADGui.ExpressionBinding(self.length).bind(self.obj, "Length")
             self.length.setProperty("value", self.obj.Length)
             self.length.setToolTip(
-                translate("App::Property", self.obj.getDocumentationOfProperty("Length"))
+                ArchCommands.wrapTooltip(
+                    translate("App::Property", self.obj.getDocumentationOfProperty("Length"))
+                )
             )
             layout.addRow(translate("Arch", "Length"), self.length)
 
@@ -1835,7 +1837,9 @@ if FreeCAD.GuiUp:
             FreeCADGui.ExpressionBinding(self.width).bind(self.obj, "Width")
             self.width.setProperty("value", self.obj.Width)
             self.width.setToolTip(
-                translate("App::Property", self.obj.getDocumentationOfProperty("Width"))
+                ArchCommands.wrapTooltip(
+                    translate("App::Property", self.obj.getDocumentationOfProperty("Width"))
+                )
             )
             layout.addRow(translate("Arch", "Width"), self.width)
 
@@ -1844,11 +1848,15 @@ if FreeCAD.GuiUp:
             FreeCADGui.ExpressionBinding(self.height).bind(self.obj, "Height")
             self.height.setProperty("value", self.obj.Height)
             self.height.setToolTip(
-                translate("App::Property", self.obj.getDocumentationOfProperty("Height"))
+                ArchCommands.wrapTooltip(
+                    translate("App::Property", self.obj.getDocumentationOfProperty("Height"))
+                )
             )
             layout.addRow(translate("Arch", "Height"), self.height)
 
-            alignTooltip = translate("App::Property", self.obj.getDocumentationOfProperty("Align"))
+            alignTooltip = ArchCommands.wrapTooltip(
+                translate("App::Property", self.obj.getDocumentationOfProperty("Align"))
+            )
             self.alignLayout = QtGui.QHBoxLayout()
             self.alignLeft = QtGui.QRadioButton(translate("Arch", "Left"))
             self.alignCenter = QtGui.QRadioButton(translate("Arch", "Center"))
