@@ -206,6 +206,40 @@ class TestGenerateInPlaneFrame(PathTestUtils.PathTestBase):
         z = op.Placement.Rotation.multVec(Vector(0, 0, 1))
         self.assertTrue(z.isEqual(n, 1e-6))
 
+    def test_placingAPathOnATurnedOverPlaneKeepsEveryArcInPlace(self):
+        """A G2/G3 is an arc as seen from +Z. Turning the path over reverses
+        that sense, so the placed command swaps its direction word; the
+        placed arc then lies where the frame puts the stored one. Checked at
+        the midpoint, which is where a wrong direction shows."""
+        turned_over = FreeCAD.Placement(Vector(5, 7, 0), FreeCAD.Rotation(Vector(1, 0, 0), 180))
+        stored = Path.Path(
+            [
+                Path.Command("G0", {"X": 0, "Y": 0, "Z": 1}),
+                Path.Command("G1", {"X": 10, "Y": 0, "Z": -1}),
+                Path.Command("G3", {"X": 10, "Y": 10, "Z": -1, "I": 0, "J": 5}),
+                Path.Command("G2", {"X": 0, "Y": 10, "Z": -1, "I": -5, "J": 0}),
+            ]
+        )
+        placed = PathUtils.applyPlacementToPath(turned_over, stored)
+        self.assertEqual([c.Name for c in placed.Commands], ["G0", "G1", "G2", "G3"])
+        pos_s, pos_p = Vector(0, 0, 0), Vector(0, 0, 0)
+        for c, pc in zip(stored.Commands, placed.Commands):
+            if c.Name in ("G2", "G3"):
+                e_s = Path.Geom.edgeForCmd(c, pos_s)
+                e_p = Path.Geom.edgeForCmd(pc, pos_p)
+                mid_s = turned_over.multVec(
+                    e_s.valueAt((e_s.FirstParameter + e_s.LastParameter) / 2)
+                )
+                mid_p = e_p.valueAt((e_p.FirstParameter + e_p.LastParameter) / 2)
+                self.assertTrue(mid_s.isEqual(mid_p, 1e-6), "%s != %s" % (mid_s, mid_p))
+            pos_s = Vector(c.x, c.y, c.z)
+            pos_p = Vector(pc.x, pc.y, pc.z)
+
+    def test_placingAPathOnAnUprightPlaneKeepsTheArcWords(self):
+        upright = FreeCAD.Placement(Vector(5, 7, 3), FreeCAD.Rotation(Vector(0, 0, 1), 90))
+        stored = Path.Path([Path.Command("G3", {"X": 10, "Y": 10, "I": 0, "J": 5})])
+        self.assertEqual(PathUtils.applyPlacementToPath(upright, stored).Commands[0].Name, "G3")
+
     def test_anUnreachablePlaneStillGeneratesItsPath(self):
         """A plane the machine cannot index to is the post's problem. The
         operation generates in the plane's frame regardless, so the same

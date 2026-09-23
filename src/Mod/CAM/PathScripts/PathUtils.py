@@ -977,6 +977,15 @@ def applyPlacementToPath(placement, path):
     currY = 0
     currZ = 0
 
+    # An arc is G2 or G3 as seen from +Z. A rotation that turns the path
+    # over - an operation on the underside of the part, say - reverses that
+    # sense: the arc's centre and end move with the rotation, and the
+    # direction word is swapped so the arc still bulges the same way. (A
+    # rotation that tilts the arc out of the XY plane has no exact G2/G3
+    # form; the words are left as they are.)
+    turned_over = placement.Rotation.multVec(FreeCAD.Vector(0, 0, 1)).z < 0
+    flipped = {"G2": "G3", "G02": "G03", "G3": "G2", "G03": "G02"}
+
     # Angles of rotation (on A, B or C) do not need translation but may need a correction on start position, get transformed angles of 0 deg.
     cmd = Path.Command("G0 A0 B0 C0")
     t = cmd.transform(placement)
@@ -1012,6 +1021,8 @@ def applyPlacementToPath(placement, path):
                     params.update({"I": i})
                 if currJ != j:
                     params.update({"J": j})
+                if turned_over:
+                    cmd.Name = flipped.get(cmd.Name, cmd.Name)
 
             cmd.Parameters = params
 
