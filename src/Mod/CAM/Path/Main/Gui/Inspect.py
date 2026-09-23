@@ -88,7 +88,13 @@ class GCodeEditorDialog(QtGui.QDialog):
             Q.alpha() / 255.0,
         )
 
+        # The highlight is drawn exactly as the operation is: the stored
+        # commands, in the operation's own frame, under the operation's
+        # Placement. Drawing placed commands at identity instead would put
+        # every arc on a turned-over plane on the wrong side, since a G2/G3
+        # with I/J cannot carry a rotation out of the XY plane.
         self.selectionobj = FreeCAD.ActiveDocument.addObject("Path::Feature", "selection")
+        self.selectionobj.Placement = FreeCAD.Placement(PathObj.Placement)
         self.selectionobj.ViewObject.LineWidth = 4
         self.selectionobj.ViewObject.NormalColor = highlightcolor
 
@@ -187,11 +193,13 @@ class GCodeEditorDialog(QtGui.QDialog):
         cursor.setPosition(ep)
         endrow = cursor.blockNumber()
 
-        # Derive the starting position for the first selected command
-        x, y, z = self.getPosition(self.commands[max(0, startrow - 1) :: -1])
+        # Derive the starting position for the first selected command. The
+        # rows of the listing and of the stored path correspond one to one;
+        # the highlight takes the stored commands, in the operation's frame.
+        x, y, z = self.getPosition(self.rawCommands[max(0, startrow - 1) :: -1])
         selCommands = self.commands[startrow : endrow + 1]
         firstrapid = Path.Command("G0", {"X": x, "Y": y, "Z": z})
-        selectionCommands = [firstrapid] + selCommands
+        selectionCommands = [firstrapid] + self.rawCommands[startrow : endrow + 1]
         self.selectionobj.Path = Path.Path()
         if len(selectionCommands) > 1:
             self.selectionobj.Path = Path.Path(selectionCommands)
