@@ -505,9 +505,6 @@ void Cell::_setForeground(const Base::Color& color)
         foregroundColor = color;
         setDirty();
     }
-    // An explicit set always marks the color as used. Clearing is done
-    // through clearForeground() instead; no color value (including black)
-    // may silently cancel the flag (see issue #24481).
     setUsed(FOREGROUND_COLOR_SET, true);
 }
 
@@ -558,8 +555,6 @@ void Cell::_setBackground(const Base::Color& color)
         backgroundColor = color;
         setDirty();
     }
-    // Same reasoning as _setForeground above: an explicit set always
-    // marks the color as used, clearing is done via clearBackground().
     setUsed(BACKGROUND_COLOR_SET, true);
 }
 
