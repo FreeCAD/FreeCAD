@@ -2175,7 +2175,7 @@ int SketchObject::setConstruction(int GeoId, bool on)
         GeometryFacade::setConstruction(geo.get(), on);
     else {
         auto egf = ExternalGeometryFacade::getFacade(geo.get());
-        egf->setFlag(ExternalGeometryExtension::Defining, on);
+        egf->setFlag(ExternalGeometryExtension::Defining, !on);
     }
 
     prop->set1Value(idx,std::move(geo));
