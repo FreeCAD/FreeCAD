@@ -1,41 +1,35 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2017 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
 from PathScripts.PathUtils import waiting_effects
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import Constants
+import Part
 import Path
 import Path.Base.Util as PathUtil
-import Path.Base.Generator.rotation as rotation
+from Path.Base.Generator import rotation
 import Path.Geom
-import PathScripts.PathUtils as PathUtils
+from PathScripts import PathUtils
 from Path.Op.Util import getCycleTimeEstimate
-
-# lazily loaded modules
-from lazy_loader.lazy_loader import LazyLoader
-
-Part = LazyLoader("Part", globals(), "Part")
 
 __title__ = "Base class for all operations."
 __author__ = "sliptonic (Brad Collette)"
@@ -77,6 +71,20 @@ class PathNoTCException(Exception):
 
     def __init__(self):
         super().__init__("No Tool Controller found")
+
+
+class BaseGeometryException(Exception):
+    """BaseGeometryException is raised when assigned geometry missed"""
+
+    def __init__(self):
+        super().__init__("Base geometry error!")
+
+
+class DepthsException(Exception):
+    """DepthsException is raised when depth parameters incorrect"""
+
+    def __init__(self):
+        super().__init__("Depth parameters error!")
 
 
 class _TransformedShapeProxy:
@@ -139,10 +147,10 @@ def _transform_shape_with_arc_fix(shape, matrix):
                     fixed_edges.append(Part.Edge(arcs[0]))
                     any_converted = True
                     continue
-            except Exception:
+            except Exception as e:
                 # Biarc conversion can fail for degenerate or unsupported
                 # B-spline geometry; fall back to keeping the original edge.
-                pass
+                Path.Log.debug(str(e))
         fixed_edges.append(edge)
 
     if any_converted:
@@ -150,7 +158,7 @@ def _transform_shape_with_arc_fix(shape, matrix):
     return transformed
 
 
-class ObjectOp(object):
+class ObjectOp:
     """
     Base class for proxy objects of all Path operations.
 
@@ -498,7 +506,7 @@ class ObjectOp(object):
         if dataType == "raw":
             return enums
 
-        data = list()
+        data = []
         idx = 0 if dataType == "translated" else 1
 
         Path.Log.debug(enums)
@@ -516,9 +524,8 @@ class ObjectOp(object):
             if hasattr(obj, op):
                 obj.setEditorMode(op, 1)  # read-only
 
-        if FeatureDepths & features:
-            if FeatureNoFinalDepth & features:
-                obj.setEditorMode("OpFinalDepth", 2)
+        if FeatureDepths & features and FeatureNoFinalDepth & features:
+            obj.setEditorMode("OpFinalDepth", 2)
 
     def onDocumentRestored(self, obj):
         Path.Log.track()
@@ -528,7 +535,7 @@ class ObjectOp(object):
             FeatureBaseGeometry & features
             and "App::PropertyLinkSubList" == obj.getTypeIdOfProperty("Base")
         ):
-            Path.Log.info("Replacing link property with global link (%s)." % obj.State)
+            Path.Log.info(f"Replacing link property with global link ({obj.State})")
             base = obj.Base
             obj.removeProperty("Base")
             self.addBaseProperty(obj)
@@ -543,7 +550,7 @@ class ObjectOp(object):
             oldvalue = str(obj.CoolantMode) if hasattr(obj, "CoolantMode") else "None"
             if (
                 hasattr(obj, "CoolantMode")
-                and not obj.getTypeIdOfProperty("CoolantMode") == "App::PropertyEnumeration"
+                and obj.getTypeIdOfProperty("CoolantMode") != "App::PropertyEnumeration"
             ):
                 obj.removeProperty("CoolantMode")
 
@@ -619,12 +626,12 @@ class ObjectOp(object):
     def dumps(self):
         """__getstat__(self) ... called when receiver is saved.
         Can safely be overwritten by subclasses."""
-        return None
+        return
 
     def loads(self, state):
         """__getstat__(self) ... called when receiver is restored.
         Can safely be overwritten by subclasses."""
-        return None
+        return
 
     def opFeatures(self, obj):
         """opFeatures(obj) ... returns the OR'ed list of features used and supported by the operation.
@@ -643,18 +650,15 @@ class ObjectOp(object):
     def initOperation(self, obj):
         """initOperation(obj) ... implement to create additional properties.
         Should be overwritten by subclasses."""
-        pass
 
     def initAfterBase(self, obj):
         """initAfterBase(obj) ... implement to execute extra commands
         while create new operation after add all base geometry.
         Should be overwritten by subclasses."""
-        pass
 
     def opOnDocumentRestored(self, obj):
         """opOnDocumentRestored(obj) ... implement if an op needs special handling like migrating the data model.
         Should be overwritten by subclasses."""
-        pass
 
     def opOnChanged(self, obj, prop):
         """opOnChanged(obj, prop) ... overwrite to process property changes.
@@ -663,24 +667,20 @@ class ObjectOp(object):
         distinguish between assigning a different value and assigning the same
         value again.
         Can safely be overwritten by subclasses."""
-        pass
 
     def opSetDefaultValues(self, obj, job):
         """opSetDefaultValues(obj, job) ... overwrite to set initial default values.
         Called after the receiver has been fully created with all properties.
         Can safely be overwritten by subclasses."""
-        pass
 
     def opUpdateDepths(self, obj):
         """opUpdateDepths(obj) ... overwrite to implement special depths calculation.
         Can safely be overwritten by subclass."""
-        pass
 
     def opExecute(self, obj):
         """opExecute(obj) ... called whenever the receiver needs to be recalculated.
         See documentation of execute() for a list of base functionality provided.
         Should be overwritten by subclasses."""
-        pass
 
     def baseShapes(self, obj):
         """baseShapes(obj) ... yield (base, subs) tuples for the operation's
@@ -811,19 +811,20 @@ class ObjectOp(object):
         else:
             obj.StartDepth = 1.0
 
-        if FeatureStepDown & features:
-            if not self.applyExpression(obj, "StepDown", job.SetupSheet.StepDownExpression):
-                obj.StepDown = "1 mm"
+        if FeatureStepDown & features and not self.applyExpression(
+            obj, "StepDown", job.SetupSheet.StepDownExpression
+        ):
+            obj.StepDown = "1 mm"
 
         if FeatureHeights & features:
-            if job.SetupSheet.SafeHeightExpression:
-                if not self.applyExpression(obj, "SafeHeight", job.SetupSheet.SafeHeightExpression):
-                    obj.SafeHeight = "3 mm"
-            if job.SetupSheet.ClearanceHeightExpression:
-                if not self.applyExpression(
-                    obj, "ClearanceHeight", job.SetupSheet.ClearanceHeightExpression
-                ):
-                    obj.ClearanceHeight = "5 mm"
+            if job.SetupSheet.SafeHeightExpression and not self.applyExpression(
+                obj, "SafeHeight", job.SetupSheet.SafeHeightExpression
+            ):
+                obj.SafeHeight = "3 mm"
+            if job.SetupSheet.ClearanceHeightExpression and not self.applyExpression(
+                obj, "ClearanceHeight", job.SetupSheet.ClearanceHeightExpression
+            ):
+                obj.ClearanceHeight = "5 mm"
 
         if FeatureDiameters & features:
             obj.MinDiameter = "0 mm"
@@ -842,28 +843,26 @@ class ObjectOp(object):
         return job
 
     def _setBaseAndStock(self, obj, ignoreErrors=False):
-        job = PathUtils.findParentJob(obj)
-
-        if not job:
+        self.job = PathUtils.findParentJob(obj)
+        if not self.job:
             if not ignoreErrors:
-                Path.Log.error(translate("CAM", "No parent job found for operation."))
+                Path.Log.error(translate("CAM_Operation", "No parent job found for operation"))
             return False
-        if not job.Model.Group:
+        if not self.job.Model.Group:
             if not ignoreErrors:
                 Path.Log.error(
-                    translate("CAM", "Parent job %s doesn't have a base object") % job.Label
+                    translate("CAM_Operation", "Parent job %s doesn't have a base object")
+                    % self.job.Label
                 )
             return False
-        self.job = job
-        self.model = job.Model.Group
-        self.stock = job.Stock
+        self.model = self.job.Model.Group
+        self.stock = self.job.Stock
         return True
 
     def getJob(self, obj):
         """getJob(obj) ... return the job this operation is part of."""
-        if not hasattr(self, "job") or self.job is None:
-            if not self._setBaseAndStock(obj):
-                return None
+        if getattr(self, "job", None) is None:
+            self._setBaseAndStock(obj)
         return self.job
 
     def updateDepths(self, obj, ignoreErrors=False):
@@ -871,13 +870,12 @@ class ObjectOp(object):
         Should not be overwritten."""
 
         def faceZmin(bb, fbb):
-            if fbb.ZMax == fbb.ZMin and fbb.ZMax == bb.ZMax:  # top face
-                return fbb.ZMin
-            elif fbb.ZMax > fbb.ZMin and fbb.ZMax == bb.ZMax:  # vertical face, full cut
-                return fbb.ZMin
-            elif fbb.ZMax > fbb.ZMin and fbb.ZMin > bb.ZMin:  # internal vertical wall
-                return fbb.ZMin
-            elif fbb.ZMax == fbb.ZMin and fbb.ZMax > bb.ZMin:  # face/shelf
+            if (
+                (fbb.ZMax == fbb.ZMin and fbb.ZMax == bb.ZMax)  # top face
+                or (fbb.ZMax > fbb.ZMin and fbb.ZMax == bb.ZMax)  # vertical face, full cut
+                or (fbb.ZMax > fbb.ZMin and fbb.ZMin > bb.ZMin)  # internal vertical wall
+                or (fbb.ZMax == fbb.ZMin and fbb.ZMax > bb.ZMin)  # face/shelf
+            ):
                 return fbb.ZMin
             return bb.ZMin
 
@@ -975,14 +973,43 @@ class ObjectOp(object):
                     for sub in sublist:
                         o.Shape.getElement(sub)
             except Exception:
-                Path.Log.error(
-                    "%s - stale base geometry detected - %s, %s" % (obj.Label, o.Label, sub)
-                )
+                Path.Log.error(f"{obj.Label} - stale base geometry detected - {o.Label}, {sub}")
                 self.isBaseValid = False
                 return False
 
         self.isBaseValid = True
         return True
+
+    def checkDepths(self, obj):
+        """checkDepths(obj) ... check that depths and heights are consistent with each other"""
+        features = self.opFeatures(obj)
+        isValid = True
+        if (
+            FeatureDepths & features
+            and not FeatureNoFinalDepth & features
+            and Path.Geom.isStrictlyGreater(obj.FinalDepth.Value, obj.StartDepth.Value)
+        ):
+            Path.Log.error(
+                translate("CAM_Operation", "%s: Final depth is above start depth") % obj.Label
+            )
+            isValid = False
+        if (
+            FeatureDepths & features
+            and FeatureHeights & features
+            and Path.Geom.isStrictlyGreater(obj.StartDepth.Value, obj.SafeHeight.Value)
+        ):
+            Path.Log.error(
+                translate("CAM_Operation", "%s: Start depth is above safe height") % obj.Label
+            )
+            isValid = False
+        if FeatureHeights & features and Path.Geom.isStrictlyGreater(
+            obj.SafeHeight.Value, obj.ClearanceHeight.Value
+        ):
+            Path.Log.error(
+                translate("CAM_Operation", "%s: Safe height is above clearance height") % obj.Label
+            )
+            isValid = False
+        return isValid
 
     def _setup_workplane_transform(self, obj):
         """Set up 3+2 geometry transformation if workplane is not Z-up.
@@ -1113,7 +1140,7 @@ class ObjectOp(object):
         # make sure Base is still valid
         if not self.checkBase(obj):
             obj.Path = Path.Path()
-            raise Exception("Base geometry error!")
+            raise BaseGeometryException
 
         if FeatureTool & self.opFeatures(obj):
             tc = obj.ToolController
@@ -1162,10 +1189,14 @@ class ObjectOp(object):
         # in case they still have an expression referencing any op values
         obj.recompute()
 
+        if not self.checkDepths(obj):  # check depth parameters
+            obj.Path = Path.Path()
+            raise DepthsException
+
         self.commandlist = []
-        self.commandlist.append(Path.Command("(%s)" % obj.Label))
+        self.commandlist.append(Path.Command(f"({obj.Label})"))
         if obj.Comment:
-            self.commandlist.append(Path.Command("(%s)" % obj.Comment))
+            self.commandlist.append(Path.Command(f"({obj.Comment})"))
 
         # Emit rotation commands if 3+2 is active
         if hasattr(self, "_rotation_commands"):
@@ -1271,7 +1302,7 @@ class ObjectOp(object):
             for p, el in baselist:
                 if p == base and sub in el:
                     Path.Log.notice(
-                        (translate("CAM", "Base object %s.%s already in the list") + "\n")
+                        (translate("CAM_Operation", "Base object %s.%s already in the list") + "\n")
                         % (base.Label, sub)
                     )
                     return
@@ -1281,7 +1312,7 @@ class ObjectOp(object):
                 obj.Base = baselist
             else:
                 Path.Log.notice(
-                    (translate("CAM", "Base object %s.%s rejected by operation") + "\n")
+                    (translate("CAM_Operation", "Base object %s.%s rejected by operation") + "\n")
                     % (base.Label, sub)
                 )
 
