@@ -580,20 +580,15 @@ QString Material::getFilePath() const
 
 QString Material::getAuthorAndLicense() const
 {
-    QString authorAndLicense;
-
     // Combine the author and license field for backwards compatibility
-    if (!_author.isNull()) {
-        authorAndLicense = _author;
-        if (!_license.isNull()) {
-            authorAndLicense += QStringLiteral(" ") + _license;
-        }
+    if (_author.isEmpty()) {
+        return _license;
     }
-    else if (!_license.isNull()) {
-        authorAndLicense = _license;
+    if (_license.isEmpty()) {
+        return _author;
     }
 
-    return _license;
+    return _author + QStringLiteral(" ") + _license;
 }
 
 void Material::addModel(const QString& uuid)
