@@ -2558,9 +2558,11 @@ void PropertyColor::setValue(const Base::Color& col)
 
 void PropertyColor::setValue(uint32_t rgba)
 {
-    aboutToSetValue();
-    _cCol.setPackedValue(rgba);
-    hasSetValue();
+    if(rgba != _cCol.getPackedValue()) {
+        aboutToSetValue();
+        _cCol.setPackedValue(rgba);
+        hasSetValue();
+    }
 }
 
 void PropertyColor::setValue(float r, float g, float b, float a)
