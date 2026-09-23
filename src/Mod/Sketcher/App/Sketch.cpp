@@ -2602,7 +2602,7 @@ int Sketch::addConstraint(const Constraint* constraint)
                 return -1;
             }
             // Check that the first element is correctly the group construction line
-            if (Geoms[checkGeoId(constraint->getGeoId(0))].type != Line) {
+            if (!Geoms[checkGeoId(constraint->getGeoId(0))].geo->is<Part::GeomLineSegment>()) {
                 return -1;
             }
 
