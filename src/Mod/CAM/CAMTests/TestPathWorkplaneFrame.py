@@ -196,14 +196,26 @@ class TestGenerateInPlaneFrame(PathTestUtils.PathTestBase):
             world_after - world_before, 5.0, places=5, msg="the cut moved with the plane"
         )
 
-    def test_recordedPositionsMatchTheSolve(self):
+    def test_theOperationRecordsNothingAboutTheMachine(self):
+        """The rotary positions are the post's to solve from the Placement;
+        the operation carries its plane and nothing else."""
         n = _tilted()
         plane = PathWorkplane.createWorkplaneFromToolAxis(self.job, n)
         op = self._facing("F", plane, 2.0, 0.0, 7.0, 5.0)
-        recorded = {k: float(v) for k, v in dict(op.RotaryPositions).items()}
-        result = rotation.solve_orientation(self.machine, n)
-        for axis, angle in result.angles.items():
-            self.assertAlmostEqual(recorded[axis], angle, places=6)
+        self.assertFalse(hasattr(op, "RotaryPositions"))
+        z = op.Placement.Rotation.multVec(Vector(0, 0, 1))
+        self.assertTrue(z.isEqual(n, 1e-6))
+
+    def test_anUnreachablePlaneStillGeneratesItsPath(self):
+        """A plane the machine cannot index to is the post's problem. The
+        operation generates in the plane's frame regardless, so the same
+        document posts on another machine, or by refixturing, unchanged."""
+        n = Vector(0, 0, -1)  # the underside: A = 180 on a +-120 trunnion
+        self.assertFalse(rotation.solve_orientation(self.machine, n).success)
+        plane = PathWorkplane.createWorkplaneFromToolAxis(self.job, n)
+        op = self._facing("Under", plane, 2.0, 0.0, 7.0, 5.0)
+        self.assertTrue(_cutPoints(op.Path), "a path was generated")
+        self.assertNotIn("unavailable", op.Path.toGCode())
 
     def test_planeFromAFaceHasItsOriginOnTheFace(self):
         model = self.job.Model.Group[0]
@@ -314,8 +326,7 @@ class TestPostWorkplaneFrames(PathTestUtils.PathTestBase):
         plane = PathWorkplane.createWorkplaneFromToolAxis(self.job, n, origin=origin)
         op = PathCustom.Create("Tilted", parentJob=self.job)
         op.Workplane = plane
-        self.doc.recompute()  # records the rotary positions
-        self.assertTrue(dict(op.RotaryPositions), "the op must have recorded positions")
+        self.doc.recompute()
         # Assigned after the recompute: Custom rebuilds its path from Gcode on
         # execute, which would discard a path assigned before it.
         op.Path = Path.Path(
@@ -330,7 +341,7 @@ class TestPostWorkplaneFrames(PathTestUtils.PathTestBase):
         items = out[0][1]
         self.assertEqual([i.item_type for i in items], ["rotation", "operation"])
 
-        positions = {k: float(v) for k, v in dict(op.RotaryPositions).items()}
+        positions = dict(rotation.solve_orientation(self.machine, n).angles)
         rotary = items[0].path.Commands[0]
         self.assertEqual(rotary.Name, "G0")
         for axis, angle in positions.items():

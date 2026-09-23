@@ -531,29 +531,6 @@ class ObjectOp:
             ),
         )
         obj.Workplane = workplane
-        self._addRotaryPositionsProperty(obj)
-
-    def _addRotaryPositionsProperty(self, obj):
-        """_addRotaryPositionsProperty(obj) ... the rotary axis positions this
-        operation was solved for, recorded at recompute for the post to emit.
-
-        The operation's path carries no rotary words: it is generated in its
-        work plane's frame and knows nothing about the machine. The post reads
-        these, moves the rotaries, and transforms the path into the frame the
-        machine reaches. Empty on a machine without rotary axes."""
-        if hasattr(obj, "RotaryPositions"):
-            return
-        obj.addProperty(
-            "App::PropertyMap",
-            "RotaryPositions",
-            "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "Rotary axis positions this operation was solved for, in degrees, "
-                "for the post-processor to emit. Computed; do not edit.",
-            ),
-        )
-        obj.setEditorMode("RotaryPositions", 1)  # read-only
 
     def _migrateWorkplane(self, obj):
         """_migrateWorkplane(obj) ... ensure obj carries a Workplane link.
@@ -570,7 +547,10 @@ class ObjectOp:
         with. The convention that turns a vector into a placement is documented
         in PathUtil.placementFromToolAxis() and must not change, or documents
         written before the first migration would shift in plane."""
-        self._addRotaryPositionsProperty(obj)
+        if hasattr(obj, "RotaryPositions"):
+            # A prototype recorded the solved rotary positions on the
+            # operation. The post solves them from the Placement now.
+            obj.removeProperty("RotaryPositions")
         if hasattr(obj, "Workplane"):
             if "App::PropertyLink" == obj.getTypeIdOfProperty("Workplane"):
                 if hasattr(obj, "WorkplaneLink"):
@@ -624,8 +604,6 @@ class ObjectOp:
 
         if hasattr(obj, "Placement"):
             obj.setEditorMode("Placement", 1)  # derived from the work plane
-        if hasattr(obj, "RotaryPositions"):
-            obj.setEditorMode("RotaryPositions", 1)
 
         for op in ["OpStartDepth", "OpFinalDepth", "OpToolDiameter", "CycleTime"]:
             if hasattr(obj, op):
@@ -1211,25 +1189,20 @@ class ObjectOp:
         every depth and height is a distance along the tool axis from the
         plane and every direction-sensitive parameter is relative to the
         plane's X. The path is stored in that frame, with no rotary words,
-        and obj.Placement carries the frame; the post-processor moves the
-        rotaries from obj.RotaryPositions and transforms the path into the
-        frame the machine reaches. Generation therefore knows nothing about
-        the machine.
+        and obj.Placement carries the frame. Generation knows nothing about
+        the machine: how the plane is reached - indexing the rotaries,
+        declaring a tilted plane to the control, or refixturing the part - is
+        the post-processor's question, answered from the Placement at output
+        time, and changing the machine means re-posting, not recomputing.
 
-        The machine is still consulted here, for one purpose: to solve and
-        record the rotary positions, which is also where an unreachable plane
-        is caught. On a machine with rotary axes every operation records its
-        positions, zeros included, because operations are atomic and the post
-        must command the pose explicitly before each one.
+        If a machine with rotary axes is configured and cannot index to the
+        plane, a warning says so here, early, but the path is generated all
+        the same.
 
         Sets ``self._geom_transform_matrix`` (world to plane frame) for
         updateDepths() and baseShapes(), and ``self._geometry_rotation`` when
         the plane is rotated, which is the flag operations key their 3+2
         handling on.
-
-        Returns True if the operation may proceed, False if it has a rotated
-        plane that no configured machine can reach - the caller aborts rather
-        than generate against an unrotated frame.
         """
         for attr in self._FRAME_ATTRS:
             if hasattr(self, attr):
@@ -1248,53 +1221,29 @@ class ObjectOp:
         if is_rotated:
             self._geometry_rotation = placement.Rotation.inverted()
 
-        machine = self.job.Proxy.getMachine() if self.job else None
-        has_rotaries = machine is not None and machine.has_rotary_axes
+        if is_rotated:
+            self._warnIfUnreachableByIndexing(obj, tool_axis)
 
-        if not has_rotaries:
-            if hasattr(obj, "RotaryPositions") and obj.RotaryPositions:
-                obj.RotaryPositions = {}
-            if is_rotated:
-                Path.Log.warning(
-                    f"Operation {obj.Label}: Workplane requires rotation but "
-                    f"no machine with rotary axes is configured"
-                )
-                for attr in self._FRAME_ATTRS:
-                    if hasattr(self, attr):
-                        delattr(self, attr)
-                return False
-            return True
-
+    def _warnIfUnreachableByIndexing(self, obj, tool_axis):
+        """An early, advisory word when the configured machine has rotary
+        axes and cannot index to the operation's plane. Nothing is decided
+        here; the post refuses at output time, and a plane may be reached by
+        refixturing instead."""
         try:
-            chain = rotation.build_kinematic_chain(machine)
-            if not is_rotated:
-                positions = {axis.name: 0.0 for axis in chain}
-            else:
-                result = rotation.solve_orientation(machine, tool_axis)
-                Path.Log.debug(result)
-                if not result.success:
-                    Path.Log.error(
-                        f"Operation {obj.Label}: Cannot solve workplane "
-                        f"orientation: {result.reason}"
-                    )
-                    for attr in self._FRAME_ATTRS:
-                        if hasattr(self, attr):
-                            delattr(self, attr)
-                    return False
-                positions = dict(result.angles)
-                Path.Log.info(f"Operation {obj.Label}: 3+2 workplane active, angles={positions}")
-
-            recorded = {name: repr(float(angle)) for name, angle in positions.items()}
-            if hasattr(obj, "RotaryPositions") and dict(obj.RotaryPositions) != recorded:
-                obj.RotaryPositions = recorded
-            return True
-
+            machine = self.job.Proxy.getMachine() if self.job else None
+            if machine is None or not machine.has_rotary_axes:
+                return
+            result = rotation.solve_orientation(machine, tool_axis)
+            if not result.success:
+                plane = getattr(obj, "Workplane", None)
+                Path.Log.warning(
+                    "Operation %s: machine '%s' cannot index to work plane %s (%s). The "
+                    "path is generated in the plane's frame; the post-processor decides how "
+                    "the plane is reached."
+                    % (obj.Label, machine.name, plane.Label if plane else "?", result.reason)
+                )
         except Exception as e:
-            Path.Log.error(f"Operation {obj.Label}: Error setting up workplane " f"transform: {e}")
-            for attr in self._FRAME_ATTRS:
-                if hasattr(self, attr):
-                    delattr(self, attr)
-            return False
+            Path.Log.debug("Operation %s: reachability not checked: %s" % (obj.Label, e))
 
     @waiting_effects
     def execute(self, obj):
@@ -1369,14 +1318,10 @@ class ObjectOp:
                 obj.OpToolDiameter = tool.Diameter
 
         # --- 3+2 Setup: compute geometry transformation before depth calculation ---
-        # If the workplane is not Z-up, solve the orientation and set up the
+        # If the workplane is not Z-up, set up the
         # transform matrix so that updateDepths() sees transformed BoundBoxes
-        # and baseShapes() yields transformed geometry. Abort the op cleanly
-        # if rotation is required but unavailable — otherwise downstream
-        # geometry ops would fail with confusing errors against unrotated input.
-        if not self._setup_workplane_transform(obj):
-            obj.Path = Path.Path("(workplane rotation unavailable)")
-            return
+        # and baseShapes() yields transformed geometry.
+        self._setup_workplane_transform(obj)
 
         self.updateDepths(obj)
         # now that all op values are set make sure the user properties get updated accordingly,

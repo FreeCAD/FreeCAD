@@ -116,7 +116,9 @@ class TestSharedWorkplane(PathTestUtils.PathTestBase):
         op = self._op()
         op.Workplane = plane
         self.doc.recompute()
-        self.assertEqual(dict(op.RotaryPositions), {})
+        z = op.Placement.Rotation.multVec(Vector(0, 0, 1))
+        self.assertTrue(z.isEqual(Vector(1, 0, 0), 1e-6), "the op generates in the plane")
+        self.assertNotIn("unavailable", op.Path.toGCode())
 
     # --- the plane's fixture ---------------------------------------------
 

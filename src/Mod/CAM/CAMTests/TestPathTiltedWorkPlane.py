@@ -200,7 +200,7 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
         """A Custom op on the plane, with a fixed plane-relative path."""
         op = PathCustom.Create(label, parentJob=self.job)
         op.Workplane = plane
-        self.doc.recompute()  # records the rotary positions
+        self.doc.recompute()
         # Custom rebuilds its path from Gcode on execute; assign after.
         op.Path = Path.Path(list(PATH))
         return op
@@ -302,7 +302,7 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
         shape = self._shape(items)
         self.assertTrue(shape[0].startswith("rotation:G0"), shape)
         self.assertEqual(shape[1:], [DECLARE, "operation", "G69"])
-        positions = {k: float(v) for k, v in dict(op.RotaryPositions).items()}
+        positions = dict(rotation.solve_orientation(self.machine, _tiltedAboutX()).angles)
         rotary = items[0].path.Commands[0]
         for axis, angle in positions.items():
             self.assertAlmostEqual(rotary.Parameters[axis], angle, places=6)
@@ -340,7 +340,6 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
                 Path.Command("G1", {"X": 20, "A": 180}),
             ]
         )
-        op.RotaryPositions = {}
         processor = self._processor(machine=Machine(name="3 axis"), pre="M10", post="M11")
         postables = processor._expand_workplane_frames([("Job", [self._item(op)])])
         processor._expand_rotary_move(postables)
@@ -387,7 +386,6 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
     def test_returningToTheTableCancelsThePlaneAndCommandsTheRotariesHome(self):
         tilted = self._op("Tilted", self._plane())
         plain = self._op("Plain", None)
-        self.assertTrue(dict(plain.RotaryPositions), "a rotary machine records zeros too")
         items = self._expand([self._item(tilted), self._item(plain)], self._processor(pre=CLEAR))
         shape = self._shape(items)
         self.assertEqual(shape[:5], [CLEAR, DECLARE, "G53.1", "operation", CLEAR])
@@ -402,9 +400,6 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
         first = self._plane(axis)
         turned = self._plane(axis, x=Vector(-1, 0, 0))
         a, b = self._op("A", first), self._op("B", turned)
-        self.assertEqual(
-            dict(a.RotaryPositions), dict(b.RotaryPositions), "same tool axis, same angles"
-        )
         shape = self._shape(
             self._expand([self._item(a), self._item(b)], self._processor(pre=CLEAR))
         )
@@ -489,7 +484,6 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
         plane.Fixture = "G55"
         datum = self._op("Datum", plane)
         plain = self._op("Plain", None)
-        plain.RotaryPositions = {}
         datum.Path = Path.Path(list(PATH))  # the second op's recompute rebuilt the first
         items = self._expand(
             [self._job_fixture(), self._item(datum), self._item(plain)],
@@ -540,7 +534,7 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
         self.assertEqual(shape[0], CLEAR)
         self.assertTrue(shape[1].startswith("rotation:G0"), shape)
         self.assertEqual(shape[2:], ["M11", "operation"])
-        positions = {k: float(v) for k, v in dict(op.RotaryPositions).items()}
+        positions = dict(rotation.solve_orientation(self.machine, _tiltedAboutX()).angles)
         chain = rotation.build_kinematic_chain(self.machine)
         R = rotation.compute_rotation_matrix(chain, positions)
         world = PathUtils.getPathWithPlacement(op)
@@ -560,6 +554,24 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
         shape = self._shape(self._expand([self._item(op)]))
         self.assertTrue(shape[0].startswith("rotation:G0"), shape)
         self.assertEqual(shape[1:], ["operation"])
+
+    def test_anUnreachablePlaneIsRefusedNamingThePlaneAndTheLimits(self):
+        """The underside needs A at 180 on a +-120 trunnion. The operation
+        generated all the same; the refusal is the post's, with the reason."""
+        plane = self._plane(Vector(0, 0, -1))
+        op = self._op("Under", plane)
+        self.assertTrue(op.Path.Commands, "the operation still has its path")
+        with self.assertRaises(CAMValueError) as raised:
+            self._expand([self._item(op)])
+        message = str(raised.exception)
+        self.assertIn(plane.Label, message)
+        self.assertIn(self.machine.name, message)
+        self.assertIn("A -120 to 120", message)
+
+    def test_sanitySkipsAnUnreachablePlane(self):
+        self._op("Under", self._plane(Vector(0, 0, -1)))
+        self._op("Plain", None)
+        self.assertEqual(self._sanity_post("").get_sanity_checks(self.job), [])
 
     def test_postTransformIsRefusedForNow(self):
         self.machine = _machineCA(RotationStrategy.POST_TRANSFORM)
@@ -651,7 +663,6 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
         op = PathCustom.Create("Plain", parentJob=self.job)
         self.doc.recompute()
         op.Path = Path.Path(list(PATH))
-        op.RotaryPositions = {}
         items = self._expand([self._item(op)], self._processor(machine=Machine(name="3 axis")))
         self.assertEqual(self._shape(items), ["operation"])
         self.assertEqual(_gcode(items[0].path), _gcode(op.Path))

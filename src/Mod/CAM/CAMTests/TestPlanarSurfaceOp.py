@@ -685,11 +685,17 @@ class TestPlanarSurfaceOp(PathTestWithAssets):
 
     @staticmethod
     def _rotaryMoves(op):
-        """The rotary positioning the op was solved for. The op's own path
-        carries no rotary words - it is generated in its work plane's frame -
-        so this reads the recorded positions the post-processor commands."""
-        positions = {k: float(v) for k, v in dict(op.RotaryPositions).items()}
-        return [Path.Command("G0", positions)] if positions else []
+        """The rotary positioning the post would command for the op. The
+        op's own path carries no rotary words - it is generated in its work
+        plane's frame - so this solves, as the post does, from its Placement
+        on the Job's machine."""
+        import Path.Base.Generator.rotation as rotation
+        import PathScripts.PathUtils as PathUtils
+
+        machine = PathUtils.findParentJob(op).Proxy.getMachine()
+        axis = op.Placement.Rotation.multVec(FreeCAD.Vector(0, 0, 1))
+        result = rotation.solve_orientation(machine, axis)
+        return [Path.Command("G0", dict(result.angles))] if result.success else []
 
     @staticmethod
     def _cutValues(op, axis):
