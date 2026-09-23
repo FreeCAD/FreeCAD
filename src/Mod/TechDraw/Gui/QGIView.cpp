@@ -77,7 +77,6 @@ using DU = DrawUtil;
 
 QGIView::QGIView()
     :QGraphicsItemGroup(),
-    m_isHovered(false),
     viewObj(nullptr),
     m_innerView(false),
     m_multiselectActivated(false),

@@ -928,7 +928,7 @@ void QGIViewPart::drawCenterLines(bool b)
         QGICenterLine* centerLine{nullptr};
         double sectionSpan{0};
         constexpr double FudgeConstant{10};
-        double sectionFudge = FudgeConstant;
+        double sectionFudge = Rez::guiX(FudgeConstant);
         double xVal{0};
         double yVal{0};
         if (horiz) {
