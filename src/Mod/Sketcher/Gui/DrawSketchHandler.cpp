@@ -680,6 +680,9 @@ bool DrawSketchHandler::seekLineExtensionAutoConstraint(
     Base::Vector2d bestProjection;
 
     for (int geoId = 0; geoId <= getHighestCurveIndex(); ++geoId) {
+        if (!sketchgui->isGeometryVisible(geoId)) {
+            continue;
+        }
         const Part::Geometry* geo = obj->getGeometry(geoId);
         if (!geo) {
             continue;
@@ -785,7 +788,8 @@ bool DrawSketchHandler::updateTangentAutoConstraintHint()
 {
     resetTangentAutoConstraintHint();
 
-    if (!sketchgui->Autoconstraints.getValue()) {
+    if (!sketchgui->Autoconstraints.getValue()
+        || !sketchgui->getSketchObject()->layerUsesConstraints(sketchgui->getSketchObject()->ActiveLayer.getValue())) {
         return false;
     }
 
@@ -796,6 +800,9 @@ bool DrawSketchHandler::updateTangentAutoConstraintHint()
     }
 
     for (int geoId = getHighestCurveIndex(); geoId >= 0; --geoId) {
+        if (!sketchgui->isGeometryVisible(geoId)) {
+            continue;
+        }
         const Part::Geometry* geometry = obj->getGeometry(geoId);
         if (!geometry || !geometry->is<Part::GeomArcOfCircle>()) {
             continue;
@@ -1034,6 +1041,9 @@ bool DrawSketchHandler::seekTangentAutoConstraint(
     int i = -1;
     for (auto* geo : geomlist) {
         i++;
+        if (!sketchgui->isGeometryVisible(obj->getGeoIdFromCompleteGeometryIndex(i))) {
+            continue;
+        }
 
         if (geo->isDerivedFrom<Part::GeomCircle>()) {
             auto* circle = static_cast<const Part::GeomCircle*>(geo);
@@ -1251,7 +1261,8 @@ int DrawSketchHandler::seekAutoConstraint(
     updateTangentAutoConstraintHint();
     parallelPerpendicularActiveHintLine = -1;
 
-    if (!sketchgui->Autoconstraints.getValue()) {
+    if (!sketchgui->Autoconstraints.getValue()
+        || !sketchgui->getSketchObject()->layerUsesConstraints(sketchgui->getSketchObject()->ActiveLayer.getValue())) {
         return 0;  // If Autoconstraints property is not set quit
     }
 
@@ -1289,6 +1300,10 @@ int DrawSketchHandler::seekAutoConstraint(
         }
     }
 
+    std::erase_if(suggestedConstraints, [this](const AutoConstraint& constraint) {
+        return constraint.GeoId != GeoEnum::GeoUndef
+            && !sketchgui->isGeometryVisible(constraint.GeoId);
+    });
     return suggestedConstraints.size();
 }
 
@@ -1597,7 +1612,8 @@ void DrawSketchHandler::createAutoConstraints(
     bool createowncommand /*= true*/
 )
 {
-    if (!sketchgui->Autoconstraints.getValue()) {
+    if (!sketchgui->Autoconstraints.getValue()
+        || !sketchgui->getSketchObject()->layerUsesConstraints(sketchgui->getSketchObject()->ActiveLayer.getValue())) {
         return;  // If Autoconstraints property is not set quit
     }
 
@@ -1913,7 +1929,8 @@ void DrawSketchHandler::clearParallelPerpendicularHintDrawing() const
 
 bool DrawSketchHandler::updateParallelPerpendicularEndpointHint()
 {
-    if (!sketchgui->Autoconstraints.getValue()) {
+    if (!sketchgui->Autoconstraints.getValue()
+        || !sketchgui->getSketchObject()->layerUsesConstraints(sketchgui->getSketchObject()->ActiveLayer.getValue())) {
         return false;
     }
 
@@ -1945,6 +1962,9 @@ bool DrawSketchHandler::updateParallelPerpendicularEndpointHint()
     }
 
     for (int geoId = getHighestCurveIndex(); geoId >= 0; --geoId) {
+        if (!sketchgui->isGeometryVisible(geoId)) {
+            continue;
+        }
         const Part::Geometry* geometry = obj->getGeometry(geoId);
         if (!geometry || !geometry->is<Part::GeomLineSegment>()) {
             continue;
@@ -1981,7 +2001,8 @@ bool DrawSketchHandler::snapToParallelPerpendicularHint(Base::Vector2d& point)
 {
     parallelPerpendicularActiveHintLine = -1;
 
-    if (!sketchgui->Autoconstraints.getValue()) {
+    if (!sketchgui->Autoconstraints.getValue()
+        || !sketchgui->getSketchObject()->layerUsesConstraints(sketchgui->getSketchObject()->ActiveLayer.getValue())) {
         return false;
     }
 

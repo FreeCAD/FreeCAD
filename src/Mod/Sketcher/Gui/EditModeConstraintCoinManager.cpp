@@ -109,7 +109,8 @@ void EditModeConstraintCoinManager::updateVirtualSpace()
 
         for (size_t i = 0; i < constrlist.size(); i++) {
             sws[i] = !(constrlist[i]->isInVirtualSpace != isshownvirtualspace)
-                && constrlist[i]->isVisible;  // XOR of constraint mode and VP mode
+                && constrlist[i]->isVisible
+                && viewProvider.isConstraintVisible(constrlist[i]);  // XOR of constraint mode and VP mode
         }
 
 
@@ -2546,7 +2547,7 @@ void EditModeConstraintCoinManager::drawConstraintIcons(const GeoListFacade& geo
         thisIcon.position = absPos;
         thisIcon.destination = coinIconPtr;
         thisIcon.infoPtr = infoPtr;
-        thisIcon.visible = (constraint->isInVirtualSpace
+        thisIcon.visible = viewProvider.isConstraintVisible(constraint) && (constraint->isInVirtualSpace
                             == ViewProviderSketchCoinAttorney::isShownVirtualSpace(viewProvider))
             && constraint->isVisible;
 
