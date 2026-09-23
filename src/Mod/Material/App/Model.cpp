@@ -247,7 +247,12 @@ void Model::validate(Model& other) const
         throw InvalidModel("Model property counts don't match");
     }
     for (auto& property : _properties) {
-        auto& remote = other._properties[property.first];
-        property.second.validate(remote);
+        const auto remote = other._properties.find(property.first);
+        if (remote == other._properties.end()) {
+            Base::Console().log("Remote property '{}' not found\n",
+                                property.first.toStdString());
+            throw InvalidModel("Model properties don't match");
+        }
+        property.second.validate(remote->second);
     }
 }
