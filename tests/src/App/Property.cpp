@@ -90,7 +90,11 @@ TEST_F(PropertyFloatTest, testWriteRead)
     EXPECT_DOUBLE_EQ(prop2.getValue(), value);
 }
 
+#include <Base/Quantity.h>
+#include <App/PropertyUnits.h>
+
 #define DoTest(tpe, name, val1, val2) \
+    { \
     tpe name; \
     name.setValue(val1); \
     name.purgeTouched(); \
@@ -99,6 +103,7 @@ TEST_F(PropertyFloatTest, testWriteRead)
     EXPECT_DOUBLE_EQ(name.isTouched(), false); \
     name.setValue(val2); \
     EXPECT_DOUBLE_EQ(name.isTouched(), true); \
+    } \
     
     
 TEST_F(PropertyFloatTest, testTouched)
@@ -109,6 +114,8 @@ TEST_F(PropertyFloatTest, testTouched)
     DoTest(App::PropertyInteger, iProp, 5, 6);
     DoTest(App::PropertyBool, bProp, true, false)
     DoTest(App::PropertyColor, cProp, 0xffffffff, 0x00000000)
+    DoTest(App::PropertyLength, lProp, 5, 6)
+    DoTest(App::PropertyLength, lProp, 6.0, 5.0)
 }
 
 App::Document* RenameProperty::doc {nullptr};
