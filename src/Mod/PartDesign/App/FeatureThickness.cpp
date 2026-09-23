@@ -418,7 +418,7 @@ TopoShape Thickness::makeSolidShell(const TopoShape& solid, const ThicknessParam
             params.tolerance,
             params.intersection,
             false,
-            params.mode,
+            BRepOffset_Skin,
             params.join
         );
 
@@ -427,7 +427,7 @@ TopoShape Thickness::makeSolidShell(const TopoShape& solid, const ThicknessParam
             params.tolerance,
             params.intersection,
             false,
-            params.mode,
+            BRepOffset_Skin,
             params.join
         );
 
@@ -442,20 +442,43 @@ TopoShape Thickness::makeSolidShell(const TopoShape& solid, const ThicknessParam
     }
 
     // Skin
-    const auto offset = solid.makeOffsetShape(
-        -fabs(thickness),
+    if (thickness > 0.0) {
+        // Normal: thickness goes outward.
+        const auto outerOffset = solid.makeOffsetShape(
+            thickness,
+            params.tolerance,
+            params.intersection,
+            false,
+            BRepOffset_Skin,
+            params.join
+        );
+
+        TopoShape outer(outerOffset);
+
+        if (outer.isNull()) {
+            return {};
+        }
+
+        // Outer offset minus original solid = outward shell.
+        return outer.makeElementCut(solid);
+    }
+
+    // Reversed: thickness goes inward.
+    const auto innerOffset = solid.makeOffsetShape(
+        thickness,
         params.tolerance,
         params.intersection,
         false,
-        params.mode,
+        BRepOffset_Skin,
         params.join
     );
 
-    TopoShape inner(offset);
+    TopoShape inner(innerOffset);
 
     if (inner.isNull()) {
         return {};
     }
 
+    // Original solid minus inner offset = inward shell.
     return solid.makeElementCut(inner);
 }
