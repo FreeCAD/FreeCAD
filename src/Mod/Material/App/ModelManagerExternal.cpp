@@ -87,7 +87,7 @@ std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> ModelManagerExternal::
     return libraryList;
 }
 
-std::shared_ptr<ModelLibrary> ModelManagerExternal::getLibrary(const QString& name) const
+std::shared_ptr<ModelLibrary> ModelManagerExternal::getLibrary(const std::string& name) const
 {
     try {
         auto lib = ExternalManager::getManager()->getLibrary(name);
@@ -105,7 +105,7 @@ std::shared_ptr<ModelLibrary> ModelManagerExternal::getLibrary(const QString& na
     }
 }
 
-void ModelManagerExternal::createLibrary(const QString& libraryName,
+void ModelManagerExternal::createLibrary(const std::string& libraryName,
                                          const QByteArray& icon,
                                          bool readOnly)
 {
@@ -113,7 +113,7 @@ void ModelManagerExternal::createLibrary(const QString& libraryName,
 }
 
 std::shared_ptr<std::vector<LibraryObject>>
-ModelManagerExternal::libraryModels(const QString& libraryName)
+ModelManagerExternal::libraryModels(const std::string& libraryName)
 {
     return ExternalManager::getManager()->libraryModels(libraryName);
 }
@@ -124,22 +124,22 @@ ModelManagerExternal::libraryModels(const QString& libraryName)
 //
 //=====
 
-std::shared_ptr<Model> ModelManagerExternal::modelNotFound(const QString& uuid)
+std::shared_ptr<Model> ModelManagerExternal::modelNotFound(const std::string& uuid)
 {
     // Setting the cache value to nullptr prevents repeated lookups
-    _cache.emplace(uuid.toStdString(), nullptr);
+    _cache.emplace(uuid, nullptr);
     return nullptr;
 }
 
-std::shared_ptr<Model> ModelManagerExternal::getModel(const QString& uuid)
+std::shared_ptr<Model> ModelManagerExternal::getModel(const std::string& uuid)
 {
-    if (_cache.contains(uuid.toStdString())) {
-        return _cache.lookup(uuid.toStdString());
+    if (_cache.contains(uuid)) {
+        return _cache.lookup(uuid);
     }
     try
     {
         auto model = ExternalManager::getManager()->getModel(uuid);
-        _cache.emplace(uuid.toStdString(), model);
+        _cache.emplace(uuid, model);
         return model;
     }
     catch (const ModelNotFound& e) {
@@ -153,25 +153,25 @@ std::shared_ptr<Model> ModelManagerExternal::getModel(const QString& uuid)
     }
 }
 
-std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> ModelManagerExternal::getModels()
+std::shared_ptr<std::map<std::string, std::shared_ptr<Model>>> ModelManagerExternal::getModels()
 {
     // TODO: Implement an external call
-    return std::make_shared<std::map<QString, std::shared_ptr<Model>>>();
+    return std::make_shared<std::map<std::string, std::shared_ptr<Model>>>();
 }
 
-void ModelManagerExternal::addModel(const QString& libraryName,
-                                    const QString& path,
+void ModelManagerExternal::addModel(const std::string& libraryName,
+                                    const std::string& path,
                                     const Model& model)
 {
-    _cache.erase(model.getUUID().toStdString());
+    _cache.erase(model.getUUID());
     ExternalManager::getManager()->addModel(libraryName, path, model);
 }
 
-void ModelManagerExternal::migrateModel(const QString& libraryName,
-                                    const QString& path,
+void ModelManagerExternal::migrateModel(const std::string& libraryName,
+                                    const std::string& path,
                                     const Model& model)
 {
-    _cache.erase(model.getUUID().toStdString());
+    _cache.erase(model.getUUID());
     ExternalManager::getManager()->migrateModel(libraryName, path, model);
 }
 

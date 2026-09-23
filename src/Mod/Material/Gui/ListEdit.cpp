@@ -50,14 +50,15 @@ ListEdit::ListEdit(const QString& propertyName,
 {
     ui->setupUi(this);
 
-    if (material->hasPhysicalProperty(propertyName)) {
-        _property = material->getPhysicalProperty(propertyName);
+    const std::string name = propertyName.toStdString();
+    if (material->hasPhysicalProperty(name)) {
+        _property = material->getPhysicalProperty(name);
     }
-    else if (material->hasAppearanceProperty(propertyName)) {
-        _property = material->getAppearanceProperty(propertyName);
+    else if (material->hasAppearanceProperty(name)) {
+        _property = material->getAppearanceProperty(name);
     }
     else {
-        Base::Console().log("Property '{}' not found\n", propertyName.toStdString());
+        Base::Console().log("Property '{}' not found\n", name);
         _property = nullptr;
     }
     if (_property) {
@@ -84,7 +85,10 @@ ListEdit::ListEdit(const QString& propertyName,
 
 void ListEdit::setDelegates(QListView* list)
 {
-    list->setItemDelegate(new ListDelegate(_property->getType(), _property->getUnits(), this));
+    list->setItemDelegate(
+        new ListDelegate(_property->getType(),
+                         QString::fromStdString(_property->getUnits()),
+                         this));
 }
 
 void ListEdit::setupListView()

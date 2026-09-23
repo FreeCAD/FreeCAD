@@ -83,7 +83,7 @@ void PropertyMaterial::setPyObject(PyObject* value)
 void PropertyMaterial::Save(Base::Writer& writer) const
 {
     writer.Stream() << writer.ind() << "<PropertyMaterial uuid=\""
-                    << _material.getUUID().toStdString() << "\"/>" << std::endl;
+                    << _material.getUUID() << "\"/>" << std::endl;
 }
 
 void PropertyMaterial::Restore(Base::XMLReader& reader)
@@ -93,7 +93,7 @@ void PropertyMaterial::Restore(Base::XMLReader& reader)
     // get the value of my Attribute
     auto uuid = reader.getAttribute<const char*>("uuid");
 
-    setValue(*MaterialManager::getManager().getMaterial(QString::fromLatin1(uuid)));
+    setValue(*MaterialManager::getManager().getMaterial(uuid));
 }
 
 const char* PropertyMaterial::getEditorName() const

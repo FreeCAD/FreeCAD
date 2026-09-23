@@ -376,7 +376,7 @@ void FaceAppearances::onMaterialSelected(const std::shared_ptr<Materials::Materi
 {
     if (!d->index.isEmpty()) {
         App::Material appearance = material->getMaterialAppearance();
-        appearance.uuid = material->getUUID().toStdString();
+        appearance.uuid = material->getUUID();
         for (int it : d->index) {
             d->perface[it] = appearance;
         }

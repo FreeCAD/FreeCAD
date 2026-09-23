@@ -22,6 +22,7 @@
  **************************************************************************/
 
 #include <string>
+#include <utility>
 
 
 #include <App/Application.h>
@@ -31,6 +32,7 @@
 #include "ModelLibrary.h"
 
 #include <QDir>
+#include <QString>
 
 using namespace Materials;
 
@@ -39,18 +41,18 @@ TYPESYSTEM_SOURCE(Materials::ModelProperty, Base::BaseClass)
 ModelProperty::ModelProperty()
 {}
 
-ModelProperty::ModelProperty(const QString& name,
-                             const QString& header,
-                             const QString& type,
-                             const QString& units,
-                             const QString& url,
-                             const QString& description)
-    : _name(name)
-    , _displayName(header)
-    , _propertyType(type)
-    , _units(units)
-    , _url(url)
-    , _description(description)
+ModelProperty::ModelProperty(std::string name,
+                             std::string header,
+                             std::string type,
+                             std::string units,
+                             std::string url,
+                             std::string description)
+    : _name(std::move(name))
+    , _displayName(std::move(header))
+    , _propertyType(std::move(type))
+    , _units(std::move(units))
+    , _url(std::move(url))
+    , _description(std::move(description))
 {}
 
 ModelProperty::ModelProperty(const ModelProperty& other)
@@ -67,12 +69,9 @@ ModelProperty::ModelProperty(const ModelProperty& other)
     }
 }
 
-const QString ModelProperty::getDisplayName() const
+const std::string& ModelProperty::getDisplayName() const
 {
-    if (_displayName.isEmpty()) {
-        return getName();
-    }
-    return _displayName;
+    return _displayName.empty() ? _name : _displayName;
 }
 
 ModelProperty& ModelProperty::operator=(const ModelProperty& other)
@@ -114,9 +113,8 @@ void ModelProperty::validate(const ModelProperty& other) const
         throw InvalidProperty("Model names don't match");
     }
     if (getDisplayName() != other.getDisplayName()) {
-        Base::Console().log("Local display name '{}'\n", getDisplayName().toStdString());
-        Base::Console().log("Remote display name '{}'\n",
-                            other.getDisplayName().toStdString());
+        Base::Console().log("Local display name '{}'\n", getDisplayName());
+        Base::Console().log("Remote display name '{}'\n", other.getDisplayName());
         throw InvalidProperty("Model display names don't match");
     }
     if (_propertyType != other._propertyType) {
@@ -152,48 +150,50 @@ Model::Model()
 
 Model::Model(std::shared_ptr<ModelLibrary> library,
              ModelType type,
-             const QString& name,
-             const QString& directory,
-             const QString& uuid,
-             const QString& description,
-             const QString& url,
-             const QString& doi)
+             std::string name,
+             std::string directory,
+             std::string uuid,
+             std::string description,
+             std::string url,
+             std::string doi)
     : _library(library)
     , _type(type)
-    , _name(name)
-    , _directory(directory)
-    , _uuid(uuid)
-    , _description(description)
-    , _url(url)
-    , _doi(doi)
+    , _name(std::move(name))
+    , _directory(std::move(directory))
+    , _uuid(std::move(uuid))
+    , _description(std::move(description))
+    , _url(std::move(url))
+    , _doi(std::move(doi))
 {}
 
-QString Model::getDirectory() const
+const std::string& Model::getDirectory() const
 {
     return _directory;
 }
 
-void Model::setDirectory(const QString& directory)
+void Model::setDirectory(std::string directory)
 {
-    _directory = directory;
+    _directory = std::move(directory);
 }
 
-QString Model::getFilename() const
+const std::string& Model::getFilename() const
 {
     return _filename;
 }
 
-void Model::setFilename(const QString& filename)
+void Model::setFilename(std::string filename)
 {
-    _filename = filename;
+    _filename = std::move(filename);
 }
 
-QString Model::getFilePath() const
+std::string Model::getFilePath() const
 {
-    return QDir(_directory + QStringLiteral("/") + _filename).absolutePath();
+    return QDir(QString::fromStdString(_directory + "/" + _filename))
+        .absolutePath()
+        .toStdString();
 }
 
-ModelProperty& Model::operator[](const QString& key)
+ModelProperty& Model::operator[](const std::string& key)
 {
     try {
         return _properties.at(key);
@@ -213,7 +213,6 @@ void Model::validate(Model& other) const
         throw InvalidModel(e.what());
     }
 
-    // std::map<QString, ModelProperty> _properties;
     if (_type != other._type) {
         throw InvalidModel("Model types don't match");
     }
@@ -223,7 +222,7 @@ void Model::validate(Model& other) const
     if (_directory != other._directory) {
         throw InvalidModel("Model directories don't match");
     }
-    if (!other._filename.isEmpty()) {
+    if (!other._filename.empty()) {
         throw InvalidModel("Remote filename is not empty");
     }
     if (_uuid != other._uuid) {
@@ -250,7 +249,7 @@ void Model::validate(Model& other) const
         const auto remote = other._properties.find(property.first);
         if (remote == other._properties.end()) {
             Base::Console().log("Remote property '{}' not found\n",
-                                property.first.toStdString());
+                                property.first);
             throw InvalidModel("Model properties don't match");
         }
         property.second.validate(remote->second);

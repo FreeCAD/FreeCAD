@@ -23,8 +23,11 @@
 
 #pragma once
 
+#include <string>
+#include <utility>
+#include <vector>
+
 #include <QByteArray>
-#include <QString>
 
 #include <Base/BaseClass.h>
 
@@ -40,26 +43,26 @@ class MaterialsExport Library: public Base::BaseClass
 public:
     Library() = default;
     Library(const Library &other) = default;
-    Library(const QString& libraryName, const QString& icon, bool readOnly = true);
-    Library(const QString& libraryName, const QByteArray& icon, bool readOnly);
-    Library(const QString& libraryName,
-            const QString& dir,
-            const QString& iconPath,
+    Library(const std::string& libraryName, const std::string& icon, bool readOnly = true);
+    Library(const std::string& libraryName, const QByteArray& icon, bool readOnly);
+    Library(const std::string& libraryName,
+            const std::string& dir,
+            const std::string& iconPath,
             bool readOnly = true);
     ~Library() override = default;
 
     bool isLocal() const;
     void setLocal(bool local);
 
-    QString getName() const
+    const std::string& getName() const
     {
         return _name;
     }
-    void setName(const QString& newName)
+    void setName(std::string newName)
     {
-        _name = newName;
+        _name = std::move(newName);
     }
-    bool isName(const QString& name)
+    bool isName(const std::string& name)
     {
         return (_name == name);
     }
@@ -68,12 +71,12 @@ public:
     {
         return _icon;
     }
-    static QByteArray getIcon(const QString& iconPath);
+    static QByteArray getIcon(const std::string& iconPath);
     void setIcon(const QByteArray& icon)
     {
         _icon = icon;
     }
-    void setIcon(const QString& iconPath);
+    void setIcon(const std::string& iconPath);
     bool hasIcon() const
     {
         return !_icon.isEmpty();
@@ -87,9 +90,9 @@ public:
         _readOnly = readOnly;
     }
 
-    QString getDirectory() const;
-    void setDirectory(const QString& directory);
-    QString getDirectoryPath() const;
+    const std::string& getDirectory() const;
+    void setDirectory(const std::string& directory);
+    std::string getDirectoryPath() const;
 
     bool operator==(const Library& library) const;
     bool operator!=(const Library& library) const
@@ -97,89 +100,76 @@ public:
         return !operator==(library);
     }
 
-    QString getLocalPath(const QString& path) const;
-    QString getRelativePath(const QString& path) const;
-    QString getLibraryPath(const QString& path, const QString& filename) const;
-    bool isRoot(const QString& path) const;
+    std::string getLocalPath(const std::string& path) const;
+    std::string getRelativePath(const std::string& path) const;
+    std::string getLibraryPath(const std::string& path, const std::string& filename) const;
+    bool isRoot(const std::string& path) const;
 
     // Validate a remote library against this one (a local library)
     void validate(const Library& remote) const;
 
-    static QString canonical(const QString& path);
+    static std::string canonical(const std::string& path);
+    static std::string cleanPath(const std::string& path);
+    /// Split \a text on \a separator, keeping empty parts
+    static std::vector<std::string> split(const std::string& text, char separator);
 
-    Qt::CaseSensitivity caseSensitivity() const;
+    /// Does \a path start with this library's directory, as the file system compares names?
+    bool startsWithDirectory(const std::string& path) const;
 
 private:
-    QString _name;
-    QString _directory;
+    std::string _name;
+    std::string _directory;
     QByteArray _icon;
     bool _readOnly;
     bool _caseSensitive;
 
     bool _local;
 
-    QByteArray loadByteArrayFromFile(const QString& filePath) const;
+    QByteArray loadByteArrayFromFile(const std::string& filePath) const;
     void setCaseSensitivity();
 };
 
 class MaterialsExport LibraryObject
 {
 public:
-    LibraryObject(const QString& uuid, const QString& path, const QString& name)
-        : _uuid(uuid)
-        , _path(path)
-        , _name(name)
-    {}
-    LibraryObject(const std::string& uuid, const std::string& path, const std::string& name)
-        : _uuid(QString::fromStdString(uuid))
-        , _path(QString::fromStdString(path))
-        , _name(QString::fromStdString(name))
+    LibraryObject(std::string uuid, std::string path, std::string name)
+        : _uuid(std::move(uuid))
+        , _path(std::move(path))
+        , _name(std::move(name))
     {}
     ~LibraryObject() = default;
 
-    void setUUID(const QString& uuid)
+    void setUUID(std::string uuid)
     {
-        _uuid = uuid;
+        _uuid = std::move(uuid);
     }
-    void setUUID(const std::string& uuid)
-    {
-        _uuid = QString::fromStdString(uuid);
-    }
-    QString getUUID() const
+    const std::string& getUUID() const
     {
         return _uuid;
     }
 
-    void setPath(const QString& path)
+    void setPath(std::string path)
     {
-        _path = path;
+        _path = std::move(path);
     }
-    void setPath(const std::string& path)
-    {
-        _path = QString::fromStdString(path);
-    }
-    QString getPath() const
+    const std::string& getPath() const
     {
         return _path;
     }
 
-    void setName(const QString& name)
+    void setName(std::string name)
     {
-        _name = name;
+        _name = std::move(name);
     }
-    void setName(const std::string& name)
-    {
-        _name = QString::fromStdString(name);
-    }
-    QString getName() const
+    const std::string& getName() const
     {
         return _name;
     }
 
 private:
-    QString _uuid;
-    QString _path;
-    QString _name;
+    std::string _uuid;
+    std::string _path;
+    std::string _name;
 };
 
 }  // namespace Materials

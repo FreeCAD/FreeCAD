@@ -29,7 +29,6 @@
 #include <Mod/Material/MaterialGlobal.h>
 
 class QMutex;
-class QString;
 class QByteArray;
 
 namespace Materials
@@ -55,57 +54,57 @@ public:
     std::shared_ptr<std::vector<std::shared_ptr<Library>>> libraries();
     std::shared_ptr<std::vector<std::shared_ptr<Library>>> modelLibraries();
     std::shared_ptr<std::vector<std::shared_ptr<Library>>> materialLibraries();
-    std::shared_ptr<Library> getLibrary(const QString& name);
-    void createLibrary(const QString& libraryName,
+    std::shared_ptr<Library> getLibrary(const std::string& name);
+    void createLibrary(const std::string& libraryName,
                        const QByteArray& icon,
                        bool readOnly = true);
-    void renameLibrary(const QString& libraryName, const QString& newName);
-    void changeIcon(const QString& libraryName, const QByteArray& icon);
-    void removeLibrary(const QString& libraryName);
-    std::shared_ptr<std::vector<LibraryObject>> libraryModels(const QString& libraryName);
-    std::shared_ptr<std::vector<LibraryObject>> libraryMaterials(const QString& libraryName);
+    void renameLibrary(const std::string& libraryName, const std::string& newName);
+    void changeIcon(const std::string& libraryName, const QByteArray& icon);
+    void removeLibrary(const std::string& libraryName);
+    std::shared_ptr<std::vector<LibraryObject>> libraryModels(const std::string& libraryName);
+    std::shared_ptr<std::vector<LibraryObject>> libraryMaterials(const std::string& libraryName);
     std::shared_ptr<std::vector<LibraryObject>>
-    libraryMaterials(const QString& libraryName,
+    libraryMaterials(const std::string& libraryName,
                      const MaterialFilter& filter,
                      const MaterialFilterOptions& options);
-    std::shared_ptr<std::vector<QString>> libraryFolders(const QString& libraryName);
+    std::shared_ptr<std::vector<std::string>> libraryFolders(const std::string& libraryName);
 
     // Folder management
-    void createFolder(const QString& libraryName, const QString& path);
-    void renameFolder(const QString& libraryName,
-                      const QString& oldPath,
-                      const QString& newPath);
-    void deleteRecursive(const QString& libraryName, const QString& path);
+    void createFolder(const std::string& libraryName, const std::string& path);
+    void renameFolder(const std::string& libraryName,
+                      const std::string& oldPath,
+                      const std::string& newPath);
+    void deleteRecursive(const std::string& libraryName, const std::string& path);
 
     // Model management
-    std::shared_ptr<Model> getModel(const QString& uuid);
+    std::shared_ptr<Model> getModel(const std::string& uuid);
     void
-    addModel(const QString& libraryName, const QString& path, const Model& model);
+    addModel(const std::string& libraryName, const std::string& path, const Model& model);
     void
-    migrateModel(const QString& libraryName, const QString& path, const Model& model);
-    void updateModel(const QString& libraryName,
-                     const QString& path,
+    migrateModel(const std::string& libraryName, const std::string& path, const Model& model);
+    void updateModel(const std::string& libraryName,
+                     const std::string& path,
                      const Model& model);
-    void setModelPath(const QString& libraryName, const QString& path, const QString& uuid);
-    void renameModel(const QString& libraryName, const QString& name, const QString& uuid);
-    void moveModel(const QString& libraryName, const QString& path, const QString& uuid);
-    void removeModel(const QString& uuid);
+    void setModelPath(const std::string& libraryName, const std::string& path, const std::string& uuid);
+    void renameModel(const std::string& libraryName, const std::string& name, const std::string& uuid);
+    void moveModel(const std::string& libraryName, const std::string& path, const std::string& uuid);
+    void removeModel(const std::string& uuid);
 
     // Material management
-    std::shared_ptr<Material> getMaterial(const QString& uuid);
-    void addMaterial(const QString& libraryName,
-                     const QString& path,
+    std::shared_ptr<Material> getMaterial(const std::string& uuid);
+    void addMaterial(const std::string& libraryName,
+                     const std::string& path,
                      const Material& material);
-    void migrateMaterial(const QString& libraryName,
-                     const QString& path,
+    void migrateMaterial(const std::string& libraryName,
+                     const std::string& path,
                      const Material& material);
-    void updateMaterial(const QString& libraryName,
-                        const QString& path,
+    void updateMaterial(const std::string& libraryName,
+                        const std::string& path,
                         const Material& material);
-    void setMaterialPath(const QString& libraryName, const QString& path, const QString& uuid);
-    void renameMaterial(const QString& libraryName, const QString& name, const QString& uuid);
-    void moveMaterial(const QString& libraryName, const QString& path, const QString& uuid);
-    void removeMaterial(const QString& uuid);
+    void setMaterialPath(const std::string& libraryName, const std::string& path, const std::string& uuid);
+    void renameMaterial(const std::string& libraryName, const std::string& name, const std::string& uuid);
+    void moveMaterial(const std::string& libraryName, const std::string& path, const std::string& uuid);
+    void removeMaterial(const std::string& uuid);
 
 private:
     ExternalManager();
@@ -120,9 +119,9 @@ private:
     bool checkMaterialLibraryObjectType(const Py::Object& entry);
     LibraryObject materialLibraryObjectTypeFromObject(const Py::Object& entry);
     bool checkModelObjectType(const Py::Object& entry);
-    std::shared_ptr<Model> modelFromObject(const Py::Object& entry, const QString& uuid);
+    std::shared_ptr<Model> modelFromObject(const Py::Object& entry, const std::string& uuid);
     bool checkMaterialObjectType(const Py::Object& entry);
-    std::shared_ptr<Material> materialFromObject(const Py::Object& entry, const QString& uuid);
+    std::shared_ptr<Material> materialFromObject(const Py::Object& entry, const std::string& uuid);
 
     static ExternalManager* _manager;
     static QMutex _mutex;

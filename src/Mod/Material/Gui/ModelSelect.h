@@ -78,7 +78,7 @@ private:
     void addFavorites(QStandardItem* parent);
     void
     addModels(QStandardItem& parent,
-              const std::shared_ptr<std::map<QString, std::shared_ptr<Materials::ModelTreeNode>>>
+              const std::shared_ptr<std::map<std::string, std::shared_ptr<Materials::ModelTreeNode>>>
                   modelTree,
               const QIcon& icon);
     void updateMaterialModel(const QString& uuid);
