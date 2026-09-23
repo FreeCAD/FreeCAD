@@ -75,6 +75,18 @@ EditModeGeometryCoinManager::~EditModeGeometryCoinManager()
 
 void EditModeGeometryCoinManager::processGeometry(const GeoListFacade& geolistfacade)
 {
+    for (size_t i = 0; i < editModeScenegraphNodes.LayerDrawStyles.size(); ++i) {
+        editModeScenegraphNodes.LayerDrawStyles[i]->linePattern = viewProvider.getLayerPattern(
+            viewProvider.getLayerFromCoinIndex(i),
+            drawingParameters.CurvePattern
+        );
+        editModeScenegraphNodes.LayerDrawStyles[i]->lineWidth
+            = viewProvider.getLayerLineWidth(
+                  viewProvider.getLayerFromCoinIndex(i),
+                  drawingParameters.CurveWidth
+              )
+            * drawingParameters.pixelScalingFactor;
+    }
     // enable all layers
     editModeScenegraphNodes.PointsGroup->enable.setNum(geometryLayerParameters.getCoinLayerCount());
     editModeScenegraphNodes.CurvesGroup->enable.setNum(
@@ -83,10 +95,8 @@ void EditModeGeometryCoinManager::processGeometry(const GeoListFacade& geolistfa
     SbBool* swsp = editModeScenegraphNodes.PointsGroup->enable.startEditing();
     SbBool* swsc = editModeScenegraphNodes.CurvesGroup->enable.startEditing();
 
-    auto layersconfigurations = viewProvider.VisualLayerList.getValues();
-
     for (auto l = 0; l < geometryLayerParameters.getCoinLayerCount(); l++) {
-        auto enabled = layersconfigurations[l].isVisible();
+        auto enabled = viewProvider.isCoinLayerVisible(l);
 
         swsp[l] = enabled;
         int slCount = geometryLayerParameters.getSubLayerCount();
@@ -432,6 +442,8 @@ void EditModeGeometryCoinManager::updateGeometryColor(
             }
         );
 
+        const int layerId = viewProvider.getLayerFromCoinIndex(l);
+        const bool solvedColors = viewProvider.layerUsesSolvedColors(layerId);
         // update colors and rendering height of the curves
 
         float zNormLine = getRenderHeight(
@@ -516,7 +528,7 @@ void EditModeGeometryCoinManager::updateGeometryColor(
                     }
                 }
                 else {
-                    if (issketchinvalid) {
+                    if (issketchinvalid && (!geometryLayerParameters.isNormalSubLayer(t) || solvedColors)) {
                         color[i] = drawingParameters.InvalidSketchColor;
 
                         for (int k = j; j < k + indexes; j++) {
@@ -551,14 +563,17 @@ void EditModeGeometryCoinManager::updateGeometryColor(
                         }
                     }
                     else {
-                        if (sketchFullyConstrained) {
+                        if (solvedColors && sketchFullyConstrained) {
                             color[i] = drawingParameters.FullyConstrainedColor;
                         }
-                        else if (constrainedElement) {
+                        else if (solvedColors && constrainedElement) {
                             color[i] = drawingParameters.FullyConstraintElementColor;
                         }
                         else {
-                            color[i] = drawingParameters.CurveColor;
+                            const auto layerColor = viewProvider.getLayerColor(layerId, Base::Color(
+                                drawingParameters.CurveColor[0], drawingParameters.CurveColor[1],
+                                drawingParameters.CurveColor[2]));
+                            color[i] = SbColor(layerColor.r, layerColor.g, layerColor.b);
                         }
 
                         for (int k = j; j < k + indexes; j++) {
@@ -623,7 +638,10 @@ void EditModeGeometryCoinManager::updateGeometryLayersConfiguration()
     // 2) The number of layers is the same, but the configuration needs to be updated
 
     // TODO: Quite some room for improvement here:
-    geometryLayerParameters.setCoinLayerCount(viewProvider.VisualLayerList.getSize());
+    if (geometryLayerParameters.getCoinLayerCount() == viewProvider.getGeometryCoinLayerCount()) {
+        return;
+    }
+    geometryLayerParameters.setCoinLayerCount(viewProvider.getGeometryCoinLayerCount());
 
     emptyGeometryRootNodes();
     createEditModePointInventorNodes();
@@ -640,7 +658,7 @@ void EditModeGeometryCoinManager::createEditModeInventorNodes()
 {
     createGeometryRootNodes();
 
-    geometryLayerParameters.setCoinLayerCount(viewProvider.VisualLayerList.getSize());
+    geometryLayerParameters.setCoinLayerCount(viewProvider.getGeometryCoinLayerCount());
 
     createEditModePointInventorNodes();
 
@@ -662,6 +680,13 @@ void EditModeGeometryCoinManager::emptyGeometryRootNodes()
 {
     Gui::coinRemoveAllChildren(editModeScenegraphNodes.PointsGroup);
     Gui::coinRemoveAllChildren(editModeScenegraphNodes.CurvesGroup);
+    editModeScenegraphNodes.PointsMaterials.clear();
+    editModeScenegraphNodes.PointsCoordinate.clear();
+    editModeScenegraphNodes.PointsDrawStyle.clear();
+    editModeScenegraphNodes.PointSet.clear();
+    editModeScenegraphNodes.CurvesMaterials.clear();
+    editModeScenegraphNodes.CurvesCoordinate.clear();
+    editModeScenegraphNodes.CurveSet.clear();
 }
 
 void EditModeGeometryCoinManager::createEditModePointInventorNodes()
@@ -708,6 +733,7 @@ void EditModeGeometryCoinManager::createEditModePointInventorNodes()
 
 void EditModeGeometryCoinManager::createEditModeCurveInventorNodes()
 {
+    editModeScenegraphNodes.LayerDrawStyles.clear();
     editModeScenegraphNodes.CurvesDrawStyle = new SoDrawStyle;
     editModeScenegraphNodes.CurvesDrawStyle->setName("CurvesDrawStyle");
     editModeScenegraphNodes.CurvesDrawStyle->lineWidth = drawingParameters.CurveWidth
@@ -782,6 +808,21 @@ void EditModeGeometryCoinManager::createEditModeCurveInventorNodes()
             }
             else {
                 sep->addChild(editModeScenegraphNodes.CurvesDrawStyle);
+                auto* style = static_cast<SoDrawStyle*>(
+                    editModeScenegraphNodes.CurvesDrawStyle->copy()
+                );
+                style->lineWidth = viewProvider.getLayerLineWidth(
+                                       viewProvider.getLayerFromCoinIndex(i),
+                                       drawingParameters.CurveWidth
+                                   )
+                    * drawingParameters.pixelScalingFactor;
+                editModeScenegraphNodes.LayerDrawStyles.push_back(style);
+                style->setName(concat("LayerDrawStyle", i).c_str());
+                style->linePattern = viewProvider.getLayerPattern(
+                    viewProvider.getLayerFromCoinIndex(i),
+                    drawingParameters.CurvePattern
+                );
+                sep->addChild(style);
             }
 
             auto solineset = new SoLineSet;

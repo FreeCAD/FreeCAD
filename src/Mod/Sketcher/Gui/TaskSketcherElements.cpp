@@ -45,7 +45,9 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/Notifications.h>
+#include <Gui/MainWindow.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/Selection/SelectionObject.h>
 #include <Gui/ViewProvider.h>
@@ -57,6 +59,7 @@
 #include <Mod/Sketcher/App/ExternalGeometryFacade.h>
 #include "Utils.h"
 #include "ViewProviderSketch.h"
+#include "LayerListDelegate.h"
 #include "ui_TaskSketcherElements.h"
 
 // clang-format off
@@ -146,7 +149,7 @@ QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Select Vertical Axis");
 namespace SketcherGui
 {
 
-class ElementItemDelegate: public QStyledItemDelegate
+class ElementItemDelegate: public LayerListDelegate
 {
     Q_OBJECT
 public:
@@ -269,6 +272,13 @@ public:
             return QIcon(QPixmap(size));
         }
 
+        if (role == LayerListDelegate::LayerRole) {
+            return sketchView->getSketchObject()->getGeometryLayer(ElementNbr);
+        }
+        if (role == LayerListDelegate::LayerEditableRole) {
+            auto* sketch = sketchView->getSketchObject();
+            return !sketch->isLayerLocked(sketch->getGeometryLayer(ElementNbr));
+        }
         return QListWidgetItem::data(role);
     }
 
@@ -627,7 +637,7 @@ private:
 };
 
 ElementView::ElementView(QWidget* parent)
-    : QListWidget(parent)
+    : LayerListWidget(parent)
 {
     auto* elementItemDelegate = new ElementItemDelegate(this);
     setItemDelegate(elementItemDelegate);
@@ -888,7 +898,15 @@ void ElementView::contextMenuEvent(QContextMenuEvent* event)
 
     menu.addSeparator();
 
-    auto submenu = menu.addMenu(tr("Layer"));
+    if (!items.isEmpty()) {
+        auto* sketch = static_cast<ElementItem*>(items.first())->getSketchObject();
+        auto* vp = dynamic_cast<ViewProviderSketch*>(Gui::Application::Instance->getViewProvider(sketch));
+        if (vp) {
+            vp->appendLayerMenu(&menu);
+        }
+    }
+
+    auto submenu = menu.addMenu(tr("Element visibility"));
 
     auto addLayerAction = [submenu, this, items](auto&& name, int layernumber) {
         auto action = submenu->addAction(std::forward<decltype(name)>(name), [this, layernumber]() {
@@ -898,8 +916,8 @@ void ElementView::contextMenuEvent(QContextMenuEvent* event)
         return action;
     };
 
-    addLayerAction(tr("Layer 0"), 0);
-    addLayerAction(tr("Layer 1"), 1);
+    addLayerAction(tr("Visible"), 0);
+    addLayerAction(tr("Dashed"), 1);
     addLayerAction(tr("Hidden"), 2);
 
 
@@ -1013,9 +1031,38 @@ void ElementView::doConvertToGeometries()
 // clang-format on
 /* ElementItem delegate ---------------------------------------------------- */
 ElementItemDelegate::ElementItemDelegate(ElementView* parent)
-    : QStyledItemDelegate(parent)
-{  // This class relies on the parent being an ElementView, see getElementtItem
-}
+    : LayerListDelegate(parent, nullptr, [parent](const QModelIndex& index, int layer) {
+        auto* item = parent->itemFromIndex(index);
+        if (!item) {
+            return;
+        }
+        auto* sketch = item->getSketchObject();
+        const int id = item->ElementNbr;
+        if (sketch->getGeometryLayer(id) == layer || sketch->isLayerLocked(layer)
+            || sketch->isLayerLocked(sketch->getGeometryLayer(id))) {
+            return;
+        }
+        if (id >= 0) {
+            for (int member : sketch->getGroupGeometries(id)) {
+                if (sketch->isLayerLocked(sketch->getGeometryLayer(member))) {
+                    return;
+                }
+            }
+        }
+        sketch->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Move geometry to layer"));
+        try {
+            Gui::cmdAppObjectArgs(sketch, "setGeometryLayer([%d], %d)", id, layer);
+            sketch->getDocument()->commitTransaction();
+        }
+        catch (const Base::Exception& error) {
+            sketch->getDocument()->abortTransaction();
+            error.reportException();
+            if (auto* window = Gui::getMainWindow()) {
+                window->showMessage(QString::fromUtf8(error.what()), 4000);
+            }
+        }
+    })
+{}
 
 void ElementItemDelegate::paint(
     QPainter* painter,
@@ -1042,12 +1089,15 @@ void ElementItemDelegate::paint(
 
     style->drawPrimitive(QStyle::PE_PanelItemViewItem, &itemOption, painter, option.widget);
 
+    painter->save();
+    painter->setClipRect(option.rect.adjusted(0, 0, -layerWidth(option), 0));
     drawSubControl(SubControl::CheckBox, painter, option, index);
     drawSubControl(SubControl::LineSelect, painter, option, index);
     drawSubControl(SubControl::StartSelect, painter, option, index);
     drawSubControl(SubControl::EndSelect, painter, option, index);
     drawSubControl(SubControl::MidSelect, painter, option, index);
     drawSubControl(SubControl::Label, painter, option, index);
+    painter->restore();
 }
 
 QRect ElementItemDelegate::subControlRect(
@@ -2018,6 +2068,9 @@ void TaskSketcherElements::slotElementsChanged()
 
     const std::vector<Part::Geometry*>& vals = sketch->Geometry.getValues();
 
+    auto* layerDelegate = static_cast<ElementItemDelegate*>(ui->listWidgetElements->itemDelegate());
+    layerDelegate->setView(sketchView);
+    layerDelegate->setLayersEnabled(sketchView->areLayersEnabled());
     ui->listWidgetElements->clear();
     elementMap.clear();
     selectionBuffer.clear();
@@ -2122,6 +2175,9 @@ void TaskSketcherElements::slotElementsChanged()
             isTextHandle);
 
         ui->listWidgetElements->addItem(itemN);
+        if (sketchView->areLayersEnabled()) {
+            ui->listWidgetElements->openPersistentEditor(itemN);
+        }
 
         elementMap[itemN->ElementNbr] = itemN;
 
@@ -2230,6 +2286,9 @@ void TaskSketcherElements::slotElementsChanged()
                 sketchView);
 
             ui->listWidgetElements->addItem(itemN);
+            if (sketchView->areLayersEnabled()) {
+                ui->listWidgetElements->openPersistentEditor(itemN);
+            }
 
             elementMap[itemN->ElementNbr] = itemN;
 

@@ -157,6 +157,7 @@ int SketchObject::addGeometry(const std::vector<Part::Geometry*>& geoList,
     newVals.reserve(newVals.size() + geoList.size());
     for (auto& v : geoList) {
         Part::Geometry* copy = v->copy();
+        initializeGeometryLayer(copy);
         generateId(copy);
 
         if (construction) {
@@ -191,6 +192,7 @@ int SketchObject::addGeometry(std::unique_ptr<Part::Geometry> newgeo, bool const
     std::vector<Part::Geometry*> newVals(vals);
 
     auto* geoNew = newgeo.release();
+    initializeGeometryLayer(geoNew);
     generateId(geoNew);
 
     if (construction) {
@@ -225,6 +227,7 @@ bool SketchObject::hasInternalGeometry(const Part::Geometry* geo)
 
 int SketchObject::delGeometry(int GeoId, DeleteOptions options)
 {
+    checkGeometryUnlocked(GeoId);
     if (GeoId < 0) {
         if(GeoId > GeoEnum::RefExt)
             return -1;
@@ -289,6 +292,9 @@ int SketchObject::delGeometry(int GeoId, DeleteOptions options)
 
 int SketchObject::delGeometriesExclusiveList(const std::vector<int>& GeoIds, DeleteOptions options)
 {
+    for (int id : GeoIds) {
+        checkGeometryUnlocked(id);
+    }
     std::vector<int> sGeoIds(GeoIds);
 
     std::ranges::sort(sGeoIds);
@@ -360,6 +366,9 @@ int SketchObject::delGeometriesExclusiveList(const std::vector<int>& GeoIds, Del
 
 int SketchObject::deleteAllGeometry(DeleteOptions options)
 {
+    for (int id = 0; id < Geometry.getSize(); ++id) {
+        checkGeometryUnlocked(id);
+    }
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
@@ -386,6 +395,7 @@ int SketchObject::deleteAllGeometry(DeleteOptions options)
 
 int SketchObject::toggleConstruction(int GeoId)
 {
+    checkGeometryUnlocked(GeoId);
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
@@ -429,6 +439,7 @@ int SketchObject::toggleConstruction(int GeoId)
 
 int SketchObject::setConstruction(int GeoId, bool on)
 {
+    checkGeometryUnlocked(GeoId);
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
@@ -1053,32 +1064,38 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomBSplineCurve>(const in
 
 int SketchObject::exposeInternalGeometry(int GeoId)
 {
+    checkGeometryUnlocked(GeoId);
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
         return -1;
 
     const Part::Geometry* geo = getGeometry(GeoId);
+    int result = -1;
+    const int layer = getGeometryLayer(GeoId);
     // Only for supported types
     if (geo->is<Part::GeomEllipse>()) {
-        return exposeInternalGeometryForType<Part::GeomEllipse>(GeoId);
+        result = exposeInternalGeometryForType<Part::GeomEllipse>(GeoId);
     }
     else if (geo->is<Part::GeomArcOfEllipse>()) {
-        return exposeInternalGeometryForType<Part::GeomArcOfEllipse>(GeoId);
+        result = exposeInternalGeometryForType<Part::GeomArcOfEllipse>(GeoId);
     }
     else if (geo->is<Part::GeomArcOfHyperbola>()) {
-        return exposeInternalGeometryForType<Part::GeomArcOfHyperbola>(GeoId);
+        result = exposeInternalGeometryForType<Part::GeomArcOfHyperbola>(GeoId);
     }
     else if (geo->is<Part::GeomArcOfParabola>()) {
-        return exposeInternalGeometryForType<Part::GeomArcOfParabola>(GeoId);
+        result = exposeInternalGeometryForType<Part::GeomArcOfParabola>(GeoId);
     }
     else if (geo->is<Part::GeomBSplineCurve>()) {
-        return exposeInternalGeometryForType<Part::GeomBSplineCurve>(GeoId);
+        result = exposeInternalGeometryForType<Part::GeomBSplineCurve>(GeoId);
     }
-    else
-        return -1;// not supported type
+    if (result > 0) {
+        setGeometryLayer({GeoId}, layer);
+    }
+    return result;
 }
 
 int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
 {
+    checkGeometryUnlocked(GeoId);
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
         return -1;
 

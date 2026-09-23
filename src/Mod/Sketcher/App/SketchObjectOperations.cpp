@@ -52,6 +52,9 @@ SketchSolveStatus SketchObject::moveGeometries(
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
+    for (const auto& element : geoEltIds) {
+        checkGeometryUnlocked(element.GeoId);
+    }
     // if we are moving a point at SketchObject level, we need to start from a solved sketch
     // if we have conflicts we can forget about moving. However, there is the possibility that we
     // need to do programmatically moves of new geometry that has not been solved yet and that
@@ -64,7 +67,9 @@ SketchSolveStatus SketchObject::moveGeometries(
         lastDoF = solvedSketch.setUpSketch(
             getCompleteGeometry(),
             Constraints.getValues(),
-            getExternalGeometryCount()
+            getExternalGeometryCount(),
+            getUnconstrainedGeometry(),
+            getLockedGeometry()
         );
 
         retrieveSolverDiagnostics();
@@ -120,6 +125,9 @@ int SketchObject::delGeometries(const std::vector<int>& GeoIds, DeleteOptions op
 template <class InputIt>
 int SketchObject::delGeometries(InputIt first, InputIt last, DeleteOptions options)
 {
+    for (auto it = first; it != last; ++it) {
+        checkGeometryUnlocked(*it);
+    }
     std::vector<int> sGeoIds;
     std::vector<int> negativeGeoIds;
 
@@ -169,6 +177,9 @@ int SketchObject::delGeometries(InputIt first, InputIt last, DeleteOptions optio
 // clang-format on
 void SketchObject::replaceGeometries(std::vector<int> oldGeoIds, std::vector<Part::Geometry*>& newGeos)
 {
+    for (int id : oldGeoIds) {
+        checkGeometryUnlocked(id);
+    }
     auto& vals = getInternalGeometry();
     auto newVals(vals);
 
@@ -178,14 +189,19 @@ void SketchObject::replaceGeometries(std::vector<int> oldGeoIds, std::vector<Par
 
     auto oldGeoIdIter = oldGeoIds.begin();
     auto newGeoIter = newGeos.begin();
+    int sourceLayer = static_cast<int>(ActiveLayer.getValue());
 
     for (; oldGeoIdIter != oldGeoIds.end() && newGeoIter != newGeos.end();
          ++oldGeoIdIter, ++newGeoIter) {
+        sourceLayer = getGeometryLayer(*oldGeoIdIter);
         GeometryFacade::copyId(getGeometry(*oldGeoIdIter), *newGeoIter);
+        GeometryFacade::getFacade(*newGeoIter)->setGeometryLayerId(sourceLayer);
         newVals[*oldGeoIdIter] = *newGeoIter;
     }
 
     for (; newGeoIter != newGeos.end(); ++newGeoIter) {
+        // Additional pieces from splitting/trimming inherit the same source layer.
+        GeometryFacade::getFacade(*newGeoIter)->setGeometryLayerId(sourceLayer);
         generateId(*newGeoIter);
         newVals.push_back(*newGeoIter);
     }
@@ -218,6 +234,7 @@ std::vector<int> SketchObject::chooseFilletsEdges(const std::vector<int>& GeoIdL
 
 int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim, bool createCorner, bool chamfer)
 {
+    checkGeometryUnlocked(GeoId);
     if (GeoId < 0 || GeoId > getHighestCurveIndex()) {
         Base::Console().error("Invalid GeoId: {}\n", GeoId);
         return -1;
@@ -267,6 +284,8 @@ int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim, bo
 int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
                          const Base::Vector3d& refPnt2, double radius, bool trim, bool createCorner, bool chamfer)
 {
+    checkGeometryUnlocked(GeoId1);
+    checkGeometryUnlocked(GeoId2);
     if (GeoId1 < 0 || GeoId1 > getHighestCurveIndex() || GeoId2 < 0 || GeoId2 > getHighestCurveIndex()) {
         return -1;
     }
@@ -296,6 +315,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         return -1;
     }
 
+    GeometryFacade::getFacade(arc.get())->setGeometryLayerId(getGeometryLayer(GeoId1));
     int filletId = addGeometry(arc.get());
     if (filletId < 0) {
         return -1;
@@ -442,6 +462,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
     if (chamfer) {
         auto line = std::make_unique<Part::GeomLineSegment>();
         line->setPoints(p1, p2);
+        GeometryFacade::getFacade(line.get())->setGeometryLayerId(getGeometryLayer(GeoId1));
         int lineGeoId = addGeometry(std::move(line));
 
         auto coinc1 = std::make_unique<Sketcher::Constraint>();
@@ -502,6 +523,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
 
 SketchSolveStatus SketchObject::extend(int GeoId, double increment, PointPos endpoint)
 {
+    checkGeometryUnlocked(GeoId);
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
         return SketchSolveStatus::SolverError;
 
@@ -920,6 +942,7 @@ void createNewConstraintsForTrim(
 
 SketchSolveStatus SketchObject::trim(int GeoId, const Base::Vector3d& point, bool includeSketchAxes)
 {
+    checkGeometryUnlocked(GeoId);
     if (!isGeoIdAllowedForTrim(this, GeoId)) {
         return SketchSolveStatus::SolverError;
     }
@@ -1150,6 +1173,7 @@ SketchSolveStatus SketchObject::trim(int GeoId, const Base::Vector3d& point, boo
 
 int SketchObject::split(int GeoId, const Base::Vector3d& point)
 {
+    checkGeometryUnlocked(GeoId);
     // No need to check input data validity as this is an sketchobject managed operation
 
     Base::StateLocker lock(managedoperation, true);
@@ -1290,6 +1314,8 @@ int SketchObject::join(
     int continuity
 )
 {
+    checkGeometryUnlocked(geoId1);
+    checkGeometryUnlocked(geoId2);
     // No need to check input data validity as this is an sketchobject managed operation
 
     Base::StateLocker lock(managedoperation, true);
@@ -2273,6 +2299,9 @@ int SketchObject::addCopy(
         }
     }
 
+    for (int id : newgeoIdList) {
+        checkGeometryUnlocked(id);
+    }
     int cgeoid = getHighestCurveIndex() + 1;
 
     int iterfirstgeoid = -1;
@@ -2630,6 +2659,7 @@ int SketchObject::addCopy(
         Base::Vector3d ep = iterfirstpoint;
         constrline->setPoints(sp, ep);
         GeometryFacade::setConstruction(constrline, true);
+        GeometryFacade::getFacade(constrline)->setGeometryLayerId(getGeometryLayer(refgeoid));
 
         generateId(constrline);
         newgeoVals.push_back(constrline);
@@ -2806,6 +2836,7 @@ int SketchObject::addCopy(
 
 bool SketchObject::convertToNURBS(int GeoId)
 {
+    checkGeometryUnlocked(GeoId);
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
@@ -2848,6 +2879,7 @@ bool SketchObject::convertToNURBS(int GeoId)
         Base::StateLocker preventUpdate(internaltransaction, true);
 
         if (GeoId < 0) {// external geometry
+            GeometryFacade::getFacade(bspline)->setGeometryLayerId(getGeometryLayer(GeoId));
             newVals.push_back(bspline);
             generateId(bspline);
         }
@@ -2855,6 +2887,7 @@ bool SketchObject::convertToNURBS(int GeoId)
 
             newVals[GeoId] = bspline;
             GeometryFacade::copyId(geo, bspline);
+            GeometryFacade::getFacade(bspline)->setGeometryLayerId(getGeometryLayer(GeoId));
 
             const std::vector<Sketcher::Constraint*>& cvals = Constraints.getValues();
 
@@ -2891,6 +2924,7 @@ bool SketchObject::convertToNURBS(int GeoId)
 
 bool SketchObject::increaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
 {
+    checkGeometryUnlocked(GeoId);
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
@@ -2925,6 +2959,7 @@ bool SketchObject::increaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
     std::vector<Part::Geometry*> newVals(vals);
 
     GeometryFacade::copyId(geo, bspline.get());
+    GeometryFacade::getFacade(bspline.get())->setGeometryLayerId(getGeometryLayer(GeoId));
     newVals[GeoId] = bspline.release();
 
     // AcceptGeometry called from onChanged
@@ -2935,6 +2970,7 @@ bool SketchObject::increaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
 
 bool SketchObject::decreaseBSplineDegree(int GeoId, int degreedecrement /*= 1*/)
 {
+    checkGeometryUnlocked(GeoId);
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
@@ -2978,6 +3014,8 @@ bool SketchObject::decreaseBSplineDegree(int GeoId, int degreedecrement /*= 1*/)
     // AcceptGeometry called from onChanged
     Geometry.setValues(newVals);
 #else
+    const int sourceLayer = getGeometryLayer(GeoId);
+    GeometryFacade::getFacade(bspline.get())->setGeometryLayerId(sourceLayer);
     delGeometry(GeoId);
     int newId = addGeometry(bspline.release());
     exposeInternalGeometry(newId);
@@ -2989,6 +3027,7 @@ bool SketchObject::decreaseBSplineDegree(int GeoId, int degreedecrement /*= 1*/)
 // clang-format on
 bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int multiplicityincr)
 {
+    checkGeometryUnlocked(GeoId);
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
@@ -3141,6 +3180,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     std::vector<Part::Geometry*> newVals(vals);
 
     GeometryFacade::copyId(geo, bspline.get());
+    GeometryFacade::getFacade(bspline.get())->setGeometryLayerId(getGeometryLayer(GeoId));
     newVals[GeoId] = bspline.release();
 
     // Block acceptGeometry in OnChanged to avoid unnecessary checks and updates
@@ -3165,6 +3205,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
 
 bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
 {
+    checkGeometryUnlocked(GeoId);
     // TODO: Check if this is still valid: no need to check input data validity as this is an
     // sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
@@ -3294,6 +3335,7 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
     std::vector<Part::Geometry*> newVals(vals);
 
     GeometryFacade::copyId(geo, bspline.get());
+    GeometryFacade::getFacade(bspline.get())->setGeometryLayerId(getGeometryLayer(GeoId));
     newVals[GeoId] = bspline.release();
 
     // Block acceptGeometry in OnChanged to avoid unnecessary checks and updates

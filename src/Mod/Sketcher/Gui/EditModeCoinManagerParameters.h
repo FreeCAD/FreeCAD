@@ -310,7 +310,7 @@ public:
 
     inline int getSafeCoinLayer(int coinlayer)
     {
-        if (coinlayer < CoinLayers) {
+        if (coinlayer >= 0 && coinlayer < CoinLayers) {
             return coinlayer;
         }
 
@@ -438,6 +438,7 @@ struct EditModeScenegraphNodes
     std::vector<std::vector<SoCoordinate3*>> CurvesCoordinate;
     std::vector<std::vector<SoLineSet*>> CurveSet;
     SoDrawStyle* CurvesDrawStyle;
+    std::vector<SoDrawStyle*> LayerDrawStyles;
     SoDrawStyle* CurvesConstructionDrawStyle;
     SoDrawStyle* CurvesInternalDrawStyle;
     SoDrawStyle* CurvesExternalDrawStyle;
