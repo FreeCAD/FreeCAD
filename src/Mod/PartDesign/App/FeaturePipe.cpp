@@ -46,6 +46,7 @@
 #include <App/DocumentObject.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
+#include <Base/Translation.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
 
 #include "FeaturePipe.h"
