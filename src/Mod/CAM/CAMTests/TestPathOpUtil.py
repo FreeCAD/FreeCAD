@@ -1136,31 +1136,28 @@ class TestWorkplaneRotationCommands(PathTestUtils.PathTestBase):
             and ("A" in c.Parameters or "B" in c.Parameters or "C" in c.Parameters)
         ]
 
-    def _positions(self, op):
-        return {k: float(v) for k, v in dict(op.RotaryPositions).items()}
-
-    def test_zUpOpRecordsZeroRotation(self):
-        """A Z-up op on a rotary machine records all rotary axes at zero."""
+    def test_zUpOpHasAnIdentityFrameAndNoRotaryWords(self):
+        """A Z-up op on a rotary machine records nothing about the machine:
+        the post solves the (zero) pose from the identity Placement."""
         self._attachMachine()
         op = self._makeOp("ZUp", Vector(0, 0, 1))
 
-        positions = self._positions(op)
-        self.assertAlmostEqual(positions.get("A"), 0.0)
-        self.assertAlmostEqual(positions.get("C"), 0.0)
+        self.assertFalse(hasattr(op, "RotaryPositions"))
+        self.assertTrue(op.Placement.isIdentity(1e-9))
         self.assertEqual(self._rotaryCommands(op), [], "the op's own path carries no rotary words")
 
-    def test_rotatedOpRecordsSolvedRotation(self):
-        """A non-Z workplane records its solved rotary position."""
+    def test_rotatedOpCarriesItsPlaneAndNoRotaryWords(self):
+        """A non-Z workplane is carried as the op's Placement; the rotary
+        positions are the post's to solve."""
         self._attachMachine()
         op = self._makeOp("Side", Vector(0, 1, 0))
 
-        positions = self._positions(op)
-        self.assertAlmostEqual(abs(positions.get("A")), 90.0)
+        self.assertFalse(hasattr(op, "RotaryPositions"))
+        z = op.Placement.Rotation.multVec(Vector(0, 0, 1))
+        self.assertTrue(z.isEqual(Vector(0, 1, 0), 1e-6))
         self.assertEqual(self._rotaryCommands(op), [], "the op's own path carries no rotary words")
 
-    def test_zUpOpWithoutMachineRecordsNothing(self):
-        """Without a rotary machine a Z-up op records no rotary positions."""
+    def test_zUpOpWithoutMachineCarriesNoRotaryWords(self):
         op = self._makeOp("ZUpPlain", Vector(0, 0, 1))
 
-        self.assertEqual(self._positions(op), {})
         self.assertEqual(self._rotaryCommands(op), [])

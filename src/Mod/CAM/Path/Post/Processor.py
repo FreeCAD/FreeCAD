@@ -2074,6 +2074,48 @@ class PostProcessor:
             items.extend(self._rotary_block_postables("POST_ROTARY_MOVE"))
         return items
 
+    def _solve_pose(self, placement, chain):
+        """The rotary positions that index the machine to placement's tool
+        axis: zeros when the axis is Z, the solver's answer otherwise.
+        Returns (positions, reason); positions is None when unreachable."""
+        import Path.Base.Generator.rotation as rotation
+
+        if not _tool_axis_tilted(placement):
+            return {axis.name: 0.0 for axis in chain}, None
+        tool_axis = placement.Rotation.multVec(FreeCAD.Vector(0, 0, 1))
+        result = rotation.solve_orientation(self._machine, tool_axis)
+        if not result.success:
+            return None, result.reason
+        return {k: float(v) for k, v in result.angles.items()}, None
+
+    def _solve_positions(self, item, placement, chain):
+        """Rotary positions for an operation, or a refusal naming the plane,
+        the machine and its rotary limits."""
+        import Path.Dressup.Utils as PathDressup
+
+        positions, reason = self._solve_pose(placement, chain)
+        if positions is not None:
+            return positions
+        plane = getattr(PathDressup.baseOp(item.source), "Workplane", None)
+        limits = ", ".join(
+            "%s %g to %g" % (axis.name, axis.min_limit, axis.max_limit) for axis in chain
+        )
+        raise CAMValueError(
+            translate(
+                "CAM",
+                "{op} is on work plane '{plane}', which machine '{machine}' cannot index to: "
+                "{reason}. Its rotary limits are {limits}.",
+            ).format(
+                op=item.label,
+                plane=plane.Label if plane is not None else "?",
+                machine=self._machine.name,
+                reason=reason,
+                limits=limits,
+            ),
+            job=self._job,
+            operation=item.source,
+        )
+
     @staticmethod
     def _fixture_postable(fixture):
         """The selection of a work coordinate system, as a Job-level fixture
@@ -2116,10 +2158,13 @@ class PostProcessor:
         """Operations on a work plane: express each in the form the machine runs.
 
         An operation's path is stored in its work plane's frame, with the
-        operation's Placement positioning it in the world and its
-        RotaryPositions recording the rotary angles it was solved for.
-        Generation knows nothing about the machine; this is where the machine
-        comes in, and the machine's rotation strategy decides the shape:
+        operation's Placement positioning it in the world. Generation knows
+        nothing about the machine; this is where the machine comes in. The
+        rotary positions are solved here, from the Placement, for the machine
+        this post is running for - on a rotary machine every operation gets a
+        pose, zeros included, because operations are atomic and the pose is
+        commanded explicitly before each one - and the machine's rotation
+        strategy decides the shape:
 
         DWO (dynamic work offset): the rotaries move to the recorded
         positions and the path is emitted in the frame the machine reaches
@@ -2172,16 +2217,17 @@ class PostProcessor:
         strategy = self._rotation_strategy()
         chain = rotation.build_kinematic_chain(machine) if strategy is not None else []
 
-        def frame_of(item):
+        def placement_of(item):
+            """The operation's frame, or None for anything that is not an
+            operation. Without a rotary machine an unframed operation is
+            None too, so a three-axis Job passes through untouched."""
             src = item.source
             if src is None or item.item_type != "operation":
-                return None, None
-            placement = getattr(src, "Placement", None)
-            recorded = dict(getattr(src, "RotaryPositions", {}) or {})
-            positions = {k: float(v) for k, v in recorded.items()}
-            if (placement is None or placement.isIdentity(1e-9)) and not positions:
-                return None, None
-            return placement or FreeCAD.Placement(), positions
+                return None
+            placement = getattr(src, "Placement", None) or FreeCAD.Placement()
+            if strategy is None and placement.isIdentity(1e-9):
+                return None
+            return placement
 
         tool_axis_tilted = _tool_axis_tilted
 
@@ -2214,34 +2260,28 @@ class PostProcessor:
                 wanted = self._plane_fixture_of(item) or job_fixture
                 fixture_change = wanted if wanted is not None and wanted != selected else None
 
-                placement, positions = frame_of(item)
+                placement = placement_of(item)
                 if placement is None:
                     if fixture_change:
                         new_items.append(self._fixture_postable(fixture_change))
                         selected = fixture_change
                     new_items.append(item)
                     continue
-                framed = not placement.isIdentity(1e-9)
                 tilted = tool_axis_tilted(placement)
 
                 if strategy is None:
                     if tilted:
                         self._refuse_without_rotary_axes(item)
-                    if positions:
-                        Path.Log.warning(
-                            f"{item.label}: recorded rotary positions but the post's "
-                            f"machine has no rotary axes; emitting without positioning"
-                        )
                     if fixture_change:
                         new_items.append(self._fixture_postable(fixture_change))
                         selected = fixture_change
-                    if framed:
-                        item.path = PathUtils.applyPlacementToPath(placement, item.path)
+                    item.path = PathUtils.applyPlacementToPath(placement, item.path)
                     new_items.append(item)
                     continue
 
                 if tilted:
                     self._check_rotation_strategy(strategy, item)
+                positions = self._solve_positions(item, placement, chain)
 
                 # A plane that will not be declared has no pose of its own
                 # beyond the rotary angles: two datum planes at different
@@ -3292,16 +3332,20 @@ class PostProcessor:
                 )
         return squawks
 
-    @staticmethod
-    def _rotaries_move_between_operations(job):
-        """Whether consecutive operations were solved to different rotary positions."""
+    def _rotaries_move_between_operations(self, job):
+        """Whether consecutive operations solve to different rotary positions
+        on this post's machine. An unreachable plane is skipped here; the
+        export refuses it with the reason."""
+        import Path.Base.Generator.rotation as rotation
         import Path.Dressup.Utils as PathDressup
 
+        chain = rotation.build_kinematic_chain(self._machine)
         previous = None
         for op in job.Operations.Group:
             base = PathDressup.baseOp(op)
-            positions = dict(getattr(base, "RotaryPositions", {}) or {})
-            if not positions:
+            placement = getattr(base, "Placement", None) or FreeCAD.Placement()
+            positions, _ = self._solve_pose(placement, chain)
+            if positions is None:
                 continue
             key = tuple(sorted((k, round(float(v), 6)) for k, v in positions.items()))
             if previous is not None and key != previous:
