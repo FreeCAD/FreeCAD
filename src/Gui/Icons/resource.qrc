@@ -105,6 +105,8 @@
         <file>InTray_missed_notifications.svg</file>
         <file>InTray.svg</file>
         <file>Invisible.svg</file>
+        <file>LayerLocked.svg</file>
+        <file>LayerUnlocked.svg</file>
         <file>Link.svg</file>
         <file>LinkArray.svg</file>
         <file>LinkArrayOverlay.svg</file>
