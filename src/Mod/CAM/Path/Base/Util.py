@@ -31,7 +31,9 @@ other than Path.Log, then it probably doesn't belong here.
 """
 
 import FreeCAD
+import Part
 import Path
+import Path.Geom
 
 translate = FreeCAD.Qt.translate
 
@@ -172,3 +174,152 @@ def clearExpressionEngine(obj):
     if hasattr(obj, "ExpressionEngine"):
         for attr, expr in obj.ExpressionEngine:
             obj.setExpression(attr, None)
+
+
+def workplaneForOp(op):
+    """workplaneForOp(op) ... returns the effective Workplane of op as a Placement.
+
+    This is the single accessor for an operation's frame. Nothing outside this
+    module should read ``op.Workplane`` directly: the property has changed
+    shape twice already, and beyond indexed machining the tool axis stops being
+    a property of the operation at all. One accessor can absorb those changes;
+    scattered reads cannot.
+
+    ``Workplane`` is a link to a named work plane held by the Job. No link
+    means the Job's own XY, which is ordinary Z-up milling. A document
+    restored but not yet migrated may still carry the older vector or
+    placement forms; those are read as they were."""
+    wp = getattr(op, "Workplane", None)
+    if wp is None:
+        return FreeCAD.Placement()
+    if isinstance(wp, FreeCAD.Vector):
+        return placementFromToolAxis(wp)
+    if isinstance(wp, FreeCAD.Placement):
+        return FreeCAD.Placement(wp)
+    if hasattr(wp, "Placement"):
+        return FreeCAD.Placement(wp.Placement)
+    return FreeCAD.Placement()
+
+
+def toolAxisForOp(op):
+    """toolAxisForOp(op) ... returns the effective tool axis of op as a unit Vector.
+
+    The direction the tool points, from the part toward the tool - the
+    Workplane's local +Z. Constant for the whole operation, which is true for
+    indexed machining and is the assumption that simultaneous motion removes."""
+    return workplaneForOp(op).Rotation.multVec(FreeCAD.Vector(0, 0, 1))
+
+
+def placementFromToolAxis(axis, origin=None):
+    """placementFromToolAxis(axis, origin=None) ... builds a Workplane placement
+    whose local +Z is axis.
+
+    The rotation about that axis is not determined by the axis alone. The
+    convention here is FreeCAD.Rotation(Vector(0,0,1), axis), the minimal
+    rotation carrying global +Z onto axis, which is what the vector form of the
+    property implied and so is what document migration must reproduce."""
+    if origin is None:
+        origin = FreeCAD.Vector(0, 0, 0)
+    direction = FreeCAD.Vector(axis)
+    if direction.Length < 1e-9:
+        direction = FreeCAD.Vector(0, 0, 1)
+    else:
+        direction.normalize()
+    return FreeCAD.Placement(origin, FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), direction))
+
+
+def sameWorkplane(a, b, tol=1e-6):
+    """sameWorkplane(a, b, tol=1e-6) ... True if two Workplane placements name
+    the same frame for the purpose of reusing generated toolpath geometry.
+
+    Today this compares tool axes only, because an operation's path is
+    generated in a frame derived from the machine's solved rotary angles and
+    the Workplane's origin and in-plane X are recorded but not consumed
+    (see the Workplane property documentation). Two operations that share a
+    tool axis therefore share a frame.
+
+    When origins are consumed this has to compare full frames, and callers
+    that reuse geometry between operations - rest machining in particular -
+    become wrong if it is not changed at the same time. That is the reason
+    this is a named predicate rather than an inline comparison."""
+    axis_a = FreeCAD.Placement(a).Rotation.multVec(FreeCAD.Vector(0, 0, 1))
+    axis_b = FreeCAD.Placement(b).Rotation.multVec(FreeCAD.Vector(0, 0, 1))
+    return axis_a.isEqual(axis_b, tol)
+
+
+def liesInPlanePerpendicularTo(sub, axis, tol=1e-6):
+    """liesInPlanePerpendicularTo(sub, axis) ... True if every point of sub is
+    at the same distance along axis, so the feature names a single depth."""
+    if "Face" == sub.ShapeType:
+        if not isinstance(sub.Surface, Part.Plane):
+            return False
+        normal = FreeCAD.Vector(sub.Surface.Axis)
+        if normal.Length < tol:
+            return False
+        normal.normalize()
+        return Path.Geom.isRoughly(abs(normal.dot(axis)), 1.0)
+
+    if "Edge" == sub.ShapeType:
+        try:
+            points = sub.discretize(Number=8)
+        except Exception:
+            points = [v.Point for v in sub.Vertexes]
+        if not points:
+            return False
+        levels = [axis.dot(p) for p in points]
+        return Path.Geom.isRoughly(max(levels) - min(levels), 0.0)
+
+    return False
+
+
+def depthOfFeature(sub, axis):
+    """depthOfFeature(sub, axis) ... the depth named by a selected feature,
+    measured along axis, or None if it does not name one.
+
+    A depth is a coordinate in the frame an operation generates in, and that
+    frame's up direction is the tool axis. So the useful selection is a feature
+    lying in a plane perpendicular to the tool axis, and the depth it names is
+    its projection onto that axis.
+
+    For the default work plane the tool axis is +Z and this is the Z level it
+    has always been. That path is kept verbatim rather than expressed through
+    the general one, because Path.Geom.isHorizontal() accepts shapes - a
+    sphere, a surface of revolution - for which a bounding box maximum and a
+    maximum over vertices are not the same number, and three-axis behaviour
+    must not drift."""
+    if "Vertex" == sub.ShapeType:
+        # Identical to sub.Z when the tool axis is +Z.
+        return axis.dot(sub.Point)
+
+    if Path.Geom.isRoughly(axis.z, 1.0):
+        if Path.Geom.isHorizontal(sub):
+            if "Edge" == sub.ShapeType:
+                return sub.Vertexes[0].Z
+            if "Face" == sub.ShapeType:
+                return sub.BoundBox.ZMax
+        return None
+
+    if not liesInPlanePerpendicularTo(sub, axis):
+        return None
+    return max(axis.dot(v.Point) for v in sub.Vertexes)
+
+
+def isPlanarFace(shape):
+    """isPlanarFace(shape) ... True if shape is a face lying in a plane."""
+    return getattr(shape, "ShapeType", None) == "Face" and isinstance(shape.Surface, Part.Plane)
+
+
+def jobHasRotaryMachine(job):
+    """jobHasRotaryMachine(job) ... True if job's machine has rotary axes.
+
+    Work planes are available on every Job; this decides what a plane may be.
+    Without rotary axes a plane must be parallel to the table: a datum for
+    depths and a turned X, which any three-axis machine can cut. A tilted
+    plane needs rotary axes to point the tool along it."""
+    if job is None or not hasattr(job, "Proxy"):
+        return False
+    try:
+        machine = job.Proxy.getMachine()
+    except Exception:
+        return False
+    return bool(machine is not None and getattr(machine, "has_rotary_axes", False))

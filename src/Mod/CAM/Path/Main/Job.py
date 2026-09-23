@@ -255,6 +255,7 @@ class ObjectJob:
         obj.GeometryTolerance = Path.Preferences.defaultGeometryTolerance()
 
         self.setupOperations(obj)
+        self.setupWorkplanes(obj)
         self.setupSetupSheet(obj)
         self.setupBaseModel(obj, models)
         self.setupToolTable(obj)
@@ -313,6 +314,49 @@ class ObjectJob:
         obj.Operations = ops
         obj.setEditorMode("Operations", 2)  # hide
         obj.setEditorMode("Placement", 2)
+
+    def setupWorkplanes(self, obj):
+        """setupWorkplanes(obj) ... set up the Workplanes group for the Job.
+
+        Holds the named frames operations can share. A workplane is a plain
+        Part::LocalCoordinateSystem: it already carries an attachment to the
+        geometry it was derived from, the map modes that describe a plane from
+        a face or three points, an editable offset, and a placement that
+        recomputes when the model moves. None of that needs reimplementing
+        here."""
+        if not hasattr(obj, "Workplanes"):
+            obj.addProperty(
+                "App::PropertyLink",
+                "Workplanes",
+                "Base",
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Group of named work planes the Operations can share"
+                ),
+            )
+        if getattr(obj, "Workplanes", None):
+            return
+
+        group = obj.Document.addObject("App::DocumentObjectGroup", "Workplanes")
+        group.Label = "Workplanes"
+        obj.Workplanes = group
+        obj.setEditorMode("Workplanes", 2)  # hide
+
+    def adoptOrphanWorkplanes(self, obj):
+        """adoptOrphanWorkplanes(obj) ... file any work plane an operation links
+        to but the group does not hold.
+
+        An operation migrating from an older document may create its work
+        plane before the Job is far enough restored to have a group. Restore
+        order across objects is not guaranteed, so the Job picks them up."""
+        if not getattr(obj, "Workplanes", None) or not getattr(obj, "Operations", None):
+            return
+        held = set(o.Name for o in obj.Workplanes.Group)
+        for op in obj.Operations.Group:
+            workplane = getattr(op, "Workplane", None)
+            if workplane is not None and hasattr(workplane, "Placement"):
+                if workplane.Name not in held:
+                    obj.Workplanes.addObject(workplane)
+                    held.add(workplane.Name)
 
     def setupSetupSheet(self, obj):
         if not getattr(obj, "SetupSheet", None):
@@ -472,6 +516,15 @@ class ObjectJob:
             doc.removeObject(obj.SetupSheet.Name)
             obj.SetupSheet = None
 
+        if getattr(obj, "Workplanes", None):
+            Path.Log.debug("taking down workplanes")
+            for workplane in list(obj.Workplanes.Group):
+                PathUtil.clearExpressionEngine(workplane)
+                doc.removeObject(workplane.Name)
+            obj.Workplanes.Group = []
+            doc.removeObject(obj.Workplanes.Name)
+            obj.Workplanes = None
+
         return True
 
     def fixupOperations(self, obj):
@@ -545,6 +598,14 @@ class ObjectJob:
                 QT_TRANSLATE_NOOP("App::Property", "Operations Cycle Time Estimation"),
             )
             obj.setEditorMode("CycleTime", 1)  # read-only
+
+        self.setupWorkplanes(obj)
+        self.adoptOrphanWorkplanes(obj)
+        if FreeCAD.GuiUp:
+            import Path.Main.Workplane as PathWorkplane
+
+            for workplane in PathWorkplane.workplanesOf(obj):
+                PathWorkplane.configureView(workplane)
 
         if not hasattr(obj, "Fixtures"):
             obj.addProperty(

@@ -24,6 +24,7 @@
 import FreeCAD
 import Part
 import Path
+import Path.Main.Workplane as PathWorkplane
 import Path.Op.Util as PathOpUtil
 import Path.Op.Custom as PathCustom
 import Path.Main.Job as PathJob
@@ -971,6 +972,21 @@ class TestGetClearedAreasWorkplane(PathTestUtils.PathTestBase):
         self.job = PathJob.Create("Job", [box], None)
         self.job.GeometryTolerance.Value = 0.001
         self.doc.recompute()
+        # The frames here are tilted, which needs a machine with rotary axes.
+        from Machine.models.machine import Machine, RotaryAxis, AxisRole
+
+        machine = Machine(name="Test CA Machine")
+        machine.rotary_axes["C"] = RotaryAxis(
+            name="C", rotation_vector=Vector(0, 0, 1), role=AxisRole.TABLE_ROTARY, sequence=0
+        )
+        machine.rotary_axes["A"] = RotaryAxis(
+            name="A",
+            rotation_vector=Vector(1, 0, 0),
+            role=AxisRole.TABLE_ROTARY,
+            parent="C",
+            sequence=1,
+        )
+        self.job.Proxy.getMachine = lambda: machine
 
     def tearDown(self):
         FreeCAD.closeDocument(self.doc.Name)
@@ -983,7 +999,9 @@ class TestGetClearedAreasWorkplane(PathTestUtils.PathTestBase):
             # Simulate an older op that predates the Workplane property.
             op.removeProperty("Workplane")
         else:
-            op.Workplane = workplane
+            # Tests name a frame by its tool axis; the property is a link to a
+            # named work plane on the Job.
+            op.Workplane = PathWorkplane.createWorkplaneFromToolAxis(self.job, workplane)
         op.ToolController.Tool.Diameter = diameter
         # Assign the toolpath directly: getClearedAreas only reads op.Path, and
         # driving it here keeps the cleared-area filtering test independent of
@@ -1194,7 +1212,7 @@ class TestWorkplaneRotationCommands(PathTestUtils.PathTestBase):
 
     def _makeOp(self, name, workplane):
         op = PathCustom.Create(name, parentJob=self.job)
-        op.Workplane = workplane
+        op.Workplane = PathWorkplane.createWorkplaneFromToolAxis(self.job, workplane)
         op.ToolController.Tool.Diameter = 5.0
         self.doc.recompute()
         return op
