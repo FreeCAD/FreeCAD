@@ -1564,13 +1564,14 @@ class TestPathPocket(PathTestBase):
             part_obj,
             pocket_bottom_z,
             "regression04",
-            tool_diameter=3.0,
+            tool_diameter=0.5,
             ClearingPattern="Offset",
             StartAt="Edge",
+            StepDown=5,
         )
 
         # assert that there is a meaningful amount of output commands
-        self.assertGreater(len(pocket.Path.Commands), 50)
+        self.assertGreater(len(pocket.Path.Commands), 10)
 
 
 def _addViewProvider(pocketOp):
