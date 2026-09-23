@@ -601,9 +601,11 @@ class ObjectJob:
 
         self.setupWorkplanes(obj)
         self.adoptOrphanWorkplanes(obj)
-        if FreeCAD.GuiUp:
-            import Path.Main.Workplane as PathWorkplane
+        import Path.Main.Workplane as PathWorkplane
 
+        for workplane in PathWorkplane.workplanesOf(obj):
+            PathWorkplane.ensureFixtureProperty(workplane)
+        if FreeCAD.GuiUp:
             for workplane in PathWorkplane.workplanesOf(obj):
                 PathWorkplane.configureView(workplane)
 

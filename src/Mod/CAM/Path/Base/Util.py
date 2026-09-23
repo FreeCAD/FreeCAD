@@ -314,10 +314,10 @@ def isPlanarFace(shape):
 def jobHasRotaryMachine(job):
     """jobHasRotaryMachine(job) ... True if job's machine has rotary axes.
 
-    Work planes are available on every Job; this decides what a plane may be.
-    Without rotary axes a plane must be parallel to the table: a datum for
-    depths and a turned X, which any three-axis machine can cut. A tilted
-    plane needs rotary axes to point the tool along it."""
+    Any plane may be created on any Job. This says whether a tilted one can
+    be reached: the operation records rotary positions only on a machine
+    that has them, and the post refuses a tilted plane without them. A plane
+    parallel to the table - a datum for depths, a turned X - needs none."""
     if job is None or not hasattr(job, "Proxy"):
         return False
     try:

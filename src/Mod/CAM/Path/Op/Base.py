@@ -610,9 +610,7 @@ class ObjectOp:
         label = "%s work plane" % obj.Label
         if job is not None and getattr(job, "Proxy", None) is not None:
             try:
-                return PathWorkplane.createWorkplane(
-                    job, label=label, placement=placement, check_machine=False
-                )
+                return PathWorkplane.createWorkplane(job, label=label, placement=placement)
             except Exception as e:
                 Path.Log.warning("Could not file migrated work plane under the Job: %s" % e)
 

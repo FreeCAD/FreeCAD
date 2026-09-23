@@ -29,6 +29,7 @@ import argparse
 import importlib.util
 import json
 import os
+import re
 import sys
 import itertools
 from typing import Any, Dict, List, Optional, Tuple, Union
@@ -299,6 +300,11 @@ def properties_in_scope(schema, *scopes) -> List[Dict[str, Any]]:
         return []
     wanted = set(scopes)
     return [prop for prop in schema if property_scope(prop) in wanted]
+
+
+# A Fixture word as the Job's Fixtures list spells it: G54-G59, G59.1-G59.3,
+# or G54.1 with a P number.
+_FIXTURE_WORD = re.compile(r"^G5[4-9](?:\.[1-9])?(?:\s+P\d+)?$", re.IGNORECASE)
 
 
 def _tool_axis_tilted(placement):
@@ -2014,7 +2020,9 @@ class PostProcessor:
         label = "pre-rotary" if key == "PRE_ROTARY_MOVE" else "post-rotary"
         return [self._make_postable(f"Post: {label}", lines)]
 
-    def _pose_change_postables(self, strategy, placement, positions, declared, rotaries_move):
+    def _pose_change_postables(
+        self, strategy, placement, positions, declared, rotaries_move, fixture=None
+    ):
         """What the machine does between one operation's pose and the next.
 
         DWO: the rotary move. TWP: cancel the plane that was declared,
@@ -2022,6 +2030,11 @@ class PostProcessor:
         declare the new plane, align. A return to the table-parallel pose
         under TWP cancels and commands the rotaries home explicitly, since
         cancelling a plane moves nothing.
+
+        A Fixture to select goes after the cancel and before anything that
+        depends on the coordinate system: a plane command is relative to
+        the active fixture, and a control will not change fixtures under a
+        declared plane.
 
         When the rotaries move, the machine's pre- and post-rotary blocks
         wrap the whole of it. That is where the moves that bring the tool
@@ -2041,6 +2054,8 @@ class PostProcessor:
             items.extend(self._rotary_block_postables("PRE_ROTARY_MOVE"))
         if twp and declared:
             items.extend(self._plane_postables("TWP_CANCEL"))
+        if fixture:
+            items.append(self._fixture_postable(fixture))
         if positions and not control_positions:
             items.append(
                 Postable(
@@ -2058,6 +2073,44 @@ class PostProcessor:
         if rotaries_move:
             items.extend(self._rotary_block_postables("POST_ROTARY_MOVE"))
         return items
+
+    @staticmethod
+    def _fixture_postable(fixture):
+        """The selection of a work coordinate system, as a Job-level fixture
+        item is shaped, so the fixture blocks wrap it and the header lists it."""
+        return Postable(
+            item_type="fixture",
+            label="Fixture",
+            path=Path.Path([Path.Command(fixture)]),
+            source=None,
+            data={"work_plane_fixture": True},
+        )
+
+    def _plane_fixture_of(self, item):
+        """The Fixture the operation's work plane names, or None.
+
+        A malformed one is refused here, naming the plane: the control would
+        take an unknown word as a fault or, worse, as something else."""
+        import Path.Dressup.Utils as PathDressup
+        import Path.Main.Workplane as PathWorkplane
+
+        if item.source is None or item.item_type != "operation":
+            return None
+        plane = getattr(PathDressup.baseOp(item.source), "Workplane", None)
+        fixture = PathWorkplane.fixtureOf(plane)
+        if fixture is None:
+            return None
+        if not _FIXTURE_WORD.match(fixture):
+            raise CAMValueError(
+                translate(
+                    "CAM",
+                    "Work plane '{plane}' names '{fixture}' as its fixture, which is not a "
+                    "work coordinate system (G54-G59.9, or G54.1 Pn).",
+                ).format(plane=plane.Label, fixture=fixture),
+                job=self._job,
+                operation=item.source,
+            )
+        return fixture.upper()
 
     def _expand_workplane_frames(self, postables):
         """Operations on a work plane: express each in the form the machine runs.
@@ -2100,6 +2153,13 @@ class PostProcessor:
         depths, a turned X - is placed into world coordinates without a
         rotary machine, and under a strategy the machine has not declared:
         rotating a 2.5D path about Z keeps it 2.5D, and any machine cuts it.
+
+        A work plane may name a Fixture. It is selected with the pose, the
+        first time an operation on the plane comes up after the Job's own
+        fixture or another plane's, and the Job's fixture is selected again
+        for the next operation that does not name one. This works the same
+        with and without a rotary machine, so a two-sided job on a
+        three-axis machine can give each side its own fixture.
         """
         import Path.Base.Generator.rotation as rotation
         from Machine.models.machine import RotationStrategy
@@ -2134,6 +2194,8 @@ class PostProcessor:
         for section_name, sublist in postables:
             pose = None  # (frame, angles) the machine is at; None when not assumed
             declared = False  # a TWP plane is in effect
+            job_fixture = None  # the Job's own fixture, from the last fixture item
+            selected = None  # the fixture the control has selected; None when not assumed
             new_items = []
             for item in sublist:
                 if item.item_type in ("tool_controller", "fixture"):
@@ -2141,11 +2203,22 @@ class PostProcessor:
                         new_items.extend(self._plane_postables("TWP_CANCEL"))
                         declared = False
                     pose = None
+                    if item.item_type == "fixture" and item.path.Commands:
+                        job_fixture = selected = item.path.Commands[0].Name.upper()
                     new_items.append(item)
                     continue
 
+                # The fixture this operation runs under: its plane's, or the
+                # Job's. A change is emitted with the pose change below, or
+                # on its own when nothing else changes.
+                wanted = self._plane_fixture_of(item) or job_fixture
+                fixture_change = wanted if wanted is not None and wanted != selected else None
+
                 placement, positions = frame_of(item)
                 if placement is None:
+                    if fixture_change:
+                        new_items.append(self._fixture_postable(fixture_change))
+                        selected = fixture_change
                     new_items.append(item)
                     continue
                 framed = not placement.isIdentity(1e-9)
@@ -2159,6 +2232,9 @@ class PostProcessor:
                             f"{item.label}: recorded rotary positions but the post's "
                             f"machine has no rotary axes; emitting without positioning"
                         )
+                    if fixture_change:
+                        new_items.append(self._fixture_postable(fixture_change))
+                        selected = fixture_change
                     if framed:
                         item.path = PathUtils.applyPlacementToPath(placement, item.path)
                     new_items.append(item)
@@ -2172,13 +2248,15 @@ class PostProcessor:
                 # heights share one, and nothing moves between them.
                 declares = strategy == RotationStrategy.TWP and tilted
                 frame, angles = pose_of(placement if declares else FreeCAD.Placement(), positions)
-                if (frame, angles) != pose:
+                if (frame, angles) != pose or fixture_change:
                     rotaries_move = pose is None or angles != pose[1]
                     new_items.extend(
                         self._pose_change_postables(
-                            strategy, placement, positions, declared, rotaries_move
+                            strategy, placement, positions, declared, rotaries_move, fixture_change
                         )
                     )
+                    if fixture_change:
+                        selected = fixture_change
                     pose = (frame, angles)
                     declared = strategy == RotationStrategy.TWP and tilted
 
@@ -3039,7 +3117,11 @@ class PostProcessor:
         Returns:
             list: List of bound methods.
         """
-        return [self._sanity_spindle_speed, self._rotation_sanity_checks]
+        return [
+            self._sanity_spindle_speed,
+            self._rotation_sanity_checks,
+            self._fixture_sanity_checks,
+        ]
 
     def _sanity_spindle_speed(self, job):
         """
@@ -3171,6 +3253,44 @@ class PostProcessor:
                 ).format(machine=machine.name),
             )
         ]
+
+    def _fixture_sanity_checks(self, job):
+        """Warn about a work plane's Fixture before the post refuses it, and
+        about one the Job also repeats the program for: inside that repetition
+        the plane's selection wins, which is rarely what was meant."""
+        import Path.Main.Workplane as PathWorkplane
+
+        squawks = []
+        job_fixtures = [f.upper() for f in (getattr(job, "Fixtures", None) or [])]
+        for plane in PathWorkplane.workplanesOf(job):
+            fixture = PathWorkplane.fixtureOf(plane)
+            if fixture is None:
+                continue
+            if not _FIXTURE_WORD.match(fixture):
+                squawks.append(
+                    self._create_squawk(
+                        "WARNING",
+                        translate(
+                            "CAM",
+                            "Work plane '{plane}' names '{fixture}' as its fixture, which is "
+                            "not a work coordinate system (G54-G59.9, or G54.1 Pn). The post "
+                            "will refuse it.",
+                        ).format(plane=plane.Label, fixture=fixture),
+                    )
+                )
+            elif len(job_fixtures) > 1 and fixture.upper() in job_fixtures:
+                squawks.append(
+                    self._create_squawk(
+                        "WARNING",
+                        translate(
+                            "CAM",
+                            "Work plane '{plane}' selects {fixture}, which is also one of the "
+                            "fixtures the Job repeats its program for. Inside each repetition "
+                            "the plane's selection wins.",
+                        ).format(plane=plane.Label, fixture=fixture),
+                    )
+                )
+        return squawks
 
     @staticmethod
     def _rotaries_move_between_operations(job):
