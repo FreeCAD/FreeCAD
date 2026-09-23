@@ -870,7 +870,7 @@ void QGIView::drawBorder()
 
     Base::Vector3d captionLocation = feat->CaptionLocation.getValue();
 
-    // CaptionSnap 4 is the NoSnap option, so we use the curent location
+    // CaptionSnap 4 is the NoSnap option, so we use the current location
     if (viewObj->CaptionSnap.getValue() == 4 || m_caption->m_isEditing) {
         finalCaptionPos = QPointF(Rez::guiX(captionLocation.x), Rez::guiX(-captionLocation.y));
     }
