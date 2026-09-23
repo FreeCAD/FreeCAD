@@ -61,6 +61,7 @@ public:
     bool getIntersection() const;
     int getMode() const;
     int getJoinType() const;
+    int getSelectionMode() const;
 
 private Q_SLOTS:
     void onValueChanged(double angle);
@@ -69,6 +70,7 @@ private Q_SLOTS:
     void onReversedChanged(bool on);
     void onIntersectionChanged(bool on);
     void onRefDeleted() override;
+    void onSelectionModeChanged(int selectionMode);
 
 protected:
     void setButtons(const selectionModes mode) override;
