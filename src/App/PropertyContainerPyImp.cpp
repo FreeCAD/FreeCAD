@@ -218,6 +218,7 @@ static const std::map<std::string, int>& getStatusMap()
 {
     static std::map<std::string, int> statusMap;
     if (statusMap.empty()) {
+        statusMap["Touched"] = Property::Touched;
         statusMap["Immutable"] = Property::Immutable;
         statusMap["ReadOnly"] = Property::ReadOnly;
         statusMap["Hidden"] = Property::Hidden;
@@ -232,6 +233,7 @@ static const std::map<std::string, int>& getStatusMap()
         statusMap["NoRecompute"] = Property::NoRecompute;
         statusMap["CopyOnChange"] = Property::CopyOnChange;
         statusMap["UserEdit"] = Property::UserEdit;
+        statusMap["StaticBegin"] = Property::PropStaticBegin;
     }
     return statusMap;
 }
@@ -341,7 +343,7 @@ PyObject* PropertyContainerPy::getPropertyStatus(PyObject* args)
         }
 
         std::bitset<32> bits(prop->getStatus());
-        for (size_t i = 1; i < bits.size(); ++i) {
+        for (size_t i = 0; i < bits.size(); ++i) {
             if (!bits[i]) {
                 continue;
             }
