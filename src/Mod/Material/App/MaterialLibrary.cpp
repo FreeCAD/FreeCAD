@@ -235,7 +235,7 @@ void MaterialLibraryLocal::deleteDir(MaterialManager& manager, const QString& pa
     // Finally, remove ourself
     QDir dir;
     if (!dir.rmdir(path)) {
-        throw DeleteError(path);
+        throw DeleteError(path.toStdString());
     }
 }
 
@@ -255,8 +255,7 @@ void MaterialLibraryLocal::deleteFile(MaterialManager& manager, const QString& p
         _materialPathMap->erase(rPath);
     }
     else {
-        QString error = QStringLiteral("DeleteError: Unable to delete ") + path;
-        throw DeleteError(error);
+        throw DeleteError("DeleteError: Unable to delete " + path.toStdString());
     }
 }
 
