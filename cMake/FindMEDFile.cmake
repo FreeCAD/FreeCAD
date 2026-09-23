@@ -169,13 +169,20 @@ function(medfile_extract_med_h_data)
     endif()
 
     # Extract version info
-    string(REGEX MATCH "define[ \t]+MED_MAJOR_NUM[ \t]+([0-9?])" _med_major_version_match "${_med_h}")
-    set(MED_MAJOR_VERSION "${CMAKE_MATCH_1}" PARENT_SCOPE)
-    string(REGEX MATCH "define[ \t]+MED_MINOR_NUM[ \t]+([0-9?])" _med_minor_version_match "${_med_h}")
-    set(MED_MINOR_VERSION "${CMAKE_MATCH_1}" PARENT_SCOPE)
-    string(REGEX MATCH "define[ \t]+MED_RELEASE_NUM[ \t]+([0-9?])" _med_release_version_match "${_med_h}")
-    set(MED_RELEASE_VERSION "${CMAKE_MATCH_1}" PARENT_SCOPE)
-    set(MEDFILE_VERSION "${MED_MAJOR_VERSION}.${MED_MINOR_VERSION}.${MED_RELEASE_VERSION}" PARENT_SCOPE)
+    string(REGEX MATCH "define[ \t]+MED_MAJOR_NUM[ \t]+([0-9]+)" _match "${_med_h}")
+    set(_med_major "${CMAKE_MATCH_1}")
+    string(REGEX MATCH "define[ \t]+MED_MINOR_NUM[ \t]+([0-9]+)" _match "${_med_h}")
+    set(_med_minor "${CMAKE_MATCH_1}")
+    # in the med.h the word release is used to refer to the semver patch number
+    string(REGEX MATCH "define[ \t]+MED_RELEASE_NUM[ \t]+([0-9]+)" _match "${_med_h}")
+    set(_med_release "${CMAKE_MATCH_1}")
+
+    # PARENT_SCOPE only writes the caller's scope, so the values above have to be
+    # kept in locals to be usable here.
+    set(MED_MAJOR_VERSION "${_med_major}" PARENT_SCOPE)
+    set(MED_MINOR_VERSION "${_med_minor}" PARENT_SCOPE)
+    set(MED_RELEASE_VERSION "${_med_release}" PARENT_SCOPE)
+    set(MEDFILE_VERSION "${_med_major}.${_med_minor}.${_med_release}" PARENT_SCOPE)
 endfunction()
 
 medfile_extract_med_h_data()
