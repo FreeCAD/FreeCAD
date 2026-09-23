@@ -76,6 +76,7 @@ int PropertyGeometryList::getSize() const
 void PropertyGeometryList::setValue(const Geometry* lValue)
 {
     if (lValue) {
+        validateValue({const_cast<Geometry*>(lValue)});
         aboutToSetValue();
         Geometry* newVal = lValue->clone();
         for (auto it : _lValueList) {
@@ -89,6 +90,7 @@ void PropertyGeometryList::setValue(const Geometry* lValue)
 
 void PropertyGeometryList::setValues(const std::vector<Geometry*>& lValue)
 {
+    validateValue(lValue);
     auto copy = lValue;
     aboutToSetValue();
     std::sort(_lValueList.begin(), _lValueList.end());
@@ -112,6 +114,19 @@ void PropertyGeometryList::setValues(const std::vector<Geometry*>& lValue)
 
 void PropertyGeometryList::setValues(std::vector<Geometry*>&& lValue)
 {
+    try {
+        validateValue(lValue);
+    }
+    catch (...) {
+        // Rvalue inputs transfer ownership, except pointers borrowed from this list.
+        for (auto* geo : lValue) {
+            if (std::find(_lValueList.begin(), _lValueList.end(), geo) == _lValueList.end()) {
+                delete geo;
+            }
+        }
+        lValue.clear();
+        throw;
+    }
     // Unlike above, the moved version of setValues() indicates the caller want
     // us to manager the memory of the passed in values. So no need clone.
     aboutToSetValue();
@@ -135,6 +150,14 @@ void PropertyGeometryList::set1Value(int idx, std::unique_ptr<Geometry>&& lValue
     if (idx >= (int)_lValueList.size()) {
         throw Base::IndexError("Index out of bound");
     }
+    auto candidate = _lValueList;
+    if (idx < 0) {
+        candidate.push_back(lValue.get());
+    }
+    else {
+        candidate[idx] = lValue.get();
+    }
+    validateValue(candidate);
     aboutToSetValue();
     if (idx < 0) {
         _lValueList.push_back(lValue.release());

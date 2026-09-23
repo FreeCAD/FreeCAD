@@ -99,6 +99,10 @@ public:
 
     unsigned int getMemSize() const override;
 
+protected:
+    /// Derived geometry properties can reject a replacement before ownership changes.
+    virtual void validateValue(const std::vector<Geometry*>&) const {}
+
 private:
     void trySaveGeometry(Geometry* geom, Base::Writer& writer) const;
     void tryRestoreGeometry(Geometry* geom, Base::XMLReader& reader);
