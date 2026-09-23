@@ -42,6 +42,7 @@
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 #include <App/FeaturePythonPyImp.h>
+#include <Base/Translation.h>
 
 #include "FeaturePrimitive.h"
 #include "FeaturePy.h"

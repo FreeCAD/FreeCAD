@@ -29,6 +29,7 @@
 #include <App/Application.h>
 #include <App/FeaturePythonPyImp.h>
 #include <App/GeoFeature.h>
+#include <Base/Translation.h>
 #include <Mod/Part/App/PropertyTopoShape.h>
 #include "Body.h"
 #include "FeatureBase.h"
