@@ -42,13 +42,13 @@ std::atomic<long> SketchGeometryExtension::_GeometryID;
 SketchGeometryExtension::SketchGeometryExtension()
     : Id(++SketchGeometryExtension::_GeometryID)
     , InternalGeometryType(InternalType::None)
-    , GeometryLayer(0)
+    , GeometryLayer(-1)
 {}
 
 SketchGeometryExtension::SketchGeometryExtension(long cid)
     : Id(cid)
     , InternalGeometryType(InternalType::None)
-    , GeometryLayer(0)
+    , GeometryLayer(-1)
 {}
 
 void SketchGeometryExtension::copyAttributes(Part::GeometryExtension* cpy) const
@@ -73,9 +73,9 @@ void SketchGeometryExtension::restoreAttributes(Base::XMLReader& reader)
 
     GeometryModeFlags = GeometryModeFlagType(reader.getAttribute<const char*>("geometryModeFlags"));
 
-    if (reader.hasAttribute("geometryLayer")) {
-        GeometryLayer = reader.getAttribute<long>("geometryLayer");
-    }
+    // Files predating layers belong to the default layer, not the active layer.
+    GeometryLayer = reader.hasAttribute("geometryLayer")
+        ? reader.getAttribute<int>("geometryLayer") : 0;
 }
 
 void SketchGeometryExtension::saveAttributes(Base::Writer& writer) const

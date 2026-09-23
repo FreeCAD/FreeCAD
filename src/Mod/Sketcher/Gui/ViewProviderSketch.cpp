@@ -350,6 +350,13 @@ void ViewProviderSketch::ParameterObserver::initParameters()
               updateBoolProperty(string, property, true);
           },
           &Client.AvoidRedundant}},
+        {"ShowLayers",
+         {[this](const std::string&, App::Property*) {
+              Client.showLayers = App::GetApplication().GetParameterGroupByPath(
+                  "User parameter:BaseApp/Preferences/Mod/Sketcher")->GetBool("ShowLayers", false);
+              Client.refreshLayers();
+          },
+          nullptr}},
         {"LeaveSketchWithEscape",
          {[this](const std::string& string, App::Property* property) {
               updateEscapeKeyBehaviour(string, property);
@@ -660,6 +667,15 @@ ViewProviderSketch::ViewProviderSketch()
                       "Layers",
                       (App::PropertyType)(App::Prop_ReadOnly),
                       "Information about the Visual Representation of layers");
+    ADD_PROPERTY_TYPE(HiddenLayers, (), "Layers", App::Prop_Hidden,
+                      "Hidden named sketch layer IDs");
+    ADD_PROPERTY_TYPE(LayerColors, (), "Layers", App::Prop_Hidden, "Normal geometry colors by layer ID");
+    ADD_PROPERTY_TYPE(LayerPatterns, (), "Layers", App::Prop_Hidden, "Normal geometry patterns by layer ID");
+    ADD_PROPERTY_TYPE(LayerLineWidths, (), "Layers", App::Prop_Hidden, "Normal geometry screen widths by layer ID");
+    ADD_PROPERTY_TYPE(LayerSolverColorsDisabled, (), "Layers", App::Prop_Hidden,
+                      "Layers that use their own color instead of solver status colors");
+    ADD_PROPERTY_TYPE(LayerOrder, (), "Layers", App::Prop_Hidden,
+                      "Display order of named sketch layer IDs");
 
     ADD_PROPERTY_TYPE(
         AutoColor,
@@ -756,6 +772,19 @@ void ViewProviderSketch::forceUpdateData()
 
 void ViewProviderSketch::activateHandler(std::unique_ptr<DrawSketchHandler> newHandler)
 {
+    const int activeLayer = getSketchObject()->ActiveLayer.getValue();
+    if (newHandler->addsToActiveLayer()) {
+        if (getSketchObject()->isLayerLocked(activeLayer)) {
+            const auto message = tr("The active layer is locked; geometry cannot be added to it");
+            Base::Console().warning("{}\n", message.toUtf8().constData());
+            if (auto* window = Gui::getMainWindow()) {
+                window->showMessage(message, 4000);
+            }
+            return;
+        }
+        // New geometry must not disappear into a hidden layer.
+        setLayerVisible(activeLayer, true);
+    }
     assert(editCoinManager);
     assert(!sketchHandler);
 
@@ -1954,6 +1983,11 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
         return; // don't drag externals
     }
 
+    if (getSketchObject()->isLayerLocked(getSketchObject()->getGeometryLayer(geoId))) {
+        setSketchMode(STATUS_NONE);
+        return;
+    }
+
     // If we are trying to drag an edge that is in a group, we drag the group handle instead.
     int oldgeoId = geoId;
     geoId = getSketchObject()->getGroupHandleIfInGroup(geoId);
@@ -2022,12 +2056,6 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
         }
     }
 
-    if (!dragAutoConstraintHandler) {
-        dragAutoConstraintHandler = std::make_unique<DrawSketchHandlerDragAutoConstraint>();
-        dragAutoConstraintHandler->setSketchGui(this);
-    }
-    dragAutoConstraintHandler->initDragging(drag.Dragged);
-
     auto cancelDrag = [&]() {
         if (dragAutoConstraintHandler) {
             dragAutoConstraintHandler->clear();
@@ -2035,6 +2063,21 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
         drag.reset();
         setSketchMode(STATUS_NONE);
     };
+
+    // Reject the entire gesture if a selected member is locked, before preview or commit.
+    if (std::ranges::any_of(drag.Dragged, [this](const auto& element) {
+            return getSketchObject()->isLayerLocked(
+                getSketchObject()->getGeometryLayer(element.GeoId));
+        })) {
+        cancelDrag();
+        return;
+    }
+
+    if (!dragAutoConstraintHandler) {
+        dragAutoConstraintHandler = std::make_unique<DrawSketchHandlerDragAutoConstraint>();
+        dragAutoConstraintHandler->setSketchGui(this);
+    }
+    dragAutoConstraintHandler->initDragging(drag.Dragged);
 
     auto setRelative = [&]() {
         drag.relative = true;
@@ -2139,10 +2182,12 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
         }
 
         if (geo->is<Part::GeomBSplineCurve>()) {
-            getSketchObject()->initTemporaryBSplinePieceMove(
+            if (getSketchObject()->initTemporaryBSplinePieceMove(
                 geoId,
                 Sketcher::PointPos::none,
-                Base::Vector3d(drag.xInit, drag.yInit, 0.0));
+                Base::Vector3d(drag.xInit, drag.yInit, 0.0)) != 0) {
+                cancelDrag();
+            }
             return;
         }
     }
@@ -2152,7 +2197,9 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
         }
     }
 
-    getSketchObject()->initTemporaryMove(drag.Dragged);
+    if (getSketchObject()->initTemporaryMove(drag.Dragged) != 0) {
+        cancelDrag();
+    }
 }
 
 bool ViewProviderSketch::doDragStep(double x, double y)
@@ -2208,6 +2255,19 @@ bool ViewProviderSketch::doDragStep(double x, double y)
 
 void ViewProviderSketch::commitDragMove(double x, double y)
 {
+    // A layer can also be locked after the gesture has started.
+    if (std::ranges::any_of(drag.Dragged, [this](const auto& element) {
+            return getSketchObject()->isLayerLocked(
+                getSketchObject()->getGeometryLayer(element.GeoId));
+        })) {
+        if (dragAutoConstraintHandler) {
+            dragAutoConstraintHandler->clear();
+        }
+        drag.reset();
+        resetPositionText();
+        draw(false, true);
+        return;
+    }
     const char* cmdName = (drag.Dragged.size() == 1) ?
         (drag.Dragged[0].Pos == Sketcher::PointPos::none ?
         QT_TRANSLATE_NOOP("Command", "Drag Curve") : QT_TRANSLATE_NOOP("Command", "Drag Point"))
@@ -3182,6 +3242,12 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
     batchSelection.reserve(geomlist.size());
 
     auto addConvertedName = [this, sketchObject, &batchSelection](const std::string& suffix) {
+        int geoId;
+        Sketcher::PointPos pos;
+        if (sketchObject->geoIdFromShapeType(suffix.c_str(), geoId, pos)
+            && !isGeometryVisible(geoId)) {
+            return;
+        }
         std::string finalName = editSubName + sketchObject->convertSubName(suffix);
         batchSelection.push_back(finalName);
     };
@@ -3489,7 +3555,8 @@ bool ViewProviderSketch::selectAll()
                 GeoId = -extGeoCount;
             }
 
-            if (focusedList && std::ranges::find(ids, GeoId) == ids.end()) {
+            if ((!focusOnElementWidget && !isGeometryVisible(GeoId))
+                || (focusedList && std::ranges::find(ids, GeoId) == ids.end())) {
                 continue;
             }
 
@@ -3528,7 +3595,10 @@ bool ViewProviderSketch::selectAll()
     if (focusOnConstraintWidget || noWidgetSelected) {
         const std::vector<Sketcher::Constraint*>& constraints = sketchObject->Constraints.getValues();
         for (size_t i = 0; i < constraints.size(); ++i) {
-            if (focusedList && std::ranges::find(ids, i) == ids.end()) {
+            if ((!focusOnConstraintWidget
+                 && (!constraints[i]->isVisible || !isConstraintVisible(constraints[i])
+                     || constraints[i]->isInVirtualSpace != getIsShownVirtualSpace()))
+                || (focusedList && std::ranges::find(ids, i) == ids.end())) {
                 continue;
             }
             addConvertedName(std::format("Constraint{}", i + 1));
@@ -3861,6 +3931,19 @@ void ViewProviderSketch::drawEditMarkers(const std::vector<Base::Vector2d>& Edit
 }
 
 void ViewProviderSketch::updateData(const App::Property* prop) {
+    if (prop == &getSketchObject()->Layers) {
+        initializeNewLayerStyles();
+    }
+    if (prop == &getSketchObject()->Layers || prop == &getSketchObject()->LockedLayers
+        || prop == &getSketchObject()->UnconstrainedLayers) {
+        refreshLayers();
+    }
+    else if (prop == &getSketchObject()->ActiveLayer) {
+        if (!isRestoring() && !getSketchObject()->getDocument()->isPerformingTransaction()) {
+            setLayerVisible(getSketchObject()->ActiveLayer.getValue(), true);
+        }
+        signalLayersChanged();
+    }
     if (std::string(prop->getName()) != "ShapeMaterial") {
         // We don't want material to override the colors of sketches.
         ViewProvider2DObject::updateData(prop);
@@ -3880,6 +3963,9 @@ void ViewProviderSketch::updateData(const App::Property* prop) {
 
     if (prop != &getSketchObject()->Constraints) {
         signalElementsChanged();
+    }
+    if (prop == &getSketchObject()->Shape || prop == &getSketchObject()->Geometry) {
+        updateLayerStyles();
     }
 }
 
@@ -3938,11 +4024,27 @@ void ViewProviderSketch::onChanged(const App::Property* prop)
 {
     ViewProvider2DObject::onChanged(prop);
 
+    if (prop == &LayerColors || prop == &LayerPatterns || prop == &LayerLineWidths
+        || prop == &LayerSolverColorsDisabled) {
+        refreshLayers();
+        updateLayerStyles();
+        return;
+    }
+    if (prop == &LineColor || prop == &LineWidth || prop == &DrawStyle || prop == &LineColorArray) {
+        updateLayerStyles();
+    }
+    if (prop == &LayerOrder) {
+        signalLayersChanged();
+        return;
+    }
+
+    if (prop == &HiddenLayers) {
+        refreshLayers();
+        return;
+    }
+
     if (prop == &VisualLayerList) {
-        if (isInEditMode()) {
-            // Configure and rebuild Coin SceneGraph
-            editCoinManager->updateGeometryLayersConfiguration();
-        }
+        refreshLayers();
         return;
     }
 
@@ -4146,6 +4248,7 @@ void ViewProviderSketch::attach(App::DocumentObject* pcFeat)
     ViewProvider2DObject::attach(pcFeat);
 
     getOrCreateAnnotation()->addChild(pcSketchFacesToggle);
+    initializeNewLayerStyles();
 }
 
 void ViewProviderSketch::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
@@ -4154,6 +4257,7 @@ void ViewProviderSketch::setupContextMenu(QMenu* menu, QObject* receiver, const 
     act->setData(QVariant((int)ViewProvider::Default));
     // Call the extensions
     ViewProvider::setupContextMenu(menu, receiver, member);
+    appendLayerMenu(menu);
 }
 
 bool ViewProviderSketch::setEdit(int ModNum)
@@ -5639,6 +5743,7 @@ void ViewProviderSketch::generateContextMenu(const Gui::View3DInventorViewer* vi
     Gui::Application::Instance->setupContextMenu("Sketch", &menu);
     QMenu contextMenu(viewer->getGLWidget());
     Gui::MenuManager::getInstance()->setupContextMenu(&menu, contextMenu);
+    appendLayerMenu(&contextMenu);
     contextMenu.exec(QCursor::pos());
 }
 
