@@ -22,12 +22,16 @@
 
 #include <gtest/gtest.h>
 
+#include <iterator>
+
 #include <QString>
 
 #include <App/Application.h>
 #include <src/App/InitApplication.h>
 
+#include <Mod/Material/App/Exceptions.h>
 #include <Mod/Material/App/MaterialManager.h>
+#include <Mod/Material/App/ModelLibrary.h>
 #include <Mod/Material/App/Model.h>
 #include <Mod/Material/App/ModelManager.h>
 
@@ -131,6 +135,59 @@ TEST_F(TestModel, TestModelByPath)
     EXPECT_NE(&linearElastic4, nullptr);
     EXPECT_EQ(linearElastic4->getName(), QStringLiteral("Linear Elastic"));
     EXPECT_EQ(linearElastic4->getUUID(), QStringLiteral("7b561d1d-fb9b-44f6-9da9-56a4f74d7536"));
+}
+
+TEST_F(TestModel, TestValidateProperties)
+{
+    // The local library and the matching remote one
+    const Materials::Library library {QStringLiteral("Library"), QByteArray(), true};
+    auto localLibrary = std::make_shared<Materials::ModelLibrary>(library);
+    auto remoteLibrary = std::make_shared<Materials::ModelLibrary>(library);
+
+    Materials::Model model;
+    model.setType(Materials::Model::ModelType_Physical);
+    model.setLibrary(localLibrary);
+    model.setUUID(QStringLiteral("d0e6b5a4-3a1f-4d4e-8a5b-7c3f2b1a0987"));
+    Materials::Model remote;
+    remote.setType(Materials::Model::ModelType_Physical);
+    remote.setLibrary(remoteLibrary);
+    remote.setUUID(model.getUUID());
+
+    Materials::ModelProperty density {QStringLiteral("Density"),
+                                     QStringLiteral("Density"),
+                                     QStringLiteral("Quantity"),
+                                     QStringLiteral("kg/m^3"),
+                                     QString(),
+                                     QString()};
+    model.addProperty(density);
+
+    // The same property on both sides validates
+    Materials::ModelProperty remoteDensity {density};
+    remote.addProperty(remoteDensity);
+    EXPECT_NO_THROW(model.validate(remote));
+
+    // A property the remote model does not have is reported, not dereferenced
+    Materials::Model other;
+    other.setType(Materials::Model::ModelType_Physical);
+    other.setLibrary(remoteLibrary);
+    other.setUUID(model.getUUID());
+    Materials::ModelProperty mass {QStringLiteral("Mass"),
+                                  QStringLiteral("Mass"),
+                                  QStringLiteral("Quantity"),
+                                  QStringLiteral("kg"),
+                                  QString(),
+                                  QString()};
+    other.addProperty(mass);
+    EXPECT_EQ(std::distance(model.begin(), model.end()),
+              std::distance(other.begin(), other.end()));
+
+    try {
+        model.validate(other);
+        FAIL() << "A missing remote property was accepted";
+    }
+    catch (const Materials::InvalidModel& e) {
+        EXPECT_STREQ(e.what(), "Model properties don't match");
+    }
 }
 
 // clang-format on
