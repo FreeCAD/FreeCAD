@@ -249,7 +249,11 @@ void Model::validate(Model& other) const
         throw InvalidModel("Model property counts don't match");
     }
     for (auto& property : _properties) {
-        auto& remote = other._properties[property.first];
-        property.second.validate(remote);
+        const auto remote = other._properties.find(property.first);
+        if (remote == other._properties.end()) {
+            throw InvalidModel(std::format("Model property '{}' not found in remote",
+                                           property.first.toStdString()));
+        }
+        property.second.validate(remote->second);
     }
 }
