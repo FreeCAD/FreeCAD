@@ -2074,6 +2074,14 @@ class PostProcessor:
             items.extend(self._rotary_block_postables("POST_ROTARY_MOVE"))
         return items
 
+    def _operations_to_post(self):
+        """The operations this export covers: the selected ones or the Job's,
+        minus any that are inactive - the same set the post list is built
+        from. A disabled operation must not block or colour the output."""
+        import Path.Base.Util as PathUtil
+
+        return [op for op in self._operations if PathUtil.activeForOp(op)]
+
     def _solve_pose(self, placement, chain):
         """The rotary positions that index the machine to placement's tool
         axis: zeros when the axis is Z, the solver's answer otherwise.
@@ -3341,7 +3349,7 @@ class PostProcessor:
 
         chain = rotation.build_kinematic_chain(self._machine)
         previous = None
-        for op in job.Operations.Group:
+        for op in self._operations_to_post():
             base = PathDressup.baseOp(op)
             placement = getattr(base, "Placement", None) or FreeCAD.Placement()
             positions, _ = self._solve_pose(placement, chain)
@@ -3960,10 +3968,12 @@ class WrapperPost(PostProcessor):
         machine. Multi-axis output is for post-processors of the current
         kind; an operation on a tilted work plane is refused here rather
         than posted unpositioned. A plane parallel to the table - a datum, a
-        turned X - is fine: world coordinates are all it needs."""
+        turned X - is fine: world coordinates are all it needs. Only the
+        operations being posted count: a disabled one, or one left out of a
+        selection, is no reason to refuse the rest."""
         import Path.Dressup.Utils as PathDressup
 
-        for op in self._job.Operations.Group:
+        for op in self._operations_to_post():
             base = PathDressup.baseOp(op)
             placement = getattr(base, "Placement", None)
             if placement is not None and _tool_axis_tilted(placement):

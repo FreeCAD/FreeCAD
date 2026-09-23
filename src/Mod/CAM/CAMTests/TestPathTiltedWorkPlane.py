@@ -568,6 +568,12 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
         self.assertIn(self.machine.name, message)
         self.assertIn("A -120 to 120", message)
 
+    def test_sanityIgnoresADisabledOperation(self):
+        self._op("A", self._plane(_tiltedAboutX(45)))
+        b = self._op("B", self._plane(_tiltedAboutX(-45)))
+        b.Active = False
+        self.assertEqual(self._sanity_post("").get_sanity_checks(self.job), [])
+
     def test_sanitySkipsAnUnreachablePlane(self):
         self._op("Under", self._plane(Vector(0, 0, -1)))
         self._op("Plain", None)
@@ -677,6 +683,29 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
         with self.assertRaises(CAMValueError) as raised:
             post.export()
         self.assertIn("Legacy post-processor", str(raised.exception))
+
+    def test_aLegacyPostIgnoresADisabledTiltedOperation(self):
+        from Path.Post.Processor import PostProcessorFactory
+
+        tilted = self._op("Tilted", self._plane())
+        tilted.Active = False
+        plain = self._op("Plain", None)
+        plain.Path = Path.Path(list(PATH))
+        post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc_legacy")
+        gcode = "\n".join(g for _, g in post.export())
+        self.assertIn("G1 X10", gcode.replace("G1 X10.000", "G1 X10"))
+
+    def test_aLegacyPostIgnoresATiltedOperationLeftOutOfTheSelection(self):
+        from Path.Post.Processor import PostProcessorFactory
+
+        self._op("Tilted", self._plane())
+        plain = self._op("Plain", None)
+        plain.Path = Path.Path(list(PATH))
+        post = PostProcessorFactory.get_post_processor(
+            {"job": self.job, "operations": [plain]}, "linuxcnc_legacy"
+        )
+        gcode = "\n".join(g for _, g in post.export())
+        self.assertIn("G1 X10", gcode.replace("G1 X10.000", "G1 X10"))
 
     def test_aLegacyPostPostsADatumPlaneInWorldCoordinates(self):
         from Path.Post.Processor import PostProcessorFactory
