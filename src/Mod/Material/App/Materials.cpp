@@ -1859,13 +1859,13 @@ void Material::validate(Material& other) const
         throw InvalidMaterial("Material physical models don't match");
     }
 
-    if (_physicalUuids.size() != other._physicalUuids.size()) {
+    if (_appearanceUuids.size() != other._appearanceUuids.size()) {
         throw InvalidMaterial(
             std::format("Material appearance model counts don't match (local {}, remote {})",
-                        _physicalUuids.size(),
-                        other._physicalUuids.size()));
+                        _appearanceUuids.size(),
+                        other._appearanceUuids.size()));
     }
-    if (!other._physicalUuids.contains(_physicalUuids)) {
+    if (!other._appearanceUuids.contains(_appearanceUuids)) {
         throw InvalidMaterial("Material appearance models don't match");
     }
 
