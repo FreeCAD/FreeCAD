@@ -1878,15 +1878,25 @@ void Material::validate(Material& other) const
         throw InvalidMaterial("Material physical property counts don't match");
     }
     for (auto& property : _physical) {
-        auto& remote = other._physical[property.first];
-        property.second->validate(*remote);
+        const auto remote = other._physical.find(property.first);
+        if (remote == other._physical.end()) {
+            Base::Console().log("Remote physical property '{}' not found\n",
+                                property.first.toStdString());
+            throw InvalidMaterial("Material physical properties don't match");
+        }
+        property.second->validate(*remote->second);
     }
 
     if (_appearance.size() != other._appearance.size()) {
         throw InvalidMaterial("Material appearance property counts don't match");
     }
     for (auto& property : _appearance) {
-        auto& remote = other._appearance[property.first];
-        property.second->validate(*remote);
+        const auto remote = other._appearance.find(property.first);
+        if (remote == other._appearance.end()) {
+            Base::Console().log("Remote appearance property '{}' not found\n",
+                                property.first.toStdString());
+            throw InvalidMaterial("Material appearance properties don't match");
+        }
+        property.second->validate(*remote->second);
     }
 }
