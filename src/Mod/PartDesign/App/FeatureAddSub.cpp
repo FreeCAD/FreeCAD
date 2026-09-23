@@ -25,8 +25,8 @@
 
 #include <Standard_Failure.hxx>
 
-
 #include <App/FeaturePythonPyImp.h>
+#include <Base/Translation.h>
 #include <Mod/Part/App/modelRefine.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
 #include <GProp_GProps.hxx>
@@ -134,12 +134,17 @@ void FeatureAddSub::getAddSubShape(Part::TopoShape& addShape, Part::TopoShape& s
 
 void FeatureAddSub::updatePreviewShape()
 {
-    const auto notifyWarning = [](const QString& message) {
-        Base::Console().translatedUserWarning(
-            "Preview",
-            "{}",
-            tr("Failure while computing removed volume preview: %1").arg(message).toStdString()
+    const auto notifyWarning = [](const std::string& reason) {
+        const std::string message = Base::Translation::format(
+            "PartDesign::FeatureAddSub",
+            QT_TRANSLATE_NOOP(
+                "PartDesign::FeatureAddSub",
+                "Failure while computing removed volume preview: {}"
+            ),
+            reason
         );
+
+        Base::Console().translatedUserWarning("Preview", "{}", message);
     };
 
     // for subtractive shapes we want to also showcase removed volume, not only the tool
@@ -176,19 +181,23 @@ void FeatureAddSub::updatePreviewShape()
                 const double removed = propsBefore.Mass() - propsAfter.Mass();
 
                 if (removed <= Precision::Confusion()) {
-                    notifyWarning(
-                        tr("Resulting shape is empty. That may indicate that no material will be "
-                           "removed or a problem with the model.")
-                    );
+                    notifyWarning(Base::Translation::translate(
+                        "PartDesign::FeatureAddSub",
+                        QT_TRANSLATE_NOOP(
+                            "PartDesign::FeatureAddSub",
+                            "Resulting shape is empty. That may indicate that no material will be "
+                            "removed or a problem with the model."
+                        )
+                    ));
                 }
                 PreviewShape.setValue(common);
                 return;
             }
             catch (Standard_Failure& e) {
-                notifyWarning(QString::fromUtf8(e.GetMessageString()));
+                notifyWarning(e.GetMessageString());
             }
             catch (Base::Exception& e) {
-                notifyWarning(QString::fromStdString(e.what()));
+                notifyWarning(e.what());
             }
             PreviewShape.setValue(base);
             return;
