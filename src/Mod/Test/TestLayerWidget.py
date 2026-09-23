@@ -78,8 +78,13 @@ class FullLayers(MemoryLayers):
     def extraSettings(self):
         return [
             {"key": "Print", "label": "Print", "default": True},
-            {"key": "Plot", "label": "Plot style", "type": "choice",
-             "choices": ["Normal", "Screened"], "dependsOn": "Print"},
+            {
+                "key": "Plot",
+                "label": "Plot style",
+                "type": "choice",
+                "choices": ["Normal", "Screened"],
+                "dependsOn": "Print",
+            },
         ]
 
     def setting(self, layer_id, key):
@@ -223,8 +228,9 @@ class TestLayerWidget(unittest.TestCase):
         adapter = FullLayers()
         panel, tree = self.create(adapter)
         printing = self.child(tree, 7, "Print")
-        self.assertEqual(QtCore.Qt.CheckState(printing.data(QtCore.Qt.CheckStateRole)),
-                         QtCore.Qt.Checked)
+        self.assertEqual(
+            QtCore.Qt.CheckState(printing.data(QtCore.Qt.CheckStateRole)), QtCore.Qt.Checked
+        )
         plot = panel.form.findChild(QtGui.QComboBox, "layerSettingPlot7")
         self.assertTrue(plot.isEnabled())
         tree.model().setData(printing, QtCore.Qt.Unchecked, QtCore.Qt.CheckStateRole)
@@ -245,8 +251,11 @@ class TestLayerWidget(unittest.TestCase):
         add = self.rows(tree)[-1]
         model = tree.model()
         parent = tree.indexFromItem(add, 0)
-        printing = next(model.index(r, 2, parent) for r in range(model.rowCount(parent))
-                        if model.index(r, 1, parent).data() == "Print")
+        printing = next(
+            model.index(r, 2, parent)
+            for r in range(model.rowCount(parent))
+            if model.index(r, 1, parent).data() == "Print"
+        )
         model.setData(printing, QtCore.Qt.Unchecked, QtCore.Qt.CheckStateRole)
         self.flush()
         group = FreeCAD.ParamGet(DEFAULTS)
