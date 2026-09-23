@@ -27,13 +27,12 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Builder.hxx>
 #include <TopoDS_Iterator.hxx>
-#include <QtGlobal>
-
 
 #include <memory>
 
 #include "FaceMaker.h"
 #include <App/MappedElement.h>
+#include <Base/Translation.h>
 #include "TopoShape.h"
 #include "TopoShapeOpCode.h"
 
@@ -78,9 +77,13 @@ void Part::FaceMaker::addTopoShape(const TopoShape& shape)
             // need to ignore it rather than throw an error
             break;
         default:
-            throw Base::TypeError(
-                tr("Shape must be a wire, edge or compound. Something else was supplied.").toStdString()
-            );
+            throw Base::TypeError(Base::Translation::translate(
+                "FaceMaker",
+                QT_TRANSLATE_NOOP(
+                    "FaceMaker",
+                    "Shape must be a wire, edge or compound. Something else was supplied."
+                )
+            ));
             break;
     }
     this->mySourceShapes.push_back(shape);
@@ -335,14 +338,19 @@ TYPESYSTEM_SOURCE(Part::FaceMakerSimple, Part::FaceMakerPublic)
 
 std::string Part::FaceMakerSimple::getUserFriendlyName() const
 {
-    return {tr("Simple").toStdString()};
+    return Base::Translation::translate("FaceMaker", QT_TRANSLATE_NOOP("FaceMaker", "Simple"));
 }
 
 std::string Part::FaceMakerSimple::getBriefExplanation() const
 {
-    return {tr("Makes separate plane face from every wire independently. No support for holes; "
-               "wires can be on different planes.")
-                .toStdString()};
+    return Base::Translation::translate(
+        "FaceMaker",
+        QT_TRANSLATE_NOOP(
+            "FaceMaker",
+            "Makes separate plane face from every wire independently. No support for holes; "
+            "wires can be on different planes."
+        )
+    );
 }
 
 void Part::FaceMakerSimple::Build_Essence()
