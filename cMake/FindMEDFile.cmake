@@ -10,7 +10,7 @@
 #  The CMake (or environment) variable MEDFILE_ROOT_DIR can be set to
 #  guide the detection and indicate a root directory to look into.
 #
-############################################################################
+#---------------------------------------------------------------------------
 # Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
 #
 # This library is free software; you can redistribute it and/or
@@ -42,13 +42,19 @@ endif()
 
 # Try CMake config/NO_MODULE first, and then legacy FindMEDFile.cmake failing that.
 set(_medfile_find_mode "config")
-find_package(MEDFile NO_MODULE)
+# add QUIET because libmed-dev on debian does not ship either a FindMEDFile.cmake or a medfile-config.cmake
+# see: https://github.com/FreeCAD/FreeCAD/issues/32785#issuecomment-5782466142
+find_package(MEDFile QUIET NO_MODULE)
 if(NOT MEDFile_FOUND)
     set(_cmake_module_path "${CMAKE_MODULE_PATH}")
     list(REMOVE_ITEM CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cMake")
     set(_medfile_find_mode "module")
-    find_package(MEDFile)
+    find_package(MEDFile QUIET)
     set(CMAKE_MODULE_PATH "${_cmake_module_path}")
+endif()
+
+if(NOT MEDFile_FOUND)
+    message(STATUS "No MEDFile CMake package found, falling back to manual detection.")
 endif()
 
 if(MEDFile_FOUND)
