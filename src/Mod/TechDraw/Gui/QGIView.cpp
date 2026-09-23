@@ -54,7 +54,6 @@
 #include "QGIView.h"
 #include "MDIViewPage.h"
 #include "PreferencesGui.h"
-#include "QGCustomBorder.h"
 #include "QGCustomClip.h"
 #include "QGCustomImage.h"
 #include "QGCustomLabel.h"
@@ -78,7 +77,6 @@ using DU = DrawUtil;
 
 QGIView::QGIView()
     :QGraphicsItemGroup(),
-    m_isHovered(false),
     viewObj(nullptr),
     m_innerView(false),
     m_multiselectActivated(false),
