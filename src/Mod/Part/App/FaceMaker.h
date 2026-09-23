@@ -31,7 +31,6 @@
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Wire.hxx>
-#include <QCoreApplication>
 
 #include <memory>
 #include <Base/BaseClass.h>
@@ -53,7 +52,6 @@ namespace Part
  */
 class PartExport FaceMaker: public BRepBuilderAPI_MakeShape, public Base::BaseClass
 {
-    Q_DECLARE_TR_FUNCTIONS(FaceMaker)
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
