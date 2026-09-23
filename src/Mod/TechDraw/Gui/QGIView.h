@@ -42,6 +42,7 @@
 #include <Gui/ViewProvider.h>
 
 #include "QGIUserTypes.h"
+#include "QGCustomBorder.h"
 
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
@@ -70,7 +71,6 @@ namespace TechDrawGui
 class QGSPage;
 class QGVPage;
 class ViewProviderPage;
-class QGCustomBorder;
 class QGCustomLabel;
 class QGCustomText;
 class QGICaption;
@@ -134,16 +134,17 @@ public:
     void makeMark(Base::Vector3d pos, QColor color = Qt::red);
     void makeMark(QPointF pos, QColor color = Qt::red);
 
-
+    std::string getScaleString(std::string originalString);
+    std::string getRefString(std::string originalString);
     /** Methods to ensure that Y-Coordinates are orientated correctly.
      * @{ */
-    inline qreal getY() { return y() * -1; }
+    qreal getY() { return y() * -1; }
     bool isInnerView() const { return m_innerView; }
     void isInnerView(bool state) { m_innerView = state; }
     QGIViewClip* getClipGroup();
     virtual void updatePositionFromFeatureXY();
 
-    bool isSnapping() { return snapping; }
+    bool isSnapping() const { return snapping; }
     void snapPosition(QPointF& position);
     void snapSectionView(const TechDraw::DrawViewSection* sectionView,
                          QPointF& newPosition);
@@ -159,6 +160,8 @@ public:
     void setCurrentColor(QColor color)  {m_colCurrent = color; }
     QColor getSettingColor() { return m_colSetting; }
     void   setSettingColor(QColor color) { m_colSetting = color; }
+
+    QRectF getFrameRect() const { return m_frameRect; }
 
     virtual void setStack(int z);
     virtual void setStackFromVP();
@@ -214,7 +217,6 @@ protected:
     virtual QRectF customChildrenBoundingRect() const;
     virtual QRectF frameRect() const;
     void dumpRect(const char* text, QRectF rect);
-    bool m_isHovered;
 
     virtual void updateFrameVisibility();
     bool shouldShowFromViewProvider() const;
@@ -222,6 +224,8 @@ protected:
     bool isViewSelected() const;
 
     Base::Reference<ParameterGrp> getParmGroupCol();
+
+    bool borderIsVisible() const {return m_border->isVisible(); }
 
 private:
     TechDraw::DrawView *viewObj;
@@ -231,6 +235,8 @@ private:
     bool m_innerView;                                                  //View is inside another View
     bool m_multiselectActivated;
     bool snapping;
+
+    QRectF m_frameRect;
 
     QPen m_pen;
     QBrush m_brush;
@@ -248,7 +254,7 @@ private:
     double m_lockWidth;
     double m_lockHeight;
     int m_zOrder{0};
-
+    bool m_isHovered{false};
     bool m_snapped{false};
 
     void layoutDecorations(const QRectF& contentArea,
