@@ -68,6 +68,7 @@ public:
     {
         return "PartDesignGui::ViewProviderThickness";
     }
+    void updatePreviewShape() override;
     //@}
 private:
     struct ThicknessParameters
@@ -91,6 +92,10 @@ private:
     App::DocumentObjectExecReturn* executeSelectedFaces(ThicknessParameters& params);
     App::DocumentObjectExecReturn* executeSelectedSolids(ThicknessParameters& params);
     App::DocumentObjectExecReturn* executeAllSolids(ThicknessParameters& params);
+    void updatePreviewSelectedFaces(ThicknessParameters& params, std::vector<TopoShape>& previewShapes);
+    void updatePreviewSelectedSolids(ThicknessParameters& params, std::vector<TopoShape>& previewShapes);
+    void updatePreviewAllSolids(ThicknessParameters& params, std::vector<TopoShape>& previewShapes);
+    TopoShape makeSolidPreview(const TopoShape& solid, const ThicknessParameters& params);
 
     static const char* ModeEnums[];
     static const char* JoinEnums[];
