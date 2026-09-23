@@ -1446,11 +1446,20 @@ class _ArchWindowTaskPanel:
 
             FreeCADGui.ExpressionBinding(self.widthWidget).bind(self.obj, "Width")
             self.widthWidget.setProperty("value", self.obj.Width)
+            self.widthWidget.setToolTip(
+                translate("App::Property", self.obj.getDocumentationOfProperty("Width"))
+            )
 
             FreeCADGui.ExpressionBinding(self.heightWidget).bind(self.obj, "Height")
             self.heightWidget.setProperty("value", self.obj.Height)
+            self.heightWidget.setToolTip(
+                translate("App::Property", self.obj.getDocumentationOfProperty("Height"))
+            )
 
             FreeCADGui.ExpressionBinding(self.openingWidget).bind(self.obj, "Opening")
+            self.openingWidget.setToolTip(
+                translate("App::Property", self.obj.getDocumentationOfProperty("Opening"))
+            )
             # Opening is a scalar property, as opposed to a quantity property. It appears to have
             # no "preferred unit" metadata. We cannot set the suffix manually either, but at least
             # we can set some safe limits. These limits are hardcoded: the Property Editor clamps
