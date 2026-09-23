@@ -310,7 +310,7 @@ void TransactionObject::applyDel(Document& /*Doc*/, TransactionalObject* /*pcObj
 void TransactionObject::applyNew(Document& /*Doc*/, TransactionalObject* /*pcObj*/)
 {}
 
-void TransactionObject::applyChn(Document& /*Doc*/, TransactionalObject* pcObj, bool /* Forward */)
+void TransactionObject::applyChn(Document& Doc, TransactionalObject* pcObj, bool /* Forward */)
 {
     if (status == New || status == Chn) {
         // Property change order is not preserved, as it is recursive in nature
