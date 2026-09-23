@@ -32,6 +32,8 @@
 #include <Gui/MetaTypes.h>
 #include <src/App/InitApplication.h>
 
+#include <Mod/Material/App/Exceptions.h>
+#include <Mod/Material/App/MaterialLibrary.h>
 #include <Mod/Material/App/MaterialManager.h>
 #include <Mod/Material/App/MaterialValue.h>
 #include <Mod/Material/App/Model.h>
@@ -215,6 +217,35 @@ TEST_F(TestMaterial, TestAddAppearanceModel)
     material.removeAppearance(Materials::ModelUUIDs::ModelUUID_Rendering_Advanced);
     models = material.getAppearanceModels();
     EXPECT_EQ(models->size(), 0);
+}
+
+TEST_F(TestMaterial, TestValidateAppearanceModels)
+{
+    // The local library and the matching remote one
+    const Materials::Library library {QStringLiteral("Library"), QByteArray(), true};
+    auto localLibrary = std::make_shared<Materials::MaterialLibrary>(library);
+    auto remoteLibrary = std::make_shared<Materials::MaterialLibrary>(library);
+
+    Materials::Material material;
+    material.setLibrary(localLibrary);
+    material.addPhysical(Materials::ModelUUIDs::ModelUUID_Mechanical_Density);
+
+    Materials::Material remote(material);
+    remote.setLibrary(remoteLibrary);
+    EXPECT_NO_THROW(material.validate(remote));
+
+    remote.addAppearance(Materials::ModelUUIDs::ModelUUID_Mechanical_Density);
+    EXPECT_EQ(material.getPhysicalModels()->size(), remote.getPhysicalModels()->size());
+    EXPECT_EQ(material.getAppearanceModels()->size(), 0);
+    EXPECT_EQ(remote.getAppearanceModels()->size(), 1);
+
+    try {
+        material.validate(remote);
+        FAIL() << "A differing appearance model was accepted";
+    }
+    catch (const Materials::InvalidMaterial& e) {
+        EXPECT_STREQ(e.what(), "Material appearance model counts don't match");
+    }
 }
 
 QString parseQuantity(const std::string& value)

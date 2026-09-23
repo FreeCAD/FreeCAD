@@ -1855,12 +1855,12 @@ void Material::validate(Material& other) const
         throw InvalidMaterial("Material physical models don't match");
     }
 
-    if (_physicalUuids.size() != other._physicalUuids.size()) {
-        Base::Console().log("Local appearance model count {}\n", _physicalUuids.size());
-        Base::Console().log("Remote appearance model count {}\n", other._physicalUuids.size());
+    if (_appearanceUuids.size() != other._appearanceUuids.size()) {
+        Base::Console().log("Local appearance model count {}\n", _appearanceUuids.size());
+        Base::Console().log("Remote appearance model count {}\n", other._appearanceUuids.size());
         throw InvalidMaterial("Material appearance model counts don't match");
     }
-    if (!other._physicalUuids.contains(_physicalUuids)) {
+    if (!other._appearanceUuids.contains(_appearanceUuids)) {
         throw InvalidMaterial("Material appearance models don't match");
     }
 
