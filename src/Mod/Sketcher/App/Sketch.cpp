@@ -5944,8 +5944,10 @@ void Sketch::moveFreeGeometry(
         else if (auto* point = dynamic_cast<Part::GeomPoint*>(copy.get())) {
             point->setPoint(relative ? point->getPoint() + target : target);
         }
-        else if (auto* spline = dynamic_cast<Part::GeomBSplineCurve*>(copy.get());
-                 spline && (element.Pos == PointPos::start || element.Pos == PointPos::end)) {
+        else if (
+            auto* spline = dynamic_cast<Part::GeomBSplineCurve*>(copy.get());
+            spline && (element.Pos == PointPos::start || element.Pos == PointPos::end)
+        ) {
             const int pole = element.Pos == PointPos::start ? 1 : spline->countPoles();
             const auto old = SketchGeometryType::getPoint(copy.get(), element.Pos);
             spline->setPole(pole, relative ? old + target : target);

@@ -532,7 +532,8 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
         Part::Geometry* geoNew = geoOld->copy();
         // Imported geometry belongs to the destination's active layer; source IDs are local.
         GeometryFacade::getFacade(geoNew)->setGeometryLayerId(
-            hasLayer(ActiveLayer.getValue()) ? ActiveLayer.getValue() : 0);
+            hasLayer(ActiveLayer.getValue()) ? ActiveLayer.getValue() : 0
+        );
         if (xinv || yinv) {
             // corrections for flipped geometry
             applyGeometryFlipCorrection(geoNew);

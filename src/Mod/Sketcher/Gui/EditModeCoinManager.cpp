@@ -259,8 +259,10 @@ struct GeometryScreenPreselector
              ++layerIndex) {
             for (int subLayerIndex = 0; subLayerIndex < geometryLayerParameters.getSubLayerCount();
                  ++subLayerIndex) {
-                if (!editModeScenegraphNodes.CurvesGroup->enable[
-                        layerIndex * geometryLayerParameters.getSubLayerCount() + subLayerIndex]) {
+                if (
+                    !editModeScenegraphNodes.CurvesGroup
+                         ->enable[layerIndex * geometryLayerParameters.getSubLayerCount() + subLayerIndex]
+                ) {
                     continue;
                 }
                 if (static_cast<int>(editModeScenegraphNodes.CurvesCoordinate.size()) <= layerIndex

@@ -11,16 +11,25 @@ import Sketcher
 def isolatedLayerDefaults(test):
     preferences = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Sketcher/LayerDefaults")
     types = {"String": "String", "Integer": "Int", "Float": "Float", "Boolean": "Bool"}
-    keys = {"Color": "String", "Pattern": "Int", "LineWidth": "Float", "Locked": "Bool",
-            "UseConstraints": "Bool", "UseSolvedStateColors": "Bool"}
+    keys = {
+        "Color": "String",
+        "Pattern": "Int",
+        "LineWidth": "Float",
+        "Locked": "Bool",
+        "UseConstraints": "Bool",
+        "UseSolvedStateColors": "Bool",
+    }
     previous = [entry for entry in preferences.GetContents() or [] if entry[1] in keys]
+
     def clear():
         for key, kind in keys.items():
             getattr(preferences, "Rem" + kind)(key)
+
     def restore():
         clear()
         for kind, key, value in previous:
             getattr(preferences, "Set" + types[kind])(key, value)
+
     test.addCleanup(restore)
     clear()
     return preferences
@@ -83,8 +92,11 @@ class TestSketchLayers(unittest.TestCase):
         for name in ("", "  ", "Construction"):
             with self.assertRaises(ValueError):
                 s.addLayer(name)
-        for call in (lambda: s.removeLayer(0), lambda: s.setActiveLayer(999),
-                     lambda: s.renameLayer(999, "Invalid")):
+        for call in (
+            lambda: s.removeLayer(0),
+            lambda: s.setActiveLayer(999),
+            lambda: s.renameLayer(999, "Invalid"),
+        ):
             with self.assertRaises(ValueError):
                 call()
 
@@ -196,6 +208,7 @@ class TestSketchLayers(unittest.TestCase):
     def testLegacyGeometryRestoresToDefaultLayer(self):
         import re
         import zipfile
+
         s = self.sketch
         self.line()
         layer = s.addLayer("Active")
@@ -210,7 +223,7 @@ class TestSketchLayers(unittest.TestCase):
                 for entry in source.infolist():
                     content = source.read(entry.filename)
                     if entry.filename == "Document.xml":
-                        content, replacements = re.subn(rb' geometryLayer="-?\d+"', b'', content)
+                        content, replacements = re.subn(rb' geometryLayer="-?\d+"', b"", content)
                     target.writestr(entry, content)
             self.assertGreater(replacements, 0)
             App.closeDocument(self.doc.Name)
@@ -230,7 +243,8 @@ class TestSketchLayers(unittest.TestCase):
         # Offset prepares geometry this way before passing it to addGeometry.
         for construction in (False, True):
             facade = Sketcher.GeometryFacade(
-                Part.LineSegment(App.Vector(0, 0, 0), App.Vector(10, 0, 0)))
+                Part.LineSegment(App.Vector(0, 0, 0), App.Vector(10, 0, 0))
+            )
             facade.Construction = construction
             geo = s.addGeometry(facade.Geometry)
             self.assertEqual(s.getGeometryLayer(geo), layer)
@@ -337,8 +351,9 @@ class TestSketchLayers(unittest.TestCase):
         self.assertEqual([c.Content for c in s.Constraints], saved)
         self.assertEqual(s.addConstraint(Sketcher.Constraint("Distance", a, 12.0)), -1)
         self.assertEqual(len(s.Constraints), 2)
-        ids = s.addConstraint([Sketcher.Constraint("Distance", a, 12.0),
-                               Sketcher.Constraint("Distance", b, 15.0)])
+        ids = s.addConstraint(
+            [Sketcher.Constraint("Distance", a, 12.0), Sketcher.Constraint("Distance", b, 15.0)]
+        )
         self.assertEqual(ids, (-1, 2))
         s.UnconstrainedLayers = []
         self.assertEqual(s.solve(), 0)
@@ -368,8 +383,9 @@ class TestSketchLayers(unittest.TestCase):
         a, b = self.line(), self.line(20)
         layer = s.addLayer("Free drawing")
         s.setGeometryLayer([a], layer)
-        manual, cross = s.addConstraint([Sketcher.Constraint("Horizontal", a),
-                                         Sketcher.Constraint("Equal", a, b)])
+        manual, cross = s.addConstraint(
+            [Sketcher.Constraint("Horizontal", a), Sketcher.Constraint("Equal", a, b)]
+        )
         s.setActive(manual, False)
         self.doc.openTransaction("Disable layer constraints")
         s.UnconstrainedLayers = [layer]
@@ -395,12 +411,15 @@ class TestSketchLayers(unittest.TestCase):
         self.assertEqual(s.solve(), 0)
         self.assertEqual(s.DoF, 4)
         original = s.Geometry[a].StartPoint
-        for operation in [lambda: s.delGeometry(a), lambda: s.delGeometries([b, a]),
-                          lambda: s.toggleConstruction(a),
-                          lambda: s.setGeometryLayer([a], 0),
-                          lambda: s.setGeometryLayer([b], layer),
-                          lambda: s.moveGeometry(a, 1, App.Vector(10, 10, 0), False),
-                          lambda: s.removeLayer(layer)]:
+        for operation in [
+            lambda: s.delGeometry(a),
+            lambda: s.delGeometries([b, a]),
+            lambda: s.toggleConstruction(a),
+            lambda: s.setGeometryLayer([a], 0),
+            lambda: s.setGeometryLayer([b], layer),
+            lambda: s.moveGeometry(a, 1, App.Vector(10, 10, 0), False),
+            lambda: s.removeLayer(layer),
+        ]:
             with self.assertRaises((ValueError, RuntimeError)):
                 operation()
             self.assertEqual(s.GeometryCount, 2)
@@ -461,9 +480,11 @@ class TestSketchLayers(unittest.TestCase):
         s.addConstraint(Sketcher.Constraint("Horizontal", a))
         s.LockedLayers = [0]
         constraints = [c.Content for c in s.Constraints]
-        for operation in [lambda: s.trim(a, App.Vector(5, 0, 0)),
-                          lambda: s.split(a, App.Vector(5, 0, 0)),
-                          lambda: s.extend(a, 3.0, 2)]:
+        for operation in [
+            lambda: s.trim(a, App.Vector(5, 0, 0)),
+            lambda: s.split(a, App.Vector(5, 0, 0)),
+            lambda: s.extend(a, 3.0, 2),
+        ]:
             with self.assertRaises((ValueError, RuntimeError)):
                 operation()
             self.assertEqual([c.Content for c in s.Constraints], constraints)

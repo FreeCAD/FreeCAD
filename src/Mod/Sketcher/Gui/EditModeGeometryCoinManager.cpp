@@ -528,7 +528,8 @@ void EditModeGeometryCoinManager::updateGeometryColor(
                     }
                 }
                 else {
-                    if (issketchinvalid && (!geometryLayerParameters.isNormalSubLayer(t) || solvedColors)) {
+                    if (issketchinvalid
+                        && (!geometryLayerParameters.isNormalSubLayer(t) || solvedColors)) {
                         color[i] = drawingParameters.InvalidSketchColor;
 
                         for (int k = j; j < k + indexes; j++) {
@@ -570,9 +571,14 @@ void EditModeGeometryCoinManager::updateGeometryColor(
                             color[i] = drawingParameters.FullyConstraintElementColor;
                         }
                         else {
-                            const auto layerColor = viewProvider.getLayerColor(layerId, Base::Color(
-                                drawingParameters.CurveColor[0], drawingParameters.CurveColor[1],
-                                drawingParameters.CurveColor[2]));
+                            const auto layerColor = viewProvider.getLayerColor(
+                                layerId,
+                                Base::Color(
+                                    drawingParameters.CurveColor[0],
+                                    drawingParameters.CurveColor[1],
+                                    drawingParameters.CurveColor[2]
+                                )
+                            );
                             color[i] = SbColor(layerColor.r, layerColor.g, layerColor.b);
                         }
 

@@ -132,8 +132,11 @@ public:
     }
     void setModelData(QWidget*, QAbstractItemModel*, const QModelIndex&) const override
     {}
-    void updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex&)
-        const override
+    void updateEditorGeometry(
+        QWidget* editor,
+        const QStyleOptionViewItem& option,
+        const QModelIndex&
+    ) const override
     {
         auto rect = option.rect;
         rect.setLeft(rect.right() - layerWidth(option) + 1);

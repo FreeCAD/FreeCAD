@@ -101,7 +101,8 @@ public:
 
 protected:
     /// Derived geometry properties can reject a replacement before ownership changes.
-    virtual void validateValue(const std::vector<Geometry*>&) const {}
+    virtual void validateValue(const std::vector<Geometry*>&) const
+    {}
 
 private:
     void trySaveGeometry(Geometry* geom, Base::Writer& writer) const;

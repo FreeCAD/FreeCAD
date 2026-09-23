@@ -39,11 +39,15 @@ class TestSketchLayersGui(SketcherGuiTestCase):
         return int(item.data(1, QtCore.Qt.UserRole))
 
     def row(self, layer):
-        return next(self.tree.topLevelItem(i) for i in range(self.tree.topLevelItemCount())
-                    if self.item_id(self.tree.topLevelItem(i)) == layer)
+        return next(
+            self.tree.topLevelItem(i)
+            for i in range(self.tree.topLevelItemCount())
+            if self.item_id(self.tree.topLevelItem(i)) == layer
+        )
 
-    def remove_layer(self, layer, destination=0, delete=False, cancel=False, context=False,
-                     populated=True):
+    def remove_layer(
+        self, layer, destination=0, delete=False, cancel=False, context=False, populated=True
+    ):
         errors = []
         decisions = []
 
@@ -65,9 +69,12 @@ class TestSketchLayersGui(SketcherGuiTestCase):
                         index = target.findData(destination)
                         self.assertGreaterEqual(index, 0)
                         target.setCurrentIndex(index)
-                    dialog.findChild(QtGui.QDialogButtonBox).button(QtGui.QDialogButtonBox.Ok).click()
+                    dialog.findChild(QtGui.QDialogButtonBox).button(
+                        QtGui.QDialogButtonBox.Ok
+                    ).click()
             except Exception:
                 import traceback
+
                 errors.append(traceback.format_exc())
                 if dialog:
                     dialog.reject()
@@ -83,6 +90,7 @@ class TestSketchLayersGui(SketcherGuiTestCase):
                 action.trigger()
             except Exception:
                 import traceback
+
                 errors.append(traceback.format_exc())
             finally:
                 if menu:
@@ -93,8 +101,9 @@ class TestSketchLayersGui(SketcherGuiTestCase):
             self.tree.scrollToItem(self.row(layer))
             point = self.tree.visualItemRect(self.row(layer)).center()
             QtCore.QTimer.singleShot(100, choose_remove)
-            event = QtGui.QContextMenuEvent(QtGui.QContextMenuEvent.Mouse, point,
-                                           self.tree.viewport().mapToGlobal(point))
+            event = QtGui.QContextMenuEvent(
+                QtGui.QContextMenuEvent.Mouse, point, self.tree.viewport().mapToGlobal(point)
+            )
             QtGui.QApplication.sendEvent(self.tree.viewport(), event)
         else:
             self.tree.setCurrentItem(self.row(layer), 1)
@@ -110,6 +119,7 @@ class TestSketchLayersGui(SketcherGuiTestCase):
 
     def layer_action(self, layer, text):
         errors = []
+
         def choose():
             menu = QtGui.QApplication.activePopupWidget()
             try:
@@ -117,15 +127,18 @@ class TestSketchLayersGui(SketcherGuiTestCase):
                 action.trigger()
             except Exception:
                 import traceback
+
                 errors.append(traceback.format_exc())
             finally:
                 if menu:
                     menu.close()
+
         self.tree.scrollToItem(self.row(layer))
         point = self.tree.visualItemRect(self.row(layer)).center()
         QtCore.QTimer.singleShot(100, choose)
-        event = QtGui.QContextMenuEvent(QtGui.QContextMenuEvent.Mouse, point,
-                                       self.tree.viewport().mapToGlobal(point))
+        event = QtGui.QContextMenuEvent(
+            QtGui.QContextMenuEvent.Mouse, point, self.tree.viewport().mapToGlobal(point)
+        )
         QtGui.QApplication.sendEvent(self.tree.viewport(), event)
         self.flush_gui(150)
         self.assertFalse(errors, errors)
@@ -148,8 +161,10 @@ class TestSketchLayersGui(SketcherGuiTestCase):
         # Explicit layer selection includes its hidden geometry and constraints.
         s.ViewObject.HiddenLayers = [layer]
         self.flush_gui(100)
+
         def selected():
             return {name for obj in Gui.Selection.getSelectionEx() for name in obj.SubElementNames}
+
         self.layer_action(layer, "Select Layer Geometry")
         geometry = selected()
         self.assertIn("Edge1", geometry)
@@ -182,16 +197,20 @@ class TestSketchLayersGui(SketcherGuiTestCase):
         s = self.sketch
         s.addLayer("Layer1")
         self.flush_gui(100)
+
         def begin():
             self.tree.scrollToItem(self.row(-1))
             rect = self.tree.visualItemRect(self.row(-1))
             # Clicking the plus in the eye column must also start editing.
-            self.click(self.tree.viewport(), QtCore.QPoint(self.tree.columnWidth(0) // 2,
-                                                           rect.center().y()))
+            self.click(
+                self.tree.viewport(),
+                QtCore.QPoint(self.tree.columnWidth(0) // 2, rect.center().y()),
+            )
             editor = self.tree.findChild(QtGui.QLineEdit, "newLayerName")
             self.assertIsNotNone(editor)
             self.assertEqual(editor.selectedText(), "Layer2")
             return editor
+
         editor = begin()
         self.key_click(editor, QtCore.Qt.Key_Escape)
         self.flush_gui(100)
@@ -222,8 +241,9 @@ class TestSketchLayersGui(SketcherGuiTestCase):
         self.assertEqual(s.ActiveLayer, layer)
 
     def layer_order(self):
-        return [self.item_id(self.tree.topLevelItem(i))
-                for i in range(self.tree.topLevelItemCount())]
+        return [
+            self.item_id(self.tree.topLevelItem(i)) for i in range(self.tree.topLevelItemCount())
+        ]
 
     def drop_layer(self, source, target, below=False):
         item = self.row(source)
@@ -233,16 +253,23 @@ class TestSketchLayersGui(SketcherGuiTestCase):
         self.tree.scrollToItem(target_item)
         rect = self.tree.visualItemRect(target_item)
         point = QtCore.QPoint(rect.center().x(), rect.bottom() if below else rect.top())
-        enter = QtGui.QDragEnterEvent(point, QtCore.Qt.MoveAction, mime,
-                                     QtCore.Qt.LeftButton, QtCore.Qt.NoModifier)
+        enter = QtGui.QDragEnterEvent(
+            point, QtCore.Qt.MoveAction, mime, QtCore.Qt.LeftButton, QtCore.Qt.NoModifier
+        )
         QtGui.QApplication.sendEvent(self.tree.viewport(), enter)
         if not enter.isAccepted():
             return False
-        move = QtGui.QDragMoveEvent(point, QtCore.Qt.MoveAction, mime,
-                                   QtCore.Qt.LeftButton, QtCore.Qt.NoModifier)
+        move = QtGui.QDragMoveEvent(
+            point, QtCore.Qt.MoveAction, mime, QtCore.Qt.LeftButton, QtCore.Qt.NoModifier
+        )
         QtGui.QApplication.sendEvent(self.tree.viewport(), move)
-        drop = QtGui.QDropEvent(QtCore.QPointF(point), QtCore.Qt.MoveAction, mime,
-                               QtCore.Qt.LeftButton, QtCore.Qt.NoModifier)
+        drop = QtGui.QDropEvent(
+            QtCore.QPointF(point),
+            QtCore.Qt.MoveAction,
+            mime,
+            QtCore.Qt.LeftButton,
+            QtCore.Qt.NoModifier,
+        )
         QtGui.QApplication.sendEvent(self.tree.viewport(), drop)
         self.flush_gui(100)
         return drop.isAccepted()
@@ -250,6 +277,7 @@ class TestSketchLayersGui(SketcherGuiTestCase):
     def testLayerReorderUndoSaveAndPinnedAddRow(self):
         import os
         import tempfile
+
         s = self.sketch
         first = s.addLayer("First")
         second = s.addLayer("Second")
@@ -293,6 +321,7 @@ class TestSketchLayersGui(SketcherGuiTestCase):
 
     def testShowLayersDefaultAndEditSettings(self):
         from pivy import coin
+
         s = self.sketch
         layer = s.addLayer("Hidden")
         s.setGeometryLayer([0], layer)
@@ -301,10 +330,13 @@ class TestSketchLayersGui(SketcherGuiTestCase):
         box = Gui.getMainWindow().findChild(QtGui.QWidget, "sketchLayersTaskBox")
         constraints = Gui.getMainWindow().findChild(QtGui.QListWidget, "listWidgetConstraints")
         elements = Gui.getMainWindow().findChild(QtGui.QListWidget, "listWidgetElements")
-        self.assertLess(box.mapToGlobal(QtCore.QPoint()).y(),
-                        constraints.mapToGlobal(QtCore.QPoint()).y())
-        self.assertLess(constraints.mapToGlobal(QtCore.QPoint()).y(),
-                        elements.mapToGlobal(QtCore.QPoint()).y())
+        self.assertLess(
+            box.mapToGlobal(QtCore.QPoint()).y(), constraints.mapToGlobal(QtCore.QPoint()).y()
+        )
+        self.assertLess(
+            constraints.mapToGlobal(QtCore.QPoint()).y(), elements.mapToGlobal(QtCore.QPoint()).y()
+        )
+
         def curves_shown():
             search = coin.SoSearchAction()
             search.setName("CurvesLineSet0")
@@ -313,6 +345,7 @@ class TestSketchLayersGui(SketcherGuiTestCase):
             path = search.getPath()
             group = path.getNode(path.getLength() - 3)
             return all(list(group.getField("enable").getValues())[15:20])
+
         self.assertFalse(curves_shown())
         self.layerPrefs.RemBool("ShowLayers")
         self.flush_gui(100)
@@ -346,6 +379,7 @@ class TestSketchLayersGui(SketcherGuiTestCase):
         self.layerPrefs.SetBool("ShowLayers", False)
         self.flush_gui(100)
         errors = []
+
         def change_preference():
             dialog = QtGui.QApplication.activeModalWidget()
             try:
@@ -353,15 +387,20 @@ class TestSketchLayersGui(SketcherGuiTestCase):
                 self.assertIsNotNone(checkbox)
                 self.assertFalse(checkbox.isChecked())
                 checkbox.setChecked(True)
-                buttons = next(b for b in dialog.findChildren(QtGui.QDialogButtonBox)
-                               if b.button(QtGui.QDialogButtonBox.Apply))
+                buttons = next(
+                    b
+                    for b in dialog.findChildren(QtGui.QDialogButtonBox)
+                    if b.button(QtGui.QDialogButtonBox.Apply)
+                )
                 buttons.button(QtGui.QDialogButtonBox.Apply).click()
             except Exception:
                 import traceback
+
                 errors.append(traceback.format_exc())
             finally:
                 if dialog:
                     dialog.reject()
+
         QtCore.QTimer.singleShot(300, change_preference)
         Gui.showPreferences("Sketcher", 0)
         self.flush_gui(100)
@@ -578,10 +617,13 @@ class TestSketchLayersGui(SketcherGuiTestCase):
                 layer_action = next(action for action in actions if action.text() == "Layer")
                 submenu = layer_action.menu()
                 layer_actions = submenu.actions()
-                destination = next(action for action in layer_actions if action.text() == "Destination")
+                destination = next(
+                    action for action in layer_actions if action.text() == "Destination"
+                )
                 destination.trigger()
             except Exception as error:
                 import traceback
+
                 errors.append(traceback.format_exc())
             finally:
                 try:
@@ -592,7 +634,9 @@ class TestSketchLayersGui(SketcherGuiTestCase):
 
         QtCore.QTimer.singleShot(100, choose_layer)
         point = elements.rect().center()
-        event = QtGui.QContextMenuEvent(QtGui.QContextMenuEvent.Mouse, point, elements.mapToGlobal(point))
+        event = QtGui.QContextMenuEvent(
+            QtGui.QContextMenuEvent.Mouse, point, elements.mapToGlobal(point)
+        )
         QtGui.QApplication.sendEvent(elements.viewport(), event)
         self.flush_gui(150)
         self.assertFalse(errors, errors)
@@ -603,6 +647,7 @@ class TestSketchLayersGui(SketcherGuiTestCase):
 
     def testLayerRenderingSwitches(self):
         from pivy import coin
+
         s = self.sketch
         layer = s.addLayer("Profile")
         s.setGeometryLayer([0], layer)
@@ -646,6 +691,7 @@ class TestSketchLayersGui(SketcherGuiTestCase):
 
     def scene_node(self, name):
         from pivy import coin
+
         search = coin.SoSearchAction()
         search.setName(name)
         search.apply(Gui.activeDocument().activeView().getSceneGraph())
@@ -664,8 +710,10 @@ class TestSketchLayersGui(SketcherGuiTestCase):
         for setting in ("Use constraints", "Use solved state colors"):
             index = self.setting_row(0, setting)
             self.assertTrue(index.data(QtCore.Qt.ToolTipRole))
-            self.assertEqual(index.data(QtCore.Qt.ToolTipRole),
-                             index.siblingAtColumn(1).data(QtCore.Qt.ToolTipRole))
+            self.assertEqual(
+                index.data(QtCore.Qt.ToolTipRole),
+                index.siblingAtColumn(1).data(QtCore.Qt.ToolTipRole),
+            )
         self.assertTrue(self.setting_row(0, "Line thickness").flags() & QtCore.Qt.ItemIsEnabled)
         self.set_setting(0, "Use constraints", QtCore.Qt.Unchecked)
         self.flush_gui(100)
@@ -677,7 +725,9 @@ class TestSketchLayersGui(SketcherGuiTestCase):
         self.set_setting(0, "Use constraints", QtCore.Qt.Checked)
         self.flush_gui(100)
         self.assertEqual(s.UnconstrainedLayers, [])
-        self.assertTrue(self.setting_row(0, "Use solved state colors").flags() & QtCore.Qt.ItemIsEnabled)
+        self.assertTrue(
+            self.setting_row(0, "Use solved state colors").flags() & QtCore.Qt.ItemIsEnabled
+        )
         rect = self.tree.visualRect(self.tree.indexFromItem(self.row(0), 3))
         self.click(self.tree.viewport(), rect.center())
         self.flush_gui(100)
@@ -692,6 +742,7 @@ class TestSketchLayersGui(SketcherGuiTestCase):
         self.row(0).setExpanded(False)
         errors = []
         dialogs = []
+
         def choose():
             dialog = QtGui.QApplication.activeModalWidget()
             try:
@@ -701,9 +752,11 @@ class TestSketchLayersGui(SketcherGuiTestCase):
                 dialog.accept()
             except Exception:
                 import traceback
+
                 errors.append(traceback.format_exc())
                 if dialog:
                     dialog.reject()
+
         rect = self.tree.visualRect(self.tree.indexFromItem(self.row(0), 1))
         QtCore.QTimer.singleShot(100, choose)
         self.click(self.tree.viewport(), QtCore.QPoint(rect.left() + 9, rect.center().y()))
@@ -717,6 +770,7 @@ class TestSketchLayersGui(SketcherGuiTestCase):
 
     def testLayerScreenWidthsInsideAndOutsideEdit(self):
         from pivy import coin
+
         s = self.sketch
         layer = s.addLayer("Thick circle")
         other = s.addGeometry(Part.Circle(App.Vector(10, 20, 0), App.Vector(0, 0, 1), 5))
@@ -726,14 +780,18 @@ class TestSketchLayersGui(SketcherGuiTestCase):
         self.flush_gui(100)
         construction = self.scene_node("CurvesConstructionDrawStyle").lineWidth.getValue()
         widths = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Sketcher/View")
-        scale = self.scene_node("LayerDrawStyle0").lineWidth.getValue() / widths.GetInt("EdgeWidth", 2)
+        scale = self.scene_node("LayerDrawStyle0").lineWidth.getValue() / widths.GetInt(
+            "EdgeWidth", 2
+        )
         self.row(layer).setExpanded(True)
         picker = self.tree.findChild(QtGui.QDoubleSpinBox, f"layerLineWidth{layer}")
         picker.setValue(6.5)
         self.flush_gui(100)
         self.assertEqual(s.ViewObject.LayerLineWidths, {str(layer): "6.5"})
         self.assertAlmostEqual(self.scene_node("LayerDrawStyle3").lineWidth.getValue(), 6.5 * scale)
-        self.assertEqual(self.scene_node("CurvesConstructionDrawStyle").lineWidth.getValue(), construction)
+        self.assertEqual(
+            self.scene_node("CurvesConstructionDrawStyle").lineWidth.getValue(), construction
+        )
         Gui.activeDocument().activeView().fitAll()
         self.flush_gui(100)
         self.assertAlmostEqual(self.scene_node("LayerDrawStyle3").lineWidth.getValue(), 6.5 * scale)
@@ -753,20 +811,22 @@ class TestSketchLayersGui(SketcherGuiTestCase):
         self.assertEqual(sorted(node.lineWidths.getValues()), sorted([s.ViewObject.LineWidth, 6.5]))
         s.ViewObject.LineWidth = 3
         self.flush_gui(80)
-        self.assertEqual(sorted(node.lineWidths.getValues()), [3., 6.5])
+        self.assertEqual(sorted(node.lineWidths.getValues()), [3.0, 6.5])
         # Malformed stored values safely inherit the sketch width.
         for value in ("nan", "inf", "-1", "1000", "bad"):
             s.ViewObject.LayerLineWidths = {str(layer): value}
             self.flush_gui(40)
-            self.assertEqual(list(node.lineWidths.getValues()), [3., 3.])
+            self.assertEqual(list(node.lineWidths.getValues()), [3.0, 3.0])
 
     def testDefaultControlsAndNewLayers(self):
         s = self.sketch
         add = self.row(-1)
         rect = self.tree.visualRect(self.tree.indexFromItem(add, 1))
         # Clicking the disclosure arrow must expand defaults without starting creation.
-        self.click(self.tree.viewport(), QtCore.QPoint(rect.left() - self.tree.indentation() // 2,
-                                                      rect.center().y()))
+        self.click(
+            self.tree.viewport(),
+            QtCore.QPoint(rect.left() - self.tree.indentation() // 2, rect.center().y()),
+        )
         self.flush_gui(60)
         self.assertTrue(self.row(-1).isExpanded())
         self.assertIsNone(self.tree.findChild(QtGui.QLineEdit, "newLayerName"))
@@ -775,9 +835,10 @@ class TestSketchLayersGui(SketcherGuiTestCase):
         pattern.activated.emit(2)
         width = self.tree.findChild(QtGui.QDoubleSpinBox, "layerLineWidthDefaults")
         width.setValue(4.5)
-        self.assertEqual(self.defaults.GetInt("Pattern"), 0xaaaa)
+        self.assertEqual(self.defaults.GetInt("Pattern"), 0xAAAA)
         self.assertEqual(self.defaults.GetFloat("LineWidth"), 4.5)
         errors = []
+
         def choose():
             dialog = QtGui.QApplication.activeModalWidget()
             try:
@@ -788,6 +849,7 @@ class TestSketchLayersGui(SketcherGuiTestCase):
                 errors.append(str(exc))
                 if dialog:
                     dialog.reject()
+
         QtCore.QTimer.singleShot(100, choose)
         self.tree.findChild(QtGui.QPushButton, "layerColorDefaults").click()
         self.flush_gui(100)
@@ -797,8 +859,9 @@ class TestSketchLayersGui(SketcherGuiTestCase):
         self.flush_gui(60)
         self.set_setting(-1, "Default use constraints", QtCore.Qt.Unchecked)
         self.flush_gui(60)
-        self.assertFalse(self.setting_row(-1, "Default solver colors").flags()
-                         & QtCore.Qt.ItemIsEnabled)
+        self.assertFalse(
+            self.setting_row(-1, "Default solver colors").flags() & QtCore.Qt.ItemIsEnabled
+        )
         self.assertFalse(self.defaults.GetBool("UseConstraints", True))
         self.assertFalse(self.defaults.GetBool("UseSolvedStateColors", True))
         self.assertEqual(s.ViewObject.LayerColors, {})
@@ -806,20 +869,24 @@ class TestSketchLayersGui(SketcherGuiTestCase):
         self.assertEqual(s.ViewObject.LayerLineWidths, {})
         self.assertEqual(s.LockedLayers, [])
         self.assertEqual(s.UnconstrainedLayers, [])
-        mime = self.tree.model().mimeData([self.setting_row(-1, "Default use constraints").siblingAtColumn(1)])
+        mime = self.tree.model().mimeData(
+            [self.setting_row(-1, "Default use constraints").siblingAtColumn(1)]
+        )
         self.assertFalse(mime.hasFormat("application/x-sketch-layer"))
         self.doc.openTransaction("New layer with defaults")
         layer = s.addLayer("Defaults")
         self.doc.commitTransaction()
         self.flush_gui(100)
+
         def check(sketch, layer):
             key = str(layer)
             self.assertEqual(sketch.ViewObject.LayerColors[key], "#20c080")
-            self.assertEqual(int(sketch.ViewObject.LayerPatterns[key]), 0xaaaa)
+            self.assertEqual(int(sketch.ViewObject.LayerPatterns[key]), 0xAAAA)
             self.assertEqual(float(sketch.ViewObject.LayerLineWidths[key]), 4.5)
             self.assertNotIn(layer, sketch.LockedLayers)
             self.assertIn(layer, sketch.UnconstrainedLayers)
             self.assertIn(layer, sketch.ViewObject.LayerSolverColorsDisabled)
+
         check(s, layer)
         self.doc.undo()
         self.flush_gui(80)
@@ -837,6 +904,7 @@ class TestSketchLayersGui(SketcherGuiTestCase):
     def testDefaultsDoNotAlterRestoredSketches(self):
         import os
         import tempfile
+
         Gui.activeDocument().resetEdit()
         self.doc.recompute()
         with tempfile.TemporaryDirectory() as folder:
@@ -844,7 +912,7 @@ class TestSketchLayersGui(SketcherGuiTestCase):
             self.doc.saveAs(path)
             App.closeDocument(self.doc.Name)
             self.defaults.SetString("Color", "#ff0000")
-            self.defaults.SetInt("Pattern", 0xaaaa)
+            self.defaults.SetInt("Pattern", 0xAAAA)
             self.defaults.SetFloat("LineWidth", 12)
             self.defaults.SetBool("Locked", True)
             self.defaults.SetBool("UseConstraints", False)
@@ -876,17 +944,21 @@ class TestSketchLayersGui(SketcherGuiTestCase):
         picker.activated.emit(1)
         self.flush_gui(100)
         self.assertEqual(s.ViewObject.LayerPatterns, {"0": "61680"})
-        self.assertEqual(int(self.scene_node("LayerDrawStyle0").linePattern.getValue()), 0xf0f0)
-        expected = (224/255., 64/255., 128/255.)
+        self.assertEqual(int(self.scene_node("LayerDrawStyle0").linePattern.getValue()), 0xF0F0)
+        expected = (224 / 255.0, 64 / 255.0, 128 / 255.0)
+
         def assert_color(node, color):
             for actual, wanted in zip(node.diffuseColor[0].getValue(), color):
                 self.assertAlmostEqual(actual, wanted, places=5)
+
         assert_color(self.scene_node("CurvesMaterials0"), expected)
         assert_color(self.scene_node("CurvesMaterials1"), construction)
         s.addConstraint(Sketcher.Constraint("Block", 0))
         s.solve()
         self.flush_gui(100)
-        self.assertNotEqual(tuple(self.scene_node("CurvesMaterials0").diffuseColor[0].getValue()), expected)
+        self.assertNotEqual(
+            tuple(self.scene_node("CurvesMaterials0").diffuseColor[0].getValue()), expected
+        )
         self.set_setting(0, "Use solved state colors", QtCore.Qt.Unchecked)
         self.flush_gui(100)
         assert_color(self.scene_node("CurvesMaterials0"), expected)
@@ -896,16 +968,18 @@ class TestSketchLayersGui(SketcherGuiTestCase):
         assert_color(self.scene_node("LineMaterial"), expected)
         # The outside-edit renderer retains a separate stipple value for each edge.
         from pivy import coin
+
         search = coin.SoSearchAction()
         search.setType(coin.SoType.fromName("SoBrepEdgeSet"))
         search.apply(Gui.activeDocument().activeView().getSceneGraph())
         self.assertIsNotNone(search.getPath())
         node = search.getPath().getTail()
-        self.assertEqual(list(node.linePatterns.getValues()), [0xf0f0])
+        self.assertEqual(list(node.linePatterns.getValues()), [0xF0F0])
 
     def testExpandedLayerDragAndSettingsPersistence(self):
         import os
         import tempfile
+
         s = self.sketch
         layer = s.addLayer("Styled")
         s.setGeometryLayer([0], layer)
@@ -918,7 +992,7 @@ class TestSketchLayersGui(SketcherGuiTestCase):
         mime = self.tree.model().mimeData([child.siblingAtColumn(1)])
         self.assertFalse(mime.hasFormat("application/x-sketch-layer"))
         s.ViewObject.LayerColors = {str(layer): "#2060e0"}
-        s.ViewObject.LayerPatterns = {str(layer): str(0xaaaa)}
+        s.ViewObject.LayerPatterns = {str(layer): str(0xAAAA)}
         s.ViewObject.LayerSolverColorsDisabled = [layer]
         s.ViewObject.LayerLineWidths = {str(layer): "5.5"}
         with tempfile.TemporaryDirectory() as folder:
@@ -930,7 +1004,7 @@ class TestSketchLayersGui(SketcherGuiTestCase):
             self.doc = App.openDocument(path)
             self.sketch = self.doc.getObject("Sketch")
             self.assertEqual(self.sketch.ViewObject.LayerColors, {str(layer): "#2060e0"})
-            self.assertEqual(self.sketch.ViewObject.LayerPatterns, {str(layer): str(0xaaaa)})
+            self.assertEqual(self.sketch.ViewObject.LayerPatterns, {str(layer): str(0xAAAA)})
             self.assertEqual(self.sketch.ViewObject.LayerSolverColorsDisabled, [layer])
             self.assertEqual(self.sketch.ViewObject.LayerOrder, [layer, 0])
             self.assertEqual(self.sketch.ViewObject.LayerLineWidths, {str(layer): "5.5"})
@@ -944,14 +1018,18 @@ class TestSketchLayersGui(SketcherGuiTestCase):
         other = s.addGeometry(Part.Circle(App.Vector(10, 20, 0), App.Vector(0, 0, 1), 5))
         s.setGeometryLayer([other], layer)
         s.ViewObject.LayerColors = {"0": "#ff0000", str(layer): "#00ff00"}
-        s.ViewObject.LayerPatterns = {"0": str(0xf0f0), str(layer): str(0xaaaa)}
+        s.ViewObject.LayerPatterns = {"0": str(0xF0F0), str(layer): str(0xAAAA)}
         s.ViewObject.LayerSolverColorsDisabled = [0, layer]
         s.solve()
         self.flush_gui(100)
-        self.assertEqual(tuple(self.scene_node("CurvesMaterials0").diffuseColor[0].getValue()), (1., 0., 0.))
-        self.assertEqual(tuple(self.scene_node("CurvesMaterials30").diffuseColor[0].getValue()), (0., 1., 0.))
-        self.assertEqual(int(self.scene_node("LayerDrawStyle0").linePattern.getValue()), 0xf0f0)
-        self.assertEqual(int(self.scene_node("LayerDrawStyle3").linePattern.getValue()), 0xaaaa)
+        self.assertEqual(
+            tuple(self.scene_node("CurvesMaterials0").diffuseColor[0].getValue()), (1.0, 0.0, 0.0)
+        )
+        self.assertEqual(
+            tuple(self.scene_node("CurvesMaterials30").diffuseColor[0].getValue()), (0.0, 1.0, 0.0)
+        )
+        self.assertEqual(int(self.scene_node("LayerDrawStyle0").linePattern.getValue()), 0xF0F0)
+        self.assertEqual(int(self.scene_node("LayerDrawStyle3").linePattern.getValue()), 0xAAAA)
         Gui.activeDocument().resetEdit()
         self.doc.recompute()
         Gui.Selection.clearSelection()
@@ -960,9 +1038,14 @@ class TestSketchLayersGui(SketcherGuiTestCase):
             self.flush_gui(60)
         colors = self.scene_node("LineMaterial").diffuseColor
         from pivy import coin
-        self.assertEqual(self.scene_node("LineBind").value.getValue(), coin.SoMaterialBinding.PER_FACE)
-        self.assertEqual({tuple(color.getValue()) for color in colors.getValues()},
-                         {(1., 0., 0.), (0., 1., 0.)})
+
+        self.assertEqual(
+            self.scene_node("LineBind").value.getValue(), coin.SoMaterialBinding.PER_FACE
+        )
+        self.assertEqual(
+            {tuple(color.getValue()) for color in colors.getValues()},
+            {(1.0, 0.0, 0.0), (0.0, 1.0, 0.0)},
+        )
 
     def testLockedLayerDragIsSilent(self):
         s = self.sketch
@@ -974,8 +1057,11 @@ class TestSketchLayersGui(SketcherGuiTestCase):
             "orientation 0 0 1 0 focalDistance 100 height 60 }"
         )
         viewport = view.graphicsView().viewport()
-        reports = [widget for widget in Gui.getMainWindow().findChildren(QtGui.QTextEdit)
-                   if widget.metaObject().className().endswith("ReportOutput")]
+        reports = [
+            widget
+            for widget in Gui.getMainWindow().findChildren(QtGui.QTextEdit)
+            if widget.metaObject().className().endswith("ReportOutput")
+        ]
         self.assertTrue(reports)
 
         def drag_at(position):
@@ -985,16 +1071,33 @@ class TestSketchLayersGui(SketcherGuiTestCase):
             end = start + QtCore.QPoint(35, -25)
             Gui.Selection.clearSelection()
             self.move(viewport, start)
-            self.assertTrue(Gui.Selection.getPreselection().SubElementNames,
-                            f"No geometry at {start}; viewport={viewport.size()}, view={view.getSize()}")
-            self.send_mouse(viewport, QtCore.QEvent.MouseButtonPress, start,
-                            QtCore.Qt.LeftButton, QtCore.Qt.LeftButton)
+            self.assertTrue(
+                Gui.Selection.getPreselection().SubElementNames,
+                f"No geometry at {start}; viewport={viewport.size()}, view={view.getSize()}",
+            )
+            self.send_mouse(
+                viewport,
+                QtCore.QEvent.MouseButtonPress,
+                start,
+                QtCore.Qt.LeftButton,
+                QtCore.Qt.LeftButton,
+            )
             for point in (start + QtCore.QPoint(8, -6), end):
-                self.send_mouse(viewport, QtCore.QEvent.MouseMove, point,
-                                QtCore.Qt.NoButton, QtCore.Qt.LeftButton)
+                self.send_mouse(
+                    viewport,
+                    QtCore.QEvent.MouseMove,
+                    point,
+                    QtCore.Qt.NoButton,
+                    QtCore.Qt.LeftButton,
+                )
                 self.flush_gui(60)
-            self.send_mouse(viewport, QtCore.QEvent.MouseButtonRelease, end,
-                            QtCore.Qt.LeftButton, QtCore.Qt.NoButton)
+            self.send_mouse(
+                viewport,
+                QtCore.QEvent.MouseButtonRelease,
+                end,
+                QtCore.Qt.LeftButton,
+                QtCore.Qt.NoButton,
+            )
             self.flush_gui(100)
 
         s.LockedLayers = [0]
@@ -1018,8 +1121,10 @@ class TestSketchLayersGui(SketcherGuiTestCase):
         try:
             self.flush_gui(100)
             boxes = {box.text(): box for box in menu.findChildren(QtGui.QCheckBox)}
-            positions = [boxes[text].mapToGlobal(QtCore.QPoint()).x()
-                         for text in ("Auto-update", "Show layers", "Display grid")]
+            positions = [
+                boxes[text].mapToGlobal(QtCore.QPoint()).x()
+                for text in ("Auto-update", "Show layers", "Display grid")
+            ]
             self.assertEqual(len(set(positions)), 1)
             boxes["Show layers"].click()
             self.flush_gui(100)
@@ -1033,20 +1138,25 @@ class TestSketchLayersGui(SketcherGuiTestCase):
         other = s.addGeometry(Part.LineSegment(App.Vector(0, 10, 0), App.Vector(20, 10, 0)))
         layer = s.addLayer("Free drawing")
         s.setGeometryLayer([0], layer)
-        own, cross, unaffected = s.addConstraint([
-            Sketcher.Constraint("Distance", 0, 20.0),
-            Sketcher.Constraint("Equal", 0, other),
-            Sketcher.Constraint("Horizontal", other)])
+        own, cross, unaffected = s.addConstraint(
+            [
+                Sketcher.Constraint("Distance", 0, 20.0),
+                Sketcher.Constraint("Equal", 0, other),
+                Sketcher.Constraint("Horizontal", other),
+            ]
+        )
         s.solve()
         self.flush_gui(100)
         self.assertEqual(list(self.scene_node("ConstraintGroup").enable.getValues()), [True] * 3)
         Gui.Selection.addSelection(s, "Constraint1")
         self.set_setting(layer, "Use constraints", QtCore.Qt.Unchecked)
         self.flush_gui(100)
-        self.assertEqual([s.getActive(index) for index in (own, cross, unaffected)],
-                         [False, False, True])
-        self.assertEqual(list(self.scene_node("ConstraintGroup").enable.getValues()),
-                         [False, False, True])
+        self.assertEqual(
+            [s.getActive(index) for index in (own, cross, unaffected)], [False, False, True]
+        )
+        self.assertEqual(
+            list(self.scene_node("ConstraintGroup").enable.getValues()), [False, False, True]
+        )
         self.assertFalse(Gui.Selection.getSelectionEx())
         self.assertEqual(s.DoF, 3)
         self.doc.undo()

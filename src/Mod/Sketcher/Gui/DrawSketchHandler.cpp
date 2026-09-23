@@ -792,7 +792,9 @@ bool DrawSketchHandler::updateTangentAutoConstraintHint()
     resetTangentAutoConstraintHint();
 
     if (!sketchgui->Autoconstraints.getValue()
-        || !sketchgui->getSketchObject()->layerUsesConstraints(sketchgui->getSketchObject()->ActiveLayer.getValue())) {
+        || !sketchgui->getSketchObject()->layerUsesConstraints(
+            sketchgui->getSketchObject()->ActiveLayer.getValue()
+        )) {
         return false;
     }
 
@@ -1265,7 +1267,9 @@ int DrawSketchHandler::seekAutoConstraint(
     parallelPerpendicularActiveHintLine = -1;
 
     if (!sketchgui->Autoconstraints.getValue()
-        || !sketchgui->getSketchObject()->layerUsesConstraints(sketchgui->getSketchObject()->ActiveLayer.getValue())) {
+        || !sketchgui->getSketchObject()->layerUsesConstraints(
+            sketchgui->getSketchObject()->ActiveLayer.getValue()
+        )) {
         return 0;  // If Autoconstraints property is not set quit
     }
 
@@ -1616,7 +1620,9 @@ void DrawSketchHandler::createAutoConstraints(
 )
 {
     if (!sketchgui->Autoconstraints.getValue()
-        || !sketchgui->getSketchObject()->layerUsesConstraints(sketchgui->getSketchObject()->ActiveLayer.getValue())) {
+        || !sketchgui->getSketchObject()->layerUsesConstraints(
+            sketchgui->getSketchObject()->ActiveLayer.getValue()
+        )) {
         return;  // If Autoconstraints property is not set quit
     }
 
@@ -1933,7 +1939,9 @@ void DrawSketchHandler::clearParallelPerpendicularHintDrawing() const
 bool DrawSketchHandler::updateParallelPerpendicularEndpointHint()
 {
     if (!sketchgui->Autoconstraints.getValue()
-        || !sketchgui->getSketchObject()->layerUsesConstraints(sketchgui->getSketchObject()->ActiveLayer.getValue())) {
+        || !sketchgui->getSketchObject()->layerUsesConstraints(
+            sketchgui->getSketchObject()->ActiveLayer.getValue()
+        )) {
         return false;
     }
 
@@ -2005,7 +2013,9 @@ bool DrawSketchHandler::snapToParallelPerpendicularHint(Base::Vector2d& point)
     parallelPerpendicularActiveHintLine = -1;
 
     if (!sketchgui->Autoconstraints.getValue()
-        || !sketchgui->getSketchObject()->layerUsesConstraints(sketchgui->getSketchObject()->ActiveLayer.getValue())) {
+        || !sketchgui->getSketchObject()->layerUsesConstraints(
+            sketchgui->getSketchObject()->ActiveLayer.getValue()
+        )) {
         return false;
     }
 

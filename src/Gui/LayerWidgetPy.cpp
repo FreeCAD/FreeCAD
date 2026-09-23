@@ -125,14 +125,17 @@ public:
             connections.emplace_back(doc->signalUndo.connect(changed));
             connections.emplace_back(doc->signalRedo.connect(changed));
             // View properties (colors, line styles) change without touching the document.
-            connections.emplace_back(Application::Instance->signalChangedObject.connect(
-                [this, doc](const ViewProvider& view, const App::Property&) {
-                    const auto* object = dynamic_cast<const ViewProviderDocumentObject*>(&view);
-                    if (object && object->getObject() && object->getObject()->getDocument() == doc) {
-                        signalChanged();
+            connections.emplace_back(
+                Application::Instance->signalChangedObject.connect(
+                    [this, doc](const ViewProvider& view, const App::Property&) {
+                        const auto* object = dynamic_cast<const ViewProviderDocumentObject*>(&view);
+                        if (object && object->getObject()
+                            && object->getObject()->getDocument() == doc) {
+                            signalChanged();
+                        }
                     }
-                }
-            ));
+                )
+            );
         }
     }
     ~PythonLayerModel() override
