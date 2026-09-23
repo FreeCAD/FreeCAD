@@ -611,8 +611,11 @@ private:
     std::set<int> excludedLayerGeometry;
     std::set<int> lockedLayerGeometry;
     std::map<int, std::shared_ptr<const Part::Geometry>> freeMoveOrigins;
-    void moveFreeGeometry(const std::vector<GeoElementId>& elements,
-                          const Base::Vector3d& target, bool relative);
+    void moveFreeGeometry(
+        const std::vector<GeoElementId>& elements,
+        const Base::Vector3d& target,
+        bool relative
+    );
     std::vector<GeoDef> Geoms;
     std::vector<ConstrDef> Constrs;
     GCS::System GCSsys;

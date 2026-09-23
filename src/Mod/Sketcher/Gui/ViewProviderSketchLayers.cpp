@@ -140,7 +140,8 @@ void ViewProviderSketch::refreshLayers()
                 bool hidden = getSketchObject()->geoIdFromShapeType(name.c_str(), id, pos)
                     && !isGeometryVisible(id);
                 if (name.starts_with("Constraint")) {
-                    const int index = Sketcher::PropertyConstraintList::getIndexFromConstraintName(name
+                    const int index = Sketcher::PropertyConstraintList::getIndexFromConstraintName(
+                        name
                     );
                     const auto& constraints = getSketchObject()->Constraints.getValues();
                     hidden = index >= 0 && index < static_cast<int>(constraints.size())
@@ -198,10 +199,9 @@ void ViewProviderSketch::appendLayerMenu(QMenu* menu)
     }
     for (const auto& [layer, name] : sketch->getLayers()) {
         // A '&' in a layer name is literal text, not a mnemonic.
-        auto* action = submenu->addAction(QString::fromStdString(name).replace(
-            QLatin1Char('&'),
-            QStringLiteral("&&")
-        ));
+        auto* action = submenu->addAction(
+            QString::fromStdString(name).replace(QLatin1Char('&'), QStringLiteral("&&"))
+        );
         action->setCheckable(true);
         action->setChecked(std::all_of(ids.begin(), ids.end(), [sketch, layer](int id) {
             return sketch->getGeometryLayer(id) == layer;

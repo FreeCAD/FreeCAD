@@ -74,8 +74,8 @@ void SketchGeometryExtension::restoreAttributes(Base::XMLReader& reader)
     GeometryModeFlags = GeometryModeFlagType(reader.getAttribute<const char*>("geometryModeFlags"));
 
     // Files predating layers belong to the default layer, not the active layer.
-    GeometryLayer = reader.hasAttribute("geometryLayer")
-        ? reader.getAttribute<int>("geometryLayer") : 0;
+    GeometryLayer = reader.hasAttribute("geometryLayer") ? reader.getAttribute<int>("geometryLayer")
+                                                         : 0;
 }
 
 void SketchGeometryExtension::saveAttributes(Base::Writer& writer) const

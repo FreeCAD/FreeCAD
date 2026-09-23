@@ -559,7 +559,10 @@ public:
     void updateLayerStyles();
     void updateVisual() override;
     std::vector<int> getLayerOrder() const;
-    bool areLayersEnabled() const { return showLayers; }
+    bool areLayersEnabled() const
+    {
+        return showLayers;
+    }
     fastsignals::signal<void()> signalLayersChanged;
     int getGeometryCoinLayer(const Sketcher::GeometryFacade* geometry) const;
     int getGeometryCoinLayerCount() const;

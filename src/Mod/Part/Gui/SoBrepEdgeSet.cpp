@@ -898,7 +898,8 @@ void SoBrepEdgeSet::renderBase(SoGLRenderAction* action)
             if (i > start) {
                 // Styles are per topological edge; materials stay bound per rendered line.
                 const int edge = edgeIndexFromLine(line) - 1;
-                const int pattern = edge >= 0 && edge < linePatterns.getNum() ? linePatterns[edge] : -1;
+                const int pattern = edge >= 0 && edge < linePatterns.getNum() ? linePatterns[edge]
+                                                                              : -1;
                 const float width = edge >= 0 && edge < lineWidths.getNum() && lineWidths[edge] > 0
                         && std::isfinite(lineWidths[edge])
                     ? lineWidths[edge]
