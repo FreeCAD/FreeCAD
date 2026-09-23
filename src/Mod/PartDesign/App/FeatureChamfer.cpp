@@ -45,6 +45,7 @@
 #include "FeatureChamfer.h"
 
 #include <Base/ProgramVersion.h>
+#include <Base/Translation.h>
 
 
 using namespace PartDesign;
