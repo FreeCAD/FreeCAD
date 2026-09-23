@@ -222,7 +222,7 @@ void MaterialTreeWidget::fillFilterCombo()
     m_filterCombo->clear();
     if (hasMultipleFilters()) {
         for (auto const& filter : *_filterList) {
-            m_filterCombo->addItem(filter->name());
+            m_filterCombo->addItem(QString::fromStdString(filter->name()));
         }
     }
 }
@@ -249,7 +249,7 @@ void MaterialTreeWidget::editorClicked(bool checked)
         // _materialSelected = true;
         auto material = dialog.getMaterial();
         updateMaterialTree();
-        setMaterial(material->getUUID());
+        setMaterial(QString::fromStdString(material->getUUID()));
     }
 
     // Gui::Application::Instance->commandManager().runCommandByName("Material_Edit");
@@ -268,13 +268,13 @@ void MaterialTreeWidget::updateMaterial(const QString& uuid)
     // Fetch the material from the manager
     auto material = std::make_shared<Materials::Material>();
     try {
-        material = std::make_shared<Materials::Material>(*getMaterialManager().getMaterial(uuid));
+        material = std::make_shared<Materials::Material>(*getMaterialManager().getMaterial(uuid.toStdString()));
     }
     catch (Materials::MaterialNotFound const&) {
         Base::Console().log("*** Unable to load material '{}'\n", uuid.toStdString());
     }
 
-    m_materialDisplay = material->getName();
+    m_materialDisplay = QString::fromStdString(material->getName());
     m_material->setText(m_materialDisplay);
 }
 
@@ -418,7 +418,7 @@ void MaterialTreeWidget::getFavorites()
     for (int i = 0; static_cast<long>(i) < count; i++) {
         QString key = QStringLiteral("FAV%1").arg(i);
         QString uuid = QString::fromStdString(param->GetASCII(key.toStdString().c_str(), ""));
-        if (_filter.modelIncluded(uuid)) {
+        if (_filter.modelIncluded(uuid.toStdString())) {
             _favorites.push_back(uuid);
         }
     }
@@ -435,7 +435,7 @@ void MaterialTreeWidget::getRecents()
     for (int i = 0; static_cast<long>(i) < count; i++) {
         QString key = QStringLiteral("MRU%1").arg(i);
         QString uuid = QString::fromStdString(param->GetASCII(key.toStdString().c_str(), ""));
-        if (_filter.modelIncluded(uuid)) {
+        if (_filter.modelIncluded(uuid.toStdString())) {
             _recents.push_back(uuid);
         }
     }
@@ -475,7 +475,7 @@ void MaterialTreeWidget::addRecent(const QString& uuid)
 {
     // Ensure it is a material. New, unsaved materials will not be
     try {
-        auto material = Materials::MaterialManager::getManager().getMaterial(uuid);
+        auto material = Materials::MaterialManager::getManager().getMaterial(uuid.toStdString());
         Q_UNUSED(material)
     }
     catch (const Materials::MaterialNotFound&) {
@@ -556,7 +556,7 @@ void MaterialTreeWidget::fillMaterialTree()
         }
 
         if (showLibraries) {
-            auto lib = new QStandardItem(library->getName());
+            auto lib = new QStandardItem(QString::fromStdString(library->getName()));
             lib->setFlags(Qt::ItemIsEnabled);
             addExpanded(model, lib, param);
 
@@ -606,9 +606,9 @@ void MaterialTreeWidget::addRecents(QStandardItem* parent)
 {
     for (auto& uuid : _recents) {
         try {
-            auto material = getMaterialManager().getMaterial(uuid);
+            auto material = getMaterialManager().getMaterial(uuid.toStdString());
             auto icon = MaterialsEditor::getIcon(material->getLibrary());
-            auto card = new QStandardItem(icon, material->getName());
+            auto card = new QStandardItem(icon, QString::fromStdString(material->getName()));
             card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
             card->setData(QVariant(uuid), Qt::UserRole);
 
@@ -623,9 +623,9 @@ void MaterialTreeWidget::addFavorites(QStandardItem* parent)
 {
     for (auto& uuid : _favorites) {
         try {
-            auto material = getMaterialManager().getMaterial(uuid);
+            auto material = getMaterialManager().getMaterial(uuid.toStdString());
             auto icon = MaterialsEditor::getIcon(material->getLibrary());
-            auto card = new QStandardItem(icon, material->getName());
+            auto card = new QStandardItem(icon, QString::fromStdString(material->getName()));
             card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
             card->setData(QVariant(uuid), Qt::UserRole);
 
@@ -637,7 +637,7 @@ void MaterialTreeWidget::addFavorites(QStandardItem* parent)
 }
 void MaterialTreeWidget::addMaterials(
     QStandardItem& parent,
-    const std::shared_ptr<std::map<QString, std::shared_ptr<Materials::MaterialTreeNode>>>&
+    const std::shared_ptr<std::map<std::string, std::shared_ptr<Materials::MaterialTreeNode>>>&
         modelTree,
     const QIcon& folderIcon,
     const QIcon& icon,
@@ -647,16 +647,16 @@ void MaterialTreeWidget::addMaterials(
     for (auto& mat : *modelTree) {
         auto nodePtr = mat.second;
         if (nodePtr->getType() == Materials::MaterialTreeNode::NodeType::DataNode) {
-            QString uuid = nodePtr->getUUID();
+            const QString uuid = QString::fromStdString(nodePtr->getUUID());
 
-            auto card = new QStandardItem(icon, mat.first);
+            auto card = new QStandardItem(icon, QString::fromStdString(mat.first));
             card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
             card->setData(QVariant(uuid), Qt::UserRole);
 
             addExpanded(&parent, card);
         }
         else {
-            auto node = new QStandardItem(folderIcon, mat.first);
+            auto node = new QStandardItem(folderIcon, QString::fromStdString(mat.first));
             addExpanded(&parent, node, childParam);
             node->setFlags(Qt::ItemIsEnabled);
             auto treeMap = nodePtr->getFolder();
@@ -692,7 +692,7 @@ void MaterialTreeWidget::onSelectMaterial(const QItemSelection& selected,
     std::string _uuid = uuid.toStdString();
 
     if (!uuid.isEmpty()) {
-        Q_EMIT materialSelected(getMaterialManager().getMaterial(uuid));
+        Q_EMIT materialSelected(getMaterialManager().getMaterial(uuid.toStdString()));
         Q_EMIT onMaterial(uuid);
     }
 }

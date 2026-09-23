@@ -87,7 +87,7 @@ Materials::MaterialValue::ValueType MaterialDelegate::getType(const QModelIndex&
         propertyType = group->child(row, 2)->text();
     }
 
-    return Materials::MaterialValue::mapType(propertyType);
+    return Materials::MaterialValue::mapType(propertyType.toStdString());
 }
 
 QString MaterialDelegate::getUnits(const QModelIndex& index) const
@@ -121,7 +121,7 @@ QVariant MaterialDelegate::getValue(const QModelIndex& index) const
     if (group->child(row, 1)) {
         auto material = group->child(row, 1)->data().value<std::shared_ptr<Materials::Material>>();
         // auto propertyName = group->child(row, 0)->text();
-        auto propertyName = group->child(row, 0)->data().toString();
+        auto propertyName = group->child(row, 0)->data().toString().toStdString();
         propertyValue = material->getProperty(propertyName)->getValue();
     }
     return propertyValue;
@@ -141,8 +141,7 @@ void MaterialDelegate::setValue(QAbstractItemModel* model,
     int row = index.row();
     if (group->child(row, 1)) {
         auto material = group->child(row, 1)->data().value<std::shared_ptr<Materials::Material>>();
-        auto propertyName = group->child(row, 0)->data().toString();
-        std::string _name = propertyName.toStdString();
+        auto propertyName = group->child(row, 0)->data().toString().toStdString();
         auto property = material->getProperty(propertyName);
 
         try {
@@ -153,24 +152,24 @@ void MaterialDelegate::setValue(QAbstractItemModel* model,
             auto quantity = value.value<Base::Quantity>();
             Base::Console().log("Units mismatch '{}' = '{}', "
                                 "setting to default property units '{}'\n",
-                                propertyName.toStdString(),
+                                propertyName,
                                 quantity.getUserString(),
-                                property->getUnits().toStdString());
+                                property->getUnits());
 
             QMessageBox msgBox;
             msgBox.setWindowTitle(QStringLiteral("Property Units Mismatch"));
             msgBox.setText(QStringLiteral("Units mismatch '%1' = '%2', "
                            "setting to default property units '%3'\n")
-                           .arg(propertyName)
+                           .arg(QString::fromStdString(propertyName))
                            .arg(QString::fromStdString(quantity.getUserString()))
-                           .arg(property->getUnits()));
+                           .arg(QString::fromStdString(property->getUnits())));
             msgBox.exec();
 
             property->setQuantity(
-                Base::Quantity(quantity.getValue(), property->getUnits().toStdString()));
+                Base::Quantity(quantity.getValue(), property->getUnits()));
         }
 
-        group->child(row, 1)->setText(property->getString());
+        group->child(row, 1)->setText(QString::fromStdString(property->getString()));
     }
 
     notifyChanged(model, index);
@@ -190,11 +189,13 @@ void MaterialDelegate::notifyChanged(const QAbstractItemModel* model,
     if (group->child(row, 1)) {
         auto material = group->child(row, 1)->data().value<std::shared_ptr<Materials::Material>>();
         // auto propertyName = group->child(row, 0)->text();
-        auto propertyName = group->child(row, 0)->data().toString();
+        auto propertyName = group->child(row, 0)->data().toString().toStdString();
         auto propertyValue = material->getProperty(propertyName)->getValue();
         material->setEditStateAlter();
 
-        Q_EMIT const_cast<MaterialDelegate*>(this)->propertyChange(propertyName, propertyValue);
+        Q_EMIT const_cast<MaterialDelegate*>(this)->propertyChange(
+            QString::fromStdString(propertyName),
+            propertyValue);
     }
 }
 

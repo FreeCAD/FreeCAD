@@ -21,8 +21,10 @@
  *                                                                         *
  **************************************************************************/
 
+#include <format>
+#include <string>
+
 #include <QMetaType>
-#include <QRegularExpression>
 
 
 #include <App/Application.h>
@@ -39,24 +41,24 @@ using namespace Materials;
 
 TYPESYSTEM_SOURCE(Materials::MaterialValue, Base::BaseClass)
 
-QMap<QString, MaterialValue::ValueType> MaterialValue::_typeMap {
-    {QStringLiteral("String"), String},
-    {QStringLiteral("Boolean"), Boolean},
-    {QStringLiteral("Integer"), Integer},
-    {QStringLiteral("Float"), Float},
-    {QStringLiteral("Quantity"), Quantity},
-    {QStringLiteral("Distribution"), Distribution},
-    {QStringLiteral("List"), List},
-    {QStringLiteral("2DArray"), Array2D},
-    {QStringLiteral("3DArray"), Array3D},
-    {QStringLiteral("Color"), Color},
-    {QStringLiteral("Image"), Image},
-    {QStringLiteral("File"), File},
-    {QStringLiteral("URL"), URL},
-    {QStringLiteral("MultiLineString"), MultiLineString},
-    {QStringLiteral("FileList"), FileList},
-    {QStringLiteral("ImageList"), ImageList},
-    {QStringLiteral("SVG"), SVG}};
+const std::map<std::string, MaterialValue::ValueType> MaterialValue::_typeMap {
+    {"String", String},
+    {"Boolean", Boolean},
+    {"Integer", Integer},
+    {"Float", Float},
+    {"Quantity", Quantity},
+    {"Distribution", Distribution},
+    {"List", List},
+    {"2DArray", Array2D},
+    {"3DArray", Array3D},
+    {"Color", Color},
+    {"Image", Image},
+    {"File", File},
+    {"URL", URL},
+    {"MultiLineString", MultiLineString},
+    {"FileList", FileList},
+    {"ImageList", ImageList},
+    {"SVG", SVG}};
 
 MaterialValue::MaterialValue()
     : _valueType(None)
@@ -140,18 +142,23 @@ void MaterialValue::validate(const MaterialValue& other) const
     }
 }
 
-QString MaterialValue::escapeString(const QString& source)
+std::string MaterialValue::escapeString(const std::string& source)
 {
-    QString res = source;
-    res.replace(QStringLiteral("\\"), QStringLiteral("\\\\"));
-    res.replace(QStringLiteral("\""), QStringLiteral("\\\""));
+    std::string res;
+    for (const char character : source) {
+        if (character == '\\' || character == '"') {
+            res += '\\';
+        }
+        res += character;
+    }
     return res;
 }
 
-MaterialValue::ValueType MaterialValue::mapType(const QString& stringType)
+MaterialValue::ValueType MaterialValue::mapType(const std::string& stringType)
 {
     // If not found, return None
-    return _typeMap.value(stringType, None);
+    const auto type = _typeMap.find(stringType);
+    return type == _typeMap.end() ? None : type->second;
 }
 
 void MaterialValue::setInitialValue(ValueType inherited)
@@ -237,57 +244,62 @@ bool MaterialValue::isEmpty() const
     return false;
 }
 
-QString MaterialValue::getYAMLStringImage() const
+std::string MaterialValue::getYAMLStringImage() const
 {
-    QString yaml;
-    yaml = QStringLiteral(" |-2");
-    QString base64 = getValue().toString();
-    while (!base64.isEmpty()) {
-        yaml += QStringLiteral("\n      ") + base64.left(74);
-        base64.remove(0, 74);
+    std::string yaml {" |-2"};
+    const std::string base64 = getValue().toString().toStdString();
+    for (std::size_t pos = 0; pos < base64.size(); pos += 74) {
+        yaml += "\n      " + base64.substr(pos, 74);
     }
     return yaml;
 }
 
-QString MaterialValue::getYAMLStringList() const
+std::string MaterialValue::getYAMLStringList() const
 {
-    QString yaml;
+    std::string yaml;
     for (auto& it : getList()) {
-        yaml += QStringLiteral("\n      - \"") + escapeString(it.toString())
-            + QStringLiteral("\"");
+        yaml += "\n      - \"" + escapeString(it.toString().toStdString()) + '"';
     }
     return yaml;
 }
 
-QString MaterialValue::getYAMLStringImageList() const
+std::string MaterialValue::getYAMLStringImageList() const
 {
-    QString yaml;
+    std::string yaml;
     for (auto& it : getList()) {
-        yaml += QStringLiteral("\n      - |-2");
-        QString base64 = it.toString();
-        while (!base64.isEmpty()) {
-            yaml += QStringLiteral("\n        ") + base64.left(72);
-            base64.remove(0, 72);
+        yaml += "\n      - |-2";
+        const std::string base64 = it.toString().toStdString();
+        for (std::size_t pos = 0; pos < base64.size(); pos += 72) {
+            yaml += "\n        " + base64.substr(pos, 72);
         }
     }
     return yaml;
 }
 
-QString MaterialValue::getYAMLStringMultiLine() const
+std::string MaterialValue::getYAMLStringMultiLine() const
 {
-    QString yaml;
-    yaml = QStringLiteral(" |2");
-    auto list =
-        getValue().toString().split(QRegularExpression(QStringLiteral("[\r\n]")), Qt::SkipEmptyParts);
-    for (auto& it : list) {
-        yaml += QStringLiteral("\n      ") + it;
+    std::string yaml {" |2"};
+    const std::string text = getValue().toString().toStdString();
+
+    // every non empty line of the text, indented
+    for (std::size_t pos = 0; pos < text.size();) {
+        const auto end = text.find_first_of("\r\n", pos);
+        if (end != pos) {
+            yaml += "\n      ";
+            yaml += text.substr(pos, end == std::string::npos ? end : end - pos);
+        }
+        if (end == std::string::npos) {
+            break;
+        }
+        pos = end + 1;
     }
+
     return yaml;
 }
 
-QString MaterialValue::getYAMLString() const
+std::string MaterialValue::getYAMLString() const
 {
-    QString yaml;
+    std::string yaml;
     if (!isNull()) {
         if (getType() == MaterialValue::Image) {
             return getYAMLStringImage();
@@ -303,27 +315,25 @@ QString MaterialValue::getYAMLString() const
         }
         if (getType() == MaterialValue::Quantity) {
             auto quantity = getValue().value<Base::Quantity>();
-            yaml += QString::fromStdString(quantity.getUserString());
+            yaml += quantity.getUserString();
         }
         else if (getType() == MaterialValue::Float) {
             auto value = getValue();
             if (!value.isNull()) {
-                yaml += QStringLiteral("%1").arg(value.toFloat(), 0, 'g', 6);
+                yaml += std::format("{:g}", value.toFloat());
             }
         }
         else if (getType() == MaterialValue::List) {
             for (auto& it : getList()) {
-                yaml += QStringLiteral("\n      - \"") + escapeString(it.toString())
-                    + QStringLiteral("\"");
+                yaml += "\n      - \"" + escapeString(it.toString().toStdString()) + '"';
             }
             return yaml;
         }
         else {
-            yaml += getValue().toString();
+            yaml += getValue().toString().toStdString();
         }
     }
-    yaml = QStringLiteral(" \"") + escapeString(yaml) + QStringLiteral("\"");
-    return yaml;
+    return " \"" + escapeString(yaml) + '"';
 }
 
 const Base::QuantityFormat MaterialValue::getQuantityFormat()
@@ -521,47 +531,46 @@ void Array2D::dump() const
     }
 }
 
-QString Array2D::getYAMLString() const
+std::string Array2D::getYAMLString() const
 {
     if (isNull()) {
-        return QString();
+        return {};
     }
 
     // Set the correct indentation. 9 chars in this case
-    QString pad;
-    pad.fill(QChar::fromLatin1(' '), 9);
+    const std::string pad(9, ' ');
 
     // Save the array contents
-    QString yaml = QStringLiteral("\n      - [");
+    std::string yaml {"\n      - ["};
     bool firstRow = true;
     for (auto& row : _rows) {
         if (!firstRow) {
             // Each row is on its own line, padded for correct indentation
-            yaml += QStringLiteral(",\n") + pad;
+            yaml += ",\n" + pad;
         }
         else {
             firstRow = false;
         }
-        yaml += QStringLiteral("[");
+        yaml += '[';
 
         bool first = true;
         for (auto& column : *row) {
             if (!first) {
                 // TODO: Fix for arrays with too many columns to fit on a single line
-                yaml += QStringLiteral(", ");
+                yaml += ", ";
             }
             else {
                 first = false;
             }
-            yaml += QStringLiteral("\"");
+            yaml += '"';
             auto quantity = column.value<Base::Quantity>();
-            yaml += QString::fromStdString(quantity.getUserString());
-            yaml += QStringLiteral("\"");
+            yaml += quantity.getUserString();
+            yaml += '"';
         }
 
-        yaml += QStringLiteral("]");
+        yaml += ']';
     }
-    yaml += QStringLiteral("]");
+    yaml += ']';
     return yaml;
 }
 
@@ -928,63 +937,60 @@ void Array3D::setCurrentDepth(int depth)
     }
 }
 
-QString Array3D::getYAMLString() const
+std::string Array3D::getYAMLString() const
 {
     if (isNull()) {
-        return QString();
+        return {};
     }
 
     // Set the correct indentation. 7 chars + name length
-    QString pad;
-    pad.fill(QChar::fromLatin1(' '), 9);
+    const std::string pad(9, ' ');
 
     // Save the array contents
-    QString yaml = QStringLiteral("\n      - [");
+    std::string yaml {"\n      - ["};
     for (int depth = 0; depth < this->depth(); depth++) {
         if (depth > 0) {
             // Each row is on its own line, padded for correct indentation
-            yaml += QStringLiteral(",\n") + pad;
+            yaml += ",\n" + pad;
         }
 
-        yaml += QStringLiteral("\"");
-        auto value = QString::fromStdString(getDepthValue(depth).getUserString());
+        yaml += '"';
+        const std::string value = getDepthValue(depth).getUserString();
         yaml += value;
-        yaml += QStringLiteral("\": [");
+        yaml += "\": [";
 
-        QString pad2;
-        pad2.fill(QChar::fromLatin1(' '), 14 + value.length());
+        const std::string pad2(14 + value.length(), ' ');
 
         bool firstRow = true;
         auto rows = getTable(depth);
         for (auto& row : *rows) {
             if (!firstRow) {
                 // Each row is on its own line, padded for correct indentation
-                yaml += QStringLiteral(",\n") + pad2;
+                yaml += ",\n" + pad2;
             }
             else {
                 firstRow = false;
             }
-            yaml += QStringLiteral("[");
+            yaml += '[';
 
             bool first = true;
             for (auto& column : *row) {
                 if (!first) {
                     // TODO: Fix for arrays with too many columns to fit on a single line
-                    yaml += QStringLiteral(", ");
+                    yaml += ", ";
                 }
                 else {
                     first = false;
                 }
-                yaml += QStringLiteral("\"");
-                // Base::Quantity quantity = column.value<Base::Quantity>();
-                yaml += QString::fromStdString(column.getUserString());
-                yaml += QStringLiteral("\"");
+                yaml += '"';
+                yaml += column.getUserString();
+                yaml += '"';
             }
 
-            yaml += QStringLiteral("]");
+            yaml += ']';
         }
-        yaml += QStringLiteral("]");
+        yaml += ']';
     }
-    yaml += QStringLiteral("]");
+    yaml += ']';
     return yaml;
 }

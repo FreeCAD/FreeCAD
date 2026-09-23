@@ -56,7 +56,7 @@ int ModelPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 Py::String ModelPy::getLibraryName() const
 {
     auto library = getModelPtr()->getLibrary();
-    return Py::String(library ? library->getName().toStdString() : "");
+    return Py::String(library ? library->getName() : "");
 }
 
 Py::String ModelPy::getLibraryRoot() const
@@ -65,7 +65,7 @@ Py::String ModelPy::getLibraryRoot() const
     if (!library->isLocal()) {
         return "";
     }
-    return Py::String(library ? library->getDirectoryPath().toStdString() : "");
+    return Py::String(library ? library->getDirectoryPath() : "");
 }
 
 Py::Object ModelPy::getLibraryIcon() const
@@ -76,12 +76,12 @@ Py::Object ModelPy::getLibraryIcon() const
 
 Py::String ModelPy::getName() const
 {
-    return Py::String(getModelPtr()->getName().toStdString());
+    return Py::String(getModelPtr()->getName());
 }
 
 void ModelPy::setName(Py::String arg)
 {
-    getModelPtr()->setName(QString::fromStdString(arg));
+    getModelPtr()->setName(arg);
 }
 
 Py::String ModelPy::getType() const
@@ -105,47 +105,47 @@ void ModelPy::setType(Py::String arg)
 
 Py::String ModelPy::getDirectory() const
 {
-    return Py::String(getModelPtr()->getDirectory().toStdString());
+    return Py::String(getModelPtr()->getDirectory());
 }
 
 void ModelPy::setDirectory(Py::String arg)
 {
-    getModelPtr()->setDirectory(QString::fromStdString(arg));
+    getModelPtr()->setDirectory(arg);
 }
 
 Py::String ModelPy::getUUID() const
 {
-    return Py::String(getModelPtr()->getUUID().toStdString());
+    return Py::String(getModelPtr()->getUUID());
 }
 
 Py::String ModelPy::getDescription() const
 {
-    return Py::String(getModelPtr()->getDescription().toStdString());
+    return Py::String(getModelPtr()->getDescription());
 }
 
 void ModelPy::setDescription(Py::String arg)
 {
-    getModelPtr()->setDescription(QString::fromStdString(arg));
+    getModelPtr()->setDescription(arg);
 }
 
 Py::String ModelPy::getURL() const
 {
-    return Py::String(getModelPtr()->getURL().toStdString());
+    return Py::String(getModelPtr()->getURL());
 }
 
 void ModelPy::setURL(Py::String arg)
 {
-    getModelPtr()->setURL(QString::fromStdString(arg));
+    getModelPtr()->setURL(arg);
 }
 
 Py::String ModelPy::getDOI() const
 {
-    return Py::String(getModelPtr()->getDOI().toStdString());
+    return Py::String(getModelPtr()->getDOI());
 }
 
 void ModelPy::setDOI(Py::String arg)
 {
-    getModelPtr()->setDOI(QString::fromStdString(arg));
+    getModelPtr()->setDOI(arg);
 }
 
 Py::List ModelPy::getInherited() const
@@ -154,7 +154,7 @@ Py::List ModelPy::getInherited() const
     Py::List list;
 
     for (auto it = inherited.begin(); it != inherited.end(); it++) {
-        list.append(Py::String(it->toStdString()));
+        list.append(Py::String(*it));
     }
 
     return list;
@@ -165,11 +165,11 @@ Py::Dict ModelPy::getProperties() const
     Py::Dict dict;
 
     for (auto it = getModelPtr()->begin(); it != getModelPtr()->end(); it++) {
-        QString key = it->first;
+        const std::string& key = it->first;
         ModelProperty& modelProperty = it->second;
 
         PyObject* modelPropertyPy = new ModelPropertyPy(new ModelProperty(modelProperty));
-        dict.setItem(Py::String(key.toStdString()), Py::Object(modelPropertyPy, true));
+        dict.setItem(Py::String(key), Py::Object(modelPropertyPy, true));
     }
 
     return dict;
@@ -182,7 +182,7 @@ PyObject* ModelPy::addInheritance(PyObject* args)
         return nullptr;
     }
 
-    getModelPtr()->addInheritance(QString::fromStdString(uuid));
+    getModelPtr()->addInheritance(uuid);
     Py_INCREF(Py_None);
     return Py_None;
 }

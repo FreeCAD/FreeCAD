@@ -47,14 +47,15 @@ Array3D::Array3D(const QString& propertyName,
 {
     ui->setupUi(this);
 
-    if (material->hasPhysicalProperty(propertyName)) {
-        _property = material->getPhysicalProperty(propertyName);
+    const std::string name = propertyName.toStdString();
+    if (material->hasPhysicalProperty(name)) {
+        _property = material->getPhysicalProperty(name);
     }
-    else if (material->hasAppearanceProperty(propertyName)) {
-        _property = material->getAppearanceProperty(propertyName);
+    else if (material->hasAppearanceProperty(name)) {
+        _property = material->getAppearanceProperty(name);
     }
     else {
-        Base::Console().log("Property '{}' not found\n", propertyName.toStdString());
+        Base::Console().log("Property '{}' not found\n", name);
         _property = nullptr;
     }
     if (_property) {
@@ -107,7 +108,9 @@ void Array3D::setDepthColumnDelegate(QTableView* table)
 {
     auto& column = _property->getColumn(0);
     table->setItemDelegateForColumn(0,
-                                    new ArrayDelegate(column.getType(), column.getUnits(), this));
+                                    new ArrayDelegate(column.getType(),
+                              QString::fromStdString(column.getUnits()),
+                              this));
 }
 
 void Array3D::setDepthColumnWidth(QTableView* table)
@@ -178,7 +181,9 @@ void Array3D::setColumnDelegates(QTableView* table)
         auto& column = _property->getColumn(i);
         table->setItemDelegateForColumn(
             i,
-            new ArrayDelegate(column.getType(), column.getUnits(), this));
+            new ArrayDelegate(column.getType(),
+                              QString::fromStdString(column.getUnits()),
+                              this));
     }
 }
 

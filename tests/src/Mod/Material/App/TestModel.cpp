@@ -23,8 +23,7 @@
 #include <gtest/gtest.h>
 
 #include <iterator>
-
-#include <QString>
+#include <string>
 
 #include <App/Application.h>
 #include <src/App/InitApplication.h>
@@ -88,12 +87,12 @@ TEST_F(TestModel, TestModelLoad)
 {
     ASSERT_NE(_modelManager, nullptr);
 
-    auto density = _modelManager->getModel(QStringLiteral("454661e5-265b-4320-8e6f-fcf6223ac3af"));
-    EXPECT_EQ(density->getName(), QStringLiteral("Density"));
-    EXPECT_EQ(density->getUUID(), QStringLiteral("454661e5-265b-4320-8e6f-fcf6223ac3af"));
+    auto density = _modelManager->getModel("454661e5-265b-4320-8e6f-fcf6223ac3af");
+    EXPECT_EQ(density->getName(), "Density");
+    EXPECT_EQ(density->getUUID(), "454661e5-265b-4320-8e6f-fcf6223ac3af");
 
-    auto& prop = (*density)[QStringLiteral("Density")];
-    EXPECT_EQ(prop.getName(), QStringLiteral("Density"));
+    auto& prop = (*density)["Density"];
+    EXPECT_EQ(prop.getName(), "Density");
 }
 
 TEST_F(TestModel, TestModelByPath)
@@ -101,64 +100,64 @@ TEST_F(TestModel, TestModelByPath)
     ASSERT_NE(_modelManager, nullptr);
 
     auto linearElastic = _modelManager->getModelByPath(
-        QStringLiteral("Mechanical/LinearElastic.yml"),
-        QStringLiteral("System"));
+        "Mechanical/LinearElastic.yml",
+        "System");
     EXPECT_NE(&linearElastic, nullptr);
-    EXPECT_EQ(linearElastic->getName(), QStringLiteral("Linear Elastic"));
-    EXPECT_EQ(linearElastic->getUUID(), QStringLiteral("7b561d1d-fb9b-44f6-9da9-56a4f74d7536"));
+    EXPECT_EQ(linearElastic->getName(), "Linear Elastic");
+    EXPECT_EQ(linearElastic->getUUID(), "7b561d1d-fb9b-44f6-9da9-56a4f74d7536");
 
     // The same but with a leading '/'
     auto linearElastic2 = _modelManager->getModelByPath(
-        QStringLiteral("/Mechanical/LinearElastic.yml"),
-        QStringLiteral("System"));
+        "/Mechanical/LinearElastic.yml",
+        "System");
     EXPECT_NE(&linearElastic2, nullptr);
-    EXPECT_EQ(linearElastic2->getName(), QStringLiteral("Linear Elastic"));
-    EXPECT_EQ(linearElastic2->getUUID(), QStringLiteral("7b561d1d-fb9b-44f6-9da9-56a4f74d7536"));
+    EXPECT_EQ(linearElastic2->getName(), "Linear Elastic");
+    EXPECT_EQ(linearElastic2->getUUID(), "7b561d1d-fb9b-44f6-9da9-56a4f74d7536");
 
     // Same with the library name as a prefix
     auto linearElastic3 = _modelManager->getModelByPath(
-        QStringLiteral("/System/Mechanical/LinearElastic.yml"),
-        QStringLiteral("System"));
+        "/System/Mechanical/LinearElastic.yml",
+        "System");
     EXPECT_NE(&linearElastic3, nullptr);
-    EXPECT_EQ(linearElastic3->getName(), QStringLiteral("Linear Elastic"));
-    EXPECT_EQ(linearElastic3->getUUID(), QStringLiteral("7b561d1d-fb9b-44f6-9da9-56a4f74d7536"));
+    EXPECT_EQ(linearElastic3->getName(), "Linear Elastic");
+    EXPECT_EQ(linearElastic3->getUUID(), "7b561d1d-fb9b-44f6-9da9-56a4f74d7536");
 
     // Test with the file system path
     ASSERT_NO_THROW(linearElastic->getLibrary());
     ASSERT_NO_THROW(linearElastic->getLibrary()->getName());
     ASSERT_NO_THROW(linearElastic->getLibrary()->getDirectoryPath());
-    EXPECT_EQ(linearElastic->getLibrary()->getName(), QStringLiteral("System"));
-    QString path = linearElastic->getLibrary()->getDirectoryPath() + QStringLiteral("/Mechanical/LinearElastic.yml");
+    EXPECT_EQ(linearElastic->getLibrary()->getName(), "System");
+    const std::string path = linearElastic->getLibrary()->getDirectoryPath() + "/Mechanical/LinearElastic.yml";
 
     ASSERT_NO_THROW(_modelManager->getModelByPath(path));
     auto linearElastic4 = _modelManager->getModelByPath(path);
     EXPECT_NE(&linearElastic4, nullptr);
-    EXPECT_EQ(linearElastic4->getName(), QStringLiteral("Linear Elastic"));
-    EXPECT_EQ(linearElastic4->getUUID(), QStringLiteral("7b561d1d-fb9b-44f6-9da9-56a4f74d7536"));
+    EXPECT_EQ(linearElastic4->getName(), "Linear Elastic");
+    EXPECT_EQ(linearElastic4->getUUID(), "7b561d1d-fb9b-44f6-9da9-56a4f74d7536");
 }
 
 TEST_F(TestModel, TestValidateProperties)
 {
     // The local library and the matching remote one
-    const Materials::Library library {QStringLiteral("Library"), QByteArray(), true};
+    const Materials::Library library {"Library", QByteArray(), true};
     auto localLibrary = std::make_shared<Materials::ModelLibrary>(library);
     auto remoteLibrary = std::make_shared<Materials::ModelLibrary>(library);
 
     Materials::Model model;
     model.setType(Materials::Model::ModelType_Physical);
     model.setLibrary(localLibrary);
-    model.setUUID(QStringLiteral("d0e6b5a4-3a1f-4d4e-8a5b-7c3f2b1a0987"));
+    model.setUUID("d0e6b5a4-3a1f-4d4e-8a5b-7c3f2b1a0987");
     Materials::Model remote;
     remote.setType(Materials::Model::ModelType_Physical);
     remote.setLibrary(remoteLibrary);
     remote.setUUID(model.getUUID());
 
-    Materials::ModelProperty density {QStringLiteral("Density"),
-                                     QStringLiteral("Density"),
-                                     QStringLiteral("Quantity"),
-                                     QStringLiteral("kg/m^3"),
-                                     QString(),
-                                     QString()};
+    Materials::ModelProperty density {"Density",
+                                     "Density",
+                                     "Quantity",
+                                     "kg/m^3",
+                                     std::string(),
+                                     std::string()};
     model.addProperty(density);
 
     // The same property on both sides validates
@@ -171,12 +170,12 @@ TEST_F(TestModel, TestValidateProperties)
     other.setType(Materials::Model::ModelType_Physical);
     other.setLibrary(remoteLibrary);
     other.setUUID(model.getUUID());
-    Materials::ModelProperty mass {QStringLiteral("Mass"),
-                                  QStringLiteral("Mass"),
-                                  QStringLiteral("Quantity"),
-                                  QStringLiteral("kg"),
-                                  QString(),
-                                  QString()};
+    Materials::ModelProperty mass {"Mass",
+                                  "Mass",
+                                  "Quantity",
+                                  "kg",
+                                  std::string(),
+                                  std::string()};
     other.addProperty(mass);
     EXPECT_EQ(std::distance(model.begin(), model.end()),
               std::distance(other.begin(), other.end()));

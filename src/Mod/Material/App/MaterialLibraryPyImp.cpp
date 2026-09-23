@@ -64,12 +64,12 @@ int MaterialLibraryPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 Py::String MaterialLibraryPy::getName() const
 {
     auto filterName = getMaterialLibraryPtr()->getName();
-    return {filterName.toStdString()};
+    return {filterName};
 }
 
 void MaterialLibraryPy::setName(const Py::String value)
 {
-    getMaterialLibraryPtr()->setName(QString::fromStdString(value));
+    getMaterialLibraryPtr()->setName(value);
 }
 
 Py::Object MaterialLibraryPy::getIcon() const
@@ -93,12 +93,12 @@ void MaterialLibraryPy::setIcon(const Py::Object value)
 Py::String MaterialLibraryPy::getDirectory() const
 {
     auto path = getMaterialLibraryPtr()->getDirectory();
-    return {path.toStdString()};
+    return {path};
 }
 
 void MaterialLibraryPy::setDirectory(const Py::String value)
 {
-    getMaterialLibraryPtr()->setDirectory(QString::fromStdString(value));
+    getMaterialLibraryPtr()->setDirectory(value);
 }
 
 Py::Boolean MaterialLibraryPy::getReadOnly() const

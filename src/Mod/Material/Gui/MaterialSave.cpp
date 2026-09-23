@@ -59,7 +59,8 @@ MaterialSave::MaterialSave(const std::shared_ptr<Materials::Material>& material,
     showSelectedTree();
 
     if (_material->getName().length() > 0) {
-        ui->editFilename->setText(_material->getName() + QStringLiteral(".FCMat"));
+        ui->editFilename->setText(QString::fromStdString(_material->getName())
+                                  + QStringLiteral(".FCMat"));
     }
     else {
         ui->editFilename->setText(QStringLiteral("NewMaterial.FCMat"));
@@ -131,7 +132,7 @@ void MaterialSave::onOk(bool checked)
 
     QString name = _filename.remove(QStringLiteral(".FCMat"), Qt::CaseInsensitive);
     if (name != _material->getName()) {
-        _material->setName(name);
+        _material->setName(name.toStdString());
         _material->setEditStateAlter();  // ? Does a name change count?
     }
 
@@ -141,7 +142,7 @@ void MaterialSave::onOk(bool checked)
                        + QStringLiteral(".FCMat"));
 
     auto localLibrary = std::dynamic_pointer_cast<Materials::MaterialLibraryLocal>(library);
-    if (localLibrary && localLibrary->fileExists(filepath.filePath()))
+    if (localLibrary && localLibrary->fileExists(filepath.filePath().toStdString()))
     {
         // confirm overwrite
         auto res = confirmOverwrite(_filename);
@@ -150,7 +151,7 @@ void MaterialSave::onOk(bool checked)
         }
 
         Materials::MaterialManager::getManager()
-            .saveMaterial(library, _material, filepath.filePath(), true, false, _saveInherited);
+            .saveMaterial(library, _material, filepath.filePath().toStdString(), true, false, _saveInherited);
         accept();
         return;
     }
@@ -181,7 +182,7 @@ void MaterialSave::onOk(bool checked)
     }
 
     Materials::MaterialManager::getManager()
-        .saveMaterial(library, _material, filepath.filePath(), false, saveAsCopy, _saveInherited);
+        .saveMaterial(library, _material, filepath.filePath().toStdString(), false, saveAsCopy, _saveInherited);
 
     accept();
 }
@@ -299,7 +300,8 @@ void MaterialSave::setLibraries()
             if (!library->isReadOnly()) {
                 QVariant libraryVariant;
                 libraryVariant.setValue(library);
-                ui->comboLibrary->addItem(library->getName(), libraryVariant);
+                ui->comboLibrary->addItem(QString::fromStdString(library->getName()),
+                                          libraryVariant);
             }
         }
     }
@@ -327,7 +329,7 @@ void MaterialSave::addExpanded(QTreeView* tree, QStandardItemModel* parent, QSta
 
 void MaterialSave::addMaterials(
     QStandardItem& parent,
-    const std::shared_ptr<std::map<QString, std::shared_ptr<Materials::MaterialTreeNode>>>
+    const std::shared_ptr<std::map<std::string, std::shared_ptr<Materials::MaterialTreeNode>>>
         modelTree,
     const QIcon& folderIcon,
     const QIcon& icon)
@@ -336,9 +338,9 @@ void MaterialSave::addMaterials(
     for (auto& mat : *modelTree) {
         std::shared_ptr<Materials::MaterialTreeNode> nodePtr = mat.second;
         if (nodePtr->getType() == Materials::MaterialTreeNode::NodeType::DataNode) {
-            QString uuid = nodePtr->getUUID();
+            const QString uuid = QString::fromStdString(nodePtr->getUUID());
 
-            auto card = new QStandardItem(icon, mat.first);
+            auto card = new QStandardItem(icon, QString::fromStdString(mat.first));
             card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
                            | Qt::ItemIsDropEnabled);
             card->setData(QVariant(uuid), Qt::UserRole);
@@ -346,7 +348,7 @@ void MaterialSave::addMaterials(
             addExpanded(tree, &parent, card);
         }
         else {
-            auto node = new QStandardItem(folderIcon, mat.first);
+            auto node = new QStandardItem(folderIcon, QString::fromStdString(mat.first));
             node->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
                            | Qt::ItemIsDropEnabled | Qt::ItemIsEditable);
             addExpanded(tree, &parent, node);
@@ -367,11 +369,11 @@ void MaterialSave::showSelectedTree()
         auto library = variant.value<std::shared_ptr<Materials::MaterialLibrary>>();
         auto icon = MaterialsEditor::getIcon(library);
         QIcon folderIcon(QStringLiteral(":/icons/folder.svg"));
-        _libraryName = library->getName();
+        _libraryName = QString::fromStdString(library->getName());
         _selectedPath = QStringLiteral("/") + _libraryName;
         _selectedFull = _selectedPath;
 
-        auto lib = new QStandardItem(library->getName());
+        auto lib = new QStandardItem(QString::fromStdString(library->getName()));
         lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
         addExpanded(tree, model, lib);
 
@@ -451,14 +453,14 @@ void MaterialSave::createFolder(const QString& path)
 {
     auto library = currentLibrary();
 
-    Materials::MaterialManager::getManager().createFolder(library, path);
+    Materials::MaterialManager::getManager().createFolder(library, path.toStdString());
 }
 
 void MaterialSave::renameFolder(const QString& oldPath, const QString& newPath)
 {
     auto library = currentLibrary();
 
-    Materials::MaterialManager::getManager().renameFolder(library, oldPath, newPath);
+    Materials::MaterialManager::getManager().renameFolder(library, oldPath.toStdString(), newPath.toStdString());
 }
 
 void MaterialSave::deleteRecursive(const QString& path)
@@ -466,7 +468,7 @@ void MaterialSave::deleteRecursive(const QString& path)
     // This will delete files, folders, and any children
     auto library = currentLibrary();
 
-    Materials::MaterialManager::getManager().deleteRecursive(library, path);
+    Materials::MaterialManager::getManager().deleteRecursive(library, path.toStdString());
 }
 
 void MaterialSave::onNewFolder(bool checked)

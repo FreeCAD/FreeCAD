@@ -25,7 +25,7 @@
 
 #include <memory>
 
-#include <QString>
+#include <string>
 #include <yaml-cpp/yaml.h>
 
 #include "Model.h"
@@ -38,10 +38,10 @@ class ModelEntry
 {
 public:
     ModelEntry(const std::shared_ptr<ModelLibraryLocal>& library,
-               const QString& baseName,
-               const QString& modelName,
-               const QString& dir,
-               const QString& modelUuid,
+               const std::string& baseName,
+               const std::string& modelName,
+               const std::string& dir,
+               const std::string& modelUuid,
                const YAML::Node& modelData);
     virtual ~ModelEntry() = default;
 
@@ -49,19 +49,19 @@ public:
     {
         return _library;
     }
-    const QString getBase() const
+    const std::string& getBase() const
     {
         return _base;
     }
-    const QString getName() const
+    const std::string& getName() const
     {
         return _name;
     }
-    const QString getDirectory() const
+    const std::string& getDirectory() const
     {
         return _directory;
     }
-    const QString getUUID() const
+    const std::string& getUUID() const
     {
         return _uuid;
     }
@@ -87,10 +87,10 @@ private:
     ModelEntry();
 
     std::shared_ptr<ModelLibraryLocal> _library;
-    QString _base;
-    QString _name;
-    QString _directory;
-    QString _uuid;
+    std::string _base;
+    std::string _name;
+    std::string _directory;
+    std::string _uuid;
     YAML::Node _model;
     bool _dereferenced;
 };
@@ -98,35 +98,35 @@ private:
 class ModelLoader
 {
 public:
-    ModelLoader(std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> modelMap,
+    ModelLoader(std::shared_ptr<std::map<std::string, std::shared_ptr<Model>>> modelMap,
                 std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> libraryList);
     virtual ~ModelLoader() = default;
 
-    static const QString getUUIDFromPath(const QString& path);
+    static std::string getUUIDFromPath(const std::string& path);
 
 private:
     ModelLoader();
 
     void getModelLibraries();
-    QString
+    std::string
     yamlValue(const YAML::Node& node, const std::string& key, const std::string& defaultValue);
     void addToTree(std::shared_ptr<ModelEntry> model,
-                   std::map<std::pair<QString, QString>, QString>* inheritances);
+                   std::map<std::pair<std::string, std::string>, std::string>* inheritances);
     void showYaml(const YAML::Node& yaml) const;
-    void dereference(const QString& uuid,
+    void dereference(const std::string& uuid,
                      std::shared_ptr<ModelEntry> parent,
                      std::shared_ptr<ModelEntry> child,
-                     std::map<std::pair<QString, QString>, QString>* inheritances);
+                     std::map<std::pair<std::string, std::string>, std::string>* inheritances);
     void dereference(std::shared_ptr<ModelEntry> model,
-                     std::map<std::pair<QString, QString>, QString>* inheritances);
+                     std::map<std::pair<std::string, std::string>, std::string>* inheritances);
     std::shared_ptr<ModelEntry> getModelFromPath(std::shared_ptr<ModelLibrary> library,
-                                                 const QString& path) const;
+                                                 const std::string& path) const;
     void addLibrary(std::shared_ptr<ModelLibraryLocal> model);
     void loadLibrary(std::shared_ptr<ModelLibraryLocal> library);
     void loadLibraries();
 
-    static std::unique_ptr<std::map<QString, std::shared_ptr<ModelEntry>>> _modelEntryMap;
-    std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> _modelMap;
+    static std::unique_ptr<std::map<std::string, std::shared_ptr<ModelEntry>>> _modelEntryMap;
+    std::shared_ptr<std::map<std::string, std::shared_ptr<Model>>> _modelMap;
     std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> _libraryList;
 };
 

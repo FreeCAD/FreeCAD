@@ -55,39 +55,39 @@ public:
     // Library management
     std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> getLibraries();
     std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> getLocalLibraries();
-    std::shared_ptr<ModelLibrary> getLibrary(const QString& name) const;
-    void createLibrary(const QString& libraryName,
-                       const QString& iconPath,
+    std::shared_ptr<ModelLibrary> getLibrary(const std::string& name) const;
+    void createLibrary(const std::string& libraryName,
+                       const std::string& iconPath,
                        bool readOnly = true);
-    void createLocalLibrary(const QString& libraryName,
-                       const QString& directory,
-                       const QString& icon,
+    void createLocalLibrary(const std::string& libraryName,
+                       const std::string& directory,
+                       const std::string& icon,
                        bool readOnly = true);
-    void renameLibrary(const QString& libraryName, const QString& newName);
-    void changeIcon(const QString& libraryName, const QString& icon);
-    void removeLibrary(const QString& libraryName);
+    void renameLibrary(const std::string& libraryName, const std::string& newName);
+    void changeIcon(const std::string& libraryName, const std::string& icon);
+    void removeLibrary(const std::string& libraryName);
     std::shared_ptr<std::vector<LibraryObject>>
-    libraryModels(const QString& libraryName);
-    bool isLocalLibrary(const QString& libraryName);
+    libraryModels(const std::string& libraryName);
+    bool isLocalLibrary(const std::string& libraryName);
 
     // Folder management
 
     // Tree management
-    std::shared_ptr<std::map<QString, std::shared_ptr<ModelTreeNode>>>
+    std::shared_ptr<std::map<std::string, std::shared_ptr<ModelTreeNode>>>
     getModelTree(std::shared_ptr<ModelLibrary> library, ModelFilter filter = ModelFilter_None) const
     {
         return library->getModelTree(filter);
     }
 
     // Model management
-    std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> getModels();
-    std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> getLocalModels();
-    std::shared_ptr<Model> getModel(const QString& uuid) const;
-    std::shared_ptr<Model> getModel(const QString& libraryName, const QString& uuid) const;
-    std::shared_ptr<Model> getModelByPath(const QString& path) const;
-    std::shared_ptr<Model> getModelByPath(const QString& path, const QString& lib) const;
+    std::shared_ptr<std::map<std::string, std::shared_ptr<Model>>> getModels();
+    std::shared_ptr<std::map<std::string, std::shared_ptr<Model>>> getLocalModels();
+    std::shared_ptr<Model> getModel(const std::string& uuid) const;
+    std::shared_ptr<Model> getModel(const std::string& libraryName, const std::string& uuid) const;
+    std::shared_ptr<Model> getModelByPath(const std::string& path) const;
+    std::shared_ptr<Model> getModelByPath(const std::string& path, const std::string& lib) const;
 
-    static bool isModel(const QString& file);
+    static bool isModel(const std::string& file);
     static bool passFilter(ModelFilter filter, Model::ModelType modelType);
 
     /// Observer message from the ParameterGrp

@@ -27,7 +27,7 @@
 
 #include <QMetaType>
 #include <QSet>
-#include <QString>
+#include <string>
 
 #include <Base/BaseClass.h>
 
@@ -151,11 +151,11 @@ public:
      * Filter name when used in a list of filters. The name should be
      * unique within the list.
      */
-    QString name() const
+    const std::string& name() const
     {
         return _name;
     }
-    void setName(const QString& name)
+    void setName(const std::string& name)
     {
         _name = name;
     }
@@ -166,13 +166,13 @@ public:
      * Models only need to be included in one set.
      */
     bool modelIncluded(const Material& material) const;
-    bool modelIncluded(const QString& uuid) const;
+    bool modelIncluded(const std::string& uuid) const;
 
     /* Add model UUIDs for required models, or models that are both required
      * and complete.
      */
-    void addRequired(const QString& uuid);
-    void addRequiredComplete(const QString& uuid);
+    void addRequired(const std::string& uuid);
+    void addRequiredComplete(const std::string& uuid);
 
     /* Require that the materials have physical properties defined.
      */
@@ -185,11 +185,11 @@ public:
     /* These functions shouldn't normally be called directly. They are
      * for use by conversion methods, such as MaterialFilterPy
      */
-    const QSet<QString>* getRequired() const
+    const std::set<std::string>* getRequired() const
     {
         return &_required;
     }
-    const QSet<QString>* getRequiredComplete() const
+    const std::set<std::string>* getRequiredComplete() const
     {
         return &_requiredComplete;
     }
@@ -197,9 +197,9 @@ public:
     void clear();
 
 private:
-    QString _name;
-    QSet<QString> _required;
-    QSet<QString> _requiredComplete;
+    std::string _name;
+    std::set<std::string> _required;
+    std::set<std::string> _requiredComplete;
     bool _requirePhysical;
     bool _requireAppearance;
 };

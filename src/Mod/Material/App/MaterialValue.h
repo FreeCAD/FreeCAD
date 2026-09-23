@@ -23,7 +23,9 @@
 
 #pragma once
 
+#include <map>
 #include <memory>
+#include <string>
 
 #include <QList>
 #include <QMetaType>
@@ -105,9 +107,9 @@ public:
     }
     void setList(const QList<QVariant>& value);
 
-    virtual QString getYAMLString() const;
-    static QString escapeString(const QString& source);
-    static ValueType mapType(const QString& stringType);
+    virtual std::string getYAMLString() const;
+    static std::string escapeString(const std::string& source);
+    static ValueType mapType(const std::string& stringType);
 
     static const Base::QuantityFormat getQuantityFormat();
 
@@ -125,16 +127,16 @@ protected:
     }
     void setInitialValue(ValueType inherited);
 
-    QString getYAMLStringImage() const;
-    QString getYAMLStringList() const;
-    QString getYAMLStringImageList() const;
-    QString getYAMLStringMultiLine() const;
+    std::string getYAMLStringImage() const;
+    std::string getYAMLStringList() const;
+    std::string getYAMLStringImageList() const;
+    std::string getYAMLStringMultiLine() const;
 
     ValueType _valueType;
     QVariant _value;
 
 private:
-    static QMap<QString, ValueType> _typeMap;
+    static const std::map<std::string, ValueType> _typeMap;
 };
 
 class MaterialsExport Array2D: public MaterialValue
@@ -182,7 +184,7 @@ public:
     void setValue(int row, int column, const QVariant& value);
     QVariant getValue(int row, int column) const;
 
-    QString getYAMLString() const override;
+    std::string getYAMLString() const override;
 
 protected:
     void deepCopy(const Array2D& other);
@@ -271,7 +273,7 @@ public:
     int currentDepth() const;
     void setCurrentDepth(int depth);
 
-    QString getYAMLString() const override;
+    std::string getYAMLString() const override;
 
 protected:
     void deepCopy(const Array3D& other);
