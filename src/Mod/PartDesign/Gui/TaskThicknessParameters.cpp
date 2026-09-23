@@ -109,6 +109,11 @@ void TaskThicknessParameters::initControls()
     int selectionMode = static_cast<int>(thickness->Selection.getValue());
     ui->selectionMode->setCurrentIndex(selectionMode);
 
+    const bool enableSelection = selectionMode
+        != static_cast<int>(Thickness::SelectionMode::AllSolids);
+    ui->listWidgetReferences->setEnabled(enableSelection);
+    ui->buttonRefSel->setEnabled(enableSelection);
+
     if (strings.empty()) {
         setSelectionMode(refSel);
     }
@@ -157,9 +162,10 @@ void TaskThicknessParameters::onSelectionModeChanged(int selectionMode)
         onAfterChange(thickness);
     }
 
-    ui->listWidgetReferences->setEnabled(
-        selectionMode != static_cast<int>(Thickness::SelectionMode::AllSolids)
-    );
+    const bool enableSelection = selectionMode
+        != static_cast<int>(Thickness::SelectionMode::AllSolids);
+    ui->listWidgetReferences->setEnabled(enableSelection);
+    ui->buttonRefSel->setEnabled(enableSelection);
 }
 
 void TaskThicknessParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -313,7 +319,9 @@ void TaskThicknessParameters::changeEvent(QEvent* e)
 void TaskThicknessParameters::apply()
 {
     // Alert user if he created an empty feature
-    if (ui->listWidgetReferences->count() == 0) {
+    if (ui->listWidgetReferences->count() == 0
+        && ui->selectionMode->currentIndex()
+            != static_cast<int>(Thickness::SelectionMode::AllSolids)) {
         Base::Console().warning("{}", tr("Empty thickness created!\n").toStdString());
     }
 }
