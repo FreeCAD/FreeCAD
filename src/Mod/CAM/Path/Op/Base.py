@@ -829,7 +829,7 @@ class ObjectOp:
             return
 
         if "Restore" not in obj.State and prop in ("Base", "StartDepth", "FinalDepth"):
-            self.updateDepths(obj, True)
+            self._updateDepthsInFrame(obj)
 
         self.opOnChanged(obj, prop)
 
@@ -1188,7 +1188,27 @@ class ObjectOp:
     # at the end of execute().
     _FRAME_ATTRS = ("_geom_transform_matrix", "_geometry_rotation")
 
-    def _setup_workplane_transform(self, obj):
+    def _updateDepthsInFrame(self, obj):
+        """updateDepths() for a property change, in the operation's frame.
+
+        Depths are measured in the work plane's frame, which execute() sets
+        up before it calls updateDepths(). A property change (a new Base, a
+        depth) arrives here without it and computed the depths in world
+        coordinates: a new operation that kept the plane it inherited showed
+        the world stock top as its Start Depth, above its Safe Height, and
+        generated nothing. Set the frame up for the call, unless execute()
+        already has."""
+        if any(hasattr(self, attr) for attr in self._FRAME_ATTRS):
+            return self.updateDepths(obj, True)
+        self._setup_workplane_transform(obj, warn=False)
+        try:
+            return self.updateDepths(obj, True)
+        finally:
+            for attr in self._FRAME_ATTRS:
+                if hasattr(self, attr):
+                    delattr(self, attr)
+
+    def _setup_workplane_transform(self, obj, warn=True):
         """Set up the frame this operation generates in.
 
         The operation generates in its work plane's own frame: the plane's
@@ -1204,7 +1224,8 @@ class ObjectOp:
 
         If a machine with rotary axes is configured and cannot index to the
         plane, a warning says so here, early, but the path is generated all
-        the same.
+        the same. ``warn=False`` skips that check, for a caller that only
+        needs the frame.
 
         Sets ``self._geom_transform_matrix`` (world to plane frame) for
         updateDepths() and baseShapes(), and ``self._geometry_rotation`` when
@@ -1228,7 +1249,7 @@ class ObjectOp:
         if is_rotated:
             self._geometry_rotation = placement.Rotation.inverted()
 
-        if is_rotated:
+        if is_rotated and warn:
             self._warnIfUnreachableByIndexing(obj, tool_axis)
 
     def toFrame(self, point):
