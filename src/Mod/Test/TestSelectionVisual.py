@@ -190,9 +190,7 @@ class TestSelectionVisual(unittest.TestCase):
         color = image.pixelColor(image.width() // 2, image.height() // 2)
         return (color.redF(), color.greenF(), color.blueF())
 
-    def _assert_subelement_preselection_overrides_selection(
-        self, obj, subelement, sample_point
-    ):
+    def _assert_subelement_preselection_overrides_selection(self, obj, subelement, sample_point):
         base_colors = self._pixel_patch_colors(sample_point)
 
         Selection.addSelection(obj, subelement)
