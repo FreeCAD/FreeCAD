@@ -56,6 +56,7 @@
 #include <gp_Pnt.hxx>
 #include <gp_Vec.hxx>
 
+#include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Base/Converter.h>
 #include <Base/FileInfo.h>
@@ -2009,4 +2010,9 @@ void DrawUtil::dumpCS3(const char* text, const gp_Ax3& CS)
                             DrawUtil::formatVector(baseAxis),
                             DrawUtil::formatVector(baseX),
                             DrawUtil::formatVector(baseY));
+}
+
+bool DrawUtil::isSourceOwnedAnnotation(const App::DocumentObject* object)
+{
+    return object && object->getPropertyByName(sourceAnnotationProperty) != nullptr;
 }
