@@ -782,6 +782,8 @@ std::vector<TechDraw::DrawGeomHatch*> DrawViewPart::getGeomHatches() const
             result.push_back(geom);
         }
     }
+    std::sort(result.begin(), result.end(), std::less<>());
+    result.erase(std::unique(result.begin(), result.end()), result.end());
     return result;
 }
 
