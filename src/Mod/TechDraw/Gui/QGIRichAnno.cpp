@@ -180,6 +180,9 @@ void QGIRichAnno::setTextItem()
     // convert the text size
     if (!m_isEditing) {
         m_text->setHtml(QString::fromUtf8(annoFeat->AnnoText.getValue()));
+        if (auto* color = dynamic_cast<App::PropertyColor*>(annoFeat->getPropertyByName("AnnotationColor"))) {
+            m_text->setDefaultTextColor(color->getValue().asValue<QColor>());
+        }
     }
 
     if (getExportingSvg() && annoFeat->TextHeight.getValue() > 0) {
