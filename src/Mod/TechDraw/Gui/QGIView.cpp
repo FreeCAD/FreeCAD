@@ -75,7 +75,6 @@ using DU = DrawUtil;
 
 QGIView::QGIView()
     :QGraphicsItemGroup(),
-    m_isHovered(false),
     viewObj(nullptr),
     m_innerView(false),
     m_multiselectActivated(false),
@@ -83,7 +82,8 @@ QGIView::QGIView()
     m_label(new QGCustomLabel()),
     m_border(new QGCustomBorder()),
     m_caption(new QGICaption()),
-    m_lock(new QGCustomImage())
+    m_lock(new QGCustomImage()),
+    m_isHovered(false)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setHandlesChildEvents(false);
