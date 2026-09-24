@@ -19,7 +19,7 @@
      <item>
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>Offset selection</string>
+        <string>Selection</string>
        </property>
       </widget>
      </item>
