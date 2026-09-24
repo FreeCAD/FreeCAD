@@ -168,9 +168,24 @@ class TestSketchAnnotations(unittest.TestCase):
         self.assertEqual(self.s.Annotations[0]["Pattern"], "ANSI31")
         solid = len(self.s.getAnnotationStrokes(ident))
         for name in (
-            "ANSI31", "ANSI32", "ANSI33", "ANSI34", "ANSI35", "ANSI36", "ANSI37", "ANSI38",
-            "NET", "BRICK", "EARTH", "HBONE", "CROSS", "HONEY", "INSUL", "DOTS",
-            "AR-CONC", "AR-SAND",
+            "ANSI31",
+            "ANSI32",
+            "ANSI33",
+            "ANSI34",
+            "ANSI35",
+            "ANSI36",
+            "ANSI37",
+            "ANSI38",
+            "NET",
+            "BRICK",
+            "EARTH",
+            "HBONE",
+            "CROSS",
+            "HONEY",
+            "INSUL",
+            "DOTS",
+            "AR-CONC",
+            "AR-SAND",
         ):
             self.s.updateAnnotation(ident, {"Pattern": name})
             strokes = self.s.getAnnotationStrokes(ident)
@@ -207,7 +222,9 @@ class TestSketchAnnotations(unittest.TestCase):
                     data = source.read(item.filename)
                     if item.filename == "Document.xml":
                         text = data.decode("utf-8")
-                        element = re.search(r'<Annotation id="[^>]*type="Hatch"[^>]*>', text).group(0)
+                        element = re.search(r'<Annotation id="[^>]*type="Hatch"[^>]*>', text).group(
+                            0
+                        )
                         old = element.replace('pattern="ANSI31"', 'crosshatch="1"')
                         old = re.sub(r'rotation="[^"]*"', 'rotation="45"', old)
                         data = text.replace(element, old).encode("utf-8")
@@ -223,8 +240,14 @@ class TestSketchAnnotations(unittest.TestCase):
         )
         self.assertEqual(self.s.Annotations[0]["ArrowStyle"], "Open arrow")
         for style in (
-            "Filled arrow", "Open arrow", "Tick", "Dot", "Open circle", "Fork",
-            "Filled triangle", "None",
+            "Filled arrow",
+            "Open arrow",
+            "Tick",
+            "Dot",
+            "Open circle",
+            "Fork",
+            "Filled triangle",
+            "None",
         ):
             self.s.updateAnnotation(ident, {"ArrowStyle": style})
             strokes = self.s.getAnnotationStrokes(ident)
@@ -285,5 +308,5 @@ class TestSketchAnnotations(unittest.TestCase):
             App.closeDocument(self.doc.Name)
             self.doc = App.openDocument(path)
             self.s = self.doc.Sketch
-            second = self.s.addAnnotation({"Type": "Leader", "Points": [(0,0,0),(1,1,0)]})
+            second = self.s.addAnnotation({"Type": "Leader", "Points": [(0, 0, 0), (1, 1, 0)]})
             self.assertGreater(second, first)

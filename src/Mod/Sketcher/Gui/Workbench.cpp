@@ -104,7 +104,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     addSketcherWorkbenchSketchEditModeActions(*sketch);
     auto* annotations = new Gui::MenuItem;
     annotations->setCommand("Cosmetics");
-    *annotations << "Sketcher_AnnotationText" << "Sketcher_AnnotationHatch" << "Sketcher_AnnotationLeader";
+    *annotations << "Sketcher_AnnotationText" << "Sketcher_AnnotationHatch"
+                 << "Sketcher_AnnotationLeader";
     *sketch << geom << cons << consaccel << bsplines << visual << annotations;
 
     return root;
@@ -145,7 +146,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     auto* cosmetics = new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
     cosmetics->setCommand("Cosmetics");
-    *cosmetics << "Sketcher_AnnotationText" << "Sketcher_AnnotationHatch" << "Sketcher_AnnotationLeader";
+    *cosmetics << "Sketcher_AnnotationText" << "Sketcher_AnnotationHatch"
+               << "Sketcher_AnnotationLeader";
 
     Gui::ToolBarItem* visual
         = new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);

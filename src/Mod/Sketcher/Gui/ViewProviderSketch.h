@@ -549,7 +549,10 @@ public:
     App::PropertyIntegerList HiddenAnnotations;
     AnnotationManager& annotationManager();
     /// Whether cosmetics are offered in the interface (their task box and toolbar).
-    bool areCosmeticsEnabled() const { return showCosmetics; }
+    bool areCosmeticsEnabled() const
+    {
+        return showCosmetics;
+    }
     //@}
 
     const ToolManager toolManager;

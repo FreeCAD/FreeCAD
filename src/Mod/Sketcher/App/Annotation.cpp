@@ -217,9 +217,9 @@ Annotation Annotation::fromPython(PyObject* values, Annotation a)
 
 void Annotation::validate() const
 {
-    if (!planar(position) || !std::isfinite(rotation) || !std::isfinite(textSize)
-        || textSize <= 0 || !std::isfinite(textWidth) || textWidth < 0 || !std::isfinite(spacing)
-        || spacing < 0.01 || !std::isfinite(arrowSize) || arrowSize <= 0) {
+    if (!planar(position) || !std::isfinite(rotation) || !std::isfinite(textSize) || textSize <= 0
+        || !std::isfinite(textWidth) || textWidth < 0 || !std::isfinite(spacing) || spacing < 0.01
+        || !std::isfinite(arrowSize) || arrowSize <= 0) {
         throw Base::ValueError("Invalid annotation coordinates or size");
     }
     // Control characters cannot be written to the document XML and would break loading it.
@@ -304,8 +304,8 @@ unsigned int PropertyAnnotationList::getMemSize() const
 {
     size_t size = sizeof(*this);
     for (const auto& a : values) {
-        size += sizeof(a) + a.html.size() + a.label.size() + a.pattern.size() + a.arrowStyle.size() + a.boundary.size() * sizeof(long)
-            + a.points.size() * sizeof(Base::Vector3d);
+        size += sizeof(a) + a.html.size() + a.label.size() + a.pattern.size() + a.arrowStyle.size()
+            + a.boundary.size() * sizeof(long) + a.points.size() * sizeof(Base::Vector3d);
     }
     return static_cast<unsigned int>(size);
 }
@@ -316,13 +316,13 @@ void PropertyAnnotationList::Save(Base::Writer& writer) const
         << "\" highestId=\"" << highestId << "\">\n";
     for (const auto& a : values) {
         out << writer.ind() << "<Annotation id=\"" << a.id << "\" type=\"" << kindName(a.kind)
-            << "\" label=\"" << encodeAttribute(a.label)
-            << "\" construction=\"" << a.construction << "\" x=\"" << a.position.x << "\" y=\""
-            << a.position.y << "\" rotation=\"" << a.rotation << "\" html=\""
-            << encodeAttribute(a.html) << "\" textSize=\"" << a.textSize << "\" textWidth=\""
-            << a.textWidth << "\" spacing=\"" << a.spacing << "\" pattern=\"" << encodeAttribute(a.pattern)
-            << "\" arrowSize=\"" << a.arrowSize << "\" arrowStyle=\"" << encodeAttribute(a.arrowStyle) << "\" boundaries=\"" << a.boundary.size()
-            << "\" points=\"" << a.points.size() << "\">\n";
+            << "\" label=\"" << encodeAttribute(a.label) << "\" construction=\"" << a.construction
+            << "\" x=\"" << a.position.x << "\" y=\"" << a.position.y << "\" rotation=\""
+            << a.rotation << "\" html=\"" << encodeAttribute(a.html) << "\" textSize=\""
+            << a.textSize << "\" textWidth=\"" << a.textWidth << "\" spacing=\"" << a.spacing
+            << "\" pattern=\"" << encodeAttribute(a.pattern) << "\" arrowSize=\"" << a.arrowSize
+            << "\" arrowStyle=\"" << encodeAttribute(a.arrowStyle) << "\" boundaries=\""
+            << a.boundary.size() << "\" points=\"" << a.points.size() << "\">\n";
         for (long id : a.boundary) {
             out << "<Boundary id=\"" << id << "\"/>\n";
         }
@@ -405,11 +405,8 @@ void PropertyAnnotationList::Restore(Base::XMLReader& reader)
         }
         reader.readEndElement("Annotation");
         if (!knownType) {
-            Base::Console().warning(
-                "Skipped sketch annotation %ld of unknown type '%s'\n",
-                a.id,
-                type.c_str()
-            );
+            Base::Console()
+                .warning("Skipped sketch annotation %ld of unknown type '%s'\n", a.id, type.c_str());
             continue;
         }
         try {
