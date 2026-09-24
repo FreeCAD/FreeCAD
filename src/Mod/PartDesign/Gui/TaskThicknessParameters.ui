@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>321</width>
-    <height>509</height>
+    <height>449</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -77,6 +77,27 @@
        </property>
       </widget>
      </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Join type</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="joinComboBox">
+       <item>
+        <property name="text">
+         <string>Arc</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Intersection</string>
+        </property>
+       </item>
+      </widget>
+     </item>
      <item row="0" column="1">
       <widget class="Gui::QuantitySpinBox" name="Value" native="true">
        <property name="keyboardTracking" stdset="0">
@@ -99,53 +120,6 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Mode</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QComboBox" name="modeComboBox">
-       <item>
-        <property name="text">
-         <string>Skin</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Pipe</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Recto verso</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Join type</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QComboBox" name="joinComboBox">
-       <item>
-        <property name="text">
-         <string>Arc</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Intersection</string>
-        </property>
-       </item>
-      </widget>
-     </item>
     </layout>
    </item>
    <item>
@@ -156,11 +130,65 @@
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="checkReverse">
-     <property name="text">
-      <string>Make thickness inwards</string>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Offset</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::QuantitySpinBox" name="centeringValue" native="true"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QSlider" name="centering">
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;-1 = Thickness towards the inside&lt;/p&gt;&lt;p&gt;0 = Recto Verso (centered around wall)&lt;/p&gt;&lt;p&gt;+1 = Thickness towards the outside&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="minimum">
+      <number>-100</number>
+     </property>
+     <property name="maximum">
+      <number>100</number>
+     </property>
+     <property name="singleStep">
+      <number>1</number>
+     </property>
+     <property name="pageStep">
+      <number>10</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
     </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QPushButton" name="pushButton_3">
+       <property name="text">
+        <string>Inside</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_2">
+       <property name="text">
+        <string>Center</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>Outside</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
@@ -174,11 +202,8 @@
  <tabstops>
   <tabstop>buttonRefSel</tabstop>
   <tabstop>listWidgetReferences</tabstop>
-  <tabstop>Value</tabstop>
-  <tabstop>modeComboBox</tabstop>
   <tabstop>joinComboBox</tabstop>
   <tabstop>checkIntersection</tabstop>
-  <tabstop>checkReverse</tabstop>
  </tabstops>
  <resources/>
  <connections/>

@@ -48,26 +48,48 @@ void ensureValidWall(const Part::TopoShape& wall, const char* message)
     }
 }
 
-/** Build a wall centered on the retained shell of a solid.
+/** Build a wall on the retained shell of a solid.
  *
  * The closing faces are removed by the ordinary skin-thickness operation.
- * Two exact one-sided walls are built at half the requested thickness in
- * each direction and regular-fused across their shared source shell.
+ *
+ * `centering` controls where the requested thickness lies relative to the
+ * original shell:
+ *
+ *   -1 = completely inside
+ *    0 = centered on the shell
+ *   +1 = completely outside
+ *
+ * The total wall thickness is always `thickness`.
  */
 Part::TopoShape makeRectoVersoThickness(
     const Part::TopoShape& solid,
     const std::vector<Part::TopoShape>& closingFaces,
     double thickness,
+    double centering,
     double tolerance,
     bool intersection,
     Part::JoinType join,
     long tag
 )
 {
-    const double distance = std::abs(thickness) / 2.0;
-    if (distance <= tolerance) {
-        throw Base::CADKernelError("Recto-verso half-thickness must exceed the modeling tolerance");
+    if (std::abs(centering) > 1.0) {
+        throw Base::CADKernelError("Recto-verso centering must be in the range [-1, 1]");
     }
+
+    const double totalThickness = std::abs(thickness);
+    if (totalThickness <= tolerance) {
+        throw Base::CADKernelError("Recto-verso thickness must exceed the modeling tolerance");
+    }
+
+    // Map [-1, 1] to [0, 1].
+    //
+    // centering = -1 -> 0.0  => all thickness inside
+    // centering =  0 -> 0.5  => half on each side
+    // centering = +1 -> 1.0  => all thickness outside
+    const double outsideFraction = (centering + 1.0) / 2.0;
+
+    const double outsideDistance = totalThickness * outsideFraction;
+    const double insideDistance = totalThickness - outsideDistance;
 
     // Signed offsets are only meaningful for consistently oriented solids.
     // Imported and programmatically constructed solids are not guaranteed to
@@ -76,34 +98,60 @@ Part::TopoShape makeRectoVersoThickness(
     orientedSolid.fixSolidOrientation();
 
     constexpr auto skinMode = static_cast<short>(BRepOffset_Skin);
-    Part::TopoShape recto = orientedSolid.makeElementThickSolid(
-        closingFaces,
-        distance,
-        tolerance,
-        intersection,
-        false,
-        skinMode,
-        join,
-        "RectoVersoRecto"
-    );
-    Part::TopoShape verso = orientedSolid.makeElementThickSolid(
-        closingFaces,
-        -distance,
-        tolerance,
-        intersection,
-        false,
-        skinMode,
-        join,
-        "RectoVersoVerso"
-    );
-    ensureValidWall(recto, "Recto-verso positive-side wall is invalid");
-    ensureValidWall(verso, "Recto-verso negative-side wall is invalid");
+
+    std::vector<Part::TopoShape> walls;
+
+    if (outsideDistance > tolerance) {
+        Part::TopoShape recto = orientedSolid.makeElementThickSolid(
+            closingFaces,
+            outsideDistance,
+            tolerance,
+            intersection,
+            false,
+            skinMode,
+            join,
+            "RectoVersoRecto"
+        );
+
+        ensureValidWall(recto, "Recto-verso positive-side wall is invalid");
+
+        walls.push_back(std::move(recto));
+    }
+
+    if (insideDistance > tolerance) {
+        Part::TopoShape verso = orientedSolid.makeElementThickSolid(
+            closingFaces,
+            -insideDistance,
+            tolerance,
+            intersection,
+            false,
+            skinMode,
+            join,
+            "RectoVersoVerso"
+        );
+
+        ensureValidWall(verso, "Recto-verso negative-side wall is invalid");
+
+        walls.push_back(std::move(verso));
+    }
+
+    if (walls.empty()) {
+        throw Base::CADKernelError("Recto-verso thickness produced no wall");
+    }
 
     Part::TopoShape result(tag);
-    result.makeElementFuse({recto, verso}, "RectoVerso", tolerance);
+
+    if (walls.size() == 1) {
+        result = std::move(walls.front());
+    }
+    else {
+        result.makeElementFuse(walls, "RectoVerso", tolerance);
+    }
+
     if (result.isNull() || !result.isValid() || result.countSubShapes(TopAbs_SOLID) != 1) {
         throw Base::CADKernelError("Recto-verso thickness produced an invalid solid");
     }
+
     return result;
 }
 }  // namespace
@@ -117,7 +165,7 @@ PROPERTY_SOURCE(PartDesign::Thickness, PartDesign::DressUp)
 Thickness::Thickness()
 {
     ADD_PROPERTY_TYPE(Value, (1.0), "Thickness", App::Prop_None, "Thickness value");
-    ADD_PROPERTY_TYPE(Mode, (0L), "Thickness", App::Prop_None, "Mode");
+    ADD_PROPERTY_TYPE(Mode, (0L), "Thickness", App::Prop_ReadOnly, "Mode");
     Mode.setEnums(ModeEnums);
     ADD_PROPERTY_TYPE(Join, (0L), "Thickness", App::Prop_None, "Join type");
     Join.setEnums(JoinEnums);
@@ -125,13 +173,43 @@ Thickness::Thickness()
         Reversed,
         (true),
         "Thickness",
-        App::Prop_None,
+        App::Prop_ReadOnly,
         "Apply the thickness towards the solids interior"
     );
     ADD_PROPERTY_TYPE(Intersection, (false), "Thickness", App::Prop_None, "Enable intersection-handling");
     ADD_PROPERTY_TYPE(Selection, (0L), "Thickness", App::Prop_None, "Selection Type");
     Selection.setEnums(SelectionEnums);
+    ADD_PROPERTY_TYPE(
+        Centering,
+        (0.0),
+        "Offset",
+        App::Prop_None,
+        "Offset factor to the existing faces [-1, 1]"
+    );
+    Centering.setConstraints(new App::PropertyFloatConstraint::Constraints(-1.0, 1.0, 0.01));
 }
+
+void Thickness::onDocumentRestored()
+{
+    Feature::onDocumentRestored();
+
+    if (!Mode.isTouched()) {
+        return;
+    }
+
+    const int mode = Mode.getValue();
+    const double value = Value.getValue();
+
+    if (mode == BRepOffset_RectoVerso) {
+        Centering.setValue(0.0);
+    }
+    else if (Reversed.isTouched()) {
+        Centering.setValue(Reversed.getValue() ? -1.0 : 1.0);
+
+        Value.setValue(std::abs(value));
+    }
+}
+
 
 int16_t Thickness::mustExecute() const
 {
@@ -185,7 +263,7 @@ App::DocumentObjectExecReturn* Thickness::execute()
         (reversed ? -1. : 1.) * Value.getValue(),
         tolerance,
         Intersection.getValue(),
-        static_cast<int16_t>(Mode.getValue()),
+        Centering.getValue(),
         join,
         static_cast<int>(topShape.countSubShapes(TopAbs_SOLID))
     };
@@ -220,9 +298,7 @@ App::DocumentObjectExecReturn* Thickness::execute()
 
     std::vector<Part::TopoShape> solids;
 
-    for (TopExp_Explorer exp(result.getShape(), TopAbs_SOLID);
-         exp.More();
-         exp.Next()) {
+    for (TopExp_Explorer exp(result.getShape(), TopAbs_SOLID); exp.More(); exp.Next()) {
 
         Part::TopoShape solid;
         solid.setShape(exp.Current());
@@ -302,30 +378,16 @@ App::DocumentObjectExecReturn* Thickness::executeSelectedFaces(ThicknessParamete
         }
 
         try {
-            TopoShape result;
-
-            if (params.mode == BRepOffset_RectoVerso) {
-                result = makeRectoVersoThickness(
-                    solid,
-                    it->second,
-                    params.thickness,
-                    params.tolerance,
-                    params.intersection,
-                    joinType,
-                    getID()
-                );
-            }
-            else {
-                result = solid.makeElementThickSolid(
-                    it->second,
-                    params.thickness,
-                    params.tolerance,
-                    params.intersection,
-                    false,
-                    params.mode,
-                    joinType
-                );
-            }
+            TopoShape result = makeRectoVersoThickness(
+                solid,
+                it->second,
+                params.thickness,
+                params.centering,
+                params.tolerance,
+                params.intersection,
+                joinType,
+                getID()
+            );
 
             if (!result.isNull()) {
                 shapes.push_back(result);
@@ -350,6 +412,10 @@ App::DocumentObjectExecReturn* Thickness::executeSelectedSolids(ThicknessParamet
         return nullptr;
     }
 
+    const double thickness = fabs(params.thickness);
+    const double outsideDistance = thickness * (params.centering + 1.0) / 2.0;
+    const double insideDistance = thickness - outsideDistance;
+
     std::vector<TopoShape> shapes;
     shapes.reserve(params.solidCount);
 
@@ -364,13 +430,48 @@ App::DocumentObjectExecReturn* Thickness::executeSelectedSolids(ThicknessParamet
         }
 
         try {
-            TopoShape shell = makeSolidShell(solid, params);
+            TopoShape outer;
+            TopoShape inner;
+
+            if (outsideDistance > params.tolerance) {
+                outer.setShape(solid.makeOffsetShape(
+                    outsideDistance,
+                    params.tolerance,
+                    params.intersection,
+                    false,
+                    BRepOffset_Skin,
+                    params.join
+                ));
+            }
+            else {
+                outer = solid;
+            }
+
+            if (insideDistance > params.tolerance) {
+                inner.setShape(solid.makeOffsetShape(
+                    -insideDistance,
+                    params.tolerance,
+                    params.intersection,
+                    false,
+                    BRepOffset_Skin,
+                    params.join
+                ));
+            }
+            else {
+                inner = solid;
+            }
+
+            if (outer.isNull() || inner.isNull()) {
+                return new App::DocumentObjectExecReturn("Failed to make solid shell");
+            }
+
+            TopoShape shell = outer.makeElementCut(inner);
 
             if (shell.isNull()) {
                 return new App::DocumentObjectExecReturn("Failed to make solid shell");
             }
 
-            shapes.push_back(shell);
+            shapes.push_back(std::move(shell));
         }
         catch (Standard_Failure& e) {
             FC_ERR("Exception on making solid shell: " << e.GetMessageString());
@@ -391,6 +492,10 @@ App::DocumentObjectExecReturn* Thickness::executeAllSolids(ThicknessParameters& 
         return nullptr;
     }
 
+    const double thickness = fabs(params.thickness);
+    const double outsideDistance = thickness * (params.centering + 1.0) / 2.0;
+    const double insideDistance = thickness - outsideDistance;
+
     std::vector<TopoShape> shapes;
     shapes.reserve(params.solidCount);
 
@@ -399,13 +504,48 @@ App::DocumentObjectExecReturn* Thickness::executeAllSolids(ThicknessParameters& 
         TopoShape solid = params.input.getSubTopoShape(TopAbs_SOLID, solidIndex);
 
         try {
-            TopoShape shell = makeSolidShell(solid, params);
+            TopoShape outer;
+            TopoShape inner;
+
+            if (outsideDistance > params.tolerance) {
+                outer.setShape(solid.makeOffsetShape(
+                    outsideDistance,
+                    params.tolerance,
+                    params.intersection,
+                    false,
+                    BRepOffset_Skin,
+                    params.join
+                ));
+            }
+            else {
+                outer = solid;
+            }
+
+            if (insideDistance > params.tolerance) {
+                inner.setShape(solid.makeOffsetShape(
+                    -insideDistance,
+                    params.tolerance,
+                    params.intersection,
+                    false,
+                    BRepOffset_Skin,
+                    params.join
+                ));
+            }
+            else {
+                inner = solid;
+            }
+
+            if (outer.isNull() || inner.isNull()) {
+                return new App::DocumentObjectExecReturn("Failed to make solid shell");
+            }
+
+            TopoShape shell = outer.makeElementCut(inner);
 
             if (shell.isNull()) {
                 return new App::DocumentObjectExecReturn("Failed to make solid shell");
             }
 
-            shapes.push_back(shell);
+            shapes.push_back(std::move(shell));
         }
         catch (Standard_Failure& e) {
             FC_ERR("Exception on making solid shell: " << e.GetMessageString());
@@ -419,81 +559,57 @@ App::DocumentObjectExecReturn* Thickness::executeAllSolids(ThicknessParameters& 
     return nullptr;
 }
 
-TopoShape Thickness::makeSolidShell(const TopoShape& solid, const ThicknessParameters& params)
+TopoShape Thickness::makePreviewDelta(
+    const TopoShape& original,
+    const TopoShape& result,
+    const ThicknessParameters& params
+)
 {
-    const double thickness = params.thickness;
-
-    if (params.mode == BRepOffset_RectoVerso) {
-        const double halfThickness = 0.5 * fabs(thickness);
-
-        const auto outerOffset = solid.makeOffsetShape(
-            halfThickness,
-            params.tolerance,
-            params.intersection,
-            false,
-            BRepOffset_Skin,
-            params.join
-        );
-
-        const auto innerOffset = solid.makeOffsetShape(
-            -halfThickness,
-            params.tolerance,
-            params.intersection,
-            false,
-            BRepOffset_Skin,
-            params.join
-        );
-
-        TopoShape outer(outerOffset);
-        TopoShape inner(innerOffset);
-
-        if (outer.isNull() || inner.isNull()) {
-            return {};
-        }
-
-        return outer.makeElementCut(inner);
-    }
-
-    // Skin
-    if (thickness > 0.0) {
-        // Normal: thickness goes outward.
-        const auto outerOffset = solid.makeOffsetShape(
-            thickness,
-            params.tolerance,
-            params.intersection,
-            false,
-            BRepOffset_Skin,
-            params.join
-        );
-
-        TopoShape outer(outerOffset);
-
-        if (outer.isNull()) {
-            return {};
-        }
-
-        // Outer offset minus original solid = outward shell.
-        return outer.makeElementCut(solid);
-    }
-
-    // Reversed: thickness goes inward.
-    const auto innerOffset = solid.makeOffsetShape(
-        thickness,
-        params.tolerance,
-        params.intersection,
-        false,
-        BRepOffset_Skin,
-        params.join
-    );
-
-    TopoShape inner(innerOffset);
-
-    if (inner.isNull()) {
+    if (original.isNull() || result.isNull()) {
         return {};
     }
 
-    // Original solid minus inner offset = inward shell.
-    return solid.makeElementCut(inner);
+    const double centering = params.centering;
+
+    // Completely inside:
+    // show only the material removed from the original solid.
+    if (centering <= -1.0) {
+        return original.makeElementCut(result);
+    }
+
+    // Completely outside:
+    // show only the material added to the original solid.
+    if (centering >= 1.0) {
+        return result.makeElementCut(original);
+    }
+
+    // Centered or partially shifted:
+    // show both the added and removed material.
+    TopoShape added = result.makeElementCut(original);
+    TopoShape removed = original.makeElementCut(result);
+
+    std::vector<TopoShape> changes;
+
+    if (!added.isNull()) {
+        changes.push_back(std::move(added));
+    }
+
+    if (!removed.isNull()) {
+        changes.push_back(std::move(removed));
+    }
+
+    if (changes.empty()) {
+        return {};
+    }
+
+    if (changes.size() == 1) {
+        return std::move(changes.front());
+    }
+
+    TopoShape preview;
+    preview.makeCompound(changes);
+
+    return preview;
 }
 
 void Thickness::updatePreviewShape()
@@ -518,7 +634,6 @@ void Thickness::updatePreviewShape()
     const std::vector<std::string>& subStrings = Base.getSubValues(true);
 
     const double tolerance = Precision::Confusion();
-    const bool reversed = Reversed.getValue();
 
     auto join = static_cast<int>(Join.getValue());
 
@@ -534,10 +649,10 @@ void Thickness::updatePreviewShape()
         result,
         subStrings,
         {},
-        (reversed ? -1. : 1.) * Value.getValue(),
+        std::abs(Value.getValue()),
         tolerance,
         Intersection.getValue(),
-        static_cast<int16_t>(Mode.getValue()),
+        Centering.getValue(),
         join,
         static_cast<int>(topShape.countSubShapes(TopAbs_SOLID))
     };
@@ -547,7 +662,7 @@ void Thickness::updatePreviewShape()
         return;
     }
 
-    if (fabs(params.thickness) <= 2 * params.tolerance) {
+    if (params.thickness <= 2 * params.tolerance) {
         PreviewShape.setValue(TopoShape());
         return;
     }
@@ -582,91 +697,58 @@ void Thickness::updatePreviewShape()
 
 TopoShape Thickness::makeSolidPreview(const TopoShape& solid, const ThicknessParameters& params)
 {
-    const double thickness = params.thickness;
-
-    if (params.mode == BRepOffset_RectoVerso) {
-        const double halfThickness = 0.5 * fabs(thickness);
-
-        const auto outerOffset = solid.makeOffsetShape(
-            halfThickness,
-            params.tolerance,
-            params.intersection,
-            false,
-            BRepOffset_Skin,
-            params.join
-        );
-
-        const auto innerOffset = solid.makeOffsetShape(
-            -halfThickness,
-            params.tolerance,
-            params.intersection,
-            false,
-            BRepOffset_Skin,
-            params.join
-        );
-
-        TopoShape outer(outerOffset);
-        TopoShape inner(innerOffset);
-
-        if (outer.isNull() || inner.isNull()) {
-            return {};
-        }
-
-        // Only the geometry added outside the original solid.
-        TopoShape outerDelta = outer.makeElementCut(solid);
-
-        // Only the geometry removed inside the original solid.
-        TopoShape innerDelta = solid.makeElementCut(inner);
-
-        if (outerDelta.isNull() || innerDelta.isNull()) {
-            return {};
-        }
-
-        TopoShape result;
-        result.makeCompound({outerDelta, innerDelta});
-
-        return result;
-    }
-
-    if (thickness > 0.0) {
-        // Outward thickness:
-        // show only the material added outside the original solid.
-        const auto offset = solid.makeOffsetShape(
-            thickness,
-            params.tolerance,
-            params.intersection,
-            false,
-            BRepOffset_Skin,
-            params.join
-        );
-
-        TopoShape outer(offset);
-
-        if (outer.isNull()) {
-            return {};
-        }
-
-        return outer.makeElementCut(solid);
-    }
-
-    // Inward thickness:
-    // show the volume that becomes the cavity.
-    const auto offset = solid.makeOffsetShape(
-        thickness,
-        params.tolerance,
-        params.intersection,
-        false,
-        BRepOffset_Skin,
-        params.join
-    );
-
-    TopoShape inner(offset);
-
-    if (inner.isNull()) {
+    if (solid.isNull()) {
         return {};
     }
 
-    return inner;
+    const double thickness = params.thickness;
+
+    const double outsideDistance = thickness * (params.centering + 1.0) / 2.0;
+
+    const double insideDistance = thickness - outsideDistance;
+
+    TopoShape outer;
+    TopoShape inner;
+
+    if (outsideDistance > params.tolerance) {
+        outer.setShape(solid.makeOffsetShape(
+            outsideDistance,
+            params.tolerance,
+            params.intersection,
+            false,
+            BRepOffset_Skin,
+            params.join
+        ));
+    }
+    else {
+        outer = solid;
+    }
+
+    if (insideDistance > params.tolerance) {
+        inner.setShape(solid.makeOffsetShape(
+            -insideDistance,
+            params.tolerance,
+            params.intersection,
+            false,
+            BRepOffset_Skin,
+            params.join
+        ));
+    }
+    else {
+        inner = solid;
+    }
+
+    if (outer.isNull() || inner.isNull()) {
+        return {};
+    }
+
+    TopoShape result = outer.makeElementCut(inner);
+
+    if (result.isNull()) {
+        return {};
+    }
+
+    return makePreviewDelta(solid, result, params);
 }
 
 void Thickness::updatePreviewSelectedFaces(
@@ -681,48 +763,25 @@ void Thickness::updatePreviewSelectedFaces(
         TopoShape solid = params.input.getSubTopoShape(TopAbs_SOLID, solidIndex);
 
         try {
-            TopoShape result;
-
-            if (params.mode == BRepOffset_RectoVerso) {
-                result = makeRectoVersoThickness(
-                    solid,
-                    faces,
-                    params.thickness,
-                    params.tolerance,
-                    params.intersection,
-                    joinType,
-                    getID()
-                );
-            }
-            else {
-                result = solid.makeElementThickSolid(
-                    faces,
-                    params.thickness,
-                    params.tolerance,
-                    params.intersection,
-                    false,
-                    params.mode,
-                    joinType
-                );
-            }
+            TopoShape result = makeRectoVersoThickness(
+                solid,
+                faces,
+                params.thickness,
+                params.centering,
+                params.tolerance,
+                params.intersection,
+                joinType,
+                getID()
+            );
 
             if (result.isNull()) {
                 continue;
             }
 
-            TopoShape preview;
-
-            if (params.thickness > 0.0) {
-                // Only added material.
-                preview = result.makeElementCut(solid);
-            }
-            else {
-                // Only removed material / cavity.
-                preview = solid.makeElementCut(result);
-            }
+            TopoShape preview = makePreviewDelta(solid, result, params);
 
             if (!preview.isNull()) {
-                previewShapes.push_back(preview);
+                previewShapes.push_back(std::move(preview));
             }
         }
         catch (Standard_Failure& e) {
@@ -744,7 +803,7 @@ void Thickness::updatePreviewSelectedSolids(
             TopoShape preview = makeSolidPreview(solid, params);
 
             if (!preview.isNull()) {
-                previewShapes.push_back(preview);
+                previewShapes.push_back(std::move(preview));
             }
         }
         catch (Standard_Failure& e) {
@@ -763,7 +822,7 @@ void Thickness::updatePreviewAllSolids(ThicknessParameters& params, std::vector<
             TopoShape preview = makeSolidPreview(solid, params);
 
             if (!preview.isNull()) {
-                previewShapes.push_back(preview);
+                previewShapes.push_back(std::move(preview));
             }
         }
         catch (Standard_Failure& e) {

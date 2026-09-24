@@ -52,11 +52,13 @@ public:
     Thickness();
 
     App::PropertyLength Value;
-    App::PropertyBool Reversed;
     App::PropertyBool Intersection;
-    App::PropertyEnumeration Mode;
+    App::PropertyFloatConstraint Centering;
     App::PropertyEnumeration Join;
     App::PropertyEnumeration Selection;
+    /// LEGACY, Dictated by Centering property
+    App::PropertyEnumeration Mode;
+    App::PropertyBool Reversed;
 
     /** @name methods override feature */
     //@{
@@ -69,6 +71,7 @@ public:
         return "PartDesignGui::ViewProviderThickness";
     }
     void updatePreviewShape() override;
+    void onDocumentRestored() override;
     //@}
 private:
     struct ThicknessParameters
@@ -82,13 +85,12 @@ private:
         double thickness;
         double tolerance;
         bool intersection;
-        int16_t mode;
+        double centering;
         int join;
         int solidCount;
     };
 
     App::DocumentObjectExecReturn* identifySolids(ThicknessParameters& params);
-    TopoShape makeSolidShell(const TopoShape& solid, const ThicknessParameters& params);
     App::DocumentObjectExecReturn* executeSelectedFaces(ThicknessParameters& params);
     App::DocumentObjectExecReturn* executeSelectedSolids(ThicknessParameters& params);
     App::DocumentObjectExecReturn* executeAllSolids(ThicknessParameters& params);
@@ -96,6 +98,11 @@ private:
     void updatePreviewSelectedSolids(ThicknessParameters& params, std::vector<TopoShape>& previewShapes);
     void updatePreviewAllSolids(ThicknessParameters& params, std::vector<TopoShape>& previewShapes);
     TopoShape makeSolidPreview(const TopoShape& solid, const ThicknessParameters& params);
+    TopoShape makePreviewDelta(
+        const TopoShape& original,
+        const TopoShape& result,
+        const ThicknessParameters& params
+    );
 
     static const char* ModeEnums[];
     static const char* JoinEnums[];
