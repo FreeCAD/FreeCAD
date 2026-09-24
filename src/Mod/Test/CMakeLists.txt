@@ -19,6 +19,7 @@ SET(Test_SRCS
     TestApp.py
     TestLinkSuppression.py
     TestIntPairList.py
+    TestPropertyFlags.py
     TestGui.py
     UnicodeTests.py
     UnitTests.py
