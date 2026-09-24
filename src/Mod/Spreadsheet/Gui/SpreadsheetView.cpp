@@ -130,7 +130,7 @@ SheetView::SheetView(Gui::Document* pcDocument, App::DocumentObject* docObj, QWi
 
     QPalette palette = ui->cells->palette();
     palette.setColor(QPalette::Base, QColor(255, 255, 255));
-    palette.setColor(QPalette::AlternateBase, QColor(245, 245, 245)); // white smoke
+    palette.setColor(QPalette::AlternateBase, QColor(245, 245, 245));  // white smoke
     palette.setColor(QPalette::Text, QColor(0, 0, 0));
     ui->cells->setPalette(palette);
 
@@ -410,19 +410,19 @@ void SheetView::resizeRow(int col, int newSize)
     }
 }
 
-void SheetView::changeEvent(QEvent *event)
+void SheetView::changeEvent(QEvent* event)
 {
     Gui::MDIView::changeEvent(event);
     if (event->type() == QEvent::ParentChange) {
-        if (auto sub = qobject_cast <QMdiSubWindow *> (this->parentWidget())) {
-            QTimer::singleShot(300, sub, [sub, this](){
-                QMenu *menu = sub->systemMenu();
+        if (auto sub = qobject_cast<QMdiSubWindow*>(this->parentWidget())) {
+            QTimer::singleShot(300, sub, [sub, this]() {
+                QMenu* menu = sub->systemMenu();
                 menu->addSeparator();
-                QAction *act = menu->addAction(tr("Toggle alternate rows"));
+                QAction* act = menu->addAction(tr("Toggle alternate rows"));
                 act->setCheckable(true);
                 act->setChecked(ui->cells->alternatingRowColors());
-                connect(act, &QAction::triggered,
-                        ui->cells, &SheetTableView::setAlternatingRowColors);});
+                connect(act, &QAction::triggered, ui->cells, &SheetTableView::setAlternatingRowColors);
+            });
         }
     }
 }
