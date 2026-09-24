@@ -29,6 +29,9 @@
 # include <QGraphicsItem>
 # include <QGraphicsSceneMouseEvent>
 # include <QPainter>
+# include <QFontMetricsF>
+# include <QFontInfo>
+# include <QTextFragment>
 # include <QRegularExpression>
 # include <QApplication>
 # include <QCursor>
@@ -133,6 +136,12 @@ void QGIRichAnno::updateView(bool update)
     // the screen or pdf rendering
     constexpr double mmPerPoint {25.4 / 72};  //  mm/in / points/inch
     m_textScaleFactor = Rez::getRezFactor() * mmPerPoint;  // scene units per point: 3.53
+    if (annoFeat->TextHeight.getValue() > 0) {
+        const QFont font(QStringLiteral("Sans Serif"), 12);
+        m_text->document()->setDefaultFont(font);
+        m_text->document()->setDocumentMargin(0);
+        m_textScaleFactor = Rez::getRezFactor() * annoFeat->TextHeight.getValue() / QFontMetricsF(font).height();
+    }
     m_text->setScale(m_textScaleFactor);
 
     draw();
@@ -173,6 +182,32 @@ void QGIRichAnno::setTextItem()
         m_text->setHtml(QString::fromUtf8(annoFeat->AnnoText.getValue()));
     }
 
+    if (getExportingSvg() && annoFeat->TextHeight.getValue() > 0) {
+        // Model-sized text keeps the same pixel layout for screen, PDF and SVG.
+        // Point-sized fonts otherwise get rescaled by QSvgGenerator's page DPI.
+        auto* document = m_text->document();
+        QFont font = document->defaultFont();
+        font.setPixelSize(QFontInfo(font).pixelSize());
+        document->setDefaultFont(font);
+        for (auto block = document->begin(); block.isValid(); block = block.next()) {
+            for (auto it = block.begin(); !it.atEnd(); ++it) {
+                const auto fragment = it.fragment();
+                if (!fragment.isValid()) continue;
+                auto format = fragment.charFormat();
+                if (format.fontPointSize() > 0) {
+                    QFont resolved = format.font();
+                    const int pixels = QFontInfo(resolved).pixelSize();
+                    format.clearProperty(QTextFormat::FontPointSize);
+                    format.setProperty(QTextFormat::FontPixelSize, pixels);
+                    QTextCursor cursor(document);
+                    cursor.setPosition(fragment.position());
+                    cursor.setPosition(fragment.position()+fragment.length(), QTextCursor::KeepAnchor);
+                    cursor.setCharFormat(format);
+                }
+            }
+        }
+    }
+
     // 1. Get the bounding rectangle of the text in its own local coordinates.
     QRectF textParentRect = m_text->mapRectToParent(m_text->boundingRect());
 
@@ -191,7 +226,7 @@ void QGIRichAnno::setTextItem()
     m_rect->setBrush(Qt::NoBrush);
     m_rect->setVisible(annoFeat->ShowFrame.getValue());
 
-    if (getExportingSvg()) {
+    if (getExportingSvg() && annoFeat->TextHeight.getValue() <= 0) {
         // Convert the word processing font size spec (in typographic points) to CSS pixels
         // for Svg rendering
         constexpr double mmPerPoint {25.4 / 72.0};
