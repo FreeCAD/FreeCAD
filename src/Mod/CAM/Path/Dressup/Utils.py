@@ -64,10 +64,36 @@ def isOp(obj):
 
 
 def baseOp(path):
-    """baseOp(path) ... return the base operation underlying the given path"""
-    if hasattr(path, "Name") and "Dressup" in path.Name:
-        return baseOp(path.Base)
+    """baseOp(path) ... return the base operation underlying the given path.
+
+    A dressup is known by its shape, not its name: its Base is the one path
+    object it dresses. An operation's Base, if it has one, is a list of
+    geometry."""
+    base = getattr(path, "Base", None)
+    if base is not None and not isinstance(base, (list, tuple)) and hasattr(base, "Path"):
+        return baseOp(base)
     return path
+
+
+def placeWithBase(obj):
+    """placeWithBase(obj) ... carry the base operation's frame.
+
+    A dressup generates in the frame its base operation generates in: it
+    reads the base's stored path, which is in the base's work plane's frame,
+    and stores its own path in that frame. Its Placement positions it, as an
+    operation's does, so the simulators, Inspect and the posts read a dressup
+    exactly as they read an operation. The frame is never stored on the
+    dressup: it is read through the base on every execute and written here."""
+    import Path.Base.Util as PathUtil
+
+    placement = getattr(obj, "Placement", None)
+    if placement is None:
+        return  # a test double without one
+    frame = PathUtil.workplaneForOp(obj)
+    if not placement.isSame(frame, 1e-9):
+        obj.Placement = frame
+    if hasattr(obj, "setEditorMode"):
+        obj.setEditorMode("Placement", 1)  # derived from the base operation
 
 
 def toolController(path, default=None):

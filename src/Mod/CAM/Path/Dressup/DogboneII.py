@@ -27,7 +27,6 @@ import Path
 import Path.Base.Generator.dogboneII as dogboneII
 import Path.Base.Language as PathLanguage
 import Path.Dressup.Utils as PathDressup
-import PathScripts.PathUtils as PathUtils
 import math
 
 if False:
@@ -424,7 +423,8 @@ class Proxy(object):
         dressingUpDogbone = hasattr(obj.Base, "BoneBlacklist")
 
         if obj.Base and obj.Base.Path and obj.Base.Path.Commands:
-            source = PathLanguage.Maneuver.FromPath(PathUtils.getPathWithPlacement(obj.Base)).instr
+            PathDressup.placeWithBase(obj)
+            source = PathLanguage.Maneuver.FromPath(obj.Base.Path).instr
 
             # get indexes of outer closed profile in each multi work area
             if getattr(obj, "OnlyClosedProfiles", None):

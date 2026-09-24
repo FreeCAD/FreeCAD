@@ -25,6 +25,7 @@ from pivy import coin
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Util as PathUtil
 import Path.Base.Gui.GetPoint as PathGetPoint
 import Path.Dressup.Tags as PathDressupTag
 from PathScripts import PathUtils
@@ -263,6 +264,10 @@ class PathDressupTagTaskPanel:
         self.updateTagsView()
 
     def addNewTagAt(self, point, obj):
+        # The pick is a world point; the path and the tag positions are in
+        # the base operation's frame.
+        if point:
+            point = PathUtil.workplaneForOp(self.obj).inverse().multVec(point)
         if point and obj and self.obj.Proxy.pointIsOnPath(self.obj, point):
             Path.Log.info(f"addNewTagAt({point.x:.2f}, {point.y:.2f})")
             self.Positions.append(FreeCAD.Vector(point.x, point.y, 0))

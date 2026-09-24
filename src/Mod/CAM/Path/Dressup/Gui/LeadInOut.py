@@ -422,22 +422,11 @@ class ObjectDressup:
             if hasattr(toolController, "LeadOutFeed"):
                 self.exitFeed = toolController.LeadOutFeed.Value
 
-        # The base op's heights are measured in its work plane's frame, but
-        # this dressup works on its placed path, in world coordinates. A plane
-        # parallel to the table only moves heights by its Z; add it back. (A
-        # tilted plane has no single world height to shift by.)
-        dz = 0.0
-        placement = getattr(baseOp, "Placement", None)
-        if placement is not None:
-            z_up = App.Vector(0, 0, 1)
-            if placement.Rotation.multVec(z_up).isEqual(z_up, 1e-6):
-                dz = placement.Base.z
-
         if hasattr(baseOp, "ClearanceHeight"):
-            self.clearanceHeight = baseOp.ClearanceHeight.Value + dz
+            self.clearanceHeight = baseOp.ClearanceHeight.Value
 
         if hasattr(baseOp, "SafeHeight"):
-            self.safeHeight = baseOp.SafeHeight.Value + dz
+            self.safeHeight = baseOp.SafeHeight.Value
 
         if (
             self.clearanceHeight is None
@@ -457,7 +446,7 @@ class ObjectDressup:
 
             machine = MachineState()
             rapidZ = []
-            for cmd in PathUtils.getPathWithPlacement(baseOp).Commands:
+            for cmd in baseOp.Path.Commands:
                 if cmd.Name not in Constants.GCODE_MOVE_ALL:
                     continue
                 if _isVertical(machine.getPosition(), cmd):
@@ -492,7 +481,7 @@ class ObjectDressup:
                     self.safeHeight = rapidZ[1]
 
         if hasattr(baseOp, "StartDepth"):
-            self.startDepth = baseOp.StartDepth.Value + dz
+            self.startDepth = baseOp.StartDepth.Value
         else:
             self.startDepth = self.safeHeight
 
@@ -503,7 +492,7 @@ class ObjectDressup:
 
         self.clearanceHeightOut = self.clearanceHeight
         if hasattr(baseOp, "ClearanceHeightOut"):
-            self.clearanceHeightOut = baseOp.ClearanceHeightOut.Value + dz
+            self.clearanceHeightOut = baseOp.ClearanceHeightOut.Value
 
         return self.clearanceHeight is not None and self.safeHeight is not None
 
@@ -516,8 +505,10 @@ class ObjectDressup:
             obj.Path = Path.Path("(inactive operation)")
             return
 
+        PathDressup.placeWithBase(obj)
+
         if not obj.LeadIn and not obj.LeadOut:
-            obj.Path = PathUtils.getPathWithPlacement(obj.Base)
+            obj.Path = obj.Base.Path
 
         if obj.RadiusIn <= 0:
             obj.RadiusIn = 1
@@ -565,7 +556,7 @@ class ObjectDressup:
             return
 
         args = {
-            "path": PathUtils.getPathWithPlacement(obj.Base),
+            "path": obj.Base.Path,
             "side": self.side,
             "direction": self.direction,
             "leadIn": obj.LeadIn,

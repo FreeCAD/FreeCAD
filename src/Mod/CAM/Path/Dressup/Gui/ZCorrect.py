@@ -22,6 +22,7 @@
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Util as PathUtil
 import PathScripts.PathUtils as PathUtils
 import Path.Dressup.Utils as PathDressup
 
@@ -188,9 +189,26 @@ class ObjectDressup:
             obj.Path = Path.Path()
             return
 
-        path = PathUtils.getPathWithPlacement(obj.Base)
+        path = obj.Base.Path
         if not path.Commands:
             obj.Path = Path.Path()
+            return
+
+        PathDressup.placeWithBase(obj)
+        # The probe map is world geometry and the path is in the base
+        # operation's frame. On a plane parallel to the table a frame point
+        # maps to its world X, Y for the lookup, and the correction is along
+        # the tool axis either way. A tilted plane has no such lookup.
+        frame = PathUtil.workplaneForOp(obj)
+        z_up = FreeCAD.Vector(0, 0, 1)
+        if not frame.Rotation.multVec(z_up).isEqual(z_up, 1e-6):
+            Path.Log.warning(
+                translate(
+                    "CAM_DressupZCorrect",
+                    "Z correction needs a work plane parallel to the table; path left unchanged",
+                )
+            )
+            obj.Path = path
             return
 
         self._getinterpSurface(obj)
@@ -231,9 +249,10 @@ class ObjectDressup:
                         pointlist = [v.Point for v in edge.Vertexes]
 
                 for point in pointlist:
-                    if not bb.isInside(FreeCAD.Vector(point.x, point.y, 0)):
+                    world = frame.multVec(point)
+                    if not bb.isInside(FreeCAD.Vector(world.x, world.y, 0)):
                         obj.Path = path
-                        pointStr = f"({round(point.x, 3)}, {round(point.y, 3)})"
+                        pointStr = f"({round(world.x, 3)}, {round(world.y, 3)})"
                         bbMin = f"XMin={round(bb.XMin, 3)}, YMin={round(bb.YMin, 3)}"
                         bbMax = f"XMax={round(bb.XMax, 3)}, YMax={round(bb.YMax, 3)}"
                         Path.Log.warning(
@@ -245,7 +264,7 @@ class ObjectDressup:
                         )
                         return
 
-                    offset = self._bilinearInterpolate(surface, point.x, point.y)
+                    offset = self._bilinearInterpolate(surface, world.x, world.y)
                     commandparams = {"X": point.x, "Y": point.y, "Z": point.z + offset}
                     if "F" in newparams.keys():
                         commandparams["F"] = newparams["F"]
