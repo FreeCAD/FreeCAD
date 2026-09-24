@@ -55,7 +55,7 @@ using namespace std;
 #include <GCPnts_UniformAbscissa.hxx>
 #include <GCPnts_UniformDeflection.hxx>
 #include <GeomAPI_ProjectPointOnCurve.hxx>
-#include <Geom_Circle.hxx>
+#include <GeomAdaptor_Curve.hxx>
 #include <Geom_TrimmedCurve.hxx>
 #include <gp_Circ.hxx>
 #include <HLRAlgo_Projector.hxx>
@@ -429,51 +429,38 @@ void Area::addWire(CArea& area, const TopoDS_Wire& wire, const gp_Trsf* trsf, do
         const TopoDS_Edge& edge = TopoDS::Edge(xp.Current());
         BRepAdaptor_Curve curve(edge);
         bool reversed = (xp.Current().Orientation() == TopAbs_REVERSED);
-
         p = curve.Value(reversed ? curve.FirstParameter() : curve.LastParameter());
+
+        // Extract helper code for appending an arc, to be used on circular edges
+        // and other types of edges that get approximated as circular arcs
+        auto appendArc = [&](const Adaptor3d_Curve& arc) {
+            double first = arc.FirstParameter();
+            double last = arc.LastParameter();
+            gp_Circ circ = arc.Circle();
+            gp_Pnt center = circ.Location();
+            Point c(center.X(), center.Y());
+            int type = circ.Axis().Direction().Z() < 0 ? -1 : 1;
+            if (reversed) {
+                type = -type;
+            }
+            if (fabs(first - last) > std::numbers::pi) {
+                // Split arc(circle) larger than half circle. Because gcode
+                // can't handle full circle?
+                gp_Pnt mid = arc.Value((first + last) * 0.5);
+                ccurve.append(CVertex(type, Point(mid.X(), mid.Y()), c));
+            }
+            gp_Pnt end = arc.Value(reversed ? first : last);
+            ccurve.append(CVertex(type, Point(end.X(), end.Y()), c));
+        };
 
         switch (curve.GetType()) {
             case GeomAbs_Line: {
                 ccurve.append(CVertex(Point(p.X(), p.Y())));
-                if (to_edges) {
-                    area.append(ccurve);
-                    ccurve.m_vertices.pop_front();
-                }
                 break;
             }
 
             case GeomAbs_Circle: {
-                double first = curve.FirstParameter();
-                double last = curve.LastParameter();
-                gp_Circ circle = curve.Circle();
-                gp_Dir dir = circle.Axis().Direction();
-                gp_Pnt center = circle.Location();
-                int type = dir.Z() < 0 ? -1 : 1;
-                if (reversed) {
-                    type = -type;
-                }
-                if (fabs(first - last) > std::numbers::pi) {
-                    // Split arc(circle) larger than half circle. Because gcode
-                    // can't handle full circle?
-                    gp_Pnt mid = curve.Value((last - first) * 0.5 + first);
-                    ccurve.append(
-                        CVertex(type, Point(mid.X(), mid.Y()), Point(center.X(), center.Y()))
-                    );
-                }
-                ccurve.append(CVertex(type, Point(p.X(), p.Y()), Point(center.X(), center.Y())));
-                if (to_edges) {
-                    ccurve.Discretize();
-                    CCurve c;
-                    c.append(ccurve.m_vertices.front());
-                    auto it = ccurve.m_vertices.begin();
-                    for (++it; it != ccurve.m_vertices.end(); ++it) {
-                        c.append(*it);
-                        area.append(c);
-                        c.m_vertices.pop_front();
-                    }
-                    ccurve.m_vertices.clear();
-                    ccurve.append(c.m_vertices.front());
-                }
+                appendArc(curve);
                 break;
             }
 
@@ -482,59 +469,34 @@ void Area::addWire(CArea& area, const TopoDS_Wire& wire, const gp_Trsf* trsf, do
             case GeomAbs_Ellipse:
             case GeomAbs_Hyperbola:
             case GeomAbs_Parabola: {
-                // Approximate as circular arc segments (bi-arcs) and line segments.
-                // BSplineCurveBiArcs operates on any Geom_Curve via D0/D1, so no
-                // pre-conversion to BSpline is required.
-                double curveLen = GCPnts_AbscissaPoint::Length(
-                    curve,
-                    curve.FirstParameter(),
-                    curve.LastParameter()
-                );
-                gp_Pnt ptStart = curve.Value(curve.FirstParameter());
-                gp_Pnt ptEnd = curve.Value(curve.LastParameter());
-                if (curveLen < gp::Resolution()) {
+                // Process very short curves as segments
+                if (GCPnts_AbscissaPoint::Length(curve) < Precision::Confusion()) {
+                    ccurve.append(CVertex(Point(p.X(), p.Y())));
                     break;
                 }
 
+                // Approximate the curve as arcs and lines
                 Handle(Geom_TrimmedCurve) trimmed = new Geom_TrimmedCurve(
                     curve.Curve().Curve(),
                     curve.FirstParameter(),
                     curve.LastParameter()
                 );
                 trimmed->Transform(curve.Trsf());
-
                 Part::BSplineCurveBiArcs biarcs(trimmed);
                 auto segments = biarcs.toBiArcs(deflection);
 
+                // Now append each segment. If the curve is reversed, iterate the reversed list
+                if (reversed) {
+                    segments.reverse();
+                }
                 for (Part::Geometry* seg : segments) {
-                    if (auto* arc = dynamic_cast<Part::GeomArcOfCircle*>(seg)) {
-                        Handle(Geom_TrimmedCurve)
-                            tc = Handle(Geom_TrimmedCurve)::DownCast(arc->handle());
-                        Handle(Geom_Circle) gcircle = Handle(Geom_Circle)::DownCast(tc->BasisCurve());
-                        gp_Pnt center = gcircle->Location();
-                        gp_Dir dir = gcircle->Axis().Direction();
-                        int type = dir.Z() < 0 ? -1 : 1;
-                        if (reversed) {
-                            type = -type;
-                        }
-                        gp_Pnt endPt;
-                        tc->D0(tc->LastParameter(), endPt);
-                        ccurve.append(
-                            CVertex(type, Point(endPt.X(), endPt.Y()), Point(center.X(), center.Y()))
-                        );
-                        if (to_edges) {
-                            // TODO: same discretize-and-split logic as GeomAbs_Circle
-                        }
+                    GeomAdaptor_Curve segC(Handle(Geom_Curve)::DownCast(seg->handle()));
+                    if (segC.GetType() == GeomAbs_Circle) {
+                        appendArc(segC);
                     }
                     else {
-                        // GeomLineSegment
-                        auto* line = static_cast<Part::GeomLineSegment*>(seg);
-                        Base::Vector3d ep = line->getEndPoint();
-                        ccurve.append(CVertex(Point(ep.x, ep.y)));
-                        if (to_edges) {
-                            area.append(ccurve);
-                            ccurve.m_vertices.pop_front();
-                        }
+                        gp_Pnt pt = segC.Value(reversed ? segC.FirstParameter() : segC.LastParameter());
+                        ccurve.append(CVertex(Point(pt.X(), pt.Y())));
                     }
                     delete seg;
                 }
@@ -547,15 +509,23 @@ void Area::addWire(CArea& area, const TopoDS_Wire& wire, const gp_Trsf* trsf, do
                 for (size_t i = 1; i < pts.size(); ++i) {
                     auto& pt = pts[i];
                     ccurve.append(CVertex(Point(pt.X(), pt.Y())));
-                    if (to_edges) {
-                        area.append(ccurve);
-                        ccurve.m_vertices.pop_front();
-                    }
                 }
             }
         }
     }
-    if (!to_edges) {
+
+    if (to_edges) {
+        // Split the curve into single-edge curves, with arcs discretized
+        ccurve.Discretize();
+        CCurve c;
+        c.append(ccurve.m_vertices.front());
+        for (auto it = std::next(ccurve.m_vertices.begin()); it != ccurve.m_vertices.end(); ++it) {
+            c.append(*it);
+            area.append(c);
+            c.m_vertices.pop_front();
+        }
+    }
+    else {
         if (BRep_Tool::IsClosed(wire) && !ccurve.IsClosed()) {
             AREA_WARN("ccurve not closed");
             ccurve.append(ccurve.m_vertices.front());
