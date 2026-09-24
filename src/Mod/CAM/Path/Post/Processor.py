@@ -4002,6 +4002,7 @@ class WrapperPost(PostProcessor):
                 placement = getattr(item.source, "Placement", None)
                 if placement is not None and not placement.isIdentity(1e-9):
                     item.path = PathUtils.applyPlacementToPath(placement, item.path)
+                    item.data["placed"] = True
 
     @property
     def tooltip(self):

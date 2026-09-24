@@ -319,6 +319,26 @@ class TestGenerateInPlaneFrame(PathTestUtils.PathTestBase):
         self.assertTrue(rapids, "the dressup should retract")
         self.assertRoughly(max(rapids), op.ClearanceHeight.Value + 50.0, 1e-6)
 
+    def test_legacyPostPlacesAnOperationOnce(self):
+        """WrapperPost places each operation's path for legacy scripts, and
+        most of those scripts call PathUtils.getPathWithPlacement() on the
+        item as well. The item forwards Placement to its operation, so the
+        plane's offset was applied twice."""
+        from Path.Post.PostList import Postable
+        from Path.Post.Processor import WrapperPost
+
+        class Op:
+            Placement = FreeCAD.Placement(Vector(0, 0, 50), FreeCAD.Rotation())
+
+        item = Postable(
+            item_type="operation",
+            label="Op",
+            path=Path.Path([Path.Command("G1", {"X": 1, "Y": 2, "Z": -5})]),
+            source=Op(),
+        )
+        WrapperPost._place_operations([("all", [item])])
+        self.assertRoughly(PathUtils.getPathWithPlacement(item).Commands[0].z, 45.0)
+
     def test_placingAPathOnAnUprightPlaneKeepsTheArcWords(self):
         upright = FreeCAD.Placement(Vector(5, 7, 3), FreeCAD.Rotation(Vector(0, 0, 1), 90))
         stored = Path.Path([Path.Command("G3", {"X": 10, "Y": 10, "I": 0, "J": 5})])
