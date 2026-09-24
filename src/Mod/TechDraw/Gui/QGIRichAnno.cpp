@@ -370,6 +370,11 @@ void QGIRichAnno::hoverMoveEvent(QGraphicsSceneHoverEvent* event)
 void QGIRichAnno::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
     TechDraw::DrawRichAnno* annoFeat = getFeature();
+    if (TechDraw::DrawUtil::isSourceOwnedAnnotation(annoFeat)) {
+        // The text belongs to the source sketch, so there is nothing to resize here.
+        QGIView::mousePressEvent(event);
+        return;
+    }
     // Allow resizing even if MaxWidth is initially -1 or 0, as long as frame is shown
     if (event->button() != Qt::LeftButton || !annoFeat || annoFeat->isLocked()) {
         QGIView::mousePressEvent(event);
@@ -588,6 +593,9 @@ void QGIRichAnno::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) {
 
 void QGIRichAnno::setEditMode(bool enable)
 {
+    if (enable && TechDraw::DrawUtil::isSourceOwnedAnnotation(getFeature())) {
+        return;  // Source-owned text is edited in the sketch, not on the page.
+    }
     m_isEditing = enable;
     if (enable) {
         m_text->setTextInteractionFlags(Qt::TextEditorInteraction);
