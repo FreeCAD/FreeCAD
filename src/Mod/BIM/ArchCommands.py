@@ -33,8 +33,6 @@ __url__ = "https://www.freecad.org"
 #  This module provides general functions used by Arch tools
 #  and utility commands
 
-import textwrap
-
 import FreeCAD
 import ArchComponent
 import Draft
@@ -1701,17 +1699,6 @@ def getExtrusionData(shape, sortmethod="area"):
             valids.sort(key=lambda v: (v[0].CenterOfMass.sub(sortmethod)).Length)
         return valids[0]
     return None
-
-
-# Character width task box tooltips are wrapped to.
-TOOLTIP_WRAP_WIDTH = 60
-
-
-def wrapTooltip(text, width=TOOLTIP_WRAP_WIDTH):
-    """Wraps a translated tooltip string to a fixed character width, so that long property descriptions
-    don't end up as one very long tooltip on the UI."""
-
-    return "\n".join(textwrap.wrap(text, width=width))
 
 
 def printMessage(message):

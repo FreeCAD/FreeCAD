@@ -1447,24 +1447,18 @@ class _ArchWindowTaskPanel:
             FreeCADGui.ExpressionBinding(self.widthWidget).bind(self.obj, "Width")
             self.widthWidget.setProperty("value", self.obj.Width)
             self.widthWidget.setToolTip(
-                ArchCommands.wrapTooltip(
-                    translate("App::Property", self.obj.getDocumentationOfProperty("Width"))
-                )
+                translate("App::Property", self.obj.getDocumentationOfProperty("Width"))
             )
 
             FreeCADGui.ExpressionBinding(self.heightWidget).bind(self.obj, "Height")
             self.heightWidget.setProperty("value", self.obj.Height)
             self.heightWidget.setToolTip(
-                ArchCommands.wrapTooltip(
-                    translate("App::Property", self.obj.getDocumentationOfProperty("Height"))
-                )
+                translate("App::Property", self.obj.getDocumentationOfProperty("Height"))
             )
 
             FreeCADGui.ExpressionBinding(self.openingWidget).bind(self.obj, "Opening")
             self.openingWidget.setToolTip(
-                ArchCommands.wrapTooltip(
-                    translate("App::Property", self.obj.getDocumentationOfProperty("Opening"))
-                )
+                translate("App::Property", self.obj.getDocumentationOfProperty("Opening"))
             )
             # Opening is a scalar property, as opposed to a quantity property. It appears to have
             # no "preferred unit" metadata, but it is a percentage (App::PropertyPercent), so set
