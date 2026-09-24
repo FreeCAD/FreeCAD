@@ -25,12 +25,17 @@
 #ifndef BASE_TRANSLATION_H
 #define BASE_TRANSLATION_H
 
+#include <format>
 #include <string>
 #include <string_view>
 #include <vector>
 
 #ifndef FC_GLOBAL_H
 # include <FCGlobal.h>
+#endif
+
+#ifndef QT_TRANSLATE_NOOP
+# define QT_TRANSLATE_NOOP(scope, x) x
 #endif
 
 namespace Base::Translation
@@ -61,6 +66,14 @@ BaseExport std::string translate(
     std::string_view disambiguation = {},
     int n = -1
 );
+
+BaseExport std::string vformat(std::string_view context, std::string_view pattern, std::format_args args);
+
+template<typename... Args>
+std::string format(std::string_view context, std::string_view pattern, const Args&... args)
+{
+    return vformat(context, pattern, std::make_format_args(args...));
+}
 
 BaseExport bool installTranslator(std::string_view filename);
 BaseExport bool removeTranslators(const std::vector<std::string>& filenames);
