@@ -52,6 +52,7 @@ import Path.Main.Job as PathJob
 import Path.Main.Workplane as PathWorkplane
 import Path.Op.Custom as PathCustom
 import Path.Op.MillFacing as PathMillFacing
+import Path.Op.Profile as PathProfile
 import Path.Op.Util as PathOpUtil
 import CAMTests.PathTestUtils as PathTestUtils
 import PathScripts.PathUtils as PathUtils
@@ -275,6 +276,22 @@ class TestGenerateInPlaneFrame(PathTestUtils.PathTestBase):
         op.Workplane = plane
         self.doc.recompute()
         self.assertRoughly(op.OpFinalDepth.Value, 0.0, 1e-6)
+
+    def test_startPointIsTakenInTheWorld(self):
+        """A start point is picked in the 3D view, in world coordinates. On a
+        plane whose origin is off the Job's, the operation must carry it into
+        its frame, or the profile starts where the untransformed point lands:
+        here 50 mm away, on the other side of the part."""
+        plane = PathWorkplane.createWorkplaneFromToolAxis(
+            self.job, Vector(0, 0, 1), origin=Vector(50, 50, 50)
+        )
+        op = PathProfile.Create("P")
+        op.Workplane = plane
+        op.UseStartPoint = True
+        op.StartPoint = Vector(100, 0, 50)
+        self.doc.recompute()
+        first = _cutPoints(PathUtils.getPathWithPlacement(op))[0]
+        self.assertLess((Vector(first.x, first.y, 0) - Vector(100, 0, 0)).Length, 10.0)
 
     def test_placingAPathOnAnUprightPlaneKeepsTheArcWords(self):
         upright = FreeCAD.Placement(Vector(5, 7, 3), FreeCAD.Rotation(Vector(0, 0, 1), 90))

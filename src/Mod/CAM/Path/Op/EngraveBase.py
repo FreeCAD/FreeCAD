@@ -107,7 +107,7 @@ class ObjectOp(PathOp.ObjectOp):
 
         # sorting wires
         if len(wires) > 1 and getattr(obj, "SortingMode", None) == "Automatic":
-            endPoint = obj.EndPoint if obj.UseEndPoint else None
+            endPoint = self.toFrame(obj.EndPoint) if obj.UseEndPoint else None
             if len(zValues) % 2 == 0 and biDir:  # sorting pairs points
                 pairs = []
                 for indexWire, wire in enumerate(wires):
@@ -123,7 +123,7 @@ class ObjectOp(PathOp.ObjectOp):
                     )
 
                 sortedPairs = tsp_solver.solvePairs(
-                    pairs, routeStartPoint=obj.StartPoint, routeEndPoint=endPoint
+                    pairs, routeStartPoint=self.startPoint(obj), routeEndPoint=endPoint
                 )
                 orderedWires = []
                 for pair in sortedPairs:
@@ -149,7 +149,7 @@ class ObjectOp(PathOp.ObjectOp):
                 sortedTunnels = tsp_solver.solveTunnels(
                     tunnels,
                     allowFlipping=biDir,
-                    routeStartPoint=obj.StartPoint,
+                    routeStartPoint=self.startPoint(obj),
                     routeEndPoint=endPoint,
                 )
                 orderedWires = []
