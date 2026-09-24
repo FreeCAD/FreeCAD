@@ -128,7 +128,6 @@ public:
     virtual double getVertexSize();
 
     bool isExporting() const;
-    bool hideCenterMarks() const;
 
     void setMovableFlag() override;
     void setMovableFlagProjGroupItem();
@@ -154,8 +153,11 @@ protected:
     bool formatGeomFromCosmetic(std::string cTag, QGIEdge* item);
     bool formatGeomFromCenterLine(std::string cTag, QGIEdge* item);
 
-    bool showCenterMarks() const;
     bool showVertices() const;
+
+    bool showCenterMarks() const;
+    bool showCenterMarksExporting() const;
+    bool showCenterMarksScreen() const;
 
 private:
     QList<QGraphicsItem*> deleteItems;
