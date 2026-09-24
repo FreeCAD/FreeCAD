@@ -51,6 +51,7 @@ import Path.Base.Util as PathUtil
 import Path.Main.Job as PathJob
 import Path.Main.Workplane as PathWorkplane
 import Path.Op.Custom as PathCustom
+import Path.Op.Engrave as PathEngrave
 import Path.Op.MillFacing as PathMillFacing
 import Path.Op.Profile as PathProfile
 import Path.Op.Util as PathOpUtil
@@ -338,6 +339,33 @@ class TestGenerateInPlaneFrame(PathTestUtils.PathTestBase):
         )
         WrapperPost._place_operations([("all", [item])])
         self.assertRoughly(PathUtils.getPathWithPlacement(item).Commands[0].z, 45.0)
+
+    def test_engraveBaseShapesAreReadInTheOperationsFrame(self):
+        """Engrave takes whole shapes beside its Base. A line lying on a
+        tilted plane is read in that plane's frame, as Base geometry is: its
+        top is at depth 0, and the placed path runs along the line in the
+        world. Read in world coordinates it engraved 50 mm below the table,
+        90 mm off to the side."""
+        plane = FreeCAD.Placement(Vector(60, 40, 50), FreeCAD.Rotation(Vector(0, 1, 0), 30))
+        a, b = plane.multVec(Vector(-10, -20, 0)), plane.multVec(Vector(10, 20, 0))
+        line = self.doc.addObject("Part::Feature", "Line")
+        line.Shape = Part.makeLine(a, b)
+        op = PathEngrave.Create("Engrave")
+        op.Workplane = PathWorkplane.createWorkplane(self.job, placement=plane)
+        op.BaseShapes = [line]
+        self.doc.recompute()
+
+        self.assertRoughly(op.OpFinalDepth.Value, 0.0, 1e-6)
+        stored = _cutPoints(op.Path)
+        self.assertTrue(stored)
+        self.assertRoughly(min(p.z for p in stored), 0.0, 1e-6)
+        for p in stored:
+            self.assertTrue(-10 - 1e-6 <= p.x <= 10 + 1e-6, p)
+            self.assertTrue(-20 - 1e-6 <= p.y <= 20 + 1e-6, p)
+        world = Part.makeLine(a, b)
+        for p in _cutPoints(PathUtils.getPathWithPlacement(op)):
+            if Path.Geom.isRoughly(plane.inverse().multVec(p).z, 0.0):
+                self.assertRoughly(world.distToShape(Part.Vertex(p))[0], 0.0, 1e-6)
 
     def test_placingAPathOnAnUprightPlaneKeepsTheArcWords(self):
         upright = FreeCAD.Placement(Vector(5, 7, 3), FreeCAD.Rotation(Vector(0, 0, 1), 90))
