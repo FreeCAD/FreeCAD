@@ -154,9 +154,9 @@ PyObject* SketchObjectPy::getAnnotationFace(PyObject* args)
     }
     try {
         auto* sketch = getSketchObjectPtr();
-        return new Part::TopoShapePy(new Part::TopoShape(
-            sketch->annotationFace(sketch->getAnnotation(id))
-        ));
+        return new Part::TopoShapePy(
+            new Part::TopoShape(sketch->annotationFace(sketch->getAnnotation(id)))
+        );
     }
     catch (const Py::Exception&) {
         return nullptr;
