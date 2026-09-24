@@ -590,8 +590,16 @@ Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
 
     // Iterate through edges
     for (auto vIt = std::next(curve.m_vertices.cbegin()); vIt != curve.m_vertices.cend(); vIt++) {
-        const CVertex& vertex = *vIt;
+        CVertex vertex = *vIt;
         const bool isLoop = std::next(vIt) == curve.m_vertices.end() && curve.IsClosed();
+        if (isLoop) {
+            // IsClosed() uses tolerance-based heeks::Point equality. If the last vertex doesn't
+            // exactly match the first, processing that vertex unmodified will create a new/unique
+            // z coordinate to "close" the curve, and fail to correctly record metadata for the
+            // actual edge back to the start point. To fix this, we coerce the end point to exactly
+            // equal the start point.
+            vertex.m_p = curve.m_vertices.front().m_p;
+        }
         const int edgeTag = tagIt != curve.m_edgeTags.cend() ? *tagIt : 1;
 
         if (vertex.m_type == 0) {
