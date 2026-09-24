@@ -684,7 +684,7 @@ def compact_result(res_obj):
     """
     compacts result.Mesh and appropriate result.NodeNumbers
     """
-    # as workaround for https://www.freecad.org/tracker/view.php?id=2873
+    # as workaround for https://tracker.freecad.org/view.php?id=2873
 
     # get compact mesh data
     from femmesh.meshtools import compact_mesh

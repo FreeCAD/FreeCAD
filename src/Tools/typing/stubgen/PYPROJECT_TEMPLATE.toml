@@ -26,7 +26,7 @@ Documentation = "https://wiki.freecad.org/Power_users_hub"
 Repository = "https://github.com/FreeCAD/FreeCAD"
 Issues = "https://github.com/FreeCAD/FreeCAD/issues"
 Changelog = "https://github.com/FreeCAD/FreeCAD/releases"
-Funding = "https://www.freecad.org/sponsor.php"
+Funding = "https://www.freecad.org/donate"
 Forum = "https://forum.freecad.org/"
 
 [tool.hatch.build.targets.sdist]

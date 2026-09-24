@@ -24,7 +24,7 @@ workflow or shared API, start with architecture and design proposals before impl
 
 [CONTRIBUTING.md](../../CONTRIBUTING.md) defines the contribution process and
 [AI_POLICY.md](../../AI_POLICY.md) defines responsibilities when using AI. The
-[Developers Handbook](https://freecad.github.io/DevelopersHandbook/) explains project-wide
+[Developers Handbook](https://www.freecad.org/dev) explains project-wide
 development and design practices. The [FEP repository](https://github.com/FreeCAD/FreeCAD-Enhancement-Proposals)
 records substantial proposals and decisions. These guides make that material easier to find
 and connect it to implementation choices in the repository; they do not replace those sources.

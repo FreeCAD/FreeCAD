@@ -17,7 +17,7 @@ Where automated coverage is impractical, explain the limitation and provide repe
 steps and the observed result. A missing test is a gap to assess, not permission to claim that
 source inspection has established runtime correctness.
 
-The [testing handbook](https://freecad.github.io/DevelopersHandbook/technical/automated_testing)
+The [testing handbook](https://www.freecad.org/dev/tech/tests/)
 introduces the frameworks. C++ suites live under [tests/src](../../tests/src); Python suites
 generally live in their workbench package. Choose the layer that observes the contract directly
 without requiring unrelated architectural changes.

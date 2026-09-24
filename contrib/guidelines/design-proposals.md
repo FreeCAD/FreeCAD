@@ -14,7 +14,7 @@ was solved elsewhere, its dependencies were missing, the behavior was rejected, 
 superseded. A closed PR is not automatically a rejected design, and a merged PR is not proof
 that every choice remains correct after later changes.
 
-Read the relevant [Developers Handbook](https://freecad.github.io/DevelopersHandbook/) sections
+Read the relevant [Developers Handbook](https://www.freecad.org/dev) sections
 and search the [FEP index](https://github.com/FreeCAD/FreeCAD-Enhancement-Proposals#feps). Verify
 the proposal's current text, status, and linked implementation. Do not infer available APIs
 from an accepted design or from a prototype branch.

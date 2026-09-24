@@ -95,7 +95,7 @@ are shown below; not every feature needs every item.
 | Resources | SVG icon and resource collection entries |
 | Tests | Source lists, suite/aggregator imports, registration only for genuinely new suites |
 
-The handbook's [feature integration checklist](https://freecad.github.io/DevelopersHandbook/technical/ChecklistForNewFeatureC%2B%2B)
+The handbook's [feature integration checklist](https://www.freecad.org/dev/tech/checklist/)
 provides an overview. Verify filenames and registration mechanisms in this checkout, especially
 when working on a newer binding generator or a Python workbench.
 

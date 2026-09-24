@@ -18,7 +18,7 @@ already own the whole user operation. Inspect accept, cancel, preview, and failu
 the change neither leaves an open transaction nor commits half an operation.
 
 Study [DocumentObject.h](../../src/App/DocumentObject.h), the affected feature's overrides, and
-the handbook's [property-change overview](https://freecad.github.io/DevelopersHandbook/technical/PropertyChanges).
+the handbook's [property-change overview](https://www.freecad.org/dev/tech/properties/).
 In particular, establish what `onChanged()` invalidates, what `mustExecute()` requests, and
 what `execute()` consumes. Calling execution directly from a property callback can recurse
 when execution changes the same property again.
