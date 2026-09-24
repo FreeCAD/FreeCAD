@@ -244,6 +244,38 @@ class TestGenerateInPlaneFrame(PathTestUtils.PathTestBase):
         self.assertRoughly(placed.Parameters["Z"], 30)
         self.assertRoughly(placed.Parameters["R"], 55)
 
+    def test_modelTopInATiltedFrameComesFromTheShapeNotItsBoundingBox(self):
+        """A facing operation's final depth is the top of the model along the
+        tool axis. A 30 degree facet cut off the end of a block leaves the
+        block's old corner in its bounding box, 15 above the facet in the
+        plane's frame; the model has nothing there, so the top is the facet."""
+        drop = 30 * math.tan(math.radians(30))
+        wedge = Part.Face(
+            Part.makePolygon(
+                [
+                    Vector(90, 0, 50),
+                    Vector(120, 0, 50),
+                    Vector(120, 0, 50 - drop),
+                    Vector(90, 0, 50),
+                ]
+            )
+        ).extrude(Vector(0, 80, 0))
+        model = self.doc.addObject("Part::Feature", "Faceted")
+        model.Shape = Part.makeBox(120, 80, 50).cut(wedge)
+        self.doc.recompute()
+        job = PathJob.Create("JobFaceted", [model], None)
+        self.doc.recompute()
+        plane = PathWorkplane.createWorkplane(
+            job,
+            placement=FreeCAD.Placement(
+                Vector(105, 40, 50 - drop / 2), FreeCAD.Rotation(Vector(0, 1, 0), 30)
+            ),
+        )
+        op = PathMillFacing.Create("FacetFacing", parentJob=job)
+        op.Workplane = plane
+        self.doc.recompute()
+        self.assertRoughly(op.OpFinalDepth.Value, 0.0, 1e-6)
+
     def test_placingAPathOnAnUprightPlaneKeepsTheArcWords(self):
         upright = FreeCAD.Placement(Vector(5, 7, 3), FreeCAD.Rotation(Vector(0, 0, 1), 90))
         stored = Path.Path([Path.Command("G3", {"X": 10, "Y": 10, "I": 0, "J": 5})])

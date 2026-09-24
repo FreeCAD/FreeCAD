@@ -1091,9 +1091,16 @@ class ObjectOp:
             job = PathUtils.findParentJob(obj)
             zmax = stockBB.ZMax
             if matrix is not None:
-                # Transform model bounding box to get Z in rotated frame
-                modelBB = job.Proxy.modelBoundBox(job)
-                if matrix is not None:
+                # The top of the model along the tool axis, from the shapes
+                # themselves: in a tilted frame the corners of the world
+                # bounding box include corners the model does not have (a
+                # facet cut off a block leaves its old corner above the facet).
+                shapes = [getattr(m, "Shape", None) for m in job.Model.Group]
+                if shapes and all(sh is not None and not sh.isNull() for sh in shapes):
+                    zmin = max(sh.transformed(matrix).BoundBox.ZMax for sh in shapes)
+                else:
+                    # A mesh has no Shape: fall back to the bounding box.
+                    modelBB = job.Proxy.modelBoundBox(job)
                     corners = [
                         FreeCAD.Vector(modelBB.XMin, modelBB.YMin, modelBB.ZMin),
                         FreeCAD.Vector(modelBB.XMax, modelBB.YMin, modelBB.ZMin),
