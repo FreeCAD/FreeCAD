@@ -21,29 +21,28 @@ class TestPropertyFlags(unittest.TestCase):
             App.closeDocument(self.doc.Name)
 
     def test(self):
-        print("TestPropertyFlags running");
-        self.assertEqual(self.obj.getPropertyStatus('Test'), ['PropDynamic'])
-        self.obj.Test=False
+        print("TestPropertyFlags running")
+        self.assertEqual(self.obj.getPropertyStatus("Test"), ["PropDynamic"])
+        self.obj.Test = False
 
-        self.assertEqual(self.obj.getPropertyStatus('Test'), ['Touched', 'PropDynamic'])
-        self.obj.setPropertyStatus('Test', ['-Touched'])
-        self.assertEqual(self.obj.getPropertyStatus('Test'), ['PropDynamic'])
+        self.assertEqual(self.obj.getPropertyStatus("Test"), ["Touched", "PropDynamic"])
+        self.obj.setPropertyStatus("Test", ["-Touched"])
+        self.assertEqual(self.obj.getPropertyStatus("Test"), ["PropDynamic"])
 
-        self.obj.setPropertyStatus('Test', ['User3'])
-        self.assertEqual(self.obj.getPropertyStatus('Test'), ['PropDynamic', 'User3'])
+        self.obj.setPropertyStatus("Test", ["User3"])
+        self.assertEqual(self.obj.getPropertyStatus("Test"), ["PropDynamic", "User3"])
 
-        self.obj.setPropertyStatus('Test', ['-User3'])
-        self.assertEqual(self.obj.getPropertyStatus('Test'), ['PropDynamic'])
+        self.obj.setPropertyStatus("Test", ["-User3"])
+        self.assertEqual(self.obj.getPropertyStatus("Test"), ["PropDynamic"])
 
-        self.obj.setPropertyStatus('Test', [31])
-        self.assertEqual(self.obj.getPropertyStatus('Test'), ['PropDynamic', 'User3'])
+        self.obj.setPropertyStatus("Test", [31])
+        self.assertEqual(self.obj.getPropertyStatus("Test"), ["PropDynamic", "User3"])
 
-        self.obj.setPropertyStatus('Test', [-31])
-        self.assertEqual(self.obj.getPropertyStatus('Test'), ['PropDynamic'])
+        self.obj.setPropertyStatus("Test", [-31])
+        self.assertEqual(self.obj.getPropertyStatus("Test"), ["PropDynamic"])
 
         with self.assertRaises(ValueError):
-            self.obj.setPropertyStatus('Test', ['User4'])
+            self.obj.setPropertyStatus("Test", ["User4"])
             raise RuntimeError("Expected FreeCAD failure")
 
-        self.assertEqual(self.obj.getPropertyStatus('Test'), ['PropDynamic'])
-
+        self.assertEqual(self.obj.getPropertyStatus("Test"), ["PropDynamic"])
