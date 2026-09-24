@@ -478,6 +478,9 @@ class TestNativeIfc(TestArchBase.TestArchBase):
         self.document.recompute()
         self.assertAlmostEqual(storey.Elevation.Value, 6500, delta=0.001)
 
+    @unittest.expectedFailure
+    # See https://github.com/FreeCAD/FreeCAD/pull/31801 and
+    # https://github.com/FreeCAD/FreeCAD/issues/31403. Re-enable once fixed.
     def test10_ChangePlacement(self):
         FreeCAD.Console.PrintMessage("NativeIFC 10: Changing Placement...")
         fp = getIfcFilePath()
