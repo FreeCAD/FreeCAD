@@ -1960,7 +1960,7 @@ public:
     bool _findClosedWiresUpdateEdges(
         VertexInfo& currentVertex,
         gp_Pnt& pend,
-        EdgeInfo* currentInfo,
+        EdgeInfo*& currentInfo,
         int& currentIdx,
         const size_t stackEnd
     )
