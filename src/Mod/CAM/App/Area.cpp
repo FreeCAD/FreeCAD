@@ -431,8 +431,7 @@ void Area::addWire(CArea& area, const TopoDS_Wire& wire, const gp_Trsf* trsf, do
         bool reversed = (xp.Current().Orientation() == TopAbs_REVERSED);
         p = curve.Value(reversed ? curve.FirstParameter() : curve.LastParameter());
 
-        // Extract helper code for appending an arc, to be used on circular edges
-        // and other types of edges that get approximated as circular arcs
+        // Helper code for appending an arc
         auto appendArc = [&](const Adaptor3d_Curve& arc) {
             double first = arc.FirstParameter();
             double last = arc.LastParameter();
@@ -453,6 +452,15 @@ void Area::addWire(CArea& area, const TopoDS_Wire& wire, const gp_Trsf* trsf, do
             ccurve.append(CVertex(type, Point(end.X(), end.Y()), c));
         };
 
+        // Helper code for appending a discretized edge
+        auto appendDiscretized = [&]() {
+            const auto& pts = discretize(edge, deflection);
+            for (size_t i = 1; i < pts.size(); ++i) {
+                auto& pt = pts[i];
+                ccurve.append(CVertex(Point(pt.X(), pt.Y())));
+            }
+        };
+
         switch (curve.GetType()) {
             case GeomAbs_Line: {
                 ccurve.append(CVertex(Point(p.X(), p.Y())));
@@ -469,13 +477,19 @@ void Area::addWire(CArea& area, const TopoDS_Wire& wire, const gp_Trsf* trsf, do
             case GeomAbs_Ellipse:
             case GeomAbs_Hyperbola:
             case GeomAbs_Parabola: {
-                // Process very short curves as segments
+                // Edges with only a pcurve (no 3D curve) can't be fed to biarcs
+                if (!curve.Is3DCurve()) {
+                    appendDiscretized();
+                    break;
+                }
+
+                // Convert very short curves to single segments
                 if (GCPnts_AbscissaPoint::Length(curve) < Precision::Confusion()) {
                     ccurve.append(CVertex(Point(p.X(), p.Y())));
                     break;
                 }
 
-                // Approximate the curve as arcs and lines
+                // Use BiArcs to apprximate the curve as arcs and lines
                 Handle(Geom_TrimmedCurve) trimmed = new Geom_TrimmedCurve(
                     curve.Curve().Curve(),
                     curve.FirstParameter(),
@@ -485,7 +499,7 @@ void Area::addWire(CArea& area, const TopoDS_Wire& wire, const gp_Trsf* trsf, do
                 Part::BSplineCurveBiArcs biarcs(trimmed);
                 auto segments = biarcs.toBiArcs(deflection);
 
-                // Now append each segment. If the curve is reversed, iterate the reversed list
+                // Append each segment. If the curve is reversed, iterate the reversed list
                 if (reversed) {
                     segments.reverse();
                 }
@@ -504,12 +518,9 @@ void Area::addWire(CArea& area, const TopoDS_Wire& wire, const gp_Trsf* trsf, do
             }
 
             default: {
-                // Discretize all other type of curves
-                const auto& pts = discretize(edge, deflection);
-                for (size_t i = 1; i < pts.size(); ++i) {
-                    auto& pt = pts[i];
-                    ccurve.append(CVertex(Point(pt.X(), pt.Y())));
-                }
+                // Fallback for all other type of curves
+                appendDiscretized();
+                break;
             }
         }
     }
@@ -2728,12 +2739,14 @@ TopoDS_Shape Area::toShape(const CCurve& _c, const gp_Trsf* trsf, int reorient)
             double r = center.Distance(pt);
             double r2 = center.Distance(pnext);
 
-            // If the arc deviates from its chord by a tiny amount, replace it with the chord
+            // For short arcs, if the arc deviates from its chord by a tiny amount, replace it
+            // with the chord
             // Exact formula: r - sqrt(r² - d²/4)
             // Approximation for small d: d²/(8r)
             double d = pt.Distance(pnext);
             double deviation = d * d / (8.0 * r);
-            if (deviation < Precision::Confusion()) {
+            bool minorArc = IsLeft(pt, pnext, center) == (v.m_type > 0);
+            if (minorArc && deviation < Precision::Confusion()) {
                 auto edge = BRepBuilderAPI_MakeEdge(pt, pnext).Edge();
                 hEdges->Append(edge);
                 pt = pnext;

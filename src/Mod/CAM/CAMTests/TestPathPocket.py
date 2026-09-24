@@ -24,7 +24,6 @@ import Part
 import Path.Geom as PathGeom
 import Path.Op.MillFace as PathMillFace
 import Path.Op.Pocket as PathPocket
-import Path.Op.MillFace as PathMillFace
 import Path.Main.Job as PathJob
 import Path.Tool.Controller as PathToolController
 import Constants as CAMConstants

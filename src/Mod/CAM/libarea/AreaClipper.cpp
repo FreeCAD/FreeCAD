@@ -743,7 +743,7 @@ void CArea::SetFromResult(
             if (!c.m_vertices.empty()) {
                 CCurve* added = nullptr;
 
-                if (tag == 1) {
+                if (tag == 1 || tag == tagSentinel) {
                     m_curves.push_back(c);
                     added = &m_curves.back();
                 }
@@ -779,6 +779,7 @@ void CArea::SetFromResult(
             // Look up the segment data of the parent edge. Check for and handle the tag sentinel
             // value. The sentinel value is provided only when the parent edge lookup fails.
             // We handle this by assuming the tag is unchanged.
+            // If the full curve is completed without any non-sentinel tags, it is treated as tag 1
             SegmentData parentData = getParentMetadata(v0, v1, metadata);
             if (parentData.edgeTag == tagSentinel) {
                 parentData.edgeTag = tag;
@@ -1074,9 +1075,9 @@ SegmentData CArea::getParentMetadataFallback(
         // Bbox check: skip if either p1 or p2 is outside the edge's bounding box.
         // If either is, then that point is too far from the edge.
         if (std::min(p1.x, p2.x) < std::min(ptA.x, ptB.x)
-            || std::min(p1.x, p2.x) > std::max(ptA.x, ptB.x)
+            || std::max(p1.x, p2.x) > std::max(ptA.x, ptB.x)
             || std::min(p1.y, p2.y) < std::min(ptA.y, ptB.y)
-            || std::min(p1.y, p2.y) > std::max(ptA.y, ptB.y)) {
+            || std::max(p1.y, p2.y) > std::max(ptA.y, ptB.y)) {
             continue;
         }
 
@@ -1104,9 +1105,8 @@ SegmentData CArea::getParentMetadataFallback(
         return *best;
     }
 
-    // Ultimate fallback: pretend it's a line.
-    // This is not a desirable fallback. Hopefully the previous process finds the correct parent
-    // edge. This requires sentinel values for unknown/missing data.
+    // Final fallback option: pretend that we know it's a line segment.
+    // This fallback requires sentinel values for unknown/missing data:
     //   edgeTag = tagSentinel, to indicate we don't know the tag
     //   curveIndex = vertexIndex = -1, acceptable when used for sorting open paths
     std::cerr << "Warning: getParentMetadataFallback: no parent edge found for z=(" << p1.z << ","
@@ -1200,11 +1200,12 @@ SegmentData CArea::getParentMetadata(const Point64& p1, const Point64& p2, const
 
     // Failed to find the parent edge. This should not happen; the parent edge should always exist.
     //
-    // But it does seem to happen (for now?). I've reported a clipper bug for at least one way
-    // it can happen (https://github.com/AngusJohnson/Clipper2/issues/1111). Instead of throwing,
-    // invoke a more intensive fallback to find the parent edge.
+    // Update: Unfortunately, it does seem to happen. I've reported a clipper bug for at least one
+    // way it can happen (https://github.com/AngusJohnson/Clipper2/issues/1111). Instead of
+    // throwing, for now we will invoke a more intensive fallback to find the parent edge.
     return getParentMetadataFallback(p1, p2, metadata);
-    // I'm optimistically leaving this code in place, hoping to revert to using it in the future
+    // After the clipper bug is resolved, we can look into removing this fallback code and going
+    // back to throwing an error:
     // throw std::logic_error(
     //     "No parent edge found for z=(" + std::to_string(p1.z) + "," + std::to_string(p2.z) + ")"
     //     + " hits=(" + std::to_string(metadata.intersections.count(p1.z)) + ","
