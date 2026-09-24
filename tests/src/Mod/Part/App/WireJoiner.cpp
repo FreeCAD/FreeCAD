@@ -1135,4 +1135,134 @@ TEST_F(WireJoinerTest, setTightBoundRegions)
     }
 }
 
+TEST_F(WireJoinerTest, setOpenWiresOnly)
+{
+    // Arrange
+
+    // Create various edges that will be used for the WireJoiner objects tests
+
+    // The 4 sides of a square with corners (0.0, 0.0, 0.0) and (20.0, 20.0, 0.0)
+    auto side1 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(20.0, 0.0, 0.0)).Edge()};
+    auto side2 {BRepBuilderAPI_MakeEdge(gp_Pnt(20.0, 0.0, 0.0), gp_Pnt(20.0, 20.0, 0.0)).Edge()};
+    auto side3 {BRepBuilderAPI_MakeEdge(gp_Pnt(20.0, 20.0, 0.0), gp_Pnt(0.0, 20.0, 0.0)).Edge()};
+    auto side4 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 20.0, 0.0), gp_Pnt(0.0, 0.0, 0.0)).Edge()};
+    // A line going through the square and sticking out on both sides
+    auto line1 {BRepBuilderAPI_MakeEdge(gp_Pnt(10.0, -5.0, 0.0), gp_Pnt(10.0, 25.0, 0.0)).Edge()};
+    // A line going from line1 into the right half of the square
+    auto line2 {BRepBuilderAPI_MakeEdge(gp_Pnt(10.0, 10.0, 0.0), gp_Pnt(15.0, 10.0, 0.0)).Edge()};
+
+    // 3 circles overlapping like in a Venn diagram, all with a radius of 10
+    auto circle1 {
+        BRepBuilderAPI_MakeEdge(gp_Circ(gp_Ax2(gp_Pnt(0.0, 0.0, 0.0), gp::DZ()), 10.0)).Edge()
+    };
+    auto circle2 {
+        BRepBuilderAPI_MakeEdge(gp_Circ(gp_Ax2(gp_Pnt(10.0, 0.0, 0.0), gp::DZ()), 10.0)).Edge()
+    };
+    auto circle3 {
+        BRepBuilderAPI_MakeEdge(gp_Circ(gp_Ax2(gp_Pnt(5.0, 8.660254, 0.0), gp::DZ()), 10.0)).Edge()
+    };
+    // A line going through all 3 circles and sticking out on both sides
+    auto line3 {BRepBuilderAPI_MakeEdge(gp_Pnt(-15.0, 3.0, 0.0), gp_Pnt(25.0, 3.0, 0.0)).Edge()};
+
+    // Vectors of TopoShape edges used as argument for the addShape() calls. A Tag and an element
+    // map are needed for every TopoShape, otherwise the open wires won't have mapped names to
+    // compare
+    std::vector<TopoShape> edgesSquare;
+    std::vector<TopoShape> edgesCircles;
+    long tag {1};
+    for (const auto& edge : {side1, side2, side3, side4, line1, line2}) {
+        auto shape {TopoShape(tag++)};
+        shape.setShape(edge);
+        shape.mapSubElement(shape);
+        edgesSquare.push_back(shape);
+    }
+    for (const auto& edge : {circle1, circle2, circle3, line3}) {
+        auto shape {TopoShape(tag++)};
+        shape.setShape(edge);
+        shape.mapSubElement(shape);
+        edgesCircles.push_back(shape);
+    }
+
+    // A WireJoiner object where the value of setOpenWiresOnly() will be changed but no shapes will
+    // be built
+    auto wjNoBuild {WireJoiner()};
+
+    // WireJoiner objects where setOpenWiresOnly() will be set to false
+    auto wjSquare {WireJoiner()};
+    auto wjCircles {WireJoiner()};
+    // WireJoiner objects where setOpenWiresOnly() will be set to true
+    auto wjSquareOpenOnly {WireJoiner()};
+    auto wjCirclesOpenOnly {WireJoiner()};
+
+    // Empty TopoShapes that will contain the shapes returned by getOpenWires()
+    auto wireSquare {TopoShape(tag++)};
+    auto wireCircles {TopoShape(tag++)};
+    auto wireSquareOpenOnly {TopoShape(tag++)};
+    auto wireCirclesOpenOnly {TopoShape(tag++)};
+
+    // Act
+
+    // Changing only the value of setOpenWiresOnly(). This should set wjNoBuild.IsDone() to false
+    wjNoBuild.setOpenWiresOnly(true);
+
+    wjSquare.addShape(edgesSquare);
+    wjSquare.setOpenWiresOnly(false);
+    // wjSquare.Build() is called by wjSquare.getOpenWires()
+    wjSquare.getOpenWires(wireSquare, "SKF");
+
+    wjCircles.addShape(edgesCircles);
+    wjCircles.setOpenWiresOnly(false);
+    wjCircles.getOpenWires(wireCircles, "SKF");
+
+    wjSquareOpenOnly.addShape(edgesSquare);
+    // same as wjSquareOpenOnly.setOpenWiresOnly(true);
+    wjSquareOpenOnly.setOpenWiresOnly();
+    // Calling wjSquareOpenOnly.getOpenWires() will stop after a closed wire has been searched for
+    // every edge, without finding the tight bound wires
+    wjSquareOpenOnly.getOpenWires(wireSquareOpenOnly, "SKF");
+
+    wjCirclesOpenOnly.addShape(edgesCircles);
+    wjCirclesOpenOnly.setOpenWiresOnly();
+    wjCirclesOpenOnly.getOpenWires(wireCirclesOpenOnly, "SKF");
+
+    // Assert
+
+    // Without calling wjNoBuild.Build() the value of wjNoBuild.IsDone() should be false even if we
+    // only changed the value of setOpenWiresOnly()
+    EXPECT_FALSE(wjNoBuild.IsDone());
+
+    // With setOpenWiresOnly() set to true no result wires are made
+    EXPECT_TRUE(wjSquareOpenOnly.Shape().IsNull());
+    EXPECT_TRUE(wjCirclesOpenOnly.Shape().IsNull());
+
+    // The open wires are the 2 pieces of line1 outside the square. line2 is open too, but it
+    // isn't split, and getOpenWires() leaves out the wires made only of original edges
+    EXPECT_EQ(wireSquare.getSubTopoShapes(TopAbs_EDGE).size(), 2);
+    EXPECT_EQ(wireSquareOpenOnly.getSubTopoShapes(TopAbs_EDGE).size(), 2);
+
+    // The open wires are the 2 pieces of line3 outside the circles
+    EXPECT_EQ(wireCircles.getSubTopoShapes(TopAbs_EDGE).size(), 2);
+    EXPECT_EQ(wireCirclesOpenOnly.getSubTopoShapes(TopAbs_EDGE).size(), 2);
+
+    // The open wires found with and without setOpenWiresOnly() should have the same element names
+    for (const char* type : {"Edge", "Vertex"}) {
+        for (int i = 1; i <= wireSquare.countSubShapes(type); ++i) {
+            auto name {Data::IndexedName::fromConst(type, i)};
+            EXPECT_TRUE(wireSquare.getMappedName(name));
+            EXPECT_EQ(
+                wireSquareOpenOnly.getMappedName(name).toString(),
+                wireSquare.getMappedName(name).toString()
+            );
+        }
+        for (int i = 1; i <= wireCircles.countSubShapes(type); ++i) {
+            auto name {Data::IndexedName::fromConst(type, i)};
+            EXPECT_TRUE(wireCircles.getMappedName(name));
+            EXPECT_EQ(
+                wireCirclesOpenOnly.getMappedName(name).toString(),
+                wireCircles.getMappedName(name).toString()
+            );
+        }
+    }
+}
+
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
