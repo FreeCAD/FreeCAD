@@ -100,6 +100,18 @@ def _cutPoints(path):
     return pts
 
 
+def _leadInOut(doc, job, op):
+    """A Lead In/Out dressup on op, set up as the command does."""
+    import Path.Dressup.Gui.LeadInOut as PathLeadInOut
+
+    dressup = doc.addObject("Path::FeaturePython", "LeadInOut")
+    proxy = PathLeadInOut.ObjectDressup(dressup, op)
+    job.Proxy.addOperation(dressup, op)
+    proxy.setup(dressup)
+    doc.recompute()
+    return dressup
+
+
 class TestGenerateInPlaneFrame(PathTestUtils.PathTestBase):
     def setUp(self):
         self.doc = FreeCAD.newDocument("TestPathWorkplaneFrame")
@@ -294,31 +306,56 @@ class TestGenerateInPlaneFrame(PathTestUtils.PathTestBase):
         first = _cutPoints(PathUtils.getPathWithPlacement(op))[0]
         self.assertLess((Vector(first.x, first.y, 0) - Vector(100, 0, 0)).Length, 10.0)
 
-    def test_leadInOutRetractsToTheBaseOpsHeightsInTheWorld(self):
-        """The dressup works on the base op's placed path but takes its heights
-        from the op, which measures them from its work plane. On a plane 50
-        above the Job's zero the retracts must be 50 higher too, or the tool
-        rapids across the part at the plane's safe height read as a world Z."""
-        import Path.Dressup.Gui.LeadInOut as PathLeadInOut
-
+    def test_dressupWorksInTheBaseOpsFrameAndCarriesItsPlacement(self):
+        """A dressup reads its base op's stored path, in the op's plane frame,
+        and stores its own path there: the op's heights, measured from the
+        plane, are the dressup's heights too. Its Placement is the op's, so
+        placed, the retracts land 50 above the Job's zero as the op's do."""
         plane = PathWorkplane.createWorkplaneFromToolAxis(
             self.job, Vector(0, 0, 1), origin=Vector(50, 50, 50)
         )
         op = PathProfile.Create("P")
         op.Workplane = plane
         self.doc.recompute()
-        dressup = self.doc.addObject("Path::FeaturePython", "LeadInOut")
-        proxy = PathLeadInOut.ObjectDressup(dressup, op)
-        self.job.Proxy.addOperation(dressup, op)
-        proxy.setup(dressup)
+        dressup = _leadInOut(self.doc, self.job, op)
+
+        def rapids(path):
+            return [
+                c.Parameters["Z"] for c in path.Commands if c.Name == "G0" and "Z" in c.Parameters
+            ]
+
+        self.assertTrue(rapids(dressup.Path), "the dressup should retract")
+        self.assertRoughly(max(rapids(dressup.Path)), op.ClearanceHeight.Value, 1e-6)
+        self.assertTrue(dressup.Placement.isSame(op.Placement, 1e-9))
+        placed = PathUtils.getPathWithPlacement(dressup)
+        self.assertRoughly(max(rapids(placed)), op.ClearanceHeight.Value + 50.0, 1e-6)
+
+    def test_dressupOnATiltedPlaneKeepsItsArcsInThePlane(self):
+        """In the plane frame every arc is a flat XY arc, which is the only
+        arc G2/G3 can say. A dressup that read the placed, tilted path saw
+        arcs standing out of XY and rewrote them as chords."""
+        plane = PathWorkplane.createWorkplane(
+            self.job,
+            placement=FreeCAD.Placement(Vector(50, 50, 40), FreeCAD.Rotation(Vector(0, 1, 0), 30)),
+        )
+        op = PathProfile.Create("P")
+        op.Workplane = plane
         self.doc.recompute()
-        rapids = [
-            c.Parameters["Z"]
-            for c in dressup.Path.Commands
-            if c.Name == "G0" and "Z" in c.Parameters
-        ]
-        self.assertTrue(rapids, "the dressup should retract")
-        self.assertRoughly(max(rapids), op.ClearanceHeight.Value + 50.0, 1e-6)
+        dressup = _leadInOut(self.doc, self.job, op)
+        self.assertTrue(dressup.Placement.isSame(op.Placement, 1e-9))
+        self.assertFalse(dressup.Placement.isIdentity(1e-9))
+
+        z = None
+        arcs = 0
+        for c in dressup.Path.Commands:
+            if c.Name in ("G2", "G3", "G02", "G03"):
+                arcs += 1
+                self.assertRoughly(c.Parameters.get("K", 0.0), 0.0, 1e-6)
+                if z is not None and "Z" in c.Parameters:
+                    self.assertRoughly(c.Parameters["Z"], z, 1e-6)
+            if "Z" in c.Parameters:
+                z = c.Parameters["Z"]
+        self.assertGreater(arcs, 0, "a lead-in is an arc")
 
     def test_legacyPostPlacesAnOperationOnce(self):
         """WrapperPost places each operation's path for legacy scripts, and
@@ -477,6 +514,28 @@ class TestPostWorkplaneFrames(PathTestUtils.PathTestBase):
         items = out[0][1]
         self.assertEqual(len(items), 1)
         self.assertEqual(items[0].path.Commands[0].toGCode(), op.Path.Commands[0].toGCode())
+
+    def test_dressedTiltedOperationIsPosedLikeItsBase(self):
+        """The post reads the pose from the item it is handed. A dressup
+        carries its base op's Placement, so a dressed tilted op gets the
+        rotary move its base would; it used to post as A0 C0 with the tilted
+        path written out as three-axis moves."""
+        from Machine.models.machine import RotationStrategy
+
+        self.machine.kinematics.rotation_strategy = RotationStrategy.DWO
+        plane = PathWorkplane.createWorkplane(
+            self.job,
+            placement=FreeCAD.Placement(Vector(50, 50, 40), FreeCAD.Rotation(Vector(0, 1, 0), 30)),
+        )
+        op = PathProfile.Create("P", parentJob=self.job)
+        op.Workplane = plane
+        self.doc.recompute()
+        dressup = _leadInOut(self.doc, self.job, op)
+
+        out = self._processor()._expand_workplane_frames([("Job", [self._item(dressup)])])
+        self.assertEqual([i.item_type for i in out[0][1]], ["rotation", "operation"])
+        rotary = out[0][1][0].path.Commands[0].Parameters
+        self.assertFalse(all(Path.Geom.isRoughly(v, 0.0) for v in rotary.values()))
 
     def test_planeOperationGetsRotaryMoveAndMachineFrame(self):
         """Positions first, then the path in the frame the machine reaches.

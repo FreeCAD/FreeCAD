@@ -188,7 +188,14 @@ def workplaneForOp(op):
     ``Workplane`` is a link to a named work plane held by the Job. No link
     means the Job's own XY, which is ordinary Z-up milling. A document
     restored but not yet migrated may still carry the older vector or
-    placement forms; those are read as they were."""
+    placement forms; those are read as they were.
+
+    A dressup has no plane of its own: its frame is its base operation's,
+    resolved here through the dressup chain every time and never stored on
+    the dressup."""
+    from Path.Dressup.Utils import baseOp
+
+    op = baseOp(op)
     wp = getattr(op, "Workplane", None)
     if wp is None:
         return FreeCAD.Placement()
