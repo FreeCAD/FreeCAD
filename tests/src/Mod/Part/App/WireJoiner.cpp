@@ -8,6 +8,8 @@
 #include "PartTestHelpers.h"
 
 #include <algorithm>
+#include <cmath>
+#include <numbers>
 
 #include <BRepBuilderAPI_MakeShape.hxx>
 #include <BRep_Tool.hxx>
@@ -143,6 +145,57 @@ void expectRegions(const std::vector<TopoDS_Shape>& edges, int expectedRegions)
     }
     // Every edge bounds some region, so nothing should be reported as open
     EXPECT_EQ(res.openEdges, 0);
+}
+
+// Open wires as SketchObject::buildInternals() gets them, as mapped element names per edge and
+// vertex. The source edges are tagged so that the result carries element names.
+std::vector<std::string> openWireNames(const std::vector<TopoDS_Shape>& edges, bool openWiresOnly)
+{
+    std::vector<TopoShape> sources;
+    long tag = 1;
+    for (const auto& edge : edges) {
+        TopoShape source(tag++);
+        source.setShape(edge);
+        source.mapSubElement(source);
+        sources.push_back(source);
+    }
+    WireJoiner joiner;
+    joiner.setTightBound(true);
+    joiner.setMergeEdges(true);
+    joiner.setOpenWiresOnly(openWiresOnly);
+    joiner.addShape(sources);
+
+    TopoShape open(tag);
+    joiner.getOpenWires(open, "SKF");
+    if (openWiresOnly) {
+        EXPECT_TRUE(joiner.Shape().IsNull());
+    }
+
+    std::vector<std::string> names;
+    if (open.isNull()) {
+        return names;
+    }
+    for (const char* type : {"Edge", "Vertex"}) {
+        int count = open.countSubShapes(type);
+        for (int i = 1; i <= count; ++i) {
+            auto indexed = Data::IndexedName::fromConst(type, i);
+            auto mapped = open.getMappedName(indexed);
+            EXPECT_TRUE(mapped) << indexed.toString() << " has no mapped name";
+            names.push_back(indexed.toString() + " " + mapped.toString());
+        }
+    }
+    return names;
+}
+
+void expectSameOpenWires(const std::vector<TopoDS_Shape>& edges, size_t expectedOpenEdges)
+{
+    auto full = openWireNames(edges, false);
+    auto openOnly = openWireNames(edges, true);
+    EXPECT_EQ(openOnly, full);
+    auto isEdge = [](const std::string& name) {
+        return name.rfind("Edge", 0) == 0;
+    };
+    EXPECT_EQ(static_cast<size_t>(std::count_if(full.begin(), full.end(), isEdge)), expectedOpenEdges);
 }
 
 }  // namespace
@@ -1082,6 +1135,58 @@ TEST_F(WireJoinerTest, tightBoundSquarePlusSign)
     edges.push_back(lineEdge(10, 0, 10, 20));
     edges.push_back(lineEdge(0, 10, 20, 10));
     expectRegions(edges, 4);
+}
+
+// setOpenWiresOnly() skips the tight bound search, which must not change the open wires or
+// their element names.
+
+TEST_F(WireJoinerTest, openWiresOnlyClosedArrangement)
+{
+    expectSameOpenWires({circleEdge(0, 0), circleEdge(10, 0), circleEdge(5, 8.660254)}, 0);
+}
+
+TEST_F(WireJoinerTest, openWiresOnlyDanglingEnds)
+{
+    std::vector<TopoDS_Shape> edges;
+    addSquare(edges, 10, 10, 10);
+    // Crosses the whole square and sticks out at both ends
+    edges.push_back(lineEdge(10, -5, 10, 25));
+    // Stops inside the right half. It is open but not split, and getOpenWires() leaves out
+    // open wires made only of original edges.
+    edges.push_back(lineEdge(10, 10, 15, 10));
+    expectSameOpenWires(edges, 2);
+}
+
+TEST_F(WireJoinerTest, openWiresOnlyLinesThroughCircles)
+{
+    expectSameOpenWires(
+        {circleEdge(0, 0), circleEdge(10, 0), circleEdge(5, 8.660254), lineEdge(-15, 3, 25, 3)},
+        2
+    );
+}
+
+TEST_F(WireJoinerTest, openWiresOnlyGrid)
+{
+    std::vector<TopoDS_Shape> edges;
+    addSquare(edges, 10, 10, 10);
+    for (double t : {5.0, 10.0, 15.0}) {
+        edges.push_back(lineEdge(t, 0, t, 20));
+        edges.push_back(lineEdge(0, t, 20, t));
+    }
+    // One grid line extends past the square
+    edges.push_back(lineEdge(-5, 2, 20, 2));
+    expectSameOpenWires(edges, 1);
+}
+
+TEST_F(WireJoinerTest, openWiresOnlyRingOfCircles)
+{
+    std::vector<TopoDS_Shape> edges;
+    const int count = 10;
+    for (int i = 0; i < count; ++i) {
+        double angle = 2 * std::numbers::pi * i / count;
+        edges.push_back(circleEdge(15 * std::cos(angle), 15 * std::sin(angle)));
+    }
+    expectSameOpenWires(edges, 0);
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)

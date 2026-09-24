@@ -49,6 +49,14 @@ public:
     void setSplitEdges(bool enable = true);
     void setMergeEdges(bool enable = true);
     void setTolerance(double tolerance, double atol = 0.0);
+    /** Only compute the open wires in tight bound mode
+     *
+     * Which edges are open is known once a closed wire has been searched for each edge, so
+     * the expensive splitting into tight bound wires is skipped. getOpenWires() gives the
+     * same result as without this option, while Shape() and getResultWires() are empty.
+     * Has no effect in outline mode.
+     */
+    void setOpenWiresOnly(bool enable = true);
 
     bool getOpenWires(TopoShape& shape, const char* op = "", bool noOriginal = true);
     bool getResultWires(TopoShape& shape, const char* op = "");
