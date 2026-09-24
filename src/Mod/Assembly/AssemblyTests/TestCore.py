@@ -23,6 +23,8 @@
 
 import FreeCAD as App
 import Part
+import os
+import tempfile
 import unittest
 
 import UtilsAssembly
@@ -340,3 +342,67 @@ class TestCore(AssemblyTestBase):
         joint.Proxy.setJointConnectors(joint, refs)
 
         self.assertTrue(box.Placement.isSame(box2.Placement, 1e-6), "'{}'".format(operation))
+
+    def test_rack_pinion_with_slider_offset(self):
+        """Rack and pinion joint whose rack slider has a yaw offset, see
+        github.com/freecad/freecad/issues/17563"""
+        operation = "Rack and pinion with slider offset"
+        _msg("  Test '{}'".format(operation))
+
+        ground = self.assembly.newObject("Part::Box", "Ground")
+        ground.Length = 200
+        ground.Width = 200
+        ground.Height = 10
+
+        rack = self.assembly.newObject("Part::Box", "Rack")
+        rack.Length = 10
+        rack.Width = 100
+        rack.Height = 10
+        rack.Placement.Base = App.Vector(50, 0, 10)
+
+        pinion = self.assembly.newObject("Part::Cylinder", "Pinion")
+        pinion.Radius = 10
+        pinion.Height = 10
+        pinion.Placement.Base = App.Vector(30, 50, 10)
+        self.doc.recompute()
+
+        grounded = self.jointgroup.newObject("App::FeaturePython", "GroundedJoint")
+        JointObject.GroundedJoint(grounded, ground)
+
+        # Edge4 of a box runs along Y, so the slider axis is not the global Z axis.
+        slider = self.jointgroup.newObject("App::FeaturePython", "Slider")
+        JointObject.Joint(slider, JointObject.JointTypes.index("Slider"))
+        slider.Proxy.setJointConnectors(
+            slider, [[ground, ["Edge4", "Edge4"]], [rack, ["Edge4", "Edge4"]]]
+        )
+
+        revolute = self.jointgroup.newObject("App::FeaturePython", "Revolute")
+        JointObject.Joint(revolute, JointObject.JointTypes.index("Revolute"))
+        revolute.Proxy.setJointConnectors(
+            revolute, [[ground, ["Face6", "Face6"]], [pinion, ["Edge3", "Edge3"]]]
+        )
+
+        rackPinion = self.jointgroup.newObject("App::FeaturePython", "RackPinion")
+        JointObject.Joint(rackPinion, JointObject.JointTypes.index("RackPinion"))
+        rackPinion.Proxy.setJointConnectors(
+            rackPinion, [[rack, ["Edge4", "Edge4"]], [pinion, ["Edge3", "Edge3"]]]
+        )
+        rackPinion.Distance = 10
+
+        # Rotating the rack around its sliding axis keeps that axis but changes
+        # the pitch and roll of the slider JCS.
+        slider.Offset2 = App.Placement(App.Vector(), App.Rotation(-90, 0, 0))
+        self.doc.recompute()
+
+        self.assertEqual(self.assembly.solve(), 0, "'{}' failed - solve".format(operation))
+
+        # The rack and pinion joint must reach the solver: it is silently dropped when
+        # the rack cannot be identified from its slider.
+        with tempfile.TemporaryDirectory() as temp_dir:
+            fileName = os.path.join(temp_dir, "rackPinion.asmt")
+            self.assembly.exportAsASMT(fileName)
+            with open(fileName) as asmt:
+                content = asmt.read()
+        self.assertTrue(
+            "RackPinionJoint" in content, "'{}' failed - joint not exported".format(operation)
+        )
