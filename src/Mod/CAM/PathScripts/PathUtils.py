@@ -1001,6 +1001,11 @@ def applyPlacementToPath(placement, path):
             currY = y = params.get("Y", currY)
             currZ = z = params.get("Z", currZ)
 
+            # A canned cycle's R is the height of its retract plane, a Z at
+            # the cycle's X, Y, so it moves with the frame the way Z does.
+            if "R" in params:
+                params["R"] = placement.multVec(FreeCAD.Vector(x, y, params["R"])).z
+
             x, y, z = placement.Rotation.multVec(FreeCAD.Vector(x, y, z))
 
             if x != currX:

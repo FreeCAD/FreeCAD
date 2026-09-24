@@ -235,6 +235,15 @@ class TestGenerateInPlaneFrame(PathTestUtils.PathTestBase):
             pos_s = Vector(c.x, c.y, c.z)
             pos_p = Vector(pc.x, pc.y, pc.z)
 
+    def test_placingACannedCycleMovesItsRetractPlaneWithIt(self):
+        """R is a height like Z: a drill cycle on a plane 50 above the Job's
+        zero must retract 50 higher too, or it rapids into the part."""
+        raised = FreeCAD.Placement(Vector(0, 0, 50), FreeCAD.Rotation())
+        stored = Path.Path([Path.Command("G81", {"X": 10, "Y": 5, "Z": -20, "R": 5})])
+        placed = PathUtils.applyPlacementToPath(raised, stored).Commands[0]
+        self.assertRoughly(placed.Parameters["Z"], 30)
+        self.assertRoughly(placed.Parameters["R"], 55)
+
     def test_placingAPathOnAnUprightPlaneKeepsTheArcWords(self):
         upright = FreeCAD.Placement(Vector(5, 7, 3), FreeCAD.Rotation(Vector(0, 0, 1), 90))
         stored = Path.Path([Path.Command("G3", {"X": 10, "Y": 10, "I": 0, "J": 5})])
