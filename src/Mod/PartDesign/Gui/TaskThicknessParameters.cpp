@@ -131,6 +131,9 @@ void TaskThicknessParameters::setupConnections()
             this, &TaskThicknessParameters::onSelectionModeChanged);
     connect(ui->centering, qOverload<int>(&QSlider::valueChanged), this, &TaskThicknessParameters::onCenteringChanged);
     connect(ui->centeringValue, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &TaskThicknessParameters::onCenteringValueChanged);
+    connect(ui->centerButton, &QPushButton::clicked, this, &TaskThicknessParameters::onSetRectoVerso);
+    connect(ui->insideButton, &QPushButton::clicked, this, &TaskThicknessParameters::onSetInside);
+    connect(ui->outsideButton, &QPushButton::clicked, this, &TaskThicknessParameters::onSetOutside);
 
     // Create context menu
     createDeleteAction(ui->listWidgetReferences);
