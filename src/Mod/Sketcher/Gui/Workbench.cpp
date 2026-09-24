@@ -26,6 +26,8 @@
 #include "Utils.h"
 #include "Workbench.h"
 #include <Base/Console.h>
+#include <App/Application.h>
+#include <Base/Parameter.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Mod/Sketcher/App/Constraint.h>
@@ -40,6 +42,7 @@ using namespace SketcherGui;
     qApp->translate("Workbench", "Edit Mode");
 
     qApp->translate("Workbench", "Geometries");
+    qApp->translate("Workbench", "Cosmetics");
     qApp->translate("Workbench", "Constraints");
     qApp->translate("Workbench", "Sketcher Helpers");
     qApp->translate("Workbench", "B-Spline Tools");
@@ -98,7 +101,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     sketch->setCommand("S&ketch");
     addSketcherWorkbenchSketchActions(*sketch);
     addSketcherWorkbenchSketchEditModeActions(*sketch);
-    *sketch << geom << cons << consaccel << bsplines << visual;
+    auto* annotations = new Gui::MenuItem;
+    annotations->setCommand("Cosmetics");
+    *annotations << "Sketcher_AnnotationText" << "Sketcher_AnnotationHatch" << "Sketcher_AnnotationLeader";
+    *sketch << geom << cons << consaccel << bsplines << visual << annotations;
 
     return root;
 }
@@ -136,6 +142,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     bspline->setCommand("B-Spline Tools");
     addSketcherWorkbenchBSplines(*bspline);
 
+    auto* cosmetics = new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
+    cosmetics->setCommand("Cosmetics");
+    *cosmetics << "Sketcher_AnnotationText" << "Sketcher_AnnotationHatch" << "Sketcher_AnnotationLeader";
+
     Gui::ToolBarItem* visual
         = new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
     visual->setCommand("Visual Helpers");
@@ -154,9 +164,14 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
 
 namespace
 {
+inline const QStringList cosmeticsToolbarName()
+{
+    return QStringList {QStringLiteral("Cosmetics")};
+}
+
 inline const QStringList editModeToolbarNames()
 {
-    return QStringList {
+    QStringList names {
         QStringLiteral("Edit Mode"),
         QStringLiteral("Geometries"),
         QStringLiteral("Constraints"),
@@ -165,6 +180,10 @@ inline const QStringList editModeToolbarNames()
         QStringLiteral("Visual Helpers"),
         QStringLiteral("Sketcher Edit Tools")
     };
+    if (SketcherGui::areCosmeticsShown()) {
+        names << cosmeticsToolbarName();
+    }
+    return names;
 }
 
 inline const QStringList nonEditModeToolbarNames()
@@ -172,6 +191,23 @@ inline const QStringList nonEditModeToolbarNames()
     return QStringList {QStringLiteral("Structure"), QStringLiteral("Sketcher")};
 }
 }  // namespace
+
+bool SketcherGui::areCosmeticsShown()
+{
+    return App::GetApplication()
+        .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher")
+        ->GetBool("ShowCosmetics", true);
+}
+
+void SketcherGui::updateCosmeticsToolbar()
+{
+    // Hidden cosmetics keep their toolbar out of the way; showing them brings it back.
+    Gui::ToolBarManager::getInstance()->setState(
+        cosmeticsToolbarName(),
+        areCosmeticsShown() ? Gui::ToolBarManager::State::ForceAvailable
+                            : Gui::ToolBarManager::State::ForceHidden
+    );
+}
 
 void Workbench::activated()
 {
@@ -200,6 +236,7 @@ void Workbench::activated()
             nonEditModeToolbarNames(),
             Gui::ToolBarManager::State::ForceHidden
         );
+        updateCosmeticsToolbar();
     }
 }
 
@@ -221,6 +258,7 @@ void Workbench::enterEditMode()
         nonEditModeToolbarNames(),
         Gui::ToolBarManager::State::ForceHidden
     );
+    updateCosmeticsToolbar();
 }
 
 void Workbench::leaveEditMode()
@@ -232,6 +270,10 @@ void Workbench::leaveEditMode()
 
     Gui::ToolBarManager::getInstance()->setState(
         editModeToolbarNames(),
+        Gui::ToolBarManager::State::RestoreDefault
+    );
+    Gui::ToolBarManager::getInstance()->setState(
+        cosmeticsToolbarName(),
         Gui::ToolBarManager::State::RestoreDefault
     );
     Gui::ToolBarManager::getInstance()->setState(
