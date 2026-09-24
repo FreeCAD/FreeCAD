@@ -40,6 +40,8 @@
 
 #include "CenterLine.h"
 #include "DrawViewPart.h"
+#include "DrawGeomHatch.h"
+#include <Mod/Part/App/TopoShapePy.h>
 #include "Geometry.h"
 #include "GeometryObject.h"
 #include "Cosmetic.h"
@@ -984,3 +986,26 @@ int DrawViewPartPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
     return 0;
 }
 
+
+PyObject* DrawViewPartPy::getFaces(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) return nullptr;
+    auto* view = getDrawViewPartPtr();
+    Py::List faces;
+    const auto count = view->getFaceGeometry().size();
+    for (size_t i = 0; i < count; ++i) {
+        if (view->getWireForFace(static_cast<int>(i)).empty()) {
+            faces.append(Py::Object(new Part::TopoShapePy(new Part::TopoShape()), true));
+            continue;
+        }
+        faces.append(Py::Object(new Part::TopoShapePy(new Part::TopoShape(
+            DrawGeomHatch::extractFace(view, static_cast<int>(i)))), true));
+    }
+    return Py::new_reference_to(faces);
+}
+
+PyObject* DrawViewPartPy::isProjectionReady(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) return nullptr;
+    return PyBool_FromLong(!getDrawViewPartPtr()->waitingForResult());
+}
