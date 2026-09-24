@@ -98,6 +98,8 @@ DrawLeaderLine::DrawLeaderLine()
     ADD_PROPERTY_TYPE(RotatesWithParent ,(true), group, App::Prop_None,
                       "If true, leader rotates around parent.  If false, only first segment of leader changes with parent rotation.");
 
+    ADD_PROPERTY_TYPE(ArrowSize, (0.0), group, App::Prop_None, "Arrow size in mm; zero uses the preference");
+
     //hide the DrawView properties that don't apply to Leader
     ScaleType.setStatus(App::Property::ReadOnly, true);
     ScaleType.setStatus(App::Property::Hidden, true);
