@@ -38,6 +38,7 @@
 #include <Base/Vector3D.h>
 
 #include "QGIUserTypes.h"
+#include "QGCustomBorder.h"
 
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
@@ -66,7 +67,6 @@ namespace TechDrawGui
 class QGSPage;
 class QGVPage;
 class ViewProviderPage;
-class QGCustomBorder;
 class QGCustomLabel;
 class QGCustomText;
 class QGICaption;
@@ -208,6 +208,8 @@ protected:
     bool shouldShowFrame() const;
 
     Base::Reference<ParameterGrp> getParmGroupCol();
+
+    bool borderIsVisible() const {return m_border->isVisible(); }
 
 private:
     TechDraw::DrawView *viewObj;
