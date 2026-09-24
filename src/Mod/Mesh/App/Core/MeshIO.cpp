@@ -781,6 +781,10 @@ bool MeshInput::LoadAsciiSTL(std::istream& input)
     // restart from the beginning
     buf->pubseekoff(0, std::ios::beg, std::ios::in);
 
+    if (input.fail()) {
+        input.clear();
+    }
+
 #if 0
     MeshBuilder builder(this->_rclMesh);
 #else
