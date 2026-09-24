@@ -7,7 +7,12 @@
 
 #include "PartTestHelpers.h"
 
+#include <algorithm>
+
 #include <BRepBuilderAPI_MakeShape.hxx>
+#include <BRep_Tool.hxx>
+#include <gp_Ax2.hxx>
+#include <gp_Circ.hxx>
 
 // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
@@ -41,6 +46,106 @@ private:
     Data::ElementIDRefs _sid;
     App::StringHasherRef _hasher;
 };
+
+namespace
+{
+
+TopoDS_Shape circleEdge(double cx, double cy, double radius = 10.0)
+{
+    return BRepBuilderAPI_MakeEdge(gp_Circ(gp_Ax2(gp_Pnt(cx, cy, 0.0), gp::DZ()), radius)).Edge();
+}
+
+TopoDS_Shape lineEdge(double x0, double y0, double x1, double y1)
+{
+    return BRepBuilderAPI_MakeEdge(gp_Pnt(x0, y0, 0.0), gp_Pnt(x1, y1, 0.0)).Edge();
+}
+
+// Axis aligned square with half size s centered at (cx, cy), as four separate edges
+void addSquare(std::vector<TopoDS_Shape>& edges, double cx, double cy, double s)
+{
+    edges.push_back(lineEdge(cx - s, cy - s, cx + s, cy - s));
+    edges.push_back(lineEdge(cx + s, cy - s, cx + s, cy + s));
+    edges.push_back(lineEdge(cx + s, cy + s, cx - s, cy + s));
+    edges.push_back(lineEdge(cx - s, cy + s, cx - s, cy - s));
+}
+
+std::vector<double> sortedFaceAreas(const TopoShape& shape)
+{
+    std::vector<double> areas;
+    for (const auto& face : shape.getSubShapes(TopAbs_FACE)) {
+        areas.push_back(getArea(face));
+    }
+    std::sort(areas.begin(), areas.end());
+    return areas;
+}
+
+struct TightBoundResult
+{
+    int closedWires = 0;
+    std::vector<double> faceAreas;
+    int openEdges = 0;
+};
+
+// Mirrors the legacy (_InternalFaceVersion 1) path of SketchObject::buildInternals()
+TightBoundResult runTightBound(const std::vector<TopoDS_Shape>& edges)
+{
+    TightBoundResult res;
+    WireJoiner joiner;
+    joiner.setTightBound(true);
+    joiner.setMergeEdges(true);
+    joiner.addShape(edges);
+    joiner.Build();
+
+    TopoShape wires(1);
+    joiner.getResultWires(wires);
+    if (!wires.isNull()) {
+        for (const auto& wire : wires.getSubShapes(TopAbs_WIRE)) {
+            if (BRep_Tool::IsClosed(wire)) {
+                ++res.closedWires;
+            }
+        }
+        TopoShape faces(2);
+        faces.makeElementFace(wires.getSubTopoShapes(TopAbs_WIRE), "", "Part::FaceMakerRing", nullptr);
+        res.faceAreas = sortedFaceAreas(faces);
+    }
+
+    TopoShape open(3);
+    joiner.getOpenWires(open, nullptr, false);
+    if (!open.isNull()) {
+        res.openEdges = open.countSubShapes(TopAbs_EDGE);
+    }
+    return res;
+}
+
+// Region areas from FaceMakerBuildFace, used as an oracle for arrangements without nesting
+std::vector<double> oracleAreas(const std::vector<TopoDS_Shape>& edges)
+{
+    std::vector<TopoShape> wires;
+    for (const auto& edge : edges) {
+        wires.emplace_back(BRepBuilderAPI_MakeWire(TopoDS::Edge(edge)).Wire());
+    }
+    TopoShape faces(4);
+    faces.makeElementFace(wires, "", "Part::FaceMakerBuildFace", nullptr);
+    return sortedFaceAreas(faces);
+}
+
+void expectRegions(const std::vector<TopoDS_Shape>& edges, int expectedRegions)
+{
+    auto res = runTightBound(edges);
+    auto expectedAreas = oracleAreas(edges);
+    ASSERT_EQ(static_cast<int>(expectedAreas.size()), expectedRegions)
+        << "FaceMakerBuildFace disagrees with the expected region count";
+
+    EXPECT_EQ(res.closedWires, expectedRegions);
+    ASSERT_EQ(res.faceAreas.size(), expectedAreas.size());
+    for (size_t i = 0; i < expectedAreas.size(); ++i) {
+        EXPECT_NEAR(res.faceAreas[i], expectedAreas[i], 1e-6 * expectedAreas.back()) << "face " << i;
+    }
+    // Every edge bounds some region, so nothing should be reported as open
+    EXPECT_EQ(res.openEdges, 0);
+}
+
+}  // namespace
 
 TEST_F(WireJoinerTest, addShape)
 {
@@ -926,6 +1031,57 @@ TEST_F(WireJoinerTest, IsDeleted)
     // edge5 is smaller that the smallest shape that can be considered with the given value of
     // tolerance and therefore deleted
     EXPECT_TRUE(wjIsDeleted.IsDeleted(edge5));
+}
+
+// The following cases exercise the closed wire search used by setTightBound(true). Regions that
+// need more than two (merged) edges to close used to be missed, and their edges were reported as
+// open wires. See issue #23406.
+
+TEST_F(WireJoinerTest, tightBoundTwoCircles)
+{
+    expectRegions({circleEdge(0, 0), circleEdge(10, 0)}, 3);
+}
+
+TEST_F(WireJoinerTest, tightBoundThreeCirclesInARow)
+{
+    expectRegions({circleEdge(0, 0), circleEdge(12, 0), circleEdge(24, 0)}, 5);
+}
+
+TEST_F(WireJoinerTest, tightBoundThreeCirclesVenn)
+{
+    expectRegions({circleEdge(0, 0), circleEdge(10, 0), circleEdge(5, 8.660254)}, 7);
+}
+
+TEST_F(WireJoinerTest, tightBoundThreeCirclesNoCommonPoint)
+{
+    // Pairwise overlapping circles leaving a small gap in the middle
+    expectRegions({circleEdge(0, 0), circleEdge(18, 0), circleEdge(9, 15.6)}, 7);
+}
+
+TEST_F(WireJoinerTest, tightBoundSquareOneLine)
+{
+    std::vector<TopoDS_Shape> edges;
+    addSquare(edges, 10, 10, 10);
+    edges.push_back(lineEdge(10, 0, 10, 20));
+    expectRegions(edges, 2);
+}
+
+TEST_F(WireJoinerTest, tightBoundSquareTwoParallelLines)
+{
+    std::vector<TopoDS_Shape> edges;
+    addSquare(edges, 10, 10, 10);
+    edges.push_back(lineEdge(7, 0, 7, 20));
+    edges.push_back(lineEdge(14, 0, 14, 20));
+    expectRegions(edges, 3);
+}
+
+TEST_F(WireJoinerTest, tightBoundSquarePlusSign)
+{
+    std::vector<TopoDS_Shape> edges;
+    addSquare(edges, 10, 10, 10);
+    edges.push_back(lineEdge(10, 0, 10, 20));
+    edges.push_back(lineEdge(0, 10, 20, 10));
+    expectRegions(edges, 4);
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
