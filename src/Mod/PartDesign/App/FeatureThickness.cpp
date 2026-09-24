@@ -220,9 +220,7 @@ App::DocumentObjectExecReturn* Thickness::execute()
 
     std::vector<Part::TopoShape> solids;
 
-    for (TopExp_Explorer exp(result.getShape(), TopAbs_SOLID);
-         exp.More();
-         exp.Next()) {
+    for (TopExp_Explorer exp(result.getShape(), TopAbs_SOLID); exp.More(); exp.Next()) {
 
         Part::TopoShape solid;
         solid.setShape(exp.Current());
