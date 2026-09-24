@@ -233,7 +233,20 @@ static const std::map<std::string, int>& getStatusMap()
         statusMap["NoRecompute"] = Property::NoRecompute;
         statusMap["CopyOnChange"] = Property::CopyOnChange;
         statusMap["UserEdit"] = Property::UserEdit;
-        statusMap["StaticBegin"] = Property::PropStaticBegin;
+        statusMap["DisableNotify"] = Property::DisableNotify;
+        statusMap["PropStaticBegin"] = Property::PropStaticBegin;
+        statusMap["PropDynamic"] = Property::PropDynamic;
+        statusMap["PropNoPersist"] = Property::PropNoPersist;
+        statusMap["PropNoRecompute"] = Property::PropNoRecompute;
+        statusMap["PropReadOnly"] = Property::PropReadOnly;
+        statusMap["PropTransient"] = Property::PropTransient;
+        statusMap["PropHidden"] = Property::PropHidden;
+        statusMap["PropOutput"] = Property::PropOutput;
+        statusMap["PropInput"] = Property::PropInput;
+        statusMap["PropStaticEnd"] = Property::PropStaticEnd;
+        statusMap["User1"] = Property::User1;
+        statusMap["User2"] = Property::User2;
+        statusMap["User3"] = Property::User3;
     }
     return statusMap;
 }
@@ -300,7 +313,7 @@ PyObject* PropertyContainerPy::setPropertyStatus(PyObject* args)
                 value = false;
                 v = -v;
             }
-            if (v == 0 || v > 31) {
+            if (v < 0 || v > 31) {
                 PyErr_Format(PyExc_ValueError, "Status value out of range '%d'", v);
                 return nullptr;
             }
