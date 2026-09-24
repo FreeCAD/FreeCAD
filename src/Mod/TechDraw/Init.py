@@ -26,3 +26,12 @@
 # FreeCAD init script of the TechDraw module
 
 FreeCAD.__unit_test__ += ["TestTechDrawApp"]
+
+# The Sketcher annotation adapter arms itself when a document first contains a drawing
+# page; importing it here only registers that trigger. A failure must not break TechDraw.
+try:
+    import SketchAnnotations  # noqa: F401
+except Exception as _exc:
+    FreeCAD.Console.PrintError(
+        "TechDraw: the sketch annotation adapter is unavailable: {}\n".format(_exc)
+    )
