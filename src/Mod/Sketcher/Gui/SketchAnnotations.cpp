@@ -262,13 +262,15 @@ QString patternLabel(std::string_view name)
     // Section-lining symbols of ANSI Y14.2 (acad.pat ANSI31–ANSI38). ISO 128-3 prescribes
     // the ANSI31 lines for general use and leaves material symbols to the drawing.
     static const std::map<std::string_view, const char*> labels {
-        {"ANSI31", QT_TRANSLATE_NOOP("SketcherGui::HatchPattern", "General use, cast iron (ANSI31, ISO 128)")},
+        {"ANSI31",
+         QT_TRANSLATE_NOOP("SketcherGui::HatchPattern", "General use, cast iron (ANSI31, ISO 128)")},
         {"ANSI32", QT_TRANSLATE_NOOP("SketcherGui::HatchPattern", "Steel (ANSI32)")},
         {"ANSI33", QT_TRANSLATE_NOOP("SketcherGui::HatchPattern", "Bronze, brass, copper (ANSI33)")},
         {"ANSI34", QT_TRANSLATE_NOOP("SketcherGui::HatchPattern", "Plastic, rubber (ANSI34)")},
         {"ANSI35", QT_TRANSLATE_NOOP("SketcherGui::HatchPattern", "Refractory, fire brick (ANSI35)")},
         {"ANSI36", QT_TRANSLATE_NOOP("SketcherGui::HatchPattern", "Marble, slate, glass (ANSI36)")},
-        {"ANSI37", QT_TRANSLATE_NOOP("SketcherGui::HatchPattern", "Lead, zinc, magnesium, insulation (ANSI37)")},
+        {"ANSI37",
+         QT_TRANSLATE_NOOP("SketcherGui::HatchPattern", "Lead, zinc, magnesium, insulation (ANSI37)")},
         {"ANSI38", QT_TRANSLATE_NOOP("SketcherGui::HatchPattern", "Aluminum (ANSI38)")},
         {"NET", QT_TRANSLATE_NOOP("SketcherGui::HatchPattern", "Square grid")},
         {"BRICK", QT_TRANSLATE_NOOP("SketcherGui::HatchPattern", "Brick")},
@@ -630,8 +632,9 @@ private:
         const auto world = view.getDocument()->getEditingTransform() * local;
         auto* manager = viewer->getSoRenderManager();
         const auto& region = manager->getViewportRegion();
-        const SbViewVolume volume
-            = manager->getCamera()->getViewVolume(region.getViewportAspectRatio());
+        const SbViewVolume volume = manager->getCamera()->getViewVolume(
+            region.getViewportAspectRatio()
+        );
         SbVec3f screen;
         volume.projectToScreen(SbVec3f(float(world.x), float(world.y), float(world.z)), screen);
         const auto size = region.getViewportSizePixels();
@@ -780,7 +783,8 @@ private:
             {Qt::AlignRight,
              QT_TRANSLATE_NOOP("SketcherGui::TextEditOverlay", "Aligns the paragraph to the right")},
         };
-        const QString glyphs[] = {QString(QChar(0x21E4)), QString(QChar(0x2194)), QString(QChar(0x21E5))};
+        const QString glyphs[]
+            = {QString(QChar(0x21E4)), QString(QChar(0x2194)), QString(QChar(0x21E5))};
         for (int i = 0; i < 3; ++i) {
             auto* b = button(glyphs[i], tr(alignments[i].second), false);
             const auto alignment = alignments[i].first;
@@ -923,8 +927,14 @@ public:
         auto widget = std::make_unique<QWidget>();
         widget->setObjectName("sketchTextToolWidget");
         auto* form = new QFormLayout(widget.get());
-        auto quantity = [form](const char* name, const QString& label, const Base::Unit& unit,
-                               double min, double max, double value) {
+        auto quantity = [form](
+                            const char* name,
+                            const QString& label,
+                            const Base::Unit& unit,
+                            double min,
+                            double max,
+                            double value
+                        ) {
             auto* box = new Gui::QuantitySpinBox;
             box->setObjectName(QString::fromLatin1(name));
             box->setUnit(unit);
@@ -1043,16 +1053,22 @@ private:
         }
         auto connectQuantity = [this](const char* name, double Annotation::* field) {
             if (auto* box = toolwidget->findChild<Gui::QuantitySpinBox*>(name)) {
-                connections.push_back(QObject::connect(
-                    box,
-                    qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-                    [this, field](double value) {
-                        settings.*field = value;
-                        if (editor) {
-                            editor->setGeometry(settings.textSize, settings.textWidth, settings.rotation);
+                connections.push_back(
+                    QObject::connect(
+                        box,
+                        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+                        [this, field](double value) {
+                            settings.*field = value;
+                            if (editor) {
+                                editor->setGeometry(
+                                    settings.textSize,
+                                    settings.textWidth,
+                                    settings.rotation
+                                );
+                            }
                         }
-                    }
-                ));
+                    )
+                );
             }
         };
         connectQuantity("textHeight", &Annotation::textSize);
@@ -1080,7 +1096,9 @@ private:
             return;
         }
         editor = new TextEditOverlay(*sketchgui, target, settings);
-        editor->finished = [this] { finishEditing(); };
+        editor->finished = [this] {
+            finishEditing();
+        };
         // The scene would draw the stored text under the editor; hide it meanwhile.
         sketchgui->annotationManager().setTextEditing(existing ? existing->id : 0);
         updateHint();
@@ -1140,7 +1158,9 @@ private:
         }
         if (!commit()) {
             // Keep editing; Escape was consumed by this call, so arm it again.
-            editor->finished = [this] { finishEditing(); };
+            editor->finished = [this] {
+                finishEditing();
+            };
             return;
         }
         dropEditor();
@@ -1404,25 +1424,25 @@ private:
             return;
         }
         if (auto* pattern = toolwidget->findChild<QComboBox*>("hatchPattern")) {
-            connections.push_back(QObject::connect(
-                pattern,
-                qOverload<int>(&QComboBox::currentIndexChanged),
-                [this, pattern] {
+            connections.push_back(
+                QObject::connect(pattern, qOverload<int>(&QComboBox::currentIndexChanged), [this, pattern] {
                     settings.pattern = pattern->currentData().toString().toStdString();
                     refresh();
-                }
-            ));
+                })
+            );
         }
         auto connectQuantity = [this](const char* name, double Annotation::* field) {
             if (auto* box = toolwidget->findChild<Gui::QuantitySpinBox*>(name)) {
-                connections.push_back(QObject::connect(
-                    box,
-                    qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-                    [this, field](double value) {
-                        settings.*field = value;
-                        refresh();
-                    }
-                ));
+                connections.push_back(
+                    QObject::connect(
+                        box,
+                        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+                        [this, field](double value) {
+                            settings.*field = value;
+                            refresh();
+                        }
+                    )
+                );
             }
         };
         connectQuantity("hatchSpacing", &Annotation::spacing);
@@ -1735,24 +1755,24 @@ private:
             return;
         }
         if (auto* style = toolwidget->findChild<QComboBox*>("leaderArrowStyle")) {
-            connections.push_back(QObject::connect(
-                style,
-                qOverload<int>(&QComboBox::currentIndexChanged),
-                [this, style] {
+            connections.push_back(
+                QObject::connect(style, qOverload<int>(&QComboBox::currentIndexChanged), [this, style] {
                     settings.arrowStyle = style->currentData().toString().toStdString();
                     refresh();
-                }
-            ));
+                })
+            );
         }
         if (auto* size = toolwidget->findChild<Gui::QuantitySpinBox*>("leaderArrowSize")) {
-            connections.push_back(QObject::connect(
-                size,
-                qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-                [this](double value) {
-                    settings.arrowSize = value;
-                    refresh();
-                }
-            ));
+            connections.push_back(
+                QObject::connect(
+                    size,
+                    qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+                    [this](double value) {
+                        settings.arrowSize = value;
+                        refresh();
+                    }
+                )
+            );
         }
     }
     void disconnectWidget()
@@ -2109,10 +2129,8 @@ void AnnotationManager::update()
                 const QFont font(QStringLiteral("Sans Serif"), 12);
                 document.setDefaultFont(font);
                 document.setDocumentMargin(0);
-                document.setDefaultStyleSheet(
-                    QStringLiteral("body { color: %1; }")
-                        .arg(QColor::fromRgbF(ink.r, ink.g, ink.b).name())
-                );
+                document.setDefaultStyleSheet(QStringLiteral("body { color: %1; }")
+                                                  .arg(QColor::fromRgbF(ink.r, ink.g, ink.b).name()));
                 document.setHtml(QString::fromStdString(a.html));
                 const double units = a.textSize / QFontMetricsF(font).height();
                 if (a.textWidth > 0) {
@@ -2156,11 +2174,8 @@ void AnnotationManager::update()
             // Coin copies the image; do that only when the raster changed, not per rebuild.
             if (!raster.texture) {
                 raster.texture = new SoTexture2;
-                raster.texture->image.setValue(
-                    SbVec2s(size.width(), size.height()),
-                    4,
-                    image.constBits()
-                );
+                raster.texture->image
+                    .setValue(SbVec2s(size.width(), size.height()), 4, image.constBits());
             }
             item->addChild(raster.texture);
             auto* texCoords = new SoTextureCoordinate2;
@@ -2186,8 +2201,7 @@ void AnnotationManager::update()
                 item->addChild(borderStyle);
                 auto* borderCoordinates = new SoCoordinate3;
                 const SbVec3f border[]
-                    = {{0, 0, 0.001F}, {w, 0, 0.001F}, {w, -h, 0.001F}, {0, -h, 0.001F}, {0, 0, 0.001F}
-                    };
+                    = {{0, 0, 0.001F}, {w, 0, 0.001F}, {w, -h, 0.001F}, {0, -h, 0.001F}, {0, 0, 0.001F}};
                 borderCoordinates->point.setValues(0, 5, border);
                 item->addChild(borderCoordinates);
                 auto* borderLine = new SoLineSet;
@@ -2567,9 +2581,7 @@ void AnnotationManager::editInDialog(Annotation a)
             }
         });
         auto* remove = new QPushButton(tr("Remove Point"));
-        remove->setToolTip(
-            tr("Removes the selected point. A leader line keeps at least two points.")
-        );
+        remove->setToolTip(tr("Removes the selected point. A leader line keeps at least two points."));
         layout->addWidget(remove);
         connect(remove, &QPushButton::clicked, &dialog, [points] {
             if (points->rowCount() > 2 && points->currentRow() >= 0) {
@@ -2672,12 +2684,7 @@ void AnnotationManager::editInDialog(Annotation a)
     };
     for (auto* control : {x, y, rotation, spacing, arrow}) {
         if (control) {
-            connect(
-                control,
-                qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-                &dialog,
-                preview
-            );
+            connect(control, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), &dialog, preview);
         }
     }
     connect(construction, &QCheckBox::toggled, &dialog, preview);
@@ -2788,11 +2795,9 @@ TaskSketcherAnnotations::TaskSketcherAnnotations(ViewProviderSketch* view)
                 }
                 selected.push_back(selectedId);
             }
-            menu.addAction(
-                    tr("Delete"),
-                    this,
-                    [this, selected] { this->view->annotationManager().remove(selected); }
-            );
+            menu.addAction(tr("Delete"), this, [this, selected] {
+                this->view->annotationManager().remove(selected);
+            });
             menu.addSeparator();
         }
         std::vector<long> all;
@@ -2844,8 +2849,7 @@ void TaskSketcherAnnotations::updateFilters()
 {
     for (int i = 0; i < list->count(); ++i) {
         auto* row = list->item(i);
-        const auto* a
-            = view->getSketchObject()->findAnnotation(row->data(Qt::UserRole).toLongLong());
+        const auto* a = view->getSketchObject()->findAnnotation(row->data(Qt::UserRole).toLongLong());
         if (!a) {
             continue;  // The list is one refresh behind the model.
         }
@@ -2881,13 +2885,12 @@ void TaskSketcherAnnotations::refresh()
         row->setData(Qt::UserRole, qlonglong(a.id));
         row->setFlags(row->flags() | Qt::ItemIsUserCheckable);
         row->setCheckState(view->annotationManager().isVisible(a.id) ? Qt::Checked : Qt::Unchecked);
-        row->setSelected(
-            isAnnotationSelected(*view, a.id)
-        );
+        row->setSelected(isAnnotationSelected(*view, a.id));
         const auto error = view->annotationManager().error(a.id);
         QString tooltip = typeName(a.kind);
         if (a.construction) {
-            tooltip += QStringLiteral("\n") + tr("Construction: shown only while the sketch is edited");
+            tooltip += QStringLiteral("\n")
+                + tr("Construction: shown only while the sketch is edited");
         }
         tooltip += QStringLiteral("\n") + tr("The checkbox shows or hides the cosmetic");
         if (!error.empty()) {
@@ -2959,11 +2962,13 @@ public:
         if (!action) {
             return;
         }
-        const bool construction
-            = static_cast<GeometryCreationMode>(mode) == GeometryCreationMode::Construction;
-        action->setIcon(Gui::BitmapFactory().iconFromTheme(
-            (std::string(typeIcon(kind)) + (construction ? "_Constr" : "")).c_str()
-        ));
+        const bool construction = static_cast<GeometryCreationMode>(mode)
+            == GeometryCreationMode::Construction;
+        action->setIcon(
+            Gui::BitmapFactory().iconFromTheme(
+                (std::string(typeIcon(kind)) + (construction ? "_Constr" : "")).c_str()
+            )
+        );
     }
 
 private:

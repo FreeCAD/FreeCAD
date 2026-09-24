@@ -54,7 +54,10 @@ class TestSketchAnnotationsGui(SketcherGuiTestCase):
         scene = Gui.activeDocument().activeView().graphicsView().scene()
         for item in scene.items():
             item = item.toGraphicsObject()
-            if isinstance(item, QtGui.QGraphicsTextItem) and item.objectName() == "sketchTextEditor":
+            if (
+                isinstance(item, QtGui.QGraphicsTextItem)
+                and item.objectName() == "sketchTextEditor"
+            ):
                 return item
         return None
 
@@ -83,9 +86,7 @@ class TestSketchAnnotationsGui(SketcherGuiTestCase):
         self.assertIn("Note", editor.toPlainText())
         # The stored text is hidden while its editor is shown in its place.
         self.assertEqual(self.scene().getNumChildren(), 1)
-        self.assertIsNotNone(
-            Gui.getMainWindow().findChild(QtGui.QWidget, "sketchTextToolWidget")
-        )
+        self.assertIsNotNone(Gui.getMainWindow().findChild(QtGui.QWidget, "sketchTextToolWidget"))
         self.type_text(viewport, "!")
         self.key_click(viewport, QtCore.Qt.Key_Escape)
         self.flush_gui(150)
@@ -496,7 +497,9 @@ class TestSketchAnnotationsGui(SketcherGuiTestCase):
     def testHatchCreationHandler(self):
         outer = self.square(40, 0, 20)
         inner = self.square(45, 5, 10)
-        dangling = self.s.addGeometry(Part.LineSegment(App.Vector(62, 15, 0), App.Vector(68, 15, 0)))
+        dangling = self.s.addGeometry(
+            Part.LineSegment(App.Vector(62, 15, 0), App.Vector(68, 15, 0))
+        )
         self.doc.recompute()
         self.enter()
         view, viewport = self.hatch_view()
@@ -581,7 +584,11 @@ class TestSketchAnnotationsGui(SketcherGuiTestCase):
                     dialog.reject()
 
         QtCore.QTimer.singleShot(150, inspect)
-        row = next(i for i in range(self.tree.count()) if self.tree.item(i).data(QtCore.Qt.UserRole) == hatch)
+        row = next(
+            i
+            for i in range(self.tree.count())
+            if self.tree.item(i).data(QtCore.Qt.UserRole) == hatch
+        )
         self.tree.itemDoubleClicked.emit(self.tree.item(row))
         self.assertFalse(errors, errors)
         self.assertEqual(self.s.Annotations[-1]["Pattern"], "BRICK")

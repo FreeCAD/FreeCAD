@@ -365,7 +365,10 @@ std::vector<Base::Vector3d> SketchObject::annotationStrokes(const Annotation& a)
             common.SetTools(tools);
             common.Build();
             if (!common.IsDone()) {
-                THROWMT(Base::ValueError, QT_TRANSLATE_NOOP("Exceptions", "Failed to clip hatch strokes"));
+                THROWMT(
+                    Base::ValueError,
+                    QT_TRANSLATE_NOOP("Exceptions", "Failed to clip hatch strokes")
+                );
             }
             const double period = f.period;
             for (TopExp_Explorer ex(common.Shape(), TopAbs_EDGE); ex.More(); ex.Next()) {
@@ -397,7 +400,8 @@ std::vector<Base::Vector3d> SketchObject::annotationStrokes(const Annotation& a)
                             result.push_back(through + f.direction * u1);
                         }
                     };
-                    for (double cycle = std::floor(t0 / period) * period; cycle < t1; cycle += period) {
+                    for (double cycle = std::floor(t0 / period) * period; cycle < t1;
+                         cycle += period) {
                         double at = cycle;
                         for (double dash : *f.dashes) {
                             if (dash > 0) {
