@@ -182,7 +182,7 @@ def importFrd(filename, analysis=None, result_name_prefix="", result_analysis_ty
                     # information 1:
                     # only compact result if not Flow 1D results
                     # compact result object, workaround for bug 2873
-                    # https://www.freecad.org/tracker/view.php?id=2873
+                    # https://tracker.freecad.org/view.php?id=2873
                     # information 2:
                     # if the result data has multiple result sets there will be multiple result objs
                     # they all will use one mesh obj

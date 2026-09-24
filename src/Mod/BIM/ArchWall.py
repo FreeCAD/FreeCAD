@@ -1417,7 +1417,7 @@ class _Wall(ArchComponent.Component):
 
                                     # "Bug #2408: [PartDesign] .fuse is splitting edges it should not"
                                     # - https://forum.freecad.org/viewtopic.php?f=10&t=20349&p=346237#p346237
-                                    # - bugtracker - https://freecad.org/tracker/view.php?id=2408
+                                    # - bugtracker - https://tracker.freecad.org/view.php?id=2408
 
                                     # Try Part.Shell before removeSplitter
                                     # - https://forum.freecad.org/viewtopic.php?f=10&t=20349&start=10

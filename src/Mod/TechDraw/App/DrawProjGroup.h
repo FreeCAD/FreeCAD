@@ -165,7 +165,7 @@ protected:
 
     /// Annoying helper - keep in sync with DrawProjGroupItem::TypeEnums
     /*!
-     * \todo {See note regarding App::PropertyEnumeration on my wiki page https://freecad.org/wiki/User:Ian.rees}
+     * \todo {See note regarding App::PropertyEnumeration on my wiki page https://wiki.freecad.org/User:Ian.rees}
      * \return true iff 'in' is a valid name for an orthographic/isometric view
      */
     bool checkViewProjType(const char *in);

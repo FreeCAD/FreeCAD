@@ -54,7 +54,7 @@ Other options are described on the [wiki Download page](https://wiki.freecad.org
 Compiling
 ---------
 
-See the [Developers Handbook – Getting Started](https://freecad.github.io/DevelopersHandbook/gettingstarted/)
+See the [Developers Handbook – Building FreeCAD](https://www.freecad.org/dev/setup/build/)
 for build instructions.
 
 
@@ -96,7 +96,7 @@ View these pages for more information:
 - [Frequent questions](https://wiki.freecad.org/FAQ/en)
 - [Workbenches](https://wiki.freecad.org/Workbenches)
 - [Scripting](https://wiki.freecad.org/Power_users_hub)
-- [Developers Handbook](https://freecad.github.io/DevelopersHandbook/)
+- [Developers Handbook](https://www.freecad.org/dev)
 
 The [FreeCAD forum](https://forum.freecad.org) is a great place
 to find help and solve specific problems when learning to use FreeCAD.
