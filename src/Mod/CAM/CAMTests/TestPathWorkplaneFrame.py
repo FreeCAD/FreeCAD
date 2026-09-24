@@ -170,6 +170,37 @@ class TestGenerateInPlaneFrame(PathTestUtils.PathTestBase):
     def _rotaryWords(path):
         return [c for c in path.Commands if any(k in c.Parameters for k in "ABC")]
 
+    def test_depthsStayInThePlaneFrameWhenAPropertyChanges(self):
+        """execute() computes an operation's depths in its work plane's frame.
+        Adding base geometry recomputes them from onChanged(), outside
+        execute(), and used to do it in world coordinates: a new Helix that
+        kept its inherited plane showed the world stock top as its Start
+        Depth, above its Safe Height, and generated nothing."""
+        import Path.Op.Helix as PathHelix
+
+        drilled = self.doc.addObject("Part::Feature", "Drilled")
+        drilled.Shape = Part.makeBox(100, 100, 50).cut(Part.makeCylinder(4, 30, Vector(50, 50, 20)))
+        self.doc.recompute()
+        job = PathJob.Create("JobDrilled", [drilled], None)
+        self.doc.recompute()
+        clone = job.Model.Group[0]
+        hole = [
+            "Face%d" % i
+            for i, f in enumerate(clone.Shape.Faces, 1)
+            if isinstance(f.Surface, Part.Cylinder)
+        ]
+        top = PathWorkplane.createWorkplaneFromToolAxis(
+            job, Vector(0, 0, 1), origin=Vector(0, 0, 50)
+        )
+        op = PathHelix.Create("H", parentJob=job)
+        op.Workplane = top
+        self.doc.recompute()
+        in_plane = job.Stock.Shape.BoundBox.ZMax - 50.0
+        self.assertAlmostEqual(op.OpStartDepth.Value, in_plane, places=5)
+
+        op.Base = [(clone, hole)]  # onChanged -> updateDepths, outside execute()
+        self.assertAlmostEqual(op.OpStartDepth.Value, in_plane, places=5)
+
     def test_zUpPlaneOnTheTopFaceMeasuresFromIt(self):
         """A plane with no rotation but an origin still defines the frame: the
         stock top reads as its height above the face, the model top as 0, and
