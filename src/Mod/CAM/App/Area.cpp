@@ -482,8 +482,11 @@ void Area::addWire(CArea& area, const TopoDS_Wire& wire, const gp_Trsf* trsf, do
             case GeomAbs_Ellipse:
             case GeomAbs_Hyperbola:
             case GeomAbs_Parabola: {
-                // Edges with only a pcurve (no 3D curve) can't be fed to biarcs
-                if (!curve.Is3DCurve()) {
+                // Discretize instead of using biarcs for:
+                // - edges with only a pcurve (no 3D curve), which can't be fed to biarcs
+                // - degree 1 BSplines (polylines, no slope continuity at corners)
+                if (!curve.Is3DCurve()
+                    || (curve.GetType() == GeomAbs_BSplineCurve && curve.Degree() == 1)) {
                     appendDiscretized(curve);
                     break;
                 }
