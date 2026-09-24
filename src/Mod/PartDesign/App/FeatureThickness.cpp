@@ -29,8 +29,8 @@
 
 #include <BRepOffset_Mode.hxx>
 #include <Precision.hxx>
-#include <TopoDS.hxx>
-
+#include <TopExp_Explorer.hxx>
+#include <TopAbs.hxx>
 
 #include <Base/Exception.h>
 #include "FeatureThickness.h"
@@ -218,9 +218,22 @@ App::DocumentObjectExecReturn* Thickness::execute()
 
     this->rawShape = result;
 
-    result = refineShapeIfActive(result);
+    std::vector<Part::TopoShape> solids;
 
-    this->Shape.setValue(getSolid(result));
+    for (TopExp_Explorer exp(result.getShape(), TopAbs_SOLID);
+         exp.More();
+         exp.Next()) {
+
+        Part::TopoShape solid;
+        solid.setShape(exp.Current());
+        solids.push_back(std::move(solid));
+    }
+
+    TopoShape final;
+    final.makeElementFuse(solids);
+    final = refineShapeIfActive(final);
+
+    this->Shape.setValue(getSolid(final));
 
     return App::DocumentObject::StdReturn;
 }
