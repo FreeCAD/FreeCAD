@@ -3646,9 +3646,10 @@ class PostProcessor:
             "U": format_axis_param,
             "V": format_axis_param,
             "W": format_axis_param,
-            "A": format_axis_param,
-            "B": format_axis_param,
-            "C": format_axis_param,
+            # Rotary axes are angles: precision, but no mm -> inch conversion
+            "A": self._format_angle,
+            "B": self._format_angle,
+            "C": self._format_angle,
             # Arc parameters
             "I": format_axis_param,
             "J": format_axis_param,
