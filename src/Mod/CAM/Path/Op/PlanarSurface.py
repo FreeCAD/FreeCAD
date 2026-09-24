@@ -803,7 +803,11 @@ class ObjectSurface(PathOp.ObjectOp):
         obj.setEditorMode("MinSampleInterval", show if is_adaptive else hide)
 
         # Pattern center is relevant for circular/spiral patterns in SurfaceScan
-        pattern_needs_center = is_surface_scan and not obj.CutPattern in ["Line", "ZigZag"]
+        pattern_needs_center = is_surface_scan and obj.CutPattern in [
+            "Circular",
+            "CircularZigZag",
+            "Spiral",
+        ]
         obj.setEditorMode("PatternCenterAt", show if pattern_needs_center else hide)
         obj.setEditorMode("PatternCenterCustom", show if pattern_needs_center else hide)
 
@@ -847,12 +851,12 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # Apply Visibility to Common/Contextual Group (E-F)
         obj.setEditorMode("StepOver", E)
-        obj.setEditorMode("CutPatternReversed", E)
         obj.setEditorMode("CutPatternAngle", F)
 
         # Global Properties
         obj.setEditorMode("CutMode", show)
         obj.setEditorMode("DepthOffset", show)
+        obj.setEditorMode("CutPatternReversed", hide if is_waterline else show)
         obj.setEditorMode("KeepToolDown", show if not is_waterline else hide)
         obj.setEditorMode("KeepToolDownRatio", show if not is_waterline else hide)
         obj.setEditorMode("BoundaryAdjustment", show if not is_waterline else hide)
@@ -1390,9 +1394,6 @@ class ObjectSurface(PathOp.ObjectOp):
             )
             Path.Log.info("Switching to faster standard dropcutter for this high-density path.")
 
-        if obj.CutPatternReversed:
-            cut_climb = not cut_climb
-
         wl_data = surface_waterline.waterline_stack(
             stl,
             cutter,
@@ -1866,7 +1867,8 @@ class ObjectSurface(PathOp.ObjectOp):
         self.commandlist.append(
             Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
         )
-        if obj.UseStartPoint:
+        # Z-Level only
+        if obj.UseStartPoint and is_zlevel:
             self.commandlist.append(
                 Path.Command(
                     "G0",
