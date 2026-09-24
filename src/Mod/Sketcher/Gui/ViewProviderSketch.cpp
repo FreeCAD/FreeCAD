@@ -91,7 +91,10 @@
 #include "TaskDlgEditSketch.h"
 #include "TaskSketcherValidation.h"
 #include "Utils.h"
+#include <optional>
+
 #include "ViewProviderSketch.h"
+#include "SketchAnnotations.h"
 #include "ViewProviderSketchGeometryExtension.h"
 #include "Workbench.h"
 
@@ -350,6 +353,20 @@ void ViewProviderSketch::ParameterObserver::initParameters()
               updateBoolProperty(string, property, true);
           },
           &Client.AvoidRedundant}},
+        {"ShowCosmetics",
+         {[this](const std::string&, App::Property*) {
+              Client.showCosmetics = SketcherGui::areCosmeticsShown();
+              // The annotations only exist from attach() on; this also runs before that.
+              if (Client.annotations) {
+                  // The task box hides itself on refresh; the toolbar follows the setting.
+                  Client.annotations->scheduleUpdate();
+              }
+              // Only a sketch being edited shows that toolbar at all.
+              if (Client.isInEditMode()) {
+                  SketcherGui::updateCosmeticsToolbar();
+              }
+          },
+          nullptr}},
         {"LeaveSketchWithEscape",
          {[this](const std::string& string, App::Property* property) {
               updateEscapeKeyBehaviour(string, property);
@@ -660,6 +677,7 @@ ViewProviderSketch::ViewProviderSketch()
                       "Layers",
                       (App::PropertyType)(App::Prop_ReadOnly),
                       "Information about the Visual Representation of layers");
+    ADD_PROPERTY_TYPE(HiddenAnnotations, (), "Cosmetics", App::Prop_Hidden, "Hidden cosmetic IDs");
 
     ADD_PROPERTY_TYPE(
         AutoColor,
@@ -753,6 +771,17 @@ void ViewProviderSketch::forceUpdateData()
 }
 
 /***************************** handler management ************************************/
+
+namespace
+{
+/// Whether a preselection result names a sketch point, edge or constraint (the axes are
+/// drawn across the whole view and must not hide a cosmetic).
+bool hitsSketchElement(const EditModeCoinManager::PreselectionResult& result)
+{
+    using Kind = EditModeCoinManager::PreselectionResult::HitKind;
+    return result.Kind != Kind::None && result.Kind != Kind::Axis;
+}
+}  // namespace
 
 void ViewProviderSketch::activateHandler(std::unique_ptr<DrawSketchHandler> newHandler)
 {
@@ -896,6 +925,20 @@ SoPickedPointList ViewProviderSketch::getPickedPointsOnRay(
         return picks;
     }
 
+    collectPickedPointsOnRay(pos, viewer, picks);
+    return picks;
+}
+
+void ViewProviderSketch::collectPickedPointsOnRay(
+    const SbVec2s& pos,
+    const Gui::View3DInventorViewer* viewer,
+    SoPickedPointList& picks
+) const
+{
+    if (!viewer || !isInEditMode()) {
+        return;
+    }
+
     auto root = new SoSeparator;
     root->ref();
     root->addChild(viewer->getSoRenderManager()->getCamera());
@@ -921,16 +964,21 @@ SoPickedPointList ViewProviderSketch::getPickedPointsOnRay(
 
     root->unref();
     trans->unref();
-
-    return picks;
 }
 
 EditModeCoinManager::PreselectionResult ViewProviderSketch::getPreselectionResultAtViewportPos(
     const SbVec2s& pos,
-    const Gui::View3DInventorViewer* viewer
+    const Gui::View3DInventorViewer* viewer,
+    const SoPickedPointList* picked
 ) const
 {
-    SoPickedPointList points = getPickedPointsOnRay(pos, viewer);
+    // A ray pick walks the whole edit scene graph; callers that already have one pass it.
+    SoPickedPointList owned;
+    if (!picked) {
+        collectPickedPointsOnRay(pos, viewer, owned);
+        picked = &owned;
+    }
+    const SoPickedPointList& points = *picked;
     int hoveredPointIndex = EditModeCoinManager::PreselectionResult::InvalidPoint;
     if (viewProviderParameters.hasLastPreselectionResult
         && viewProviderParameters.lastPreselectionResult.Kind
@@ -1038,6 +1086,9 @@ bool ViewProviderSketch::getPreselectionAtViewportPos(
 
 bool ViewProviderSketch::keyPressed(bool pressed, int key)
 {
+    if (pressed && key == SoKeyboardEvent::ESCAPE && annotations && annotations->cancelDrag()) {
+        return true;
+    }
     if (getEditingMode() != ViewProviderSketch::Default) {
         return ViewProvider2DObject::keyPressed(pressed, key);
     }
@@ -1228,8 +1279,12 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
 
     // use scoped_ptr to make sure that instance gets deleted in all cases
     boost::scoped_ptr<SoPickedPoint> pp(this->getPointOnRay(cursorPos, viewer));
+    // A ray pick traverses the whole edit scene graph, so do it once per event and
+    // share it between preselection and the annotation hit test below.
+    SoPickedPointList picks;
+    collectPickedPointsOnRay(cursorPos, viewer, picks);
     EditModeCoinManager::PreselectionResult clickResult
-        = getPreselectionResultAtViewportPos(cursorPos, viewer);
+        = getPreselectionResultAtViewportPos(cursorPos, viewer, &picks);
     EditModeCoinManager::PreselectionResult resolvedClickResult
         = resolveClickPreselectionResult(clickResult, cursorPos, viewer);
 
@@ -1260,6 +1315,19 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
     }
     snapHandle = std::make_unique<SnapManager::SnapHandle>(snapManager.get(), Base::Vector2d(x, y));
 
+    if (annotations && !sketchHandler && Mode == STATUS_NONE) {
+        long annotationId = 0;
+        // Sketch points and edges win over a cosmetic drawn across them, so that geometry
+        // under a text or leader stays selectable.
+        if (!hitsSketchElement(resolvedClickResult)) {
+            for (int i = 0; i < picks.getLength() && !annotationId; ++i) {
+                annotationId = annotations->picked(picks[i]);
+            }
+        }
+        if (annotations->mouseButton(Button, pressed, Base::Vector3d(x, y, 0), annotationId)) {
+            return true;
+        }
+    }
     // Left Mouse button ****************************************************
     if (Button == 1) {
         if (pressed) {
@@ -1830,11 +1898,40 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
     }
     snapHandle = std::make_unique<SnapManager::SnapHandle>(snapManager.get(), Base::Vector2d(x, y));
 
+    // Computed at most once per mouse move, and only for the modes that need it.
+    SoPickedPointList picks;
+    bool picksReady = false;
+    const auto pickedPoints = [&]() -> const SoPickedPointList& {
+        if (!picksReady) {
+            collectPickedPointsOnRay(cursorPos, viewer, picks);
+            picksReady = true;
+        }
+        return picks;
+    };
+
+    // Computed at most once per move, and shared with the cosmetic hit test.
+    std::optional<EditModeCoinManager::PreselectionResult> geometryHit;
+    if (annotations && !sketchHandler && Mode == STATUS_NONE) {
+        long annotationId = 0;
+        const auto& hits = pickedPoints();
+        geometryHit = getPreselectionResultAtViewportPos(cursorPos, viewer, &hits);
+        // Sketch points and edges win over a cosmetic drawn across them.
+        if (!hitsSketchElement(*geometryHit)) {
+            for (int i = 0; i < hits.getLength() && !annotationId; ++i) {
+                annotationId = annotations->picked(hits[i]);
+            }
+        }
+        if (annotations->mouseMove(Base::Vector3d(x, y, 0), annotationId)) {
+            return true;
+        }
+    }
     bool preselectChanged = false;
     if (Mode != STATUS_SELECT_Point && Mode != STATUS_SELECT_Edge
         && Mode != STATUS_SELECT_Constraint && Mode != STATUS_SKETCH_Drag
         && Mode != STATUS_SKETCH_DragConstraint && Mode != STATUS_SKETCH_UseRubberBand) {
-        auto result = getPreselectionResultAtViewportPos(cursorPos, viewer);
+        const auto& hits = pickedPoints();
+        auto result = geometryHit ? *geometryHit
+                                  : getPreselectionResultAtViewportPos(cursorPos, viewer, &hits);
         cachePreselectionResult(cursorPos, result);
         preselectChanged = detectAndShowPreselection(result);
     }
@@ -3378,8 +3475,15 @@ void ViewProviderSketch::setGeometryCreationMode(GeometryCreationMode newMode)
     if (geometryCreationMode == newMode) {
         return;
     }
+    if (geometryCreationMode == newMode) {
+        return;
+    }
 
     geometryCreationMode = newMode;
+    // Tools draw previews and headers in the creation mode; let them follow the toggle.
+    if (sketchHandler) {
+        sketchHandler->onConstructionModeChanged();
+    }
 
     if (!editCoinManager) {
         return;
@@ -3866,6 +3970,10 @@ void ViewProviderSketch::drawEditMarkers(const std::vector<Base::Vector2d>& Edit
 }
 
 void ViewProviderSketch::updateData(const App::Property* prop) {
+    if (annotations) {
+        // Geometry changes only matter to hatches, which are rebuilt once the drag settles.
+        annotations->scheduleUpdate(prop == &getSketchObject()->Geometry);
+    }
     if (std::string(prop->getName()) != "ShapeMaterial") {
         // We don't want material to override the colors of sketches.
         ViewProvider2DObject::updateData(prop);
@@ -3940,6 +4048,9 @@ void ViewProviderSketch::slotConstraintAdded(Sketcher::Constraint* constraint)
 void ViewProviderSketch::onChanged(const App::Property* prop)
 {
     ViewProvider2DObject::onChanged(prop);
+    if (annotations) {
+        annotations->scheduleUpdate();
+    }
 
     if (prop == &VisualLayerList) {
         if (isInEditMode()) {
@@ -4035,6 +4146,12 @@ void SketcherGui::ViewProviderSketch::finishRestoring()
 // clang-format on
 bool ViewProviderSketch::getElementPicked(const SoPickedPoint* pp, std::string& subname) const
 {
+    if (annotations) {
+        if (const long id = annotations->picked(pp)) {
+            subname = annotationSubName(id);
+            return true;
+        }
+    }
     if (pp->getPath()->containsNode(pcSketchFaces) && !isInEditMode()) {
         if (ViewProvider2DObject::getElementPicked(pp, subname)) {
             subname = SketchObject::internalPrefix() + subname;
@@ -4114,6 +4231,32 @@ bool ViewProviderSketch::getDetailPath(
     SoDetail*& det
 ) const
 {
+    if (const long annotationId = subname && annotations ? annotationIdFromSubName(subname) : 0) {
+        const SbName nodeName(annotationNodeName(annotationId).c_str());
+        auto* scene = annotations->root();
+        for (int i = 0; i < scene->getNumChildren(); ++i) {
+            if (scene->getChild(i)->getName() != nodeName) {
+                continue;
+            }
+            if (append) {
+                pPath->append(pcRoot);
+                // The scene hangs off whichever parent is active; see reparentAnnotations.
+                // getOrCreateAnnotation() is not const, and attach() has already made it.
+                SoNode* parent = isInEditMode() && editCoinManager
+                    ? static_cast<SoNode*>(editCoinManager->getRootEditNode())
+                    : static_cast<SoNode*>(pcAnnotation);
+                if (!parent) {
+                    return false;
+                }
+                pPath->append(parent);
+            }
+            pPath->append(scene);
+            pPath->append(i);
+            det = nullptr;
+            return true;
+        }
+        return false;
+    }
     const auto getLastPartOfName = [](const char* subname) -> const char* {
         const char* realName = strrchr(subname, '.');
 
@@ -4149,6 +4292,40 @@ void ViewProviderSketch::attach(App::DocumentObject* pcFeat)
     ViewProvider2DObject::attach(pcFeat);
 
     getOrCreateAnnotation()->addChild(pcSketchFacesToggle);
+    if (!annotations) {
+        annotations = std::make_unique<AnnotationManager>(*this);
+    }
+    reparentAnnotations(false);
+    annotations->scheduleUpdate(true);
+}
+
+void ViewProviderSketch::reparentAnnotations(bool editing)
+{
+    if (!annotations) {
+        return;
+    }
+    auto* scene = annotations->root();
+    auto* display = getOrCreateAnnotation();
+    auto* edit = editCoinManager ? editCoinManager->getRootEditNode() : nullptr;
+    auto* from = editing ? display : edit;
+    auto* to = editing ? edit : display;
+    if (!to) {
+        return;
+    }
+    // Coin allows several parents, but two live paths would draw and pick every
+    // annotation twice and leave getDetailPath pointing at only one of them.
+    if (from && from->findChild(scene) >= 0) {
+        from->removeChild(scene);
+    }
+    if (to->findChild(scene) < 0) {
+        to->addChild(scene);
+    }
+    annotations->scheduleUpdate();
+}
+
+AnnotationManager& ViewProviderSketch::annotationManager()
+{
+    return *annotations;
 }
 
 void ViewProviderSketch::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
@@ -4157,6 +4334,9 @@ void ViewProviderSketch::setupContextMenu(QMenu* menu, QObject* receiver, const 
     act->setData(QVariant((int)ViewProvider::Default));
     // Call the extensions
     ViewProvider::setupContextMenu(menu, receiver, member);
+    if (annotations) {
+        annotations->appendContextMenu(menu);
+    }
 }
 
 bool ViewProviderSketch::setEdit(int ModNum)
@@ -4232,6 +4412,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
     preselection.reset();
     selection.reset();
     editCoinManager = std::make_unique<EditModeCoinManager>(*this);
+    reparentAnnotations(true);
     snapManager = std::make_unique<SnapManager>(*this);
 
 
@@ -4548,6 +4729,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
             deactivateHandler();
         }
 
+        reparentAnnotations(false);
         editCoinManager = nullptr;
         snapManager = nullptr;
         preselection.reset();
@@ -4678,6 +4860,9 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
         viewer->viewObjects(objs);
     }
 
+    if (annotations) {
+        annotations->scheduleUpdate();
+    }
     viewer->setEditing(true);
     viewer->setSelectionEnabled(false);
 
@@ -4716,6 +4901,10 @@ void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
     cameraSensor.detach();
 
     viewer->removeGraphicsItem(rubberband.get());
+    if (annotations) {
+        annotations->cancelDrag();
+        annotations->scheduleUpdate();
+    }
     viewer->setEditing(false);
     viewer->setSelectionEnabled(true);
 
@@ -4757,6 +4946,7 @@ void ViewProviderSketch::camSensCB(void* data, SoSensor*)
 
 void ViewProviderSketch::onCameraChanged(SoCamera* cam)
 {
+    // AnnotationManager watches the camera itself, inside and outside edit mode.
     auto rotSk = Base::Rotation(getDocument()->getEditingTransform());// sketch orientation
     auto rotc = cam->orientation.getValue().getValue();
     auto rotCam =
@@ -4855,6 +5045,34 @@ void ViewProviderSketch::deleteSelected()
 
 bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
 {
+    std::vector<long> annotationIds;
+    std::size_t annotationNames = 0;
+    for (const auto& name : subList) {
+        const long id = annotationIdFromSubName(name);
+        if (!id) {
+            continue;
+        }
+        ++annotationNames;
+        if (!getSketchObject()->findAnnotation(id)) {
+            continue;  // Already gone: nothing to delete.
+        }
+        annotationIds.push_back(id);
+    }
+    if (!annotationIds.empty()) {
+        std::string ids;
+        for (long id : annotationIds) {
+            if (!ids.empty()) {
+                ids += ",";
+            }
+            ids += std::to_string(id);
+        }
+        Gui::cmdAppObjectArgs(getObject(), "delAnnotations([%s])", ids.c_str());
+    }
+    if (!subList.empty() && annotationNames == subList.size()) {
+        // Only annotations were selected; the sketch itself must not be deleted.
+        // An empty subList means the whole object is being deleted, which must proceed.
+        return false;
+    }
     if (isInEditMode()) {
         std::vector<std::string> SubNames = subList;
 
@@ -5651,6 +5869,9 @@ void ViewProviderSketch::generateContextMenu()
     QMenu contextMenu(
         qobject_cast<Gui::View3DInventor*>(this->getActiveView())->getViewer()->getGLWidget());
     Gui::MenuManager::getInstance()->setupContextMenu(&menu, contextMenu);
+    if (annotations) {
+        annotations->appendContextMenu(&contextMenu);
+    }
     contextMenu.exec(QCursor::pos());
 }
 

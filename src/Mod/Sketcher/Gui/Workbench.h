@@ -63,6 +63,11 @@ SketcherGuiExport void addSketcherWorkbenchTools(Gui::MenuItem& consaccel);
 SketcherGuiExport void addSketcherWorkbenchBSplines(Gui::MenuItem& bspline);
 SketcherGuiExport void addSketcherWorkbenchVisual(Gui::MenuItem& visual);
 
+/// Whether the Cosmetics toolbar and task box are offered (the ShowCosmetics setting).
+SketcherGuiExport bool areCosmeticsShown();
+/// Shows or hides the Cosmetics toolbar to match that setting, while editing a sketch.
+SketcherGuiExport void updateCosmeticsToolbar();
+
 SketcherGuiExport void addSketcherWorkbenchSketchActions(Gui::ToolBarItem& sketch);
 SketcherGuiExport void addSketcherWorkbenchSketchEditModeActions(Gui::ToolBarItem& sketch);
 SketcherGuiExport void addSketcherWorkbenchGeometries(Gui::ToolBarItem& geom);

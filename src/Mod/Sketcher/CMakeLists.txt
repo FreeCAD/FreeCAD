@@ -38,6 +38,7 @@ if(BUILD_GUI)
           SketcherTests/TestConstraintCommandsGui.py
           SketcherTests/TestCoincidentCommandGui.py
           SketcherTests/GuiTestCase.py
+          SketcherTests/TestSketchAnnotationsGui.py
           SketcherTests/TestPlacementUpdate.py
           SketcherTests/TestOnViewParameterGui.py
           SketcherTests/TestExternalFacePreselection.py

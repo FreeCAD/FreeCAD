@@ -196,6 +196,10 @@ public:
         return false;
     }
 
+    /// The construction toggle switched the creation mode while this tool is active.
+    virtual void onConstructionModeChanged()
+    {}
+
     std::list<Gui::InputHint> getToolHints() const override
     {
         return {};
