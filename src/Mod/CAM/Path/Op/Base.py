@@ -1231,6 +1231,21 @@ class ObjectOp:
         if is_rotated:
             self._warnIfUnreachableByIndexing(obj, tool_axis)
 
+    def toFrame(self, point):
+        """toFrame(point) ... a world point in the frame the operation generates in.
+
+        Start and end points are picked in the 3D view and stored in world
+        coordinates. While the operation generates in its work plane's frame
+        they have to be carried into that frame, as the base geometry is."""
+        matrix = getattr(self, "_geom_transform_matrix", None)
+        if matrix is None:
+            return point
+        return matrix.multVec(point)
+
+    def startPoint(self, obj):
+        """startPoint(obj) ... obj.StartPoint in the frame the operation generates in."""
+        return self.toFrame(obj.StartPoint)
+
     def _warnIfUnreachableByIndexing(self, obj, tool_axis):
         """An early, advisory word when the configured machine has rotary
         axes and cannot index to the operation's plane. Nothing is decided
