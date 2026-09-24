@@ -311,7 +311,10 @@ QStringList FileDialogInternal::nativeFileDialog(
             isOpen ? IID_IFileOpenDialog : IID_IFileSaveDialog,
             fileDialog.ppvObject()
         ))) {
-        Base::Console().warning("Failed to create IFileDialog, falling back on GetOpen/SaveFileNameW");
+        Base::Console().developerWarning(
+            "FileDialog",
+            "Failed to create IFileDialog, falling back on GetOpen/SaveFileNameW"
+        );
         return legacyNativeFileDialog(mode, parent, caption, startPath, filters, selectedFilterIndex, options);
     }
 
@@ -337,8 +340,11 @@ QStringList FileDialogInternal::nativeFileDialog(
     }
     else {
         // No private API, fall back to legacy and emit warning
-        Base::Console()
-            .warning("FileDialog fell back on legacy GetOpen/SaveFileNameW, the IFileDialog private API needs to be updated");
+        Base::Console().developerWarning(
+            "FileDialog",
+            "Fell back on legacy GetOpen/SaveFileNameW, the IFileDialog private API needs to be "
+            "updated"
+        );
         return legacyNativeFileDialog(mode, parent, caption, startPath, filters, selectedFilterIndex, options);
     }
 
@@ -400,8 +406,9 @@ QStringList FileDialogInternal::nativeFileDialog(
             fileDialog->SetFolder(shellStartFolder);
         }
         else {
-            Base::Console().error(
-                "SHCreateItemFromParsingName(\"%s\") failed, file dialog will have "
+            Base::Console().developerError(
+                "FileDialog",
+                "SHCreateItemFromParsingName(\"{}\") failed, file dialog will have "
                 "wrong starting folder",
                 startFolderStr.toStdString()
             );
@@ -443,18 +450,23 @@ QStringList FileDialogInternal::nativeFileDialog(
         if (SUCCEEDED(openFileDialog->GetResults(&results.ptr)) && results) {
             DWORD itemCount;
             if (FAILED(results->GetCount(&itemCount))) {
-                Base::Console().error("Failed to enumerate IShellItemArray");
+                Base::Console().developerError("FileDialog", "Failed to enumerate IShellItemArray");
                 return selectedFiles;
             }
             for (DWORD i = 0; i < itemCount; ++i) {
                 ComPointer<IShellItem> item;
                 if (FAILED(results->GetItemAt(i, &item.ptr))) {
-                    Base::Console().error("Failed to get IShellItemArray item #{}", i);
+                    Base::Console()
+                        .developerError("FileDialog", "Failed to get IShellItemArray item #{}", i);
                     return selectedFiles;
                 }
                 PWSTR itemPath;
                 if (FAILED(item->GetDisplayName(SIGDN_FILESYSPATH, &itemPath))) {
-                    Base::Console().error("Failed to get path of IShellItemArray item #{}", i);
+                    Base::Console().developerError(
+                        "FileDialog",
+                        "Failed to get path of IShellItemArray item #{}",
+                        i
+                    );
                     return selectedFiles;
                 }
                 selectedFiles.append(QDir::cleanPath(QString::fromWCharArray(itemPath)));
@@ -462,7 +474,10 @@ QStringList FileDialogInternal::nativeFileDialog(
             }
         }
         else {
-            Base::Console().error("Failed to get file picker IShellItemArray results");
+            Base::Console().developerError(
+                "FileDialog",
+                "Failed to get file picker IShellItemArray results"
+            );
         }
     }
     else {
@@ -474,11 +489,11 @@ QStringList FileDialogInternal::nativeFileDialog(
                 CoTaskMemFree(itemPath);
             }
             else {
-                Base::Console().error("Failed to get path of IShellItem");
+                Base::Console().developerError("FileDialog", "Failed to get path of IShellItem");
             }
         }
         else {
-            Base::Console().error("Failed to get file picker IShellItem result");
+            Base::Console().developerError("FileDialog", "Failed to get file picker IShellItem result");
         }
     }
 
