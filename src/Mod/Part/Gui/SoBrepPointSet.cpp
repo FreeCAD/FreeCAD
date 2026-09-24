@@ -280,29 +280,15 @@ void SoBrepPointSet::GLRender(SoGLRenderAction* action)
 
     // Workaround for #0000433
     // #if !defined(FC_OS_WIN32)
-    if (!action->isRenderingDelayedPaths()) {
-        renderHighlight(action, ctx);
-    }
     if (ctx && !ctx->selectionIndex.empty()) {
         renderSelection(action, ctx);
     }
-    if (action->isRenderingDelayedPaths()) {
-        renderHighlight(action, ctx);
-    }
+    // Preselection is the transient interaction state and must remain visible
+    // when the same vertex is already selected.
+    renderHighlight(action, ctx);
     // #endif
 
     // Optional overlay rendering for deterministic tests (and programmatic usage).
-    const int hlNum = highlightCoordIndex.getNum();
-    if (hlNum > 0) {
-        renderOverlayPoints(
-            action,
-            overlayPointSet,
-            highlightCoordIndex.getValues(0),
-            hlNum,
-            highlightColor.getValue(),
-            OverlayDepthMode::DrawOnTop
-        );
-    }
     const int selNum = selectionCoordIndex.getNum();
     if (selNum > 0) {
         renderOverlayPoints(
@@ -311,6 +297,17 @@ void SoBrepPointSet::GLRender(SoGLRenderAction* action)
             selectionCoordIndex.getValues(0),
             selNum,
             selectionColor.getValue(),
+            OverlayDepthMode::DrawOnTop
+        );
+    }
+    const int hlNum = highlightCoordIndex.getNum();
+    if (hlNum > 0) {
+        renderOverlayPoints(
+            action,
+            overlayPointSet,
+            highlightCoordIndex.getValues(0),
+            hlNum,
+            highlightColor.getValue(),
             OverlayDepthMode::DrawOnTop
         );
     }
