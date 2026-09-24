@@ -235,6 +235,12 @@ SketchObject::SketchObject() : geoLastId(0)
                       (App::PropertyType)(App::Prop_Hidden | App::Prop_ReadOnly),
                       "");
 
+    ADD_PROPERTY_TYPE(Annotations, (), "Annotations",
+                      (App::PropertyType)(App::Prop_ReadOnly | App::Prop_Hidden | App::Prop_NoRecompute),
+                      "Visual annotations, independent of sketch geometry");
+    ADD_PROPERTY_TYPE(NextAnnotationId, (1), "Annotations",
+                      (App::PropertyType)(App::Prop_ReadOnly | App::Prop_Hidden | App::Prop_NoRecompute),
+                      "Next stable annotation ID");
     Geometry.setOrderRelevant(true);
 
     allowOtherBody = true;
@@ -1696,6 +1702,23 @@ App::DocumentObject *SketchObject::getSubObject(
     const char *mapped = Data::isMappedElement(subname);
     if(!subname || !subname[0]) {
         return Part2DObject::getSubObject(subname,pyObj,pmat,transform,depth);
+    }
+    // Only names that actually parse as annotations are claimed here; anything else
+    // must fall through to the normal element handling below.
+    if (const long annotationId = Annotation::idFromSubName(subname)) {
+        for (const auto& annotation : Annotations.getValues()) {
+            if (annotation.id != annotationId) {
+                continue;
+            }
+            if (pmat && transform) {
+                *pmat *= Placement.getValue().toMatrix();
+            }
+            if (pyObj) {
+                *pyObj = annotation.toPython();
+            }
+            return const_cast<SketchObject*>(this);
+        }
+        return nullptr;
     }
     const char *element = Data::findElementName(subname);
     if(element != subname) {
