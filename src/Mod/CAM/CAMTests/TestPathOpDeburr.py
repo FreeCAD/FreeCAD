@@ -1,25 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2018 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import math
 
@@ -30,7 +28,7 @@ import Path.Base.Language as PathLanguage
 import Path.Main.Job as PathJob
 import Path.Op.Deburr as PathDeburr
 from Path.Tool.toolbit import ToolBit
-import CAMTests.PathTestUtils as PathTestUtils
+from CAMTests import PathTestUtils
 
 if FreeCAD.GuiUp:
     import Path.Main.Gui.Job as PathJobGui
@@ -39,7 +37,7 @@ Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 # Path.Log.trackModule(Path.Log.thisModule())
 
 
-class MockToolBit(object):
+class MockToolBit:
     def __init__(self, name="t1", diameter=5.0):
         self.Diameter = diameter
         self.FlatRadius = 0
@@ -134,7 +132,7 @@ class TestPathOpDeburr(PathTestUtils.PathTestBase):
     def test10(self):
         """Verify missing cutting edge angle info prints only once."""
 
-        class FakeEndmill(object):
+        class FakeEndmill:
             def __init__(self, dia):
                 self.Diameter = dia
 
@@ -155,7 +153,7 @@ class TestPathOpDeburr(PathTestUtils.PathTestBase):
     def test11(self):
         """Verify missing tip diameter info prints only once."""
 
-        class FakePointyBit(object):
+        class FakePointyBit:
             def __init__(self, dia, angle):
                 self.Diameter = dia
                 self.CuttingEdgeAngle = angle
@@ -209,6 +207,8 @@ class TestPathOpDeburr(PathTestUtils.PathTestBase):
 
         deburr = PathDeburr.Create("Deburr", parentJob=job)
         deburr.Base = [(part, [sub_name])]
+        deburr.clearExpression("StepDown")
+        deburr.StepDown = 999
         deburr.recompute()
 
         return deburr

@@ -948,9 +948,10 @@ class ObjectOp:
         if FeatureDepths & features:
             if not self.applyExpression(obj, "StartDepth", setup.StartDepthExpression):
                 obj.StartDepth = obj.OpStartDepth.Value
-            if not FeatureNoFinalDepth & features:
-                if not self.applyExpression(obj, "FinalDepth", setup.FinalDepthExpression):
-                    obj.FinalDepth = obj.OpFinalDepth.Value
+            if not FeatureNoFinalDepth & features and not self.applyExpression(
+                obj, "FinalDepth", setup.FinalDepthExpression
+            ):
+                obj.FinalDepth = obj.OpFinalDepth.Value
 
         if FeatureStepDown & features:
             self.applyExpression(obj, "StepDown", setup.StepDownExpression)
@@ -1163,6 +1164,11 @@ class ObjectOp:
         ):
             Path.Log.error(
                 translate("CAM_Operation", "%s: Safe height is above clearance height") % obj.Label
+            )
+            isValid = False
+        if FeatureStepDown & features and Path.Geom.isLessEqual(obj.StepDown.Value, 0):
+            Path.Log.error(
+                translate("CAM_Operation", "%s: Step down is zero or negative") % obj.Label
             )
             isValid = False
         return isValid
