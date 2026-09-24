@@ -1246,6 +1246,17 @@ class ObjectOp:
         """startPoint(obj) ... obj.StartPoint in the frame the operation generates in."""
         return self.toFrame(obj.StartPoint)
 
+    def shapeToFrame(self, shape):
+        """shapeToFrame(shape) ... a world shape in the frame the operation generates in.
+
+        Base geometry goes through baseShapes(); a whole shape an operation
+        takes beside it (Engrave's BaseShapes) has to go through the same
+        transform, or the operation reads world coordinates as plane-local."""
+        matrix = getattr(self, "_geom_transform_matrix", None)
+        if matrix is None:
+            return shape
+        return _transform_shape_with_arc_fix(shape, matrix)
+
     def _warnIfUnreachableByIndexing(self, obj, tool_axis):
         """An early, advisory word when the configured machine has rotary
         axes and cannot index to the operation's plane. Nothing is decided

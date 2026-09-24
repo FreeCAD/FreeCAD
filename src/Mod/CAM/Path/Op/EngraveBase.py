@@ -231,15 +231,22 @@ class ObjectOp(PathOp.ObjectOp):
     def opSetDefaultValues(self, obj, job):
         """opSetDefaultValues(obj) ... set depths for engraving"""
         if PathOp.FeatureDepths & self.opFeatures(obj):
+            # Heights are measured along the tool axis, from the work plane:
+            # every shape is read in the operation's frame.
             if job and job.Stock:
-                obj.OpStartDepth = job.Stock.Shape.BoundBox.ZMax
-                obj.OpFinalDepth = job.Stock.Shape.BoundBox.ZMax
+                stockTop = self.shapeToFrame(job.Stock.Shape).BoundBox.ZMax
+                obj.OpStartDepth = stockTop
+                obj.OpFinalDepth = stockTop
 
             if obj.Base:
                 obj.OpFinalDepth = max(
-                    sh.BoundBox.ZMax for base, sub in obj.Base for sh in base.getSubObject(sub)
+                    self.shapeToFrame(sh).BoundBox.ZMax
+                    for base, sub in obj.Base
+                    for sh in base.getSubObject(sub)
                 )
             elif obj.BaseShapes:
-                obj.OpFinalDepth = max(base.Shape.BoundBox.ZMax for base in obj.BaseShapes)
+                obj.OpFinalDepth = max(
+                    self.shapeToFrame(base.Shape).BoundBox.ZMax for base in obj.BaseShapes
+                )
 
             obj.OpStartDepth = max(obj.OpStartDepth, obj.OpFinalDepth)
