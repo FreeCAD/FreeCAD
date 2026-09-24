@@ -372,14 +372,12 @@ int Area::addShape(
     return skipped;
 }
 
-static std::vector<gp_Pnt> discretize(const TopoDS_Edge& edge, double deflection)
+static std::vector<gp_Pnt> discretize(const Adaptor3d_Curve& curve, bool reversed, double deflection)
 {
     std::vector<gp_Pnt> ret;
-    BRepAdaptor_Curve curve(edge);
     Standard_Real efirst, elast;
     efirst = curve.FirstParameter();
     elast = curve.LastParameter();
-    bool reversed = (edge.Orientation() == TopAbs_REVERSED);
 
     // push the first point
     ret.push_back(curve.Value(reversed ? elast : efirst));
@@ -431,33 +429,40 @@ void Area::addWire(CArea& area, const TopoDS_Wire& wire, const gp_Trsf* trsf, do
         bool reversed = (xp.Current().Orientation() == TopAbs_REVERSED);
         p = curve.Value(reversed ? curve.FirstParameter() : curve.LastParameter());
 
+        // Helper code for appending a discretized curve
+        auto appendDiscretized = [&](const Adaptor3d_Curve& c) {
+            const auto& pts = discretize(c, reversed, deflection);
+            for (size_t i = 1; i < pts.size(); ++i) {
+                auto& pt = pts[i];
+                ccurve.append(CVertex(Point(pt.X(), pt.Y())));
+            }
+        };
+
         // Helper code for appending an arc
         auto appendArc = [&](const Adaptor3d_Curve& arc) {
             double first = arc.FirstParameter();
             double last = arc.LastParameter();
             gp_Circ circ = arc.Circle();
-            gp_Pnt center = circ.Location();
-            Point c(center.X(), center.Y());
-            int type = circ.Axis().Direction().Z() < 0 ? -1 : 1;
-            if (reversed) {
-                type = -type;
-            }
-            if (fabs(first - last) > std::numbers::pi) {
-                // Split arc(circle) larger than half circle. Because gcode
-                // can't handle full circle?
-                gp_Pnt mid = arc.Value((first + last) * 0.5);
-                ccurve.append(CVertex(type, Point(mid.X(), mid.Y()), c));
-            }
-            gp_Pnt end = arc.Value(reversed ? first : last);
-            ccurve.append(CVertex(type, Point(end.X(), end.Y()), c));
-        };
 
-        // Helper code for appending a discretized edge
-        auto appendDiscretized = [&]() {
-            const auto& pts = discretize(edge, deflection);
-            for (size_t i = 1; i < pts.size(); ++i) {
-                auto& pt = pts[i];
-                ccurve.append(CVertex(Point(pt.X(), pt.Y())));
+            // Arcs not parallel to the XY plane don't project to arcs; discretize them instead
+            if (!circ.Axis().Direction().IsParallel(gp::DZ(), Precision::Confusion())) {
+                appendDiscretized(arc);
+            }
+            else {
+                gp_Pnt center = circ.Location();
+                Point c(center.X(), center.Y());
+                int type = circ.Axis().Direction().Z() < 0 ? -1 : 1;
+                if (reversed) {
+                    type = -type;
+                }
+                if (fabs(first - last) > std::numbers::pi) {
+                    // Split arc(circle) larger than half circle. Because gcode
+                    // can't handle full circle?
+                    gp_Pnt mid = arc.Value((first + last) * 0.5);
+                    ccurve.append(CVertex(type, Point(mid.X(), mid.Y()), c));
+                }
+                gp_Pnt end = arc.Value(reversed ? first : last);
+                ccurve.append(CVertex(type, Point(end.X(), end.Y()), c));
             }
         };
 
@@ -479,7 +484,7 @@ void Area::addWire(CArea& area, const TopoDS_Wire& wire, const gp_Trsf* trsf, do
             case GeomAbs_Parabola: {
                 // Edges with only a pcurve (no 3D curve) can't be fed to biarcs
                 if (!curve.Is3DCurve()) {
-                    appendDiscretized();
+                    appendDiscretized(curve);
                     break;
                 }
 
@@ -519,7 +524,7 @@ void Area::addWire(CArea& area, const TopoDS_Wire& wire, const gp_Trsf* trsf, do
 
             default: {
                 // Fallback for all other type of curves
-                appendDiscretized();
+                appendDiscretized(curve);
                 break;
             }
         }
@@ -4233,7 +4238,7 @@ void Area::toPath(
                 }
                     /* FALLTHRU */
                 default: {
-                    const auto& pts = discretize(edge, deflection);
+                    const auto& pts = discretize(curve, reversed, deflection);
                     for (size_t i = 1; i < pts.size(); ++i) {
                         auto& pt = pts[i];
                         addG1(verbose, path, plast, pt, nf, cur_f);
