@@ -494,7 +494,7 @@ void Area::addWire(CArea& area, const TopoDS_Wire& wire, const gp_Trsf* trsf, do
                     break;
                 }
 
-                // Use BiArcs to apprximate the curve as arcs and lines
+                // Use biarcs to approximate the curve as arcs and lines
                 Handle(Geom_TrimmedCurve) trimmed = new Geom_TrimmedCurve(
                     curve.Curve().Curve(),
                     curve.FirstParameter(),
@@ -502,22 +502,36 @@ void Area::addWire(CArea& area, const TopoDS_Wire& wire, const gp_Trsf* trsf, do
                 );
                 trimmed->Transform(curve.Trsf());
                 Part::BSplineCurveBiArcs biarcs(trimmed);
-                auto segments = biarcs.toBiArcs(deflection);
-
-                // Append each segment. If the curve is reversed, iterate the reversed list
-                if (reversed) {
-                    segments.reverse();
+                std::list<Part::Geometry*> segments;
+                bool biarcsFailed = false;
+                try {
+                    segments = biarcs.toBiArcs(deflection);
                 }
-                for (Part::Geometry* seg : segments) {
-                    GeomAdaptor_Curve segC(Handle(Geom_Curve)::DownCast(seg->handle()));
-                    if (segC.GetType() == GeomAbs_Circle) {
-                        appendArc(segC);
+                catch (...) {
+                    biarcsFailed = true;
+                }
+
+                if (biarcsFailed) {
+                    appendDiscretized(curve);
+                }
+                else {
+                    // Append each segment. If the curve is reversed, iterate the reversed list
+                    if (reversed) {
+                        segments.reverse();
                     }
-                    else {
-                        gp_Pnt pt = segC.Value(reversed ? segC.FirstParameter() : segC.LastParameter());
-                        ccurve.append(CVertex(Point(pt.X(), pt.Y())));
+                    for (Part::Geometry* seg : segments) {
+                        GeomAdaptor_Curve segC(Handle(Geom_Curve)::DownCast(seg->handle()));
+                        if (segC.GetType() == GeomAbs_Circle) {
+                            appendArc(segC);
+                        }
+                        else {
+                            gp_Pnt pt = segC.Value(
+                                reversed ? segC.FirstParameter() : segC.LastParameter()
+                            );
+                            ccurve.append(CVertex(Point(pt.X(), pt.Y())));
+                        }
+                        delete seg;
                     }
-                    delete seg;
                 }
                 break;
             }
