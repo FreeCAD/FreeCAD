@@ -293,6 +293,32 @@ class TestGenerateInPlaneFrame(PathTestUtils.PathTestBase):
         first = _cutPoints(PathUtils.getPathWithPlacement(op))[0]
         self.assertLess((Vector(first.x, first.y, 0) - Vector(100, 0, 0)).Length, 10.0)
 
+    def test_leadInOutRetractsToTheBaseOpsHeightsInTheWorld(self):
+        """The dressup works on the base op's placed path but takes its heights
+        from the op, which measures them from its work plane. On a plane 50
+        above the Job's zero the retracts must be 50 higher too, or the tool
+        rapids across the part at the plane's safe height read as a world Z."""
+        import Path.Dressup.Gui.LeadInOut as PathLeadInOut
+
+        plane = PathWorkplane.createWorkplaneFromToolAxis(
+            self.job, Vector(0, 0, 1), origin=Vector(50, 50, 50)
+        )
+        op = PathProfile.Create("P")
+        op.Workplane = plane
+        self.doc.recompute()
+        dressup = self.doc.addObject("Path::FeaturePython", "LeadInOut")
+        proxy = PathLeadInOut.ObjectDressup(dressup, op)
+        self.job.Proxy.addOperation(dressup, op)
+        proxy.setup(dressup)
+        self.doc.recompute()
+        rapids = [
+            c.Parameters["Z"]
+            for c in dressup.Path.Commands
+            if c.Name == "G0" and "Z" in c.Parameters
+        ]
+        self.assertTrue(rapids, "the dressup should retract")
+        self.assertRoughly(max(rapids), op.ClearanceHeight.Value + 50.0, 1e-6)
+
     def test_placingAPathOnAnUprightPlaneKeepsTheArcWords(self):
         upright = FreeCAD.Placement(Vector(5, 7, 3), FreeCAD.Rotation(Vector(0, 0, 1), 90))
         stored = Path.Path([Path.Command("G3", {"X": 10, "Y": 10, "I": 0, "J": 5})])

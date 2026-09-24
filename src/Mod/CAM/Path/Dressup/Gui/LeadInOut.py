@@ -422,11 +422,22 @@ class ObjectDressup:
             if hasattr(toolController, "LeadOutFeed"):
                 self.exitFeed = toolController.LeadOutFeed.Value
 
+        # The base op's heights are measured in its work plane's frame, but
+        # this dressup works on its placed path, in world coordinates. A plane
+        # parallel to the table only moves heights by its Z; add it back. (A
+        # tilted plane has no single world height to shift by.)
+        dz = 0.0
+        placement = getattr(baseOp, "Placement", None)
+        if placement is not None:
+            z_up = App.Vector(0, 0, 1)
+            if placement.Rotation.multVec(z_up).isEqual(z_up, 1e-6):
+                dz = placement.Base.z
+
         if hasattr(baseOp, "ClearanceHeight"):
-            self.clearanceHeight = baseOp.ClearanceHeight.Value
+            self.clearanceHeight = baseOp.ClearanceHeight.Value + dz
 
         if hasattr(baseOp, "SafeHeight"):
-            self.safeHeight = baseOp.SafeHeight.Value
+            self.safeHeight = baseOp.SafeHeight.Value + dz
 
         if (
             self.clearanceHeight is None
@@ -446,7 +457,7 @@ class ObjectDressup:
 
             machine = MachineState()
             rapidZ = []
-            for cmd in baseOp.Path.Commands:
+            for cmd in PathUtils.getPathWithPlacement(baseOp).Commands:
                 if cmd.Name not in Constants.GCODE_MOVE_ALL:
                     continue
                 if _isVertical(machine.getPosition(), cmd):
@@ -481,7 +492,7 @@ class ObjectDressup:
                     self.safeHeight = rapidZ[1]
 
         if hasattr(baseOp, "StartDepth"):
-            self.startDepth = baseOp.StartDepth.Value
+            self.startDepth = baseOp.StartDepth.Value + dz
         else:
             self.startDepth = self.safeHeight
 
@@ -492,7 +503,7 @@ class ObjectDressup:
 
         self.clearanceHeightOut = self.clearanceHeight
         if hasattr(baseOp, "ClearanceHeightOut"):
-            self.clearanceHeightOut = baseOp.ClearanceHeightOut.Value
+            self.clearanceHeightOut = baseOp.ClearanceHeightOut.Value + dz
 
         return self.clearanceHeight is not None and self.safeHeight is not None
 
