@@ -427,24 +427,30 @@ int SketchObject::toggleConstruction(int GeoId)
     return 0;
 }
 
+// clang-format on
 int SketchObject::setConstruction(int GeoId, bool on)
 {
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
-   Part::PropertyGeometryList *prop;
+    Part::PropertyGeometryList* prop;
     int idx;
     if (GeoId >= 0) {
         prop = &Geometry;
-        if (GeoId < Geometry.getSize())
+        if (GeoId < Geometry.getSize()) {
             idx = GeoId;
-        else
+        }
+        else {
             return -1;
-    }else if (GeoId <= GeoEnum::RefExt && -GeoId-1 < ExternalGeo.getSize()) {
+        }
+    }
+    else if (GeoId <= GeoEnum::RefExt && -GeoId - 1 < ExternalGeo.getSize()) {
         prop = &ExternalGeo;
-        idx = -GeoId-1;
-    }else
+        idx = -GeoId - 1;
+    }
+    else {
         return -1;
+    }
 
     // While it may seem that there is not a need to trigger an update at this time, because the
     // solver has its own copy of the geometry, and updateColors of the viewprovider may be
@@ -452,17 +458,19 @@ int SketchObject::setConstruction(int GeoId, bool on)
     // the accumulative of actions it is judged that it is worth to trigger an update here.
 
     std::unique_ptr<Part::Geometry> geo(prop->getValues()[idx]->clone());
-    if(prop == &Geometry)
+    if (prop == &Geometry) {
         GeometryFacade::setConstruction(geo.get(), on);
+    }
     else {
         auto egf = ExternalGeometryFacade::getFacade(geo.get());
-        egf->setFlag(ExternalGeometryExtension::Defining, on);
+        egf->setFlag(ExternalGeometryExtension::Defining, !on);
     }
 
-    prop->set1Value(idx,std::move(geo));
+    prop->set1Value(idx, std::move(geo));
     solverNeedsUpdate = true;
     return 0;
 }
+// clang-format off
 
 template <>
 int SketchObject::exposeInternalGeometryForType<Part::GeomEllipse>(const int GeoId)

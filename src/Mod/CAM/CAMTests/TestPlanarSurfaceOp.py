@@ -25,6 +25,7 @@ import FreeCAD
 import Part
 import Path
 import unittest
+import Path.Main.Workplane as PathWorkplane
 import Path.Main.Job as PathJob
 from CAMTests.PathTestUtils import PathTestWithAssets
 
@@ -677,7 +678,8 @@ class TestPlanarSurfaceOp(PathTestWithAssets):
         proxy.initOperation(op)
         op.Strategy = strategy
         op.Base = job.Model.Group
-        op.Workplane = FreeCAD.Vector(0, -1, 0)
+        # Workplane links a named plane on the Job; the test names it by tool axis.
+        op.Workplane = PathWorkplane.createWorkplaneFromToolAxis(job, FreeCAD.Vector(0, -1, 0))
         job.Operations.addObject(op)
         return op
 
