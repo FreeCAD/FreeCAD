@@ -434,11 +434,10 @@ void DlgExpressionInput::textChanged()
     okBtn->setDefault(true);
 
     try {
-        if (text.endsWith(QLatin1Char('.'))
-            && ui->expression->textCursor().position() == text.size()) {
+        if (text.endsWith(u'.') && ui->expression->textCursor().position() == text.size()) {
             App::ExpressionTokenizer tokenizer;
             const QString prefix = tokenizer.perform(text, text.size());
-            if (prefix.size() > 1 && !prefix.front().isDigit() && prefix.endsWith(QLatin1Char('.'))) {
+            if (prefix.size() > 1 && !prefix.front().isDigit() && prefix.endsWith(u'.')) {
                 // Treat member access as unfinished input, but still validate numeric input.
                 message.clear();
                 ui->msg->clear();

@@ -22,7 +22,7 @@
 
 
 #include <algorithm>
-#include <boost/algorithm/string/predicate.hpp>
+#include <string_view>
 #include <fastsignals/connection.h>
 #include <QAbstractItemView>
 #include <QContextMenuEvent>
@@ -54,6 +54,8 @@ Q_DECLARE_METATYPE(App::ObjectIdentifier)
 
 using namespace App;
 using namespace Gui;
+
+static constexpr std::string_view completionSentinel = "._self";
 
 class ExpressionCompleterModel: public QAbstractItemModel
 {
@@ -791,7 +793,7 @@ public:
     void setPathContext(const App::DocumentObject* obj, const QString& prefix)
     {
         // Reuse the advertised members while only the final search token changes.
-        const QString parentPrefix = prefix.left(prefix.lastIndexOf(QLatin1Char('.')) + 1);
+        const QString parentPrefix = prefix.left(prefix.lastIndexOf(u'.') + 1);
         if (parentPrefix == contextPrefix) {
             return;
         }
@@ -800,15 +802,18 @@ public:
         std::vector<App::ObjectIdentifier> paths;
         if (obj && !parentPrefix.isEmpty()) {
             try {
-                const auto ident = App::ObjectIdentifier::parse(
-                    obj,
-                    (parentPrefix + QLatin1String("_self")).toStdString()
-                );
+                std::string path = parentPrefix.toStdString();
+                path += completionSentinel.substr(1);
+                const auto ident = App::ObjectIdentifier::parse(obj, path);
                 const std::string subPath = ident.getSubPathStr();
-                if (subPath.size() > 6 && boost::ends_with(subPath, "._self")) {
+                if (subPath.size() > completionSentinel.size()
+                    && subPath.ends_with(completionSentinel)) {
                     property = ident.getProperty();
                     if (property) {
-                        property->getPathsForCompletion(paths, subPath.substr(0, subPath.size() - 6));
+                        property->getPathsForCompletion(
+                            paths,
+                            subPath.substr(0, subPath.size() - completionSentinel.size())
+                        );
                     }
                 }
             }
@@ -988,7 +993,7 @@ private:
                 QString(),
                 QLatin1Char('#')
             );
-            const QString docPrefix = isCurrentDoc ? QString() : documentName + QLatin1Char('#');
+            const QString docPrefix = isCurrentDoc ? QString() : documentName + u'#';
 
             for (auto obj : doc->getObjects()) {
                 if (inList.contains(obj)) {
@@ -1004,9 +1009,8 @@ private:
                 );
 
                 const bool isCurrentObject = isCurrentDoc && currentObj == obj->getNameInDocument();
-                const QString propertyPrefix = isCurrentObject
-                    ? QString()
-                    : docPrefix + objectName + QLatin1Char('.');
+                const QString propertyPrefix = isCurrentObject ? QString()
+                                                               : docPrefix + objectName + u'.';
                 collectPropertyCandidates(propertyPrefix, obj, !isCurrentObject);
             }
         }
@@ -1049,11 +1053,11 @@ private:
 
             for (const auto& path : retrieveSubPaths(prop)) {
                 QString subPath = QString::fromStdString(path.getSubPathStr());
-                if (subPath.startsWith(QLatin1Char('.')) || subPath.startsWith(QLatin1Char('#'))) {
+                if (subPath.startsWith(u'.') || subPath.startsWith(u'#')) {
                     subPath.remove(0, 1);
                 }
                 if (!subPath.isEmpty()) {
-                    addPropertyCandidate(prefix, propertyName + QLatin1Char('.') + subPath, priority);
+                    addPropertyCandidate(prefix, propertyName + u'.' + subPath, priority);
                 }
             }
         }
@@ -1063,7 +1067,7 @@ private:
     {
         Candidate candidate;
         candidate.completion = prefix + path;
-        candidate.searchText = path.mid(path.lastIndexOf(QLatin1Char('.')) + 1).toLower();
+        candidate.searchText = path.mid(path.lastIndexOf(u'.') + 1).toLower();
         candidate.priority = priority;
         fuzzyCandidates.push_back(candidate);
     }
@@ -1150,8 +1154,7 @@ void ExpressionCompleter::updateCompletionModel(const QString& completionPrefix)
         return;
     }
 
-    const bool containsSeparator = completionPrefix.contains(QLatin1Char('.'))
-        || completionPrefix.contains(QLatin1Char('#'));
+    const bool containsSeparator = completionPrefix.contains(u'.') || completionPrefix.contains(u'#');
     const bool hasPathSeparator = containsSeparator && splitPath(completionPrefix).size() > 1;
     const bool useFuzzyModel = !noProperty && !hasPathSeparator
         && filterMode() != Qt::MatchStartsWith && !completionPrefix.isEmpty();
@@ -1161,9 +1164,9 @@ void ExpressionCompleter::updateCompletionModel(const QString& completionPrefix)
     );
     if (useFuzzyModel) {
         QString searchText = completionPrefix;
-        if (searchText.startsWith(QLatin1String("<<"))) {
+        if (searchText.startsWith(QLatin1StringView("<<"))) {
             searchText.remove(0, 2);
-            if (searchText.endsWith(QLatin1String(">>"))) {
+            if (searchText.endsWith(QLatin1StringView(">>"))) {
                 searchText.chop(2);
             }
         }
@@ -1184,10 +1187,10 @@ QString ExpressionCompleter::pathFromIndex(const QModelIndex& index) const
     }
 
     QString path = static_cast<ExpressionCompleterModel*>(m)->pathFromIndex(index);
-    if (completionPrefix().startsWith(QLatin1Char('.'))) {
+    if (completionPrefix().startsWith(u'.')) {
         if (const auto obj = currentObj.getObject()) {
             const QString objectName = QString::fromLatin1(obj->getNameInDocument());
-            if (path.startsWith(objectName + QLatin1Char('.'))) {
+            if (path.startsWith(objectName + u'.')) {
                 path.remove(0, objectName.size());
             }
         }
@@ -1210,7 +1213,7 @@ QStringList ExpressionCompleter::splitPath(const QString& input) const
     if (trailingDot) {
         // A member-access prefix is not a complete expression. The sentinel is only parsed,
         // never evaluated or inserted into the editor.
-        path += "_self";
+        path += completionSentinel.substr(1);
         lastElem = ".";
     }
     while (true) {
@@ -1227,7 +1230,7 @@ QStringList ExpressionCompleter::splitPath(const QString& input) const
             }
 
             if (!stringList.empty()) {
-                if (!trim.empty() && boost::ends_with(stringList.back(), trim)) {
+                if (!trim.empty() && stringList.back().ends_with(trim)) {
                     stringList.back().resize(stringList.back().size() - trim.size());
                 }
                 for (const auto& component : stringList) {
@@ -1235,14 +1238,17 @@ QStringList ExpressionCompleter::splitPath(const QString& input) const
                 }
             }
             QString subPath = QString::fromStdString(ident.getSubPathStr());
-            if (trailingDot && subPath.endsWith(QLatin1String("._self"))) {
-                subPath.chop(6);
+            if (trailingDot
+                && subPath.endsWith(
+                    QLatin1StringView(completionSentinel.data(), completionSentinel.size())
+                )) {
+                subPath.chop(completionSentinel.size());
             }
             // The model stores a property's subpath as one leaf (e.g. Rotation.Axis.x).
             // Keep the filter at that same level when editing or deleting nested components.
             for (int first = resultList.size() - 1; first > 0 && !subPath.isEmpty(); --first) {
-                const QString tail = resultList.mid(first).join(QLatin1Char('.'));
-                if (QLatin1Char('.') + tail == subPath) {
+                const QString tail = resultList.mid(first).join(u'.');
+                if (u'.' + tail == subPath) {
                     resultList = resultList.mid(0, first);
                     resultList << tail + QString::fromStdString(lastElem);
                     lastElem.clear();
@@ -1259,10 +1265,7 @@ QStringList ExpressionCompleter::splitPath(const QString& input) const
                     resultList.prepend(QString::fromLatin1(obj->getNameInDocument()));
                 }
             }
-            FC_TRACE(
-                "split path " << path << " -> "
-                              << resultList.join(QLatin1String("/")).toUtf8().constData()
-            );
+            FC_TRACE("split path " << path << " -> " << resultList.join(u'/').toUtf8().constData());
             return resultList;
         }
         catch (const Base::Exception& except) {
@@ -1294,21 +1297,22 @@ QStringList ExpressionCompleter::splitPath(const QString& input) const
                 if (!path.empty()) {
                     char last = path[path.size() - 1];
                     if (last != '#' && last != '.'
-                        && (path.find('#') != std::string::npos || boost::starts_with(path, "<<"))) {
-                        path += "._self";
+                        && (path.find('#') != std::string::npos || path.starts_with("<<"))) {
+                        path += completionSentinel;
                         ++retry;
                         continue;
                     }
                 }
             }
             else if (retry == 2) {
-                if (path.size() >= 6) {
-                    path.resize(path.size() - 6);
+                if (path.size() >= completionSentinel.size()) {
+                    path.resize(path.size() - completionSentinel.size());
                 }
                 if (!path.empty()) {
                     char last = path[path.size() - 1];
                     if (last != '.' && last != '<' && path.find("#<<") != std::string::npos) {
-                        path += ">>._self";
+                        path += ">>";
+                        path += completionSentinel;
                         ++retry;
                         trim = ">>";
                         continue;
