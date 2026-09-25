@@ -2,9 +2,6 @@
 
 """Run with FreeCADCmd -t TestPropertyFlags."""
 
-import ctypes
-import os
-import tempfile
 import unittest
 
 import FreeCAD as App
