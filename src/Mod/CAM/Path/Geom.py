@@ -113,6 +113,24 @@ def isStrictlyGreater(float1, float2, error=Tolerance):
     return float1 > float2 and not isRoughly(float1, float2, error)
 
 
+def isStrictlyLess(float1, float2, error=Tolerance):
+    """isStrictlyLess(float1, float2, [error=Tolerance])
+    Returns true if float1 is less than float2 by more than a given error."""
+    return float1 < float2 and not isRoughly(float1, float2, error)
+
+
+def isLessEqual(float1, float2, error=Tolerance):
+    """isLessEqual(float1, float2, [error=Tolerance])
+    Returns true if float1 is less than float2 or the same within a given error."""
+    return float1 < float2 or isRoughly(float1, float2, error)
+
+
+def isGreaterEqual(float1, float2, error=Tolerance):
+    """isGreaterEqual(float1, float2, [error=Tolerance])
+    Returns true if float1 is greater than float2 or the same within a given error."""
+    return float1 > float2 or isRoughly(float1, float2, error)
+
+
 def pointsCoincide(p1, p2, error=Tolerance):
     """pointsCoincide(p1, p2, [error=Tolerance])
     Return True if two points are roughly identical (see also isRoughly)."""
