@@ -124,7 +124,6 @@ public:
     ~SelectionFilterGate() override;
     bool allow(App::Document*, App::DocumentObject*, const char*) override;
 
-
     std::unordered_set<std::string> getGatedTypes(
         const std::vector<const char*>& allTypesForGeometry
     ) const override;

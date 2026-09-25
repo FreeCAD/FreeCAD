@@ -114,7 +114,7 @@ protected:
     QAction* deleteAction;
     QAction* addAllEdgesAction;
 
-    bool allowFaces, allowEdges;
+    bool allowFaces, allowEdges, allowSolids;
     selectionModes selectionMode;
     int transactionID;
 

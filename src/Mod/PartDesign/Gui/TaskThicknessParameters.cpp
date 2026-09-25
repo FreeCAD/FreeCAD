@@ -104,6 +104,10 @@ void TaskThicknessParameters::initControls()
     int join = static_cast<int>(thickness->Join.getValue());
     ui->joinComboBox->setCurrentIndex(join);
 
+    allowEdges = false;
+    allowFaces = false;
+    allowSolids = true;
+
     if (strings.empty()) {
         setSelectionMode(refSel);
     }

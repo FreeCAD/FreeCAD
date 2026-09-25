@@ -39,9 +39,12 @@
 
 #include "StyleParameters.h"
 #include "TaskDressUpParameters.h"
+#include "TopExp_Explorer.hxx"
+#include "TopoDS.hxx"
 
 #include <Base/ServiceProvider.h>
 #include <Gui/Utilities.h>
+
 
 using namespace PartDesignGui;
 
@@ -110,39 +113,139 @@ bool ViewProviderDressUp::setEdit(int ModNum)
 
 void ViewProviderDressUp::highlightReferences(const bool on)
 {
-    PartDesign::DressUp* pcDressUp = getObject<PartDesign::DressUp>();
-    Part::Feature* base = pcDressUp->getBaseObject(/*silent =*/true);
+    const auto* pdDressUp = getObject<PartDesign::DressUp>();
+    const Part::Feature* base = pdDressUp->getBaseObject(/*silent =*/true);
+
     if (!base) {
         return;
     }
-    PartGui::ViewProviderPart* vp = dynamic_cast<PartGui::ViewProviderPart*>(
-        Gui::Application::Instance->getViewProvider(base)
-    );
+
+    auto* vp = dynamic_cast<ViewProviderPart*>(Gui::Application::Instance->getViewProvider(base));
+
     if (!vp) {
         return;
     }
 
-    std::vector<std::string> faces = pcDressUp->Base.getSubValuesStartsWith("Face");
-    std::vector<std::string> edges = pcDressUp->Base.getSubValuesStartsWith("Edge");
+    const std::vector<std::string> refs = pdDressUp->Base.getSubValues();
 
     if (on) {
+        std::vector<std::string> faces;
+        std::vector<std::string> edges;
+
+        const TopoDS_Shape& shape = base->Shape.getValue();
+
+        TopTools_IndexedMapOfShape allFaces;
+        TopTools_IndexedMapOfShape allEdges;
+        TopTools_IndexedMapOfShape allSolids;
+
+        TopExp::MapShapes(shape, TopAbs_FACE, allFaces);
+        TopExp::MapShapes(shape, TopAbs_EDGE, allEdges);
+        TopExp::MapShapes(shape, TopAbs_SOLID, allSolids);
+
+        std::set<int> solidIndices;
+
+        for (const auto& ref : refs) {
+            if (ref.starts_with("Solid")) {
+                const int solidIndex = std::stoi(ref.substr(5));
+
+                if (solidIndex >= 1 && solidIndex <= allSolids.Extent()) {
+                    solidIndices.insert(solidIndex);
+                }
+
+                continue;
+            }
+
+            if (ref.starts_with("Face")) {
+                const int faceIndex = std::stoi(ref.substr(4));
+
+                if (faceIndex < 1 || faceIndex > allFaces.Extent()) {
+                    continue;
+                }
+
+                if (highlightAsSolid) {
+                    const TopoDS_Shape& selectedFace = allFaces(faceIndex);
+
+                    for (int i = 1; i <= allSolids.Extent(); ++i) {
+                        const TopoDS_Shape& solid = allSolids(i);
+
+                        for (TopExp_Explorer exp(solid, TopAbs_FACE); exp.More(); exp.Next()) {
+
+                            if (selectedFace.IsSame(exp.Current())) {
+                                solidIndices.insert(i);
+                                break;
+                            }
+                        }
+                    }
+                }
+                else {
+                    faces.emplace_back(ref);
+                }
+
+                continue;
+            }
+
+            if (ref.starts_with("Edge")) {
+                const int edgeIndex = std::stoi(ref.substr(4));
+
+                if (edgeIndex < 1 || edgeIndex > allEdges.Extent()) {
+                    continue;
+                }
+
+                if (highlightAsSolid) {
+                    const TopoDS_Shape& selectedEdge = allEdges(edgeIndex);
+
+                    for (int i = 1; i <= allSolids.Extent(); ++i) {
+                        const TopoDS_Shape& solid = allSolids(i);
+
+                        for (TopExp_Explorer exp(solid, TopAbs_EDGE); exp.More(); exp.Next()) {
+
+                            if (selectedEdge.IsSame(exp.Current())) {
+                                solidIndices.insert(i);
+                                break;
+                            }
+                        }
+                    }
+                }
+                else {
+                    edges.emplace_back(ref);
+                }
+            }
+        }
+
+        // A solid reference always means all of its faces.
+        // When highlightAsSolid is enabled, Face/Edge references
+        // have also populated solidIndices above.
+        for (const int solidIndex : solidIndices) {
+            const TopoDS_Shape& solid = allSolids(solidIndex);
+
+            for (TopExp_Explorer exp(solid, TopAbs_FACE); exp.More(); exp.Next()) {
+
+                const int faceIndex = allFaces.FindIndex(exp.Current());
+
+                if (faceIndex > 0) {
+                    faces.emplace_back("Face" + std::to_string(faceIndex));
+                }
+            }
+        }
+
+        std::sort(faces.begin(), faces.end());
+        faces.erase(std::unique(faces.begin(), faces.end()), faces.end());
+
         if (!faces.empty()) {
             std::vector<App::Material> materials = vp->ShapeAppearance.getValues();
 
-            PartGui::ReferenceHighlighter highlighter(
-                base->Shape.getValue(),
-                ShapeAppearance.getDiffuseColor()
-            );
-            highlighter.getFaceMaterials(faces, materials);
+            PartGui::ReferenceHighlighter highlighter(shape, ShapeAppearance.getDiffuseColor());
 
+            highlighter.getFaceMaterials(faces, materials);
             vp->setHighlightedFaces(materials);
         }
+
         if (!edges.empty()) {
             std::vector<Base::Color> colors = vp->LineColorArray.getValues();
 
-            PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(), LineColor.getValue());
-            highlighter.getEdgeColors(edges, colors);
+            PartGui::ReferenceHighlighter highlighter(shape, LineColor.getValue());
 
+            highlighter.getEdgeColors(edges, colors);
             vp->setHighlightedEdges(colors);
         }
     }

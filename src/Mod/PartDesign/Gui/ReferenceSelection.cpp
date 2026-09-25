@@ -51,6 +51,8 @@
 #include "ui_DlgReference.h"
 #include "ReferenceSelection.h"
 #include "TaskFeaturePick.h"
+#include "TopExp_Explorer.hxx"
+#include "TopTools_IndexedMapOfShape.hxx"
 #include "Utils.h"
 
 
@@ -202,22 +204,22 @@ bool ReferenceSelection::allowPartFeature(App::DocumentObject* pObj, const char*
         return true;
     }
 
-    if (type.testFlag(AllowSelection::EDGE) && subName.compare(0, 4, "Edge") == 0) {
-        if (isEdge(pObj, sSubName)) {
-            return true;
-        }
+    if (type.testFlag(AllowSelection::EDGE) && subName.compare(0, 4, "Edge") == 0
+        && isEdge(pObj, sSubName)) {
+        return true;
     }
 
-    if (type.testFlag(AllowSelection::CIRCLE) && subName.compare(0, 4, "Edge") == 0) {
-        if (isCircle(pObj, sSubName)) {
-            return true;
-        }
+    if (type.testFlag(AllowSelection::CIRCLE) && subName.compare(0, 4, "Edge") == 0
+        && isCircle(pObj, sSubName)) {
+        return true;
     }
 
-    if (type.testFlag(AllowSelection::FACE)) {
-        if (isFace(pObj, sSubName)) {
-            return true;
-        }
+    if (type.testFlag(AllowSelection::FACE) && isFace(pObj, sSubName)) {
+        return true;
+    }
+
+    if (type.testFlag(AllowSelection::SOLID) && isSolid(pObj, sSubName)) {
+        return true;
     }
 
     return false;
@@ -261,6 +263,76 @@ bool ReferenceSelection::isFace(App::DocumentObject* pObj, const char* sSubName)
         else {
             return true;
         }
+    }
+
+    return false;
+}
+
+bool ReferenceSelection::isSolid(App::DocumentObject* pObj, const char* sSubName) const
+{
+    const auto* feature = dynamic_cast<const Part::Feature*>(pObj);
+    if (!feature) {
+        return false;
+    }
+
+    const TopoDS_Shape& shape = feature->Shape.getValue();
+
+    TopTools_IndexedMapOfShape faces;
+    TopTools_IndexedMapOfShape edges;
+    TopTools_IndexedMapOfShape solids;
+
+    TopExp::MapShapes(shape, TopAbs_FACE, faces);
+    TopExp::MapShapes(shape, TopAbs_EDGE, edges);
+    TopExp::MapShapes(shape, TopAbs_SOLID, solids);
+
+    const std::string subName(sSubName);
+
+    int solidIndex = 0;
+
+    if (subName.compare(0, 4, "Face") == 0) {
+        const int faceIndex = std::stoi(subName.substr(4));
+
+        if (faceIndex < 1 || faceIndex > faces.Extent()) {
+            return false;
+        }
+
+        const TopoDS_Shape& selectedFace = faces(faceIndex);
+
+        for (int i = 1; i <= solids.Extent(); ++i) {
+            const TopoDS_Shape& solid = solids(i);
+
+            for (TopExp_Explorer exp(solid, TopAbs_FACE); exp.More(); exp.Next()) {
+
+                if (selectedFace.IsSame(exp.Current())) {
+                    return true;
+                }
+            }
+        }
+    }
+    else if (subName.compare(0, 4, "Edge") == 0) {
+        const int edgeIndex = std::stoi(subName.substr(4));
+
+        if (edgeIndex < 1 || edgeIndex > edges.Extent()) {
+            return false;
+        }
+
+        const TopoDS_Shape& selectedEdge = edges(edgeIndex);
+
+        for (int i = 1; i <= solids.Extent(); ++i) {
+            const TopoDS_Shape& solid = solids(i);
+
+            for (TopExp_Explorer exp(solid, TopAbs_EDGE); exp.More(); exp.Next()) {
+
+                if (selectedEdge.IsSame(exp.Current())) {
+                    return true;
+                }
+            }
+        }
+    }
+    else if (subName.compare(0, 5, "Solid") == 0) {
+        const int solidIndexValue = std::stoi(subName.substr(5));
+
+        return solidIndexValue >= 1 && solidIndexValue <= solids.Extent();
     }
 
     return false;
