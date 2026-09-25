@@ -301,15 +301,17 @@ class GCodeEditorDialog(QtGui.QDialog):
             % (unitsStr, unitLength, unitLength, unitTime)
         )
         if self.chkRaw.isChecked():
-            if not self.pathObj.Placement.isIdentity(1e-9):
+            placement = self.pathObj.Placement
+            if not placement.isIdentity(1e-9):
+                origin = placement.Base
                 self.lab.setText(
                     self.lab.text()
                     + translate(
                         "CAM_Inspect",
                         "<br><b>Raw</b>: as stored, in the operation's own frame; "
-                        "Placement %s is not applied.",
+                        "the frame's origin (%.3f, %.3f, %.3f) and rotation are not applied.",
                     )
-                    % self.pathObj.Placement.Base
+                    % (origin.x, origin.y, origin.z)
                 )
             self.editor.setPlainText(Path.Path(self.rawCommands).toGCode())
             self.editor.verticalScrollBar().setValue(scrolBarValue)
