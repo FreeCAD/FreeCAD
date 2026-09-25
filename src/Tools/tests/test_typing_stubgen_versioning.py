@@ -8,8 +8,7 @@ import json
 from pathlib import Path
 import sys
 import tempfile
-import unittest
-from unittest import mock
+import unittest.mock
 import urllib.error
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
@@ -72,28 +71,32 @@ class NextPatchNumberTests(unittest.TestCase):
 class PublishedVersionsTests(unittest.TestCase):
     def test_versions_are_returned(self):
         payload = {"meta": {"api-version": "1.4"}, "versions": ["1.0.0", "1.0.1"]}
-        with mock.patch("urllib.request.urlopen", return_value=json_response(payload)):
+        with unittest.mock.patch("urllib.request.urlopen", return_value=json_response(payload)):
             self.assertEqual(published_versions("freecad-typings"), ["1.0.0", "1.0.1"])
 
     def test_an_unknown_package_is_not_an_error(self):
-        with mock.patch("urllib.request.urlopen", side_effect=http_error(404, "Not Found")):
+        with unittest.mock.patch(
+            "urllib.request.urlopen", side_effect=http_error(404, "Not Found")
+        ):
             self.assertEqual(published_versions("freecad-typings"), [])
 
     def test_a_server_error_propagates(self):
-        with mock.patch("urllib.request.urlopen", side_effect=http_error(503, "Server Error")):
+        with unittest.mock.patch(
+            "urllib.request.urlopen", side_effect=http_error(503, "Server Error")
+        ):
             with self.assertRaises(urllib.error.HTTPError):
                 published_versions("freecad-typings")
 
     def test_an_index_without_the_versions_key_is_refused(self):
         payload = {"meta": {"api-version": "1.0"}, "files": []}
-        with mock.patch("urllib.request.urlopen", return_value=json_response(payload)):
+        with unittest.mock.patch("urllib.request.urlopen", return_value=json_response(payload)):
             with self.assertRaises(ValueError) as caught:
                 published_versions("freecad-typings")
         self.assertIn("1.0", str(caught.exception))
 
     def test_a_non_json_index_is_refused_by_content_type(self):
         response = FakeResponse(b"<html><body>Simple index</body></html>", "text/html")
-        with mock.patch("urllib.request.urlopen", return_value=response):
+        with unittest.mock.patch("urllib.request.urlopen", return_value=response):
             with self.assertRaises(ValueError) as caught:
                 published_versions("freecad-typings")
         self.assertIn("text/html", str(caught.exception))
