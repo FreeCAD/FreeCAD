@@ -22,6 +22,8 @@
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Op.Gui.Base
+import Path.Op.Gui.Custom
 from Path.Base.Util import coolantModeForOp
 from Path.Base.Util import toolControllerForOp
 import Path.Dressup.Utils as PathDressup
@@ -45,10 +47,9 @@ class ViewProvider(Path.Op.Gui.Base.ViewProvider):
 
     def dumps(self):
         """Overwrites base class
-        Changes ViewProvider and dumps correct 'state'"""
-        res = Path.Op.Gui.Custom.Command.res
-        self.Object.ViewObject.Proxy = Path.Op.Gui.Base.ViewProvider(self.Object.ViewObject, res)
-        return super().dumps()
+        Switches to the base ViewProvider class, so it is saved as a regular Custom op"""
+        self.__class__ = Path.Op.Gui.Base.ViewProvider
+        return self.dumps()
 
 
 class CommandPathSimpleCopy:
@@ -84,6 +85,8 @@ class CommandPathSimpleCopy:
         FreeCADGui.doCommand("sel = FreeCADGui.Selection.getSelection()")
         FreeCADGui.doCommand("name = sel[0].Name+'_SimpleCopy' if len(sel) == 1 else 'SimpleCopy'")
         FreeCADGui.addModule("PathScripts.PathUtils as PathUtils")
+        FreeCADGui.addModule("Path.Op.Custom")
+        FreeCADGui.addModule("Path.Op.Gui.Custom")
         FreeCADGui.doCommand("job = PathUtils.findParentJob(sel[0])")
         FreeCADGui.doCommand("obj = Path.Op.Custom.Create(name, parentJob=job)")
         FreeCADGui.doCommand("res = Path.Op.Gui.Custom.Command.res")
@@ -94,6 +97,7 @@ class CommandPathSimpleCopy:
         FreeCADGui.doCommand("obj.CoolantMode = Path.Base.Util.coolantModeForOp(sel[0])")
         FreeCADGui.doCommand("paths = [PathUtils.getPathWithPlacement(s) for s in sel]")
         FreeCADGui.doCommand("obj.Gcode = [c.toGCode() for path in paths for c in path.Commands]")
+        FreeCADGui.doCommand("obj.ViewObject.Proxy.setDeleteObjectsOnReject(False)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
