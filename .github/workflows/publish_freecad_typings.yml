@@ -31,7 +31,8 @@
 # 3) (no suffix -- e.g. a real release) - publishes to the real PyPI as a full release. The API version is taken from
 #    src/Tools/typing/api_version.json and the patch version is auto-incremented from the last published version.
 #
-# Only a branch can be dispatched: a tag is refused, so a release is never cut from one by accident.
+# Only a branch can be dispatched. Tags are refused because the tag namespace carries no ruleset,
+# so anyone with write access could create or move one and aim a publish at it.
 
 name: Publish freecad-typings
 
@@ -90,8 +91,9 @@ jobs:
           # publishable, and what they render as, belongs to stubgen.project.
           if os.environ["REF_TYPE"] != "branch":
               sys.exit(
-                  "Refusing to publish: dispatch this workflow from a branch, not from the "
-                  f"{os.environ['REF_TYPE']} {os.environ['REF_NAME']!r}."
+                  f"Refusing to publish from the {os.environ['REF_TYPE']} "
+                  f"{os.environ['REF_NAME']!r}: dispatch from the releases/* branch this version "
+                  "was built on. Tag refs are not an allowed deployment source."
               )
 
           if os.environ["REF_NAME"].startswith("releases/"):
