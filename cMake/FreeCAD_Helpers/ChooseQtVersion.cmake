@@ -82,6 +82,13 @@ macro(ChooseQtVersion)
     set_property(CACHE FREECAD_QT_VERSION PROPERTY STRINGS "${freecad_supported_qt_versions}")
   endif()
 
+  if (BUILD_GUI AND FREECAD_QT_VERSION STREQUAL "None")
+    message(FATAL_ERROR
+      "BUILD_GUI requires Qt, but FREECAD_QT_VERSION is set to None. Either "
+      "configure with -DBUILD_GUI=OFF (see the \"core-no-qt\" preset) or set "
+      "FREECAD_QT_VERSION to Auto or 6.")
+  endif()
+
   set(_FREECAD_QT_REQUIRED OFF)
   if (BUILD_GUI OR (NOT FREECAD_QT_VERSION STREQUAL "Auto" AND NOT FREECAD_QT_VERSION STREQUAL "None"))
     set(_FREECAD_QT_REQUIRED ON)
