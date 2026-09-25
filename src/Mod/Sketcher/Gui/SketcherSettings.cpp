@@ -28,19 +28,66 @@
 #include <QStyledItemDelegate>
 
 #include <map>
-#include <filesystem>
+#include <string>
+#include <vector>
 
 #include <App/Application.h>
-#include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Gui/Command.h>
 #include <Gui/PreferencePackManager.h>
 
 #include "SketcherSettings.h"
+#include "ThemeDefaults.h"
 #include "ui_SketcherSettings.h"
 #include "ui_SketcherSettingsAppearance.h"
 #include "ui_SketcherSettingsDisplay.h"
 #include "ui_SketcherSettingsGrid.h"
+
+namespace
+{
+constexpr const char* viewGroup = "BaseApp/Preferences/View";
+constexpr const char* sketcherGeneralGroup = "BaseApp/Preferences/Mod/Sketcher/General";
+
+const std::vector<std::string>& sketcherViewColors()
+{
+    static const std::vector<std::string> colors = {
+        "SketchEdgeColor",
+        "SketchVertexColor",
+        "EditedEdgeColor",
+        "EditedVertexColor",  // pending the git grep check
+        "ConstructionColor",
+        "ExternalColor",
+        "ExternalDefiningColor",
+        "FullyConstrainedColor",
+        "ConstrainedDimColor",
+        "ConstrainedIcoColor",
+        "NonDrivingConstrDimColor",
+        "InvalidSketchColor",
+        "FullyConstraintElementColor",
+        "FullyConstraintConstructionElementColor",
+        "FullyConstraintInternalAlignmentColor",
+        "FullyConstraintConstructionPointColor",  // pending the git grep check
+        "InternalAlignedGeoColor",
+        "DeactivatedConstrDimColor",
+        "ExprBasedConstrDimColor",
+        "CursorTextColor",
+        "CursorCrosshairColor",
+        "CreateLineColor",
+        "InformationColor",
+
+    };
+    return colors;
+}
+const std::vector<std::string>& sketcherGeneralColors()
+{
+    static const std::vector<std::string> colors = {
+        "GridLineColor",
+        "SketchFaceColor",
+
+    };
+    return colors;
+}
+}  // namespace
 
 using namespace SketcherGui;
 
@@ -128,85 +175,6 @@ SketcherSettings::~SketcherSettings()
     // no need to delete child widgets, Qt does it all for us
 }
 
-void SketcherSettings::loadThemeDefaults()
-{
-    // get current theme name
-    ParameterGrp::handle hMainWindow = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/MainWindow"
-    );
-    std::string themeName = hMainWindow->GetASCII("Theme", "");
-
-    if (themeName.empty()) {
-#ifdef FC_DEBUG
-        Base::Console().message("No theme set, skipping theme color defaults\n");
-#endif
-        return;  // no theme active, use current colors
-    }
-
-#ifdef FC_DEBUG
-    Base::Console().message("Loading Sketcher color defaults for theme: %s\n", themeName.c_str());
-#endif
-
-    // construct path to the theme's config file
-    // preference packs are in the Gui/PreferencePacks directory
-    std::string appPath = App::Application::getResourceDir();
-    std::filesystem::path configFile = std::filesystem::path(appPath) / "Gui" / "PreferencePacks"
-        / themeName / (themeName + ".cfg");
-
-    if (!std::filesystem::exists(configFile)) {
-#ifdef FC_DEBUG
-        Base::Console().warning("Config file not found for theme '%s'\n", themeName.c_str());
-#endif
-        return;
-    }
-
-    // load theme config into temporary parameters
-    auto themeParams = ParameterManager::Create();
-    themeParams->LoadDocument(Base::FileInfo::pathToString(configFile).c_str());
-
-    // get the view group from the theme config
-    auto themeViewGroup = themeParams->GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
-
-    // get the current user's View group
-    auto userViewGroup = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/View"
-    );
-
-    // list of sketcher color parameters to copy from theme
-    std::vector<std::string> sketcherColors = {
-        "SketchEdgeColor",
-        "SketchVertexColor",
-        "EditedEdgeColor",
-        "EditedVertexColor",
-        "ConstructionColor",
-        "ExternalColor",
-        "ExternalDefiningColor",
-        "FullyConstrainedColor",
-        "ConstrainedColor",
-        "NonDrivingConstraintColor",
-        "InvalidSketchColor",
-        "FullyConstraintElementColor",
-        "FullyConstraintConstructionElementColor",
-        "FullyConstraintInternalAlignmentColor",
-        "FullyConstraintConstructionPointColor",
-        "InternalAlignedGeoColor",
-        "DeactivatedConstrDimColor",
-        "DatumColor",
-        "ExprBasedConstrDimColor",
-        "CursorTextColor",
-        "CursorCrosshairColor",
-        "CreateLineColor"
-    };
-
-    // copy only the sketcher colors from theme to user config
-    for (const auto& colorName : sketcherColors) {
-        unsigned long colorValue = themeViewGroup->GetUnsigned(colorName.c_str(), UINT_MAX);
-        if (colorValue != UINT_MAX) {
-            userViewGroup->SetUnsigned(colorName.c_str(), colorValue);
-        }
-    }
-}
-
 void SketcherSettings::saveSettings()
 {
     // Sketch editing
@@ -225,7 +193,7 @@ void SketcherSettings::saveSettings()
     {
         DimensionSingleTool,
         DimensionSeparateTools,
-        DimensionBoth
+        DimensionBoth,
     };
 
     // Dimensioning constraints mode
@@ -1000,6 +968,12 @@ void SketcherSettingsAppearance::loadSettings()
     ui->AxisLinePattern->setCurrentIndex(index);
 }
 
+void SketcherSettingsAppearance::loadThemeDefaults()
+{
+    Gui::ThemeDefaults::applyColors(viewGroup, sketcherViewColors());
+    Gui::ThemeDefaults::applyColors(sketcherGeneralGroup, sketcherGeneralColors());
+}
+
 void SketcherSettingsAppearance::resetSettingsToDefaults()
 {
     // get parameter groups
@@ -1022,39 +996,13 @@ void SketcherSettingsAppearance::resetSettingsToDefaults()
     hSketcherView->RemoveInt("ExternalPattern");
     hSketcherView->RemoveInt("ExternalDefiningPattern");
 
-    // remove all sketcher color parameters so theme defaults can be applied fresh
-    std::vector<std::string> sketcherColors = {
-        "SketchEdgeColor",
-        "SketchVertexColor",
-        "EditedEdgeColor",
-        "EditedVertexColor",
-        "ConstructionColor",
-        "ExternalColor",
-        "FullyConstrainedColor",
-        "ConstrainedColor",
-        "NonDrivingConstraintColor",
-        "InvalidSketchColor",
-        "FullyConstraintElementColor",
-        "FullyConstraintConstructionElementColor",
-        "FullyConstraintInternalAlignmentColor",
-        "FullyConstraintConstructionPointColor",
-        "InternalAlignedGeoColor",
-        "DeactivatedConstrDimColor",
-        "DatumColor",
-        "ExprBasedConstrDimColor",
-        "CursorTextColor",
-        "CursorCrosshairColor",
-        "CreateLineColor"
-    };
+    Gui::ThemeDefaults::removeColors(viewGroup, sketcherViewColors());
+    Gui::ThemeDefaults::removeColors(sketcherGeneralGroup, sketcherGeneralColors());
 
-    for (const auto& colorName : sketcherColors) {
-        hView->RemoveUnsigned(colorName.c_str());
-    }
+    PreferencePage::resetSettingsToDefaults();
 
-    // apply theme specific color defaults
-    SketcherSettings::loadThemeDefaults();
-
-    // reload the settings from parameter storage to update gui
+    // theme colors are applied after the base reset, which clears Pref* widget params
+    loadThemeDefaults();
     loadSettings();
 }
 
