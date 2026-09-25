@@ -2773,7 +2773,7 @@ TopoDS_Shape Area::toShape(const CCurve& _c, const gp_Trsf* trsf, int reorient)
             double d = pt.Distance(pnext);
             bool minorArc = IsLeft(pt, pnext, center) == (v.m_type > 0);
             bool smallDeviation = d * d / (8.0 * r) < Precision::Confusion();
-            bool smallCircle = 2 * std::max(r, r2) < CArea::m_accuracy;
+            bool smallCircle = 2 * std::max(r, r2) < CArea::get_accuracy();
             if ((minorArc && smallDeviation) || smallCircle) {
                 auto edge = BRepBuilderAPI_MakeEdge(pt, pnext).Edge();
                 hEdges->Append(edge);
