@@ -31,13 +31,20 @@ def published_versions(
         url,
         headers={"Accept": SIMPLE_JSON_ACCEPT, "Cache-Control": "no-cache"},
     )
+    content_type = "an unknown content type"
     try:
         with urllib.request.urlopen(request, timeout=timeout) as response:
+            content_type = response.headers.get("Content-Type", content_type)
             payload = json.load(response)
     except urllib.error.HTTPError as error:
         if error.code == 404:
             return []
         raise
+    except json.JSONDecodeError as error:
+        raise ValueError(
+            f"{url} returned {content_type} rather than the requested {SIMPLE_JSON_ACCEPT}. "
+            "A patch number cannot be assigned from this index."
+        ) from error
     if "versions" not in payload:
         api_version = payload.get("meta", {}).get("api-version", "unknown")
         raise ValueError(
