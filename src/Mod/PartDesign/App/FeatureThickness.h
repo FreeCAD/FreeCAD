@@ -57,6 +57,9 @@ public:
     App::PropertyEnumeration Join;
     App::PropertyEnumeration Selection;
     /// LEGACY, Dictated by Centering property
+    /// Reversed = True -> Centering = -1 (inside)
+    /// Reversed = False -> Centering = 1 (outside)
+    /// Mode = RectoVerso -> Centering = 0
     App::PropertyEnumeration Mode;
     App::PropertyBool Reversed;
 

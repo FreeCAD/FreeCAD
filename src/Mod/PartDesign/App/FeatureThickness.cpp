@@ -299,17 +299,22 @@ App::DocumentObjectExecReturn* Thickness::execute()
     std::vector<Part::TopoShape> solids;
 
     for (TopExp_Explorer exp(result.getShape(), TopAbs_SOLID); exp.More(); exp.Next()) {
-
         Part::TopoShape solid;
         solid.setShape(exp.Current());
         solids.push_back(std::move(solid));
     }
 
-    TopoShape final;
-    final.makeElementFuse(solids);
-    final = refineShapeIfActive(final);
+    if (solids.empty()) {
+        result = refineShapeIfActive(result);
+        this->Shape.setValue(getSolid(result));
+    }
+    else {
+        TopoShape final;
+        final.makeElementFuse(solids);
+        final = refineShapeIfActive(final);
 
-    this->Shape.setValue(getSolid(final));
+        this->Shape.setValue(getSolid(final));
+    }
 
     return App::DocumentObject::StdReturn;
 }
