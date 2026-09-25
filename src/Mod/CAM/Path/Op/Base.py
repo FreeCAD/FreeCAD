@@ -1237,7 +1237,7 @@ class ObjectOp:
                 delattr(self, attr)
 
         if not hasattr(obj, "Workplane"):
-            return True
+            return
 
         placement = PathUtil.workplaneForOp(obj)
         z_up = FreeCAD.Vector(0, 0, 1)

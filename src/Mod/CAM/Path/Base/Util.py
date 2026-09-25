@@ -176,6 +176,18 @@ def clearExpressionEngine(obj):
             obj.setExpression(attr, None)
 
 
+def baseOp(path):
+    """baseOp(path) ... return the base operation underlying the given path.
+
+    A dressup is known by its shape, not its name: its Base is the one path
+    object it dresses. An operation's Base, if it has one, is a list of
+    geometry."""
+    base = getattr(path, "Base", None)
+    if base is not None and not isinstance(base, (list, tuple)) and hasattr(base, "Path"):
+        return baseOp(base)
+    return path
+
+
 def workplaneForOp(op):
     """workplaneForOp(op) ... returns the effective Workplane of op as a Placement.
 
@@ -193,8 +205,6 @@ def workplaneForOp(op):
     A dressup has no plane of its own: its frame is its base operation's,
     resolved here through the dressup chain every time and never stored on
     the dressup."""
-    from Path.Dressup.Utils import baseOp
-
     op = baseOp(op)
     wp = getattr(op, "Workplane", None)
     if wp is None:
@@ -332,3 +342,109 @@ def jobHasRotaryMachine(job):
     except Exception:
         return False
     return bool(machine is not None and getattr(machine, "has_rotary_axes", False))
+
+
+def getPathWithPlacement(pathobj):
+    """
+    Applies the rotation, and then position of the obj's Placement
+    to the obj's path
+    """
+
+    if pathobj.Path is None:
+        return pathobj.Path
+
+    # check for no placement or placement POS=(0,0,0), Yaw-Pitch-Roll=(0,0,0)
+    # isIdentity() returns True if the placement has no displacement and no rotation
+    if not hasattr(pathobj, "Placement") or pathobj.Placement.isIdentity():
+        return pathobj.Path
+
+    return applyPlacementToPath(pathobj.Placement, pathobj.Path)
+
+
+def applyPlacementToPath(placement, path):
+    """
+    Applies the rotation, and then position of the placement to path
+    """
+
+    commands = []
+    currX = 0
+    currY = 0
+    currZ = 0
+
+    # An arc is G2 or G3 as seen from +Z. A rotation that turns the path
+    # over - an operation on the underside of the part, say - reverses that
+    # sense: the arc's centre and end move with the rotation, and the
+    # direction word is swapped so the arc still bulges the same way. (A
+    # rotation that tilts the arc out of the XY plane has no exact G2/G3
+    # form; the words are left as they are.)
+    turned_over = placement.Rotation.multVec(FreeCAD.Vector(0, 0, 1)).z < 0
+    flipped = {"G2": "G3", "G02": "G03", "G3": "G2", "G03": "G02"}
+
+    # Angles of rotation (on A, B or C) do not need translation but may need a correction on start position, get transformed angles of 0 deg.
+    cmd = Path.Command("G0 A0 B0 C0")
+    t = cmd.transform(placement)
+    tparams = t.Parameters
+    transA0 = tparams.get("A", 0)
+    transB0 = tparams.get("B", 0)
+    transC0 = tparams.get("C", 0)
+
+    for cmd in path.Commands:
+        if cmd.Name in Path.Geom.CmdMoveAll:
+            params = cmd.Parameters
+            currX = x = params.get("X", currX)
+            currY = y = params.get("Y", currY)
+            currZ = z = params.get("Z", currZ)
+
+            # A canned cycle's R is the height of its retract plane, a Z at
+            # the cycle's X, Y, so it moves with the frame the way Z does.
+            if "R" in params:
+                params["R"] = placement.multVec(FreeCAD.Vector(x, y, params["R"])).z
+
+            x, y, z = placement.Rotation.multVec(FreeCAD.Vector(x, y, z))
+
+            if x != currX:
+                params.update({"X": x})
+            if y != currY:
+                params.update({"Y": y})
+            if z != currZ:
+                params.update({"Z": z})
+
+            # Arcs need to have the I and J params rotated as well
+            if cmd.Name in Path.Geom.CmdMoveArc:
+                currI = i = params.get("I", 0)
+                currJ = j = params.get("J", 0)
+
+                i, j, _ = placement.Rotation.multVec(FreeCAD.Vector(i, j, 0))
+
+                if currI != i:
+                    params.update({"I": i})
+                if currJ != j:
+                    params.update({"J": j})
+                if turned_over:
+                    cmd.Name = flipped.get(cmd.Name, cmd.Name)
+
+            cmd.Parameters = params
+
+        # Angles of rotation (on A, B or C) do not need translation, find values before translation.
+        params = cmd.Parameters
+        aVal = params.get("A", None)
+        bVal = params.get("B", None)
+        cVal = params.get("C", None)
+
+        t = cmd.transform(placement)
+
+        # Set angles of rotation on A, B or C corrected for the transformed angle of 0 deg..
+        tparams = t.Parameters
+        if aVal is not None:
+            tparams.update({"A": transA0 + aVal})
+        if bVal is not None:
+            tparams.update({"B": transB0 + bVal})
+        if cVal is not None:
+            tparams.update({"C": transC0 + cVal})
+        if aVal is not None or bVal is not None or cVal is not None:
+            t.Parameters = tparams
+
+        commands.append(t)
+    newPath = Path.Path(commands)
+
+    return newPath

@@ -741,7 +741,7 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
             "pre_rotary_move": "G53 G0 Z0",
             "twp_control_positions_rotaries": False,
         }
-        op = self._op("Tilted", self._plane())
+        self._op("Tilted", self._plane())
         post = PostProcessorFactory.get_post_processor(self.job, "generic")
         post.reinitialize()
         post._machine = self.machine

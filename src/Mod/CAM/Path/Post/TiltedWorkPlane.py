@@ -52,8 +52,6 @@ every control accepts.
 
 from enum import Enum
 
-import FreeCAD
-
 
 class PlaneCommand(Enum):
     """The control's tilted-work-plane command family.
