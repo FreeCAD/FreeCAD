@@ -39,6 +39,7 @@
 
 #include "StyleParameters.h"
 #include "TaskDressUpParameters.h"
+#include "TopExp_Explorer.hxx"
 
 #include <Base/ServiceProvider.h>
 #include <Gui/Utilities.h>
@@ -110,24 +111,78 @@ bool ViewProviderDressUp::setEdit(int ModNum)
 
 void ViewProviderDressUp::highlightReferences(const bool on)
 {
-    PartDesign::DressUp* pcDressUp = getObject<PartDesign::DressUp>();
-    Part::Feature* base = pcDressUp->getBaseObject(/*silent =*/true);
+    const auto* pdDressUp = getObject<PartDesign::DressUp>();
+    const Part::Feature* base = pdDressUp->getBaseObject(/*silent =*/true);
     if (!base) {
         return;
     }
-    PartGui::ViewProviderPart* vp = dynamic_cast<PartGui::ViewProviderPart*>(
-        Gui::Application::Instance->getViewProvider(base)
-    );
+
+    auto* vp = dynamic_cast<ViewProviderPart*>(Gui::Application::Instance->getViewProvider(base));
     if (!vp) {
         return;
     }
 
-    std::vector<std::string> faces = pcDressUp->Base.getSubValuesStartsWith("Face");
-    std::vector<std::string> edges = pcDressUp->Base.getSubValuesStartsWith("Edge");
+    std::vector<std::string> faces = pdDressUp->Base.getSubValuesStartsWith("Face");
+    std::vector<std::string> edges = pdDressUp->Base.getSubValuesStartsWith("Edge");
 
     if (on) {
         if (!faces.empty()) {
             std::vector<App::Material> materials = vp->ShapeAppearance.getValues();
+
+            if (faceAsSolids) {
+                const TopoDS_Shape& shape = base->Shape.getValue();
+
+                // Map each face to the solid containing it.
+                std::map<int, int> faceToSolid;
+                int solidIndex = 0;
+
+                for (TopExp_Explorer solidExp(shape, TopAbs_SOLID); solidExp.More();
+                     solidExp.Next(), ++solidIndex) {
+
+                    int faceIndex = 0;
+
+                    for (TopExp_Explorer shapeFaceExp(shape, TopAbs_FACE); shapeFaceExp.More();
+                         shapeFaceExp.Next(), ++faceIndex) {
+
+                        for (TopExp_Explorer solidFaceExp(solidExp.Current(), TopAbs_FACE);
+                             solidFaceExp.More();
+                             solidFaceExp.Next()) {
+
+                            if (shapeFaceExp.Current().IsSame(solidFaceExp.Current())) {
+                                faceToSolid[faceIndex] = solidIndex;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                // Find which solids contain the referenced faces.
+                std::set<int> selectedSolids;
+
+                for (const auto& faceName : faces) {
+                    const int faceIndex = std::stoi(faceName.substr(4)) - 1;
+
+                    const auto it = faceToSolid.find(faceIndex);
+                    if (it != faceToSolid.end()) {
+                        selectedSolids.insert(it->second);
+                    }
+                }
+
+                // Add all faces belonging to selected solids.
+                int faceIndex = 0;
+
+                for (TopExp_Explorer shapeFaceExp(shape, TopAbs_FACE); shapeFaceExp.More();
+                     shapeFaceExp.Next(), ++faceIndex) {
+
+                    const auto it = faceToSolid.find(faceIndex);
+                    if (it != faceToSolid.end() && selectedSolids.contains(it->second)) {
+                        faces.emplace_back("Face" + std::to_string(faceIndex + 1));
+                    }
+                }
+
+                std::sort(faces.begin(), faces.end());
+                faces.erase(std::unique(faces.begin(), faces.end()), faces.end());
+            }
 
             PartGui::ReferenceHighlighter highlighter(
                 base->Shape.getValue(),
@@ -137,6 +192,7 @@ void ViewProviderDressUp::highlightReferences(const bool on)
 
             vp->setHighlightedFaces(materials);
         }
+
         if (!edges.empty()) {
             std::vector<Base::Color> colors = vp->LineColorArray.getValues();
 

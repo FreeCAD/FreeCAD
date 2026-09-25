@@ -46,6 +46,9 @@
 
 #include "TaskDressUpParameters.h"
 
+#include "TopExp_Explorer.hxx"
+#include "TopTools_IndexedMapOfShape.hxx"
+
 
 FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
@@ -99,18 +102,17 @@ void TaskDressUpParameters::setupTransaction()
     transactionID = DressUpView->getObject()->getDocument()->openTransaction(n.c_str());
 }
 
-void TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg, QListWidget* widget)
+void TaskDressUpParameters::referenceSelected(const SelectionChanges& msg, QListWidget* widget)
 {
     if (strcmp(msg.pDocName, DressUpView->getObject()->getDocument()->getName()) != 0) {
         return;
     }
 
-    Gui::Selection().clearSelection();
+    Selection().clearSelection();
 
     PartDesign::DressUp* pcDressUp = DressUpView->getObject<PartDesign::DressUp>();
     App::DocumentObject* base = this->getBase();
 
-    // TODO: Must we make a copy here instead of assigning to const char* ?
     const char* fname = base->getNameInDocument();
     if (strcmp(msg.pObjectName, fname) != 0) {
         return;
@@ -119,12 +121,13 @@ void TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg, 
     const std::string subName(msg.pSubName);
     std::vector<std::string> refs = pcDressUp->Base.getSubValues();
 
+    // Normal face/edge selection.
     if (const auto f = std::ranges::find(refs, subName); f != refs.end()) {
-        refs.erase(f);  // it's in the list. Remove it
+        refs.erase(f);
         removeItemFromListWidget(widget, msg.pSubName);
     }
     else {
-        refs.push_back(subName);  // not yet in the list so we add it
+        refs.push_back(subName);
         widget->addItem(QString::fromStdString(msg.pSubName));
     }
 
@@ -451,6 +454,7 @@ void TaskDressUpParameters::setSelectionMode(selectionModes mode)
 
     selectionMode = mode;
     setButtons(mode);
+    DressUpView->setFaceAsSolids(selectSolids);
 
     if (mode == none) {
         // remove any highlights and selections
@@ -471,18 +475,19 @@ void TaskDressUpParameters::setSelectionMode(selectionModes mode)
         DressUpView->showPreviousFeature(true);
     }
     setSelectionGate();
-    Gui::Selection().clearSelection();
+    Selection().clearSelection();
 }
+
 void TaskDressUpParameters::setSelectionGate()
 {
     if (selectionMode == none) {
-        Gui::Selection().rmvSelectionGate();
+        Selection().rmvSelectionGate();
     }
     else {
         AllowSelectionFlags allow;
         allow.setFlag(AllowSelection::EDGE, allowEdges);
         allow.setFlag(AllowSelection::FACE, allowFaces);
-        Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), allow));
+        Selection().addSelectionGate(new ReferenceSelection(this->getBase(), allow));
     }
 }
 
