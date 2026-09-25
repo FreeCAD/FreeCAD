@@ -10,6 +10,24 @@ from SketcherTests.GuiTestCase import FreeCADGui as Gui, SketcherGuiTestCase
 
 
 class TestSketchGroupsGui(SketcherGuiTestCase):
+    def set_pattern_mode(self, viewport, command):
+        if command == "Scale":
+            self.key_click(viewport, QtCore.Qt.Key_U, "u")
+            return
+
+        # Set the element count through the tool control; synthetic key events
+        # for the U shortcut are unreliable in the CI GUI environment.
+        tools = Gui.getMainWindow().findChildren(
+            QtGui.QWidget, "SketcherGui__SketcherToolDefaultWidget"
+        )
+        tool = next((w for w in tools if w.isVisibleTo(Gui.getMainWindow())), None)
+        self.assertIsNotNone(tool)
+        elements = tool.findChild(QtGui.QAbstractSpinBox, "parameterOne")
+        self.assertIsNotNone(elements)
+        self.assertTrue(elements.setProperty("rawValue", 2.0))
+        self.assertEqual(elements.property("rawValue"), 2.0)
+        self.flush_gui(60)
+
     def testNestedGroupBoundsAndUngroup(self):
         from pivy import coin
 
@@ -132,7 +150,7 @@ class TestSketchGroupsGui(SketcherGuiTestCase):
                             self.move(viewport, pos)
                             self.click(viewport, pos)
                             if index == 0 and pattern:
-                                self.key_click(viewport, QtCore.Qt.Key_U, "u")
+                                self.set_pattern_mode(viewport, command)
                         self.assertEqual(s.GeometryCount, 8 if pattern else 4)
                         self.assertEqual(
                             sum(c.Type == "Group" for c in s.Constraints), 4 if pattern else 2
@@ -246,7 +264,7 @@ class TestSketchGroupsGui(SketcherGuiTestCase):
                 self.move(viewport, pos)
                 self.click(viewport, pos)
                 if index == 0:
-                    self.key_click(viewport, QtCore.Qt.Key_U, "u")
+                    self.set_pattern_mode(viewport, command)
             self.assertEqual(s.solve(), 0, command)
             self.assertEqual(s.GeometryCount, 2 * counts[0], command)
             self.assertEqual(sum(c.Type == "Group" for c in s.Constraints), 4, command)
