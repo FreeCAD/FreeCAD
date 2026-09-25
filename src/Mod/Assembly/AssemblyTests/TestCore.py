@@ -369,32 +369,35 @@ class TestCore(AssemblyTestBase):
         grounded = self.jointgroup.newObject("App::FeaturePython", "GroundedJoint")
         JointObject.GroundedJoint(grounded, ground)
 
-        # Edge4 of a box runs along Y, so the slider axis is not the global Z axis.
+        # Use explicit JCS orientations instead of numbered shape edges, whose
+        # orientation depends on the OpenCASCADE build.
+        along_rack = App.Rotation(App.Vector(1, 0, 0), -90)
+        yaw_offset = App.Rotation(App.Vector(0, 0, 1), -90)
+
         slider = self.jointgroup.newObject("App::FeaturePython", "Slider")
         JointObject.Joint(slider, JointObject.JointTypes.index("Slider"))
-        slider.Proxy.setJointConnectors(
-            slider, [[ground, ["Edge4", "Edge4"]], [rack, ["Edge4", "Edge4"]]]
-        )
+        slider.Offset1 = App.Placement(App.Vector(), along_rack)
+        slider.Offset2 = App.Placement(App.Vector(), along_rack * yaw_offset)
+        slider.Reference1 = (ground, [""])
+        slider.Reference2 = (rack, [""])
 
         revolute = self.jointgroup.newObject("App::FeaturePython", "Revolute")
         JointObject.Joint(revolute, JointObject.JointTypes.index("Revolute"))
-        revolute.Proxy.setJointConnectors(
-            revolute, [[ground, ["Face6", "Face6"]], [pinion, ["Edge3", "Edge3"]]]
-        )
+        revolute.Reference1 = (ground, [""])
+        revolute.Reference2 = (pinion, [""])
 
         rackPinion = self.jointgroup.newObject("App::FeaturePython", "RackPinion")
         JointObject.Joint(rackPinion, JointObject.JointTypes.index("RackPinion"))
-        rackPinion.Proxy.setJointConnectors(
-            rackPinion, [[rack, ["Edge4", "Edge4"]], [pinion, ["Edge3", "Edge3"]]]
-        )
+        rackPinion.Offset1 = App.Placement(App.Vector(), along_rack)
+        rackPinion.Reference1 = (rack, [""])
+        rackPinion.Reference2 = (pinion, [""])
         rackPinion.Distance = 10
 
-        # Rotating the rack around its sliding axis keeps that axis but changes
-        # the pitch and roll of the slider JCS.
-        slider.Offset2 = App.Placement(App.Vector(), App.Rotation(-90, 0, 0))
         self.doc.recompute()
 
-        self.assertEqual(self.assembly.solve(), 0, "'{}' failed - solve".format(operation))
+        slider_axis = slider.Placement2.Rotation.multVec(App.Vector(0, 0, 1))
+        rack_axis = rackPinion.Placement1.Rotation.multVec(App.Vector(0, 0, 1))
+        self.assertLess(slider_axis.cross(rack_axis).Length, 1e-7)
 
         # The rack and pinion joint must reach the solver: it is silently dropped when
         # the rack cannot be identified from its slider.
