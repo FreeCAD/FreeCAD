@@ -398,7 +398,7 @@ def project_bounds(wire, vec, origin):
 def generate_t_values(wire, step_vec, tool_diameter, stepover_percent, origin, end_at_center=False):
     """Generate step positions along step_vec with engagement offset and stepover.
 
-    end_at_center uses for bidirectinal pattern, passes starts at sides and ends near center
+    end_at_center uses for bidirectional pattern, passes starts at sides and ends near center
 
     If only one pass created, place it at center
     """
@@ -407,7 +407,7 @@ def generate_t_values(wire, step_vec, tool_diameter, stepover_percent, origin, e
     min_t, max_t = project_bounds(wire, step_vec, origin)
 
     # Start position: tool center positioned so engagement amount reaches polygon edge
-    # Tool center at: min_t - tool_radius + engagement_amount
+    # Tool center at: min_t - tool_radius + stepover
     # This positions the engaged portion at the polygon edge
 
     if stepover <= 0:
@@ -423,12 +423,8 @@ def generate_t_values(wire, step_vec, tool_diameter, stepover_percent, origin, e
             t_right -= stepover
             values.append(t_left)
             values.append(t_right)
-        if Path.Geom.isStrictlyGreater(
-            values[0] + tool_radius, max_t
-        ) or Path.Geom.isStrictlyGreater(
-            values[-2] + tool_radius, values[-1] - tool_radius + stepover
-        ):
-            # area cleared by previous pass and last pass can be removed
+        if Path.Geom.isGreaterEqual(values[-2] + tool_radius, values[-1] - tool_radius + stepover):
+            # remove last pass, area already cleared by previous pass
             del values[-1]
         values.sort()
     else:

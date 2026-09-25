@@ -91,7 +91,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
                 if n[0] in self.addNewProps:
                     setattr(obj, n[0], n[1])
             if warn:
-                newPropMsg = translate("CAM_MIllFacing", "New property added to")
+                newPropMsg = translate("CAM_MillFacing", "New property added to")
                 newPropMsg += ' "{}": {}'.format(obj.Label, self.addNewProps) + ". "
                 newPropMsg += translate("CAM_MillFacing", "Check default value(s).")
                 FreeCAD.Console.PrintWarning(newPropMsg + "\n")
@@ -340,7 +340,8 @@ class ObjectMillFacing(PathOp.ObjectOp):
         # offset with intersection joins
         offsetVal = obj.StockExtension.Value
         if offsetVal < 0:
-            offsetVal = max(offsetVal, -0.5 * min(e.Length for e in boundary_wire.Edges))
+            # offset limited to not collapse the rectangle to line with zero area
+            offsetVal = max(offsetVal, -0.5 * min(e.Length for e in boundary_wire.Edges) + 0.001)
         boundary_wire = boundary_wire.makeOffset2D(offsetVal, 2)
 
         # Determine milling direction
@@ -354,6 +355,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
         retract_height = obj.SafeHeight.Value
 
         # Generate the base toolpath for one depth level based on clearing pattern
+        base_commands = []
         try:
             if obj.ClearingPattern == "Spiral":
                 # Spiral has different signature - no pass_extension or retract_height
@@ -411,6 +413,13 @@ class ObjectMillFacing(PathOp.ObjectOp):
         except Exception as e:
             Path.Log.error(f"Error generating toolpath: {e}")
             raise
+
+        if not base_commands:
+            Path.Log.warning(
+                translate("CAM_MillFacing", "%s: Generating empty toolpath. Check extensions.")
+                % obj.Label
+            )
+            return
 
         # Be safe. Add first G0 to clearance height
         targetZ = obj.ClearanceHeight.Value

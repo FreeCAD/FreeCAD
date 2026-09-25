@@ -93,7 +93,7 @@ def directional(
     end_s = max_s + total_extension
 
     s_mid = (min_s + max_s) / 2.0
-    if start_s > s_mid or end_s < s_mid:
+    if start_s >= s_mid or end_s <= s_mid:
         step_positions = []
 
     commands = []
