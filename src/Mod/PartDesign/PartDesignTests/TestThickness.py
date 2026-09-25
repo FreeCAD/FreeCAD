@@ -144,7 +144,7 @@ class TestThickness(unittest.TestCase):
         thickness = self.Doc.addObject("PartDesign::Thickness", "RectoVersoThickness")
         thickness.Base = (fillet, [opening])
         thickness.Value = 1.0
-        thickness.Mode = "RectoVerso"
+        thickness.Centering = 0  # recto verso
         body.addObject(thickness)
         self.Doc.recompute()
 
