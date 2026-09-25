@@ -190,11 +190,13 @@ App::DocumentObjectExecReturn* Thickness::execute()
         static_cast<int>(topShape.countSubShapes(TopAbs_SOLID))
     };
 
-    if (auto* error = identifySolids(params)) {
-        return error;
-    }
-
     const auto selectionMode = static_cast<SelectionMode>(Selection.getValue());
+
+    if (selectionMode != SelectionMode::AllSolids) {
+        if (auto* error = identifySolids(params)) {
+            return error;
+        }
+    }
 
     App::DocumentObjectExecReturn* error = nullptr;
 
@@ -210,6 +212,9 @@ App::DocumentObjectExecReturn* Thickness::execute()
         case SelectionMode::AllSolids:
             error = executeAllSolids(params);
             break;
+
+        default:
+            error = new App::DocumentObjectExecReturn("Unknown selection mode.");
     }
 
     if (error) {
@@ -218,20 +223,26 @@ App::DocumentObjectExecReturn* Thickness::execute()
 
     this->rawShape = result;
 
+    // Fuse solids back together if they are intersecting
     std::vector<Part::TopoShape> solids;
-
     for (TopExp_Explorer exp(result.getShape(), TopAbs_SOLID); exp.More(); exp.Next()) {
-
         Part::TopoShape solid;
         solid.setShape(exp.Current());
         solids.push_back(std::move(solid));
     }
 
-    TopoShape final;
-    final.makeElementFuse(solids);
-    final = refineShapeIfActive(final);
+    if (solids.size() <= 1) {
+        result = refineShapeIfActive(result);
 
-    this->Shape.setValue(getSolid(final));
+        this->Shape.setValue(getSolid(result));
+    }
+    else {
+        TopoShape final;
+        final.makeElementFuse(solids);
+        final = refineShapeIfActive(final);
+
+        this->Shape.setValue(getSolid(final));
+    }
 
     return App::DocumentObject::StdReturn;
 }
@@ -279,7 +290,9 @@ App::DocumentObjectExecReturn* Thickness::executeSelectedFaces(ThicknessParamete
 {
     if (fabs(params.thickness) <= 2 * params.tolerance) {
         params.result = params.input;
-        return nullptr;
+        return new App::DocumentObjectExecReturn(
+            "Recto-verso half-thickness must exceed the modeling tolerance"
+        );
     }
 
     std::vector<TopoShape> shapes;
@@ -288,7 +301,6 @@ App::DocumentObjectExecReturn* Thickness::executeSelectedFaces(ThicknessParamete
     const auto joinType = static_cast<Part::JoinType>(params.join);
 
     for (int solidIndex = 1; solidIndex <= params.solidCount; ++solidIndex) {
-
         TopoShape solid = params.input.getSubTopoShape(TopAbs_SOLID, solidIndex);
 
         const auto it = params.closeFaces.find(solidIndex);
@@ -345,14 +357,15 @@ App::DocumentObjectExecReturn* Thickness::executeSelectedSolids(ThicknessParamet
 {
     if (fabs(params.thickness) <= 2 * params.tolerance) {
         params.result = params.input;
-        return nullptr;
+        return new App::DocumentObjectExecReturn(
+            "Recto-verso half-thickness must exceed the modeling tolerance"
+        );
     }
 
     std::vector<TopoShape> shapes;
     shapes.reserve(params.solidCount);
 
     for (int solidIndex = 1; solidIndex <= params.solidCount; ++solidIndex) {
-
         TopoShape solid = params.input.getSubTopoShape(TopAbs_SOLID, solidIndex);
 
         // Solid is not affected.
@@ -386,14 +399,15 @@ App::DocumentObjectExecReturn* Thickness::executeAllSolids(ThicknessParameters& 
 {
     if (fabs(params.thickness) <= 2 * params.tolerance) {
         params.result = params.input;
-        return nullptr;
+        return new App::DocumentObjectExecReturn(
+            "Recto-verso half-thickness must exceed the modeling tolerance"
+        );
     }
 
     std::vector<TopoShape> shapes;
     shapes.reserve(params.solidCount);
 
     for (int solidIndex = 1; solidIndex <= params.solidCount; ++solidIndex) {
-
         TopoShape solid = params.input.getSubTopoShape(TopAbs_SOLID, solidIndex);
 
         try {
@@ -675,7 +689,6 @@ void Thickness::updatePreviewSelectedFaces(
     const auto joinType = static_cast<Part::JoinType>(params.join);
 
     for (const auto& [solidIndex, faces] : params.closeFaces) {
-
         TopoShape solid = params.input.getSubTopoShape(TopAbs_SOLID, solidIndex);
 
         try {
@@ -710,6 +723,12 @@ void Thickness::updatePreviewSelectedFaces(
 
             TopoShape preview;
 
+            if (params.mode == BRepOffset_RectoVerso) {
+                // show both sides
+                previewShapes.push_back(result);
+                continue;
+            }
+
             if (params.thickness > 0.0) {
                 // Only added material.
                 preview = result.makeElementCut(solid);
@@ -735,7 +754,6 @@ void Thickness::updatePreviewSelectedSolids(
 )
 {
     for (const auto& [solidIndex, faces] : params.closeFaces) {
-
         TopoShape solid = params.input.getSubTopoShape(TopAbs_SOLID, solidIndex);
 
         try {
