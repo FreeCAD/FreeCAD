@@ -2761,14 +2761,20 @@ TopoDS_Shape Area::toShape(const CCurve& _c, const gp_Trsf* trsf, int reorient)
             double r = center.Distance(pt);
             double r2 = center.Distance(pnext);
 
-            // For short arcs, if the arc deviates from its chord by a tiny amount, replace it
-            // with the chord
-            // Exact formula: r - sqrt(r² - d²/4)
-            // Approximation for small d: d²/(8r)
+            // Replace arcs with their chords if the radius is small (OCCT can't
+            // handle constructing arcs with radii near Precision::Confusion()).
+            // There is a wide range of plausibly acceptible thresholds to choose
+            // from for this; I have tentatively chosen diamter < m_accuracy.
+            //
+            // Also replace arcs if the chord is a very good representation of the
+            // arc (i.e. minor arc of with short cord).
+            //   Exact formula: r - sqrt(r² - d²/4)
+            //   Approximation for small d: d²/(8r)
             double d = pt.Distance(pnext);
-            double deviation = d * d / (8.0 * r);
             bool minorArc = IsLeft(pt, pnext, center) == (v.m_type > 0);
-            if (minorArc && deviation < Precision::Confusion()) {
+            bool smallDeviation = d * d / (8.0 * r) < Precision::Confusion();
+            bool smallCircle = 2 * std::max(r, r2) < CArea::m_accuracy;
+            if ((minorArc && smallDeviation) || smallCircle) {
                 auto edge = BRepBuilderAPI_MakeEdge(pt, pnext).Edge();
                 hEdges->Append(edge);
                 pt = pnext;
