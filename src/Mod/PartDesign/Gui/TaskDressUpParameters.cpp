@@ -133,7 +133,6 @@ void TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg, 
 
 void TaskDressUpParameters::addAllEdges(QListWidget* widget)
 {
-    Q_UNUSED(widget)
 
     if (DressUpView.expired()) {
         return;
@@ -141,7 +140,7 @@ void TaskDressUpParameters::addAllEdges(QListWidget* widget)
 
     PartDesign::DressUp* pcDressUp = DressUpView->getObject<PartDesign::DressUp>();
     App::DocumentObject* base = pcDressUp->Base.getValue();
-    if (!base) {
+	if (!base) {
         return;
     }
     int count = Part::Feature::getTopoShape(
@@ -161,12 +160,19 @@ void TaskDressUpParameters::addAllEdges(QListWidget* widget)
         return;
     }
     try {
-        setupTransaction();
-        pcDressUp->Base.setValue(base, subValues);
-    }
+		updateFeature(pcDressUp, subValues);
+		if(widget){
+			QSignalBlocker block(widget);
+			widget->clear();
+			for(const auto& name : subValues){
+				widget->addItem(QString::fromStdString(name));
+			}
+		}
+	}
     catch (Base::Exception& e) {
         e.reportException();
-    }
+		return;
+	}
 }
 
 void TaskDressUpParameters::deleteRef(QListWidget* widget)
