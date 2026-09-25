@@ -69,9 +69,5 @@ bool ViewProviderJointGroup::onDelete(const std::vector<std::string>&)
     auto* group = getObject<Assembly::JointGroup>();
 
     // if empty or orphaned ok to delete.
-    if (group && (group->Group.getValues().empty() || group->getParents().empty())) {
-        return true;
-    }
-
-    return false;
+    return group && (group->Group.getValues().empty() || group->getParents().empty());
 };
