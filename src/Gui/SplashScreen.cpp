@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <format>
 #include <string_view>
-#include <fmt/format.h>
 #include <QApplication>
 #include <QClipboard>
 #include <QDir>
@@ -384,7 +384,7 @@ QPixmap SplashScreen::splashImage()
         const std::string minor = App::Application::Config()["BuildVersionMinor"];
         const std::string point = App::Application::Config()["BuildVersionPoint"];
         const std::string suffix = App::Application::Config()["BuildVersionSuffix"];
-        std::string version = fmt::format("{}.{}.{}{}", major, minor, point, suffix);
+        std::string version = std::format("{}.{}.{}{}", major, minor, point, suffix);
         QString position, fontFamily;
 
         std::map<std::string, std::string>::const_iterator te = App::Application::Config().find(

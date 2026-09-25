@@ -208,8 +208,8 @@ SoSeparator* ViewProvider2DObjectGrid::createGrid()
 
     if (lines > maxNumberOfLines.getValue()) {
         Base::Console().warning(
-            "Grid disabled: requested number of lines %d is larger than the maximum configured of "
-            "%d\n."
+            "Grid disabled: requested number of lines {} is larger than the maximum configured of "
+            "{}\n."
             "Either increase the 'GridSize' property to a more reasonable value (recommended) or "
             "increase the 'maxNumberOfLines' property.\n",
             lines,

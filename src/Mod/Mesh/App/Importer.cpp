@@ -75,7 +75,7 @@ void Importer::load(const std::string& fileName)
         }
     }
     else {
-        Base::Console().error("Failed to load %s\n", fileName.c_str());
+        Base::Console().error("Failed to load {}\n", fileName);
     }
 }
 

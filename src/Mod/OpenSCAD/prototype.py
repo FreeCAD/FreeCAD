@@ -156,8 +156,8 @@ class Node:
                 else: #Use Part::Loft and GetWire Feature
                     obj = doc.addObject('Part::Loft', 'frustum')
                     import Draft
-                    p1 = Draft.makePolygon(int(self.arguments['$fn']), r1)
-                    p2 = Draft.makePolygon(int(self.arguments['$fn']), r2)
+                    p1 = Draft.make_polygon(int(self.arguments['$fn']), r1)
+                    p2 = Draft.make_polygon(int(self.arguments['$fn']), r2)
                     if self.arguments['center']:
                         p1.Placement = FreeCAD.Placement(\
                         FreeCAD.Vector(0.0,0.0,-h/2.0),FreeCAD.Rotation())
@@ -226,9 +226,9 @@ class Node:
             import Draft
             if '$fn' in self.arguments and self.arguments['$fn'] != 0 \
             and self.arguments['$fn']<=Node.fnmin:
-                obj = Draft.makePolygon(int(self.arguments['$fn']),r)
+                obj = Draft.make_polygon(int(self.arguments['$fn']), r)
             else:
-                obj = Draft.makeCircle(r) # create a Face
+                obj = Draft.make_circle(r) # create a Face
                 #obj = doc.addObject("Part::Circle",namel);obj.Radius = r
         elif namel == 'color':
             if len(self.children) == 1:

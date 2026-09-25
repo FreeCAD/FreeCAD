@@ -490,8 +490,8 @@ QStringList DlgSettingsWorkbenchesImp::getEnabledWorkbenches()
         }
         else {
             Base::Console().log(
-                "Ignoring unknown %s workbench found in user preferences.\n",
-                wbName.toStdString().c_str()
+                "Ignoring unknown {} workbench found in user preferences.\n",
+                wbName.toStdString()
             );
         }
     }
@@ -531,8 +531,8 @@ QStringList DlgSettingsWorkbenchesImp::getDisabledWorkbenches()
         }
         else {
             Base::Console().log(
-                "Ignoring unknown %s workbench found in user preferences.\n",
-                wbName.toStdString().c_str()
+                "Ignoring unknown {} workbench found in user preferences.\n",
+                wbName.toStdString()
             );
         }
     }

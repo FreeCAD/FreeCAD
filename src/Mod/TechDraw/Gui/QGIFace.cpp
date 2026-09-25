@@ -189,7 +189,7 @@ void QGIFace::loadSvgHatch(std::string fileSpec)
     QString qfs(QString::fromUtf8(fileSpec.data(), fileSpec.size()));
     QFile file(qfs);
     if (!file.open(QFile::ReadOnly | QFile::Text))  {
-        Base::Console().error("QGIFace could not read %s\n", fileSpec.c_str());
+        Base::Console().error("QGIFace could not read {}\n", fileSpec);
         return;
     }
     m_svgXML = file.readAll();
@@ -309,7 +309,7 @@ void QGIFace::buildSvgHatch()
                          -overlayWidth + ih*hTile + getHatchOffset().y);
             tileCount++;
             if (tileCount > m_maxTile) {
-                Base::Console().warning("SVG tile count exceeded: %ld. Change hatch scale or raise limit.\n", tileCount);
+                Base::Console().warning("SVG tile count exceeded: {}. Change hatch scale or raise limit.\n", tileCount);
                 break;
             }
         }
@@ -392,7 +392,7 @@ void QGIFace::buildPixHatch()
                                QRectF(0, 0, wTile, hTile));  //source rect
             tileCount++;
             if (tileCount > m_maxTile) {
-                Base::Console().warning("Pixmap tile count exceeded: %ld\n",tileCount);
+                Base::Console().warning("Pixmap tile count exceeded: {}\n",tileCount);
                 break;
             }
         }
@@ -446,7 +446,7 @@ QPixmap QGIFace::textureFromBitmap(std::string fileSpec) const
     QString qfs(QString::fromUtf8(fileSpec.data(), fileSpec.size()));
     QFile file(qfs);
     if (!file.open(QFile::ReadOnly))  {
-        Base::Console().error("QGIFace could not read %s\n", fileSpec.c_str());
+        Base::Console().error("QGIFace could not read {}\n", fileSpec);
         return pix;
     }
     QByteArray bytes = file.readAll();

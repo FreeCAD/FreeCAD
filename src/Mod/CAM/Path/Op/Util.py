@@ -24,6 +24,7 @@
 
 import FreeCAD
 import Path
+import Path.Base.Util as PathUtil
 import Path.Dressup.Utils as PathDressup
 import math
 import time
@@ -590,13 +591,20 @@ def getClearedAreas(currentOp, bbox):
     workplanes has no meaningful 2D interpretation. For ops that share a
     non-Z-up Workplane the path's leading rotary G0 is stripped before
     walking so positions are read in the same rotated frame as bbox.
+
+    Frames are compared with PathUtil.sameWorkplane() rather than by hand.
+    That predicate compares tool axes only, which is correct while a
+    Workplane's origin is recorded but not consumed; when origins are
+    consumed, two operations sharing a tool axis but not an origin stop
+    being the same frame and this reuse becomes wrong. Changing the
+    predicate has to change this function with it.
     """
     clearedAreas = []
     job = currentOp.Proxy.job
     z = bbox.ZMin + job.GeometryTolerance.getValueAs("mm")
-    z_up = FreeCAD.Vector(0, 0, 1)
-    currentWp = getattr(currentOp, "Workplane", z_up)
-    rotated = not currentWp.isEqual(z_up, 1e-6)
+    identity = FreeCAD.Placement()
+    currentWp = PathUtil.workplaneForOp(currentOp)
+    rotated = not PathUtil.sameWorkplane(currentWp, identity)
     for op in job.Operations.Group:
         baseOp = PathDressup.baseOp(op)
         if baseOp.Name == currentOp.Name:
@@ -605,8 +613,7 @@ def getClearedAreas(currentOp, bbox):
             op = baseOp
         if not (getattr(baseOp, "Active", False) and op.Path):
             continue
-        opWp = getattr(baseOp, "Workplane", z_up)
-        if not opWp.isEqual(currentWp, 1e-6):
+        if not PathUtil.sameWorkplane(PathUtil.workplaneForOp(baseOp), currentWp):
             continue
         tool = baseOp.ToolController.Tool
         diameter = tool.Diameter.getValueAs("mm")

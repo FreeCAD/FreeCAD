@@ -21,17 +21,15 @@
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
+import Part
 import Path
 import Path.Op.Base as PathOp
 import Path.Op.PocketBase as PathPocketBase
+from PathScripts import PathUtils
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 
-Part = LazyLoader("Part", globals(), "Part")
-TechDraw = LazyLoader("TechDraw", globals(), "TechDraw")
-math = LazyLoader("math", globals(), "math")
-PathUtils = LazyLoader("PathScripts.PathUtils", globals(), "PathScripts.PathUtils")
 FeatureExtensions = LazyLoader("Path.Op.FeatureExtension", globals(), "Path.Op.FeatureExtension")
 
 translate = FreeCAD.Qt.translate
@@ -59,11 +57,11 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             | PathOp.FeatureBaseEdges
         )
 
-    def removeHoles(self, solids, face):
+    def removeHoles(self, solids, face, tol):
         """Create face from outer wire and remove collisions with solids"""
         outer_wire = face.OuterWire
         outer_face = Part.Face(outer_wire)
-        translate_dist = face.BoundBox.ZLength + self.tol
+        translate_dist = face.BoundBox.ZLength + tol
         outer_face.translate(FreeCAD.Vector(0, 0, translate_dist))
         new_face = outer_face.cut(solids)
         new_face.translate(FreeCAD.Vector(0, 0, -translate_dist))
@@ -113,8 +111,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         Path.Log.track()
         # self.isDebug = True if Path.Log.getLevel(Path.Log.thisModule()) == 4 else False
         self.removalshapes = []
-        avoidFeatures = list()
-        self.tol = self.job.GeometryTolerance.Value or 0.01
+        avoidFeatures = []
+        tol = self.job.GeometryTolerance.Value or 0.01
         solids = [base.Shape for base in self.model if base.Shape.Faces]
 
         # Get extensions and identify faces to avoid
@@ -167,7 +165,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             Path.Log.debug("UseOutline: {}".format(obj.UseOutline))
             Path.Log.debug("self.horiz: {}".format(self.horiz))
             if obj.UseOutline and self.horiz:
-                self.horiz = [self.removeHoles(solids, face) for face in self.horiz]
+                self.horiz = [self.removeHoles(solids, face, tol) for face in self.horiz]
 
             # Add faces for extensions
             # Note: Extension faces don't have a parent base object, so we append them directly
@@ -189,26 +187,15 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             for h in self.horizontal:
                 h.translate(FreeCAD.Vector(0.0, 0.0, obj.FinalDepth.Value - h.BoundBox.ZMin))
 
-            # extrude all faces up to StartDepth and those are the removal shapes
-            extent = FreeCAD.Vector(0, 0, obj.StartDepth.Value - obj.FinalDepth.Value)
+            # Extrude all faces up to StartDepth to get the removal shapes.
+            # Area cannot section a solid only microns tall when the face has curved edges,
+            # so extrude at least 1 mm.
+            # The extra height above StartDepth is never sectioned:
+            # the depth parameters come from the operation, not from the shape.
+            extent = FreeCAD.Vector(0, 0, max(obj.StartDepth.Value - obj.FinalDepth.Value, 1))
             self.removalshapes = [
                 (face.removeSplitter().extrude(extent), False) for face in self.horizontal
             ]
-
-        else:  # process the job base object as a whole
-            Path.Log.debug("processing the whole job base object")
-            self.outlines = [
-                Part.Face(TechDraw.findShapeOutline(base.Shape, 1, FreeCAD.Vector(0, 0, 1)))
-                for base in self.model
-            ]
-            stockBB = self.stock.Shape.BoundBox
-
-            self.bodies = []
-            for outline in self.outlines:
-                outline.translate(FreeCAD.Vector(0, 0, stockBB.ZMin - 1))
-                body = outline.extrude(FreeCAD.Vector(0, 0, stockBB.ZLength + 2))
-                self.bodies.append(body)
-                self.removalshapes.append((self.stock.Shape.cut(body), False))
 
         # Tessellate all working faces
         # for (shape, hole) in self.removalshapes:

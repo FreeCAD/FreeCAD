@@ -426,7 +426,7 @@ App::DocumentObjectExecReturn* DrawViewSection::execute()
     Base::Vector3d orgPnt = SectionOrigin.getValue();
 
     if (!isReallyInBox(gp_Pnt(orgPnt.x, orgPnt.y, orgPnt.z), centerBox)) {
-        Base::Console().warning("DVS: SectionOrigin doesn't intersect part in %s\n",
+        Base::Console().warning("DVS: SectionOrigin doesn't intersect part in {}\n",
                                 getNameInDocument());
     }
 
@@ -526,7 +526,7 @@ void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
         const TopoDS_Solid& s = TopoDS::Solid(expl.Current());
         FCBRepAlgoAPI_Cut mkCut(s, m_cuttingTool);
         if (!mkCut.IsDone()) {
-            Base::Console().warning("DVS: Section cut has failed in %s\n", getNameInDocument());
+            Base::Console().warning("DVS: Section cut has failed in {}\n", getNameInDocument());
             continue;
         }
         builder.Add(cutPieces, mkCut.Shape());
@@ -556,7 +556,7 @@ void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
     testBox.SetGap(0.0);
     if (testBox.IsVoid()) {// prism & input don't intersect.  rawShape is
                            // garbage, don't bother.
-        Base::Console().warning("DVS::makeSectionCut - prism & input don not intersect - %s\n",
+        Base::Console().warning("DVS::makeSectionCut - prism & input don not intersect - {}\n",
                                 Label.getValue());
         return;
     }
@@ -601,7 +601,7 @@ TopoDS_Shape DrawViewSection::prepareShape(const TopoDS_Shape& uncenteredCutShap
         }
     }
     catch (Standard_Failure& e1) {
-        Base::Console().warning("DVS::prepareShape - failed to build shape %s - %s **\n",
+        Base::Console().warning("DVS::prepareShape - failed to build shape {} - {} **\n",
                                 getNameInDocument(),
                                 e1.GetMessageString());
     }
@@ -639,10 +639,60 @@ void DrawViewSection::onSectionCutFinished()
     postSectionCutTasks();
 
     // display geometry for cut shape is in geometryObject as in DVP
-    m_tempGeometryObject = buildGeometryObject(m_preparedShape, getProjectionCS());
+    m_tempGeometryObject = buildGeometryObject(getShapeForGeometryBuild(), getProjectionCS());
     if (!DU::isGuiUp()) {
         onHlrFinished();
     }
+}
+
+TopoDS_Shape DrawViewSection::getShapeForGeometryBuild() const
+{
+    return m_preparedShape;
+}
+
+void DrawViewSection::assignFaceRepresentations(const std::vector<TechDraw::FacePtr>& faces,
+                                                const std::vector<TopoDS_Face>& occFaces)
+{
+    showProgressMessage(getNameInDocument(), "is mapping section faces");
+
+    // Take the projector used for HLR when building the geometry
+    HLRAlgo_Projector projector = geometryObject->getProjector(getProjectionCS());
+
+    // Collect the 3D faces identified as sections
+    std::vector<TopoDS_Face> sectionFaces;
+    for (TopExp_Explorer explorer(unprojectedSectionFaces, TopAbs_FACE); explorer.More(); explorer.Next()) {
+        sectionFaces.push_back(TopoDS::Face(explorer.Current()));
+    }
+
+    // Clear the unprojected 3D faces compound, it is no longer needed
+    unprojectedSectionFaces.Nullify();
+
+    // Map the 2D drawing faces to the 3D model section faces
+    auto mapping = ShapeUtils::mapImageFacesToModelFaces(occFaces, sectionFaces, projector, false);
+
+    // Process the mapping result and mark sections + errors
+    BRep_Builder builder;
+    builder.MakeCompound(m_sectionTopoDSFaces);
+    for (auto it = mapping.cbegin(); it != mapping.cend(); it++) {
+        if (it->second < 0) {
+            // Mark the mapping failure for this face
+            faces[it->first]->setRepresentation(FaceRepresentation::Failed);
+        }
+        else {
+            // This face was identified as 2D projection od a 3D section face
+            faces[it->first]->setRepresentation(FaceRepresentation::Sliced);
+            builder.Add(m_sectionTopoDSFaces, occFaces[it->first]);
+        }
+    }
+
+    // Finally, create all geometry section faces from the OCC section faces
+    for (TopExp_Explorer explorer(m_sectionTopoDSFaces, TopAbs_FACE); explorer.More(); explorer.Next()) {
+        TechDraw::FacePtr sectionFace = std::make_shared<TechDraw::Face>(TopoDS::Face(explorer.Current()));
+        m_tdSectionFaces.push_back(sectionFace);
+    }
+
+    // Once the section faces were marked, process the rest of 2D faces in a standard way
+    DrawViewPart::assignFaceRepresentations(faces, occFaces);
 }
 
 // activities that depend on updated geometry object
@@ -666,14 +716,6 @@ void DrawViewSection::postHlrTasks()
     }
     if (debugSection()) {
         BRepTools::Write(faceIntersections, "DVSFaceIntersections.brep");// debug
-    }
-
-    TopoDS_Shape centeredFaces = ShapeUtils::moveShape(faceIntersections, SectionOrigin.getValue() * -1.0);
-
-    TopoDS_Shape scaledSection = ShapeUtils::scaleShape(centeredFaces, getScale());
-    if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
-        scaledSection =
-            ShapeUtils::rotateShape(scaledSection, getProjectionCS(), Rotation.getValue());
     }
 
     m_sectionTopoDSFaces = alignSectionFaces(faceIntersections);
@@ -726,7 +768,7 @@ TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shap
     if (shape.IsNull()) {
         // this shouldn't happen
         Base::Console().warning(
-            "DrawViewSection::findSectionPlaneInter - %s - input shape is Null\n",
+            "DrawViewSection::findSectionPlaneInter - {} - input shape is Null\n",
             getNameInDocument());
         return {};
     }
@@ -763,18 +805,16 @@ TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shap
 // move section faces to line up with cut shape
 TopoDS_Compound DrawViewSection::alignSectionFaces(const TopoDS_Shape& faceIntersections)
 {
-    TopoDS_Compound sectionFaces;
-    TopoDS_Shape centeredShape =
-        ShapeUtils::moveShape(faceIntersections, SectionOrigin.getValue() * -1.0);
-
-    TopoDS_Shape scaledSection = ShapeUtils::scaleShape(centeredShape, getScale());
-    if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
-        scaledSection =
-            ShapeUtils::rotateShape(scaledSection, getProjectionCS(), Rotation.getValue());
-    }
-
+    TopoDS_Shape scaledSection = scaleAndRotate(ShapeUtils::centerShape(faceIntersections, SectionOrigin.getValue()));
     if (debugSection()) {
         BRepTools::Write(scaledSection, "DVSScaledSectionFaces.brep");
+    }
+
+    if (handleFaces() && Preferences::faceFinderVersion() == FaceFinderVersion::v26_3 && identifyVoids()) {
+        // Face Finder v26.3 with voids identification active constructs projected section faces once all drawing faces
+        // are extracted, thus here we will only store the 3D section faces for later use and return an empty compound
+        unprojectedSectionFaces = TopoDS::Compound(scaledSection);
+        return TopoDS_Compound();
     }
 
     return mapToPage(scaledSection);
@@ -787,7 +827,7 @@ TopoDS_Compound DrawViewSection::mapToPage(const TopoDS_Shape& shapeToAlign)
     // stdZ);
     // project the faces in the shapeToAlign, build new faces from the resulting
     // wires and combine everything into a compound of faces
-    //    Base::Console().message("DVS::mapToPage() - shapeToAlign.null: %d\n",
+    //    Base::Console().message("DVS::mapToPage() - shapeToAlign.null: {}\n",
     //    shapeToAlign.IsNull());
     if (debugSection()) {
         BRepTools::Write(shapeToAlign, "DVSShapeToAlign.brep");// debug
@@ -850,7 +890,7 @@ TopoDS_Compound DrawViewSection::mapToPage(const TopoDS_Shape& shapeToAlign)
             // this may or may not be significant.  In the offset or noparallel
             // strategies, a profile segment that is parallel to the SectionNormal
             // will not generate a face.
-            Base::Console().log("DVS::mapToPage - %s - section face has no valid wires.\n",
+            Base::Console().log("DVS::mapToPage - {} - section face has no valid wires.\n",
                                 getNameInDocument());
             continue;
         }
@@ -901,7 +941,7 @@ TopoDS_Shape DrawViewSection::makeFaceFromWires(std::vector<TopoDS_Wire>& inWire
         }
 
         if (!mkFace.IsDone()) {
-            Base::Console().warning("DVS::makeFaceFromWires - %s - failed to make section face.\n",
+            Base::Console().warning("DVS::makeFaceFromWires - {} - failed to make section face.\n",
                                     getNameInDocument());
             return {};
         }
@@ -921,24 +961,9 @@ std::vector<TechDraw::FacePtr> DrawViewSection::makeTDSectionFaces(const TopoDS_
 {
     //    Base::Console().message("DVS::makeTDSectionFaces()\n");
     std::vector<TechDraw::FacePtr> tdSectionFaces;
-    TopExp_Explorer sectionExpl(topoDSFaces, TopAbs_FACE);
-    for (; sectionExpl.More(); sectionExpl.Next()) {
-        const TopoDS_Face& face = TopoDS::Face(sectionExpl.Current());
-        TechDraw::FacePtr sectionFace(std::make_shared<TechDraw::Face>());
-        TopExp_Explorer expFace(face, TopAbs_WIRE);
-        for (; expFace.More(); expFace.Next()) {
-            auto* w = new TechDraw::Wire();
-            const TopoDS_Wire& wire = TopoDS::Wire(expFace.Current());
-            TopExp_Explorer expWire(wire, TopAbs_EDGE);
-            for (; expWire.More(); expWire.Next()) {
-                const TopoDS_Edge& edge = TopoDS::Edge(expWire.Current());
-                TechDraw::BaseGeomPtr e = BaseGeom::baseFactory(edge);
-                if (e) {
-                    w->geoms.push_back(e);
-                }
-            }
-            sectionFace->wires.push_back(w);
-        }
+
+    for (TopExp_Explorer sectionExpl(topoDSFaces, TopAbs_FACE); sectionExpl.More(); sectionExpl.Next()) {
+        TechDraw::FacePtr sectionFace = std::make_shared<TechDraw::Face>(TopoDS::Face(sectionExpl.Current()));
         tdSectionFaces.push_back(sectionFace);
     }
 
@@ -1152,7 +1177,7 @@ gp_Ax2 DrawViewSection::getSectionCS() const
         sectionCS = gp_Ax2(gOrigin, gNormal, gXDir);
     }
     catch (...) {
-        Base::Console().error("DVS::getSectionCS - %s - failed to create section CS\n",
+        Base::Console().error("DVS::getSectionCS - {} - failed to create section CS\n",
                               getNameInDocument());
     }
     return sectionCS;
@@ -1295,9 +1320,9 @@ void DrawViewSection::makeLineSets()
     std::string fileSpec = PatIncluded.getValue();
     Base::FileInfo fi(fileSpec);
     if (!fi.isReadable()) {
-        Base::Console().message("%s can not read hatch file: %s\n",
+        Base::Console().message("{} can not read hatch file: {}\n",
                                 getNameInDocument(),
-                                fileSpec.c_str());
+                                fileSpec);
         return;
     }
 

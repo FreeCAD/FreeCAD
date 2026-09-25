@@ -1273,7 +1273,7 @@ void CmdPartMakeSolid::activated(int iMsg)
             label = Base::Tools::escapeEncodeString(label);
             if (type == TopAbs_SOLID) {
                 Base::Console().message(
-                    "%s is ignored because it is already a solid.\n",
+                    "{} is ignored because it is already a solid.\n",
                     it->Label.getValue()
                 );
             }
@@ -1301,7 +1301,7 @@ void CmdPartMakeSolid::activated(int iMsg)
             }
             else {
                 Base::Console().message(
-                    "%s is ignored because it is neither a shell nor a compound.\n",
+                    "{} is ignored because it is neither a shell nor a compound.\n",
                     it->Label.getValue()
                 );
             }
@@ -1312,7 +1312,7 @@ void CmdPartMakeSolid::activated(int iMsg)
                 }
             }
             catch (const Base::Exception& e) {
-                Base::Console().error("Cannot convert %s because %s.\n", it->Label.getValue(), e.what());
+                Base::Console().error("Cannot convert {} because {}.\n", it->Label.getValue(), e.what());
             }
         }
     }
@@ -1381,7 +1381,7 @@ void CmdPartReverseShape::activated(int iMsg)
                 copyVisual(name.c_str(), "PointColor", it->getNameInDocument());
             }
             catch (const Base::Exception& e) {
-                Base::Console().error("Cannot convert %s because %s.\n", it->Label.getValue(), e.what());
+                Base::Console().error("Cannot convert {} because {}.\n", it->Label.getValue(), e.what());
             }
         }
     }
