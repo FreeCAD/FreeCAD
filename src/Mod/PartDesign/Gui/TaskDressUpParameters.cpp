@@ -121,106 +121,8 @@ void TaskDressUpParameters::referenceSelected(const SelectionChanges& msg, QList
     const std::string_view subName {msg.pSubName};
     std::vector<std::string> refs = pcDressUp->Base.getSubValues();
 
-    const bool convertFaceToSolid = subName.starts_with("Face") && !allowFaces && allowSolids;
-    const bool convertEdgeToSolid = subName.starts_with("Edge") && !allowEdges && allowSolids;
 
-    if (convertFaceToSolid || convertEdgeToSolid) {
-        const auto* feature = dynamic_cast<const Part::Feature*>(base);
-
-        if (feature) {
-            const Part::TopoShape& topoShape = feature->Shape.getShape();
-            const TopoDS_Shape& shape = topoShape.getShape();
-
-            // TopoDS_Shape -> SolidN name.
-            TopTools_IndexedMapOfShape solids;
-            TopExp::MapShapes(shape, TopAbs_SOLID, solids);
-
-            // Face/Edge -> Containing solid
-            TopTools_IndexedDataMapOfShapeListOfShape ancestors;
-
-            const TopAbs_ShapeEnum subShapeType = convertFaceToSolid ? TopAbs_FACE : TopAbs_EDGE;
-
-            TopExp::MapShapesAndAncestors(shape, subShapeType, TopAbs_SOLID, ancestors);
-
-            const TopoDS_Shape selected = topoShape.getSubShape(msg.pSubName, true);
-
-            if (!selected.IsNull() && ancestors.Contains(selected)) {
-                const auto& solidAncestors = ancestors.FindFromKey(selected);
-
-                if (!solidAncestors.IsEmpty()) {
-                    const int solidIndex = solids.FindIndex(solidAncestors.First());
-
-                    if (solidIndex > 0) {
-                        const std::string solidName = "Solid" + std::to_string(solidIndex);
-
-                        const auto solidIt = std::ranges::find(refs, solidName);
-
-                        if (solidIt != refs.end()) {
-                            // toggle solid off
-                            refs.erase(solidIt);
-
-                            removeItemFromListWidget(widget, solidName.c_str());
-                        }
-                        else {
-                            if (solidNoSubShapes) {
-                                // replace faces/edges of the same solid if needed
-                                TopTools_IndexedMapOfShape faces;
-                                TopTools_IndexedMapOfShape edges;
-
-                                TopExp::MapShapes(shape, TopAbs_FACE, faces);
-                                TopExp::MapShapes(shape, TopAbs_EDGE, edges);
-
-                                const TopoDS_Shape& solid = solids(solidIndex);
-
-                                for (TopExp_Explorer exp(solid, TopAbs_FACE); exp.More(); exp.Next()) {
-                                    const int faceIndex = faces.FindIndex(exp.Current());
-
-                                    if (faceIndex > 0) {
-                                        const std::string faceName = "Face"
-                                            + std::to_string(faceIndex);
-
-                                        if (const auto it = std::ranges::find(refs, faceName);
-                                            it != refs.end()) {
-
-                                            refs.erase(it);
-
-                                            removeItemFromListWidget(widget, faceName.c_str());
-                                        }
-                                    }
-                                }
-
-                                for (TopExp_Explorer exp(solid, TopAbs_EDGE); exp.More(); exp.Next()) {
-                                    const int edgeIndex = edges.FindIndex(exp.Current());
-
-                                    if (edgeIndex > 0) {
-                                        const std::string edgeName = "Edge"
-                                            + std::to_string(edgeIndex);
-
-                                        if (const auto it = std::ranges::find(refs, edgeName);
-                                            it != refs.end()) {
-
-                                            refs.erase(it);
-
-                                            removeItemFromListWidget(widget, edgeName.c_str());
-                                        }
-                                    }
-                                }
-                            }
-
-                            refs.push_back(solidName);
-
-                            widget->addItem(QString::fromStdString(solidName));
-                        }
-
-                        updateFeature(pcDressUp, refs);
-                        return;
-                    }
-                }
-            }
-        }
-    }
-
-    // normal face/edge selection
+    // Normal face/edge selection.
     if (const auto f = std::ranges::find(refs, subName); f != refs.end()) {
         refs.erase(f);
         removeItemFromListWidget(widget, msg.pSubName);
@@ -740,6 +642,7 @@ void TaskDressUpParameters::setSelectionMode(selectionModes mode)
 
     selectionMode = mode;
     setButtons(mode);
+    DressUpView->setFaceAsSolids(selectSolids);
 
     if (mode == none) {
         // remove any highlights and selections
@@ -760,19 +663,20 @@ void TaskDressUpParameters::setSelectionMode(selectionModes mode)
         DressUpView->showPreviousFeature(true);
     }
     setSelectionGate();
-    Gui::Selection().clearSelection();
+    Selection().clearSelection();
 }
+
 void TaskDressUpParameters::setSelectionGate()
 {
     if (selectionMode == none) {
-        Gui::Selection().rmvSelectionGate();
+        Selection().rmvSelectionGate();
     }
     else {
         AllowSelectionFlags allow;
         allow.setFlag(AllowSelection::SOLID, allowSolids);
         allow.setFlag(AllowSelection::EDGE, allowEdges);
         allow.setFlag(AllowSelection::FACE, allowFaces);
-        Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), allow));
+        Selection().addSelectionGate(new ReferenceSelection(this->getBase(), allow));
     }
 }
 
