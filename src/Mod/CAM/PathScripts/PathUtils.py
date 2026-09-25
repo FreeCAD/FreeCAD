@@ -29,12 +29,16 @@ import Part
 import Path
 import Path.Main.Job as PathJob
 
-# Re-exported: they live in Path.Base.Util so the post can import them
-# without pulling in the Job (which imports the post).
-from Path.Base.Util import applyPlacementToPath, getPathWithPlacement  # noqa: F401
+import Path.Base.Util as PathUtil
 import math
 from numpy import linspace
 import tsp_solver
+
+# Path placement lives in Path.Base.Util, so the post can import it without
+# pulling in the Job (which imports the post). Kept here under the names the
+# legacy post scripts and everything else have always used.
+applyPlacementToPath = PathUtil.applyPlacementToPath
+getPathWithPlacement = PathUtil.getPathWithPlacement
 
 translate = FreeCAD.Qt.translate
 

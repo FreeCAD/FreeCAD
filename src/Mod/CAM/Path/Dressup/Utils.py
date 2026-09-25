@@ -24,7 +24,6 @@
 import FreeCAD
 import Path
 import Path.Base.Util as PathUtil
-from Path.Base.Util import baseOp  # noqa: F401  (re-exported; used below)
 
 translate = FreeCAD.Qt.translate
 
@@ -63,6 +62,11 @@ def isOp(obj):
         return False
     proxy = obj.Proxy.__module__
     return "Path.Op" in proxy or "Path.Dressup" in proxy
+
+
+# The base of a dressup chain is found in Path.Base.Util, where the work
+# plane accessor needs it; it stays reachable here as PathDressup.baseOp.
+baseOp = PathUtil.baseOp
 
 
 def placeWithBase(obj):
