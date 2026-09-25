@@ -1512,14 +1512,21 @@ void ProfileBased::getAxis(
             throw Base::ValueError("No rotation axis reference specified");
         }
         const Part::Feature* refFeature = static_cast<const Part::Feature*>(pcReferenceAxis);
-        Part::TopoShape refShape = refFeature->Shape.getShape();
-        TopoDS_Shape ref;
-        try {
-            // if an exception is raised then convert it into a FreeCAD-specific exception
-            ref = refShape.getSubShape(subReferenceAxis[0].c_str());
+        Part::TopoShape refShape = Part::Feature::getTopoShape(
+            refFeature,
+            Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink,
+            subReferenceAxis[0].c_str()
+        );
+
+        Base::Placement transform = refFeature->Placement.getValue();
+        if (auto* body = Body::findBodyOf(this)) {
+            transform = body->globalPlacement().inverse() * refFeature->globalPlacement();
         }
-        catch (const Standard_Failure& e) {
-            throw Base::RuntimeError(e.GetMessageString());
+        refShape.transformShape(transform.toMatrix(), false, true);
+
+        const TopoDS_Shape& ref = refShape.getShape();
+        if (ref.IsNull()) {
+            throw Base::RuntimeError("Failed to extract rotation edge");
         }
 
         if (ref.ShapeType() == TopAbs_EDGE) {

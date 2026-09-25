@@ -117,9 +117,13 @@ class DocumentObject(ExtensionContainer):
         """
         ...
 
-    def touch(self) -> None:
+    def touch(self, property_name: str = ..., /) -> None:
         """
         Mark the object as changed (touched)
+
+        With no argument the object is then forced to recompute. With an empty string as the
+        argument, this marks the object as touched *without* forcing a recompute. Finally, if a
+        property name is passed, this only touches that property.
         """
         ...
 
@@ -295,7 +299,7 @@ class DocumentObject(ExtensionContainer):
         """
         ...
 
-    def getPathsByOutList(self) -> list:
+    def getPathsByOutList(self, target: DocumentObject, /) -> list[list[DocumentObject]]:
         """
         Get all paths from this object to another object following the OutList.
         """

@@ -721,10 +721,15 @@ class ObjectWaterline(PathOp.ObjectOp):
 
     def opUpdateDepths(self, obj):
         if hasattr(obj, "Base") and obj.Base:
-            base, sublist = obj.Base[0]
+            # Read base geometry through baseShapes() rather than from obj.Base
+            # directly, so that an operation with a rotated workplane computes
+            # its depth in the frame its path is generated in. With no rotation
+            # active baseShapes() yields obj.Base unchanged.
+            baseShapes = list(self.baseShapes(obj))
+            base, sublist = baseShapes[0]
             fbb = base.Shape.getElement(sublist[0]).BoundBox
             zmin = fbb.ZMax
-            for base, sublist in obj.Base:
+            for base, sublist in baseShapes:
                 for sub in sublist:
                     try:
                         fbb = base.Shape.getElement(sub).BoundBox
