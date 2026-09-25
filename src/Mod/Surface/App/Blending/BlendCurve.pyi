@@ -28,9 +28,10 @@ class BlendCurve(PyObjectBase):
         """
         ...
 
-    def setSize(self) -> Any:
+    def setSize(self, index: int, size: float, relative: bool, /) -> None:
         """
         Set the tangent size of the blendpoint at given index.
+
         If relative is true, the size is considered relative to the distance between the two blendpoints.
         myBlendCurve.setSize(idx, size, relative)
         """
