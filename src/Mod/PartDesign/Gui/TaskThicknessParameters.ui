@@ -27,17 +27,12 @@
       <widget class="QComboBox" name="selectionMode">
        <item>
         <property name="text">
-         <string>Selected Faces</string>
+         <string>Open Thickness</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Selected Solids</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>All Solids</string>
+         <string>Closed Thickness</string>
         </property>
        </item>
       </widget>
@@ -64,7 +59,20 @@
 - double-click on an item to see the features</string>
      </property>
      <property name="selectionMode">
-      <enum>QAbstractItemView::SelectionMode::MultiSelection</enum>
+      <enum>QAbstractItemView::NoSelection</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="selectAllSolids">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="text">
+      <string>All solids</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
