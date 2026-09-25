@@ -106,13 +106,21 @@ void TaskThicknessParameters::initControls()
     int join = static_cast<int>(thickness->Join.getValue());
     ui->joinComboBox->setCurrentIndex(join);
 
-    int selectionMode = static_cast<int>(thickness->Selection.getValue());
-    ui->selectionMode->setCurrentIndex(selectionMode);
+    auto selectionMode = static_cast<Thickness::SelectionMode>(thickness->Selection.getValue());
+    ui->selectionMode->setCurrentIndex(
+        static_cast<int>(
+            selectionMode == Thickness::SelectionMode::AllSolids
+                ? Thickness::SelectionMode::SelectedSolids
+                : selectionMode
+        )
+    );
 
-    const bool enableSelection = selectionMode
-        != static_cast<int>(Thickness::SelectionMode::AllSolids);
+    bool enableSelection = selectionMode != Thickness::SelectionMode::AllSolids;
     ui->listWidgetReferences->setEnabled(enableSelection);
     ui->buttonRefSel->setEnabled(enableSelection);
+
+    ui->selectAllSolids->setEnabled(selectionMode != Thickness::SelectionMode::SelectedFaces);
+    ui->selectAllSolids->setChecked(selectionMode == Thickness::SelectionMode::AllSolids);
 
     if (strings.empty()) {
         setSelectionMode(refSel);
@@ -140,7 +148,9 @@ void TaskThicknessParameters::setupConnections()
     connect(ui->joinComboBox, qOverload<int>(&QComboBox::currentIndexChanged),
     this, &TaskThicknessParameters::onJoinTypeChanged);
     connect(ui->selectionMode, qOverload<int>(&QComboBox::currentIndexChanged),
-            this, &TaskThicknessParameters::onSelectionModeChanged);
+    this, &TaskThicknessParameters::onSelectionModeChanged);
+    connect(ui->selectAllSolids, &QCheckBox::toggled,
+            this, &TaskThicknessParameters::onSelectAllSolidsChanged);
 
     // Create context menu
     createDeleteAction(ui->listWidgetReferences);
@@ -155,17 +165,42 @@ void TaskThicknessParameters::setupConnections()
     // clang-format on
 }
 
-void TaskThicknessParameters::onSelectionModeChanged(int selectionMode)
+void TaskThicknessParameters::onSelectAllSolidsChanged(bool on)
 {
+    const auto newValue = on
+            && ui->selectionMode->currentIndex()
+                == static_cast<int>(Thickness::SelectionMode::SelectedSolids)
+        ? Thickness::SelectionMode::AllSolids
+        : static_cast<Thickness::SelectionMode>(ui->selectionMode->currentIndex());
+
     if (Thickness* thickness = onBeforeChange()) {
-        thickness->Selection.setValue(selectionMode);
+        thickness->Selection.setValue(static_cast<int>(newValue));
         onAfterChange(thickness);
     }
 
-    const bool enableSelection = selectionMode
-        != static_cast<int>(Thickness::SelectionMode::AllSolids);
+    ui->listWidgetReferences->setEnabled(!on);
+    ui->buttonRefSel->setEnabled(!on);
+
+    ui->selectAllSolids->setEnabled(newValue != Thickness::SelectionMode::SelectedFaces);
+}
+
+void TaskThicknessParameters::onSelectionModeChanged(int selectionMode)
+{
+    const auto newValue = selectionMode == static_cast<int>(Thickness::SelectionMode::SelectedSolids)
+            && ui->selectAllSolids->isChecked()
+        ? Thickness::SelectionMode::AllSolids
+        : static_cast<Thickness::SelectionMode>(selectionMode);
+
+    if (Thickness* thickness = onBeforeChange()) {
+        thickness->Selection.setValue(static_cast<int>(newValue));
+        onAfterChange(thickness);
+    }
+
+    const bool enableSelection = newValue != Thickness::SelectionMode::AllSolids;
     ui->listWidgetReferences->setEnabled(enableSelection);
     ui->buttonRefSel->setEnabled(enableSelection);
+
+    ui->selectAllSolids->setEnabled(newValue != Thickness::SelectionMode::SelectedFaces);
 }
 
 void TaskThicknessParameters::onSelectionChanged(const Gui::SelectionChanges& msg)

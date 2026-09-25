@@ -39,9 +39,9 @@ class PartDesignExport Thickness: public DressUp
 public:
     enum class SelectionMode
     {
-        SelectedFaces,
-        SelectedSolids,
-        AllSolids
+        SelectedFaces = 0,
+        SelectedSolids = 1,
+        AllSolids = 2  // option only accessible via checkbox
     };
     // enum class ThicknessMode : int16_t {
     //     Skin = BRepOffset_Skin,

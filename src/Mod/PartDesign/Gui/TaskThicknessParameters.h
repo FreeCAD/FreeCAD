@@ -71,6 +71,7 @@ private Q_SLOTS:
     void onIntersectionChanged(bool on);
     void onRefDeleted() override;
     void onSelectionModeChanged(int selectionMode);
+    void onSelectAllSolidsChanged(bool on);
 
 protected:
     void setButtons(const selectionModes mode) override;
