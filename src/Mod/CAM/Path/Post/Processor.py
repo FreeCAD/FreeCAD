@@ -51,6 +51,7 @@ from Path.Post.UtilsParse import format_command_line
 from Path.Post.PathOptimizationUtils import modal_gcode, modal_axis
 from Path.Post.CAMErrors import CAMError, CAMValueError, CAMAttributeError, CAMNotImplementedError
 from Path.Base.MachineState import MachineState
+import Path.Base.Util as PathUtil
 from Machine.models.machine import MachineFactory, OutputUnits, ToolheadType
 
 translate = FreeCAD.Qt.translate
@@ -2078,8 +2079,6 @@ class PostProcessor:
         """The operations this export covers: the selected ones or the Job's,
         minus any that are inactive - the same set the post list is built
         from. A disabled operation must not block or colour the output."""
-        import Path.Base.Util as PathUtil
-
         return [op for op in self._operations if PathUtil.activeForOp(op)]
 
     def _solve_pose(self, placement, chain):
@@ -2217,10 +2216,6 @@ class PostProcessor:
         import Path.Base.Generator.rotation as rotation
         from Machine.models.machine import RotationStrategy
 
-        # Imported here, not at module level: PathUtils imports the Job, and
-        # the Job imports this module.
-        import PathScripts.PathUtils as PathUtils
-
         machine = self._machine
         strategy = self._rotation_strategy()
         chain = rotation.build_kinematic_chain(machine) if strategy is not None else []
@@ -2283,7 +2278,7 @@ class PostProcessor:
                     if fixture_change:
                         new_items.append(self._fixture_postable(fixture_change))
                         selected = fixture_change
-                    item.path = PathUtils.applyPlacementToPath(placement, item.path)
+                    item.path = PathUtil.applyPlacementToPath(placement, item.path)
                     new_items.append(item)
                     continue
 
@@ -2322,7 +2317,7 @@ class PostProcessor:
                         FreeCAD.Vector(0, 0, 0), machine_rotation
                     ).multiply(placement)
                     if not to_machine.isIdentity(1e-9):
-                        item.path = PathUtils.applyPlacementToPath(to_machine, item.path)
+                        item.path = PathUtil.applyPlacementToPath(to_machine, item.path)
                 new_items.append(item)
 
             if declared:
@@ -3993,15 +3988,13 @@ class WrapperPost(PostProcessor):
         """An operation on a work plane stores its path in the plane's frame;
         a legacy script reads the path it is given as world coordinates. Place
         each one, as the current posts do in _expand_workplane_frames."""
-        import PathScripts.PathUtils as PathUtils
-
         for _, items in postables:
             for item in items:
                 if item.item_type != "operation" or item.source is None:
                     continue
                 placement = getattr(item.source, "Placement", None)
                 if placement is not None and not placement.isIdentity(1e-9):
-                    item.path = PathUtils.applyPlacementToPath(placement, item.path)
+                    item.path = PathUtil.applyPlacementToPath(placement, item.path)
                     item.data["placed"] = True
 
     @property

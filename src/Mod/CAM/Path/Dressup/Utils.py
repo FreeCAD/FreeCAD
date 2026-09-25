@@ -21,6 +21,8 @@
 
 import FreeCAD
 import Path
+import Path.Base.Util as PathUtil
+from Path.Base.Util import baseOp  # noqa: F401  (re-exported; used below)
 
 translate = FreeCAD.Qt.translate
 
@@ -61,17 +63,6 @@ def isOp(obj):
     return "Path.Op" in proxy or "Path.Dressup" in proxy
 
 
-def baseOp(obj):
-    """baseOp(obj) ... return the base operation underlying the given path object"""
-    if (
-        getattr(obj, "Proxy", None)
-        and obj.Proxy.__module__.startswith("Path.Dressup")
-        and getattr(obj, "Base", None)
-    ):
-        return baseOp(obj.Base)
-    return obj
-
-
 def placeWithBase(obj):
     """placeWithBase(obj) ... carry the base operation's frame.
 
@@ -81,8 +72,6 @@ def placeWithBase(obj):
     operation's does, so the simulators, Inspect and the posts read a dressup
     exactly as they read an operation. The frame is never stored on the
     dressup: it is read through the base on every execute and written here."""
-    import Path.Base.Util as PathUtil
-
     placement = getattr(obj, "Placement", None)
     if placement is None:
         return  # a test double without one
