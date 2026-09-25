@@ -69,7 +69,6 @@ private Q_SLOTS:
     void onRefDeleted() override;
     void onSelectionModeChanged(int selectionMode);
     void onCenteringValueChanged(double value);
-    void onCenteringChanged(int value);
     void onSetInside();
     void onSetRectoVerso();
     void onSetOutside();
@@ -85,6 +84,7 @@ private:
     void setupConnections();
     PartDesign::Thickness* onBeforeChange();
     void onAfterChange(PartDesign::Thickness* obj);
+    void setCenteringValue(double size);
 
 private:
     std::unique_ptr<Ui_TaskThicknessParameters> ui;

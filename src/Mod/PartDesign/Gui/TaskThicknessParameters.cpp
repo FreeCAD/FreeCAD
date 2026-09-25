@@ -101,7 +101,6 @@ void TaskThicknessParameters::initControls()
     ui->buttonRefSel->setEnabled(enableSelection);
 
     const double centering = thickness->Centering.getValue();
-    ui->centering->setValue(centering * 100);
     ui->centeringValue->setMinimum(-1);
     ui->centeringValue->setMaximum(1);
     ui->centeringValue->setValue(centering);
@@ -129,7 +128,6 @@ void TaskThicknessParameters::setupConnections()
     this, &TaskThicknessParameters::onJoinTypeChanged);
     connect(ui->selectionMode, qOverload<int>(&QComboBox::currentIndexChanged),
             this, &TaskThicknessParameters::onSelectionModeChanged);
-    connect(ui->centering, qOverload<int>(&QSlider::valueChanged), this, &TaskThicknessParameters::onCenteringChanged);
     connect(ui->centeringValue, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &TaskThicknessParameters::onCenteringValueChanged);
     connect(ui->centerButton, &QPushButton::clicked, this, &TaskThicknessParameters::onSetRectoVerso);
     connect(ui->insideButton, &QPushButton::clicked, this, &TaskThicknessParameters::onSetInside);
@@ -208,43 +206,36 @@ void TaskThicknessParameters::onValueChanged(double size)
     }
 }
 
-double TaskThicknessParameters::getCentering() const
-{
-    return ui->centeringValue->value().getValue();
-}
-
 void TaskThicknessParameters::onCenteringValueChanged(double size)
 {
     if (Thickness* thickness = onBeforeChange()) {
         thickness->Centering.setValue(size);
         onAfterChange(thickness);
     }
-    ui->centering->setValue(size * 100);
-}
-
-void TaskThicknessParameters::onCenteringChanged(int size)
-{
-    const double val = size / 100.0;
-    if (Thickness* thickness = onBeforeChange()) {
-        thickness->Centering.setValue(val);
-        onAfterChange(thickness);
-    }
-    ui->centeringValue->setValue(val);
 }
 
 void TaskThicknessParameters::onSetInside()
 {
-    onCenteringValueChanged(-1);
+    setCenteringValue(-1);
 }
 
 void TaskThicknessParameters::onSetRectoVerso()
 {
-    onCenteringValueChanged(0);
+    setCenteringValue(0);
 }
 
 void TaskThicknessParameters::onSetOutside()
 {
-    onCenteringValueChanged(1);
+    setCenteringValue(1);
+}
+
+void TaskThicknessParameters::setCenteringValue(double size)
+{
+    if (Thickness* thickness = onBeforeChange()) {
+        thickness->Centering.setValue(size);
+        ui->centeringValue->setValue(size);
+        onAfterChange(thickness);
+    }
 }
 
 void TaskThicknessParameters::onJoinTypeChanged(int join)
@@ -280,8 +271,12 @@ bool TaskThicknessParameters::getIntersection() const
 
 int TaskThicknessParameters::getJoinType() const
 {
-
     return ui->joinComboBox->currentIndex();
+}
+
+double TaskThicknessParameters::getCentering() const
+{
+    return ui->centeringValue->value().getValue();
 }
 
 TaskThicknessParameters::~TaskThicknessParameters()

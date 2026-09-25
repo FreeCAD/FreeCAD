@@ -144,28 +144,6 @@
     </layout>
    </item>
    <item>
-    <widget class="QSlider" name="centering">
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;-1 = Thickness towards the inside&lt;/p&gt;&lt;p&gt;0 = Recto Verso (centered around wall)&lt;/p&gt;&lt;p&gt;+1 = Thickness towards the outside&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="minimum">
-      <number>-100</number>
-     </property>
-     <property name="maximum">
-      <number>100</number>
-     </property>
-     <property name="singleStep">
-      <number>1</number>
-     </property>
-     <property name="pageStep">
-      <number>10</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QPushButton" name="insideButton">
