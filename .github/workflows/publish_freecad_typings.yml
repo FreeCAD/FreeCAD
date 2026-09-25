@@ -30,6 +30,8 @@
 #    release will have but with a suffix of "rcN".
 # 3) (no suffix -- e.g. a real release) - publishes to the real PyPI as a full release. The API version is taken from
 #    src/Tools/typing/api_version.json and the patch version is auto-incremented from the last published version.
+#
+# Only a branch can be dispatched: a tag is refused, so a release is never cut from one by accident.
 
 name: Publish freecad-typings
 
@@ -76,6 +78,7 @@ jobs:
         id: target
         env:
           REF_NAME: ${{ github.ref_name }}
+          REF_TYPE: ${{ github.ref_type }}
           RUN_NUMBER: ${{ github.run_number }}
         run: |
           python3 - <<'PY' >> "$GITHUB_OUTPUT"
@@ -85,6 +88,12 @@ jobs:
 
           # Only the "is this branch ready to publish" policy lives here; which suffixes are
           # publishable, and what they render as, belongs to stubgen.project.
+          if os.environ["REF_TYPE"] != "branch":
+              sys.exit(
+                  "Refusing to publish: dispatch this workflow from a branch, not from the "
+                  f"{os.environ['REF_TYPE']} {os.environ['REF_NAME']!r}."
+              )
+
           if os.environ["REF_NAME"].startswith("releases/"):
               try:
                   with open("version.json", encoding="utf-8") as f:
