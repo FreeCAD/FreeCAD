@@ -3837,7 +3837,7 @@ void TopoShape::getLinesFromSubShape(
             // must provide this triangulation
 
             // Look for one face the edge belongs to (it doesn't care which one we take).
-	    // The edge->face map is built once and kept in the shape cache.
+            // The edge->face map is built once and kept in the shape cache.
             const TopoDS_Shape face = findAncestorShape(aEdge, TopAbs_FACE);
             if (face.IsNull()) {
                 continue;
