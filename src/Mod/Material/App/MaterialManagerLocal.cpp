@@ -24,8 +24,6 @@
 #include <random>
 
 #include <QDirIterator>
-#include <QMutex>
-#include <QMutexLocker>
 
 #include <App/Application.h>
 #include <App/Material.h>
@@ -48,7 +46,7 @@ std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>>
     MaterialManagerLocal::_libraryList = nullptr;
 std::shared_ptr<std::map<std::string, std::shared_ptr<Material>>> MaterialManagerLocal::_materialMap =
     nullptr;
-QMutex MaterialManagerLocal::_mutex;
+std::mutex MaterialManagerLocal::_mutex;
 
 TYPESYSTEM_SOURCE(Materials::MaterialManagerLocal, Base::BaseClass)
 
@@ -60,7 +58,7 @@ MaterialManagerLocal::MaterialManagerLocal()
 
 void MaterialManagerLocal::initLibraries()
 {
-    QMutexLocker locker(&_mutex);
+    std::lock_guard<std::mutex> locker(_mutex);
 
     if (_materialMap == nullptr) {
         // Load the models first
@@ -79,7 +77,7 @@ void MaterialManagerLocal::initLibraries()
 
 void MaterialManagerLocal::cleanup()
 {
-    QMutexLocker locker(&_mutex);
+    std::lock_guard<std::mutex> locker(_mutex);
 
     if (_libraryList) {
         _libraryList->clear();
@@ -332,7 +330,7 @@ std::shared_ptr<Material> MaterialManagerLocal::getMaterialByPath(const std::str
 
                 // See if it's a new file saved by the old editor
                 {
-                    QMutexLocker locker(&_mutex);
+                    std::lock_guard<std::mutex> locker(_mutex);
 
                     if (MaterialConfigLoader::isConfigStyle(path)) {
                         auto material =
@@ -351,7 +349,7 @@ std::shared_ptr<Material> MaterialManagerLocal::getMaterialByPath(const std::str
 
     // Older workbenches may try files outside the context of a library
     {
-        QMutexLocker locker(&_mutex);
+        std::lock_guard<std::mutex> locker(_mutex);
 
         if (MaterialConfigLoader::isConfigStyle(path)) {
             auto material = MaterialConfigLoader::getMaterialFromPath(nullptr, path);

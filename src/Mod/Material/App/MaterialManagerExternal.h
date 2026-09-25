@@ -24,16 +24,15 @@
 #pragma once
 
 #include <memory>
+#include <mutex>
 #include <lru/lru.hpp>
 
 #include <Mod/Material/MaterialGlobal.h>
 
-#include <QMutex>
 
 #include "FolderTree.h"
 #include "Materials.h"
 
-class QMutex;
 
 namespace App
 {
@@ -102,7 +101,7 @@ private:
     static void initCache();
     std::shared_ptr<Material> materialNotFound(const std::string& uuid) const;
 
-    static QMutex _mutex;
+    static std::mutex _mutex;
 
     // Older platforms (Ubuntu 20.04) can't use QString as the index
     // due to a lack of a move constructor

@@ -22,7 +22,6 @@
  **************************************************************************/
 
 #include <QDirIterator>
-#include <QMutexLocker>
 
 #include <App/Application.h>
 #include <Base/Console.h>
@@ -40,7 +39,7 @@ using namespace Materials;
 
 TYPESYSTEM_SOURCE(Materials::ModelManager, Base::BaseClass)
 
-QMutex ModelManager::_mutex;
+std::mutex ModelManager::_mutex;
 bool ModelManager::_useExternal = false;
 ModelManager* ModelManager::_manager = nullptr;
 std::unique_ptr<ModelManagerLocal> ModelManager::_localManager;
@@ -72,7 +71,7 @@ ModelManager& ModelManager::getManager()
 
 void ModelManager::initManagers()
 {
-    QMutexLocker locker(&_mutex);
+    std::lock_guard<std::mutex> locker(_mutex);
 
     if (!_manager) {
         // Can't use smart pointers for this since the constructor is private

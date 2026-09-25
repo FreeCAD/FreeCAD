@@ -22,8 +22,6 @@
  **************************************************************************/
 
 #include <Python.h>
-#include <QMutex>
-#include <QMutexLocker>
 
 #include <App/Application.h>
 #include <Base/Console.h>
@@ -48,7 +46,7 @@ using namespace Materials;
 /* TRANSLATOR Material::Materials */
 
 ExternalManager* ExternalManager::_manager = nullptr;
-QMutex ExternalManager::_mutex;
+std::mutex ExternalManager::_mutex;
 
 ExternalManager::ExternalManager()
     : _instantiated(false)
@@ -146,7 +144,7 @@ void ExternalManager::connect()
 
 void ExternalManager::initManager()
 {
-    QMutexLocker locker(&_mutex);
+    std::lock_guard<std::mutex> locker(_mutex);
 
     if (!_manager) {
         _manager = new ExternalManager();

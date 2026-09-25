@@ -24,6 +24,7 @@
 #pragma once
 
 #include <memory>
+#include <mutex>
 
 #include <filesystem>
 
@@ -39,7 +40,6 @@
 namespace fs = std::filesystem;
 
 class QFileInfo;
-class QMutex;
 
 namespace App
 {
@@ -166,7 +166,7 @@ private:
     static std::unique_ptr<MaterialManagerExternal> _externalManager;
 #endif
     static std::unique_ptr<MaterialManagerLocal> _localManager;
-    static QMutex _mutex;
+    static std::mutex _mutex;
     static bool _useExternal;
 
     ParameterGrp::handle _hGrp;
