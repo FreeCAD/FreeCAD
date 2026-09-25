@@ -177,7 +177,7 @@ class _Wall(ArchComponent.Component):
                 "Wall",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The length of this wall.\nEditable only when this wall's baseline is a Draft line, an unconstrained sketch with a single line, or none.",
+                    "The length of this wall.\nEditable only if this wall's baseline is a Draft line, an unconstrained sketch with a single line, or none.",
                 ),
                 locked=True,
             )
@@ -188,7 +188,7 @@ class _Wall(ArchComponent.Component):
                 "Wall",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The width of this wall.\nIgnored when this wall is based on a solid or a face.",
+                    "The width of this wall.\nIgnored if this wall is based on a solid or a face.",
                 ),
                 locked=True,
             )
@@ -234,7 +234,7 @@ class _Wall(ArchComponent.Component):
                 "Wall",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The height of this wall.\nKeep 0 to automatically match the height of the enclosing Level or Building.\nIgnored when this wall is based on a solid.",
+                    "The height of this wall.\nKeep 0 to automatically match the height of the enclosing Level or Building.\nIgnored if this wall is based on a solid.",
                 ),
                 locked=True,
             )

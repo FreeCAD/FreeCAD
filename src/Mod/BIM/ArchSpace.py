@@ -566,7 +566,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                 "Space",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Template for the space's on-screen label text.\nUse $area, $label, $longname, $description or any other property name preceded with $ (case insensitive),\nor $floor, $walls, $ceiling for finishes, to insert the respective data.",
+                    "Template for the space's label text, shown in the 3D view and in drawings.\nUse $area, $label, $longname, $description or any other property name preceded with $ (case insensitive),\nor $floor, $walls, $ceiling for finishes, to insert the respective data.",
                 ),
                 locked=True,
             )
