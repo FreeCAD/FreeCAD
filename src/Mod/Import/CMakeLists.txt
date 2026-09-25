@@ -63,6 +63,7 @@ list(APPEND Import_Scripts TestImport.py)
 set(importtests_SRCS
     importtests/__init__.py
     importtests/TestImportBase.py
+    importtests/TestImportDXF.py
 )
 
 if(BUILD_GUI)
@@ -76,6 +77,7 @@ endif(BUILD_GUI)
 set(importtests_FIXTURES
     importtests/fixtures/__init__.py
     importtests/fixtures/README.md
+    importtests/fixtures/rectangle_lines.dxf
 )
 
 
