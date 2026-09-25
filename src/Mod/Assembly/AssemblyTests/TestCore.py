@@ -366,9 +366,6 @@ class TestCore(AssemblyTestBase):
         pinion.Placement.Base = App.Vector(30, 50, 10)
         self.doc.recompute()
 
-        grounded = self.jointgroup.newObject("App::FeaturePython", "GroundedJoint")
-        JointObject.GroundedJoint(grounded, ground)
-
         # Attach to real faces, but specify the JCS explicitly so the test does
         # not depend on OpenCASCADE's orientation of those faces.
         along_rack = App.Rotation(App.Vector(1, 0, 0), -90)
@@ -383,11 +380,6 @@ class TestCore(AssemblyTestBase):
         slider.Placement1 = App.Placement(App.Vector(), along_rack)
         slider.Placement2 = App.Placement(App.Vector(), along_rack * yaw_offset)
 
-        revolute = self.jointgroup.newObject("App::FeaturePython", "Revolute")
-        JointObject.Joint(revolute, JointObject.JointTypes.index("Revolute"))
-        revolute.Reference1 = (ground, ["Face1"])
-        revolute.Reference2 = (pinion, ["Face1"])
-
         rackPinion = self.jointgroup.newObject("App::FeaturePython", "RackPinion")
         JointObject.Joint(rackPinion, JointObject.JointTypes.index("RackPinion"))
         rackPinion.Detach1 = True
@@ -398,8 +390,12 @@ class TestCore(AssemblyTestBase):
 
         self.doc.recompute()
 
-        slider_axis = slider.Placement2.Rotation.multVec(App.Vector(0, 0, 1))
-        rack_axis = rackPinion.Placement1.Rotation.multVec(App.Vector(0, 0, 1))
+        slider_axis = UtilsAssembly.getJcsGlobalPlc(
+            slider.Placement2, slider.Reference2
+        ).Rotation.multVec(App.Vector(0, 0, 1))
+        rack_axis = UtilsAssembly.getJcsGlobalPlc(
+            rackPinion.Placement1, rackPinion.Reference1
+        ).Rotation.multVec(App.Vector(0, 0, 1))
         self.assertLess(slider_axis.cross(rack_axis).Length, 1e-7)
 
         # The rack and pinion joint must reach the solver: it is silently dropped when
@@ -409,6 +405,11 @@ class TestCore(AssemblyTestBase):
             self.assembly.exportAsASMT(fileName)
             with open(fileName) as asmt:
                 content = asmt.read()
-        self.assertTrue(
-            "RackPinionJoint" in content, "'{}' failed - joint not exported".format(operation)
+        self.assertIn(
+            "RackPinionJoint",
+            content,
+            "'{}' failed - joint not exported; slider state: {}, rack-pinion state: {}; "
+            "exported assembly: {}".format(
+                operation, slider.State, rackPinion.State, content[-2500:]
+            ),
         )
