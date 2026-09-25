@@ -291,9 +291,9 @@ TaskView::~TaskView()
 
     // if well behaved, we should not have nay taskInfo at this point
     for (auto& taskInfo : taskInfos) {
-        delete taskInfo.ActiveCtrl;
-        delete taskInfo.ActiveDialog;
-        delete taskInfo.taskPanel;
+        delete taskInfo.ActiveCtrl.data();
+        delete taskInfo.ActiveDialog.data();
+        delete taskInfo.taskPanel.data();
     }
 }
 
@@ -493,7 +493,8 @@ void TaskView::slotResetEdit(const Gui::ViewProviderDocumentObject& vp)
     auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
     bool hasDialog = foundTaskInfo != taskInfos.end() && foundTaskInfo->ActiveDialog;
 
-    if (hasDialog && foundTaskInfo->ActiveDialog->isAutoCloseOnResetEdit()) {
+    if (hasDialog && foundTaskInfo->ActiveDialog
+        && foundTaskInfo->ActiveDialog->isAutoCloseOnResetEdit()) {
         foundTaskInfo->ActiveDialog->autoClosedOnResetEdit();
 
         auto refreshedTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
@@ -541,7 +542,8 @@ void TaskView::slotViewClosed(const Gui::MDIView* view)
     });
     bool hasDialog = foundTaskInfo != taskInfos.end() && foundTaskInfo->ActiveDialog;
     // It can happen that only a view is closed an not the document
-    if (hasDialog && foundTaskInfo->ActiveDialog->isAutoCloseOnClosedView()) {
+    if (hasDialog && foundTaskInfo->ActiveDialog
+        && foundTaskInfo->ActiveDialog->isAutoCloseOnClosedView()) {
         const App::Document* doc = foundTaskInfo->Document;
         foundTaskInfo->ActiveDialog->autoClosedOnClosedView();
 
@@ -562,7 +564,7 @@ void TaskView::transactionChangeOnDocument(const App::Document& doc, bool undo)
     auto foundTaskInfo = std::ranges::find(taskInfos, &doc, &TaskInfo::Document);
     bool hasDialog = foundTaskInfo != taskInfos.end() && foundTaskInfo->ActiveDialog;
 
-    if (hasDialog) {
+    if (hasDialog && foundTaskInfo->ActiveDialog) {
         if (undo) {
             foundTaskInfo->ActiveDialog->onUndo();
         }
@@ -570,7 +572,11 @@ void TaskView::transactionChangeOnDocument(const App::Document& doc, bool undo)
             foundTaskInfo->ActiveDialog->onRedo();
         }
 
-        if (foundTaskInfo->ActiveDialog->isAutoCloseOnTransactionChange()) {
+        // onUndo()/onRedo() may pump events (recomputes etc.), so re-locate the
+        // entry before touching the dialog again
+        foundTaskInfo = std::ranges::find(taskInfos, &doc, &TaskInfo::Document);
+        if (foundTaskInfo != taskInfos.end() && foundTaskInfo->ActiveDialog
+            && foundTaskInfo->ActiveDialog->isAutoCloseOnTransactionChange()) {
             const App::Document* docPtr = foundTaskInfo->Document;
             foundTaskInfo->ActiveDialog->autoClosedOnTransactionChange();
 
@@ -718,8 +724,10 @@ void TaskView::removeDialog(std::vector<TaskInfo>::iterator infoIt)
         // See 'accept' and 'reject'
         if (infoIt->ActiveDialog->property("taskview_accept_or_reject").isNull()) {
             const std::vector<QWidget*>& cont = infoIt->ActiveDialog->getDialogContent();
-            for (const auto& it : cont) {
-                infoIt->taskPanel->actionPanel->removeWidget(it);
+            if (infoIt->taskPanel) {
+                for (const auto& it : cont) {
+                    infoIt->taskPanel->actionPanel->removeWidget(it);
+                }
             }
             remove = *infoIt;
             infoIt->ActiveCtrl = nullptr;
@@ -731,13 +739,19 @@ void TaskView::removeDialog(std::vector<TaskInfo>::iterator infoIt)
     }
 
     if (remove) {
-        remove->ActiveDialog->closed();
-        remove->ActiveDialog->emitDestructionSignal();
+        if (remove->ActiveDialog) {
+            remove->ActiveDialog->closed();
+            remove->ActiveDialog->emitDestructionSignal();
+        }
         // Defer the deletion: a dialog may still be on the stack here (e.g. its own
         // accept()/reject() invocation, or a pending focus event referencing the
         // widgets), so deleting synchronously would leave dangling users behind.
-        remove->ActiveCtrl->deleteLater();
-        remove->ActiveDialog->deleteLater();
+        if (remove->ActiveCtrl) {
+            remove->ActiveCtrl->deleteLater();
+        }
+        if (remove->ActiveDialog) {
+            remove->ActiveDialog->deleteLater();
+        }
     }
 
     // put the watcher back in control
@@ -996,58 +1010,69 @@ void TaskView::removeTaskWatcher(TaskInfo& taskInfo)
 
 void TaskView::accept(App::Document* doc)
 {
-    auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
-    if (foundTaskInfo == taskInfos.end()) {  // Protect against segfaults due to out-of-order deletions
-        Base::Console().warning("ActiveDialog was null in call to TaskView::accept()\n");
-        return;
-    }
-
-    // Take the dialog out of interaction right away: accept() may run a long
-    // recompute or open dialogs while pumping events, and a second click on
-    // OK during that time would re-enter this slot.
-    QWidget* panel = foundTaskInfo->taskPanel;
-    QWidget* ctrl = foundTaskInfo->ActiveCtrl;
-    panel->hide();
-    ctrl->hide();
-
-    // Make sure that if 'accept' calls 'closeDialog' the deletion is postponed until
-    // the dialog leaves the 'accept' method
-    foundTaskInfo->ActiveDialog->setProperty("taskview_accept_or_reject", true);
-    bool success = foundTaskInfo->ActiveDialog->accept();
-    foundTaskInfo->ActiveDialog->setProperty("taskview_accept_or_reject", QVariant());
-    if (success || foundTaskInfo->ActiveDialog->property("taskview_remove_dialog").isValid()) {
-        removeDialog(doc);
-    }
-    else {
-        // The dialog stays open, restore it
-        panel->show();
-        ctrl->show();
-    }
+    acceptOrReject(doc, true);
 }
 
 void TaskView::reject(App::Document* doc)
 {
+    acceptOrReject(doc, false);
+}
+
+// Runs the dialog's accept()/reject() and owns everything around it that a
+// nested event loop can invalidate: the dialog may recompute the document and
+// pump events (progress sequencer), which lets a second OK/Cancel click
+// re-enter this path or flushes the deferred deletion of the dialog family.
+void TaskView::acceptOrReject(App::Document* doc, bool accept)
+{
     auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
     if (foundTaskInfo == taskInfos.end()) {  // Protect against segfaults due to out-of-order deletions
-        Base::Console().warning("ActiveDialog was null in call to TaskView::reject()\n");
+        Base::Console().warning(
+            "ActiveDialog was null in call to TaskView::{}()\n",
+            accept ? "accept" : "reject"
+        );
         return;
     }
 
-    // See 'accept'
-    QWidget* panel = foundTaskInfo->taskPanel;
-    QWidget* ctrl = foundTaskInfo->ActiveCtrl;
-    panel->hide();
-    ctrl->hide();
+    QPointer<TaskDialog> dialog = foundTaskInfo->ActiveDialog;
+    QPointer<TaskPanel> panel = foundTaskInfo->taskPanel;
+    QPointer<TaskEditControl> ctrl = foundTaskInfo->ActiveCtrl;
+    if (!dialog) {
+        // Stale entry, the dialog is already gone
+        removeDialog(doc);
+        return;
+    }
 
-    // Make sure that if 'reject' calls 'closeDialog' the deletion is postponed until
-    // the dialog leaves the 'reject' method
-    foundTaskInfo->ActiveDialog->setProperty("taskview_accept_or_reject", true);
-    bool success = foundTaskInfo->ActiveDialog->reject();
-    foundTaskInfo->ActiveDialog->setProperty("taskview_accept_or_reject", QVariant());
-    if (success || foundTaskInfo->ActiveDialog->property("taskview_remove_dialog").isValid()) {
+    // Take the dialog out of interaction right away: the dialog may run a long
+    // recompute or open dialogs while pumping events, and a second click on
+    // OK/Cancel during that time would re-enter this slot.
+    if (panel) {
+        panel->hide();
+    }
+    if (ctrl) {
+        ctrl->hide();
+    }
+
+    // Make sure that if the dialog calls 'closeDialog' the deletion is postponed
+    // until it leaves the accept/reject method
+    dialog->setProperty("taskview_accept_or_reject", true);
+    bool success = accept ? dialog->accept() : dialog->reject();
+
+    if (!dialog) {
+        // The dialog got destroyed while its accept()/reject() was running (a
+        // nested event loop flushed its deferred deletion), so clean up the
+        // stale entry
+        Base::Console().warning(
+            "The task dialog was destroyed while TaskView::{}() was running\n",
+            accept ? "accept" : "reject"
+        );
+        removeDialog(doc);
+        return;
+    }
+    dialog->setProperty("taskview_accept_or_reject", QVariant());
+    if (success || dialog->property("taskview_remove_dialog").isValid()) {
         removeDialog(doc);
     }
-    else {
+    else if (panel && ctrl) {
         // The dialog stays open, restore it
         panel->show();
         ctrl->show();
@@ -1057,7 +1082,7 @@ void TaskView::reject(App::Document* doc)
 void TaskView::helpRequested(App::Document* doc)
 {
     auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
-    if (foundTaskInfo != taskInfos.end()) {
+    if (foundTaskInfo != taskInfos.end() && foundTaskInfo->ActiveDialog) {
         foundTaskInfo->ActiveDialog->helpRequested();
     }
 }
@@ -1065,7 +1090,7 @@ void TaskView::helpRequested(App::Document* doc)
 void TaskView::clicked(QAbstractButton* button, App::Document* doc)
 {
     auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
-    if (foundTaskInfo != taskInfos.end()) {
+    if (foundTaskInfo != taskInfos.end() && foundTaskInfo->ActiveCtrl && foundTaskInfo->ActiveDialog) {
         int id = foundTaskInfo->ActiveCtrl->buttonBox->standardButton(button);
         foundTaskInfo->ActiveDialog->clicked(id);
     }
@@ -1097,7 +1122,7 @@ void TaskView::restoreActionStyle()
 void TaskView::addContextualPanel(QWidget* panel, App::Document* doc)
 {
     auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
-    if (!panel || foundTaskInfo == taskInfos.end()
+    if (!panel || foundTaskInfo == taskInfos.end() || !foundTaskInfo->taskPanel
         || foundTaskInfo->taskPanel->contextualPanels.contains(panel)) {
         return;
     }
@@ -1112,7 +1137,7 @@ void TaskView::addContextualPanel(QWidget* panel, App::Document* doc)
 void TaskView::removeContextualPanel(QWidget* panel, App::Document* doc)
 {
     auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
-    if (!panel || foundTaskInfo == taskInfos.end()
+    if (!panel || foundTaskInfo == taskInfos.end() || !foundTaskInfo->taskPanel
         || !foundTaskInfo->taskPanel->contextualPanels.contains(panel)) {
         return;
     }
