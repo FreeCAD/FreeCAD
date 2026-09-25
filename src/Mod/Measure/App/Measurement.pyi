@@ -29,7 +29,7 @@ class Measurement(BaseClass):
         ...
 
     def clear(self) -> Any:
-        """measure the difference between references to obtain resultant vector"""
+        """clear all references and reset the measurement"""
         ...
 
     def delta(self) -> Any:
