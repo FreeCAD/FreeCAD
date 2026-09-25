@@ -538,20 +538,20 @@ TEST_F(TopoShapeExpansionTest, cacheRelatedElements)
 {
     // Arrange
     TopoShape topoShape {3L};
-    QVector<MappedElement> names {
+    std::vector<MappedElement> names {
         {MappedName {"Test1"}, IndexedName {"Test", 1}},
         {MappedName {"Test2"}, IndexedName {"Test", 2}},
         {MappedName {"OtherTest1"}, IndexedName {"OtherTest", 1}},
     };
-    QVector<MappedElement> names2 {
+    std::vector<MappedElement> names2 {
         {MappedName {"Test3"}, IndexedName {"Test", 3}},
     };
     HistoryTraceType traceType = HistoryTraceType::followTypeChange;
     MappedName keyName {"Key1"};
     MappedName keyName2 {"Key2"};
-    QVector<MappedElement> returnedNames;
-    QVector<MappedElement> returnedNames2;
-    QVector<MappedElement> returnedNames3;
+    std::vector<MappedElement> returnedNames;
+    std::vector<MappedElement> returnedNames2;
+    std::vector<MappedElement> returnedNames3;
     // Act
     topoShape.cacheRelatedElements(keyName, traceType, names);
     topoShape.cacheRelatedElements(keyName2, HistoryTraceType::stopOnTypeChange, names2);

@@ -30,16 +30,17 @@
 
 #ifdef FC_OS_MACOSX
 # include <mach-o/dyld.h>
-# include <string>
 #endif
 
 #if HAVE_CONFIG_H
 # include <config.h>
 #endif  // HAVE_CONFIG_H
 
+#include <cstdlib>
 #include <cstdio>
 #include <iostream>
-#include <QByteArray>
+#include <string>
+#include <vector>
 
 // FreeCAD Base header
 #include <Base/ConsoleObserver.h>
@@ -84,7 +85,7 @@ PyMOD_INIT_FUNC(FreeCAD)
     App::Application::Config()["ExeVendor"] = "FreeCAD";
     App::Application::Config()["AppDataSkipVendor"] = "true";
 
-    QByteArray path;
+    std::string path;
 
 #if defined(FC_OS_WIN32)
     path = App::Application::Config()["AppHomePath"].c_str();
@@ -140,7 +141,7 @@ PyMOD_INIT_FUNC(FreeCAD)
             path = basePath;
 
             // append libName to the path
-            if (access(path + libName, R_OK | X_OK) == 0) {
+            if (access((path + libName).c_str(), R_OK | X_OK) == 0) {
 
                 // The FreeCAD "home" path is one level up from
                 // libName, so replace libName with upDir.
@@ -150,7 +151,7 @@ PyMOD_INIT_FUNC(FreeCAD)
         }
     }
 
-    if (path.isEmpty()) {
+    if (path.empty()) {
         PyErr_SetString(PyExc_ImportError, "Cannot get path of the FreeCAD module!");
         return nullptr;
     }

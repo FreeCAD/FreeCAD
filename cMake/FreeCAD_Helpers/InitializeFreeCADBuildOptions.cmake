@@ -117,6 +117,8 @@ macro(InitializeFreeCADBuildOptions)
         set(FREECAD_LIBPACK_DIR ""  CACHE PATH  "Directory of the FreeCAD LibPack")
     endif(MSVC)
 
+    ChooseQtVersion()
+
     option(BUILD_DESIGNER_PLUGIN "Build and install the designer plugin" OFF)
 
     if(APPLE)
@@ -177,6 +179,21 @@ macro(InitializeFreeCADBuildOptions)
     option(BUILD_WEB "Build the FreeCAD Web module" ON)
     option(BUILD_SURFACE "Build the FreeCAD surface module" ON)
     option(ENABLE_DEVELOPER_TESTS "Build the FreeCAD unit tests suit" ON)
+
+    # Modules still using Qt in their App part.  Without Qt they cannot be
+    # built, so turn them off; modules depending on them are disabled by
+    # CheckInterModuleDependencies().  Drop a module from this list once Qt
+    # is gone from its App part.
+    if(NOT FREECAD_HAS_QT)
+        foreach(module ASSEMBLY CAM FEM INSPECTION MATERIAL MEASURE MESH PART
+                       PART_DESIGN POINTS REVERSEENGINEERING SPREADSHEET START
+                       TECHDRAW WEB)
+            if(BUILD_${module})
+                message(STATUS "Disabling BUILD_${module}: its App part needs Qt")
+                set(BUILD_${module} OFF)
+            endif()
+        endforeach()
+    endif()
 
     if(MSVC OR APPLE)
         set(FREECAD_3DCONNEXION_SUPPORT "NavLib" CACHE STRING "Select version of the 3Dconnexion device integration")

@@ -34,6 +34,9 @@
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <utility>
+#include <vector>
+
+#include <QVector>
 
 #include <App/ElementMap.h>
 
@@ -117,7 +120,7 @@ public:
     };
 
     explicit TopoShapeCache(const TopoDS_Shape& tds);
-    void insertRelation(const ShapeRelationKey& key, const QVector<Data::MappedElement>& value);
+    void insertRelation(const ShapeRelationKey& key, const std::vector<Data::MappedElement>& value);
     bool isTouched(const TopoDS_Shape& tds) const;
     Ancestry& getAncestry(TopAbs_ShapeEnum type);
     int countShape(TopAbs_ShapeEnum type);
@@ -140,7 +143,7 @@ public:
     /// compound shape.
     std::array<Ancestry, TopAbs_SHAPE + 1> shapeAncestryCache;
 
-    std::map<ShapeRelationKey, QVector<Data::MappedElement>> relations;
+    std::map<ShapeRelationKey, std::vector<Data::MappedElement>> relations;
 };
 
 }  // namespace Part

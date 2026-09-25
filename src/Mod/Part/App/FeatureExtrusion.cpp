@@ -43,6 +43,7 @@
 #include <Base/Exception.h>
 #include <Base/ProgramVersion.h>
 #include <Base/Tools.h>
+#include <Base/Translation.h>
 
 #include "FeatureExtrusion.h"
 #include "ExtrusionHelper.h"
@@ -424,12 +425,18 @@ TYPESYSTEM_SOURCE(Part::FaceMakerExtrusion, Part::FaceMakerCheese)
 
 std::string FaceMakerExtrusion::getUserFriendlyName() const
 {
-    return {tr("Part Extrude facemaker").toStdString()};
+    return Base::Translation::translate(
+        "FaceMaker",
+        QT_TRANSLATE_NOOP("FaceMaker", "Part Extrude facemaker")
+    );
 }
 
 std::string FaceMakerExtrusion::getBriefExplanation() const
 {
-    return {tr("Supports making faces with holes, does not support nesting.").toStdString()};
+    return Base::Translation::translate(
+        "FaceMaker",
+        QT_TRANSLATE_NOOP("FaceMaker", "Supports making faces with holes, does not support nesting.")
+    );
 }
 
 #if OCC_VERSION_HEX >= 0x070600
