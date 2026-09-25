@@ -177,7 +177,7 @@ class _Wall(ArchComponent.Component):
                 "Wall",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The length of this wall. Read-only if this wall is not based on an unconstrained sketch with a single edge, or on a Draft Wire with a single edge. Refer to wiki for details how length is deduced.",
+                    "The length of this wall.\nEditable only when this wall's baseline is a Draft line, an unconstrained sketch with a single line, or none.",
                 ),
                 locked=True,
             )
@@ -188,7 +188,7 @@ class _Wall(ArchComponent.Component):
                 "Wall",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The width of this wall. Not used if this wall is based on a face. Disabled and ignored if Base object (ArchSketch) provides the information.",
+                    "The width of this wall.\nIgnored when this wall is based on a solid or a face.",
                 ),
                 locked=True,
             )
@@ -234,7 +234,7 @@ class _Wall(ArchComponent.Component):
                 "Wall",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid",
+                    "The height of this wall.\nKeep 0 to automatically match the height of the enclosing Level or Building.\nIgnored when this wall is based on a solid.",
                 ),
                 locked=True,
             )
@@ -256,7 +256,7 @@ class _Wall(ArchComponent.Component):
                 "Wall",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The alignment of this wall on its base object, if applicable. Disabled and ignored if Base object (ArchSketch) provides the information.",
+                    "The alignment of this wall on its base object, if applicable.",
                 ),
                 locked=True,
             )

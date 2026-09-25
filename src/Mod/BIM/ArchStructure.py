@@ -796,7 +796,7 @@ class _Structure(ArchComponent.Component):
                 "Structure",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The height or extrusion depth of this element. Keep 0 for automatic",
+                    "The height or extrusion depth of this element.\nKeep 0 to automatically match the height of the enclosing Level or Building.",
                 ),
                 locked=True,
             )
