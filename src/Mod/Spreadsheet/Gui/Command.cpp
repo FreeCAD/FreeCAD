@@ -981,6 +981,7 @@ void CmdCreateSpreadsheet::activated(int iMsg)
     doCommand(Doc, "App.activeDocument().addObject('Spreadsheet::Sheet','%s\')", FeatName.c_str());
     doCommand(Gui, "Gui.Selection.clearSelection()\n");
     doCommand(Gui, "Gui.Selection.addSelection(App.activeDocument().Name,'%s\')", FeatName.c_str());
+    doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
     commitCommand();
 }
 
