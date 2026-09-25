@@ -48,13 +48,14 @@ That command writes under `src/Tools/typing/generated/`:
 ### Versioning and Publishing
 
 `freecad-typings` versions the FreeCAD Python API, not the FreeCAD release. The
-major and minor components live in `src/Tools/typing/api_version.json` and
-change only when the API changes: bump the minor for additive changes and the
-major for breaking ones. On a `releases/*` branch the file tracks the API of
-the release that branch builds; on every other branch it is the API being
-worked towards. The patch component is not stored in the repository; it is
-assigned from the releases already published on PyPI, so it counts published
-releases rather than build attempts and stays gapless.
+major and minor components are assigned in `src/Tools/typing/api_version.json` and
+should change only when the API changes: bump the minor for additive changes and
+the major for breaking ones. The actual published location and version depend on
+the *FreeCAD* release the stubs were generated from:
+
+1. **dev** - always publishes to TestPyPI, never to the real PyPI index. Intended only for testing, should not be used to publish a real release of the stubs.
+2. **rcN** - publishes to the real PyPI, but as a "pre-release" version, with the same version number that the next real release will have but with a suffix of "rcN".
+3. **(no suffix -- e.g. a real release)** - publishes to the real PyPI as a full release. The API version is taken from src/Tools/typing/api_version.json and the patch version is auto-incremented from the last published version.
 
 Ask the package index for the next patch number and pass it to generation:
 
@@ -81,6 +82,8 @@ Normal publishes go through the `Publish freecad-typings` GitHub workflow
 (manual dispatch). It routes by ref: `releases/*` branches publish to PyPI,
 every other branch publishes to TestPyPI as a `.devN` build, and the workflow
 refuses a release branch that still carries the `dev` suffix in `version.json`.
+A release candidate is published to PyPI as a pre-release, not to TestPyPI, so
+the production path is exercised before the release itself goes out.
 Regenerate before publishing whenever the bindings change so the wheel reflects
 the current API.
 

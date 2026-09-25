@@ -23,15 +23,13 @@
 
 # Publish freecad-typings to PyPI via trusted publishing (OIDC). Manual dispatch only.
 #
-# The target index is chosen by the dispatched ref: a release branch publishes to PyPI, every
-# other branch publishes to TestPyPI as a .devN build. The environment deployment branch
-# policies enforce the same rule independently, so this routing is for clarity and a fast
-# failure, not for security.
-#
-# The version is major.minor from src/Tools/typing/api_version.json, which versions the FreeCAD
-# Python API rather than the FreeCAD release, plus a patch number counted from the releases
-# already on PyPI. Counting published releases rather than CI runs is what keeps the patch
-# sequence gapless: a dispatch abandoned at the approval gate consumes nothing.
+# There are three main publication mechanisms, depending on which version of FreeCAD is being published:
+# 1) dev - always publishes to TestPyPI, never to the real PyPI index. Intended only for testing, should not be used to
+#    publish a real release of the stubs.
+# 2) rcN - publishes to the real PyPI, but as a "pre-release" version, with the same version number that the next real
+#    release will have but with a suffix of "rcN".
+# 3) (no suffix -- e.g. a real release) - publishes to the real PyPI as a full release. The API version is taken from
+#    src/Tools/typing/api_version.json and the patch version is auto-incremented from the last published version.
 
 name: Publish freecad-typings
 
@@ -85,9 +83,14 @@ jobs:
           import os
           import sys
 
+          # Only the "is this branch ready to publish" policy lives here; which suffixes are
+          # publishable, and what they render as, belongs to stubgen.project.
           if os.environ["REF_NAME"].startswith("releases/"):
-              with open("version.json", encoding="utf-8") as f:
-                  suffix = json.load(f)["version_suffix"].strip().lstrip(".")
+              try:
+                  with open("version.json", encoding="utf-8") as f:
+                      suffix = json.load(f)["version_suffix"].strip().lstrip(".")
+              except FileNotFoundError:
+                  sys.exit("Refusing to publish to PyPI: this branch has no version.json.")
               if suffix.lower() == "dev":
                   sys.exit(
                       "Refusing to publish to PyPI: this release branch still carries the 'dev' "
@@ -109,8 +112,8 @@ jobs:
       - name: Assign patch number
         id: version
         run: |
-          echo "patch=$(python3 src/Tools/typing/generate_stubs.py next-patch --root .)" \
-            >> "$GITHUB_OUTPUT"
+          patch=$(python3 src/Tools/typing/generate_stubs.py next-patch --root .)
+          echo "patch=$patch" >> "$GITHUB_OUTPUT"
 
       - name: Generate and validate stubs
         env:
@@ -135,7 +138,7 @@ jobs:
         with:
           name: dist
           path: src/Tools/typing/generated/dist
-          retention-days: 7
+          retention-days: 30
 
   publish:
     name: Publish to ${{ needs.build.outputs.index_name }}

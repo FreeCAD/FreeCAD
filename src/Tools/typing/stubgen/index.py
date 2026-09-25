@@ -38,7 +38,13 @@ def published_versions(
         if error.code == 404:
             return []
         raise
-    return payload.get("versions", [])
+    if "versions" not in payload:
+        api_version = payload.get("meta", {}).get("api-version", "unknown")
+        raise ValueError(
+            f"{url} gave {api_version}, which does not list versions. A patch number cannot be "
+            "assigned from this index."
+        )
+    return payload["versions"]
 
 
 def next_patch_number(major: int, minor: int, versions: list[str]) -> int:
