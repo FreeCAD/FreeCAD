@@ -24,5 +24,4 @@
 Imports the CLI test classes from the `importtests` package, so the test runner finds them.
 """
 
-# Examples of CLI tests for importers; add more as they are implemented.
-# from importtests.TestImportDXF import TestImportDXF
+from importtests.TestImportDXF import TestImportDXF
