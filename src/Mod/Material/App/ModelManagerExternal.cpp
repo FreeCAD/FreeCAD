@@ -21,7 +21,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include <QMutexLocker>
 
 #include <App/Application.h>
 
@@ -32,7 +31,7 @@
 
 using namespace Materials;
 
-QMutex ModelManagerExternal::_mutex;
+std::mutex ModelManagerExternal::_mutex;
 LRU::Cache<std::string, std::shared_ptr<Model>> ModelManagerExternal::_cache(DEFAULT_CACHE_SIZE);
 
 TYPESYSTEM_SOURCE(Materials::ModelManagerExternal, Base::BaseClass)
@@ -44,7 +43,7 @@ ModelManagerExternal::ModelManagerExternal()
 
 void ModelManagerExternal::initCache()
 {
-    QMutexLocker locker(&_mutex);
+    std::lock_guard<std::mutex> locker(_mutex);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Material/ExternalInterface");

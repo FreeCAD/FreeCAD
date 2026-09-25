@@ -25,8 +25,6 @@
 
 
 #include <QDirIterator>
-#include <QMutex>
-#include <QMutexLocker>
 
 #include <App/Application.h>
 #include <App/Material.h>
@@ -51,7 +49,7 @@ using namespace Materials;
 
 TYPESYSTEM_SOURCE(Materials::MaterialManager, Base::BaseClass)
 
-QMutex MaterialManager::_mutex;
+std::mutex MaterialManager::_mutex;
 bool MaterialManager::_useExternal = false;
 MaterialManager* MaterialManager::_manager = nullptr;
 std::unique_ptr<MaterialManagerLocal> MaterialManager::_localManager;
@@ -88,7 +86,7 @@ MaterialManager& MaterialManager::getManager()
 
 void MaterialManager::initManagers()
 {
-    QMutexLocker locker(&_mutex);
+    std::lock_guard<std::mutex> locker(_mutex);
 
     if (!_manager) {
         // Can't use smart pointers for this since the constructor is private

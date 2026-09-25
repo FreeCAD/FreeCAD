@@ -21,7 +21,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include <QMutexLocker>
 
 #include <App/Application.h>
 
@@ -35,7 +34,7 @@ using namespace Materials;
 
 /* TRANSLATOR Material::Materials */
 
-QMutex MaterialManagerExternal::_mutex;
+std::mutex MaterialManagerExternal::_mutex;
 LRU::Cache<std::string, std::shared_ptr<Material>>
     MaterialManagerExternal::_cache(DEFAULT_CACHE_SIZE);
 
@@ -48,7 +47,7 @@ MaterialManagerExternal::MaterialManagerExternal()
 
 void MaterialManagerExternal::initCache()
 {
-    QMutexLocker locker(&_mutex);
+    std::lock_guard<std::mutex> locker(_mutex);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Material/ExternalInterface");

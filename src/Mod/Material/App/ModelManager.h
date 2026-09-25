@@ -24,11 +24,11 @@
 #pragma once
 
 #include <memory>
+#include <mutex>
 
 #include <Base/Parameter.h>
 #include <Mod/Material/MaterialGlobal.h>
 
-#include <QMutex>
 
 #include "Exceptions.h"
 #include "FolderTree.h"
@@ -113,7 +113,7 @@ private:
 #if defined(BUILD_MATERIAL_EXTERNAL)
     static std::unique_ptr<ModelManagerExternal> _externalManager;
 #endif
-    static QMutex _mutex;
+    static std::mutex _mutex;
     static bool _useExternal;
 
     ParameterGrp::handle _hGrp;

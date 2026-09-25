@@ -22,7 +22,6 @@
  **************************************************************************/
 
 #include <QDirIterator>
-#include <QMutexLocker>
 
 #include <Base/Console.h>
 
@@ -34,7 +33,7 @@ using namespace Materials;
 
 std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> ModelManagerLocal::_libraryList = nullptr;
 std::shared_ptr<std::map<std::string, std::shared_ptr<Model>>> ModelManagerLocal::_modelMap = nullptr;
-QMutex ModelManagerLocal::_mutex;
+std::mutex ModelManagerLocal::_mutex;
 
 
 TYPESYSTEM_SOURCE(Materials::ModelManagerLocal, Base::BaseClass)
@@ -46,7 +45,7 @@ ModelManagerLocal::ModelManagerLocal()
 
 void ModelManagerLocal::initLibraries()
 {
-    QMutexLocker locker(&_mutex);
+    std::lock_guard<std::mutex> locker(_mutex);
 
     if (_modelMap == nullptr) {
         _modelMap = std::make_shared<std::map<std::string, std::shared_ptr<Model>>>();

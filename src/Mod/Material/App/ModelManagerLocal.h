@@ -24,10 +24,10 @@
 #pragma once
 
 #include <memory>
+#include <mutex>
 
 #include <Mod/Material/MaterialGlobal.h>
 
-#include <QMutex>
 
 #include "Exceptions.h"
 #include "FolderTree.h"
@@ -80,7 +80,7 @@ private:
 
     static std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> _libraryList;
     static std::shared_ptr<std::map<std::string, std::shared_ptr<Model>>> _modelMap;
-    static QMutex _mutex;
+    static std::mutex _mutex;
 };
 
 }  // namespace Materials

@@ -24,6 +24,7 @@
 #pragma once
 
 #include <memory>
+#include <mutex>
 
 #include <filesystem>
 
@@ -35,7 +36,6 @@
 namespace fs = std::filesystem;
 
 class QFileInfo;
-class QMutex;
 
 namespace App
 {
@@ -124,7 +124,7 @@ protected:
 private:
     static std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> _libraryList;
     static std::shared_ptr<std::map<std::string, std::shared_ptr<Material>>> _materialMap;
-    static QMutex _mutex;
+    static std::mutex _mutex;
 
     static void initLibraries();
 };

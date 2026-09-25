@@ -23,12 +23,13 @@
 
 #pragma once
 
+#include <mutex>
+
 #include <Base/Parameter.h>
 #include <CXX/Objects.hxx>
 
 #include <Mod/Material/MaterialGlobal.h>
 
-class QMutex;
 class QByteArray;
 
 namespace Materials
@@ -124,7 +125,7 @@ private:
     std::shared_ptr<Material> materialFromObject(const Py::Object& entry, const std::string& uuid);
 
     static ExternalManager* _manager;
-    static QMutex _mutex;
+    static std::mutex _mutex;
 
     // COnfiguration
     ParameterGrp::handle _hGrp;
