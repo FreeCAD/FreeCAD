@@ -77,7 +77,9 @@ private:
         TopoShape& result;
         const std::vector<std::string>& subStrings;
 
-        std::map<int, std::vector<TopoShape>> closeFaces;
+        /// Solid id = [ Faces ]
+        /// std::vector is empty for solid selection
+        std::map<int, std::vector<TopoShape>> selectedShapes;
 
         double thickness;
         double tolerance;

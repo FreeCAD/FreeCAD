@@ -122,6 +122,8 @@ void TaskThicknessParameters::initControls()
     ui->selectAllSolids->setEnabled(selectionMode != Thickness::SelectionMode::SelectedFaces);
     ui->selectAllSolids->setChecked(selectionMode == Thickness::SelectionMode::AllSolids);
 
+    selectSolids = selectionMode != Thickness::SelectionMode::SelectedFaces;
+
     if (strings.empty()) {
         setSelectionMode(refSel);
     }
@@ -201,6 +203,8 @@ void TaskThicknessParameters::onSelectionModeChanged(int selectionMode)
     ui->buttonRefSel->setEnabled(enableSelection);
 
     ui->selectAllSolids->setEnabled(newValue != Thickness::SelectionMode::SelectedFaces);
+
+    selectSolids = selectionMode != static_cast<int>(Thickness::SelectionMode::SelectedFaces);
 }
 
 void TaskThicknessParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -439,6 +443,7 @@ bool TaskDlgThicknessParameters::accept()
     FCMD_OBJ_CMD(obj, "Mode = " << draftparameter->getMode());
     FCMD_OBJ_CMD(obj, "Intersection = " << draftparameter->getIntersection());
     FCMD_OBJ_CMD(obj, "Join = " << draftparameter->getJoinType());
+    FCMD_OBJ_CMD(obj, "Selection = " << draftparameter->getSelectionMode());
 
     return TaskDlgDressUpParameters::accept();
 }

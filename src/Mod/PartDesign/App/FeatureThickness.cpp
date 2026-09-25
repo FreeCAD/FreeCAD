@@ -35,6 +35,8 @@
 #include <Base/Exception.h>
 #include "FeatureThickness.h"
 
+#include "TopoDS.hxx"
+
 FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
 using namespace PartDesign;
@@ -254,33 +256,50 @@ App::DocumentObjectExecReturn* Thickness::identifySolids(ThicknessParameters& pa
     }
 
     for (const auto& subString : params.subStrings) {
-        TopoDS_Shape face;
+        TopoDS_Shape shape;
 
         try {
-            face = params.input.getSubShape(subString.c_str());
+            shape = params.input.getSubShape(subString.c_str());
         }
         catch (...) {
         }
 
-        if (face.IsNull()) {
+        if (shape.IsNull()) {
             return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Invalid face reference")
+                QT_TRANSLATE_NOOP("Exception", "Invalid shape reference")
             );
         }
 
-        if (face.ShapeType() != TopAbs_FACE) {
-            FC_WARN(getFullName() << ": Ignore non-face selection " << subString);
-            continue;
+        switch (shape.ShapeType()) {
+            case TopAbs_SOLID: {
+                const int solidIndex = params.input.findAncestor(shape, TopAbs_SOLID);
+
+                if (!solidIndex) {
+                    FC_WARN(getFullName() << ": Ignore solid not belonging to a solid " << subString);
+                    continue;
+                }
+
+                // empty vector = the whole solid was selected.
+                params.selectedShapes[solidIndex] = {};
+                break;
+            }
+
+            case TopAbs_FACE: {
+                const int solidIndex = params.input.findAncestor(shape, TopAbs_SOLID);
+
+                if (!solidIndex) {
+                    FC_WARN(getFullName() << ": Ignore face not belonging to a solid " << subString);
+                    continue;
+                }
+
+                params.selectedShapes[solidIndex].emplace_back(TopoDS::Face(shape));
+                break;
+            }
+
+            default:
+                FC_WARN(getFullName() << ": Ignore unsupported selection " << subString);
+                break;
         }
-
-        const int solidIndex = params.input.findAncestor(face, TopAbs_SOLID);
-
-        if (!solidIndex) {
-            FC_WARN(getFullName() << ": Ignore face not belonging to a solid " << subString);
-            continue;
-        }
-
-        params.closeFaces[solidIndex].emplace_back(face);
     }
 
     return nullptr;
@@ -303,10 +322,10 @@ App::DocumentObjectExecReturn* Thickness::executeSelectedFaces(ThicknessParamete
     for (int solidIndex = 1; solidIndex <= params.solidCount; ++solidIndex) {
         TopoShape solid = params.input.getSubTopoShape(TopAbs_SOLID, solidIndex);
 
-        const auto it = params.closeFaces.find(solidIndex);
+        const auto it = params.selectedShapes.find(solidIndex);
 
         // Solid is unaffected: keep it unchanged.
-        if (it == params.closeFaces.end()) {
+        if (it == params.selectedShapes.end()) {
             shapes.push_back(solid);
             continue;
         }
@@ -369,7 +388,7 @@ App::DocumentObjectExecReturn* Thickness::executeSelectedSolids(ThicknessParamet
         TopoShape solid = params.input.getSubTopoShape(TopAbs_SOLID, solidIndex);
 
         // Solid is not affected.
-        if (!params.closeFaces.contains(solidIndex)) {
+        if (!params.selectedShapes.contains(solidIndex)) {
             shapes.push_back(solid);
             continue;
         }
@@ -688,7 +707,7 @@ void Thickness::updatePreviewSelectedFaces(
 {
     const auto joinType = static_cast<Part::JoinType>(params.join);
 
-    for (const auto& [solidIndex, faces] : params.closeFaces) {
+    for (const auto& [solidIndex, faces] : params.selectedShapes) {
         TopoShape solid = params.input.getSubTopoShape(TopAbs_SOLID, solidIndex);
 
         try {
@@ -753,7 +772,7 @@ void Thickness::updatePreviewSelectedSolids(
     std::vector<TopoShape>& previewShapes
 )
 {
-    for (const auto& [solidIndex, faces] : params.closeFaces) {
+    for (const auto& [solidIndex, faces] : params.selectedShapes) {
         TopoShape solid = params.input.getSubTopoShape(TopAbs_SOLID, solidIndex);
 
         try {
