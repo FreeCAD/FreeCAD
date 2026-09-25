@@ -602,12 +602,10 @@ class ObjectOp:
     def setEditorModes(self, obj, features):
         """Editor modes are not preserved during document store/restore, set editor modes for all properties"""
 
-        if hasattr(obj, "Placement"):
-            obj.setEditorMode("Placement", 1)  # derived from the work plane
-
-        for op in ["OpStartDepth", "OpFinalDepth", "OpToolDiameter", "CycleTime"]:
-            if hasattr(obj, op):
-                obj.setEditorMode(op, 1)  # read-only
+        # Placement is derived from the work plane; the Op* values are computed.
+        for prop in ["Placement", "OpStartDepth", "OpFinalDepth", "OpToolDiameter", "CycleTime"]:
+            if hasattr(obj, prop):
+                obj.setEditorMode(prop, 1)  # read-only
 
         if FeatureDepths & features and FeatureNoFinalDepth & features:
             obj.setEditorMode("OpFinalDepth", 2)
@@ -1199,7 +1197,11 @@ class ObjectOp:
         generated nothing. Set the frame up for the call, unless execute()
         already has."""
         if any(hasattr(self, attr) for attr in self._FRAME_ATTRS):
+            # execute() set the frame up and owns its teardown; clearing it
+            # here would pull the frame out from under the rest of execute().
             return self.updateDepths(obj, True)
+        # Nobody set the frame up, so this call does, and takes it down again
+        # whether or not updateDepths() raises.
         self._setup_workplane_transform(obj, warn=False)
         try:
             return self.updateDepths(obj, True)
