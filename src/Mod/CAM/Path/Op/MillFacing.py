@@ -416,7 +416,10 @@ class ObjectMillFacing(PathOp.ObjectOp):
 
         if not base_commands:
             Path.Log.warning(
-                translate("CAM_MillFacing", "%s: Generating empty toolpath. Check extensions.")
+                translate(
+                    "CAM_MillFacing",
+                    "%s: Generating empty toolpath. Take attention to extensions and tool diameter.",
+                )
                 % obj.Label
             )
             return

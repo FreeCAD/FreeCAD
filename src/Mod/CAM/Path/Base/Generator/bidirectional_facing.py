@@ -73,7 +73,6 @@ def bidirectional(
 
     # Compute projection bounds
     min_s, max_s = facing_common.project_bounds(polygon, primary_vec, origin)
-    min_t, max_t = facing_common.project_bounds(polygon, step_vec, origin)
 
     # ------------------------------------------------------------------
     # Use the proven generate_t_values (with coverage fix) for full coverage
@@ -81,8 +80,6 @@ def bidirectional(
     step_positions = facing_common.generate_t_values(
         polygon, step_vec, tool_diameter, stepover_percent, origin, end_at_center=True
     )
-
-    tool_radius = tool_diameter / 2.0
 
     commands = []
     tool_radius = tool_diameter / 2.0
