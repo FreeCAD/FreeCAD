@@ -77,13 +77,15 @@ void Part::FaceMaker::addTopoShape(const TopoShape& shape)
             // need to ignore it rather than throw an error
             break;
         default:
-            throw Base::TypeError(Base::Translation::translate(
-                "FaceMaker",
-                QT_TRANSLATE_NOOP(
+            throw Base::TypeError(
+                Base::Translation::translate(
                     "FaceMaker",
-                    "Shape must be a wire, edge or compound. Something else was supplied."
+                    QT_TRANSLATE_NOOP(
+                        "FaceMaker",
+                        "Shape must be a wire, edge or compound. Something else was supplied."
+                    )
                 )
-            ));
+            );
             break;
     }
     this->mySourceShapes.push_back(shape);

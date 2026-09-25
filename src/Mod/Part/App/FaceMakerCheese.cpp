@@ -253,10 +253,7 @@ TopoDS_Shape FaceMakerCheese::makeFace(const std::vector<TopoDS_Wire>& w)
 
 std::string FaceMakerCheese::getUserFriendlyName() const
 {
-    return Base::Translation::translate(
-        "FaceMaker",
-        QT_TRANSLATE_NOOP("FaceMaker", "Cheese facemaker")
-    );
+    return Base::Translation::translate("FaceMaker", QT_TRANSLATE_NOOP("FaceMaker", "Cheese facemaker"));
 }
 
 std::string FaceMakerCheese::getBriefExplanation() const

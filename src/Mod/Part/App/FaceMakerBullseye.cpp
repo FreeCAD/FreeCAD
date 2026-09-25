@@ -370,10 +370,7 @@ FaceMakerRing::FaceMakerRing()
 
 std::string FaceMakerRing::getUserFriendlyName() const
 {
-    return Base::Translation::translate(
-        "FaceMaker",
-        QT_TRANSLATE_NOOP("FaceMaker", "Ring facemaker")
-    );
+    return Base::Translation::translate("FaceMaker", QT_TRANSLATE_NOOP("FaceMaker", "Ring facemaker"));
 }
 
 std::string FaceMakerRing::getBriefExplanation() const

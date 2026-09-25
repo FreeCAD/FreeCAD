@@ -181,14 +181,17 @@ void FeatureAddSub::updatePreviewShape()
                 const double removed = propsBefore.Mass() - propsAfter.Mass();
 
                 if (removed <= Precision::Confusion()) {
-                    notifyWarning(Base::Translation::translate(
-                        "PartDesign::FeatureAddSub",
-                        QT_TRANSLATE_NOOP(
+                    notifyWarning(
+                        Base::Translation::translate(
                             "PartDesign::FeatureAddSub",
-                            "Resulting shape is empty. That may indicate that no material will be "
-                            "removed or a problem with the model."
+                            QT_TRANSLATE_NOOP(
+                                "PartDesign::FeatureAddSub",
+                                "Resulting shape is empty. That may indicate that no material will "
+                                "be "
+                                "removed or a problem with the model."
+                            )
                         )
-                    ));
+                    );
                 }
                 PreviewShape.setValue(common);
                 return;

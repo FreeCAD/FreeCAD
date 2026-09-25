@@ -169,7 +169,10 @@ TopoShapeCache::TopoShapeCache(const TopoDS_Shape& tds)
     : shape(tds.Located(TopLoc_Location()))
 {}
 
-void TopoShapeCache::insertRelation(const ShapeRelationKey& key, const std::vector<Data::MappedElement>& value)
+void TopoShapeCache::insertRelation(
+    const ShapeRelationKey& key,
+    const std::vector<Data::MappedElement>& value
+)
 {
     auto [insertedItr, newKeyInserted] = relations.insert({key, value});
     if (newKeyInserted) {
