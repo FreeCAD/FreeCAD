@@ -312,10 +312,11 @@ void PropertyLinkBase::updateAllElementReferences(const std::vector<App::Documen
     }
 
     for (auto reference : _ElementRefMap) {
+        const bool targetIsNew = newDocSet.contains(reference.first->getDocument());
         for (auto prop : reference.second) {
             if (prop->getContainer()) {
                 const auto docObj = freecad_cast<App::DocumentObject*>(prop->getContainer());
-                if (!docObj || !newDocSet.count(docObj->getDocument())) {
+                if (!docObj || (!targetIsNew && !newDocSet.contains(docObj->getDocument()))) {
                     continue;
                 }
                 try {
