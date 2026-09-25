@@ -369,28 +369,31 @@ class TestCore(AssemblyTestBase):
         grounded = self.jointgroup.newObject("App::FeaturePython", "GroundedJoint")
         JointObject.GroundedJoint(grounded, ground)
 
-        # Use explicit JCS orientations instead of numbered shape edges, whose
-        # orientation depends on the OpenCASCADE build.
+        # Attach to real faces, but specify the JCS explicitly so the test does
+        # not depend on OpenCASCADE's orientation of those faces.
         along_rack = App.Rotation(App.Vector(1, 0, 0), -90)
         yaw_offset = App.Rotation(App.Vector(0, 0, 1), -90)
 
         slider = self.jointgroup.newObject("App::FeaturePython", "Slider")
         JointObject.Joint(slider, JointObject.JointTypes.index("Slider"))
-        slider.Offset1 = App.Placement(App.Vector(), along_rack)
-        slider.Offset2 = App.Placement(App.Vector(), along_rack * yaw_offset)
-        slider.Reference1 = (ground, [""])
-        slider.Reference2 = (rack, [""])
+        slider.Detach1 = True
+        slider.Detach2 = True
+        slider.Reference1 = (ground, ["Face1"])
+        slider.Reference2 = (rack, ["Face1"])
+        slider.Placement1 = App.Placement(App.Vector(), along_rack)
+        slider.Placement2 = App.Placement(App.Vector(), along_rack * yaw_offset)
 
         revolute = self.jointgroup.newObject("App::FeaturePython", "Revolute")
         JointObject.Joint(revolute, JointObject.JointTypes.index("Revolute"))
-        revolute.Reference1 = (ground, [""])
-        revolute.Reference2 = (pinion, [""])
+        revolute.Reference1 = (ground, ["Face1"])
+        revolute.Reference2 = (pinion, ["Face1"])
 
         rackPinion = self.jointgroup.newObject("App::FeaturePython", "RackPinion")
         JointObject.Joint(rackPinion, JointObject.JointTypes.index("RackPinion"))
-        rackPinion.Offset1 = App.Placement(App.Vector(), along_rack)
-        rackPinion.Reference1 = (rack, [""])
-        rackPinion.Reference2 = (pinion, [""])
+        rackPinion.Detach1 = True
+        rackPinion.Reference1 = (rack, ["Face1"])
+        rackPinion.Reference2 = (pinion, ["Face1"])
+        rackPinion.Placement1 = App.Placement(App.Vector(), along_rack)
         rackPinion.Distance = 10
 
         self.doc.recompute()
