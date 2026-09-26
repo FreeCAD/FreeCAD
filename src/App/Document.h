@@ -1472,6 +1472,16 @@ private:
                                 const std::function<void()>& changeFunc);
     [[nodiscard]] Base::ScopeGuard setDefiningTransaction();
 
+    /**
+     * @brief Rewrite expression references that use a property alias to the canonical name.
+     *
+     * Static aliases are not visible to Restore()'s expression text, so a document saved
+     * against an old property name keeps that name in its expressions. This heals them on
+     * load. The document is deliberately not marked as touched; the file heals on the next
+     * save the user makes for their own reasons.
+     */
+    void canonicalizeAliasedExpressions(const std::vector<DocumentObject*>& objArray);
+
 private:
     // # Data Member of the document
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
