@@ -9,12 +9,31 @@ export PATH_TO_FREECAD_LIBDIR=${HERE}/usr/lib
 export FONTCONFIG_FILE=/etc/fonts/fonts.conf
 export FONTCONFIG_PATH=/etc/fonts
 
-# Fix: Use X to run on Wayland
-export QT_QPA_PLATFORM=xcb
+# Use X by default even on Wayland, but allow overriding via FREECAD_QT_QPA_PLATFORM.
+# Warn users of this if QT_QPA_PLATFORM is already set by their environment.
+if [ -z "${FREECAD_QT_QPA_PLATFORM}" ] && [ -n "${QT_QPA_PLATFORM}" ]; then
+    echo "Warning: \$QT_QPA_PLATFORM has no effect on FreeCAD AppImages. Use \$FREECAD_QT_QPA_PLATFORM instead." >&2
+fi
+export QT_QPA_PLATFORM=${FREECAD_QT_QPA_PLATFORM:-xcb}
+
+# Use XDG Desktop Portals by default. Qt gracefully falls back to whichever platform
+# theme it detected should be next in the chain (gtk3 or Qt built-in) if an XDG
+# portal implementation isn't reachable over D-Bus.
+export QT_QPA_PLATFORMTHEME=${QT_QPA_PLATFORMTHEME:-xdgdesktopportal}
+
+# Set the XKBCommon config location here, as this path (or a host-side path) isn't
+# automatically picked up when starting with a Wayland QT_QPA_PLATFORM.
+export XKB_CONFIG_EXTRA_PATH=${XKB_CONFIG_EXTRA_PATH:-${PREFIX}/share/xkeyboard-config-2}
+
+# Set the XCursor paths if they're otherwise unset to fix https://github.com/FreeCAD/FreeCAD/issues/26726
+# which resurfaced as xcb-util-cursor 0.1.6 now picks up its default path from its build environment,
+# a thing Conda packagers did not pick up on and so the library now ships with build placeholder paths
+# included. Those obviously lead to nowhere on any user system, and causes fallbacks to antiquated X11 cursors.
+export XCURSOR_PATH=${XCURSOR_PATH:-~/.local/share/icons:~/.icons:/usr/share/icons:/usr/share/pixmaps:${PREFIX}/share/icons:${PREFIX}/share/pixmaps}
 
 # Show packages info if DEBUG env variable is set
 if [ "$DEBUG" = 1 ]; then
-    cat ${HERE}/packages.txt
+    cat "${HERE}/packages.txt"
 fi
 
 # SSL
