@@ -244,6 +244,7 @@ static const std::map<std::string, int>& getStatusMap()
         statusMap["PropOutput"] = Property::PropOutput;
         statusMap["PropInput"] = Property::PropInput;
         statusMap["PropStaticEnd"] = Property::PropStaticEnd;
+        statusMap["Busy"] = Property::Busy;
         statusMap["User1"] = Property::User1;
         statusMap["User2"] = Property::User2;
         statusMap["User3"] = Property::User3;
