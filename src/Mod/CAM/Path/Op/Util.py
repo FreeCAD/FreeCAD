@@ -1,26 +1,24 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2018 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileCopyrightText: 2021 Schildkroet
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
-# *   Copyright (c) 2021 Schildkroet                                        *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
 import Path
@@ -212,6 +210,14 @@ def orientWire(w, forward=True):
     return wire
 
 
+def discretizeWire(wire, tolerance=0.01):
+    """discretizeWire(wire) ... discretize any non-line edges with lines."""
+    vertexes = wire.discretize(Deflection=tolerance)
+    line_edges = [Part.makeLine(vertexes[i], vertexes[i + 1]) for i in range(len(vertexes) - 1)]
+
+    return Part.Wire(line_edges)
+
+
 def approximateWire(wire, tolerance=0.01):
     """approximateWire approximates any non-line/arc edges with lines or arcs.
     Edges that are lines or circular arcs are kept as-is.
@@ -277,7 +283,11 @@ def wireToCArea(wire, tolerance=0.01):
     c = area.Curve()
 
     # Approximate wire as lines and arcs
-    wire = approximateWire(wire, tolerance)
+    coincideTolerance = getCoincideTolerance(wire.Edges)
+    if coincideTolerance is None or coincideTolerance > Path.Geom.Tolerance:
+        wire = discretizeWire(wire, tolerance)
+    else:
+        wire = approximateWire(wire, tolerance)
     edges = _orientEdges(Part.__sortEdges__(wire.Edges))
 
     # Add the first point (start of first edge)
@@ -428,6 +438,11 @@ def offsetWire(wire, base, offset, tolerance=0.01):
     flipping behavior is undesirable, we'll need a new flag to disable it in the C++
     implementation. It was needed in C++ for compatibility with old behavior.)
     """
+
+    def cutLength(wires):
+        """Calculate total length of edges after cutting by solid"""
+        return sum(e.Length for e in Part.Compound(wires).cut(base).Edges)
+
     if len(wire.Edges) == 0:
         return [], []
 
@@ -453,6 +468,11 @@ def offsetWire(wire, base, offset, tolerance=0.01):
 
         for i, w in enumerate(neg_wires):
             debugWire(f"negativeOffset_{i}", w)
+
+        if base and any(not w.isClosed() for w in pos_wires + neg_wires):
+            # In case of open wires, cuts pos_wires and neg_wires by solids
+            # Assumed that remaining edges from pos_wires should be longer
+            return sorted([pos_wires, neg_wires], key=cutLength, reverse=True)
 
         # Return
         return pos_wires, neg_wires
