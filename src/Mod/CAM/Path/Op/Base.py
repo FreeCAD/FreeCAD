@@ -744,10 +744,8 @@ class ObjectOp:
             key = id(base_obj)
             if key not in proxy_cache:
                 if hasattr(base_obj, "Shape") and base_obj.Shape:
-                    # checkScale=False keeps this on the gp_Trsf path, which
-                    # preserves analytic curve types. Do not pass True here:
-                    # it routes to BRepBuilderAPI_GTransform and turns
-                    # circles/arcs into BSplines.
+                    # The matrix is a pure rotation, so a rigid transform is
+                    # enough and analytic curve types are preserved.
                     shape = base_obj.Shape.copy().transformShape(matrix, False, False)
 
                     # Validate the shape before creating proxy
