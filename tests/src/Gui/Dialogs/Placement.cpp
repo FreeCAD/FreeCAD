@@ -47,12 +47,10 @@ private Q_SLOTS:
     void missingCenterOfMassDoesNotUseTranslatedFallback()
     {
         Gui::Dialog::PlacementHandler handler;
-        Base::Vector3d center(1.0, 2.0, 3.0);
 
-        const bool found = handler.computeCenterOfMass(center);
+        const auto center = handler.computeCenterOfMass();
 
-        QVERIFY(!found);
-        QVERIFY(center == Base::Vector3d());
+        QVERIFY(!center.has_value());
     }
 };
 

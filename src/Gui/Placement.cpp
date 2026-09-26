@@ -378,9 +378,8 @@ QString PlacementHandler::getSimplePlacement(const App::DocumentObject* obj, con
         );
 }
 
-bool PlacementHandler::computeCenterOfMass(Base::Vector3d& centerOfMass) const
+std::optional<Base::Vector3d> PlacementHandler::computeCenterOfMass() const
 {
-    centerOfMass = Base::Vector3d();
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
         App::GeoFeature::getClassTypeId()
     );
@@ -389,12 +388,13 @@ bool PlacementHandler::computeCenterOfMass(Base::Vector3d& centerOfMass) const
             const App::PropertyComplexGeoData* propgeo
                 = static_cast<App::GeoFeature*>(it)->getPropertyOfGeometry();
             const Data::ComplexGeoData* geodata = propgeo ? propgeo->getComplexData() : nullptr;
+            Base::Vector3d centerOfMass;
             if (geodata && geodata->getCenterOfGravity(centerOfMass)) {
-                return true;
+                return centerOfMass;
             }
         }
     }
-    return false;
+    return std::nullopt;
 }
 
 Base::Vector3d PlacementHandler::relativeCenter(
@@ -628,8 +628,8 @@ void Placement::onCenterOfMassToggled(bool on)
 
     if (on) {
         Base::Vector3d pnt;
-        if (handler.computeCenterOfMass(pnt)) {
-            pnt = PlacementHandler::relativeCenter(pnt, getPositionData());
+        if (const auto centerOfMass = handler.computeCenterOfMass()) {
+            pnt = PlacementHandler::relativeCenter(*centerOfMass, getPositionData());
         }
         handler.setCenterOfMass(pnt);
         ui->xCnt->setValue(pnt.x);
