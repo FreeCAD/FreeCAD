@@ -274,6 +274,12 @@ public:
     void setShow(const char* name);
     /// set the feature in Noshow
     void setHide(const char* name);
+    /// Swap between the normal visible space and its temporary complement.
+    void toggleVisibleSpace();
+    /// Rebuilds the alternate visible space after an object visibility change.
+    bool updateVisibleSpaceVisibility(ViewProviderDocumentObject* viewProvider);
+    /// Toggles an object's membership in the alternate visible space.
+    bool toggleVisibleSpaceVisibility(ViewProviderDocumentObject* viewProvider);
     /// set the feature transformation (only viewing)
     void setPos(const char* name, const Base::Matrix4D& rclMtrx);
     std::vector<ViewProvider*> getViewProvidersOfType(const Base::Type& typeId) const;
@@ -353,6 +359,9 @@ protected:
     Gui::DocumentPy* _pcDocPy;
 
 private:
+    void setVisibleSpaceBackground(bool active);
+    void restoreNormalVisibleSpace();
+    void showAlternateVisibleSpace();
     bool trySetEdit(Gui::ViewProvider* p, int ModNum, const char* subname);
     void resetIfEditing();
     // handles the scene graph nodes to correctly group child and parents
