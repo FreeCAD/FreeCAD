@@ -35,6 +35,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 from draftobjects.base import DraftObject
+from draftobjects import base as draft_base
 from draftutils import gui_utils
 
 
@@ -58,16 +59,26 @@ class Point(DraftObject):
         obj.Z = z
 
         obj.setPropertyStatus("Placement", "Hidden")
+        draft_base.assure_point_attachment_properties(obj)
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)
+        draft_base.assure_point_attachment_properties(obj)
         gui_utils.restore_view_object(obj, vp_module="view_point", vp_class="ViewProviderPoint")
 
     def execute(self, obj):
         base = obj.Placement.Base
+        attached_point_global = draft_base.apply_point_attachment_to_point(obj)
+        if attached_point_global is not None:
+            attached_point = obj.Placement.multVec(
+                obj.getGlobalPlacement().inverse().multVec(attached_point_global)
+            )
+            obj.X = attached_point.x
+            obj.Y = attached_point.y
+            obj.Z = attached_point.z
         xyz_vec = App.Vector(obj.X.Value, obj.Y.Value, obj.Z.Value)
 
-        if self.props_changed_placement_only():
+        if self.props_changed_placement_only() and attached_point_global is None:
             if base != xyz_vec:
                 obj.X = base.x
                 obj.Y = base.y

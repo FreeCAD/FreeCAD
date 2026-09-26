@@ -30,6 +30,193 @@
 
 ## \addtogroup draftobjects
 # @{
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
+import FreeCAD as App
+
+ATTACHED_NODES_PROP = "AttachedNodes"
+ATTACHED_NODE_INDEXES_PROP = "AttachedNodeIndexes"
+
+
+def assure_point_attachment_properties(obj):
+    """Add generic node attachment properties to a Draft object."""
+    if ATTACHED_NODES_PROP not in obj.PropertiesList:
+        _tip = QT_TRANSLATE_NOOP(
+            "App::Property",
+            "Geometry references used to drive individual Draft edit nodes",
+        )
+        obj.addProperty(
+            "App::PropertyLinkSubListGlobal",
+            ATTACHED_NODES_PROP,
+            "Node Attachments",
+            _tip,
+            locked=True,
+        )
+    if ATTACHED_NODE_INDEXES_PROP not in obj.PropertiesList:
+        _tip = QT_TRANSLATE_NOOP(
+            "App::Property",
+            "Zero-based indexes of Draft edit nodes driven by AttachedNodes",
+        )
+        obj.addProperty(
+            "App::PropertyIntegerList",
+            ATTACHED_NODE_INDEXES_PROP,
+            "Node Attachments",
+            _tip,
+            locked=True,
+        )
+
+
+def has_point_attachments(obj):
+    """Return True if the object has at least one attached edit node."""
+    return (
+        hasattr(obj, ATTACHED_NODES_PROP)
+        and hasattr(obj, ATTACHED_NODE_INDEXES_PROP)
+        and bool(getattr(obj, ATTACHED_NODES_PROP))
+        and bool(getattr(obj, ATTACHED_NODE_INDEXES_PROP))
+    )
+
+
+def _subnames_from_link(link):
+    if len(link) < 2:
+        return ()
+    subnames = link[1]
+    if isinstance(subnames, str):
+        return (subnames,) if subnames else ()
+    return tuple(subnames)
+
+
+def point_from_attachment_link(link):
+    """Resolve a LinkSub entry to a point in global coordinates."""
+    if not link:
+        return None
+    obj = link[0]
+    if obj is None:
+        return None
+
+    subnames = _subnames_from_link(link)
+    subname = subnames[0] if subnames else ""
+    if subname:
+        try:
+            subobj = obj.getSubObject(subname)
+        except (AttributeError, ValueError, TypeError, ReferenceError):
+            subobj = None
+        if subobj is not None and getattr(subobj, "ShapeType", None) == "Vertex":
+            return subobj.Point
+
+    shape = getattr(obj, "Shape", None)
+    if shape is not None and not shape.isNull() and len(shape.Vertexes) == 1:
+        return shape.Vertexes[0].Point
+
+    if hasattr(obj, "getGlobalPlacement"):
+        return obj.getGlobalPlacement().Base
+    if hasattr(obj, "Placement"):
+        return App.Vector(obj.Placement.Base)
+    return None
+
+
+def get_point_attachment_map(obj):
+    """Return a dict mapping node index to LinkSub entry."""
+    if not has_point_attachments(obj):
+        return {}
+    return dict(zip(obj.AttachedNodeIndexes, get_flat_point_attachment_links(obj)))
+
+
+def get_flat_point_attachment_links(obj):
+    """Return one LinkSub entry per stored attached node."""
+    links = []
+    for link in obj.AttachedNodes:
+        source = link[0]
+        subnames = _subnames_from_link(link)
+        if subnames:
+            for subname in subnames:
+                links.append((source, (subname,)))
+        else:
+            links.append((source, ("",)))
+    return links
+
+
+def apply_point_attachments(obj, points):
+    """Return a copy of points with attached nodes updated from their links."""
+    if not has_point_attachments(obj):
+        return points
+
+    result = list(points)
+    inv_placement = obj.getGlobalPlacement().inverse()
+    for node_idx, link in get_point_attachment_map(obj).items():
+        if node_idx < 0 or node_idx >= len(result):
+            continue
+        point = point_from_attachment_link(link)
+        if point is not None:
+            result[node_idx] = inv_placement.multVec(point)
+    return result
+
+
+def apply_point_attachment_to_point(obj):
+    """Return the global point for an attached Draft Point, or None."""
+    link = get_point_attachment_map(obj).get(0)
+    if link:
+        return point_from_attachment_link(link)
+    return None
+
+
+def set_point_attachment(obj, node_idx, link):
+    """Attach a Draft edit node to a LinkSub entry."""
+    assure_point_attachment_properties(obj)
+    links_by_index = get_point_attachment_map(obj)
+    links_by_index[node_idx] = link
+    _set_point_attachment_map(obj, links_by_index)
+
+
+def remove_point_attachment(obj, node_idx):
+    """Remove the attachment for a Draft edit node."""
+    if not has_point_attachments(obj):
+        return
+    links_by_index = get_point_attachment_map(obj)
+    links_by_index.pop(node_idx, None)
+    _set_point_attachment_map(obj, links_by_index)
+
+
+def shift_point_attachments(obj, start_idx, delta):
+    """Shift stored node indexes after a point insertion or deletion."""
+    if not has_point_attachments(obj):
+        return
+    shifted = {}
+    for node_idx, link in get_point_attachment_map(obj).items():
+        if delta < 0 and node_idx == start_idx:
+            continue
+        if node_idx >= start_idx:
+            node_idx += delta
+        if node_idx >= 0:
+            shifted[node_idx] = link
+    _set_point_attachment_map(obj, shifted)
+
+
+def reverse_point_attachments(obj, point_count):
+    """Reverse stored node indexes after reversing a point-list object."""
+    if not has_point_attachments(obj):
+        return
+    reversed_links = {}
+    for node_idx, link in get_point_attachment_map(obj).items():
+        if 0 <= node_idx < point_count:
+            reversed_links[point_count - node_idx - 1] = link
+    _set_point_attachment_map(obj, reversed_links)
+
+
+def rotate_point_attachments(obj, point_count, first_idx):
+    """Move node attachments with a point-list rotation."""
+    if not has_point_attachments(obj) or point_count <= 0:
+        return
+    rotated_links = {}
+    for node_idx, link in get_point_attachment_map(obj).items():
+        if 0 <= node_idx < point_count:
+            rotated_links[(node_idx - first_idx) % point_count] = link
+    _set_point_attachment_map(obj, rotated_links)
+
+
+def _set_point_attachment_map(obj, links_by_index):
+    items = sorted(links_by_index.items())
+    obj.AttachedNodeIndexes = [idx for idx, _link in items]
+    obj.AttachedNodes = [link for _idx, link in items]
 
 
 class DraftObject(object):
