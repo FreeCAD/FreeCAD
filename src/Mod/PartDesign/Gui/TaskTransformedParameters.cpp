@@ -47,6 +47,7 @@
 #include "TaskTransformedParameters.h"
 #include "TaskMultiTransformParameters.h"
 #include "ReferenceSelection.h"
+#include "Mod/PartDesign/App/FeatureBoolean.h"
 
 
 FC_LOG_LEVEL_INIT("PartDesign", true, true)
@@ -228,7 +229,8 @@ bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& ms
 
         PartDesign::Transformed* pcTransformed = getObject();
         App::DocumentObject* selectedObject = pcTransformed->getDocument()->getObject(msg.pObjectName);
-        if (selectedObject->isDerivedFrom<PartDesign::FeatureAddSub>()) {
+        if (selectedObject->isDerivedFrom<PartDesign::FeatureAddSub>()
+            || selectedObject->isDerivedFrom<PartDesign::Boolean>()) {
 
             // Do the same like in TaskDlgTransformedParameters::accept() but without doCommand
             std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValue();
