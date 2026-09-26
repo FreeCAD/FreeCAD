@@ -39,7 +39,7 @@ class Points(object):
         ...
 
     @constmethod
-    def write(self) -> Any:
+    def write(self, filename: str, /) -> None:
         """Write the points object into file."""
         ...
 
@@ -53,7 +53,7 @@ class Points(object):
         ...
 
     @constmethod
-    def fromSegment(self) -> Any:
+    def fromSegment(self, indices: Sequence[int], /) -> Points:
         """Get a new point object from a given segment"""
         ...
 
