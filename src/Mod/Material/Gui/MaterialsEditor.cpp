@@ -56,6 +56,8 @@
 #include "ModelSelect.h"
 #include "ui_MaterialsEditor.h"
 
+static const int DescriptionRole = Qt::UserRole + 2;
+
 
 using namespace MatGui;
 
@@ -1455,3 +1457,19 @@ int MaterialsEditor::confirmSave(QWidget* parent)
 }
 
 #include "moc_MaterialsEditor.cpp"
+
+QString MaterialsEditor::buildPropertyTooltip(const QString& description, const QString& propertyType, const QString& valueString)
+{
+    QString tooltip = description;
+    if (!valueString.trimmed().isEmpty()) {
+        if (!tooltip.isEmpty()) {
+            tooltip += QStringLiteral("\n\n");
+        }
+        if (propertyType == QStringLiteral("Color")) {
+            tooltip += QStringLiteral("Value: %1 %2").arg(getColorHash(valueString), valueString);
+        } else {
+            tooltip += QStringLiteral("Value: %1").arg(valueString);
+        }
+    }
+    return tooltip;
+}

@@ -66,6 +66,9 @@ public:
     void onDescription();
 
     void propertyChange(const QString& property, const QVariant& value);
+
+private:
+    QString buildPropertyTooltip(const QString& description, const QString& propertyType, const QString& valueString);
     void onInheritNewMaterial(bool checked);
     void onNewMaterial(bool checked);
     void onFavourite(bool checked);

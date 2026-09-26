@@ -189,8 +189,6 @@ class _Space(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self, obj)
         self.Type = "Space"
-        if not obj.hasExtension("App::GroupExtensionPython"):
-            obj.addExtension("App::GroupExtensionPython")
         self.setProperties(obj)
         obj.IfcType = "Space"
         obj.CompositionType = "ELEMENT"
@@ -240,11 +238,6 @@ class _Space(ArchComponent.Component):
                 QT_TRANSLATE_NOOP("App::Property", "The finishing of the ceiling of this space"),
                 locked=True,
             )
-        if not obj.hasExtension("App::GroupExtensionPython"):
-            try:
-                obj.addExtension("App::GroupExtensionPython")
-            except Exception:
-                pass
         if not "Group" in pl:
             obj.addProperty(
                 "App::PropertyLinkList",
@@ -555,8 +548,6 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
     def __init__(self, vobj):
 
         ArchComponent.ViewProviderComponent.__init__(self, vobj)
-        if not vobj.hasExtension("Gui::ViewProviderGroupExtensionPython"):
-            vobj.addExtension("Gui::ViewProviderGroupExtensionPython")
         self.setProperties(vobj)
         vobj.Transparency = params.get_param_arch("defaultSpaceTransparency")
         vobj.LineWidth = params.get_param_view("DefaultShapeLineWidth")
