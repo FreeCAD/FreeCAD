@@ -478,6 +478,27 @@ endsolid Simple"""
         mesh.read(Stream=data, Format="AST")
         self.assertTrue(mesh.hasSelfIntersections())
 
+    def testAsciiSTLEndSolidWithoutTrailingNewline(self):
+        # Issue #32928: a long endsolid name on the final line with no trailing
+        # newline produced an empty mesh. Facet counting must see ENDSOLID, and
+        # the second pass must be able to rewind after eofbit.
+        body = b"""solid ASCII_STL
+facet normal 0.0e0 0.0e0 1.0e1
+    outer loop
+        vertex 0.0e1 0.0e1 0.0e1
+        vertex 1.0e1 0.0e1 0.0e1
+        vertex 0.0e1 1.0e1 0.0e1
+    endloop
+endfacet
+endsolid ASCII_STLLL"""
+        self.assertTrue(body.endswith(b"endsolid ASCII_STLLL"))
+        self.assertFalse(body.endswith(b"\n"))
+
+        mesh = Mesh.Mesh()
+        mesh.read(Stream=io.BytesIO(body), Format="AST")
+        self.assertEqual(mesh.CountFacets, 1)
+        self.assertEqual(mesh.CountPoints, 3)
+
 
 # Threads
 

@@ -769,16 +769,26 @@ bool MeshInput::LoadAsciiSTL(std::istream& input)
         if (line.find("ENDFACET") != std::string::npos) {
             ulFacetCt++;
         }
-        // prevent from reading EOF (as I don't know how to reread the file then)
-        if (input.tellg() > ulSize) {
+        // Stop at the solid terminator first. The size heuristic below only guards
+        // against reading a non-text tail; it must not skip ENDSOLID on the final
+        // line (issue #32928: long endsolid name, no trailing newline).
+        if (line.find("ENDSOLID") != std::string::npos) {
             break;
         }
-        if (line.find("ENDSOLID") != std::string::npos) {
+        // prevent from reading past a non-text tail
+        if (input.eof()) {
+            break;
+        }
+        if (ulSize > 0 && input.tellg() > ulSize) {
             break;
         }
     }
 
     // restart from the beginning
+    // getline on a final line without a trailing newline leaves eofbit set, and
+    // pubseekoff on the streambuf does not clear iostream state. Clear first or
+    // the second pass reads nothing and the mesh comes in empty (#32928).
+    input.clear();
     buf->pubseekoff(0, std::ios::beg, std::ios::in);
 
 #if 0
