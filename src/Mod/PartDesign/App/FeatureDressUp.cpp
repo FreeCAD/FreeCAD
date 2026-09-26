@@ -131,21 +131,15 @@ void DressUp::getContinuousEdges(
     TopTools_IndexedMapOfShape mapOfEdges;
     TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
 
-    TopExp::MapShapesAndAncestors(
-        TopShape.getShape(),
-        TopAbs_EDGE,
-        TopAbs_FACE,
-        mapEdgeFace
-    );
+    TopExp::MapShapesAndAncestors(TopShape.getShape(), TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
     TopExp::MapShapes(TopShape.getShape(), TopAbs_EDGE, mapOfEdges);
 
     const auto parseIndex = [](std::string_view value) -> int {
         int index = 0;
 
-        const auto [ptr, ec] =
-            std::from_chars(value.data(), value.data() + value.size(), index);
+        const auto [ptr, ec] = std::from_chars(value.data(), value.data() + value.size(), index);
 
-        if (ec != std::errc{} || ptr != value.data() + value.size()) {
+        if (ec != std::errc {} || ptr != value.data() + value.size()) {
             return 0;
         }
 
@@ -154,7 +148,7 @@ void DressUp::getContinuousEdges(
 
     unsigned int i = 0;
     while (i < SubNames.size()) {
-        const std::string_view subName{SubNames[i]};
+        const std::string_view subName {SubNames[i]};
 
         if (subName.starts_with("Edge"sv)) {
             const int edgeIndex = parseIndex(subName.substr(4));
@@ -164,8 +158,7 @@ void DressUp::getContinuousEdges(
                 continue;
             }
 
-            const TopoDS_Edge edge =
-                TopoDS::Edge(mapOfEdges.FindKey(edgeIndex));
+            const TopoDS_Edge edge = TopoDS::Edge(mapOfEdges.FindKey(edgeIndex));
 
             const TopTools_ListOfShape& faces = mapEdgeFace.FindFromKey(edge);
 
@@ -174,11 +167,8 @@ void DressUp::getContinuousEdges(
                 continue;
             }
 
-            const GeomAbs_Shape cont = BRep_Tool::Continuity(
-                edge,
-                TopoDS::Face(faces.First()),
-                TopoDS::Face(faces.Last())
-            );
+            const GeomAbs_Shape cont
+                = BRep_Tool::Continuity(edge, TopoDS::Face(faces.First()), TopoDS::Face(faces.Last()));
 
             if (cont != GeomAbs_C0) {
                 SubNames.erase(SubNames.begin() + i);
@@ -195,8 +185,7 @@ void DressUp::getContinuousEdges(
                 continue;
             }
 
-            const TopoDS_Shape face =
-                TopShape.getSubShape(SubNames[i].c_str(), true);
+            const TopoDS_Shape face = TopShape.getSubShape(SubNames[i].c_str(), true);
 
             if (face.IsNull()) {
                 SubNames.erase(SubNames.begin() + i);
@@ -207,15 +196,13 @@ void DressUp::getContinuousEdges(
             TopExp::MapShapes(face, TopAbs_EDGE, mapOfFaceEdges);
 
             for (int j = 1; j <= mapOfFaceEdges.Extent(); ++j) {
-                const int edgeIndex =
-                    mapOfEdges.FindIndex(mapOfFaceEdges.FindKey(j));
+                const int edgeIndex = mapOfEdges.FindIndex(mapOfFaceEdges.FindKey(j));
 
                 if (edgeIndex <= 0) {
                     continue;
                 }
 
-                const std::string edgeName =
-                    "Edge" + std::to_string(edgeIndex);
+                const std::string edgeName = "Edge" + std::to_string(edgeIndex);
 
                 if (std::ranges::find(SubNames, edgeName) == SubNames.end()) {
                     SubNames.push_back(edgeName);
@@ -233,8 +220,7 @@ void DressUp::getContinuousEdges(
                 continue;
             }
 
-            const TopoDS_Shape solid =
-                TopShape.getSubShape(SubNames[i].c_str(), true);
+            const TopoDS_Shape solid = TopShape.getSubShape(SubNames[i].c_str(), true);
 
             if (solid.IsNull()) {
                 SubNames.erase(SubNames.begin() + i);
@@ -245,15 +231,13 @@ void DressUp::getContinuousEdges(
             TopExp::MapShapes(solid, TopAbs_EDGE, mapOfSolidEdges);
 
             for (int j = 1; j <= mapOfSolidEdges.Extent(); ++j) {
-                const int edgeIndex =
-                    mapOfEdges.FindIndex(mapOfSolidEdges.FindKey(j));
+                const int edgeIndex = mapOfEdges.FindIndex(mapOfSolidEdges.FindKey(j));
 
                 if (edgeIndex <= 0) {
                     continue;
                 }
 
-                const std::string edgeName =
-                    "Edge" + std::to_string(edgeIndex);
+                const std::string edgeName = "Edge" + std::to_string(edgeIndex);
 
                 if (std::ranges::find(SubNames, edgeName) == SubNames.end()) {
                     SubNames.push_back(edgeName);
@@ -281,27 +265,18 @@ std::vector<TopoShape> DressUp::getContinuousEdges(const TopoShape& shape)
         const auto faces = shape.findAncestorsShapes(subshape, TopAbs_FACE);
 
         if (faces.size() != 2) {
-            FC_WARN(
-                getFullName() << ": skip edge " << ref
-                              << " with less two attaching faces"
-            );
+            FC_WARN(getFullName() << ": skip edge " << ref << " with less two attaching faces");
             return;
         }
 
         const TopoDS_Shape& face1 = faces.front();
         const TopoDS_Shape& face2 = faces.back();
 
-        const GeomAbs_Shape cont = BRep_Tool::Continuity(
-            TopoDS::Edge(subshape),
-            TopoDS::Face(face1),
-            TopoDS::Face(face2)
-        );
+        const GeomAbs_Shape cont
+            = BRep_Tool::Continuity(TopoDS::Edge(subshape), TopoDS::Face(face1), TopoDS::Face(face2));
 
         if (cont != GeomAbs_C0) {
-            FC_WARN(
-                getFullName() << ": skip edge " << ref
-                              << " that is not C0 continuous"
-            );
+            FC_WARN(getFullName() << ": skip edge " << ref << " that is not C0 continuous");
             return;
         }
 
@@ -325,17 +300,14 @@ std::vector<TopoShape> DressUp::getContinuousEdges(const TopoShape& shape)
             case TopAbs_FACE:
             case TopAbs_WIRE:
             case TopAbs_SOLID:
-                for (TopExp_Explorer exp(subshape, TopAbs_EDGE);
-                     exp.More();
-                     exp.Next()) {
+                for (TopExp_Explorer exp(subshape, TopAbs_EDGE); exp.More(); exp.Next()) {
                     addEdge(exp.Current(), ref);
                 }
                 break;
 
             default:
                 FC_WARN(
-                    getFullName() << ": skip invalid shape '" << ref
-                                  << "' with type "
+                    getFullName() << ": skip invalid shape '" << ref << "' with type "
                                   << TopoShape::shapeName(subshape.ShapeType())
                 );
                 break;
