@@ -40,7 +40,7 @@ FILES = [
 BBIM = ["00:00", "00:01", "00:04", "00:05", "00:05", "00:14", "00:36"]
 
 
-class NativeIFCTest(unittest.TestCase):
+class NativeIfcPerformanceTest(unittest.TestCase):
     results = []
 
     def setUp(self):
