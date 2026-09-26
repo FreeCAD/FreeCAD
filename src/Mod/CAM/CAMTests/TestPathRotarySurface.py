@@ -165,7 +165,7 @@ class TestPathRotarySurface(PathTestBase):
         op.AngularResolution = 15.0
         # Clear the OpToolDiameter expression that the SetupSheet auto-binds.
         op.setExpression("StepDown", None)
-        op.StepDown = 0.0  # single radial pass by default; test_07 covers multi-pass
+        op.StepDown = 999.0  # single radial pass by default; test_07 covers multi-pass
         op.RadialStockToLeave = 0.0
         op.MaxFeed = 5000.0
         op.LinearDeflection = 0.2
@@ -387,7 +387,7 @@ class TestPathRotarySurface(PathTestBase):
 
     def test10_centerline_feed_clamp_logs(self):
         """rotary_spiral.generate logs when the rotary feed is clamped."""
-        import Path.Base.Generator.rotary_spiral as rotary_spiral
+        from Path.Base.Generator import rotary_spiral
 
         # 12-step grid, all radii ~0.5 mm — small enough that the
         # effective rotary feed F * 360/(2π·r) blows past max_feed.

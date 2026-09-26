@@ -1,41 +1,32 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2017 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileCopyrightText: 2025 Billy Huddleston <billy@ivdc.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
-# *   Copyright (c) 2025 Billy Huddleston <billy@ivdc.com>                  *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
+import Part
 import Path
 import Path.Op.Base as PathOp
 from Path.Base import Drillable
 from PathScripts import PathUtils
-
-# lazily loaded modules
-from lazy_loader.lazy_loader import LazyLoader
-
-Draft = LazyLoader("Draft", globals(), "Draft")
-Part = LazyLoader("Part", globals(), "Part")
-DraftGeomUtils = LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
-
 
 __title__ = "CAM Circular Holes Base Operation"
 __author__ = "sliptonic (Brad Collette)"
@@ -136,7 +127,6 @@ class ObjectOp(PathOp.ObjectOp):
     def initCircularHoleOperation(self, obj):
         """initCircularHoleOperation(obj) ... overwrite if the subclass needs initialisation.
         Can safely be overwritten by subclasses."""
-        pass
 
     def holeDiameter(self, base, sub):
         """holeDiameter(base, sub) ... returns the diameter of the specified hole."""
@@ -148,10 +138,11 @@ class ObjectOp(PathOp.ObjectOp):
             if isinstance(shape, Part.Edge) and isinstance(shape.Curve, Part.Circle):
                 return shape.Curve.Radius * 2
 
-            if isinstance(shape, Part.Face):
-                if edges := [e for e in shape.Edges if isinstance(e.Curve, Part.Circle)]:
-                    edge = sorted(edges, key=lambda e: e.BoundBox.ZMax)[0]  # bottom circular edge
-                    return edge.Curve.Radius * 2
+            if isinstance(shape, Part.Face) and (
+                edges := [e for e in shape.Edges if isinstance(e.Curve, Part.Circle)]
+            ):
+                edge = min(edges, key=lambda e: e.BoundBox.ZMax)  # bottom circular edge
+                return edge.Curve.Radius * 2
 
             # for all other shapes the diameter is just the dimension in X.
             # This may be inaccurate as the BoundBox is calculated on the tessellated geometry
@@ -201,7 +192,7 @@ class ObjectOp(PathOp.ObjectOp):
 
     def isHoleEnabled(self, obj, base, sub):
         """isHoleEnabled(obj, base, sub) ... return true if hole is enabled."""
-        name = "%s.%s" % (base.Name, sub)
+        name = f"{base.Name}.{sub}"
         return name not in obj.Disabled
 
     def opExecute(self, obj):
@@ -209,6 +200,12 @@ class ObjectOp(PathOp.ObjectOp):
         them in a list of positions and radii which is then passed to circularHoleExecute(obj, holes).
         Do not overwrite, implement circularHoleExecute(obj, holes) instead."""
         Path.Log.track()
+
+        if Path.Geom.isRoughly(obj.StartDepth.Value, obj.FinalDepth.Value):
+            Path.Log.error(
+                translate("CAM", "%s: Start depth is the same as final depth") % obj.Label
+            )
+            raise PathOp.DepthsException
 
         holes = []
         for base, subs in self.baseShapes(obj):
@@ -224,7 +221,7 @@ class ObjectOp(PathOp.ObjectOp):
                     if Path.Geom.pointsCoincide((pos.x, pos.y), (hole["x"], hole["y"])):
                         if diam > hole["d"] and not Path.Geom.isRoughly(diam, hole["d"]):
                             # use bigger hole and disable with less diameter
-                            name = "%s.%s" % (base.Name, hole["sub"])
+                            name = f"{base.Name}.{hole["sub"]}"
                             disabled = obj.Disabled
                             disabled.append(name)
                             obj.Disabled = disabled
@@ -232,7 +229,7 @@ class ObjectOp(PathOp.ObjectOp):
                             hole["sub"] = sub
                         else:
                             # disable repeat with less diameter
-                            name = "%s.%s" % (base.Name, sub)
+                            name = f"{base.Name}.{sub}"
                             disabled = obj.Disabled
                             disabled.append(name)
                             obj.Disabled = disabled
@@ -258,12 +255,15 @@ class ObjectOp(PathOp.ObjectOp):
         holes is a list of dictionaries with 'x', 'y' and 'r' specified for each hole.
         Note that for Vertexes, non-circular Edges and Locations r=0.
         Must be overwritten by subclasses."""
-        pass
 
-    def findAllHoles(self, obj, selection=[]):
+    def findAllHoles(self, obj, selection=None):
         """findAllHoles(obj) ...
         find all holes of all base or selected models and assign as features."""
         Path.Log.track()
+
+        if selection is None:
+            selection = []
+
         job = self.getJob(obj)
         if not job:
             return
