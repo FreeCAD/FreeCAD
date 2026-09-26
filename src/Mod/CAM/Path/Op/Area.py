@@ -243,6 +243,7 @@ class ObjectOp(PathOp.ObjectOp):
 
         commands = []
         areaParamsDebug = []
+        units = []  # pass options, section shape at one height
         for areaIndex, areaParams in enumerate(areaParamsList):
             """
             Notes:
@@ -262,6 +263,7 @@ class ObjectOp(PathOp.ObjectOp):
             oneStepDown = False
             middleEdge = False
             pocketCenter = False
+            orientation = baseOrientation
             finishing = areaIndex >= len(areaParamsList) - getattr(obj, "FinishingPasses", 0)
             if "Path.Op.Profile" in obj.Proxy.__module__:
                 if obj.RampAngle:
@@ -301,7 +303,7 @@ class ObjectOp(PathOp.ObjectOp):
 
             elif pocketOp:
                 if finishing:  # Pocket finishing pass
-                    pathParams["orientation"] = not baseOrientation
+                    orientation = not baseOrientation
                     if obj.FinishingOneStepDown:
                         oneStepDown = True
                     elif obj.FinishingRampHelix:
@@ -353,77 +355,87 @@ class ObjectOp(PathOp.ObjectOp):
             if not sections:
                 continue
 
-            sectionsShapes = [sec.getShape() for sec in sections]
+            opts = (rampParams, reverseOpenWire, middleEdge, pocketCenter, orientation, finishing)
+            units.extend((opts, sec.getShape()) for sec in sections)
 
-            for sh in sectionsShapes:  # each shape is a path/wires at one height
-                if not (wires := sh.Wires):
-                    continue
-                sortFrom = sh.CenterOfGravity if pocketCenter else self.endVector
-                while wires:
-                    if wires[0].isClosed():
-                        v = Part.Vertex(sortFrom)
-                        wire = min(wires, key=lambda w: v.distToShape(w)[0])  # nearest closed wire
-                        if middleEdge:
-                            # get middle point of the longest edge from wire
-                            longestEdge = max(wire.Edges, key=lambda edge: edge.Length)
-                            start = longestEdge.discretize(3)[1]
-                        else:
-                            start = self.endVector
-                    else:  # open wire (pocket ZigZag, Line, Grid)
-                        iV = -1 if reverseOpenWire else 0
-                        wire = min(wires, key=lambda w: (sortFrom - w.Vertexes[iV].Point).Length)
-                        start = wire.Vertexes[iV].Point
+        if obj.Proxy.__module__ == "Path.Op.Profile":
+            # Cut all roughing offsets at one height before stepping down,
+            # finishing passes stay last
+            roughing = [u for u in units if not u[0][5]]
+            roughing.sort(key=lambda u: -round(u[1].BoundBox.ZMax, 6))  # stable: keeps pass order
+            units = roughing + [u for u in units if u[0][5]]
 
-                    wires.remove(wire)
-                    pathParams["start"] = start
-                    pathParams["shapes"] = [wire]
-                    pp, end_vector = Path.fromShapes(**pathParams)
-                    Path.Log.debug("pp: {}, end vector: {}".format(pp, end_vector))
+        for opts, sh in units:  # each shape is a path/wires at one height
+            rampParams, reverseOpenWire, middleEdge, pocketCenter, orientation, _ = opts
+            pathParams["orientation"] = orientation
+            if not (wires := sh.Wires):
+                continue
+            sortFrom = sh.CenterOfGravity if pocketCenter else self.endVector
+            while wires:
+                if wires[0].isClosed():
+                    v = Part.Vertex(sortFrom)
+                    wire = min(wires, key=lambda w: v.distToShape(w)[0])  # nearest closed wire
+                    if middleEdge:
+                        # get middle point of the longest edge from wire
+                        longestEdge = max(wire.Edges, key=lambda edge: edge.Length)
+                        start = longestEdge.discretize(3)[1]
+                    else:
+                        start = self.endVector
+                else:  # open wire (pocket ZigZag, Line, Grid)
+                    iV = -1 if reverseOpenWire else 0
+                    wire = min(wires, key=lambda w: (sortFrom - w.Vertexes[iV].Point).Length)
+                    start = wire.Vertexes[iV].Point
 
-                    if pp.Size:
-                        doRamp = rampParams["method"] is not None
-                        while pp.Commands[0].Name in Constants.GCODE_MOVE_RAPID:
-                            pp.deleteCommand(0)  # remove rapid moves
-                        plungeMove = pp.Commands[0]
-                        p = Path.Geom.commandEndPoint(plungeMove)
-                        pp.deleteCommand(0)  # remove plunge move
+                wires.remove(wire)
+                pathParams["start"] = start
+                pathParams["shapes"] = [wire]
+                pp, end_vector = Path.fromShapes(**pathParams)
+                Path.Log.debug("pp: {}, end vector: {}".format(pp, end_vector))
 
-                        cmds = []
-                        if self.initmove:
-                            self.initmove = False
-                            cmds.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
-                            cmds.append(Path.Command("G0", {"X": p.x, "Y": p.y}))
-                            cmds.append(Path.Command("G0", {"Z": obj.SafeHeight.Value}))
-                            par = {"X": p.x, "Y": p.y, "Z": p.z, "F": self.vertFeed}
-                            cmds.append(Path.Command("G1", par))
-                        elif obj.RetractThreshold.Value > (self.endVector - p).Length:
-                            cmds.append(plungeMove)
-                        else:
-                            linkingArgs["start_position"] = self.endVector
-                            linkingArgs["target_position"] = p
-                            cmds.extend(linking.get_linking_moves(**linkingArgs))
-                            zMax = max(cmd.z for cmd in cmds) if cmds else p.z
-                            if rampParams["method"] == 0 and zMax < obj.SafeHeight.Value:
-                                doRamp = False
-                            for cmd in cmds:
-                                if cmd.z < obj.SafeHeight.Value:
-                                    cmd.Name = "G1"
-                                    par = cmd.Parameters
-                                    par["F"] = self.vertFeed
-                                    cmd.Parameters = par
+                if pp.Size:
+                    doRamp = rampParams["method"] is not None
+                    while pp.Commands[0].Name in Constants.GCODE_MOVE_RAPID:
+                        pp.deleteCommand(0)  # remove rapid moves
+                    plungeMove = pp.Commands[0]
+                    p = Path.Geom.commandEndPoint(plungeMove)
+                    pp.deleteCommand(0)  # remove plunge move
 
-                            if doRamp and len(cmds) < 2:
-                                c = commands[-1]
-                                cmds.insert(0, Path.Command("G1", {"X": c.x, "Y": c.y, "Z": c.z}))
+                    cmds = []
+                    if self.initmove:
+                        self.initmove = False
+                        cmds.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
+                        cmds.append(Path.Command("G0", {"X": p.x, "Y": p.y}))
+                        cmds.append(Path.Command("G0", {"Z": obj.SafeHeight.Value}))
+                        par = {"X": p.x, "Y": p.y, "Z": p.z, "F": self.vertFeed}
+                        cmds.append(Path.Command("G1", par))
+                    elif obj.RetractThreshold.Value > (self.endVector - p).Length:
+                        cmds.append(plungeMove)
+                    else:
+                        linkingArgs["start_position"] = self.endVector
+                        linkingArgs["target_position"] = p
+                        cmds.extend(linking.get_linking_moves(**linkingArgs))
+                        zMax = max(cmd.z for cmd in cmds) if cmds else p.z
+                        if rampParams["method"] == 0 and zMax < obj.SafeHeight.Value:
+                            doRamp = False
+                        for cmd in cmds:
+                            if cmd.z < obj.SafeHeight.Value:
+                                cmd.Name = "G1"
+                                par = cmd.Parameters
+                                par["F"] = self.vertFeed
+                                cmd.Parameters = par
 
-                        cmds.extend(pp.Commands)
-                        if doRamp:  # generate ramp entry
-                            rampParams["commands"] = cmds
-                            cmds = RampEntry(**rampParams).generate()
+                        if doRamp and len(cmds) < 2:
+                            c = commands[-1]
+                            cmds.insert(0, Path.Command("G1", {"X": c.x, "Y": c.y, "Z": c.z}))
 
-                        commands.extend(cmds)
-                        self.endVector = end_vector
-                        sortFrom = end_vector
+                    cmds.extend(pp.Commands)
+                    if doRamp:  # generate ramp entry
+                        rampParams["commands"] = cmds
+                        cmds = RampEntry(**rampParams).generate()
+
+                    commands.extend(cmds)
+                    self.endVector = end_vector
+                    sortFrom = end_vector
 
         self.setParamsDebug(obj, "AreaParams", areaParamsDebug)
         return commands
