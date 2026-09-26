@@ -37,13 +37,31 @@ class PartDesignExport Thickness: public DressUp
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Thickness);
 
 public:
+    enum class SelectionMode
+    {
+        SelectedFaces,
+        SelectedSolids,
+        AllSolids
+    };
+    // enum class ThicknessMode : int16_t {
+    //     Skin = BRepOffset_Skin,
+    //     Pipe = BRepOffset_Pipe,
+    //     RectoVerso = BRepOffset_RectoVerso
+    // };
+
     Thickness();
 
     App::PropertyLength Value;
-    App::PropertyBool Reversed;
     App::PropertyBool Intersection;
-    App::PropertyEnumeration Mode;
+    App::PropertyFloatConstraint Centering;
     App::PropertyEnumeration Join;
+    App::PropertyEnumeration Selection;
+    /// LEGACY, Dictated by Centering property
+    /// Reversed = True -> Centering = -1 (inside)
+    /// Reversed = False -> Centering = 1 (outside)
+    /// Mode = RectoVerso -> Centering = 0
+    App::PropertyEnumeration Mode;
+    App::PropertyBool Reversed;
 
     /** @name methods override feature */
     //@{
@@ -55,10 +73,43 @@ public:
     {
         return "PartDesignGui::ViewProviderThickness";
     }
+    void updatePreviewShape() override;
+    void onDocumentRestored() override;
     //@}
 private:
+    struct ThicknessParameters
+    {
+        const TopoShape& input;
+        TopoShape& result;
+        const std::vector<std::string>& subStrings;
+
+        std::map<int, std::vector<TopoShape>> closeFaces;
+
+        double thickness;
+        double tolerance;
+        bool intersection;
+        double centering;
+        int join;
+        int solidCount;
+    };
+
+    App::DocumentObjectExecReturn* identifySolids(ThicknessParameters& params);
+    App::DocumentObjectExecReturn* executeSelectedFaces(ThicknessParameters& params);
+    App::DocumentObjectExecReturn* executeSelectedSolids(ThicknessParameters& params);
+    App::DocumentObjectExecReturn* executeAllSolids(ThicknessParameters& params);
+    void updatePreviewSelectedFaces(ThicknessParameters& params, std::vector<TopoShape>& previewShapes);
+    void updatePreviewSelectedSolids(ThicknessParameters& params, std::vector<TopoShape>& previewShapes);
+    void updatePreviewAllSolids(ThicknessParameters& params, std::vector<TopoShape>& previewShapes);
+    TopoShape makeSolidPreview(const TopoShape& solid, const ThicknessParameters& params);
+    TopoShape makePreviewDelta(
+        const TopoShape& original,
+        const TopoShape& result,
+        const ThicknessParameters& params
+    );
+
     static const char* ModeEnums[];
     static const char* JoinEnums[];
+    static const char* SelectionEnums[];
 };
 
 }  // namespace PartDesign
