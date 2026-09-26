@@ -272,6 +272,13 @@ PropertyLinkBase::getElementReferences(DocumentObject* feature)
     return it->second;
 }
 
+/// Given a feature and a property, see if the feature contains a reference to the property.
+static bool propertyIsRegistered(DocumentObject* feature, PropertyLinkBase* property)
+{
+    const auto it = _ElementRefMap.find(feature);
+    return it != _ElementRefMap.end() && it->second.contains(property);
+}
+
 void PropertyLinkBase::updateElementReferences(DocumentObject* feature, bool reverse)
 {
     if (!feature || !feature->getNameInDocument()) {
@@ -281,10 +288,11 @@ void PropertyLinkBase::updateElementReferences(DocumentObject* feature, bool rev
     if (it == _ElementRefMap.end()) {
         return;
     }
-    std::vector<PropertyLinkBase*> props;
-    props.reserve(it->second.size());
-    props.insert(props.end(), it->second.begin(), it->second.end());
+    std::vector<PropertyLinkBase*> props(it->second.begin(), it->second.end());
     for (auto prop : props) {
+        if (!propertyIsRegistered(feature, prop)) {
+            continue;
+        }
         if (prop->getContainer()) {
             try {
                 prop->updateElementReference(feature, reverse, true);
@@ -303,11 +311,17 @@ void PropertyLinkBase::updateElementReferences(DocumentObject* feature, bool rev
 
 void PropertyLinkBase::updateAllElementReferences(bool reverse)
 {
-    for (auto reference : _ElementRefMap) {
-        for (auto prop : reference.second) {
+    auto const mapSnapshot = _ElementRefMap;
+    for (const auto& [feature, props] : mapSnapshot) {
+        for (auto prop : props) {
+            // Check to see if the property is no longer registered (because the code below can
+            // remove them and we're working off a snapshot from before that). See #29673.
+            if (!propertyIsRegistered(feature, prop)) {
+                continue;
+            }
             if (prop->getContainer()) {
                 try {
-                    prop->updateElementReference(reference.first, reverse, true);
+                    prop->updateElementReference(feature, reverse, true);
                 }
                 catch (Base::Exception& e) {
                     e.reportException();
