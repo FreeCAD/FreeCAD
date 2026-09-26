@@ -31,6 +31,7 @@
 
 #include <App/PropertyStandard.h>
 #include "FeatureRefine.h"
+#include "FeatureAddSub.h"
 
 
 namespace PartDesign
@@ -161,6 +162,13 @@ private:
         const std::vector<gp_Trsf>& transformations,
         Part::TopoShape& supportShape,
         const std::vector<DocumentObject*>& originals
+    );
+
+    App::DocumentObjectExecReturn* extractFeature(
+        Feature* feature,
+        Part::TopoShape& topo_shape,
+        Part::TopoShape& sub_shape,
+        FeatureAddSub::BooleanOperation& op
     );
 
     App::DocumentObjectExecReturn* computeFeatureShapes(
