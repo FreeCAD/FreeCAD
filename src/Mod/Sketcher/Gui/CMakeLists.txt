@@ -96,6 +96,10 @@ SET(SketcherGui_SRCS
     TaskSketcherConstraints.h
     TaskSketcherElements.ui
     TaskSketcherElements.cpp
+    LayerListDelegate.h
+    TaskSketcherLayers.cpp
+    TaskSketcherLayers.h
+    ViewProviderSketchLayers.cpp
     TaskSketcherElements.h
     TaskSketcherCreateCommands.cpp
     TaskSketcherCreateCommands.h

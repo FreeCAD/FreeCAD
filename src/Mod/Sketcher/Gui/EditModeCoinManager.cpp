@@ -57,6 +57,7 @@
 #include <Gui/Utilities.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/Constraint.h>
+#include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/App/GeoList.h>
 
 #include "EditModeCoinManager.h"
@@ -204,6 +205,9 @@ struct GeometryScreenPreselector
 
         for (int layerIndex = 0; layerIndex < geometryLayerParameters.getCoinLayerCount();
              ++layerIndex) {
+            if (!editModeScenegraphNodes.PointsGroup->enable[layerIndex]) {
+                continue;
+            }
             SoCoordinate3* coords = editModeScenegraphNodes.PointsCoordinate[layerIndex];
             if (!coords) {
                 continue;
@@ -255,6 +259,12 @@ struct GeometryScreenPreselector
              ++layerIndex) {
             for (int subLayerIndex = 0; subLayerIndex < geometryLayerParameters.getSubLayerCount();
                  ++subLayerIndex) {
+                if (
+                    !editModeScenegraphNodes.CurvesGroup
+                         ->enable[layerIndex * geometryLayerParameters.getSubLayerCount() + subLayerIndex]
+                ) {
+                    continue;
+                }
                 if (static_cast<int>(editModeScenegraphNodes.CurvesCoordinate.size()) <= layerIndex
                     || static_cast<int>(editModeScenegraphNodes.CurvesCoordinate[layerIndex].size())
                         <= subLayerIndex
@@ -277,7 +287,7 @@ struct GeometryScreenPreselector
                     continue;
                 }
 
-                float curveHitRadius = getCurveHitRadius(subLayerIndex);
+                float curveHitRadius = getCurveHitRadius(layerIndex, subLayerIndex);
                 float curveHitRadiusSquared = curveHitRadius * curveHitRadius;
                 int vertexOffset = 0;
 
@@ -359,7 +369,8 @@ private:
     )
     {
         if (!coinMapping.isValidPointId(pointIndex, layerIndex)
-            || static_cast<int>(editModeScenegraphNodes.PointsCoordinate.size()) <= layerIndex) {
+            || static_cast<int>(editModeScenegraphNodes.PointsCoordinate.size()) <= layerIndex
+            || !editModeScenegraphNodes.PointsGroup->enable[layerIndex]) {
             return false;
         }
 
@@ -425,7 +436,7 @@ private:
         return pointHitRadius;
     }
 
-    float getCurveHitRadius(int subLayerIndex) const
+    float getCurveHitRadius(int layerIndex, int subLayerIndex) const
     {
         SoDrawStyle* drawStyle = editModeScenegraphNodes.CurvesDrawStyle;
         if (geometryLayerParameters.isConstructionSubLayer(subLayerIndex)) {
@@ -441,6 +452,10 @@ private:
             drawStyle = editModeScenegraphNodes.CurvesExternalDefiningDrawStyle;
         }
 
+        if (drawStyle == editModeScenegraphNodes.CurvesDrawStyle && layerIndex >= 0
+            && layerIndex < static_cast<int>(editModeScenegraphNodes.LayerDrawStyles.size())) {
+            drawStyle = editModeScenegraphNodes.LayerDrawStyles[layerIndex];
+        }
         float lineWidth = drawStyle ? drawStyle->lineWidth.getValue() : 1.0F;
         return std::max(3.0F, lineWidth * 0.5F + ScreenPreselectionPolicy::EdgeHitPaddingPx);
     }
@@ -2099,8 +2114,18 @@ void EditModeCoinManager::setEditDrawStyle(GeometryCreationMode mode)
             break;
     }
 
-    editModeScenegraphNodes.EditCurvesDrawStyle->lineWidth = toCopy->lineWidth;
-    editModeScenegraphNodes.EditCurvesDrawStyle->linePattern = toCopy->linePattern;
+    editModeScenegraphNodes.EditCurvesDrawStyle->lineWidth = mode == GeometryCreationMode::Normal
+        ? viewProvider.getLayerLineWidth(
+              viewProvider.getSketchObject()->ActiveLayer.getValue(),
+              drawingParameters.CurveWidth
+          ) * drawingParameters.pixelScalingFactor
+        : toCopy->lineWidth.getValue();
+    editModeScenegraphNodes.EditCurvesDrawStyle->linePattern = mode == GeometryCreationMode::Normal
+        ? viewProvider.getLayerPattern(
+              viewProvider.getSketchObject()->ActiveLayer.getValue(),
+              toCopy->linePattern.getValue()
+          )
+        : toCopy->linePattern.getValue();
     editModeScenegraphNodes.EditCurvesDrawStyle->linePatternScaleFactor = toCopy->linePatternScaleFactor;
 }
 
@@ -2243,6 +2268,14 @@ void EditModeCoinManager::updateInventorNodeSizes()
 
 void EditModeCoinManager::updateInventorWidths()
 {
+    for (size_t i = 0; i < editModeScenegraphNodes.LayerDrawStyles.size(); ++i) {
+        editModeScenegraphNodes.LayerDrawStyles[i]->lineWidth
+            = viewProvider.getLayerLineWidth(
+                  viewProvider.getLayerFromCoinIndex(i),
+                  drawingParameters.CurveWidth
+              )
+            * drawingParameters.pixelScalingFactor;
+    }
     editModeScenegraphNodes.CurvesDrawStyle->lineWidth = drawingParameters.CurveWidth
         * drawingParameters.pixelScalingFactor;
     editModeScenegraphNodes.CurvesConstructionDrawStyle->lineWidth = drawingParameters.ConstructionWidth

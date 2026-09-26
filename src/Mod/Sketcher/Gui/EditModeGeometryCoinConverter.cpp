@@ -169,7 +169,7 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
         const auto geom = geolistfacade.getGeometryFacadeFromGeoId(GeoId);
         const auto type = geom->getGeometry()->getTypeId();
 
-        int layerId = getSafeGeomLayerId(geom);
+        int layerId = viewProvider.getGeometryCoinLayer(geom);
         int subLayerId = geometryLayerParameters.getSubLayerIndex(GeoId, geom);
 
         auto coinLayer = geometryLayerParameters.getSafeCoinLayer(layerId);
@@ -329,7 +329,7 @@ void EditModeGeometryCoinConverter::convert(
 )
 {
     auto geo = static_cast<const GeoType*>(geometryfacade->getGeometry());
-    auto layerId = getSafeGeomLayerId(geometryfacade);
+    auto layerId = viewProvider.getGeometryCoinLayer(geometryfacade);
 
     auto coinLayer = geometryLayerParameters.getSafeCoinLayer(layerId);
 

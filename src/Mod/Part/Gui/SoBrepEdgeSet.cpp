@@ -40,11 +40,15 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoGroup.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoMaterialBinding.h>
 #include <Inventor/actions/SoSearchAction.h>
 
 #include <Gui/Selection/SoFCUnifiedSelection.h>
 #include <Gui/Selection/Selection.h>
 #include <Base/Color.h>
+#include <cmath>
 #include "SoBrepEdgeSet.h"
 #include "ViewProviderExt.h"
 
@@ -265,6 +269,10 @@ SoBrepEdgeSet::SoBrepEdgeSet()
     , selContext2(std::make_shared<SelContext>())
 {
     SO_NODE_CONSTRUCTOR(SoBrepEdgeSet);
+    SO_NODE_ADD_FIELD(linePatterns, (0xffff));
+    linePatterns.setNum(0);
+    SO_NODE_ADD_FIELD(lineWidths, (0));
+    lineWidths.setNum(0);
     SO_NODE_ADD_FIELD(highlightCoordIndex, (0));
     SO_NODE_ADD_FIELD(selectionCoordIndex, (0));
     SO_NODE_ADD_FIELD(highlightColor, (SbColor(1.0f, 0.0f, 0.0f)));
@@ -278,6 +286,7 @@ SoBrepEdgeSet::SoBrepEdgeSet()
 
 SoBrepEdgeSet::~SoBrepEdgeSet()
 {
+    clearPatternCache();
     if (overlayLineSet) {
         overlayLineSet->unref();
         overlayLineSet = nullptr;
@@ -403,12 +412,12 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
         state->push();
         SoDepthBufferElement::set(state, FALSE, FALSE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0f, 1.0f));
 
-        inherited::GLRender(action);
+        renderBase(action);
 
         state->pop();
     }
     else {
-        inherited::GLRender(action);
+        renderBase(action);
     }
 
     // Workaround for #0000433
@@ -850,4 +859,95 @@ int SoBrepEdgeSet::lineIndexFromEdge(int edge) const
     }
     // The mapping exists and does not contain this edge: it has no rendered line.
     return InvalidLine;
+}
+
+void SoBrepEdgeSet::notify(SoNotList* list)
+{
+    patternsDirty = true;
+    inherited::notify(list);
+}
+
+void SoBrepEdgeSet::clearPatternCache()
+{
+    for (auto* node : patternCache) {
+        node->unref();
+    }
+    patternCache.clear();
+}
+
+void SoBrepEdgeSet::renderBase(SoGLRenderAction* action)
+{
+    if (linePatterns.getNum() == 0 && lineWidths.getNum() == 0) {
+        inherited::GLRender(action);
+        return;
+    }
+    if (patternsDirty) {
+        clearPatternCache();
+        struct Batch
+        {
+            std::vector<int32_t> coordinates;
+            std::vector<int32_t> materials;
+        };
+        std::map<std::pair<int, float>, Batch> batches;
+        int line = 0;
+        int start = 0;
+        for (int i = 0; i <= coordIndex.getNum(); ++i) {
+            if (i < coordIndex.getNum() && coordIndex[i] >= 0) {
+                continue;
+            }
+            if (i > start) {
+                // Styles are per topological edge; materials stay bound per rendered line.
+                const int edge = edgeIndexFromLine(line) - 1;
+                const int pattern = edge >= 0 && edge < linePatterns.getNum() ? linePatterns[edge]
+                                                                              : -1;
+                const float width = edge >= 0 && edge < lineWidths.getNum() && lineWidths[edge] > 0
+                        && std::isfinite(lineWidths[edge])
+                    ? lineWidths[edge]
+                    : 0;
+                auto& batch = batches[{pattern, width}];
+                batch.coordinates.insert(
+                    batch.coordinates.end(),
+                    coordIndex.getValues(start),
+                    coordIndex.getValues(start) + i - start
+                );
+                batch.coordinates.push_back(-1);
+                batch.materials.push_back(line);
+            }
+            start = i + 1;
+            ++line;
+        }
+        for (const auto& [key, batch] : batches) {
+            auto* separator = new SoSeparator;
+            separator->ref();
+            auto* style = new SoDrawStyle;
+            style->style.setIgnored(true);
+            style->pointSize.setIgnored(true);
+            const auto [pattern, width] = key;
+            style->lineWidth = width;
+            style->lineWidth.setIgnored(width <= 0);
+            style->linePattern = pattern;
+            style->linePattern.setIgnored(pattern < 0);
+            separator->addChild(style);
+            auto* binding = new SoMaterialBinding;
+            binding->value = SoMaterialBinding::PER_FACE_INDEXED;
+            separator->addChild(binding);
+            auto* lines = new SoIndexedLineSet;
+            lines->vertexProperty = vertexProperty.getValue();
+            lines->coordIndex.setValues(0, batch.coordinates.size(), batch.coordinates.data());
+            lines->materialIndex.setValues(0, batch.materials.size(), batch.materials.data());
+            separator->addChild(lines);
+            patternCache.push_back(separator);
+        }
+        patternsDirty = false;
+    }
+    for (auto* node : patternCache) {
+        // These cached batches are not scenegraph children. Traverse only their state
+        // nodes and leaf shape, without constructing paths through a detached group.
+        auto* state = action->getState();
+        state->push();
+        static_cast<SoDrawStyle*>(node->getChild(0))->doAction(action);
+        static_cast<SoMaterialBinding*>(node->getChild(1))->doAction(action);
+        static_cast<SoIndexedLineSet*>(node->getChild(2))->GLRender(action);
+        state->pop();
+    }
 }

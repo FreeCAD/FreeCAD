@@ -61,6 +61,7 @@ EditModeInformationOverlayCoinConverter::EditModeInformationOverlayCoinConverter
 
 void EditModeInformationOverlayCoinConverter::convert(const Part::Geometry* geometry, int geoid)
 {
+    geometryVisible = viewProvider.isGeometryVisible(geoid);
     if (geoid >= 0) {
         // Get the SketchObject from the ViewProvider.
         if (auto* obj = viewProvider.getSketchObject()) {
@@ -338,6 +339,9 @@ void EditModeInformationOverlayCoinConverter::addUpdateNode(const Result& result
 template<EditModeInformationOverlayCoinConverter::CalculationType calculation>
 bool EditModeInformationOverlayCoinConverter::isVisible()
 {
+    if (!geometryVisible) {
+        return false;
+    }
     if constexpr (calculation == CalculationType::BSplineDegree) {
         return overlayParameters.bSplineDegreeVisible;
     }
