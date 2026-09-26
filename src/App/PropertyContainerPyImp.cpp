@@ -218,6 +218,7 @@ static const std::map<std::string, int>& getStatusMap()
 {
     static std::map<std::string, int> statusMap;
     if (statusMap.empty()) {
+        statusMap["Touched"] = Property::Touched;
         statusMap["Immutable"] = Property::Immutable;
         statusMap["ReadOnly"] = Property::ReadOnly;
         statusMap["Hidden"] = Property::Hidden;
@@ -232,6 +233,21 @@ static const std::map<std::string, int>& getStatusMap()
         statusMap["NoRecompute"] = Property::NoRecompute;
         statusMap["CopyOnChange"] = Property::CopyOnChange;
         statusMap["UserEdit"] = Property::UserEdit;
+        statusMap["DisableNotify"] = Property::DisableNotify;
+        statusMap["PropStaticBegin"] = Property::PropStaticBegin;
+        statusMap["PropDynamic"] = Property::PropDynamic;
+        statusMap["PropNoPersist"] = Property::PropNoPersist;
+        statusMap["PropNoRecompute"] = Property::PropNoRecompute;
+        statusMap["PropReadOnly"] = Property::PropReadOnly;
+        statusMap["PropTransient"] = Property::PropTransient;
+        statusMap["PropHidden"] = Property::PropHidden;
+        statusMap["PropOutput"] = Property::PropOutput;
+        statusMap["PropInput"] = Property::PropInput;
+        statusMap["PropStaticEnd"] = Property::PropStaticEnd;
+        statusMap["Busy"] = Property::Busy;
+        statusMap["User1"] = Property::User1;
+        statusMap["User2"] = Property::User2;
+        statusMap["User3"] = Property::User3;
     }
     return statusMap;
 }
@@ -298,7 +314,7 @@ PyObject* PropertyContainerPy::setPropertyStatus(PyObject* args)
                 value = false;
                 v = -v;
             }
-            if (v == 0 || v > 31) {
+            if (v < 0 || v > 31) {
                 PyErr_Format(PyExc_ValueError, "Status value out of range '%d'", v);
                 return nullptr;
             }
@@ -341,7 +357,7 @@ PyObject* PropertyContainerPy::getPropertyStatus(PyObject* args)
         }
 
         std::bitset<32> bits(prop->getStatus());
-        for (size_t i = 1; i < bits.size(); ++i) {
+        for (size_t i = 0; i < bits.size(); ++i) {
             if (!bits[i]) {
                 continue;
             }
