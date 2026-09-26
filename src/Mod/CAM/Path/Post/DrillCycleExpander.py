@@ -30,10 +30,8 @@ from typing import List, Optional
 
 import Path
 from Path.Base.MachineState import MachineState
+from Path.Post.CAMErrors import CAMNotImplementedError
 import Constants
-
-EXPANDABLE_DRILL_CYCLES = {"G81", "G82", "G83", "G73"}
-
 
 debug = False
 if debug:
@@ -46,7 +44,8 @@ else:
 class DrillCycleExpander:
     """Expands canned drill cycles (Path.Command) into basic G-code movements."""
 
-    EXPANDABLE_CYCLES = EXPANDABLE_DRILL_CYCLES
+    # The specific gcodes this class can expand
+    EXPANDABLE_CYCLES = Constants.EXPANDABLE_DRILL_CYCLES
 
     def __init__(
         self,
@@ -85,7 +84,7 @@ class DrillCycleExpander:
             return []
 
         # Handle drill cycles
-        if cmd_name in ("G81", "G82", "G73", "G83"):
+        if cmd_name in Constants.GCODE_MOVE_DRILL:
             result = self._expand_drill_cycle(command, strict=strict)
             Path.Log.debug(f"Expanded drill cycle: {command} -> {result}")
             return result
@@ -234,16 +233,24 @@ class DrillCycleExpander:
             self.machine_state.addCommand(cmd)
 
         # Perform the drilling operation
-        if cmd_name in ("G81", "G82"):
+        if cmd_name in {"G81", "G82"}:
             cmds = self._expand_g81_g82(cmd_name, params, drill_z, final_retract, feedrate)
             self.machine_state.addCommands(cmds)
             expanded.extend(cmds)
-        elif cmd_name in ("G73", "G83"):
+        elif cmd_name in {"G73", "G83"}:
             cmds = self._expand_g73_g83(
                 cmd_name, params, drill_z, retract_z, final_retract, feedrate
             )
             expanded.extend(cmds)
             self.machine_state.addCommands(cmds)
+        elif cmd_name in {"G85"}:
+            cmds = self._expand_g85(cmd_name, params, drill_z, retract_z, final_retract, feedrate)
+            self.machine_state.addCommands(cmds)
+            expanded.extend(cmds)
+        else:
+            raise CAMNotImplementedError(
+                f"Internal: '{command.toGCode()}' has no implementation in `_expand_drill_cycle`"
+            )
 
         return expanded
 
@@ -385,6 +392,63 @@ class DrillCycleExpander:
                 "Y": self.machine_state.Y,
                 "Z": final_retract,
             }
+            if self.machine_state.G0F is not None:
+                params["F"] = self.machine_state.G0F
+            cmd = Path.Command("G0", params)
+            expanded.append(cmd)
+            self.machine_state.addCommand(cmd)
+
+        return expanded
+
+    def _expand_g85(
+        self,
+        cmd_name: str,
+        params: dict,
+        drill_z: float,
+        retract: float,
+        final_retract: float,
+        feedrate: Optional[float],
+    ):
+        """Expand G85 (Boring Cycle, Feed Out)
+         G85: like a typical drilling, but retract is G1 (up to R)
+        Notes on other boring:
+         G89: similar, but with dwell
+         G86: prelim motion as usual, G1 to Z depth, dwell, stop spindle, rapid to Z==final_retract, restart spindle
+         G88: manual feed-out
+         G87: only makes sense for lathe?
+        """
+        expanded = []
+
+        if feedrate is None:
+            feedrate = self.machine_state.F
+
+        # Feed to depth
+        move_params = {
+            "X": self.machine_state.X,
+            "Y": self.machine_state.Y,
+            "Z": drill_z,
+            "F": feedrate,
+        }
+        cmd = Path.Command("G1", move_params)
+        expanded.append(cmd)
+        self.machine_state.addCommand(cmd)
+
+        # Retract ("engageed") to R
+        if retract > self.machine_state.Z:
+
+            params = {
+                "X": self.machine_state.X,
+                "Y": self.machine_state.Y,
+                "Z": retract,
+                "F": feedrate,
+            }
+            cmd = Path.Command("G1", params)
+            expanded.append(cmd)
+            self.machine_state.addCommand(cmd)
+
+        # final-retract to clearance
+        if final_retract > self.machine_state.Z:
+            params = {"Z": final_retract}
             if self.machine_state.G0F is not None:
                 params["F"] = self.machine_state.G0F
             cmd = Path.Command("G0", params)
