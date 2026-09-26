@@ -25,6 +25,9 @@
 
 #pragma once
 
+#include "FeatureAddSub.h"
+
+
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/PropertyStandard.h>
 #include "FeatureRefine.h"
@@ -58,6 +61,8 @@ public:
     App::DocumentObjectExecReturn* execute() override;
     void updatePreviewShape() override;
     short mustExecute() const override;
+    FeatureAddSub::BooleanOperation getBooleanOperation() const;
+    void getAddSubShape(TopoShape& addShape, TopoShape& subShape);
     std::vector<App::DocumentObject*> addObject(App::DocumentObject* object) override;
     std::vector<App::DocumentObject*> addObjects(std::vector<App::DocumentObject*> objects) override;
     std::vector<App::DocumentObject*> setObjects(std::vector<App::DocumentObject*> objects) override;

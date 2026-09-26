@@ -38,6 +38,7 @@
 
 #include "FeatureBoolean.h"
 #include "Body.h"
+#include "Mod/Part/App/FeaturePartBoolean.h"
 
 FC_LOG_LEVEL_INIT("PartDesign", true, true);
 
@@ -272,6 +273,57 @@ App::DocumentObjectExecReturn* Boolean::execute()
     this->Shape.setValue(getSolid(result));
 
     return StdReturn;
+}
+
+void Boolean::getAddSubShape(TopoShape& addShape, TopoShape& subShape)
+{
+    const std::string type = Type.getValueAsString();
+
+    std::vector<App::DocumentObject*> tools = Group.getValues();
+
+    if (tools.empty()) {
+        return;
+    }
+
+    std::vector<TopoShape> shapes;
+    shapes.reserve(tools.size());
+
+    for (auto* tool : tools) {
+        if (!tool || !tool->isDerivedFrom<Part::Feature>()) {
+            continue;
+        }
+
+        TopoShape shape = getBooleanTopoShape(tool);
+
+        if (!shape.isNull()) {
+            shapes.push_back(shape);
+        }
+    }
+
+    if (shapes.empty()) {
+        return;
+    }
+
+    if (type == "Fuse") {
+        addShape.makeElementCompound(shapes);
+    }
+    else if (type == "Cut" || type == "Common") {
+        subShape.makeElementCompound(shapes);
+    }
+}
+
+FeatureAddSub::BooleanOperation Boolean::getBooleanOperation() const
+{
+    const std::string type = Type.getValueAsString();
+
+    if (type == "Cut") {
+        return FeatureAddSub::BooleanOperation::Subtraction;
+    }
+    if (type == "Common") {
+        return FeatureAddSub::BooleanOperation::Common;
+    }
+
+    return FeatureAddSub::BooleanOperation::Union;
 }
 
 void Boolean::updatePreviewShape()
