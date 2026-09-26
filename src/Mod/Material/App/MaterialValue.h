@@ -26,17 +26,89 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <utility>
+#include <variant>
+#include <vector>
 
-#include <QList>
 #include <QMetaType>
-#include <QVariant>
 
+#include <Base/Quantity.h>
 #include <Gui/MetaTypes.h>
 
 #include <Mod/Material/MaterialGlobal.h>
 
 namespace Materials
 {
+
+class Value;
+using ValueList = std::vector<Value>;
+
+// The value of a material property; colors, images, files and URLs are stored as strings
+class MaterialsExport Value
+{
+public:
+    using Variant = std::
+        variant<std::monostate, std::string, bool, int, double, Base::Quantity, ValueList>;
+
+    Value() = default;
+    Value(std::string value)  // NOLINT(misc-explicit-constructor)
+        : _value(std::move(value))
+    {}
+    Value(const char* value)  // NOLINT(misc-explicit-constructor)
+        : _value(std::string(value))
+    {}
+    Value(bool value)  // NOLINT(misc-explicit-constructor)
+        : _value(value)
+    {}
+    Value(int value)  // NOLINT(misc-explicit-constructor)
+        : _value(value)
+    {}
+    Value(double value)  // NOLINT(misc-explicit-constructor)
+        : _value(value)
+    {}
+    Value(const Base::Quantity& value)  // NOLINT(misc-explicit-constructor)
+        : _value(value)
+    {}
+    Value(ValueList value)  // NOLINT(misc-explicit-constructor)
+        : _value(std::move(value))
+    {}
+
+    bool isNull() const
+    {
+        return std::holds_alternative<std::monostate>(_value);
+    }
+    template<typename T>
+    bool is() const
+    {
+        return std::holds_alternative<T>(_value);
+    }
+
+    template<typename T>
+    const T& get() const
+    {
+        return std::get<T>(_value);
+    }
+    const Variant& variant() const
+    {
+        return _value;
+    }
+
+    std::string toString() const;
+    bool toBool() const;
+    int toInt() const;
+    double toDouble() const;
+    Base::Quantity toQuantity() const;
+    const ValueList& toList() const;
+
+    bool operator==(const Value& other) const;
+    bool operator!=(const Value& other) const
+    {
+        return !operator==(other);
+    }
+
+private:
+    Variant _value;
+};
 
 class MaterialsExport MaterialValue: public Base::BaseClass
 {
@@ -81,31 +153,26 @@ public:
         return _valueType;
     }
 
-    QVariant getValue() const
+    const Value& getValue() const
     {
         return _value;
     }
-    QList<QVariant> getList()
+    const ValueList& getList() const
     {
-        return _value.value<QList<QVariant>>();
-    }
-    const QList<QVariant> getList() const
-    {
-        return _value.value<QList<QVariant>>();
+        return _value.toList();
     }
     virtual bool isNull() const;
     virtual bool isEmpty() const;
 
-    virtual const QVariant getValueAt(const QVariant& value) const
+    virtual const Value& getValueAt([[maybe_unused]] const Value& value) const
     {
-        Q_UNUSED(value);
         return _value;
     }
-    void setValue(const QVariant& value)
+    void setValue(Value value)
     {
-        _value = value;
+        _value = std::move(value);
     }
-    void setList(const QList<QVariant>& value);
+    void setList(ValueList value);
 
     virtual std::string getYAMLString() const;
     static std::string escapeString(const std::string& source);
@@ -133,7 +200,7 @@ protected:
     std::string getYAMLStringMultiLine() const;
 
     ValueType _valueType;
-    QVariant _value;
+    Value _value;
 
 private:
     static const std::map<std::string, ValueType> _typeMap;
@@ -153,7 +220,7 @@ public:
     bool isNull() const override;
     bool isEmpty() const override;
 
-    const QList<std::shared_ptr<QList<QVariant>>>& getArray() const
+    const std::vector<std::shared_ptr<ValueList>>& getArray() const
     {
         return _rows;
     }
@@ -162,11 +229,10 @@ public:
     void validateColumn(int column) const;
     void validate(const Array2D& other) const;
 
-    std::shared_ptr<QList<QVariant>> getRow(int row) const;
-    std::shared_ptr<QList<QVariant>> getRow(int row);
+    std::shared_ptr<ValueList> getRow(int row) const;
     int rows() const
     {
-        return _rows.size();
+        return static_cast<int>(_rows.size());
     }
     int columns() const
     {
@@ -176,24 +242,24 @@ public:
     {
         _columns = size;
     }
-    void addRow(const std::shared_ptr<QList<QVariant>>& row);
-    void insertRow(int index, const std::shared_ptr<QList<QVariant>>& row);
+    void addRow(const std::shared_ptr<ValueList>& row);
+    void insertRow(int index, const std::shared_ptr<ValueList>& row);
     void deleteRow(int row);
     void setRows(int rowCount);
 
-    void setValue(int row, int column, const QVariant& value);
-    QVariant getValue(int row, int column) const;
+    void setValue(int row, int column, const Value& value);
+    Value getValue(int row, int column) const;
 
     std::string getYAMLString() const override;
 
 protected:
     void deepCopy(const Array2D& other);
 
-    QList<std::shared_ptr<QList<QVariant>>> _rows;
+    std::vector<std::shared_ptr<ValueList>> _rows;
     int _columns;
 
 private:
-    static void dumpRow(const std::shared_ptr<QList<QVariant>>& row);
+    static void dumpRow(const ValueList& row);
     void dump() const;
 };
 

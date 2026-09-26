@@ -32,6 +32,7 @@
 #include <Mod/Material/App/Materials.h>
 
 #include "ListModel.h"
+#include "ValueVariant.h"
 
 
 using namespace MatGui;
@@ -42,7 +43,7 @@ ListModel::ListModel()
 {}
 
 ListModel::ListModel(std::shared_ptr<Materials::MaterialProperty> property,
-                     QList<QVariant>& value,
+                     Materials::ValueList& value,
                      QObject* parent)
     : QAbstractListModel(parent)
     , _property(property)
@@ -55,12 +56,12 @@ int ListModel::rowCount(const QModelIndex& parent) const
         return 0;  // No children
     }
 
-    return _valuePtr->size() + 1;  // Will always have 1 empty row
+    return static_cast<int>(_valuePtr->size()) + 1;  // Will always have 1 empty row
 }
 
 bool ListModel::newRow(const QModelIndex& index) const
 {
-    return (index.row() == _valuePtr->size());
+    return (index.row() == static_cast<int>(_valuePtr->size()));
 }
 
 void ListModel::deleteRow(const QModelIndex& index)
@@ -72,8 +73,8 @@ void ListModel::deleteRow(const QModelIndex& index)
 QVariant ListModel::data(const QModelIndex& index, int role) const
 {
     if (role == Qt::DisplayRole) {
-        if (index.row() < _valuePtr->size()) {
-            return _valuePtr->at(index.row());
+        if (index.row() < static_cast<int>(_valuePtr->size())) {
+            return toQVariant(_valuePtr->at(index.row()));
         }
     }
 
@@ -92,7 +93,7 @@ bool ListModel::setData(const QModelIndex& index, const QVariant& value, int rol
     if (newRow(index)) {
         insertRows(index.row(), 1);
     }
-    (*_valuePtr)[index.row()] = value;
+    (*_valuePtr)[index.row()] = fromQVariant(value);
 
     Q_EMIT dataChanged(index, index);
     return true;
@@ -109,10 +110,7 @@ bool ListModel::insertRows(int row, int count, const QModelIndex& parent)
 {
     beginInsertRows(parent, row, row + count - 1);
 
-    QVariant newRow = QString();
-    while (count--) {
-        _valuePtr->insert(row, newRow);
-    }
+    _valuePtr->insert(_valuePtr->begin() + row, count, Materials::Value(std::string()));
 
     endInsertRows();
 
@@ -123,9 +121,7 @@ bool ListModel::removeRows(int row, int count, const QModelIndex& parent)
 {
     beginRemoveRows(parent, row, row + count - 1);
 
-    while (count--) {
-        _valuePtr->removeAt(row);
-    }
+    _valuePtr->erase(_valuePtr->begin() + row, _valuePtr->begin() + row + count);
 
     endRemoveRows();
 

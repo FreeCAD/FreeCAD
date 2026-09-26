@@ -125,6 +125,8 @@ SET(MatGui_SRCS
     Workbench.h
     WorkbenchManipulator.cpp
     WorkbenchManipulator.h
+    ValueVariant.cpp
+    ValueVariant.h
 )
 if(BUILD_MATERIAL_EXTERNAL)
     list(APPEND MatGui_SRCS

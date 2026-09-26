@@ -23,10 +23,7 @@
 
 #include <QDirIterator>
 #include <QFileInfo>
-#include <QList>
 #include <QMetaType>
-#include <QRegularExpression>
-#include <QString>
 
 
 #include <App/Application.h>
@@ -74,26 +71,21 @@ std::string MaterialYamlEntry::yamlValue(const YAML::Node& node,
     return defaultValue;
 }
 
-std::shared_ptr<QList<QVariant>> MaterialYamlEntry::readList(const YAML::Node& node,
-                                                             bool isImageList)
+ValueList MaterialYamlEntry::readList(const YAML::Node& node, bool isImageList)
 {
-    auto list = std::make_shared<QList<QVariant>>();
+    ValueList list;
     for (auto it = node.begin(); it != node.end(); it++) {
-        QVariant nodeValue;
+        std::string nodeValue = it->as<std::string>();
         if (isImageList) {
-            nodeValue = QString::fromStdString(it->as<std::string>())
-                            .remove(QRegularExpression("[\r\n]"));
+            std::erase_if(nodeValue, [](char c) { return c == '\r' || c == '\n'; });
         }
-        else {
-            nodeValue = QString::fromStdString(it->as<std::string>());
-        }
-        list->append(nodeValue);
+        list.emplace_back(std::move(nodeValue));
     }
 
     return list;
 }
 
-std::shared_ptr<QList<QVariant>> MaterialYamlEntry::readImageList(const YAML::Node& node)
+ValueList MaterialYamlEntry::readImageList(const YAML::Node& node)
 {
     return readList(node, true);
 }
@@ -113,11 +105,11 @@ std::shared_ptr<Array2D> MaterialYamlEntry::read2DArray(const YAML::Node& node, 
         for (std::size_t i = 0; i < yamlArray.size(); i++) {
             auto yamlRow = yamlArray[i];
 
-            auto row = std::make_shared<QList<QVariant>>();
+            auto row = std::make_shared<ValueList>();
             for (std::size_t j = 0; j < yamlRow.size(); j++) {
                 Base::Quantity qq = Base::Quantity::parse(yamlRow[j].as<std::string>());
                 qq.setFormat(MaterialValue::getQuantityFormat());
-                row->push_back(QVariant::fromValue(qq));
+                row->emplace_back(qq);
             }
             array2d->addRow(row);
         }
@@ -193,8 +185,8 @@ void MaterialYamlEntry::addToTree(
 
     if (yamlModel["General"]["Tags"]) {
         auto tags = readList(yamlModel["General"]["Tags"]);
-        for (auto tag : *tags) {
-            finalModel->addTag(tag.toString().toStdString());
+        for (const auto& tag : tags) {
+            finalModel->addTag(tag.toString());
         }
     }
 

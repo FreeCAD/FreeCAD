@@ -760,7 +760,7 @@ void MaterialConfigLoader::addRenderTexture(std::map<std::string, std::string>& 
                                             const std::shared_ptr<Material>& finalModel)
 {
     std::string renderName;
-    auto renderImage = std::make_shared<QList<QVariant>>();
+    ValueList renderImage;
     std::string renderScale;
     std::string renderRotation;
     std::string renderTranslationU;
@@ -774,7 +774,7 @@ void MaterialConfigLoader::addRenderTexture(std::map<std::string, std::string>& 
                 renderName = list1[2];
             }
             if (list1[3] == "Images") {
-                renderImage->push_back(QString::fromStdString(value(fcmat, key, "")));
+                renderImage.emplace_back(value(fcmat, key, ""));
             }
             else if (list1[3] == "Scale") {
                 renderScale = value(fcmat, key, "");

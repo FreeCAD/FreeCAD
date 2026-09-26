@@ -22,8 +22,8 @@
 
 #include <gtest/gtest.h>
 
-#include <QMetaType>
-#include <QString>
+#include <cmath>
+#include <string>
 
 #include <App/Application.h>
 #include <Gui/MetaTypes.h>
@@ -46,12 +46,10 @@ TEST_F(TestMaterialValue, TestNoneType)
     auto mat1 = Materials::MaterialValue();
     EXPECT_EQ(mat1.getType(), Materials::MaterialValue::None);
     EXPECT_TRUE(mat1.isNull());
-    auto variant = mat1.getValue();
-    EXPECT_TRUE(variant.isNull());
-    EXPECT_FALSE(variant.canConvert<QString>());
-    EXPECT_TRUE(variant.toString().isNull());
-    EXPECT_TRUE(variant.toString().isEmpty());
-    EXPECT_EQ(variant.toString().size(), 0);
+    const auto& value = mat1.getValue();
+    EXPECT_TRUE(value.isNull());
+    EXPECT_FALSE(value.is<std::string>());
+    EXPECT_TRUE(value.toString().empty());
 }
 
 TEST_F(TestMaterialValue, TestStringType)
@@ -59,12 +57,13 @@ TEST_F(TestMaterialValue, TestStringType)
     auto mat1 = Materials::MaterialValue(Materials::MaterialValue::String);
     EXPECT_EQ(mat1.getType(), Materials::MaterialValue::String);
     EXPECT_TRUE(mat1.isNull());
-    auto variant = mat1.getValue();
-    EXPECT_TRUE(variant.isNull());
-    EXPECT_TRUE(variant.canConvert<QString>());
-    EXPECT_TRUE(variant.toString().isNull());
-    EXPECT_TRUE(variant.toString().isEmpty());
-    EXPECT_EQ(variant.toString().size(), 0);
+    EXPECT_TRUE(mat1.getValue().isNull());
+    EXPECT_TRUE(mat1.getValue().toString().empty());
+
+    mat1.setValue("text");
+    EXPECT_FALSE(mat1.isNull());
+    EXPECT_TRUE(mat1.getValue().is<std::string>());
+    EXPECT_EQ(mat1.getValue().toString(), "text");
 }
 
 TEST_F(TestMaterialValue, TestBooleanType)
@@ -72,14 +71,15 @@ TEST_F(TestMaterialValue, TestBooleanType)
     auto mat1 = Materials::MaterialValue(Materials::MaterialValue::Boolean);
     EXPECT_EQ(mat1.getType(), Materials::MaterialValue::Boolean);
     EXPECT_TRUE(mat1.isNull());
-    auto variant = mat1.getValue();
-    EXPECT_TRUE(variant.isNull());
-    EXPECT_TRUE(variant.canConvert<bool>());
-    EXPECT_FALSE(variant.toString().isNull());
-    EXPECT_FALSE(variant.toString().isEmpty());
-    EXPECT_EQ(variant.toString().size(), 5);
-    EXPECT_EQ(variant.toString(), QStringLiteral("false"));
-    EXPECT_EQ(variant.toBool(), false);
+    EXPECT_TRUE(mat1.getValue().isNull());
+    EXPECT_TRUE(mat1.getValue().toString().empty());
+    EXPECT_EQ(mat1.getValue().toBool(), false);
+
+    mat1.setValue(true);
+    EXPECT_FALSE(mat1.isNull());
+    EXPECT_EQ(mat1.getValue().toString(), "true");
+    EXPECT_EQ(mat1.getValue().toBool(), true);
+    EXPECT_EQ(mat1.getValue().toInt(), 1);
 }
 
 TEST_F(TestMaterialValue, TestIntegerType)
@@ -87,14 +87,15 @@ TEST_F(TestMaterialValue, TestIntegerType)
     auto mat1 = Materials::MaterialValue(Materials::MaterialValue::Integer);
     EXPECT_EQ(mat1.getType(), Materials::MaterialValue::Integer);
     EXPECT_TRUE(mat1.isNull());
-    auto variant = mat1.getValue();
-    EXPECT_TRUE(variant.isNull());
-    EXPECT_TRUE(variant.canConvert<int>());
-    EXPECT_FALSE(variant.toString().isNull());
-    EXPECT_FALSE(variant.toString().isEmpty());
-    EXPECT_EQ(variant.toString().size(), 1);
-    EXPECT_EQ(variant.toString(), QStringLiteral("0"));
-    EXPECT_EQ(variant.toInt(), 0);
+    EXPECT_TRUE(mat1.getValue().isNull());
+    EXPECT_TRUE(mat1.getValue().toString().empty());
+    EXPECT_EQ(mat1.getValue().toInt(), 0);
+
+    mat1.setValue(42);
+    EXPECT_FALSE(mat1.isNull());
+    EXPECT_EQ(mat1.getValue().toString(), "42");
+    EXPECT_EQ(mat1.getValue().toInt(), 42);
+    EXPECT_DOUBLE_EQ(mat1.getValue().toDouble(), 42.0);
 }
 
 TEST_F(TestMaterialValue, TestFloatType)
@@ -102,14 +103,20 @@ TEST_F(TestMaterialValue, TestFloatType)
     auto mat1 = Materials::MaterialValue(Materials::MaterialValue::Float);
     EXPECT_EQ(mat1.getType(), Materials::MaterialValue::Float);
     EXPECT_TRUE(mat1.isNull());
-    auto variant = mat1.getValue();
-    EXPECT_TRUE(variant.isNull());
-    EXPECT_TRUE(variant.canConvert<float>());
-    EXPECT_FALSE(variant.toString().isNull());
-    EXPECT_FALSE(variant.toString().isEmpty());
-    EXPECT_EQ(variant.toString().size(), 1);
-    EXPECT_EQ(variant.toString(), QStringLiteral("0"));
-    EXPECT_EQ(variant.toFloat(), 0);
+    EXPECT_TRUE(mat1.getValue().isNull());
+    EXPECT_TRUE(mat1.getValue().toString().empty());
+    EXPECT_EQ(mat1.getValue().toDouble(), 0);
+
+    mat1.setValue(0.3);
+    EXPECT_FALSE(mat1.isNull());
+    EXPECT_EQ(mat1.getValue().toString(), "0.3");
+    EXPECT_DOUBLE_EQ(mat1.getValue().toDouble(), 0.3);
+    EXPECT_EQ(mat1.getValue().toInt(), 0);
+
+    // Strings convert like numbers
+    EXPECT_DOUBLE_EQ(Materials::Value("0.25").toDouble(), 0.25);
+    EXPECT_EQ(Materials::Value("7").toInt(), 7);
+    EXPECT_TRUE(Materials::Value("true").toBool());
 }
 
 TEST_F(TestMaterialValue, TestQuantityType)
@@ -118,13 +125,11 @@ TEST_F(TestMaterialValue, TestQuantityType)
     EXPECT_EQ(mat1.getType(), Materials::MaterialValue::Quantity);
     EXPECT_TRUE(mat1.isNull());
 
-    auto variant = mat1.getValue();
-    EXPECT_FALSE(variant.isNull());
-    EXPECT_TRUE(variant.canConvert<Base::Quantity>());
-    EXPECT_TRUE(variant.toString().isNull());
-    EXPECT_TRUE(variant.toString().isEmpty());
-    EXPECT_EQ(variant.toString().size(), 0);
-    auto quantity = variant.value<Base::Quantity>();
+    const auto& value = mat1.getValue();
+    EXPECT_FALSE(value.isNull());
+    EXPECT_TRUE(value.is<Base::Quantity>());
+    EXPECT_TRUE(value.toString().empty());
+    auto quantity = value.toQuantity();
     EXPECT_FALSE(quantity.isValid());
     EXPECT_EQ(quantity.getUserString(), "nan");
     EXPECT_TRUE(std::isnan(quantity.getValue()));
@@ -134,13 +139,11 @@ TEST_F(TestMaterialValue, TestQuantityType)
     EXPECT_EQ(mat2.getType(), Materials::MaterialValue::Quantity);
     EXPECT_TRUE(mat2.isNull());
 
-    variant = mat2.getValue();
-    EXPECT_FALSE(variant.isNull());
-    EXPECT_TRUE(variant.canConvert<Base::Quantity>());
-    EXPECT_TRUE(variant.toString().isNull());
-    EXPECT_TRUE(variant.toString().isEmpty());
-    EXPECT_EQ(variant.toString().size(), 0);
-    quantity = variant.value<Base::Quantity>();
+    const auto& copied = mat2.getValue();
+    EXPECT_FALSE(copied.isNull());
+    EXPECT_TRUE(copied.is<Base::Quantity>());
+    EXPECT_TRUE(copied.toString().empty());
+    quantity = copied.toQuantity();
     EXPECT_FALSE(quantity.isValid());
     EXPECT_EQ(quantity.getUserString(), "nan");
     EXPECT_TRUE(std::isnan(quantity.getValue()));
@@ -151,17 +154,18 @@ TEST_F(TestMaterialValue, TestListType)
     auto mat1 = Materials::MaterialValue(Materials::MaterialValue::List);
     EXPECT_EQ(mat1.getType(), Materials::MaterialValue::List);
     EXPECT_TRUE(mat1.isNull());
-    auto variant = mat1.getValue();
-    EXPECT_TRUE(variant.value<QList<QVariant>>().isEmpty());
-    EXPECT_EQ(variant.value<QList<QVariant>>().size(), 0);
-    EXPECT_FALSE(variant.isNull());
-    EXPECT_FALSE(variant.canConvert<QVariant>());
-    EXPECT_TRUE(variant.toString().isNull());
-    EXPECT_TRUE(variant.toString().isEmpty());
-    EXPECT_EQ(variant.toString().size(), 0);
-    auto list = mat1.getList();
-    EXPECT_TRUE(list.isEmpty());
-    EXPECT_EQ(list.size(), 0);
+    const auto& value = mat1.getValue();
+    EXPECT_FALSE(value.isNull());
+    EXPECT_TRUE(value.is<Materials::ValueList>());
+    EXPECT_TRUE(value.toList().empty());
+    EXPECT_TRUE(value.toString().empty());
+    EXPECT_TRUE(mat1.getList().empty());
+
+    mat1.setList({Materials::Value("a"), Materials::Value("b")});
+    EXPECT_FALSE(mat1.isNull());
+    EXPECT_EQ(mat1.getList().size(), 2);
+    EXPECT_EQ(mat1.getList().at(1).toString(), "b");
+    EXPECT_EQ(mat1.getValue(), Materials::Value(Materials::ValueList {"a", "b"}));
 }
 
 TEST_F(TestMaterialValue, TestArray2DType)

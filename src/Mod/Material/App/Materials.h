@@ -30,7 +30,9 @@
 #include <utility>
 #include <vector>
 
+#include <QList>
 #include <QTextStream>
+#include <QVariant>
 
 #include <App/Application.h>
 #include <Base/Color.h>
@@ -70,11 +72,7 @@ public:
 
     QVariant getValue();
     QVariant getValue() const;
-    QList<QVariant> getList()
-    {
-        return _valuePtr->getList();
-    }
-    QList<QVariant> getList() const
+    const ValueList& getList() const
     {
         return _valuePtr->getList();
     }
@@ -103,7 +101,6 @@ public:
     {
         return getValue().toFloat();
     }
-    const Base::Quantity& getQuantity() const;
     std::string getURL() const
     {
         return getValue().toString().toStdString();
@@ -137,6 +134,7 @@ public:
     void setQuantity(double value, const std::string& units);
     void setQuantity(const std::string& value);
     void setList(const QList<QVariant>& value);
+    void setList(ValueList value);
     void setURL(const std::string& value);
     void setColor(const Base::Color& value);
 
@@ -303,11 +301,13 @@ public:
     void setPhysicalValue(const std::string& name, const Base::Quantity& value);
     void setPhysicalValue(const std::string& name, const std::shared_ptr<MaterialValue>& value);
     void setPhysicalValue(const std::string& name, const std::shared_ptr<QList<QVariant>>& value);
+    void setPhysicalValue(const std::string& name, const ValueList& value);
     void setPhysicalValue(const std::string& name, const QVariant& value);
 
     void setAppearanceValue(const std::string& name, const std::string& value);
     void setAppearanceValue(const std::string& name, const std::shared_ptr<MaterialValue>& value);
     void setAppearanceValue(const std::string& name, const std::shared_ptr<QList<QVariant>>& value);
+    void setAppearanceValue(const std::string& name, const ValueList& value);
     void setAppearanceValue(const std::string& name, const QVariant& value);
 
     void setValue(const std::string& name, const std::string& value);

@@ -33,6 +33,7 @@
 #include <Mod/Material/App/Materials.h>
 
 #include "ArrayModel.h"
+#include "ValueVariant.h"
 
 
 using namespace MatGui;
@@ -85,7 +86,7 @@ QVariant Array2DModel::data(const QModelIndex& index, int role) const
 {
     if (role == Qt::DisplayRole) {
         try {
-            return _value->getValue(index.row(), index.column());
+            return toQVariant(_value->getValue(index.row(), index.column()));
         }
         catch (const Materials::InvalidIndex&) {
         }
@@ -133,7 +134,7 @@ bool Array2DModel::setData(const QModelIndex& index, const QVariant& value, int 
     if (index.row() == _value->rows()) {
         insertRows(index.row(), 1);
     }
-    _value->setValue(index.row(), index.column(), value);
+    _value->setValue(index.row(), index.column(), fromQVariant(value));
 
     Q_EMIT dataChanged(index, index);
     return true;
@@ -152,9 +153,9 @@ bool Array2DModel::insertRows(int row, int count, const QModelIndex& parent)
 
     int columns = columnCount();
     for (int i = 0; i < count; i++) {
-        auto rowPtr = std::make_shared<QList<QVariant>>();
+        auto rowPtr = std::make_shared<Materials::ValueList>();
         for (int j = 0; j < columns; j++) {
-            rowPtr->push_back(_property->getColumnNull(j));
+            rowPtr->push_back(fromQVariant(_property->getColumnNull(j)));
         }
 
         _value->insertRow(row, rowPtr);

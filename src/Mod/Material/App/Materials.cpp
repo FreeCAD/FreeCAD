@@ -29,6 +29,7 @@
 #include <QDir>
 #include <QLocale>
 #include <QMetaType>
+#include <QVariant>
 #include <QUuid>
 
 
@@ -61,6 +62,70 @@ static QTextStream& operator<<(QTextStream& stream, const std::string& text)
 /* TRANSLATOR Material::Materials */
 
 TYPESYSTEM_SOURCE(Materials::MaterialProperty, Materials::ModelProperty)
+
+namespace
+{
+
+// Bridge to the QVariant based property API, until it is converted to Value
+QVariant toQVariant(const Value& value)
+{
+    if (value.is<std::string>()) {
+        return QString::fromStdString(value.get<std::string>());
+    }
+    if (value.is<bool>()) {
+        return value.get<bool>();
+    }
+    if (value.is<int>()) {
+        return value.get<int>();
+    }
+    if (value.is<double>()) {
+        return value.get<double>();
+    }
+    if (value.is<Base::Quantity>()) {
+        return QVariant::fromValue(value.get<Base::Quantity>());
+    }
+    if (value.is<ValueList>()) {
+        QList<QVariant> list;
+        for (const auto& item : value.get<ValueList>()) {
+            list.append(toQVariant(item));
+        }
+        return list;
+    }
+    return {};
+}
+
+Value fromQVariant(const QVariant& value)
+{
+    if (value.isNull()) {
+        return {};
+    }
+    if (value.userType() == qMetaTypeId<Base::Quantity>()) {
+        return value.value<Base::Quantity>();
+    }
+    if (value.userType() == qMetaTypeId<QList<QVariant>>()) {
+        ValueList list;
+        for (const auto& item : value.value<QList<QVariant>>()) {
+            list.push_back(fromQVariant(item));
+        }
+        return list;
+    }
+    switch (value.userType()) {
+        case QMetaType::Bool:
+            return value.toBool();
+        case QMetaType::Int:
+        case QMetaType::UInt:
+        case QMetaType::Long:
+        case QMetaType::LongLong:
+            return value.toInt();
+        case QMetaType::Float:
+        case QMetaType::Double:
+            return value.toDouble();
+        default:
+            return value.toString().toStdString();
+    }
+}
+
+}  // namespace
 
 MaterialProperty::MaterialProperty()
 {
@@ -117,12 +182,12 @@ void MaterialProperty::setModelUUID(std::string uuid)
 
 QVariant MaterialProperty::getValue()
 {
-    return _valuePtr->getValue();
+    return toQVariant(_valuePtr->getValue());
 }
 
 QVariant MaterialProperty::getValue() const
 {
-    return _valuePtr->getValue();
+    return toQVariant(_valuePtr->getValue());
 }
 
 std::shared_ptr<MaterialValue> MaterialProperty::getMaterialValue()
@@ -314,7 +379,7 @@ void MaterialProperty::setValue(const QVariant& value)
         }
     }
     else {
-        _valuePtr->setValue(value);
+        _valuePtr->setValue(fromQVariant(value));
     }
 }
 
@@ -360,17 +425,17 @@ void MaterialProperty::setValue(const std::shared_ptr<MaterialValue>& value)
 
 void MaterialProperty::setString(const std::string& value)
 {
-    _valuePtr->setValue(QVariant(QString::fromStdString(value)));
+    _valuePtr->setValue(value);
 }
 
 void MaterialProperty::setBoolean(bool value)
 {
-    _valuePtr->setValue(QVariant(value));
+    _valuePtr->setValue(value);
 }
 
 void MaterialProperty::setBoolean(int value)
 {
-    _valuePtr->setValue(QVariant(value != 0));
+    _valuePtr->setValue(value != 0);
 }
 
 void MaterialProperty::setBoolean(const std::string& value)
@@ -392,26 +457,26 @@ void MaterialProperty::setBoolean(const std::string& value)
 
 void MaterialProperty::setInt(int value)
 {
-    _valuePtr->setValue(QVariant(value));
+    _valuePtr->setValue(value);
 }
 
 void MaterialProperty::setInt(const std::string& value)
 {
     long parsed {0};
     Base::StringUtils::parseLong(value, parsed);
-    _valuePtr->setValue(QVariant(static_cast<int>(parsed)));
+    _valuePtr->setValue(static_cast<int>(parsed));
 }
 
 void MaterialProperty::setFloat(double value)
 {
-    _valuePtr->setValue(QVariant(value));
+    _valuePtr->setValue(value);
 }
 
 void MaterialProperty::setFloat(const std::string& value)
 {
     double parsed {0.0};
     Base::StringUtils::parseDouble(value, parsed);
-    _valuePtr->setValue(QVariant(static_cast<float>(parsed)));
+    _valuePtr->setValue(parsed);
 }
 
 void MaterialProperty::setQuantity(const Base::Quantity& value)
@@ -432,7 +497,7 @@ void MaterialProperty::setQuantity(const Base::Quantity& value)
         }
     }
     quantity.setFormat(MaterialValue::getQuantityFormat());
-    _valuePtr->setValue(QVariant(QVariant::fromValue(quantity)));
+    _valuePtr->setValue(quantity);
 }
 
 void MaterialProperty::setQuantity(double value, const std::string& units)
@@ -447,19 +512,24 @@ void MaterialProperty::setQuantity(const std::string& value)
 
 void MaterialProperty::setList(const QList<QVariant>& value)
 {
-    _valuePtr->setList(value);
+    _valuePtr->setList(fromQVariant(value).toList());
+}
+
+void MaterialProperty::setList(ValueList value)
+{
+    _valuePtr->setList(std::move(value));
 }
 
 void MaterialProperty::setURL(const std::string& value)
 {
-    _valuePtr->setValue(QVariant(QString::fromStdString(value)));
+    _valuePtr->setValue(value);
 }
 
 void MaterialProperty::setColor(const Base::Color& value)
 {
     std::stringstream ss;
     ss << "(" << value.r << ", " << value.g << ", " << value.b << ", " << value.a << ")";
-    _valuePtr->setValue(QVariant(QString::fromStdString(ss.str())));
+    _valuePtr->setValue(ss.str());
 }
 
 MaterialProperty& MaterialProperty::operator=(const MaterialProperty& other)
@@ -962,6 +1032,14 @@ void Material::setPhysicalValue(const std::string& name, const std::shared_ptr<Q
     }
 }
 
+void Material::setPhysicalValue(const std::string& name, const ValueList& value)
+{
+    setPhysicalEditState(name);
+    if (hasPhysicalProperty(name)) {
+        _physical[name]->setList(value);
+    }
+}
+
 void Material::setPhysicalValue(const std::string& name, const QVariant& value)
 {
     setPhysicalEditState(name);
@@ -996,6 +1074,14 @@ void Material::setAppearanceValue(const std::string& name,
 
     if (hasAppearanceProperty(name)) {
         _appearance[name]->setList(*value);
+    }
+}
+
+void Material::setAppearanceValue(const std::string& name, const ValueList& value)
+{
+    setAppearanceEditState(name);
+    if (hasAppearanceProperty(name)) {
+        _appearance[name]->setList(value);
     }
 }
 

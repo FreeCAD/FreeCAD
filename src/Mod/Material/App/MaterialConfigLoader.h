@@ -28,9 +28,6 @@
 #include <map>
 #include <string>
 
-#include <QList>
-#include <QVariant>
-
 #include <Base/StringUtils.h>
 
 #include "Materials.h"
@@ -83,9 +80,9 @@ private:
     }
     static void setAppearanceValue(const std::shared_ptr<Material>& finalModel,
                                    const std::string& name,
-                                   const std::shared_ptr<QList<QVariant>>& value)
+                                   const ValueList& value)
     {
-        if (!value->isEmpty()) {
+        if (!value.empty()) {
             finalModel->setAppearanceValue(name, value);
         }
     }
