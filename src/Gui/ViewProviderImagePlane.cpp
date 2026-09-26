@@ -27,6 +27,7 @@
 #include <QImage>
 #include <QImageReader>
 #include <QMenu>
+#include <QPainter>
 #include <QString>
 #include <QSvgRenderer>
 #include <Inventor/nodes/SoCoordinate3.h>
@@ -261,7 +262,26 @@ QImage ViewProviderImagePlane::loadRaster(const char* fileName) const
         }
     }
 
-    return reader.read();
+    QImage img = reader.read();
+
+    // The Qt PDF image plugin delivers Format_ARGB32_Premultiplied images
+    // where the page background is alpha=0 / RGB=0. Detect this specific
+    // case (premultiplied format + fully transparent top-left pixel) and
+    // composite onto white, which gives the expected page appearance without
+    // affecting PNG/SVG images that have genuine partial transparency.
+    if (!img.isNull() && img.format() == QImage::Format_ARGB32_Premultiplied
+        && qAlpha(img.pixel(0, 0)) == 0) {
+        QImage opaque(img.size(), QImage::Format_RGB32);
+        opaque.fill(Qt::white);
+        QPainter painter(&opaque);
+        painter.drawImage(0, 0, img);
+        painter.end();
+        opaque.setDotsPerMeterX(img.dotsPerMeterX());
+        opaque.setDotsPerMeterY(img.dotsPerMeterY());
+        return opaque;
+    }
+
+    return img;
 }
 
 void ViewProviderImagePlane::reloadIfSvg()
