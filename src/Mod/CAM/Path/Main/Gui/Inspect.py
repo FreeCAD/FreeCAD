@@ -154,6 +154,14 @@ class GCodeEditorDialog(QtGui.QDialog):
 
         self.updateText()
 
+    def resizeEvent(self, event):
+        # Change widgets width with a dialog window
+        width = self.width() - 290  # take into account width of others widgets at the bottom
+        fm = self.chkTool.fontMetrics()
+        elided_text = fm.elidedText(self.tool.Label, QtCore.Qt.ElideMiddle, width)
+        self.chkTool.setText(elided_text)
+        super().resizeEvent(event)
+
     def cleanup(self):
         """Prepare for exit from Inspect"""
         prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
