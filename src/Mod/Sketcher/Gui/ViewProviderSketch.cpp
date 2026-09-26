@@ -3898,10 +3898,12 @@ void ViewProviderSketch::slotSolverUpdate()
             + getSketchObject()->getHighestCurveIndex() + 1
         == getSolvedSketch().getGeometrySize()) {
 
+        draw(false, true);
+
         Gui::MDIView* mdi =
             Gui::Application::Instance->editViewOfNode(editCoinManager->getRootEditNode());
         if (mdi && mdi->isDerivedFrom<Gui::View3DInventor>()) {
-            draw(false, true);
+            static_cast<Gui::View3DInventor*>(mdi)->getViewer()->redraw();
         }
 
         signalConstraintsChanged();
