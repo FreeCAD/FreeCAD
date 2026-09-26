@@ -224,10 +224,12 @@ Py::Dict CommandPy::getParameters() const
 
 void CommandPy::setParameters(Py::Dict arg)
 {
-    PyObject* dict_copy = PyDict_Copy(arg.ptr());
+    // Convert and validate the whole dictionary before touching the command so
+    // that a bad key or value leaves the existing parameters intact.
+    std::map<std::string, double> params;
     PyObject *key, *value;
     Py_ssize_t pos = 0;
-    while (PyDict_Next(dict_copy, &pos, &key, &value)) {
+    while (PyDict_Next(arg.ptr(), &pos, &key, &value)) {
         std::string ckey;
         if (PyUnicode_Check(key)) {
             ckey = PyUnicode_AsUTF8(key);
@@ -247,9 +249,13 @@ void CommandPy::setParameters(Py::Dict arg)
         else {
             throw Py::TypeError("The dictionary can only contain number values");
         }
-        getCommandPtr()->Parameters[ckey] = cvalue;
-        parameters_copy_dict.clear();
+        params[ckey] = cvalue;
     }
+
+    // Assignment replaces the parameter set: keys that are not in the
+    // dictionary are removed, and an empty dictionary clears all parameters.
+    getCommandPtr()->Parameters = std::move(params);
+    parameters_copy_dict.clear();
 }
 
 // Annotations attribute get/set
