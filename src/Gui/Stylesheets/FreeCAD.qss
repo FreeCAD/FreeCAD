@@ -2320,6 +2320,13 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qheaderview
 QTableCornerButton::section {
   background-color: @PrimaryColor;
   border-radius: 0px;/*if you remove this line it breaks it */}
+
+QTableView#cells QTableCornerButton::section {
+  border: none;
+  border-bottom: 1px solid @GeneralBorderColor;
+  border-right: 1px solid @GeneralBorderColor;
+}
+
 QHeaderView {
   background-color: transparent;
   margin-top -1px;/* fix for misalignment*/}
@@ -2347,6 +2354,13 @@ QHeaderView::section::horizontal::first, QHeaderView::section::horizontal::only-
   border-left: 1px solid @GeneralBorderColor;
 }
 
+QTableView#cells QHeaderView::section::horizontal {
+  border: none;
+  border-bottom: 1px solid @GeneralBorderColor;
+  border-right: 1px solid @GeneralBorderColor;
+  border-top: 1px solid @GeneralBorderColor;
+}
+
 QHeaderView::section::horizontal:disabled {
   color: @TextDisabledColor;
 }
@@ -2362,6 +2376,14 @@ QHeaderView::section::vertical {
 
 QHeaderView::section::vertical::first, QHeaderView::section::vertical::only-one {
  border-top: 1px solid @GeneralBorderColor;
+}
+
+QTableView#cells QHeaderView::section::vertical {
+  border: none;
+  border-left: 1px solid @GeneralBorderColor;
+  border-bottom: 1px solid @GeneralBorderColor;
+  border-right: 1px solid @GeneralBorderColor;
+  margin: 0px;
 }
 
 QHeaderView::section::vertical:disabled {
