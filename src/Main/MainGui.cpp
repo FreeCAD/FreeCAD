@@ -214,7 +214,7 @@ int main(int argc, char** argv)
     App::Application::Config()["SplashScreen"] = "freecadsplash";
     App::Application::Config()["StartWorkbench"] = "PartDesignWorkbench";
     // App::Application::Config()["HiddenDockWindow"] = "Property editor";
-    App::Application::Config()["SplashAlignment"] = "Bottom|Left";
+    App::Application::Config()["SplashAlignment"] = "Top";
     App::Application::Config()["SplashTextColor"] = "#418FDE";
     App::Application::Config()["SplashWarningColor"] = "#CA333B";
     App::Application::Config()["SplashInfoColor"] = "#212529";

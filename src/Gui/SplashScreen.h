@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include <list>
+#include <QFontMetrics>
 #include <QSplashScreen>
 
 namespace Gui
@@ -45,6 +47,7 @@ public:
 
     void show();
     void setShowMessages(bool on);
+    void pushMessage(const QString& msg);
 
     static QPixmap defaultSplashImage();
     static QPixmap splashImage();
@@ -55,6 +58,12 @@ protected:
 
 private:
     SplashObserver* messages;
+    std::list<QString> lines;
+    std::list<QString>::size_type lineCount;
+    int lineSpacing;
+    int startX, startY, maxWidth;
+    QColor textColor;
+    QFontMetrics fontMetrics;
 };
 
 }  // namespace Gui
