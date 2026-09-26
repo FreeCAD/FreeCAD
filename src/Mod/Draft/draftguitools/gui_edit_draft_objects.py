@@ -81,31 +81,29 @@ class DraftWireGuiTools(GuiTools):
             obj.Closed = True
             pts[0] = v
             del pts[-1]
-            obj.Points = pts
-            return
         elif node_idx == len(pts) - 1 and (v - pts[0]).Length < tol:
             # DNC: user moved last point over first point -> Close curve
             obj.Closed = True
             del pts[-1]
-            obj.Points = pts
-            return
         elif v in pts:
             # DNC: checks if point enter is equal to other, this could cause a OCC problem
             _err = translate("draft", "This object does not support possible " "coincident points")
             App.Console.PrintMessage(_err + "\n")
             return
+        else:
+            pts[node_idx] = v
 
         # TODO: Make consistent operation with trackers and open wires
         # See: https://forum.freecad.org/viewtopic.php?f=23&t=56661
         # if obj.Closed:
         #    # DNC: project the new point to the plane of the face if present
         #    if hasattr(obj.Shape, "normalAt"):
-        #        normal = obj.Shape.normalAt(0,0)
+        #        normal = obj.Shape.normalAt(0, 0)
         #        point_on_plane = obj.Shape.Vertexes[0].Point
         #        v.projectToPlane(point_on_plane, normal)
 
-        pts[node_idx] = v
         obj.Points = pts
+        obj.Document.recompute()
 
     def get_edit_point_context_menu(self, edit_command, obj, node_idx):
         menu = [
@@ -176,9 +174,9 @@ class DraftWireGuiTools(GuiTools):
         if obj.Closed and edgeIndex == len(obj.Points):
             # last segment when object is closed
             newPoints.append(edit_command.localize_vector(obj, newPoint))
-        obj.Points = newPoints
 
-        obj.recompute()
+        obj.Points = newPoints
+        obj.Document.recompute()
 
     def delete_point(self, obj, node_idx):
         if len(obj.Points) <= 2:
@@ -188,16 +186,15 @@ class DraftWireGuiTools(GuiTools):
         pts = obj.Points
         pts.pop(node_idx)
         obj.Points = pts
-
-        obj.recompute()
+        obj.Document.recompute()
 
     def open_close_wire(self, obj):
         obj.Closed = not obj.Closed
-        obj.recompute()
+        obj.Document.recompute()
 
     def reverse_wire(self, obj):
         obj.Points = reversed(obj.Points)
-        obj.recompute()
+        obj.Document.recompute()
 
     def set_first_point(self, obj, node_idx):
         pts = obj.Points
@@ -250,8 +247,7 @@ class DraftBSplineGuiTools(DraftWireGuiTools):
         if obj.Closed and (uNewPoint > uPoints[-1]):
             pts.append(pt)
         obj.Points = pts
-
-        obj.recompute()
+        obj.Document.recompute()
 
 
 class DraftRectangleGuiTools(GuiTools):
@@ -279,6 +275,7 @@ class DraftRectangleGuiTools(GuiTools):
             obj.Length = DraftVecUtils.project(v, App.Vector(1, 0, 0)).Length
         elif node_idx == 2:
             obj.Height = DraftVecUtils.project(v, App.Vector(0, 1, 0)).Length
+        obj.Document.recompute()
 
 
 class DraftCircleGuiTools(GuiTools):
@@ -374,6 +371,7 @@ class DraftCircleGuiTools(GuiTools):
                         obj.LastAngle = dangle
                     elif node_idx == 3:
                         obj.Radius = v.Length
+        obj.Document.recompute()
 
     def get_edit_point_context_menu(self, edit_command, obj, node_idx):
         actions = None
@@ -518,7 +516,7 @@ class DraftCircleGuiTools(GuiTools):
 
     def arcInvert(self, obj):
         obj.FirstAngle, obj.LastAngle = obj.LastAngle, obj.FirstAngle
-        obj.recompute()
+        obj.Document.recompute()
 
 
 class DraftEllipseGuiTools(GuiTools):
@@ -546,6 +544,7 @@ class DraftEllipseGuiTools(GuiTools):
                 obj.MinorRadius = v.Length
             else:
                 obj.MinorRadius = obj.MajorRadius
+        obj.Document.recompute()
 
 
 class DraftPolygonGuiTools(GuiTools):
@@ -571,7 +570,7 @@ class DraftPolygonGuiTools(GuiTools):
             obj.Placement.Base = obj.Placement.multVec(v)
         elif node_idx == 1:
             obj.Radius = v.Length
-        obj.recompute()
+        obj.Document.recompute()
 
 
 class DraftDimensionGuiTools(GuiTools):
@@ -687,6 +686,7 @@ class DraftBezCurveGuiTools(GuiTools):
                 v.projectToPlane(point_on_plane, normal)
         pts[node_idx] = v
         obj.Points = pts
+        obj.Document.recompute()
 
     def get_edit_point_context_menu(self, edit_command, obj, node_idx):
         return [
@@ -917,8 +917,7 @@ class DraftBezCurveGuiTools(GuiTools):
         obj.Continuity = c[0:edgeindex] + [cont] + c[edgeindex:]
 
         obj.Points = pts
-
-        obj.recompute()
+        obj.Document.recompute()
 
     def delete_point(self, obj, node_idx):
         if len(obj.Points) <= 2:
@@ -929,15 +928,15 @@ class DraftBezCurveGuiTools(GuiTools):
         pts.pop(node_idx)
         obj.Points = pts
         obj.Proxy.resetcontinuity(obj)
-        obj.recompute()
+        obj.Document.recompute()
 
     def open_close_wire(self, obj):
         obj.Closed = not obj.Closed
-        obj.recompute()
+        obj.Document.recompute()
 
     def reverse_wire(self, obj):
         obj.Points = reversed(obj.Points)
-        obj.recompute()
+        obj.Document.recompute()
 
 
 ## @}
