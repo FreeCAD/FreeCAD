@@ -1,24 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# ***************************************************************************
-# *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+# SPDX-FileCopyrightText: 2017 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
 import Path
@@ -78,16 +77,16 @@ def _traverseTemplateAttributes(attrs, codec):
     coded = {}
     for key, value in attrs.items():
         if type(value) == dict:
-            Path.Log.debug("%s is a dict" % key)
+            Path.Log.debug(f"{key} is a dict")
             coded[key] = _traverseTemplateAttributes(value, codec)
         elif type(value) == list:
-            Path.Log.debug("%s is a list" % key)
+            Path.Log.debug(f"{key} is a list")
             coded[key] = [_traverseTemplateAttributes(attr, codec) for attr in value]
         elif isinstance(value, str):
-            Path.Log.debug("%s is a string" % key)
+            Path.Log.debug(f"{key} is a string")
             coded[key] = codec(value)
         else:
-            Path.Log.debug("%s is %s" % (key, type(value)))
+            Path.Log.debug(f"{key} is {type(value)}")
             coded[key] = value
     return coded
 
@@ -235,7 +234,6 @@ class SetupSheet:
             if hasattr(obj, "Proxy") and obj.Proxy == self:
                 self.obj = obj
                 break
-        return None
 
     def hasDefaultToolRapids(self):
         return Path.Geom.isRoughly(self.obj.VertRapid.Value, 0) and Path.Geom.isRoughly(
@@ -257,20 +255,16 @@ class SetupSheet:
             self.DefaultSafeHeightExpression
         ):
             return False
-        if self.obj.ClearanceHeightExpression != self.decodeAttributeString(
+        return self.obj.ClearanceHeightExpression == self.decodeAttributeString(
             self.DefaultClearanceHeightExpression
-        ):
-            return False
-        return True
+        )
 
     def hasDefaultOperationDepths(self):
         if self.obj.StartDepthExpression != self.DefaultStartDepthExpression:
             return False
         if self.obj.FinalDepthExpression != self.DefaultFinalDepthExpression:
             return False
-        if self.obj.StepDownExpression != self.DefaultStepDownExpression:
-            return False
-        return True
+        return self.obj.StepDownExpression == self.DefaultStepDownExpression
 
     def hasDefaultCoolantMode(self):
         return self.obj.CoolantMode == "None"
@@ -284,6 +278,10 @@ class SetupSheet:
         for opName, op in _RegisteredOps.items():
             opSetting = attrs.get(opName)
             if opSetting is not None:
+                if opSetting.get("ClearingPattern") == "ZigZagOffset":
+                    # ZigZagOffset was replaced by ZigZag with a finishing pass
+                    opSetting = dict(opSetting, ClearingPattern="ZigZag")
+                    opSetting.setdefault("FinishingPasses", "1")
                 prototype = op.prototype(opName)
                 for propName in op.properties():
                     value = opSetting.get(propName)
@@ -386,7 +384,7 @@ class SetupSheet:
                 if hasattr(self.obj, prop):
                     ops.append(name)
                     break
-        return list(sorted(ops))
+        return sorted(ops)
 
     def setOperationProperties(self, obj, opName):
         Path.Log.track(obj.Label, opName)
@@ -396,7 +394,13 @@ class SetupSheet:
                 propName = OpPropertyName(opName, prop)
                 if hasattr(self.obj, propName):
                     obj.setExpression(prop, None)  # clear any bound expression first
-                    setattr(obj, prop, getattr(self.obj, propName))
+                    value = getattr(self.obj, propName)
+                    if prop == "ClearingPattern" and value == "ZigZagOffset":
+                        # ZigZagOffset was replaced by ZigZag with a finishing pass
+                        value = "ZigZag"
+                        if not hasattr(self.obj, OpPropertyName(opName, "FinishingPasses")):
+                            obj.FinishingPasses = 1
+                    setattr(obj, prop, value)
         except Exception:
             Path.Log.info("SetupSheet has no support for {}".format(opName))
 
@@ -440,7 +444,7 @@ def Create(name="SetupSheet"):
     return obj
 
 
-class _RegisteredOp(object):
+class _RegisteredOp:
     def __init__(self, factory, properties):
         self.factory = factory
         self.properties = properties
@@ -450,7 +454,7 @@ class _RegisteredOp(object):
 
     def prototype(self, name):
         ptt = PathSetupSheetOpPrototype.OpPrototype(name)
-        self.factory("OpPrototype.%s" % name, ptt)
+        self.factory(f"OpPrototype.{name}", ptt)
         return ptt
 
 

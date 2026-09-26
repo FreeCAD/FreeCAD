@@ -53,6 +53,9 @@ translate = FreeCAD.Qt.translate
 class ObjectFace(PathPocketBase.ObjectPocket):
     """Proxy object for Mill Facing operation."""
 
+    # Helix and finishing-only clearing are implemented for pockets only
+    excludedClearingPatterns = ("Helix", "No clearing")
+
     @classmethod
     def propertyEnumerations(self, dataType="data"):
         """helixOpPropertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.

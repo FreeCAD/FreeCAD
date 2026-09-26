@@ -1,41 +1,35 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2017 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
-from PySide.QtCore import QT_TRANSLATE_NOOP
+import Constants
 import FreeCAD
+import Part
 import Path
+from Path.Base.Generator import linking
+from Path.Base.Generator.ramp_entry import RampEntry
 import Path.Op.Base as PathOp
 import Path.Op.Util as PathOpUtil
-import PathScripts.PathUtils as PathUtils
-
-from Path.Geom import isRoughly
-
-# lazily loaded modules
-from lazy_loader.lazy_loader import LazyLoader
-
-Draft = LazyLoader("Draft", globals(), "Draft")
-Part = LazyLoader("Part", globals(), "Part")
-
+from PathScripts import PathUtils
+from PySide.QtCore import QT_TRANSLATE_NOOP
+import math
 
 __title__ = "Base class for PathArea based operations."
 __author__ = "sliptonic (Brad Collette)"
@@ -73,6 +67,7 @@ class ObjectOp(PathOp.ObjectOp):
             | PathOp.FeatureStartPoint
             | self.areaOpFeatures(obj)
             | PathOp.FeatureCoolant
+            | PathOp.FeatureLinking
         )
 
     def areaOpFeatures(self, obj):
@@ -86,9 +81,9 @@ class ObjectOp(PathOp.ObjectOp):
         Path.Log.track()
 
         # Debugging
-        obj.addProperty("App::PropertyString", "AreaParams", "Path")
+        obj.addProperty("App::PropertyStringList", "AreaParams", "Path")
         obj.setEditorMode("AreaParams", 2)  # hide
-        obj.addProperty("App::PropertyString", "PathParams", "Path")
+        obj.addProperty("App::PropertyStringList", "PathParams", "Path")
         obj.setEditorMode("PathParams", 2)  # hide
         obj.addProperty("Part::PropertyPartShape", "removalshape", "Path")
         obj.setEditorMode("removalshape", 2)  # hide
@@ -109,14 +104,13 @@ class ObjectOp(PathOp.ObjectOp):
     def initAreaOp(self, obj):
         """initAreaOp(obj) ... overwrite if the receiver class needs initialisation.
         Can safely be overwritten by subclasses."""
-        pass
 
     def areaOpShapeForDepths(self, obj, job):
         """areaOpShapeForDepths(obj) ... returns the shape used to make an initial calculation for the depths being used.
         The default implementation returns the job's Base.Shape"""
         if job:
             if job.Stock:
-                Path.Log.debug("job=%s base=%s shape=%s" % (job, job.Stock, job.Stock.Shape))
+                Path.Log.debug(f"job={job} base={job.Stock} shape={job.Stock.Shape}")
                 return job.Stock.Shape
             else:
                 Path.Log.warning(translate("PathAreaOp", "job %s has no Base.") % job.Label)
@@ -127,7 +121,6 @@ class ObjectOp(PathOp.ObjectOp):
     def areaOpOnChanged(self, obj, prop):
         """areaOpOnChanged(obj, porp) ... overwrite to process operation specific changes to properties.
         Can safely be overwritten by subclasses."""
-        pass
 
     def opOnChanged(self, obj, prop):
         """opOnChanged(obj, prop) ... base implementation of the notification framework - do not overwrite.
@@ -142,7 +135,7 @@ class ObjectOp(PathOp.ObjectOp):
 
     def opOnDocumentRestored(self, obj):
         Path.Log.track()
-        for prop in ["AreaParams", "PathParams", "removalshape"]:
+        for prop in ("AreaParams", "PathParams", "removalshape"):
             if hasattr(obj, prop):
                 obj.setEditorMode(prop, 2)
         if not hasattr(obj, "SplitArcs"):
@@ -157,14 +150,13 @@ class ObjectOp(PathOp.ObjectOp):
 
     def areaOpOnDocumentRestored(self, obj):
         """areaOpOnDocumentRestored(obj) ... overwrite to fully restore receiver"""
-        pass
 
     def opSetDefaultValues(self, obj, job):
         """opSetDefaultValues(obj) ... base implementation, do not overwrite.
         The base implementation sets the depths and heights based on the
         areaOpShapeForDepths() return value.
         Do not overwrite, overwrite areaOpSetDefaultValues(obj, job) instead."""
-        Path.Log.debug("opSetDefaultValues(%s, %s)" % (obj.Label, job.Label))
+        Path.Log.debug(f"opSetDefaultValues({obj.Label}, {job.Label})")
 
         if PathOp.FeatureDepths & self.opFeatures(obj):
             try:
@@ -197,156 +189,324 @@ class ObjectOp(PathOp.ObjectOp):
 
         self.areaOpSetDefaultValues(obj, job)
 
+    def setParamsDebug(self, obj, prop, paramsTuples):
+        """setAreaParamsDebug(obj,prop, paramsTuples) ... set debug data
+        Save as string for legacy PropertyString or list of string for PropertyStringList"""
+        valLst = [f"{k}: {v}" for k, v in paramsTuples]
+        valStr = ", ".join(valLst)
+        if "list" in obj.getTypeIdOfProperty(prop).casefold():
+            setattr(obj, prop, valLst)
+        else:
+            setattr(obj, prop, valStr)
+        Path.Log.debug(f"{prop}: {valStr}")
+
     def areaOpSetDefaultValues(self, obj, job):
         """areaOpSetDefaultValues(obj, job) ... overwrite to set initial values of operation specific properties.
         Can safely be overwritten by subclasses."""
-        pass
 
-    def getMiddlePointLongestEdge(self, shape):
-        """getMiddlePointLongestEdge(shape) ... return middle point of longest edge from shape."""
-        longest = max(shape.Edges, key=lambda edge: edge.Length, default=None)
-        if longest is None:
-            return None
-        return longest.discretize(3)[1]
-
-    def _buildPathArea(self, obj, baseobject, isHole, start):
-        """_buildPathArea(obj, baseobject, isHole, start) ... internal function."""
+    def _buildPathArea(self, obj, shape, isHole, linkingArgs):
+        """_buildPathArea(obj, shape, isHole, start) ... returns commands for areas."""
         Path.Log.track()
-        area = Path.Area()
-        area.setPlane(PathUtils.makeWorkplane(baseobject))
-        area.add(baseobject)
 
-        areaParams = self.areaOpAreaParams(obj, isHole)
-        areaParams["SectionTolerance"] = FreeCAD.Base.Precision.confusion() * 10  # basically 1e-06
-
-        heights = [i for i in self.depthparams]
-        Path.Log.debug("depths: {}".format(heights))
-        area.setParams(**areaParams)
-        obj.AreaParams = str(area.getParams())
-
-        Path.Log.debug("Area with params: {}".format(area.getParams()))
-
-        sections = area.makeSections(mode=0, project=self.areaOpUseProjection(obj), heights=heights)
-        Path.Log.debug("sections = %s" % sections)
-
-        # Rest machining
-        if hasattr(obj, "UseRestMachining") and obj.UseRestMachining:
-            restSections = []
-            for section in sections:
-                bbox = section.getShape().BoundBox
-                sectionClearedAreas = PathOpUtil.getClearedAreas(obj, bbox)
-                restSection = section.getRestArea(
-                    sectionClearedAreas, self.tool.Diameter.getValueAs("mm")
-                )
-                if restSection is not None:
-                    restSections.append(restSection)
-            sections = restSections
-
-        shapelist = [sec.getShape() for sec in sections]
-        Path.Log.debug("shapelist = %s" % shapelist)
+        areaParamsList = []
+        # Pocket family (Pocket, PocketShape, MillFace) provides finishing areas
+        pocketOp = hasattr(self, "areaOpAreaParamsFinishing")
+        if pocketOp:
+            # Pocket operation: split area and get order Clearing path -> Finishing pass
+            if obj.ClearingPattern != "No clearing":
+                areaParamsList.append(self.areaOpAreaParams(obj, isHole))  # Clearing path
+            for i in range(obj.FinishingPasses):
+                areaParamsList.append(self.areaOpAreaParamsFinishing(obj, isHole))  # Finishing pass
+        elif obj.Proxy.__module__ == "Path.Op.Profile":
+            # Profile operation: create independent area for each offset
+            areaParams = self.areaOpAreaParams(obj, isHole)
+            offsets = areaParams["Offset"][:]
+            for offset in offsets:
+                areaParams["Offset"] = offset
+                areaParamsList.append(areaParams.copy())
+        else:
+            areaParamsList.append(self.areaOpAreaParams(obj, isHole))
 
         pathParams = self.areaOpPathParams(obj, isHole)
-        pathParams["shapes"] = shapelist
+        baseOrientation = pathParams.get("orientation", 0)
         pathParams["feedrate"] = self.horizFeed
         pathParams["feedrate_v"] = self.vertFeed
         pathParams["verbose"] = True
         pathParams["resume_height"] = obj.SafeHeight.Value
         pathParams["retraction"] = obj.ClearanceHeight.Value
         pathParams["return_end"] = True
-        # Note that emitting preambles between moves breaks some dressups and prevents path optimization on some controllers
+        # Note that emitting preambles between moves breaks some dressups
+        # and prevents path optimization on some controllers
         pathParams["preamble"] = False
+        pathParams["sort_mode"] = 1  # 2D5 sorting mode
+        self.setParamsDebug(obj, "PathParams", sorted(pathParams.items()))
 
-        # disable path sorting for offset and zigzag-offset paths
-        if (
-            hasattr(obj, "ClearingPattern")
-            and obj.ClearingPattern in ["ZigZagOffset", "Offset"]
-            and hasattr(obj, "MinTravel")
-            and not obj.MinTravel
-        ):
-            pathParams["sort_mode"] = 0
+        commands = []
+        areaParamsDebug = []
+        units = []  # pass options, section shape at one height
+        for areaIndex, areaParams in enumerate(areaParamsList):
+            """
+            Notes:
+            - Finishing pass should be the last in order, no matter value 'StartAt'.
+            - For helix ramp need to skip step down and use only bottom shapes.
+            - For 'StartAt' at 'Center' in Pocket op StartPoint should be in the center.
+            """
+            rampParams = {
+                "commands": None,
+                "method": None,
+                "angle_rad": None,
+                "pitch": None,
+                "tc": obj.ToolController,
+                "ignoreAbove": obj.StartDepth.Value,
+            }
+            reverseOpenWire = False
+            oneStepDown = False
+            middleEdge = False
+            pocketCenter = False
+            orientation = baseOrientation
+            finishing = areaIndex >= len(areaParamsList) - getattr(obj, "FinishingPasses", 0)
+            if "Path.Op.Profile" in obj.Proxy.__module__:
+                if obj.RampAngle:
+                    rampParams["angle_rad"] = math.radians(obj.RampAngle.Value)
+                else:
+                    rampParams["pitch"] = obj.StepDown.Value
 
-        if hasattr(obj, "RetractThreshold"):
-            pathParams["threshold"] = obj.RetractThreshold.Value
+                if finishing:  # Profile finishing pass
+                    if obj.FinishingOneStepDown:
+                        oneStepDown = True
+                    elif obj.RampMethod == "Helix":
+                        rampParams["method"] = 0
+                        oneStepDown = True
+                elif obj.RampMethod != "None":
+                    oneStepDown = obj.RampMethod == "Helix"
+                    rampParams["method"] = (
+                        0 if obj.RampMethod == "Helix" else int(obj.RampMethod.split()[1])
+                    )
 
-        if (
-            not obj.UseStartPoint
-            and getattr(obj, "HandleMultipleFeatures", None) == "Individually"
-            and getattr(obj, "UseLongestEdge", False)
-        ):
-            mid_longest = self.getMiddlePointLongestEdge(shapelist[0])
-            if mid_longest is not None:
-                pathParams["start"] = mid_longest
-        elif self.endVector is not None:
-            if self.endVector[:2] != (0, 0):
-                pathParams["start"] = self.endVector
-        elif PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
-            pathParams["start"] = obj.StartPoint
+                if rampParams["method"] and not rampParams["angle_rad"]:
+                    # Ramp methods 1-3 need an angle, plunge instead
+                    if areaIndex == 0:
+                        Path.Log.warning(
+                            translate(
+                                "PathAreaOp", "%s: ramp method '%s' needs a ramp angle, plunging"
+                            )
+                            % (obj.Label, obj.RampMethod)
+                        )
+                    rampParams["method"] = None
 
-        obj.PathParams = str({key: value for key, value in pathParams.items() if key != "shapes"})
-        Path.Log.debug("Path with params: {}".format(obj.PathParams))
+                if (
+                    obj.UseLongestEdge
+                    and not obj.UseStartPoint
+                    and obj.HandleMultipleFeatures == "Individually"
+                ):
+                    middleEdge = True
 
-        pp, end_vector = Path.fromShapes(**pathParams)
-        Path.Log.debug("pp: {}, end vector: {}".format(pp, end_vector))
+            elif pocketOp:
+                if finishing:  # Pocket finishing pass
+                    orientation = not baseOrientation
+                    if obj.FinishingOneStepDown:
+                        oneStepDown = True
+                    elif obj.FinishingRampHelix:
+                        oneStepDown = True
+                        rampParams["method"] = 0
+                        rampParams["pitch"] = obj.StepDown.Value
+                elif obj.ClearingPattern in ("Offset", "Helix"):  # Pocket clearing path
+                    if obj.StartAt == "Center":
+                        pocketCenter = True
+                    if obj.ClearingPattern == "Helix":
+                        oneStepDown = True
+                        rampParams["method"] = 0
+                        rampParams["pitch"] = obj.StepDown.Value
+                if obj.CutMode == "Climb":
+                    reverseOpenWire = True
 
-        # Keep track of this segment's end only if it has movement (otherwise end_vector is 0,0,0 and the next segment will unnecessarily start there)
-        if pp.Size > 0:
-            self.endVector = end_vector
+            area = Path.Area()
+            area.setPlane(PathUtils.makeWorkplane(shape))
+            area.add(shape)
+            areaParams["SectionTolerance"] = FreeCAD.Base.Precision.confusion() * 10
 
-        return pp
+            heights = [i for i in self.depthparams]
+            if oneStepDown:
+                heights = heights[-1:]
+            Path.Log.debug("depths: {}".format(heights))
 
-    def _buildProfileOpenEdges(self, obj, openWire, start):
-        """_buildPathArea(obj, openWire, start) ... internal function."""
+            area.setParams(**areaParams)
+            areaParamsDebug.append(("AREA_INDEX", areaIndex))
+            areaParamsDebug.extend(sorted(area.getParams().items()))
+
+            sections = area.makeSections(
+                mode=0, project=self.areaOpUseProjection(obj), heights=heights
+            )
+            Path.Log.debug(f"sections = {sections}")
+
+            # Rest machining
+            if getattr(obj, "UseRestMachining", False):
+                restSections = []
+                for section in sections:
+                    bbox = section.getShape().BoundBox
+                    sectionClearedAreas = PathOpUtil.getClearedAreas(obj, bbox)
+                    restSection = section.getRestArea(
+                        sectionClearedAreas, self.tool.Diameter.getValueAs("mm")
+                    )
+                    if restSection is not None:
+                        restSections.append(restSection)
+                sections = restSections
+
+            if not sections:
+                continue
+
+            opts = (rampParams, reverseOpenWire, middleEdge, pocketCenter, orientation, finishing)
+            units.extend((opts, sec.getShape()) for sec in sections)
+
+        if obj.Proxy.__module__ == "Path.Op.Profile":
+            # Cut all roughing offsets at one height before stepping down,
+            # finishing passes stay last
+            roughing = [u for u in units if not u[0][5]]
+            roughing.sort(key=lambda u: -round(u[1].BoundBox.ZMax, 6))  # stable: keeps pass order
+            units = roughing + [u for u in units if u[0][5]]
+
+        for opts, sh in units:  # each shape is a path/wires at one height
+            rampParams, reverseOpenWire, middleEdge, pocketCenter, orientation, _ = opts
+            pathParams["orientation"] = orientation
+            if not (wires := sh.Wires):
+                continue
+            sortFrom = sh.CenterOfGravity if pocketCenter else self.endVector
+            while wires:
+                if wires[0].isClosed():
+                    v = Part.Vertex(sortFrom)
+                    wire = min(wires, key=lambda w: v.distToShape(w)[0])  # nearest closed wire
+                    if middleEdge:
+                        # get middle point of the longest edge from wire
+                        longestEdge = max(wire.Edges, key=lambda edge: edge.Length)
+                        start = longestEdge.discretize(3)[1]
+                    else:
+                        start = self.endVector
+                else:  # open wire (pocket ZigZag, Line, Grid)
+                    iV = -1 if reverseOpenWire else 0
+                    wire = min(wires, key=lambda w: (sortFrom - w.Vertexes[iV].Point).Length)
+                    start = wire.Vertexes[iV].Point
+
+                wires.remove(wire)
+                pathParams["start"] = start
+                pathParams["shapes"] = [wire]
+                pp, end_vector = Path.fromShapes(**pathParams)
+                Path.Log.debug("pp: {}, end vector: {}".format(pp, end_vector))
+
+                if pp.Size:
+                    doRamp = rampParams["method"] is not None
+                    while pp.Commands[0].Name in Constants.GCODE_MOVE_RAPID:
+                        pp.deleteCommand(0)  # remove rapid moves
+                    plungeMove = pp.Commands[0]
+                    p = Path.Geom.commandEndPoint(plungeMove)
+                    pp.deleteCommand(0)  # remove plunge move
+
+                    cmds = []
+                    if self.initmove:
+                        self.initmove = False
+                        cmds.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
+                        cmds.append(Path.Command("G0", {"X": p.x, "Y": p.y}))
+                        cmds.append(Path.Command("G0", {"Z": obj.SafeHeight.Value}))
+                        par = {"X": p.x, "Y": p.y, "Z": p.z, "F": self.vertFeed}
+                        cmds.append(Path.Command("G1", par))
+                    elif obj.RetractThreshold.Value > (self.endVector - p).Length:
+                        cmds.append(plungeMove)
+                    else:
+                        linkingArgs["start_position"] = self.endVector
+                        linkingArgs["target_position"] = p
+                        cmds.extend(linking.get_linking_moves(**linkingArgs))
+                        zMax = max(cmd.z for cmd in cmds) if cmds else p.z
+                        if rampParams["method"] == 0 and zMax < obj.SafeHeight.Value:
+                            doRamp = False
+                        for cmd in cmds:
+                            if cmd.z < obj.SafeHeight.Value:
+                                cmd.Name = "G1"
+                                par = cmd.Parameters
+                                par["F"] = self.vertFeed
+                                cmd.Parameters = par
+
+                        if doRamp and len(cmds) < 2:
+                            c = commands[-1]
+                            cmds.insert(0, Path.Command("G1", {"X": c.x, "Y": c.y, "Z": c.z}))
+
+                    cmds.extend(pp.Commands)
+                    if doRamp:  # generate ramp entry
+                        rampParams["commands"] = cmds
+                        cmds = RampEntry(**rampParams).generate()
+
+                    commands.extend(cmds)
+                    self.endVector = end_vector
+                    sortFrom = end_vector
+
+        self.setParamsDebug(obj, "AreaParams", areaParamsDebug)
+        return commands
+
+    def _buildProfileOpenEdges(self, obj, shape, linkingArgs):
+        """_buildPathArea(obj, shape, linkingArgs) ... returns commands for open wires.
+        shape: Part.Wire or Part.Compound contains wires"""
         Path.Log.track()
 
-        paths = []
+        commands = []
         heights = [i for i in self.depthparams]
         Path.Log.debug("depths: {}".format(heights))
-        for i in range(0, len(heights)):
-            openWire.translate(FreeCAD.Vector(0, 0, heights[i] - openWire.BoundBox.ZMin))
+        for height in heights:
+            for openWire in shape.Wires:
+                openWire.translate(FreeCAD.Vector(0, 0, height - openWire.BoundBox.ZMin))
 
-            pathParams = {}
-            pathParams["shapes"] = [openWire]
-            pathParams["feedrate"] = self.horizFeed
-            pathParams["feedrate_v"] = self.vertFeed
-            pathParams["verbose"] = True
-            pathParams["resume_height"] = obj.SafeHeight.Value
-            pathParams["retraction"] = obj.ClearanceHeight.Value
-            pathParams["return_end"] = True
-            # Note that emitting preambles between moves breaks some dressups and prevents path optimization on some controllers
-            pathParams["preamble"] = False
+                pathParams = {}
+                pathParams["shapes"] = [openWire]
+                pathParams["feedrate"] = self.horizFeed
+                pathParams["feedrate_v"] = self.vertFeed
+                pathParams["verbose"] = True
+                pathParams["resume_height"] = obj.SafeHeight.Value
+                pathParams["retraction"] = obj.ClearanceHeight.Value
+                pathParams["return_end"] = True
+                # Note that emitting preambles between moves breaks some dressups
+                # and prevents path optimization on some controllers
+                pathParams["preamble"] = False
 
-            # Always manually setting pathParams["start"] to the first or
-            # last vertex of the wire (depending on obj.Direction) ensures
-            # the edge is always milled in the correct direction. Using
-            # self.endVector would allow Path.fromShapes to reverse the
-            # direction if that would shorten the travel move and thus cause
-            # the edges being milled in seemingly random directions.
+                # Always manually setting pathParams["start"] to the first or
+                # last vertex of the wire (depending on obj.Direction) ensures
+                # the edge is always milled in the correct direction. Using
+                # self.endVector would allow Path.fromShapes to reverse the
+                # direction if that would shorten the travel move and thus cause
+                # the edges being milled in seemingly random directions.
 
-            verts = openWire.Wires[0].Vertexes
-            idx = 0
-            if obj.Direction == "CCW":
-                idx = len(verts) - 1
-            x = verts[idx].X
-            y = verts[idx].Y
-            # Zero start value adjustments for Path.fromShapes() bug
-            if Path.Geom.isRoughly(x, 0.0):
-                x = 0.00001
-            if Path.Geom.isRoughly(y, 0.0):
-                y = 0.00001
-            pathParams["start"] = FreeCAD.Vector(x, y, verts[0].Z)
+                verts = openWire.Vertexes
+                pathParams["start"] = verts[0].Point if obj.Direction == "CW" else verts[-1].Point
 
-            obj.PathParams = str(
-                {key: value for key, value in pathParams.items() if key != "shapes"}
-            )
-            Path.Log.debug("Path with params: {}".format(obj.PathParams))
+                self.setParamsDebug(obj, "PathParams", sorted(pathParams.items()))
 
-            pp, end_vector = Path.fromShapes(**pathParams)
-            paths.extend(pp.Commands)
-            Path.Log.debug("pp: {}, end vector: {}".format(pp, end_vector))
+                pp, end_vector = Path.fromShapes(**pathParams)
+                if pp.Size:
+                    p = pathParams["start"]
+                    while pp.Commands[0].Name in Constants.GCODE_MOVE_RAPID:
+                        pp.deleteCommand(0)  # remove rapid moves
+                    pp.deleteCommand(0)  # remove plunge move
 
-        self.endVector = end_vector
+                    if self.initmove:
+                        self.initmove = False
+                        commands.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
+                        commands.append(Path.Command("G0", {"X": p.x, "Y": p.y}))
+                        commands.append(Path.Command("G0", {"Z": obj.SafeHeight.Value}))
+                        par = {"X": p.x, "Y": p.y, "Z": p.z, "F": self.vertFeed}
+                        commands.append(Path.Command("G1", par))
+                    else:
+                        linkingArgs["start_position"] = self.endVector
+                        linkingArgs["target_position"] = p
+                        linkingMoves = linking.get_linking_moves(**linkingArgs)
+                        for cmd in linkingMoves:
+                            if cmd.z < obj.SafeHeight.Value:
+                                cmd.Name = "G1"
+                                par = cmd.Parameters
+                                par["F"] = self.vertFeed
+                                cmd.Parameters = par
+                        commands.extend(linkingMoves)
 
-        return paths
+                    commands.extend(pp.Commands)
+                    self.endVector = end_vector
+                    Path.Log.debug("pp: {}, end vector: {}".format(pp, end_vector))
+
+        return commands
 
     def opExecute(self, obj):
         """opExecute(obj) ... implementation of Path.Area ops.
@@ -359,17 +519,14 @@ class ObjectOp(PathOp.ObjectOp):
         instead."""
         Path.Log.track()
 
-        # Instantiate class variables for operation reference
-        self.endVector = None
+        # Init start point
+        if PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
+            self.endVector = obj.StartPoint
+        else:
+            self.endVector = FreeCAD.Vector()
 
         # Initiate depthparams and calculate operation heights for operation
         self.depthparams = self._customDepthParams(obj, obj.StartDepth.Value, obj.FinalDepth.Value)
-
-        # Set start point
-        if PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
-            start = obj.StartPoint
-        else:
-            start = None
 
         shapes = self.areaOpShapes(obj)
 
@@ -404,7 +561,7 @@ class ObjectOp(PathOp.ObjectOp):
             and len(shapes) > 1
             and getattr(obj, "HandleMultipleFeatures", False) == "Collectively"
         ):
-            keys = set((iH, desc) for _, iH, desc in shapes)
+            keys = {(iH, desc) for _, iH, desc in shapes}
             collectively = []
             for key in keys:
                 combine = []
@@ -416,38 +573,55 @@ class ObjectOp(PathOp.ObjectOp):
 
             shapes = collectively
 
+        # Build linking kwargs for collision-aware between-feature transitions
+        self.initmove = True
+        linkingArgs = None
+        if PathOp.FeatureLinking & self.opFeatures(obj):
+            solids = []
+            if self.job and hasattr(self.job, "Model"):
+                solids = [b.Shape for b in self.job.Model.Group if hasattr(b, "Shape")]
+            linkingArgs = {
+                "start_position": None,
+                "target_position": None,
+                "heights_clearance": (obj.SafeHeight.Value, obj.ClearanceHeight.Value),
+                "solids": None,
+                "tool_shape": None,
+                "tool_diameter": None,
+                "collision_clearance": obj.CollisionClearance.Value,
+                "retract_height_offset": None,
+                "split_plunge_height": obj.SafeHeight.Value,
+            }
+            if obj.CollisionAvoidanceStrategy == "Clearance Height":
+                linkingArgs["heights_clearance"] = obj.ClearanceHeight.Value
+            elif obj.CollisionAvoidanceStrategy == "Retract Height":
+                pass
+            elif obj.CollisionAvoidanceStrategy == "Line of Sight":
+                linkingArgs["retract_height_offset"] = obj.CollisionClearance.Value
+                linkingArgs["solids"] = solids
+            elif obj.CollisionAvoidanceStrategy == "Tool Diameter":
+                linkingArgs["retract_height_offset"] = obj.CollisionClearance.Value
+                linkingArgs["solids"] = solids
+                linkingArgs["tool_diameter"] = obj.ToolController.Tool.Diameter.Value
+            elif obj.CollisionAvoidanceStrategy == "Tool Shape":
+                linkingArgs["retract_height_offset"] = obj.CollisionClearance.Value
+                linkingArgs["solids"] = solids
+                linkingArgs["tool_shape"] = obj.ToolController.Tool.BitBody.Shape
+
         for shape, isHole, sub in shapes:
-            profileEdgesIsOpen = False
-
-            if sub == "OpenEdge":
-                profileEdgesIsOpen = True
-                if PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
-                    osp = obj.StartPoint
-                    self.commandlist.append(
-                        Path.Command("G0", {"X": osp.x, "Y": osp.y, "F": self.horizRapid})
-                    )
-
             try:
-                if profileEdgesIsOpen:
-                    pp = self._buildProfileOpenEdges(obj, shape, start)
+                if sub == "OpenEdge":
+                    ppCmds = self._buildProfileOpenEdges(obj, shape, linkingArgs)
                 else:
-                    pp = self._buildPathArea(obj, shape, isHole, start)
+                    ppCmds = self._buildPathArea(obj, shape, isHole, linkingArgs)
             except Exception as e:
                 FreeCAD.Console.PrintError(e)
                 FreeCAD.Console.PrintError(
                     "Something unexpected happened. Check project and tool config."
                 )
-                raise e
-            else:
-                ppCmds = pp if profileEdgesIsOpen else pp.Commands
+                raise
 
+            if ppCmds:
                 self.commandlist.extend(ppCmds)
-
-            if self.endVector is not None and len(self.commandlist) > 1:
-                self.endVector[2] = obj.ClearanceHeight.Value
-                self.commandlist.append(
-                    Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
-                )
 
         Path.Log.debug("obj.Name: " + str(obj.Name) + "\n\n")
 
@@ -455,18 +629,15 @@ class ObjectOp(PathOp.ObjectOp):
         """areaOpAreaParams(obj, isHole) ... return operation specific area parameters in a dictionary.
         Note that the resulting parameters are stored in the property AreaParams.
         Must be overwritten by subclasses."""
-        pass
 
     def areaOpPathParams(self, obj, isHole):
         """areaOpPathParams(obj, isHole) ... return operation specific path parameters in a dictionary.
         Note that the resulting parameters are stored in the property PathParams.
         Must be overwritten by subclasses."""
-        pass
 
     def areaOpShapes(self, obj):
         """areaOpShapes(obj) ... return all shapes to be processed by Path.Area for this op.
         Must be overwritten by subclasses."""
-        pass
 
     def areaOpUseProjection(self, obj):
         """areaOpUseProcjection(obj) ... return True if the operation can use procjection, defaults to False.
