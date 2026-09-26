@@ -233,7 +233,11 @@ void TaskDressUpParameters::referenceSelected(const SelectionChanges& msg, QList
     updateFeature(pcDressUp, refs);
 }
 
-void TaskDressUpParameters::convert_selection_to_solids(QListWidget* widget, const bool edgesEnabled, const bool facesEnabled)
+void TaskDressUpParameters::convert_selection_to_solids(
+    QListWidget* widget,
+    const bool edgesEnabled,
+    const bool facesEnabled
+)
 {
     PartDesign::DressUp* pcDressUp = DressUpView->getObject<PartDesign::DressUp>();
     std::vector<std::string> refs = pcDressUp->Base.getSubValues();
@@ -321,7 +325,11 @@ void TaskDressUpParameters::convert_selection_to_solids(
     refs = std::move(convertedRefs);
 }
 
-void TaskDressUpParameters::convert_selection_to_elements(QListWidget* widget, const bool edgesEnabled, const bool facesEnabled)
+void TaskDressUpParameters::convert_selection_to_elements(
+    QListWidget* widget,
+    const bool edgesEnabled,
+    const bool facesEnabled
+)
 {
     PartDesign::DressUp* pcDressUp = DressUpView->getObject<PartDesign::DressUp>();
     std::vector<std::string> refs = pcDressUp->Base.getSubValues();
