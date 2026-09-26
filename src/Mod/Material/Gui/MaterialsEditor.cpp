@@ -1107,11 +1107,6 @@ QString MaterialsEditor::getColorHash(const QString& colorString)
 void MaterialsEditor::updateMaterialAppearance()
 {
     QTreeView* tree = ui->treeAppearance;
-    tree->setMouseTracking(true);
-    if (tree->viewport()) {
-        tree->viewport()->setMouseTracking(true);
-        tree->viewport()->setAttribute(Qt::WA_Hover);
-    }
     auto treeModel = qobject_cast<QStandardItemModel*>(tree->model());
     treeModel->clear();
 
