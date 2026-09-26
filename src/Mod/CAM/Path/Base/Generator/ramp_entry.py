@@ -19,8 +19,7 @@
 ################################################################################
 
 import Path
-from Path.Geom import isRoughly
-from Path.Geom import pointsCoincide
+from Path.Geom import isRoughly, isStrictlyGreater, pointsCoincide
 
 import copy
 import math
@@ -33,7 +32,7 @@ else:
 
 
 class RampEntry:
-    """
+    r"""
     Generator ramp enty
 
     Example of uses:
@@ -43,7 +42,7 @@ class RampEntry:
 
     Parameters:
     - commands:    List of Path.Command objects of closed profile
-    - method:      0 - Helix, 1 - Ramp1, 2 - Ramp2, 3 - Ramp3
+    - method:      0 - Helix, 1 - Ramp1, 2 - Ramp2, 3 - Ramp3, 4 - Ramp4
     - angle_rad:   Maximum angle of the ramp entry (radians)
     - pitch:       Maximum height for each helix turn (mm)
                    If angle_rad and pitch not set for Helix, create only one helix turn
@@ -51,13 +50,13 @@ class RampEntry:
     - ignoreAbove: Helix ramp will start from this height (optional)
                    Upper path will stay without modifications
 
-              1 |                          2 |                              3 |
-         plunge |                     plunge |                         plunge |
-    start depth v                start depth v--->                start depth v
-               /                                 /                           /
-        ramp  /                           ramp  /                     ramp  /
-             /                                 /                            \
-            /--->                             /                       ramp   \
+              1 |                    2 |                        3 |                    4 |
+         plunge |               plunge |                   plunge |               plunge |
+    start depth v          start depth v--->          start depth v          start depth v
+               /                           /                     /                        \
+        ramp  /                     ramp  /               ramp  /                    ramp  \
+             /                           /                      \                           \
+            /--->                       /                 ramp   \                       --->\--->
 
     Ramp Method 0
     - Helix like path
@@ -82,6 +81,14 @@ class RampEntry:
         traveled half of the Z distance
     3. Change direction and ramp backwards to the original plunge end point
     4. Continue with the original path
+
+    Ramp Method 4
+    1. Start from the original startpoint of the plunge.
+    2. Ramp down along the path that comes after the plunge until
+    3. When reaching the Z level of the original plunge, continue with the
+       original path (without returning back to the beginning as in method 1).
+    4. On the final loop, when reaching the beginning, extend the path until
+       the point where the ramp ended.
     """
 
     def __init__(self, commands, method=0, angle_rad=None, pitch=None, tc=None, ignoreAbove=None):
@@ -100,8 +107,8 @@ class RampEntry:
         if not isinstance(self.method, int):
             raise TypeError("'method' must be a int")
 
-        if self.method < 0 or self.method > 3:
-            raise ValueError("'method' must be 0, 1, 2 or 3")
+        if self.method < 0 or self.method > 4:
+            raise ValueError("'method' must be 0, 1, 2, 3 or 4")
 
         if self.angle is not None:
             if not isinstance(self.angle, (float, int)):
@@ -120,7 +127,7 @@ class RampEntry:
                 self.tc.Proxy, Path.Tool.Controller.ToolController
             ):
                 raise TypeError("'tc' must be a tool controller object")
-            Path.Log.debug("tool controller: {}".format(self.tc.Name))
+            Path.Log.debug(f"tool controller: {self.tc.Name}")
             if not self.tc.HorizFeed.Value:
                 raise ValueError("'HorizFeed' is 0")
             if not self.tc.VertFeed.Value:
@@ -130,10 +137,11 @@ class RampEntry:
 
         if self.ignoreAbove is not None and not isinstance(self.ignoreAbove, (float, int)):
             raise TypeError("'ignoreAbove' must be a int or float")
-        Path.Log.debug("ignoreAboveZ: {}".format(self.ignoreAbove))
+        Path.Log.debug(f"ignoreAboveZ: {self.ignoreAbove}")
 
     def generate(self):
         self.edges = []
+        self.min_z = float("nan")
         last_params = {}
         for cmd in self.commands:
             params = cmd.Parameters
@@ -141,13 +149,18 @@ class RampEntry:
                 cmd.Name in Path.Geom.CmdMoveAll
                 and self.edges
                 and cmd.Name == self.edges[-1].command.Name
-            ):  # skip repeat move command
-                if all(last_params.get(k, None) == v for k, v in params.items()):
-                    continue
+                and all(last_params.get(k, None) == v for k, v in params.items())
+            ):
+                continue
 
-            start_point = self.edges[-1].end_point if self.edges else (0, 0, 0)
+            start_point = (
+                self.edges[-1].end_point
+                if self.edges
+                else (float("nan"), float("nan"), float("nan"))
+            )
             edge = AnnotatedGCode(cmd, start_point)
             last_params.update(params)
+            self.min_z = min(edge.end_point[2], self.min_z)
 
             if (
                 self.edges
@@ -172,8 +185,7 @@ class RampEntry:
 
     def generateHelix(self):
         edges = self.edges
-        minZ = min(e.end_point[2] for e in edges if e.command.Name in Path.Geom.CmdMoveAll)
-        Path.Log.debug("Minimum Z in this path is {}".format(minZ))
+        Path.Log.debug(f"Minimum Z in this path is {self.min_z}")
         outedges = []
         i = 0
         while i < len(edges):
@@ -204,12 +216,12 @@ class RampEntry:
                         j += 1
                     if not loopFound:
                         Path.Log.info(
-                            "No suitable helix found, leaving as a plunge: %s" % edge.command
+                            f"No suitable helix found, leaving as a plunge: {edge.command}"
                         )
                         outedges.append(edge)
                     else:
                         outedges.extend(self.createHelix(rampedges, edge.start_point[2]))
-                        if not isRoughly(edge.end_point[2], minZ):
+                        if not isRoughly(edge.end_point[2], self.min_z):
                             # the edges covered by the helix not handled again,
                             # unless reached the bottom height
                             i = j - 1
@@ -252,7 +264,9 @@ class RampEntry:
     def generateRamps(self):
         edges = self.edges
         outedges = []
-        for edgei, edge in enumerate(edges):
+        edgei = 0
+        while edgei < len(edges):
+            edge = edges[edgei]
             if edge.is_line or edge.is_arc:
                 # check for plunge
                 if edge.xy_length < 1e-6 and edge.end_point[2] < edge.start_point[2]:
@@ -261,6 +275,7 @@ class RampEntry:
                     if noramp_edge is not None:
                         outedges.append(noramp_edge)
                     if edge is None:
+                        edgei += 1
                         continue
 
                     plungelen = abs(edge.start_point[2] - edge.end_point[2])
@@ -311,6 +326,11 @@ class RampEntry:
                                     rampedges, edge.start_point, projectionlen, self.angle
                                 )
                             )
+                        elif self.method == 4:
+                            ramp, edgei = self.createRampMethod4(
+                                rampedges, edge.start_point, projectionlen, self.angle, edgei, edges
+                            )
+                            outedges.extend(ramp)
                         else:
                             # if the ramp cannot be covered with Method3, revert to Method1
                             # because Method1 support going back-and-forth and thus results in same path as Method3 when
@@ -332,9 +352,12 @@ class RampEntry:
                     outedges.append(edge)
             else:
                 outedges.append(edge)
+            edgei += 1
         return outedges
 
-    def _createRampHelper(self, rampedges, p0, projectionlen, rampangle):
+    def _createRampHelper(
+        self, rampedges, p0, projectionlen, rampangle, loop=False, remaining=None
+    ):
         """
         Helper method for generating ramps. Computes ramp method 1, but returns the result in pieces to allow for implementing the other ramp methods.
         Returns (ramp, reset)
@@ -360,10 +383,16 @@ class RampEntry:
                 # start that by going to the beginning of this splitEdge
                 if goingForward:
                     reset.append(split_first.clone(reverse=True))
+                    if remaining is not None:
+                        remaining.append(split_remaining)
+                        remaining.append(i)
                 else:
                     # if we were reversing, we continue to the same direction as the ramp
                     reset.append(split_remaining)
                     i -= 1
+                    if remaining is not None:
+                        remaining.append(split_first.clone(reverse=True))
+                        remaining.append(i)
                 break
             else:
                 deltaZ = redge.xy_length * math.tan(rampangle)
@@ -375,7 +404,10 @@ class RampEntry:
                 if i == 0:
                     goingForward = True
                 if i == len(rampedges):
-                    goingForward = False
+                    if not loop:
+                        goingForward = False
+                    else:
+                        i = 0
 
         # now we need to return to original position.
         while i >= 1:
@@ -437,6 +469,62 @@ class RampEntry:
             for redge in ramp[::-1]
         ]
         return ramp + ramp_back
+
+    def createRampMethod4(self, rampedges, p0, projectionlen, rampangle, edgei, edges):
+        """
+        This method generates a ramp with following pattern:
+        1. Start from the original startpoint of the plunge.
+        2. Ramp down along the path that comes after the plunge until
+        3. When reaching the Z level of the original plunge, continue with the
+           original path (without returning back to the beginning as in method 1).
+        4. On the final loop, when reaching the beginning, extend the path until
+           the point where the ramp ended.
+        """
+        start = rampedges[0].start_point
+        loop = pointsCoincide(start, rampedges[-1].end_point)
+        remaining = []
+
+        ramp, reset = self._createRampHelper(
+            rampedges, p0, projectionlen, rampangle, loop, remaining
+        )
+        ramp.append(remaining[0])
+        edgei += remaining[1] + 1
+
+        # if we're not on the last step down, we're done
+        if isStrictlyGreater(start[2], self.min_z):
+            return ramp, edgei
+
+        # check if the loop returns
+        loop_end = next(
+            (
+                i
+                for i, candidate in enumerate(edges[edgei + 1 :], edgei + 1)
+                if pointsCoincide(candidate.end_point, start)
+            ),
+            None,
+        )
+
+        if loop_end is None:
+            return ramp, edgei
+
+        # continue the path for the piece we missed when ramping
+        reset = [redge.clone(reverse=True) for redge in reversed(reset)]
+        edges[loop_end + 1 : loop_end + 1] = reset
+
+        # we changed the xy-location, make sure the next horizontal move is fully specified
+        def is_horizontal(edge):
+            return any(k in edge.command.Parameters for k in ("X", "Y"))
+
+        nxy = next(
+            (edge for edge in self.edges[loop_end + 1 + len(reset) :] if is_horizontal(edge)), None
+        )
+        if nxy is not None:
+            nxy.command.Parameters = {
+                "X": nxy.end_point[0],
+                "Y": nxy.end_point[1],
+            } | nxy.command.Parameters
+
+        return ramp, edgei
 
     def processIgnoreAbove(self, edge):
         """Edges, or parts of edges, above self.ignoreAbove should not be ramped.
