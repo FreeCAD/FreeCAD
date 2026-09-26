@@ -2547,7 +2547,7 @@ void parseProgramOptions(int ac, char ** av, const std::string& exe, boost::prog
     if (vm.contains("help")) {
         std::stringstream str;
         str << exe << '\n' << '\n';
-        str << "For a detailed description see https://www.freecad.org/wiki/Start_up_and_Configuration" << '\n'<<'\n';
+        str << "For a detailed description see https://wiki.freecad.org/Start_up_and_Configuration" << '\n'<<'\n';
         str << "Usage: " << exe << " [options] File1 File2 ..." << '\n' << '\n';
         str << visible << '\n';
         throw Base::ProgramInformation(str.str());

@@ -70,12 +70,12 @@
   <url type="homepage">https://www.freecad.org/</url>
   <url type="bugtracker">https://github.com/FreeCAD/FreeCAD/issues</url>
   <url type="faq">https://wiki.freecad.org/Frequently_asked_questions</url>
-  <url type="help">https://wiki.freecad.org/User_hub</url>
-  <url type="donation">https://www.freecad.org/sponsor.php</url>
+  <url type="help">https://freecad.org/docs/</url>
+  <url type="donation">https://www.freecad.org/donate</url>
   <url type="translate">https://crowdin.com/project/freecad</url>
   <url type="vcs-browser">https://github.com/FreeCAD/FreeCAD</url>
   <url type="contribute">https://github.com/FreeCAD/FreeCAD/blob/master/CONTRIBUTING.md</url>
-  <update_contact>yorik_AT_uncreated.net</update_contact>
+  <update_contact>fpa_AT_freecad.org</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>
     <release version="@PACKAGE_VERSION@" date="@APPDATA_RELEASE_DATE@"/>

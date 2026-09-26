@@ -277,7 +277,7 @@ struct InputHint
      * Message can contain placeholders like %1, %2 etc. that will then be replaced with graphical
      * key representation from sequences field.
      *
-     * @see https://freecad.github.io/DevelopersHandbook/designguide/input-hints.html
+     * @see https://www.freecad.org/dev/design/hints/
      */
     QString message;
 

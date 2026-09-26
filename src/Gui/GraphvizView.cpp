@@ -329,7 +329,7 @@ void GraphvizView::updateSvgItem(const App::Document& doc)
                 tr("Graphviz not found"),
                 QStringLiteral(
                     "<html><head/><body>%1 "
-                    "<a href=\"https://www.freecad.org/wiki/Std_DependencyGraph\">%2"
+                    "<a href=\"https://wiki.freecad.org/Std_DependencyGraph\">%2"
                     "</a><p>%3</p></body></html>"
                 )
                     .arg(
