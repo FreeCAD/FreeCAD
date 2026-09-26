@@ -24,10 +24,10 @@ During interactive placement, a command may offer several candidate anchor
 points on the object's cross-section (for instance, its center, corners, and
 edge midpoints) rather than always anchoring at the center. This module
 provides the shared, object-agnostic mechanics for that: the candidate table,
-the anchor offset calculation, and the keyboard cycling behavior. A consuming
-command supplies its own cross-section dimensions, placement rotation, and
-(optionally) a shape origin offset; this module has no knowledge of what kind
-of object is being placed.
+the anchor offset calculation, the keyboard cycling behavior, and the
+associated status bar hint. A consuming command supplies its own cross-section
+dimensions, placement rotation, and (optionally) a shape origin offset; this
+module has no knowledge of what kind of object is being placed.
 """
 
 ## @package gui_insertion_point
@@ -37,9 +37,16 @@ of object is being placed.
 ## \addtogroup draftguitools
 # @{
 import FreeCAD as App
+import FreeCADGui as Gui
 
 if App.GuiUp:
     from PySide import QtCore, QtGui
+    import draftguitools.gui_tool_utils as gui_tool_utils
+    from draftutils.translate import translate
+else:
+
+    def translate(context, text):
+        return text
 
 
 # Nine (u, v) unit offsets for a rectangular cross-section: center, four
@@ -115,6 +122,42 @@ def insertion_point_offset(
         insertion_point = insertion_point - shape_origin
 
     return rotation.multVec(insertion_point)
+
+
+def insertion_point_hint():
+    """Return the generic 'next/previous insertion point' status bar hint.
+
+    The wording never mentions the object being placed, so it is shared,
+    unparameterized, and identical across every command that uses this module.
+    """
+    return Gui.InputHint(
+        translate("draft", "%1 next insertion point / %2+%1 previous"),
+        Gui.UserInput.KeyI,
+        Gui.UserInput.KeyShift,
+    )
+
+
+def placement_hints(action_hint, cycler_active=True):
+    """Compose the standard hint list for an interactive placement command.
+
+    Parameters
+    ----------
+    action_hint : FreeCADGui.InputHint
+        The consumer-specific hint for the current placement step, such as
+        "insert column" or "pick first point of beam".
+    cycler_active : bool, optional
+        Whether an insertion point anchor currently exists to cycle through.
+        Defaults to True. Pass False before enough points have been picked
+        for an anchor to exist yet.
+    """
+    hints = [action_hint]
+    if cycler_active:
+        hints.append(insertion_point_hint())
+    return hints + (
+        gui_tool_utils._get_hint_xyz_constrain()
+        + gui_tool_utils._get_hint_mod_constrain()
+        + gui_tool_utils._get_hint_mod_snap()
+    )
 
 
 if App.GuiUp:
