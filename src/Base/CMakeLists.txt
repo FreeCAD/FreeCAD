@@ -251,6 +251,8 @@ SET(FreeCADBase_CPP_SRCS
     Matrix.cpp
     MatrixPyImp.cpp
     Observer.cpp
+    Parameter.xsd
+    Parallel.cpp
     Resources/schemas/Parameter.xsd
     Parameter.cpp
     ParameterObserver.cpp
@@ -331,6 +333,7 @@ SET(FreeCADBase_HPP_SRCS
     Maturity.h
     NumericFormatting.h
     Observer.h
+    Parallel.h
     Parameter.h
     ParameterObserver.h
     Persistence.h
