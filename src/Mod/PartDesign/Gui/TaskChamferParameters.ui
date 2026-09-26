@@ -15,6 +15,36 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,2">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Selection</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="selectionType">
+       <item>
+        <property name="text">
+         <string>Selected Edges &amp; Faces</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Selected Solids</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>All Solids</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <widget class="QToolButton" name="buttonRefSel">
      <property name="toolTip">
       <string>Toggles between selection and preview mode</string>
@@ -102,23 +132,16 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="Gui::QuantitySpinBox" name="chamferSize">
-       <property name="keyboardTracking">
+      <widget class="Gui::QuantitySpinBox" name="chamferSize" native="true">
+       <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
-       <property name="value">
+       <property name="value" stdset="0">
         <double>1.000000000000000</double>
        </property>
       </widget>
      </item>
     </layout>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkBoxUseAllEdges">
-     <property name="text">
-      <string>Use all edges</string>
-     </property>
-    </widget>
    </item>
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
@@ -148,11 +171,11 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="Gui::QuantitySpinBox" name="chamferSize2">
-         <property name="keyboardTracking">
+        <widget class="Gui::QuantitySpinBox" name="chamferSize2" native="true">
+         <property name="keyboardTracking" stdset="0">
           <bool>false</bool>
          </property>
-         <property name="value">
+         <property name="value" stdset="0">
           <double>1.000000000000000</double>
          </property>
         </widget>
@@ -181,20 +204,20 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="Gui::QuantitySpinBox" name="chamferAngle">
-         <property name="keyboardTracking">
+        <widget class="Gui::QuantitySpinBox" name="chamferAngle" native="true">
+         <property name="keyboardTracking" stdset="0">
           <bool>false</bool>
          </property>
-         <property name="minimum">
+         <property name="minimum" stdset="0">
           <double>0.000000000000000</double>
          </property>
-         <property name="maximum">
+         <property name="maximum" stdset="0">
           <double>180.000000000000000</double>
          </property>
-         <property name="singleStep">
+         <property name="singleStep" stdset="0">
           <double>1.000000000000000</double>
          </property>
-         <property name="value">
+         <property name="value" stdset="0">
           <double>45.000000000000000</double>
          </property>
         </widget>
@@ -218,7 +241,6 @@
   <tabstop>chamferType</tabstop>
   <tabstop>flipDirection</tabstop>
   <tabstop>chamferSize</tabstop>
-  <tabstop>checkBoxUseAllEdges</tabstop>
   <tabstop>chamferSize2</tabstop>
   <tabstop>chamferAngle</tabstop>
  </tabstops>
