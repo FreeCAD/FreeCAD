@@ -599,13 +599,15 @@ def getClearedAreas(currentOp, bbox):
     being the same frame and this reuse becomes wrong. Changing the
     predicate has to change this function with it.
     """
+    from PathScripts.PathUtils import getOperations
+
     clearedAreas = []
     job = currentOp.Proxy.job
     z = bbox.ZMin + job.GeometryTolerance.getValueAs("mm")
     identity = FreeCAD.Placement()
     currentWp = PathUtil.workplaneForOp(currentOp)
     rotated = not PathUtil.sameWorkplane(currentWp, identity)
-    for op in job.Operations.Group:
+    for op in getOperations(job):
         baseOp = PathDressup.baseOp(op)
         if baseOp.Name == currentOp.Name:
             break
