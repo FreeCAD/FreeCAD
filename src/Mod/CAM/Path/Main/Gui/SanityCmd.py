@@ -31,6 +31,8 @@ CAM projects.
 from Path.Main.Sanity import Sanity
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from PySide.QtGui import QFileDialog
+from Path import Preferences
+from Path.Post.Utils import substitute_report_path_and_filename
 import FreeCAD
 import FreeCADGui
 import Path
@@ -69,19 +71,42 @@ class CommandCAMSanity:
 
         # Ask the user for a filename to save the report to
 
-        defaultDir = os.path.split(FreeCAD.ActiveDocument.getFileName())[0]
+        pref_report_file = Preferences.defaultSanityReportOutputFile()
+        default_filename = None
 
-        if defaultDir == "":
-            defaultDir = os.path.expanduser("~")
+        # Use the preference as the template for the filename, or fallback to legacy logic
+        if pref_report_file and isinstance(pref_report_file, str) and pref_report_file.strip():
+            # If the preference is an absolute or relative path, expand substitutions
+            template_path = pref_report_file
+            expanded = substitute_report_path_and_filename(template_path, obj)
+            # Ensure .html extension
+            if not expanded.lower().endswith(".html"):
+                expanded += ".html"
+            default_filename = expanded
+        else:
+            # Fallback to legacy logic
+            doc_path = FreeCAD.ActiveDocument.getFileName()
+            if doc_path:
+                base_path = os.path.dirname(doc_path)
+                camcheck_path = os.path.join(base_path, "CAMCheck")
+                if os.path.isdir(camcheck_path):
+                    defaultDir = camcheck_path
+                else:
+                    defaultDir = base_path
+                base = os.path.splitext(os.path.basename(doc_path))[0]
+                default_filename = os.path.join(defaultDir, f"{base}.html")
+            else:
+                defaultDir = os.path.expanduser("~")
+                default_filename = os.path.join(defaultDir, "setupreport.html")
 
         file_location = QFileDialog.getSaveFileName(
             None,
             translate("Path", "Save Sanity Check Report"),
-            defaultDir,
+            default_filename,
             "HTML files (*.html)",
         )[0]
 
-        if file_location == "":
+        if not file_location:
             return
 
         sanity_checker = Sanity.CAMSanity(obj, file_location)
@@ -94,8 +119,7 @@ class CommandCAMSanity:
         with open(file_location, "w") as fp:
             fp.write(html)
 
-        FreeCAD.Console.PrintMessage("Sanity check report written to: {}\n".format(file_location))
-
+        FreeCAD.Console.PrintMessage(f"Sanity check report written to: {file_location}\n")
         webbrowser.open_new_tab(file_location)
 
 
