@@ -443,6 +443,9 @@ inline const UnitsSchemaSpec s4
             { 1e9             , "W"          , 1e6             },
             { 0               , "kW"         , 1e9             }}
         },
+        { "Moment", {
+            { 0               , "Nm"         , 1e6             }}
+        },
         { "ElectricPotential", {
             { 1e6             , "mV"         , 1e3             },
             { 1e9             , "V"          , 1e6             },
