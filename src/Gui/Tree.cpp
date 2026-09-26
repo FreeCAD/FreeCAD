@@ -1947,8 +1947,7 @@ namespace
 
 bool itemHasExpandIndicator(const QTreeWidgetItem* item)
 {
-    return item->childCount() > 0
-        || item->childIndicatorPolicy() == QTreeWidgetItem::ShowIndicator;
+    return item->childCount() > 0 || item->childIndicatorPolicy() == QTreeWidgetItem::ShowIndicator;
 }
 
 bool isExpandIndicatorClick(const QTreeWidget* tree, const QTreeWidgetItem* item, int x)
