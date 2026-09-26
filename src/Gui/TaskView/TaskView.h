@@ -26,6 +26,7 @@
 
 #include <vector>
 #include <optional>
+#include <QPointer>
 #include <QScrollArea>
 #include <QStackedWidget>
 
@@ -135,9 +136,12 @@ public:
 
 struct TaskInfo
 {
-    TaskPanel* taskPanel {nullptr};
-    TaskDialog* ActiveDialog {nullptr};
-    TaskEditControl* ActiveCtrl {nullptr};
+    // QPointer so that an entry whose dialog/widgets were already destroyed (a
+    // deferred deletion flushed by a nested event loop) is detectable instead
+    // of dangling.
+    QPointer<TaskPanel> taskPanel;
+    QPointer<TaskDialog> ActiveDialog;
+    QPointer<TaskEditControl> ActiveCtrl;
     App::Document* Document {nullptr};
 };
 
@@ -201,6 +205,7 @@ protected:
     void clicked(QAbstractButton* button, App::Document* doc);
 
 private:
+    void acceptOrReject(App::Document* doc, bool accept);
     void triggerMinimumSizeHint();
     void adjustMinimumSizeHint();
     void saveCurrentWidth();
