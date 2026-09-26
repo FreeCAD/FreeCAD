@@ -122,7 +122,7 @@ class _TransformedShapeProxy:
         return hash(object.__getattribute__(self, "_real_obj"))
 
 
-class ObjectOp(object):
+class ObjectOp:
     """
     Base class for proxy objects of all Path operations.
 
