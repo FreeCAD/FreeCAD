@@ -151,8 +151,6 @@
 #include <BOPAlgo_ArgumentAnalyzer.hxx>
 #include <BOPAlgo_ListOfCheckResult.hxx>
 
-#include <BRepAlgoAPI_Defeaturing.hxx>
-
 #if OCC_VERSION_HEX < 0x070600
 # include <BRepAdaptor_HCurve.hxx>
 # include <BRepAdaptor_HCompCurve.hxx>
@@ -4063,26 +4061,14 @@ TopoDS_Shape TopoShape::defeaturing(const std::vector<TopoDS_Shape>& s) const
     if (this->_Shape.IsNull()) {
         throw Standard_Failure("Base shape is null");
     }
-    BRepAlgoAPI_Defeaturing defeat;
-    defeat.SetRunParallel(true);
-    defeat.SetShape(this->_Shape);
+
+    std::vector<TopoShape> faces;
+    faces.reserve(s.size());
     for (const auto& it : s) {
-        defeat.AddFaceToRemove(it);
+        faces.emplace_back(it);
     }
-#if OCC_VERSION_HEX >= 0x070600
-    defeat.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    defeat.Build();
-#endif
-    if (!defeat.IsDone()) {
-        // error treatment
-        Standard_SStream aSStream;
-        defeat.DumpErrors(aSStream);
-        const std::string& resultstr = aSStream.str();
-        const char* cstr2 = resultstr.c_str();
-        throw Base::RuntimeError(cstr2);
-    }
-    return defeat.Shape();
+
+    return makeElementDefeaturing(faces).getShape();
 }
 
 /**
@@ -4564,7 +4550,7 @@ bool TopoShape::_makeTransform(
             }
         }
         catch (const Standard_Failure& e) {
-            Base::Console().warning("TopoShape::makeGTransform failed: %s\n", e.GetMessageString());
+            Base::Console().warning("TopoShape::makeGTransform failed: {}\n", e.GetMessageString());
         }
     }
     makeTransform(shape, convert(rclTrf), op, copy);

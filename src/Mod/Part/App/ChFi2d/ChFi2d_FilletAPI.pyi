@@ -4,7 +4,11 @@ from __future__ import annotations
 
 from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
+from typing import overload
+from Base.Vector import Vector
+from Part.App.Plane import Plane
 from Part.TopoShapeEdgePy import TopoShapeEdge
+from Part.TopoShapeWire import TopoShapeWire
 from Part.PointPy import Point
 
 @export(
@@ -23,7 +27,11 @@ class ChFi2d_FilletAPI(PyObjectBase):
     Licence: LGPL
     """
 
-    def init(self) -> None:
+    @overload
+    def init(self, wire: TopoShapeWire, plane: Plane, /) -> None: ...
+    @overload
+    def init(self, edge1: TopoShapeEdge, edge2: TopoShapeEdge, plane: Plane, /) -> None: ...
+    def init(self, *args) -> None:
         """
         Initializes a fillet algorithm: accepts a wire consisting of two edges in a plane
         """
@@ -37,7 +45,7 @@ class ChFi2d_FilletAPI(PyObjectBase):
         """
         ...
 
-    def numberOfResults(self) -> int:
+    def numberOfResults(self, point: Vector, /) -> int:
         """
         Returns number of possible solutions
         """

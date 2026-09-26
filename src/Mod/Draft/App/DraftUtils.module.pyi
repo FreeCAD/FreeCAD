@@ -12,7 +12,7 @@ from Base.Metadata import deprecated
 
 @deprecated(
     deprecated_in="26.3",
-    removed_in="27.2",
+    removed_in="28.3",
     replacement="Import.readDXF",
     details="This compatibility entry point no longer imports files.",
 )

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -39,6 +41,17 @@ public:
     enum {Type = UserType::QGICaption};
     int type() const override { return Type;}
 
+    bool m_isEditing = false;
+
+protected:
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    QPointF snapToView(QPointF pos);
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
+    void focusOutEvent(QFocusEvent* event) override;
+    void keyPressEvent(QKeyEvent* event) override;
+
+private:
+    void setEditMode(bool enable);
 };
 
 }

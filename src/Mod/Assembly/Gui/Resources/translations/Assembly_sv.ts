@@ -11,7 +11,7 @@
     <message>
       <location filename="../../../CommandExportASMT.py" line="50"/>
       <source>Export currently active assembly as a ASMT file.</source>
-      <translation>Exportera aktuell aktiv montering som en ASMT-fil.</translation>
+      <translation>Exportera den aktiva sammanställningen som en ASMT-fil.</translation>
     </message>
   </context>
   <context>
@@ -32,12 +32,12 @@
     <message>
       <location filename="../../../CommandSolveAssembly.py" line="48"/>
       <source>Solve Assembly</source>
-      <translation>Lös montering</translation>
+      <translation>Lös sammanställning</translation>
     </message>
     <message>
       <location filename="../../../CommandSolveAssembly.py" line="53"/>
       <source>Solves the currently active assembly.</source>
-      <translation>Löser den aktuella aktiva monteringen.</translation>
+      <translation>Löser den aktiva sammanställningen.</translation>
     </message>
   </context>
   <context>
@@ -48,7 +48,7 @@
       <translation>Ihopsättning</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="145"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="155"/>
       <source>Active object</source>
       <translation>Aktivt objekt</translation>
     </message>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="156"/>
       <source>Your sub-assembly is currently rigid. This will make it flexible instead.</source>
-      <translation>Din underenhet är för närvarande stel. Detta kommer att göra den flexibel istället.</translation>
+      <translation>Delsammanställningen är för närvarande stel. Detta gör den flexibel i stället.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="160"/>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="162"/>
       <source>Your sub-assembly is currently flexible. This will make it rigid instead.</source>
-      <translation>Din underenhet är för närvarande flexibel. Detta kommer att göra den stel istället.</translation>
+      <translation>Delsammanställningen är för närvarande flexibel. Detta gör den stel i stället.</translation>
     </message>
     <message>
       <location filename="../../../App/BomObject.cpp" line="329"/>
@@ -86,19 +86,19 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="120"/>
-      <source>Assembly</source>
-      <translation>Montering</translation>
-    </message>
-    <message>
       <location filename="../../../InitGui.py" line="121"/>
-      <source>Assembly Joints</source>
-      <translation>Monteringsfogar</translation>
+      <source>Assembly</source>
+      <translation>Sammanställning</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="124"/>
+      <location filename="../../../InitGui.py" line="122"/>
+      <source>Assembly Joints</source>
+      <translation>Sammanställningsleder</translation>
+    </message>
+    <message>
+      <location filename="../../../InitGui.py" line="125"/>
       <source>&amp;Assembly</source>
-      <translation>&amp;Montering</translation>
+      <translation>&amp;Sammanställning</translation>
     </message>
   </context>
   <context>
@@ -126,11 +126,11 @@
     <message>
       <location filename="../../../JointObject.py" line="54"/>
       <source>Ball</source>
-      <translation>Boll</translation>
+      <translation>Kulled</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1896"/>
+      <location filename="../../../JointObject.py" line="2061"/>
       <source>Distance</source>
       <translation>Distans</translation>
     </message>
@@ -162,40 +162,45 @@
     <message>
       <location filename="../../../JointObject.py" line="61"/>
       <source>Gears</source>
-      <translation>Kuggar</translation>
+      <translation>Kugghjul</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="62"/>
       <source>Belt</source>
-      <translation>Bälte</translation>
+      <translation>Rem</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="818"/>
       <source>Broken link in: </source>
-      <translation>Trasig länk i:</translation>
+      <translation>Trasig länk i: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1238"/>
+      <location filename="../../../JointObject.py" line="1248"/>
       <source>Edit Joint</source>
-      <translation>Redigera fog</translation>
+      <translation>Redigera led</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1704"/>
+      <location filename="../../../JointObject.py" line="1430"/>
+      <source>Update Stored Positions</source>
+      <translation>Uppdatera lagrade positioner</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="1869"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Välj 2 element från 2 separata delar</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1898"/>
+      <location filename="../../../JointObject.py" line="2063"/>
       <source>Radius 1</source>
       <translation>Radie 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1900"/>
+      <location filename="../../../JointObject.py" line="2065"/>
       <source>Thread pitch</source>
       <translation>Gängstigning</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1902"/>
+      <location filename="../../../JointObject.py" line="2067"/>
       <source>Pitch radius</source>
       <translation>Stigningsradie</translation>
     </message>
@@ -262,17 +267,17 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="372"/>
       <source>Sub-assembly children: the children of sub-assemblies will be included in the bill of materials</source>
-      <translation>Underenhetens barn: underenhetens barn kommer att inkluderas i materialförteckningen</translation>
+      <translation>Delsammanställningarnas underobjekt: underobjekten i delsammanställningar tas med i materialförteckningen</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="378"/>
       <source>Parts children: the children of parts will be added to the bill of materials</source>
-      <translation>Barn till delar: delarnas barn läggs till i materialförteckningen</translation>
+      <translation>Delarnas underobjekt: underobjekten i delar läggs till i materialförteckningen</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="384"/>
       <source>Only parts: adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.</source>
-      <translation>Enbart delar: lägger endast till delbehållare och underenheter i materialförteckningen. Solider som partdesignkroppar, fästelement eller primitiver för partarbetsbänken ignoreras.</translation>
+      <translation>Endast delar: lägger bara till delbehållare och delsammanställningar i materialförteckningen. Solider som kroppar från Part Design, fästelement och primitiver från arbetsbänken Part ignoreras.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="386"/>
@@ -297,7 +302,7 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="414"/>
       <source>The exported file format can be customized in the Spreadsheet workbench preferences</source>
-      <translation>Det exporterade filformatet kan anpassas i inställningarna för kalkylbladets arbetsbänk</translation>
+      <translation>Det exporterade filformatet kan anpassas i inställningarna för arbetsbänken Kalkylblad</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="393"/>
@@ -327,7 +332,7 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="161"/>
       <source>If the new document is not saved the new part cannot be linked in the assembly.</source>
-      <translation>Om det nya dokumentet inte sparas kan den nya delen inte länkas i monteringen.</translation>
+      <translation>Om det nya dokumentet inte sparas kan den nya delen inte länkas in i sammanställningen.</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="78"/>
@@ -349,7 +354,7 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="167"/>
       <source>Do not Link</source>
-      <translation>Länk inte</translation>
+      <translation>Länka inte</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="495"/>
@@ -364,44 +369,44 @@
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="551"/>
       <source> - Linear: C + VEL*time</source>
-      <translation> - Linjär: C + VEL*tid</translation>
+      <translation> - Linjär: C + VEL*time</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="553"/>
       <source> - Quadratic: C + VEL*time + ACC*time^2</source>
-      <translation> - Kvadratisk: C + VEL*tid + ACC*tid^2</translation>
+      <translation> - Kvadratisk: C + VEL*time + ACC*time^2</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="556"/>
       <source> - Harmonic: C + AMP*sin(VEL*time - PHASE)</source>
-      <translation> - Harmonisk: C + AMP*sin(VEL*tid - PHASE)</translation>
+      <translation> - Harmonisk: C + AMP*sin(VEL*time - PHASE)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="559"/>
       <source> - Exponential: C*exp(time/TIMEC)</source>
-      <translation> - Exponentiell: C*exp(tid/TIMEC)</translation>
+      <translation> - Exponentiell: C*exp(time/TIMEC)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="565"/>
       <source> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</source>
-      <translation> - Smidigt steg: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(tid - T0)))</translation>
+      <translation> - Mjukt steg: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="572"/>
       <source> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</source>
-      <translation> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(tid - T1)) - arctan(SLOPE*(tid - T2)))</translation>
+      <translation> - Mjuk rektangelpuls: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="579"/>
       <source> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</source>
-      <translation> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(tid - T1)) - arctan(1000*(tid - T2))))*(((H2 - H1)/(T2 - T1))*(tid - T1) + H1)</translation>
+      <translation> - Mjuk puls med rampformad topp: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="589"/>
       <source>C is a constant offset.
 VEL is a velocity or slope or gradient of the straight line.</source>
-      <translation>C är en konstant offset.
-VEL är en hastighet eller lutning eller gradient för den räta linjen.</translation>
+      <translation>C är en konstant förskjutning.
+VEL är en hastighet, lutning eller gradient för den räta linjen.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="597"/>
@@ -418,7 +423,7 @@ ACC är accelerationen eller koefficienten av andra ordningen. Funktionen är en
 AMP is the amplitude of the sine wave.
 VEL is the angular velocity in radians per second.
 PHASE is the phase of the sine wave.</source>
-      <translation>C är en konstant offset.
+      <translation>C är en konstant förskjutning.
 AMP är sinusvågens amplitud.
 VEL är vinkelhastigheten i radianer per sekund.
 PHASE är sinusvågens fas.</translation>
@@ -435,9 +440,9 @@ TIMEC är tidskonstanten för den exponentiella funktionen.</translation>
       <source>L1 is step level before time = T0.
 L2 is step level after time = T0.
 SLOPE defines the steepness of the transition between L1 and L2 about time = T0. Higher values gives sharper cornered steps. SLOPE = 1000 or greater are suitable.</source>
-      <translation>L1 är stegnivån före tiden = T0.
-L2 är stegnivån efter tiden = T0.
-SLOPE definierar brantheten i övergången mellan L1 och L2 vid tiden = T0. Högre värden ger skarpare hörnsteg. SLOPE = 1000 eller högre är lämpliga.</translation>
+      <translation>L1 är stegets nivå före time = T0.
+L2 är stegets nivå efter time = T0.
+SLOPE anger övergångens branthet mellan L1 och L2 kring time = T0. Högre värden ger steg med skarpare hörn. SLOPE = 1000 eller högre är lämpligt.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="630"/>
@@ -445,10 +450,10 @@ SLOPE definierar brantheten i övergången mellan L1 och L2 vid tiden = T0. Hög
 T1 is the start of the impulse.
 T2 is the end of the impulse.
 SLOPE defines the steepness of the transition between 0 and H about time = T1 and T2. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</source>
-      <translation>H är impulsens höjd.
-T1 är början på impulsen.
-T2 är slutet på impulsen.
-SLOPE definierar brantheten i övergången mellan 0 och H vid tiden = T1 och T2. Högre värden ger skarpare hörnimpulser. SLOPE = 1000 eller högre är lämpliga.</translation>
+      <translation>H är pulsens höjd.
+T1 är pulsens starttid.
+T2 är pulsens sluttid.
+SLOPE anger övergångens branthet mellan 0 och H kring time = T1 och T2. Högre värden ger pulser med skarpare hörn. SLOPE = 1000 eller högre är lämpligt.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="641"/>
@@ -458,12 +463,12 @@ T2 is the end of the impulse.
 H1 is the height at T1 at the beginning of the ramp.
 H2 is the height at T2 at the end of the ramp.
 SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about time = T1 and T2 respectively. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</source>
-      <translation>Den här liknar den kvadratiska impulsen, men toppen har en sluttande ramp. Den är bra för att bygga en jämn styckvis linjär funktion genom att lägga till en serie av dessa.
-T1 är början på impulsen.
-T2 är slutet på impulsen.
-H1 är höjden vid T1 i början av rampen.
-H2 är höjden vid T2 i slutet av rampen.
-SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid = T1 respektive T2. Högre värden ger skarpare hörnimpulser. SLOPE = 1000 eller högre är lämpliga.</translation>
+      <translation>Detta liknar rektangelpulsen, men toppen har en lutande ramp. Genom att addera flera sådana pulser går det att skapa en mjuk, styckvis linjär funktion.
+T1 är pulsens starttid.
+T2 är pulsens sluttid.
+H1 är höjden vid T1 i rampens början.
+H2 är höjden vid T2 i rampens slut.
+SLOPE anger övergångarnas branthet från 0 till H1 och från H2 till 0 kring time = T1 respektive T2. Högre värden ger pulser med skarpare hörn. SLOPE = 1000 eller högre är lämpligt.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="679"/>
@@ -489,7 +494,7 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1068"/>
       <source>Save Animation</source>
-      <translation>Spara animation</translation>
+      <translation>Spara animering</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1093"/>
@@ -499,7 +504,7 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1100"/>
       <source>Generating Frames…</source>
-      <translation>Genererar bildrutor …</translation>
+      <translation>Genererar bildrutor…</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1101"/>
@@ -509,12 +514,12 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1128"/>
       <source>Assembling animation…</source>
-      <translation>Sätter samman animeringen …</translation>
+      <translation>Sätter samman animeringen…</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1150"/>
       <source>An error occurred while saving the animation</source>
-      <translation>Ett fel inträffade när animationen skulle sparas</translation>
+      <translation>Ett fel inträffade när animeringen skulle sparas</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1186"/>
@@ -527,39 +532,69 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
       <translation>Okänt format för videoexport</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="168"/>
+      <location filename="../../../InitGui.py" line="169"/>
       <source>Create</source>
       <translation>Skapa</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="184"/>
+      <location filename="../../../InitGui.py" line="185"/>
       <source>Activate</source>
       <translation>Aktivera</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="218"/>
+      <location filename="../../../InitGui.py" line="219"/>
       <source>Insert</source>
       <translation>Infoga</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="229"/>
+      <location filename="../../../InitGui.py" line="230"/>
       <source>Grounding</source>
-      <translation>Jordning</translation>
+      <translation>Fixering</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="256"/>
+      <location filename="../../../InitGui.py" line="257"/>
       <source>Constraints</source>
       <translation>Begränsningar</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="272"/>
+      <location filename="../../../InitGui.py" line="273"/>
       <source>Tools</source>
       <translation>Verktyg</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="285"/>
+      <location filename="../../../InitGui.py" line="286"/>
       <source>Simulation</source>
       <translation>Simulering</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="394"/>
+      <source>Radial Translation</source>
+      <translation>Radiell förflyttning</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="397"/>
+      <source>Rotation</source>
+      <translation>Rotation</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="400"/>
+      <source>Translation</source>
+      <translation>Förflyttning</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="988"/>
+      <source>Angle of this exploded-view move</source>
+      <translation>Vinkel för denna rörelse i sprängskissen</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="998"/>
+      <source>Distance of this exploded-view move</source>
+      <translation>Avstånd för denna rörelse i sprängskissen</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="1038"/>
+      <source>Edit placement</source>
+      <translation>Redigera placering</translation>
     </message>
   </context>
   <context>
@@ -598,7 +633,7 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../../../JointObject.py" line="270"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement</source>
-      <translation>Detta förhindrar att Placement2 räknar om, vilket möjliggör anpassad positionering av placeringen</translation>
+      <translation>Detta förhindrar att Placement2 räknas om, vilket möjliggör anpassad positionering av placeringen</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="282"/>
@@ -609,12 +644,12 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../../../JointObject.py" line="304"/>
       <source>Enable the minimum length limit of the joint</source>
-      <translation>Aktivera den minsta längdgränsen för fogen</translation>
+      <translation>Aktivera ledens nedre längdgräns</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="317"/>
       <source>Enable the maximum length limit of the joint</source>
-      <translation>Aktivera den maximala längdgränsen för fogen</translation>
+      <translation>Aktivera ledens övre längdgräns</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="330"/>
@@ -682,23 +717,28 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
       <translation>Ledens {order}-referens för fogen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1288"/>
-      <source>The object to ground</source>
-      <translation>Objektet till marken</translation>
+      <location filename="../../../JointObject.py" line="1294"/>
+      <source>List of references to compnents to group together</source>
+      <translation>Lista över referenser till komponenter som ska grupperas</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="376"/>
-      <location filename="../../../CommandCreateView.py" line="413"/>
+      <location filename="../../../JointObject.py" line="1453"/>
+      <source>The object to ground</source>
+      <translation>Objektet som ska fixeras</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="527"/>
+      <location filename="../../../CommandCreateView.py" line="564"/>
       <source>The objects moved by the move</source>
       <translation>De objekt som flyttas av flytten</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="388"/>
+      <location filename="../../../CommandCreateView.py" line="539"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
-      <translation>Detta är rörelsens rörelse. Slutplaceringen är resultatet av startplaceringen * denna placering.</translation>
+      <translation>Detta är förflyttningens transformation. Slutplaceringen är resultatet av startplaceringen * denna placering.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="397"/>
+      <location filename="../../../CommandCreateView.py" line="548"/>
       <source>The type of the move</source>
       <translation>Typ av flyttning</translation>
     </message>
@@ -715,12 +755,12 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="140"/>
       <source>Simulation time step for output.</source>
-      <translation>Tidssteg för simulering av utdata.</translation>
+      <translation>Simuleringens tidssteg för utdata.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="152"/>
       <source>Integration global error tolerance.</source>
-      <translation>Integrering av global feltolerans.</translation>
+      <translation>Global feltolerans för integrationen.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="164"/>
@@ -740,7 +780,7 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="328"/>
       <source>This is the formula of the motion. For example '1.0*time'.</source>
-      <translation>Detta är formeln för rörelsen. Till exempel "1.0*tid".</translation>
+      <translation>Detta är rörelsens formel. Till exempel ”1.0*time”.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="337"/>
@@ -765,7 +805,7 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="146"/>
       <source>If true, applying the snapshot will solve the assembly after restoring the placements.</source>
-      <translation>Om sant löses monteringen efter att placeringarna har återställts när ögonblicksbilden tillämpas.</translation>
+      <translation>Om sant löses sammanställningen efter att placeringarna har återställts när ögonblicksbilden tillämpas.</translation>
     </message>
   </context>
   <context>
@@ -833,17 +873,17 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="237"/>
       <source>Reverse the direction of the joint</source>
-      <translation>Omvänd riktning på fogen</translation>
+      <translation>Vänd ledens riktning</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="240"/>
       <source>Reverse</source>
-      <translation>Omvänd</translation>
+      <translation>Vänd</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="257"/>
       <source>Rotate the joint 90 degrees</source>
-      <translation>Rotera fogen 90 grader</translation>
+      <translation>Rotera leden 90 grader</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="260"/>
@@ -858,22 +898,22 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="297"/>
       <source>Min length</source>
-      <translation>Min längd</translation>
+      <translation>Minsta längd</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="320"/>
       <source>Max length</source>
-      <translation>Max längd</translation>
+      <translation>Största längd</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="343"/>
       <source>Min angle</source>
-      <translation>Min vinkel</translation>
+      <translation>Minsta vinkel</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="372"/>
       <source>Max angle</source>
-      <translation>Max vinkel</translation>
+      <translation>Största vinkel</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="404"/>
@@ -891,12 +931,12 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="20"/>
       <source>Search parts…</source>
-      <translation>Sök delar..</translation>
+      <translation>Sök delar…</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
       <source>Cannot find the part?</source>
-      <translation>Kan inte hitta delen?</translation>
+      <translation>Hittar du inte delen?</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="46"/>
@@ -929,7 +969,7 @@ Du kan ändra detta beteende när som helst genom att antingen högerklicka på 
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="81"/>
       <source>Rigid sub-assemblies</source>
-      <translation>Styva underenheter</translation>
+      <translation>Stela delsammanställningar</translation>
     </message>
   </context>
   <context>
@@ -954,12 +994,12 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../preferences/Assembly.ui" line="59"/>
       <source>Ground first part</source>
-      <translation>Jord första delen</translation>
+      <translation>Fixera första delen</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="66"/>
       <source>When inserting the first part in the assembly, it can be grounded automatically</source>
-      <translation>När den första delen sätts in i monteringen kan den jordas automatiskt</translation>
+      <translation>När den första delen infogas i sammanställningen kan den fixeras automatiskt</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="23"/>
@@ -975,60 +1015,60 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="213"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="223"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Objektet är kopplat till en eller flera fogar.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="215"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="225"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Vill du flytta objektet och ta bort tillhörande fogar?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1088"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1142"/>
       <source>Move part</source>
       <translation>Flytta del</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1805"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1897"/>
       <source>Empty Assembly</source>
-      <translation>Tom montering</translation>
+      <translation>Tom sammanställning</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1817"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1909"/>
       <source>Over-constrained:</source>
       <translation>Överbegränsad:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1825"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1917"/>
       <source>Malformed joints:</source>
       <translation>Felformade fogar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1790"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1882"/>
       <source>and %1 more</source>
-      <translation>och %1 mer</translation>
+      <translation>och %1 till</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1849"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1941"/>
       <source>Solver failed to converge</source>
       <translation>Lösaren lyckades inte konvergera</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1857"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1949"/>
       <source>Under-constrained:</source>
       <translation>Underbegränsad:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1859"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1951"/>
       <source>%n Degrees of Freedom</source>
       <translation>
-        <numerusform>%n Grader av frihet</numerusform>
-        <numerusform>%n Grader av frihet</numerusform>
+        <numerusform>%n frihetsgrad</numerusform>
+        <numerusform>%n frihetsgrader</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1863"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1955"/>
       <source>Fully constrained</source>
       <translation>Fullständigt begränsad</translation>
     </message>
@@ -1038,12 +1078,12 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandCreateJoint.py" line="317"/>
       <source>Screw Joint</source>
-      <translation>Skruvförband</translation>
+      <translation>Skruvled</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="323"/>
       <source>&lt;p&gt;Creates a screw joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;Skapar en skruvfog som kopplar en del med en glidfog till en del med en rotationsfog&lt;/p&gt;&lt;p&gt;Välj samma koordinatsystem som för rotations- och glidfogarna. Delningsradien definierar rörelseförhållandet mellan den roterande skruven och den glidande delen.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Skapar en skruvled som kopplar en del med en glidled till en del med en rotationsled&lt;/p&gt;&lt;p&gt;Välj samma koordinatsystem som för rotations- och glidlederna. Delningsradien definierar rörelseförhållandet mellan den roterande skruven och den glidande delen.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1064,12 +1104,12 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="14"/>
       <source>Exploded View</source>
-      <translation>Exploderad vy</translation>
+      <translation>Sprängskiss</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="20"/>
       <source>If checked, parts will be selected as a single solid</source>
-      <translation>Om markerad, kommer delar att väljas som en enda solid</translation>
+      <translation>Om detta är markerat väljs delar som en enda solid</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="23"/>
@@ -1079,27 +1119,27 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="42"/>
       <source>Align Dragger</source>
-      <translation>Rikta in Dragger</translation>
+      <translation>Rikta in dragverktyget</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="49"/>
       <source>Select a feature to align. Press Esc to cancel.</source>
-      <translation>Välj en funktion som ska justeras. Tryck på Esc för att avbryta.</translation>
+      <translation>Välj en funktion att rikta in mot. Tryck på Esc för att avbryta.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="56"/>
       <source>Explode Radially</source>
-      <translation>Exploderar radiellt</translation>
+      <translation>Separera radiellt</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="23"/>
       <source>Sub-assemblies children</source>
-      <translation>Underenheter barn</translation>
+      <translation>Delsammanställningarnas underobjekt</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="42"/>
       <source>Parts children</source>
-      <translation>Delar barn</translation>
+      <translation>Delarnas underobjekt</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="14"/>
@@ -1109,17 +1149,17 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="20"/>
       <source>Includes children of sub-assemblies in the bill of materials</source>
-      <translation>Inkluderar barn till underenheter i materialförteckningen</translation>
+      <translation>Inkluderar delsammanställningarnas underobjekt i materialförteckningen</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="39"/>
       <source>Include child parts in the bill of materials</source>
-      <translation>Inkludera barndelar i materialförteckningen</translation>
+      <translation>Inkludera underdelar i materialförteckningen</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="58"/>
       <source>Adds only part containers and sub-assemblies to the bill of materials. Solids (e.g. bodies, fasteners, primitives) are excluded.</source>
-      <translation>Lägger endast till delbehållare och underenheter till materialförteckningen. Solider (t.ex. kroppar, fästelement, primitiver) är undantagna.</translation>
+      <translation>Lägger endast till delbehållare och delsammanställningar i materialförteckningen. Solider (t.ex. kroppar, fästelement och primitiver) tas inte med.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="61"/>
@@ -1165,7 +1205,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../App/AssemblyLink.cpp" line="704"/>
       <source>Joints</source>
-      <translation>Fogar</translation>
+      <translation>Leder</translation>
     </message>
   </context>
   <context>
@@ -1173,7 +1213,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="168"/>
       <source>Toggle Rigid</source>
-      <translation>Växla styv</translation>
+      <translation>Växla stelhet</translation>
     </message>
   </context>
   <context>
@@ -1186,7 +1226,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="59"/>
       <source>Insert a new part into the active assembly. The new part's origin can be positioned in the assembly.</source>
-      <translation>Infoga en ny del i den aktiva montering. Den nya delens ursprung kan positioneras i monteringen.</translation>
+      <translation>Infoga en ny del i den aktiva sammanställningen. Den nya delens origo kan placeras i sammanställningen.</translation>
     </message>
   </context>
   <context>
@@ -1194,7 +1234,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="20"/>
       <source>Motions</source>
-      <translation>Motioner</translation>
+      <translation>Rörelser</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="50"/>
@@ -1204,7 +1244,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="70"/>
       <source>Delete selected motions</source>
-      <translation>Ta bort valda motioner</translation>
+      <translation>Ta bort valda rörelser</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="14"/>
@@ -1263,7 +1303,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="197"/>
       <source>Animation Player</source>
-      <translation>Animationsspelare</translation>
+      <translation>Animeringsspelare</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="236"/>
@@ -1288,12 +1328,12 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="225"/>
       <source>0.00 s</source>
-      <translation>0.00 s</translation>
+      <translation>0,00 s</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="278"/>
       <source>Step backward</source>
-      <translation>Steg bakåt</translation>
+      <translation>Stega bakåt</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="310"/>
@@ -1321,12 +1361,12 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="49"/>
       <source>New Assembly</source>
-      <translation>Ny montering</translation>
+      <translation>Ny sammanställning</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="54"/>
       <source>Creates an assembly object in the current document, or in the current active assembly (if any). Limit of one root assembly per file.</source>
-      <translation>Skapar ett monteringsobjekt i det aktuella dokumentet eller i den aktuella aktiva monteringen (om sådan finns). Begränsning till en rotmontering per fil.</translation>
+      <translation>Skapar ett sammanställningsobjekt i det aktuella dokumentet eller i den aktiva sammanställningen (om någon finns). Högst en rotsammanställning per fil.</translation>
     </message>
   </context>
   <context>
@@ -1335,17 +1375,17 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
       <location filename="../../../CommandCreateAssembly.py" line="101"/>
       <location filename="../../../CommandCreateAssembly.py" line="135"/>
       <source>Activate Assembly</source>
-      <translation>Aktivera montering</translation>
+      <translation>Aktivera sammanställning</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="106"/>
       <source>Select an assembly to activate:</source>
-      <translation>Välj en montering som ska aktiveras:</translation>
+      <translation>Välj en sammanställning att aktivera:</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="138"/>
       <source>Sets an assembly as the active one for editing.</source>
-      <translation>Anger en montering som aktiv för redigering.</translation>
+      <translation>Anger en sammanställning som aktiv för redigering.</translation>
     </message>
   </context>
   <context>
@@ -1353,12 +1393,12 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandCreateJoint.py" line="76"/>
       <source>Fixed Joint</source>
-      <translation>Fast fog</translation>
+      <translation>Fast led</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="82"/>
       <source>&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;1 – Om en montering är aktiv: Skapar en fog som statiskt låser två delar till varandra och förhindrar all förflyttning och rotation&lt;/p&gt;&lt;p&gt;2 – Om en del är aktiv: Placerar underdelar genom att matcha valda koordinatsystem. Den andra valda delen flyttas.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;1 – Om en sammanställning är aktiv: Skapar en led som statiskt låser två delar till varandra och förhindrar all förflyttning och rotation&lt;/p&gt;&lt;p&gt;2 – Om en del är aktiv: Placerar underdelar genom att matcha valda koordinatsystem. Den andra valda delen flyttas.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1444,7 +1484,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandCreateJoint.py" line="245"/>
       <source>Perpendicular Joint</source>
-      <translation>Vinkelrät fog</translation>
+      <translation>Vinkelrät led</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="250"/>
@@ -1457,12 +1497,12 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandCreateJoint.py" line="268"/>
       <source>Angle Joint</source>
-      <translation>Vinkelförband</translation>
+      <translation>Vinkelled</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="273"/>
       <source>Creates an angle joint that fixes the angle between the Z-axis of the selected coordinate systems</source>
-      <translation>Skapar en vinkelfog som fixerar vinkeln mellan Z-axeln i de valda koordinatsystemen</translation>
+      <translation>Skapar en vinkelled som fixerar vinkeln mellan Z-axlarna i de valda koordinatsystemen</translation>
     </message>
   </context>
   <context>
@@ -1475,7 +1515,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandCreateJoint.py" line="299"/>
       <source>&lt;p&gt;Creates a rack and pinion joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;Skapar en kuggstångs- och kugghjulsfog som kopplar en del med en glidfog till en del med en rotationsfog&lt;/p&gt;&lt;p&gt;Välj samma koordinatsystem som för rotations- och glidfogarna. Delningsradien definierar rörelseförhållandet mellan kuggstången och kugghjulet.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Skapar en kuggstångs- och pinjongled som kopplar en del med en glidled till en del med en rotationsled&lt;/p&gt;&lt;p&gt;Välj samma koordinatsystem som för rotations- och glidlederna. Delningsradien definierar rörelseförhållandet mellan kuggstången och pinjongen.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1507,14 +1547,14 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
   <context>
     <name>Assembly_ToggleGrounded</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="430"/>
+      <location filename="../../../CommandCreateJoint.py" line="454"/>
       <source>Toggle Grounded</source>
       <translation>Växla jordad</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="436"/>
+      <location filename="../../../CommandCreateJoint.py" line="460"/>
       <source>&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation.</source>
-      <translation>&lt;p&gt;Växlar om en del är fixerad.&lt;/p&gt;&lt;p&gt;När en del fixeras låses dess position permanent i monteringen, vilket förhindrar all förflyttning och rotation.</translation>
+      <translation>&lt;p&gt;Växlar om en del är fixerad.&lt;/p&gt;&lt;p&gt;När en del fixeras låses dess position permanent i sammanställningen, vilket förhindrar all förflyttning och rotation.</translation>
     </message>
   </context>
   <context>
@@ -1527,20 +1567,20 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="77"/>
       <source>Creates a new simulation of the current assembly</source>
-      <translation>Skapar en ny simulering av den aktuella monteringen</translation>
+      <translation>Skapar en ny simulering av den aktuella sammanställningen</translation>
     </message>
   </context>
   <context>
     <name>Assembly_CreateView</name>
     <message>
-      <location filename="../../../CommandCreateView.py" line="53"/>
+      <location filename="../../../CommandCreateView.py" line="54"/>
       <source>Exploded View</source>
       <translation>Exploderad vy</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="58"/>
+      <location filename="../../../CommandCreateView.py" line="59"/>
       <source>Creates an exploded view of the current assembly</source>
-      <translation>Skapar en sprängskiss av den aktuella monteringen</translation>
+      <translation>Skapar en sprängskiss av den aktuella sammanställningen</translation>
     </message>
   </context>
   <context>
@@ -1556,7 +1596,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
       <translation>Delvis inläst</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="615"/>
+      <location filename="../../../CommandInsertLink.py" line="613"/>
       <source>Fully load document</source>
       <translation>Fullständigt inläst dokument</translation>
     </message>
@@ -1571,26 +1611,26 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="56"/>
       <source>Selects these conflicting joints</source>
-      <translation>Väljer dessa motstridiga fogar</translation>
+      <translation>Väljer dessa motstridiga leder</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="59"/>
       <source>Selects these redundant joints</source>
-      <translation>Väljer dessa överflödiga fogar</translation>
+      <translation>Väljer dessa överflödiga leder</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="63"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom.
 Selects these unconstrained components.
 Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</source>
-      <translation>Monteringen har obundna komponenter som ger upphov till dessa frihetsgrader.
+      <translation>Sammanställningen har obundna komponenter som ger upphov till dessa frihetsgrader.
 Väljer dessa obundna komponenter.
-Obs! För närvarande väljs endast delar som inte är anslutna, inte bundna delar som fortfarande har fria frihetsgrader.</translation>
+Obs! För närvarande väljs endast delar som inte är anslutna, inte bundna delar som fortfarande har återstående frihetsgrader.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
       <source>Selects these malformed joints</source>
-      <translation>Väljer dessa felaktigt utformade fogar</translation>
+      <translation>Väljer dessa felaktigt definierade leder</translation>
     </message>
   </context>
   <context>
@@ -1603,7 +1643,7 @@ Obs! För närvarande väljs endast delar som inte är anslutna, inte bundna del
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="53"/>
       <source>Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</source>
-      <translation>Registrerar monteringens aktuella tillstånd (placeringar och synlighet). Om du dubbelklickar på objektet Ögonblicksbild återställs monteringen till detta tillstånd.</translation>
+      <translation>Registrerar sammanställningens aktuella tillstånd (placeringar och synlighet). Om du dubbelklickar på objektet Ögonblicksbild återställs sammanställningen till detta tillstånd.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="70"/>
@@ -1617,21 +1657,39 @@ Obs! För närvarande väljs endast delar som inte är anslutna, inte bundna del
     </message>
   </context>
   <context>
+    <name>Assembly_CreateJointRigidGroup</name>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="413"/>
+      <source>Select at least 2 components to create a rigid group</source>
+      <translation>Välj minst två komponenter för att skapa en stel grupp</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="536"/>
+      <source>Create Rigid Group</source>
+      <translation>Skapa stel grupp</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="542"/>
+      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Skapa en stel grupp.&lt;/p&gt;&lt;p&gt;Skapar en stel grupp som permanent låser samman de valda komponenterna.&lt;/p&gt;</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdAssemblyLinkSelectLinked</name>
     <message>
       <location filename="../../Commands.cpp" line="101"/>
       <source>Assembly</source>
-      <translation>Ihopsättning</translation>
+      <translation>Sammanställning</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="102"/>
       <source>Go to Linked Assembly</source>
-      <translation>Gå till länkad montering</translation>
+      <translation>Gå till länkad sammanställning</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="103"/>
       <source>Selects the linked assembly and switches to its original document</source>
-      <translation>Väljer den länkade monteringen och växlar till dess ursprungliga dokument</translation>
+      <translation>Väljer den länkade sammanställningen och växlar till dess ursprungliga dokument</translation>
     </message>
   </context>
   <context>
@@ -1639,7 +1697,7 @@ Obs! För närvarande väljs endast delar som inte är anslutna, inte bundna del
     <message>
       <location filename="../../Commands.cpp" line="165"/>
       <source>Assembly</source>
-      <translation>Ihopsättning</translation>
+      <translation>Sammanställning</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="166"/>
@@ -1649,7 +1707,7 @@ Obs! För närvarande väljs endast delar som inte är anslutna, inte bundna del
     <message>
       <location filename="../../Commands.cpp" line="167"/>
       <source>Selects conflicting joints in the active assembly</source>
-      <translation>Väljer motstridiga fogar i den aktiva monteringen</translation>
+      <translation>Väljer motstridiga leder i den aktiva sammanställningen</translation>
     </message>
   </context>
   <context>
@@ -1657,17 +1715,17 @@ Obs! För närvarande väljs endast delar som inte är anslutna, inte bundna del
     <message>
       <location filename="../../Commands.cpp" line="200"/>
       <source>Assembly</source>
-      <translation>Ihopsättning</translation>
+      <translation>Sammanställning</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="201"/>
       <source>Select Redundant Constraints</source>
-      <translation>Välj redundanta begränsningar</translation>
+      <translation>Välj överflödiga begränsningar</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="202"/>
       <source>Selects redundant joints in the active assembly</source>
-      <translation>Väljer överflödiga fogar i den aktiva monteringen</translation>
+      <translation>Väljer överflödiga leder i den aktiva sammanställningen</translation>
     </message>
   </context>
   <context>
@@ -1675,17 +1733,17 @@ Obs! För närvarande väljs endast delar som inte är anslutna, inte bundna del
     <message>
       <location filename="../../Commands.cpp" line="233"/>
       <source>Assembly</source>
-      <translation>Ihopsättning</translation>
+      <translation>Sammanställning</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="234"/>
       <source>Select Malformed Constraints</source>
-      <translation>Välj missbildade begränsningar</translation>
+      <translation>Välj felaktigt definierade begränsningar</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="235"/>
       <source>Selects malformed joints in the active assembly</source>
-      <translation>Väljer felaktigt utformade fogar i den aktiva monteringen</translation>
+      <translation>Väljer felaktigt definierade leder i den aktiva sammanställningen</translation>
     </message>
   </context>
   <context>
@@ -1693,7 +1751,7 @@ Obs! För närvarande väljs endast delar som inte är anslutna, inte bundna del
     <message>
       <location filename="../../Commands.cpp" line="267"/>
       <source>Assembly</source>
-      <translation>Ihopsättning</translation>
+      <translation>Sammanställning</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="268"/>
@@ -1703,7 +1761,7 @@ Obs! För närvarande väljs endast delar som inte är anslutna, inte bundna del
     <message>
       <location filename="../../Commands.cpp" line="269"/>
       <source>Selects unconstrained components in the active assembly</source>
-      <translation>Väljer obundna komponenter i den aktiva monteringen</translation>
+      <translation>Väljer obundna komponenter i den aktiva sammanställningen</translation>
     </message>
   </context>
   <context>
@@ -1711,17 +1769,17 @@ Obs! För närvarande väljs endast delar som inte är anslutna, inte bundna del
     <message>
       <location filename="../../Commands.cpp" line="310"/>
       <source>Assembly</source>
-      <translation>Ihopsättning</translation>
+      <translation>Sammanställning</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="311"/>
       <source>Select Component Joints</source>
-      <translation>Välj komponentfogar</translation>
+      <translation>Välj komponentleder</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="312"/>
       <source>Selects all joints referencing the selected component</source>
-      <translation>Väljer alla fogar som refererar till den valda komponenten</translation>
+      <translation>Väljer alla leder som refererar till den valda komponenten</translation>
     </message>
   </context>
 </TS>

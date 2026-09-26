@@ -410,7 +410,7 @@ public:
             tryFindBasePlanes();
         }
         catch (const Base::Exception& ex) {
-            Base::Console().error("%s\n", ex.what());
+            Base::Console().error("{}\n", ex.what());
         }
     }
 
@@ -790,17 +790,8 @@ private:
             return;
         }
         std::string FeatName = documentOfBody->getUniqueObjectName("Sketch");
-        auto* plane = static_cast<App::Plane*>(features.front());
-        auto* lcs = plane->getLCS();
-
-        std::string supportString;
-        if (lcs) {
-            supportString = Gui::Command::getObjectCmd(lcs, "(") + ",['"
-                + plane->getNameInDocument() + "'])";
-        }
-        else {
-            supportString = Gui::Command::getObjectCmd(plane, "(", ",[''])");
-        }
+        const std::string supportString
+            = Gui::SelectionObject(features.front()).getAsPropertyLinkSubString();
 
         App::Document* doc = partDesignBody->getDocument();
         if (!doc->hasPendingTransaction()) {

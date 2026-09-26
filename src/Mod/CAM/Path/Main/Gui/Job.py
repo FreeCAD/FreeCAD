@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2017 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
-
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 from PySide import QtCore, QtGui
 from collections import Counter
@@ -30,18 +27,25 @@ import FreeCAD
 import FreeCADGui
 import Path
 import Path.Base.Gui.SetupSheet as PathSetupSheetGui
+import Path.Base.Gui.Theme as PathGuiTheme
 import Path.Base.Util as PathUtil
 import Path.GuiInit as PathGuiInit
-import Path.Main.Gui.JobCmd as PathJobCmd
 import Path.Main.Gui.JobDlg as PathJobDlg
 import Path.Main.Job as PathJob
 import Path.Main.Stock as PathStock
 import Path.Tool.Gui.Controller as PathToolControllerGui
-import PathScripts.PathUtils as PathUtils
-from Path.Tool.toolbit.ui.selector import ToolBitSelector
+
+# Must stay an eager, top-level import (not lazy/local): importing this
+# module registers the document-load observer that prompts about stale
+# tool updates on open, which must happen before any document opens.
+import Path.Tool.Gui.UpdateDocumentToolsDlg as PathUpdateToolsGui
+from PathScripts import PathUtils
+from Path.Tool.docobject.ui.docobject import _get_label_text as _format_label
+from Path.Tool.library.ui.dock import ToolBitLibraryDock
 from Machine.models import MachineFactory
 from Machine.ui.editor import MachineEditorDialog
 import math
+import os
 import traceback
 from PySide import QtWidgets
 
@@ -77,7 +81,7 @@ def _OpenCloseResourceEditor(obj, vobj, edit):
             missing = "ViewObject"
             if job.ViewObject:
                 missing = "Proxy"
-        Path.Log.warning("Cannot edit %s - no %s" % (obj.Label, missing))
+        Path.Log.warning(f"Cannot edit {obj.Label} - no {missing}")
 
 
 @contextmanager
@@ -207,9 +211,8 @@ class ViewProvider:
         self.obj.Stock.Visibility = False
 
     def restoreStockVisibility(self):
-        if hasattr(self, "stockVisibility"):
-            if self.stockVisibility:
-                self.obj.Stock.Visibility = True
+        if hasattr(self, "stockVisibility") and self.stockVisibility:
+            self.obj.Stock.Visibility = True
 
     def hideTools(self):
         self.toolsVisibility = {}
@@ -270,7 +273,7 @@ class ViewProvider:
                 return self.openTaskPanel("Model")
             if obj == self.obj.Stock:
                 return self.openTaskPanel("Stock")
-            Path.Log.info("Expected a specific object to edit - %s not recognized" % obj.Label)
+            Path.Log.info(f"Expected a specific object to edit - {obj.Label} not recognized")
         return self.openTaskPanel()
 
     def uneditObject(self, obj=None):
@@ -295,6 +298,8 @@ class ViewProvider:
             children.append(self.obj.SetupSheet)
         if hasattr(self.obj, "Tools"):
             children.append(self.obj.Tools)
+        if getattr(self.obj, "Workplanes", None):
+            children.append(self.obj.Workplanes)
         return children
 
     def onDelete(self, vobj, arg2=None):
@@ -364,13 +369,21 @@ class ViewProvider:
         action.triggered.connect(self._editInContextMenuTriggered)
         menu.addAction(action)
 
+        updateAction = QtGui.QAction(translate("CAM_Job", "Update Tools from Library"), menu)
+        updateAction.setIcon(QtGui.QIcon(":/icons/CAM_UpdateDocumentTools.svg"))
+        updateAction.triggered.connect(self._updateToolsFromLibraryTriggered)
+        menu.addAction(updateAction)
+
     def _editInContextMenuTriggered(self, checked):
         self.setEdit()
+
+    def _updateToolsFromLibraryTriggered(self, checked):
+        PathUpdateToolsGui.update_tools_from_gui(self.obj)
 
 
 class MaterialDialog(QtWidgets.QDialog):
     def __init__(self, parent=None, current_uuid=None):
-        super(MaterialDialog, self).__init__(parent)
+        super().__init__(parent)
 
         self.setWindowTitle(translate("CAM_Job", "Assign Stock Material"))
         self.uuid = current_uuid
@@ -388,7 +401,7 @@ class MaterialDialog(QtWidgets.QDialog):
             try:
                 self.materialTreeWidget.UUID = current_uuid
             except Exception as e:
-                Path.Log.debug("Could not preselect material %s: %s" % (current_uuid, e))
+                Path.Log.debug(f"Could not preselect material {current_uuid}: {e}")
 
         # Create OK and Cancel buttons
         self.okButton = QtWidgets.QPushButton("OK")
@@ -413,13 +426,12 @@ class MaterialDialog(QtWidgets.QDialog):
 
     def onMaterial(self, uuid):
         try:
-            print("Selected '{0}'".format(uuid))
             self.uuid = uuid
         except Exception as e:
             print(e)
 
 
-class StockEdit(object):
+class StockEdit:
     Index = -1
     StockType = PathStock.StockType.Unknown
 
@@ -484,7 +496,7 @@ class StockFromBaseBoundBoxEdit(StockEdit):
     StockType = PathStock.StockType.FromBase
 
     def __init__(self, obj, form, force):
-        super(StockFromBaseBoundBoxEdit, self).__init__(obj, form, force)
+        super().__init__(obj, form, force)
 
         self.trackXpos = None
         self.trackYpos = None
@@ -522,8 +534,8 @@ class StockFromBaseBoundBoxEdit(StockEdit):
                 stock.ExtZpos = FreeCAD.Units.Quantity(
                     self.form.stockExtZpos.property("rawValue"), FreeCAD.Units.Length
                 )
-        except Exception:
-            pass
+        except Exception as e:
+            Path.Log.debug(e)
 
     def getFields(self, obj, fields=None):
         if fields is None:
@@ -637,8 +649,8 @@ class StockCreateBoxEdit(StockEdit):
                     )
             else:
                 Path.Log.error("Stock not a box!")
-        except Exception:
-            pass
+        except Exception as e:
+            Path.Log.debug(e)
 
     def setFields(self, obj):
         if self.force or not self.IsStock(obj):
@@ -664,7 +676,7 @@ class StockCreateCylinderEdit(StockEdit):
 
     def getFields(self, obj, fields=None):
         if fields is None:
-            fields = ["radius", "height"]
+            fields = ("axis", "radius", "height")
         try:
             if self.IsStock(obj):
                 if "radius" in fields:
@@ -675,22 +687,47 @@ class StockCreateCylinderEdit(StockEdit):
                     obj.Stock.Height = FreeCAD.Units.Quantity(
                         self.form.stockCylinderHeight.property("rawValue"), FreeCAD.Units.Length
                     )
+                if "axis" in fields and hasattr(self.form, "stockCylinderAxis"):
+                    obj.Stock.Axis = str(self.form.stockCylinderAxis.currentData())
             else:
                 Path.Log.error(translate("CAM_Job", "Stock not a cylinder!"))
-        except Exception:
-            pass
+        except Exception as e:
+            Path.Log.debug(e)
 
     def setFields(self, obj):
         if self.force or not self.IsStock(obj):
-            self.setStock(obj, PathStock.CreateCylinder(obj))
+            self.setStock(obj, PathStock.CreateCylinder(obj, axis=self.axis))
             self.force = False
         self.setLengthField(self.form.stockCylinderRadius, obj.Stock.Radius)
         self.setLengthField(self.form.stockCylinderHeight, obj.Stock.Height)
+        if hasattr(self.form, "stockCylinderAxis"):
+            self.selectComboBoxText(self.form.stockCylinderAxis, obj.Stock.Axis)
 
     def setupUi(self, obj):
+        if hasattr(self.form, "stockCylinderAxis"):
+            self.axis = self.form.stockCylinderAxis.currentData()
+            self.populateCombobox(self.form.stockCylinderAxis, ("X", "Y", "Z"))
+        else:
+            self.axis = "Z"
         self.setFields(obj)
         self.form.stockCylinderRadius.textChanged.connect(lambda: self.getFields(obj, ["radius"]))
         self.form.stockCylinderHeight.textChanged.connect(lambda: self.getFields(obj, ["height"]))
+        if hasattr(self.form, "stockCylinderAxis"):
+            self.form.stockCylinderAxis.currentIndexChanged.connect(
+                lambda: self.getFields(obj, ["axis"])
+            )
+
+    def populateCombobox(self, widget, enumTups):
+        widget.clear()
+        for name in enumTups:
+            widget.addItem(name, name)
+
+    def selectComboBoxText(self, widget, text):
+        newindex = widget.findData(text)
+        if newindex >= 0:
+            widget.blockSignals(True)
+            widget.setCurrentIndex(newindex)
+            widget.blockSignals(False)
 
 
 class StockFromExistingEdit(StockEdit):
@@ -707,13 +744,13 @@ class StockFromExistingEdit(StockEdit):
             hasattr(obj.Stock, "Objects")
             and len(obj.Stock.Objects) == 1
             and obj.Stock.Objects[0] == stock
+            and stock
         ):
-            if stock:
-                stock = PathJob.createResourceClone(obj, stock, self.StockLabelPrefix, "Stock")
-                stock.ViewObject.Visibility = True
-                PathStock.SetupStockObject(stock, PathStock.StockType.Unknown)
-                stock.Proxy.execute(stock)
-                self.setStock(obj, stock)
+            stock = PathJob.createResourceClone(obj, stock, self.StockLabelPrefix, "Stock")
+            stock.ViewObject.Visibility = True
+            PathStock.SetupStockObject(stock, PathStock.StockType.Unknown)
+            stock.Proxy.execute(stock)
+            self.setStock(obj, stock)
 
     def candidates(self, obj):
         solids = [o for o in obj.Document.Objects if PathUtil.isSolid(o)]
@@ -729,21 +766,16 @@ class StockFromExistingEdit(StockEdit):
             solids.remove(job.Stock)
         excludeIndexes = []
         for index, model in enumerate(solids):
-            if [ob.Name for ob in model.InListRecursive if "Tools" in ob.Name]:
-                excludeIndexes.append(index)
-            elif hasattr(model, "PathResource"):
-                excludeIndexes.append(index)
-            elif model.InList and hasattr(model.InList[0], "ToolBitID"):
-                excludeIndexes.append(index)
-            elif hasattr(model, "ToolBitID"):
-                excludeIndexes.append(index)
-            elif model.TypeId == "App::DocumentObjectGroup":
-                excludeIndexes.append(index)
-            elif hasattr(model, "StockType"):
-                excludeIndexes.append(index)
-            elif not model.ViewObject.ShowInTree:
-                excludeIndexes.append(index)
-            elif model.isDerivedFrom("PartDesign::Feature"):
+            if (
+                any("Tools" in ob.Name for ob in model.InListRecursive)
+                or hasattr(model, "PathResource")
+                or (model.InList and hasattr(model.InList[0], "ToolBitID"))
+                or hasattr(model, "ToolBitID")
+                or model.TypeId == "App::DocumentObjectGroup"
+                or hasattr(model, "StockType")
+                or not model.ViewObject.ShowInTree
+                or model.isDerivedFrom("PartDesign::Feature")
+            ):
                 excludeIndexes.append(index)
 
         for i in sorted(excludeIndexes, reverse=True):
@@ -766,6 +798,15 @@ class StockFromExistingEdit(StockEdit):
             self.form.stockExisting.addItem(solid.Label, solid)
             if stockBaseName == solid.Name:
                 index = i
+
+        if self.force and self.IsStock(obj) and obj.Model.Group:  # set placement while refresh
+            for model in obj.Model.Group:
+                objects = getattr(model, "Objects", None)
+                if objects and objects[0] == obj.Stock.Objects[0]:
+                    obj.Stock.Placement = model.Placement
+                    break
+            else:
+                obj.Stock.Placement = obj.Model.Group[0].Placement
 
         self.form.stockExisting.setCurrentIndex(index)
         self.form.stockExisting.blockSignals(False)
@@ -882,7 +923,7 @@ class TaskPanel:
             return
         _, name = self._currentStockMaterial()
         if name:
-            label.setText(name)
+            label.setText(_format_label(name, keep_case=True))
             label.setStyleSheet("")
         else:
             label.setText(translate("CAM_Job", "(none assigned)"))
@@ -904,12 +945,15 @@ class TaskPanel:
         Path.Log.track()
         FreeCADGui.Selection.removeObserver(self)
         # Restore natural selectability: model selectable, stock non-selectable
+        # and reset transparency after leaving the task panel.
         stock = self.obj.Stock
         if stock and stock.ViewObject:
             stock.ViewObject.Selectable = False
+            stock.ViewObject.Transparency = 85
         for base in self.obj.Model.Group:
             if base and base.ViewObject:
                 base.ViewObject.Selectable = True
+                # base.ViewObject.Transparency = 0
         self.vproxy.resetEditVisibility(self.obj)
         self.vproxy.resetTaskPanel()
 
@@ -976,8 +1020,8 @@ class TaskPanel:
             self.obj.Label = str(self.form.jobLabel.text())
             self.obj.Description = str(self.form.jobDescription.toPlainText())
             self.obj.Operations.Group = [
-                self.form.operationsList.item(i).data(self.DataObject)
-                for i in range(self.form.operationsList.count())
+                self.form.operationsList.invisibleRootItem().child(i).data(self.DataObject, 0)
+                for i in range(self.form.operationsList.topLevelItemCount())
             ]
             try:
                 self.obj.SplitOutput = self.form.splitOutput.isChecked()
@@ -1056,26 +1100,26 @@ class TaskPanel:
             item.setData(self.DataProperty, "Label")
             self.form.toolControllerList.setItem(row, 0, item)
 
-            item = QtGui.QTableWidgetItem("%d" % tc.ToolNumber)
+            item = QtGui.QTableWidgetItem(f"{tc.ToolNumber}")
             item.setTextAlignment(QtCore.Qt.AlignRight)
             item.setData(self.DataObject, tc)
             item.setData(self.DataProperty, "Number")
             self.form.toolControllerList.setItem(row, 1, item)
 
-            item = QtGui.QTableWidgetItem("%g" % tc.HorizFeed.getValueAs(vUnit))
+            item = QtGui.QTableWidgetItem(f"{tc.HorizFeed.getValueAs(vUnit).Value:g}")
             item.setTextAlignment(QtCore.Qt.AlignRight)
             item.setData(self.DataObject, tc)
             item.setData(self.DataProperty, "HorizFeed")
             self.form.toolControllerList.setItem(row, 2, item)
 
-            item = QtGui.QTableWidgetItem("%g" % tc.VertFeed.getValueAs(vUnit))
+            item = QtGui.QTableWidgetItem(f"{tc.VertFeed.getValueAs(vUnit).Value:g}")
             item.setTextAlignment(QtCore.Qt.AlignRight)
             item.setData(self.DataObject, tc)
             item.setData(self.DataProperty, "VertFeed")
             self.form.toolControllerList.setItem(row, 3, item)
 
             item = QtGui.QTableWidgetItem(
-                "%s%g" % ("+" if tc.SpindleDir == "Forward" else "-", tc.SpindleSpeed)
+                f"{'+' if tc.SpindleDir.casefold() == 'forward' else '-'}{tc.SpindleSpeed:g}"
             )
             item.setTextAlignment(QtCore.Qt.AlignRight)
             item.setData(self.DataObject, tc)
@@ -1112,11 +1156,43 @@ class TaskPanel:
         # self.obj.Proxy.onChanged(self.obj, "PostProcessor")
         self.updateTooltips()
 
-        self.form.operationsList.clear()
-        for child in self.obj.Operations.Group:
-            item = QtGui.QListWidgetItem(child.Label)
-            item.setData(self.DataObject, child)
-            self.form.operationsList.addItem(item)
+        col_num = 0
+        col_op_label = 1
+        col_tool_number = 2
+        col_tc = 3
+        col_coolant = 4
+        col_time = 5
+
+        tree = self.form.operationsList
+        tree.blockSignals(True)
+        tree.setTextElideMode(QtCore.Qt.ElideMiddle)
+        tree.setWordWrap(False)
+        tree.clear()
+
+        for index, op in enumerate(self.obj.Operations.Group):
+            item = QtGui.QTreeWidgetItem(tree)
+            item.setData(self.DataObject, 0, op)
+            item.setText(col_num, str(index))
+            item.setText(col_op_label, op.Label)
+            if tc := PathUtil.toolControllerForOp(op):
+                tcLabel = tc.Label
+                toolNumber = str(tc.ToolNumber)
+            else:
+                tcLabel = "???"
+                toolNumber = ""
+            item.setText(col_tool_number, toolNumber)
+            item.setTextAlignment(col_tool_number, QtCore.Qt.AlignCenter)
+            item.setText(col_tc, tcLabel)
+            coolant = PathUtil.coolantModeForOp(op)
+            coolantString = coolant if coolant != "None" else ""
+            item.setText(col_coolant, coolantString)
+            item.setText(col_time, getattr(op, "CycleTime", ""))
+
+        for column in range(tree.columnCount()):
+            tree.resizeColumnToContents(column)
+
+        tree.resizeColumnToContents(0)
+        tree.blockSignals(False)
 
         self.form.jobModel.clear()
         for name, count in Counter(
@@ -1125,7 +1201,7 @@ class TaskPanel:
             if count == 1:
                 self.form.jobModel.addItem(name)
             else:
-                self.form.jobModel.addItem("%s (%d)" % (name, count))
+                self.form.jobModel.addItem(f"{name} ({count})")
 
         self.updateToolController()
         self.stockEdit.setFields(self.obj)
@@ -1134,30 +1210,53 @@ class TaskPanel:
         self.populateMachineCombo()
 
     def setPostProcessorOutputFile(self):
+        from Path.Post.Utils import FilenameGenerator
+
+        generator = FilenameGenerator(job=self.vobj.Object)
+        gen_filenames = generator.generate_filenames()
+        resolved_path = next(gen_filenames)
+        if not os.path.exists(resolved_path) and not os.path.exists(os.path.dirname(resolved_path)):
+            resolved_path = os.path.dirname(FreeCAD.activeDocument().FileName)
         filename = QtGui.QFileDialog.getSaveFileName(
             self.form,
             translate("CAM_Job", "Select Output File"),
-            None,
-            translate("CAM_Job", "All Files (*.*)"),
+            resolved_path,
+            translate("CAM_Job", "All Files (*)"),
         )
         if filename and filename[0]:
-            self.obj.PostProcessorOutputFile = str(filename[0])
-            self.setFields()
+            msgBox = QtGui.QMessageBox()
+            msgBox.setWindowTitle("Warning")
+            msgBox.setText("<p align='center'>This will replace filename template</p>")
+            msgBox.setInformativeText("<p align='center'>Are you sure?</p>")
+            msgBox.findChild(QtGui.QGridLayout).setColumnMinimumWidth(1, 250)
+            btn1 = msgBox.addButton("Ok", QtGui.QMessageBox.ButtonRole.YesRole)
+            _ = msgBox.addButton("Cancel", QtGui.QMessageBox.ButtonRole.RejectRole)
+            msgBox.exec()
+            if msgBox.clickedButton() == btn1:
+                self.obj.PostProcessorOutputFile = str(filename[0])
+                self.setFields()
 
     def operationSelect(self):
-        if self.form.operationsList.selectedItems():
+        tree = self.form.operationsList
+        if tree.selectedItems():
             self.form.operationModify.setEnabled(True)
             self.form.operationMove.setEnabled(True)
-            row = self.form.operationsList.currentRow()
-            self.form.operationUp.setEnabled(row > 0)
-            self.form.operationDown.setEnabled(row < self.form.operationsList.count() - 1)
+            selected_item = tree.currentItem()
+            if selected_item:
+                row = tree.indexOfTopLevelItem(selected_item)
+                # row = tree.currentItem()
+                self.form.operationUp.setEnabled(row > 0)
+                self.form.operationDown.setEnabled(row < tree.topLevelItemCount() - 1)
         else:
             self.form.operationModify.setEnabled(False)
             self.form.operationMove.setEnabled(False)
 
     def objectDelete(self, widget):
         for item in widget.selectedItems():
-            obj = item.data(self.DataObject)
+            if isinstance(widget, QtGui.QTreeWidget):  # operationsList
+                obj = item.data(self.DataObject, 0)
+            else:  # toolControllerList
+                obj = item.data(self.DataObject)
             if (
                 obj.ViewObject
                 and hasattr(obj.ViewObject, "Proxy")
@@ -1171,19 +1270,21 @@ class TaskPanel:
         self.objectDelete(self.form.operationsList)
 
     def operationMoveUp(self):
-        row = self.form.operationsList.currentRow()
+        selected_item = self.form.operationsList.currentItem()
+        row = self.form.operationsList.indexOfTopLevelItem(selected_item)
         if row > 0:
-            item = self.form.operationsList.takeItem(row)
-            self.form.operationsList.insertItem(row - 1, item)
-            self.form.operationsList.setCurrentRow(row - 1)
+            item = self.form.operationsList.takeTopLevelItem(row)
+            self.form.operationsList.insertTopLevelItem(row - 1, item)
+            self.form.operationsList.setCurrentItem(item)
             self.getFields()
 
     def operationMoveDown(self):
-        row = self.form.operationsList.currentRow()
-        if row < self.form.operationsList.count() - 1:
-            item = self.form.operationsList.takeItem(row)
-            self.form.operationsList.insertItem(row + 1, item)
-            self.form.operationsList.setCurrentRow(row + 1)
+        selected_item = self.form.operationsList.currentItem()
+        row = self.form.operationsList.indexOfTopLevelItem(selected_item)
+        if row < self.form.operationsList.topLevelItemCount() - 1:
+            item = self.form.operationsList.takeTopLevelItem(row)
+            self.form.operationsList.insertTopLevelItem(row + 1, item)
+            self.form.operationsList.setCurrentItem(item)
             self.getFields()
 
     def toolControllerSelect(self):
@@ -1192,7 +1293,7 @@ class TaskPanel:
             return len(tc.InList) == 1
 
         # if anything is selected it can be edited
-        edit = True if self.form.toolControllerList.selectedItems() else False
+        edit = bool(self.form.toolControllerList.selectedItems())
         self.form.toolControllerEdit.setEnabled(edit)
 
         # can only delete what is selected
@@ -1216,34 +1317,20 @@ class TaskPanel:
         self.setFields()
         self.toolControllerSelect()
 
+    def toolControllerAdded(self, job, tc):
+        """Refreshes the tool table whenever a controller is added to our job."""
+        if job is self.obj:
+            self.updateToolController()
+
     def toolControllerAdd(self):
-        selector = ToolBitSelector(compact=True, show_all_tools=True)
-        if not selector.exec_():
-            return
-
-        toolbits = selector.get_selected_tools()
-        if not toolbits:
-            return
-
-        # Get tool numbers mapping (from library or empty for auto-increment)
-        tool_numbers = selector.get_tool_numbers()
-
-        # Add each selected tool
-        for toolbit in toolbits:
-            toolbit.attach_to_doc(FreeCAD.ActiveDocument)
-
-            # Get tool number: use library number if available, otherwise auto-increment
-            toolbit_uri = str(toolbit.get_uri())
-            toolNum = tool_numbers.get(toolbit_uri)
-            if toolNum is None:
-                toolNum = self.obj.Proxy.nextToolNumber()
-
-            tc = PathToolControllerGui.Create(
-                name=f"TC: {toolbit.label}", tool=toolbit.obj, toolNumber=toolNum
-            )
-            self.obj.Proxy.addToolController(tc)
-
-        FreeCAD.ActiveDocument.recompute()
+        # Listen while the dock is open so tools appear in the table as they
+        # are added, rather than only once the dock is closed.
+        PathJob.Notification.updateTC.connect(self.toolControllerAdded)
+        try:
+            dock = ToolBitLibraryDock(self.obj)
+            dock.open()
+        finally:
+            PathJob.Notification.updateTC.disconnect(self.toolControllerAdded)
         self.updateToolController()
 
     def toolControllerDelete(self):
@@ -1257,10 +1344,26 @@ class TaskPanel:
             item.setText(tc.Label)
         elif "Number" == prop:
             try:
-                tc.ToolNumber = int(item.text())
+                toolNumber = int(item.text())
             except Exception:
-                pass
-            item.setText("%d" % tc.ToolNumber)
+                toolNumber = tc.ToolNumber
+            if toolNumber != tc.ToolNumber:
+                # Two different tools on one number would emit the same tool
+                # change for both, so refuse the edit and put the old one back.
+                owner = PathToolControllerGui.findConflictingToolController(
+                    self.obj.Tools.Group, toolNumber, getattr(tc.Tool, "ToolBitID", None), tc
+                )
+                if owner is None:
+                    tc.ToolNumber = toolNumber
+                else:
+                    QtGui.QMessageBox.warning(
+                        self.form,
+                        translate("CAM_Job", "Tool Number In Use"),
+                        translate("CAM_Job", "Tool number {} is already used by {}.").format(
+                            toolNumber, owner.Label
+                        ),
+                    )
+            item.setText(f"{tc.ToolNumber}")
         elif "Spindle" == prop:
             try:
                 speed = float(item.text())
@@ -1270,9 +1373,11 @@ class TaskPanel:
                     speed = -speed
                 tc.SpindleDir = rot
                 tc.SpindleSpeed = speed
-            except Exception:
-                pass
-            item.setText("%s%g" % ("+" if tc.SpindleDir == "Forward" else "-", tc.SpindleSpeed))
+            except Exception as e:
+                Path.Log.debug(e)
+            item.setText(
+                f"{'+' if tc.SpindleDir.casefold() == 'forward' else '-'}{tc.SpindleSpeed:g}"
+            )
         elif "HorizFeed" == prop or "VertFeed" == prop:
             vUnit = FreeCAD.Units.Quantity(1, FreeCAD.Units.Velocity).getUserPreferred()[2]
             try:
@@ -1282,22 +1387,22 @@ class TaskPanel:
                 elif FreeCAD.Units.Unit() == val.Unit:
                     val = FreeCAD.Units.Quantity(item.text() + vUnit)
                     setattr(tc, prop, val)
-            except Exception:
-                pass
-            item.setText("%g" % getattr(tc, prop).getValueAs(vUnit))
+            except Exception as e:
+                Path.Log.debug(e)
+            item.setText(f"{getattr(tc, prop).getValueAs(vUnit).Value:g}")
         else:
             try:
                 val = FreeCAD.Units.Quantity(item.text())
                 setattr(tc, prop, val)
-            except Exception:
-                pass
-            item.setText("%g" % getattr(tc, prop).Value)
+            except Exception as e:
+                Path.Log.debug(e)
+            item.setText(f"{getattr(tc, prop).Value:g}")
 
     def modelSetAxis(self, axis):
         Path.Log.track(axis)
 
         def alignSel(sel, normal, flip=False):
-            Path.Log.track("Vector(%.2f, %.2f, %.2f)" % (normal.x, normal.y, normal.z), flip)
+            Path.Log.track(f"Vector({normal.x:.2f}, {normal.y:.2f}, {normal.z:.2f})", flip)
             v = axis
             if flip:
                 v = axis.negative()
@@ -1314,8 +1419,7 @@ class TaskPanel:
                 r = v.cross(normal)  # rotation axis
                 a = DraftVecUtils.angle(normal, v, r) * 180 / math.pi
             Path.Log.debug(
-                "oh boy: (%.2f, %.2f, %.2f) x (%.2f, %.2f, %.2f) -> (%.2f, %.2f, %.2f) -> %.2f"
-                % (v.x, v.y, v.z, normal.x, normal.y, normal.z, r.x, r.y, r.z, a)
+                f"oh boy: ({v.x:.2f}, {v.y:.2f}, {v.z:.2f}) x ({normal.x:.2f}, {normal.y:.2f}, {normal.z:.2f}) -> ({r.x:.2f}, {r.y:.2f}, {r.z:.2f}) -> {a:.2f}"
             )
             Draft.rotate(sel.Object, a, axis=r)
 
@@ -1334,13 +1438,11 @@ class TaskPanel:
                         if sub.Orientation == "Reversed":
                             normal = FreeCAD.Vector() - normal
                             Path.Log.debug(
-                                "(%.2f, %.2f, %.2f) -> reversed (%s)"
-                                % (normal.x, normal.y, normal.z, sub.Orientation)
+                                f"({normal.x:.2f}, {normal.y:.2f}, {normal.z:.2f}) -> reversed ({sub.Orientation})"
                             )
                         else:
                             Path.Log.debug(
-                                "(%.2f, %.2f, %.2f) -> forward  (%s)"
-                                % (normal.x, normal.y, normal.z, sub.Orientation)
+                                f"({normal.x:.2f}, {normal.y:.2f}, {normal.z:.2f}) -> forward  ({sub.Orientation})"
                             )
 
                         if Path.Geom.pointsCoincide(axis, normal):
@@ -1400,13 +1502,26 @@ class TaskPanel:
                                 Draft.move(self.obj.Stock, offset)
 
     def modelMove(self, axis):
-        scale = self.form.modelMoveValue.value()
+        scale = self.form.modelMoveValue.property("rawValue")
         with selectionEx() as selection:
             for sel in selection:
                 offset = axis * scale
                 Draft.move(sel.Object, offset)
 
-    def modelRotate(self, axis):
+    def modelRotateAxis(self):
+        """Returns the unit vector of the rotation axis selected in the axis combo."""
+        axes = [
+            FreeCAD.Vector(1, 0, 0),
+            FreeCAD.Vector(0, 1, 0),
+            FreeCAD.Vector(0, 0, 1),
+        ]
+        index = self.form.modelRotateAxis.currentIndex()
+        if index < 0 or index >= len(axes):
+            index = 2  # default to Z
+        return axes[index]
+
+    def modelRotate(self, direction):
+        axis = self.modelRotateAxis() * direction
         angle = self.form.modelRotateValue.value()
         with selectionEx() as selection:
             if self.form.modelRotateCompound.isChecked() and len(selection) > 1:
@@ -1425,14 +1540,13 @@ class TaskPanel:
         try:
             entries = MachineFactory.list_configuration_files()
         except Exception as e:
-            Path.Log.warning("Failed to list machines: %s" % e)
+            Path.Log.warning(f"Failed to list machines: {e}")
             entries = [("<none>", None)]
         for display, filename in entries:
             combo.addItem(display, filename or "")
         current = getattr(self.obj, "Machine", "") or ""
         idx = combo.findText(current) if current else -1
-        if idx < 0:
-            idx = 0
+        idx = max(0, idx)
         combo.setCurrentIndex(idx)
         combo.blockSignals(False)
 
@@ -1455,22 +1569,29 @@ class TaskPanel:
                     if idx >= 0:
                         self.form.jobMachine.setCurrentIndex(idx)
         except Exception as e:
-            Path.Log.error("Failed to open Machine Editor: %s" % e)
+            Path.Log.error(f"Failed to open Machine Editor: {e}")
 
-    def togglePickTarget(self, checked):
-        """Toggle whether origin/axis picks target the Stock or the Model.
-        When checked (Picking: Model): model selectable, stock non-selectable.
-        When unchecked (Picking: Stock): stock selectable, model non-selectable."""
+    def togglePickTarget(self, modelTarget):
+        """Set whether origin/axis picks target the Model or the Stock.
+        When modelTarget is True: model selectable, stock non-selectable.
+        When modelTarget is False: stock selectable, model non-selectable."""
         stock = self.obj.Stock
         if stock and stock.ViewObject:
-            stock.ViewObject.Selectable = not checked
+            stock.ViewObject.Selectable = not modelTarget
+            stock.ViewObject.Transparency = 95 if modelTarget else 85
         for base in self.obj.Model.Group:
             if base and base.ViewObject:
-                base.ViewObject.Selectable = checked
-        if checked:
-            self.form.pickTargetToggle.setText(translate("CAM_Job", "Picking: Model"))
-        else:
-            self.form.pickTargetToggle.setText(translate("CAM_Job", "Picking: Stock"))
+                base.ViewObject.Selectable = modelTarget
+                # base.ViewObject.Transparency = 0 if modelTarget else 95
+        self.form.pickTargetModel.setChecked(modelTarget)
+        self.form.pickTargetStock.setChecked(not modelTarget)
+        # Apply explicit highlight so the active button is visible regardless of theme.
+        pal = self.form.pickTargetModel.palette()
+        hl_color = pal.highlight().color().name()
+        hl_text = pal.highlightedText().color().name()
+        active_style = f"background-color: {hl_color}; color: {hl_text};"
+        self.form.pickTargetModel.setStyleSheet(active_style if modelTarget else "")
+        self.form.pickTargetStock.setStyleSheet("" if modelTarget else active_style)
 
     def alignSetOrigin(self):
         obj, by = self.alignMoveToOrigin()
@@ -1499,7 +1620,11 @@ class TaskPanel:
                 if "Vertex" == sub.ShapeType:
                     p = FreeCAD.Vector() - sub.Point
                 if "Edge" == sub.ShapeType:
-                    p = FreeCAD.Vector() - sub.Curve.Location
+                    if isinstance(sub.Curve, Part.Circle):
+                        p = FreeCAD.Vector() - sub.Curve.Location
+                    else:
+                        mid = sub.valueAt((sub.FirstParameter + sub.LastParameter) / 2)
+                        p = FreeCAD.Vector() - mid
                 if "Face" == sub.ShapeType:
                     p = FreeCAD.Vector() - sub.BoundBox.Center
 
@@ -1572,6 +1697,7 @@ class TaskPanel:
 
     def refreshStock(self):
         self.updateStockEditor(self.form.stock.currentIndex(), True)
+        self.togglePickTarget(self.form.pickTargetModel.isChecked())
 
     def alignCenterInStock(self):
         bbs = self.obj.Stock.Shape.BoundBox
@@ -1589,21 +1715,13 @@ class TaskPanel:
             Draft.move(sel.Object, by)
 
     def isValidDatumSelection(self, sel):
-        if sel.ShapeType in ["Vertex", "Edge", "Face"]:
-            if hasattr(sel, "Curve") and not isinstance(sel.Curve, Part.Circle):
-                return False
-            return True
-
-        # no valid selection
-        return False
+        return sel.ShapeType in ("Vertex", "Edge", "Face")
 
     def isValidAxisSelection(self, sel):
-        if sel.ShapeType in ["Vertex", "Edge", "Face"]:
+        if sel.ShapeType in ("Vertex", "Edge", "Face"):
             if hasattr(sel, "Curve") and isinstance(sel.Curve, Part.Circle):
                 return False
-            if hasattr(sel, "Surface") and sel.Surface.curvature(0, 0, "Max") != 0:
-                return False
-            return True
+            return not (hasattr(sel, "Surface") and sel.Surface.curvature(0, 0, "Max") != 0)
 
         # no valid selection
         return False
@@ -1643,14 +1761,16 @@ class TaskPanel:
             self.form.modelSetY0.setEnabled(True)
             self.form.modelSetZ0.setEnabled(True)
             self.form.modelMoveGroup.setEnabled(True)
-            self.form.modelRotateGroup.setEnabled(True)
-            self.form.modelRotateCompound.setEnabled(len(sel) > 1)
+            # self.form.modelRotateGroup.setEnabled(True)
+            # Compound only has an effect with multiple objects selected, but keep it
+            # clickable so the setting can be made before the selection is complete.
+            self.form.modelRotateCompound.setEnabled(True)
         else:
             self.form.modelSetX0.setEnabled(False)
             self.form.modelSetY0.setEnabled(False)
             self.form.modelSetZ0.setEnabled(False)
             self.form.modelMoveGroup.setEnabled(False)
-            self.form.modelRotateGroup.setEnabled(False)
+            # self.form.modelRotateGroup.setEnabled(False)
 
     def jobModelEdit(self):
         dialog = PathJobDlg.JobCreate()
@@ -1723,7 +1843,7 @@ class TaskPanel:
 
         # Workplan
         self.form.operationsList.itemSelectionChanged.connect(self.operationSelect)
-        self.form.operationsList.indexesMoved.connect(self.getFields)
+        self.form.operationsList.itemChanged.connect(self.getFields)
         self.form.operationDelete.clicked.connect(self.operationDelete)
         self.form.operationUp.clicked.connect(self.operationMoveUp)
         self.form.operationDown.clicked.connect(self.operationMoveDown)
@@ -1759,44 +1879,112 @@ class TaskPanel:
 
         self.form.setOrigin.clicked.connect(self.alignSetOrigin)
         self.form.moveToOrigin.clicked.connect(self.alignMoveToOrigin)
-        self.form.pickTargetToggle.toggled.connect(self.togglePickTarget)
-        self.togglePickTarget(self.form.pickTargetToggle.isChecked())
+        self.form.pickTargetModel.clicked.connect(lambda: self.togglePickTarget(True))
+        self.form.pickTargetStock.clicked.connect(lambda: self.togglePickTarget(False))
+        self.togglePickTarget(True)  # default: Model
 
-        self.form.modelMoveLeftUp.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(-1, 1, 0)))
+        _moveUnit = FreeCAD.Units.Quantity(1, FreeCAD.Units.Length).getUserPreferred()[2]
+        if _moveUnit in ("in", '"'):
+            self.form.modelMoveValue.setProperty("unit", "in")
+            self.form.modelMoveValue.setProperty("rawValue", 2.54)  # 0.100"
+        else:
+            self.form.modelMoveValue.setProperty("unit", "mm")
+            self.form.modelMoveValue.setProperty("rawValue", 1.0)
+
+        # self.form.modelMoveLeftUp.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(-1, 1, 0)))
         self.form.modelMoveLeft.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(-1, 0, 0)))
-        self.form.modelMoveLeftDown.clicked.connect(
-            lambda: self.modelMove(FreeCAD.Vector(-1, -1, 0))
-        )
+        # self.form.modelMoveLeftDown.clicked.connect(
+        #    lambda: self.modelMove(FreeCAD.Vector(-1, -1, 0))
+        # )
 
         self.form.modelMoveUp.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(0, 1, 0)))
         self.form.modelMoveDown.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(0, -1, 0)))
 
-        self.form.modelMoveRightUp.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(1, 1, 0)))
+        self.form.modelMoveZUp.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(0, 0, 1)))
         self.form.modelMoveRight.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(1, 0, 0)))
-        self.form.modelMoveRightDown.clicked.connect(
-            lambda: self.modelMove(FreeCAD.Vector(1, -1, 0))
-        )
+        self.form.modelMoveZDown.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(0, 0, -1)))
 
-        self.form.modelRotateLeft.clicked.connect(lambda: self.modelRotate(FreeCAD.Vector(0, 0, 1)))
-        self.form.modelRotateRight.clicked.connect(
-            lambda: self.modelRotate(FreeCAD.Vector(0, 0, -1))
-        )
+        self.form.modelRotateAxis.setCurrentIndex(2)  # default: Z
+        self.form.modelRotateAxis.currentIndexChanged.connect(self._updateRotateIcons)
+        self._updateRotateIcons()
+        self.form.modelRotateLeft.clicked.connect(lambda: self.modelRotate(1))
+        self.form.modelRotateRight.clicked.connect(lambda: self.modelRotate(-1))
 
         self.updateSelection()
 
         # set active page
-        if activate in ["Layout", "Stock"]:
+        if activate in ("Layout", "Stock"):
             self.form.setCurrentIndex(0)
-        if activate in ["General", "Model"]:
+        if activate in ("General", "Model"):
             self.form.setCurrentIndex(1)
-        if activate in ["Output", "Post Processor"]:
+        if activate in ("Output", "Post Processor"):
             self.form.setCurrentIndex(2)
-        if activate in ["Tools", "Tool Controller"]:
+        if activate in ("Tools", "Tool Controller"):
             self.form.setCurrentIndex(3)
-        if activate in ["Workplan", "Operations"]:
+        if activate in ("Workplan", "Operations"):
             self.form.setCurrentIndex(4)
 
         self.form.currentChanged.connect(self.tabPageChanged)
+
+        self._applyButtonIcons()
+
+    def _updateRotateIcons(self):
+        """Color the rotate arrows to match the axis selected in the axis combo."""
+        axis = ["x", "y", "z"][max(0, min(2, self.form.modelRotateAxis.currentIndex()))]
+        self.form.modelRotateLeft.setIcon(QtGui.QIcon(f":/icons/arrow-ccw-{axis}.svg"))
+        self.form.modelRotateRight.setIcon(QtGui.QIcon(f":/icons/arrow-cw-{axis}.svg"))
+
+    def _applyButtonIcons(self):
+        """Set button icons with original SVG colors, adapting monochrome icons to the
+        current theme (white on dark, black on light).  The XYZ axis buttons always
+        keep their fixed Red / Green / Blue stroke colors."""
+
+        is_dark = PathGuiTheme.is_dark_theme()
+
+        def _adaptive_icon(resource_path, size=16):
+            """Load a monochrome SVG icon (#111111 stroke/fill) and invert to white
+            when running under a dark theme. Also sets a proper disabled pixmap for button tinting.
+            """
+
+            from PySide import QtSvg
+
+            f = QtCore.QFile(resource_path)
+            if not f.open(QtCore.QFile.ReadOnly):
+                return QtGui.QIcon(resource_path)
+            content = bytes(f.readAll())
+            f.close()
+
+            if is_dark:
+                # #d33d3d is a placehole color to avoid #111111 -> #ffffff replacement affecting the original black strokes in the SVG
+                content = content.replace(b"#111111", b"#d33d3d")
+                content = content.replace(b"#ffffff", b"#111111")
+                content = content.replace(b"#d33d3d", b"#ffffff")
+
+            ba = QtCore.QByteArray(content)
+            renderer = QtSvg.QSvgRenderer(ba)
+            pixmap = QtGui.QPixmap(size, size)
+            pixmap.fill(QtCore.Qt.transparent)
+            painter = QtGui.QPainter(pixmap)
+            renderer.render(painter)
+            painter.end()
+
+            icon = QtGui.QIcon(pixmap)
+            # Disabled pixmap: faded version of the already-correct color
+            disabled_pixmap = pixmap.copy()
+            painter = QtGui.QPainter(disabled_pixmap)
+            painter.setCompositionMode(QtGui.QPainter.CompositionMode_DestinationIn)
+            painter.fillRect(disabled_pixmap.rect(), QtGui.QColor(0, 0, 0, 100))
+            painter.end()
+            icon.addPixmap(disabled_pixmap, QtGui.QIcon.Disabled, QtGui.QIcon.Off)
+            return icon
+
+        # Monochrome (theme-adaptive) icons
+        self.form.moveToOrigin.setIcon(_adaptive_icon(":/icons/move-to-origin.svg"))
+        self.form.setOrigin.setIcon(_adaptive_icon(":/icons/set-origin.svg"))
+        self.form.pickTargetModel.setIcon(_adaptive_icon(":/icons/model.svg"))
+        self.form.pickTargetStock.setIcon(_adaptive_icon(":/icons/stock.svg"))
+        self.form.centerInStock.setIcon(_adaptive_icon(":/icons/center-in-stock.svg"))
+        self.form.centerInStockXY.setIcon(_adaptive_icon(":/icons/xy-in-stock.svg"))
 
     def open(self):
         FreeCADGui.Selection.addObserver(self)

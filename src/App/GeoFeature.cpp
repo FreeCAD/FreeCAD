@@ -120,7 +120,7 @@ ElementNamePair GeoFeature::_getElementName(const char* name,
         mapped.index.appendToStringBuffer(result);
         return ElementNamePair(ss.str().c_str(), result.c_str());
     }
-    else if (mapped.name) {
+    if (mapped.name) {
         //        FC_TRACE("element mapped name " << name << " not found in " << getFullName());
         const char* dot = strrchr(name, '.');
         if (dot) {
@@ -132,11 +132,9 @@ ElementNamePair GeoFeature::_getElementName(const char* name,
         }
         return ElementNamePair(name, "");
     }
-    else {
-        std::string oldName;
-        mapped.index.appendToStringBuffer(oldName);
-        return ElementNamePair("", oldName.c_str());
-    }
+    std::string oldName;
+    mapped.index.appendToStringBuffer(oldName);
+    return ElementNamePair("", oldName.c_str());
 }
 
 DocumentObject* GeoFeature::resolveElement(const DocumentObject* obj,

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -66,7 +68,7 @@ QGIHighlight::~QGIHighlight()
 // QGIHighlight is no longer dragged except through TaskDetail.
 void QGIHighlight::onDragFinished()
 {
-//    Base::Console().message("QGIH::onDragFinished - pos: %s\n",
+//    Base::Console().message("QGIH::onDragFinished - pos: {}\n",
 //                            DrawUtil::formatVector(pos()).c_str());
     QGraphicsItem* parent = parentItem();
     auto qgivp = dynamic_cast<QGIViewPart*>(parent);
@@ -167,10 +169,15 @@ void QGIHighlight::setFont(QFont f, double fsize)
 }
 
 
-//obs?
+
 QColor QGIHighlight::getHighlightColor()
 {
-    return PreferencesGui::sectionLineQColor();
+    return m_pen.color();
+}
+
+void QGIHighlight::setHighlightColor(QColor newColor)
+{
+    m_pen.setColor(newColor);
 }
 
 int QGIHighlight::getHoleStyle()

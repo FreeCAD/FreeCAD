@@ -84,7 +84,7 @@ jobs:
 
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
         with:
           egress-policy: audit
 
@@ -118,12 +118,11 @@ jobs:
         uses: ./.github/workflows/actions/linux/generateCacheKey
         with:
           compiler: ${{ env.CXX }}
-          qt_major_version: 5
 
       - name: Restore Compiler Cache
         id: cache-restore
         if: always()
-        uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ${{ env.CCACHE_DIR }}
           key: FC-${{ steps.genCacheKey.outputs.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
@@ -145,7 +144,7 @@ jobs:
       - name: CMake Configure
         uses: ./.github/workflows/actions/linux/configure
         with:
-          extraParameters: -G Ninja --preset ${{ env.config }} -DFREECAD_USE_EXTERNAL_PYCXX=ON -DFREECAD_USE_EXTERNAL_JSON=ON
+          extraParameters: -G Ninja --preset ${{ env.config }} -DFREECAD_USE_EXTERNAL_COIN_PIVY=ON -DFREECAD_USE_EXTERNAL_PYCXX=ON -DFREECAD_USE_EXTERNAL_JSON=ON
           builddir: ${{ env.builddir }}
           logFile: ${{ env.logdir }}Cmake.log
           errorFile: ${{ env.logdir }}CmakeErrors.log
@@ -243,7 +242,7 @@ jobs:
       - name: Save Compiler Cache
         id: cache-save
         if: always()
-        uses: actions/cache/save@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ${{ env.CCACHE_DIR }}
           key: FC-${{ steps.genCacheKey.outputs.cacheKey }}-${{ github.ref }}-${{ github.run_id }}

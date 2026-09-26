@@ -100,9 +100,8 @@ def CreateDressup(path):
 
 
 def MNVR(gcode, begin=None):
-    # 'turns out the replace() isn't really necessary
-    # leave it here anyway for clarity
-    return PathLanguage.Maneuver.FromGCode(gcode.replace("/", "\n"), begin)
+    pp = Path.Path([Path.Command(x) for x in gcode.split("/")])
+    return PathLanguage.Maneuver.FromPath(pp, begin)
 
 
 def INSTR(gcode, begin=None):

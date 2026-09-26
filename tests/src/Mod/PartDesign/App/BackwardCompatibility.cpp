@@ -143,6 +143,7 @@ TEST_F(BackwardCompatibilityTest, TestTwoLengthsPadWithExpression)
     auto pad = dynamic_cast<PartDesign::Pad*>(doc->getObject("Pad"));
     ASSERT_NE(pad, nullptr);
 
+    EXPECT_FALSE(pad->UseLegacyTaperDirection.getValue());
     EXPECT_DOUBLE_EQ(pad->Length.getValue(), 5.0);
     EXPECT_DOUBLE_EQ(pad->Length2.getValue(), 10.0);
 

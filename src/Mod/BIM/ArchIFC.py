@@ -78,6 +78,7 @@ class IfcRoot:
                 QT_TRANSLATE_NOOP("App::Property", "IFC data"),
                 locked=True,
             )
+            obj.setPropertyStatus("IfcData", "Hidden")
 
         if not "IfcType" in obj.PropertiesList:
             obj.addProperty(
@@ -97,6 +98,7 @@ class IfcRoot:
                 QT_TRANSLATE_NOOP("App::Property", "IFC properties of this object"),
                 locked=True,
             )
+            obj.setPropertyStatus("IfcProperties", "Hidden")
 
         self.migrateDeprecatedAttributes(obj)
 
@@ -344,7 +346,6 @@ class IfcRoot:
 
         - OverallWidth
         - OverallHeight
-        - ElevationWithFlooring
         - Elevation
         - NominalDiameter
         - BarLength
@@ -379,8 +380,6 @@ class IfcRoot:
                 obj.setExpression("OverallHeight", "Height.Value")
             else:
                 obj.setExpression("OverallHeight", "Shape.BoundBox.ZLength")
-        elif attribute["name"] == "ElevationWithFlooring" and "Shape" in obj.PropertiesList:
-            obj.setExpression("ElevationWithFlooring", "Shape.BoundBox.ZMin")
         elif attribute["name"] == "Elevation" and "Placement" in obj.PropertiesList:
             obj.setExpression("Elevation", "Placement.Base.z")
         elif attribute["name"] == "NominalDiameter" and "Diameter" in obj.PropertiesList:

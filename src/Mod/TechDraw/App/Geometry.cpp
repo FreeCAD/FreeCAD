@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2012 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -23,7 +25,6 @@
 # include <limits>
 # include <Approx_Curve3d.hxx>
 # include <BRep_Tool.hxx>
-# include <BRepAdaptor_Curve.hxx>
 # include <Mod/Part/App/FCBRepAlgoAPI_Section.h>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
@@ -34,6 +35,7 @@
 # include <BRepLib.hxx>
 # include <BRepLProp_CLProps.hxx>
 # include <BRepTools.hxx>
+# include <BRepTools_WireExplorer.hxx>
 # include <GC_MakeArcOfCircle.hxx>
 # include <GC_MakeEllipse.hxx>
 # include <GC_MakeCircle.hxx>
@@ -42,6 +44,7 @@
 
 # include <gce_MakeCirc.hxx>
 # include <GCPnts_AbscissaPoint.hxx>
+# include <GCPnts_QuasiUniformDeflection.hxx>
 # include <GProp_GProps.hxx>
 # include <Geom_BSplineCurve.hxx>
 # include <Geom_BezierCurve.hxx>
@@ -49,6 +52,7 @@
 # include <GeomAPI_ProjectPointOnCurve.hxx>
 # include <GeomConvert_BSplineCurveToBezierCurve.hxx>
 # include <GeomLProp_CLProps.hxx>
+
 # include <gp_Ax2.hxx>
 # include <gp_Circ.hxx>
 # include <gp_Dir.hxx>
@@ -100,9 +104,8 @@ Wire::Wire()
 
 Wire::Wire(const TopoDS_Wire &w)
 {
-    TopExp_Explorer edges(w, TopAbs_EDGE);
-    for (; edges.More(); edges.Next()) {
-        const auto edge( TopoDS::Edge(edges.Current()) );
+    for (BRepTools_WireExplorer explorer(w); explorer.More(); explorer.Next()) {
+        TopoDS_Edge edge = explorer.Current();
         BaseGeomPtr bg = BaseGeom::baseFactory(edge);
         if (bg) {
             geoms.push_back(bg);
@@ -133,6 +136,19 @@ TopoDS_Wire Wire::toOccWire() const
 void Wire::dump(std::string s)
 {
     BRepTools::Write(toOccWire(), s.c_str());            //debug
+}
+
+Face::Face(const TopoDS_Face& f) : representation(FaceRepresentation::Common)
+{
+    TopoDS_Wire outerWire = BRepTools::OuterWire(f);
+    wires.push_back(new Wire(outerWire));
+
+    for (TopExp_Explorer explorer(f, TopAbs_WIRE); explorer.More(); explorer.Next()) {
+        const TopoDS_Wire& wire = TopoDS::Wire(explorer.Current());
+        if (!wire.IsSame(outerWire)) {
+            wires.push_back(new Wire(wire));
+        }
+    }
 }
 
 // note that the face returned is inverted in Y
@@ -498,10 +514,6 @@ BaseGeomPtr BaseGeom::baseFactory(TopoDS_Edge edge, bool isCosmetic)
           Handle(Geom_BezierCurve) bez = adapt.Bezier();
           //if (bez->Degree() < 4) {
           result = std::make_shared<BezierSegment>(edge);
-          if (edge.Orientation() == TopAbs_REVERSED) {
-              result->reversed = true;
-          }
-
           //    OCC is quite happy with Degree > 3 but QtGui handles only 2, 3
       } break;
       case GeomAbs_BSplineCurve: {
@@ -530,7 +542,7 @@ BaseGeomPtr BaseGeom::baseFactory(TopoDS_Edge edge, bool isCosmetic)
             break;
         }
         catch (const Standard_Failure& e) {
-            Base::Console().log("Geom::baseFactory - OCC error - %s - while making spline\n",
+            Base::Console().log("Geom::baseFactory - OCC error - {} - while making spline\n",
                               e.GetMessageString());
             break;
         }
@@ -572,7 +584,7 @@ TopoDS_Edge BaseGeom::completeEdge(const TopoDS_Edge &edge) {
         }
     }
     catch (Standard_Failure &e) {
-        Base::Console().error("BaseGeom::completeEdge OCC error: %s\n", e.GetMessageString());
+        Base::Console().error("BaseGeom::completeEdge OCC error: {}\n", e.GetMessageString());
     }
 
     return TopoDS_Edge();
@@ -616,7 +628,7 @@ std::vector<Base::Vector3d> BaseGeom::intersection(TechDraw::BaseGeomPtr geom2)
 
 TopoShape BaseGeom::asTopoShape(double scale)
 {
-//    Base::Console().message("BG::asTopoShape(%.3f) - dump: %s\n", scale, dump().c_str());
+//    Base::Console().message("BG::asTopoShape({:.3f}) - dump: {}\n", scale, dump());
     TopoDS_Shape unscaledShape = ShapeUtils::scaleShape(getOCCEdge(), 1.0 / scale);
     TopoDS_Edge unscaledEdge = TopoDS::Edge(unscaledShape);
     return unscaledEdge;
@@ -678,7 +690,7 @@ AOE::AOE(const TopoDS_Edge &e) : Ellipse(e)
         a = v3.DotCross(v1, v2);
     }
     catch (const Standard_Failure& e) {
-        Base::Console().error("Geom::AOE::AOE - OCC error - %s - while making AOE in ctor\n",
+        Base::Console().error("Geom::AOE::AOE - OCC error - {} - while making AOE in ctor\n",
                               e.GetMessageString());
     }
 
@@ -790,7 +802,6 @@ AOC::AOC(const TopoDS_Edge &e) : Circle(e)
 
     startAngle = fmod(f, 2.0*std::numbers::pi);
     endAngle = fmod(l, 2.0*std::numbers::pi);
-
 
     cw = (a < 0) ? true: false;
     largeArc = (fabs(l-f) > std::numbers::pi) ? true : false;
@@ -1117,60 +1128,39 @@ Base::Vector3d Generic::apparentInter(GenericPtr g)
 BSpline::BSpline(const TopoDS_Edge &e)
 {
     geomType = GeomType::BSPLINE;
-    BRepAdaptor_Curve c(e);
-    isArc = !c.IsClosed();
-    Handle(Geom_BSplineCurve) cSpline = c.BSpline();
+    BRepAdaptor_Curve edgeCurve(e);
+    isArc = !edgeCurve.IsClosed();
     occEdge = e;
-    Handle(Geom_BSplineCurve) spline;
 
-    double f, l;
-    f = c.FirstParameter();
-    l = c.LastParameter();
-    gp_Pnt s = c.Value(f);
-    gp_Pnt m = c.Value((l+f)/2.0);
-    gp_Pnt ePt = c.Value(l);
-    startPnt = Base::Vector3d(s.X(), s.Y(), s.Z());
-    endPnt = Base::Vector3d(ePt.X(), ePt.Y(), ePt.Z());
-    midPnt = Base::Vector3d(m.X(), m.Y(), m.Z());
-    gp_Vec v1(m, s);
-    gp_Vec v2(m, ePt);
-    gp_Vec v3(0, 0, 1);
-    double a = v3.DotCross(v1, v2);
-    cw = (a < 0) ? true: false;
+    setDirection(edgeCurve);
 
-    startAngle = atan2(startPnt.y, startPnt.x);
-    if (startAngle < 0) {
-         startAngle += 2.0 * std::numbers::pi;
-    }
-    endAngle = atan2(endPnt.y, endPnt.x);
-    if (endAngle < 0) {
-         endAngle += 2.0 * std::numbers::pi;
-    }
-
-    Standard_Real tol3D = 0.001;                                   //1/1000 of a mm? screen can't resolve this
-    Standard_Integer maxDegree = 3, maxSegment = 200;
-    Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(c);
-    // approximate the curve using a tolerance
-    //Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C2, maxSegment, maxDegree);   //gives degree == 5  ==> too many poles ==> buffer overrun
-    Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C0, maxSegment, maxDegree);
-    if (approx.IsDone() && approx.HasResult()) {
-        spline = approx.Curve();
-    }
-    else if (approx.HasResult()) { //result, but not within tolerance
-        spline = approx.Curve();
-    }
-    else {
-        f = c.FirstParameter();
-        l = c.LastParameter();
-        s = c.Value(f);
-        ePt = c.Value(l);
-        TColgp_Array1OfPnt controlPoints(0, 1);
-        controlPoints.SetValue(0, s);
-        controlPoints.SetValue(1, ePt);
-        spline = GeomAPI_PointsToBSpline(controlPoints, 1).Curve();
+    // if the curve is already has degree <= 3, we should not approximate it, but just use the existing curve
+    Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(edgeCurve);
+    Handle(Geom_BSplineCurve) splineOut = hCurve->BSpline();   // the bspline from the edge
+    if (hCurve->Degree() > 3) {
+        // if the degree is > 3 Qt can not draw it, so we approximate it as bezier
+        // segments with degree <= 3.
+        bool success = GeometryUtils::asCubic(edgeCurve, splineOut);
+        if (!success) {
+            // There will be a missing edge in the drawing and error messages
+            // from PathBuilder if we just pass the high degree spline, so we make
+            // a "spline" of degree 1 from the start point to the endpoint.  This is the original
+            // solution for approximation fails.
+            // this is not a useful message for end user. :(
+            Base::Console().warning("Could not create cubic spline in GeometryUtils::asCubic\n");
+            GeometryUtils::asLinear(edgeCurve, splineOut);
+        }
+    } else {
+        // Geom_BSplineCurve::Segment() modifies the curve in-place, thus we must work on a copy
+        splineOut = Handle(Geom_BSplineCurve)::DownCast(edgeCurve.BSpline()->Copy());
+        // Geom_BSplineCurve is a Geom_BoundedCurve, but copying from hCurve->BSpline() does
+        // not preserve the bounds, so we apply them here.
+        splineOut->Segment(std::min(hCurve->FirstParameter(), hCurve->LastParameter()),
+                           std::max(hCurve->FirstParameter(), hCurve->LastParameter()));
     }
 
-    GeomConvert_BSplineCurveToBezierCurve crt(spline);
+    // spline to bezier segments
+    GeomConvert_BSplineCurveToBezierCurve crt(splineOut);
 
     gp_Pnt controlPoint;
     for (Standard_Integer i = 1; i <= crt.NbArcs(); ++i) {
@@ -1226,6 +1216,35 @@ bool BSpline::intersectsArc(Base::Vector3d p1, Base::Vector3d p2)
         return true;
     }
     return false;
+}
+
+//! determines if the spline should be drawn in a clockwise or anticlockwise
+//! direction.
+void  BSpline::setDirection(BRepAdaptor_Curve edgeCurve)
+{
+    double f, l;
+    f = edgeCurve.FirstParameter();
+    l = edgeCurve.LastParameter();
+    gp_Pnt s = edgeCurve.Value(f);
+    gp_Pnt m = edgeCurve.Value((l+f)/2.0);
+    gp_Pnt ePt = edgeCurve.Value(l);
+    startPnt = Base::Vector3d(s.X(), s.Y(), s.Z());
+    endPnt = Base::Vector3d(ePt.X(), ePt.Y(), ePt.Z());
+    midPnt = Base::Vector3d(m.X(), m.Y(), m.Z());
+    gp_Vec v1(m, s);
+    gp_Vec v2(m, ePt);
+    gp_Vec v3(0, 0, 1);
+    double a = v3.DotCross(v1, v2);
+    cw = (a < 0) ? true: false;
+
+    startAngle = atan2(startPnt.y, startPnt.x);
+    if (startAngle < 0) {
+        startAngle += 2.0 * std::numbers::pi;
+    }
+    endAngle = atan2(endPnt.y, endPnt.x);
+    if (endAngle < 0) {
+        endAngle += 2.0 * std::numbers::pi;
+    }
 }
 
 
@@ -1372,9 +1391,9 @@ void Vertex::restoreVertexTag(Base::XMLReader& reader)
 
 void Vertex::dump(const char* title)
 {
-    Base::Console().message("TD::Vertex - %s - point: %s vis: %d cosmetic: %d  cosLink: %d cosTag: %s\n",
-                            title, DrawUtil::formatVector(pnt).c_str(), hlrVisible, cosmetic, cosmeticLink,
-                            cosmeticTag.c_str());
+    Base::Console().message("TD::Vertex - {} - point: {} vis: {} cosmetic: {}  cosLink: {} cosTag: {}\n",
+                            title, DrawUtil::formatVector(pnt), hlrVisible, cosmetic, cosmeticLink,
+                            cosmeticTag);
 }
 
 TopoShape Vertex::asTopoShape(double scale)
@@ -1660,10 +1679,13 @@ bool GeometryUtils::isLine(const TopoDS_Edge& occEdge)
 {
     BRepAdaptor_Curve adapt(occEdge);
 
-    Handle(Geom_BSplineCurve) spline = adapt.BSpline();
     double firstParm = adapt.FirstParameter();
     double lastParm = adapt.LastParameter();
+
+    // Because Geom_BSplineCurve::Segment() modifies the curve in-place, we must work with a copy
+    Handle(Geom_BSplineCurve) spline = Handle(Geom_BSplineCurve)::DownCast(adapt.BSpline()->Copy());
     spline->Segment(firstParm, lastParm);
+
     auto startPoint = Base::convertTo<Base::Vector3d>(adapt.Value(firstParm));
     auto endPoint = Base::convertTo<Base::Vector3d>(adapt.Value(lastParm));
     auto edgeLong = edgeLength(occEdge);
@@ -1881,6 +1903,62 @@ std::vector<int> GeometryUtils::findNestedFaceIndices(const std::vector<FacePtr>
         nestedFaceIndices.erase(last, nestedFaceIndices.end());
     }
     return nestedFaceIndices;
+}
+
+//! approximates curveIn as a bspline with degree <= 3.
+bool GeometryUtils::asCubic(const BRepAdaptor_Curve &curveIn, Handle(Geom_BSplineCurve)& splineOut)
+{
+    Standard_Real tol3D = 0.001;                                   //1/1000 of a mm? screen/paper can't resolve this
+    Standard_Integer maxDegree = 3, maxSegment = 200;
+    Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(curveIn);
+
+    try {
+        Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C0, maxSegment, maxDegree);
+        if (approx.IsDone() && approx.HasResult()) {
+            splineOut = approx.Curve();
+        }
+        else if (approx.HasResult()) { //result, but not within tolerance
+            splineOut = approx.Curve();
+        } else {
+            // this should really make a Generic polyline approximation.
+            constexpr double Deflection{0.1};
+            constexpr int LowIndex{0};
+            GCPnts_QuasiUniformDeflection discretizer(curveIn, Deflection);
+            TColgp_Array1OfPnt controlPoints(LowIndex, discretizer.NbPoints()-1);
+            if (discretizer.IsDone() && discretizer.NbPoints() > 0) {
+                for (int i = LowIndex; i < discretizer.NbPoints(); i++) {
+                    controlPoints.SetValue(i, discretizer.Value(i));
+                }
+                constexpr int MinDegree{1};
+                constexpr int MaxDegree{3};
+                splineOut = GeomAPI_PointsToBSpline(controlPoints, MinDegree, MaxDegree).Curve();
+            }
+        }
+    }
+    catch(...) {
+        return false;
+    }
+
+    return true;
+}
+
+//! make splineOut a linear approximation of curveIn.
+void GeometryUtils::asLinear(const BRepAdaptor_Curve &curveIn, Handle(Geom_BSplineCurve)& splineOut)
+{
+    double firstParam = curveIn.FirstParameter();
+    gp_Pnt firstPoint = curveIn.Value(firstParam);
+    double lastParam = curveIn.LastParameter();
+    gp_Pnt lastPoint = curveIn.Value(lastParam);
+
+    constexpr int LowPointIndex{0};
+    constexpr int HighPointIndex{1};
+    TColgp_Array1OfPnt controlPoints(LowPointIndex, HighPointIndex);
+    controlPoints.SetValue(LowPointIndex, firstPoint);
+    controlPoints.SetValue(HighPointIndex, lastPoint);
+
+    constexpr int MinDegree{1};
+    constexpr int MaxDegree{1};
+    splineOut = GeomAPI_PointsToBSpline(controlPoints, MinDegree, MaxDegree).Curve();
 }
 
 //! get a description for a GeomType.  Needs to always be in sync with the

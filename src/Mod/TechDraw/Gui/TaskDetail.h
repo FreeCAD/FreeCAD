@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2020 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -80,6 +82,8 @@ public Q_SLOTS:
 protected:
     void changeEvent(QEvent *event) override;
     void startDragger();
+
+    std::string makeCaption();
 
     void createDetail();
     void updateDetail();

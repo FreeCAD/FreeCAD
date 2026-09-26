@@ -25,13 +25,12 @@ import FreeCAD as App
 import FreeCADGui
 import Part
 import Path
-import Path.Base.Generator.leadinout as leadinout
-
+from Path.Base.Generator import leadinout
 from Path.Base.Gui.Util import QuantitySpinBox
 from Path.Base.Util import toolControllerForOp
 from Path.Dressup import Utils as PathDressup
 from PathPythonGui.simple_edit_panel import SimpleEditPanel
-from PathScripts import PathUtils as PathUtils
+from PathScripts import PathUtils
 from Path.Base.MachineState import MachineState
 
 __doc__ = """LeadInOut Dressup USE ROLL-ON ROLL-OFF to profile"""
@@ -117,13 +116,13 @@ class ObjectDressup:
             "App::PropertyAngle",
             "AngleIn",
             "Path Lead-in",
-            QT_TRANSLATE_NOOP("App::Property", "Angle of the Lead-In (1..90)"),
+            QT_TRANSLATE_NOOP("App::Property", "Angle of the Lead-In"),
         )
         obj.addProperty(
             "App::PropertyAngle",
             "AngleOut",
             "Path Lead-out",
-            QT_TRANSLATE_NOOP("App::Property", "Angle of the Lead-Out (1..90)"),
+            QT_TRANSLATE_NOOP("App::Property", "Angle of the Lead-Out"),
         )
         obj.addProperty(
             "App::PropertyLength",
@@ -268,15 +267,13 @@ class ObjectDressup:
             )
             obj.AngleOut = 90
 
-        if styleOn:
-            if styleOn == "Arc":
-                obj.StyleIn = "Arc"
-                obj.AngleIn = 90
+        if styleOn and styleOn == "Arc":
+            obj.StyleIn = "Arc"
+            obj.AngleIn = 90
 
-        if styleOff:
-            if styleOff == "Arc":
-                obj.StyleOut = "Arc"
-                obj.AngleOut = 90
+        if styleOff and styleOff == "Arc":
+            obj.StyleOut = "Arc"
+            obj.AngleOut = 90
 
         for prop in ("Length", "LengthIn"):
             if hasattr(obj, prop):
@@ -391,7 +388,7 @@ class ObjectDressup:
             )
 
         # Ensure correct initial visibility of fields after defaults are set
-        for k, v in TaskDressupLeadInOut.hideModes.items():
+        for k, v in hideModes.items():
             obj.setEditorMode(k + "In", 2 if obj.StyleIn in v else 0)
             obj.setEditorMode(k + "Out", 2 if obj.StyleOut in v else 0)
 
@@ -439,9 +436,9 @@ class ObjectDressup:
         ):
 
             def _isVertical(currentposition, cmd):
-                x = cmd.Parameters["X"] if "X" in cmd.Parameters else currentposition.x
-                y = cmd.Parameters["Y"] if "Y" in cmd.Parameters else currentposition.y
-                z = cmd.Parameters["Z"] if "Z" in cmd.Parameters else currentposition.z
+                x = cmd.Parameters.get("X", currentposition.x)
+                y = cmd.Parameters.get("Y", currentposition.y)
+                z = cmd.Parameters.get("Z", currentposition.z)
                 endpoint = App.Vector(x, y, z)
                 if Path.Geom.pointsCoincide(currentposition, endpoint):
                     return True
@@ -500,19 +497,14 @@ class ObjectDressup:
         return self.clearanceHeight is not None and self.safeHeight is not None
 
     def execute(self, obj):
-        if not obj.Base:
+        if not obj.Base or not obj.Base.isDerivedFrom("Path::Feature") or not obj.Base.Path:
             obj.Path = Path.Path()
             return
-        if not obj.Base.isDerivedFrom("Path::Feature"):
-            obj.Path = Path.Path()
-            return
-        if not obj.Base.Path:
-            obj.Path = Path.Path()
-            return
+
         if not PathDressup.baseOp(obj.Base).Active:
-            path = Path.Path("(inactive operation)")
-            obj.Path = path
+            obj.Path = Path.Path("(inactive operation)")
             return
+
         if not obj.LeadIn and not obj.LeadOut:
             obj.Path = PathUtils.getPathWithPlacement(obj.Base)
 
@@ -545,8 +537,8 @@ class ObjectDressup:
         elif obj.StyleOut == "LineZFollow" and obj.AngleOut > 89:
             obj.AngleOut = 89
 
-        # Use shared hideModes from TaskDressupLeadInOut
-        for k, v in TaskDressupLeadInOut.hideModes.items():
+        # Use shared hideModes
+        for k, v in hideModes.items():
             obj.setEditorMode(k + "In", 2 if obj.StyleIn in v else 0)
             obj.setEditorMode(k + "Out", 2 if obj.StyleOut in v else 0)
 
@@ -612,16 +604,33 @@ class TaskDressupLeadInOut(SimpleEditPanel):
         self.connectWidget("InvertOut", self.form.chkInvertDirectionOut)
         self.connectWidget("StyleIn", self.form.cboStyleIn)
         self.connectWidget("StyleOut", self.form.cboStyleOut)
-        self.radiusIn = QuantitySpinBox(self.form.dspRadiusIn, self.obj, "RadiusIn")
-        self.radiusOut = QuantitySpinBox(self.form.dspRadiusOut, self.obj, "RadiusOut")
-        self.angleIn = QuantitySpinBox(self.form.dspAngleIn, self.obj, "AngleIn")
-        self.angleOut = QuantitySpinBox(self.form.dspAngleOut, self.obj, "AngleOut")
-        self.extendIn = QuantitySpinBox(self.form.dspExtendIn, self.obj, "ExtendIn")
-        self.extendOut = QuantitySpinBox(self.form.dspExtendOut, self.obj, "ExtendOut")
-        self.offsetIn = QuantitySpinBox(self.form.dspOffsetIn, self.obj, "OffsetIn")
-        self.offsetOut = QuantitySpinBox(self.form.dspOffsetOut, self.obj, "OffsetOut")
         self.connectWidget("RapidPlunge", self.form.chkRapidPlunge)
-        self.threshold = QuantitySpinBox(self.form.dspThreshold, self.obj, "RetractThreshold")
+
+        self.radiusIn = QuantitySpinBox(
+            self.form.dspRadiusIn, self.obj, "RadiusIn", setToolTip=True
+        )
+        self.radiusOut = QuantitySpinBox(
+            self.form.dspRadiusOut, self.obj, "RadiusOut", setToolTip=True
+        )
+        self.angleIn = QuantitySpinBox(self.form.dspAngleIn, self.obj, "AngleIn", setToolTip=True)
+        self.angleOut = QuantitySpinBox(
+            self.form.dspAngleOut, self.obj, "AngleOut", setToolTip=True
+        )
+        self.extendIn = QuantitySpinBox(
+            self.form.dspExtendIn, self.obj, "ExtendIn", setToolTip=True
+        )
+        self.extendOut = QuantitySpinBox(
+            self.form.dspExtendOut, self.obj, "ExtendOut", setToolTip=True
+        )
+        self.offsetIn = QuantitySpinBox(
+            self.form.dspOffsetIn, self.obj, "OffsetIn", setToolTip=True
+        )
+        self.offsetOut = QuantitySpinBox(
+            self.form.dspOffsetOut, self.obj, "OffsetOut", setToolTip=True
+        )
+        self.threshold = QuantitySpinBox(
+            self.form.dspThreshold, self.obj, "RetractThreshold", setToolTip=True
+        )
 
         self.radiusIn.updateWidget()
         self.radiusOut.updateWidget()
@@ -677,33 +686,6 @@ class TaskDressupLeadInOut(SimpleEditPanel):
         for signal in self.getSignalsForUpdate():
             signal.connect(self.pageGetFields)
 
-    # Shared hideModes for both LeadIn and LeadOut
-    hideModes = {
-        "Angle": ("No Retract", "Perpendicular", "Tangent", "Vertical"),
-        "Invert": (
-            "No Retract",
-            "ArcZ",
-            "ArcZFollow",
-            "LineZ",
-            "LineZFollow",
-            "Vertical",
-            "Tangent",
-        ),
-        "Offset": ("No Retract"),
-        "Extend": (
-            "No Retract",
-            "Vertical",
-            "Arc3d",
-            "ArcZ",
-            "ArcZFollow",
-            "Line3d",
-            "LineZ",
-            "LineZFollow",
-            "Helix",
-        ),
-        "Radius": ("No Retract", "Vertical"),
-    }
-
     def updateLeadVisibility(self, style, inout):
         if inout == "in":
             angleField = self.form.dspAngleIn
@@ -727,7 +709,7 @@ class TaskDressupLeadInOut(SimpleEditPanel):
             radiusLabel = self.form.labelRadiusOut
 
         # Angle
-        if style in self.hideModes["Angle"]:
+        if style in hideModes["Angle"]:
             angleField.hide()
             angleLabel.hide()
         else:
@@ -735,7 +717,7 @@ class TaskDressupLeadInOut(SimpleEditPanel):
             angleLabel.show()
 
         # Extend
-        if style in self.hideModes["Extend"]:
+        if style in hideModes["Extend"]:
             extendField.hide()
             extendLabel.hide()
         else:
@@ -743,13 +725,13 @@ class TaskDressupLeadInOut(SimpleEditPanel):
             extendLabel.show()
 
         # Invert Direction
-        if style in self.hideModes["Invert"]:
+        if style in hideModes["Invert"]:
             invertWidget.hide()
         else:
             invertWidget.show()
 
         # Offset
-        if style in self.hideModes["Offset"]:
+        if style in hideModes["Offset"]:
             offsetField.hide()
             offsetLabel.hide()
         else:
@@ -757,7 +739,7 @@ class TaskDressupLeadInOut(SimpleEditPanel):
             offsetLabel.show()
 
         # Radius
-        if style in self.hideModes["Radius"]:
+        if style in hideModes["Radius"]:
             radiusField.hide()
             radiusLabel.hide()
         else:
@@ -896,6 +878,34 @@ def Create(baseObject, name="DressupLeadInOut", mode=0):
     obj.ViewObject.Document.setEdit(obj.ViewObject, mode)
 
     return obj
+
+
+# Shared hideModes for both LeadIn and LeadOut
+hideModes = {
+    "Angle": ("No Retract", "Perpendicular", "Tangent", "Vertical"),
+    "Invert": (
+        "No Retract",
+        "ArcZ",
+        "ArcZFollow",
+        "LineZ",
+        "LineZFollow",
+        "Vertical",
+        "Tangent",
+    ),
+    "Offset": ("No Retract"),
+    "Extend": (
+        "No Retract",
+        "Vertical",
+        "Arc3d",
+        "ArcZ",
+        "ArcZFollow",
+        "Line3d",
+        "LineZ",
+        "LineZFollow",
+        "Helix",
+    ),
+    "Radius": ("No Retract", "Vertical"),
+}
 
 
 if App.GuiUp:

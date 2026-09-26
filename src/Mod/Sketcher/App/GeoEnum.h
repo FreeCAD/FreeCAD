@@ -25,6 +25,8 @@
 #pragma once
 
 #include <functional>
+#include <string>
+#include <array>
 
 #include <FCConfig.h>
 
@@ -71,7 +73,7 @@ enum GeoEnum
     RtPnt = -1,   // GeoId of the Root Point
     HAxis = -1,   // GeoId of the Horizontal Axis
     VAxis = -2,   // GeoId of the Vertical Axis
-    RefExt = -3,  // Starting GeoID of external geometry ( negative geoIds starting at this index)
+    RefExt = -3,  // Starting GeoID of external geometry (negative geoIds starting at this index)
     GeoUndef = -2000  // GeoId of an undefined Geometry (uninitialised or unused GeoId)
 };
 
@@ -85,10 +87,11 @@ enum GeoEnum
  */
 enum class PointPos : int
 {
-    none = 0,   // Edge of a geometry
-    start = 1,  // Starting point of a geometry
-    end = 2,    // End point of a geometry
-    mid = 3     // Mid point of a geometry
+    none = 0,    // Edge of a geometry
+    start = 1,   // Starting point of a geometry
+    end = 2,     // End point of a geometry
+    mid = 3,     // Mid point of a geometry
+    NumPointPos  // must be the last item
 };
 
 /** @brief      Struct for storing a {GeoId, PointPos} pair.
@@ -100,7 +103,7 @@ enum class PointPos : int
  * GeoElementId intends to substitute this pair whenever appropriate. For example in containers and
  * ordered containers.
  *
- * It has overloaded equality operator and specialised std::less so that it can safely be used in
+ * It has overloaded equality and less-than operators so that it can safely be used in
  * containers, including ordered containers.
  *
  */
@@ -119,6 +122,10 @@ public:
      */
     bool operator!=(const GeoElementId& obj) const;
 
+    /** @brief strict weak ordering for use as a key in ordered containers
+     */
+    bool operator<(const GeoElementId& obj) const;
+
     /** @brief Underlying GeoId (see GeoEnum for definition)
      */
     int GeoId;
@@ -129,6 +136,18 @@ public:
     bool isCurve() const;
 
     int posIdAsInt() const;
+
+    std::string toString() const;
+
+    std::string pointPosToString() const
+    {
+        return pointPosToString(Pos);
+    }
+    static std::string pointPosToString(PointPos Pos);
+
+    constexpr static std::array<const char*, static_cast<size_t>(PointPos::NumPointPos)> pointPos2str {
+        {"none", "start", "end", "mid"}
+    };
 
     /** @brief GeoElementId of the Root Point
      */
@@ -157,6 +176,12 @@ inline int GeoElementId::posIdAsInt() const
     return static_cast<int>(Pos);
 }
 
+inline bool GeoElementId::operator<(const GeoElementId& obj) const
+{
+    return (GeoId != obj.GeoId) ? (GeoId < obj.GeoId)
+                                : (static_cast<int>(Pos) < static_cast<int>(obj.Pos));
+}
+
 #ifndef FC_OS_WIN32
 constexpr const GeoElementId GeoElementId::RtPnt = GeoElementId(GeoEnum::RtPnt, PointPos::start);
 constexpr const GeoElementId GeoElementId::HAxis = GeoElementId(GeoEnum::HAxis, PointPos::none);
@@ -164,16 +189,3 @@ constexpr const GeoElementId GeoElementId::VAxis = GeoElementId(GeoEnum::VAxis, 
 #endif
 
 }  // namespace Sketcher
-
-namespace std
-{
-template<>
-struct less<Sketcher::GeoElementId>
-{
-    bool operator()(const Sketcher::GeoElementId& lhs, const Sketcher::GeoElementId& rhs) const
-    {
-        return (lhs.GeoId != rhs.GeoId) ? (lhs.GeoId < rhs.GeoId)
-                                        : (static_cast<int>(lhs.Pos) < static_cast<int>(rhs.Pos));
-    }
-};
-}  // namespace std

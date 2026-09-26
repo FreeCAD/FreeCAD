@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Peter McB                                          *
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
@@ -2941,7 +2943,7 @@ void CmdFemPostPipelineFromResult::activated(int)
         Fem::FemResultObject* result =
          static_cast<Fem::FemResultObject*>(ResultFilter.Result[0][0].getObject());
         //static_cast failed here
-        Base::Console().message("Debug: FemResultObject pointer = %p", result );
+        Base::Console().message("Debug: FemResultObject pointer = {}", result );
 
     */
 

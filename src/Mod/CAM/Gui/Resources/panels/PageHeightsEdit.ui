@@ -19,6 +19,24 @@
   </property>
   <layout class="QVBoxLayout" name="outerLayout">
    <item>
+    <layout class="QHBoxLayout" name="workplaneLayout">
+     <item>
+      <widget class="QLabel" name="workplaneLabel">
+       <property name="text">
+        <string>Work plane</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="workplane">
+       <property name="toolTip">
+        <string>The frame this operation works in. Heights and depths are measured in it, so changing it makes manually entered values stale.</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="diagramFieldsLayout">
      <item alignment="Qt::AlignTop">
       <widget class="QLabel" name="heightsDiagram">
@@ -282,6 +300,33 @@
     </layout>
    </item>
    <item>
+    <layout class="QHBoxLayout" name="resetLayout">
+     <item>
+      <spacer name="resetSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="resetDefaults">
+       <property name="toolTip">
+        <string>Recompute all heights and depths from this operation's work plane, stock and model. Discards manual edits to these fields.</string>
+       </property>
+       <property name="text">
+        <string>Reset to defaults</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <widget class="QGroupBox" name="groupBoxLinking">
      <property name="title">
       <string>Linking</string>
@@ -362,6 +407,7 @@ Tool Shape: safest - checks clearance using the cross section of the tool shape
   <tabstop>finalDepth</tabstop>
   <tabstop>startDepthSet</tabstop>
   <tabstop>finalDepthSet</tabstop>
+  <tabstop>resetDefaults</tabstop>
  </tabstops>
  <resources>
   <include location="../Path.qrc"/>

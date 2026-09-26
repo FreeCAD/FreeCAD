@@ -190,7 +190,7 @@ def compute():
             involutee.insert(0, pointt)
         involute.extend(involutesav)
 
-    Gui.SendMsgToActiveView("ViewFit")
+    Gui.ActiveDocument.ActiveView.sendMessage("ViewFit")
 
     # ************ Forming teeth
 
@@ -256,7 +256,7 @@ def compute():
         App.ActiveDocument.removeObject(gearFlat.Name)
 
     App.ActiveDocument.recompute()
-    Gui.SendMsgToActiveView("ViewFit")
+    Gui.ActiveDocument.ActiveView.sendMessage("ViewFit")
 
     QtGui.QApplication.restoreOverrideCursor()
 

@@ -23,9 +23,6 @@
 
 #pragma once
 
-// define this to enable offset algo selection
-// #define AREA_OFFSET_ALGO
-
 /** \file
  * Parameters definition for Path::Area and its companion
  * See \ref ParamPage "here" for details of parameter definition.
@@ -49,15 +46,7 @@
       Clipper2Lib::FillRule::NonZero, \
       "Clipper2 subject fill rule. \nSee " \
       "http://www.angusj.com/clipper2/Docs/Units/Clipper/Types/FillRule.htm", \
-      AREA_CLIPPER_FILL_TYPE))( \
-        (enum2, \
-         clip_fill, \
-         ClipFill, \
-         Clipper2Lib::FillRule::NonZero, \
-         "Clipper2 clip fill rule. \nSee " \
-         "http://www.angusj.com/clipper2/Docs/Units/Clipper/Types/FillRule.htm", \
-         AREA_CLIPPER_FILL_TYPE) \
-    )
+      AREA_CLIPPER_FILL_TYPE))
 
 /** Deflection parameter */
 #define AREA_PARAMS_DEFLECTION \
@@ -122,7 +111,7 @@
       Precision::Confusion(), \
       "Point coincidence tolerance", \
       App::PropertyPrecision)) \
-        AREA_PARAMS_FIT_ARCS((bool, clipper_simple, Simplify, false, "Simplify polygons after operation. See http://www.angusj.com/clipper2/Docs/Units/Clipper/Functions/SimplifyPaths.htm"))((double, clipper_clean_distance, CleanDistance, 0.0, "Clean polygon smaller than this distance. See http://www.angusj.com/clipper2/Docs/Units/Clipper/Functions/SimplifyPaths.htm", App::PropertyLength))((double, accuracy, Accuracy, 0.01, "Arc fitting accuracy", App::PropertyPrecision))((double, units, Unit, 1.0, "Scaling factor for conversion to inch", App::PropertyFloat))((short, min_arc_points, MinArcPoints, 4, "Minimum segments for arc discretization"))((short, max_arc_points, MaxArcPoints, 100, "Maximum segments for arc discretization (ignored currently)"))( \
+        AREA_PARAMS_FIT_ARCS((double, accuracy, Accuracy, 0.01, "Arc fitting accuracy", App::PropertyPrecision))( \
             (double, \
              clipper_scale, \
              ClipperScale, \
@@ -180,9 +169,6 @@
          false,                                                                                    \
          "Force maximum stepover even if not all area is cleared. Without this flag set, the "     \
          "stepover may be reduced (for large stepover, >50%) to ensure full area coverage"))
-
-#define AREA_PARAMS_POCKET_CONF \
-    ((bool, thicken, Thicken, false, "Thicken the resulting wires with ToolRadius"))
 
 /** Operation code */
 #define AREA_PARAMS_OPCODE \
@@ -263,47 +249,6 @@
          "will be created. A small offset is usually required to avoid the tangential cut.",       \
          App::PropertyPrecision))AREA_PARAMS_SECTION_EXTRA
 
-#ifdef AREA_OFFSET_ALGO
-# define AREA_PARAMS_OFFSET_ALGO \
-     ((enum, algo, Algo, 0, "Offset algorithm type", (Clipper)(libarea)))
-#else
-# define AREA_PARAMS_OFFSET_ALGO
-#endif
-
-/** Offset configuration parameters */
-#define AREA_PARAMS_OFFSET_CONF \
-    AREA_PARAMS_OFFSET_ALGO( \
-        (enum2, \
-         join_type, \
-         JoinType, \
-         Clipper2Lib::JoinType::Round, \
-         "Clipper2 offset join type. \nSee " \
-         "http://www.angusj.com/clipper2/Docs/Units/Clipper/Types/JoinType.htm", \
-         (Clipper2Lib::JoinType::Round)(Clipper2Lib::JoinType::Square)(Clipper2Lib::JoinType::Miter), \
-         Clipper2Lib::JoinType) \
-    ) \
-    ((enum2, \
-      end_type, \
-      EndType, \
-      Clipper2Lib::EndType::Round, \
-      "\nClipper2 offset end type. See " \
-      "http://www.angusj.com/clipper2/Docs/Units/Clipper/Types/EndType.htm", \
-      (Clipper2Lib::EndType::Round)(Clipper2Lib::EndType:: \
-                                        Polygon)(Clipper2Lib::EndType:: \
-                                                     Joined)(Clipper2Lib::EndType:: \
-                                                                 Square)(Clipper2Lib::EndType::Butt), \
-      Clipper2Lib:: \
-          EndType, ))((double, miter_limit, MiterLimit, 2.0, "Miter limit for joint type Miter. See http://www.angusj.com/clipper2/Docs/Units/Clipper.Offset/Classes/ClipperOffset/Properties/MiterLimit.htm", App::PropertyFloat))( \
-        (double, \
-         round_precision, \
-         RoundPrecision, \
-         0.0, \
-         "Round joint precision. If =0, it defaults to Accuracy. \n" \
-         "See " \
-         "http://www.angusj.com/clipper2/Docs/Units/Clipper.Offset/Classes/ClipperOffset/" \
-         "Properties/ArcTolerance.htm", \
-         App::PropertyPrecision) \
-    )
 
 #define AREA_PARAMS_MIN_DIST \
     ((double, \
@@ -429,9 +374,7 @@
 #define AREA_PARAMS_AREA \
     AREA_PARAMS_BASE \
     AREA_PARAMS_OFFSET \
-    AREA_PARAMS_OFFSET_CONF \
     AREA_PARAMS_POCKET \
-    AREA_PARAMS_POCKET_CONF \
     AREA_PARAMS_SECTION
 
 /** Group of all Area configuration parameters */

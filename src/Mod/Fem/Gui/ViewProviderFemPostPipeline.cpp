@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -20,6 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
+
+// vtkDataSetAttributesFieldList.h (VTK 9.7) uses std::vector without including <vector>
+#include <vector>
 
 #include <vtkPointData.h>
 

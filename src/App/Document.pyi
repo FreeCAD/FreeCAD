@@ -6,10 +6,7 @@ from Base.Metadata import constmethod
 from PropertyContainer import PropertyContainer
 from DocumentObject import DocumentObject
 from DocumentSettings import DocumentSettings
-from typing import TYPE_CHECKING, Final, Literal, Sequence, overload
-
-if TYPE_CHECKING:
-    from Part import Feature as _PartFeature
+from typing import Final, Literal, Sequence, overload
 
 
 class Document(PropertyContainer):
@@ -208,36 +205,14 @@ class Document(PropertyContainer):
         """
         ...
 
-    @overload
-    def addObject(
-        self,
-        type: Literal["Part::Feature"],
-        name: str = None,
-        objProxy: object = None,
-        viewProxy: object = None,
-        attach: bool = False,
-        viewType: str = None,
-    ) -> _PartFeature: ...
-
-    @overload
     def addObject(
         self,
         type: str,
-        name: str = None,
-        objProxy: object = None,
-        viewProxy: object = None,
+        name: str = ...,
+        objProxy: object | None = None,
+        viewProxy: object | None = None,
         attach: bool = False,
-        viewType: str = None,
-    ) -> DocumentObject: ...
-
-    def addObject(
-        self,
-        type: str,
-        name: str = None,
-        objProxy: object = None,
-        viewProxy: object = None,
-        attach: bool = False,
-        viewType: str = None,
+        viewType: str = ...,
     ) -> DocumentObject:
         """
         Add an object to document.
@@ -502,13 +477,14 @@ class Document(PropertyContainer):
         """
         ...
 
-    def getTempFileName(self) -> str:
+    def getTempFileName(self, name: str, /) -> str:
         """
-        Returns a file name with path in the temp directory of the document.
+        Returns a unique file name, based on the given name, with a path in the temp directory of
+        the document.
         """
         ...
 
-    def getDependentDocuments(self, sort: bool = True, /) -> list[DocumentObject]:
+    def getDependentDocuments(self, sort: bool = True, /) -> list[Document]:
         """
         Returns a list of documents that this document directly or indirectly links to including itself.
 

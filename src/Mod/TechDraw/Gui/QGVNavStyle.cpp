@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Wanderer Fan <wandererfan@gmail.com>               *
  *                                                                         *
@@ -107,7 +109,7 @@ void QGVNavStyle::handleFocusOutEvent(QFocusEvent* event)
 
 void QGVNavStyle::handleKeyPressEvent(QKeyEvent* event)
 {
-    // Base::Console().message("QGNS::handleKeyPressEvent(%d)\n", event->key());
+    // Base::Console().message("QGNS::handleKeyPressEvent({})\n", event->key());
     if (event->modifiers().testFlag(Qt::ControlModifier)) {
         switch (event->key()) {
             case Qt::Key_Plus: {
@@ -298,12 +300,13 @@ void QGVNavStyle::zoom(double factor)
 
     setAnchor();
     getViewer()->scale(factor, factor);
+    getViewer()->getScene()->updateScreenScale();
     m_zoomPending = false;
 }
 
 void QGVNavStyle::startZoom(QPoint p)
 {
-    //    Base::Console().message("QGVNS::startZoom(%s)\n", TechDraw::DrawUtil::formatVector(p).c_str());
+    //    Base::Console().message("QGVNS::startZoom({})\n", TechDraw::DrawUtil::formatVector(p));
     zoomOrigin = p;
     zoomingActive = true;
     m_zoomPending = false;

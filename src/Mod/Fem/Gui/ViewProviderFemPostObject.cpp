@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -289,7 +291,7 @@ ViewProviderFemPostObject::~ViewProviderFemPostObject()
     catch (Base::Exception& e) {
         Base::Console().destructorError(
             "ViewProviderFemPostObject",
-            "ViewProviderFemPostObject destructor threw an exception: %s\n",
+            "ViewProviderFemPostObject destructor threw an exception: {}\n",
             e.what()
         );
     }

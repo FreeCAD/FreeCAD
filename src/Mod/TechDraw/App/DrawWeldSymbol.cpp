@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -61,7 +63,7 @@ DrawWeldSymbol::DrawWeldSymbol()
 //but if this is a restore of an existing DWS, the tiles will loaded elsewhere
 void DrawWeldSymbol::onSettingDocument()
 {
-//    Base::Console().message("DWS::onSettingDocument() - doc: %s\n", getDocument()->getName());
+//    Base::Console().message("DWS::onSettingDocument() - doc: {}\n", getDocument()->getName());
     App::Document* doc = getDocument();
 
     if (doc->testStatus(App::Document::Status::Restoring)) {

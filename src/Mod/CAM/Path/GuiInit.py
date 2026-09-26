@@ -48,6 +48,7 @@ def Startup():
         from Path.Dressup.Gui import LeadInOut
         from Path.Dressup.Gui import Mirror
         from Path.Dressup.Gui import Boundary
+        from Path.Dressup.Gui import PlungeMilling
         from Path.Dressup.Gui import RampEntry
         from Path.Dressup.Gui import Tags
         from Path.Dressup.Gui import ZCorrect
@@ -69,12 +70,13 @@ def Startup():
         from Path.Op.Gui import Helix
         from Path.Op.Gui import MillFace
         from Path.Op.Gui import MillFacing
-        from Path.Op.Gui import PathShapeTC
+        from Path.Op.Gui import PathShape
         from Path.Op.Gui import Pocket
         from Path.Op.Gui import PocketShape
         from Path.Op.Gui import Probe
         from Path.Op.Gui import Profile
         from Path.Op.Gui import SimpleCopy
+        from Path.Op.Gui import Flute
         from Path.Op.Gui import Slot
         from Path.Op.Gui import Stop
         from Path.Op.Gui import Tapping

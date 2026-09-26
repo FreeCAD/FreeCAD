@@ -88,6 +88,7 @@ class CAMWorkbench(Workbench):
         import Path.GuiInit
 
         from Path.Main.Gui import JobCmd as PathJobCmd
+        from Path.Main.Gui import WorkplaneCmd as PathWorkplaneCmd
         from Path.Main.Gui import SanityCmd as SanityCmd
         from Path.Tool.toolbit.ui import cmd as PathToolBitCmd
         from Path.Tool.library.ui import cmd as PathToolBitLibraryCmd
@@ -124,7 +125,7 @@ class CAMWorkbench(Workbench):
         Path.GuiInit.Startup()
 
         # build commands list
-        projcmdlist = ["CAM_Job", "CAM_Sanity"]
+        projcmdlist = ["CAM_Job", "CAM_Workplane", "CAM_Sanity"]
         postcmdlist = ["CAM_Post", "CAM_PostSelected"]
         toolcmdlist = ["CAM_Inspect", "CAM_SelectLoop", "CAM_OpActiveToggle"]
 
@@ -160,6 +161,7 @@ class CAMWorkbench(Workbench):
             "CAM_DressupDragKnife",
             "CAM_DressupLeadInOut",
             "CAM_DressupMirror",
+            "CAM_DressupPlungeMilling",
             "CAM_DressupRampEntry",
             "CAM_DressupTag",
             "CAM_DressupZCorrect",
@@ -216,9 +218,9 @@ class CAMWorkbench(Workbench):
         )
         threedcmdgroup = threedopcmdlist
         if Path.Preferences.experimentalFeaturesEnabled():
-            prepcmdlist.append("CAM_PathShapeTC")
+            prepcmdlist.append("CAM_PathShape")
             extracmdlist.extend(["CAM_Area", "CAM_Area_Workplane"])
-            twodopcmdlist.append("CAM_Slot")
+            engravecmdlist.append("CAM_Flute")
 
         if Path.Preferences.advancedOCLFeaturesEnabled():
             try:
@@ -249,9 +251,12 @@ class CAMWorkbench(Workbench):
                 threedopcmdlist.extend(["CAM_Surface", "CAM_Waterline"])
 
                 if Path.Preferences.experimentalFeaturesEnabled():
+                    # Planar Surface and Rotary Surface are companion operations
+                    # and ship together behind the experimental-features flag.
+                    from Path.Op.Gui import PlanarSurface  # noqa: F401
                     from Path.Op.Gui import RotarySurface  # noqa: F401
 
-                    threedopcmdlist.append("CAM_RotarySurface")
+                    threedopcmdlist.extend(["CAM_PlanarSurface", "CAM_RotarySurface"])
                 threedcmdgroup = ["CAM_3dTools"]
                 FreeCADGui.addCommand(
                     "CAM_3dTools",
@@ -293,6 +298,7 @@ class CAMWorkbench(Workbench):
             + ["Separator"]
             + twodopcmdlist
             + drillingcmdlist
+            + ["Separator"]
             + engravecmdlist
             + ["Separator"]
             + threedopcmdlist

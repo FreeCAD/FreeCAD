@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2020 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -99,7 +101,7 @@ QColor PreferencesGui::sectionLineQColor()
 Base::Color PreferencesGui::breaklineColor()
 {
     Base::Color fcColor;
-    fcColor.setPackedValue(Preferences::getPreferenceGroup("Decorations")->GetUnsigned("BreaklineColor", 0x000000FF));
+    fcColor.setPackedValue(Preferences::getPreferenceGroup("Decorations")->GetUnsigned("BreakLineColor", 0x000000FF));
     return fcColor;
 }
 
@@ -107,7 +109,7 @@ QColor PreferencesGui::breaklineQColor()
 {
 //if the Base::Color version has already lightened the color, we don't want to do it again
     Base::Color fcColor;
-    fcColor.setPackedValue(Preferences::getPreferenceGroup("Decorations")->GetUnsigned("BreaklineColor", 0x000000FF));
+    fcColor.setPackedValue(Preferences::getPreferenceGroup("Decorations")->GetUnsigned("BreakLineColor", 0x000000FF));
     return fcColor.asValue<QColor>();
 }
 
@@ -188,7 +190,7 @@ QString PreferencesGui::weldingDirectory()
     QString qSymbolDir = QString::fromUtf8(symbolDir.c_str());
     Base::FileInfo fi(symbolDir);
     if (!fi.isReadable()) {
-        Base::Console().warning("Welding Directory: %s is not readable\n", symbolDir.c_str());
+        Base::Console().warning("Welding Directory: {} is not readable\n", symbolDir);
         qSymbolDir = QString::fromUtf8(defaultDir.c_str());
     }
     return qSymbolDir;
@@ -222,6 +224,26 @@ bool PreferencesGui::multiSelection()
 {
     bool greedy = Gui::Selection().getSelectionStyle() == Gui::SelectionSingleton::SelectionStyle::GreedySelection;
     return greedy || Preferences::getPreferenceGroup("General")->GetBool("multiSelection", false);
+}
+
+bool PreferencesGui::screenMode()
+{
+    return Preferences::getPreferenceGroup("View")->GetBool("ScreenMode", true);
+}
+
+void PreferencesGui::setScreenMode(bool enable)
+{
+    Preferences::getPreferenceGroup("View")->SetBool("ScreenMode", enable);
+}
+
+double PreferencesGui::screenVertexSize()
+{
+    return Preferences::getPreferenceGroup("View")->GetFloat("ScreenVertexSize", 5.0);
+}
+
+double PreferencesGui::screenEdgeWidth()
+{
+    return Preferences::getPreferenceGroup("View")->GetFloat("ScreenEdgeWidth", 2.0);
 }
 
 Base::Color PreferencesGui::pageColor()

@@ -1,25 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2017 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
 import FreeCADGui
@@ -34,7 +32,7 @@ import Path.Op.Base as PathOp
 import Path.Op.Gui.Selection as PathSelection
 import Path.Tool.Controller as PathToolController
 from Path.Tool.library.ui.dock import ToolBitLibraryDock
-import PathScripts.PathUtils as PathUtils
+from PathScripts import PathUtils
 import importlib
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -54,7 +52,7 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
-class ViewProvider(object):
+class ViewProvider:
     """
     Generic view provider for path objects.
     Deducts the icon name from operation name, brings up the TaskPanel
@@ -65,7 +63,7 @@ class ViewProvider(object):
     def __init__(self, vobj, resources):
         Path.Log.track()
         self.deleteOnReject = True
-        self.OpIcon = ":/icons/%s.svg" % resources.pixmap
+        self.OpIcon = f":/icons/{resources.pixmap}.svg"
         self.OpName = resources.name
         self.OpPageModule = resources.opPageClass.__module__
         self.OpPageClass = resources.opPageClass.__name__
@@ -145,8 +143,6 @@ class ViewProvider(object):
 
         # Update the visualization
         self.updateWorkplaneVisualization()
-
-        return
 
     def isSelected(self):
         """Check if this operation is currently selected."""
@@ -292,7 +288,6 @@ class ViewProvider(object):
 
     def onChanged(self, vobj, prop):
         """onChanged(vobj, prop) ... callback when a view property changes."""
-        pass
 
     def updateData(self, obj, prop):
         """updateData(obj, prop) ... callback whenever a property of the receiver's model is assigned.
@@ -317,8 +312,7 @@ class ViewProvider(object):
         action.triggered.connect(self._editInContextMenuTriggered)
         menu.addAction(action)
 
-        # Add "Set Workplane from Face" action
-        action = QtGui.QAction(translate("PathOp", "Set Workplane from Face"), menu)
+        action = QtGui.QAction(translate("PathOp", "Set Work Plane from Face"), menu)
         action.triggered.connect(self._setWorkplaneFromFaceTriggered)
         menu.addAction(action)
 
@@ -326,66 +320,58 @@ class ViewProvider(object):
         self.setEdit()
 
     def _setWorkplaneFromFaceTriggered(self, checked):
-        """Activate face selection mode to set workplane."""
-        # Store reference to the operation
-        self._workplaneOperation = self.Object
+        """Pick a planar face; create a shared work plane from it and link the
+        operation to it. The same result as the CAM_Workplane command followed
+        by choosing the plane on the Heights page."""
+        operation = self.Object
 
-        # Create selection observer
         class FaceSelectionObserver:
-            def __init__(self, operation, viewprovider):
+            def __init__(self, operation):
                 self.operation = operation
-                self.viewprovider = viewprovider
                 self.active = True
 
-            def addSelection(self, doc, obj, sub, pnt):
-                """Called when user selects something."""
-                if not self.active:
+            def addSelection(self, doc, objName, sub, pnt):
+                if not self.active or not sub or not sub.startswith("Face"):
                     return
+                try:
+                    picked = FreeCAD.getDocument(doc).getObject(objName)
+                    face = picked.Shape.getElement(sub)
+                    if not PathUtil.isPlanarFace(face):
+                        FreeCAD.Console.PrintWarning(
+                            translate("PathOp", "Select a planar face to set a work plane from.")
+                            + "\n"
+                        )
+                        return
 
-                # Check if it's a face
-                if sub and sub.startswith("Face"):
-                    try:
-                        # Get the face object
-                        selected_obj = FreeCAD.ActiveDocument.getObject(obj)
-                        if selected_obj and hasattr(selected_obj, "Shape"):
-                            # Get the face
-                            face = selected_obj.Shape.getElement(sub)
+                    import Path.Main.Workplane as PathWorkplane
 
-                            # Extract the normal vector at the center of the face
-                            u_mid = (face.ParameterRange[0] + face.ParameterRange[1]) / 2.0
-                            v_mid = (face.ParameterRange[2] + face.ParameterRange[3]) / 2.0
-                            normal = face.normalAt(u_mid, v_mid)
+                    job = PathUtils.findParentJob(self.operation)
+                    workplane = PathWorkplane.createWorkplane(
+                        job, picked, sub, label="%s.%s" % (picked.Label, sub)
+                    )
+                    self.operation.Workplane = workplane
+                    FreeCAD.ActiveDocument.recompute()
+                    FreeCAD.Console.PrintMessage(
+                        translate("PathOp", "Set %s to work plane %s")
+                        % (self.operation.Label, workplane.Label)
+                        + "\n"
+                    )
+                except Exception as e:
+                    FreeCAD.Console.PrintError("Error setting work plane: %s\n" % e)
+                finally:
+                    self.active = False
+                    FreeCADGui.Selection.removeObserver(self)
 
-                            # Normalize the vector
-                            normal.normalize()
-
-                            # Store the face normal as the workplane orientation
-                            self.operation.Workplane = normal
-                            FreeCAD.ActiveDocument.recompute()
-
-                            FreeCAD.Console.PrintMessage(
-                                f"Set {self.operation.Label} workplane to {normal} from {selected_obj.Label}.{sub}\n"
-                            )
-
-                            # Deactivate and remove observer
-                            self.active = False
-                            FreeCADGui.Selection.removeObserver(self)
-
-                    except Exception as e:
-                        FreeCAD.Console.PrintError(f"Error setting workplane: {e}\n")
-                        self.active = False
-                        FreeCADGui.Selection.removeObserver(self)
-
-        # Create and add the observer
-        observer = FaceSelectionObserver(self._workplaneOperation, self)
-        FreeCADGui.Selection.addObserver(observer)
-
-        # Clear current selection and provide user feedback
+        FreeCADGui.Selection.addObserver(FaceSelectionObserver(operation))
         FreeCADGui.Selection.clearSelection()
-        FreeCAD.Console.PrintMessage(f"Click on a face to set workplane for {self.Object.Label}\n")
+        FreeCAD.Console.PrintMessage(
+            translate("PathOp", "Click on a planar face to set the work plane for %s")
+            % operation.Label
+            + "\n"
+        )
 
 
-class TaskPanelPage(object):
+class TaskPanelPage:
     """Base class for all task panel pages."""
 
     # task panel interaction framework
@@ -395,6 +381,7 @@ class TaskPanelPage(object):
         self.obj = obj
         self.job = PathUtils.findParentJob(obj)
         self.form = self.getForm()
+        self.setToolTips(obj)
         self.setToolControllerMinWidth(self.form)
         self.signalDirtyChanged = None
         self.setClean()
@@ -429,8 +416,7 @@ class TaskPanelPage(object):
 
     def setToolControllerMinWidth(self, form):
         """If form has a widget named toolController, set its minimum width to 80 if possible."""
-        if hasattr(form, "toolController"):
-            tc = getattr(form, "toolController")
+        if tc := getattr(form, "toolController", None):
             tc.setMinimumWidth(80)
 
     def onDirtyChanged(self, callback):
@@ -505,32 +491,26 @@ class TaskPanelPage(object):
         """initPage(obj) ... overwrite to customize UI for specific model.
         Note that this function is invoked after all page controllers have been created.
         Should be overwritten by subclasses."""
-        pass
 
     def cleanupPage(self, obj):
         """cleanupPage(obj) ... overwrite to perform any cleanup tasks before page is destroyed.
         Can safely be overwritten by subclasses."""
-        pass
 
     def modifyStandardButtons(self, buttonBox):
         """modifyStandardButtons(buttonBox) ... overwrite if the task panel standard buttons need to be modified.
         Can safely be overwritten by subclasses."""
-        pass
 
     def getForm(self):
         """getForm() ... return UI form for this page.
         Must be overwritten by subclasses."""
-        pass
 
     def getFields(self, obj):
         """getFields(obj) ... overwrite to transfer values from UI to obj's properties.
         Can safely be overwritten by subclasses."""
-        pass
 
     def setFields(self, obj):
         """setFields(obj) ... overwrite to transfer obj's property values to UI.
         Can safely be overwritten by subclasses."""
-        pass
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return signals which, when triggered, cause the receiver to update the model.
@@ -544,7 +524,6 @@ class TaskPanelPage(object):
         (see getSignalsForUpdate(obj)) this function can be used to register signal handlers
         manually.
         Can safely be overwritten by subclasses."""
-        pass
 
     def updateData(self, obj, prop):
         """updateData(obj, prop) ... overwrite if the receiver needs to react to property changes that might not have been caused by the receiver itself.
@@ -556,13 +535,11 @@ class TaskPanelPage(object):
         This can happen if a subclass unconditionally transfers all values in getFields(obj) to the model and just calls setFields(obj) in this callback.
         In such a scenario the first property assignment will cause all changes in the UI of the other fields to be overwritten by setFields(obj).
         You have been warned."""
-        pass
 
     def updateSelection(self, obj, sel):
         """updateSelection(obj, sel) ...
         overwrite to customize UI depending on current selection.
         Can safely be overwritten by subclasses."""
-        pass
 
     def selectInComboBox(self, name, combo):
         """selectInComboBox(name, combo) ...
@@ -595,8 +572,10 @@ class TaskPanelPage(object):
     def tcComboChanged(self, newIndex):
         if self.obj is not None and self.tcEditor:
             if newIndex == self.combo.count() - 1:
-                # Special entry: new tool controller. Show the tool dock and reset combo
-                dock = ToolBitLibraryDock(self.job, True)
+                # Special entry: new tool controller. Show the tool dock and reset combo.
+                # One toolbit at a time: the operation adopts the controller that gets
+                # added, and it can only use one.
+                dock = ToolBitLibraryDock(self.job, True, askToolNumber=True, singleSelection=True)
                 dock.open()
                 self.resetTCCombo()
             elif newIndex == self.combo.count() - 2:
@@ -700,9 +679,7 @@ class TaskPanelPage(object):
         showCountLabel = tcCount > 0
         self.tcEditor.controller.tcOperationCountLabel.setWordWrap(True)
         self.tcEditor.controller.tcOperationCountLabel.setText(
-            '<img src=":/icons/Warning.svg" width="24" height="24" style="vertical-align: bottom;"> {0}'.format(
-                labelStr
-            )
+            f'<img src=":/icons/Warning.svg" width="24" height="24" style="vertical-align: bottom;"> {labelStr}'
         )
         self.tcEditor.controller.tcOperationCountLabel.setVisible(showCountLabel)
 
@@ -713,7 +690,8 @@ class TaskPanelPage(object):
             )
         else:
             Path.Log.error(
-                "Panel uses a layout incompatible with editing tool controllers. Report a bug: it should be a QGridLayout"
+                "Panel uses a layout incompatible with editing tool controllers."
+                " Report a bug: it should be a QGridLayout"
             )
 
         self.tcEditor.controller.show()
@@ -754,22 +732,32 @@ class TaskPanelPage(object):
         helper function to update obj's Coolant property if a different
         one has been selected in the combo box."""
         option = combo.currentText()
-        if hasattr(obj, "CoolantMode") and option:
-            if obj.CoolantMode != option:
-                obj.CoolantMode = option
+        if hasattr(obj, "CoolantMode") and option and obj.CoolantMode != option:
+            obj.CoolantMode = option
 
     def updatePanelVisibility(self, panelTitle, obj):
         """updatePanelVisibility(panelTitle, obj) ...
         Function to call the `updateVisibility()` GUI method of the
         page whose panel title is as indicated."""
-        if hasattr(self, "parent"):
-            parent = getattr(self, "parent")
-            if parent and hasattr(parent, "featurePages"):
-                for page in parent.featurePages:
-                    if hasattr(page, "panelTitle"):
-                        if page.panelTitle == panelTitle and hasattr(page, "updateVisibility"):
-                            page.updateVisibility()
-                            break
+        if (parent := getattr(self, "parent", None)) and hasattr(parent, "featurePages"):
+            for page in parent.featurePages:
+                if getattr(page, "panelTitle", None) == panelTitle and hasattr(
+                    page, "updateVisibility"
+                ):
+                    page.updateVisibility()
+                    break
+
+    def getToolTipList(self):
+        """getToolTipList() ... Collect list of tuples (widget_name: str, property_name: str)
+        See also setToolTips(obj)
+        Can safely be overwritten by subclasses."""
+        return []
+
+    def setToolTips(self, obj):
+        """setToolTips(obj) ... set widgets tool tip from properties description"""
+        for widName, propName in self.getToolTipList():
+            widget = self.form.findChild(QtGui.QWidget, widName)
+            widget.setToolTip(translate("App::Property", obj.getDocumentationOfProperty(propName)))
 
 
 class TaskPanelBaseGeometryPage(TaskPanelPage):
@@ -779,7 +767,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
     DataObjectSub = QtCore.Qt.ItemDataRole.UserRole + 1
 
     def __init__(self, obj, features):
-        super(TaskPanelBaseGeometryPage, self).__init__(obj, features)
+        super().__init__(obj, features)
 
         self.panelTitle = "Base Geometry"
         self.OpIcon = ":/icons/CAM_BaseGeometry.svg"
@@ -795,12 +783,11 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         Helper method to modify the current form immediately after
         it is loaded."""
         # Determine if Job operations are available with Base Geometry
-        availableOps = list()
         ops = self.job.Operations.Group
+        availableOps = []
         for op in ops:
-            if hasattr(op, "Base") and isinstance(op.Base, list):
-                if len(op.Base) > 0:
-                    availableOps.append(op.Label)
+            if hasattr(op, "Base") and isinstance(op.Base, list) and op.Base:
+                availableOps.append(op.Label)
 
         # Load available operations into combobox
         if len(availableOps) > 0:
@@ -834,7 +821,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         self.form.baseList.clear()
         for base in self.obj.Base:
             for sub in base[1]:
-                item = QtGui.QListWidgetItem("%s.%s" % (base[0].Label, sub))
+                item = QtGui.QListWidgetItem(f"{base[0].Label}.{sub}")
                 item.setData(self.DataObject, base[0])
                 item.setData(self.DataObjectSub, sub)
                 self.form.baseList.addItem(item)
@@ -932,7 +919,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
                 newlist.append(base)
             else:
                 newlist.append(obj)
-        Path.Log.debug("Setting new base: %s -> %s" % (self.obj.Base, newlist))
+        Path.Log.debug(f"Setting new base: {self.obj.Base} -> {newlist}")
         self.obj.Base = newlist
 
     def clearBase(self):
@@ -999,7 +986,7 @@ class TaskPanelBaseLocationPage(TaskPanelPage):
     DataLocation = QtCore.Qt.ItemDataRole.UserRole
 
     def __init__(self, obj, features):
-        super(TaskPanelBaseLocationPage, self).__init__(obj, features)
+        super().__init__(obj, features)
 
         # members initialized later
         self.editRow = None
@@ -1030,11 +1017,11 @@ class TaskPanelBaseLocationPage(TaskPanelPage):
         for location in self.obj.Locations:
             self.formLoc.baseList.insertRow(self.formLoc.baseList.rowCount())
 
-            item = QtGui.QTableWidgetItem("%.2f" % location.x)
+            item = QtGui.QTableWidgetItem(f"{location.x:.2f}")
             item.setData(self.DataLocation, location.x)
             self.formLoc.baseList.setItem(self.formLoc.baseList.rowCount() - 1, 0, item)
 
-            item = QtGui.QTableWidgetItem("%.2f" % location.y)
+            item = QtGui.QTableWidgetItem(f"{location.y:.2f}")
             item.setData(self.DataLocation, location.y)
             self.formLoc.baseList.setItem(self.formLoc.baseList.rowCount() - 1, 1, item)
         self.formLoc.baseList.resizeColumnToContents(0)
@@ -1112,7 +1099,7 @@ class TaskPanelHeightsPage(TaskPanelPage):
     """Page controller for heights and depths."""
 
     def __init__(self, obj, features):
-        super(TaskPanelHeightsPage, self).__init__(obj, features)
+        super().__init__(obj, features)
 
         # members initialized later
         self.clearanceHeight = None
@@ -1200,7 +1187,32 @@ class TaskPanelHeightsPage(TaskPanelPage):
         else:
             self.form.groupBoxLinking.hide()
 
+        # Whether this page offers the work plane selector. An explicit flag,
+        # not a question to Qt about the widget being visible: isVisible() is
+        # false whenever any ancestor is not shown, which a task panel page
+        # can be at the moment a signal fires, and a guard on it silently
+        # drops the write. Every Job offers the selector; what a plane may be
+        # on a machine without rotary axes is decided where it is created.
+        self.hasWorkplaneSelector = True
+        self.populateWorkplanes(obj)
         self.updateHeightsDiagram()
+
+    def populateWorkplanes(self, obj):
+        """Fill the work plane selector with the Job's named work planes.
+
+        The data carried by each entry is the object Name, not the Label, so a
+        rename does not break the association."""
+        combo = self.form.workplane
+        combo.blockSignals(True)
+        try:
+            combo.clear()
+            combo.addItem(translate("CAM_Operation", "None (Job XY)"), "")
+            job = PathUtils.findParentJob(obj)
+            group = getattr(job, "Workplanes", None) if job else None
+            for workplane in getattr(group, "Group", []) or []:
+                combo.addItem(workplane.Label, workplane.Name)
+        finally:
+            combo.blockSignals(False)
 
     def updateHeightsDiagram(self):
         """Render the Clearance/Retract/Start/StepDown/FinishStepDown/Final callout graphic as
@@ -1224,6 +1236,19 @@ class TaskPanelHeightsPage(TaskPanelPage):
         return translate("PathOp", "Heights")
 
     def getFields(self, obj):
+        # The work plane first. Every property assignment below fires
+        # updateData() synchronously, and pageUpdateData() answers it with
+        # setFields(), which repopulates the selector from the model. Read
+        # and write the selection before anything can reset it.
+        if hasattr(obj, "Workplane") and getattr(self, "hasWorkplaneSelector", False):
+            name = self.form.workplane.currentData()
+            selected = obj.Document.getObject(name) if name else None
+            current = obj.Workplane
+            if (selected is None) != (current is None) or (
+                selected is not None and current is not None and selected.Name != current.Name
+            ):
+                obj.Workplane = selected
+
         self.safeHeight.updateProperty()
         self.clearanceHeight.updateProperty()
         if self.haveStartDepth():
@@ -1258,6 +1283,15 @@ class TaskPanelHeightsPage(TaskPanelPage):
                 self.form.CollisionAvoidanceStrategy.blockSignals(True)
                 self.form.CollisionAvoidanceStrategy.setCurrentIndex(index)
                 self.form.CollisionAvoidanceStrategy.blockSignals(False)
+        if hasattr(obj, "Workplane") and getattr(self, "hasWorkplaneSelector", False):
+            self.populateWorkplanes(obj)
+            linked = obj.Workplane
+            index = self.form.workplane.findData(linked.Name if linked else "")
+            if index >= 0:
+                self.form.workplane.blockSignals(True)
+                self.form.workplane.setCurrentIndex(index)
+                self.form.workplane.blockSignals(False)
+
         self.updateSelection(obj, FreeCADGui.Selection.getSelectionEx())
 
     def getSignalsForUpdate(self, obj):
@@ -1275,6 +1309,7 @@ class TaskPanelHeightsPage(TaskPanelPage):
         if PathOp.FeatureLinking & self.features:
             signals.append(self.form.CollisionClearance.editingFinished)
             signals.append(self.form.CollisionAvoidanceStrategy.currentIndexChanged)
+        signals.append(self.form.workplane.currentIndexChanged)
         return signals
 
     def pageUpdateData(self, obj, prop):
@@ -1287,6 +1322,7 @@ class TaskPanelHeightsPage(TaskPanelPage):
             "FinishDepth",
             "CollisionAvoidanceStrategy",
             "CollisionClearance",
+            "Workplane",
         ]:
             self.setFields(obj)
 
@@ -1299,11 +1335,20 @@ class TaskPanelHeightsPage(TaskPanelPage):
             self.form.finalDepthSet.clicked.connect(
                 lambda: self.depthSet(obj, self.finalDepth, "FinalDepth")
             )
+        self.form.resetDefaults.clicked.connect(lambda: self.resetDefaults(obj))
+
+    def resetDefaults(self, obj):
+        """Re-derive every height and depth for the operation's current work
+        plane, stock and model, restoring the SetupSheet expressions so the
+        fields track later changes as well."""
+        if obj.Proxy.resetDepthDefaults(obj):
+            self.setFields(obj)
+            self.setDirty()
 
     def depthSet(self, obj, spinbox, prop):
-        z = self.selectionZLevel(FreeCADGui.Selection.getSelectionEx())
+        z = self.selectionZLevel(obj, FreeCADGui.Selection.getSelectionEx())
         if z is not None:
-            Path.Log.debug("depthSet(%s, %s, %.2f)" % (obj.Label, prop, z))
+            Path.Log.debug(f"depthSet({obj.Label}, {prop}, {z:.2f})")
             if spinbox.expression():
                 obj.setExpression(prop, None)
                 self.setDirty()
@@ -1313,32 +1358,24 @@ class TaskPanelHeightsPage(TaskPanelPage):
         else:
             Path.Log.info("depthSet(-)")
 
-    def selectionZLevel(self, sel):
-        if len(sel) == 1 and len(sel[0].SubObjects) == 1:
-            sub = sel[0].SubObjects[0]
-            if "Vertex" == sub.ShapeType:
-                return sub.Z
-            if Path.Geom.isHorizontal(sub):
-                if "Edge" == sub.ShapeType:
-                    return sub.Vertexes[0].Z
-                if "Face" == sub.ShapeType:
-                    return sub.BoundBox.ZMax
-        return None
+    def selectionZLevel(self, obj, sel):
+        """Depth named by the current selection, measured along this
+        operation's tool axis. See PathUtil.depthOfFeature()."""
+        if len(sel) != 1 or len(sel[0].SubObjects) != 1:
+            return None
+        return PathUtil.depthOfFeature(sel[0].SubObjects[0], PathUtil.toolAxisForOp(obj))
 
     def updateSelection(self, obj, sel):
-        if self.selectionZLevel(sel) is not None:
-            self.form.startDepthSet.setEnabled(True)
-            self.form.finalDepthSet.setEnabled(True)
-        else:
-            self.form.startDepthSet.setEnabled(False)
-            self.form.finalDepthSet.setEnabled(False)
+        enabled = self.selectionZLevel(obj, sel) is not None
+        self.form.startDepthSet.setEnabled(enabled)
+        self.form.finalDepthSet.setEnabled(enabled)
 
 
 class TaskPanelToolControllerPage(TaskPanelPage):
     """Page controller for tool controller, coolant and tool controller editing."""
 
     def __init__(self, obj, features):
-        super(TaskPanelToolControllerPage, self).__init__(obj, features)
+        super().__init__(obj, features)
 
         self.panelTitle = "Tool Controller"
         self.OpIcon = ":/icons/CAM_ToolController.svg"
@@ -1379,7 +1416,7 @@ class TaskPanelDiametersPage(TaskPanelPage):
     """Page controller for diameters."""
 
     def __init__(self, obj, features):
-        super(TaskPanelDiametersPage, self).__init__(obj, features)
+        super().__init__(obj, features)
 
         # members initialized later
         self.clearanceHeight = None
@@ -1414,7 +1451,7 @@ class TaskPanelDiametersPage(TaskPanelPage):
             self.setFields(obj)
 
 
-class TaskPanel(object):
+class TaskPanel:
     """
     Generic TaskPanel implementation handling the standard Path operation layout.
     This class only implements the framework and takes care of bringing all pages up and down in a controller fashion.
@@ -1731,7 +1768,7 @@ def Create(res):
     res is an instance of CommandResources. It is not expected that the user invokes
     this function directly, but calls the Activated() function of the Command object
     that is created in each operations Gui implementation."""
-    FreeCAD.ActiveDocument.openTransaction("Create %s" % res.name)
+    FreeCAD.ActiveDocument.openTransaction(f"Create {res.name}")
     if res.job is None:
         FreeCAD.ActiveDocument.abortTransaction()
         raise ValueError("No job selected. Operation creation aborted.")
@@ -1823,7 +1860,7 @@ def SetupOperation(name, objFactory, opPageClass, pixmap, menuText, toolTip, set
     res = CommandResources(name, objFactory, opPageClass, pixmap, menuText, None, toolTip)
 
     command = CommandPathOp(res)
-    FreeCADGui.addCommand("CAM_%s" % name.replace(" ", "_"), command)
+    FreeCADGui.addCommand(f"CAM_{name.replace(' ', '_')}", command)
 
     if setupProperties is not None:
         PathSetupSheet.RegisterOperation(name, objFactory, setupProperties)
@@ -1842,11 +1879,11 @@ class _AdaptiveTabBar(QtGui.QTabBar):
     ICON_PADDING = 14
 
     def __init__(self, *args, **kwargs):
-        super(_AdaptiveTabBar, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.iconOnlyMaxWidth = 24 + self.ICON_PADDING
 
     def tabSizeHint(self, index):
-        size = super(_AdaptiveTabBar, self).tabSizeHint(index)
+        size = super().tabSizeHint(index)
         if not self.tabText(index):
             size.setWidth(min(size.width(), self.iconOnlyMaxWidth))
         return size
@@ -1860,7 +1897,7 @@ class IconTabWidget(QtGui.QTabWidget):
     """
 
     def __init__(self, *args, **kwargs):
-        super(IconTabWidget, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.setStyleSheet("QTabWidget::tab-bar { alignment: left; }")
         self.setTabBar(_AdaptiveTabBar())
         tabbar = self.tabBar()
@@ -1887,12 +1924,10 @@ class IconTabWidget(QtGui.QTabWidget):
         self.currentChanged.connect(self._resizeToCurrentPage)
 
     def sizeHint(self):
-        return self._currentPageSize(super(IconTabWidget, self).sizeHint(), "sizeHint")
+        return self._currentPageSize(super().sizeHint(), "sizeHint")
 
     def minimumSizeHint(self):
-        return self._currentPageSize(
-            super(IconTabWidget, self).minimumSizeHint(), "minimumSizeHint"
-        )
+        return self._currentPageSize(super().minimumSizeHint(), "minimumSizeHint")
 
     def _currentPageSize(self, fallback, hintName):
         current = self.currentWidget()
@@ -1911,7 +1946,7 @@ class IconTabWidget(QtGui.QTabWidget):
     def heightForWidth(self, width):
         current = self.currentWidget()
         if current is None or not current.hasHeightForWidth():
-            return super(IconTabWidget, self).heightForWidth(width)
+            return super().heightForWidth(width)
         return current.heightForWidth(width) + self.tabBar().sizeHint().height()
 
     def _resizeToCurrentPage(self, _index):
@@ -1931,24 +1966,24 @@ class IconTabWidget(QtGui.QTabWidget):
             transform = QtGui.QTransform().rotate(90)
             rotated_pixmap = pixmap.transformed(transform, QtCore.Qt.SmoothTransformation)
             icon = QtGui.QIcon(rotated_pixmap)
-        index = super(IconTabWidget, self).addTab(widget, icon, "")
+        index = super().addTab(widget, icon, "")
         self._tabLabels[index] = label
         self.tabBar().setTabToolTip(index, label)
         self._updateTabLabels(self.currentIndex())
         return index
 
     def resizeEvent(self, event):
-        super(IconTabWidget, self).resizeEvent(event)
+        super().resizeEvent(event)
         self._scheduleUpdate()
 
     def showEvent(self, event):
-        super(IconTabWidget, self).showEvent(event)
+        super().showEvent(event)
         self._installAncestorFilters()
         self._scheduleUpdate()
 
     def hideEvent(self, event):
         self._removeAncestorFilters()
-        super(IconTabWidget, self).hideEvent(event)
+        super().hideEvent(event)
 
     def _installAncestorFilters(self):
         self._removeAncestorFilters()
@@ -1971,7 +2006,7 @@ class IconTabWidget(QtGui.QTabWidget):
             return False
         if event.type() == QtCore.QEvent.Resize:
             self._scheduleUpdate()
-        return super(IconTabWidget, self).eventFilter(obj, event)
+        return super().eventFilter(obj, event)
 
     def _scheduleUpdate(self):
         # Defer until the event loop catches up so ancestor geometry (dock/

@@ -804,6 +804,48 @@
         </property>
        </widget>
       </item>
+      <item row="16" column="0">
+       <widget class="QLabel" name="label_axislines">
+        <property name="text">
+         <string>Sketcher axes</string>
+        </property>
+       </widget>
+      </item>
+      <item row="16" column="3">
+       <widget class="QComboBox" name="AxisLinePattern">
+        <property name="toolTip">
+         <string>Line pattern of sketcher axes</string>
+        </property>
+        <property name="currentIndex">
+         <number>-1</number>
+        </property>
+       </widget>
+      </item>
+      <item row="16" column="4">
+        <widget class="Gui::PrefSpinBox" name="AxisLineWidth">
+         <property name="toolTip">
+          <string>Width of the sketcher axes</string>
+         </property>
+         <property name="suffix">
+           <string notr="true"> px</string>
+         </property>
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+           <number>99</number>
+         </property>
+         <property name="value">
+           <number>2</number>
+         </property>
+         <property name="prefEntry" stdset="0">
+           <cstring>AxisLineWidth</cstring>
+         </property>
+         <property name="prefPath" stdset="0">
+           <cstring>Mod/Sketcher/View</cstring>
+         </property>
+        </widget>
+      </item>
      </layout>
     </widget>
    </item>

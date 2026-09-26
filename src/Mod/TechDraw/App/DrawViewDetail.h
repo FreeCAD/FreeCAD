@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -73,6 +75,7 @@ public:
     void handleChangedPropertyType(
         Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
 
+    std::string makeCaption();
 
     void detailExec(TopoDS_Shape& s,
                     DrawViewPart* baseView,
@@ -99,6 +102,8 @@ public Q_SLOTS:
     void onMakeDetailFinished(void);
 
 protected:
+    TopoDS_Shape getShapeForGeometryBuild() const override;
+
     void getParameters(void);
     double m_fudge;
     bool debugDetail() const;
@@ -110,6 +115,8 @@ protected:
     QFutureWatcher<void> m_detailWatcher;
     QFuture<void> m_detailFuture;
     bool m_waitingForDetail;
+    bool m_scaleAdded = false;
+    bool m_refAdded = false;
 
     DrawViewPart* m_saveDvp;
     DrawViewSection* m_saveDvs;

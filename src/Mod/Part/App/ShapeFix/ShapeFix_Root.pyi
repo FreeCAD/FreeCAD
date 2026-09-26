@@ -38,7 +38,7 @@ class ShapeFix_Root(PyObjectBase):
     """Maximal allowed tolerance"""
 
     @constmethod
-    def limitTolerance(self) -> float:
+    def limitTolerance(self, tolerance: float, /) -> float:
         """
         Returns tolerance limited by [MinTolerance,MaxTolerance]
         """

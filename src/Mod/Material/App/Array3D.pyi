@@ -4,7 +4,8 @@ from __future__ import annotations
 
 from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
-from typing import Any, Final, List
+from Base.Quantity import Quantity
+from typing import Final, List
 
 
 @export(
@@ -36,39 +37,39 @@ class Array3D(BaseClass):
     """The depth of the array (3rd dimension)."""
 
     @constmethod
-    def getRows(self) -> int:
+    def getRows(self, depth: int = ..., /) -> int:
         """
         Get the number of rows in the array at the specified depth.
         """
         ...
 
     @constmethod
-    def getValue(self) -> Any:
+    def getValue(self, depth: int, row: int, column: int, /) -> Quantity:
         """
         Get the value at the given row and column
         """
         ...
 
     @constmethod
-    def getDepthValue(self) -> Any:
+    def getDepthValue(self, depth: int, /) -> Quantity:
         """
         Get the column value at the given depth
         """
         ...
 
-    def setDepthValue(self, value: Any, /):
+    def setDepthValue(self, depth: int, value: str, /) -> None:
         """
         Set the column value at the given depth
         """
         ...
 
-    def setValue(self, depth: int, row: int, column: int, value: Any, /):
+    def setValue(self, depth: int, row: int, column: int, value: str, /) -> None:
         """
         Set the value at the given depth, row, and column
         """
         ...
 
-    def setRows(self, depth: int, value: int, /):
+    def setRows(self, depth: int, rows: int, /) -> None:
         """
         Set the number of rows at the given depth
         """

@@ -355,7 +355,7 @@ void CmdMeshImport::activated(int)
 
     const Gui::FileDialog::FilterList filter {
         {QObject::tr("All Mesh Files"),
-         {"*.stl", "*.ast", "*.bms", "*.obj", "*.off", "*.iv", "*.ply", "*.nas", "*.bdf"}},
+         {"*.stl", "*.ast", "*.bms", "*.obj", "*.off", "*.iv", "*.ply", "*.nas", "*.bdf", "*.3mf"}},
         {QObject::tr("Binary STL"), {"*.stl"}},
         {QObject::tr("ASCII STL"), {"*.ast"}},
         {QObject::tr("Binary Mesh"), {"*.bms"}},
@@ -363,6 +363,7 @@ void CmdMeshImport::activated(int)
         {QObject::tr("Object File Format"), {"*.off"}},
         {QObject::tr("Inventor V2.1 ASCII"), {"*.iv"}},
         {QObject::tr("Stanford Polygon"), {"*.ply"}},
+        {QObject::tr("3D Manufacturing Format"), {"*.3mf"}},
         {QStringLiteral("NASTRAN"), {"*.nas", "*.bdf"}},
         Gui::FileDialog::Filter::AllFiles(),
     };
@@ -1502,7 +1503,7 @@ void CmdMeshBoundingBox::activated(int)
         const Base::BoundBox3f& box = rMesh.GetBoundBox();
 
         Base::Console().message(
-            "Boundings: Min=<%f,%f,%f>, Max=<%f,%f,%f>\n",
+            "Boundings: Min=<{:f},{:f},{:f}>, Max=<{:f},{:f},{:f}>\n",
             box.MinX,
             box.MinY,
             box.MinZ,

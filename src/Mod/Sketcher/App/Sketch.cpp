@@ -138,7 +138,6 @@ Sketch::Sketch()
     , GCSsys()
     , ConstraintsCounter(0)
     , isInitMove(false)
-    , isFine(true)
     , moveStep(0)
     , defaultSolver(GCS::DogLeg)
     , defaultSolverRedundant(GCS::DogLeg)
@@ -303,7 +302,7 @@ int Sketch::setUpSketch(
     bool found = false;
     for (; i < onlyBlockedGeometry.size(); i++) {
         if (onlyBlockedGeometry[i]) {
-            Base::Console().log("\n  GeoId=%d", i);
+            Base::Console().log("\n  GeoId={}", i);
             found = true;
         }
     }
@@ -314,7 +313,7 @@ int Sketch::setUpSketch(
     Base::Console().log("\nNotOnlyBlocked GeoIds:");
     i = 0;
     for (; i < blockedGeoIds.size(); i++) {
-        Base::Console().log("\n  GeoId=%d", blockedGeoIds[i]);
+        Base::Console().log("\n  GeoId={}", blockedGeoIds[i]);
     }
     if (i == 0) {
         Base::Console().log("\n  None");
@@ -385,7 +384,7 @@ int Sketch::setUpSketch(
                 = analyseBlockedConstraintDependentParameters(blockedGeoIds, params_to_block);
 
             if (debugMode == GCS::IterationLevel) {
-                Base::Console().log("Sketcher::setUpSketch()-BlockConstraint-PostAnalysis:%d\n", index);
+                Base::Console().log("Sketcher::setUpSketch()-BlockConstraint-PostAnalysis:{}\n", index);
             }
             index++;
         }
@@ -400,10 +399,10 @@ int Sketch::setUpSketch(
 
             // Debug code block
             for (size_t i = 0; i < groups.size(); i++) {
-                Base::Console().log("\nDepParams: Group %d:", i);
+                Base::Console().log("\nDepParams: Group {}:", i);
                 for (size_t j = 0; j < groups[i].size(); j++) {
                     Base::Console().log(
-                        "\n  Param=%x ,GeoId=%d, GeoPos=%d",
+                        "\n  Param={:x} ,GeoId={}, GeoPos={}",
                         param2geoelement.find(*std::next(groups[i].begin(), j))->first,
                         param2geoelement.find(*std::next(groups[i].begin(), j))->second.first,
                         param2geoelement.find(*std::next(groups[i].begin(), j))->second.second
@@ -426,8 +425,8 @@ int Sketch::setUpSketch(
         Base::TimeElapsed end_time;
 
         Base::Console().log(
-            "Sketcher::setUpSketch()-T:%s\n",
-            Base::TimeElapsed::diffTime(start_time, end_time).c_str()
+            "Sketcher::setUpSketch()-T:{}\n",
+            Base::TimeElapsed::diffTime(start_time, end_time)
         );
     }
 
@@ -482,10 +481,10 @@ bool Sketch::analyseBlockedConstraintDependentParameters(
 
 #ifdef DEBUG_BLOCK_CONSTRAINT
     for (size_t i = 0; i < groups.size(); i++) {
-        Base::Console().log("\nDepParams: Group %d:", i);
+        Base::Console().log("\nDepParams: Group {}:", i);
         for (size_t j = 0; j < groups[i].size(); j++) {
             Base::Console().log(
-                "\n  Param=%x ,GeoId=%d, GeoPos=%d",
+                "\n  Param={:x} ,GeoId={}, GeoPos={}",
                 param2geoelement.find(*std::next(groups[i].begin(), j))->first,
                 param2geoelement.find(*std::next(groups[i].begin(), j))->second.first,
                 param2geoelement.find(*std::next(groups[i].begin(), j))->second.second
@@ -523,7 +522,11 @@ bool Sketch::analyseBlockedConstraintDependentParameters(
                 params_to_block.push_back(thisparam);
                 prop_groups[i].blocking_param_in_group = thisparam;
 #ifdef DEBUG_BLOCK_CONSTRAINT
-                Base::Console().log("\nTentatively blocking group %d, with param=%x", i, thisparam);
+                Base::Console().log(
+                    "\nTentatively blocking group {}, with param={}",
+                    i,
+                    static_cast<const void*>(thisparam)
+                );
 #endif  // DEBUG_BLOCK_CONSTRAINT
                 break;
             }
@@ -620,6 +623,9 @@ void Sketch::calculateDependentParametersElements()
                     else {
                         solvext->setMidy(SolverGeometryExtension::Dependent);
                     }
+                    break;
+                case PointPos::NumPointPos:
+                    // ignore
                     break;
             }
         }
@@ -1973,7 +1979,7 @@ int Sketch::checkGeoId(int geoId) const
         geoId += Geoms.size();  // convert negative external-geometry index to index into Geoms
     }
     if (!(geoId >= 0 && geoId < int(Geoms.size()))) {
-        Base::Console().warning("geoId %d  Geoms.size %d\n", geoId, int(Geoms.size()));
+        Base::Console().warning("geoId {}  Geoms.size {}\n", geoId, int(Geoms.size()));
         throw Base::IndexError("Sketch::checkGeoId. GeoId index out range.");
     }
     return geoId;
@@ -2623,7 +2629,7 @@ int Sketch::addConstraints(const std::vector<Constraint*>& ConstraintList)
 
         if (rtn == -1) {
             int humanConstraintId = cid + 1;
-            Base::Console().error("Sketcher constraint number %d is malformed!\n", humanConstraintId);
+            Base::Console().error("Sketcher constraint number {} is malformed!\n", humanConstraintId);
             MalformedConstraints.push_back(humanConstraintId);
         }
     }
@@ -2645,7 +2651,7 @@ int Sketch::addConstraints(
 
             if (rtn == -1) {
                 int humanConstraintId = cid + 1;
-                Base::Console().error("Sketcher constraint number %d is malformed!\n", humanConstraintId);
+                Base::Console().error("Sketcher constraint number {} is malformed!\n", humanConstraintId);
                 MalformedConstraints.push_back(humanConstraintId);
             }
         }
@@ -3060,7 +3066,7 @@ int Sketch::addPerpendicularConstraint(int geoId1, int geoId2)
     }
 
     Base::Console().warning(
-        "Perpendicular constraints between %s and %s are not supported.\n",
+        "Perpendicular constraints between {} and {} are not supported.\n",
         nameByType(Geoms[geoId1].type),
         nameByType(Geoms[geoId2].type)
     );
@@ -3980,7 +3986,7 @@ int Sketch::addEqualConstraint(int geoId1, int geoId2)
     }
 
     Base::Console().warning(
-        "Equality constraints between %s and %s are not supported.\n",
+        "Equality constraints between {} and {} are not supported.\n",
         nameByType(Geoms[geoId1].type),
         nameByType(Geoms[geoId2].type)
     );
@@ -4713,7 +4719,7 @@ bool Sketch::updateGeometry()
             ++i;
         }
         catch (Base::Exception& e) {
-            Base::Console().error("Updating geometry: Error build geometry(%d): %s\n", i, e.what());
+            Base::Console().error("Updating geometry: Error build geometry({}): {}\n", i, e.what());
             return false;
         }
         catch (const Standard_Failure& e) {
@@ -4955,7 +4961,7 @@ bool Sketch::updateNonDrivingConstraints()
 
 // solving ==========================================================
 
-int Sketch::solve()
+GCS::SolveStatus Sketch::solve()
 {
     captureGroupStates();
 
@@ -4969,64 +4975,63 @@ int Sketch::solve()
     if (debugMode == GCS::Minimal || debugMode == GCS::IterationLevel) {
 
         Base::Console().log(
-            "Sketcher::Solve()-%s-T:%s\n",
-            solvername.c_str(),
-            Base::TimeElapsed::diffTime(start_time, end_time).c_str()
+            "Sketcher::Solve()-{}-T:{}\n",
+            solvername,
+            Base::TimeElapsed::diffTime(start_time, end_time)
         );
     }
 
     SolveTime = Base::TimeElapsed::diffTimeF(start_time, end_time);
 
-    if (result == GCS::Success) {
+    if (result == GCS::SolveStatus::Success) {
         applyGroupTransformations();
     }
 
     return result;
 }
 
-int Sketch::internalSolve(std::string& solvername, int level)
+GCS::SolveStatus Sketch::internalSolve(std::string& solvername, int level)
 {
     if (!isInitMove) {  // make sure we are in single subsystem mode
         clearTemporaryConstraints();
-        isFine = true;
     }
 
-    int ret = -1;
     bool valid_solution;
     int defaultsoltype = -1;
+    GCS::SolveStatus status = GCS::SolveStatus::Failed;
 
     if (isInitMove) {
         solvername = "DogLeg";  // DogLeg is used for dragging (same as before)
-        ret = GCSsys.solve(isFine, GCS::DogLeg);
+        status = GCSsys.solve(GCS::DogLeg);
     }
     else {
         switch (defaultSolver) {
-            case 0:
+            case GCS::BFGS:
                 solvername = "BFGS";
-                ret = GCSsys.solve(isFine, GCS::BFGS);
+                status = GCSsys.solve(GCS::BFGS);
                 defaultsoltype = 2;
                 break;
-            case 1:  // solving with the LevenbergMarquardt solver
+            case GCS::LevenbergMarquardt:
                 solvername = "LevenbergMarquardt";
-                ret = GCSsys.solve(isFine, GCS::LevenbergMarquardt);
+                status = GCSsys.solve(GCS::LevenbergMarquardt);
                 defaultsoltype = 1;
                 break;
-            case 2:  // solving with the BFGS solver
+            case GCS::DogLeg:
                 solvername = "DogLeg";
-                ret = GCSsys.solve(isFine, GCS::DogLeg);
+                status = GCSsys.solve(GCS::DogLeg);
                 defaultsoltype = 0;
                 break;
         }
     }
 
     // if successfully solved try to write the parameters back
-    if (ret == GCS::Success) {
+    if (status == GCS::SolveStatus::Success) {
         GCSsys.applySolution();
         valid_solution = updateGeometry();
         if (!valid_solution) {
             GCSsys.undoSolution();
             updateGeometry();
-            Base::Console().warning("Invalid solution from %s solver.\n", solvername.c_str());
+            Base::Console().warning("Invalid solution from {} solver.\n", solvername);
         }
         else {
             updateNonDrivingConstraints();
@@ -5036,7 +5041,7 @@ int Sketch::internalSolve(std::string& solvername, int level)
         valid_solution = false;
         if (debugMode == GCS::Minimal || debugMode == GCS::IterationLevel) {
 
-            Base::Console().log("Sketcher::Solve()-%s- Failed!! Falling back...\n", solvername.c_str());
+            Base::Console().log("Sketcher::Solve()-{}- Failed!! Falling back...\n", solvername);
         }
     }
 
@@ -5050,15 +5055,15 @@ int Sketch::internalSolve(std::string& solvername, int level)
             switch (soltype) {
                 case 0:
                     solvername = "DogLeg";
-                    ret = GCSsys.solve(isFine, GCS::DogLeg);
+                    status = GCSsys.solve(GCS::DogLeg);
                     break;
                 case 1:  // solving with the LevenbergMarquardt solver
                     solvername = "LevenbergMarquardt";
-                    ret = GCSsys.solve(isFine, GCS::LevenbergMarquardt);
+                    status = GCSsys.solve(GCS::LevenbergMarquardt);
                     break;
                 case 2:  // solving with the BFGS solver
                     solvername = "BFGS";
-                    ret = GCSsys.solve(isFine, GCS::BFGS);
+                    status = GCSsys.solve(GCS::BFGS);
                     break;
                 // last resort: augment the system with a second subsystem and use the SQP solver
                 case 3:
@@ -5074,19 +5079,19 @@ int Sketch::internalSolve(std::string& solvername, int level)
                         );
                     }
                     GCSsys.initSolution();
-                    ret = GCSsys.solve(isFine);
+                    status = GCSsys.solve();
                     break;
             }
 
             // if successfully solved try to write the parameters back
-            if (ret == GCS::Success) {
+            if (status == GCS::SolveStatus::Success) {
                 GCSsys.applySolution();
                 valid_solution = updateGeometry();
                 if (!valid_solution) {
                     GCSsys.undoSolution();
                     updateGeometry();
-                    Base::Console().warning("Invalid solution from %s solver.\n", solvername.c_str());
-                    ret = GCS::SuccessfulSolutionInvalid;
+                    Base::Console().warning("Invalid solution from {} solver.\n", solvername);
+                    status = GCS::SolveStatus::SuccessfulSolutionInvalid;
                 }
                 else {
                     updateNonDrivingConstraints();
@@ -5095,10 +5100,7 @@ int Sketch::internalSolve(std::string& solvername, int level)
             else {
                 valid_solution = false;
                 if (debugMode == GCS::Minimal || debugMode == GCS::IterationLevel) {
-                    Base::Console().log(
-                        "Sketcher::Solve()-%s- Failed!! Falling back...\n",
-                        solvername.c_str()
-                    );
+                    Base::Console().log("Sketcher::Solve()-{}- Failed!! Falling back...\n", solvername);
                 }
             }
 
@@ -5136,21 +5138,20 @@ int Sketch::internalSolve(std::string& solvername, int level)
 
     // For OCCT reliant geometry that needs an extra solve() for example to update non-driving
     // constraints.
-    if (resolveAfterGeometryUpdated && ret == GCS::Success && level == 0) {
+    if (resolveAfterGeometryUpdated && status == GCS::SolveStatus::Success && level == 0) {
         return internalSolve(solvername, 1);
     }
 
-    return ret;
+    return status;
 }
 
-int Sketch::initMove(const std::vector<GeoElementId>& geoEltIds, bool fine)
+int Sketch::initMove(const std::vector<GeoElementId>& geoEltIds)
 {
     if (hasConflicts()) {
         // don't try to move sketches that contain conflicting constraints
         isInitMove = false;
         return -1;
     }
-    isFine = fine;
 
     clearTemporaryConstraints();
 
@@ -5385,10 +5386,10 @@ int Sketch::initMove(const std::vector<GeoElementId>& geoEltIds, bool fine)
     return 0;
 }
 
-int Sketch::initMove(int geoId, PointPos pos, bool fine)
+int Sketch::initMove(int geoId, PointPos pos)
 {
     std::vector<GeoElementId> geoEltIds = {GeoElementId(geoId, pos)};
-    return initMove(geoEltIds, fine);
+    return initMove(geoEltIds);
 }
 
 void Sketch::resetInitMove()
@@ -5396,10 +5397,8 @@ void Sketch::resetInitMove()
     isInitMove = false;
 }
 
-int Sketch::initBSplinePieceMove(int geoId, PointPos pos, const Base::Vector3d& firstPoint, bool fine)
+int Sketch::initBSplinePieceMove(int geoId, PointPos pos, const Base::Vector3d& firstPoint)
 {
-    isFine = fine;
-
     geoId = checkGeoId(geoId);
 
     clearTemporaryConstraints();
@@ -5419,7 +5418,7 @@ int Sketch::initBSplinePieceMove(int geoId, PointPos pos, const Base::Vector3d& 
 
     // If spline has too few poles, just move all
     if (bsp.poles.size() <= std::size_t(bsp.degree + 1)) {
-        return initMove(geoId, pos, fine);
+        return initMove(geoId, pos);
     }
 
     // Find the closest knot
@@ -5461,11 +5460,15 @@ int Sketch::initBSplinePieceMove(int geoId, PointPos pos, const Base::Vector3d& 
     return 0;
 }
 
-int Sketch::moveGeometries(const std::vector<GeoElementId>& geoEltIds, Base::Vector3d toPoint, bool relative)
+GCS::SolveStatus Sketch::moveGeometries(
+    const std::vector<GeoElementId>& geoEltIds,
+    Base::Vector3d toPoint,
+    bool relative
+)
 {
     if (hasConflicts()) {
         // don't try to move sketches that contain conflicting constraints
-        return -1;
+        return GCS::SolveStatus::Failed;
     }
 
     if (!isInitMove) {
@@ -5574,7 +5577,7 @@ int Sketch::moveGeometries(const std::vector<GeoElementId>& geoEltIds, Base::Vec
     return solve();
 }
 
-int Sketch::moveGeometry(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative)
+GCS::SolveStatus Sketch::moveGeometry(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative)
 {
     std::vector<GeoElementId> geoEltIds = {GeoElementId(geoId, pos)};
     return moveGeometries(geoEltIds, toPoint, relative);
@@ -5599,6 +5602,7 @@ int Sketch::getPointId(int geoId, PointPos pos) const
         case PointPos::mid:
             return Geoms[geoId].midPointId;
         case PointPos::none:
+        case PointPos::NumPointPos:
             break;
     }
     return -1;

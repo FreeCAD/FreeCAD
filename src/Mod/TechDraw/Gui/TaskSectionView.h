@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -93,7 +95,7 @@ protected Q_SLOTS:
 
 private:
     double requiredRotation(double inputAngle);
-    std::string makeSectionLabel(QString symbol);
+    std::string makeSectionLabel();
     bool directionChanged() const { return m_directionChanged; }
     void directionChanged(bool newState) { m_directionChanged = newState; }
 

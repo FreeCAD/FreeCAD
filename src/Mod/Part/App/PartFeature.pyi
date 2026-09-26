@@ -5,7 +5,7 @@ from __future__ import annotations
 from Base.Metadata import export, constmethod
 from App.GeoFeature import GeoFeature
 from App.DocumentObject import DocumentObject
-from typing import TYPE_CHECKING, List, Tuple, Union
+from typing import List, Tuple, Union
 
 @export(
     Twin="Feature",
@@ -21,13 +21,10 @@ class PartFeature(GeoFeature):
     Licence: LGPL
     """
 
-    if TYPE_CHECKING:
-        Shape: "Part.Shape" = ...
-
     @constmethod
     def getElementHistory(
         self,
-        name: str,
+        elementName: str,
         *,
         recursive: bool = True,
         sameType: bool = False,
@@ -37,7 +34,7 @@ class PartFeature(GeoFeature):
         List[Tuple[DocumentObject, str, List[str]]],
     ]:
         """
-        getElementHistory(name,recursive=True,sameType=False,showName=False) - returns the element mapped name history
+        getElementHistory(elementName,recursive=True,sameType=False,showName=False) - returns the element mapped name history
 
         name: mapped element name belonging to this shape
         recursive: if True, then track back the history through other objects till the origin

@@ -49,7 +49,7 @@ class BRepOffsetAPI_MakePipeShell(PyObjectBase):
         """
         ...
 
-    def setSpineSupport(self, shape: TopoShape, /) -> None:
+    def setSpineSupport(self, shape: TopoShape, /) -> bool:
         """
         setSpineSupport(shape)
         Sets support to the spine to define the BiNormal of the trihedron, like the normal to the surfaces.
@@ -201,7 +201,7 @@ class BRepOffsetAPI_MakePipeShell(PyObjectBase):
         """
         ...
 
-    def simulate(self, nbsec: int, /) -> None:
+    def simulate(self, nbsec: int, /) -> list:
         """
         simulate(int nbsec)
         Simulates the resulting shape by calculating the given number of cross-sections.

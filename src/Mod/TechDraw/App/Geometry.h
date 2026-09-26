@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2012 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -24,6 +26,7 @@
 
 #include <memory>
 #include <boost/uuid/uuid.hpp>
+#include <BRepAdaptor_Curve.hxx>
 
 #include <Base/Reader.h>
 #include <Base/Vector3D.h>
@@ -320,6 +323,9 @@ class TechDrawExport BSpline: public BaseGeom
         TopoDS_Edge asCircle(bool& isArc);
         bool intersectsArc(Base::Vector3d p1, Base::Vector3d p2);
         std::vector<BezierSegment> segments;
+
+        void setDirection(BRepAdaptor_Curve edgeCurve);
+
 };
 
 class TechDrawExport Generic: public BaseGeom
@@ -353,17 +359,33 @@ class TechDrawExport Wire
 };
 using WirePtr = std::shared_ptr<Wire>;
 
+enum class FaceRepresentation {
+    Failed = -1,
+    Hollow =  0,
+    Common = +1,
+    Opaque = +2,
+    Sliced = +3
+};
+
 /// Simple Collection of geometric features based on BaseGeom inherited classes in order
 class TechDrawExport Face
 {
     public:
-        Face() = default;
+        Face() : representation(FaceRepresentation::Common) { };
+        explicit Face(const TopoDS_Face &f);
         ~Face();
+
+        FaceRepresentation getRepresentation() { return representation; }
+        void setRepresentation(FaceRepresentation representation) { this->representation = representation; }
+
         TopoDS_Face toOccFace() const;
         std::vector<Wire *> wires;
 
         double getArea() const;
         Base::Vector3d getCenter() const;
+
+    protected:
+        FaceRepresentation representation;
 };
 using FacePtr = std::shared_ptr<Face>;
 
@@ -475,6 +497,9 @@ class TechDrawExport GeometryUtils
         static std::vector<FacePtr> removeNestedHoles(const std::vector<FacePtr>& holes);
         static std::vector<int> findNestedFaceIndices(const std::vector<FacePtr>& holes);
 
+        static bool asCubic(const BRepAdaptor_Curve& curveIn, Handle(Geom_BSplineCurve)& splineOut);
+        static void asLinear(const BRepAdaptor_Curve &curveIn, Handle(Geom_BSplineCurve)& splineOut);
+
         static std::string getGeomTypeName(GeomType typeEnumValue);
         static gp_Pnt midPoint(const opencascade::handle<Geom_TrimmedCurve>& curve);
         static opencascade::handle<Geom_TrimmedCurve>
@@ -484,3 +509,4 @@ class TechDrawExport GeometryUtils
 };
 
 } //end namespace TechDraw
+

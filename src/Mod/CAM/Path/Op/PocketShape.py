@@ -1,39 +1,35 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2017 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
+import Part
 import Path
 import Path.Op.Base as PathOp
 import Path.Op.PocketBase as PathPocketBase
+from PathScripts import PathUtils
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 
-Part = LazyLoader("Part", globals(), "Part")
-TechDraw = LazyLoader("TechDraw", globals(), "TechDraw")
-math = LazyLoader("math", globals(), "math")
-PathUtils = LazyLoader("PathScripts.PathUtils", globals(), "PathScripts.PathUtils")
 FeatureExtensions = LazyLoader("Path.Op.FeatureExtension", globals(), "Path.Op.FeatureExtension")
 
 translate = FreeCAD.Qt.translate
@@ -61,11 +57,11 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             | PathOp.FeatureBaseEdges
         )
 
-    def removeHoles(self, solids, face):
+    def removeHoles(self, solids, face, tol):
         """Create face from outer wire and remove collisions with solids"""
         outer_wire = face.OuterWire
         outer_face = Part.Face(outer_wire)
-        translate_dist = face.BoundBox.ZLength + self.tol
+        translate_dist = face.BoundBox.ZLength + tol
         outer_face.translate(FreeCAD.Vector(0, 0, translate_dist))
         new_face = outer_face.cut(solids)
         new_face.translate(FreeCAD.Vector(0, 0, -translate_dist))
@@ -115,8 +111,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         Path.Log.track()
         # self.isDebug = True if Path.Log.getLevel(Path.Log.thisModule()) == 4 else False
         self.removalshapes = []
-        avoidFeatures = list()
-        self.tol = self.job.GeometryTolerance.Value or 0.01
+        avoidFeatures = []
+        tol = self.job.GeometryTolerance.Value or 0.01
         solids = [base.Shape for base in self.model if base.Shape.Faces]
 
         # Get extensions and identify faces to avoid
@@ -158,7 +154,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         Path.Log.error(
                             translate(
                                 "Pocket_Shape",
-                                "Pocke_Shape can not process open wire.\nYou can enable feature Close Open Path",
+                                "Pocket_Shape can not process open wire."
+                                "\nYou can enable feature Close Open Path",
                             )
                         )
                         continue
@@ -168,7 +165,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             Path.Log.debug("UseOutline: {}".format(obj.UseOutline))
             Path.Log.debug("self.horiz: {}".format(self.horiz))
             if obj.UseOutline and self.horiz:
-                self.horiz = [self.removeHoles(solids, face) for face in self.horiz]
+                self.horiz = [self.removeHoles(solids, face, tol) for face in self.horiz]
 
             # Add faces for extensions
             # Note: Extension faces don't have a parent base object, so we append them directly
@@ -186,37 +183,19 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             keepOrder = getattr(obj, "SortingMode", None) == "Manual"
             self.horizontal = Path.Geom.combineHorizontalFaces(self.horiz, keepOrder=keepOrder)
 
-            # Move all faces to final depth less buffer before extrusion
-            # Small negative buffer is applied to compensate for internal significant digits/rounding issue
-            if self.job.GeometryTolerance.Value == 0.0:
-                buffer = 0.000001
-            else:
-                buffer = self.job.GeometryTolerance.Value / 10.0
+            # Move all faces to final depth before extrusion
             for h in self.horizontal:
-                h.translate(
-                    FreeCAD.Vector(0.0, 0.0, obj.FinalDepth.Value - h.BoundBox.ZMin - buffer)
-                )
+                h.translate(FreeCAD.Vector(0.0, 0.0, obj.FinalDepth.Value - h.BoundBox.ZMin))
 
-            # extrude all faces up to StartDepth plus buffer and those are the removal shapes
-            extent = FreeCAD.Vector(0, 0, obj.StartDepth.Value - obj.FinalDepth.Value + buffer)
+            # Extrude all faces up to StartDepth to get the removal shapes.
+            # Area cannot section a solid only microns tall when the face has curved edges,
+            # so extrude at least 1 mm.
+            # The extra height above StartDepth is never sectioned:
+            # the depth parameters come from the operation, not from the shape.
+            extent = FreeCAD.Vector(0, 0, max(obj.StartDepth.Value - obj.FinalDepth.Value, 1))
             self.removalshapes = [
                 (face.removeSplitter().extrude(extent), False) for face in self.horizontal
             ]
-
-        else:  # process the job base object as a whole
-            Path.Log.debug("processing the whole job base object")
-            self.outlines = [
-                Part.Face(TechDraw.findShapeOutline(base.Shape, 1, FreeCAD.Vector(0, 0, 1)))
-                for base in self.model
-            ]
-            stockBB = self.stock.Shape.BoundBox
-
-            self.bodies = []
-            for outline in self.outlines:
-                outline.translate(FreeCAD.Vector(0, 0, stockBB.ZMin - 1))
-                body = outline.extrude(FreeCAD.Vector(0, 0, stockBB.ZLength + 2))
-                self.bodies.append(body)
-                self.removalshapes.append((self.stock.Shape.cut(body), False))
 
         # Tessellate all working faces
         # for (shape, hole) in self.removalshapes:
@@ -331,16 +310,23 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             endFaces.append(face)
 
                     # Add helper edge and try getEnvelope again
-                    if len(endFaces) == 2:  # should be only two end faces
+                    points = None
+                    if len(endFaces) == 1:
+                        face = endFaces[0]
+                        if slc := face.slice(FreeCAD.Vector(0, 0, 1), face.BoundBox.Center.z):
+                            wire = slc[0]
+                            points = wire.OrderedVertexes[0].Point, wire.OrderedVertexes[-1].Point
+                    elif len(endFaces) == 2:
                         points = []  # farest points which should be connected
                         for face in endFaces:
                             candidates.remove(face)
                             comp = Part.Compound(candidates)
                             tPoint = face.distToShape(comp)[1][0][0]  # face touched compound here
                             ps = [(v.Point.distanceToPoint(tPoint), v.Point) for v in face.Vertexes]
-                            p = sorted(ps, key=lambda tup: tup[0])[-1][1]  # farest point
+                            p = max(ps, key=lambda tup: tup[0])[1]  # farest point
                             points.append(p)
-
+                            candidates.append(face)
+                    if points:
                         edge = Part.makeLine(*points)
                         newComp = Part.Compound([vertCon, edge])
                         try:

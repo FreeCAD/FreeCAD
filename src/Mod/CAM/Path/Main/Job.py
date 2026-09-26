@@ -89,10 +89,10 @@ def createResourceClone(obj, orig, name, icon):
         Path.Base.Gui.IconViewProvider.Attach(clone.ViewObject, icon)
         clone.ViewObject.Visibility = False
         clone.ViewObject.DisplayMode = "Flat Lines"
-        clone.ViewObject.ShapeColor = (0.447, 0.475, 0.502)
+        # clone.ViewObject.ShapeColor = (0.447, 0.475, 0.502)
         clone.ViewObject.Transparency = 0
-        clone.ViewObject.LineColor = (0.310, 0.333, 0.357)
-        clone.ViewObject.ShapeMaterial.Shininess = 0.85
+        # clone.ViewObject.LineColor = (0.310, 0.333, 0.357)
+        # clone.ViewObject.ShapeMaterial.Shininess = 0.85
     obj.Document.recompute()  # necessary to create the clone shape
     return clone
 
@@ -255,6 +255,7 @@ class ObjectJob:
         obj.GeometryTolerance = Path.Preferences.defaultGeometryTolerance()
 
         self.setupOperations(obj)
+        self.setupWorkplanes(obj)
         self.setupSetupSheet(obj)
         self.setupBaseModel(obj, models)
         self.setupToolTable(obj)
@@ -313,6 +314,49 @@ class ObjectJob:
         obj.Operations = ops
         obj.setEditorMode("Operations", 2)  # hide
         obj.setEditorMode("Placement", 2)
+
+    def setupWorkplanes(self, obj):
+        """setupWorkplanes(obj) ... set up the Workplanes group for the Job.
+
+        Holds the named frames operations can share. A workplane is a plain
+        Part::LocalCoordinateSystem: it already carries an attachment to the
+        geometry it was derived from, the map modes that describe a plane from
+        a face or three points, an editable offset, and a placement that
+        recomputes when the model moves. None of that needs reimplementing
+        here."""
+        if not hasattr(obj, "Workplanes"):
+            obj.addProperty(
+                "App::PropertyLink",
+                "Workplanes",
+                "Base",
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Group of named work planes the Operations can share"
+                ),
+            )
+        if getattr(obj, "Workplanes", None):
+            return
+
+        group = obj.Document.addObject("App::DocumentObjectGroup", "Workplanes")
+        group.Label = "Workplanes"
+        obj.Workplanes = group
+        obj.setEditorMode("Workplanes", 2)  # hide
+
+    def adoptOrphanWorkplanes(self, obj):
+        """adoptOrphanWorkplanes(obj) ... file any work plane an operation links
+        to but the group does not hold.
+
+        An operation migrating from an older document may create its work
+        plane before the Job is far enough restored to have a group. Restore
+        order across objects is not guaranteed, so the Job picks them up."""
+        if not getattr(obj, "Workplanes", None) or not getattr(obj, "Operations", None):
+            return
+        held = set(o.Name for o in obj.Workplanes.Group)
+        for op in obj.Operations.Group:
+            workplane = getattr(op, "Workplane", None)
+            if workplane is not None and hasattr(workplane, "Placement"):
+                if workplane.Name not in held:
+                    obj.Workplanes.addObject(workplane)
+                    held.add(workplane.Name)
 
     def setupSetupSheet(self, obj):
         if not getattr(obj, "SetupSheet", None):
@@ -396,9 +440,11 @@ class ObjectJob:
                 obj.Stock = PathStock.CreateFromTemplate(obj, json.loads(stockTemplate))
             if not obj.Stock:
                 obj.Stock = PathStock.CreateFromBase(obj)
-        PathStock.ApplyStockViewDefaults(obj.Stock)
-        if obj.Stock and obj.Stock.ViewObject:
-            obj.Stock.ViewObject.Visibility = True
+        # I think this is redundant code, and is handled in SetupStockObject,
+        # but leaving here for now just in case
+        # PathStock.ApplyStockViewDefaults(obj.Stock)
+        # if obj.Stock and obj.Stock.ViewObject:
+        #     obj.Stock.ViewObject.Visibility = True
 
     def removeBase(self, obj, base, removeFromModel):
         if isResourceClone(obj, base, None):
@@ -469,6 +515,15 @@ class ObjectJob:
             PathUtil.clearExpressionEngine(obj.SetupSheet)
             doc.removeObject(obj.SetupSheet.Name)
             obj.SetupSheet = None
+
+        if getattr(obj, "Workplanes", None):
+            Path.Log.debug("taking down workplanes")
+            for workplane in list(obj.Workplanes.Group):
+                PathUtil.clearExpressionEngine(workplane)
+                doc.removeObject(workplane.Name)
+            obj.Workplanes.Group = []
+            doc.removeObject(obj.Workplanes.Name)
+            obj.Workplanes = None
 
         return True
 
@@ -544,6 +599,14 @@ class ObjectJob:
             )
             obj.setEditorMode("CycleTime", 1)  # read-only
 
+        self.setupWorkplanes(obj)
+        self.adoptOrphanWorkplanes(obj)
+        if FreeCAD.GuiUp:
+            import Path.Main.Workplane as PathWorkplane
+
+            for workplane in PathWorkplane.workplanesOf(obj):
+                PathWorkplane.configureView(workplane)
+
         if not hasattr(obj, "Fixtures"):
             obj.addProperty(
                 "App::PropertyStringList",
@@ -601,6 +664,23 @@ class ObjectJob:
 
         for n in self.propertyEnumerations():
             setattr(obj, n[0], n[1])
+
+        # Re-apply view defaults for older documents that may be missing them.
+        # These are safe to always apply since they restore intended CAM visual behaviour
+        # (stock non-selectable/transparent/dotted, model clones hidden with correct style).
+        if FreeCAD.GuiUp:
+            if getattr(obj, "Stock", None) and obj.Stock.ViewObject:
+                PathStock.ApplyStockViewDefaults(obj.Stock)
+
+            if getattr(obj, "Model", None) and getattr(obj.Model, "Group", None):
+                for base in obj.Model.Group:
+                    if isResourceClone(obj, base, "Model") and base.ViewObject:
+                        # base.ViewObject.Visibility = False
+                        base.ViewObject.DisplayMode = "Flat Lines"
+                        # base.ViewObject.ShapeColor = (0.447, 0.475, 0.502)
+                        base.ViewObject.Transparency = 0
+                        # base.ViewObject.LineColor = (0.310, 0.333, 0.357)
+                        # base.ViewObject.ShapeMaterial.Shininess = 0.85
 
     def onChanged(self, obj, prop):
         if prop == "PostProcessor" and obj.PostProcessor:

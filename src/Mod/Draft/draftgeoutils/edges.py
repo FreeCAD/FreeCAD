@@ -158,7 +158,7 @@ def findMidpoint(edge):
     if edge.Length == 0:
         return None
     else:
-        return edge.valueAt(edge.Curve.parameterAtDistance(edge.Length / 2, edge.FirstParameter))
+        return edge.valueAt(edge.getParameterByLength(edge.Length / 2))
 
 
 def getTangent(edge, from_point=None):

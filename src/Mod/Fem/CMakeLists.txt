@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+disable_occt8_deprecation_warnings()
 
 if(BUILD_FEM_VTK)
     add_definitions(-DFC_USE_VTK)
@@ -393,6 +396,7 @@ SET(FemTestsApp_SRCS
     femtest/app/test_object.py
     femtest/app/test_open.py
     femtest/app/test_result.py
+    femtest/app/test_security.py
     femtest/app/test_solver_elmer.py
     femtest/app/test_solver_mystran.py
     femtest/app/test_solver_z88.py

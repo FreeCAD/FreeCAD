@@ -1,4 +1,6 @@
-﻿/***************************************************************************
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
+/***************************************************************************
  *   Copyright (c) 2012-2013 Luke Parry <l.parry@warwick.ac.uk>            *
  *   Copyright (c) 2024 Benjamin Bræstrup Sayoc <benj5378@outlook.com>     *
  *                                                                         *
@@ -34,6 +36,7 @@
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
+#include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -45,6 +48,7 @@
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawViewSection.h>
+#include <Mod/TechDraw/App/DrawViewDetail.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawView.h>
@@ -52,7 +56,6 @@
 #include "QGIView.h"
 #include "MDIViewPage.h"
 #include "PreferencesGui.h"
-#include "QGCustomBorder.h"
 #include "QGCustomClip.h"
 #include "QGCustomImage.h"
 #include "QGCustomLabel.h"
@@ -76,7 +79,6 @@ using DU = DrawUtil;
 
 QGIView::QGIView()
     :QGraphicsItemGroup(),
-    m_isHovered(false),
     viewObj(nullptr),
     m_innerView(false),
     m_multiselectActivated(false),
@@ -199,7 +201,7 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
     // wf: why scene()? because if our selected state has changed because we have been removed from
     //     the scene, we don't do anything except wait to be deleted.
     if (change == ItemSelectedHasChanged && scene()) {
-        if (isSelected() || hasSelectedChildren(this)) {
+        if (isViewSelected()) {
             m_colCurrent = getSelectColor();
             m_lock->setVisible(getViewObject()->isLocked() && getViewObject()->showLock());
         } else {
@@ -552,7 +554,7 @@ void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
     m_isHovered = true;
 
-    if (isSelected()) {
+    if (isViewSelected()) {
         m_colCurrent = getSelectColor();
     } else {
         m_colCurrent = getPreColor();
@@ -572,7 +574,7 @@ void QGIView::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
     m_isHovered = false;
 
-    if (isSelected()) {
+    if (isViewSelected()) {
         m_colCurrent = getSelectColor();
         m_lock->setVisible(getViewObject()->isLocked() && getViewObject()->showLock());
     } else {
@@ -626,6 +628,12 @@ void QGIView::updateView(bool forceUpdate)
     drawBorder();
 
     QGIView::draw();
+
+    if (PreferencesGui::screenMode()) {
+        if (auto* scenePage = dynamic_cast<QGSPage*>(scene())) {
+            scenePage->updateScreenScale();
+        }
+    }
 }
 
 //QGIVP derived classes do not need a rotate view method as rotation is handled on App side.
@@ -701,7 +709,16 @@ void QGIView::prepareCaption()
                                  Preferences::labelFontSizeMM());
     m_font.setPixelSize(fontSize);
     m_caption->setFont(m_font);
-    QString captionStr = QString::fromUtf8(getViewObject()->Caption.getValue());
+
+    if (m_caption->m_isEditing) {
+        return;
+    }
+
+    std::string captionText = getViewObject()->Caption.getValue();
+    captionText = getScaleString(captionText);
+    captionText = getRefString(captionText);
+
+    QString captionStr = QString::fromUtf8(captionText.c_str());
     m_caption->setPlainText(captionStr);
 }
 
@@ -727,21 +744,108 @@ void QGIView::layoutDecorations(const QRectF& contentArea,
                           paddedContentArea.top(),
                           frameWidth,
                           frameHeight).adjusted(-padding, - padding, padding, padding);
+    
+    outLockPos = QPointF(outFrameRect.left(), outFrameRect.bottom() - m_lockHeight);
 
-    double firstTextVerticalPos = outFrameRect.bottom();
+    double firstTextVerticalPos = outFrameRect.top() - labelRect.height();
+    outLabelPos = QPointF(outFrameRect.left(), firstTextVerticalPos);
+
     if (m_caption->toPlainText().isEmpty()) {
-        outLabelPos = QPointF(outFrameRect.center().x() - (labelRect.width() / 2),
-                              firstTextVerticalPos);
-    } else {
-        outCaptionPos = QPointF(outFrameRect.center().x() - (captionRect.width() / 2),
-                                firstTextVerticalPos);
-        outLabelPos = QPointF(outFrameRect.center().x() - (labelRect.width() / 2),
-                              firstTextVerticalPos + captionRect.height());
+        return;
     }
 
-    outLockPos = QPointF(outFrameRect.left(), outFrameRect.bottom() - m_lockHeight);
+    DrawView* view = getViewObject();
+
+    QPointF captionTopPos = QPointF(outFrameRect.center().x() - (captionRect.width() / 2),
+                              outFrameRect.top() - captionRect.height());
+    QPointF captionBottomPos = QPointF(outFrameRect.center().x() - (captionRect.width() / 2),
+                              outFrameRect.bottom());
+    QPointF captionLeftPos = QPointF(outFrameRect.left() - captionRect.width(),
+                              outFrameRect.center().y() - (captionRect.height() / 2));
+    QPointF captionRightPos = QPointF(outFrameRect.right(),
+                              outFrameRect.center().y() - (captionRect.height() / 2));
+
+    if (view->CaptionSnap.getValue() == 0) {
+        outCaptionPos = captionTopPos;
+    } else if (view->CaptionSnap.getValue() == 1) {
+        outCaptionPos = captionBottomPos;
+    } else if (view->CaptionSnap.getValue() == 2) {
+        outCaptionPos = captionLeftPos;
+    } else if (view->CaptionSnap.getValue() == 3) {
+        outCaptionPos = captionRightPos;
+    } else {
+        outCaptionPos = captionBottomPos;
+    }
 }
 
+
+std::string QGIView::getScaleString(std::string originalString) {
+    
+    auto removeDecimals = [](double scale) {
+        const int decimals = Base::UnitsApi::getDecimals();
+        std::ostringstream oss;
+        oss.precision(decimals);
+        oss << std::fixed << scale;
+        std::string result = oss.str();
+    
+        // Removes trailing zeros and removes the decimal point
+        if (result.find('.') != std::string::npos) {
+            while (result.back() == '0') {
+                result.pop_back();
+            }
+            if (result.back() == '.') {
+                result.pop_back();
+            }
+        }
+        return result;
+    };
+
+    auto view = getViewObject();
+    double viewScale = view->getScale();
+
+    auto page = view->findParentPage();
+    double pageScale = page->Scale.getValue();
+
+    double relativeScale = viewScale / pageScale;
+
+    while (originalString.find("<SCALE>") != std::string::npos) {
+        double num1, num2;
+
+        // turning a scale of 0.5 into 1:2 and a scale of 2 into 2:1 etc.
+        if (relativeScale < 1.0) {
+            num1 = 1.0;
+            num2 = 1.0 / relativeScale;
+        } else {
+            num1 = relativeScale;
+            num2 = 1.0;
+        }
+
+        std::string scaleString = removeDecimals(num1) + ":" + removeDecimals(num2);
+        size_t pos = originalString.find("<SCALE>");
+        originalString.replace(pos, std::string("<SCALE>").length(), scaleString);
+    }
+
+    return originalString;
+}
+
+std::string QGIView::getRefString(std::string originalString) {
+    auto view = getViewObject();
+
+    std::string refName;
+    if (auto* section = dynamic_cast<TechDraw::DrawViewSection*>(view)) {
+        refName = section->SectionSymbol.getValue();
+    } 
+    else if (auto* detail = dynamic_cast<TechDraw::DrawViewDetail*>(view)) {
+        refName = detail->Reference.getValue();
+    }
+
+    while (originalString.find("<REF>") != std::string::npos) {
+        size_t pos = originalString.find("<REF>");
+        originalString.replace(pos, std::string("<REF>").length(), refName);
+    }
+
+    return originalString;
+}
 
 void QGIView::drawBorder()
 {
@@ -765,13 +869,17 @@ void QGIView::drawBorder()
     QRectF captionRect = m_caption->boundingRect();
     QRectF labelRect = m_label->boundingRect();
 
-
-    QRectF finalFrameRect;
     QPointF finalCaptionPos, finalLabelPos, finalLockPos;
 
     layoutDecorations(contentArea, captionRect, labelRect,
-                      finalFrameRect, finalCaptionPos, finalLabelPos, finalLockPos);
+                      m_frameRect, finalCaptionPos, finalLabelPos, finalLockPos);
 
+    Base::Vector3d captionLocation = feat->CaptionLocation.getValue();
+
+    // CaptionSnap 4 is the NoSnap option, so we use the current location
+    if (viewObj->CaptionSnap.getValue() == 4 || m_caption->m_isEditing) {
+        finalCaptionPos = QPointF(Rez::guiX(captionLocation.x), Rez::guiX(-captionLocation.y));
+    }
 
     m_caption->setPos(finalCaptionPos);
     m_label->setPos(finalLabelPos);
@@ -782,7 +890,7 @@ void QGIView::drawBorder()
     m_decorPen.setColor(m_colCurrent);
     m_border->setPen(m_decorPen);
     m_border->setPos(0., 0.);
-    m_border->setRect(finalFrameRect);
+    m_border->setRect(m_frameRect);
 
     prepareGeometryChange();
 }
@@ -944,7 +1052,14 @@ void QGIView::removeChild(QGIView* child)
 void QGIView::hideFrame()
 {
     m_border->hide();
-    m_label->hide();
+
+    ViewProviderDrawingView* vp = freecad_cast<ViewProviderDrawingView*>(getViewProvider(getViewObject()));
+    if (vp && vp->KeepLabel.getValue()) {
+        m_label->show();
+    }
+    else {
+        m_label->hide();
+    }
 }
 
 void QGIView::addArbitraryItem(QGraphicsItem* qgi)
@@ -1034,7 +1149,7 @@ int QGIView::calculateFontPixelWidth(const QFont &font)
 const double QGIView::DefaultFontSizeInMM = 5.0;
 
 void QGIView::dumpRect(const char* text, QRectF rect) {
-    Base::Console().message("DUMP - %s - rect: (%.3f, %.3f) x (%.3f, %.3f)\n", text,
+    Base::Console().message("DUMP - {} - rect: ({:.3f}, {:.3f}) x ({:.3f}, {:.3f})\n", text,
                             rect.left(), rect.top(), rect.right(), rect.bottom());
 }
 
@@ -1066,20 +1181,6 @@ void QGIView::makeMark(double xPos, double yPos, QColor color)
     vItem->setZValue(ZVALUE::VERTEX);
 }
 
-//! true if parent has any children which are selected
-bool QGIView::hasSelectedChildren(QGIView* parent)
-{
-    QList<QGraphicsItem*> children = parent->childItems();
-
-    auto itMatch = std::find_if(children.begin(), children.end(),
-             [&](QGraphicsItem* child) {
-                return child->isSelected();
-             });
-
-    return itMatch != children.end();
-}
-
-
 void QGIView::makeMark(Base::Vector3d pos, QColor color)
 {
     makeMark(pos.x, pos.y, color);
@@ -1092,6 +1193,7 @@ void QGIView::makeMark(QPointF pos, QColor color)
 
 void QGIView::updateFrameVisibility()
 {
+    ViewProviderDrawingView* vp = freecad_cast<ViewProviderDrawingView*>(getViewProvider(getViewObject()));
     if (shouldShowFrame()) {
         m_border->show();
         m_label->show();
@@ -1100,17 +1202,41 @@ void QGIView::updateFrameVisibility()
         }
     } else {
         m_border->hide();
-        m_label->hide();
+        if (vp && vp->KeepLabel.getValue()) {
+            m_label->show();
+        } else {
+            m_label->hide();
+        }
         if (m_lock) {
              m_lock->hide();
         }
     }
 }
 
+// true if the whole view (not just a sub-element) is selected in the App selection
+bool QGIView::isViewSelected() const
+{
+    if (!viewObj || !viewObj->getDocument()) {
+        return false;
+    }
+    const auto selection =
+        Gui::Selection().getSelectionEx(viewObj->getDocument()->getName());
+    for (const auto& selObj : selection) {
+        if (selObj.getObject() == viewObj) {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool QGIView::shouldShowFrame() const
 {
     if (isExporting()) {
         return false;
+    }
+
+    if (isViewSelected()) {
+        return true;
     }
 
     ViewFrameMode frameMode = PreferencesGui::getViewFrameMode();
@@ -1121,11 +1247,9 @@ bool QGIView::shouldShowFrame() const
             return true;
         case ViewFrameMode::AlwaysOff:
             return false;
-            break;
         default:
             return m_isHovered;
-    };
-
+    }
 }
 
 bool QGIView::shouldShowFromViewProvider() const

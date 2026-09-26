@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: 2026 FreeCAD Developers
+SPDX-License-Identifier: CC-BY-4.0
+-->
+
 # FreeCAD AI Policy
 
 With recent developments in the field of AI it is becoming clear that AI technology will have a big impact on Open Source projects including FreeCAD. This document outlines the core project values regarding the technology and acts as the compass that should guide us in decisions concerning AI. With this policy, the FreeCAD developer community **puts people in the first row** while **acknowledging the concerns**. It enforces **contributions with humans in the driver seat** and raises awareness of **fully open and frugal AI**.
@@ -57,3 +62,6 @@ We ask the contributor in the Pull Request template to mark a required checkbox 
 ### “Unverified” label
 
 PRs from outside the Developers group will be marked as "Unverified" to help us find potential violations.  After several successful contributions we will add new contributors to the groups - but don't hesitate to ask us to do it sooner.
+
+
+This policy is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).

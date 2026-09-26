@@ -38,7 +38,7 @@ class Quantity(PyObjectBase):
     UserString: Final[str] = ...
     """Unit of the Quantity"""
 
-    Format: dict = ...
+    Format: dict[str, int | str] = ...
     """Format of the Quantity"""
 
     # fmt: off
@@ -76,7 +76,19 @@ class Quantity(PyObjectBase):
     @overload
     def getValueAs(self, unit: str, /) -> float: ...
     @overload
-    def getValueAs(self, translation: float, unit_signature: int, /) -> float: ...
+    def getValueAs(
+        self,
+        translation: float,
+        i1: int = 0,
+        i2: int = 0,
+        i3: int = 0,
+        i4: int = 0,
+        i5: int = 0,
+        i6: int = 0,
+        i7: int = 0,
+        i8: int = 0,
+        /,
+    ) -> float: ...
     @overload
     def getValueAs(self, unit: UnitPy, /) -> float: ...
     @overload

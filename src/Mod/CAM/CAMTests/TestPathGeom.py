@@ -1,25 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2016 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import Part
 import Path
@@ -230,36 +228,36 @@ class TestPathGeom(PathTestBase):
         self.assertFalse(Path.Geom.isHorizontal(yzPlane))
 
         # cylinders
-        xCylinder = [
+        xCylinder = next(
             f
             for f in Part.makeCylinder(1, 1, Vector(), Vector(1, 0, 0)).Faces
             if isinstance(f.Surface, Part.Cylinder)
-        ][0]
-        yCylinder = [
+        )
+        yCylinder = next(
             f
             for f in Part.makeCylinder(1, 1, Vector(), Vector(0, 1, 0)).Faces
             if isinstance(f.Surface, Part.Cylinder)
-        ][0]
-        zCylinder = [
+        )
+        zCylinder = next(
             f
             for f in Part.makeCylinder(1, 1, Vector(), Vector(0, 0, 1)).Faces
             if isinstance(f.Surface, Part.Cylinder)
-        ][0]
-        xyCylinder = [
+        )
+        xyCylinder = next(
             f
             for f in Part.makeCylinder(1, 1, Vector(), Vector(1, 1, 0)).Faces
             if isinstance(f.Surface, Part.Cylinder)
-        ][0]
-        xzCylinder = [
+        )
+        xzCylinder = next(
             f
             for f in Part.makeCylinder(1, 1, Vector(), Vector(1, 0, 1)).Faces
             if isinstance(f.Surface, Part.Cylinder)
-        ][0]
-        yzCylinder = [
+        )
+        yzCylinder = next(
             f
             for f in Part.makeCylinder(1, 1, Vector(), Vector(0, 1, 1)).Faces
             if isinstance(f.Surface, Part.Cylinder)
-        ][0]
+        )
 
         self.assertTrue(Path.Geom.isHorizontal(xCylinder))
         self.assertTrue(Path.Geom.isHorizontal(yCylinder))
@@ -621,8 +619,9 @@ class TestPathGeom(PathTestBase):
         commands.append(Path.Command("G1", {"Y": 1}))
         commands.append(Path.Command("G0", {"X": 0}))
         commands.append(Path.Command("G1", {"Y": 0}))
+        commands.append(Path.Command("G1", {"Y": 0}))  # test zero length move
 
-        wire, rapid, rapid_indexes = Path.Geom.wireForPath(Path.Path(commands))
+        wire, rapid, _ = Path.Geom.wireForPath(Path.Path(commands))
         self.assertEqual(len(wire.Edges), 4)
         self.assertLine(wire.Edges[0], Vector(0, 0, 0), Vector(1, 0, 0))
         self.assertLine(wire.Edges[1], Vector(1, 0, 0), Vector(1, 1, 0))
@@ -749,7 +748,7 @@ class TestPathGeom(PathTestBase):
         self.assertCoincide(s, tail.valueAt(tail.FirstParameter), 0.005)
         i = arc.valueAt(arc.LastParameter)
         j = tail.valueAt(tail.LastParameter)
-        print("(%.2f, %.2f, %.2f) vs. (%.2f, %.2f, %.2f)" % (i.x, i.y, i.z, j.x, j.y, j.z))
+        print(f"({i.x:.2f}, {i.y:.2f}, {i.z:.2f}) vs. ({j.x:.2f}, {j.y:.2f}, {j.z:.2f})")
         self.assertCoincide(arc.valueAt(arc.LastParameter), tail.valueAt(tail.LastParameter), 0.005)
 
         # make sure the radii match
@@ -862,3 +861,21 @@ class TestPathGeom(PathTestBase):
         # do some sanity checks
         self.assertTrue(w2.isValid())
         self.assertTrue(w2.isClosed())
+
+    def test77(self):
+        """Flip an elliptical arc"""
+        ellipse = Part.Ellipse(Vector(1, 3, 2), 5, 3)
+        edge = Part.Edge(ellipse, 0.3, 2.1)
+        self.assertEdgeShapesMatch(edge, Path.Geom.flipEdge(edge))
+
+        ellipse = Part.Ellipse(Vector(1, 3, 2), 5, 3)
+        ellipse.Axis = Vector(0, 0, -1)
+        edge = Part.Edge(ellipse, 1.0, 4.0)
+        self.assertEdgeShapesMatch(edge, Path.Geom.flipEdge(edge))
+
+    def test78(self):
+        """Flip a rotated elliptical arc"""
+        ellipse = Part.Ellipse(Vector(1, 3, 2), 5, 3)
+        edge = Part.Edge(ellipse, 0.3, 2.1)
+        edge.rotate(edge.Curve.Center, Vector(0, 0, 1), -40)
+        self.assertEdgeShapesMatch(edge, Path.Geom.flipEdge(edge))

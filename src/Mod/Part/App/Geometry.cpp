@@ -385,7 +385,7 @@ void Geometry::Restore(Base::XMLReader& reader)
                 extensions.push_back(std::shared_ptr<GeometryExtension>(newExtension));
             }
             else {
-                Base::Console().warning("Cannot restore geometry extension of type: %s\n", TypeName);
+                Base::Console().warning("Cannot restore geometry extension of type: {}\n", TypeName);
             }
         }
 
@@ -716,7 +716,7 @@ void GeomPoint::Restore(Base::XMLReader& reader)
 
 PyObject* GeomPoint::getPyObject()
 {
-    return new PointPy(new GeomPoint(getPoint()));
+    return new PointPy(freecad_cast<GeomPoint*>(this->clone()));
 }
 
 bool GeomPoint::isSame(const Geometry& other, double tol, double) const
@@ -6533,7 +6533,8 @@ GeomArcOfCircle* createFilletGeometry(
     double radius,
     int& pos1,
     int& pos2,
-    bool& reverse
+    bool& reverse,
+    Base::Vector3d& cornerPoint
 )
 {
     if (geo1->is<GeomLineSegment>() && geo2->is<GeomLineSegment>()) {
@@ -6550,6 +6551,7 @@ GeomArcOfCircle* createFilletGeometry(
         // use int.
         Base::Vector3d intersection, dist1, dist2;
         find2DLinesIntersection(line1, line2, intersection);
+        cornerPoint = intersection;
 
         Base::Vector3d p1 = arc->getStartPoint(true);
 
@@ -6565,7 +6567,6 @@ GeomArcOfCircle* createFilletGeometry(
         return arc;
     }
     else if (geo1->isDerivedFrom<GeomBoundedCurve>() && geo2->isDerivedFrom<GeomBoundedCurve>()) {
-
         auto distanceToRefPoints =
             [](Base::Vector3d ip1, Base::Vector3d ip2, Base::Vector3d ref1, Base::Vector3d ref2) {
                 return (ip1 - ref1).Length() + (ip2 - ref2).Length();
@@ -6701,6 +6702,8 @@ GeomArcOfCircle* createFilletGeometry(
                 pos2 = 2;
             }
         }
+
+        cornerPoint = interpoints.first;
 
         if (dist == INFINITY) {
             // no coincident was found, try basis curve intersection if GeomTrimmedCurve
@@ -7615,7 +7618,7 @@ void transformAndConvertToGeometry(
                 geos.emplace_back(std::move(newGeo));
             }
             catch (const Base::Exception& e) {
-                Base::Console().warning("BSpline conversion failed: %s\n", e.what());
+                Base::Console().warning("BSpline conversion failed: {}\n", e.what());
             }
         }
     }
@@ -7652,7 +7655,7 @@ std::vector<TopoDS_Shape> makeTextWires(
 
     std::ifstream fontStream(fontFile, std::ios::binary);
     if (!fontStream) {
-        Base::Console().error("makeTextWires: Cannot open font file: %s\n", fontFile.c_str());
+        Base::Console().error("makeTextWires: Cannot open font file: {}\n", fontFile);
         FT_Done_FreeType(ftLib);
         return allWires;
     }
@@ -7670,7 +7673,7 @@ std::vector<TopoDS_Shape> makeTextWires(
             &ftFace
         )
         != 0) {
-        Base::Console().error("makeTextWires: Failed to load font face from %s\n", fontFile.c_str());
+        Base::Console().error("makeTextWires: Failed to load font face from {}\n", fontFile);
         FT_Done_FreeType(ftLib);
         return allWires;
     }

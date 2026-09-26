@@ -63,87 +63,87 @@
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="217"/>
+      <location filename="../../StartView.cpp" line="227"/>
       <source>Open File</source>
       <translation>파일 열기</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="227"/>
+      <location filename="../../StartView.cpp" line="237"/>
       <source>Assembly</source>
       <translation>조립체</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="232"/>
+      <location filename="../../StartView.cpp" line="242"/>
       <source>2D Draft</source>
       <translation>2D 드래프트</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="232"/>
+      <location filename="../../StartView.cpp" line="242"/>
       <source>Creates a 2D Draft document</source>
       <translation>2D 드래프트 문서를 만듭니다</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="235"/>
+      <location filename="../../StartView.cpp" line="245"/>
       <source>BIM/Architecture</source>
       <translation>BIM/건축</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="212"/>
+      <location filename="../../StartView.cpp" line="222"/>
       <source>Empty File</source>
       <translation>빈 파일</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="213"/>
+      <location filename="../../StartView.cpp" line="223"/>
       <source>Creates a new empty FreeCAD file</source>
       <translation>새로운 빈 FreeCAD 파일을 만듭니다</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="218"/>
+      <location filename="../../StartView.cpp" line="228"/>
       <source>Opens an existing CAD file or 3D model</source>
       <translation>기존 CAD 파일 또는 3D 모델을 엽니다</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="222"/>
+      <location filename="../../StartView.cpp" line="232"/>
       <source>Parametric Body</source>
       <translation>파라메트릭 바디</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="223"/>
+      <location filename="../../StartView.cpp" line="233"/>
       <source>Creates a body with the Part Design workbench</source>
       <translation>파트 디자인 워크벤치에서 바디를 만듭니다</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="228"/>
+      <location filename="../../StartView.cpp" line="238"/>
       <source>Creates an assembly project</source>
       <translation>어셈블리 프로젝트를 생성합니다</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="236"/>
+      <location filename="../../StartView.cpp" line="246"/>
       <source>Creates an architectural project</source>
       <translation>건축 프로젝트를 생성합니다</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="520"/>
+      <location filename="../../StartView.cpp" line="538"/>
       <source>New File</source>
       <translation>새 파일</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="522"/>
+      <location filename="../../StartView.cpp" line="540"/>
       <source>Examples</source>
       <translation>예시</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="524"/>
+      <location filename="../../StartView.cpp" line="542"/>
       <source>Recent Files</source>
       <translation>최근 파일</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="539"/>
+      <location filename="../../StartView.cpp" line="557"/>
       <source>Open First Start Setup</source>
       <translation>첫 시작 설정 열기</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="540"/>
+      <location filename="../../StartView.cpp" line="558"/>
       <source>Do not show this Start page again (start with blank screen)</source>
       <translation>이 시작 페이지를 다시 표시하지 않음(빈 화면으로 시작)</translation>
     </message>
@@ -151,7 +151,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="514"/>
+      <location filename="../../StartView.cpp" line="532"/>
       <source>Start</source>
       <translation>시작</translation>
     </message>
@@ -261,7 +261,7 @@ Multiple folders can be added using ";;" to separate paths.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppStartGui.cpp" line="139"/>
+      <location filename="../../AppStartGui.cpp" line="140"/>
       <source>Start</source>
       <translation>시작</translation>
     </message>

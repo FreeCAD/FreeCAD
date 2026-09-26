@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2018 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2018 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """The BIM Views command"""
 
@@ -301,7 +298,10 @@ class BIM_Views:
                                         lv.addChild(wp)
                                 lvHold.append((lv, lvH))
                         if obj and (t == "WorkingPlaneProxy"):
-                            if obj.getParent() and obj.getParent().IfcType == "Building Storey":
+                            if (
+                                obj.getParent()
+                                and getattr(obj.getParent(), "IfcType", "") == "Building Storey"
+                            ):
                                 continue
                             wp, _ = getTreeViewItem(obj)
                             soloProxyHold.append(wp)
@@ -470,7 +470,7 @@ class BIM_Views:
         import WorkingPlane
 
         FreeCAD.ActiveDocument.openTransaction("Create WP Proxy")
-        obj = Draft.makeWorkingPlaneProxy(WorkingPlane.get_working_plane().get_placement())
+        obj = Draft.make_working_plane_proxy(WorkingPlane.get_working_plane().get_placement())
         self.addToSelection(obj)
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
@@ -801,7 +801,7 @@ def show(item, column=None):
                         break
             FreeCADGui.runCommand("Std_OrthographicCamera")
             FreeCADGui.ActiveDocument.ActiveView.viewTop()
-            FreeCADGui.SendMsgToActiveView("ViewSelection")
+            FreeCADGui.ActiveDocument.ActiveView.sendMessage("ViewSelection")
             FreeCADGui.ActiveDocument.ActiveView.viewTop()
             FreeCADGui.Selection.clearSelection()
             FreeCADGui.Selection.addSelection(obj)

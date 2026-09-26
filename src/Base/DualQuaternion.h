@@ -131,8 +131,8 @@ public:
 
     // DEBUG
     // void print() const {
-    //     Console().log("%f, %f, %f, %f; %f, %f, %f, %f", x.re,y.re,z.re,w.re, x.du,y.du,z.du,
-    //     w.du);
+    //     Console().log("{:f}, {:f}, {:f}, {:f}; {:f}, {:f}, {:f}, {:f}", x.re,y.re,z.re,w.re,
+    //     x.du,y.du,z.du, w.du);
     // }
 };
 

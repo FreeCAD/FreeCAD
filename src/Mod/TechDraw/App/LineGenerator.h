@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -39,6 +41,7 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 #include <map>
+#include <vector>
 #include <QPen>
 
 namespace TechDraw {

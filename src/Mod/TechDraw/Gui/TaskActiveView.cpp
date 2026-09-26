@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -184,7 +186,7 @@ void TaskActiveView::updatePreview()
     image.fill(Qt::transparent);
     Grabber3d::quickView(view3d, bg, image);
     if (!image.save(QString::fromStdString(tempName), "PNG")) {
-         Base::Console().error("ActiveView could not save file: %s\n", tempName.c_str());
+         Base::Console().error("ActiveView could not save file: {}\n", tempName);
     }
 
     tempName = DU::cleanFilespecBackslash(tempName);

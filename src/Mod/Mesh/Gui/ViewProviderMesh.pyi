@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Any
 from Gui.ViewProviderGeometryObject import ViewProviderGeometryObject
 from Base.Metadata import export
 
@@ -18,27 +17,27 @@ class ViewProviderMesh(ViewProviderGeometryObject):
     License: LGPL-2.1-or-later
     """
 
-    def setSelection(self) -> Any:
+    def setSelection(self, indices: list[int], /) -> None:
         """Select list of facets"""
         ...
 
-    def addSelection(self) -> Any:
+    def addSelection(self, indices: list[int], /) -> None:
         """Add list of facets to selection"""
         ...
 
-    def removeSelection(self) -> Any:
+    def removeSelection(self, indices: list[int], /) -> None:
         """Remove list of facets from selection"""
         ...
 
-    def invertSelection(self) -> Any:
+    def invertSelection(self) -> None:
         """Invert the selection"""
         ...
 
-    def clearSelection(self) -> Any:
+    def clearSelection(self) -> None:
         """Clear the selection"""
         ...
 
-    def highlightSegments(self) -> Any:
+    def highlightSegments(self, colors: list, /) -> None:
         """Highlights the segments of a mesh with a given list of colors.
         The number of elements of this list must be equal to the number of mesh segments.
         """

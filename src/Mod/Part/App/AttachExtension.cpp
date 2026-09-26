@@ -457,12 +457,12 @@ void AttachExtension::extensionOnChanged(const App::Property* prop)
             }
             catch (Base::Exception& e) {
                 getExtendedObject()->setStatus(App::Error, true);
-                Base::Console().error("PositionBySupport: %s\n", e.what());
+                Base::Console().error("PositionBySupport: {}\n", e.what());
                 // set error message - how?
             }
             catch (Standard_Failure& e) {
                 getExtendedObject()->setStatus(App::Error, true);
-                Base::Console().error("PositionBySupport: %s\n", e.GetMessageString());
+                Base::Console().error("PositionBySupport: {}\n", e.GetMessageString());
             }
 
             updateSinglePropertyStatus(bAttached);
@@ -511,12 +511,19 @@ bool AttachExtension::extensionHandleChangedPropertyName(
         if (tmp.getTypeId().getName() == TypeName) {
             tmp.setContainer(this->getExtendedContainer());
             tmp.Restore(reader);
-            AttachmentSupport.setValue(tmp.getValue(), tmp.getSubValues());
-            this->MapMode.setValue(Attacher::mmFlatFace);
+            if (tmp.getValue()) {
+                AttachmentSupport.setValue(tmp.getValue(), tmp.getSubValues());
+                this->MapMode.setValue(Attacher::mmFlatFace);
+            }
             return true;
         }
         if (AttachmentSupport.getClassTypeId() == type) {
-            AttachmentSupport.Restore(reader);
+            App::PropertyLinkSubList tmp;
+            tmp.setContainer(this->getExtendedContainer());
+            tmp.Restore(reader);
+            if (!tmp.getValues().empty()) {
+                AttachmentSupport.Paste(tmp);
+            }
             return true;
         }
     }
@@ -575,7 +582,7 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
      */
 
     App::DocumentObject* owner = getExtendedObject();
-    Base::Console().message("Converting attachment offset of %s\n", owner->getNameInDocument());
+    Base::Console().message("Converting attachment offset of {}\n", owner->getNameInDocument());
 
     try {
         // extract current attachment offset values
@@ -705,7 +712,7 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
     }
     catch (const Base::Exception& e) {
         Base::Console().error(
-            "Error converting legacy attachment offset of %s: %s\n",
+            "Error converting legacy attachment offset of {}: {}\n",
             owner->getNameInDocument(),
             e.what()
         );
