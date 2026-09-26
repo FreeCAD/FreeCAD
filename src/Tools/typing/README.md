@@ -38,11 +38,39 @@ That command writes under `src/Tools/typing/generated/`:
   module directory so type checkers (Pyright, MyPy, Pyrefly) discover the
   stubs when the package is installed.
 - `pyproject.toml`: a packaging manifest for distributing the stubs on PyPI
-  as `freecad-typings`. It uses the `hatchling` build backend and the FreeCAD
-  version from `version.json`, and copies the `stubs/` tree to the wheel root
-  so the top-level modules import directly (e.g. `import FreeCAD`).
+  as `freecad-typings`. It uses the `hatchling` build backend and copies the
+  `stubs/` tree to the wheel root so the top-level modules import directly
+  (e.g. `import FreeCAD`). The package version is the Python API version from
+  `src/Tools/typing/api_version.json` plus a patch number assigned from the
+  package index; the FreeCAD release the stubs were generated from is recorded
+  in the generated `README.md` for provenance only.
 
-Build and publish the stub package with `uv` from the generated directory:
+### Versioning and Publishing
+
+`freecad-typings` versions the FreeCAD Python API, not the FreeCAD release. The
+major and minor components are assigned in `src/Tools/typing/api_version.json` and
+should change only when the API changes: bump the minor for additive changes and
+the major for breaking ones. The actual published location and version depend on
+the *FreeCAD* release the stubs were generated from:
+
+1. **dev** - always publishes to TestPyPI, never to the real PyPI index. Intended only for testing, should not be used to publish a real release of the stubs.
+2. **rcN** - publishes to the real PyPI, but as a "pre-release" version, with the same version number that the next real release will have but with a suffix of "rcN".
+3. **(no suffix -- e.g. a real release)** - publishes to the real PyPI as a full release. The API version is taken from src/Tools/typing/api_version.json and the patch version is auto-incremented from the last published version.
+
+Ask the package index for the next patch number and pass it to generation:
+
+```sh
+PATCH=$(python3 src/Tools/typing/generate_stubs.py next-patch --root .)
+python3 src/Tools/typing/generate_stubs.py \
+    --root . --out-dir src/Tools/typing/generated --patch-number "$PATCH"
+```
+
+Add `--dev-build <n>` to append `.devN` to the version for a development
+build. `next-patch` always counts plain releases on PyPI, even when building
+for TestPyPI, so a dev upload can never advance the release line. Local builds
+that omit `--patch-number` use patch `0`.
+
+Build and publish the package manually with `uv` from the generated directory:
 
 ```sh
 cd src/Tools/typing/generated
@@ -50,10 +78,14 @@ uv build                 # creates dist/freecad_typings-<version>.tar.gz and .wh
 uv publish               # uploads to PyPI (set UV_PUBLISH_TOKEN or log in first)
 ```
 
-To push a release candidate or development snapshot instead, use the alias
-`uv publish --publish-url https://test.pypi.org/legacy/` (test PyPI) or pass
-an explicit index URL. Regenerate before publishing whenever the bindings
-change so the wheel reflects the current API.
+Normal publishes go through the `Publish freecad-typings` GitHub workflow
+(manual dispatch). It routes by ref: `releases/*` branches publish to PyPI,
+every other branch publishes to TestPyPI as a `.devN` build, and the workflow
+refuses a release branch that still carries the `dev` suffix in `version.json`.
+A release candidate is published to PyPI as a pre-release, not to TestPyPI, so
+the production path is exercised before the release itself goes out.
+Regenerate before publishing whenever the bindings change so the wheel reflects
+the current API.
 
 Keep residual hand-written public overlays under `src/Tools/typing/inputs/overlays/`. Keep
 source-adjacent PyCXX type signature inputs in plain `.pyi` files such as
