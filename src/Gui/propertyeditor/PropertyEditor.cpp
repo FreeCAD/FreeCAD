@@ -85,12 +85,8 @@ PropertyEditor::PropertyEditor(QWidget* parent)
     setRootIsDecorated(false);
     setExpandsOnDoubleClick(false);
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QStyleOptionViewItem opt = PropertyEditor::viewOptions();
-#else
     QStyleOptionViewItem opt;
     initViewItemOption(&opt);
-#endif
     this->background = opt.palette.dark();
     this->groupColor = opt.palette.color(QPalette::BrightText);
 
@@ -182,20 +178,11 @@ void PropertyEditor::setItemBackground(const QBrush& c)
     this->_itemBackground = c;
 }
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-QStyleOptionViewItem PropertyEditor::viewOptions() const
-{
-    QStyleOptionViewItem option = QTreeView::viewOptions();
-    option.showDecorationSelected = true;
-    return option;
-}
-#else
 void PropertyEditor::initViewItemOption(QStyleOptionViewItem* option) const
 {
     QTreeView::initViewItemOption(option);
     option->showDecorationSelected = true;
 }
-#endif
 
 bool PropertyEditor::event(QEvent* event)
 {
@@ -450,7 +437,7 @@ void PropertyEditor::recomputeDocument(App::Document* doc)
     catch (const std::exception& e) {
         Base::Console().error(
             "Unhandled std::exception caught in PropertyEditor::recomputeDocument.\n"
-            "The error message is: %s\n",
+            "The error message is: {}\n",
             e.what()
         );
     }
@@ -1551,11 +1538,7 @@ bool PropertyEditor::eventFilter(QObject* object, QEvent* event)
             ) {
                 if (indexResizable(mouse_event->pos()).isValid()) {
                     dragInProgress = true;
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-                    dragPreviousPos = mouse_event->x();
-#else
                     dragPreviousPos = mouse_event->position().toPoint().x();
-#endif
                     dragSection = indexResizable(mouse_event->pos()).column();
                     return true;
                 }

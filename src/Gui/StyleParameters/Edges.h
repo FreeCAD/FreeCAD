@@ -27,7 +27,6 @@
 #include <concepts>
 #include <optional>
 
-#include <fmt/format.h>
 
 #include "Diagnostics.h"
 #include "Value.h"

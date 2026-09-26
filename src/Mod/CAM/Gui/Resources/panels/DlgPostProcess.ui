@@ -411,7 +411,8 @@
          <item>
           <widget class="QLineEdit" name="lineEditFilenameTemplate">
            <property name="toolTip">
-            <string>Filename template. Substitutions: %j=job name, %d=document, %T=tool, %W=fixture, %O=operation</string>
+            <string>Filename template. Substitutions: %j=job name, %d=document, %S=sequence number.
+%T=tool number, %t=tool controller, %W=fixture and %O=operation name a section of a split output and are ignored when the output is not split.</string>
            </property>
            <property name="placeholderText">
             <string>e.g. %j.nc</string>

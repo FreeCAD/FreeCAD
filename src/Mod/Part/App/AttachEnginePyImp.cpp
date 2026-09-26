@@ -348,7 +348,7 @@ PyObject* AttachEnginePy::getModeInfo(PyObject* args)
         }
         catch (Base::Exception& e) {
             Base::Console().warning("AttachEngine.getModeInfo: error obtaining GUI strings:");
-            Base::Console().warning(e.what());
+            Base::Console().warning("{}", e.what());
             Base::Console().warning("\n");
         }
 
@@ -447,7 +447,7 @@ PyObject* AttachEnginePy::getRefTypeInfo(PyObject* args)
         }
         catch (Base::Exception& e) {
             Base::Console().warning("AttachEngine.getRefTypeInfo: error obtaining GUI strings:");
-            Base::Console().warning(e.what());
+            Base::Console().warning("{}", e.what());
             Base::Console().warning("\n");
         }
 

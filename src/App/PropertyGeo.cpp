@@ -717,31 +717,29 @@ const boost::any PropertyPlacement::getPathValue(const ObjectIdentifier& path) c
             Base::toDegrees(boost::any_cast<double>(Property::getPathValue(path))),
             Unit::Angle);
     }
-    else if (p == ".Base.x" || p == ".Base.y" || p == ".Base.z") {
+    if (p == ".Base.x" || p == ".Base.y" || p == ".Base.z") {
         // Convert double to quantity
         return Base::Quantity(boost::any_cast<double>(Property::getPathValue(path)), Unit::Length);
     }
-    else if (p == ".Rotation.Axis.x") {
+    if (p == ".Rotation.Axis.x") {
         return getAxis(_cPos).x;
     }
-    else if (p == ".Rotation.Axis.y") {
+    if (p == ".Rotation.Axis.y") {
         return getAxis(_cPos).y;
     }
-    else if (p == ".Rotation.Axis.z") {
+    if (p == ".Rotation.Axis.z") {
         return getAxis(_cPos).z;
     }
-    else if (p == ".Rotation.Yaw") {
+    if (p == ".Rotation.Yaw") {
         return getYawPitchRoll(_cPos).x;
     }
-    else if (p == ".Rotation.Pitch") {
+    if (p == ".Rotation.Pitch") {
         return getYawPitchRoll(_cPos).y;
     }
-    else if (p == ".Rotation.Roll") {
+    if (p == ".Rotation.Roll") {
         return getYawPitchRoll(_cPos).z;
     }
-    else {
-        return Property::getPathValue(path);
-    }
+    return Property::getPathValue(path);
 }
 
 bool PropertyPlacement::getPyPathValue(const ObjectIdentifier& path, Py::Object& res) const
@@ -769,39 +767,39 @@ bool PropertyPlacement::getPyPathValue(const ObjectIdentifier& path, Py::Object&
         res = Py::asObject(new QuantityPy(new Quantity(Base::toDegrees(angle), Unit::Angle)));
         return true;
     }
-    else if (p == ".Base.x") {
+    if (p == ".Base.x") {
         res = Py::asObject(new QuantityPy(new Quantity(_cPos.getPosition().x, Unit::Length)));
         return true;
     }
-    else if (p == ".Base.y") {
+    if (p == ".Base.y") {
         res = Py::asObject(new QuantityPy(new Quantity(_cPos.getPosition().y, Unit::Length)));
         return true;
     }
-    else if (p == ".Base.z") {
+    if (p == ".Base.z") {
         res = Py::asObject(new QuantityPy(new Quantity(_cPos.getPosition().z, Unit::Length)));
         return true;
     }
-    else if (p == ".Rotation.Axis.x") {
+    if (p == ".Rotation.Axis.x") {
         res = Py::Float(getAxis(_cPos).x);
         return true;
     }
-    else if (p == ".Rotation.Axis.y") {
+    if (p == ".Rotation.Axis.y") {
         res = Py::Float(getAxis(_cPos).y);
         return true;
     }
-    else if (p == ".Rotation.Axis.z") {
+    if (p == ".Rotation.Axis.z") {
         res = Py::Float(getAxis(_cPos).z);
         return true;
     }
-    else if (p == ".Rotation.Yaw") {
+    if (p == ".Rotation.Yaw") {
         res = Py::Float(getYawPitchRoll(_cPos).x);
         return true;
     }
-    else if (p == ".Rotation.Pitch") {
+    if (p == ".Rotation.Pitch") {
         res = Py::Float(getYawPitchRoll(_cPos).y);
         return true;
     }
-    else if (p == ".Rotation.Roll") {
+    if (p == ".Rotation.Roll") {
         res = Py::Float(getYawPitchRoll(_cPos).z);
         return true;
     }
@@ -1049,9 +1047,7 @@ App::Placement* PropertyPlacementLink::getPlacementObject() const
     if (_pcLink->isDerivedFrom<App::Placement>()) {
         return dynamic_cast<App::Placement*>(_pcLink);
     }
-    else {
-        return nullptr;
-    }
+    return nullptr;
 }
 
 //**************************************************************************
@@ -1167,18 +1163,16 @@ const boost::any PropertyRotation::getPathValue(const ObjectIdentifier& path) co
             Base::toDegrees(boost::any_cast<double>(Property::getPathValue(path))),
             Unit::Angle);
     }
-    else if (p == ".Axis.x") {
+    if (p == ".Axis.x") {
         return getAxis(_rot).x;
     }
-    else if (p == ".Axis.y") {
+    if (p == ".Axis.y") {
         return getAxis(_rot).y;
     }
-    else if (p == ".Axis.z") {
+    if (p == ".Axis.z") {
         return getAxis(_rot).z;
     }
-    else {
-        return Property::getPathValue(path);
-    }
+    return Property::getPathValue(path);
 }
 
 bool PropertyRotation::getPyPathValue(const ObjectIdentifier& path, Py::Object& res) const
@@ -1198,15 +1192,15 @@ bool PropertyRotation::getPyPathValue(const ObjectIdentifier& path, Py::Object& 
         res = Py::asObject(new QuantityPy(new Quantity(Base::toDegrees(angle), Unit::Angle)));
         return true;
     }
-    else if (p == ".Axis.x") {
+    if (p == ".Axis.x") {
         res = Py::Float(getAxis(_rot).x);
         return true;
     }
-    else if (p == ".Axis.y") {
+    if (p == ".Axis.y") {
         res = Py::Float(getAxis(_rot).y);
         return true;
     }
-    else if (p == ".Axis.z") {
+    if (p == ".Axis.z") {
         res = Py::Float(getAxis(_rot).z);
         return true;
     }

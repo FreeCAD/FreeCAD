@@ -7,7 +7,8 @@ from Base.Persistence import Persistence
 from App.Extension import Extension
 from Base.Vector import Vector
 from Base.Matrix import Matrix
-from typing import Final, List, Optional
+from Base.Placement import Placement
+from typing import Final, List, Union
 
 @export(
     Include="Mod/Part/App/Geometry.h",
@@ -25,19 +26,20 @@ class Geometry(Persistence):
     Tag: Final[str]
     """Gives the tag of the geometry as string."""
 
-    def mirror(self, geometry: "Geometry", /) -> None:
+    def mirror(self, point: Vector, axis: Vector = ..., /) -> None:
         """
-        Performs the symmetrical transformation of this geometric object
-        """
-        ...
-
-    def rotate(self, angle: float, axis: Vector, /) -> None:
-        """
-        Rotates this geometric object at angle Ang (in radians) about axis
+        Performs the symmetrical transformation of this geometric object, either
+        about a point or about a plane defined by a point and an axis.
         """
         ...
 
-    def scale(self, center: Vector, factor: float, /) -> None:
+    def rotate(self, placement: Placement, /) -> None:
+        """
+        Rotates this geometric object by the given placement
+        """
+        ...
+
+    def scale(self, center: Union[Vector, tuple], factor: float, /) -> None:
         """
         Applies a scaling transformation on this geometric object with a center and scaling factor
         """
@@ -49,7 +51,7 @@ class Geometry(Persistence):
         """
         ...
 
-    def translate(self, vector: Vector, /) -> None:
+    def translate(self, vector: Union[Vector, tuple], /) -> None:
         """
         Translates this geometric object
         """
@@ -93,14 +95,14 @@ class Geometry(Persistence):
         ...
 
     @constmethod
-    def getExtensionOfType(self, type_name: str, /) -> Optional[Extension]:
+    def getExtensionOfType(self, type_name: str, /) -> Extension:
         """
         Gets the first geometry extension of the type indicated by the string.
         """
         ...
 
     @constmethod
-    def getExtensionOfName(self, name: str, /) -> Optional[Extension]:
+    def getExtensionOfName(self, name: str, /) -> Extension:
         """
         Gets the first geometry extension of the name indicated by the string.
         """

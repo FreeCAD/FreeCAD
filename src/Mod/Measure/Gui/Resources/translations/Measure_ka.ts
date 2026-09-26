@@ -548,7 +548,7 @@
       <translation>საწყის მნიშვნელობებზე დაბრუნება</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="1218"/>
+      <location filename="../../TaskMassProperties.cpp" line="1222"/>
       <source> (Average)</source>
       <translation> (საშუალო)</translation>
     </message>

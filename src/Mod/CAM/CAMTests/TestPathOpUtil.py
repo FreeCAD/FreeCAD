@@ -24,6 +24,7 @@
 import FreeCAD
 import Part
 import Path
+import Path.Main.Workplane as PathWorkplane
 import Path.Op.Util as PathOpUtil
 import Path.Op.Custom as PathCustom
 import Path.Main.Job as PathJob
@@ -122,6 +123,17 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
     def tearDownClass(cls):
         FreeCAD.closeDocument(cls.doc.Name)
 
+    def assertEdgesConnected(self, edges, tolerance=None):
+        """Assert that each edge's end point coincides with the next edge's start point."""
+        tol = tolerance if tolerance is not None else self.tolerance
+        for i in range(len(edges) - 1):
+            end = edges[i].valueAt(edges[i].LastParameter)
+            start = edges[i + 1].valueAt(edges[i + 1].FirstParameter)
+            self.assertTrue(
+                Path.Geom.pointsCoincide(end, start, tol),
+                f"edge {i} end {end} does not connect to edge {i+1} start {start}",
+            )
+
     def setUp(self):
         self.clipper_scale_orig = area.get_clipper_scale()
         area.set_clipper_scale(1e7)
@@ -161,6 +173,9 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
                 if isinstance(c1, (Part.Circle, Part.ArcOfCircle)):
                     edges_equal = edges_equal and c1.Center == c2.Center and c1.Axis == c2.Axis
                 self.assertTrue(edges_equal, f"Edge mismatch:\n{desc}")
+
+        for w in wires:
+            self.assertEdgesConnected(w.Edges)
 
         return compat_wires
 
@@ -811,6 +826,35 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
                 "All edges should be circular arcs, no line segments",
             )
 
+    def test49(self):
+        """Regression test, that offsetting a specific path produces a connected result."""
+
+        a1 = Part.makeCircle(8, Vector(3, 11, 0), Vector(0, 0, 1), 270, 349.6111421845304)
+        a3 = Part.makeCircle(8, Vector(20, 15, 0), Vector(0, 0, -1), 190.3888578154, 349.611142184)
+        a5 = Part.makeCircle(8, Vector(37, 11, 0), Vector(0, 0, 1), 190.3888578154, 270)
+
+        e0 = Part.makeLine(Vector(0, 3, 0), a1.Vertexes[0].Point)
+        e1 = a1
+        e2 = Part.makeLine(a1.Vertexes[-1].Point, a3.Vertexes[0].Point)
+        e3 = a3
+        e4 = Part.makeLine(a3.Vertexes[-1].Point, a5.Vertexes[0].Point)
+        e5 = a5
+        e6 = Part.makeLine(a5.Vertexes[-1].Point, Vector(60, 3, 0))
+
+        edges = [e0, e1, e2, e3, e4, e5, e6]
+        self.assertEdgesConnected(edges)
+        wire = Part.Wire(edges)
+        self.assertEdgesConnected(wire.Edges)
+
+        pos_wires, neg_wires = PathOpUtil.offsetWire(wire, None, 3)
+        self.assertEqual(1, len(pos_wires))
+        self.assertEqual(len(edges), len(pos_wires[0].Edges))
+        self.assertEdgesConnected(pos_wires[0].Edges)
+
+        self.assertEqual(1, len(neg_wires))
+        self.assertEqual(len(edges), len(neg_wires[0].Edges))
+        self.assertEdgesConnected(neg_wires[0].Edges)
+
     def test50(self):
         """Orient an already oriented wire"""
         p0 = Vector()
@@ -928,6 +972,21 @@ class TestGetClearedAreasWorkplane(PathTestUtils.PathTestBase):
         self.job = PathJob.Create("Job", [box], None)
         self.job.GeometryTolerance.Value = 0.001
         self.doc.recompute()
+        # The frames here are tilted, which needs a machine with rotary axes.
+        from Machine.models.machine import Machine, RotaryAxis, AxisRole
+
+        machine = Machine(name="Test CA Machine")
+        machine.rotary_axes["C"] = RotaryAxis(
+            name="C", rotation_vector=Vector(0, 0, 1), role=AxisRole.TABLE_ROTARY, sequence=0
+        )
+        machine.rotary_axes["A"] = RotaryAxis(
+            name="A",
+            rotation_vector=Vector(1, 0, 0),
+            role=AxisRole.TABLE_ROTARY,
+            parent="C",
+            sequence=1,
+        )
+        self.job.Proxy.getMachine = lambda: machine
 
     def tearDown(self):
         FreeCAD.closeDocument(self.doc.Name)
@@ -940,7 +999,9 @@ class TestGetClearedAreasWorkplane(PathTestUtils.PathTestBase):
             # Simulate an older op that predates the Workplane property.
             op.removeProperty("Workplane")
         else:
-            op.Workplane = workplane
+            # Tests name a frame by its tool axis; the property is a link to a
+            # named work plane on the Job.
+            op.Workplane = PathWorkplane.createWorkplaneFromToolAxis(self.job, workplane)
         op.ToolController.Tool.Diameter = diameter
         # Assign the toolpath directly: getClearedAreas only reads op.Path, and
         # driving it here keeps the cleared-area filtering test independent of
@@ -1151,7 +1212,7 @@ class TestWorkplaneRotationCommands(PathTestUtils.PathTestBase):
 
     def _makeOp(self, name, workplane):
         op = PathCustom.Create(name, parentJob=self.job)
-        op.Workplane = workplane
+        op.Workplane = PathWorkplane.createWorkplaneFromToolAxis(self.job, workplane)
         op.ToolController.Tool.Diameter = 5.0
         self.doc.recompute()
         return op

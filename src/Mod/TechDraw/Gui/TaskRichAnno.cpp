@@ -84,9 +84,7 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
 
     m_basePage = m_annoFeat->findParentPage();
     if (!m_basePage) {
-        Base::Console().error("TaskRichAnno - bad parameters (2).  Cannot proceed.\n");
-        m_inProgressLock = false;
-        return;
+        throw Base::RuntimeError("TaskRichAnno - Parent page not found");
     }
 
     //m_baseFeat can be null
@@ -762,7 +760,7 @@ void TaskRichAnno::commonFeatureUpdate()
 QPointF TaskRichAnno::calcTextStartPos(double scale)
 {
     Q_UNUSED(scale)
-//    Base::Console().message("TRA::calcTextStartPos(%.3f)\n", scale);
+//    Base::Console().message("TRA::calcTextStartPos({:.3f})\n", scale);
     double textWidth = 100.0; // Default guess for text width in document units
     double textHeight = 20.0; // Default guess for text height
     double horizGap(Rez::appX(5.0)); // 5mm gap from leader end point in document units

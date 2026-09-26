@@ -235,6 +235,7 @@ private:
 
     Base::Quantity actQuantity;
     Base::Unit actUnit;
+    std::string displayUnitStr;
     double actUnitValue;
 
     double Maximum;

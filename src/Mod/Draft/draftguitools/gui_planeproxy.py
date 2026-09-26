@@ -63,7 +63,7 @@ class Draft_WorkingPlaneProxy:
         Gui.addModule("Draft")
         Gui.addModule("WorkingPlane")
         Gui.doCommand("pl = WorkingPlane.get_working_plane().get_placement()")
-        Gui.doCommand("Draft.make_workingplaneproxy(pl)")
+        Gui.doCommand("Draft.make_working_plane_proxy(pl)")
         App.ActiveDocument.commitTransaction()
         App.ActiveDocument.recompute()
 

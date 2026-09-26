@@ -3,7 +3,7 @@
 
 #include "ValueMatchers.h"
 
-#include <fmt/format.h>
+#include <format>
 
 using ::testing::AllOf;
 using ::testing::DoubleEq;
@@ -62,6 +62,11 @@ Matcher<Value> IsColor(const Base::Color& expected)
     return holding<Base::Color>(Eq(expected));
 }
 
+Matcher<Value> IsString(const std::string& expected)
+{
+    return holding<std::string>(Eq(expected));
+}
+
 Matcher<Value> IsColorNear(const Base::Color& expected, double tolerance)
 {
     return holding<Base::Color>(ColorNear(expected, tolerance));
@@ -70,7 +75,7 @@ Matcher<Value> IsColorNear(const Base::Color& expected, double tolerance)
 Matcher<Tuple> HasField(std::string name, Matcher<Value> matcher)
 {
     return ResultOf(
-        fmt::format("field '{}'", name),
+        std::format("field '{}'", name),
         [name = std::move(name)](const Tuple& tuple) { return tuple.find(name); },
         Pointee(matcher)
     );
@@ -79,7 +84,7 @@ Matcher<Tuple> HasField(std::string name, Matcher<Value> matcher)
 Matcher<Tuple> HasElement(size_t index, Matcher<Value> matcher)
 {
     return ResultOf(
-        fmt::format("element {}", index),
+        std::format("element {}", index),
         [index](const Tuple& tuple) { return tuple.tryAt(index); },
         Pointee(matcher)
     );

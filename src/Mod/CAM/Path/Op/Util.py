@@ -24,6 +24,7 @@
 
 import FreeCAD
 import Path
+import Path.Base.Util as PathUtil
 import Path.Dressup.Utils as PathDressup
 import math
 import time
@@ -380,23 +381,19 @@ def cAreaToWires(carea, z=0.0, tolerance=0.01):
 
                 radius = (p0 - center).Length
 
-                # Create axis direction: CCW uses +Z, CW uses -Z
-                axis = FreeCAD.Vector(0, 0, 1 if v1.type == 1 else -1)
-
-                # Calculate angles for the arc
-                angle0 = math.atan2(p0.y - center.y, p0.x - center.x)
-                angle1 = math.atan2(p1.y - center.y, p1.x - center.x)
-
-                # Adjust angle1 to agree with arc direction
-                if v1.type == 1:  # CCW: want angle1 > angle0
-                    while angle1 <= angle0:
-                        angle1 += 2 * math.pi
-                else:  # CW: want angle1 < angle0
-                    while angle1 >= angle0:
-                        angle1 -= 2 * math.pi
-
-                # Create circle with center, axis, and radius, then extract arc
+                # Create the circle. For axis direction, CCW is +Z and CW is -Z, matching type
+                axis = FreeCAD.Vector(0, 0, v1.type)
                 circle = Part.Circle(center, axis, radius)
+
+                # Compute start/end angles in the circle's parameterization, and create the arc
+                xdir = circle.XAxis
+                ydir = circle.YAxis
+                d0 = p0 - center
+                d1 = p1 - center
+                angle0 = math.atan2(d0.dot(ydir), d0.dot(xdir))
+                angle1 = math.atan2(d1.dot(ydir), d1.dot(xdir))
+                if angle1 == angle0:
+                    angle1 += 2 * math.pi
                 edge = Part.ArcOfCircle(circle, angle0, angle1).toShape()
 
                 # Set tolerance on arc vertices
@@ -594,13 +591,20 @@ def getClearedAreas(currentOp, bbox):
     workplanes has no meaningful 2D interpretation. For ops that share a
     non-Z-up Workplane the path's leading rotary G0 is stripped before
     walking so positions are read in the same rotated frame as bbox.
+
+    Frames are compared with PathUtil.sameWorkplane() rather than by hand.
+    That predicate compares tool axes only, which is correct while a
+    Workplane's origin is recorded but not consumed; when origins are
+    consumed, two operations sharing a tool axis but not an origin stop
+    being the same frame and this reuse becomes wrong. Changing the
+    predicate has to change this function with it.
     """
     clearedAreas = []
     job = currentOp.Proxy.job
     z = bbox.ZMin + job.GeometryTolerance.getValueAs("mm")
-    z_up = FreeCAD.Vector(0, 0, 1)
-    currentWp = getattr(currentOp, "Workplane", z_up)
-    rotated = not currentWp.isEqual(z_up, 1e-6)
+    identity = FreeCAD.Placement()
+    currentWp = PathUtil.workplaneForOp(currentOp)
+    rotated = not PathUtil.sameWorkplane(currentWp, identity)
     for op in job.Operations.Group:
         baseOp = PathDressup.baseOp(op)
         if baseOp.Name == currentOp.Name:
@@ -609,8 +613,7 @@ def getClearedAreas(currentOp, bbox):
             op = baseOp
         if not (getattr(baseOp, "Active", False) and op.Path):
             continue
-        opWp = getattr(baseOp, "Workplane", z_up)
-        if not opWp.isEqual(currentWp, 1e-6):
+        if not PathUtil.sameWorkplane(PathUtil.workplaneForOp(baseOp), currentWp):
             continue
         tool = baseOp.ToolController.Tool
         diameter = tool.Diameter.getValueAs("mm")
@@ -730,7 +733,7 @@ def getCycleTimeEstimate(obj, formatted=True):
         )
 
     # Get the cycle time in seconds
-    seconds = obj.Path.getCycleTime(hFeedrate, vFeedrate, hRapidrate, vRapidrate)
+    seconds = obj.Path.getCycleTime(hFeedrate, vFeedrate, hRapidrate)
 
     if math.isnan(seconds):
         return translate("CAM", "Cycletime Error")

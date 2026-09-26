@@ -1,6 +1,5 @@
 #include "XMLParser.h"
 
-#include <fmt/format.h>
 #include <iostream>
 #include <memory>
 #include <optional>
@@ -269,12 +268,12 @@ std::unique_ptr<XMLElement> ParseXMLFile(const fs::path& path)
     }
     catch (const XMLException& e) {
         throw XMLBaseException {
-            fmt::format("An error occurred during parsing: {}", StrX(e.getMessage()).c_str())
+            std::format("An error occurred during parsing: {}", StrX(e.getMessage()).c_str())
         };
     }
     catch (const DOMException& e) {
         throw XMLBaseException {
-            fmt::format("A DOM error occurred during parsing. DOMException code: {}", e.code)
+            std::format("A DOM error occurred during parsing. DOMException code: {}", e.code)
         };
     }
 
@@ -307,7 +306,7 @@ void SaveXMLFile(const fs::path& path, const XMLElement& xmlTree)
         doc->release();
     }
     catch (XMLException& e) {
-        throw Base::XMLBaseException {fmt::format(
+        throw Base::XMLBaseException {std::format(
             "An error occurred during creation of output transcoder. Msg is:\n{}\n",
             StrX(e.getMessage()).c_str()
         )};
@@ -382,7 +381,7 @@ std::optional<std::vector<std::string>> CheckXMLDocument(
     }
     catch (XMLException& e) {
         return std::vector<std::string> {
-            fmt::format("An error occurred while checking document: {}", StrX(e.getMessage()).c_str())
+            std::format("An error occurred while checking document: {}", StrX(e.getMessage()).c_str())
         };
     }
     return std::nullopt;

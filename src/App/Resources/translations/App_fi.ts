@@ -87,7 +87,7 @@ Käyttäjän pitäisi sen jälkeen klikata Päivitä-painiketta päätyökaluriv
   <context>
     <name>LinkParams</name>
     <message>
-      <location filename="../../Link.cpp" line="119"/>
+      <location filename="../../Link.cpp" line="131"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
       <translation>Tallentaa viimeksi käytetyn valinnan siitä, otetaanko muutokset käyttöön kaikissa samaan konfiguroitavaan objektiin viittaavissa linkitetyissä objekteissa</translation>

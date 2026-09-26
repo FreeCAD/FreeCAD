@@ -89,6 +89,11 @@ static QColor gridQColor();
 static double gridSpacing();
 static bool multiSelection();
 
+static bool screenMode();
+static void setScreenMode(bool enable);
+static double screenVertexSize();
+static double screenEdgeWidth();
+
 static QColor       getAccessibleQColor(QColor orig);
 static QColor       lightTextQColor();
 static QColor       reverseColor(QColor orig);
