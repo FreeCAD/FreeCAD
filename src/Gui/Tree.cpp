@@ -1942,6 +1942,35 @@ bool isTreeViewDragging()
 
 }  // namespace Gui
 
+namespace
+{
+
+bool itemHasExpandIndicator(const QTreeWidgetItem* item)
+{
+    return item->childCount() > 0
+        || item->childIndicatorPolicy() == QTreeWidgetItem::ShowIndicator;
+}
+
+bool isExpandIndicatorClick(const QTreeWidget* tree, const QTreeWidgetItem* item, int x)
+{
+    auto itemRect = tree->visualItemRect(item);
+    return x >= itemRect.left() - tree->indentation() && x < itemRect.left();
+}
+
+void setExpandedRecursive(QTreeWidgetItem* item, bool expanded)
+{
+    if (!item) {
+        return;
+    }
+
+    item->setExpanded(expanded);
+    for (int i = 0; i < item->childCount(); ++i) {
+        setExpandedRecursive(item->child(i), expanded);
+    }
+}
+
+}  // namespace
+
 void TreeWidget::keyPressEvent(QKeyEvent* event)
 {
     if (event->matches(QKeySequence::Find)) {
@@ -1952,14 +1981,14 @@ void TreeWidget::keyPressEvent(QKeyEvent* event)
     else if (event->modifiers() == Qt::AltModifier) {
         if (event->key() == Qt::Key_Left) {
             for (auto& item : selectedItems()) {
-                item->setExpanded(false);
+                setExpandedRecursive(item, false);
             }
             event->accept();
             return;
         }
         else if (event->key() == Qt::Key_Right) {
             for (auto& item : selectedItems()) {
-                item->setExpanded(true);
+                setExpandedRecursive(item, true);
             }
             event->accept();
             return;
@@ -2076,11 +2105,18 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
 
     if (event->button() == Qt::LeftButton) {
         QTreeWidgetItem* pressedItem = itemAt(event->pos());
-        if (pressedItem && pressedItem->childCount() > 0) {
-            auto itemRect = visualItemRect(pressedItem);
+        if (pressedItem && itemHasExpandIndicator(pressedItem)) {
             int x = event->pos().x();
-            if (x >= itemRect.left() - indentation() && x < itemRect.left()) {
+            if (isExpandIndicatorClick(this, pressedItem, x)) {
                 expandIndicatorPressed = true;
+
+                // Option/Alt-click on the expand indicator recursively expands or
+                // collapses the whole subtree, like macOS Finder.
+                if (event->modifiers() & Qt::AltModifier) {
+                    setExpandedRecursive(pressedItem, !pressedItem->isExpanded());
+                    event->accept();
+                    return;
+                }
             }
         }
     }
