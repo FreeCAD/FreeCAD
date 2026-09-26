@@ -48,6 +48,8 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskThicknessParameters */
 
+using PartDesign::Thickness;
+
 TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp* DressUpView, QWidget* parent)
     : TaskDressUpParameters(DressUpView, false, true, parent)
     , ui(new Ui_TaskThicknessParameters)
@@ -73,7 +75,7 @@ void TaskThicknessParameters::addContainerWidget()
 
 void TaskThicknessParameters::initControls()
 {
-    auto thickness = getObject<PartDesign::Thickness>();
+    auto thickness = getObject<Thickness>();
     double a = thickness->Value.getValue();
 
     ui->Value->setMinimum(0.0);
@@ -104,6 +106,24 @@ void TaskThicknessParameters::initControls()
     int join = static_cast<int>(thickness->Join.getValue());
     ui->joinComboBox->setCurrentIndex(join);
 
+    auto selectionMode = static_cast<Thickness::SelectionMode>(thickness->Selection.getValue());
+    ui->selectionMode->setCurrentIndex(
+        static_cast<int>(
+            selectionMode == Thickness::SelectionMode::AllSolids
+                ? Thickness::SelectionMode::SelectedSolids
+                : selectionMode
+        )
+    );
+
+    bool enableSelection = selectionMode != Thickness::SelectionMode::AllSolids;
+    ui->listWidgetReferences->setEnabled(enableSelection);
+    ui->buttonRefSel->setEnabled(enableSelection);
+
+    ui->selectAllSolids->setEnabled(selectionMode != Thickness::SelectionMode::SelectedFaces);
+    ui->selectAllSolids->setChecked(selectionMode == Thickness::SelectionMode::AllSolids);
+
+    selectSolids = selectionMode != Thickness::SelectionMode::SelectedFaces;
+
     if (strings.empty()) {
         setSelectionMode(refSel);
     }
@@ -128,7 +148,11 @@ void TaskThicknessParameters::setupConnections()
     connect(ui->modeComboBox, qOverload<int>(&QComboBox::currentIndexChanged),
             this, &TaskThicknessParameters::onModeChanged);
     connect(ui->joinComboBox, qOverload<int>(&QComboBox::currentIndexChanged),
-            this, &TaskThicknessParameters::onJoinTypeChanged);
+    this, &TaskThicknessParameters::onJoinTypeChanged);
+    connect(ui->selectionMode, qOverload<int>(&QComboBox::currentIndexChanged),
+    this, &TaskThicknessParameters::onSelectionModeChanged);
+    connect(ui->selectAllSolids, &QCheckBox::toggled,
+            this, &TaskThicknessParameters::onSelectAllSolidsChanged);
 
     // Create context menu
     createDeleteAction(ui->listWidgetReferences);
@@ -141,6 +165,46 @@ void TaskThicknessParameters::setupConnections()
     connect(ui->listWidgetReferences, &QListWidget::itemDoubleClicked,
             this, &TaskThicknessParameters::doubleClicked);
     // clang-format on
+}
+
+void TaskThicknessParameters::onSelectAllSolidsChanged(bool on)
+{
+    const auto newValue = on
+            && ui->selectionMode->currentIndex()
+                == static_cast<int>(Thickness::SelectionMode::SelectedSolids)
+        ? Thickness::SelectionMode::AllSolids
+        : static_cast<Thickness::SelectionMode>(ui->selectionMode->currentIndex());
+
+    if (Thickness* thickness = onBeforeChange()) {
+        thickness->Selection.setValue(static_cast<int>(newValue));
+        onAfterChange(thickness);
+    }
+
+    ui->listWidgetReferences->setEnabled(!on);
+    ui->buttonRefSel->setEnabled(!on);
+
+    ui->selectAllSolids->setEnabled(newValue != Thickness::SelectionMode::SelectedFaces);
+}
+
+void TaskThicknessParameters::onSelectionModeChanged(int selectionMode)
+{
+    const auto newValue = selectionMode == static_cast<int>(Thickness::SelectionMode::SelectedSolids)
+            && ui->selectAllSolids->isChecked()
+        ? Thickness::SelectionMode::AllSolids
+        : static_cast<Thickness::SelectionMode>(selectionMode);
+
+    if (Thickness* thickness = onBeforeChange()) {
+        thickness->Selection.setValue(static_cast<int>(newValue));
+        onAfterChange(thickness);
+    }
+
+    const bool enableSelection = newValue != Thickness::SelectionMode::AllSolids;
+    ui->listWidgetReferences->setEnabled(enableSelection);
+    ui->buttonRefSel->setEnabled(enableSelection);
+
+    ui->selectAllSolids->setEnabled(newValue != Thickness::SelectionMode::SelectedFaces);
+
+    selectSolids = selectionMode != static_cast<int>(Thickness::SelectionMode::SelectedFaces);
 }
 
 void TaskThicknessParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -168,14 +232,14 @@ void TaskThicknessParameters::onRefDeleted()
     TaskDressUpParameters::deleteRef(ui->listWidgetReferences);
 }
 
-PartDesign::Thickness* TaskThicknessParameters::onBeforeChange()
+Thickness* TaskThicknessParameters::onBeforeChange()
 {
     setButtons(none);
     setupTransaction();
-    return getObject<PartDesign::Thickness>();
+    return getObject<Thickness>();
 }
 
-void TaskThicknessParameters::onAfterChange(PartDesign::Thickness* obj)
+void TaskThicknessParameters::onAfterChange(Thickness* obj)
 {
     obj->recomputeFeature();
     // hide the thickness if there was a computation error
@@ -184,7 +248,7 @@ void TaskThicknessParameters::onAfterChange(PartDesign::Thickness* obj)
 
 void TaskThicknessParameters::onValueChanged(double angle)
 {
-    if (PartDesign::Thickness* thickness = onBeforeChange()) {
+    if (Thickness* thickness = onBeforeChange()) {
         thickness->Value.setValue(angle);
         onAfterChange(thickness);
     }
@@ -192,7 +256,7 @@ void TaskThicknessParameters::onValueChanged(double angle)
 
 void TaskThicknessParameters::onJoinTypeChanged(int join)
 {
-    if (PartDesign::Thickness* thickness = onBeforeChange()) {
+    if (Thickness* thickness = onBeforeChange()) {
         thickness->Join.setValue(join);
         onAfterChange(thickness);
     }
@@ -200,7 +264,7 @@ void TaskThicknessParameters::onJoinTypeChanged(int join)
 
 void TaskThicknessParameters::onModeChanged(int mode)
 {
-    if (PartDesign::Thickness* thickness = onBeforeChange()) {
+    if (Thickness* thickness = onBeforeChange()) {
         thickness->Mode.setValue(mode);
         onAfterChange(thickness);
     }
@@ -227,7 +291,7 @@ double TaskThicknessParameters::getValue() const
 
 void TaskThicknessParameters::onReversedChanged(bool on)
 {
-    if (PartDesign::Thickness* thickness = onBeforeChange()) {
+    if (Thickness* thickness = onBeforeChange()) {
         thickness->Reversed.setValue(on);
         onAfterChange(thickness);
 
@@ -240,9 +304,14 @@ bool TaskThicknessParameters::getReversed() const
     return ui->checkReverse->isChecked();
 }
 
+int TaskThicknessParameters::getSelectionMode() const
+{
+    return ui->selectionMode->currentIndex();
+}
+
 void TaskThicknessParameters::onIntersectionChanged(bool on)
 {
-    if (PartDesign::Thickness* thickness = onBeforeChange()) {
+    if (Thickness* thickness = onBeforeChange()) {
         thickness->Intersection.setValue(on);
         onAfterChange(thickness);
     }
@@ -289,7 +358,9 @@ void TaskThicknessParameters::changeEvent(QEvent* e)
 void TaskThicknessParameters::apply()
 {
     // Alert user if he created an empty feature
-    if (ui->listWidgetReferences->count() == 0) {
+    if (ui->listWidgetReferences->count() == 0
+        && ui->selectionMode->currentIndex()
+            != static_cast<int>(Thickness::SelectionMode::AllSolids)) {
         Base::Console().warning("{}", tr("Empty thickness created!\n").toStdString());
     }
 }
@@ -314,7 +385,7 @@ void TaskThicknessParameters::setGizmoPositions()
         return;
     }
 
-    auto thickness = getObject<PartDesign::Thickness>();
+    auto thickness = getObject<Thickness>();
     if (!thickness) {
         gizmoContainer->visible = false;
         return;
@@ -372,6 +443,7 @@ bool TaskDlgThicknessParameters::accept()
     FCMD_OBJ_CMD(obj, "Mode = " << draftparameter->getMode());
     FCMD_OBJ_CMD(obj, "Intersection = " << draftparameter->getIntersection());
     FCMD_OBJ_CMD(obj, "Join = " << draftparameter->getJoinType());
+    FCMD_OBJ_CMD(obj, "Selection = " << draftparameter->getSelectionMode());
 
     return TaskDlgDressUpParameters::accept();
 }

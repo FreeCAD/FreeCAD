@@ -115,6 +115,9 @@ protected:
     QAction* addAllEdgesAction;
 
     bool allowFaces, allowEdges;
+    /// Show face selections as solids
+    /// This is a separate mode from allowFaces/Edges because it would conflict.
+    bool selectSolids;
     selectionModes selectionMode;
     int transactionID;
 
