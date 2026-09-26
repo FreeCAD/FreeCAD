@@ -5,6 +5,9 @@ on:
   schedule:
     - cron: "0 0 * * 1"
 
+env:
+  TRANSLATION_REF: "main"
+
 # Writes happen via the GH_TOKEN_FOR_CROWDIN_SYNC secret; GITHUB_TOKEN stays read-only.
 permissions:
   contents: read
@@ -23,7 +26,12 @@ jobs:
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
           fetch-depth: 0
+          ref: ${{ env.TRANSLATION_REF }}
           token: ${{ secrets.GH_TOKEN_FOR_CROWDIN_SYNC }}
+
+      - name: Compute PR branch name
+        run: |
+          echo "PR_BRANCH=update-crowdin-translations-${TRANSLATION_REF//\//-}" >> "$GITHUB_ENV"
 
       - name: Install Qt ≥ 6.8
         uses: jurplel/install-qt-action@48d3ad6db93f3627c8ee7a0454bc6f3744f7e730
@@ -63,15 +71,17 @@ jobs:
 
       - name: Push changes to a new branch
         run: |
-          git branch update-crowdin-translations
-          git push origin update-crowdin-translations --force
+          git branch "$PR_BRANCH"
+          git push origin "$PR_BRANCH" --force
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1
         with:
-          branch: update-crowdin-translations
+          branch: ${{ env.PR_BRANCH }}
+          base: ${{ env.TRANSLATION_REF }}
           title: "Update translations from Crowdin"
           body: "Automatic Crowdin update."
+          labels: "Approved: CI"
           token: ${{ secrets.GH_TOKEN_FOR_CROWDIN_SYNC }}
           delete-branch: true
           add-paths: |
