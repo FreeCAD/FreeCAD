@@ -32,6 +32,7 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
+#include <App/FeaturePythonPyImp.h>
 #include "DrawPage.h"
 #include "DrawPagePy.h" // generated from DrawPagePy.xml
 #include "DrawProjGroup.h"
@@ -537,6 +538,15 @@ PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawPagePython, TechDraw::DrawPage)
 template<> const char* TechDraw::DrawPagePython::getViewProviderName(void) const
 {
     return "TechDrawGui::ViewProviderPage";
+}
+template<>
+PyObject* TechDraw::DrawPagePython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawPagePy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

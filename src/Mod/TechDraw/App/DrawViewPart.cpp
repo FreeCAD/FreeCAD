@@ -85,6 +85,7 @@
 #include "DrawViewBalloon.h"
 #include "DrawViewDetail.h"
 #include "DrawViewDimension.h"
+#include <App/FeaturePythonPyImp.h>
 #include "DrawViewPart.h"
 #include "DrawViewPartPy.h"// generated from DrawViewPartPy.xml
 #include "DrawViewSection.h"
@@ -1765,6 +1766,15 @@ PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewPartPython, TechDraw::DrawViewPart)
 template<> const char* TechDraw::DrawViewPartPython::getViewProviderName() const
 {
     return "TechDrawGui::ViewProviderViewPart";
+}
+template<>
+PyObject* TechDraw::DrawViewPartPython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawViewPartPy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

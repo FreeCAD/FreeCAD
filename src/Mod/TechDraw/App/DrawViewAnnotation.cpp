@@ -23,7 +23,9 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <App/FeaturePythonPyImp.h>
 #include "DrawViewAnnotation.h"
+#include "DrawViewAnnotationPy.h"
 #include "Preferences.h"
 
 
@@ -147,6 +149,15 @@ namespace App {
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewAnnotationPython, TechDraw::DrawViewAnnotation)
 template<> const char* TechDraw::DrawViewAnnotationPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderAnnotation";
+}
+template<>
+PyObject* TechDraw::DrawViewAnnotationPython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawViewAnnotationPy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

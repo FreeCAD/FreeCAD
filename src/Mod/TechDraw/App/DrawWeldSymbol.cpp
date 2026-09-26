@@ -27,6 +27,7 @@
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
 
+#include <App/FeaturePythonPyImp.h>
 #include "DrawWeldSymbol.h"
 #include "DrawWeldSymbolPy.h"  // generated from DrawWeldSymbolPy.xml
 #include "DrawLeaderLine.h"
@@ -174,6 +175,15 @@ namespace App {
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawWeldSymbolPython, TechDraw::DrawWeldSymbol)
 template<> const char* TechDraw::DrawWeldSymbolPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderWeld";
+}
+template<>
+PyObject* TechDraw::DrawWeldSymbolPython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawWeldSymbolPy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

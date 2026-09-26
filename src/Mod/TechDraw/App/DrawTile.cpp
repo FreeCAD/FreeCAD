@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 
+#include <App/FeaturePythonPyImp.h>
 #include "DrawTile.h"
 #include "DrawTilePy.h"  // generated from DrawTilePy.xml
 
@@ -108,6 +109,15 @@ namespace App {
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawTilePython, TechDraw::DrawTile)
 template<> const char* TechDraw::DrawTilePython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderTile";
+}
+template<>
+PyObject* TechDraw::DrawTilePython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawTilePy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 
