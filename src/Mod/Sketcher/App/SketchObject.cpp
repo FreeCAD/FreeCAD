@@ -58,6 +58,7 @@
 #include <memory>
 
 #include "GeoEnum.h"
+#include "GroupHierarchy.h"
 #include "SketchObject.h"
 #include "Constraint.h"
 #include "SketchObjectPy.h"
@@ -857,10 +858,13 @@ bool SketchObject::evaluateSupport()
 
 bool SketchObject::isInGroup(int geoId, bool includeHandle) const
 {
+    if (geoId == GeoEnum::GeoUndef) {
+        return false;
+    }
     const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
 
     for (const auto& constr : vals) {
-        if (constr->Type == Group || constr->Type == Text) {
+        if (constr->isActive && (constr->Type == Group || constr->Type == Text)) {
             // First is the group construction line. We include it or not in our search.
             int iStart = includeHandle ? 0 : 1;
             for (int i = iStart; constr->hasElement(i); ++i) {
@@ -889,39 +893,36 @@ bool SketchObject::isGroupHandle(int geoId) const
 
 int SketchObject::getGroupHandleIfInGroup(int geoId)
 {
-    const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
-
-    for (const auto& constr : vals) {
-        if (constr->Type == Group || constr->Type == Text) {
-            // First is the group construction line.
-            int groupHandleGeoId = -1;
-            for (int i = 0; constr->hasElement(i); ++i) {
-                if (i == 0) {
-                    groupHandleGeoId = constr->getGeoId(i);
+    if (geoId < 0) {
+        return geoId;
+    }
+    const auto& constraints = Constraints.getValues();
+    std::set<int> visited;
+    while (visited.insert(geoId).second) {
+        const int current = geoId;
+        for (const auto* c : constraints) {
+            if (c->isActive && (c->Type == Group || c->Type == Text)) {
+                for (int i = 1; c->hasElement(i); ++i) {
+                    if (c->getGeoId(i) == current) {
+                        geoId = c->getGeoId(0);
+                        break;
+                    }
                 }
-                else if (constr->getGeoId(i) == geoId) {
-                    return groupHandleGeoId;
+                if (geoId != current) {
+                    break;
                 }
             }
         }
+        if (geoId == current) {
+            return geoId;
+        }
     }
-    return geoId;
+    return geoId;  // A malformed cycle must not hang selection or drawing.
 }
 
 std::set<int> SketchObject::getGroupGeometries(int handleGeoId) const
 {
-    std::set<int> geoIds;
-    const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
-    for (const auto& constr : vals) {
-        if (constr->Type == Group || constr->Type == Text) {
-            if (constr->getGeoId(0) == handleGeoId) {
-                for (int i = 1; constr->hasElement(i); ++i) {
-                    geoIds.insert(constr->getElement(i).GeoId);
-                }
-            }
-        }
-    }
-    return geoIds;
+    return GroupHierarchy(Constraints.getValues(), false).descendants(handleGeoId);
 }
 
 PyObject* SketchObject::getPyObject()
