@@ -52,20 +52,21 @@ Array2D::Array2D(const QString& propertyName,
 {
     ui->setupUi(this);
 
-    if (material->hasPhysicalProperty(propertyName)) {
-        _property = material->getPhysicalProperty(propertyName);
+    const std::string name = propertyName.toStdString();
+    if (material->hasPhysicalProperty(name)) {
+        _property = material->getPhysicalProperty(name);
     }
-    else if (material->hasAppearanceProperty(propertyName)) {
-        _property = material->getAppearanceProperty(propertyName);
+    else if (material->hasAppearanceProperty(name)) {
+        _property = material->getAppearanceProperty(name);
     }
     else {
-        Base::Console().log("Property '{}' not found\n", propertyName.toStdString());
+        Base::Console().log("Property '{}' not found\n", name);
         _property = nullptr;
     }
     if (_property) {
         _value =
             std::static_pointer_cast<Materials::Array2D>(_property->getMaterialValue());
-        setWindowTitle(_property->getDisplayName());
+        setWindowTitle(QString::fromStdString(_property->getDisplayName()));
     }
     else {
         _value = nullptr;
@@ -101,7 +102,9 @@ void Array2D::setColumnDelegates(QTableView* table)
         const Materials::MaterialProperty& column = _property->getColumn(i);
         table->setItemDelegateForColumn(
             i,
-            new ArrayDelegate(column.getType(), column.getUnits(), this));
+            new ArrayDelegate(column.getType(),
+                              QString::fromStdString(column.getUnits()),
+                              this));
     }
 }
 

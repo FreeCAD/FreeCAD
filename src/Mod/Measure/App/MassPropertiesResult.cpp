@@ -162,14 +162,14 @@ MassPropertiesData CalculateMassProperties(
         // Fallback density the units 1e-6 kg/mm^3 (1000 kg/m^3)
         double density = 1.0e-6;
 
-        const QString densityMaterialProperty = QStringLiteral("Density");
+        const std::string densityMaterialProperty {"Density"};
 
         if (part) {
             mat = part->ShapeMaterial.getValue();
         }
         if (mat.hasPhysicalProperty(densityMaterialProperty)) {
             try {
-                if (mat.getName() != QStringLiteral("Default")) {
+                if (mat.getName() != "Default") {
                     density = mat.getPhysicalQuantity(densityMaterialProperty).getValue();
                 }
             }

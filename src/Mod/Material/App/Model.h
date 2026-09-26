@@ -23,10 +23,11 @@
 
 #pragma once
 
+#include <algorithm>
+#include <map>
 #include <memory>
-
-#include <QString>
-#include <QStringList>
+#include <string>
+#include <vector>
 
 #include <Base/BaseClass.h>
 #include <Base/Quantity.h>
@@ -55,72 +56,72 @@ class MaterialsExport ModelProperty: public Base::BaseClass
 
 public:
     ModelProperty();
-    ModelProperty(const QString& name,
-                  const QString& header,
-                  const QString& type,
-                  const QString& units,
-                  const QString& url,
-                  const QString& description);
+    ModelProperty(std::string name,
+                  std::string header,
+                  std::string type,
+                  std::string units,
+                  std::string url,
+                  std::string description);
     ModelProperty(const ModelProperty& other);
     ~ModelProperty() override = default;
 
-    const QString getName() const
+    const std::string& getName() const
     {
         return _name;
     }
-    const QString getDisplayName() const;
-    const QString getPropertyType() const
+    const std::string& getDisplayName() const;
+    const std::string& getPropertyType() const
     {
         return _propertyType;
     }
-    const QString getUnits() const
+    const std::string& getUnits() const
     {
         return _units;
     }
-    const QString getURL() const
+    const std::string& getURL() const
     {
         return _url;
     }
-    const QString getDescription() const
+    const std::string& getDescription() const
     {
         return _description;
     }
-    const QString getInheritance() const
+    const std::string& getInheritance() const
     {
         return _inheritance;
     }
     bool isInherited() const
     {
-        return (_inheritance.length() > 0);
+        return !_inheritance.empty();
     }
 
-    void setName(const QString& name)
+    void setName(std::string name)
     {
-        _name = name;
+        _name = std::move(name);
     }
-    void setDisplayName(const QString& header)
+    void setDisplayName(std::string header)
     {
-        _displayName = header;
+        _displayName = std::move(header);
     }
-    virtual void setPropertyType(const QString& type)
+    virtual void setPropertyType(std::string type)
     {
-        _propertyType = type;
+        _propertyType = std::move(type);
     }
-    void setUnits(const QString& units)
+    void setUnits(std::string units)
     {
-        _units = units;
+        _units = std::move(units);
     }
-    void setURL(const QString& url)
+    void setURL(std::string url)
     {
-        _url = url;
+        _url = std::move(url);
     }
-    void setDescription(const QString& description)
+    void setDescription(std::string description)
     {
-        _description = description;
+        _description = std::move(description);
     }
-    void setInheritance(const QString& uuid)
+    void setInheritance(std::string uuid)
     {
-        _inheritance = uuid;
+        _inheritance = std::move(uuid);
     }
 
     void addColumn(ModelProperty& column)
@@ -146,13 +147,13 @@ public:
     void validate(const ModelProperty& other) const;
 
 private:
-    QString _name;
-    QString _displayName;
-    QString _propertyType;
-    QString _units;
-    QString _url;
-    QString _description;
-    QString _inheritance;
+    std::string _name;
+    std::string _displayName;
+    std::string _propertyType;
+    std::string _units;
+    std::string _url;
+    std::string _description;
+    std::string _inheritance;
     std::vector<ModelProperty> _columns;
 };
 
@@ -170,24 +171,23 @@ public:
     Model();
     Model(std::shared_ptr<ModelLibrary> library,
           ModelType type,
-          const QString& name,
-          const QString& directory,
-          const QString& uuid,
-          const QString& description,
-          const QString& url,
-          const QString& doi);
+          std::string name,
+          std::string directory,
+          std::string uuid,
+          std::string description,
+          std::string url,
+          std::string doi);
     ~Model() override = default;
 
     std::shared_ptr<ModelLibrary> getLibrary() const
     {
         return _library;
     }
-    QString getBase() const
+    std::string getBase() const
     {
-        return (_type == ModelType_Physical) ? QStringLiteral("Model")
-                                             : QStringLiteral("AppearanceModel");
+        return (_type == ModelType_Physical) ? "Model" : "AppearanceModel";
     }
-    QString getName() const
+    const std::string& getName() const
     {
         return _name;
     }
@@ -195,22 +195,22 @@ public:
     {
         return _type;
     }
-    QString getDirectory() const;
-    QString getFilename() const;
-    QString getFilePath() const;
-    QString getUUID() const
+    const std::string& getDirectory() const;
+    const std::string& getFilename() const;
+    std::string getFilePath() const;
+    const std::string& getUUID() const
     {
         return _uuid;
     }
-    QString getDescription() const
+    const std::string& getDescription() const
     {
         return _description;
     }
-    QString getURL() const
+    const std::string& getURL() const
     {
         return _url;
     }
-    QString getDOI() const
+    const std::string& getDOI() const
     {
         return _doi;
     }
@@ -223,40 +223,40 @@ public:
     {
         _type = type;
     }
-    void setName(const QString& name)
+    void setName(std::string name)
     {
-        _name = name;
+        _name = std::move(name);
     }
-    void setDirectory(const QString& directory);
-    void setFilename(const QString& filename);
-    void setUUID(const QString& uuid)
+    void setDirectory(std::string directory);
+    void setFilename(std::string filename);
+    void setUUID(std::string uuid)
     {
-        _uuid = uuid;
+        _uuid = std::move(uuid);
     }
-    void setDescription(const QString& description)
+    void setDescription(std::string description)
     {
-        _description = description;
+        _description = std::move(description);
     }
-    void setURL(const QString& url)
+    void setURL(std::string url)
     {
-        _url = url;
+        _url = std::move(url);
     }
-    void setDOI(const QString& doi)
+    void setDOI(std::string doi)
     {
-        _doi = doi;
+        _doi = std::move(doi);
     }
 
-    void addInheritance(const QString& uuid)
+    void addInheritance(std::string uuid)
     {
-        _inheritedUuids << uuid;
+        _inheritedUuids.push_back(std::move(uuid));
     }
-    const QStringList& getInheritance() const
+    const std::vector<std::string>& getInheritance() const
     {
         return _inheritedUuids;
     }
-    bool inherits(const QString& uuid) const
+    bool inherits(const std::string& uuid) const
     {
-        return _inheritedUuids.contains(uuid);
+        return std::ranges::find(_inheritedUuids, uuid) != _inheritedUuids.end();
     }
 
     bool operator==(const Model& m) const
@@ -268,14 +268,14 @@ public:
         return !operator==(m);
     }
 
-    ModelProperty& operator[](const QString& key);
+    ModelProperty& operator[](const std::string& key);
     void addProperty(ModelProperty& property)
     {
         _properties[property.getName()] = property;
     }
 
-    using iterator = typename std::map<QString, ModelProperty>::iterator;
-    using const_iterator = typename std::map<QString, ModelProperty>::const_iterator;
+    using iterator = typename std::map<std::string, ModelProperty>::iterator;
+    using const_iterator = typename std::map<std::string, ModelProperty>::const_iterator;
     iterator begin()
     {
         return _properties.begin();
@@ -306,15 +306,15 @@ public:
 private:
     std::shared_ptr<ModelLibrary> _library;
     ModelType _type;
-    QString _name;
-    QString _directory;
-    QString _filename;
-    QString _uuid;
-    QString _description;
-    QString _url;
-    QString _doi;
-    QStringList _inheritedUuids;
-    std::map<QString, ModelProperty> _properties;
+    std::string _name;
+    std::string _directory;
+    std::string _filename;
+    std::string _uuid;
+    std::string _description;
+    std::string _url;
+    std::string _doi;
+    std::vector<std::string> _inheritedUuids;
+    std::map<std::string, ModelProperty> _properties;
 };
 
 typedef FolderTreeNode<Model> ModelTreeNode;

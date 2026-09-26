@@ -115,23 +115,24 @@ ImageEdit::ImageEdit(const QString& propertyName,
 {
     ui->setupUi(this);
 
-    if (material->hasPhysicalProperty(propertyName)) {
-        _property = material->getPhysicalProperty(propertyName);
+    const std::string name = propertyName.toStdString();
+    if (material->hasPhysicalProperty(name)) {
+        _property = material->getPhysicalProperty(name);
     }
-    else if (material->hasAppearanceProperty(propertyName)) {
-        _property = material->getAppearanceProperty(propertyName);
+    else if (material->hasAppearanceProperty(name)) {
+        _property = material->getAppearanceProperty(name);
     }
     else {
-        Base::Console().log("Property '{}' not found\n", propertyName.toStdString());
+        Base::Console().log("Property '{}' not found\n", name);
         _property = nullptr;
     }
     if (_property) {
         if (_property->getType() == Materials::MaterialValue::SVG) {
-            _svg = _property->getString();
+            _svg = QString::fromStdString(_property->getString());
             showSVG();
         }
         else {
-            QString value = _property->getString();
+            QString value = QString::fromStdString(_property->getString());
             if (!value.isEmpty()) {
                 QByteArray by = QByteArray::fromBase64(value.toUtf8());
                 QImage img = QImage::fromData(by);
@@ -245,15 +246,14 @@ void ImageEdit::accept()
 {
     if (_property) {
         if (_property->getType() == Materials::MaterialValue::SVG) {
-            _property->setValue(_svg);
+            _property->setValue(_svg.toStdString());
         }
         else {
             QBuffer buffer;
             buffer.open(QIODevice::WriteOnly);
             _pixmap.save(&buffer, "PNG");
-            QByteArray base64 = buffer.data().toBase64();
-            QString encoded = QString::fromUtf8(base64);
-            _property->setValue(encoded);
+            const QByteArray base64 = buffer.data().toBase64();
+            _property->setValue(base64.toStdString());
         }
     }
     QDialog::accept();

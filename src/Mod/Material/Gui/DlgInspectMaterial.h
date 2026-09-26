@@ -77,14 +77,16 @@ private:
     void addMaterial(QTreeView* tree, QStandardItem* parent, const Materials::Material& material);
     void
     addMaterialDetails(QTreeView* tree, QStandardItem* parent, const Materials::Material& material);
-    void addModels(QTreeView* tree, QStandardItem* parent, const QSet<QString>* models);
+    void addModels(QTreeView* tree,
+                   QStandardItem* parent,
+                   const std::set<std::string>* models);
     void addModelDetails(QTreeView* tree,
                          QStandardItem* parent,
                          std::shared_ptr<Materials::Model>& model);
     void addProperties(
         QTreeView* tree,
         QStandardItem* parent,
-        const std::map<QString, std::shared_ptr<Materials::MaterialProperty>>& properties);
+        const std::map<std::string, std::shared_ptr<Materials::MaterialProperty>>& properties);
     void addPropertyDetails(QTreeView* tree,
                             QStandardItem* parent,
                             const std::shared_ptr<Materials::MaterialProperty>& property);

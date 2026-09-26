@@ -48,8 +48,8 @@ void DlgMigrateExternal::showLibraries()
 {
     auto materialLibraries = Materials::MaterialManager::getManager().getLocalLibraries();
     for (auto library : *materialLibraries) {
-        if (library->getName() != QLatin1String("User")) {
-            auto item = new QListWidgetItem(library->getName());
+        if (library->getName() != "User") {
+            auto item = new QListWidgetItem(QString::fromStdString(library->getName()));
             item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
             item->setCheckState(Qt::Checked);
             item->setData(Qt::UserRole, QVariant::fromValue(library));
@@ -59,8 +59,8 @@ void DlgMigrateExternal::showLibraries()
 
     auto modelLibraries = Materials::ModelManager::getManager().getLocalLibraries();
     for (auto library : *modelLibraries) {
-        if (library->getName() != QLatin1String("User")) {
-            auto item = new QListWidgetItem(library->getName());
+        if (library->getName() != "User") {
+            auto item = new QListWidgetItem(QString::fromStdString(library->getName()));
             item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
             item->setCheckState(Qt::Checked);
             item->setData(Qt::UserRole, QVariant::fromValue(library));
@@ -78,7 +78,7 @@ void DlgMigrateExternal::migrate()
             if (item->checkState() == Qt::Checked) {
                 auto library =
                     item->data(Qt::UserRole).value<std::shared_ptr<Materials::ModelLibrary>>();
-                statusUpdate(tr("  Library: ") + library->getName());
+                statusUpdate(tr("  Library: ") + QString::fromStdString(library->getName()));
                 Materials::ModelManager::getManager().migrateToExternal(library);
             }
         }
@@ -90,7 +90,7 @@ void DlgMigrateExternal::migrate()
             if (item->checkState() == Qt::Checked) {
                 auto library =
                     item->data(Qt::UserRole).value<std::shared_ptr<Materials::ModelLibrary>>();
-                statusUpdate(tr("  Library: ") + library->getName());
+                statusUpdate(tr("  Library: ") + QString::fromStdString(library->getName()));
                 Materials::ModelManager::getManager().validateMigration(library);
             }
         }
@@ -102,7 +102,7 @@ void DlgMigrateExternal::migrate()
             if (item->checkState() == Qt::Checked) {
                 auto library =
                     item->data(Qt::UserRole).value<std::shared_ptr<Materials::MaterialLibrary>>();
-                statusUpdate(tr("  Library: ") + library->getName());
+                statusUpdate(tr("  Library: ") + QString::fromStdString(library->getName()));
                 Materials::MaterialManager::getManager().migrateToExternal(library);
             }
         }
@@ -114,7 +114,7 @@ void DlgMigrateExternal::migrate()
             if (item->checkState() == Qt::Checked) {
                 auto library =
                     item->data(Qt::UserRole).value<std::shared_ptr<Materials::MaterialLibrary>>();
-                statusUpdate(tr("  Library: ") + library->getName());
+                statusUpdate(tr("  Library: ") + QString::fromStdString(library->getName()));
                 Materials::MaterialManager::getManager().validateMigration(library);
             }
         }

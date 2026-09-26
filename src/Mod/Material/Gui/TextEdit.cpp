@@ -47,18 +47,19 @@ TextEdit::TextEdit(const QString& propertyName,
 {
     ui->setupUi(this);
 
-    if (material->hasPhysicalProperty(propertyName)) {
-        _property = material->getPhysicalProperty(propertyName);
+    const std::string name = propertyName.toStdString();
+    if (material->hasPhysicalProperty(name)) {
+        _property = material->getPhysicalProperty(name);
     }
-    else if (material->hasAppearanceProperty(propertyName)) {
-        _property = material->getAppearanceProperty(propertyName);
+    else if (material->hasAppearanceProperty(name)) {
+        _property = material->getAppearanceProperty(name);
     }
     else {
-        Base::Console().log("Property '{}' not found\n", propertyName.toStdString());
+        Base::Console().log("Property '{}' not found\n", name);
         _property = nullptr;
     }
     if (_property) {
-        _value = _property->getString();
+        _value = QString::fromStdString(_property->getString());
     }
     else {
         Base::Console().log("No value loaded\n");
@@ -77,7 +78,7 @@ void TextEdit::accept()
 {
     QString newText = ui->textEdit->toPlainText();
     if (newText != _value) {
-        _property->setValue(ui->textEdit->toPlainText());
+        _property->setValue(newText.toStdString());
         _material->setEditStateAlter();
     }
     QDialog::accept();

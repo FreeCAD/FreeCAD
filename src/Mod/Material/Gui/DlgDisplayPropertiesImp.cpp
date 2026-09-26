@@ -177,17 +177,17 @@ void DlgDisplayPropertiesImp::setupFilters()
     auto filterList = std::make_shared<std::list<std::shared_ptr<Materials::MaterialFilter>>>();
 
     auto filter = std::make_shared<Materials::MaterialFilter>();
-    filter->setName(tr("Basic appearance"));
+    filter->setName(tr("Basic appearance").toStdString());
     filter->addRequiredComplete(Materials::ModelUUIDs::ModelUUID_Rendering_Basic);
     filterList->push_back(filter);
 
     filter = std::make_shared<Materials::MaterialFilter>();
-    filter->setName(tr("Texture appearance"));
+    filter->setName(tr("Texture appearance").toStdString());
     filter->addRequiredComplete(Materials::ModelUUIDs::ModelUUID_Rendering_Texture);
     filterList->push_back(filter);
 
     filter = std::make_shared<Materials::MaterialFilter>();
-    filter->setName(tr("All materials"));
+    filter->setName(tr("All materials").toStdString());
     filterList->push_back(filter);
 
     d->ui.widgetMaterial->setIncludeEmptyFolders(false);

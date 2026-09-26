@@ -25,7 +25,7 @@
 
 #include <memory>
 
-#include <QString>
+#include <string>
 
 #include <Base/BaseClass.h>
 #include <Base/Quantity.h>
@@ -47,14 +47,14 @@ class MaterialsExport ModelLibrary: public Library,
 public:
     ModelLibrary();
     ModelLibrary(const Library& library);
-    ModelLibrary(const QString& libraryName,
-                 const QString& dir,
-                 const QString& iconPath,
+    ModelLibrary(const std::string& libraryName,
+                 const std::string& dir,
+                 const std::string& iconPath,
                  bool readOnly = true);
     ModelLibrary(const ModelLibrary& other) = delete;
     ~ModelLibrary() override = default;
 
-    std::shared_ptr<std::map<QString, std::shared_ptr<ModelTreeNode>>>
+    std::shared_ptr<std::map<std::string, std::shared_ptr<ModelTreeNode>>>
     getModelTree(ModelFilter filter) const;
 
     // Use this to get a shared_ptr for *this
@@ -71,9 +71,9 @@ class MaterialsExport ModelLibraryLocal: public ModelLibrary
 public:
     ModelLibraryLocal();
     ModelLibraryLocal(const Library& other);
-    ModelLibraryLocal(const QString& libraryName,
-                      const QString& dir,
-                      const QString& iconPath,
+    ModelLibraryLocal(const std::string& libraryName,
+                      const std::string& dir,
+                      const std::string& iconPath,
                       bool readOnly = true);
     ModelLibraryLocal(const ModelLibraryLocal& other) = delete;
     ~ModelLibraryLocal() override = default;
@@ -86,13 +86,13 @@ public:
     {
         return !operator==(library);
     }
-    std::shared_ptr<Model> getModelByPath(const QString& path) const;
+    std::shared_ptr<Model> getModelByPath(const std::string& path) const;
 
-    std::shared_ptr<Model> addModel(const Model& model, const QString& path);
+    std::shared_ptr<Model> addModel(const Model& model, const std::string& path);
 
 private:
 
-    std::unique_ptr<std::map<QString, std::shared_ptr<Model>>> _modelPathMap;
+    std::unique_ptr<std::map<std::string, std::shared_ptr<Model>>> _modelPathMap;
 };
 
 }  // namespace Materials
