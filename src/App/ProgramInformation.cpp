@@ -293,7 +293,11 @@ void ProgramInformation::getLibraryVersions(std::stringstream& str)
     str << "SMESH " << SMESH_VERSION_STR << ", ";
 #endif
     str << "xerces-c " << fcXercescVersion << ", ";
-    str << "Clipper2 " << fcClipper2Version << ", ";
+    str << "Clipper2";
+    if (*fcClipper2Version) {
+        str << " " << fcClipper2Version;
+    }
+    str << ", ";
     getIfcInfo(str);
 #if defined(OCC_VERSION_STRING_EXT)
     str << "OCC " << OCC_VERSION_STRING_EXT << '\n';

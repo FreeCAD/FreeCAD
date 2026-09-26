@@ -14,6 +14,18 @@ else()
 
     add_subdirectory(src/3rdParty/Clipper2)
     add_library(Clipper2::Clipper2Z ALIAS Clipper2Z)
+
+    # project(Clipper2 VERSION ...) is scoped to the bundled directory. Export the
+    # version so LibraryVersions.h.cmake can fill the About line (#32627).
+    if(NOT Clipper2_VERSION)
+        get_directory_property(_clipper2_version
+            DIRECTORY "${CMAKE_SOURCE_DIR}/src/3rdParty/Clipper2"
+            DEFINITION Clipper2_VERSION)
+        if(_clipper2_version)
+            set(Clipper2_VERSION "${_clipper2_version}")
+        endif()
+        unset(_clipper2_version)
+    endif()
 endif()
 
 endmacro(SetupClipper2)
