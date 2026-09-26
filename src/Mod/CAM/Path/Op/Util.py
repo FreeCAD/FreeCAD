@@ -1,26 +1,24 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2018 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileCopyrightText: 2021 Schildkroet
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
-# *   Copyright (c) 2021 Schildkroet                                        *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
 import Path
@@ -653,8 +651,12 @@ def getOpSide(obj, default="Outside"):
     isRoughly = Path.Geom.isRoughly
     isHorizontal = Path.Geom.isHorizontal
     base, subNames = obj.Base[0]
+    shape = base.Shape
+    frame = PathUtil.workplaneForOp(obj)
+    if not frame.isIdentity(1e-9):
+        shape = shape.transformed(frame.inverse().toMatrix())
     if "Face" in subNames[0]:
-        faces = [base.Shape.getElement(sub) for sub in subNames if sub.startswith("Face")]
+        faces = [shape.getElement(sub) for sub in subNames if sub.startswith("Face")]
         vFaces = []
         hFaces = []
         for face in faces:
@@ -668,26 +670,25 @@ def getOpSide(obj, default="Outside"):
                 return "Outside"
             # check if vertical faces creates a closed area
             fzMin = min(e.BoundBox.ZMin for f in vFaces for e in f.Edges)
-            bEdges = [e for f in vFaces for e in f.Edges if isRoughly(e.BoundBox.ZMax, fzMin)]
-            wire = Part.Wire(Part.__sortEdges__(bEdges))
-            if not wire.isClosed():  # for open area always offer 'Outside'
-                return "Outside"
-            if volume < 0 and not isRoughly(volume, 0):  # negative volume forms inner area
-                return "Inside"
+            if bEdges := [e for f in vFaces for e in f.Edges if isRoughly(e.BoundBox.ZMax, fzMin)]:
+                wire = Part.Wire(Part.__sortEdges__(bEdges))
+                if not wire.isClosed():  # for open area always offer 'Outside'
+                    return "Outside"
+            return "Inside"  # negative volume forms inner area
         if hFaces:
-            vFaces = getVerticalFaces(hFaces[0].OuterWire.Edges, base.Shape)
+            vFaces = getVerticalFaces(hFaces[0].OuterWire.Edges, shape)
             volume = Part.Compound(vFaces).Volume
             if volume < 0 and not isRoughly(volume, 0):  # negative volume forms inner area
                 return "Inside"
             else:
                 return "Outside"
     elif "Edge" in subNames[0]:
-        edges = [base.Shape.getElement(sub) for sub in subNames if sub.startswith("Edge")]
+        edges = [shape.getElement(sub) for sub in subNames if sub.startswith("Edge")]
         cluster = Part.getSortedClusters(edges)[0]
         wire = Part.Wire(Part.__sortEdges__(cluster))
         if not wire.isClosed():  # for open wire always offer 'Outside'
             return "Outside"
-        vFaces = getVerticalFaces(edges, base.Shape)
+        vFaces = getVerticalFaces(edges, shape)
         volume = Part.Compound(vFaces).Volume
         if volume < 0 and not isRoughly(volume, 0):  # negative volume forms inner area
             return "Inside"
