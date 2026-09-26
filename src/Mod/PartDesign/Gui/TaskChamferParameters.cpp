@@ -191,7 +191,6 @@ void TaskChamferParameters::updateSolidSelection()
 
     if (solidSelection) {
         convertSelectionToSolids(ui->listWidgetReferences, true, true);
-        ;
     }
     else {
         convertSelectionToElements(ui->listWidgetReferences, true, false);

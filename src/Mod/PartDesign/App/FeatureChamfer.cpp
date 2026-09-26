@@ -93,7 +93,7 @@ Chamfer::Chamfer()
         UseAllEdges,
         (false),
         "Chamfer",
-        App::Prop_None,
+        App::Prop_ReadOnly,
         "Chamfer all edges if true, else use only those edges in Base property.\n"
         "If true, then this overrides any edge changes made to the Base property or in the "
         "dialog.\n"
@@ -123,7 +123,7 @@ short Chamfer::mustExecute() const
             break;
     }
 
-    if (Placement.isTouched() || touched) {
+    if (Placement.isTouched() || touched || SelectionType.isTouched()) {
         return 1;
     }
     return DressUp::mustExecute();

@@ -47,6 +47,9 @@ using namespace PartDesign;
 
 PROPERTY_SOURCE(PartDesign::Fillet, PartDesign::DressUp)
 
+const char* Fillet::SelectionTypeEnums[]
+    = {"Selected edges & faces", "Selected solids", "All solids", nullptr};
+
 const App::PropertyQuantityConstraint::Constraints floatRadius
     = {0.0, std::numeric_limits<float>::max(), 0.1};
 
@@ -55,20 +58,25 @@ Fillet::Fillet()
     ADD_PROPERTY_TYPE(Radius, (1.0), "Fillet", App::Prop_None, "Fillet radius.");
     Radius.setUnit(Base::Unit::Length);
     Radius.setConstraints(&floatRadius);
+
+    // TODO: Remove UseAllEdges property
     ADD_PROPERTY_TYPE(
         UseAllEdges,
         (false),
         "Fillet",
-        App::Prop_None,
+        App::Prop_ReadOnly,
         "Fillet all edges if true, else use only those edges in Base property.\n"
         "If true, then this overrides any edge changes made to the Base property or in the "
         "dialog.\n"
     );
+
+    ADD_PROPERTY_TYPE(SelectionType, (0L), "Fillet", App::Prop_None, "Selection Type");
+    SelectionType.setEnums(SelectionTypeEnums);
 }
 
 short Fillet::mustExecute() const
 {
-    if (Placement.isTouched() || Radius.isTouched()) {
+    if (Placement.isTouched() || Radius.isTouched() || SelectionType.isTouched()) {
         return 1;
     }
     return DressUp::mustExecute();
@@ -80,25 +88,54 @@ App::DocumentObjectExecReturn* Fillet::execute()
         return App::DocumentObject::StdReturn;
     }
 
-
-    Part::TopoShape baseShape;
+    // NOTE: Normally the Base property and the BaseFeature property should point to the same object.
+    // The only difference is that the Base property also stores the edges that are to be filleted.
+    Part::TopoShape TopShape;
     try {
-        baseShape = getBaseTopoShape();
+        TopShape = getBaseTopoShape();
     }
     catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
-    baseShape.setTransform(Base::Matrix4D());
 
-    auto edges = UseAllEdges.getValue() ? baseShape.getSubTopoShapes(TopAbs_EDGE)
-                                        : getContinuousEdges(baseShape);
+    TopShape.setTransform(Base::Matrix4D());
+
+    std::vector<TopoShape> edges;
+
+    switch (static_cast<SelectionMode>(SelectionType.getValue())) {
+        case SelectionMode::SelectedEdges: {
+            edges = getContinuousEdges(TopShape);
+            break;
+        }
+
+        case SelectionMode::SelectedSolids: {
+            for (const std::string& ref : Base.getSubValues()) {
+                const TopoDS_Shape solid = TopShape.getSubShape(ref.c_str(), true);
+
+                if (solid.IsNull()) {
+                    continue;
+                }
+
+                for (TopExp_Explorer exp(solid, TopAbs_EDGE); exp.More(); exp.Next()) {
+                    edges.emplace_back(exp.Current());
+                }
+            }
+            break;
+        }
+
+        case SelectionMode::AllSolids: {
+            edges = TopShape.getSubTopoShapes(TopAbs_EDGE);
+            break;
+        }
+    }
+
     if (edges.empty()) {
         return new App::DocumentObjectExecReturn(
             QT_TRANSLATE_NOOP("Exception", "Fillet not possible on selected shapes")
         );
     }
 
-    double radius = Radius.getValue();
+    const double radius = Radius.getValue();
 
     if (radius <= 0) {
         return new App::DocumentObjectExecReturn(
@@ -109,14 +146,14 @@ App::DocumentObjectExecReturn* Fillet::execute()
     this->positionByBaseFeature();
 
     try {
-        TopoShape shape(0);  //,getDocument()->getStringHasher());
+        TopoShape shape(0);
 
-        // Add signal handler for segfault protection
 #if defined(__GNUC__) && defined(FC_OS_LINUX)
         Base::SignalException se;
 #endif
 
-        shape.makeElementFillet(baseShape, edges, Radius.getValue(), Radius.getValue());
+        shape.makeElementFillet(TopShape, edges, radius, radius);
+
         if (shape.isNull()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Resulting shape is null")
@@ -124,7 +161,8 @@ App::DocumentObjectExecReturn* Fillet::execute()
         }
 
         TopTools_ListOfShape aLarg;
-        aLarg.Append(baseShape.getShape());
+        aLarg.Append(TopShape.getShape());
+
         if (!BRepAlgo::IsValid(aLarg, shape.getShape(), Standard_False, Standard_False)) {
             ShapeFix_ShapeTolerance aSFT;
             aSFT.LimitTolerance(
@@ -135,9 +173,11 @@ App::DocumentObjectExecReturn* Fillet::execute()
             );
         }
 
-        // store shape before refinement
+        // Store shape before refinement.
         this->rawShape = shape;
+
         shape = refineShapeIfActive(shape);
+
         if (!isSingleSolidRuleSatisfied(shape.getShape())) {
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
                 "Exception",
@@ -147,6 +187,7 @@ App::DocumentObjectExecReturn* Fillet::execute()
 
         shape = getSolid(shape);
         this->Shape.setValue(shape);
+
         return App::DocumentObject::StdReturn;
     }
     catch (Base::Exception& e) {
