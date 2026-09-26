@@ -43,6 +43,10 @@ public:
     void loadRecentFiles();
     void recentFileAdded(const QString& filename);
 
+    /// Remove a single entry from the Recent Files list (and its thumbnail), identified by its
+    /// full file path. Does nothing if the given path is not currently in the Recent Files list.
+    void removeFile(const QString& filename);
+
 private:
     Base::Reference<ParameterGrp> _parameterGroup;
 };
