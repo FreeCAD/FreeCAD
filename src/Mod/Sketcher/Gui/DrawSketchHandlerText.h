@@ -722,7 +722,7 @@ void DSHTextController::addConstraints()
 
 Gui::InputHint DrawSketchHandlerText::switchModeHint()
 {
-    return {QObject::tr("%1 switch mode"), {Gui::InputHint::UserInput::KeyM}};
+    return {QObject::tr("%1 switch mode"), {{Qt::Key_M}}};
 }
 
 DrawSketchHandlerText::HintTable DrawSketchHandlerText::getTextHintTable()
@@ -732,20 +732,16 @@ DrawSketchHandlerText::HintTable DrawSketchHandlerText::getTextHintTable()
         // Structure: {constructionMethod, state, {hints...}}
         {static_cast<int>(ConstructionMethod::Height),
          0,
-         {{QObject::tr("%1 pick bottom-left point"), {Gui::InputHint::UserInput::MouseLeft}},
-          switchHint}},
+         {{QObject::tr("%1 pick bottom-left point"), {{Gui::MouseInput::MouseLeft}}}, switchHint}},
         {static_cast<int>(ConstructionMethod::Height),
          1,
-         {{QObject::tr("%1 pick top-left point"), {Gui::InputHint::UserInput::MouseLeft}},
-          switchHint}},
+         {{QObject::tr("%1 pick top-left point"), {{Gui::MouseInput::MouseLeft}}}, switchHint}},
         {static_cast<int>(ConstructionMethod::Width),
          0,
-         {{QObject::tr("%1 pick bottom-left point"), {Gui::InputHint::UserInput::MouseLeft}},
-          switchHint}},
+         {{QObject::tr("%1 pick bottom-left point"), {{Gui::MouseInput::MouseLeft}}}, switchHint}},
         {static_cast<int>(ConstructionMethod::Width),
          1,
-         {{QObject::tr("%1 pick bottom-right point"), {Gui::InputHint::UserInput::MouseLeft}},
-          switchHint}}
+         {{QObject::tr("%1 pick bottom-right point"), {{Gui::MouseInput::MouseLeft}}}, switchHint}}
     };
 }
 
