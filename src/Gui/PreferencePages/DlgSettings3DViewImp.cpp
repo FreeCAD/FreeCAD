@@ -20,6 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <string>
+#include <vector>
 
 #include <QApplication>
 #include <QMessageBox>
@@ -37,6 +39,22 @@
 
 #include "DlgSettings3DViewImp.h"
 #include "ui_DlgSettings3DView.h"
+#include "ThemeDefaults.h"
+
+namespace
+{
+const std::vector<std::string>& axisColors()
+{
+    static const std::vector<std::string> colors = {
+        "AxisLetterColor",
+        "AxisXColor",
+        "AxisYColor",
+        "AxisZColor",
+    };
+    return colors;
+}
+constexpr const char* viewGroup = "BaseApp/Preferences/View";
+}  // namespace
 
 
 using namespace Gui::Dialog;
@@ -199,6 +217,11 @@ void DlgSettings3DViewImp::loadMarkerSize()
     // NOLINTEND
 }
 
+void DlgSettings3DViewImp::loadThemeDefaults()
+{
+    ThemeDefaults::applyColors(viewGroup, axisColors());
+}
+
 void DlgSettings3DViewImp::resetSettingsToDefaults()
 {
     ParameterGrp::handle hGrp;
@@ -210,8 +233,11 @@ void DlgSettings3DViewImp::resetSettingsToDefaults()
     // reset "MarkerSize" parameter
     hGrp->RemoveInt("MarkerSize");
 
-    // finally reset all the parameters associated to Gui::Pref* widgets
+    // order matters: the base reset clears Pref* widget params, so theme colors are applied after it
+    ThemeDefaults::removeColors(viewGroup, axisColors());
     PreferencePage::resetSettingsToDefaults();
+    loadThemeDefaults();
+    loadSettings();
 }
 
 /**

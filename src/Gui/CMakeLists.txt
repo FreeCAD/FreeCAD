@@ -645,6 +645,7 @@ SET(Dialog_Settings_CPP_SRCS
     PreferencePages/DlgSettingsViewColor.cpp
     PreferencePages/DlgSettingsWorkbenchesImp.cpp
     PreferencePages/DlgSettingsAdvanced.cpp
+    PreferencePages/ThemeDefaults.cpp
 )
 SET(Dialog_Settings_HPP_SRCS
     Dialogs/DlgOnlineHelpImp.h
@@ -668,6 +669,7 @@ SET(Dialog_Settings_HPP_SRCS
     PreferencePages/DlgSettingsViewColor.h
     PreferencePages/DlgSettingsWorkbenchesImp.h
     PreferencePages/DlgSettingsAdvanced.h
+    PreferencePages/ThemeDefaults.h
 )
 SET(Dialog_Settings_SRCS
     ${Dialog_Settings_CPP_SRCS}

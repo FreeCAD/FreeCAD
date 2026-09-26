@@ -27,17 +27,67 @@
 #include <QPixmap>
 #include <QStyledItemDelegate>
 
+#include <map>
+#include <string>
+#include <vector>
 
 #include <App/Application.h>
-#include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Gui/Command.h>
+#include <Gui/PreferencePackManager.h>
 
 #include "SketcherSettings.h"
+#include "ThemeDefaults.h"
 #include "ui_SketcherSettings.h"
 #include "ui_SketcherSettingsAppearance.h"
 #include "ui_SketcherSettingsDisplay.h"
 #include "ui_SketcherSettingsGrid.h"
+
+namespace
+{
+constexpr const char* viewGroup = "BaseApp/Preferences/View";
+constexpr const char* sketcherGeneralGroup = "BaseApp/Preferences/Mod/Sketcher/General";
+
+const std::vector<std::string>& sketcherViewColors()
+{
+    static const std::vector<std::string> colors = {
+        "SketchEdgeColor",
+        "SketchVertexColor",
+        "EditedEdgeColor",
+        "EditedVertexColor",  // pending the git grep check
+        "ConstructionColor",
+        "ExternalColor",
+        "ExternalDefiningColor",
+        "FullyConstrainedColor",
+        "ConstrainedDimColor",
+        "ConstrainedIcoColor",
+        "NonDrivingConstrDimColor",
+        "InvalidSketchColor",
+        "FullyConstraintElementColor",
+        "FullyConstraintConstructionElementColor",
+        "FullyConstraintInternalAlignmentColor",
+        "FullyConstraintConstructionPointColor",  // pending the git grep check
+        "InternalAlignedGeoColor",
+        "DeactivatedConstrDimColor",
+        "ExprBasedConstrDimColor",
+        "CursorTextColor",
+        "CursorCrosshairColor",
+        "CreateLineColor",
+        "InformationColor",
+
+    };
+    return colors;
+}
+const std::vector<std::string>& sketcherGeneralColors()
+{
+    static const std::vector<std::string> colors = {
+        "GridLineColor",
+        "SketchFaceColor",
+
+    };
+    return colors;
+}
+}  // namespace
 
 using namespace SketcherGui;
 
@@ -143,7 +193,7 @@ void SketcherSettings::saveSettings()
     {
         DimensionSingleTool,
         DimensionSeparateTools,
-        DimensionBoth
+        DimensionBoth,
     };
 
     // Dimensioning constraints mode
@@ -333,7 +383,6 @@ void SketcherSettings::resetSettingsToDefaults()
     );
     // reset "OVP visibility" parameter
     hGrp->RemoveInt("OnViewParameterVisibility");
-
     // finally reset all the parameters associated to Gui::Pref* widgets
     PreferencePage::resetSettingsToDefaults();
 }
@@ -917,6 +966,44 @@ void SketcherSettingsAppearance::loadSettings()
         index = 0;
     }
     ui->AxisLinePattern->setCurrentIndex(index);
+}
+
+void SketcherSettingsAppearance::loadThemeDefaults()
+{
+    Gui::ThemeDefaults::applyColors(viewGroup, sketcherViewColors());
+    Gui::ThemeDefaults::applyColors(sketcherGeneralGroup, sketcherGeneralColors());
+}
+
+void SketcherSettingsAppearance::resetSettingsToDefaults()
+{
+    // get parameter groups
+    ParameterGrp::handle hView = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
+    ParameterGrp::handle hSketcherView = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/View"
+    );
+
+    // remove only non-color parameters (widths and patterns)
+    hSketcherView->RemoveInt("EdgeWidth");
+    hSketcherView->RemoveInt("ConstructionWidth");
+    hSketcherView->RemoveInt("InternalWidth");
+    hSketcherView->RemoveInt("ExternalWidth");
+    hSketcherView->RemoveInt("ExternalDefiningWidth");
+    hSketcherView->RemoveInt("EdgePattern");
+    hSketcherView->RemoveInt("ConstructionPattern");
+    hSketcherView->RemoveInt("InternalPattern");
+    hSketcherView->RemoveInt("ExternalPattern");
+    hSketcherView->RemoveInt("ExternalDefiningPattern");
+
+    Gui::ThemeDefaults::removeColors(viewGroup, sketcherViewColors());
+    Gui::ThemeDefaults::removeColors(sketcherGeneralGroup, sketcherGeneralColors());
+
+    PreferencePage::resetSettingsToDefaults();
+
+    // theme colors are applied after the base reset, which clears Pref* widget params
+    loadThemeDefaults();
+    loadSettings();
 }
 
 /**

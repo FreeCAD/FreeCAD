@@ -48,6 +48,10 @@ public:
     void saveSettings() override;
     void loadSettings() override;
 
+    static void loadThemeDefaults();
+
+    void resetSettingsToDefaults() override;
+
 protected:
     void changeEvent(QEvent* e) override;
 
