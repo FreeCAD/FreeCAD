@@ -54,12 +54,30 @@ public:
         ViewProviderDressUp* DressUpView,
         bool selectEdges,
         bool selectFaces,
+        bool selectSolids = false,
+        bool solidNoSubShapes = true,
         QWidget* parent = nullptr
     );
     ~TaskDressUpParameters() override;
 
     const std::vector<std::string> getReferences() const;
     Part::Feature* getBase() const;
+
+    /// Convert individual face/edges selection to solid selection
+    void convert_selection_to_solids(bool edgesEnabled, bool facesEnabled);
+    void convert_selection_to_solids(
+        std::vector<std::string>& refs,
+        bool edgesEnabled,
+        bool facesEnabled
+    ) const;
+
+    /// Selects ALL faces/edges from any selected solids
+    void convert_solids_to_elements(bool edgesEnabled, bool facesEnabled);
+    void convert_solids_to_elements(
+        std::vector<std::string>& refs,
+        bool edgesEnabled,
+        bool facesEnabled
+    ) const;
 
     void setupTransaction();
 
@@ -114,7 +132,15 @@ protected:
     QAction* deleteAction;
     QAction* addAllEdgesAction;
 
-    bool allowFaces, allowEdges, allowSolids;
+    /// Allow face selection
+    bool allowFaces;
+    /// Allow edge selection
+    bool allowEdges;
+    /// Allow solid selection, will only take effect if a face is selected and allowFaces == false
+    /// or a edge is selected and allowEdges == false
+    bool allowSolids;
+    /// Removes faces/edges that were previously selected when selecting a solid to avoid duplicates
+    bool solidNoSubShapes;
     selectionModes selectionMode;
     int transactionID;
 

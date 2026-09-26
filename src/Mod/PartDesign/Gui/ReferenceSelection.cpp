@@ -22,14 +22,13 @@
  *                                                                            *
  ******************************************************************************/
 
-
+#include <string_view>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <QDialog>
-
 
 #include <App/Document.h>
 #include <App/Origin.h>
@@ -52,9 +51,11 @@
 #include "ReferenceSelection.h"
 #include "TaskFeaturePick.h"
 #include "TopExp_Explorer.hxx"
+#include "TopTools_IndexedDataMapOfShapeListOfShape.hxx"
 #include "TopTools_IndexedMapOfShape.hxx"
 #include "Utils.h"
 
+using namespace std::literals::string_view_literals;
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -199,19 +200,20 @@ bool ReferenceSelection::allowDatum(PartDesign::Body* body, App::DocumentObject*
 
 bool ReferenceSelection::allowPartFeature(App::DocumentObject* pObj, const char* sSubName) const
 {
-    std::string subName(sSubName);
-    if (type.testFlag(AllowSelection::POINT) && subName.compare(0, 6, "Vertex") == 0) {
+    const std::string_view subName {sSubName};
+
+    if (type.testFlag(AllowSelection::POINT) && subName.starts_with("Vertex"sv)) {
         return true;
     }
 
-    if (type.testFlag(AllowSelection::EDGE) && subName.compare(0, 4, "Edge") == 0
-        && isEdge(pObj, sSubName)) {
-        return true;
-    }
+    if (subName.starts_with("Edge"sv)) {
+        if (type.testFlag(AllowSelection::EDGE) && isEdge(pObj, sSubName)) {
+            return true;
+        }
 
-    if (type.testFlag(AllowSelection::CIRCLE) && subName.compare(0, 4, "Edge") == 0
-        && isCircle(pObj, sSubName)) {
-        return true;
+        if (type.testFlag(AllowSelection::CIRCLE) && isCircle(pObj, sSubName)) {
+            return true;
+        }
     }
 
     if (type.testFlag(AllowSelection::FACE) && isFace(pObj, sSubName)) {
@@ -271,68 +273,40 @@ bool ReferenceSelection::isFace(App::DocumentObject* pObj, const char* sSubName)
 bool ReferenceSelection::isSolid(App::DocumentObject* pObj, const char* sSubName) const
 {
     const auto* feature = dynamic_cast<const Part::Feature*>(pObj);
-    if (!feature) {
+
+    if (!feature || !sSubName) {
+        return false;
+    }
+
+    const std::string_view subName {sSubName};
+    const Part::TopoShape& topoShape = feature->Shape.getShape();
+
+    if (subName.starts_with("Solid"sv)) {
+        return !topoShape.getSubShape(sSubName, true).IsNull();
+    }
+
+    const TopoDS_Shape selected = topoShape.getSubShape(sSubName, true);
+
+    if (selected.IsNull()) {
         return false;
     }
 
     const TopoDS_Shape& shape = feature->Shape.getValue();
 
-    TopTools_IndexedMapOfShape faces;
-    TopTools_IndexedMapOfShape edges;
-    TopTools_IndexedMapOfShape solids;
+    if (subName.starts_with("Face"sv)) {
+        TopTools_IndexedDataMapOfShapeListOfShape faceToSolids;
 
-    TopExp::MapShapes(shape, TopAbs_FACE, faces);
-    TopExp::MapShapes(shape, TopAbs_EDGE, edges);
-    TopExp::MapShapes(shape, TopAbs_SOLID, solids);
+        TopExp::MapShapesAndAncestors(shape, TopAbs_FACE, TopAbs_SOLID, faceToSolids);
 
-    const std::string subName(sSubName);
-
-    int solidIndex = 0;
-
-    if (subName.compare(0, 4, "Face") == 0) {
-        const int faceIndex = std::stoi(subName.substr(4));
-
-        if (faceIndex < 1 || faceIndex > faces.Extent()) {
-            return false;
-        }
-
-        const TopoDS_Shape& selectedFace = faces(faceIndex);
-
-        for (int i = 1; i <= solids.Extent(); ++i) {
-            const TopoDS_Shape& solid = solids(i);
-
-            for (TopExp_Explorer exp(solid, TopAbs_FACE); exp.More(); exp.Next()) {
-
-                if (selectedFace.IsSame(exp.Current())) {
-                    return true;
-                }
-            }
-        }
+        return faceToSolids.Contains(selected);
     }
-    else if (subName.compare(0, 4, "Edge") == 0) {
-        const int edgeIndex = std::stoi(subName.substr(4));
 
-        if (edgeIndex < 1 || edgeIndex > edges.Extent()) {
-            return false;
-        }
+    if (subName.starts_with("Edge"sv)) {
+        TopTools_IndexedDataMapOfShapeListOfShape edgeToSolids;
 
-        const TopoDS_Shape& selectedEdge = edges(edgeIndex);
+        TopExp::MapShapesAndAncestors(shape, TopAbs_EDGE, TopAbs_SOLID, edgeToSolids);
 
-        for (int i = 1; i <= solids.Extent(); ++i) {
-            const TopoDS_Shape& solid = solids(i);
-
-            for (TopExp_Explorer exp(solid, TopAbs_EDGE); exp.More(); exp.Next()) {
-
-                if (selectedEdge.IsSame(exp.Current())) {
-                    return true;
-                }
-            }
-        }
-    }
-    else if (subName.compare(0, 5, "Solid") == 0) {
-        const int solidIndexValue = std::stoi(subName.substr(5));
-
-        return solidIndexValue >= 1 && solidIndexValue <= solids.Extent();
+        return edgeToSolids.Contains(selected);
     }
 
     return false;
