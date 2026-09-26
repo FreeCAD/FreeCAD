@@ -879,3 +879,50 @@ class TestPathGeom(PathTestBase):
         edge = Part.Edge(ellipse, 0.3, 2.1)
         edge.rotate(edge.Curve.Center, Vector(0, 0, 1), -40)
         self.assertEdgeShapesMatch(edge, Path.Geom.flipEdge(edge))
+
+    def test80(self):
+        """combineHorizontalFaces"""
+        faces = []
+
+        face = Part.makePlane(100, 100, Vector())
+        face.translate(Vector(0, 0, 10))
+        faces.append(face)
+
+        face = Part.makePlane(100, 100, Vector(50, 50, 0))
+        face.translate(Vector(0, 0, -10))
+        faces.append(face)
+
+        circle = Part.makeCircle(50, Vector(30, 130, 0), Vector(0, 0, 1))
+        edge = Part.Edge(circle)
+        wire = Part.Wire(edge)
+        wire.translate(Vector(0, 0, 1))
+        face = Part.Face(wire)
+        faces.append(face)
+
+        ellipse = Part.Ellipse(Vector(150, 0, 0), 100, 60)
+        edge = Part.Edge(ellipse)
+        wire = Part.Wire(edge)
+        wire.translate(Vector(0, 0, 5))
+        face = Part.Face(wire)
+        faces.append(face)
+
+        spline = Part.BSplineCurve()
+        points = [
+            Vector(14, -11, 0),
+            Vector(-26, 5, 0),
+            Vector(-3, 36, 0),
+            Vector(20, 19, 0),
+            Vector(39, -9, 0),
+            Vector(14, -11, 0),
+        ]
+        spline.interpolate(points)
+        edge = Part.Edge(spline)
+        wire = Part.Wire(edge)
+        wire.translate(Vector(0, 0, -1))
+        face = Part.Face(wire)
+        faces.append(face)
+
+        comb = Path.Geom.combineHorizontalFaces(faces)
+        self.assertEqual(len(comb), 1)
+        self.assertEqual(len(comb[0].Faces), 1)
+        self.assertRoughly(comb[0].Area, 41096, 1)
