@@ -257,6 +257,13 @@ public:
 
     static bool isGuiUp();
 
+    /// The name of the dynamic property that marks a TechDraw object as the
+    /// counterpart of a Sketcher annotation rather than a user-created one.
+    static constexpr const char* sourceAnnotationProperty = "SourceAnnotationId";
+    /// Such objects are read-only in the native editors: their content belongs to
+    /// the sketch. Kept in one place so every guard agrees on what "owned" means.
+    static bool isSourceOwnedAnnotation(const App::DocumentObject* object);
+
     //debugging routines
     static void dumpVertexes(const char* text, const TopoDS_Shape& s);
     static void dumpEdge(const char* label, int i, TopoDS_Edge e);

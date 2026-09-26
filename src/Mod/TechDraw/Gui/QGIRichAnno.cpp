@@ -29,6 +29,9 @@
 # include <QGraphicsItem>
 # include <QGraphicsSceneMouseEvent>
 # include <QPainter>
+# include <QFontMetricsF>
+# include <QFontInfo>
+# include <QTextFragment>
 # include <QRegularExpression>
 # include <QApplication>
 # include <QCursor>
@@ -133,6 +136,12 @@ void QGIRichAnno::updateView(bool update)
     // the screen or pdf rendering
     constexpr double mmPerPoint {25.4 / 72};  //  mm/in / points/inch
     m_textScaleFactor = Rez::getRezFactor() * mmPerPoint;  // scene units per point: 3.53
+    if (annoFeat->TextHeight.getValue() > 0) {
+        const QFont font(QStringLiteral("Sans Serif"), 12);
+        m_text->document()->setDefaultFont(font);
+        m_text->document()->setDocumentMargin(0);
+        m_textScaleFactor = Rez::getRezFactor() * annoFeat->TextHeight.getValue() / QFontMetricsF(font).height();
+    }
     m_text->setScale(m_textScaleFactor);
 
     draw();
@@ -171,6 +180,35 @@ void QGIRichAnno::setTextItem()
     // convert the text size
     if (!m_isEditing) {
         m_text->setHtml(QString::fromUtf8(annoFeat->AnnoText.getValue()));
+        if (auto* color = dynamic_cast<App::PropertyColor*>(annoFeat->getPropertyByName("AnnotationColor"))) {
+            m_text->setDefaultTextColor(color->getValue().asValue<QColor>());
+        }
+    }
+
+    if (getExportingSvg() && annoFeat->TextHeight.getValue() > 0) {
+        // Model-sized text keeps the same pixel layout for screen, PDF and SVG.
+        // Point-sized fonts otherwise get rescaled by QSvgGenerator's page DPI.
+        auto* document = m_text->document();
+        QFont font = document->defaultFont();
+        font.setPixelSize(QFontInfo(font).pixelSize());
+        document->setDefaultFont(font);
+        for (auto block = document->begin(); block.isValid(); block = block.next()) {
+            for (auto it = block.begin(); !it.atEnd(); ++it) {
+                const auto fragment = it.fragment();
+                if (!fragment.isValid()) continue;
+                auto format = fragment.charFormat();
+                if (format.fontPointSize() > 0) {
+                    QFont resolved = format.font();
+                    const int pixels = QFontInfo(resolved).pixelSize();
+                    format.clearProperty(QTextFormat::FontPointSize);
+                    format.setProperty(QTextFormat::FontPixelSize, pixels);
+                    QTextCursor cursor(document);
+                    cursor.setPosition(fragment.position());
+                    cursor.setPosition(fragment.position()+fragment.length(), QTextCursor::KeepAnchor);
+                    cursor.setCharFormat(format);
+                }
+            }
+        }
     }
 
     // 1. Get the bounding rectangle of the text in its own local coordinates.
@@ -191,7 +229,7 @@ void QGIRichAnno::setTextItem()
     m_rect->setBrush(Qt::NoBrush);
     m_rect->setVisible(annoFeat->ShowFrame.getValue());
 
-    if (getExportingSvg()) {
+    if (getExportingSvg() && annoFeat->TextHeight.getValue() <= 0) {
         // Convert the word processing font size spec (in typographic points) to CSS pixels
         // for Svg rendering
         constexpr double mmPerPoint {25.4 / 72.0};
@@ -335,6 +373,11 @@ void QGIRichAnno::hoverMoveEvent(QGraphicsSceneHoverEvent* event)
 void QGIRichAnno::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
     TechDraw::DrawRichAnno* annoFeat = getFeature();
+    if (TechDraw::DrawUtil::isSourceOwnedAnnotation(annoFeat)) {
+        // The text belongs to the source sketch, so there is nothing to resize here.
+        QGIView::mousePressEvent(event);
+        return;
+    }
     // Allow resizing even if MaxWidth is initially -1 or 0, as long as frame is shown
     if (event->button() != Qt::LeftButton || !annoFeat || annoFeat->isLocked()) {
         QGIView::mousePressEvent(event);
@@ -553,6 +596,9 @@ void QGIRichAnno::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) {
 
 void QGIRichAnno::setEditMode(bool enable)
 {
+    if (enable && TechDraw::DrawUtil::isSourceOwnedAnnotation(getFeature())) {
+        return;  // Source-owned text is edited in the sketch, not on the page.
+    }
     m_isEditing = enable;
     if (enable) {
         m_text->setTextInteractionFlags(Qt::TextEditorInteraction);

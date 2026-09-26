@@ -231,3 +231,11 @@ class DrawViewPart(DrawView):
     def requestPaint(self) -> Any:
         """requestPaint(). Redraw the graphic for this View."""
         ...
+
+    def getFaces(self) -> Any:
+        """Return projected faces in conventional view coordinates (scaled and rotated)."""
+        ...
+
+    def isProjectionReady(self) -> bool:
+        """Whether asynchronous edge projection and face extraction have finished."""
+        ...
