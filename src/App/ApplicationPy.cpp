@@ -401,7 +401,7 @@ PyObject* ApplicationPy::sSaveParameter(PyObject* /*self*/, PyObject* args)
             PyErr_SetString(PyExc_ValueError, str.str().c_str());
             return nullptr;
         }
-        if (!param->HasSerializer()) {
+        if (!param->HasFileName()) {
             std::stringstream str;
             str << "Parameter set cannot be serialized: " << pstr;
             PyErr_SetString(PyExc_RuntimeError, str.str().c_str());

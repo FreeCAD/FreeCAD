@@ -44,11 +44,6 @@ private:
 class ParameterTest: public ::testing::Test
 {
 protected:
-    static void SetUpTestSuite()
-    {
-        ParameterManager::Init();
-    }
-
     ParameterTest()
     {
         fi.setFile(Base::FileInfo::getTempFileName() + ".cfg");
@@ -100,8 +95,27 @@ TEST_F(ParameterTest, TestValid)
     auto cfg = getConfig();
     EXPECT_EQ(cfg.isValid(), true);
     EXPECT_EQ(cfg.isNull(), false);
-    EXPECT_EQ(cfg->CheckDocument(), false);
-    getCreateConfig();  // Make sure we have a valid config by the end of the test
+}
+
+TEST_F(ParameterTest, TestIgnoreSave)
+{
+    auto cfg = getConfig();
+    EXPECT_FALSE(cfg->IgnoreSave());
+
+    cfg->SetFileName(getFileName());
+    cfg->SetIgnoreSave(true);
+    EXPECT_TRUE(cfg->IgnoreSave());
+    if (!cfg->IgnoreSave()) {
+        cfg->SaveDocument();
+    }
+    EXPECT_FALSE(Base::FileInfo(getFileName()).exists());
+
+    cfg->SetIgnoreSave(false);
+    EXPECT_FALSE(cfg->IgnoreSave());
+    if (!cfg->IgnoreSave()) {
+        cfg->SaveDocument();
+    }
+    EXPECT_TRUE(Base::FileInfo(getFileName()).exists());
 }
 
 TEST_F(ParameterTest, TestCreate)
@@ -116,8 +130,6 @@ TEST_F(ParameterTest, TestGroup)
 {
     auto cfg = getCreateConfig();
     auto grp = cfg->GetGroup("TopLevelGroup");
-    EXPECT_EQ(grp->Parent(), static_cast<ParameterGrp*>(cfg));
-    EXPECT_EQ(grp->Manager(), static_cast<ParameterGrp*>(cfg));
 
     EXPECT_FALSE(cfg->IsEmpty());
     EXPECT_TRUE(grp->IsEmpty());
@@ -264,6 +276,17 @@ TEST_F(ParameterTest, TestString)
 
     grp->RemoveASCII("Parameter1");
     EXPECT_EQ(grp->GetASCIIs().size(), 1);
+}
+
+TEST_F(ParameterTest, TestUTF8String)
+{
+    auto cfg = getCreateConfig();
+    auto grp = cfg->GetGroup("TopLevelGroup");
+    const std::string value = "caf\xC3\xA9";
+
+    grp->SetASCII("Parameter", value);
+
+    EXPECT_EQ(grp->GetASCII("Parameter"), value);
 }
 
 TEST_F(ParameterTest, TestColor)

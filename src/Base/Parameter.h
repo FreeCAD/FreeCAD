@@ -28,7 +28,6 @@
  * \brief The classes defined here are used to interface with the XML-based
  * FreeCAD config files: user.cfg and system.cfg files. It can parse, get,
  * and store the parameters/configurations for the user's preferences.
- * 3rd party Xerces-C++ XML parser is used to parse and write the XML.
  */
 
 #pragma once
@@ -38,41 +37,17 @@ using PyObject = struct _object;
 
 #include <FCConfig.h>
 
-#ifdef FC_OS_MACOSX
-# undef toupper
-# undef tolower
-# undef isupper
-# undef islower
-# undef isspace
-# undef isalpha
-# undef isalnum
-#endif
-
 #include <map>
+#include <optional>
+#include <string>
+#include <string_view>
 #include <vector>
 #include <fastsignals/signal.h>
-#include <xercesc/util/XercesDefs.hpp>
 
 #include "Handle.h"
 #include "Observer.h"
 #include "Color.h"
-
-#ifdef _MSC_VER
-# pragma warning(disable : 4251)
-# pragma warning(disable : 4503)
-# pragma warning(disable : 4786)  // specifier longer then 255 chars
-# pragma warning(disable : 4290)  // not implemented throw specification
-# pragma warning(disable : 4275)
-#endif
-
-namespace XERCES_CPP_NAMESPACE
-{
-class DOMNode;
-class DOMElement;
-class DOMDocument;
-class XMLFormatTarget;
-class InputSource;
-}  // namespace XERCES_CPP_NAMESPACE
+#include "XMLParser.h"
 
 class ParameterManager;
 
@@ -133,7 +108,7 @@ public:
     void importFrom(const char* FileName);
 
     /**
-     *  Inserts items from the given file.
+     * Inserts the contents of the given file into this group.
      *
      *  @param[in] FileName The path to the file.
      *
@@ -141,17 +116,6 @@ public:
      *  Inserts new and replaces existing items.
      */
     void insert(const char* FileName);
-
-    /**
-     *  Removes items from this group that are present in the given file.
-     *
-     *  @param[in] FileName The path to the file.
-     *
-     *  @note
-     *  Only removes items that have the same value.
-     */
-    void revert(const char* FileName);
-
     /**
      *  Removes items from this group that are present in the other.
      *
@@ -168,7 +132,8 @@ public:
     //@{
 
     /**
-     *  Returns or creates a sub-group with the given name.
+     * Returns or creates a sub-group with the given name.
+     * Name can contain '/' characters to get nested sub-groups.
      *
      *  @param[in] Name Name of the sub-group.
      *  @returns A handle to the sub-group.
@@ -227,7 +192,7 @@ public:
     /** @name methods for generic attribute handling */
     //@{
 
-    enum class ParamType
+    enum class ParamType : std::uint8_t
     {
         FCInvalid = 0,
         FCText = 1,
@@ -295,7 +260,7 @@ public:
      *  @param[in] sFilter String that has to be present in the names of the attributes.
      *  @returns Vector of attribute type & name pairs.
      */
-    std::vector<std::pair<ParamType, std::string>> GetParameterNames(
+    std::vector<std::pair<ParameterGrp::ParamType, std::string>> GetParameterNames(
         const char* sFilter = nullptr
     ) const;
 
@@ -309,7 +274,7 @@ public:
     void SetBool(const char* Name, bool bValue);
     /// get a vector of all bool values in this group
     std::vector<bool> GetBools(const char* sFilter = nullptr) const;
-    /// get a map with all bool values and the keys of this group
+    /// get a vector of all bool values and the keys of this group
     std::vector<std::pair<std::string, bool>> GetBoolMap(const char* sFilter = nullptr) const;
     /// remove a bool value from this group
     void RemoveBool(const char* Name);
@@ -337,7 +302,7 @@ public:
     void SetUnsigned(const char* Name, unsigned long lValue);
     /// get a vector of all uint values in this group
     std::vector<unsigned long> GetUnsigneds(const char* sFilter = nullptr) const;
-    /// get a map with all uint values and the keys of this group
+    /// get a vector of all uint values and the keys of this group
     std::vector<std::pair<std::string, unsigned long>> GetUnsignedMap(
         const char* sFilter = nullptr
     ) const;
@@ -353,7 +318,7 @@ public:
     void SetColor(const char* Name, Base::Color lValue);
     /// get a vector of all color values in this group
     std::vector<Base::Color> GetColors(const char* sFilter = nullptr) const;
-    /// get a map with all color values and the keys of this group
+    /// get a vector of all color values and the keys of this group
     std::vector<std::pair<std::string, Base::Color>> GetColorMap(const char* sFilter = nullptr) const;
     /// remove a color value from this group
     void RemoveColor(const char* Name);
@@ -368,7 +333,7 @@ public:
     void SetFloat(const char* Name, double dValue);
     /// get a vector of all float values in this group
     std::vector<double> GetFloats(const char* sFilter = nullptr) const;
-    /// get a map with all float values and the keys of this group
+    /// get a vector of all float values and the keys of this group
     std::vector<std::pair<std::string, double>> GetFloatMap(const char* sFilter = nullptr) const;
     /// remove a float value from this group
     void RemoveFloat(const char* Name);
@@ -379,7 +344,6 @@ public:
     //@{
     /// set a string value
     void SetASCII(const char* Name, const char* sValue);
-    /// set a string value
     void SetASCII(const char* Name, const std::string& sValue)
     {
         SetASCII(Name, sValue.c_str());
@@ -394,21 +358,12 @@ public:
      *  @return std::vector of std::strings
      */
     std::vector<std::string> GetASCIIs(const char* sFilter = nullptr) const;
-    /// Same as GetASCIIs() but with key,value map
+    /// Same as GetASCIIs() but with key,value pairs
     std::vector<std::pair<std::string, std::string>> GetASCIIMap(const char* sFilter = nullptr) const;
     //@}
 
-    friend class ParameterManager;
-
-    /// returns the name
-    const char* GetGroupName() const
-    {
-        return _cName.c_str();
-    }
-
     /// return the full path of this group
     std::string GetPath() const;
-    void GetPath(std::string&) const;
 
     /** Notifies all observers for all entries except of sub-groups.
      */
@@ -416,34 +371,35 @@ public:
 
     ParameterGrp* Parent() const
     {
-        return _Parent;
+        return parent;
     }
     ParameterManager* Manager() const
     {
-        return _Manager;
+        return manager;
     }
 
+    const char* GetGroupName() const;
+
 protected:
-    /// constructor is protected (handle concept)
-    ParameterGrp(
-        XERCES_CPP_NAMESPACE::DOMElement* GroupNode = nullptr,
-        const char* sName = nullptr,
-        ParameterGrp* Parent = nullptr
-    );
-    /// destructor is protected (handle concept)
+    ParameterGrp();
+    ParameterGrp(Base::XMLElement& GroupNode, const std::string& name, ParameterGrp& Parent);
     ~ParameterGrp() override;
+
+private:
+    // Return root XML element, reattaching to parent node if needed
+    virtual const Base::XMLElement* GetRootNode() const;
+    Base::XMLElement* GetRootNode();
+
     /// helper function for GetGroup
-    Base::Reference<ParameterGrp> _GetGroup(const char* Name);
+    Base::Reference<ParameterGrp> GetOrCreateGroup(const std::string& Name);
     bool ShouldRemove() const;
 
-    void _Reset();
+    void SetAttributeInternal(ParamType Type, const std::string& Name, const std::string& Value);
+    void NotifyChange(ParamType Type, const std::string& Name, const std::string& Value);
 
-    void _SetAttribute(ParamType Type, const char* Name, const char* Value);
-    void _Notify(ParamType Type, const char* Name, const char* Value);
-
-    XERCES_CPP_NAMESPACE::DOMElement* FindNextElement(
-        XERCES_CPP_NAMESPACE::DOMNode* Prev,
-        const char* Type
+    std::vector<Base::XMLElement*> FindAllElements(
+        const Base::XMLElement* start,
+        const std::string& Type
     ) const;
 
     /** Find an element specified by Type and Name
@@ -452,81 +408,60 @@ protected:
      *  the pointer to that element, otherwise NULL
      *  If the names not given it returns the first occurrence of Type.
      */
-    XERCES_CPP_NAMESPACE::DOMElement* FindElement(
-        XERCES_CPP_NAMESPACE::DOMElement* Start,
-        const char* Type,
-        const char* Name = nullptr
+    const Base::XMLElement* FindElement(
+        const Base::XMLElement* start,
+        const std::string& Type,
+        const std::string& Name = ""
     ) const;
+    Base::XMLElement* FindElement(
+        const Base::XMLElement* start,
+        const std::string& Type,
+        const std::string& Name = ""
+    );
 
     /** Find an element specified by Type and Name or create it if not found
      *  Search in the parent element Start for the first occurrence of an
      *  element of Type and with the attribute Name=Name. On success it returns
      *  the pointer to that element, otherwise it creates the element and returns the pointer.
      */
-    XERCES_CPP_NAMESPACE::DOMElement* FindOrCreateElement(
-        XERCES_CPP_NAMESPACE::DOMElement* Start,
-        const char* Type,
-        const char* Name
+    Base::XMLElement* FindOrCreateElement(
+        Base::XMLElement* start,
+        const std::string& Type,
+        const std::string& Name
     );
 
-    XERCES_CPP_NAMESPACE::DOMElement* CreateElement(
-        XERCES_CPP_NAMESPACE::DOMElement* Start,
-        const char* Type,
-        const char* Name
+    Base::XMLElement* CreateElement(
+        Base::XMLElement* start,
+        const std::string& Type,
+        const std::string& Name
     );
 
-    /** Find an attribute specified by Name
-     */
-    XERCES_CPP_NAMESPACE::DOMNode* FindAttribute(
-        XERCES_CPP_NAMESPACE::DOMNode* Node,
-        const char* Name
-    ) const;
+    /// Find an attribute specified by Name
+    std::optional<std::string> FindAttribute(Base::XMLElement& Node, const std::string& Name) const;
 
-    /// DOM Node of the Base node of this group
-    XERCES_CPP_NAMESPACE::DOMElement* _pGroupNode;
-    /// the own name
-    std::string _cName;
-    /// map of already exported groups
-    std::map<std::string, Base::Reference<ParameterGrp>> _GroupMap;
-    ParameterGrp* _Parent = nullptr;
-    ParameterManager* _Manager = nullptr;
-    /// Means this group xml element has not been added to its parent yet.
-    bool _Detached = false;
-    /** Indicate this group is currently being cleared
-     *
-     * This is used to prevent anynew value/sub-group to be added in observer
-     */
-    bool _Clearing = false;
-};
+    /// Node of the Base node of this group
+    // Object is owned by the top-level group, unless the group is detached.
+    // In this case, it is null until the group is reattached.
+    Base::XMLElement* groupNode = nullptr;
+    ParameterGrp* parent = nullptr;
 
-/** The parameter serializer class
- *  This is a helper class to serialize a parameter XML document.
- *  Does loading and saving the DOM document from and to files.
- *  In sub-classes the load and saving of XML documents can be
- *  customized.
- *  @see ParameterManager
- */
-class BaseExport ParameterSerializer
-{
-public:
-    explicit ParameterSerializer(std::string fn);
-    ParameterSerializer(const ParameterSerializer&) = delete;
-    ParameterSerializer(ParameterSerializer&&) = delete;
-    virtual ~ParameterSerializer();
 
-    virtual void SaveDocument(const ParameterManager&);
-    virtual int LoadDocument(ParameterManager&);
-    virtual bool LoadOrCreateDocument(ParameterManager&);
-    const std::string& GetFileName() const
-    {
-        return filename;
-    }
+    std::map<std::string, Base::Reference<ParameterGrp>> groupMap;
 
-    ParameterSerializer& operator=(const ParameterSerializer&) = delete;
-    ParameterSerializer& operator=(ParameterSerializer&&) = delete;
+    /// On when this group has been removed from its parent.
+    bool detached = false;
 
-private:
-    std::string filename;
+    /// Disable observers while clearing
+    bool clearing = false;
+
+
+    std::string groupName;
+
+protected:
+    ParameterManager* manager = nullptr;
+
+    // Rebind cached groups before replacing the document to keep observers alive
+    void RebindGroupNodes(Base::XMLElement* root);
 };
 
 /** The parameter manager class
@@ -539,8 +474,6 @@ class BaseExport ParameterManager: public ParameterGrp
 public:
     /// Create a reference counted ParameterManager
     static Base::Reference<ParameterManager> Create();
-    static void Init();
-    static void Terminate();
 
     /** Signal on parameter changes
      *
@@ -565,14 +498,12 @@ public:
      *  - Group rename: 'name' is the new name, and 'value' is the old name
      */
     fastsignals::signal<
-        void(ParameterGrp* /*param*/, ParamType /*type*/, const char* /*name*/, const char* /*value*/)>
+        void(ParameterGrp* /*param*/, ParameterGrp::ParamType /*type*/, const char* /*name*/, const char* /*value*/)>
         signalParamChanged;
 
-    int LoadDocument(const char* sFileName);
-    int LoadDocument(const XERCES_CPP_NAMESPACE::InputSource&);
-    bool LoadOrCreateDocument(const char* sFileName);
-    void SaveDocument(const char* sFileName) const;
-    void SaveDocument(XERCES_CPP_NAMESPACE::XMLFormatTarget* pFormatTarget) const;
+    /**
+     * Create a new XML document, clear the current one
+     */
     void CreateDocument();
 
     /**
@@ -581,44 +512,38 @@ public:
      */
     bool CheckDocument() const;
 
-    /** @name Parameter serialization */
+    /** @name Save/Load document from configured file name **/
     //@{
-    /// Sets a serializer. The ParameterManager takes ownership of the serializer.
-    void SetSerializer(ParameterSerializer*);
-    /// Returns true if a serializer is set, otherwise false is returned.
-    bool HasSerializer() const;
-    /// Returns the filename of the serialize.
-    const std::string& GetSerializeFileName() const;
-    /// Loads an XML document by calling the serializer's load method.
+    /// Returns the configured filename.
+    const std::string& GetFileName() const;
+    /// Loads an XML document from the configured file.
     int LoadDocument();
-    /// Loads or creates an XML document by calling the serializer's load method.
+    /// Loads or creates an XML document from the configured file.
     bool LoadOrCreateDocument();
-    /// Saves an XML document by calling the serializer's save method.
+    /// Saves an XML document to the configured file.
     void SaveDocument() const;
+    /// Sets the file used by save/load methods
+    void SetFileName(const std::string& name);
+    /// Returns true if a file is configured
+    bool HasFileName() const;
+    /// @}
+
+    int LoadDocument(const char* sFileName);
+    bool LoadOrCreateDocument(const char* sFileName);
+    void SaveDocument(const char* sFileName) const;
+
     void SetIgnoreSave(bool value);
     bool IgnoreSave() const;
-    //@}
 
 private:
-    XERCES_CPP_NAMESPACE::DOMDocument* _pDocument {nullptr};
-    ParameterSerializer* paramSerializer {nullptr};
+    const Base::XMLElement* GetRootNode() const override;
+    bool CheckDocument(const Base::XMLElement& document) const;
 
-    bool gIgnoreSave;
-    bool gDoNamespaces;
-    bool gDoSchema;
-    bool gSchemaFullChecking;
-    bool gDoCreate;
+    // Owned root of the XML Document
+    std::unique_ptr<Base::XMLElement> XMLDocument;
+    std::optional<std::string> fileName;
+    bool gIgnoreSave = false;
 
-
-    const XMLCh* gOutputEncoding;
-    const XMLCh* gMyEOLSequence;
-
-    bool gSplitCdataSections;
-    bool gDiscardDefaultContent;
-    bool gUseFilter;
-    bool gFormatPrettyPrint;
-
-private:
     ParameterManager();
 
 public:
