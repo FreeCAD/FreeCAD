@@ -717,3 +717,46 @@ class TestSketchInternalFaces(unittest.TestCase):
         face_names = [name for name in shape.ElementReverseMap.keys() if name.startswith("Face")]
         self.assertEqual(len(face_names), len(set(face_names)))
         self.assertEqual(len(face_names), 3, "Should have 3 face names for 3 faces")
+
+    # ==================================================================
+    # 12. Open wires — edges that bound no face
+    # ==================================================================
+
+    def _open_wires(self, sketch):
+        shape = sketch.InternalShape
+        face_wires = [w for f in shape.Faces for w in f.Wires]
+        return [w for w in shape.Wires if not any(w.isSame(fw) for fw in face_wires)]
+
+    def testNoOpenWiresThreeOverlappingCircles(self):
+        """Every edge of three overlapping circles bounds a face, so there must be
+        no open wires. The WireJoiner search used to report 12 (issue #23406)."""
+        sk = self._make_sketch()
+        add_circle(sk, 0, 0, 10)
+        add_circle(sk, 8, 0, 10)
+        add_circle(sk, 4, 7, 10)
+        self.Doc.recompute()
+        self.assertEqual(len(get_internal_faces(sk)), 7)
+        self.assertEqual(self._open_wires(sk), [])
+
+    def testNoOpenWiresRectangleWithMidpointCross(self):
+        """A rectangle split into four by a cross has no open wires."""
+        sk = self._make_sketch()
+        add_rectangle(sk, 0, 0, 10, 10)
+        sk.addGeometry(Part.LineSegment(App.Vector(5, 0, 0), App.Vector(5, 10, 0)))
+        sk.addGeometry(Part.LineSegment(App.Vector(0, 5, 0), App.Vector(10, 5, 0)))
+        self.Doc.recompute()
+        self.assertEqual(len(get_internal_faces(sk)), 4)
+        self.assertEqual(self._open_wires(sk), [])
+
+    def testOpenWiresLineThroughRectangle(self):
+        """A line crossing a rectangle and sticking out at both ends leaves exactly
+        the two outside pieces as open wires."""
+        sk = self._make_sketch()
+        add_rectangle(sk, 0, 0, 10, 10)
+        sk.addGeometry(Part.LineSegment(App.Vector(5, -3, 0), App.Vector(5, 13, 0)))
+        self.Doc.recompute()
+        self.assertEqual(len(get_internal_faces(sk)), 2)
+        open_wires = self._open_wires(sk)
+        self.assertEqual(len(open_wires), 2)
+        for wire in open_wires:
+            self.assertAlmostEqual(wire.Length, 3.0, places=6)
