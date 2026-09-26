@@ -63,22 +63,6 @@ public:
     const std::vector<std::string> getReferences() const;
     Part::Feature* getBase() const;
 
-    /// Convert individual face/edges selection to solid selection
-    void convert_selection_to_solids(QListWidget* widget, bool edgesEnabled, bool facesEnabled);
-    void convert_selection_to_solids(
-        std::vector<std::string>& refs,
-        bool edgesEnabled,
-        bool facesEnabled
-    ) const;
-
-    /// Selects ALL faces/edges from any selected solids
-    void convert_selection_to_elements(QListWidget* widget, bool edgesEnabled, bool facesEnabled);
-    void convert_selection_to_elements(
-        std::vector<std::string>& refs,
-        bool edgesEnabled,
-        bool facesEnabled
-    ) const;
-
     void setupTransaction();
 
     int getTransactionID() const
@@ -108,6 +92,22 @@ protected:
     void addAllEdges(QListWidget* listWidget);
     void deleteRef(QListWidget* listWidget);
     void updateFeature(PartDesign::DressUp* pcDressUp, const std::vector<std::string>& refs);
+
+    /// Convert individual face/edges selection to solid selection
+    void convertSelectionToSolids(QListWidget* widget, bool edgesEnabled, bool facesEnabled);
+    void convertSelectionToSolids(
+        std::vector<std::string>& refs,
+        bool edgesEnabled,
+        bool facesEnabled
+    ) const;
+
+    /// Selects ALL faces/edges from any selected solids
+    void convertSelectionToElements(QListWidget* widget, bool edgesEnabled, bool facesEnabled);
+    void convertSelectionToElements(
+        std::vector<std::string>& refs,
+        bool edgesEnabled,
+        bool facesEnabled
+    ) const;
 
 protected:
     enum selectionModes
