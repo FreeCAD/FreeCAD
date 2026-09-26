@@ -37,9 +37,11 @@ my ryzen9 machine, for 2700 objects. Larger files like the King Arch file
 
 import time
 
-import ifcopenshell
-
 from PySide import QtWidgets
+
+from nativeifc import ifc_backend
+
+ifcopenshell = ifc_backend.get_backend(capability=ifc_backend.READ)
 
 
 class ViewProvider:
