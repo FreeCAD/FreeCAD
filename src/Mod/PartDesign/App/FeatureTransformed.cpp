@@ -51,6 +51,9 @@
 #include "FeatureSketchBased.h"
 #include "FeatureTransformed.h"
 
+#include "FeatureAddSub.h"
+#include "FeatureBoolean.h"
+
 using namespace PartDesign;
 
 namespace PartDesign
@@ -482,19 +485,15 @@ App::DocumentObjectExecReturn* Transformed::executeFeatures(
 )
 {
     for (auto original : originals) {
-        // Extract the original shape and determine whether to cut or to fuse
         Part::TopoShape addShape;
         Part::TopoShape subShape;
+        FeatureAddSub::BooleanOperation booleanOperation;
 
-        auto feature = freecad_cast<PartDesign::FeatureAddSub*>(original);
-        if (!feature) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
-                "Exception",
-                "Only additive and subtractive features can be transformed"
-            ));
+        auto* feature = freecad_cast<Feature*>(original);
+        if (auto* a = extractFeature(feature, addShape, subShape, booleanOperation)) {
+            return a;
         }
 
-        feature->getAddSubShape(addShape, subShape);
         if (addShape.isNull() && subShape.isNull()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Shape of additive/subtractive feature is empty")
@@ -539,6 +538,32 @@ App::DocumentObjectExecReturn* Transformed::executeFeatures(
     return nullptr;
 }
 
+App::DocumentObjectExecReturn* Transformed::extractFeature(
+    Feature* feature,
+    Part::TopoShape& addShape,
+    Part::TopoShape& subShape,
+    FeatureAddSub::BooleanOperation& op
+)
+{
+    if (feature->isDerivedFrom<FeatureAddSub>()) {
+        auto* addSub = freecad_cast<FeatureAddSub*>(feature);
+        addSub->getAddSubShape(addShape, subShape);
+        op = addSub->getBooleanOperation();
+    }
+    else if (feature->isDerivedFrom<Boolean>()) {
+        auto* boolean = freecad_cast<Boolean*>(feature);
+        boolean->getAddSubShape(addShape, subShape);
+        op = boolean->getBooleanOperation();
+    }
+    else {
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception", "Feature is not supported")
+        );
+    }
+
+    return nullptr;
+}
+
 App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
     const gp_Trsf& trsfInv,
     const std::vector<DocumentObject*>& originals,
@@ -568,19 +593,15 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
     };
 
     for (auto original : originals) {
-        auto feature = freecad_cast<PartDesign::FeatureAddSub*>(original);
-        if (!feature) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
-                "Exception",
-                "Only additive and subtractive features can be transformed"
-            ));
-        }
-
-        gp_Trsf trsf = trsfInv.Multiplied(feature->getLocation().Transformation());
-
         Part::TopoShape addShape;
         Part::TopoShape subShape;
-        feature->getAddSubShape(addShape, subShape);
+        auto feature = freecad_cast<Feature*>(original);
+        FeatureAddSub::BooleanOperation booleanOperation;
+
+        if (auto* a = extractFeature(feature, addShape, subShape, booleanOperation)) {
+            return a;
+        }
+
         if (addShape.isNull() && subShape.isNull()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Shape of additive/subtractive feature is empty")
@@ -590,6 +611,7 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
         // previous feature to compute minimum tool shape
         const auto* prevFeature = feature->getBaseObject(true);
         std::optional<Part::TopoShape> prevShape;
+        gp_Trsf trsf = trsfInv.Multiplied(feature->getLocation().Transformation());
 
         if (prevFeature) {
             prevShape.emplace(feature->getBaseShape());
@@ -647,7 +669,7 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
 
             size_t i = 0;
             for (auto& s : subShapes) {
-                if (feature->getBooleanOperation() == FeatureAddSub::BooleanOperation::Common) {
+                if (booleanOperation == FeatureAddSub::BooleanOperation::Common) {
                     s = s.makeElementCut(
                         {*prevShape, s},
                         std::format(

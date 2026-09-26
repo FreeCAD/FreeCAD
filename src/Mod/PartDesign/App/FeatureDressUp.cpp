@@ -308,14 +308,14 @@ void DressUp::getAddSubShape(Part::TopoShape& addShape, Part::TopoShape& subShap
             Part::TopoShape shape = Shape.getShape();
             shape.setPlacement(Base::Placement());
 
-            FeatureAddSub* base = nullptr;
+            const FeatureAddSub* base = nullptr;
             if (SupportTransform.getValue()) {
                 // SupportTransform means transform the support together with
                 // the dressing. So we need to find the previous support
                 // feature (which must be of type FeatureAddSub), and skipping
                 // any consecutive DressUp in-between.
-                for (Feature* current = this;; current = static_cast<DressUp*>(base)) {
-                    base = freecad_cast<FeatureAddSub*>(current->getBaseObject(true));
+                for (const Feature* current = this;; current = static_cast<const DressUp*>(base)) {
+                    base = freecad_cast<const FeatureAddSub*>(current->getBaseObject(true));
                     if (!base) {
                         FC_THROWM(
                             Base::CADKernelError,
