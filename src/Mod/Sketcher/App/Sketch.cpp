@@ -331,6 +331,54 @@ int Sketch::setUpSketch(
         Geoms[i].external = true;
     }
 
+    // Avoid solver parameters for visible midpoints until a constraint references one.
+    std::set<int> lineMidpointGeoIds;
+    for (const auto* constraint : ConstraintList) {
+        if (!constraint->isActive) {
+            continue;
+        }
+        for (int element = 0; constraint->hasElement(element); ++element) {
+            if (constraint->getPosId(element) == PointPos::mid) {
+                lineMidpointGeoIds.insert(checkGeoId(constraint->getGeoId(element)));
+            }
+        }
+    }
+
+    for (const int geoId : lineMidpointGeoIds) {
+        if (geoId < 0 || geoId >= static_cast<int>(Geoms.size()) || Geoms[geoId].type != Line
+            || Geoms[geoId].midPointId >= 0) {
+            continue;
+        }
+
+        const GCS::Point& start = Points[Geoms[geoId].startPointId];
+        const GCS::Point& end = Points[Geoms[geoId].endPointId];
+        Parameters.push_back(new double((*start.x + *end.x) / 2));
+        Parameters.push_back(new double((*start.y + *end.y) / 2));
+
+        GCS::Point midpoint;
+        midpoint.x = Parameters[Parameters.size() - 2];
+        midpoint.y = Parameters[Parameters.size() - 1];
+        Geoms[geoId].midPointId = Points.size();
+        Points.push_back(midpoint);
+
+        param2geoelement.emplace(
+            std::piecewise_construct,
+            std::forward_as_tuple(midpoint.x),
+            std::forward_as_tuple(geoId, PointPos::mid, 0)
+        );
+        param2geoelement.emplace(
+            std::piecewise_construct,
+            std::forward_as_tuple(midpoint.y),
+            std::forward_as_tuple(geoId, PointPos::mid, 1)
+        );
+
+        GCSsys.addConstraintP2PSymmetric(
+            Points[Geoms[geoId].startPointId],
+            Points[Geoms[geoId].endPointId],
+            Points[Geoms[geoId].midPointId]
+        );
+    }
+
     // The Geoms list might be empty after an undo/redo
     if (!Geoms.empty()) {
         // Disable any constraint that act on geometries that are in a group.

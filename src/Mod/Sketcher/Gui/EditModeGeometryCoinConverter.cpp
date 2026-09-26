@@ -105,12 +105,14 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
         else if (pointmode == PointsMode::InsertMidOnly) {
             numberPoints = 1;
         }
-        else if (pointmode == PointsMode::InsertStartEndMid) {
+        else if (
+            pointmode == PointsMode::InsertLineStartEndMid || pointmode == PointsMode::InsertStartEndMid
+        ) {
             numberPoints = 3;
         }
 
-        // This loop simulates the creation of vertices for THIS geometry.
-        // It runs for all geometries to keep vertexCounter in sync with SketchObject.
+        // Point drawing order does not have to match VertexN order. Resolve the logical vertex ID
+        // directly so appended virtual points do not renumber existing vertices.
         for (int i = 0; i < numberPoints; i++) {
             // If the point is NOT part of a group member, we add it to the physical
             // Coin maps that are used for drawing and picking.
@@ -138,12 +140,10 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
                 // Map: physicalIndex -> logical info
                 coinMapping.PointIdToGeoId[coinLayer].push_back(geoId);
                 coinMapping.PointIdToPosId[coinLayer].push_back(pos);
-                // This is the key: store the correct, globally-incremented logical VertexId.
-                coinMapping.PointIdToVertexId[coinLayer].push_back(vertexCounter);
+                coinMapping.PointIdToVertexId[coinLayer].push_back(
+                    viewProvider.getSketchObject()->getVertexIndexGeoPos(geoId, pos)
+                );
             }
-
-            // ALWAYS increment the logical vertex counter to stay in sync with SketchObject.
-            vertexCounter++;
         }
 
         if (numberCurves > 0) {  // insert the first segment of the curve into the map
@@ -194,7 +194,7 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
         else if (type == Part::GeomLineSegment::getClassTypeId()) {  // add a line
             convert<
                 Part::GeomLineSegment,
-                EditModeGeometryCoinConverter::PointsMode::InsertStartEnd,
+                EditModeGeometryCoinConverter::PointsMode::InsertLineStartEndMid,
                 EditModeGeometryCoinConverter::CurveMode::StartEndPointsOnly,
                 EditModeGeometryCoinConverter::AnalyseMode::BoundingBoxMagnitude>(
                 geom,
@@ -205,7 +205,7 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
             setTracking(
                 GeoId,
                 coinLayer,
-                EditModeGeometryCoinConverter::PointsMode::InsertStartEnd,
+                EditModeGeometryCoinConverter::PointsMode::InsertLineStartEndMid,
                 1,
                 subLayerId,
                 isGroupMember
@@ -352,6 +352,13 @@ void EditModeGeometryCoinConverter::convert(
         else if constexpr (pointmode == PointsMode::InsertStartEnd) {
             addPoint(Points[coinLayer], geo->getStartPoint());
             addPoint(Points[coinLayer], geo->getEndPoint());
+        }
+        else if constexpr (pointmode == PointsMode::InsertLineStartEndMid) {
+            const Base::Vector3d startPoint = geo->getStartPoint();
+            const Base::Vector3d endPoint = geo->getEndPoint();
+            addPoint(Points[coinLayer], startPoint);
+            addPoint(Points[coinLayer], endPoint);
+            addPoint(Points[coinLayer], (startPoint + endPoint) / 2);
         }
         else if constexpr (pointmode == PointsMode::InsertStartEndMid) {
             // All in this group are Trimmed Curves (see Geometry.h)
