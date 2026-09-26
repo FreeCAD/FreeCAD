@@ -23,6 +23,8 @@
 
 import FreeCAD as App
 import Part
+import os
+import tempfile
 import unittest
 
 import UtilsAssembly
@@ -340,3 +342,74 @@ class TestCore(AssemblyTestBase):
         joint.Proxy.setJointConnectors(joint, refs)
 
         self.assertTrue(box.Placement.isSame(box2.Placement, 1e-6), "'{}'".format(operation))
+
+    def test_rack_pinion_with_slider_offset(self):
+        """Rack and pinion joint whose rack slider has a yaw offset, see
+        github.com/freecad/freecad/issues/17563"""
+        operation = "Rack and pinion with slider offset"
+        _msg("  Test '{}'".format(operation))
+
+        ground = self.assembly.newObject("Part::Box", "Ground")
+        ground.Length = 200
+        ground.Width = 200
+        ground.Height = 10
+
+        rack = self.assembly.newObject("Part::Box", "Rack")
+        rack.Length = 10
+        rack.Width = 100
+        rack.Height = 10
+        rack.Placement.Base = App.Vector(50, 0, 10)
+
+        pinion = self.assembly.newObject("Part::Cylinder", "Pinion")
+        pinion.Radius = 10
+        pinion.Height = 10
+        pinion.Placement.Base = App.Vector(30, 50, 10)
+        self.doc.recompute()
+
+        # Attach to real faces, but specify the JCS explicitly so the test does
+        # not depend on OpenCASCADE's orientation of those faces.
+        along_rack = App.Rotation(App.Vector(1, 0, 0), -90)
+        yaw_offset = App.Rotation(App.Vector(0, 0, 1), -90)
+
+        slider = self.jointgroup.newObject("App::FeaturePython", "Slider")
+        JointObject.Joint(slider, JointObject.JointTypes.index("Slider"))
+        slider.Detach1 = True
+        slider.Detach2 = True
+        slider.Reference1 = (ground, ["Face1"])
+        slider.Reference2 = (rack, ["Face1"])
+        slider.Placement1 = App.Placement(App.Vector(), along_rack)
+        slider.Placement2 = App.Placement(App.Vector(), along_rack * yaw_offset)
+
+        rackPinion = self.jointgroup.newObject("App::FeaturePython", "RackPinion")
+        JointObject.Joint(rackPinion, JointObject.JointTypes.index("RackPinion"))
+        rackPinion.Detach1 = True
+        rackPinion.Reference1 = (rack, ["Face1"])
+        rackPinion.Reference2 = (pinion, ["Face1"])
+        rackPinion.Placement1 = App.Placement(App.Vector(), along_rack)
+        rackPinion.Distance = 10
+
+        self.doc.recompute()
+
+        slider_axis = UtilsAssembly.getJcsGlobalPlc(
+            slider.Placement2, slider.Reference2
+        ).Rotation.multVec(App.Vector(0, 0, 1))
+        rack_axis = UtilsAssembly.getJcsGlobalPlc(
+            rackPinion.Placement1, rackPinion.Reference1
+        ).Rotation.multVec(App.Vector(0, 0, 1))
+        self.assertLess(slider_axis.cross(rack_axis).Length, 1e-7)
+
+        # The rack and pinion joint must reach the solver: it is silently dropped when
+        # the rack cannot be identified from its slider.
+        with tempfile.TemporaryDirectory() as temp_dir:
+            fileName = os.path.join(temp_dir, "rackPinion.asmt")
+            self.assembly.exportAsASMT(fileName)
+            with open(fileName) as asmt:
+                content = asmt.read()
+        self.assertIn(
+            "RackPinionJoint",
+            content,
+            "'{}' failed - joint not exported; slider state: {}, rack-pinion state: {}; "
+            "exported assembly: {}".format(
+                operation, slider.State, rackPinion.State, content[-2500:]
+            ),
+        )
