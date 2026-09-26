@@ -67,9 +67,14 @@ InputDevice::toDevicePixelPosition(
     qreal devicePixelRatio
 )
 {
+  // The viewport is sized in device pixels, so the flip has to happen in
+  // device pixels too. Flipping in logical pixels first and scaling
+  // afterwards turns the trailing "- 1" into "- devicePixelRatio" device
+  // pixels, which is off by increasing amounts as devicePixelRatio grows
+  // past 1.
   int xpos = static_cast<int>(std::lround(logicalPosition.x() * devicePixelRatio));
-  int ypos = static_cast<int>(
-      std::lround((logicalWindowSize[1] - logicalPosition.y() - 1.0) * devicePixelRatio));
+  int ypos = static_cast<int>(std::lround(logicalWindowSize[1] * devicePixelRatio)
+      - std::lround(logicalPosition.y() * devicePixelRatio) - 1);
 
   constexpr int ShortMin = std::numeric_limits<short>::min();
   constexpr int ShortMax = std::numeric_limits<short>::max();
