@@ -190,7 +190,7 @@ from draftobjects.circle import Circle, _Circle
 from draftmake.make_circle import make_circle, makeCircle
 
 # arcs
-from draftmake.make_arc_3points import make_arc_3points
+from draftmake.make_arc_3points import make_arc_3_points, make_arc_3points
 
 # ellipse
 from draftobjects.ellipse import Ellipse, _Ellipse
@@ -225,14 +225,13 @@ if App.GuiUp:
 
 # bezcurve
 from draftobjects.bezcurve import BezCurve, _BezCurve
-from draftmake.make_bezcurve import make_bezcurve, makeBezCurve
+from draftmake.make_bezcurve import make_bez_curve, make_bezcurve, makeBezCurve
 
 if App.GuiUp:
     from draftviewproviders.view_bezcurve import ViewProviderBezCurve, _ViewProviderBezCurve
 
 # copy
-from draftmake.make_copy import make_copy
-from draftmake.make_copy import make_copy as makeCopy
+from draftmake.make_copy import make_copy, makeCopy
 
 # clone
 from draftobjects.clone import Clone, _Clone
@@ -253,8 +252,10 @@ from draftobjects.array import Array, _Array
 from draftmake.make_array import make_array, makeArray
 from draftmake.make_orthoarray import (
     make_ortho_array,
+    make_ortho_array_2d,
     make_ortho_array2d,
     make_rect_array,
+    make_rect_array_2d,
     make_rect_array2d,
 )
 from draftmake.make_polararray import make_polar_array
@@ -282,21 +283,25 @@ from draftmake.make_block import make_block, makeBlock
 
 # shapestring
 from draftobjects.shapestring import ShapeString, _ShapeString
-from draftmake.make_shapestring import make_shapestring, makeShapeString
+from draftmake.make_shapestring import make_shape_string, make_shapestring, makeShapeString
 
 if App.GuiUp:
     from draftviewproviders.view_shapestring import ViewProviderShapeString
 
 # shape 2d view
 from draftobjects.shape2dview import Shape2DView, _Shape2DView
-from draftmake.make_shape2dview import make_shape2dview, makeShape2DView
+from draftmake.make_shape2dview import make_shape_2d_view, make_shape2dview, makeShape2DView
 
 # sketch
 from draftmake.make_sketch import make_sketch, makeSketch
 
 # working plane proxy
 from draftobjects.wpproxy import WorkingPlaneProxy
-from draftmake.make_wpproxy import make_workingplaneproxy, makeWorkingPlaneProxy
+from draftmake.make_wpproxy import (
+    make_working_plane_proxy,
+    make_workingplaneproxy,
+    makeWorkingPlaneProxy,
+)
 
 if App.GuiUp:
     from draftviewproviders.view_wpproxy import ViewProviderWorkingPlaneProxy

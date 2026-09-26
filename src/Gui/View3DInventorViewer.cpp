@@ -25,6 +25,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <format>
 
 #include <Inventor/SoFCPlacementIndicatorKit.h>
 
@@ -38,8 +39,6 @@
 # include <GL/glext.h>
 # include <GL/glu.h>
 #endif
-
-#include <fmt/format.h>
 
 #include <algorithm>
 #include <array>
@@ -224,7 +223,7 @@ QString dimensionText(const View3DInventorViewer& viewer)
         auto hStr = Base::UnitsApi::schemaTranslate(qHeight);
 
         // Create final string and update window
-        dim = fmt::format("{} x {}", wStr, hStr);
+        dim = std::format("{} x {}", wStr, hStr);
     }
 
     return QString::fromStdString(dim);
@@ -256,11 +255,7 @@ void clearDimensionPaneState()
 
 int qImageByteCount(const QImage& image)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     return static_cast<int>(image.sizeInBytes());
-#else
-    return image.byteCount();
-#endif
 }
 
 void setOverlayCacheContext(SoGLRenderAction& action, const View3DInventorViewer* viewer)
@@ -1310,7 +1305,7 @@ void View3DInventorViewer::init()
 #endif
     }
     catch (Base::Exception& e) {
-        Base::Console().warning("Failed to set up gestures. Error: %s\n", e.what());
+        Base::Console().warning("Failed to set up gestures. Error: {}\n", e.what());
     }
     catch (...) {
         Base::Console().warning("Failed to set up gestures. Unknown error.\n");
@@ -2066,7 +2061,7 @@ void View3DInventorViewer::updateFPSLabel()
 
     fpsCounter->setText(
         QString::fromStdString(
-            fmt::format("{:.1f} ms / {:.1f} fps", framesPerSecond[0], framesPerSecond[1])
+            std::format("{:.1f} ms / {:.1f} fps", framesPerSecond[0], framesPerSecond[1])
         )
     );
 
@@ -2874,7 +2869,7 @@ void View3DInventorViewer::interactionFinishCB(void* ud, SoQTQuarterAdaptor* vie
 void View3DInventorViewer::interactionLoggerCB(void* ud, SoAction* action)
 {
     Q_UNUSED(ud)
-    Base::Console().log("%s\n", action->getTypeId().getName().getString());
+    Base::Console().log("{}\n", action->getTypeId().getName().getString());
 }
 
 void View3DInventorViewer::addGraphicsItem(GLGraphicsItem* item)
@@ -3084,7 +3079,7 @@ QImage View3DInventorViewer::renderToImage(const RenderImageOptions& options)
     QOpenGLFramebufferObject fbo(width, height, fboFormat);
     if (!fbo.isValid()) {
         Base::Console().warning(
-            "renderToImage failed to create a %dx%d framebuffer with %d samples\n",
+            "renderToImage failed to create a {}x{} framebuffer with {} samples\n",
             width,
             height,
             samples

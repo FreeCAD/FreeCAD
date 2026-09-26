@@ -104,7 +104,7 @@ if(BUILD_TRACY_FRAME_PROFILER)
     list(APPEND FreeCADBase_LIBS TracyClient)
 endif()
 
-list(APPEND FreeCADBase_LIBS libfastsignals fmt::fmt)
+list(APPEND FreeCADBase_LIBS libfastsignals)
 
 if(cpptrace_FOUND)
     list(APPEND FreeCADBase_LIBS cpptrace::cpptrace)
@@ -291,6 +291,7 @@ SET(FreeCADBase_CPP_SRCS
     Uuid.cpp
     Vector3D.cpp
     VectorPyImp.cpp
+    Version.cpp
     ViewProj.cpp
     Writer.cpp
     XMLTools.cpp
@@ -365,6 +366,7 @@ SET(FreeCADBase_HPP_SRCS
     UniqueNameManager.h
     Uuid.h
     Vector3D.h
+    Version.h
     ViewProj.h
     Writer.h
     XMLTools.h

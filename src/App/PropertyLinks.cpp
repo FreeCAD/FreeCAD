@@ -834,14 +834,14 @@ void PropertyLink::Restore(Base::XMLReader& reader)
         DocumentObject* object = document ? document->getObject(name.c_str()) : nullptr;
         if (!object) {
             if (reader.isVerbose()) {
-                Base::Console().warning("Lost link to '%s' while loading, maybe "
+                Base::Console().warning("Lost link to '{}' while loading, maybe "
                                         "an object was not loaded correctly\n",
-                                        name.c_str());
+                                        name);
             }
         }
         else if (parent == object) {
             if (reader.isVerbose()) {
-                Base::Console().warning("Object '%s' links to itself, nullify it\n", name.c_str());
+                Base::Console().warning("Object '{}' links to itself, nullify it\n", name);
             }
             object = nullptr;
         }
@@ -2946,9 +2946,9 @@ void PropertyLinkSubList::Restore(Base::XMLReader& reader)
             }
         }
         else if (reader.isVerbose()) {
-            Base::Console().warning("Lost link to '%s' while loading, maybe "
+            Base::Console().warning("Lost link to '{}' while loading, maybe "
                                     "an object was not loaded correctly\n",
-                                    name.c_str());
+                                    name);
         }
     }
     setFlag(LinkRestoreLabel, restoreLabel);

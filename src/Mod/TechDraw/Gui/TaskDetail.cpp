@@ -78,8 +78,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
     m_basePage = m_baseFeat->findParentPage();
     //it is possible that the basePage could be unparented and have no corresponding Page
     if (!m_basePage) {
-        Base::Console().error("TaskDetail - bad parameters - base page.  Cannot proceed.\n");
-        return;
+        throw Base::RuntimeError("TaskDetail - Parent page not found");
     }
 
     m_baseName = m_baseFeat->getNameInDocument();
@@ -141,24 +140,22 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
     m_created(false)
 {
     if (!m_detailFeat)  {
-        //should be caught in CMD caller
-        Base::Console().error("TaskDetail - bad parameters.  Cannot proceed.\n");
-        return;
+        throw Base::RuntimeError("TaskDetail - bad parameters.  Can not proceed");
     }
 
     m_doc = m_detailFeat->getDocument();
     m_detailName = m_detailFeat->getNameInDocument();
 
     m_basePage = m_detailFeat->findParentPage();
-    if (m_basePage) {
-        m_pageName = m_basePage->getNameInDocument();
+    if (!m_basePage) {
+        throw Base::RuntimeError("TaskDetail - Parent page not found");
     }
+    m_pageName = m_basePage->getNameInDocument();
 
     App::DocumentObject* baseObj = m_detailFeat->BaseView.getValue();
     m_baseFeat = dynamic_cast<TechDraw::DrawViewPart*>(baseObj);
     if (!m_baseFeat) {
-        Base::Console().error("TaskDetail - no base view.  Cannot proceed.\n");
-        return;
+        throw Base::RuntimeError("TaskDetail - no BaseView.  Can not proceed.");
     }
     m_baseName = m_baseFeat->getNameInDocument();
     // repaint baseObj here to make highlight inactive.
@@ -451,6 +448,10 @@ void TaskDetail::createDetail()
     }
     m_detailFeat = dvd;
     dvd->Source.setValues(getBaseFeat()->Source.getValues());
+    QString qRef = ui->leReference->text();
+    std::string ref = qRef.toStdString();
+    dvd->Reference.setValue(ref);
+    dvd->Caption.setValue(m_detailFeat->makeCaption());
 
     Gui::Command::doCommand(Command::Doc, "App.activeDocument().%s.BaseView = App.activeDocument().%s",
                             m_detailName.c_str(), m_baseName.c_str());
@@ -488,6 +489,8 @@ void TaskDetail::updateDetail()
         QString qRef = ui->leReference->text();
         std::string ref = qRef.toStdString();
         detailFeat->Reference.setValue(ref);
+
+        detailFeat->Caption.setValue(detailFeat->makeCaption());
 
         Gui::Command::updateActive();
         Gui::Command::commitCommand(tid);

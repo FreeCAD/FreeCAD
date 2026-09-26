@@ -123,7 +123,7 @@ App::DocumentObjectExecReturn* FemMeshShapeNetgenObject::execute()
     int numNode = info.NbNodes();
     int numVolu = info.NbVolumes();
 
-    Base::Console().log("NetgenMesh: %i Nodes, %i Volumes, %i Faces\n", numNode, numVolu, numFaces);
+    Base::Console().log("NetgenMesh: {} Nodes, {} Volumes, {} Faces\n", numNode, numVolu, numFaces);
 
     FemMesh.setValue(newMesh);
     return App::DocumentObject::StdReturn;

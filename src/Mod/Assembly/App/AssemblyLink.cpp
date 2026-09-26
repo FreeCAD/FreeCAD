@@ -706,7 +706,7 @@ void AssemblyLink::handleJointReference(
     }
     if (it == objLinkMap.end()) {
         Base::Console().warning(
-            "AssemblyLink: Could not map external component %s to a local link for joint %s\n",
+            "AssemblyLink: Could not map external component {} to a local link for joint {}\n",
             externalComponent->getNameInDocument(),
             joint->getNameInDocument()
         );

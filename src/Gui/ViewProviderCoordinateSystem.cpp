@@ -148,7 +148,7 @@ void ViewProviderCoordinateSystem::setTemporaryVisibility(DatumElements elements
         }
     }
     catch (const Base::Exception& ex) {
-        Base::Console().error("%s\n", ex.what());
+        Base::Console().error("{}\n", ex.what());
     }
 
     // Remember & Set self visibility

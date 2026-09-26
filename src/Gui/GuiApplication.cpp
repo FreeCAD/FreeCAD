@@ -69,9 +69,6 @@ GUIApplication::GUIApplication(int& argc, char** argv)
         &GUIApplication::commitData,
         Qt::DirectConnection
     );
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    setFallbackSessionManagementEnabled(false);
-#endif
 }
 
 GUIApplication::~GUIApplication() = default;
@@ -80,7 +77,7 @@ bool GUIApplication::notify(QObject* receiver, QEvent* event)
 {
     if (!receiver) {
         Base::Console().log(
-            "GUIApplication::notify: Unexpected null receiver, event type: %d\n",
+            "GUIApplication::notify: Unexpected null receiver, event type: {}\n",
             (int)event->type()
         );
         return false;
@@ -112,7 +109,7 @@ bool GUIApplication::notify(QObject* receiver, QEvent* event)
     catch (const Base::Exception& e) {
         Base::Console().error(
             "Unhandled Base::Exception caught in GUIApplication::notify.\n"
-            "The error message is: %s\n%s",
+            "The error message is: {}\n{}",
             e.what(),
             exceptionWarning
         );
@@ -120,14 +117,14 @@ bool GUIApplication::notify(QObject* receiver, QEvent* event)
     catch (const std::exception& e) {
         Base::Console().error(
             "Unhandled std::exception caught in GUIApplication::notify.\n"
-            "The error message is: %s\n%s",
+            "The error message is: {}\n{}",
             e.what(),
             exceptionWarning
         );
     }
     catch (...) {
         Base::Console().error(
-            "Unhandled unknown exception caught in GUIApplication::notify.\n%s",
+            "Unhandled unknown exception caught in GUIApplication::notify.\n{}",
             exceptionWarning
         );
     }
@@ -153,7 +150,7 @@ bool GUIApplication::notify(QObject* receiver, QEvent* event)
                 }
             }
             std::string str = dump.str();
-            Base::Console().log("%s", str.c_str());
+            Base::Console().log("{}", str);
         }
     }
     catch (...) {
@@ -262,10 +259,10 @@ public:
             }
         }
         if (server->isListening()) {
-            Base::Console().log("Local server '%s' started\n", qPrintable(serverName));
+            Base::Console().log("Local server '{}' started\n", qPrintable(serverName));
         }
         else {
-            Base::Console().log("Local server '%s' failed to start\n", qPrintable(serverName));
+            Base::Console().log("Local server '{}' failed to start\n", qPrintable(serverName));
         }
     }
 
@@ -314,16 +311,8 @@ bool GUISingleApplication::sendMessage(const QString& message, int timeout)
     }
 
     QTextStream ts(&socket);
-#if QT_VERSION <= QT_VERSION_CHECK(6, 0, 0)
-    ts.setCodec("UTF-8");
-#else
     ts.setEncoding(QStringConverter::Utf8);
-#endif
-#if QT_VERSION <= QT_VERSION_CHECK(5, 15, 0)
-    ts << message << endl;
-#else
     ts << message << Qt::endl;
-#endif
 
     return socket.waitForBytesWritten(timeout);
 }
@@ -333,15 +322,11 @@ void GUISingleApplication::readFromSocket()
     auto socket = qobject_cast<QLocalSocket*>(sender());
     if (socket) {
         QTextStream in(socket);
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        in.setCodec("UTF-8");
-#else
         in.setEncoding(QStringConverter::Utf8);
-#endif
         while (socket->canReadLine()) {
             d_ptr->timer->stop();
             QString message = in.readLine();
-            Base::Console().log("Received message: %s\n", message.toStdString());
+            Base::Console().log("Received message: {}\n", message.toStdString());
             d_ptr->messages.push_back(message);
             d_ptr->timer->start(1000);
         }

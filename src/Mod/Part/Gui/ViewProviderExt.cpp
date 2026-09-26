@@ -1554,11 +1554,11 @@ void ViewProviderPartExt::setupCoinGeometry(
 
 #ifdef FC_DEBUG
     Base::Console().log(
-        "ViewProvider update time: %f s\n",
+        "ViewProvider update time: {:f} s\n",
         Base::TimeElapsed::diffTimeF(startTime, Base::TimeElapsed())
     );
     Base::Console().log(
-        "Shape mesh info: Faces:%d Edges:%d Nodes:%d Triangles:%d IdxVec:%d\n",
+        "Shape mesh info: Faces:{} Edges:{} Nodes:{} Triangles:{} IdxVec:{}\n",
         numFaces,
         numEdges,
         numNodes,

@@ -8,13 +8,6 @@ if(POLICY CMP0144)
     cmake_policy(SET CMP0144 NEW)
 endif()
 
-# FindPythonInterp and FindPythonLibs modules are deprecated, but are still in use by
-# all versions of Shiboken2. This policy must be kept at OLD until Shiboken2 is no longer
-# supported
-if(POLICY CMP0148)
-    cmake_policy(SET CMP0148 OLD)
-endif()
-
 # The exec_program command was deprecated in cMake 3.0, and policy CMP0153 was added in cMake
 # 3.28 to control whether this gives a warning (the OLD behavior) or a fatal error (NEW)
 if(POLICY CMP0153)
@@ -94,7 +87,10 @@ SetupSanitizers()
 SetupYamlCpp()
 SetupZipIos()
 SetupClipper2()
-find_package(fmt REQUIRED)
+
+find_package(Qt6 REQUIRED COMPONENTS Core)
+set(FREECAD_QT_MAJOR_VERSION 6)
+
 find_package(ICU REQUIRED COMPONENTS uc i18n)
 find_package(cpptrace QUIET)
 if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIBPACK_CHECKFILE_VERSION)

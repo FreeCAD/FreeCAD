@@ -533,7 +533,7 @@ protected:
                 // RuntimeError exceptions inside of the block above must provide a translatable
                 // message. It is reported both to developer (report view) and user (notifications
                 // area).
-                Base::Console().error(e.what());
+                Base::Console().error("{}", e.what());
             }
 
             // Keep the recompute separate so that everything is drawn even if execution fails
@@ -545,7 +545,7 @@ protected:
                 // RuntimeError exceptions inside of the block above must provide a translatable
                 // message. It is reported both to developer (report view) and user (notifications
                 // area).
-                Base::Console().error(e.what());
+                Base::Console().error("{}", e.what());
             }
             return handleContinuousMode();
         }
@@ -1082,7 +1082,7 @@ private:
             );
         }
         catch (const Base::Exception& e) {
-            Base::Console().error("%s\n", e.what());
+            Base::Console().error("{}\n", e.what());
         }
     }
 

@@ -23,6 +23,7 @@
  ******************************************************************************/
 
 
+#include <format>
 #include <Bnd_Box.hxx>
 #include <BRep_Tool.hxx>
 #include <BRepMesh_IncrementalMesh.hxx>
@@ -58,7 +59,7 @@ const std::string& ViewProviderTransformed::featureName() const
 
 std::string ViewProviderTransformed::featureIcon() const
 {
-    return fmt::format("PartDesign_{}", featureName());
+    return std::format("PartDesign_{}", featureName());
 }
 
 void ViewProviderTransformed::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
@@ -164,7 +165,7 @@ void ViewProviderTransformed::handleTransformedResult(PartDesign::Transformed* p
         else {
             Base::Console().translatedUserWarning(
                 "ViewProviderTransformed",
-                "%d transformed shapes do not intersect the support",
+                "{} transformed shapes do not intersect the support",
                 rejected
             );
         }
@@ -172,7 +173,7 @@ void ViewProviderTransformed::handleTransformedResult(PartDesign::Transformed* p
 
     auto error = pcTransformed->getDocument()->getErrorDescription(pcTransformed);
     if (error) {
-        Base::Console().translatedUserError("ViewProviderTransformed", error);
+        Base::Console().translatedUserError("ViewProviderTransformed", "{}", error);
     }
 }
 

@@ -444,7 +444,7 @@ void PropertyEnumeration::Restore(Base::XMLReader& reader)
         // If the enum is empty at this stage do not print a warning
         if (_enum.hasEnums()) {
             Base::Console().developerWarning(std::string("PropertyEnumeration"),
-                                             "Enumeration index %d is out of range, ignore it\n",
+                                             "Enumeration index {} is out of range, ignore it\n",
                                              val);
         }
         val = getValue();
@@ -1694,7 +1694,7 @@ void PropertyString::Save(Base::Writer& writer) const
     auto verifyXMLString = [this](std::string& input) {
         const std::string output = this->validateXMLString(input);
         if (output != input) {
-            Base::Console().warning("XML output: Validate invalid string:\n'%s'\n'%s'\n",
+            Base::Console().warning("XML output: Validate invalid string:\n'{}'\n'{}'\n",
                                     input, output);
         }
         return output;
