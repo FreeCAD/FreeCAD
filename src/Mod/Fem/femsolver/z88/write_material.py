@@ -26,7 +26,6 @@ __author__ = "Mario Passaglia"
 __url__ = "https://www.freecad.org"
 
 import os
-import FreeCAD
 
 from .writer_list import WriterList
 
@@ -53,8 +52,8 @@ class WriterMaterial(WriterList):
         mat_file = open(mat_path, "w")
 
         mat = obj.Material
-        ym = FreeCAD.Units.Quantity(mat["YoungsModulus"]).getValueAs("MPa")
-        pr = float(mat["PoissonRatio"])
+        ym = self.writer.get_coherent_value(mat["YoungsModulus"])
+        pr = self.writer.get_coherent_value(mat["PoissonRatio"])
         mat_file.write(f"{ym} {pr:.3f}\n")
         mat_file.close()
 

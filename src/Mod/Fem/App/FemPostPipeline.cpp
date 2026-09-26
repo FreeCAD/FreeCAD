@@ -76,6 +76,14 @@ FemPostPipeline::FemPostPipeline()
         "set via pipeline object)."
     );
     ADD_PROPERTY_TYPE(MergeDuplicate, (false), "Pipeline", App::Prop_None, "Remove coindent elements.");
+    ADD_PROPERTY_TYPE(
+        Scale,
+        (1.0),
+        "Pipeline",
+        App::PropertyType(App::Prop_Hidden | App::Prop_Output | App::Prop_ReadOnly),
+        "Scale points. Only for visualization."
+        "Internally, the coordinates of the points remain the same."
+    );
 
     // create our source algorithm
     m_source_algorithm = vtkSmartPointer<vtkFemFrameSourceAlgorithm>::New();
@@ -281,12 +289,6 @@ void FemPostPipeline::read(
     Data.setValue(multiblock);
 }
 
-void FemPostPipeline::scale(double s)
-{
-    Data.scale(s);
-    onChanged(&Data);
-}
-
 App::DocumentObjectExecReturn* FemPostPipeline::execute()
 {
     // we fake a recalculated data object, so that the viewprovider updates
@@ -328,6 +330,28 @@ void FemPostPipeline::onChanged(const Property* prop)
     // update placement
     if (prop == &Placement) {
         // pipeline data updated!
+        updateData();
+        recomputeChildren();
+    }
+
+    if (prop == &Scale) {
+        // use current placement
+        double data[16];
+        auto matrix = Placement.getValue().toMatrix();
+        matrix.getMatrix(data);
+        m_transform->SetMatrix(data);
+        // scale in pre-multiply mode
+        double s = Scale.getValue();
+        m_transform->Scale(s, s, s);
+
+        // inform children about rescaling
+        for (const auto& obj : Group.getValues()) {
+            if (auto* postFilter = freecad_cast<FemPostFilter*>(obj)) {
+                postFilter->Scale.setValue(s);
+            }
+        }
+        // touch object and recompute children
+        this->touch();
         updateData();
         recomputeChildren();
     }
@@ -387,7 +411,8 @@ void FemPostPipeline::onChanged(const Property* prop)
 
         FemPostFilter* filter = nullptr;
         for (auto& obj : objs) {
-
+            // set filter scale from pipeline scale
+            obj->Scale.setValue(Scale.getValue());
             // prepare the filter: make all connections new
             FemPostFilter* nextFilter = obj;
             nextFilter->getFilterInput()->RemoveAllInputConnections(0);

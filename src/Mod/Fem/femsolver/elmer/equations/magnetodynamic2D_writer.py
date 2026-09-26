@@ -69,7 +69,7 @@ class MgDyn2Dwriter:
         s["Exec Solver"] = "Always"
         s["Procedure"] = sifio.FileAttr("MagnetoDynamics/MagnetoDynamicsCalcFields")
         if equation.IsHarmonic:
-            frequency = equation.Frequency.getValueAs("Hz")
+            frequency = equation.Frequency
             s["Angular Frequency"] = frequency * 2 * math.pi
         s["Potential Variable"] = "Potential"
         if equation.CalculateCurrentDensity is True:
@@ -97,14 +97,10 @@ class MgDyn2Dwriter:
         return s
 
     def handleMagnetodynamic2DConstants(self):
-        permeability = Units.Quantity(self.write.constsdef["PermeabilityOfVacuum"]).getValueAs(
-            "H/m"
-        )
+        permeability = self.write.constsdef["PermeabilityOfVacuum"]
         self.write.constant("Permeability Of Vacuum", permeability)
 
-        permittivity = Units.Quantity(self.write.constsdef["PermittivityOfVacuum"]).getValueAs(
-            "F/m"
-        )
+        permittivity = self.write.constsdef["PermittivityOfVacuum"]
         self.write.constant("Permittivity Of Vacuum", permittivity)
 
     def handleMagnetodynamic2DMaterial(self, bodies):
@@ -129,40 +125,42 @@ class MgDyn2Dwriter:
                         "The relative permeability must be specified for all materials.\n\n"
                     )
                 self.write.material(name, "Name", m["Name"])
-                conductivity = Units.Quantity(m["ElectricalConductivity"]).getValueAs("S/m")
+                conductivity = Units.Quantity(m["ElectricalConductivity"])
                 self.write.material(name, "Electric Conductivity", conductivity)
 
-                self.write.material(name, "Relative Permeability", float(m["RelativePermeability"]))
+                self.write.material(
+                    name, "Relative Permeability", Units.Quantity(m["RelativePermeability"])
+                )
                 # permittivity might be necessary for the post processor
                 if "RelativePermittivity" in m:
                     self.write.material(
-                        name, "Relative Permittivity", float(m["RelativePermittivity"])
+                        name, "Relative Permittivity", Units.Quantity(m["RelativePermittivity"])
                     )
 
     def _outputMagnetodynamic2DBodyForce(self, obj, name, equation):
         if femutils.is_derived_from(obj, "Fem::ConstraintCurrentDensity") and obj.Mode == "Normal":
-            current_density = obj.NormalCurrentDensity_re.getValueAs("A/m^2")
+            current_density = obj.NormalCurrentDensity_re
             self.write.bodyForce(name, "Current Density", current_density)
             # imaginaries are only needed for harmonic equation
             if equation.IsHarmonic:
-                current_density = obj.NormalCurrentDensity_im.getValueAs("A/m^2")
+                current_density = obj.NormalCurrentDensity_im
                 self.write.bodyForce(name, "Current Density Im", current_density)
 
         if femutils.is_derived_from(obj, "Fem::ConstraintMagnetization"):
             # output only if magnetization is enabled and needed
             if obj.EnableMagnetization_1:
-                magnetization = obj.Magnetization_re_1.getValueAs("A/m")
+                magnetization = obj.Magnetization_re_1
                 self.write.material(name, "Magnetization 1", magnetization)
             if obj.EnableMagnetization_2:
-                magnetization = obj.Magnetization_re_2.getValueAs("A/m")
+                magnetization = obj.Magnetization_re_2
                 self.write.material(name, "Magnetization 2", magnetization)
             # imaginaries are only needed for harmonic equation
             if equation.IsHarmonic:
                 if obj.EnableMagnetization_1:
-                    magnetization = obj.Magnetization_im_1.getValueAs("A/m")
+                    magnetization = obj.Magnetization_im_1
                     self.write.material(name, "Magnetization Im 1", magnetization)
                 if obj.EnableMagnetization_2:
-                    magnetization = obj.Magnetization_im_2.getValueAs("A/m")
+                    magnetization = obj.Magnetization_im_2
                     self.write.material(name, "Magnetization Im 2", magnetization)
 
     def handleMagnetodynamic2DBodyForces(self, bodies, equation):
@@ -218,25 +216,25 @@ class MgDyn2Dwriter:
 
                     if obj.BoundaryCondition == "Dirichlet":
                         if obj.EnableAV_3:
-                            potential = obj.AV_re_3.getValueAs("Wb/m")
+                            potential = obj.AV_re_3
                             self.write.boundary(name, "Potential", potential)
                             if equation.IsHarmonic:
-                                potential = obj.AV_im_3.getValueAs("Wb/m")
+                                potential = obj.AV_im_3
                                 self.write.boundary(name, "Potential im", potential)
 
                     elif obj.BoundaryCondition == "Neumann":
                         if obj.EnableMagnetic_1:
-                            b_1 = obj.Magnetic_re_1.getValueAs("Wb/m^2")
+                            b_1 = obj.Magnetic_re_1
                             self.write.boundary(name, "Magnetic Flux Density 1", b_1)
                             if equation.IsHarmonic:
-                                b_1 = obj.Magnetic_im_1.getValueAs("Wb/m^2")
+                                b_1 = obj.Magnetic_im_1
                                 self.write.boundary(name, "Magnetic Flux Density 1 im", b_1)
 
                         if obj.EnableMagnetic_2:
-                            b_2 = obj.Magnetic_re_2.getValueAs("Wb/m^2")
+                            b_2 = obj.Magnetic_re_2
                             self.write.boundary(name, "Magnetic Flux Density 2", b_2)
                             if equation.IsHarmonic:
-                                b_2 = obj.Magnetic_im_2.getValueAs("Wb/m^2")
+                                b_2 = obj.Magnetic_im_2
                                 self.write.boundary(name, "Magnetic Flux Density 2 im", b_2)
 
                     if obj.FarField:
@@ -250,7 +248,7 @@ class MgDyn2Dwriter:
                 raise general_writer.WriteError("The angular frequency must not be zero.\n\n")
             self.write.equation(b, "Name", equation.Name)
             if equation.IsHarmonic:
-                frequency = equation.Frequency.getValueAs("Hz")
+                frequency = equation.Frequency
                 self.write.equation(b, "Angular Frequency", frequency * 2 * math.pi)
 
 

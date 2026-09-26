@@ -1081,12 +1081,20 @@ class _SolverCalculixContextManager:
 
     def __enter__(self):
         ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
+        gen_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
+        units = (
+            gen_prefs.GetString("DefaultUnitSystem", "FEM")
+            if self.make_name == "makeSolverCalculiX"
+            else "FEM"
+        )
+
         FreeCAD.ActiveDocument.openTransaction("Create SolverCalculiX")
         FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.addModule("FemGui")
         FreeCADGui.doCommand(
             f"{self.cli_name} = ObjectsFem.{self.make_name}(FreeCAD.ActiveDocument)"
         )
+        FreeCADGui.doCommand("{}.UnitSystem = '{}'".format(self.cli_name, units))
         FreeCADGui.doCommand(
             "{}.AnalysisType = {}".format(self.cli_name, ccx_prefs.GetInt("AnalysisType", 0))
         )
@@ -1250,8 +1258,11 @@ class _SolverElmer(CommandManager):
             "FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)"
         )
         elmer_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Elmer")
+        gen_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
         bin_out = elmer_prefs.GetBool("BinaryOutput", False)
         save_id = elmer_prefs.GetBool("SaveGeometryIndex", False)
+        units = gen_prefs.GetString("DefaultUnitSystem", "FEM")
+        FreeCADGui.doCommand("FreeCAD.ActiveDocument.ActiveObject.UnitSystem = '{}'".format(units))
         FreeCADGui.doCommand(
             "FreeCAD.ActiveDocument.ActiveObject.BinaryOutput = {}".format(bin_out)
         )
@@ -1323,10 +1334,13 @@ class _SolverZ88(CommandManager):
             "FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)"
         )
         z88_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Z88")
+        gen_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
         solver_type = z88_prefs.GetString("Solver", "sorcg")
         maxgs = z88_prefs.GetInt("MaxGS", 100000000)
         maxkoi = z88_prefs.GetInt("MaxKOI", 2800000)
+        units = gen_prefs.GetString("DefaultUnitSystem", "FEM")
 
+        FreeCADGui.doCommand(f"FreeCAD.ActiveDocument.ActiveObject.UnitSystem = '{units}'")
         FreeCADGui.doCommand(f"FreeCAD.ActiveDocument.ActiveObject.SolverType = '{solver_type}'")
         FreeCADGui.doCommand(f"FreeCAD.ActiveDocument.ActiveObject.MatrixMaximum = {maxgs}")
         FreeCADGui.doCommand(f"FreeCAD.ActiveDocument.ActiveObject.VectorMaximum = {maxkoi}")

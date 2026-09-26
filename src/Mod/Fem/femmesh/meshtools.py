@@ -756,8 +756,8 @@ def get_force_obj_vertex_nodeload_table(femmesh, frc_obj):
     #         ("refshape_name.elemname", node_load_table)
     #     ]
     force_obj_node_load_table = []
-    force_quantity = FreeCAD.Units.Quantity(frc_obj.Force.getValueAs("N"))
-    node_load = force_quantity / len(frc_obj.References)
+    force_factor = 1
+    node_load = force_factor / len(frc_obj.References)
     for o, elem_tup in frc_obj.References:
         node_count = len(elem_tup)
         for elem in elem_tup:
@@ -809,8 +809,8 @@ def get_force_obj_edge_nodeload_table(femmesh, femelement_table, femnodes_mesh, 
             )
             sum_ref_edge_length += ref_edge.Length
     if sum_ref_edge_length != 0:
-        force_quantity = FreeCAD.Units.Quantity(frc_obj.Force.getValueAs("N"))
-        force_per_sum_ref_edge_length = force_quantity / sum_ref_edge_length
+        force_factor = 1
+        force_per_sum_ref_edge_length = force_factor / sum_ref_edge_length
     for o, elem_tup in frc_obj.References:
         for elem in elem_tup:
             ref_edge = o.Shape.getElement(elem)
@@ -854,16 +854,13 @@ def get_force_obj_edge_nodeload_table(femmesh, femelement_table, femnodes_mesh, 
         for node in ref_shape[1]:
             sum_node_load += ref_shape[1][node]  # for debugging
 
-    force_quantity = FreeCAD.Units.Quantity(frc_obj.Force.getValueAs("N"))
-    ratio = sum_node_load / force_quantity
+    ratio = sum_node_load
     if ratio < 0.99 or ratio > 1.01:
         FreeCAD.Console.PrintMessage(
             f"Deviation  sum_node_load to frc_obj.Force is more than 1% : {ratio}\n"
         )
         FreeCAD.Console.PrintMessage(f"  sum_ref_edge_node_length: {sum_ref_edge_node_length}\n")
         FreeCAD.Console.PrintMessage(f"  sum_ref_edge_length:      {sum_ref_edge_length}\n")
-        FreeCAD.Console.PrintMessage(f"  sum_node_load:            {sum_node_load}\n")
-        FreeCAD.Console.PrintMessage(f"  frc_obj.Force:            {force_quantity}\n")
         FreeCAD.Console.PrintMessage(
             "  the reason could be simply a circle length --> "
             "see method get_ref_edge_node_lengths\n"
@@ -1052,8 +1049,8 @@ def get_force_obj_face_nodeload_table(femmesh, femelement_table, femnodes_mesh, 
             )
             sum_ref_face_area += ref_face.Area
     if sum_ref_face_area != 0:
-        force_quantity = FreeCAD.Units.Quantity(frc_obj.Force.getValueAs("N"))
-        force_per_sum_ref_face_area = force_quantity / sum_ref_face_area
+        force_factor = 1
+        force_per_sum_ref_face_area = force_factor / sum_ref_face_area
     for o, elem_tup in frc_obj.References:
         for elem in elem_tup:
             ref_face = sub_shape_at_global_placement(o, elem)
@@ -1096,16 +1093,13 @@ def get_force_obj_face_nodeload_table(femmesh, femelement_table, femnodes_mesh, 
         for node in ref_shape[1]:
             sum_node_load += ref_shape[1][node]  # for debugging
 
-    force_quantity = FreeCAD.Units.Quantity(frc_obj.Force.getValueAs("N"))
-    ratio = sum_node_load / force_quantity
+    ratio = sum_node_load
     if ratio < 0.99 or ratio > 1.01:
         FreeCAD.Console.PrintMessage(
             f"Deviation sum_node_load to frc_obj.Force is more than 1% :  {ratio}\n"
         )
         FreeCAD.Console.PrintMessage(f"  sum_ref_face_node_area: {sum_ref_face_node_area}\n")
         FreeCAD.Console.PrintMessage(f"  sum_ref_face_area:      {sum_ref_face_area}\n")
-        FreeCAD.Console.PrintMessage(f"  sum_node_load:          {sum_node_load}\n")
-        FreeCAD.Console.PrintMessage(f"  frc_obj.Force:          {force_quantity}\n")
         FreeCAD.Console.PrintMessage(
             "  the reason could be simply a circle area --> see method get_ref_face_node_areas\n"
         )

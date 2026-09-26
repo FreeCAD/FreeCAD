@@ -45,4 +45,4 @@ class WriterElement2D(WriterList):
         self.add_file_rows(item["ShellElements"], self.writer.z88elp_rows, param)
 
     def get_param(self, obj):
-        return obj.Thickness.getValueAs("mm").Value
+        return self.writer.get_coherent_value(obj.Thickness)

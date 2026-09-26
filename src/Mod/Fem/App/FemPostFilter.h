@@ -91,6 +91,7 @@ public:
     ~FemPostFilter() override;
 
     App::PropertyFloat Frame;
+    App::PropertyFloat Scale;
 
     void onChanged(const App::Property* prop) override;
     App::DocumentObjectExecReturn* execute() override;

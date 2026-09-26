@@ -81,11 +81,17 @@ def write_constraint(f, femobj, rb_obj, ccxwriter):
             f.write(f"{node},{dof},{load:.13G}\n")
 
     mode = [rb_obj.TranslationalModeX, rb_obj.TranslationalModeY, rb_obj.TranslationalModeZ]
-    constraint = rb_obj.Displacement
+    constraint = [FreeCAD.Units.Quantity(i, "mm") for i in rb_obj.Displacement]
     load = [rb_obj.ForceX, rb_obj.ForceY, rb_obj.ForceZ]
 
     for i in range(3):
-        write_mode(mode[i], ref_node_idx, i + 1, constraint[i], load[i].getValueAs("N").Value)
+        write_mode(
+            mode[i],
+            ref_node_idx,
+            i + 1,
+            ccxwriter.get_coherent_value(constraint[i]),
+            ccxwriter.get_coherent_value(load[i]),
+        )
 
     mode = [rb_obj.RotationalModeX, rb_obj.RotationalModeY, rb_obj.RotationalModeZ]
     load = [rb_obj.MomentX, rb_obj.MomentY, rb_obj.MomentZ]
@@ -100,6 +106,8 @@ def write_constraint(f, femobj, rb_obj, ccxwriter):
         constraint = FreeCAD.Vector(0, 0, 0)
 
     for i in range(3):
-        write_mode(mode[i], rot_node_idx, i + 1, constraint[i], load[i].getValueAs("N*mm").Value)
+        write_mode(
+            mode[i], rot_node_idx, i + 1, constraint[i], ccxwriter.get_coherent_value(load[i])
+        )
 
     f.write("\n")

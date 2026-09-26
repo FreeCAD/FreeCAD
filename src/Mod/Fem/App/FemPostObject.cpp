@@ -44,14 +44,14 @@ FemPostObject::FemPostObject()
     ADD_PROPERTY(Data, (nullptr));
 
     m_transform_filter = vtkSmartPointer<vtkTransformFilter>::New();
+    m_transform = vtkTransform::New();
 
     // define default transform
     double data[16];
     auto matrix = Placement.getValue().toMatrix();
     matrix.getMatrix(data);
-    vtkTransform* transform = vtkTransform::New();
-    transform->SetMatrix(data);
-    m_transform_filter->SetTransform(transform);
+    m_transform->SetMatrix(data);
+    m_transform_filter->SetTransform(m_transform);
 }
 
 FemPostObject::~FemPostObject() = default;
@@ -103,9 +103,11 @@ void FemPostObject::onChanged(const App::Property* prop)
         double data[16];
         auto matrix = Placement.getValue().toMatrix();
         matrix.getMatrix(data);
-        vtkTransform* transform = vtkTransform::New();
-        transform->SetMatrix(data);
-        m_transform_filter->SetTransform(transform);
+        // use current scale
+        double scale[3];
+        m_transform->GetScale(scale);
+        m_transform->SetMatrix(data);
+        m_transform->Scale(scale);
         // note: no call to Update(), as we do not know the frame to use. has to happen
         // in derived class
 

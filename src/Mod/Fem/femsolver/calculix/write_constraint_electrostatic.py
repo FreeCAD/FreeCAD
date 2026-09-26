@@ -75,9 +75,10 @@ def write_constraint(f, femobj, pot_obj, ccxwriter):
     # floats read from ccx should use {:.13G}, see comment in writer module
     if pot_obj.BoundaryCondition == "Dirichlet":
         f.write("*BOUNDARY\n")
-        f.write("{},11,11,{:.13G}\n".format(pot_obj.Name, pot_obj.Potential.getValueAs("mV").Value))
+        potential = ccxwriter.get_coherent_value(pot_obj.Potential)
+        f.write("{},11,11,{:.13G}\n".format(pot_obj.Name, potential))
     elif pot_obj.BoundaryCondition == "Neumann":
-        density = pot_obj.ElectricFluxDensity.getValueAs("C/mm^2").Value
+        density = ccxwriter.get_coherent_value(pot_obj.ElectricFluxDensity)
         # check internal interface
         internal = _check_shared_interface(pot_obj)
         for feat, surf, is_sub_el in femobj["ElectricFluxFaces"]:

@@ -48,10 +48,6 @@ class FemPostPipeline(FemPostObject):
         """
         ...
 
-    def scale(self, scale: float, /) -> None:
-        """scale the points of a loaded vtk file"""
-        ...
-
     @overload
     def load(self, obj: DocumentObject, /) -> None: ...
     @overload

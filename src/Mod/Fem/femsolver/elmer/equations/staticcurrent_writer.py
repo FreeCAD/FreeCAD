@@ -50,9 +50,9 @@ class SCwriter:
         s["Constant Weights"] = equation.ConstantWeights
         s["Calculate Nodal Heating"] = equation.CalculateNodalHeating
         if equation.PowerControl:
-            s["Power Control"] = equation.Power.getValueAs("W").Value
+            s["Power Control"] = self.write.get_coherent_value(equation.Power)
         if equation.CurrentControl:
-            s["Current Control"] = equation.Current.getValueAs("A").Value
+            s["Current Control"] = self.write.get_coherent_value(equation.Current)
         s["Exec Solver"] = "Always"
         s["Optimize Bandwidth"] = True
         s["Stabilize"] = equation.Stabilize
@@ -70,9 +70,7 @@ class SCwriter:
                 self.write.material(name, "Name", m["Name"])
                 if "ElectricalConductivity" in m:
                     self.write.material(
-                        name,
-                        "Electric Conductivity",
-                        Units.Quantity(m["ElectricalConductivity"]).getValueAs("S/m").Value,
+                        name, "Electric Conductivity", Units.Quantity(m["ElectricalConductivity"])
                     )
 
     def handleStaticCurrentBndConditions(self):
@@ -85,9 +83,7 @@ class SCwriter:
                     if obj.BoundaryCondition == "Dirichlet":
                         if obj.PotentialEnabled:
                             self.write.boundary(name, "Current Density BC", False)
-                            self.write.boundary(
-                                name, "Potential", obj.Potential.getValueAs("V").Value
-                            )
+                            self.write.boundary(name, "Potential", obj.Potential)
                 self.write.handled(obj)
 
         for obj in self.write.getMember("Fem::ConstraintCurrentDensity"):
@@ -101,7 +97,7 @@ class SCwriter:
                         self.write.boundary(
                             name,
                             "Current Density",
-                            obj.NormalCurrentDensity_re.getValueAs("A/m^2").Value,
+                            obj.NormalCurrentDensity_re,
                         )
 
                 self.write.handled(obj)

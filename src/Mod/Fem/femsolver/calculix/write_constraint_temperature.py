@@ -78,7 +78,7 @@ def write_constraint(f, femobj, temp_obj, ccxwriter):
         f.write(f"*BOUNDARY{temp_amplitude}\n")
         f.write(
             "{},11,11,{}\n".format(
-                temp_obj.Name, FreeCAD.Units.Quantity(temp_obj.Temperature.getValueAs("K"))
+                temp_obj.Name, ccxwriter.get_coherent_value(temp_obj.Temperature)
             )
         )
         f.write("\n")
@@ -88,8 +88,7 @@ def write_constraint(f, femobj, temp_obj, ccxwriter):
         f.write(
             "{},11,{}\n".format(
                 temp_obj.Name,
-                FreeCAD.Units.Quantity(temp_obj.ConcentratedHeatFlux.getValueAs("mW"))
-                / NumberOfNodes,
+                ccxwriter.get_coherent_value(temp_obj.ConcentratedHeatFlux) / NumberOfNodes,
             )
         )
         f.write("\n")
