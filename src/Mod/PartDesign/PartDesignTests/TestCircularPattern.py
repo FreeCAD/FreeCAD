@@ -76,3 +76,40 @@ class TestCircularPattern(unittest.TestCase):
 
         self.assertEqual(multi.getStatusString(), "Valid")
         self.assertAlmostEqual(multi.Shape.Volume, 5 * box.Shape.Volume)
+
+    def testCircularPatternTransformsFeatureResult(self):
+        body = self.doc.addObject("PartDesign::Body", "Body")
+
+        cylinder = self.doc.addObject("PartDesign::AdditiveCylinder", "Cylinder1")
+        body.addObject(cylinder)
+        cylinder.Radius = 10
+        cylinder.Angle = 360
+        cylinder.Height = 10
+        self.doc.recompute()
+
+        box1 = self.doc.addObject("PartDesign::AdditiveBox", "Box1")
+        body.addObject(box1)
+        box1.Length = 10
+        box1.Width = 10
+        box1.Height = 10
+        self.doc.recompute()
+
+        box2 = self.doc.addObject("PartDesign::SubtractiveBox", "Box2")
+        body.addObject(box2)
+        box2.Length = 5
+        box2.Width = 5
+        box2.Height = 5
+        self.doc.recompute()
+
+        pattern = self.doc.addObject("PartDesign::CircularPattern", "CircularPattern")
+        pattern.Originals = [cylinder, box1, box2]
+        pattern.Axis = (self.doc.Z_Axis, [""])
+        pattern.NumberCircles = 3
+        pattern.TransformMode = "Feature Result"
+        body.addObject(pattern)
+        self.doc.recompute()
+
+        self.assertEqual(pattern.getStatusString(), "Valid")
+        self.assertFalse(pattern.Shape.isNull())
+        self.assertGreater(pattern.Shape.Volume, cylinder.Shape.Volume)
+        self.assertEqual(pattern.Shape.ElementMapSize, 1710)
