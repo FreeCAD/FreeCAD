@@ -352,6 +352,66 @@ bool CmdSurfaceSections::isActive()
     return hasActiveDocument();
 }
 
+DEF_STD_CMD_A(CmdSurfaceIntersectionCurve)
+
+CmdSurfaceIntersectionCurve::CmdSurfaceIntersectionCurve()
+    : Command("Surface_IntersectionCurve")
+{
+    sAppModule = "Surface";
+    sGroup = QT_TR_NOOP("Surface");
+    sMenuText = QT_TR_NOOP("Intersection Curve");
+    sToolTipText = QT_TR_NOOP(
+        "Creates the intersection of two sketches or planar wires extruded along their normals.\n"
+        "Select two whole profiles. Extrusion directions can be edited in the properties."
+    );
+    sStatusTip = sToolTipText;
+    sWhatsThis = "Surface_IntersectionCurve";
+    sPixmap = "Surface_IntersectionCurve";
+}
+
+void CmdSurfaceIntersectionCurve::activated(int message)
+{
+    Q_UNUSED(message);
+    const auto selection = getSelection().getSelectionEx();
+    if (selection.size() != 2 || selection.front().hasSubNames() || selection.back().hasSubNames()
+        || !Part::Feature::hasShapeOwner(selection.front().getObject())
+        || !Part::Feature::hasShapeOwner(selection.back().getObject())) {
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            qApp->translate("Surface_IntersectionCurve", "Invalid selection"),
+            qApp->translate("Surface_IntersectionCurve", "Select two whole sketches or wires.")
+        );
+        return;
+    }
+
+    const std::string name = getUniqueObjectName("IntersectionCurve");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create intersection curve"));
+    runCommand(
+        Doc,
+        QStringLiteral("App.ActiveDocument.addObject('Surface::IntersectionCurve', '%1')")
+            .arg(QString::fromStdString(name))
+            .toUtf8()
+    );
+    for (size_t index = 0; index < selection.size(); ++index) {
+        runCommand(
+            Doc,
+            QStringLiteral("App.ActiveDocument.%1.Curve%2 = App.getDocument('%3').getObject('%4')")
+                .arg(QString::fromStdString(name))
+                .arg(index + 1)
+                .arg(QString::fromUtf8(selection.at(index).getDocName()))
+                .arg(QString::fromUtf8(selection.at(index).getFeatName()))
+                .toUtf8()
+        );
+    }
+    updateActive();
+    commitCommand();
+}
+
+bool CmdSurfaceIntersectionCurve::isActive()
+{
+    return hasActiveDocument() && !Gui::Control().activeDialog();
+}
+
 void CreateSurfaceCommands()
 {
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -364,4 +424,5 @@ void CreateSurfaceCommands()
     rcCmdMgr.addCommand(new CmdSurfaceExtendFace());
     rcCmdMgr.addCommand(new CmdSurfaceCurveOnMesh());
     rcCmdMgr.addCommand(new CmdBlendCurve());
+    rcCmdMgr.addCommand(new CmdSurfaceIntersectionCurve());
 }
