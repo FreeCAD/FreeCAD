@@ -27,7 +27,6 @@
 #include <QListWidget>
 #include <QMessageBox>
 
-
 #include <Base/Interpreter.h>
 #include <Base/Converter.h>
 #include <App/Document.h>
@@ -49,8 +48,10 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskFilletParameters */
 
+using PartDesign::Fillet;
+
 TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp* DressUpView, QWidget* parent)
-    : TaskDressUpParameters(DressUpView, true, true, parent)
+    : TaskDressUpParameters(DressUpView, true, true, false, true, parent)
     , ui(new Ui_TaskFilletParameters)
 {
     // we need a separate container widget to add all controls to
@@ -58,11 +59,8 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp* DressUpView, QWi
     ui->setupUi(proxy);
     this->groupLayout()->addWidget(proxy);
 
-    PartDesign::Fillet* pcFillet = DressUpView->getObject<PartDesign::Fillet>();
-    bool useAllEdges = pcFillet->UseAllEdges.getValue();
-    ui->checkBoxUseAllEdges->setChecked(useAllEdges);
-    ui->buttonRefSel->setEnabled(!useAllEdges);
-    ui->listWidgetReferences->setEnabled(!useAllEdges);
+    Fillet* pcFillet = DressUpView->getObject<Fillet>();
+    ui->selectionType->setCurrentIndex(pcFillet->SelectionType.getValue());
     double r = pcFillet->Radius.getValue();
 
     ui->filletRadius->setUnit(Base::Unit::Length);
@@ -82,9 +80,9 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp* DressUpView, QWi
     connect(ui->filletRadius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
         this, &TaskFilletParameters::onLengthChanged);
     connect(ui->buttonRefSel, &QToolButton::toggled,
-        this, &TaskFilletParameters::onButtonRefSel);
-    connect(ui->checkBoxUseAllEdges, &QToolButton::toggled,
-        this, &TaskFilletParameters::onCheckBoxUseAllEdgesToggled);
+    this, &TaskFilletParameters::onButtonRefSel);
+    connect(ui->selectionType, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskFilletParameters::onSelectionTypeChanged);
 
     // Create context menu
     createDeleteAction(ui->listWidgetReferences);
@@ -101,14 +99,15 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp* DressUpView, QWi
         this, &TaskFilletParameters::doubleClicked);
     // clang-format on
 
+    setupGizmos(DressUpView);
+    updateSolidSelection();
+
     if (strings.empty()) {
         setSelectionMode(refSel);
     }
     else {
         hideOnError();
     }
-
-    setupGizmos(DressUpView);
 }
 
 void TaskFilletParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -128,17 +127,33 @@ void TaskFilletParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 }
 
-void TaskFilletParameters::onCheckBoxUseAllEdgesToggled(bool checked)
+void TaskFilletParameters::onSelectionTypeChanged(int v)
 {
-    if (auto fillet = getObject<PartDesign::Fillet>()) {
-        if (checked) {
-            setSelectionMode(none);
-        }
-
-        ui->buttonRefSel->setEnabled(!checked);
-        ui->listWidgetReferences->setEnabled(!checked);
-        fillet->UseAllEdges.setValue(checked);
+    if (auto fillet = getObject<Fillet>()) {
+        fillet->SelectionType.setValue(v);
         fillet->recomputeFeature();
+    }
+
+    updateSolidSelection();
+}
+
+void TaskFilletParameters::updateSolidSelection()
+{
+    const auto selectionMode = static_cast<Fillet::SelectionMode>(ui->selectionType->currentIndex());
+    const bool solidSelection = selectionMode != Fillet::SelectionMode::SelectedEdges;
+    allowSolids = solidSelection;
+    allowEdges = !solidSelection;
+    allowFaces = !solidSelection;
+
+    const bool selectionEnabled = selectionMode != Fillet::SelectionMode::AllSolids;
+    ui->buttonRefSel->setEnabled(selectionEnabled);
+    ui->listWidgetReferences->setEnabled(selectionEnabled);
+
+    if (solidSelection) {
+        convertSelectionToSolids(ui->listWidgetReferences, true, true);
+    }
+    else {
+        convertSelectionToElements(ui->listWidgetReferences, true, false);
     }
 }
 
@@ -161,7 +176,7 @@ void TaskFilletParameters::onAddAllEdges()
 
 void TaskFilletParameters::onLengthChanged(double len)
 {
-    if (auto fillet = getObject<PartDesign::Fillet>()) {
+    if (auto fillet = getObject<Fillet>()) {
         setSelectionMode(none);
         setupTransaction();
         fillet->Radius.setValue(len);
@@ -228,7 +243,7 @@ void TaskFilletParameters::setGizmoPositions()
         return;
     }
 
-    auto fillet = getObject<PartDesign::Fillet>();
+    auto fillet = getObject<Fillet>();
     if (!fillet || fillet->isError()) {
         gizmoContainer->visible = false;
         return;

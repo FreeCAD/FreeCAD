@@ -1323,9 +1323,7 @@ bool SelectionSingleton::addSelection(
     temp.y = y;
     temp.z = z;
 
-
     // check for a Selection Gate
-
     const auto& selectionAllowance = isSelectionAllowed(temp);
     if (!selectionAllowance.allowed) {
         if (getMainWindow()) {

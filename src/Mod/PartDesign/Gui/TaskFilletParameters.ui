@@ -6,14 +6,44 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>232</width>
-    <height>181</height>
+    <width>256</width>
+    <height>190</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string notr="true">Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,2">
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Selection</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="selectionType">
+       <item>
+        <property name="text">
+         <string>Selected Edges &amp; Faces</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Selected Solids</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>All Solids</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
    <item>
     <widget class="QToolButton" name="buttonRefSel">
      <property name="toolTip">
@@ -48,20 +78,13 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::QuantitySpinBox" name="filletRadius">
-       <property name="keyboardTracking">
+      <widget class="Gui::QuantitySpinBox" name="filletRadius" native="true">
+       <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
       </widget>
      </item>
     </layout>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkBoxUseAllEdges">
-     <property name="text">
-      <string>Use all edges</string>
-     </property>
-    </widget>
    </item>
   </layout>
  </widget>
@@ -76,7 +99,6 @@
   <tabstop>buttonRefSel</tabstop>
   <tabstop>listWidgetReferences</tabstop>
   <tabstop>filletRadius</tabstop>
-  <tabstop>checkBoxUseAllEdges</tabstop>
  </tabstops>
  <resources/>
  <connections/>

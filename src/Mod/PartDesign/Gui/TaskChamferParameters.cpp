@@ -50,14 +50,18 @@
 #include "ui_TaskChamferParameters.h"
 #include "TaskChamferParameters.h"
 
+#include "QCheckBox"
+
 
 using namespace PartDesignGui;
 using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskChamferParameters */
 
+using PartDesign::Chamfer;
+
 TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp* DressUpView, QWidget* parent)
-    : TaskDressUpParameters(DressUpView, true, true, parent)
+    : TaskDressUpParameters(DressUpView, true, true, false, true, parent)
     , ui(new Ui_TaskChamferParameters)
 {
     // we need a separate container widget to add all controls to
@@ -65,14 +69,12 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp* DressUpView, Q
     ui->setupUi(proxy);
     this->groupLayout()->addWidget(proxy);
 
-    PartDesign::Chamfer* pcChamfer = DressUpView->getObject<PartDesign::Chamfer>();
+    Chamfer* pcChamfer = DressUpView->getObject<Chamfer>();
 
     setUpUI(pcChamfer);
 
-    bool useAllEdges = pcChamfer->UseAllEdges.getValue();
-    ui->checkBoxUseAllEdges->setChecked(useAllEdges);
-    ui->buttonRefSel->setEnabled(!useAllEdges);
-    ui->listWidgetReferences->setEnabled(!useAllEdges);
+    ui->selectionType->setCurrentIndex(pcChamfer->SelectionType.getValue());
+
     QMetaObject::invokeMethod(ui->chamferSize, "setFocus", Qt::QueuedConnection);
 
     std::vector<std::string> strings = pcChamfer->Base.getSubValues();
@@ -95,8 +97,8 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp* DressUpView, Q
             this, &TaskChamferParameters::onFlipDirection);
     connect(ui->buttonRefSel, &QToolButton::toggled,
             this, &TaskChamferParameters::onButtonRefSel);
-    connect(ui->checkBoxUseAllEdges, &QCheckBox::toggled,
-            this, &TaskChamferParameters::onCheckBoxUseAllEdgesToggled);
+    connect(ui->selectionType, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskChamferParameters::onSelectionTypeChanged);
 
     // Create context menu
     createDeleteAction(ui->listWidgetReferences);
@@ -116,6 +118,7 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp* DressUpView, Q
     // clang-format on
 
     setupGizmos(DressUpView);
+    updateSolidSelection();
 
     if (strings.size() == 0) {
         setSelectionMode(refSel);
@@ -125,7 +128,7 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp* DressUpView, Q
     }
 }
 
-void TaskChamferParameters::setUpUI(PartDesign::Chamfer* pcChamfer)
+void TaskChamferParameters::setUpUI(Chamfer* pcChamfer)
 {
     const int index = pcChamfer->ChamferType.getValue();
     ui->chamferType->setCurrentIndex(index);
@@ -164,6 +167,36 @@ void TaskChamferParameters::setUpUI(PartDesign::Chamfer* pcChamfer)
     ui->angleLabel->setMinimumWidth(minWidth);
 }
 
+void TaskChamferParameters::onSelectionTypeChanged(int v)
+{
+    if (auto chamfer = getObject<Chamfer>()) {
+        chamfer->SelectionType.setValue(v);
+        chamfer->recomputeFeature();
+    }
+
+    updateSolidSelection();
+}
+
+void TaskChamferParameters::updateSolidSelection()
+{
+    const auto selectionMode = static_cast<Chamfer::SelectionMode>(ui->selectionType->currentIndex());
+    const bool solidSelection = selectionMode != Chamfer::SelectionMode::SelectedEdges;
+    allowSolids = solidSelection;
+    allowEdges = !solidSelection;
+    allowFaces = !solidSelection;
+
+    const bool selectionEnabled = selectionMode != Chamfer::SelectionMode::AllSolids;
+    ui->buttonRefSel->setEnabled(selectionEnabled);
+    ui->listWidgetReferences->setEnabled(selectionEnabled);
+
+    if (solidSelection) {
+        convertSelectionToSolids(ui->listWidgetReferences, true, true);
+    }
+    else {
+        convertSelectionToElements(ui->listWidgetReferences, true, false);
+    }
+}
+
 void TaskChamferParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     // executed when the user selected something in the CAD object
@@ -178,20 +211,6 @@ void TaskChamferParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         // TODO: the gizmo position should be only recalculated when the feature associated
         // with the gizmo is removed from the list
         setGizmoPositions();
-    }
-}
-
-void TaskChamferParameters::onCheckBoxUseAllEdgesToggled(bool checked)
-{
-    if (auto chamfer = getObject<PartDesign::Chamfer>()) {
-        if (checked) {
-            setSelectionMode(none);
-        }
-
-        ui->buttonRefSel->setEnabled(!checked);
-        ui->listWidgetReferences->setEnabled(!checked);
-        chamfer->UseAllEdges.setValue(checked);
-        chamfer->recomputeFeature();
     }
 }
 
@@ -214,7 +233,7 @@ void TaskChamferParameters::onAddAllEdges()
 
 void TaskChamferParameters::onTypeChanged(int index)
 {
-    if (auto chamfer = getObject<PartDesign::Chamfer>()) {
+    if (auto chamfer = getObject<Chamfer>()) {
         setSelectionMode(none);
         chamfer->ChamferType.setValue(index);
         ui->stackedWidget->setCurrentIndex(index);
@@ -227,7 +246,7 @@ void TaskChamferParameters::onTypeChanged(int index)
 
 void TaskChamferParameters::onSizeChanged(double len)
 {
-    if (auto chamfer = getObject<PartDesign::Chamfer>()) {
+    if (auto chamfer = getObject<Chamfer>()) {
         setSelectionMode(none);
         setupTransaction();
         chamfer->Size.setValue(len);
@@ -239,7 +258,7 @@ void TaskChamferParameters::onSizeChanged(double len)
 
 void TaskChamferParameters::onSize2Changed(double len)
 {
-    if (auto chamfer = getObject<PartDesign::Chamfer>()) {
+    if (auto chamfer = getObject<Chamfer>()) {
         setSelectionMode(none);
         setupTransaction();
         chamfer->Size2.setValue(len);
@@ -251,7 +270,7 @@ void TaskChamferParameters::onSize2Changed(double len)
 
 void TaskChamferParameters::onAngleChanged(double angle)
 {
-    if (auto chamfer = getObject<PartDesign::Chamfer>()) {
+    if (auto chamfer = getObject<Chamfer>()) {
         setSelectionMode(none);
         setupTransaction();
         chamfer->Angle.setValue(angle);
@@ -263,7 +282,7 @@ void TaskChamferParameters::onAngleChanged(double angle)
 
 void TaskChamferParameters::onFlipDirection(bool flip)
 {
-    if (auto chamfer = getObject<PartDesign::Chamfer>()) {
+    if (auto chamfer = getObject<Chamfer>()) {
         setSelectionMode(none);
         setupTransaction();
         chamfer->FlipDirection.setValue(flip);
@@ -300,6 +319,11 @@ bool TaskChamferParameters::getFlipDirection() const
     return ui->flipDirection->isChecked();
 }
 
+int TaskChamferParameters::getSelectionType() const
+{
+    return ui->selectionType->currentIndex();
+}
+
 TaskChamferParameters::~TaskChamferParameters()
 {
     try {
@@ -322,7 +346,7 @@ void TaskChamferParameters::changeEvent(QEvent* e)
 
 void TaskChamferParameters::apply()
 {
-    auto chamfer = getObject<PartDesign::Chamfer>();
+    auto chamfer = getObject<Chamfer>();
 
     const int chamfertype = chamfer->ChamferType.getValue();
 
@@ -395,7 +419,7 @@ void TaskChamferParameters::setGizmoPositions()
         return;
     }
 
-    auto chamfer = getObject<PartDesign::Chamfer>();
+    auto chamfer = getObject<Chamfer>();
     if (!chamfer || chamfer->isError()) {
         gizmoContainer->visible = false;
         return;

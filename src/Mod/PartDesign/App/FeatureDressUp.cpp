@@ -126,60 +126,126 @@ void DressUp::getContinuousEdges(
     std::vector<std::string>& FaceNames
 )
 {
+    using namespace std::string_view_literals;
 
     TopTools_IndexedMapOfShape mapOfEdges;
     TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
+
     TopExp::MapShapesAndAncestors(TopShape.getShape(), TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
     TopExp::MapShapes(TopShape.getShape(), TopAbs_EDGE, mapOfEdges);
 
+    const auto parseIndex = [](std::string_view value) -> int {
+        int index = 0;
+
+        const auto [ptr, ec] = std::from_chars(value.data(), value.data() + value.size(), index);
+
+        if (ec != std::errc {} || ptr != value.data() + value.size()) {
+            return 0;
+        }
+
+        return index;
+    };
+
     unsigned int i = 0;
     while (i < SubNames.size()) {
-        std::string aSubName = static_cast<std::string>(SubNames.at(i));
+        const std::string_view subName {SubNames[i]};
 
-        if (aSubName.compare(0, 4, "Edge") == 0) {
-            TopoDS_Edge edge = TopoDS::Edge(TopShape.getSubShape(aSubName.c_str()));
-            const TopTools_ListOfShape& los = mapEdgeFace.FindFromKey(edge);
+        if (subName.starts_with("Edge"sv)) {
+            const int edgeIndex = parseIndex(subName.substr(4));
 
-            if (los.Extent() != 2) {
+            if (edgeIndex < 1 || edgeIndex > mapOfEdges.Extent()) {
                 SubNames.erase(SubNames.begin() + i);
                 continue;
             }
 
-            const TopoDS_Shape& face1 = los.First();
-            const TopoDS_Shape& face2 = los.Last();
-            GeomAbs_Shape cont
-                = BRep_Tool::Continuity(TopoDS::Edge(edge), TopoDS::Face(face1), TopoDS::Face(face2));
+            const TopoDS_Edge edge = TopoDS::Edge(mapOfEdges.FindKey(edgeIndex));
+
+            const TopTools_ListOfShape& faces = mapEdgeFace.FindFromKey(edge);
+
+            if (faces.Extent() != 2) {
+                SubNames.erase(SubNames.begin() + i);
+                continue;
+            }
+
+            const GeomAbs_Shape cont
+                = BRep_Tool::Continuity(edge, TopoDS::Face(faces.First()), TopoDS::Face(faces.Last()));
+
             if (cont != GeomAbs_C0) {
                 SubNames.erase(SubNames.begin() + i);
                 continue;
             }
 
-            i++;
+            ++i;
         }
-        else if (aSubName.compare(0, 4, "Face") == 0) {
-            TopoDS_Face face = TopoDS::Face(TopShape.getSubShape(aSubName.c_str()));
+        else if (subName.starts_with("Face"sv)) {
+            const int faceIndex = parseIndex(subName.substr(4));
 
-            TopTools_IndexedMapOfShape mapOfFaces;
-            TopExp::MapShapes(face, TopAbs_EDGE, mapOfFaces);
+            if (faceIndex < 1) {
+                SubNames.erase(SubNames.begin() + i);
+                continue;
+            }
 
-            for (int j = 1; j <= mapOfFaces.Extent(); ++j) {
-                TopoDS_Edge edge = TopoDS::Edge(mapOfFaces.FindKey(j));
+            const TopoDS_Shape face = TopShape.getSubShape(SubNames[i].c_str(), true);
 
-                int id = mapOfEdges.FindIndex(edge);
+            if (face.IsNull()) {
+                SubNames.erase(SubNames.begin() + i);
+                continue;
+            }
 
-                std::stringstream buf;
-                buf << "Edge";
-                buf << id;
+            TopTools_IndexedMapOfShape mapOfFaceEdges;
+            TopExp::MapShapes(face, TopAbs_EDGE, mapOfFaceEdges);
 
-                if (std::ranges::find(SubNames, buf.str()) == SubNames.end()) {
-                    SubNames.push_back(buf.str());
+            for (int j = 1; j <= mapOfFaceEdges.Extent(); ++j) {
+                const int edgeIndex = mapOfEdges.FindIndex(mapOfFaceEdges.FindKey(j));
+
+                if (edgeIndex <= 0) {
+                    continue;
+                }
+
+                const std::string edgeName = "Edge" + std::to_string(edgeIndex);
+
+                if (std::ranges::find(SubNames, edgeName) == SubNames.end()) {
+                    SubNames.push_back(edgeName);
                 }
             }
 
-            FaceNames.emplace_back(aSubName.c_str());
+            FaceNames.emplace_back(subName);
             SubNames.erase(SubNames.begin() + i);
         }
-        // empty name or any other sub-element
+        else if (subName.starts_with("Solid"sv)) {
+            const int solidIndex = parseIndex(subName.substr(5));
+
+            if (solidIndex < 1) {
+                SubNames.erase(SubNames.begin() + i);
+                continue;
+            }
+
+            const TopoDS_Shape solid = TopShape.getSubShape(SubNames[i].c_str(), true);
+
+            if (solid.IsNull()) {
+                SubNames.erase(SubNames.begin() + i);
+                continue;
+            }
+
+            TopTools_IndexedMapOfShape mapOfSolidEdges;
+            TopExp::MapShapes(solid, TopAbs_EDGE, mapOfSolidEdges);
+
+            for (int j = 1; j <= mapOfSolidEdges.Extent(); ++j) {
+                const int edgeIndex = mapOfEdges.FindIndex(mapOfSolidEdges.FindKey(j));
+
+                if (edgeIndex <= 0) {
+                    continue;
+                }
+
+                const std::string edgeName = "Edge" + std::to_string(edgeIndex);
+
+                if (std::ranges::find(SubNames, edgeName) == SubNames.end()) {
+                    SubNames.push_back(edgeName);
+                }
+            }
+
+            SubNames.erase(SubNames.begin() + i);
+        }
         else {
             SubNames.erase(SubNames.begin() + i);
         }
@@ -196,45 +262,58 @@ std::vector<TopoShape> DressUp::getContinuousEdges(const TopoShape& shape)
             return;
         }
 
-        auto faces = shape.findAncestorsShapes(subshape, TopAbs_FACE);
+        const auto faces = shape.findAncestorsShapes(subshape, TopAbs_FACE);
+
         if (faces.size() != 2) {
             FC_WARN(getFullName() << ": skip edge " << ref << " with less two attaching faces");
             return;
         }
+
         const TopoDS_Shape& face1 = faces.front();
         const TopoDS_Shape& face2 = faces.back();
-        GeomAbs_Shape cont
+
+        const GeomAbs_Shape cont
             = BRep_Tool::Continuity(TopoDS::Edge(subshape), TopoDS::Face(face1), TopoDS::Face(face2));
+
         if (cont != GeomAbs_C0) {
             FC_WARN(getFullName() << ": skip edge " << ref << " that is not C0 continuous");
             return;
         }
+
         ret.push_back(subshape);
     };
 
     for (const auto& v : Base.getShadowSubs()) {
-        TopoDS_Shape subshape;
         const auto& ref = v.newName.size() ? v.newName : v.oldName;
-        subshape = shape.getSubShape(ref.c_str(), true);
+
+        const TopoDS_Shape subshape = shape.getSubShape(ref.c_str(), true);
+
         if (subshape.IsNull()) {
             FC_THROWM(Base::CADKernelError, "Invalid edge link: " << ref);
         }
 
-        if (subshape.ShapeType() == TopAbs_EDGE) {
-            addEdge(subshape, ref);
-        }
-        else if (subshape.ShapeType() == TopAbs_FACE || subshape.ShapeType() == TopAbs_WIRE) {
-            for (TopExp_Explorer exp(subshape, TopAbs_EDGE); exp.More(); exp.Next()) {
-                addEdge(exp.Current(), std::string());
-            }
-        }
-        else {
-            FC_WARN(
-                getFullName() << ": skip invalid shape '" << ref << "' with type "
-                              << TopoShape::shapeName(subshape.ShapeType())
-            );
+        switch (subshape.ShapeType()) {
+            case TopAbs_EDGE:
+                addEdge(subshape, ref);
+                break;
+
+            case TopAbs_FACE:
+            case TopAbs_WIRE:
+            case TopAbs_SOLID:
+                for (TopExp_Explorer exp(subshape, TopAbs_EDGE); exp.More(); exp.Next()) {
+                    addEdge(exp.Current(), ref);
+                }
+                break;
+
+            default:
+                FC_WARN(
+                    getFullName() << ": skip invalid shape '" << ref << "' with type "
+                                  << TopoShape::shapeName(subshape.ShapeType())
+                );
+                break;
         }
     }
+
     return ret;
 }
 
