@@ -215,7 +215,7 @@ public:
     void open() override;
     bool isAllowedAlterDocument() const override
     {
-        return true;
+        return false;
     }
     bool isAllowedAlterView() const override
     {
