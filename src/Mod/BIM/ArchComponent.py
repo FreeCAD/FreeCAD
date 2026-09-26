@@ -2905,7 +2905,7 @@ class ComponentOptionsTaskPanel(ComponentTaskPanel):
             if widget:
                 tooltip = target_obj.getDocumentationOfProperty(prop_name)
                 if tooltip:
-                    widget.setToolTip(tooltip)
+                    widget.setToolTip(translate("App::Property", tooltip))
                 layout.addRow(label_text, widget)
                 self.property_widgets[prop_name] = {
                     "widget": widget,

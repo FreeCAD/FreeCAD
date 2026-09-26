@@ -177,7 +177,7 @@ class _Wall(ArchComponent.Component):
                 "Wall",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The length of this wall. Read-only if this wall is not based on an unconstrained sketch with a single edge, or on a Draft Wire with a single edge. Refer to wiki for details how length is deduced.",
+                    "The length of this wall.\nEditable only if this wall's baseline is a Draft line, an unconstrained sketch with a single line, or none.",
                 ),
                 locked=True,
             )
@@ -188,7 +188,7 @@ class _Wall(ArchComponent.Component):
                 "Wall",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The width of this wall. Not used if this wall is based on a face. Disabled and ignored if Base object (ArchSketch) provides the information.",
+                    "The width of this wall.\nIgnored if this wall is based on a solid or a face.",
                 ),
                 locked=True,
             )
@@ -234,7 +234,7 @@ class _Wall(ArchComponent.Component):
                 "Wall",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid",
+                    "The height of this wall.\nKeep 0 to automatically match the height of the enclosing Level or Building.\nIgnored if this wall is based on a solid.",
                 ),
                 locked=True,
             )
@@ -256,7 +256,7 @@ class _Wall(ArchComponent.Component):
                 "Wall",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The alignment of this wall on its base object, if applicable. Disabled and ignored if Base object (ArchSketch) provides the information.",
+                    "The alignment of this wall on its base object, if applicable.",
                 ),
                 locked=True,
             )
@@ -1808,24 +1808,37 @@ if FreeCAD.GuiUp:
             self.length = loader.createWidget("Gui::QuantitySpinBox")
             FreeCADGui.ExpressionBinding(self.length).bind(self.obj, "Length")
             self.length.setProperty("value", self.obj.Length)
+            self.length.setToolTip(
+                translate("App::Property", self.obj.getDocumentationOfProperty("Length"))
+            )
             layout.addRow(translate("Arch", "Length"), self.length)
 
             # Width
             self.width = loader.createWidget("Gui::QuantitySpinBox")
             FreeCADGui.ExpressionBinding(self.width).bind(self.obj, "Width")
             self.width.setProperty("value", self.obj.Width)
+            self.width.setToolTip(
+                translate("App::Property", self.obj.getDocumentationOfProperty("Width"))
+            )
             layout.addRow(translate("Arch", "Width"), self.width)
 
             # Height
             self.height = loader.createWidget("Gui::QuantitySpinBox")
             FreeCADGui.ExpressionBinding(self.height).bind(self.obj, "Height")
             self.height.setProperty("value", self.obj.Height)
+            self.height.setToolTip(
+                translate("App::Property", self.obj.getDocumentationOfProperty("Height"))
+            )
             layout.addRow(translate("Arch", "Height"), self.height)
 
+            alignTooltip = translate("App::Property", self.obj.getDocumentationOfProperty("Align"))
             self.alignLayout = QtGui.QHBoxLayout()
             self.alignLeft = QtGui.QRadioButton(translate("Arch", "Left"))
             self.alignCenter = QtGui.QRadioButton(translate("Arch", "Center"))
             self.alignRight = QtGui.QRadioButton(translate("Arch", "Right"))
+            self.alignLeft.setToolTip(alignTooltip)
+            self.alignCenter.setToolTip(alignTooltip)
+            self.alignRight.setToolTip(alignTooltip)
             self.alignLayout.addWidget(self.alignLeft)
             self.alignLayout.addWidget(self.alignCenter)
             self.alignLayout.addWidget(self.alignRight)
