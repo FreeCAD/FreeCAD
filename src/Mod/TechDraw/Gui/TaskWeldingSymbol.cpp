@@ -166,6 +166,19 @@ void TaskWeldingSymbol::setUiPrimary()
     m_currDir = PreferencesGui::weldingDirectory();
     ui->fcSymbolDir->setFileName(m_currDir);
 
+    // Set "AllAround" checkbox icon
+    QIcon allAroundIcon(QString::fromUtf8(":/Symbols/Welding/UI_Symbols/AllAround.svg"));
+    ui->cbAllAround->setIcon(allAroundIcon);
+    ui->cbAllAround->setIconSize(QSize(16, 16));
+    // Set "FieldWeld" checkbox icon
+    QIcon fieldWeldIcon(QString::fromUtf8(":/Symbols/Welding/UI_Symbols/FieldWeld.svg"));
+    ui->cbFieldWeld->setIcon(fieldWeldIcon);
+    ui->cbFieldWeld->setIconSize(QSize(16, 16));
+    // Set "Alternate" checkbox icon
+    QIcon altWeldIcon(QString::fromUtf8(":/Symbols/Welding/UI_Symbols/AlternateISO.svg"));
+    ui->cbAltWeld->setIcon(altWeldIcon);
+    ui->cbAltWeld->setIconSize(QSize(16, 16));
+
     ui->pbArrowSymbol->setFocus();
     m_arrowOut.init();
     m_arrowPath = QString();
@@ -185,6 +198,19 @@ void TaskWeldingSymbol::setUiEdit()
 
     m_currDir = PreferencesGui::weldingDirectory();
     ui->fcSymbolDir->setFileName(m_currDir);
+
+    // Set "AllAround" checkbox icon
+    QIcon allAroundIcon(QString::fromUtf8(":/Symbols/Welding/UI_Symbols/AllAround.svg"));
+    ui->cbAllAround->setIcon(allAroundIcon);
+    ui->cbAllAround->setIconSize(QSize(16, 16));
+    // Set "FieldWeld" checkbox icon
+    QIcon fieldWeldIcon(QString::fromUtf8(":/Symbols/Welding/UI_Symbols/FieldWeld.svg"));
+    ui->cbFieldWeld->setIcon(fieldWeldIcon);
+    ui->cbFieldWeld->setIconSize(QSize(16, 16));
+    // Set "Alternate" checkbox icon
+    QIcon altWeldIcon(QString::fromUtf8(":/Symbols/Welding/UI_Symbols/AlternateISO.svg"));
+    ui->cbAltWeld->setIcon(altWeldIcon);
+    ui->cbAltWeld->setIconSize(QSize(16, 16));
 
     ui->cbAllAround->setChecked(m_weldFeat->AllAround.getValue());
     ui->cbFieldWeld->setChecked(m_weldFeat->FieldWeld.getValue());
