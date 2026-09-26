@@ -66,9 +66,6 @@ public:
     void onDescription();
 
     void propertyChange(const QString& property, const QVariant& value);
-
-private:
-    QString buildPropertyTooltip(const QString& description, const QString& propertyType, const QString& valueString);
     void onInheritNewMaterial(bool checked);
     void onNewMaterial(bool checked);
     void onFavourite(bool checked);
@@ -116,6 +113,7 @@ protected:
     void saveMaterial();
 
 private:
+    QString buildPropertyTooltip(const QString& description, const QString& propertyType, const QString& valueString);
     std::unique_ptr<Ui_MaterialsEditor> ui;
     std::shared_ptr<Materials::Material> _material;
     AppearancePreview* _rendered;
