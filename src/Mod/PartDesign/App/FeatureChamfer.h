@@ -52,7 +52,7 @@ public:
     App::PropertyAngle Angle;
     App::PropertyBool FlipDirection;
     App::PropertyEnumeration SelectionType;
-    /// TO BE REMOVED -> SelectionType = SelectionMode::AllSolids
+    /// LEGACY -> SelectionType = SelectionMode::AllSolids
     App::PropertyBool UseAllEdges;
 
     /** @name methods override feature */

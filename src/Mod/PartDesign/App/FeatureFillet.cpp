@@ -64,7 +64,7 @@ Fillet::Fillet()
         UseAllEdges,
         (false),
         "Fillet",
-        App::Prop_ReadOnly,
+        App::Prop_Hidden,
         "Fillet all edges if true, else use only those edges in Base property.\n"
         "If true, then this overrides any edge changes made to the Base property or in the "
         "dialog.\n"
@@ -209,6 +209,10 @@ App::DocumentObjectExecReturn* Fillet::execute()
 void Fillet::Restore(Base::XMLReader& reader)
 {
     DressUp::Restore(reader);
+
+    if (UseAllEdges.getValue()) {
+        SelectionType.setValue(SelectionMode::AllSolids);
+    }
 }
 
 void Fillet::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)

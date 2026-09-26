@@ -93,7 +93,7 @@ Chamfer::Chamfer()
         UseAllEdges,
         (false),
         "Chamfer",
-        App::Prop_ReadOnly,
+        App::Prop_Hidden,
         "Chamfer all edges if true, else use only those edges in Base property.\n"
         "If true, then this overrides any edge changes made to the Base property or in the "
         "dialog.\n"
@@ -261,6 +261,10 @@ void Chamfer::Restore(Base::XMLReader& reader)
     DressUp::Restore(reader);
 
     migrateFlippedProperties(reader);
+
+    if (UseAllEdges.getValue()) {
+        SelectionType.setValue(SelectionMode::AllSolids);
+    }
 }
 
 void Chamfer::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)

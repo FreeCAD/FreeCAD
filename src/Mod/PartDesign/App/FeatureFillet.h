@@ -45,7 +45,7 @@ public:
 
     App::PropertyQuantityConstraint Radius;
     App::PropertyEnumeration SelectionType;
-    /// TO BE REMOVED -> SelectionType = SelectionMode::AllSolids
+    /// LEGACY -> SelectionType = SelectionMode::AllSolids
     App::PropertyBool UseAllEdges;
 
     /** @name methods override feature */
