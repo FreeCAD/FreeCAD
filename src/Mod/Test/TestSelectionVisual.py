@@ -86,6 +86,26 @@ class TestSelectionVisual(unittest.TestCase):
             ),
         )
 
+    def test_edge_preselection_overrides_edge_selection(self):
+        plane = self._create_test_plane()
+        self._prepare_view()
+
+        self._assert_subelement_preselection_overrides_selection(
+            plane,
+            "Edge1",
+            plane.Shape.Edges[0].CenterOfMass,
+        )
+
+    def test_vertex_preselection_overrides_vertex_selection(self):
+        plane = self._create_test_plane()
+        self._prepare_view()
+
+        self._assert_subelement_preselection_overrides_selection(
+            plane,
+            "Vertex1",
+            plane.Shape.Vertexes[0].Point,
+        )
+
     def test_selection_can_be_cleared(self):
         plane = self._create_test_plane()
         self._prepare_view()
@@ -170,6 +190,44 @@ class TestSelectionVisual(unittest.TestCase):
         color = image.pixelColor(image.width() // 2, image.height() // 2)
         return (color.redF(), color.greenF(), color.blueF())
 
+    def _assert_subelement_preselection_overrides_selection(self, obj, subelement, sample_point):
+        base_colors = self._pixel_patch_colors(sample_point)
+
+        Selection.addSelection(obj, subelement)
+        self._flush_gui()
+        selection_colors = self._pixel_patch_colors(sample_point)
+
+        Selection.setPreselection(obj, subelement)
+        self._flush_gui()
+        preselection_colors = self._pixel_patch_colors(sample_point)
+
+        self.assertGreater(
+            self._patch_color_distance(base_colors, selection_colors),
+            self._COLOR_DELTA_MIN,
+            msg=f"Selection did not visibly change {subelement}.",
+        )
+        self.assertGreater(
+            self._patch_color_distance(selection_colors, preselection_colors),
+            self._COLOR_DELTA_MIN,
+            msg=f"Preselection did not visibly override selected {subelement}.",
+        )
+
+    def _pixel_patch_colors(self, point, radius=3):
+        image = self.viewer.grabFramebuffer()
+        x, y = self.view.getPointOnViewport(point)
+        x = int(x)
+
+        # Coin viewport coordinates use a bottom-left origin while QImage uses
+        # a top-left origin.
+        y = image.height() - 1 - int(y)
+
+        colors = []
+        for py in range(max(0, y - radius), min(image.height(), y + radius + 1)):
+            for px in range(max(0, x - radius), min(image.width(), x + radius + 1)):
+                color = image.pixelColor(px, py)
+                colors.append((color.redF(), color.greenF(), color.blueF()))
+        return colors
+
     def _assert_color_changed(self, before, after, message):
         self.assertGreater(
             self._color_distance(before, after),
@@ -183,6 +241,10 @@ class TestSelectionVisual(unittest.TestCase):
             self._COLOR_DELTA_RESTORE_MAX,
             msg=f"{message} expected={expected}, actual={actual}",
         )
+
+    @classmethod
+    def _patch_color_distance(cls, lhs, rhs):
+        return max(cls._color_distance(a, b) for a, b in zip(lhs, rhs))
 
     @staticmethod
     def _color_distance(lhs, rhs):
