@@ -1540,6 +1540,8 @@ void AssemblyObject::fixGroundedPart(App::DocumentObject* obj, Base::Placement& 
     markerName1 = "/OndselAssembly/" + mbdMarker1->name;
     markerName2 = "/OndselAssembly/" + mbdPart->name + "/" + mbdMarker2->name;
 
+    mbdPart->isFixed = true;
+
     auto mbdJoint = CREATE<ASMTFixedJoint>::With();
     mbdJoint->setName(name);
     mbdJoint->setMarkerI(markerName1);
