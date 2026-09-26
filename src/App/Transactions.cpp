@@ -310,7 +310,7 @@ void TransactionObject::applyDel(Document& /*Doc*/, TransactionalObject* /*pcObj
 void TransactionObject::applyNew(Document& /*Doc*/, TransactionalObject* /*pcObj*/)
 {}
 
-void TransactionObject::applyChn(Document& /*Doc*/, TransactionalObject* pcObj, bool /* Forward */)
+void TransactionObject::applyChn(Document& Doc, TransactionalObject* pcObj, bool /* Forward */)
 {
     if (status == New || status == Chn) {
         // Property change order is not preserved, as it is recursive in nature
@@ -352,7 +352,34 @@ void TransactionObject::applyChn(Document& /*Doc*/, TransactionalObject* pcObj, 
 
             if (!data.property) {
                 // here means we are undoing/redoing and property add operation
+                Property* propToRemove = pcObj->getDynamicPropertyByName(v.second.name.c_str());
+                bool wasLocked = false;
+                
+                if (propToRemove) {
+                    wasLocked = propToRemove->testStatus(App::Property::LockDynamic);
+                    if (wasLocked) {
+                        // Pre-record the property in its LOCKED state into the active Redo transaction
+                        // so that a Redo operation restores it with the lock intact.
+                        App::Transaction* activeTrans = Doc.getActiveTransaction();
+                        if (activeTrans) {
+                            activeTrans->addOrRemoveProperty(pcObj, propToRemove, false);
+                        }
+                        
+                        // Temporarily remove the lock so the transaction can undo the creation
+                        propToRemove->setStatus(App::Property::LockDynamic, false);
+                    }
+                }
+
+                // Attempt to remove the property
                 pcObj->removeDynamicProperty(v.second.name.c_str());
+                
+                // Re-fetch to see if the property survived (i.e. removal failed)
+                Property* survivingProp = pcObj->getDynamicPropertyByName(v.second.name.c_str());
+                
+                if (survivingProp && wasLocked) {
+                    // Safely restore lock state only if the removal failed
+                    survivingProp->setStatus(App::Property::LockDynamic, true);
+                }
                 continue;
             }
 
