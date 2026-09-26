@@ -142,7 +142,9 @@ protected:
 };
 
 /**
- * A wrapper around a Python class that implements the SelectionGate interface
+ * A wrapper around a Python class that implements the SelectionGate interface.
+ * The class can optionally implement getGatedTypes(allTypes) to restrict the
+ * geometry types considered by element box selection.
  * @author Werner Mayer
  */
 class SelectionGatePython: public SelectionGate
@@ -153,6 +155,9 @@ public:
     ~SelectionGatePython() override;
 
     bool allow(App::Document*, App::DocumentObject*, const char*) override;
+    std::unordered_set<std::string> getGatedTypes(
+        const std::vector<const char*>& allTypesForGeometry
+    ) const override;
 
 private:
     Py::Object gate;
