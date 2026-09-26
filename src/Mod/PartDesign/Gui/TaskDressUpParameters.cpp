@@ -233,15 +233,27 @@ void TaskDressUpParameters::referenceSelected(const SelectionChanges& msg, QList
     updateFeature(pcDressUp, refs);
 }
 
-void TaskDressUpParameters::convert_selection_to_solids(const bool edgesEnabled, const bool facesEnabled)
+void TaskDressUpParameters::convertSelectionToSolids(
+    QListWidget* widget,
+    const bool edgesEnabled,
+    const bool facesEnabled
+)
 {
     PartDesign::DressUp* pcDressUp = DressUpView->getObject<PartDesign::DressUp>();
     std::vector<std::string> refs = pcDressUp->Base.getSubValues();
-    convert_selection_to_solids(refs, edgesEnabled, facesEnabled);
+    convertSelectionToSolids(refs, edgesEnabled, facesEnabled);
     updateFeature(pcDressUp, refs);
+
+    if (widget) {
+        QSignalBlocker block(widget);
+        widget->clear();
+        for (const auto& name : refs) {
+            widget->addItem(QString::fromStdString(name));
+        }
+    }
 }
 
-void TaskDressUpParameters::convert_selection_to_solids(
+void TaskDressUpParameters::convertSelectionToSolids(
     std::vector<std::string>& refs,
     const bool edgesEnabled,
     const bool facesEnabled
@@ -313,16 +325,27 @@ void TaskDressUpParameters::convert_selection_to_solids(
     refs = std::move(convertedRefs);
 }
 
-void TaskDressUpParameters::convert_solids_to_elements(const bool edgesEnabled, const bool facesEnabled)
+void TaskDressUpParameters::convertSelectionToElements(
+    QListWidget* widget,
+    const bool edgesEnabled,
+    const bool facesEnabled
+)
 {
     PartDesign::DressUp* pcDressUp = DressUpView->getObject<PartDesign::DressUp>();
     std::vector<std::string> refs = pcDressUp->Base.getSubValues();
-
-    convert_solids_to_elements(refs, edgesEnabled, facesEnabled);
+    convertSelectionToElements(refs, edgesEnabled, facesEnabled);
     updateFeature(pcDressUp, refs);
+
+    if (widget) {
+        QSignalBlocker block(widget);
+        widget->clear();
+        for (const auto& name : refs) {
+            widget->addItem(QString::fromStdString(name));
+        }
+    }
 }
 
-void TaskDressUpParameters::convert_solids_to_elements(
+void TaskDressUpParameters::convertSelectionToElements(
     std::vector<std::string>& refs,
     const bool edgesEnabled,
     const bool facesEnabled
