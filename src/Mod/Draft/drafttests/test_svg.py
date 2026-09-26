@@ -45,6 +45,7 @@ import draftfunctions.svgshapes as svgshapes
 import importSVG
 from drafttests import auxiliary as aux
 from drafttests import test_base
+from draftutils import params
 from draftutils.messages import _msg
 
 try:
@@ -208,6 +209,62 @@ class DraftSVGExportRegression(test_base.DraftTestCaseDoc):
 
         self.assertIn("<circle ", svg)
         self.assertNotIn("fill-rule: evenodd", svg)
+
+
+class DraftSVGImportGroups(test_base.DraftTestCaseDoc):
+    """Test importing SVG groups and layers as nested document groups."""
+
+    SVG = """<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+     width="100" height="100">
+  <g id="layer1" inkscape:label="Layer 1">
+    <rect x="0" y="0" width="10" height="10"/>
+    <g id="child">
+      <circle cx="5" cy="5" r="2"/>
+    </g>
+    <g id="empty"/>
+  </g>
+</svg>
+"""
+
+    def _import_svg(self, handle_groups):
+        old_value = params.get_param("svgHandleGroups")
+        params.set_param("svgHandleGroups", handle_groups)
+        try:
+            with tempfile.TemporaryDirectory() as temp_dir:
+                in_file = os.path.join(temp_dir, "groups.svg")
+                with open(in_file, "w", encoding="utf-8") as svg_file:
+                    svg_file.write(self.SVG)
+                importSVG.insert(in_file, self.doc.Name)
+        finally:
+            params.set_param("svgHandleGroups", old_value)
+
+    def _get_groups(self):
+        return [obj for obj in self.doc.Objects if obj.isDerivedFrom("App::DocumentObjectGroup")]
+
+    def test_import_nested_groups(self):
+        """Import an SVG with nested groups and check the group hierarchy."""
+        self._import_svg(True)
+
+        groups = {obj.Label: obj for obj in self._get_groups()}
+        self.assertEqual(sorted(groups), ["Layer 1", "child"])
+        layer = groups["Layer 1"]
+        child = groups["child"]
+        self.assertIsNone(layer.getParentGroup())
+        self.assertEqual(child.getParentGroup().Name, layer.Name)
+        layer_shapes = [obj for obj in layer.Group if obj.isDerivedFrom("Part::Feature")]
+        self.assertEqual(len(layer_shapes), 1)
+        child_shapes = [obj for obj in child.Group if obj.isDerivedFrom("Part::Feature")]
+        self.assertEqual(len(child_shapes), 1)
+
+    def test_import_flat_when_disabled(self):
+        """Import the same SVG without groups when the preference is disabled."""
+        self._import_svg(False)
+
+        self.assertEqual(self._get_groups(), [])
+        shapes = [obj for obj in self.doc.Objects if obj.isDerivedFrom("Part::Feature")]
+        self.assertEqual(len(shapes), 2)
 
 
 ## @}
