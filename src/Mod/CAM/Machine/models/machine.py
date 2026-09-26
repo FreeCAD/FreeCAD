@@ -2072,7 +2072,7 @@ class MachineFactory:
         Returns:
             list: List of (name, path) tuples for discovered machine files
         """
-        machines = [("<any>", None)]
+        machines = [("<Legacy post>", None)]
         try:
             asset_base = cls.get_config_directory()
             if asset_base.exists():
@@ -2089,10 +2089,10 @@ class MachineFactory:
         """Get list of available machines from the asset directory.
 
         Scans the Machine subdirectory of the asset path for .fcm files
-        and extracts machine names. Returns ["<any>"] plus discovered machine names.
+        and extracts machine names. Returns ["<Legacy post>"] plus discovered machine names.
 
         Returns:
-            list: List of machine names starting with "<any>"
+            list: List of machine names starting with "<Legacy post>"
         """
         machines = cls.list_configuration_files()
         names = [name for name, path in machines]

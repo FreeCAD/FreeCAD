@@ -173,7 +173,7 @@ class PostProcessDialog:
         dlg = self.dialog
         dlg.comboBoxMachine.blockSignals(True)
         dlg.comboBoxMachine.clear()
-        dlg.comboBoxMachine.addItem(translate("CAM_Post", "(none)"), userData=None)
+        dlg.comboBoxMachine.addItem(translate("CAM_Post", "<Legacy post>"), userData=None)
 
         try:
             from Machine.models.machine import MachineFactory

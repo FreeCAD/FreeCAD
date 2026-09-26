@@ -429,9 +429,9 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
         # List configurations
         configs = MachineFactory.list_configuration_files()
 
-        # Should include <any> plus our two machines
+        # Should include <Legacy post> plus our two machines
         self.assertGreaterEqual(len(configs), 3)
-        self.assertEqual(configs[0][0], "<any>")
+        self.assertEqual(configs[0][0], "<Legacy post>")
 
         # Check that our machines are in the list (by display name, not filename)
         names = [name for name, path in configs]
@@ -446,7 +446,7 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
         configs = MachineFactory.list_configurations()
 
         self.assertIsInstance(configs, list)
-        self.assertIn("<any>", configs)
+        self.assertIn("<Legacy post>", configs)
         # Returns display name from JSON, not filename
         self.assertIn("Test Machine", configs)
 

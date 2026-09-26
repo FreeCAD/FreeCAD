@@ -149,7 +149,7 @@ class AssetPreferencesPage:
         self.machines_list.itemDoubleClicked.connect(self.edit_machine)
 
         for name, filename in MachineFactory.list_configuration_files():
-            if name == "<any>" or filename is None:
+            if name == "<Legacy post>" or filename is None:
                 continue
             item = QtGui.QListWidgetItem(name)
             item.setData(QtCore.Qt.UserRole, filename)

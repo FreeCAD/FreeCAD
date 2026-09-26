@@ -1549,13 +1549,30 @@ class TaskPanel:
         idx = max(0, idx)
         combo.setCurrentIndex(idx)
         combo.blockSignals(False)
+        self.updatePostProcessorVisibility()
+
+    def machineSelected(self):
+        """Return True when a machine configuration (not the legacy sentinel) is selected."""
+        return bool(self.form.jobMachine.currentData())
+
+    def updatePostProcessorVisibility(self):
+        """Show the post processor / arguments rows only when no machine is selected.
+        A machine configuration carries its own post processor settings."""
+        noMachine = not self.machineSelected()
+        for widget in (
+            self.form.label_10,
+            self.form.postProcessor,
+            self.form.label_11,
+            self.form.postProcessorArguments,
+        ):
+            widget.setVisible(noMachine)
 
     def machineChanged(self):
         """Write the selected machine name back to Job.Machine."""
+        self.updatePostProcessorVisibility()
         if not hasattr(self.obj, "Machine"):
             return
-        text = self.form.jobMachine.currentText()
-        self.obj.Machine = text if text and text != "<any>" else ""
+        self.obj.Machine = self.form.jobMachine.currentText() if self.machineSelected() else ""
 
     def newMachine(self):
         """Open the Machine Editor to create a new machine, then refresh the combo."""
