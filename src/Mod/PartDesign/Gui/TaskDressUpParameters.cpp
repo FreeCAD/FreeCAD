@@ -227,7 +227,7 @@ void TaskDressUpParameters::referenceSelected(const SelectionChanges& msg, QList
     }
     else {
         refs.emplace_back(subName);
-        widget->addItem(QString::fromUtf8(msg.pSubName));
+        widget->addItem(QString::fromStdString(msg.pSubName));
     }
 
     updateFeature(pcDressUp, refs);

@@ -194,7 +194,7 @@ void ViewProviderDressUp::highlightReferences(const bool on)
                 continue;
             }
 
-            if (highlightAsSolid) {
+            if (highlightFacesAsSolid) {
                 addSolidForShape(allFaces(faceIndex), TopAbs_FACE);
             }
             else {
@@ -211,7 +211,7 @@ void ViewProviderDressUp::highlightReferences(const bool on)
                 continue;
             }
 
-            if (highlightAsSolid) {
+            if (highlightEdgesAsSolid) {
                 addSolidForShape(allEdges(edgeIndex), TopAbs_EDGE);
             }
             else {
