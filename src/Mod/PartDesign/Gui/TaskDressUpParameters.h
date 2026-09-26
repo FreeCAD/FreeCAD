@@ -64,7 +64,7 @@ public:
     Part::Feature* getBase() const;
 
     /// Convert individual face/edges selection to solid selection
-    void convert_selection_to_solids(bool edgesEnabled, bool facesEnabled);
+    void convert_selection_to_solids(QListWidget* widget, bool edgesEnabled, bool facesEnabled);
     void convert_selection_to_solids(
         std::vector<std::string>& refs,
         bool edgesEnabled,
@@ -72,8 +72,8 @@ public:
     ) const;
 
     /// Selects ALL faces/edges from any selected solids
-    void convert_solids_to_elements(bool edgesEnabled, bool facesEnabled);
-    void convert_solids_to_elements(
+    void convert_selection_to_elements(QListWidget* widget, bool edgesEnabled, bool facesEnabled);
+    void convert_selection_to_elements(
         std::vector<std::string>& refs,
         bool edgesEnabled,
         bool facesEnabled
