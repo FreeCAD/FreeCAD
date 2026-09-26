@@ -34,7 +34,7 @@ else:
 def check_collision(
     start_position: Vector,
     target_position: Vector,
-    solids: list(Part.Shape) | None = None,
+    solids: list[Part.Shape] | None = None,
     tool_shape: Part.Shape | None = None,
     tool_diameter: float | None = None,
     collision_clearance: float = 1,
@@ -95,7 +95,7 @@ def get_linking_moves(
     heights_clearance: list[float],
     tool_shape: Part.Shape | None = None,
     tool_diameter: float | None = None,
-    solids: list(Part.Shape) | None = None,
+    solids: list[Part.Shape] | None = None,
     retract_height_offset: float | None = None,
     skip_if_no_collision: bool = False,
     collision_clearance: float = 1,

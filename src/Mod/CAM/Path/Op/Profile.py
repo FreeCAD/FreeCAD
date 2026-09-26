@@ -231,12 +231,21 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 ),
             ),
             (
-                "App::PropertyBool",
-                "HelixRamp",
-                "Profile",
+                "App::PropertyEnumeration",
+                "RampMethod",
+                "RampEntry",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Create helix ramp for closed path\nHelix pitch limits by 'Step Down'",
+                ),
+            ),
+            (
+                "App::PropertyAngle",
+                "RampAngle",
+                "RampEntry",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Angle of ramp",
                 ),
             ),
             (
@@ -247,15 +256,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     "App::Property",
                     "Adds an additional finishing pass "
                     "that clears the stock left over from tool deflection",
-                ),
-            ),
-            (
-                "App::PropertyLength",
-                "ExtensionOffset",
-                "Profile",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Extension for working area limited by the model shape",
                 ),
             ),
         ]
@@ -292,6 +292,13 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             "StartAt": [
                 (translate("PathProfile", "OutOfEdge"), "OutOfEdge"),
                 (translate("PathProfile", "Edge"), "Edge"),
+            ],
+            "RampMethod": [
+                (translate("PathProfile", "None"), "None"),
+                (translate("PathProfile", "Helix"), "Helix"),
+                (translate("PathProfile", "Method 1"), "Method 1"),
+                (translate("PathProfile", "Method 2"), "Method 2"),
+                (translate("PathProfile", "Method 3"), "Method 3"),
             ],
         }
 
@@ -362,6 +369,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         sortingMode = 0 if obj.HandleMultipleFeatures == "Individually" else 2
         multiPassMode = 0 if obj.NumPasses > 1 else 2
         finishingMode = 0 if obj.FinishingPasses else 2
+        retractThresholdMode = 0 if obj.NumPasses + obj.FinishingPasses > 1 else 2
 
         obj.setEditorMode("Stepover", multiPassMode)
         obj.setEditorMode("Side", side)
@@ -371,7 +379,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         obj.setEditorMode("processPerimeter", fc)
         obj.setEditorMode("UseLongestEdge", useLongestEdgeMode)
         obj.setEditorMode("SortingMode", sortingMode)
-        obj.setEditorMode("RetractThreshold", multiPassMode)
+        obj.setEditorMode("RetractThreshold", retractThresholdMode)
         obj.setEditorMode("StartAt", multiPassMode)
         obj.setEditorMode("FinishingOffset", finishingMode)
         obj.setEditorMode("FinishingOneStepDown", finishingMode)

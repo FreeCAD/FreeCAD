@@ -209,7 +209,9 @@ class ObjectOp(PathOp.ObjectOp):
         Path.Log.track()
 
         areaParamsList = []
-        if "Path.Op.Pocket" in obj.Proxy.__module__:
+        # Pocket family (Pocket, PocketShape, MillFace) provides finishing areas
+        pocketOp = hasattr(self, "areaOpAreaParamsFinishing")
+        if pocketOp:
             # Pocket operation: split area and get order Clearing path -> Finishing pass
             if obj.ClearingPattern != "No clearing":
                 areaParamsList.append(self.areaOpAreaParams(obj, isHole))  # Clearing path
@@ -260,13 +262,14 @@ class ObjectOp(PathOp.ObjectOp):
             oneStepDown = False
             middleEdge = False
             pocketCenter = False
+            finishing = areaIndex >= len(areaParamsList) - getattr(obj, "FinishingPasses", 0)
             if "Path.Op.Profile" in obj.Proxy.__module__:
                 if obj.RampAngle:
                     rampParams["angle_rad"] = math.radians(obj.RampAngle.Value)
                 else:
                     rampParams["pitch"] = obj.StepDown.Value
 
-                if areaIndex >= len(areaParamsList) - obj.FinishingPasses:  # Profile finishing pass
+                if finishing:  # Profile finishing pass
                     if obj.FinishingOneStepDown:
                         oneStepDown = True
                     elif obj.RampMethod == "Helix":
@@ -278,6 +281,17 @@ class ObjectOp(PathOp.ObjectOp):
                         0 if obj.RampMethod == "Helix" else int(obj.RampMethod.split()[1])
                     )
 
+                if rampParams["method"] and not rampParams["angle_rad"]:
+                    # Ramp methods 1-3 need an angle, plunge instead
+                    if areaIndex == 0:
+                        Path.Log.warning(
+                            translate(
+                                "PathAreaOp", "%s: ramp method '%s' needs a ramp angle, plunging"
+                            )
+                            % (obj.Label, obj.RampMethod)
+                        )
+                    rampParams["method"] = None
+
                 if (
                     obj.UseLongestEdge
                     and not obj.UseStartPoint
@@ -285,8 +299,8 @@ class ObjectOp(PathOp.ObjectOp):
                 ):
                     middleEdge = True
 
-            elif "Path.Op.Pocket" in obj.Proxy.__module__:
-                if areaIndex >= len(areaParamsList) - obj.FinishingPasses:  # Pocket finishing pass
+            elif pocketOp:
+                if finishing:  # Pocket finishing pass
                     pathParams["orientation"] = not baseOrientation
                     if obj.FinishingOneStepDown:
                         oneStepDown = True
@@ -367,13 +381,13 @@ class ObjectOp(PathOp.ObjectOp):
                     Path.Log.debug("pp: {}, end vector: {}".format(pp, end_vector))
 
                     if pp.Size:
+                        doRamp = rampParams["method"] is not None
                         while pp.Commands[0].Name in Constants.GCODE_MOVE_RAPID:
                             pp.deleteCommand(0)  # remove rapid moves
                         plungeMove = pp.Commands[0]
                         p = Path.Geom.commandEndPoint(plungeMove)
                         pp.deleteCommand(0)  # remove plunge move
 
-                        doRamp = rampParams["method"] is not None
                         cmds = []
                         if self.initmove:
                             self.initmove = False

@@ -1,26 +1,24 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2017 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileCopyrightText: 2020 russ4262 (Russell Johnson)
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
-# *   Copyright (c) 2020 russ4262 (Russell Johnson)                         *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
 import Path
@@ -45,6 +43,9 @@ translate = FreeCAD.Qt.translate
 
 class ObjectPocket(PathAreaOp.ObjectOp):
     """Base class for proxy objects of all pocket operations."""
+
+    # ClearingPattern values a subclass does not support
+    excludedClearingPatterns = ()
 
     @classmethod
     def pocketPropertyEnumerations(cls, dataType="data"):
@@ -79,6 +80,10 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 (translate("CAM_Pocket", "Manual"), "Manual"),
             ],
         }
+
+        enums["ClearingPattern"] = [
+            p for p in enums["ClearingPattern"] if p[1] not in cls.excludedClearingPatterns
+        ]
 
         if dataType == "raw":
             return enums
@@ -276,10 +281,11 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         params["FromCenter"] = obj.StartAt == "Center"
         params["PocketStepover"] = (self.radius * 2) * (float(obj.StepOver) / 100)
         extraOffset = obj.ExtraOffset.Value
-        if obj.FinishingPasses:
-            extraOffset += obj.FinishingOffset.Value
         if self.pocketInvertExtraOffset():
             extraOffset = -extraOffset
+        if obj.FinishingPasses:
+            # leave stock for the finishing pass, always inward
+            extraOffset += obj.FinishingOffset.Value
         params["PocketExtraOffset"] = extraOffset
         params["ToolRadius"] = self.radius
         params["ForceMaxStepover"] = obj.ForceMaxStepOver
@@ -310,7 +316,10 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         params["Fill"] = 0
         params["Coplanar"] = 0
         params["SectionCount"] = -1
-        params["Offset"] = -(self.radius + obj.ExtraOffset.Value)
+        extraOffset = obj.ExtraOffset.Value
+        if self.pocketInvertExtraOffset():
+            extraOffset = -extraOffset
+        params["Offset"] = -(self.radius + extraOffset)
         params["ExtraPass"] = 0
         params["Stepover"] = 0
 
@@ -409,7 +418,8 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 ),
             )
             obj.FinishingPasses = (0, 0, 999999, 1)
-            obj.FinishingPasses = 1
+            # ZigZagOffset is replaced by ZigZag with a finishing pass
+            obj.FinishingPasses = 1 if obj.ClearingPattern == "ZigZagOffset" else 0
         if not hasattr(obj, "FinishingRampHelix"):
             obj.addProperty(
                 "App::PropertyBool",
@@ -420,6 +430,16 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                     "Create helix ramp for finishing pass",
                 ),
             )
+        if hasattr(obj, "MinTravel"):
+            obj.removeProperty("MinTravel")
+
+        patterns = dict(self.pocketPropertyEnumerations())["ClearingPattern"]
+        if obj.getEnumerationsOfProperty("ClearingPattern") != patterns:
+            pattern = obj.ClearingPattern
+            if pattern == "ZigZagOffset":
+                pattern = "ZigZag"
+            obj.ClearingPattern = patterns
+            obj.ClearingPattern = pattern if pattern in patterns else patterns[0]
 
         Path.Log.track()
 
@@ -442,6 +462,7 @@ def SetupProperties():
     setup.append("FinishingPasses")
     setup.append("FinishingOffset")
     setup.append("FinishingOneStepDown")
+    setup.append("FinishingRampHelix")
     setup.append("StartAt")
     setup.append("StepDown")
     setup.append("StepOver")
