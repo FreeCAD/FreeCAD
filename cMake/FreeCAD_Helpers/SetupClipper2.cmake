@@ -14,6 +14,16 @@ else()
 
     add_subdirectory(src/3rdParty/Clipper2)
     add_library(Clipper2::Clipper2Z ALIAS Clipper2Z)
+    get_directory_property(
+        _clipper2_version
+        DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src/3rdParty/Clipper2"
+        DEFINITION Clipper2_VERSION
+    )
+    if(NOT _clipper2_version)
+        message(FATAL_ERROR "Bundled Clipper2 did not provide a version")
+    endif()
+    set(Clipper2_VERSION "${_clipper2_version}")
+    unset(_clipper2_version)
 endif()
 
 endmacro(SetupClipper2)
