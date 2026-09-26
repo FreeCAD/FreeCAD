@@ -280,9 +280,12 @@ def export(objectslist, filename, argstring):
 
     print("done postprocessing.")
 
-    gfile = pyopen(filename, "w")
-    gfile.write(final)
-    gfile.close()
+    if not filename == "-":
+        gfile = pyopen(filename, "w")
+        gfile.write(final)
+        gfile.close()
+
+    return final
 
 
 def linenumber():
@@ -320,7 +323,8 @@ def parse(pathobj):
         if OUTPUT_COMMENTS:
             out += linenumber() + "(Path: " + pathobj.Label + ")\n"
 
-        for c in PathUtils.getPathWithPlacement(pathobj).Commands:
+        path_to_process = PathUtils.getPathWithPlacementAndTerminator(pathobj)
+        for c in path_to_process.Commands:
             outstring = []
             command = c.Name
             outstring.append(command)

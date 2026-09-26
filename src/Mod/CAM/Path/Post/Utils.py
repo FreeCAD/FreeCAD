@@ -27,6 +27,7 @@ These are common functions and classes for creating custom post processors.
 from Path.Base.MachineState import MachineState
 from Path.Main.Gui.Editor import CodeEditor
 from Path.Geom import CmdMoveDrill
+from Constants import GCODE_DRILL_EXTENDED
 
 from PySide import QtGui
 
@@ -401,7 +402,7 @@ def cannedCycleTerminator(path):
             last_retract_mode = command.Name
             explicit_retract_mode_set = True
             result.append(command)
-        elif command.Name in CmdMoveDrill:
+        elif command.Name in CmdMoveDrill + GCODE_DRILL_EXTENDED:
             # Check if this cycle has different parameters than the last one
             current_params = {k: v for k, v in command.Parameters.items() if k not in ["X", "Y"]}
 

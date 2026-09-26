@@ -271,7 +271,7 @@ def parse(pathobj):
         if not hasattr(pathobj, "Path"):
             return out
 
-        for c in PathUtils.getPathWithPlacement(pathobj).Commands:
+        for c in PathUtils.getPathWithPlacementAndTerminator(pathobj).Commands:
             commandlist = []  # list of elements in the command, code and params.
             command = c.Name  # command M or G code or comment string
 

@@ -442,7 +442,9 @@ M2
         args = "--no-header --no-comments --no-show-editor"
         gcode = postprocessor.export(postables, "-", args)
         lines = gcode.splitlines()
-        self.assertEqual(lines[2], "G84 F100.000 X0.000 Y0.000 Z0.000 R10.000 ")
+        self.assertEqual(lines[2], "G98 ")
+        self.assertEqual(lines[3], "G84 F100.000 X0.000 Y0.000 Z0.000 R10.000 ")
+        self.assertEqual(lines[4], "G80 ")
 
     def test_thread_tapping_links(self):
         """Test thread tapping."""
@@ -465,7 +467,9 @@ M2
         args = "--no-header --no-comments --no-show-editor"
         gcode = postprocessor.export(postables, "-", args)
         lines = gcode.splitlines()
-        self.assertEqual(lines[2], "G74 F100.000 X0.000 Y0.000 Z0.000 R10.000 ")
+        self.assertEqual(lines[2], "G98 ")
+        self.assertEqual(lines[3], "G74 F100.000 X0.000 Y0.000 Z0.000 R10.000 ")
+        self.assertEqual(lines[4], "G80 ")
 
     def test_thread_rigid_tapping(self):
         """Test rigid thread tapping."""
@@ -488,10 +492,12 @@ M2
         args = "--no-header --no-comments --no-show-editor --rigid-tap"
         gcode = postprocessor.export(postables, "-", args)
         lines = gcode.splitlines()
-        self.assertEqual(lines[2], "G33.1 K100.000 Z0.000 ")
-        self.assertEqual(lines[3], "M4")
-        self.assertEqual(lines[4], "G33.1 K100.000 Z10.000")
-        self.assertEqual(lines[5], "M3")
+        self.assertEqual(lines[2], "G98 ")
+        self.assertEqual(lines[3], "G33.1 K100.000 Z0.000 ")
+        self.assertEqual(lines[4], "M4")
+        self.assertEqual(lines[5], "G33.1 K100.000 Z10.000")
+        self.assertEqual(lines[6], "M3")
+        self.assertEqual(lines[7], "G80 ")
 
     def test_thread_rigid_tapping_links(self):
         """Test rigid thread tapping."""
@@ -514,7 +520,9 @@ M2
         args = "--no-header --no-comments --no-show-editor --rigid-tap"
         gcode = postprocessor.export(postables, "-", args)
         lines = gcode.splitlines()
-        self.assertEqual(lines[2], "G33.1 K100.000 Z0.000 ")
-        self.assertEqual(lines[3], "M3")
-        self.assertEqual(lines[4], "G33.1 K100.000 Z10.000")
-        self.assertEqual(lines[5], "M4")
+        self.assertEqual(lines[2], "G98 ")
+        self.assertEqual(lines[3], "G33.1 K100.000 Z0.000 ")
+        self.assertEqual(lines[4], "M3")
+        self.assertEqual(lines[5], "G33.1 K100.000 Z10.000")
+        self.assertEqual(lines[6], "M4")
+        self.assertEqual(lines[7], "G80 ")
