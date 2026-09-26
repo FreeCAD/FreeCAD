@@ -18,18 +18,55 @@ class TestPropertyFlags(unittest.TestCase):
             App.closeDocument(self.doc.Name)
 
     def test(self):
-        FlagList = [ "Touched", "Immutable", "ReadOnly", "Hidden", "Transient", "MaterialEdit", 
-            "NoMaterialListEdit", "Output", "Input", "LockDynamic", "NoModify", "PartialTrigger", 
-            "NoRecompute", "CopyOnChange", "UserEdit", "DisableNotify", "PropStaticBegin", "Busy",  
-            "PropDynamic", "PropNoPersist", "PropNoRecompute", "PropReadOnly", "PropTransient", 
-            "PropHidden", "PropOutput", "PropInput", "PropStaticEnd", "User1", "User2", "User3", ]
+        FlagList = [
+            "Touched",
+            "Immutable",
+            "ReadOnly",
+            "Hidden",
+            "Transient",
+            "MaterialEdit",
+            "NoMaterialListEdit",
+            "Output",
+            "Input",
+            "LockDynamic",
+            "NoModify",
+            "PartialTrigger",
+            "NoRecompute",
+            "CopyOnChange",
+            "UserEdit",
+            "DisableNotify",
+            "PropStaticBegin",
+            "Busy",
+            "PropDynamic",
+            "PropNoPersist",
+            "PropNoRecompute",
+            "PropReadOnly",
+            "PropTransient",
+            "PropHidden",
+            "PropOutput",
+            "PropInput",
+            "PropStaticEnd",
+            "User1",
+            "User2",
+            "User3",
+        ]
 
-        SpecialFlags = [ "PropStaticBegin", "PropDynamic", "PropNoRecompute", "PropReadOnly", "PropTransient", 
-            "PropOutput", "PropHidden", "PropNoPersist", "Busy", "User1",  ]
+        SpecialFlags = [
+            "PropStaticBegin",
+            "PropDynamic",
+            "PropNoRecompute",
+            "PropReadOnly",
+            "PropTransient",
+            "PropOutput",
+            "PropHidden",
+            "PropNoPersist",
+            "Busy",
+            "User1",
+        ]
 
-        SettableFlags = [ i for i in FlagList if i not in SpecialFlags ]
+        SettableFlags = [i for i in FlagList if i not in SpecialFlags]
 
-        negativeFlagList = [ '-'+i for i in FlagList]
+        negativeFlagList = ["-" + i for i in FlagList]
 
         self.assertEqual(self.obj.getPropertyStatus("Test"), ["PropDynamic"])
         self.obj.Test = False
@@ -63,24 +100,22 @@ class TestPropertyFlags(unittest.TestCase):
         self.obj.setPropertyStatus("Test", FlagList)
         ret = self.obj.getPropertyStatus("Test")
         for i in SettableFlags:
-            self.assertTrue( i in ret, msg=f"{i}")
+            self.assertTrue(i in ret, msg=f"{i}")
 
         self.obj.setPropertyStatus("Test", negativeFlagList)
 
         ret = self.obj.getPropertyStatus("Test")
         for i in SettableFlags:
-            self.assertTrue( i not in ret, msg=f"{i}")
-
+            self.assertTrue(i not in ret, msg=f"{i}")
 
         # try to set/clear forbidden bits
-        ret = [ i for i in self.obj.getPropertyStatus("Test") if i in SpecialFlags ]
+        ret = [i for i in self.obj.getPropertyStatus("Test") if i in SpecialFlags]
         self.obj.setPropertyStatus("Test", SpecialFlags)
-        ret2 = [ i for i in self.obj.getPropertyStatus("Test") if i in SpecialFlags ]
+        ret2 = [i for i in self.obj.getPropertyStatus("Test") if i in SpecialFlags]
         self.assertEqual(ret, ret2)
 
-        negativeSpecialFlags = [ '-'+i for i in SpecialFlags ]
-        ret = [ i for i in self.obj.getPropertyStatus("Test") if i in SpecialFlags ]
+        negativeSpecialFlags = ["-" + i for i in SpecialFlags]
+        ret = [i for i in self.obj.getPropertyStatus("Test") if i in SpecialFlags]
         self.obj.setPropertyStatus("Test", negativeSpecialFlags)
-        ret2 = [ i for i in self.obj.getPropertyStatus("Test") if i in SpecialFlags ]
+        ret2 = [i for i in self.obj.getPropertyStatus("Test") if i in SpecialFlags]
         self.assertEqual(ret, ret2)
-
