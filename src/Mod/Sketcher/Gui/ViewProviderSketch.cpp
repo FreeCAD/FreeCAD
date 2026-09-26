@@ -4339,9 +4339,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
     listener = std::make_unique<ShortcutListener>(this);
 
     Gui::getMainWindow()->installEventFilter(listener.get());
-    if (editDoc && editDoc->isActive()) {
-        setupActiveAndInEdit();
-    }
+    setupActiveAndInEdit();
 
     return true;
 }
@@ -4370,15 +4368,6 @@ void ViewProviderSketch::unsetupActiveAndInEdit()
     detachSelection();
 
     Workbench::leaveEditMode();
-}
-void ViewProviderSketch::setActive(bool active)
-{
-    bool inEdit = isInEditMode();
-    if (active && inEdit) {
-        setupActiveAndInEdit();
-    } else {
-        unsetupActiveAndInEdit();
-    }
 }
 
 QString ViewProviderSketch::appendConflictMsg(const std::vector<int>& conflicting)
