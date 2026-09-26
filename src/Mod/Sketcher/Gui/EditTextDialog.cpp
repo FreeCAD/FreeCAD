@@ -45,6 +45,8 @@ EditTextDialog::EditTextDialog(ViewProviderSketch* viewProvider, int constraintI
     , sketchView(viewProvider)
     , constrIndex(constraintIndex)
 {
+    Q_ASSERT(parent);
+
     ui->setupUi(this);
 
     ui->comboBox_font->setMaxVisibleItems(20);
@@ -76,6 +78,9 @@ EditTextDialog::EditTextDialog(ViewProviderSketch* viewProvider, int constraintI
             );
         }
     }
+
+    // This compact form has no content that can use additional vertical space.
+    setFixedHeight(sizeHint().height());
 }
 
 EditTextDialog::~EditTextDialog()
