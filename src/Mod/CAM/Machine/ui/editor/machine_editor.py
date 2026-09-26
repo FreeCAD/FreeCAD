@@ -36,6 +36,7 @@ from Machine.models.machine import (
     ToolheadType,
     AxisRole,
     WrapStrategy,
+    RotationStrategy,
 )
 from Path.Main.Gui.Editor import CodeEditor
 from Path.Post.Processor import (
@@ -173,7 +174,7 @@ class DataclassGUIGenerator:
         "origin": translate("CAM_MachineEditor", "Origin"),
         "orientation_quaternion": translate("CAM_MachineEditor", "Orientation Quaternion"),
         "tcp_supported": translate("CAM_MachineEditor", "TCP Supported"),
-        "dwo_supported": translate("CAM_MachineEditor", "DWO Supported"),
+        "rotation_strategy": translate("CAM_MachineEditor", "Rotation Strategy"),
         "notes": translate("CAM_MachineEditor", "Kinematics Notes"),
         # Axis field labels
         "role": translate("CAM_MachineEditor", "Role"),
@@ -716,8 +717,8 @@ class MachineEditorDialog(QtGui.QDialog):
         if self.machine:
             if field_name == "tcp_supported":
                 self.machine.kinematics.tcp_supported = value
-            elif field_name == "dwo_supported":
-                self.machine.kinematics.dwo_supported = value
+            elif field_name == "rotation_strategy":
+                self.machine.kinematics.rotation_strategy = value
             elif field_name == "notes":
                 self.machine.kinematics.notes = value
 
@@ -1018,12 +1019,35 @@ class MachineEditorDialog(QtGui.QDialog):
             translate("CAM_MachineEditor", "TCP Supported"), self.tcp_supported_check
         )
 
-        self.dwo_supported_check = QtGui.QCheckBox()
-        self.dwo_supported_check.toggled.connect(
-            lambda v: self._on_kinematics_field_changed("dwo_supported", v)
+        # How the control handles an operation on a tilted work plane
+        self.rotation_strategy_combo = QtGui.QComboBox()
+        for member, label in (
+            (RotationStrategy.NONE, translate("CAM_MachineEditor", "Not declared")),
+            (RotationStrategy.DWO, translate("CAM_MachineEditor", "Dynamic work offset (DWO)")),
+            (RotationStrategy.TWP, translate("CAM_MachineEditor", "Tilted work plane (TWP)")),
+            (
+                RotationStrategy.POST_TRANSFORM,
+                translate("CAM_MachineEditor", "Post transform (not available yet)"),
+            ),
+        ):
+            self.rotation_strategy_combo.addItem(label, member)
+        self.rotation_strategy_combo.setToolTip(
+            translate(
+                "CAM_MachineEditor",
+                "How the control runs an operation on a tilted work plane. DWO: the post "
+                "commands the rotary axes and the control applies its pivot offsets. TWP: "
+                "the post declares the plane and the control positions the rotary axes. "
+                "A machine with rotary axes and no strategy cannot post such an operation. "
+                "The command the plane is declared with comes from the post-processor.",
+            )
+        )
+        self.rotation_strategy_combo.currentIndexChanged.connect(
+            lambda i: self._on_kinematics_field_changed(
+                "rotation_strategy", self.rotation_strategy_combo.itemData(i)
+            )
         )
         kinematics_layout.addRow(
-            translate("CAM_MachineEditor", "DWO Supported"), self.dwo_supported_check
+            translate("CAM_MachineEditor", "Rotation Strategy"), self.rotation_strategy_combo
         )
 
         # Notes
@@ -2166,9 +2190,11 @@ class MachineEditorDialog(QtGui.QDialog):
         if not self.machine:
             return
 
-        # TCP/DWO support
-        self.tcp_supported_check.setChecked(self.machine.kinematics.tcp_supported)
-        self.dwo_supported_check.setChecked(self.machine.kinematics.dwo_supported)
+        kinematics = self.machine.kinematics
+        self.tcp_supported_check.setChecked(kinematics.tcp_supported)
+        self.rotation_strategy_combo.setCurrentIndex(
+            max(0, self.rotation_strategy_combo.findData(kinematics.rotation_strategy))
+        )
 
         # Notes
         self.kinematics_notes_edit.setText(self.machine.kinematics.notes)

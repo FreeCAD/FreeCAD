@@ -190,14 +190,22 @@ class DressupPathBoundary(object):
             Path.Log.error("Boundary stock has no Shape; cannot execute dressup.")
             obj.Path = Path.Path()
             return
-        if obj.Offset and obj.Stock and not obj.Stock.Shape.isNull():
+        PathDressup.placeWithBase(obj)
+        # The base operation's path is in its work plane's frame; the
+        # boundary is world geometry. Bring the boundary into that frame.
+        boundary = obj.Stock.Shape
+        frame = PathUtil.workplaneForOp(obj)
+        if not frame.isIdentity(1e-9):
+            boundary = boundary.transformed(frame.inverse().toMatrix())
+
+        if obj.Offset and obj.Stock and not boundary.isNull():
             offset = obj.Offset
             if obj.Inside:
                 offset = -offset
-            stock = Path.Geom.uncompound(obj.Stock.Shape)
+            stock = Path.Geom.uncompound(boundary)
             shape = [sh.makeOffsetShape(offset, tolerance=0.1, join=2) for sh in stock]
         else:
-            shape = obj.Stock.Shape
+            shape = boundary
 
         pb = PathBoundary(obj.Base, shape, obj.Inside, obj.RetractThreshold)
         obj.Path = pb.execute()
@@ -250,7 +258,7 @@ class PathBoundary:
         ):
             return None
 
-        path = PathUtils.getPathWithPlacement(self.baseOp)
+        path = self.baseOp.Path
         if len(path.Commands) == 0:
             Path.Log.warning("No Path Commands for %s" % self.baseOp.Label)
             return []

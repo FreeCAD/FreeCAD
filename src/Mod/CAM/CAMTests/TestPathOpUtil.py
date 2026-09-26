@@ -1071,104 +1071,15 @@ class TestGetClearedAreasWorkplane(PathTestUtils.PathTestBase):
         self.assertEqual(len(areas), 1, "A previous op without Workplane should default to Z-up")
 
 
-class TestStripRotaryAxes(PathTestUtils.PathTestBase):
-    """Verify _stripRotaryAxes drops rotary parameters from path commands."""
-
-    def test_pureRotaryCommandDropped(self):
-        """A G0 with only rotary parameters is removed entirely."""
-        path = Path.Path(
-            [
-                Path.Command("G0", {"A": 90.0}),
-                Path.Command("G1", {"X": 1.0, "Y": 2.0, "Z": -1.0}),
-            ]
-        )
-        stripped = PathOpUtil._stripRotaryAxes(path)
-        self.assertEqual(len(stripped.Commands), 1)
-        self.assertEqual(stripped.Commands[0].Name, "G1")
-        self.assertNotIn("A", stripped.Commands[0].Parameters)
-
-    def test_mixedCommandKeepsLinearAxes(self):
-        """A move that carries both linear and rotary axes keeps the linear ones."""
-        path = Path.Path(
-            [
-                Path.Command("G1", {"X": 5.0, "Y": 6.0, "Z": -2.0, "B": 45.0}),
-            ]
-        )
-        stripped = PathOpUtil._stripRotaryAxes(path)
-        self.assertEqual(len(stripped.Commands), 1)
-        params = stripped.Commands[0].Parameters
-        self.assertEqual(params.get("X"), 5.0)
-        self.assertEqual(params.get("Y"), 6.0)
-        self.assertEqual(params.get("Z"), -2.0)
-        for axis in ("A", "B", "C", "U", "V", "W"):
-            self.assertNotIn(axis, params)
-
-    def test_clearedAreaIgnoresLeadingRotation(self):
-        """Cleared area on a stripped path matches the same path without the rotary G0.
-
-        This is the property that makes REST machining correct in 3+2: the
-        leading rotary command must not cause PathSegmentWalker to rotate the
-        subsequent X/Y/Z positions.
-        """
-        bbox = FreeCAD.BoundBox()
-        bbox.add(FreeCAD.Vector(-50, -50, -10))
-        bbox.add(FreeCAD.Vector(50, 50, 10))
-
-        # A simple square traverse at z=-1.
-        moves = [
-            Path.Command("G0", {"X": -10, "Y": -10, "Z": 5}),
-            Path.Command("G1", {"X": -10, "Y": -10, "Z": -1}),
-            Path.Command("G1", {"X": 10, "Y": -10, "Z": -1}),
-            Path.Command("G1", {"X": 10, "Y": 10, "Z": -1}),
-            Path.Command("G1", {"X": -10, "Y": 10, "Z": -1}),
-            Path.Command("G1", {"X": -10, "Y": -10, "Z": -1}),
-        ]
-        plain = Path.Path(moves)
-        rotated = Path.Path([Path.Command("G0", {"B": -90.0})] + moves)
-
-        plainArea = plain.getClearedArea(5.0, 0.0, bbox)
-        rotatedRawArea = rotated.getClearedArea(5.0, 0.0, bbox)
-        rotatedStrippedArea = PathOpUtil._stripRotaryAxes(rotated).getClearedArea(5.0, 0.0, bbox)
-
-        # Compare via Wires count + bounding box of resulting shape — we just
-        # need to confirm that stripping recovers the unrotated cleared area
-        # and that the raw rotated walk produces something different.
-        plainShape = plainArea.toTopoShape()
-        rotatedRawShape = rotatedRawArea.toTopoShape()
-        strippedShape = rotatedStrippedArea.toTopoShape()
-
-        plainBB = plainShape.BoundBox
-        strippedBB = strippedShape.BoundBox
-        rawBB = rotatedRawShape.BoundBox
-
-        # Stripped result should match the plain (no-rotation) result.
-        self.assertAlmostEqual(plainBB.XMin, strippedBB.XMin, places=3)
-        self.assertAlmostEqual(plainBB.XMax, strippedBB.XMax, places=3)
-        self.assertAlmostEqual(plainBB.YMin, strippedBB.YMin, places=3)
-        self.assertAlmostEqual(plainBB.YMax, strippedBB.YMax, places=3)
-
-        # The unstripped rotated walk should NOT match — confirms the bug is
-        # real and that the strip is doing the work.
-        differs = (
-            not Path.Geom.isRoughly(plainBB.XMin, rawBB.XMin)
-            or not Path.Geom.isRoughly(plainBB.XMax, rawBB.XMax)
-            or not Path.Geom.isRoughly(plainBB.YMin, rawBB.YMin)
-            or not Path.Geom.isRoughly(plainBB.YMax, rawBB.YMax)
-        )
-        self.assertTrue(
-            differs,
-            "Unstripped rotated path should produce a rotation-compensated "
-            "cleared area different from the plain path",
-        )
-
-
 class TestWorkplaneRotationCommands(PathTestUtils.PathTestBase):
-    """Verify ops always command their rotary pose on a rotary-capable machine.
+    """Verify ops always record their rotary pose on a rotary-capable machine.
 
     Operations are atomic: an op cannot know what pose the previous op left
-    the machine in. On a machine with rotary axes even a Z-up op must
-    therefore emit an explicit G0 zeroing the rotary axes, otherwise a Z-up
-    op following a rotated op silently machines the wrong face (issue #32046).
+    the machine in. On a machine with rotary axes even a Z-up op therefore
+    records an explicit zero pose, which the post-processor commands before
+    the op, otherwise a Z-up op following a rotated op silently machines the
+    wrong face (issue #32046). The op's own path carries no rotary words: it
+    is generated in its work plane's frame and knows nothing of the machine.
     """
 
     def setUp(self):
@@ -1225,33 +1136,28 @@ class TestWorkplaneRotationCommands(PathTestUtils.PathTestBase):
             and ("A" in c.Parameters or "B" in c.Parameters or "C" in c.Parameters)
         ]
 
-    def test_zUpOpEmitsZeroRotation(self):
-        """A Z-up op on a rotary machine commands all rotary axes to zero."""
+    def test_zUpOpHasAnIdentityFrameAndNoRotaryWords(self):
+        """A Z-up op on a rotary machine records nothing about the machine:
+        the post solves the (zero) pose from the identity Placement."""
         self._attachMachine()
         op = self._makeOp("ZUp", Vector(0, 0, 1))
 
-        rotary = self._rotaryCommands(op)
-        self.assertTrue(rotary, "Z-up op on a rotary machine must emit a rotary G0")
-        params = rotary[0].Parameters
-        self.assertAlmostEqual(params.get("A"), 0.0)
-        self.assertAlmostEqual(params.get("C"), 0.0)
+        self.assertFalse(hasattr(op, "RotaryPositions"))
+        self.assertTrue(op.Placement.isIdentity(1e-9))
+        self.assertEqual(self._rotaryCommands(op), [], "the op's own path carries no rotary words")
 
-    def test_rotatedOpEmitsSolvedRotation(self):
-        """A non-Z workplane still emits its solved rotary position."""
+    def test_rotatedOpCarriesItsPlaneAndNoRotaryWords(self):
+        """A non-Z workplane is carried as the op's Placement; the rotary
+        positions are the post's to solve."""
         self._attachMachine()
         op = self._makeOp("Side", Vector(0, 1, 0))
 
-        rotary = self._rotaryCommands(op)
-        self.assertTrue(rotary, "Rotated op must emit a rotary G0")
-        params = rotary[0].Parameters
-        self.assertAlmostEqual(abs(params.get("A")), 90.0)
+        self.assertFalse(hasattr(op, "RotaryPositions"))
+        z = op.Placement.Rotation.multVec(Vector(0, 0, 1))
+        self.assertTrue(z.isEqual(Vector(0, 1, 0), 1e-6))
+        self.assertEqual(self._rotaryCommands(op), [], "the op's own path carries no rotary words")
 
-    def test_zUpOpWithoutMachineEmitsNoRotation(self):
-        """Without a rotary machine a Z-up op emits no rotary words."""
+    def test_zUpOpWithoutMachineCarriesNoRotaryWords(self):
         op = self._makeOp("ZUpPlain", Vector(0, 0, 1))
 
-        self.assertEqual(
-            self._rotaryCommands(op),
-            [],
-            "A 3-axis job must not gain rotary words from the Z-up pose reset",
-        )
+        self.assertEqual(self._rotaryCommands(op), [])

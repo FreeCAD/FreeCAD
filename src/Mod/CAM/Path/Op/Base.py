@@ -309,6 +309,12 @@ class ObjectOp:
 
         self._addWorkplaneProperty(obj)
 
+        # Placement is derived from the work plane in execute(): the path is
+        # generated in the plane's frame and Placement positions it. A
+        # SetupSheet prototype has no Placement, hence the guard.
+        if hasattr(obj, "Placement"):
+            obj.setEditorMode("Placement", 1)  # read-only
+
         features = self.opFeatures(obj)
 
         if FeatureBaseGeometry & features:
@@ -541,6 +547,10 @@ class ObjectOp:
         with. The convention that turns a vector into a placement is documented
         in PathUtil.placementFromToolAxis() and must not change, or documents
         written before the first migration would shift in plane."""
+        if hasattr(obj, "RotaryPositions"):
+            # A prototype recorded the solved rotary positions on the
+            # operation. The post solves them from the Placement now.
+            obj.removeProperty("RotaryPositions")
         if hasattr(obj, "Workplane"):
             if "App::PropertyLink" == obj.getTypeIdOfProperty("Workplane"):
                 if hasattr(obj, "WorkplaneLink"):
@@ -580,9 +590,7 @@ class ObjectOp:
         label = "%s work plane" % obj.Label
         if job is not None and getattr(job, "Proxy", None) is not None:
             try:
-                return PathWorkplane.createWorkplane(
-                    job, label=label, placement=placement, check_machine=False
-                )
+                return PathWorkplane.createWorkplane(job, label=label, placement=placement)
             except Exception as e:
                 Path.Log.warning("Could not file migrated work plane under the Job: %s" % e)
 
@@ -594,9 +602,10 @@ class ObjectOp:
     def setEditorModes(self, obj, features):
         """Editor modes are not preserved during document store/restore, set editor modes for all properties"""
 
-        for op in ["OpStartDepth", "OpFinalDepth", "OpToolDiameter", "CycleTime"]:
-            if hasattr(obj, op):
-                obj.setEditorMode(op, 1)  # read-only
+        # Placement is derived from the work plane; the Op* values are computed.
+        for prop in ["Placement", "OpStartDepth", "OpFinalDepth", "OpToolDiameter", "CycleTime"]:
+            if hasattr(obj, prop):
+                obj.setEditorMode(prop, 1)  # read-only
 
         if FeatureDepths & features and FeatureNoFinalDepth & features:
             obj.setEditorMode("OpFinalDepth", 2)
@@ -818,7 +827,7 @@ class ObjectOp:
             return
 
         if "Restore" not in obj.State and prop in ("Base", "StartDepth", "FinalDepth"):
-            self.updateDepths(obj, True)
+            self._updateDepthsInFrame(obj)
 
         self.opOnChanged(obj, prop)
 
@@ -1080,10 +1089,16 @@ class ObjectOp:
             job = PathUtils.findParentJob(obj)
             zmax = stockBB.ZMax
             if matrix is not None:
-                # Transform model bounding box to get Z in rotated frame
-                modelBB = job.Proxy.modelBoundBox(job)
-                rot = getattr(self, "_geometry_rotation", None)
-                if rot is not None:
+                # The top of the model along the tool axis, from the shapes
+                # themselves: in a tilted frame the corners of the world
+                # bounding box include corners the model does not have (a
+                # facet cut off a block leaves its old corner above the facet).
+                shapes = [getattr(m, "Shape", None) for m in job.Model.Group]
+                if shapes and all(sh is not None and not sh.isNull() for sh in shapes):
+                    zmin = max(sh.transformed(matrix).BoundBox.ZMax for sh in shapes)
+                else:
+                    # A mesh has no Shape: fall back to the bounding box.
+                    modelBB = job.Proxy.modelBoundBox(job)
                     corners = [
                         FreeCAD.Vector(modelBB.XMin, modelBB.YMin, modelBB.ZMin),
                         FreeCAD.Vector(modelBB.XMax, modelBB.YMin, modelBB.ZMin),
@@ -1094,10 +1109,10 @@ class ObjectOp:
                         FreeCAD.Vector(modelBB.XMin, modelBB.YMax, modelBB.ZMax),
                         FreeCAD.Vector(modelBB.XMax, modelBB.YMax, modelBB.ZMax),
                     ]
-                    transformed_corners = [rot.multVec(c) for c in corners]
+                    # The full frame, not just its rotation: with an origin the
+                    # top of the model is measured from the plane, not from zero.
+                    transformed_corners = [matrix.multVec(c) for c in corners]
                     zmin = max(c.z for c in transformed_corners)
-                else:
-                    zmin = modelBB.ZMax
             else:
                 zmin = job.Proxy.modelBoundBox(job).ZMax
 
@@ -1167,103 +1182,124 @@ class ObjectOp:
             isValid = False
         return isValid
 
-    def _setup_workplane_transform(self, obj):
-        """Set up 3+2 geometry transformation if workplane is not Z-up.
+    # Per-execute frame state, set by _setup_workplane_transform and cleared
+    # at the end of execute().
+    _FRAME_ATTRS = ("_geom_transform_matrix", "_geometry_rotation")
 
-        When the workplane is rotated, this method:
-        1. Solves for the rotary axis angles via the orientation solver
-        2. Computes the geometry transform matrix (rotation that maps the
-           workplane normal to Z-up)
-        3. Stores rotation G-code commands for later emission
-        4. Sets ``self._geom_transform_matrix`` so that ``updateDepths()``
-           and ``baseShapes()`` see transformed geometry
+    def _updateDepthsInFrame(self, obj):
+        """updateDepths() for a property change, in the operation's frame.
 
-        Returns:
-            True if the operation may proceed (workplane is Z-up, or rotation
-            was successfully set up). False if the workplane requires rotation
-            but it cannot be applied — the caller must abort execution rather
-            than running the op against an unrotated, non-Z-up workplane.
+        Depths are measured in the work plane's frame, which execute() sets
+        up before it calls updateDepths(). A property change (a new Base, a
+        depth) arrives here without it and computed the depths in world
+        coordinates: a new operation that kept the plane it inherited showed
+        the world stock top as its Start Depth, above its Safe Height, and
+        generated nothing. Set the frame up for the call, unless execute()
+        already has."""
+        if any(hasattr(self, attr) for attr in self._FRAME_ATTRS):
+            # execute() set the frame up and owns its teardown; clearing it
+            # here would pull the frame out from under the rest of execute().
+            return self.updateDepths(obj, True)
+        # Nobody set the frame up, so this call does, and takes it down again
+        # whether or not updateDepths() raises.
+        self._setup_workplane_transform(obj, warn=False)
+        try:
+            return self.updateDepths(obj, True)
+        finally:
+            for attr in self._FRAME_ATTRS:
+                if hasattr(self, attr):
+                    delattr(self, attr)
+
+    def _setup_workplane_transform(self, obj, warn=True):
+        """Set up the frame this operation generates in.
+
+        The operation generates in its work plane's own frame: the plane's
+        origin is (0, 0, 0), its X is the plane's X, and Z is the tool axis, so
+        every depth and height is a distance along the tool axis from the
+        plane and every direction-sensitive parameter is relative to the
+        plane's X. The path is stored in that frame, with no rotary words,
+        and obj.Placement carries the frame. Generation knows nothing about
+        the machine: how the plane is reached - indexing the rotaries,
+        declaring a tilted plane to the control, or refixturing the part - is
+        the post-processor's question, answered from the Placement at output
+        time, and changing the machine means re-posting, not recomputing.
+
+        If a machine with rotary axes is configured and cannot index to the
+        plane, a warning says so here, early, but the path is generated all
+        the same. ``warn=False`` skips that check, for a caller that only
+        needs the frame.
+
+        Sets ``self._geom_transform_matrix`` (world to plane frame) for
+        updateDepths() and baseShapes(), and ``self._geometry_rotation`` when
+        the plane is rotated, which is the flag operations key their 3+2
+        handling on.
         """
-        # Clean any stale state from a previous execute()
-        for attr in ("_geom_transform_matrix", "_geometry_rotation", "_rotation_commands"):
+        for attr in self._FRAME_ATTRS:
             if hasattr(self, attr):
                 delattr(self, attr)
 
         if not hasattr(obj, "Workplane"):
-            return True
+            return
 
-        # Only the tool axis of the workplane is consumed. Its origin and its
-        # rotation about the tool axis are recorded on the property but do not
-        # reach the generated path, because the frame the path is generated in
-        # is the one the machine reaches by indexing - see the solve below -
-        # and not the one requested. Honouring them needs an explicit residual
-        # transform and a per-output-strategy decision about where that
-        # residual goes, neither of which exists yet.
-        wp = PathUtil.toolAxisForOp(obj)
+        placement = PathUtil.workplaneForOp(obj)
         z_up = FreeCAD.Vector(0, 0, 1)
+        tool_axis = placement.Rotation.multVec(z_up)
+        is_rotated = not tool_axis.isEqual(z_up, 1e-6)
 
-        machine = self.job.Proxy.getMachine() if self.job else None
-        has_rotaries = machine is not None and machine.has_rotary_axes
+        if not placement.isIdentity(1e-9):
+            self._geom_transform_matrix = placement.inverse().toMatrix()
+        if is_rotated:
+            self._geometry_rotation = placement.Rotation.inverted()
 
-        # A Z-up workplane needs no geometry transform, but on a machine with
-        # rotary axes the op must still command its pose explicitly: ops are
-        # atomic and cannot know what pose a previous op left the machine in.
-        if wp.isEqual(z_up, 1e-6):
-            if has_rotaries:
-                chain = rotation.build_kinematic_chain(machine)
-                if chain:
-                    self._rotation_commands = [
-                        Path.Command("G0", {axis.name: 0.0 for axis in chain})
-                    ]
-            return True
+        if is_rotated and warn:
+            self._warnIfUnreachableByIndexing(obj, tool_axis)
 
-        if not has_rotaries:
-            Path.Log.warning(
-                f"Operation {obj.Label}: Workplane requires rotation but "
-                f"no machine with rotary axes is configured"
-            )
-            return False
+    def toFrame(self, point):
+        """toFrame(point) ... a world point in the frame the operation generates in.
 
-        # Solve orientation
+        Start and end points are picked in the 3D view and stored in world
+        coordinates. While the operation generates in its work plane's frame
+        they have to be carried into that frame, as the base geometry is."""
+        matrix = getattr(self, "_geom_transform_matrix", None)
+        if matrix is None:
+            return point
+        return matrix.multVec(point)
+
+    def startPoint(self, obj):
+        """startPoint(obj) ... obj.StartPoint in the frame the operation generates in."""
+        return self.toFrame(obj.StartPoint)
+
+    def shapeToFrame(self, shape):
+        """shapeToFrame(shape) ... a world shape in the frame the operation generates in.
+
+        Base geometry goes through baseShapes(); a whole shape an operation
+        takes beside it (Engrave's BaseShapes) has to go through the same
+        transform, or the operation reads world coordinates as plane-local."""
+        matrix = getattr(self, "_geom_transform_matrix", None)
+        if matrix is None:
+            return shape
+        return _transform_shape_with_arc_fix(shape, matrix)
+
+    def _warnIfUnreachableByIndexing(self, obj, tool_axis):
+        """An early, advisory word when the configured machine has rotary
+        axes and cannot index to the operation's plane. Nothing is decided
+        here; the post refuses at output time, and a plane may be reached by
+        refixturing instead."""
         try:
-            result = rotation.solve_orientation(machine, wp)
-            Path.Log.debug(result)
-
+            machine = self.job.Proxy.getMachine() if self.job else None
+            if machine is None or not machine.has_rotary_axes:
+                return
+            result = rotation.solve_orientation(machine, tool_axis)
             if not result.success:
-                Path.Log.error(
-                    f"Operation {obj.Label}: Cannot solve workplane "
-                    f"orientation: {result.reason}"
+                plane = getattr(obj, "Workplane", None)
+                Path.Log.warning(
+                    "Operation %s: machine '%s' cannot index to work plane %s (%s). The "
+                    "path is generated in the plane's frame; the post-processor decides how "
+                    "the plane is reached."
+                    % (obj.Label, machine.name, plane.Label if plane else "?", result.reason)
                 )
-                return False
-
-            # Build rotation commands (G0 moves for each rotary axis)
-            cmd_params = {name: angle for name, angle in result.angles.items()}
-            rotation_cmds = [Path.Command("G0", cmd_params)] if cmd_params else []
-
-            # Compute the geometry transform matrix.
-            chain = rotation.build_kinematic_chain(machine)
-            Path.Log.debug(f"Chain: {chain}")
-            Path.Log.debug(f"Solution Angles: {result.angles}")
-            geom_rotation = rotation.compute_rotation_matrix(chain, result.angles)
-            Path.Log.debug(f"Geometry rotation: {geom_rotation}")
-
-            # Store as FreeCAD.Matrix for transformShape()
-            self._geom_transform_matrix = geom_rotation.toMatrix()
-            self._geometry_rotation = geom_rotation
-            self._rotation_commands = rotation_cmds
-
-            Path.Log.info(
-                f"Operation {obj.Label}: 3+2 workplane active, " f"angles={result.angles}"
-            )
-            return True
-
         except Exception as e:
-            Path.Log.error(f"Operation {obj.Label}: Error setting up workplane " f"transform: {e}")
-            # Clean up on failure
-            for attr in ("_geom_transform_matrix", "_geometry_rotation", "_rotation_commands"):
-                if hasattr(self, attr):
-                    delattr(self, attr)
-            return False
+            Path.Log.debug("Operation %s: reachability not checked: %s" % (obj.Label, e))
 
     @waiting_effects
     def execute(self, obj):
@@ -1338,14 +1374,10 @@ class ObjectOp:
                 obj.OpToolDiameter = tool.Diameter
 
         # --- 3+2 Setup: compute geometry transformation before depth calculation ---
-        # If the workplane is not Z-up, solve the orientation and set up the
+        # If the workplane is not Z-up, set up the
         # transform matrix so that updateDepths() sees transformed BoundBoxes
-        # and baseShapes() yields transformed geometry. Abort the op cleanly
-        # if rotation is required but unavailable — otherwise downstream
-        # geometry ops would fail with confusing errors against unrotated input.
-        if not self._setup_workplane_transform(obj):
-            obj.Path = Path.Path("(workplane rotation unavailable)")
-            return
+        # and baseShapes() yields transformed geometry.
+        self._setup_workplane_transform(obj)
 
         self.updateDepths(obj)
         # now that all op values are set make sure the user properties get updated accordingly,
@@ -1364,11 +1396,6 @@ class ObjectOp:
         self.commandlist.append(Path.Command(f"({obj.Label})"))
         if obj.Comment:
             self.commandlist.append(Path.Command(f"({obj.Comment})"))
-
-        # Emit rotation commands if 3+2 is active
-        if hasattr(self, "_rotation_commands"):
-            self.commandlist.extend(self._rotation_commands)
-            delattr(self, "_rotation_commands")
 
         # If a geometry transform is active, wrap self.model and self.stock
         # in proxy objects so operations that access them see Z-up geometry.
@@ -1443,16 +1470,18 @@ class ObjectOp:
 
         path = Path.Path(self.commandlist)
 
-        # Note: nothing here writes obj.Placement, and nothing should. A path
-        # generated in a rotated workplane carries its rotary A/B/C words, and
-        # Path::PathSegmentWalker (App/PathSegmentWalker.cpp) already applies
-        # compensateRotation() to every point when drawing, mapping those
-        # rotated-frame coordinates back to world. Setting a Placement to undo
-        # the generation frame applies that compensation a second time and
-        # draws the toolpath off the part.
+        # The path is in the work plane's frame; Placement positions it. That
+        # is the convention the rest of the pipeline already honours -
+        # dressups, both simulators, Inspect and the legacy posts read an
+        # operation through PathUtils.getPathWithPlacement(), and the 3D view
+        # applies Placement in the scene graph. An operation with no work
+        # plane keeps the identity it has always had.
+        frame = PathUtil.workplaneForOp(obj)
+        if not obj.Placement.isSame(frame, 1e-9):
+            obj.Placement = frame
 
-        # Clean up temporary 3+2 attributes
-        for attr in ("_geometry_rotation", "_geom_transform_matrix"):
+        # Clean up the per-execute frame state
+        for attr in self._FRAME_ATTRS:
             if hasattr(self, attr):
                 delattr(self, attr)
 

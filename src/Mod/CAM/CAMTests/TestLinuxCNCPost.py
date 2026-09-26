@@ -476,6 +476,24 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
         self.assertIn("Z-0.3937", result)  # -10mm / 25.4
         self.assertIn("K0.0591", result)  # 1.5mm / 25.4
 
+    def test_rotary_words_are_not_unit_converted(self):
+        """
+        A, B and C are angles. Imperial output converts X, Y, Z to inches but
+        must leave the rotary words in degrees.
+
+        Expected behavior:
+            BEFORE: G0 X10 A20 C-90 in imperial units
+
+            AFTER:  X0.3937, A20.000, C-90.000
+        """
+        self.post._machine.output.units = OutputUnits.IMPERIAL
+        self.post.apply_configuration_bundle()
+        precision = self.post.values["AXIS_PRECISION"]
+
+        self.assertEqual(self.post.format_parameter("X", 10.0, "G0"), f"{10 / 25.4:.{precision}f}")
+        self.assertEqual(self.post.format_parameter("A", 20.0, "G0"), f"{20.0:.{precision}f}")
+        self.assertEqual(self.post.format_parameter("C", -90.0, "G0"), f"{-90.0:.{precision}f}")
+
     def test_rigid_tapping_block_delete(self):
         """
         Test rigid tapping with block delete annotation.

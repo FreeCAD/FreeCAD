@@ -157,9 +157,10 @@ class ObjectDressup:
             obj.Path = Path.Path()
             return
 
+        PathDressup.placeWithBase(obj)
         job = PathUtils.findParentJob(obj)
         deflection = job.GeometryTolerance.Value
-        path = PathUtils.getPathWithPlacement(obj.Base)
+        path = obj.Base.Path
         path = PostUtils.splitArcs(path, deflection=deflection)
 
         newcommandlist = []

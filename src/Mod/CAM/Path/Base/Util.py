@@ -176,6 +176,18 @@ def clearExpressionEngine(obj):
             obj.setExpression(attr, None)
 
 
+def baseOp(path):
+    """baseOp(path) ... return the base operation underlying the given path.
+
+    A dressup is known by its shape, not its name: its Base is the one path
+    object it dresses. An operation's Base, if it has one, is a list of
+    geometry."""
+    base = getattr(path, "Base", None)
+    if base is not None and not isinstance(base, (list, tuple)) and hasattr(base, "Path"):
+        return baseOp(base)
+    return path
+
+
 def workplaneForOp(op):
     """workplaneForOp(op) ... returns the effective Workplane of op as a Placement.
 
@@ -188,7 +200,12 @@ def workplaneForOp(op):
     ``Workplane`` is a link to a named work plane held by the Job. No link
     means the Job's own XY, which is ordinary Z-up milling. A document
     restored but not yet migrated may still carry the older vector or
-    placement forms; those are read as they were."""
+    placement forms; those are read as they were.
+
+    A dressup has no plane of its own: its frame is its base operation's,
+    resolved here through the dressup chain every time and never stored on
+    the dressup."""
+    op = baseOp(op)
     wp = getattr(op, "Workplane", None)
     if wp is None:
         return FreeCAD.Placement()
@@ -232,16 +249,16 @@ def sameWorkplane(a, b, tol=1e-6):
     """sameWorkplane(a, b, tol=1e-6) ... True if two Workplane placements name
     the same frame for the purpose of reusing generated toolpath geometry.
 
-    Today this compares tool axes only, because an operation's path is
-    generated in a frame derived from the machine's solved rotary angles and
-    the Workplane's origin and in-plane X are recorded but not consumed
-    (see the Workplane property documentation). Two operations that share a
-    tool axis therefore share a frame.
-
-    When origins are consumed this has to compare full frames, and callers
-    that reuse geometry between operations - rest machining in particular -
-    become wrong if it is not changed at the same time. That is the reason
-    this is a named predicate rather than an inline comparison."""
+    Compares tool axes only, and that is deliberate even though a work plane's
+    origin is consumed. An operation generates in its plane's frame, but its
+    path is *stored* relative to the Job's zero in the rotated frame, which is
+    the same frame for every operation sharing a tool axis. Two operations on
+    parallel faces at different depths therefore share a stored frame, and
+    rest machining can reuse cleared area between them. The one thing that has
+    to move to make that work is the querying operation's own bounding box,
+    which getClearedAreas() shifts by the plane origin's position in the
+    rotated frame. This is a named predicate so that if the storage convention
+    ever changes, the callers that depend on it change with it."""
     axis_a = FreeCAD.Placement(a).Rotation.multVec(FreeCAD.Vector(0, 0, 1))
     axis_b = FreeCAD.Placement(b).Rotation.multVec(FreeCAD.Vector(0, 0, 1))
     return axis_a.isEqual(axis_b, tol)
@@ -272,9 +289,9 @@ def liesInPlanePerpendicularTo(sub, axis, tol=1e-6):
     return False
 
 
-def depthOfFeature(sub, axis):
-    """depthOfFeature(sub, axis) ... the depth named by a selected feature,
-    measured along axis, or None if it does not name one.
+def depthOfFeature(sub, axis, origin=None):
+    """depthOfFeature(sub, axis, origin=None) ... the depth named by a selected
+    feature, measured along axis from origin, or None if it does not name one.
 
     A depth is a coordinate in the frame an operation generates in, and that
     frame's up direction is the tool axis. So the useful selection is a feature
@@ -287,21 +304,23 @@ def depthOfFeature(sub, axis):
     sphere, a surface of revolution - for which a bounding box maximum and a
     maximum over vertices are not the same number, and three-axis behaviour
     must not drift."""
+    base = axis.dot(origin) if origin is not None else 0.0
+
     if "Vertex" == sub.ShapeType:
-        # Identical to sub.Z when the tool axis is +Z.
-        return axis.dot(sub.Point)
+        # Identical to sub.Z when the tool axis is +Z and the origin is zero.
+        return axis.dot(sub.Point) - base
 
     if Path.Geom.isRoughly(axis.z, 1.0):
         if Path.Geom.isHorizontal(sub):
             if "Edge" == sub.ShapeType:
-                return sub.Vertexes[0].Z
+                return sub.Vertexes[0].Z - base
             if "Face" == sub.ShapeType:
-                return sub.BoundBox.ZMax
+                return sub.BoundBox.ZMax - base
         return None
 
     if not liesInPlanePerpendicularTo(sub, axis):
         return None
-    return max(axis.dot(v.Point) for v in sub.Vertexes)
+    return max(axis.dot(v.Point) for v in sub.Vertexes) - base
 
 
 def isPlanarFace(shape):
@@ -312,10 +331,10 @@ def isPlanarFace(shape):
 def jobHasRotaryMachine(job):
     """jobHasRotaryMachine(job) ... True if job's machine has rotary axes.
 
-    Work planes are available on every Job; this decides what a plane may be.
-    Without rotary axes a plane must be parallel to the table: a datum for
-    depths and a turned X, which any three-axis machine can cut. A tilted
-    plane needs rotary axes to point the tool along it."""
+    Any plane may be created on any Job. This says whether a tilted one can
+    be reached: the operation records rotary positions only on a machine
+    that has them, and the post refuses a tilted plane without them. A plane
+    parallel to the table - a datum for depths, a turned X - needs none."""
     if job is None or not hasattr(job, "Proxy"):
         return False
     try:
@@ -323,3 +342,109 @@ def jobHasRotaryMachine(job):
     except Exception:
         return False
     return bool(machine is not None and getattr(machine, "has_rotary_axes", False))
+
+
+def getPathWithPlacement(pathobj):
+    """
+    Applies the rotation, and then position of the obj's Placement
+    to the obj's path
+    """
+
+    if pathobj.Path is None:
+        return pathobj.Path
+
+    # check for no placement or placement POS=(0,0,0), Yaw-Pitch-Roll=(0,0,0)
+    # isIdentity() returns True if the placement has no displacement and no rotation
+    if not hasattr(pathobj, "Placement") or pathobj.Placement.isIdentity():
+        return pathobj.Path
+
+    return applyPlacementToPath(pathobj.Placement, pathobj.Path)
+
+
+def applyPlacementToPath(placement, path):
+    """
+    Applies the rotation, and then position of the placement to path
+    """
+
+    commands = []
+    currX = 0
+    currY = 0
+    currZ = 0
+
+    # An arc is G2 or G3 as seen from +Z. A rotation that turns the path
+    # over - an operation on the underside of the part, say - reverses that
+    # sense: the arc's centre and end move with the rotation, and the
+    # direction word is swapped so the arc still bulges the same way. (A
+    # rotation that tilts the arc out of the XY plane has no exact G2/G3
+    # form; the words are left as they are.)
+    turned_over = placement.Rotation.multVec(FreeCAD.Vector(0, 0, 1)).z < 0
+    flipped = {"G2": "G3", "G02": "G03", "G3": "G2", "G03": "G02"}
+
+    # Angles of rotation (on A, B or C) do not need translation but may need a correction on start position, get transformed angles of 0 deg.
+    cmd = Path.Command("G0 A0 B0 C0")
+    t = cmd.transform(placement)
+    tparams = t.Parameters
+    transA0 = tparams.get("A", 0)
+    transB0 = tparams.get("B", 0)
+    transC0 = tparams.get("C", 0)
+
+    for cmd in path.Commands:
+        if cmd.Name in Path.Geom.CmdMoveAll:
+            params = cmd.Parameters
+            currX = x = params.get("X", currX)
+            currY = y = params.get("Y", currY)
+            currZ = z = params.get("Z", currZ)
+
+            # A canned cycle's R is the height of its retract plane, a Z at
+            # the cycle's X, Y, so it moves with the frame the way Z does.
+            if "R" in params:
+                params["R"] = placement.multVec(FreeCAD.Vector(x, y, params["R"])).z
+
+            x, y, z = placement.Rotation.multVec(FreeCAD.Vector(x, y, z))
+
+            if x != currX:
+                params.update({"X": x})
+            if y != currY:
+                params.update({"Y": y})
+            if z != currZ:
+                params.update({"Z": z})
+
+            # Arcs need to have the I and J params rotated as well
+            if cmd.Name in Path.Geom.CmdMoveArc:
+                currI = i = params.get("I", 0)
+                currJ = j = params.get("J", 0)
+
+                i, j, _ = placement.Rotation.multVec(FreeCAD.Vector(i, j, 0))
+
+                if currI != i:
+                    params.update({"I": i})
+                if currJ != j:
+                    params.update({"J": j})
+                if turned_over:
+                    cmd.Name = flipped.get(cmd.Name, cmd.Name)
+
+            cmd.Parameters = params
+
+        # Angles of rotation (on A, B or C) do not need translation, find values before translation.
+        params = cmd.Parameters
+        aVal = params.get("A", None)
+        bVal = params.get("B", None)
+        cVal = params.get("C", None)
+
+        t = cmd.transform(placement)
+
+        # Set angles of rotation on A, B or C corrected for the transformed angle of 0 deg..
+        tparams = t.Parameters
+        if aVal is not None:
+            tparams.update({"A": transA0 + aVal})
+        if bVal is not None:
+            tparams.update({"B": transB0 + bVal})
+        if cVal is not None:
+            tparams.update({"C": transC0 + cVal})
+        if aVal is not None or bVal is not None or cVal is not None:
+            t.Parameters = tparams
+
+        commands.append(t)
+    newPath = Path.Path(commands)
+
+    return newPath

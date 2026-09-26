@@ -1363,7 +1363,10 @@ class TaskPanelHeightsPage(TaskPanelPage):
         operation's tool axis. See PathUtil.depthOfFeature()."""
         if len(sel) != 1 or len(sel[0].SubObjects) != 1:
             return None
-        return PathUtil.depthOfFeature(sel[0].SubObjects[0], PathUtil.toolAxisForOp(obj))
+        frame = PathUtil.workplaneForOp(obj)
+        return PathUtil.depthOfFeature(
+            sel[0].SubObjects[0], frame.Rotation.multVec(FreeCAD.Vector(0, 0, 1)), frame.Base
+        )
 
     def updateSelection(self, obj, sel):
         enabled = self.selectionZLevel(obj, sel) is not None
@@ -1469,6 +1472,11 @@ class TaskPanel:
         self.deleteOnReject = deleteOnReject
         self.featurePages = []
         self.parent = None
+        # Side, when offered from the selection, is judged in the work plane
+        # the new operation inherited. See _reofferSide().
+        self._sideOffered = False
+        self._sideSetByUser = False
+        self._reofferingSide = False
 
         # members initialized later
         self.clearanceHeight = None
@@ -1679,6 +1687,8 @@ class TaskPanel:
                     page.addBaseGeometry(sel)
             if hasattr(self.obj.Proxy, "initAfterBase"):
                 self.obj.Proxy.initAfterBase(self.obj)
+                self._sideOffered = hasattr(self.obj, "Side")
+                self._sideSetByUser = False
 
         # Update properties based upon expressions in case expression value has changed
         for prp, expr in self.obj.ExpressionEngine:
@@ -1703,6 +1713,26 @@ class TaskPanel:
         # Path.Log.track(obj.Label, prop) # creates a lot of noise
         for page in self.featurePages:
             page.pageUpdateData(obj, prop)
+        if prop == "Side" and not self._reofferingSide:
+            self._sideSetByUser = True
+        elif prop == "Workplane" and self._sideOffered and not self._sideSetByUser:
+            self._reofferSide()
+
+    def _reofferSide(self):
+        """_reofferSide() ... offer Side again for the work plane just chosen.
+
+        A new operation's Side is offered from its selection when the panel
+        opens, judged in the work plane the operation inherited from the one
+        before it. Another plane turns that judgement around: a slot's walls
+        are inside in the plane that faces them and outside in one that does
+        not. So the side is offered again when the plane changes, until the
+        user sets it by hand."""
+        self._reofferingSide = True
+        try:
+            self.obj.Proxy.initAfterBase(self.obj)
+            self.panelSetFields()
+        finally:
+            self._reofferingSide = False
 
     def needsFullSpace(self):
         return self.taskPanelLayout >= 2

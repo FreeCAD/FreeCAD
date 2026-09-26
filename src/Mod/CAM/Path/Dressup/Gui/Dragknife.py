@@ -372,6 +372,8 @@ class ObjectDressup:
         if not obj.Base.isDerivedFrom("Path::Feature"):
             return
 
+        PathDressup.placeWithBase(obj)
+
         if obj.Base.Path.Commands:
 
             firstmove = Path.Command("G0", {"X": 0, "Y": 0, "Z": 0})
@@ -379,7 +381,7 @@ class ObjectDressup:
 
             queue = []
 
-            for curCommand in PathUtils.getPathWithPlacement(obj.Base).Commands:
+            for curCommand in obj.Base.Path.Commands:
                 replace = None
                 # don't worry about non-move commands, just add to output
                 if curCommand.Name not in movecommands + rapidcommands:

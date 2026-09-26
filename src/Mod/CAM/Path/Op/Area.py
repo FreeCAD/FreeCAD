@@ -280,7 +280,7 @@ class ObjectOp(PathOp.ObjectOp):
             if self.endVector[:2] != (0, 0):
                 pathParams["start"] = self.endVector
         elif PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
-            pathParams["start"] = obj.StartPoint
+            pathParams["start"] = self.startPoint(obj)
 
         obj.PathParams = str({key: value for key, value in pathParams.items() if key != "shapes"})
         Path.Log.debug("Path with params: {}".format(obj.PathParams))
@@ -367,7 +367,7 @@ class ObjectOp(PathOp.ObjectOp):
 
         # Set start point
         if PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
-            start = obj.StartPoint
+            start = self.startPoint(obj)
         else:
             start = None
 
@@ -422,7 +422,7 @@ class ObjectOp(PathOp.ObjectOp):
             if sub == "OpenEdge":
                 profileEdgesIsOpen = True
                 if PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
-                    osp = obj.StartPoint
+                    osp = self.startPoint(obj)
                     self.commandlist.append(
                         Path.Command("G0", {"X": osp.x, "Y": osp.y, "F": self.horizRapid})
                     )
