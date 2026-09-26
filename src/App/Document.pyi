@@ -477,13 +477,14 @@ class Document(PropertyContainer):
         """
         ...
 
-    def getTempFileName(self) -> str:
+    def getTempFileName(self, name: str, /) -> str:
         """
-        Returns a file name with path in the temp directory of the document.
+        Returns a unique file name, based on the given name, with a path in the temp directory of
+        the document.
         """
         ...
 
-    def getDependentDocuments(self, sort: bool = True, /) -> list[DocumentObject]:
+    def getDependentDocuments(self, sort: bool = True, /) -> list[Document]:
         """
         Returns a list of documents that this document directly or indirectly links to including itself.
 

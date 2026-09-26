@@ -32,7 +32,7 @@
 
 using namespace Materials;
 
-std::shared_ptr<std::list<std::shared_ptr<ModelLibraryLocal>>> ModelManagerLocal::_libraryList = nullptr;
+std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> ModelManagerLocal::_libraryList = nullptr;
 std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> ModelManagerLocal::_modelMap = nullptr;
 QMutex ModelManagerLocal::_mutex;
 
@@ -51,7 +51,7 @@ void ModelManagerLocal::initLibraries()
     if (_modelMap == nullptr) {
         _modelMap = std::make_shared<std::map<QString, std::shared_ptr<Model>>>();
         if (_libraryList == nullptr) {
-            _libraryList = std::make_shared<std::list<std::shared_ptr<ModelLibraryLocal>>>();
+            _libraryList = std::make_shared<std::list<std::shared_ptr<ModelLibrary>>>();
         }
 
         // Load the libraries
@@ -96,8 +96,7 @@ void ModelManagerLocal::refresh()
 
 std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> ModelManagerLocal::getLibraries()
 {
-    return reinterpret_cast<std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>>&>(
-        _libraryList);
+    return _libraryList;
 }
 
 void ModelManagerLocal::createLibrary(const QString& libraryName,

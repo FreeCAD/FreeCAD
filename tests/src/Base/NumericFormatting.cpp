@@ -44,7 +44,7 @@ TEST(NumericFormattingTest, formattedNativeDigitsRoundTripThroughScannerAndQuant
 
     for (const auto localeId : {"fa_IR", "ar_EG"}) {
         const auto locale = Base::createNumericLocaleContext(localeId);
-        for (const auto [value, format] :
+        for (const auto& [value, format] :
              {std::pair {1234.5, fixed}, std::pair {-1234.5, fixed}, std::pair {1.25e6, scientific}}) {
             const auto formatted = Base::formatNumericValue(value, format, locale);
             if (format.format == Base::QuantityFormat::Scientific) {
@@ -68,7 +68,7 @@ TEST(NumericFormattingTest, formattedNativeDigitsRoundTripThroughScannerAndQuant
 
 TEST(NumericFormattingTest, formatsValuesWithEffectiveSeparators)
 {
-    const Base::NumericLocaleContext formatting {"en_US", ",", "\xC2\xA0", "+", "-", 3, 3};
+    const Base::NumericLocaleContext formatting {"en_US", ",", "\xC2\xA0", "+", "-", 3, 3, "0"};
 
     Base::QuantityFormat fixed(Base::QuantityFormat::Fixed, 2);
     fixed.option = Base::QuantityFormat::None;

@@ -3,6 +3,7 @@
 from typing import Any, Final
 
 from Base.BaseClass import BaseClass
+from Base.Vector import Vector
 from Base.Metadata import constmethod, export
 
 @export(
@@ -21,7 +22,7 @@ class VoronoiVertex(BaseClass):
     """
 
     @constmethod
-    def toPoint(self) -> Any:
+    def toPoint(self, z: float = 0.0, /) -> Vector | None:
         """Returns a Vector - or None if not possible"""
         ...
     Index: Final[int]

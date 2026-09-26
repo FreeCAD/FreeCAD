@@ -86,7 +86,7 @@ void TaskDlgMeshShapeNetgen::clicked(int button)
         }
     }
     catch (const Base::Exception& e) {
-        Base::Console().warning("FemMeshShapeNetgenObject::execute(): %s\n", e.what());
+        Base::Console().warning("FemMeshShapeNetgenObject::execute(): {}\n", e.what());
     }
 }
 
@@ -124,7 +124,7 @@ bool TaskDlgMeshShapeNetgen::accept()
     }
     catch (const Base::Exception& e) {
         doc->abortTransaction();
-        Base::Console().warning("TaskDlgMeshShapeNetgen::accept(): %s\n", e.what());
+        Base::Console().warning("TaskDlgMeshShapeNetgen::accept(): {}\n", e.what());
     }
 
     return false;

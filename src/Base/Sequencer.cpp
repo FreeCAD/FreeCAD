@@ -215,7 +215,7 @@ using Base::ConsoleSequencer;
 
 void ConsoleSequencer::setText(const char* pszTxt)
 {
-    Base::Console().log("%s...\n", pszTxt);
+    Base::Console().log("{}...\n", pszTxt);
 }
 
 void ConsoleSequencer::startStep()
@@ -224,7 +224,7 @@ void ConsoleSequencer::startStep()
 void ConsoleSequencer::nextStep(bool /*canAbort*/)
 {
     if (this->nTotalSteps != 0) {
-        Base::Console().log("\t\t\t\t\t\t(%d %%)\t\r", progressInPercent());
+        Base::Console().log("\t\t\t\t\t\t({} %)\t\r", progressInPercent());
     }
 }
 

@@ -2995,9 +2995,17 @@ bool ViewProviderLink::linkEdit(const App::LinkBaseExtension* ext) const
 bool ViewProviderLink::doubleClicked()
 {
     if (linkEdit()) {
-        return linkView->getLinkedView()->doubleClicked();
+        return linkView->getLinkedView()->doubleClickedObject(getDefaultEditReference());
     }
     return getDocument()->setEdit(this, ViewProvider::Transform);
+}
+
+std::optional<bool> ViewProviderLink::doubleClickedOccurrence(const App::SubObjectT& reference)
+{
+    if (linkEdit()) {
+        return linkView->getLinkedView()->doubleClickedObject(reference);
+    }
+    return std::nullopt;
 }
 
 void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)

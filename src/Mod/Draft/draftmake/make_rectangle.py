@@ -31,10 +31,10 @@
 ## \addtogroup draftmake
 # @{
 import FreeCAD as App
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-
 from draftobjects.rectangle import Rectangle
+from draftutils import utils
+from draftutils import gui_utils
+from freecad.deprecation import deprecated
 
 if App.GuiUp:
     from draftviewproviders.view_rectangle import ViewProviderRectangle
@@ -101,6 +101,14 @@ def make_rectangle(length, height=0, placement=None, face=None, support=None):
     return obj
 
 
-makeRectangle = make_rectangle
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_rectangle()",
+)
+def makeRectangle(*args, **kwarg):
+    """DEPRECATED. Use 'make_rectangle'."""
+    return make_rectangle(*args, **kwarg)
+
 
 ## @}

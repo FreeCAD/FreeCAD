@@ -104,7 +104,7 @@ if(BUILD_TRACY_FRAME_PROFILER)
     list(APPEND FreeCADBase_LIBS TracyClient)
 endif()
 
-list(APPEND FreeCADBase_LIBS libfastsignals fmt::fmt)
+list(APPEND FreeCADBase_LIBS libfastsignals)
 
 if(cpptrace_FOUND)
     list(APPEND FreeCADBase_LIBS cpptrace::cpptrace)
@@ -137,6 +137,8 @@ generate_from_py(Axis)
 generate_from_py(Unit)
 generate_from_py(Quantity)
 generate_from_py(Precision)
+generate_from_py(CrashReporter/CrashFrame)
+generate_from_py(CrashReporter/CrashReport)
 generate_module_from_py(
     FreeCAD.Qt
     Qt_MODULE_GENERATED_SRCS
@@ -180,6 +182,8 @@ SET(FreeCADBase_Pyi_SRCS
     Type.pyi
     Unit.pyi
     Precision.pyi
+    CrashReporter/CrashFrame.pyi
+    CrashReporter/CrashReport.pyi
     FreeCAD.Qt.module.pyi
     FreeCAD.Console.module.pyi
     FreeCAD.Units.module.pyi
@@ -285,6 +289,7 @@ SET(FreeCADBase_CPP_SRCS
     Uuid.cpp
     Vector3D.cpp
     VectorPyImp.cpp
+    Version.cpp
     ViewProj.cpp
     Writer.cpp
     XMLTools.cpp
@@ -323,6 +328,7 @@ SET(FreeCADBase_HPP_SRCS
     InputSource.h
     Interpreter.h
     Matrix.h
+    Maturity.h
     NumericFormatting.h
     Observer.h
     Parameter.h
@@ -357,6 +363,7 @@ SET(FreeCADBase_HPP_SRCS
     UniqueNameManager.h
     Uuid.h
     Vector3D.h
+    Version.h
     ViewProj.h
     Writer.h
     XMLTools.h
@@ -365,6 +372,10 @@ SET(FreeCADBase_HPP_SRCS
 )
 
 SET (FreeCADBase_CrashReporter_SRCS
+    CrashReporter/CrashFramePyImp.cpp
+    CrashReporter/CrashReportPyImp.cpp
+    CrashReporter/FaultCodes.h
+    CrashReporter/FaultCodes.cpp
     CrashReporter/Format.h
     CrashReporter/Manager.h
     CrashReporter/Manager.cpp

@@ -49,6 +49,7 @@
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
 #include <App/DocumentObjectPy.h>
+#include <App/DocumentObserver.h>
 
 using namespace Gui;
 
@@ -703,12 +704,23 @@ PyObject* ViewProviderPy::getBoundingBox(PyObject* args, PyObject* kwd)
 
 PyObject* ViewProviderPy::doubleClicked(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, "")) {
+    PyObject* root = nullptr;
+    const char* subname = "";
+    if (!PyArg_ParseTuple(args, "|O!s", &App::DocumentObjectPy::Type, &root, &subname)) {
         return nullptr;
     }
 
     PY_TRY
     {
+        if (root) {
+            const App::SubObjectT reference(
+                static_cast<App::DocumentObjectPy*>(root)->getDocumentObjectPtr(),
+                subname
+            );
+            return Py::new_reference_to(
+                Py::Boolean(getViewProviderPtr()->doubleClickedObject(reference))
+            );
+        }
         return Py::new_reference_to(Py::Boolean(getViewProviderPtr()->doubleClicked()));
     }
     PY_CATCH;

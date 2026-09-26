@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <clocale>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -79,7 +80,10 @@ public:
         : previousQt {QLocale()}
         , previousIcu {icu::Locale::getDefault()}
         , previousFormatting {Base::currentNumericLocaleContext()}
+        , previousCNumeric {currentCNumericLocale()}
     {
+        std::setlocale(LC_NUMERIC, "C");
+
         std::optional<QLocale> qtLocale;
         if (config.qtLocale) {
             qtLocale = detail::toQtLocale(*config.qtLocale);
@@ -117,6 +121,8 @@ public:
 
     ~ScopedLocaleEnvironment()
     {
+        std::setlocale(LC_NUMERIC, previousCNumeric.c_str());
+
         Base::publishNumericLocaleContext(previousFormatting);
 
         UErrorCode status = U_ZERO_ERROR;
@@ -130,9 +136,16 @@ public:
     ScopedLocaleEnvironment& operator=(ScopedLocaleEnvironment&&) = delete;
 
 private:
+    static std::string currentCNumericLocale()
+    {
+        const char* name = std::setlocale(LC_NUMERIC, nullptr);
+        return name ? std::string(name) : std::string("C");
+    }
+
     QLocale previousQt;
     icu::Locale previousIcu;
     Base::NumericLocaleContext previousFormatting;
+    std::string previousCNumeric;
 };
 
 }  // namespace tests

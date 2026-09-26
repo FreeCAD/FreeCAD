@@ -541,7 +541,7 @@ TEST_F(SchemaTest, imperial_building_special_function_high_precision_rounding)
 TEST_F(SchemaTest, imperial_building_special_function_length)
 {
     constexpr auto val {360.6};
-    const auto result = set("ImperialBuilding", Unit::Length, val);
+    const auto result = setWithDenominator("ImperialBuilding", val, Unit::Length, 8);
     const auto expect = Tools::escapeQuotesFromString("1' 2\" + 1/4\"");
 
     EXPECT_EQ(result, expect);

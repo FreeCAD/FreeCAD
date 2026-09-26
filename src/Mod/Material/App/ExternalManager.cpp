@@ -252,7 +252,7 @@ ExternalManager::libraries()
     }
     catch (Py::Exception& e) {
         Base::PyException e1;  // extract the Python error text
-        Base::Console().log("Library error %s", e1.what());
+        Base::Console().log("Library error {}", e1.what());
         throw LibraryNotFound(e1.what());
     }
 

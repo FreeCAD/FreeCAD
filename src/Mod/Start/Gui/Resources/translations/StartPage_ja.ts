@@ -63,87 +63,87 @@
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="226"/>
+      <location filename="../../StartView.cpp" line="227"/>
       <source>Open File</source>
       <translation>ファイルを開く</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="236"/>
+      <location filename="../../StartView.cpp" line="237"/>
       <source>Assembly</source>
       <translation>アセンブリ</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="241"/>
+      <location filename="../../StartView.cpp" line="242"/>
       <source>2D Draft</source>
       <translation>2Dドラフト</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="241"/>
+      <location filename="../../StartView.cpp" line="242"/>
       <source>Creates a 2D Draft document</source>
       <translation>2Dドラフトドキュメントを作成</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="244"/>
+      <location filename="../../StartView.cpp" line="245"/>
       <source>BIM/Architecture</source>
       <translation>BIM/アーキテクチャ（建築）</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="221"/>
+      <location filename="../../StartView.cpp" line="222"/>
       <source>Empty File</source>
       <translation>空のファイル</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="222"/>
+      <location filename="../../StartView.cpp" line="223"/>
       <source>Creates a new empty FreeCAD file</source>
       <translation>新しい空のFreeCADファイルを作成</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="227"/>
+      <location filename="../../StartView.cpp" line="228"/>
       <source>Opens an existing CAD file or 3D model</source>
       <translation>既存のCADファイルまたは3Dモデルを開く</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="231"/>
+      <location filename="../../StartView.cpp" line="232"/>
       <source>Parametric Body</source>
       <translation>パラメトリックボディ</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="232"/>
+      <location filename="../../StartView.cpp" line="233"/>
       <source>Creates a body with the Part Design workbench</source>
       <translation>Part Designワークベンチでボディを作成</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="237"/>
+      <location filename="../../StartView.cpp" line="238"/>
       <source>Creates an assembly project</source>
       <translation>アセンブリプロジェクトを作成</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="245"/>
+      <location filename="../../StartView.cpp" line="246"/>
       <source>Creates an architectural project</source>
       <translation>建築プロジェクトを作成</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="529"/>
+      <location filename="../../StartView.cpp" line="538"/>
       <source>New File</source>
       <translation>新規ファイル</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="531"/>
+      <location filename="../../StartView.cpp" line="540"/>
       <source>Examples</source>
       <translation>サンプル</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="533"/>
+      <location filename="../../StartView.cpp" line="542"/>
       <source>Recent Files</source>
       <translation>最近使用したファイル</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="548"/>
+      <location filename="../../StartView.cpp" line="557"/>
       <source>Open First Start Setup</source>
       <translation>初回起動設定を開く</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="549"/>
+      <location filename="../../StartView.cpp" line="558"/>
       <source>Do not show this Start page again (start with blank screen)</source>
       <translation>次回からこのスタートページを表示しない（空白画面で起動）</translation>
     </message>
@@ -151,7 +151,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="523"/>
+      <location filename="../../StartView.cpp" line="532"/>
       <source>Start</source>
       <translation>開始</translation>
     </message>

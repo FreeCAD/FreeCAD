@@ -548,7 +548,7 @@
       <translation>ຄືນຄ່າໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="1218"/>
+      <location filename="../../TaskMassProperties.cpp" line="1222"/>
       <source> (Average)</source>
       <translation> (ສະເລ່ຍ)</translation>
     </message>

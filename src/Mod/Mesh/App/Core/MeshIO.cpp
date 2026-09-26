@@ -29,10 +29,18 @@
 #include <sstream>
 #include <string_view>
 
-
 #include <boost/algorithm/string.hpp>
 #include <boost/convert.hpp>
+// GCC cannot prove that boost::spirit's real parser assigns its accumulator on
+// every path, so it warns about it being possibly uninitialized.
+#if defined(__GNUC__) && !defined(__clang__)
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
 #include <boost/convert/spirit.hpp>
+#if defined(__GNUC__) && !defined(__clang__)
+# pragma GCC diagnostic pop
+#endif
 #include <boost/lexical_cast.hpp>
 #include <boost/regex.hpp>
 
@@ -246,7 +254,7 @@ bool MeshInput::LoadAny(const char* FileName)
     else if (fi.hasExtension("iv")) {
         ok = LoadInventor(str);
         if (ok && _rclMesh.CountFacets() == 0) {
-            Base::Console().warning("No usable mesh found in file '%s'", FileName);
+            Base::Console().warning("No usable mesh found in file '{}'", FileName);
         }
     }
     else if (fi.hasExtension({"nas", "bdf"})) {

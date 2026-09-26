@@ -2248,7 +2248,7 @@ of the projection.</source>
       <translation>更改面的颜色</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="226"/>
+      <location filename="../../TaskLoft.cpp" line="214"/>
       <source>Loft</source>
       <translation>放样</translation>
     </message>
@@ -4913,37 +4913,37 @@ the sketch plane's normal vector will be used</source>
   <context>
     <name>PartGui::LoftWidget</name>
     <message>
-      <location filename="../../TaskLoft.cpp" line="74"/>
+      <location filename="../../TaskLoft.cpp" line="77"/>
       <source>Available profiles</source>
       <translation>可用的轮廓</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="75"/>
+      <location filename="../../TaskLoft.cpp" line="78"/>
       <source>Selected profiles</source>
       <translation>选定的轮廓</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="200"/>
+      <location filename="../../TaskLoft.cpp" line="188"/>
       <source>Too Few Elements</source>
       <translation>元素太少</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="201"/>
+      <location filename="../../TaskLoft.cpp" line="189"/>
       <source>At least 2 vertices, edges, wires, or faces are required.</source>
       <translation>至少需要2个顶点、边、线或面。</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="240"/>
+      <location filename="../../TaskLoft.cpp" line="228"/>
       <source>Input error</source>
       <translation>输入错误</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="275"/>
+      <location filename="../../TaskLoft.cpp" line="263"/>
       <source>Vertex/Edge/Wire/Face</source>
       <translation>顶点/边/线/面</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="276"/>
+      <location filename="../../TaskLoft.cpp" line="264"/>
       <source>Loft</source>
       <translation>放样</translation>
     </message>
@@ -7717,35 +7717,35 @@ Overlapping volumes of the shapes will be removed.</source>
       <translation>出现次数</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="78"/>
+      <location filename="../../PatternParametersWidget.cpp" line="79"/>
       <source>Axis</source>
       <translation>轴线</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="79"/>
-      <location filename="../../PatternParametersWidget.cpp" line="81"/>
+      <location filename="../../PatternParametersWidget.cpp" line="80"/>
+      <location filename="../../PatternParametersWidget.cpp" line="82"/>
       <source>Total Angle</source>
       <translation>总角度</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="80"/>
-      <location filename="../../PatternParametersWidget.cpp" line="82"/>
+      <location filename="../../PatternParametersWidget.cpp" line="81"/>
+      <location filename="../../PatternParametersWidget.cpp" line="83"/>
       <source>Angular Spacing</source>
       <translation>角度间距</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="425"/>
-      <location filename="../../PatternParametersWidget.cpp" line="521"/>
+      <location filename="../../PatternParametersWidget.cpp" line="371"/>
+      <location filename="../../PatternParametersWidget.cpp" line="467"/>
       <source>Spacing %1</source>
       <translation>间距 %1</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="441"/>
+      <location filename="../../PatternParametersWidget.cpp" line="387"/>
       <source>Remove this spacing definition.</source>
       <translation>移除此间距定义。</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="942"/>
+      <location filename="../../PatternParametersWidget.cpp" line="894"/>
       <source>Reset spacing</source>
       <translation>重置间距</translation>
     </message>
@@ -7778,6 +7778,122 @@ Overlapping volumes of the shapes will be removed.</source>
     </message>
   </context>
   <context>
+    <name>PartGui::PatternCircularParametersWidget</name>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="29"/>
+      <source>Circular Pattern</source>
+      <translation>圆周阵列</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="35"/>
+      <source>Axis</source>
+      <translation>轴线</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="48"/>
+      <source>Radial distance</source>
+      <translation>径向距离</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="65"/>
+      <source>Tangential distance</source>
+      <translation>切向距离</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="82"/>
+      <source>Concentric circles</source>
+      <translation>同心圆</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="95"/>
+      <source>Symmetry</source>
+      <translation>对称</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::PatternPointParametersWidget</name>
+    <message>
+      <location filename="../../PatternPointParametersWidget.ui" line="8"/>
+      <source>Point object</source>
+      <translation>点对象</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPointParametersWidget.ui" line="14"/>
+      <location filename="../../PatternPointParametersWidget.cpp" line="48"/>
+      <source>Select Point Object</source>
+      <translation>选择点对象</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::PatternPathParametersWidget</name>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="6"/>
+      <source>Path</source>
+      <translation>路径</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="7"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="145"/>
+      <source>Select Path</source>
+      <translation>选择路径</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="8"/>
+      <source>Spacing mode</source>
+      <translation>间距模式</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="10"/>
+      <source>Occurrences</source>
+      <translation>出现次数</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="12"/>
+      <source>Spacing</source>
+      <translation>间距</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="14"/>
+      <source>Start offset</source>
+      <translation>起始偏移</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="16"/>
+      <source>End offset</source>
+      <translation>终止偏移</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="18"/>
+      <source>Reverse path</source>
+      <translation>反向路径</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="19"/>
+      <source>Align to path</source>
+      <translation>对齐到路径</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <source>Fixed count</source>
+      <translation>固定数量</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <source>Fixed spacing</source>
+      <translation>固定间距</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <source>Fixed count and spacing</source>
+      <translation>固定数量和间距</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.cpp" line="157"/>
+      <source>(+%1)</source>
+      <translation>(+%1)</translation>
+    </message>
+  </context>
+  <context>
     <name>Part::FaceMakerBuildFace</name>
     <message>
       <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
@@ -7801,6 +7917,19 @@ Overlapping volumes of the shapes will be removed.</source>
       <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
       <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
       <translation>统一：处理嵌套孔、重叠线和弯曲表面</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::PatternInstanceControls</name>
+    <message>
+      <location filename="../../PatternInstanceControls.cpp" line="226"/>
+      <source>Restores this instance</source>
+      <translation>恢复此实例</translation>
+    </message>
+    <message>
+      <location filename="../../PatternInstanceControls.cpp" line="231"/>
+      <source>Suppresses this instance</source>
+      <translation>抑制此实例</translation>
     </message>
   </context>
 </TS>

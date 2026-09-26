@@ -122,7 +122,7 @@ ImageEdit::ImageEdit(const QString& propertyName,
         _property = material->getAppearanceProperty(propertyName);
     }
     else {
-        Base::Console().log("Property '%s' not found\n", propertyName.toStdString().c_str());
+        Base::Console().log("Property '{}' not found\n", propertyName.toStdString());
         _property = nullptr;
     }
     if (_property) {

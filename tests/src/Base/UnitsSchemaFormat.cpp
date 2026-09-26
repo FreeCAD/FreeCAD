@@ -128,7 +128,7 @@ TEST(UnitsSchemaFormatTest, default_translation_uses_current_numeric_formatting_
 TEST(UnitsSchemaFormatTest, effective_numeric_separators_override_locale_symbols)
 {
     tests::ScopedLocaleEnvironment localeState {{.formattingLocale = "en_US"}};
-    tests::ScopedNumericLocaleContext separators {{"en_US", ",", "\xC2\xA0", "+", "-", 3, 3}};
+    tests::ScopedNumericLocaleContext separators {{"en_US", ",", "\xC2\xA0", "+", "-", 3, 3, "0"}};
 
     Base::QuantityFormat fmtFixed(Base::QuantityFormat::Fixed, 2);
     fmtFixed.option = Base::QuantityFormat::None;
@@ -149,7 +149,7 @@ TEST(UnitsSchemaFormatTest, explicit_formatting_state_does_not_use_published_sna
 
     Base::QuantityFormat fmt(Base::QuantityFormat::Fixed, 2);
     fmt.option = Base::QuantityFormat::None;
-    const Base::NumericLocaleContext formatting {"en_US", ",", ".", "+", "-", 3, 3};
+    const Base::NumericLocaleContext formatting {"en_US", ",", ".", "+", "-", 3, 3, "0"};
 
     EXPECT_EQ(translateValue(1.5, fmt, formatting), "1,50");
 }

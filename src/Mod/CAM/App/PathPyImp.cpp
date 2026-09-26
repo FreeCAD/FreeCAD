@@ -196,9 +196,9 @@ PyObject* PathPy::deleteCommand(PyObject* args)
 
 PyObject* PathPy::getCycleTime(PyObject* args) const
 {
-    double hFeed, vFeed, hRapid, vRapid;
-    if (PyArg_ParseTuple(args, "dddd", &hFeed, &vFeed, &hRapid, &vRapid)) {
-        return PyFloat_FromDouble(getToolpathPtr()->getCycleTime(hFeed, vFeed, hRapid, vRapid));
+    double hFeed, vFeed, rapid;
+    if (PyArg_ParseTuple(args, "ddd", &hFeed, &vFeed, &rapid)) {
+        return PyFloat_FromDouble(getToolpathPtr()->getCycleTime(hFeed, vFeed, rapid));
     }
     return nullptr;
 }

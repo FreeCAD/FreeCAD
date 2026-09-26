@@ -31,7 +31,7 @@ class FemPostFilter(FemPostObject):
         """Sets the filter pipeline that shall be used for data processing. Argument is the name of the filter pipeline to activate."""
         ...
 
-    def getParentPostGroup(self) -> object:
+    def getParentPostGroup(self) -> object | None:
         """Returns the postprocessing group the filter is in (e.g. a pipeline or branch object). None is returned if not in any."""
         ...
 

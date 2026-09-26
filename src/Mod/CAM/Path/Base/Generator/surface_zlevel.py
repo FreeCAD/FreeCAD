@@ -186,7 +186,7 @@ def _get_selected_faces(base_property):
                     extracted_faces.append(shape)
             except Exception as e:
                 Path.Log.debug(
-                    f"_get_selected_faces: Bypassed invalid sub-element '{sub}' on '{base.Label}': {str(e)}"
+                    f"_get_selected_faces: Bypassed invalid sub-element '{sub}' on '{base.Label}': {e!s}"
                 )
     return extracted_faces
 
@@ -420,9 +420,7 @@ def getTrimFace(border_face, bbFace, wpc):
         if hasattr(trim_face, "removeSplitter"):
             trim_face = trim_face.removeSplitter()
     except Exception as e:
-        Path.Log.debug(
-            f"surface_zlevel.getTrimFace: Removing splitter on trim face failed: {str(e)}"
-        )
+        Path.Log.debug(f"surface_zlevel.getTrimFace: Removing splitter on trim face failed: {e!s}")
         return None
 
     return trim_face
@@ -523,19 +521,22 @@ def _get_fused_floor_geometry(shape, start_z, final_z, tolerance=0.001):
             fuse_engine.add(faces[i])
         try:
             result = fuse_engine.getShape()
-        except:
+        except Exception:
             result = faces[0].multiFuse(faces[1:])
         return result
 
     def _is_planar(face):
-        # If you ever have issues with Planar surfaces (if face.BoundBox.ZLength < 1e-5:)
+        # Horizontal-floor test based on the face's Z extent, not its normal.
+        # - Normal-based tests failed on faces whose normal is reported upside-down
+        #   (norm.z = -1) even though they are real, reachable floors.
+        # - A Z-extent test is orientation-independent and also rejects slightly
+        #   tilted planes (draft faces) that 'norm.z > 0.99' (~8°) would accept.
+        # Downward-facing horizontal faces pass this test but are removed by
+        # _is_accessible_from_top(), since model material always lies above them.
         if not (hasattr(face.Surface, "TypeId") and "Plane" in face.Surface.TypeId):
             return False
 
-        u1, u2, v1, v2 = face.ParameterRange
-        norm = face.normalAt((u1 + u2) / 2.0, (v1 + v2) / 2.0)
-
-        return abs(norm.z > 0.99)
+        return face.BoundBox.ZLength < tolerance
 
     def _is_accessible_from_top(face, shape, abs_top):
         # Accessibility Check: Solid Projection (Shadow Test)
@@ -548,7 +549,7 @@ def _get_fused_floor_geometry(shape, start_z, final_z, tolerance=0.001):
 
             # If the intersection with the model is empty, path is clear
             return not shape.common(projection).Vertexes
-        except:
+        except Exception:
             return False
 
     # Detect pre-triangulated models and skip floor detection
@@ -569,14 +570,17 @@ def _get_fused_floor_geometry(shape, start_z, final_z, tolerance=0.001):
     for face in shape.Faces:
         if _is_planar(face):
             z = round(face.Vertexes[0].Z, 5)
-            if (z >= z_min - tolerance) and (z < z_max):
-                if _is_accessible_from_top(face, shape, abs_top):
-                    f_copy = face.copy()
-                    f_copy.translate(FreeCAD.Vector(0, 0, -f_copy.BoundBox.ZMin))
+            if (
+                (z >= z_min - tolerance)
+                and (z < z_max)
+                and _is_accessible_from_top(face, shape, abs_top)
+            ):
+                f_copy = face.copy()
+                f_copy.translate(FreeCAD.Vector(0, 0, -f_copy.BoundBox.ZMin))
 
-                    if z not in floor_accumulator:
-                        floor_accumulator[z] = []
-                    floor_accumulator[z].append(f_copy)
+                if z not in floor_accumulator:
+                    floor_accumulator[z] = []
+                floor_accumulator[z].append(f_copy)
 
     fused = {}
 
@@ -733,7 +737,7 @@ def zlevel_hybrid_stack(
             # current_silhouette is the union of all 3D contact points at this depth
             current_silhouette = fusion.getShape()
         except Exception as e:
-            Path.Log.error(f"Silhouette fusion failed at Z={round(z_target, 3)}. Error: {str(e)}")
+            Path.Log.error(f"Silhouette fusion failed at Z={round(z_target, 3)}. Error: {e!s}")
             continue
 
         # E. Process and apply active fill hole masks
@@ -1081,7 +1085,7 @@ def _calculate_cut_area(
     try:
         cut_area = layer_engine.getShape()
     except Exception as e:
-        Path.Log.error(f"Layer engine failed at Z={round(z_target, 3)}. Error: {str(e)}")
+        Path.Log.error(f"Layer engine failed at Z={round(z_target, 3)}. Error: {e!s}")
         cut_area = None
 
     return cut_area
@@ -1127,7 +1131,7 @@ def _update_machining_mask(wpc, all_prev_comp, current_silhouette, status, floor
     try:
         all_prev_comp = mask_engine.getShape()
     except Exception as e:
-        Path.Log.error(f"Machining mask update failed: {str(e)}")
+        Path.Log.error(f"Machining mask update failed: {e!s}")
 
     return all_prev_comp
 
@@ -1186,7 +1190,7 @@ def zlevel_hybrid_to_gcode(
     commands = []
 
     tool_diam = radius * 2
-    vert_rapid = feed_params.get("horizRapid", 0.0)
+    vert_rapid = feed_params.get("vertRapid", 0.0)
     min_path_length = tool_diam
     min_adaptive_area = math.pi * (radius**2)
 
@@ -1218,12 +1222,13 @@ def zlevel_hybrid_to_gcode(
 
             # This single call checks the topology, sets up the offsets,
             # handles the finishing_profile override, and prints a warning!
-            geofence, bb_offset = _setup_adaptive_geofence(
+            # layer_params is a per-layer view; adaptive_params itself is never modified.
+            geofence, bb_offset, layer_params = _setup_adaptive_geofence(
                 cut_area, bb_face, adaptive_params, radius, z_target, enforce_geofence
             )
 
             pattern_cmds = _adaptive.generate(
-                adaptive_params,
+                layer_params,
                 feed_params,
                 radius,
                 step_over,
@@ -1342,11 +1347,14 @@ def _setup_adaptive_geofence(
     breaches using a two-pass check (AABB followed by topological intersection) and
     applies geofencing and parameter overrides to ensure safe machining.
 
+    Overrides are applied to a per-layer copy of the parameters. The caller's
+    adaptive_params dictionary is never modified, so an override on one layer
+    does not leak into the following layers.
+
     Args:
         cut_area (Part.Shape): The 2D boundary of the area to be machined on this layer.
         bb_face (Part.Shape): The 2D stock boundary (geofence limit).
-        adaptive_params (dict): The dictionary of adaptive routing parameters.
-                                Modified in-place if overrides are required.
+        adaptive_params (dict): The dictionary of adaptive routing parameters (read-only).
         radius (float): The tool radius in millimeters.
         z_target (float): The current Z-depth (used for contextual logging).
         enforce_geofence (bool): The user's preference from the operation's Data tab.
@@ -1354,17 +1362,20 @@ def _setup_adaptive_geofence(
                                       geofence clipping on open pockets. Defaults to True.
 
     Returns:
-        tuple: (geofence_active (bool), bb_offset (float))
+        tuple: (geofence_active (bool), bb_offset (float), layer_params (dict))
                - geofence_active: True if transit moves should be strictly clipped.
                - bb_offset: The boundary offset applied for the Adaptive2d algorithm.
+               - layer_params: The parameters to use for this layer. This is the
+                 original dictionary when no override is needed, or a copy with
+                 the overrides applied.
     """
     # Defaults for closed pockets
-    force_insideout = adaptive_params.get("force_insideout", False)
+    force_insideout = bool(adaptive_params.get("force_insideout", False))
     geofence = False
     bb_offset = radius - 0.01
 
     if not cut_area or cut_area.isNull() or not bb_face or bb_face.isNull():
-        return geofence, bb_offset
+        return geofence, bb_offset, adaptive_params
 
     # Open Pocket Geometric Detection
     c_bb = cut_area.BoundBox
@@ -1384,34 +1395,43 @@ def _setup_adaptive_geofence(
         # Irregular Stock Check
         try:
             intersection = cut_area.common(bb_face)
-            if intersection and not intersection.isNull():
-                if abs(cut_area.Area - intersection.Area) > 0.01:
-                    is_open = True
-                elif abs(intersection.Length - cut_area.Length) > 0.01:
-                    is_open = True
+            if (
+                intersection
+                and not intersection.isNull()
+                and (
+                    abs(cut_area.Area - intersection.Area) > 0.01
+                    or abs(intersection.Length - cut_area.Length) > 0.01
+                )
+            ):
+                is_open = True
         except Exception:
             is_open = True
 
-    # Apply Safety Overrides
-    if is_open and not force_insideout:
-        # Respect the power-user toggle
-        geofence = bool(enforce_geofence)
-        bb_offset = -0.01
-        adaptive_params["finishing_profile"] = False
+    # Closed pocket: no overrides, use the caller's parameters unchanged
+    if not is_open or force_insideout:
+        return geofence, bb_offset, adaptive_params
 
-        status_text = "ENABLED" if geofence else "DISABLED (by user override)"
+    # Open pocket: apply safety overrides to a per-layer copy
+    layer_params = dict(adaptive_params)
+    layer_params["finishing_profile"] = False
 
-        Path.Log.warning(
-            f"Z={round(z_target, 3)}: Outside adaptive cut detected.\n"
-            f"Geofence clipping is {status_text}.\n"
-            "The Adaptive2d algorithm can be unpredictable in open regions. For safest results:\n"
-            " - Inspect the toolpath closely for any anomalies.\n"
-            " - Set your Boundary Box property to 'Stock' instead of 'BoundingBox'.\n"
-            " - Adjust your 'Boundary Extension' manually if the tool overextends.\n"
-            "(Note: 'Finishing Profile' was automatically disabled for this layer to prevent edge artifacts.)"
-        )
+    # Respect the power-user toggle
+    geofence = bool(enforce_geofence)
+    bb_offset = -0.01
 
-    return geofence, bb_offset
+    status_text = "ENABLED" if geofence else "DISABLED (by user override)"
+
+    Path.Log.warning(
+        f"Z={round(z_target, 3)}: Outside adaptive cut detected.\n"
+        f"Geofence clipping is {status_text}.\n"
+        "The Adaptive2d algorithm can be unpredictable in open regions. For safest results:\n"
+        " - Inspect the toolpath closely for any anomalies.\n"
+        " - Set the 'Boundary box' to 'Stock' instead of 'BaseBoundBox'.\n"
+        " - Adjust the 'Boundary adjustment' manually if the tool overextends.\n"
+        "(Note: 'Finishing profile' was automatically disabled for this layer to prevent edge artifacts.)"
+    )
+
+    return geofence, bb_offset, layer_params
 
 
 def _find_start_point(wire, start_point, cut_climb):
@@ -1559,7 +1579,7 @@ def _generate_wire_path(
     try:
         pp = Path.fromShapes(**path_params)
     except Exception as e:
-        Path.Log.error(f"Path.fromShapes failed at Z={z_target}: {str(e)}")
+        Path.Log.error(f"Path.fromShapes failed at Z={z_target}: {e!s}")
         return []
 
     # Extend Commands list
@@ -1673,7 +1693,7 @@ def _generatePattern(
             engine.makePocket()
             res_area = engine.getShape()
         except Exception as e:
-            Path.Log.error(f"Pattern G-code generation failed for island at Z={z_target}: {str(e)}")
+            Path.Log.error(f"Pattern G-code generation failed for island at Z={z_target}: {e!s}")
             continue
 
         if not res_area or res_area.isNull():

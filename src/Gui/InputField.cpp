@@ -191,6 +191,7 @@ void InputField::updateText(const Base::Quantity& quant)
     auto displayQuantity = quant;
     displayQuantity.setFormat(Gui::editableQuantityFormat(quant.getFormat(), formatting));
     std::string txt = Base::UnitsApi::schemaTranslate(displayQuantity, formatting, dFactor, unitStr);
+    displayUnitStr = unitStr;
     actUnitValue = quant.getValue() / dFactor;
     // Block signals to prevent newInput from re-parsing the display text
     // and overwriting actQuantity with a precision-truncated value.
@@ -207,6 +208,7 @@ App::QuantityInputResult InputField::interpretInput(const QString& input, const 
     }
     constraints.minimum = Minimum;
     constraints.maximum = Maximum;
+    const App::QuantityInputUnit implicitUnit {actUnit, displayUnitStr};
 
     const auto grammar = isBound() ? App::QuantityInputGrammar::Expression
                                    : App::QuantityInputGrammar::Quantity;
@@ -215,7 +217,7 @@ App::QuantityInputResult InputField::interpretInput(const QString& input, const 
             input.toUtf8().toStdString(),
             selectedGrammar,
             getPath(),
-            actUnit,
+            implicitUnit,
             formatting,
             phase,
             constraints

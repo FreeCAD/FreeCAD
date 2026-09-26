@@ -1,26 +1,24 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2016 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileCopyrightText: 2021 Schildkroet
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
-# *   Copyright (c) 2021 Schildkroet                                        *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
 import Path
@@ -107,6 +105,30 @@ def isRoughly(float1, float2, error=Tolerance):
     """isRoughly(float1, float2, [error=Tolerance])
     Returns true if the two values are the same within a given error."""
     return math.fabs(float1 - float2) <= error
+
+
+def isStrictlyGreater(float1, float2, error=Tolerance):
+    """isStrictlyGreater(float1, float2, [error=Tolerance])
+    Returns true if float1 is greater than float2 by more than a given error."""
+    return float1 > float2 and not isRoughly(float1, float2, error)
+
+
+def isStrictlyLess(float1, float2, error=Tolerance):
+    """isStrictlyLess(float1, float2, [error=Tolerance])
+    Returns true if float1 is less than float2 by more than a given error."""
+    return float1 < float2 and not isRoughly(float1, float2, error)
+
+
+def isLessEqual(float1, float2, error=Tolerance):
+    """isLessEqual(float1, float2, [error=Tolerance])
+    Returns true if float1 is less than float2 or the same within a given error."""
+    return float1 < float2 or isRoughly(float1, float2, error)
+
+
+def isGreaterEqual(float1, float2, error=Tolerance):
+    """isGreaterEqual(float1, float2, [error=Tolerance])
+    Returns true if float1 is greater than float2 or the same within a given error."""
+    return float1 > float2 or isRoughly(float1, float2, error)
 
 
 def pointsCoincide(p1, p2, error=Tolerance):
@@ -288,8 +310,7 @@ def speedBetweenPoints(p0, p1, hSpeed, vSpeed):
     while pitch > 1:
         pitch = pitch - 1
     Path.Log.debug(
-        "  pitch = %g %g (%.2f, %.2f, %.2f) -> %.2f"
-        % (pitch, math.atan2(xy(d).Length, d.z), d.x, d.y, d.z, xy(d).Length)
+        f"  pitch = {pitch:g} {math.atan2(xy(d).Length, d.z):g} ({d.x:.2f}, {d.y:.2f}, {d.z:.2f}) -> {xy(d).Length:.2f}"
     )
     speed = vSpeed + pitch * (hSpeed - vSpeed)
     if speed > hSpeed and speed > vSpeed:
@@ -548,8 +569,9 @@ def wiresForPath(path, startPoint=Vector(0, 0, 0)):
         edges = []
         for cmd in path.Commands:
             if cmd.Name in CmdMove:
-                edges.append(edgeForCmd(cmd, startPoint))
-                startPoint = commandEndPoint(cmd, startPoint)
+                if edge := edgeForCmd(cmd, startPoint):
+                    edges.append(edge)
+                    startPoint = commandEndPoint(cmd, startPoint)
             elif cmd.Name in CmdMoveRapid:
                 if len(edges) > 0:
                     wires.append(Part.Wire(edges))
@@ -713,14 +735,18 @@ def combineConnectedShapes(shapes):
         combined = []
         Path.Log.debug("shapes: {}".format(shapes))
         for shape in shapes:
-            connected = [f for f in combined if isRoughly(shape.distToShape(f)[0], 0.0)]
-            Path.Log.debug(
-                "  {}: connected: {} dist: {}".format(
-                    len(combined),
-                    connected,
-                    [shape.distToShape(f)[0] for f in combined],
-                )
-            )
+            connected = [
+                f
+                for f in combined
+                if shape.BoundBox.intersect(f.BoundBox) and isRoughly(shape.distToShape(f)[0], 0.0)
+            ]
+            # Path.Log.debug(
+            #     "  {}: connected: {} dist: {}".format(
+            #         len(combined),
+            #         connected,
+            #         [shape.distToShape(f)[0] for f in combined],
+            #     )
+            # )
             if connected:
                 combined = [f for f in combined if f not in connected]
                 connected.append(shape)
@@ -730,6 +756,21 @@ def combineConnectedShapes(shapes):
                 combined.append(shape)
         shapes = combined
     return shapes
+
+
+def uncompound(shape):
+    """uncompound(shape)
+    Go through the compound and return list of shapes
+    Can be useful to process shape Compound1(shape1, Compound2(shape2, Compound3(...)))"""
+    if not isinstance(shape, Part.Compound):
+        return [shape]
+    result = []
+    for sh in shape.SubShapes:
+        if isinstance(sh, Part.Compound):
+            result.extend(uncompound(sh))
+        else:
+            result.append(sh)
+    return result
 
 
 def removeDuplicateEdges(wire):
@@ -875,10 +916,10 @@ def combineHorizontalFaces(faces, keepOrder=False):
 
     If keepOrder is True, returns shapes with original order
     """
-    horizontal = list()
+    horizontal = []
     offset = 10.0
     topFace = None
-    innerFaces = list()
+    innerFaces = []
 
     # Verify all incoming faces are at Z=0.0
     for f in faces:
@@ -898,7 +939,7 @@ def combineHorizontalFaces(faces, keepOrder=False):
     afbb = allFaces.BoundBox
     bboxFace = makeBoundBoxFace(afbb, offset, -5.0)
     bboxSolid = bboxFace.extrude(FreeCAD.Vector(0.0, 0.0, 10.0))
-    extrudedFaces = list()
+    extrudedFaces = []
     for f in faces:
         extrudedFaces.append(f.extrude(FreeCAD.Vector(0.0, 0.0, 6.0)))
 
@@ -945,8 +986,7 @@ def combineHorizontalFaces(faces, keepOrder=False):
             innerComp = Part.makeCompound(inner)
             outerComp = Part.makeCompound(outer)
             cut = outerComp.cut(innerComp)
-            for f in cut.Faces:
-                horizontal.append(f)
+            horizontal = cut.Faces
         else:
             horizontal = outer
 
@@ -955,7 +995,9 @@ def combineHorizontalFaces(faces, keepOrder=False):
         ordered = [None] * len(faces)
         for face in horizontal:
             for i, f in enumerate(faces):
-                if face.isInside(f.Vertexes[0].Point, Tolerance, False):
+                if face.BoundBox.intersect(f.BoundBox) and face.isInside(
+                    f.Vertexes[0].Point, Tolerance, False
+                ):
                     ordered[i] = face
                     break
         ordered = [x for x in ordered if x]

@@ -420,13 +420,13 @@ void PropertyPostDataObject::SaveDocFile(Base::Writer& writer) const
         if (father && father->isDerivedFrom<App::DocumentObject>()) {
             App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
             Base::Console().error(
-                "Dataset of '%s' cannot be written to vtk file '%s'\n",
+                "Dataset of '{}' cannot be written to vtk file '{}'\n",
                 obj->Label.getValue(),
-                fi.filePath().c_str()
+                fi.filePath()
             );
         }
         else {
-            Base::Console().error("Cannot save vtk file '%s'\n", fi.filePath().c_str());
+            Base::Console().error("Cannot save vtk file '{}'\n", fi.filePath());
         }
 
         std::stringstream ss;
@@ -507,7 +507,21 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader& reader)
             try {
                 zipios::ConstEntryPointer entry = ZipReader.getNextEntry();
                 while (entry->isValid()) {
-                    Base::FileInfo entry_path(fo.filePath() + entry->getName());
+                    // The entry names come straight out of the stored file and are attacker
+                    // controlled, so they must never be joined to the extraction directory
+                    // unchecked.
+                    auto safeName = Base::FileInfo::safeArchiveEntryPath(entry->getName());
+                    if (!safeName) {
+                        Base::Console().error(
+                            "Skipped dataset entry '{}': the name escapes the extraction "
+                            "directory\n",
+                            entry->getName()
+                        );
+                        entry = ZipReader.getNextEntry();
+                        continue;
+                    }
+
+                    Base::FileInfo entry_path(fo.filePath() + "/" + *safeName);
                     if (entry->isDirectory()) {
                         // seems not to be called
                         entry_path.createDirectories();
@@ -551,15 +565,15 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader& reader)
                 if (father && father->isDerivedFrom<App::DocumentObject>()) {
                     App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
                     Base::Console().error(
-                        "Dataset file '%s' with data of '%s' seems to be empty\n",
-                        fi.filePath().c_str(),
+                        "Dataset file '{}' with data of '{}' seems to be empty\n",
+                        fi.filePath(),
                         obj->Label.getValue()
                     );
                 }
                 else {
                     Base::Console().warning(
-                        "Loaded Dataset file '%s' seems to be empty\n",
-                        fi.filePath().c_str()
+                        "Loaded Dataset file '{}' seems to be empty\n",
+                        fi.filePath()
                     );
                 }
             }
@@ -572,8 +586,8 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader& reader)
         }
         else {
             Base::Console().error(
-                "Dataset file '%s' is of unsupported type: %s. Data not loaded.\n",
-                fi.filePath().c_str(),
+                "Dataset file '{}' is of unsupported type: {}. Data not loaded.\n",
+                fi.filePath(),
                 extension
             );
         }

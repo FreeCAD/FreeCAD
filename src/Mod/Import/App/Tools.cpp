@@ -128,7 +128,7 @@ void Tools::printLabel(
     }
 
     ss << std::endl;
-    Base::Console().notify<Base::LogStyle::Log>("ImportOCAF2", ss.str().c_str());
+    Base::Console().notify<Base::LogStyle::Log>("ImportOCAF2", ss.str());
 }
 
 void Tools::dumpLabels(

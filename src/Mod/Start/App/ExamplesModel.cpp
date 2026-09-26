@@ -42,10 +42,7 @@ void ExamplesModel::loadExamples()
     beginResetModel();
     clear();
     if (!_examplesDirectory.isReadable()) {
-        Base::Console().warning(
-            "Cannot read %s",
-            _examplesDirectory.absolutePath().toStdString().c_str()
-        );
+        Base::Console().warning("Cannot read {}", _examplesDirectory.absolutePath().toStdString());
     }
     auto entries = _examplesDirectory.entryList(
         QDir::Filter::Files | QDir::Filter::Readable,
