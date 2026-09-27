@@ -577,35 +577,7 @@ class ObjectOp(PathOp.ObjectOp):
         self.initmove = True
         linkingArgs = None
         if PathOp.FeatureLinking & self.opFeatures(obj):
-            solids = []
-            if self.job and hasattr(self.job, "Model"):
-                solids = [b.Shape for b in self.job.Model.Group if hasattr(b, "Shape")]
-            linkingArgs = {
-                "start_position": None,
-                "target_position": None,
-                "heights_clearance": (obj.SafeHeight.Value, obj.ClearanceHeight.Value),
-                "solids": None,
-                "tool_shape": None,
-                "tool_diameter": None,
-                "collision_clearance": obj.CollisionClearance.Value,
-                "retract_height_offset": None,
-                "split_plunge_height": obj.SafeHeight.Value,
-            }
-            if obj.CollisionAvoidanceStrategy == "Clearance Height":
-                linkingArgs["heights_clearance"] = obj.ClearanceHeight.Value
-            elif obj.CollisionAvoidanceStrategy == "Retract Height":
-                pass
-            elif obj.CollisionAvoidanceStrategy == "Line of Sight":
-                linkingArgs["retract_height_offset"] = obj.CollisionClearance.Value
-                linkingArgs["solids"] = solids
-            elif obj.CollisionAvoidanceStrategy == "Tool Diameter":
-                linkingArgs["retract_height_offset"] = obj.CollisionClearance.Value
-                linkingArgs["solids"] = solids
-                linkingArgs["tool_diameter"] = obj.ToolController.Tool.Diameter.Value
-            elif obj.CollisionAvoidanceStrategy == "Tool Shape":
-                linkingArgs["retract_height_offset"] = obj.CollisionClearance.Value
-                linkingArgs["solids"] = solids
-                linkingArgs["tool_shape"] = obj.ToolController.Tool.BitBody.Shape
+            linkingArgs = linking.get_linking_args(obj, self.job)
 
         for shape, isHole, sub in shapes:
             try:

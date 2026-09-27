@@ -31,6 +31,54 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
+def get_linking_args(obj, job) -> dict | None:
+    """
+    Build get_linking_moves() arguments from an operation's linking properties
+    (CollisionAvoidanceStrategy, CollisionClearance, SafeHeight, ClearanceHeight).
+    start_position and target_position are left for the caller.
+    Returns None if the operation has no linking properties.
+    """
+    strategy = getattr(obj, "CollisionAvoidanceStrategy", None)
+    if strategy is None:
+        return None
+
+    solids = []
+    if job and hasattr(job, "Model"):
+        solids = [b.Shape for b in job.Model.Group if hasattr(b, "Shape")]
+
+    tool = obj.ToolController.Tool if getattr(obj, "ToolController", None) else None
+    clearance = obj.CollisionClearance.Value
+
+    args = {
+        "start_position": None,
+        "target_position": None,
+        "heights_clearance": (obj.SafeHeight.Value, obj.ClearanceHeight.Value),
+        "solids": None,
+        "tool_shape": None,
+        "tool_diameter": None,
+        "collision_clearance": clearance,
+        "retract_height_offset": None,
+        "split_plunge_height": obj.SafeHeight.Value,
+    }
+    if strategy == "Clearance Height":
+        args["heights_clearance"] = obj.ClearanceHeight.Value
+    elif strategy == "Retract Height":
+        pass
+    elif strategy == "Line of Sight":
+        args["retract_height_offset"] = clearance
+        args["solids"] = solids
+    elif strategy == "Tool Diameter":
+        args["retract_height_offset"] = clearance
+        args["solids"] = solids
+        args["tool_diameter"] = tool.Diameter.Value
+    elif strategy == "Tool Shape":
+        args["retract_height_offset"] = clearance
+        args["solids"] = solids
+        args["tool_shape"] = tool.BitBody.Shape
+
+    return args
+
+
 def check_collision(
     start_position: Vector,
     target_position: Vector,

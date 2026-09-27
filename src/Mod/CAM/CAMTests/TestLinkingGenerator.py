@@ -216,3 +216,49 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
     @unittest.skip("not yet implemented")
     def test_30_path_generated_without_local_safe(self):
         pass
+
+
+class _Value:
+    def __init__(self, value):
+        self.Value = value
+
+
+def _linkingOp(strategy, clearance, diameter=5.0):
+    tool = type("Tool", (), {"Diameter": _Value(diameter)})()
+    tc = type("TC", (), {"Tool": tool})()
+    return type(
+        "Op",
+        (),
+        {
+            "CollisionAvoidanceStrategy": strategy,
+            "CollisionClearance": _Value(clearance),
+            "SafeHeight": _Value(5),
+            "ClearanceHeight": _Value(10),
+            "ToolController": tc,
+        },
+    )()
+
+
+class TestGetLinkingArgs(PathTestUtils.PathTestBase):
+    """Tests for get_linking_args()"""
+
+    def test_00_no_linking_properties(self):
+        """Objects without linking properties give no arguments"""
+        self.assertIsNone(generator.get_linking_args(object(), None))
+
+    def test_01_line_of_sight(self):
+        """Line of Sight uses the collision clearance for the check and the retract offset"""
+        args = generator.get_linking_args(_linkingOp("Line of Sight", 1), None)
+        self.assertRoughly(args["collision_clearance"], 1)
+        self.assertRoughly(args["retract_height_offset"], 1)
+        self.assertIsNone(args["tool_diameter"])
+        self.assertIsNone(args["tool_shape"])
+
+    def test_02_heights(self):
+        """Retract Height uses both heights, Clearance Height only the clearance height"""
+        args = generator.get_linking_args(_linkingOp("Retract Height", 1), None)
+        self.assertEqual(args["heights_clearance"], (5, 10))
+        self.assertIsNone(args["retract_height_offset"])
+
+        args = generator.get_linking_args(_linkingOp("Clearance Height", 1), None)
+        self.assertEqual(args["heights_clearance"], 10)
