@@ -59,17 +59,6 @@ Fillet::Fillet()
     Radius.setUnit(Base::Unit::Length);
     Radius.setConstraints(&floatRadius);
 
-    // TODO: Remove UseAllEdges property
-    ADD_PROPERTY_TYPE(
-        UseAllEdges,
-        (false),
-        "Fillet",
-        App::Prop_Hidden,
-        "Fillet all edges if true, else use only those edges in Base property.\n"
-        "If true, then this overrides any edge changes made to the Base property or in the "
-        "dialog.\n"
-    );
-
     ADD_PROPERTY_TYPE(SelectionType, (0L), "Fillet", App::Prop_None, "Selection Type");
     SelectionType.setEnums(SelectionTypeEnums);
 }
@@ -210,9 +199,11 @@ void Fillet::Restore(Base::XMLReader& reader)
 {
     DressUp::Restore(reader);
 
-    if (UseAllEdges.getValue()) {
+    if (_hasOldUseAllEdges && _wasUseAllEdges) {
         SelectionType.setValue(SelectionMode::AllSolids);
     }
+
+    _hasOldUseAllEdges = false;
 }
 
 void Fillet::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
@@ -225,5 +216,20 @@ void Fillet::handleChangedPropertyType(Base::XMLReader& reader, const char* Type
     }
     else {
         DressUp::handleChangedPropertyType(reader, TypeName, prop);
+    }
+}
+
+void Fillet::handleChangedPropertyName(Base::XMLReader& reader, const char* TypeName, const char* PropName)
+{
+    if (strcmp(PropName, "UseAllEdges") == 0 && strcmp(TypeName, "App::PropertyBool") == 0) {
+
+        App::PropertyBool prop;
+        prop.Restore(reader);
+
+        _wasUseAllEdges = prop.getValue();
+        _hasOldUseAllEdges = true;
+    }
+    else {
+        DressUp::handleChangedPropertyName(reader, TypeName, PropName);
     }
 }

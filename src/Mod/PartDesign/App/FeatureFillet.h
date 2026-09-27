@@ -46,7 +46,7 @@ public:
     App::PropertyQuantityConstraint Radius;
     App::PropertyEnumeration SelectionType;
     /// LEGACY -> SelectionType = SelectionMode::AllSolids
-    App::PropertyBool UseAllEdges;
+    // App::PropertyBool UseAllEdges;
 
     /** @name methods override feature */
     //@{
@@ -67,8 +67,15 @@ protected:
         const char* TypeName,
         App::Property* prop
     ) override;
+    void handleChangedPropertyName(
+        Base::XMLReader& reader,
+        const char* typeName,
+        const char* propName
+    ) override;
 
 private:
+    bool _hasOldUseAllEdges, _wasUseAllEdges;
+
     static const char* SelectionTypeEnums[];
 };
 

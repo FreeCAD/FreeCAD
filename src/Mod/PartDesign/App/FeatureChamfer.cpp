@@ -88,16 +88,6 @@ Chamfer::Chamfer()
     Angle.setConstraints(&floatAngle);
 
     ADD_PROPERTY_TYPE(FlipDirection, (false), "Chamfer", App::Prop_None, "Flip direction");
-    // TODO: Remove UseAllEdges property
-    ADD_PROPERTY_TYPE(
-        UseAllEdges,
-        (false),
-        "Chamfer",
-        App::Prop_Hidden,
-        "Chamfer all edges if true, else use only those edges in Base property.\n"
-        "If true, then this overrides any edge changes made to the Base property or in the "
-        "dialog.\n"
-    );
 
     ADD_PROPERTY_TYPE(SelectionType, (0L), "Chamfer", App::Prop_None, "Selection Type");
     SelectionType.setEnums(SelectionTypeEnums);
@@ -262,9 +252,11 @@ void Chamfer::Restore(Base::XMLReader& reader)
 
     migrateFlippedProperties(reader);
 
-    if (UseAllEdges.getValue()) {
+    if (_hasOldUseAllEdges && _wasUseAllEdges) {
         SelectionType.setValue(SelectionMode::AllSolids);
     }
+
+    _hasOldUseAllEdges = false;
 }
 
 void Chamfer::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
@@ -277,6 +269,21 @@ void Chamfer::handleChangedPropertyType(Base::XMLReader& reader, const char* Typ
     }
     else {
         DressUp::handleChangedPropertyType(reader, TypeName, prop);
+    }
+}
+
+void Chamfer::handleChangedPropertyName(Base::XMLReader& reader, const char* TypeName, const char* PropName)
+{
+    if (strcmp(PropName, "UseAllEdges") == 0 && strcmp(TypeName, "App::PropertyBool") == 0) {
+
+        App::PropertyBool prop;
+        prop.Restore(reader);
+
+        _wasUseAllEdges = prop.getValue();
+        _hasOldUseAllEdges = true;
+    }
+    else {
+        DressUp::handleChangedPropertyName(reader, TypeName, PropName);
     }
 }
 

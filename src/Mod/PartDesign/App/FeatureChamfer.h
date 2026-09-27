@@ -53,7 +53,7 @@ public:
     App::PropertyBool FlipDirection;
     App::PropertyEnumeration SelectionType;
     /// LEGACY -> SelectionType = SelectionMode::AllSolids
-    App::PropertyBool UseAllEdges;
+    // App::PropertyBool UseAllEdges;
 
     /** @name methods override feature */
     //@{
@@ -78,13 +78,20 @@ protected:
         const char* TypeName,
         App::Property* prop
     ) override;
-    static const App::PropertyQuantityConstraint::Constraints floatSize;
-    static const App::PropertyAngle::Constraints floatAngle;
-
+    void handleChangedPropertyName(
+        Base::XMLReader& reader,
+        const char* typeName,
+        const char* propName
+    ) override;
     bool requiresSizeSwapping(const Base::XMLReader& reader) const;
     void migrateFlippedProperties(const Base::XMLReader& reader);
 
+    static const App::PropertyQuantityConstraint::Constraints floatSize;
+    static const App::PropertyAngle::Constraints floatAngle;
+
 private:
+    bool _hasOldUseAllEdges, _wasUseAllEdges;
+
     static const char* ChamferTypeEnums[];
     static const char* SelectionTypeEnums[];
 };
