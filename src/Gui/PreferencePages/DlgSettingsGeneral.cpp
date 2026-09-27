@@ -488,6 +488,11 @@ void DlgSettingsGeneral::loadThemes()
     }
 
     int index = ui->themesCombobox->findText(currentTheme);
+    if (index < 0 && !currentTheme.isEmpty()) {
+        currentTheme = QStringLiteral("FreeCAD Light");
+        hGrp->SetASCII("Theme", currentTheme.toStdString());
+        index = ui->themesCombobox->findText(currentTheme);
+    }
     if (index >= 0 && index < ui->themesCombobox->count()) {
         ui->themesCombobox->setCurrentIndex(index);
     }
