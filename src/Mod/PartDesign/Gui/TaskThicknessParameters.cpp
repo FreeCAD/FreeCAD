@@ -334,7 +334,7 @@ void TaskThicknessParameters::setGizmoPositions()
         gizmoContainer->visible = false;
         return;
     }
-    if (thickness->Mode.getValue() == BRepOffset_RectoVerso) {
+    if (thickness->Centering.getValue() == 0) {
         gizmoContainer->visible = false;
         return;
     }
@@ -350,7 +350,7 @@ void TaskThicknessParameters::setGizmoPositions()
 
     Part::TopoShape edge = shapes[0];
     DraggerPlacementProps props = getDraggerPlacementFromEdgeAndFace(edge, faces[0]);
-    props.dir *= thickness->Reversed.getValue() ? 1 : -1;
+    props.dir *= thickness->Centering.getValue();
 
     linearGizmo->Gizmo::setDraggerPlacement(props.position, props.dir);
 }

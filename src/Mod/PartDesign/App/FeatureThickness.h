@@ -43,11 +43,6 @@ public:
         SelectedSolids,
         AllSolids
     };
-    // enum class ThicknessMode : int16_t {
-    //     Skin = BRepOffset_Skin,
-    //     Pipe = BRepOffset_Pipe,
-    //     RectoVerso = BRepOffset_RectoVerso
-    // };
 
     Thickness();
 
@@ -60,8 +55,8 @@ public:
     /// Reversed = True -> Centering = -1 (inside)
     /// Reversed = False -> Centering = 1 (outside)
     /// Mode = RectoVerso -> Centering = 0
-    App::PropertyEnumeration Mode;
-    App::PropertyBool Reversed;
+    // App::PropertyEnumeration Mode;
+    // App::PropertyBool Reversed;
 
     /** @name methods override feature */
     //@{
@@ -75,8 +70,19 @@ public:
     }
     void updatePreviewShape() override;
     void onDocumentRestored() override;
+    void Restore(Base::XMLReader& reader) override;
+    void handleChangedPropertyName(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        const char* PropName
+    ) override;
     //@}
 private:
+    /// For Legacy properties
+    bool _hasOldMode, _hasOldReversed;
+    int _oldMode;
+    bool _oldReversed;
+
     struct ThicknessParameters
     {
         const TopoShape& input;

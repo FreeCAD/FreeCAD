@@ -35,6 +35,10 @@
 #include <Base/Exception.h>
 #include "FeatureThickness.h"
 
+namespace Base
+{
+class XMLReader;
+}
 FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
 using namespace PartDesign;
@@ -165,55 +169,72 @@ PROPERTY_SOURCE(PartDesign::Thickness, PartDesign::DressUp)
 Thickness::Thickness()
 {
     ADD_PROPERTY_TYPE(Value, (1.0), "Thickness", App::Prop_None, "Thickness value");
-    ADD_PROPERTY_TYPE(Mode, (0L), "Thickness", App::Prop_ReadOnly, "Mode");
-    Mode.setEnums(ModeEnums);
     ADD_PROPERTY_TYPE(Join, (0L), "Thickness", App::Prop_None, "Join type");
     Join.setEnums(JoinEnums);
-    ADD_PROPERTY_TYPE(
-        Reversed,
-        (true),
-        "Thickness",
-        App::Prop_ReadOnly,
-        "Apply the thickness towards the solids interior"
-    );
     ADD_PROPERTY_TYPE(Intersection, (false), "Thickness", App::Prop_None, "Enable intersection-handling");
     ADD_PROPERTY_TYPE(Selection, (0L), "Thickness", App::Prop_None, "Selection Type");
     Selection.setEnums(SelectionEnums);
     ADD_PROPERTY_TYPE(
         Centering,
-        (0.0),
-        "Offset",
+        (-1L),
+        "Thickness",
         App::Prop_None,
         "Offset factor to the existing faces [-1, 1]"
     );
     Centering.setConstraints(new App::PropertyFloatConstraint::Constraints(-1.0, 1.0, 0.01));
 }
 
+void Thickness::Restore(Base::XMLReader& reader)
+{
+    DressUp::Restore(reader);
+
+    Value.setValue(std::fabs(Value.getValue()));
+
+    if (_hasOldMode && _hasOldReversed) {
+        if (_oldMode == BRepOffset_RectoVerso) {
+            Centering.setValue(0.0);
+        }
+        else {
+            Centering.setValue(_oldReversed ? -1.0 : 1.0);
+        }
+    }
+
+    _hasOldMode = false;
+    _hasOldReversed = false;
+}
+
 void Thickness::onDocumentRestored()
 {
-    Feature::onDocumentRestored();
+    DressUp::onDocumentRestored();
+}
 
-    if (!Mode.isTouched()) {
-        return;
+void Thickness::handleChangedPropertyName(Base::XMLReader& reader, const char* TypeName, const char* PropName)
+{
+    if (strcmp(PropName, "Mode") == 0 && strcmp(TypeName, "App::PropertyEnumeration") == 0) {
+
+        App::PropertyEnumeration prop;
+        prop.setEnums(ModeEnums);
+        prop.Restore(reader);
+
+        _oldMode = prop.getValue();
+        _hasOldMode = true;
     }
+    else if (strcmp(PropName, "Reversed") == 0 && strcmp(TypeName, "App::PropertyBool") == 0) {
 
-    const int mode = Mode.getValue();
-    const double value = Value.getValue();
+        App::PropertyBool prop;
+        prop.Restore(reader);
 
-    if (mode == BRepOffset_RectoVerso) {
-        Centering.setValue(0.0);
+        _oldReversed = prop.getValue();
+        _hasOldReversed = true;
     }
-    else if (Reversed.isTouched()) {
-        Centering.setValue(Reversed.getValue() ? -1.0 : 1.0);
-
-        Value.setValue(std::abs(value));
+    else {
+        DressUp::handleChangedPropertyName(reader, TypeName, PropName);
     }
 }
 
-
 int16_t Thickness::mustExecute() const
 {
-    if (Placement.isTouched() || Value.isTouched() || Mode.isTouched() || Join.isTouched()) {
+    if (Placement.isTouched() || Value.isTouched() || Centering.isTouched() || Join.isTouched()) {
         return 1;
     }
     return DressUp::mustExecute();
@@ -244,7 +265,6 @@ App::DocumentObjectExecReturn* Thickness::execute()
     const std::vector<std::string>& subStrings = Base.getSubValues(true);
 
     const double tolerance = Precision::Confusion();
-    const bool reversed = Reversed.getValue();
 
     auto join = static_cast<int>(Join.getValue());
 
@@ -260,7 +280,7 @@ App::DocumentObjectExecReturn* Thickness::execute()
         result,
         subStrings,
         {},
-        (reversed ? -1. : 1.) * Value.getValue(),
+        Value.getValue(),
         tolerance,
         Intersection.getValue(),
         Centering.getValue(),
