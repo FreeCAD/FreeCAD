@@ -23,6 +23,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
 import Path.Base.Util as PathUtil
+from Path.Base.Generator import linking
 import Path.Dressup.Utils as PathDressup
 import Path.Main.Stock as PathStock
 import PathScripts.PathUtils as PathUtils
@@ -222,6 +223,18 @@ class PathBoundary:
         if Path.Geom.pointsCoincide(begin, end):
             return []
         cmds = []
+        if (
+            not self.firstBoundary
+            and self.linkingArgs
+            and begin.distanceToPoint(end) > self.retractThreshold
+        ):
+            # link the same way as the base operation (its collision avoidance strategy)
+            cmds = linking.get_dressup_linking_moves(
+                self.linkingArgs, begin, end, self.startDepth, self.safeHeight, vertFeed
+            )
+            if cmds:
+                return cmds
+            cmds = []
         if self.firstBoundary or begin.distanceToPoint(end) > self.retractThreshold:
             # moves with retract
             if begin.z < self.clearanceHeight:
@@ -260,6 +273,10 @@ class PathBoundary:
         self.safeHeight = float(PathUtil.opProperty(self.baseOp, "SafeHeight"))
         self.clearanceHeight = float(PathUtil.opProperty(self.baseOp, "ClearanceHeight"))
         self.strG0ZsafeHeight = Path.Command("G0", {"Z": self.safeHeight})
+        op = PathDressup.baseOp(self.baseOp)
+        self.linkingArgs = linking.get_linking_args(op, PathUtils.findParentJob(op))
+        startDepth = getattr(op, "StartDepth", None)
+        self.startDepth = startDepth.Value if startDepth is not None else self.safeHeight
         self.strG0ZclearanceHeight = Path.Command("G0", {"Z": self.clearanceHeight})
 
         cmd = path.Commands[0]
@@ -346,16 +363,19 @@ class PathBoundary:
                     Path.Log.track(e, flip)
                     if not bogusX and not bogusY:
                         # don't insert false paths based on bogus m/c position
-                        commands.extend(
-                            Path.Geom.cmdsForEdge(
-                                e,
-                                flip=flip,
-                                hSpeed=tc.HorizFeed.Value,
-                                vSpeed=tc.VertFeed.Value,
-                            )
+                        edgeCommands = Path.Geom.cmdsForEdge(
+                            e,
+                            flip=flip,
+                            hSpeed=tc.HorizFeed.Value,
+                            vSpeed=tc.VertFeed.Value,
                         )
                         # restore G0 movement
-                        commands[-1].Name = cmd.Name
+                        edgeCommands[-1].Name = cmd.Name
+                        if cmd.Annotations:
+                            # keep linking moves recognizable for other dressups
+                            for edgeCommand in edgeCommands:
+                                edgeCommand.Annotations = cmd.Annotations
+                        commands.extend(edgeCommands)
                     inside.remove(e)
                     newPos = e.valueAt(e.FirstParameter) if flip else LastPt
                     pos = newPos
