@@ -492,6 +492,3 @@ inline QTextStream& operator<<(QTextStream& output, const MaterialProperty& prop
 using MaterialTreeNode = FolderTreeNode<Material>;
 
 }  // namespace Materials
-
-Q_DECLARE_METATYPE(Materials::Material*)
-Q_DECLARE_METATYPE(std::shared_ptr<Materials::Material>)

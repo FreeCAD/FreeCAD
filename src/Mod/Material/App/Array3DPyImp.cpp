@@ -23,12 +23,10 @@
 
 
 #include <QList>
-#include <QMetaType>
 
 #include <Base/Quantity.h>
 #include <Base/QuantityPy.h>
 #include <CXX/Objects.hxx>
-#include <Gui/MetaTypes.h>
 
 #include "Array3DPy.h"
 #include "Exceptions.h"

@@ -125,6 +125,7 @@ SET(MatGui_SRCS
     Workbench.h
     WorkbenchManipulator.cpp
     WorkbenchManipulator.h
+    MaterialMetaTypes.h
     ValueVariant.cpp
     ValueVariant.h
 )

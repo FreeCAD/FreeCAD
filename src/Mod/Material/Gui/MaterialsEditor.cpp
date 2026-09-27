@@ -53,6 +53,7 @@
 #include "MaterialDelegate.h"
 #include "MaterialSave.h"
 #include "MaterialsEditor.h"
+#include "MaterialMetaTypes.h"
 #include "ValueVariant.h"
 #include "ModelSelect.h"
 #include "ui_MaterialsEditor.h"

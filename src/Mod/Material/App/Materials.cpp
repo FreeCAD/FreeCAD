@@ -28,12 +28,10 @@
 
 #include <QDir>
 #include <QLocale>
-#include <QMetaType>
 #include <QUuid>
 
 #include <App/Application.h>
 #include <Base/StringUtils.h>
-#include <Gui/MetaTypes.h>
 
 #include "Materials.h"
 

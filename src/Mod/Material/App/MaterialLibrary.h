@@ -24,7 +24,6 @@
 #include <memory>
 
 #include <string>
-#include <QVariant>
 
 #include <Base/BaseClass.h>
 #include <Mod/Material/MaterialGlobal.h>
@@ -125,6 +124,3 @@ protected:
 };
 
 }  // namespace Materials
-
-Q_DECLARE_METATYPE(std::shared_ptr<Materials::MaterialLibrary>)
-Q_DECLARE_METATYPE(std::shared_ptr<Materials::MaterialLibraryLocal>)

@@ -25,12 +25,10 @@
 #include <string>
 
 #include <QLocale>
-#include <QMetaType>
 
 #include <App/Application.h>
 #include <Base/Interpreter.h>
 #include <Base/Quantity.h>
-#include <Gui/MetaTypes.h>
 #include <src/App/InitApplication.h>
 
 #include <Mod/Material/App/Exceptions.h>

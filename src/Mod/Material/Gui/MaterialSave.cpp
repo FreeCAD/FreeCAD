@@ -36,6 +36,7 @@
 
 #include "MaterialsEditor.h"
 #include "MaterialSave.h"
+#include "MaterialMetaTypes.h"
 #include "ui_MaterialSave.h"
 
 using namespace MatGui;

@@ -41,6 +41,7 @@
 #include <Mod/Material/App/ModelUuids.h>
 
 #include "MaterialTreeWidget.h"
+#include "MaterialMetaTypes.h"
 #include "MaterialsEditor.h"
 #include "ui_MaterialsEditor.h"
 

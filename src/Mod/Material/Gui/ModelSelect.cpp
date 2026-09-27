@@ -35,6 +35,7 @@
 
 #include "MaterialsEditor.h"
 #include "ModelSelect.h"
+#include "MaterialMetaTypes.h"
 #include "ui_ModelSelect.h"
 
 

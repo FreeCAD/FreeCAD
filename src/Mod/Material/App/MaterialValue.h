@@ -30,10 +30,10 @@
 #include <variant>
 #include <vector>
 
-#include <QMetaType>
+#include <QList>
 
+#include <Base/BaseClass.h>
 #include <Base/Quantity.h>
-#include <Gui/MetaTypes.h>
 
 #include <Mod/Material/MaterialGlobal.h>
 
@@ -351,7 +351,3 @@ protected:
 };
 
 }  // namespace Materials
-
-Q_DECLARE_METATYPE(Materials::MaterialValue)
-Q_DECLARE_METATYPE(std::shared_ptr<Materials::Array2D>)
-Q_DECLARE_METATYPE(std::shared_ptr<Materials::Array3D>)

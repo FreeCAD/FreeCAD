@@ -7,8 +7,7 @@
 #include <QString>
 
 #include <Base/Quantity.h>
-#include <Gui/MetaTypes.h>
-
+#include "MaterialMetaTypes.h"
 #include "ValueVariant.h"
 
 using namespace MatGui;

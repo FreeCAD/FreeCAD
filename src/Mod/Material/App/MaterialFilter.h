@@ -25,8 +25,6 @@
 
 #include <memory>
 
-#include <QMetaType>
-#include <QSet>
 #include <string>
 
 #include <Base/BaseClass.h>
@@ -205,5 +203,3 @@ private:
 };
 
 }  // namespace Materials
-
-Q_DECLARE_METATYPE(Materials::MaterialFilter)

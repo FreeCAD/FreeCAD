@@ -28,6 +28,7 @@
 #include <Gui/WaitCursor.h>
 
 #include "TaskMigrateExternal.h"
+#include "MaterialMetaTypes.h"
 #include "ui_TaskMigrateExternal.h"
 
 

@@ -53,6 +53,7 @@
 #include "ImageEdit.h"
 #include "ListEdit.h"
 #include "MaterialDelegate.h"
+#include "MaterialMetaTypes.h"
 #include "ValueVariant.h"
 #include "MaterialSave.h"
 #include "TextEdit.h"

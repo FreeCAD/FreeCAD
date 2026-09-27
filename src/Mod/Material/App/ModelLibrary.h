@@ -96,6 +96,3 @@ private:
 };
 
 }  // namespace Materials
-
-Q_DECLARE_METATYPE(std::shared_ptr<Materials::ModelLibrary>)
-Q_DECLARE_METATYPE(std::shared_ptr<Materials::ModelLibraryLocal>)

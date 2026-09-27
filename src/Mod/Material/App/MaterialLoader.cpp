@@ -23,13 +23,11 @@
 
 #include <QDirIterator>
 #include <QFileInfo>
-#include <QMetaType>
 
 
 #include <App/Application.h>
 #include <Base/Interpreter.h>
 #include <Base/Stream.h>
-#include <Gui/MetaTypes.h>
 
 #include "Materials.h"
 
