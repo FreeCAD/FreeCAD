@@ -84,6 +84,22 @@ void DlgSettingsSelection::loadSettings()
     ui->checkBoxSelectionCheckBoxes->onRestore();
 }
 
+void DlgSettingsSelection::loadThemeDefaults()
+{
+    ThemeDefaults::applyColors(viewGroup, selectionColors());
+}
+
+void DlgSettingsSelection::resetSettingsToDefaults()
+{
+    ThemeDefaults::removeColors(viewGroup, selectionColors());
+
+    PreferencePage::resetSettingsToDefaults();
+
+    // theme colors are applied after the base reset, which clears Pref* widget params
+    loadThemeDefaults();
+    loadSettings();
+}
+
 void DlgSettingsSelection::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
