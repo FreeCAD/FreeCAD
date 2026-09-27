@@ -20,12 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <string>
+#include <vector>
 
 #include <App/Application.h>
 
 #include "DlgSettingsSelection.h"
 #include "ui_DlgSettingsSelection.h"
+#include "ThemeDefaults.h"
 
+namespace
+{
+constexpr const char* viewGroup = "BaseApp/Preferences/View";
+
+const std::vector<std::string>& selectionColors()
+{
+    static const std::vector<std::string> colors = {
+        "HighlightColor",
+        "SelectionColor",
+    };
+    return colors;
+}
+}  // namespace
 
 using namespace Gui::Dialog;
 
