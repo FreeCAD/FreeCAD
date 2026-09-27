@@ -79,6 +79,50 @@ def get_linking_args(obj, job) -> dict | None:
     return args
 
 
+def get_dressup_linking_moves(
+    linking_args: dict,
+    start_position: Vector,
+    target_position: Vector,
+    start_depth: float,
+    safe_height: float,
+    vert_feed: float | None = None,
+) -> list | None:
+    """
+    Linking moves for travel a dressup adds between two points, using the
+    operation's linking arguments (see get_linking_args).
+
+    The collision check sees only the model, not the stock. The operation's own
+    links start and end in material it just removed, but a dressup's travel
+    (e.g. between a lead-out and the next lead-in) can cross uncut stock, so the
+    travel never goes below start_depth plus the operation's retract offset.
+
+    Moves below safe_height are fed with vert_feed, unless vert_feed is None.
+    Returns None if no collision-free path was found.
+    """
+    args = dict(linking_args)
+    args["start_position"] = start_position
+    args["target_position"] = target_position
+    offset = args.get("retract_height_offset")
+    if offset is not None:
+        minOffset = start_depth + offset - max(start_position.z, target_position.z)
+        args["retract_height_offset"] = max(offset, minOffset)
+    try:
+        cmds = get_linking_moves(**args)
+    except RuntimeError as e:
+        Path.Log.warning(f"{e}, fallback to safe height")
+        return None
+
+    if vert_feed is not None:
+        for cmd in cmds:
+            param = cmd.Parameters
+            if param.get("Z", target_position.z) < safe_height:
+                # below safe height move with feed rate, as the operations do
+                cmd.Name = "G1"
+                param["F"] = vert_feed
+                cmd.Parameters = param
+    return cmds
+
+
 def check_collision(
     start_position: Vector,
     target_position: Vector,
