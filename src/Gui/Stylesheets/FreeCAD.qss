@@ -2329,7 +2329,6 @@ QTableView#cells QTableCornerButton::section {
 
 QHeaderView {
   background-color: transparent;
-  margin-top -1px;/* fix for misalignment*/}
 QHeaderView:disabled {
   color: @TextDisabledColor;
 }
