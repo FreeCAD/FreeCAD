@@ -576,6 +576,8 @@ SET(Part_SRCS
     BSplineCurveBiArcs.h
     CrossSection.cpp
     CrossSection.h
+    EdgeSort.cpp
+    EdgeSort.h
     ExtrusionHelper.cpp
     ExtrusionHelper.h
     FuzzyHelper.cpp
