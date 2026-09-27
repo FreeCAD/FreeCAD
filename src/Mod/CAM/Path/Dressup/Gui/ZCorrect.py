@@ -250,6 +250,7 @@ class ObjectDressup:
                     if "F" in newparams.keys():
                         commandparams["F"] = newparams["F"]
                     newcommand = Path.Command("G1", commandparams)
+                    newcommand.Annotations = cmd.Annotations
                     newcommandlist.append(newcommand)
                     currLocation.update(newcommand.Parameters)
                     currLocation["Z"] = zval
