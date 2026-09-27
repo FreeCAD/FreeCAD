@@ -1024,7 +1024,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
             ],
         )
         chamfer.Size = 1
-        chamfer.SelectionMode = "All solids"
+        chamfer.SelectionType = "All solids"
         # Act / Assert
         body.addObject(box)
         body.addObject(chamfer)
