@@ -1115,6 +1115,8 @@ class ObjectTagDressup:
                             commands.append(
                                 Path.Command("G0", {"X": v.X, "Y": v.Y, "Z": v.Z, "F": vertRapid})
                             )
+                            if pathData.linking.isRapid(edge):
+                                commands[-1].Annotations = Constants.ANNOT_LINKING
                     else:
                         edgeCommands = Path.Geom.cmdsForEdge(
                             edge,
