@@ -195,7 +195,22 @@ StartView::StartView(QWidget* parent)
         recentFilesListWidget,
         &FileCardView::fileRemovalRequested,
         this,
-        [this](const QString& filePath) { _recentFilesModel.removeFile(filePath); }
+        [this](const QString& filePath) {
+            // RecentFilesAction owns the MRU list.  Calling removeFile() on it
+            // updates the ParameterGrp, persists the change, and emits
+            // recentFilesListModified — which triggers the reload connection
+            // established below.  As a fallback (before that connection is live)
+            // we also ask the model to reload directly.
+            auto* recentFiles =
+                Gui::getMainWindow()->findChild<Gui::RecentFilesAction*>(
+                    QLatin1String("recentFiles"));
+            if (recentFiles) {
+                recentFiles->removeFile(filePath);
+            }
+            else {
+                _recentFilesModel.removeFile(filePath);
+            }
+        }
     );
 
     QTimer::singleShot(2000, this, [this, recentFilesListWidget]() {
