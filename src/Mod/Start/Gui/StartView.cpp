@@ -201,9 +201,9 @@ StartView::StartView(QWidget* parent)
             // recentFilesListModified — which triggers the reload connection
             // established below.  As a fallback (before that connection is live)
             // we also ask the model to reload directly.
-            auto* recentFiles =
-                Gui::getMainWindow()->findChild<Gui::RecentFilesAction*>(
-                    QLatin1String("recentFiles"));
+            auto* recentFiles = Gui::getMainWindow()->findChild<Gui::RecentFilesAction*>(
+                QLatin1String("recentFiles")
+            );
             if (recentFiles) {
                 recentFiles->removeFile(filePath);
             }
