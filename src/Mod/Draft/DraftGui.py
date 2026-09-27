@@ -2058,7 +2058,7 @@ class DraftToolBar:
                     "Draft_ShapeString",
                     "Draft_BezCurve",
                 ]
-                self.title = "Create Objects"
+                self.title = translate("draft", "Create Objects")
 
             def shouldShow(self):
                 return (FreeCAD.ActiveDocument is not None) and (
