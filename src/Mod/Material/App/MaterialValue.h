@@ -30,8 +30,6 @@
 #include <variant>
 #include <vector>
 
-#include <QList>
-
 #include <Base/BaseClass.h>
 #include <Base/Quantity.h>
 
@@ -42,6 +40,8 @@ namespace Materials
 
 class Value;
 using ValueList = std::vector<Value>;
+using QuantityRow = std::vector<Base::Quantity>;
+using QuantityTable = std::vector<std::shared_ptr<QuantityRow>>;
 
 // The value of a material property; colors, images, files and URLs are stored as strings
 class MaterialsExport Value
@@ -277,9 +277,7 @@ public:
     bool isNull() const override;
     bool isEmpty() const override;
 
-    const QList<
-        std::pair<Base::Quantity, std::shared_ptr<QList<std::shared_ptr<QList<Base::Quantity>>>>>>&
-    getArray() const
+    const std::vector<std::pair<Base::Quantity, std::shared_ptr<QuantityTable>>>& getArray() const
     {
         return _rowMap;
     }
@@ -289,28 +287,28 @@ public:
     void validateRow(int level, int row) const;
     void validate(const Array3D& other) const;
 
-    const std::shared_ptr<QList<std::shared_ptr<QList<Base::Quantity>>>>&
+    const std::shared_ptr<QuantityTable>&
     getTable(const Base::Quantity& depth) const;
-    const std::shared_ptr<QList<std::shared_ptr<QList<Base::Quantity>>>>&
+    const std::shared_ptr<QuantityTable>&
     getTable(int depthIndex) const;
-    std::shared_ptr<QList<Base::Quantity>> getRow(int depth, int row) const;
-    std::shared_ptr<QList<Base::Quantity>> getRow(int row) const;
-    std::shared_ptr<QList<Base::Quantity>> getRow(int depth, int row);
-    std::shared_ptr<QList<Base::Quantity>> getRow(int row);
-    void addRow(int depth, const std::shared_ptr<QList<Base::Quantity>>& row);
-    void addRow(const std::shared_ptr<QList<Base::Quantity>>& row);
+    std::shared_ptr<QuantityRow> getRow(int depth, int row) const;
+    std::shared_ptr<QuantityRow> getRow(int row) const;
+    std::shared_ptr<QuantityRow> getRow(int depth, int row);
+    std::shared_ptr<QuantityRow> getRow(int row);
+    void addRow(int depth, const std::shared_ptr<QuantityRow>& row);
+    void addRow(const std::shared_ptr<QuantityRow>& row);
     int addDepth(int depth, const Base::Quantity& value);
     int addDepth(const Base::Quantity& value);
     void deleteDepth(int depth);
-    void insertRow(int depth, int row, const std::shared_ptr<QList<Base::Quantity>>& rowData);
-    void insertRow(int row, const std::shared_ptr<QList<Base::Quantity>>& rowData);
+    void insertRow(int depth, int row, const std::shared_ptr<QuantityRow>& rowData);
+    void insertRow(int row, const std::shared_ptr<QuantityRow>& rowData);
     void deleteRow(int depth, int row);
     void deleteRow(int row);
     void deleteRows(int depth);
     void deleteRows();
     int depth() const
     {
-        return _rowMap.size();
+        return static_cast<int>(_rowMap.size());
     }
     int rows(int depth) const;
     int rows() const
@@ -344,8 +342,7 @@ public:
 protected:
     void deepCopy(const Array3D& other);
 
-    QList<std::pair<Base::Quantity, std::shared_ptr<QList<std::shared_ptr<QList<Base::Quantity>>>>>>
-        _rowMap;
+    std::vector<std::pair<Base::Quantity, std::shared_ptr<QuantityTable>>> _rowMap;
     int _currentDepth;
     int _columns;
 };

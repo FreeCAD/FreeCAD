@@ -463,7 +463,7 @@ bool Array3DModel::insertRows(int row, int count, const QModelIndex& parent)
 
     int columns = columnCount();
     for (int i = 0; i < count; i++) {
-        auto rowPtr = std::make_shared<QList<Base::Quantity>>();
+        auto rowPtr = std::make_shared<Materials::QuantityRow>();
         for (int j = 0; j < columns; j++) {
             rowPtr->push_back(_property->getColumnNull(j).toQuantity());
         }

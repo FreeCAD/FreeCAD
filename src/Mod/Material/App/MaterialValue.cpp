@@ -681,9 +681,9 @@ void Array3D::deepCopy(const Array3D& other)
         auto depth = addDepth(depthTable.first);
         auto rows = depthTable.second;
         for (auto row : *rows) {
-            auto newRow = std::make_shared<QList<Base::Quantity>>();
+            auto newRow = std::make_shared<QuantityRow>();
             for (auto column : *row) {
-                newRow->append(column);
+                newRow->push_back(column);
             }
             addRow(depth, newRow);
         }
@@ -733,7 +733,7 @@ void Array3D::validate(const Array3D& other) const
     }
 }
 
-const std::shared_ptr<QList<std::shared_ptr<QList<Base::Quantity>>>>&
+const std::shared_ptr<QuantityTable>&
 Array3D::getTable(const Base::Quantity& depth) const
 {
     for (auto& it : _rowMap) {
@@ -745,7 +745,7 @@ Array3D::getTable(const Base::Quantity& depth) const
     throw InvalidIndex();
 }
 
-const std::shared_ptr<QList<std::shared_ptr<QList<Base::Quantity>>>>&
+const std::shared_ptr<QuantityTable>&
 Array3D::getTable(int depthIndex) const
 {
     try {
@@ -756,7 +756,7 @@ Array3D::getTable(int depthIndex) const
     }
 }
 
-std::shared_ptr<QList<Base::Quantity>> Array3D::getRow(int depth, int row) const
+std::shared_ptr<QuantityRow> Array3D::getRow(int depth, int row) const
 {
     validateRow(depth, row);
 
@@ -768,13 +768,13 @@ std::shared_ptr<QList<Base::Quantity>> Array3D::getRow(int depth, int row) const
     }
 }
 
-std::shared_ptr<QList<Base::Quantity>> Array3D::getRow(int row) const
+std::shared_ptr<QuantityRow> Array3D::getRow(int row) const
 {
     // Check if we can convert otherwise throw error
     return getRow(_currentDepth, row);
 }
 
-std::shared_ptr<QList<Base::Quantity>> Array3D::getRow(int depth, int row)
+std::shared_ptr<QuantityRow> Array3D::getRow(int depth, int row)
 {
     validateRow(depth, row);
 
@@ -786,12 +786,12 @@ std::shared_ptr<QList<Base::Quantity>> Array3D::getRow(int depth, int row)
     }
 }
 
-std::shared_ptr<QList<Base::Quantity>> Array3D::getRow(int row)
+std::shared_ptr<QuantityRow> Array3D::getRow(int row)
 {
     return getRow(_currentDepth, row);
 }
 
-void Array3D::addRow(int depth, const std::shared_ptr<QList<Base::Quantity>>& row)
+void Array3D::addRow(int depth, const std::shared_ptr<QuantityRow>& row)
 {
     try {
         getTable(depth)->push_back(row);
@@ -801,7 +801,7 @@ void Array3D::addRow(int depth, const std::shared_ptr<QList<Base::Quantity>>& ro
     }
 }
 
-void Array3D::addRow(const std::shared_ptr<QList<Base::Quantity>>& row)
+void Array3D::addRow(const std::shared_ptr<QuantityRow>& row)
 {
     addRow(_currentDepth, row);
 }
@@ -815,7 +815,7 @@ int Array3D::addDepth(int depth, const Base::Quantity& value)
     if (depth > this->depth()) {
         throw InvalidIndex();
     }
-    auto rowVector = std::make_shared<QList<std::shared_ptr<QList<Base::Quantity>>>>();
+    auto rowVector = std::make_shared<QuantityTable>();
     auto entry = std::make_pair(value, rowVector);
     _rowMap.insert(_rowMap.begin() + depth, entry);
 
@@ -824,7 +824,7 @@ int Array3D::addDepth(int depth, const Base::Quantity& value)
 
 int Array3D::addDepth(const Base::Quantity& value)
 {
-    auto rowVector = std::make_shared<QList<std::shared_ptr<QList<Base::Quantity>>>>();
+    auto rowVector = std::make_shared<QuantityTable>();
     auto entry = std::make_pair(value, rowVector);
     _rowMap.push_back(entry);
 
@@ -848,7 +848,7 @@ void Array3D::setDepth(int depthCount)
 
 void Array3D::insertRow(int depth,
                                 int row,
-                                const std::shared_ptr<QList<Base::Quantity>>& rowData)
+                                const std::shared_ptr<QuantityRow>& rowData)
 {
     try {
         auto table = getTable(depth);
@@ -859,7 +859,7 @@ void Array3D::insertRow(int depth,
     }
 }
 
-void Array3D::insertRow(int row, const std::shared_ptr<QList<Base::Quantity>>& rowData)
+void Array3D::insertRow(int row, const std::shared_ptr<QuantityRow>& rowData)
 {
     insertRow(_currentDepth, row, rowData);
 }
@@ -896,7 +896,7 @@ int Array3D::rows(int depth) const
     }
     validateDepth(depth);
 
-    return getTable(depth)->size();
+    return static_cast<int>(getTable(depth)->size());
 }
 
 void Array3D::setRows(int depth, int rowCount)
@@ -905,9 +905,9 @@ void Array3D::setRows(int depth, int rowCount)
     dummy.setInvalid();
 
     while (rows(depth) < rowCount) {
-        auto row = std::make_shared<QList<Base::Quantity>>();
+        auto row = std::make_shared<QuantityRow>();
         for (int i = 0; i < columns(); i++) {
-            row->append(dummy);
+            row->push_back(dummy);
         }
         addRow(depth, row);
     }
@@ -920,7 +920,7 @@ void Array3D::setValue(int depth, int row, int column, const Base::Quantity& val
 
     auto val = getRow(depth, row);
     try {
-        val->replace(column, value);
+        val->at(column) = value;
     }
     catch (std::out_of_range const&) {
         throw InvalidIndex();
@@ -935,8 +935,7 @@ void Array3D::setValue(int row, int column, const Base::Quantity& value)
 void Array3D::setDepthValue(int depth, const Base::Quantity& value)
 {
     try {
-        auto oldRows = getTable(depth);
-        _rowMap.replace(depth, std::pair(value, oldRows));
+        _rowMap.at(depth).first = value;
     }
     catch (std::out_of_range const&) {
         throw InvalidIndex();

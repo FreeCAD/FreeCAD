@@ -22,8 +22,6 @@
  **************************************************************************/
 
 
-#include <QList>
-
 #include <Base/Quantity.h>
 #include <Base/QuantityPy.h>
 #include <CXX/Objects.hxx>

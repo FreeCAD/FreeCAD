@@ -30,6 +30,7 @@
 #include <utility>
 #include <vector>
 
+#include <QString>
 #include <QTextStream>
 
 #include <App/Application.h>

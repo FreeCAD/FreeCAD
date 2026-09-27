@@ -139,7 +139,7 @@ std::shared_ptr<Array3D> MaterialYamlEntry::read3DArray(const YAML::Node& node, 
                 for (std::size_t i = 0; i < yamlTable.size(); i++) {
                     auto yamlRow = yamlTable[i];
 
-                    auto row = std::make_shared<QList<Base::Quantity>>();
+                    auto row = std::make_shared<QuantityRow>();
                     for (std::size_t j = 0; j < yamlRow.size(); j++) {
                         auto qq = Base::Quantity::parse(yamlRow[j].as<std::string>());
                         qq.setFormat(MaterialValue::getQuantityFormat());

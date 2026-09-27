@@ -23,7 +23,6 @@
 
 #include <QDirIterator>
 #include <QFileInfo>
-#include <QVector>
 
 
 

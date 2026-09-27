@@ -209,7 +209,7 @@ TEST_F(TestMaterialValue, TestArray3DType)
     EXPECT_EQ(mat2.rows(2), 0);
 
     // Add rows
-    auto row = std::make_shared<QList<Base::Quantity>>();
+    auto row = std::make_shared<Materials::QuantityRow>();
     row->push_back(quantity);
     row->push_back(quantity);
 
