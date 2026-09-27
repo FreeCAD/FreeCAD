@@ -23,19 +23,17 @@
 
 #pragma once
 
-#include <QMetaType>
-
-#include <Base/Quantity.h>
-#include <Base/QuantityPy.h>
 #include <CXX/Objects.hxx>
-#include <Gui/MetaTypes.h>
 
 #include <Mod/Material/MaterialGlobal.h>
+
+#include "MaterialValue.h"
 
 namespace Materials
 {
 
-extern MaterialsExport PyObject* _pyObjectFromVariant(const QVariant& value);
-extern MaterialsExport Py::List getList(const QVariant& value);
+/// A new reference to the Python object holding \a value
+extern MaterialsExport PyObject* pyObjectFromValue(const Value& value);
+extern MaterialsExport Py::List getList(const ValueList& value);
 
 }  // namespace Materials

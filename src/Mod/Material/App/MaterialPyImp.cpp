@@ -498,8 +498,8 @@ PyObject* MaterialPy::getPhysicalValue(PyObject* args)
         return new Array3DPy(new Array3D(*value));
     }
 
-    QVariant value = property->getValue();
-    return _pyObjectFromVariant(value);
+    const auto& value = property->getValue();
+    return pyObjectFromValue(value);
 }
 
 PyObject* MaterialPy::setPhysicalValue(PyObject* args)
@@ -542,8 +542,8 @@ PyObject* MaterialPy::getAppearanceValue(PyObject* args)
         return new Array3DPy(new Array3D(*value));
     }
 
-    QVariant value = property->getValue();
-    return _pyObjectFromVariant(value);
+    const auto& value = property->getValue();
+    return pyObjectFromValue(value);
 }
 
 PyObject* MaterialPy::setAppearanceValue(PyObject* args)
@@ -572,16 +572,14 @@ PyObject* MaterialPy::setValue(PyObject* args)
 
     PyErr_Clear();
     if (PyArg_ParseTuple(args, "sO!", &name, &PyList_Type, &listObj)) {
-        QList<QVariant> variantList;
+        ValueList values;
         Py::List list(listObj);
         for (auto itemObj : list) {
             Py::String item(itemObj);
-            const std::string value(item.as_string());
-            QVariant variant = QVariant::fromValue(value);
-            variantList.append(variant);
+            values.emplace_back(item.as_string());
         }
 
-        getMaterialPtr()->setValue(name, variantList);
+        getMaterialPtr()->setValue(name, Value(std::move(values)));
         Py_Return;
     }
 

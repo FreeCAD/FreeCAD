@@ -53,6 +53,7 @@
 #include "MaterialDelegate.h"
 #include "MaterialSave.h"
 #include "MaterialsEditor.h"
+#include "ValueVariant.h"
 #include "ModelSelect.h"
 #include "ui_MaterialsEditor.h"
 
@@ -362,10 +363,10 @@ void MaterialsEditor::onDescription()
 void MaterialsEditor::propertyChange(const QString& property, const QVariant& value)
 {
     if (_material->hasPhysicalProperty(property.toStdString())) {
-        _material->setPhysicalValue(property.toStdString(), value);
+        _material->setPhysicalValue(property.toStdString(), fromQVariant(value));
     }
     else if (_material->hasAppearanceProperty(property.toStdString())) {
-        _material->setAppearanceValue(property.toStdString(), value);
+        _material->setAppearanceValue(property.toStdString(), fromQVariant(value));
         updatePreview();
     }
     update();

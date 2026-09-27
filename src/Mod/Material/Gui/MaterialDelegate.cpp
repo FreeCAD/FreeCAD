@@ -53,6 +53,7 @@
 #include "ImageEdit.h"
 #include "ListEdit.h"
 #include "MaterialDelegate.h"
+#include "ValueVariant.h"
 #include "MaterialSave.h"
 #include "TextEdit.h"
 
@@ -122,7 +123,7 @@ QVariant MaterialDelegate::getValue(const QModelIndex& index) const
         auto material = group->child(row, 1)->data().value<std::shared_ptr<Materials::Material>>();
         // auto propertyName = group->child(row, 0)->text();
         auto propertyName = group->child(row, 0)->data().toString().toStdString();
-        propertyValue = material->getProperty(propertyName)->getValue();
+        propertyValue = toQVariant(material->getProperty(propertyName)->getValue());
     }
     return propertyValue;
 }
@@ -145,7 +146,7 @@ void MaterialDelegate::setValue(QAbstractItemModel* model,
         auto property = material->getProperty(propertyName);
 
         try {
-            property->setValue(value);
+            property->setValue(fromQVariant(value));
         }
         catch (const Base::ValueError&) {
             // Units mismatch
@@ -190,7 +191,7 @@ void MaterialDelegate::notifyChanged(const QAbstractItemModel* model,
         auto material = group->child(row, 1)->data().value<std::shared_ptr<Materials::Material>>();
         // auto propertyName = group->child(row, 0)->text();
         auto propertyName = group->child(row, 0)->data().toString().toStdString();
-        auto propertyValue = material->getProperty(propertyName)->getValue();
+        auto propertyValue = toQVariant(material->getProperty(propertyName)->getValue());
         material->setEditStateAlter();
 
         Q_EMIT const_cast<MaterialDelegate*>(this)->propertyChange(

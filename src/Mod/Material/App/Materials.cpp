@@ -29,10 +29,7 @@
 #include <QDir>
 #include <QLocale>
 #include <QMetaType>
-#include <QVariant>
 #include <QUuid>
-
-
 
 #include <App/Application.h>
 #include <Base/StringUtils.h>
@@ -62,70 +59,6 @@ static QTextStream& operator<<(QTextStream& stream, const std::string& text)
 /* TRANSLATOR Material::Materials */
 
 TYPESYSTEM_SOURCE(Materials::MaterialProperty, Materials::ModelProperty)
-
-namespace
-{
-
-// Bridge to the QVariant based property API, until it is converted to Value
-QVariant toQVariant(const Value& value)
-{
-    if (value.is<std::string>()) {
-        return QString::fromStdString(value.get<std::string>());
-    }
-    if (value.is<bool>()) {
-        return value.get<bool>();
-    }
-    if (value.is<int>()) {
-        return value.get<int>();
-    }
-    if (value.is<double>()) {
-        return value.get<double>();
-    }
-    if (value.is<Base::Quantity>()) {
-        return QVariant::fromValue(value.get<Base::Quantity>());
-    }
-    if (value.is<ValueList>()) {
-        QList<QVariant> list;
-        for (const auto& item : value.get<ValueList>()) {
-            list.append(toQVariant(item));
-        }
-        return list;
-    }
-    return {};
-}
-
-Value fromQVariant(const QVariant& value)
-{
-    if (value.isNull()) {
-        return {};
-    }
-    if (value.userType() == qMetaTypeId<Base::Quantity>()) {
-        return value.value<Base::Quantity>();
-    }
-    if (value.userType() == qMetaTypeId<QList<QVariant>>()) {
-        ValueList list;
-        for (const auto& item : value.value<QList<QVariant>>()) {
-            list.push_back(fromQVariant(item));
-        }
-        return list;
-    }
-    switch (value.userType()) {
-        case QMetaType::Bool:
-            return value.toBool();
-        case QMetaType::Int:
-        case QMetaType::UInt:
-        case QMetaType::Long:
-        case QMetaType::LongLong:
-            return value.toInt();
-        case QMetaType::Float:
-        case QMetaType::Double:
-            return value.toDouble();
-        default:
-            return value.toString().toStdString();
-    }
-}
-
-}  // namespace
 
 MaterialProperty::MaterialProperty()
 {
@@ -180,14 +113,9 @@ void MaterialProperty::setModelUUID(std::string uuid)
     _modelUUID = std::move(uuid);
 }
 
-QVariant MaterialProperty::getValue()
+const Value& MaterialProperty::getValue() const
 {
-    return toQVariant(_valuePtr->getValue());
-}
-
-QVariant MaterialProperty::getValue() const
-{
-    return toQVariant(_valuePtr->getValue());
+    return _valuePtr->getValue();
 }
 
 std::shared_ptr<MaterialValue> MaterialProperty::getMaterialValue()
@@ -208,7 +136,7 @@ std::string MaterialProperty::getString() const
         return {};
     }
     if (getType() == MaterialValue::Quantity) {
-        auto quantity = getValue().value<Base::Quantity>();
+        auto quantity = getValue().toQuantity();
         return quantity.getUserString();
     }
     if (getType() == MaterialValue::Float) {
@@ -217,9 +145,9 @@ std::string MaterialProperty::getString() const
             return {};
         }
         // the value is shown to the user, so in their locale
-        return QLocale().toString(value.toFloat(), 'g', MaterialValue::PRECISION).toStdString();
+        return QLocale().toString(value.toDouble(), 'g', MaterialValue::PRECISION).toStdString();
     }
-    return getValue().toString().toStdString();
+    return getValue().toString();
 }
 
 std::string MaterialProperty::getYAMLString() const
@@ -229,7 +157,7 @@ std::string MaterialProperty::getYAMLString() const
 
 Base::Color MaterialProperty::getColor() const
 {
-    std::stringstream stream(getValue().toString().toStdString());
+    std::stringstream stream(getValue().toString());
 
     char c;
     stream >> c;  // read "("
@@ -260,7 +188,7 @@ std::string MaterialProperty::getDictionaryString() const
         return {};
     }
     if (getType() == MaterialValue::Quantity) {
-        auto quantity = getValue().value<Base::Quantity>();
+        auto quantity = getValue().toQuantity();
         return std::format("{:.{}g} {}",
                            quantity.getValue(),
                            MaterialValue::PRECISION,
@@ -271,9 +199,9 @@ std::string MaterialProperty::getDictionaryString() const
         if (value.isNull()) {
             return {};
         }
-        return std::format("{:.{}g}", value.toFloat(), MaterialValue::PRECISION);
+        return std::format("{:.{}g}", value.toDouble(), MaterialValue::PRECISION);
     }
-    return getValue().toString().toStdString();
+    return getValue().toString();
 }
 
 void MaterialProperty::setPropertyType(std::string type)
@@ -344,17 +272,17 @@ std::string MaterialProperty::getColumnUnits(int column) const
     }
 }
 
-QVariant MaterialProperty::getColumnNull(int column) const
+Value MaterialProperty::getColumnNull(int column) const
 {
     MaterialValue::ValueType valueType = getColumnType(column);
 
     switch (valueType) {
-        case MaterialValue::Quantity: {
-            Base::Quantity quant = Base::Quantity(0, getColumnUnits(column));
-            return QVariant::fromValue(quant);
-        }
+        case MaterialValue::Quantity:
+            return Base::Quantity(0, getColumnUnits(column));
 
         case MaterialValue::Float:
+            return 0.0;
+
         case MaterialValue::Integer:
             return 0;
 
@@ -362,14 +290,14 @@ QVariant MaterialProperty::getColumnNull(int column) const
             break;
     }
 
-    return QString();
+    return std::string();
 }
 
-void MaterialProperty::setValue(const QVariant& value)
+void MaterialProperty::setValue(const Value& value)
 {
-    if (_valuePtr->getType() == MaterialValue::Quantity && value.canConvert<Base::Quantity>()) {
+    if (_valuePtr->getType() == MaterialValue::Quantity && value.is<Base::Quantity>()) {
         // Ensure the units are set correctly
-        auto quantity = value.value<Base::Quantity>();
+        const auto& quantity = value.get<Base::Quantity>();
         if (quantity.isValid()) {
             setQuantity(quantity);
         }
@@ -379,7 +307,7 @@ void MaterialProperty::setValue(const QVariant& value)
         }
     }
     else {
-        _valuePtr->setValue(fromQVariant(value));
+        _valuePtr->setValue(value);
     }
 }
 
@@ -508,11 +436,6 @@ void MaterialProperty::setQuantity(double value, const std::string& units)
 void MaterialProperty::setQuantity(const std::string& value)
 {
     setQuantity(Base::Quantity::parse(value));
-}
-
-void MaterialProperty::setList(const QList<QVariant>& value)
-{
-    _valuePtr->setList(fromQVariant(value).toList());
 }
 
 void MaterialProperty::setList(ValueList value)
@@ -1023,14 +946,6 @@ void Material::setPhysicalValue(const std::string& name, const std::shared_ptr<M
     }
 }
 
-void Material::setPhysicalValue(const std::string& name, const std::shared_ptr<QList<QVariant>>& value)
-{
-    setPhysicalEditState(name);
-
-    if (hasPhysicalProperty(name)) {
-        _physical[name]->setList(*value);
-    }
-}
 
 void Material::setPhysicalValue(const std::string& name, const ValueList& value)
 {
@@ -1040,7 +955,7 @@ void Material::setPhysicalValue(const std::string& name, const ValueList& value)
     }
 }
 
-void Material::setPhysicalValue(const std::string& name, const QVariant& value)
+void Material::setPhysicalValue(const std::string& name, const Value& value)
 {
     setPhysicalEditState(name);
 
@@ -1067,15 +982,6 @@ void Material::setAppearanceValue(const std::string& name, const std::shared_ptr
     }
 }
 
-void Material::setAppearanceValue(const std::string& name,
-                                  const std::shared_ptr<QList<QVariant>>& value)
-{
-    setAppearanceEditState(name);
-
-    if (hasAppearanceProperty(name)) {
-        _appearance[name]->setList(*value);
-    }
-}
 
 void Material::setAppearanceValue(const std::string& name, const ValueList& value)
 {
@@ -1085,7 +991,7 @@ void Material::setAppearanceValue(const std::string& name, const ValueList& valu
     }
 }
 
-void Material::setAppearanceValue(const std::string& name, const QVariant& value)
+void Material::setAppearanceValue(const std::string& name, const Value& value)
 {
     setAppearanceEditState(name);
 
@@ -1107,7 +1013,7 @@ void Material::setValue(const std::string& name, const std::string& value)
     }
 }
 
-void Material::setValue(const std::string& name, const QVariant& value)
+void Material::setValue(const std::string& name, const Value& value)
 {
     if (hasPhysicalProperty(name)) {
         setPhysicalValue(name, value);
@@ -1202,7 +1108,7 @@ std::shared_ptr<MaterialProperty> Material::getProperty(const std::string& name)
     throw PropertyNotFound();
 }
 
-QVariant
+Value
 Material::getValue(const std::map<std::string, std::shared_ptr<MaterialProperty>>& propertyList,
                    const std::string& name)
 {
@@ -1228,7 +1134,7 @@ Material::getValueString(const std::map<std::string, std::shared_ptr<MaterialPro
             if (value.isNull()) {
                 return {};
             }
-            return value.value<Base::Quantity>().getUserString();
+            return value.toQuantity().getUserString();
         }
         if (property->getType() == MaterialValue::Float) {
             auto value = property->getValue();
@@ -1237,24 +1143,24 @@ Material::getValueString(const std::map<std::string, std::shared_ptr<MaterialPro
             }
             // the value is shown to the user, so in their locale
             return QLocale()
-                .toString(value.toFloat(), 'g', MaterialValue::PRECISION)
+                .toString(value.toDouble(), 'g', MaterialValue::PRECISION)
                 .toStdString();
         }
-        return property->getValue().toString().toStdString();
+        return property->getValue().toString();
     }
     catch (std::out_of_range const&) {
         throw PropertyNotFound();
     }
 }
 
-QVariant Material::getPhysicalValue(const std::string& name) const
+Value Material::getPhysicalValue(const std::string& name) const
 {
     return getValue(_physical, name);
 }
 
 Base::Quantity Material::getPhysicalQuantity(const std::string& name) const
 {
-    return getValue(_physical, name).value<Base::Quantity>();
+    return getValue(_physical, name).toQuantity();
 }
 
 std::string Material::getPhysicalValueString(const std::string& name) const
@@ -1262,14 +1168,14 @@ std::string Material::getPhysicalValueString(const std::string& name) const
     return getValueString(_physical, name);
 }
 
-QVariant Material::getAppearanceValue(const std::string& name) const
+Value Material::getAppearanceValue(const std::string& name) const
 {
     return getValue(_appearance, name);
 }
 
 Base::Quantity Material::getAppearanceQuantity(const std::string& name) const
 {
-    return getValue(_appearance, name).value<Base::Quantity>();
+    return getValue(_appearance, name).toQuantity();
 }
 
 std::string Material::getAppearanceValueString(const std::string& name) const

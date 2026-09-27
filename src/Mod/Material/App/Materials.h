@@ -30,9 +30,7 @@
 #include <utility>
 #include <vector>
 
-#include <QList>
 #include <QTextStream>
-#include <QVariant>
 
 #include <App/Application.h>
 #include <Base/Color.h>
@@ -70,8 +68,7 @@ public:
         return _modelUUID;
     }
 
-    QVariant getValue();
-    QVariant getValue() const;
+    const Value& getValue() const;
     const ValueList& getList() const
     {
         return _valuePtr->getList();
@@ -99,11 +96,11 @@ public:
     }
     double getFloat() const
     {
-        return getValue().toFloat();
+        return getValue().toDouble();
     }
     std::string getURL() const
     {
-        return getValue().toString().toStdString();
+        return getValue().toString();
     }
     Base::Color getColor() const;
 
@@ -111,7 +108,7 @@ public:
     const MaterialProperty& getColumn(int column) const;
     MaterialValue::ValueType getColumnType(int column) const;
     std::string getColumnUnits(int column) const;
-    QVariant getColumnNull(int column) const;
+    Value getColumnNull(int column) const;
     const std::vector<MaterialProperty>& getColumns() const
     {
         return _columns;
@@ -119,7 +116,7 @@ public:
 
     void setModelUUID(std::string uuid);
     void setPropertyType(std::string type) override;
-    void setValue(const QVariant& value);
+    void setValue(const Value& value);
     void setValue(const std::string& value);
     void setValue(const std::shared_ptr<MaterialValue>& value);
     void setString(const std::string& value);
@@ -133,7 +130,6 @@ public:
     void setQuantity(const Base::Quantity& value);
     void setQuantity(double value, const std::string& units);
     void setQuantity(const std::string& value);
-    void setList(const QList<QVariant>& value);
     void setList(ValueList value);
     void setURL(const std::string& value);
     void setColor(const Base::Color& value);
@@ -300,18 +296,16 @@ public:
     void setPhysicalValue(const std::string& name, double value);
     void setPhysicalValue(const std::string& name, const Base::Quantity& value);
     void setPhysicalValue(const std::string& name, const std::shared_ptr<MaterialValue>& value);
-    void setPhysicalValue(const std::string& name, const std::shared_ptr<QList<QVariant>>& value);
     void setPhysicalValue(const std::string& name, const ValueList& value);
-    void setPhysicalValue(const std::string& name, const QVariant& value);
+    void setPhysicalValue(const std::string& name, const Value& value);
 
     void setAppearanceValue(const std::string& name, const std::string& value);
     void setAppearanceValue(const std::string& name, const std::shared_ptr<MaterialValue>& value);
-    void setAppearanceValue(const std::string& name, const std::shared_ptr<QList<QVariant>>& value);
     void setAppearanceValue(const std::string& name, const ValueList& value);
-    void setAppearanceValue(const std::string& name, const QVariant& value);
+    void setAppearanceValue(const std::string& name, const Value& value);
 
     void setValue(const std::string& name, const std::string& value);
-    void setValue(const std::string& name, const QVariant& value);
+    void setValue(const std::string& name, const Value& value);
     void setValue(const std::string& name, const std::shared_ptr<MaterialValue>& value);
 
     /*
@@ -329,10 +323,10 @@ public:
     std::shared_ptr<MaterialProperty> getAppearanceProperty(const std::string& name) const;
     std::shared_ptr<MaterialProperty> getProperty(const std::string& name);
     std::shared_ptr<MaterialProperty> getProperty(const std::string& name) const;
-    QVariant getPhysicalValue(const std::string& name) const;
+    Value getPhysicalValue(const std::string& name) const;
     Base::Quantity getPhysicalQuantity(const std::string& name) const;
     std::string getPhysicalValueString(const std::string& name) const;
-    QVariant getAppearanceValue(const std::string& name) const;
+    Value getAppearanceValue(const std::string& name) const;
     Base::Quantity getAppearanceQuantity(const std::string& name) const;
     std::string getAppearanceValueString(const std::string& name) const;
     bool hasPhysicalProperty(const std::string& name) const;
@@ -448,7 +442,7 @@ protected:
     void addModel(const std::string& uuid);
     static void removeUUID(std::set<std::string>& uuidList, const std::string& uuid);
 
-    static QVariant
+    static Value
     getValue(const std::map<std::string, std::shared_ptr<MaterialProperty>>& propertyList,
              const std::string& name);
     static std::string

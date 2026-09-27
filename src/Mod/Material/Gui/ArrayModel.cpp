@@ -155,7 +155,7 @@ bool Array2DModel::insertRows(int row, int count, const QModelIndex& parent)
     for (int i = 0; i < count; i++) {
         auto rowPtr = std::make_shared<Materials::ValueList>();
         for (int j = 0; j < columns; j++) {
-            rowPtr->push_back(fromQVariant(_property->getColumnNull(j)));
+            rowPtr->push_back(_property->getColumnNull(j));
         }
 
         _value->insertRow(row, rowPtr);
@@ -465,7 +465,7 @@ bool Array3DModel::insertRows(int row, int count, const QModelIndex& parent)
     for (int i = 0; i < count; i++) {
         auto rowPtr = std::make_shared<QList<Base::Quantity>>();
         for (int j = 0; j < columns; j++) {
-            rowPtr->push_back(_property->getColumnNull(j).value<Base::Quantity>());
+            rowPtr->push_back(_property->getColumnNull(j).toQuantity());
         }
 
         _value->insertRow(row, rowPtr);

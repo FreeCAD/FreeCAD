@@ -24,11 +24,7 @@
 
 #include <memory>
 
-#include <QMetaType>
-#include <QString>
-
 #include <App/Application.h>
-#include <Gui/MetaTypes.h>
 
 #include <Mod/Material/App/MaterialManager.h>
 #include <Mod/Material/App/Model.h>
@@ -100,12 +96,9 @@ TEST_F(TestMaterialProperties, TestEmpty)
     Materials::MaterialProperty prop;
     EXPECT_EQ(prop.getType(), Materials::MaterialValue::None);
     EXPECT_TRUE(prop.isNull());
-    auto variant = prop.getValue();
-    EXPECT_TRUE(variant.isNull());
-    EXPECT_FALSE(variant.canConvert<QString>());
-    EXPECT_TRUE(variant.toString().isNull());
-    EXPECT_TRUE(variant.toString().isEmpty());
-    EXPECT_EQ(variant.toString().size(), 0);
+    const auto& value = prop.getValue();
+    EXPECT_TRUE(value.isNull());
+    EXPECT_TRUE(value.toString().empty());
 }
 
 TEST_F(TestMaterialProperties, TestSingle)
@@ -114,13 +107,10 @@ TEST_F(TestMaterialProperties, TestSingle)
     EXPECT_EQ(prop.getType(), Materials::MaterialValue::Quantity);
     EXPECT_EQ(prop.getModelUUID(), "sampleUUID");
     EXPECT_TRUE(prop.isNull());
-    auto variant = prop.getValue();
-    EXPECT_TRUE(variant.canConvert<Base::Quantity>());
-    EXPECT_FALSE(variant.value<Base::Quantity>().isValid());
-    EXPECT_FALSE(variant.canConvert<QString>());
-    EXPECT_TRUE(variant.toString().isNull());
-    EXPECT_TRUE(variant.toString().isEmpty());
-    EXPECT_EQ(variant.toString().size(), 0);
+    const auto& value = prop.getValue();
+    EXPECT_TRUE(value.is<Base::Quantity>());
+    EXPECT_FALSE(value.toQuantity().isValid());
+    EXPECT_TRUE(value.toString().empty());
 }
 
 void check2DArray(Materials::MaterialProperty& prop)
@@ -130,11 +120,9 @@ void check2DArray(Materials::MaterialProperty& prop)
     EXPECT_TRUE(prop.isNull());
     auto array = std::static_pointer_cast<Materials::Array2D>(prop.getMaterialValue());
     EXPECT_EQ(array->rows(), 0);
-    auto variant = prop.getValue();  // Throw an error?
-    EXPECT_FALSE(variant.canConvert<QString>());
-    EXPECT_TRUE(variant.toString().isNull());
-    EXPECT_TRUE(variant.toString().isEmpty());
-    EXPECT_EQ(variant.toString().size(), 0);
+    const auto& value = prop.getValue();
+    EXPECT_TRUE(value.isNull());
+    EXPECT_TRUE(value.toString().empty());
 
     // Check the columns
     EXPECT_EQ(prop.columns(), 2);
@@ -169,11 +157,9 @@ void check3DArray(Materials::MaterialProperty& prop)
     EXPECT_TRUE(prop.isNull());
     auto array = std::static_pointer_cast<Materials::Array3D>(prop.getMaterialValue());
     EXPECT_EQ(array->depth(), 0);
-    auto variant = prop.getValue();  // Throw an error?
-    EXPECT_FALSE(variant.canConvert<QString>());
-    EXPECT_TRUE(variant.toString().isNull());
-    EXPECT_TRUE(variant.toString().isEmpty());
-    EXPECT_EQ(variant.toString().size(), 0);
+    const auto& value = prop.getValue();
+    EXPECT_TRUE(value.isNull());
+    EXPECT_TRUE(value.toString().empty());
 
     // Check the columns
     EXPECT_EQ(prop.columns(), 3);
