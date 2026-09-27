@@ -1693,6 +1693,8 @@ std::vector<int> ViewProviderSketch::getConnectedEdges(int clickedGeoId, bool in
         Base::Vector3d pEnd;
     };
     std::vector<CandidateEdge> candidateEdges;
+    candidateEdges.reserve(obj->getHighestCurveIndex() + 1
+                           + (includeExternal ? obj->getExternalGeometryCount() : 0));
 
     auto addCandidate = [&](int geoId) {
         if (!isOpenCurve(obj->getGeometry(geoId))) {
@@ -1712,13 +1714,13 @@ std::vector<int> ViewProviderSketch::getConnectedEdges(int clickedGeoId, bool in
         }
     }
 
-    std::vector<CandidateEdge> connectedEdges;
-    auto itClicked = std::find_if(candidateEdges.begin(), candidateEdges.end(), [&](const auto& edge) {
+    auto itClicked = std::ranges::find_if(candidateEdges, [&](const auto& edge) {
         return edge.geoId == clickedGeoId;
     });
     if (itClicked == candidateEdges.end()) {
         return {};
     }
+    std::vector<CandidateEdge> connectedEdges;
     connectedEdges.push_back(*itClicked);
     candidateEdges.erase(itClicked);
 
@@ -1758,14 +1760,10 @@ std::vector<int> ViewProviderSketch::getConnectedEdges(int clickedGeoId, bool in
 void ViewProviderSketch::toggleWireSelection(int clickedGeoId)
 {
     auto getSelectionName = [](int id) {
-        std::stringstream ss;
         if (id >= 0) {
-            ss << "Edge" << (id + 1);
+            return std::format("Edge{}", id + 1);
         }
-        else {
-            ss << "ExternalEdge" << (Sketcher::GeoEnum::RefExt - id + 1);
-        }
-        return ss.str();
+        return std::format("ExternalEdge{}", Sketcher::GeoEnum::RefExt - id + 1);
     };
 
     const auto connectedEdges = getConnectedEdges(clickedGeoId);
