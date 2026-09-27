@@ -1544,9 +1544,8 @@ void PropertyLinkSub::setPyObject(PyObject* value)
             }
         }
         else {
-            std::string error = std::string(
-                "type of first element in tuple must be 'DocumentObject' or 'NoneType', not "
-            );
+            std::string error
+                = "type of first element in tuple must be 'DocumentObject' or 'NoneType', not ";
             error += seq[0].ptr()->ob_type->tp_name;
             throw Base::TypeError(error);
         }
