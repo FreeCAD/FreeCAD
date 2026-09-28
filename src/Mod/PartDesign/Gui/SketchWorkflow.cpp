@@ -49,6 +49,7 @@
 #include <Mod/Sketcher/Gui/ViewProviderSketch.h>
 
 #include <App/Document.h>
+#include <App/DocumentObserver.h>
 #include <App/Link.h>
 #include <App/Origin.h>
 #include <App/Datums.h>
@@ -622,16 +623,27 @@ private:
             }
         }
 
-        PartDesign::Body* partDesignBody = activeBody;
-        auto onAccept = [partDesignBody, sketch]() {
+        // The attachment dialog can outlive the body and sketch (e.g. they are deleted while it
+        // is open), so the callbacks look them up by name instead of holding raw pointers.
+        auto onAccept = [bodyRef = App::DocumentObjectT(activeBody),
+                         sketchRef = App::DocumentObjectT(sketch)]() {
+            auto* partDesignBody = bodyRef.getObjectAs<PartDesign::Body>();
+            if (!partDesignBody) {
+                return;
+            }
+
             resetOriginVisibility(partDesignBody);
 
             Gui::Selection().clearSelection();
 
-            PartDesignGui::setEdit(sketch, partDesignBody);
+            if (auto* sketchObj = sketchRef.getObject()) {
+                PartDesignGui::setEdit(sketchObj, partDesignBody);
+            }
         };
-        auto onReject = [partDesignBody]() {
-            resetOriginVisibility(partDesignBody);
+        auto onReject = [bodyRef = App::DocumentObjectT(activeBody)]() {
+            if (auto* partDesignBody = bodyRef.getObjectAs<PartDesign::Body>()) {
+                resetOriginVisibility(partDesignBody);
+            }
         };
 
         Gui::Selection().clearSelection();
