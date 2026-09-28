@@ -343,6 +343,8 @@ void TaskAttacher::objectDeleted(const Gui::ViewProviderDocumentObject& view)
 void TaskAttacher::documentDeleted(const Gui::Document&)
 {
     ViewProvider = nullptr;
+    // the overridden properties belong to view providers that are about to be destroyed
+    overrides.clear();
     this->setDisabled(true);
 }
 

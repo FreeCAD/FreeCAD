@@ -248,7 +248,9 @@ TaskView::TaskView(QWidget* parent)
     connectApplicationActiveDocument = App::GetApplication().signalActiveDocument.connect(
         std::bind(&Gui::TaskView::TaskView::slotActiveDocument, this, sp::_1)
     );
-    connectApplicationDeleteDocument = App::GetApplication().signalDeleteDocument.connect(
+    // Use the GUI signal: it is emitted before the document's view providers are destroyed,
+    // so a dialog closed in response can still safely restore them.
+    connectApplicationDeleteDocument = Gui::Application::Instance->signalDeleteDocument.connect(
         std::bind(&Gui::TaskView::TaskView::slotDeletedDocument, this, sp::_1)
     );
     connectApplicationClosedView = Gui::Application::Instance->signalCloseView.connect(
@@ -488,23 +490,27 @@ void TaskView::slotResetEdit(const Gui::ViewProviderDocumentObject& vp)
     }
 }
 
-void TaskView::slotDeletedDocument(const App::Document& doc)
+void TaskView::slotDeletedDocument(const Gui::Document& guiDoc)
 {
-    auto foundTaskInfo = std::ranges::find(taskInfos, &doc, &TaskInfo::Document);
-    bool hasDialog = foundTaskInfo != taskInfos.end();
-    if (hasDialog && foundTaskInfo->ActiveDialog->isAutoCloseOnDeletedDocument()) {
-        foundTaskInfo->ActiveDialog->autoClosedOnDeletedDocument();
+    const App::Document* doc = guiDoc.getDocument();
+    auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
+    if (foundTaskInfo != taskInfos.end()) {
+        if (foundTaskInfo->ActiveDialog->isAutoCloseOnDeletedDocument()) {
+            foundTaskInfo->ActiveDialog->autoClosedOnDeletedDocument();
+        }
 
-        auto refreshedTaskInfo = std::ranges::find(taskInfos, &doc, &TaskInfo::Document);
+        // The dialog must not outlive its document, whether or not it asked to be auto-closed:
+        // its content refers to objects that are about to be destroyed, and the TaskInfo is keyed
+        // by the document's address, which a later document may be allocated at. A dialog left
+        // behind would then be shown for that new document and its OK/Cancel would operate on
+        // freed objects.
+        auto refreshedTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
         if (refreshedTaskInfo != taskInfos.end()) {
             removeDialog(refreshedTaskInfo);
         }
-        hasDialog = false;
     }
 
-    if (!hasDialog) {
-        updateWatcher();
-    }
+    updateWatcher();
 }
 
 void TaskView::slotViewClosed(const Gui::MDIView* view)
