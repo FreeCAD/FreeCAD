@@ -2273,7 +2273,7 @@ Odwiedź https://openscad.org żeby go zainstalować.</translation>
     <message>
       <location filename="../../ViewProvider.cpp" line="1745"/>
       <source>Mesh: %1</source>
-      <translation type="unfinished">Mesh: %1</translation>
+      <translation>Siatka: %1</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1748"/>
@@ -2283,17 +2283,17 @@ Odwiedź https://openscad.org żeby go zainstalować.</translation>
     <message>
       <location filename="../../ViewProvider.cpp" line="1751"/>
       <source>Points: &lt;%1, %2, %3&gt;</source>
-      <translation type="unfinished">Points: &lt;%1, %2, %3&gt;</translation>
+      <translation>Punkty: &lt;%1, %2, %3&gt;</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1758"/>
       <source>Neighbours: &lt;%1, %2, %3&gt;</source>
-      <translation type="unfinished">Neighbours: &lt;%1, %2, %3&gt;</translation>
+      <translation>Sąsiednie: &lt;%1, %2, %3&gt;</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1764"/>
       <source>Triangle:</source>
-      <translation type="unfinished">Triangle:</translation>
+      <translation>Trójkąt:</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1798"/>
