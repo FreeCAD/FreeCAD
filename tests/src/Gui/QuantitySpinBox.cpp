@@ -12,6 +12,7 @@
 #include <Base/UnitsApi.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/Expression.h>
 #include <App/ObjectIdentifier.h>
 #include <App/Property.h>
 
@@ -28,6 +29,14 @@ class QuantitySpinBoxWithLineEdit: public Gui::QuantitySpinBox
 {
 public:
     using QAbstractSpinBox::lineEdit;
+};
+
+/// Gives the tests access to setExpression(), the entry point the Expression Editor uses when
+/// it hands a new expression back to the spin box.
+class QuantitySpinBoxWithExpression: public Gui::QuantitySpinBox
+{
+public:
+    using Gui::QuantitySpinBox::setExpression;
 };
 
 namespace
@@ -55,6 +64,10 @@ public:
     App::ObjectIdentifier getPath() const
     {
         return App::ObjectIdentifier(*property);
+    }
+    App::DocumentObject* getObject() const
+    {
+        return object;
     }
 
 private:
@@ -1402,6 +1415,57 @@ private Q_SLOTS:
         QCOMPARE(spinBox.text(), QStringLiteral("12,345.67 mm"));
         QCOMPARE(spinBox.rawValue(), 12345.67);
         QVERIFY(spinBox.hasValidInput());
+    }
+
+    void test_ExpressionResultKeepsRequiredUnit_data()
+    {
+        QTest::addColumn<QString>("expression");
+
+        // A bare number from the Expression Editor or a unitless spreadsheet cell must inherit
+        // the widget's required unit without changing its numeric magnitude.
+        // see: https://github.com/freecad/freecad/issues/32968
+        QTest::newRow("bare number") << QStringLiteral("10");
+        QTest::newRow("number with unit") << QStringLiteral("10 mm");
+        QTest::newRow("unitless arithmetic") << QStringLiteral("5 * 2");
+    }
+
+    void test_ExpressionResultKeepsRequiredUnit()  // NOLINT
+    {
+        QFETCH(QString, expression);
+
+        ScopedExpressionOwner owner;
+        QuantitySpinBoxWithExpression spinBox;
+        spinBox.bind(owner.getPath());
+        spinBox.setUnit(Base::Unit::Length);
+
+        std::shared_ptr<App::Expression> expr(
+            App::Expression::parse(owner.getObject(), expression.toStdString())
+        );
+        spinBox.setExpression(expr);
+
+        const auto value = spinBox.value();
+        QVERIFY(!value.isDimensionless());
+        QCOMPARE(value.getUnit(), Base::Unit::Length);
+        QCOMPARE(value, Base::Quantity(10.0, "mm"));
+    }
+    void test_DimensionlessExpressionDoesNotUseDisplayUnitScale()  // NOLINT
+    {
+        // Bare text input uses the currently displayed unit, so under this schema
+        // typing "10" means 10 in. Expression results follow property semantics
+        // instead: a dimensionless result inherits the required unit without
+        // applying the display-unit scale.
+        Base::UnitsApi::setSchema(imperialDecimalSchema.toStdString());
+
+        ScopedExpressionOwner owner;
+        QuantitySpinBoxWithExpression spinBox;
+        spinBox.bind(owner.getPath());
+        spinBox.setUnit(Base::Unit::Length);
+
+        std::shared_ptr<App::Expression> expr(App::Expression::parse(owner.getObject(), "10"));
+        spinBox.setExpression(expr);
+
+        QCOMPARE(spinBox.value(), Base::Quantity(10.0, "mm"));
+        QCOMPARE(spinBox.valueFromText(QStringLiteral("10")), Base::Quantity(254.0, "mm"));
     }
 
 private:
