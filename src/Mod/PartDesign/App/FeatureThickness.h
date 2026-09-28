@@ -56,7 +56,7 @@ public:
     App::PropertyBool Intersection;
     App::PropertyEnumeration Mode;
     App::PropertyEnumeration Join;
-    App::PropertyEnumeration Selection;
+    App::PropertyEnumeration SelectionType;
 
     /** @name methods override feature */
     //@{
@@ -101,7 +101,7 @@ private:
 
     static const char* ModeEnums[];
     static const char* JoinEnums[];
-    static const char* SelectionEnums[];
+    static const char* SelectionModeEnums[];
 };
 
 }  // namespace PartDesign

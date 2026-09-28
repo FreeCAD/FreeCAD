@@ -106,7 +106,7 @@ void TaskThicknessParameters::initControls()
     int join = static_cast<int>(thickness->Join.getValue());
     ui->joinComboBox->setCurrentIndex(join);
 
-    auto selectionMode = static_cast<Thickness::SelectionMode>(thickness->Selection.getValue());
+    auto selectionMode = static_cast<Thickness::SelectionMode>(thickness->SelectionType.getValue());
     ui->selectionMode->setCurrentIndex(
         static_cast<int>(
             selectionMode == Thickness::SelectionMode::AllSolids
@@ -124,6 +124,8 @@ void TaskThicknessParameters::initControls()
 
     allowSolids = selectionMode != Thickness::SelectionMode::SelectedFaces;
     allowFaces = allowEdges = !allowSolids;
+
+    Base::Console().log("using: {}\n", static_cast<int>(selectionMode));
 
     if (strings.empty()) {
         setSelectionMode(refSel);
@@ -177,7 +179,7 @@ void TaskThicknessParameters::onSelectAllSolidsChanged(bool on)
         : static_cast<Thickness::SelectionMode>(ui->selectionMode->currentIndex());
 
     if (Thickness* thickness = onBeforeChange()) {
-        thickness->Selection.setValue(static_cast<int>(newValue));
+        thickness->SelectionType.setValue(static_cast<int>(newValue));
         onAfterChange(thickness);
     }
 
@@ -197,7 +199,7 @@ void TaskThicknessParameters::onSelectionModeChanged(int selectionMode)
         : static_cast<Thickness::SelectionMode>(selectionMode);
 
     if (Thickness* thickness = onBeforeChange()) {
-        thickness->Selection.setValue(static_cast<int>(newValue));
+        thickness->SelectionType.setValue(static_cast<int>(newValue));
         onAfterChange(thickness);
     }
 

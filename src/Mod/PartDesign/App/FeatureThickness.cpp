@@ -112,7 +112,8 @@ Part::TopoShape makeRectoVersoThickness(
 
 const char* Thickness::ModeEnums[] = {"Skin", "Pipe", "RectoVerso", nullptr};
 const char* Thickness::JoinEnums[] = {"Arc", "Intersection", nullptr};
-const char* Thickness::SelectionEnums[] = {"Selected Faces", "Selected Solids", "All Solids", nullptr};
+const char* Thickness::SelectionModeEnums[]
+    = {"Selected faces", "Selected solids", "All solids", nullptr};
 
 PROPERTY_SOURCE(PartDesign::Thickness, PartDesign::DressUp)
 
@@ -131,8 +132,8 @@ Thickness::Thickness()
         "Apply the thickness towards the solids interior"
     );
     ADD_PROPERTY_TYPE(Intersection, (false), "Thickness", App::Prop_None, "Enable intersection-handling");
-    ADD_PROPERTY_TYPE(Selection, (0L), "Thickness", App::Prop_None, "Selection Type");
-    Selection.setEnums(SelectionEnums);
+    ADD_PROPERTY_TYPE(SelectionType, (0L), "Thickness", App::Prop_None, "Selection type");
+    SelectionType.setEnums(SelectionModeEnums);
 }
 
 int16_t Thickness::mustExecute() const
@@ -192,7 +193,7 @@ App::DocumentObjectExecReturn* Thickness::execute()
         static_cast<int>(topShape.countSubShapes(TopAbs_SOLID))
     };
 
-    const auto selectionMode = static_cast<SelectionMode>(Selection.getValue());
+    const auto selectionMode = static_cast<SelectionMode>(SelectionType.getValue());
 
     if (selectionMode != SelectionMode::AllSolids) {
         if (auto* error = identifySolids(params)) {
@@ -565,7 +566,7 @@ void Thickness::updatePreviewShape()
 
     std::vector<TopoShape> previewShapes;
 
-    switch (static_cast<SelectionMode>(Selection.getValue())) {
+    switch (static_cast<SelectionMode>(SelectionType.getValue())) {
         case SelectionMode::SelectedFaces:
             updatePreviewSelectedFaces(params, previewShapes);
             break;
