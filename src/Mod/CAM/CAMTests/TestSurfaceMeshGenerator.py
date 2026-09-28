@@ -187,7 +187,7 @@ class TestSurfaceMesh(PathTestUtils.PathTestBase):
         # the keep-out zone, exactly as _shape_to_safe_stl() expects to
         # receive it in production (built once, up front, by
         # surface_common.build_avoid_boundary()).
-        avoid_boundary = Part.Face(
+        avoid_solid = Part.Face(
             Part.makePolygon(
                 [
                     FreeCAD.Vector(7.5, 7.5, 0),
@@ -204,7 +204,7 @@ class TestSurfaceMesh(PathTestUtils.PathTestBase):
             bb_safe=self.box,
             pad_buffer=2.0,
             final_depth=0.0,
-            avoid_boundary=avoid_boundary,
+            avoid_solid=avoid_solid,
             start_depth=10.0,
             linear_deflection=0.1,
             angular_deflection=0.5,
@@ -251,7 +251,7 @@ class TestSurfaceMesh(PathTestUtils.PathTestBase):
             stl_faces=[],
             stl_filter_adj=0.0,
             bb_face=None,
-            avoid_boundary=None,
+            avoid_solid=None,
             tool_diam=6.0,
             needs_safe_stl=True,
             boundary_adjustment=2.0,
