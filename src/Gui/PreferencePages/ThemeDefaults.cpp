@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
-/****************************************************************************
+/***************************************************************************
  *                                                                          *
  *   Copyright (c) 2026 Chris Jones <chris.r.jones.1983@gmail.com>          *
  *                                                                          *
@@ -24,10 +24,15 @@
 #include <filesystem>
 #include <set>
 
+#include <QFileInfo>
+#include <QString>
+
 #include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
+#include "Application.h"
+#include "PreferencePackManager.h"
 
 #include "ThemeDefaults.h"
 
@@ -40,12 +45,41 @@ ParameterGrp::handle userGroup(const std::string& groupPath)
     return App::GetApplication().GetParameterGroupByPath(("User parameter:" + groupPath).c_str());
 }
 
-}  // namespace
-
-void applyColors(const std::string& groupPath, const std::vector<std::string>& keys)
+// Mirrors DlgSettingsGeneral::loadSettings(): an unset Theme resolves to the pack matching
+// the active stylesheet, otherwise to the Classic pack.
+std::string resolveThemeName()
 {
     auto hMain = userGroup("BaseApp/Preferences/MainWindow");
     std::string theme = hMain->GetASCII("Theme", "");
+    if (!theme.empty()) {
+        return theme;
+    }
+
+    const QString styleSheet
+        = QFileInfo(QString::fromStdString(hMain->GetASCII("StyleSheet", ""))).baseName();
+    QString classic;
+    QString similar;
+    for (const auto& [name, pack] : Application::Instance->prefPackManager()->preferencePacks()) {
+        if (pack.metadata().type() != "Theme") {
+            continue;
+        }
+        const QString packName = QString::fromStdString(name);
+        if (packName.contains(QStringLiteral("classic"), Qt::CaseInsensitive)) {
+            classic = packName;
+        }
+        if (!styleSheet.isEmpty() && packName.contains(styleSheet, Qt::CaseInsensitive)) {
+            similar = packName;
+        }
+    }
+    return (!similar.isEmpty() ? similar : classic).toStdString();
+}
+
+}  // namespace
+
+
+void applyColors(const std::string& groupPath, const std::vector<std::string>& keys)
+{
+    const std::string theme = resolveThemeName();
     if (theme.empty()) {
         return;
     }
