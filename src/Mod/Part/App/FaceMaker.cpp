@@ -316,44 +316,87 @@ void Part::FaceMaker::postBuild()
         }
     }
     else if (MyHistoryAlgorithm == App::HistoryAlgorithm::V2) {
-        std::unordered_multiset<Data::MappedName, Data::MappedNameHasher> allLinkedNames;
+        std::unordered_map<Data::MappedName, int, Data::MappedNameHasher> allLinkedNames;
         std::unordered_map<Data::IndexedName, std::pair<std::vector<Data::MappedName>, bool>, Data::IndexedNameHasher>
             linkedNameMap;
 
         for (size_t faceIndex = 0; faceIndex < faces.size(); faceIndex++) {
             Data::IndexedName faceIndexName = Data::IndexedName::fromConst("Face", faceIndex + 1);
             const TopoShape& face = faces[faceIndex];
-            TopoShape wire = face.splitWires();
-            wire.mapSubElement(face);
 
-            for (unsigned long edgeIndex = 1; edgeIndex <= wire.countSubShapes(TopAbs_EDGE);
-                 edgeIndex++) {
-                Data::MappedName edgeMappedName = wire.getMappedName(
-                    Data::IndexedName::fromConst("Edge", edgeIndex)
+            // mapping with inner wires will cause ambiguity with
+            // other faces that use those wires as outer wires
+            TopoShape outerWire = face.splitWires();
+
+            for (unsigned long edgeIndex = 1; edgeIndex <= outerWire.countSubShapes(TopAbs_EDGE);
+                 edgeIndex++)
+            {
+                Data::IndexedName edgeIndexedName = Data::IndexedName::fromConst("Edge", edgeIndex);
+
+                Data::MappedName edgeMappedName = outerWire.getMappedName(
+                    edgeIndexedName
                 );
 
-                if (edgeMappedName) {
-                    linkedNameMap[faceIndexName].first.push_back(edgeMappedName);
-                    linkedNameMap[faceIndexName].second = true;
-                    allLinkedNames.insert(edgeMappedName);
+                if (!edgeMappedName) {
+                    edgeMappedName = Data::MappedName::makeUnmappedName(
+                        {edgeIndexedName.toString()},
+                        this->myTopoShape.Tag,
+                        op,
+                        'E'
+                    );
                 }
+
+                auto linkedNameMapIterator = linkedNameMap.try_emplace(faceIndexName, std::vector<Data::MappedName>(), true);
+                linkedNameMapIterator.first->second.first.push_back(edgeMappedName);
+
+                allLinkedNames[edgeMappedName]++;
             }
         }
 
-        for (auto& linkedNameEntry : linkedNameMap) {
-            std::vector<Data::MappedName> fixedNameVector;
+        bool hasChangedMap = true;
 
-            for (const Data::MappedName& mappedName : linkedNameEntry.second.first) {
-                if (allLinkedNames.count(mappedName) == 1) {
-                    fixedNameVector.push_back(mappedName);
+        // remove duplicate elements (elements present in multiple faces) from linked names
+        while (hasChangedMap) {
+            std::vector<std::unordered_map<Data::MappedName, int, Data::MappedNameHasher>::iterator>
+                iteratorsToDecrement;
+            hasChangedMap = false;
+
+            for (auto& linkedNameEntry : linkedNameMap) {
+                std::vector<std::unordered_map<Data::MappedName, int, Data::MappedNameHasher>::iterator>
+                    duplicateCountEntryIterators;
+                std::vector<Data::MappedName> filteredLinkedNames;
+
+                for (const Data::MappedName& linkedName : linkedNameEntry.second.first) {
+                    auto duplicateEntryIterator = allLinkedNames.find(linkedName);
+
+                    if (duplicateEntryIterator != allLinkedNames.end()) {
+                        if (duplicateEntryIterator->second == 1) {
+                            filteredLinkedNames.push_back(linkedName);
+                        } else {
+                            duplicateCountEntryIterators.push_back(duplicateEntryIterator);
+                        }
+                    }
                 }
+
+                size_t filteredNameSize = filteredLinkedNames.size();
+
+                if (filteredNameSize && filteredNameSize != linkedNameEntry.second.first.size()) {
+                    linkedNameEntry.second.first = filteredLinkedNames;
+
+                    iteratorsToDecrement.insert(
+                        iteratorsToDecrement.begin(),
+                        duplicateCountEntryIterators.begin(),
+                        duplicateCountEntryIterators.end()
+                    );
+
+                    hasChangedMap = true;
+                }
+                
+                linkedNameEntry.second.second = duplicateCountEntryIterators.empty();
             }
 
-            if (fixedNameVector.size()) {
-                linkedNameEntry.second.first = fixedNameVector;
-            }
-            else {
-                linkedNameEntry.second.second = false;
+            for (auto& duplicateCountEntryIterator : iteratorsToDecrement) {
+                duplicateCountEntryIterator->second--;
             }
         }
 
@@ -363,7 +406,7 @@ void Part::FaceMaker::postBuild()
             if (linkedNameEntry.second.first.size()) {
                 if (linkedNameEntry.second.second) {
                     if (mapperFlags.size() == 1) {
-                        mapperFlags.push_back(Data::MAPPER_FLAG_NON_DUPLICATE);  // no duplicate.
+                        mapperFlags.push_back(Data::MAPPER_FLAG_NON_DUPLICATE);
                     }
                 }
                 else if (mapperFlags.size() > 1) {
