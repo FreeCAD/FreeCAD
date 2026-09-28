@@ -203,6 +203,61 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     "\nManual: uses order of shapes selection",
                 ),
             ),
+            (
+                "App::PropertyLength",
+                "FinishingOffset",
+                "Profile",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Distance between roughing and finishing passes",
+                ),
+            ),
+            (
+                "App::PropertyBool",
+                "FinishingOneStepDown",
+                "Profile",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Finish pass will processing with one step down at final depth",
+                ),
+            ),
+            (
+                "App::PropertyEnumeration",
+                "StartAt",
+                "Profile",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Start multiple profile from edge or out of edge",
+                ),
+            ),
+            (
+                "App::PropertyEnumeration",
+                "RampMethod",
+                "RampEntry",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Create helix ramp for closed path\nHelix pitch limits by 'Step Down'",
+                ),
+            ),
+            (
+                "App::PropertyAngle",
+                "RampAngle",
+                "RampEntry",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Angle of ramp",
+                ),
+            ),
+            (
+                "App::PropertyIntegerConstraint",
+                "FinishingPasses",
+                "Profile",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Adds an additional finishing pass "
+                    "that clears the stock left over from tool deflection",
+                ),
+            ),
         ]
 
     @classmethod
@@ -234,6 +289,17 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 (translate("PathProfile", "Automatic"), "Automatic"),
                 (translate("PathProfile", "Manual"), "Manual"),
             ],
+            "StartAt": [
+                (translate("PathProfile", "OutOfEdge"), "OutOfEdge"),
+                (translate("PathProfile", "Edge"), "Edge"),
+            ],
+            "RampMethod": [
+                (translate("PathProfile", "None"), "None"),
+                (translate("PathProfile", "Helix"), "Helix"),
+                (translate("PathProfile", "Method 1"), "Method 1"),
+                (translate("PathProfile", "Method 2"), "Method 2"),
+                (translate("PathProfile", "Method 3"), "Method 3"),
+            ],
         }
 
         if dataType == "raw":
@@ -264,7 +330,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             "processHoles": False,
             "processPerimeter": True,
             "Stepover": 0,
-            "NumPasses": (1, 1, 99999, 1),
+            "NumPasses": (1, 1, 999999, 1),
+            "FinishingPasses": (0, 0, 999999, 1),
         }
 
     def areaOpApplyPropertyDefaults(self, obj, job, propList):
@@ -301,6 +368,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         )
         sortingMode = 0 if obj.HandleMultipleFeatures == "Individually" else 2
         multiPassMode = 0 if obj.NumPasses > 1 else 2
+        finishingMode = 0 if obj.FinishingPasses else 2
+        retractThresholdMode = 0 if obj.NumPasses + obj.FinishingPasses > 1 else 2
 
         obj.setEditorMode("Stepover", multiPassMode)
         obj.setEditorMode("Side", side)
@@ -310,6 +379,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         obj.setEditorMode("processPerimeter", fc)
         obj.setEditorMode("UseLongestEdge", useLongestEdgeMode)
         obj.setEditorMode("SortingMode", sortingMode)
+        obj.setEditorMode("RetractThreshold", retractThresholdMode)
+        obj.setEditorMode("StartAt", multiPassMode)
+        obj.setEditorMode("FinishingOffset", finishingMode)
+        obj.setEditorMode("FinishingOneStepDown", finishingMode)
 
     def _getOperationType(self, obj):
         if len(obj.Base) == 0:
@@ -342,33 +415,33 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         params["Coplanar"] = 0
         params["SectionCount"] = -1
 
-        offset = obj.OffsetExtra.Value  # 0.0
-        num_passes = max(1, obj.NumPasses)
+        num_passes_rough = max(1, obj.NumPasses)
+        num_passes_finish = obj.FinishingPasses
         stepover = obj.Stepover.Value
-        if num_passes > 1 and stepover == 0:
-            # This check is important because C++ code has a default value for stepover
-            # if it's 0 and extra passes are requested
-            num_passes = 1
-            Path.Log.warning(
-                "Multipass profile requires a non-zero stepover. Reducing to a single pass."
-            )
-
+        offset_rough = obj.OffsetExtra.Value
+        offset_finish = obj.FinishingOffset.Value
+        if num_passes_finish:
+            offset_rough += offset_finish
         if obj.UseComp:
-            offset = self.radius + obj.OffsetExtra.Value
+            offset_rough += self.radius
         if obj.Side == "Inside":
-            offset = 0 - offset
+            offset_rough = -offset_rough
             stepover = -stepover
+            offset_finish = -offset_finish
         if isHole:
-            offset = 0 - offset
+            offset_rough = -offset_rough
             stepover = -stepover
+            offset_finish = -offset_finish
 
-        # Modify offset and stepover to do passes from most-offset to least
-        offset += stepover * (num_passes - 1)
-        stepover = -stepover
+        # Create list of offsets for multiple passes
+        offsets = [offset_rough + i * stepover for i in range(num_passes_rough)]
+        if obj.StartAt != "Edge":
+            offsets.reverse()
+        offsets.extend([offset_rough - offset_finish] * num_passes_finish)
 
-        params["Offset"] = offset
-        params["ExtraPass"] = num_passes - 1
-        params["Stepover"] = stepover
+        params["Offset"] = offsets
+        params["ExtraPass"] = 0
+        params["Stepover"] = 0
 
         if obj.SplitArcs:
             params["Explode"] = True
@@ -391,10 +464,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             params["orientation"] = 0
         else:
             params["orientation"] = 1
-
-        if obj.NumPasses > 1:
-            # Disable path sorting to ensure that offsets appear in order, from farthest offset to closest, on all layers
-            params["sort_mode"] = 0
 
         return params
 
@@ -594,10 +663,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         self._addDebugObject("FlatWire", flatWire)
 
         openWires = []
-        params = self.areaOpAreaParams(obj, False)
-        passOffsets = [
-            self.ofstRadius + i * abs(params["Stepover"]) for i in range(params["ExtraPass"] + 1)
-        ][::-1]
+        passOffsets = self.areaOpAreaParams(obj, False)["Offset"]
         for po in passOffsets:
             self.ofstRadius = po
             if cutShp := self._getCutAreaCrossSection(obj, base, origWire, flatWire):

@@ -178,6 +178,7 @@ class ObjectDressup:
                     feed = cmd.Parameters.get("F", lastPar["F"])
                     newparams.update({"F": math.degrees(feed / obj.Radius.Value)})
                 newcommand = Path.Command(cmd.Name, newparams)
+                newcommand.Annotations = cmd.Annotations
                 newcommandlist.append(newcommand)
                 lastPar.update(newparams)
             else:
