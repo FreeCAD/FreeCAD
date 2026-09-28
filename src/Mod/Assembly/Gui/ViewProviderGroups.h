@@ -75,11 +75,7 @@ public:
 
     QIcon getIcon() const override;
 
-    // Make the joint group impossible to delete.
-    bool onDelete(const std::vector<std::string>&) override
-    {
-        return false;
-    };
+    bool onDelete(const std::vector<std::string>&) override;
 };
 
 class AssemblyGuiExport ViewProviderSimulationGroup: public ViewProviderGroupBase
