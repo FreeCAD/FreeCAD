@@ -33,6 +33,7 @@
 #include <TopoDS_Face.hxx>
 
 
+#include <App/DocumentObserver.h>
 #include <App/Expression.h>
 #include <App/ObjectIdentifier.h>
 #include <App/Origin.h>
@@ -1121,7 +1122,16 @@ void prepareProfileBased(
         return true;
     };
 
-    auto sketch_worker = [&, base_worker](std::vector<App::DocumentObject*> features) {
+    // The pick dialog runs this after it closes, by which time the body may have been deleted.
+    // The workers keep using pcActiveBody, so look it up by its ID, which unlike its name is
+    // never reused for another object.
+    auto sketch_worker = [doc = App::DocumentT(pcActiveBody->getDocument()),
+                          bodyId = pcActiveBody->getID(),
+                          base_worker](std::vector<App::DocumentObject*> features) {
+        App::Document* bodyDoc = doc.getDocument();
+        if (features.empty() || !bodyDoc || !bodyDoc->getObjectByID(bodyId)) {
+            return;
+        }
         base_worker(features.front(), {});
     };
 
@@ -1402,7 +1412,7 @@ void CmdPartDesignRevolution::activated(int iMsg)
     }
 
     Gui::Command* cmd = this;
-    auto worker = [cmd, &pcActiveBody](Part::Feature* sketch, App::DocumentObject* Feat) {
+    auto worker = [cmd, pcActiveBody](Part::Feature* sketch, App::DocumentObject* Feat) {
         if (!Feat) {
             return;
         }
@@ -1464,7 +1474,7 @@ void CmdPartDesignGroove::activated(int iMsg)
     }
 
     Gui::Command* cmd = this;
-    auto worker = [cmd, &pcActiveBody](Part::Feature* sketch, App::DocumentObject* Feat) {
+    auto worker = [cmd, pcActiveBody](Part::Feature* sketch, App::DocumentObject* Feat) {
         if (!Feat) {
             return;
         }
@@ -1732,7 +1742,7 @@ void CmdPartDesignAdditiveHelix::activated(int iMsg)
     }
 
     Gui::Command* cmd = this;
-    auto worker = [cmd, &pcActiveBody](Part::Feature* sketch, App::DocumentObject* Feat) {
+    auto worker = [cmd, pcActiveBody](Part::Feature* sketch, App::DocumentObject* Feat) {
         if (!Feat) {
             return;
         }
@@ -1816,7 +1826,7 @@ void CmdPartDesignSubtractiveHelix::activated(int iMsg)
     }
 
     Gui::Command* cmd = this;
-    auto worker = [cmd, &pcActiveBody](Part::Feature* sketch, App::DocumentObject* Feat) {
+    auto worker = [cmd, pcActiveBody](Part::Feature* sketch, App::DocumentObject* Feat) {
         if (!Feat) {
             return;
         }
