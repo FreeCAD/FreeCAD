@@ -720,7 +720,10 @@ def build_avoid_boundary(avoid_faces, avoid_overlap):
     prepared_faces, fallback_faces = _classify_and_cap_faces(avoid_faces)
 
     if fallback_faces:
-        secondary = build_optimized_boundary(fallback_faces, 0.0,)
+        secondary = build_optimized_boundary(
+            fallback_faces,
+            0.0,
+        )
         if secondary is not None:
             prepared_faces.append(secondary)
         else:
@@ -732,11 +735,7 @@ def build_avoid_boundary(avoid_faces, avoid_overlap):
         Path.Log.debug("build_avoid_boundary: Nothing left to build a boundary from.")
         return None
 
-    avoid_solid = build_optimized_boundary(
-        prepared_faces,
-        0.0,
-        avoids=True
-    )
+    avoid_solid = build_optimized_boundary(prepared_faces, 0.0, avoids=True)
 
     avoid_boundary = build_optimized_boundary(
         prepared_faces,
