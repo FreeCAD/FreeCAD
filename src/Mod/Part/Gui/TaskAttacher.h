@@ -129,6 +129,7 @@ protected:
 private:
     void objectDeleted(const Gui::ViewProviderDocumentObject&);
     void documentDeleted(const Gui::Document&);
+    void forgetViewProvider();
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void updateReferencesUI();
 
