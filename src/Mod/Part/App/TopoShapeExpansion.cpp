@@ -127,7 +127,7 @@ using BRepAdaptor_HCompCurve = BRepAdaptor_CompCurve;
 namespace Part
 {
 
-static void expandCompound(const TopoShape& shape, std::vector<TopoShape>& res)
+void expandCompound(const TopoShape& shape, std::vector<TopoShape>& res)
 {
     if (shape.isNull()) {
         FC_THROWM(NullShapeException, "Null input shape");
@@ -139,6 +139,150 @@ static void expandCompound(const TopoShape& shape, std::vector<TopoShape>& res)
     for (auto& s : shape.getSubTopoShapes()) {
         expandCompound(s, res);
     }
+}
+
+std::vector<std::string> convertShapeElements(
+    const TopoShape& shape,
+    const std::vector<std::string>& source,
+    const ConversionTarget sourceConfig,
+    const ConversionTarget targetConfig
+)
+{
+    const TopoDS_Shape& topoShape = shape.getShape();
+
+    if (topoShape.IsNull()) {
+        return {};
+    }
+
+    const auto hasTarget = [](const ConversionTarget config, const ConversionTarget target) {
+        return static_cast<std::uint8_t>(config & target) != 0;
+    };
+
+    const auto isDescending = [](const TopAbs_ShapeEnum source, const TopAbs_ShapeEnum target) {
+        switch (source) {
+            case TopAbs_SOLID:
+                return target == TopAbs_FACE || target == TopAbs_EDGE || target == TopAbs_VERTEX;
+
+            case TopAbs_FACE:
+                return target == TopAbs_EDGE || target == TopAbs_VERTEX;
+
+            case TopAbs_EDGE:
+                return target == TopAbs_VERTEX;
+
+            default:
+                return false;
+        }
+    };
+
+    TopTools_IndexedMapOfShape solids;
+    TopTools_IndexedMapOfShape faces;
+    TopTools_IndexedMapOfShape edges;
+    TopTools_IndexedMapOfShape vertices;
+
+    if (hasTarget(sourceConfig, ConversionTarget::Solids)
+        || hasTarget(targetConfig, ConversionTarget::Solids)) {
+        TopExp::MapShapes(topoShape, TopAbs_SOLID, solids);
+    }
+
+    if (hasTarget(sourceConfig, ConversionTarget::Faces)
+        || hasTarget(targetConfig, ConversionTarget::Faces)) {
+        TopExp::MapShapes(topoShape, TopAbs_FACE, faces);
+    }
+
+    if (hasTarget(sourceConfig, ConversionTarget::Edges)
+        || hasTarget(targetConfig, ConversionTarget::Edges)) {
+        TopExp::MapShapes(topoShape, TopAbs_EDGE, edges);
+    }
+
+    if (hasTarget(sourceConfig, ConversionTarget::Vertices)
+        || hasTarget(targetConfig, ConversionTarget::Vertices)) {
+        TopExp::MapShapes(topoShape, TopAbs_VERTEX, vertices);
+    }
+
+    struct TargetType
+    {
+        TopAbs_ShapeEnum type;
+        const TopTools_IndexedMapOfShape* map;
+        std::string_view prefix;
+    };
+
+    std::vector<TargetType> targetTypes;
+
+    if (hasTarget(targetConfig, ConversionTarget::Solids)) {
+        targetTypes.push_back({TopAbs_SOLID, &solids, "Solid"});
+    }
+
+    if (hasTarget(targetConfig, ConversionTarget::Faces)) {
+        targetTypes.push_back({TopAbs_FACE, &faces, "Face"});
+    }
+
+    if (hasTarget(targetConfig, ConversionTarget::Edges)) {
+        targetTypes.push_back({TopAbs_EDGE, &edges, "Edge"});
+    }
+
+    if (hasTarget(targetConfig, ConversionTarget::Vertices)) {
+        targetTypes.push_back({TopAbs_VERTEX, &vertices, "Vertex"});
+    }
+
+    std::vector<std::string> result;
+    result.reserve(source.size());
+
+    const auto appendResult = [&result](const TargetType& targetType, const TopoDS_Shape& element) {
+        const int index = targetType.map->FindIndex(element);
+
+        if (index <= 0) {
+            return;
+        }
+
+        const std::string name = std::string(targetType.prefix) + std::to_string(index);
+
+        if (std::ranges::find(result, name) == result.end()) {
+            result.push_back(name);
+        }
+    };
+
+    for (const std::string& sourceName : source) {
+        const TopoDS_Shape sourceShape = shape.getSubShape(sourceName.c_str(), true);
+
+        if (sourceShape.IsNull()) {
+            result.push_back(sourceName);
+            continue;
+        }
+
+        const TopAbs_ShapeEnum sourceType = sourceShape.ShapeType();
+
+        for (const TargetType& targetType : targetTypes) {
+            if (sourceType == targetType.type) {
+                appendResult(targetType, sourceShape);
+                continue;
+            }
+
+            // Down the hierarchy
+            if (isDescending(sourceType, targetType.type)) {
+                for (TopExp_Explorer exp(sourceShape, targetType.type); exp.More(); exp.Next()) {
+
+                    appendResult(targetType, exp.Current());
+                }
+
+                continue;
+            }
+
+            // Up the hierarchy
+            for (int i = 1; i <= targetType.map->Extent(); ++i) {
+                const TopoDS_Shape& candidate = targetType.map->FindKey(i);
+
+                for (TopExp_Explorer exp(candidate, sourceType); exp.More(); exp.Next()) {
+
+                    if (exp.Current().IsSame(sourceShape)) {
+                        appendResult(targetType, candidate);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    return result;
 }
 
 void TopoShape::initCache(int reset) const

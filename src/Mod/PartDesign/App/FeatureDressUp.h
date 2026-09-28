@@ -75,6 +75,13 @@ protected:
         App::DocumentObject* newBase,
         BaseFeatureChange change
     ) override;
+
+    /// Transforms the references to base shape by forcing them to be of type ConversionTarget.
+    /// Eg: If the current's dress-up Selection Mode is set to be solids instead of faces/edges,
+    /// when restoring/validating, you'd call fixBaseShape(ConversionTarget::Solids) which will
+    /// update the refs. in the Base Property and thus remove needed conversion-code in execute.
+    /// This should be called in Restore or execute
+    void fixBaseShape(Part::ConversionTarget to);
 };
 
 }  // namespace PartDesign
