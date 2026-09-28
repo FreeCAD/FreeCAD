@@ -46,7 +46,7 @@ class TestChamfer(unittest.TestCase):
         self.MajorFaces = [face for face in self.Chamfer.Shape.Faces if face.Area > 1e-3]
         self.assertEqual(len(self.MajorFaces), 8)
         # test UseAllEdges property
-        self.Chamfer.UseAllEdges = True
+        self.Chamfer.SelectionType = "All solids"
         self.Chamfer.Base = (self.Box, [""])  # no subobjects, should still work
         self.Doc.recompute()
         self.MajorFaces = [face for face in self.Chamfer.Shape.Faces if face.Area > 1e-3]
@@ -55,7 +55,7 @@ class TestChamfer(unittest.TestCase):
         self.Doc.recompute()
         self.MajorFaces = [face for face in self.Chamfer.Shape.Faces if face.Area > 1e-3]
         self.assertEqual(len(self.MajorFaces), 8)
-        self.Chamfer.UseAllEdges = False
+        self.Chamfer.SelectionType = "Selected edges & faces"
         self.Chamfer.Base = (self.Box, ["Face1"])
         self.Doc.recompute()
         self.MajorFaces = [face for face in self.Chamfer.Shape.Faces if face.Area > 1e-3]

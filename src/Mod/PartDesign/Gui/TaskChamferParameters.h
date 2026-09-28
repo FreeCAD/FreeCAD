@@ -64,7 +64,8 @@ private Q_SLOTS:
     void onFlipDirection(bool);
     void onRefDeleted() override;
     void onAddAllEdges();
-    void onCheckBoxUseAllEdgesToggled(bool checked);
+    void onSelectionTypeChanged(int v);
+    void updateSolidSelection();
 
 protected:
     void setButtons(const selectionModes mode) override;
@@ -76,6 +77,7 @@ protected:
     double getSize2() const;
     double getAngle() const;
     bool getFlipDirection() const;
+    int getSelectionType() const;
 
 private:
     std::unique_ptr<Ui_TaskChamferParameters> ui;

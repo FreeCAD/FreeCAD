@@ -27,7 +27,9 @@
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
+
 #include "FeatureDressUp.h"
+#include "FeatureChamfer.h"
 
 namespace PartDesign
 {
@@ -37,10 +39,14 @@ class PartDesignExport Fillet: public DressUp
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Fillet);
 
 public:
+    using SelectionMode = Chamfer::SelectionMode;
+
     Fillet();
 
     App::PropertyQuantityConstraint Radius;
-    App::PropertyBool UseAllEdges;
+    App::PropertyEnumeration SelectionType;
+    /// LEGACY -> SelectionType = SelectionMode::AllSolids
+    // App::PropertyBool UseAllEdges;
 
     /** @name methods override feature */
     //@{
@@ -61,6 +67,16 @@ protected:
         const char* TypeName,
         App::Property* prop
     ) override;
+    void handleChangedPropertyName(
+        Base::XMLReader& reader,
+        const char* typeName,
+        const char* propName
+    ) override;
+
+private:
+    bool _hasOldUseAllEdges, _wasUseAllEdges;
+
+    static const char* SelectionTypeEnums[];
 };
 
 }  // namespace PartDesign

@@ -44,6 +44,8 @@
 
 #include "FeatureChamfer.h"
 
+#include "TopExp_Explorer.hxx"
+
 #include <Base/ProgramVersion.h>
 
 
@@ -52,7 +54,11 @@ using namespace PartDesign;
 
 PROPERTY_SOURCE(PartDesign::Chamfer, PartDesign::DressUp)
 
-const char* ChamferTypeEnums[] = {"Equal distance", "Two distances", "Distance and Angle", nullptr};
+const char* Chamfer::ChamferTypeEnums[]
+    = {"Equal distance", "Two distances", "Distance and Angle", nullptr};
+const char* Chamfer::SelectionTypeEnums[]
+    = {"Selected edges & faces", "Selected solids", "All solids", nullptr};
+
 const App::PropertyQuantityConstraint::Constraints Chamfer::floatSize
     = {0.0, std::numeric_limits<float>::max(), 0.1};
 const App::PropertyAngle::Constraints Chamfer::floatAngle = {0.0, 180.0, 1.0};
@@ -82,15 +88,9 @@ Chamfer::Chamfer()
     Angle.setConstraints(&floatAngle);
 
     ADD_PROPERTY_TYPE(FlipDirection, (false), "Chamfer", App::Prop_None, "Flip direction");
-    ADD_PROPERTY_TYPE(
-        UseAllEdges,
-        (false),
-        "Chamfer",
-        App::Prop_None,
-        "Chamfer all edges if true, else use only those edges in Base property.\n"
-        "If true, then this overrides any edge changes made to the Base property or in the "
-        "dialog.\n"
-    );
+
+    ADD_PROPERTY_TYPE(SelectionType, (0L), "Chamfer", App::Prop_None, "Selection Type");
+    SelectionType.setEnums(SelectionTypeEnums);
 
     updateProperties();
 }
@@ -113,7 +113,7 @@ short Chamfer::mustExecute() const
             break;
     }
 
-    if (Placement.isTouched() || touched) {
+    if (Placement.isTouched() || touched || SelectionType.isTouched()) {
         return 1;
     }
     return DressUp::mustExecute();
@@ -126,7 +126,7 @@ App::DocumentObjectExecReturn* Chamfer::execute()
     }
 
     // NOTE: Normally the Base property and the BaseFeature property should point to the same object.
-    // The only difference is that the Base property also stores the edges that are to be chamfered
+    // The only difference is that the Base property also stores the edges that are to be chamfered.
     Part::TopoShape TopShape;
     try {
         TopShape = getBaseTopoShape();
@@ -137,12 +137,39 @@ App::DocumentObjectExecReturn* Chamfer::execute()
 
     TopShape.setTransform(Base::Matrix4D());
 
-    auto edges = UseAllEdges.getValue() ? TopShape.getSubTopoShapes(TopAbs_EDGE)
-                                        : getContinuousEdges(TopShape);
+    std::vector<TopoShape> edges;
+
+    switch (static_cast<SelectionMode>(SelectionType.getValue())) {
+        case SelectedEdges: {
+            edges = getContinuousEdges(TopShape);
+            break;
+        }
+
+        case SelectedSolids: {
+            for (const std::string& ref : Base.getSubValues()) {
+                const TopoDS_Shape solid = TopShape.getSubShape(ref.c_str(), true);
+
+                if (solid.IsNull()) {
+                    continue;
+                }
+
+                for (TopExp_Explorer exp(solid, TopAbs_EDGE); exp.More(); exp.Next()) {
+                    edges.emplace_back(exp.Current());
+                }
+            }
+            break;
+        }
+
+        case AllSolids: {
+            edges = TopShape.getSubTopoShapes(TopAbs_EDGE);
+            break;
+        }
+    }
 
     if (edges.empty()) {
         return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "No edges specified"));
     }
+
     const int chamferType = ChamferType.getValue();
     const double size = Size.getValue();
     double size2 = Size2.getValue();
@@ -159,6 +186,7 @@ App::DocumentObjectExecReturn* Chamfer::execute()
     if (static_cast<Part::ChamferType>(chamferType) == Part::ChamferType::distanceAngle) {
         size2 = angle;
     }
+
     try {
         TopoShape shape(0);
         Part::SignalException sig;
@@ -171,6 +199,7 @@ App::DocumentObjectExecReturn* Chamfer::execute()
             nullptr,
             flipDirection ? Part::Flip::flip : Part::Flip::none
         );
+
         if (shape.isNull()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Failed to create chamfer")
@@ -179,6 +208,7 @@ App::DocumentObjectExecReturn* Chamfer::execute()
 
         TopTools_ListOfShape aLarg;
         aLarg.Append(TopShape.getShape());
+
         if (!BRepAlgo::IsValid(aLarg, shape.getShape(), Standard_False, Standard_False)) {
             ShapeFix_ShapeTolerance aSFT;
             aSFT.LimitTolerance(
@@ -191,7 +221,9 @@ App::DocumentObjectExecReturn* Chamfer::execute()
 
         // store shape before refinement
         this->rawShape = shape;
+
         shape = refineShapeIfActive(shape);
+
         if (!isSingleSolidRuleSatisfied(shape.getShape())) {
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
                 "Exception",
@@ -201,6 +233,7 @@ App::DocumentObjectExecReturn* Chamfer::execute()
 
         shape = getSolid(shape);
         this->Shape.setValue(shape);
+
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
@@ -218,6 +251,12 @@ void Chamfer::Restore(Base::XMLReader& reader)
     DressUp::Restore(reader);
 
     migrateFlippedProperties(reader);
+
+    if (_hasOldUseAllEdges && _wasUseAllEdges) {
+        SelectionType.setValue(SelectionMode::AllSolids);
+    }
+
+    _hasOldUseAllEdges = false;
 }
 
 void Chamfer::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
@@ -230,6 +269,21 @@ void Chamfer::handleChangedPropertyType(Base::XMLReader& reader, const char* Typ
     }
     else {
         DressUp::handleChangedPropertyType(reader, TypeName, prop);
+    }
+}
+
+void Chamfer::handleChangedPropertyName(Base::XMLReader& reader, const char* TypeName, const char* PropName)
+{
+    if (strcmp(PropName, "UseAllEdges") == 0 && strcmp(TypeName, "App::PropertyBool") == 0) {
+
+        App::PropertyBool prop;
+        prop.Restore(reader);
+
+        _wasUseAllEdges = prop.getValue();
+        _hasOldUseAllEdges = true;
+    }
+    else {
+        DressUp::handleChangedPropertyName(reader, TypeName, PropName);
     }
 }
 

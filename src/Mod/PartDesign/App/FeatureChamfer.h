@@ -37,6 +37,13 @@ class PartDesignExport Chamfer: public DressUp
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Chamfer);
 
 public:
+    enum SelectionMode
+    {
+        SelectedEdges,
+        SelectedSolids,
+        AllSolids
+    };
+
     Chamfer();
 
     App::PropertyEnumeration ChamferType;
@@ -44,7 +51,9 @@ public:
     App::PropertyQuantityConstraint Size2;
     App::PropertyAngle Angle;
     App::PropertyBool FlipDirection;
-    App::PropertyBool UseAllEdges;
+    App::PropertyEnumeration SelectionType;
+    /// LEGACY -> SelectionType = SelectionMode::AllSolids
+    // App::PropertyBool UseAllEdges;
 
     /** @name methods override feature */
     //@{
@@ -69,11 +78,22 @@ protected:
         const char* TypeName,
         App::Property* prop
     ) override;
+    void handleChangedPropertyName(
+        Base::XMLReader& reader,
+        const char* typeName,
+        const char* propName
+    ) override;
+    bool requiresSizeSwapping(const Base::XMLReader& reader) const;
+    void migrateFlippedProperties(const Base::XMLReader& reader);
+
     static const App::PropertyQuantityConstraint::Constraints floatSize;
     static const App::PropertyAngle::Constraints floatAngle;
 
-    bool requiresSizeSwapping(const Base::XMLReader& reader) const;
-    void migrateFlippedProperties(const Base::XMLReader& reader);
+private:
+    bool _hasOldUseAllEdges, _wasUseAllEdges;
+
+    static const char* ChamferTypeEnums[];
+    static const char* SelectionTypeEnums[];
 };
 
 }  // namespace PartDesign
