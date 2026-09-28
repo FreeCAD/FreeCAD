@@ -31,6 +31,7 @@
 #include <App/DocumentObjectExtension.h>
 #include <App/ExtensionPython.h>
 #include <App/PropertyLinks.h>
+#include <App/PropertyGeo.h>
 #include <App/PropertyStandard.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
@@ -93,6 +94,8 @@ public:
     App::PropertyEnumeration MapMode;  // see AttachEngine::eMapMode
     App::PropertyBool MapReversed;     // inverts Z and X internal axes
     App::PropertyPlacement AttachmentOffset;
+    App::PropertyEnumeration TranslateState;
+    App::PropertyRotation TranslateBaseRotation;
 
     /**
      * @brief MapPathParameter is a parameter value for mmNormalToPath (the
@@ -120,6 +123,7 @@ public:
     App::DocumentObjectExecReturn* extensionExecute() override;
     PyObject* getExtensionPyObject() override;
     void onExtendedDocumentRestored() override;
+    void onExtendedSetupObject() override;
 
     struct Properties
     {
@@ -149,6 +153,9 @@ protected:
     void initBase(bool force);
 
     void handleLegacyTangentPlaneOrientation();
+    Base::Placement calculateBaseAttachmentPlacement();
+    void setTranslateBaseReady(const Base::Rotation& rotation);
+    void captureTranslateBase(const Base::Placement& visiblePlacement);
 
 public:
     void updateAttacherVals(bool base = false) const;
@@ -166,6 +173,7 @@ private:
     _Properties _baseProps;
 
     mutable int _active = -1;
+    bool _settingDerivedPlacement = false;
 };
 
 

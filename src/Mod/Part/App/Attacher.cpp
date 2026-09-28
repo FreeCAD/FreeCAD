@@ -1257,12 +1257,29 @@ std::vector<App::DocumentObject*> AttachEngine::getRefObjects() const
 
 Base::Placement AttachEngine::calculateAttachedPlacement(
     const Base::Placement& origPlacement,
-    bool* subChanged
+    bool* subChanged,
+    bool modernTranslate,
+    const Base::Placement* placementForRecovery
 )
 {
     std::map<int, std::pair<std::string, std::string>> subChanges;
     int i = -1;
     auto objs = getRefObjects();
+    auto calculate = [this, &objs, &origPlacement, modernTranslate](
+                         const std::vector<std::string>& subs
+                     ) {
+        auto placement = _calculateAttachedPlacement(objs, subs, origPlacement);
+        if (modernTranslate && mapMode == mmTranslate) {
+            // mmTranslate's legacy result adds offset translation in world coordinates and
+            // retains the input orientation. Recover the support origin, then apply the
+            // effective (AttachmentOffset * BaseAttachment^-1) placement as a local transform.
+            placement.setPosition(placement.getPosition() - attachmentOffset.getPosition());
+            placement *= attachmentOffset;
+        }
+        return placement;
+    };
+    const Base::Placement& recoveryReference = placementForRecovery ? *placementForRecovery
+                                                                    : origPlacement;
     for (auto obj : objs) {
         ++i;
         auto& sub = subnames[i];
@@ -1297,20 +1314,18 @@ Base::Placement AttachEngine::calculateAttachedPlacement(
         }
     }
     if (!subChanges.empty()) {
-        // In case there is topological name changes, we only auto change the
-        // subname if the calculated placement stays the same. If not, just
-        // proceed as normal, which will throw exception and catch user's
-        // attention.
+        // Accept a recovered topology reference only when the complete calculated placement
+        // matches the last visible placement. Modern Translate uses its independent base pose
+        // for calculation, so compare against the visible placement supplied by the caller.
         auto subs = subnames;
         for (auto& change : subChanges) {
             auto [subkey, namechange] = change;
             auto [_oldname, newname] = namechange;
             subs[subkey] = newname;
         }
-        auto pla = _calculateAttachedPlacement(objs, subs, origPlacement);
-        // check equal placement with some tolerance
-        if (pla.getPosition().IsEqual(origPlacement.getPosition(), Precision::Confusion())
-            && pla.getRotation().isSame(origPlacement.getRotation(), Precision::Angular())) {
+        auto pla = calculate(subs);
+        if (pla.getPosition().IsEqual(recoveryReference.getPosition(), Precision::Confusion())
+            && pla.getRotation().isSame(recoveryReference.getRotation(), Precision::Angular())) {
             // Only make changes if the caller supplies 'subChanged', because
             // otherwise it means the caller just want to do an immutable test.
             // See AttachExtension::isAttacherActive().
@@ -1324,7 +1339,7 @@ Base::Placement AttachEngine::calculateAttachedPlacement(
             return pla;
         }
     }
-    return _calculateAttachedPlacement(objs, subnames, origPlacement);
+    return calculate(subnames);
 }
 
 

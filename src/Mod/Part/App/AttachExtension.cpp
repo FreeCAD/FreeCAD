@@ -43,6 +43,20 @@ using namespace Attacher;
 namespace
 {
 std::vector<std::string> EngineEnums = {"Engine 3D", "Engine Plane", "Engine Line", "Engine Point"};
+std::vector<std::string> TranslateStateEnums = {"LEGACY", "MODERN_UNINITIALIZED", "MODERN_BASE_READY"};
+enum TranslateStateValue { TranslateLegacy = 0, TranslateModernUninitialized = 1, TranslateModernBaseReady = 2 };
+
+class ScopedFlag
+{
+public:
+    explicit ScopedFlag(bool& flag) : flag(flag), previous(flag) { flag = true; }
+    ~ScopedFlag() { flag = previous; }
+    ScopedFlag(const ScopedFlag&) = delete;
+    ScopedFlag& operator=(const ScopedFlag&) = delete;
+private:
+    bool& flag;
+    bool previous;
+};
 
 const char* enumToClass(const char* mode)
 {
@@ -154,6 +168,23 @@ AttachExtension::AttachExtension()
         "Attachment",
         App::Prop_None,
         "Extra placement to apply in addition to attachment (in local coordinates)"
+    );
+
+    EXTENSION_ADD_PROPERTY_TYPE(
+        TranslateState,
+        (0L),
+        "Attachment",
+        (App::PropertyType)(App::Prop_ReadOnly | App::Prop_Hidden),
+        "Persistent provenance for modern Translate semantics."
+    );
+    TranslateState.setEnums(TranslateStateEnums);
+
+    EXTENSION_ADD_PROPERTY_TYPE(
+        TranslateBaseRotation,
+        (Base::Rotation()),
+        "Attachment",
+        (App::PropertyType)(App::Prop_ReadOnly | App::Prop_Hidden),
+        "Independent persistent base orientation for modern Translate semantics."
     );
 
     // Only show these properties when applicable. Controlled by extensionOnChanged
@@ -344,6 +375,56 @@ bool AttachExtension::changeAttacherType(const char* typeName, bool base)
     throw AttachEngineException(errMsg.str());
 }
 
+Base::Placement AttachExtension::calculateBaseAttachmentPlacement()
+{
+    initBase(false);
+    if (!_baseProps.attacher || !_baseProps.mapMode) {
+        return Base::Placement();
+    }
+    updateAttacherVals(/*base*/ true);
+    if (_baseProps.attacher->mapMode == mmDeactivated) {
+        return Base::Placement();
+    }
+
+    bool subChanged = false;
+    Base::Placement placement
+        = _baseProps.attacher->calculateAttachedPlacement(Base::Placement(), &subChanged);
+    if (subChanged && _baseProps.attachment) {
+        Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(
+            App::Property::User3,
+            _baseProps.attachment
+        );
+        _baseProps.attachment->setValues(
+            _baseProps.attachment->getValues(),
+            _baseProps.attacher->getSubValues()
+        );
+    }
+    return placement;
+}
+
+void AttachExtension::setTranslateBaseReady(const Base::Rotation& rotation)
+{
+    const Base::Rotation previousRotation = TranslateBaseRotation.getValue();
+    const long previousState = TranslateState.getValue();
+    try {
+        TranslateBaseRotation.setValue(rotation);
+        TranslateState.setValue(TranslateModernBaseReady);
+    }
+    catch (...) {
+        TranslateBaseRotation.setValue(previousRotation);
+        TranslateState.setValue(previousState);
+        throw;
+    }
+}
+
+void AttachExtension::captureTranslateBase(const Base::Placement& visiblePlacement)
+{
+    const Base::Placement basePlacement = calculateBaseAttachmentPlacement();
+    const Base::Placement effectiveOffset = AttachmentOffset.getValue() * basePlacement.inverse();
+    const Base::Placement independentBase = visiblePlacement * effectiveOffset.inverse();
+    setTranslateBaseReady(independentBase.getRotation());
+}
+
 bool AttachExtension::positionBySupport()
 {
     _active = 0;
@@ -353,30 +434,38 @@ bool AttachExtension::positionBySupport()
         );
     }
     updateAttacherVals();
-    Base::Placement plaOriginal = getPlacement().getValue();
+    const Base::Placement originalPlacement = getPlacement().getValue();
+    const bool modernTranslate = _props.attacher->mapMode == mmTranslate
+        && TranslateState.getValue() != TranslateLegacy;
+
+    // First modern entry stores the orientation before solving. The state is committed only
+    // after the complete rotation value has been written; AttachmentOffset is never migrated.
+    if (modernTranslate && TranslateState.getValue() == TranslateModernUninitialized) {
+        setTranslateBaseReady(originalPlacement.getRotation());
+    }
+
+    ScopedFlag derivedPlacementWrite(_settingDerivedPlacement);
     try {
         if (_props.attacher->mapMode == mmDeactivated) {
             return false;
         }
         bool subChanged = false;
-
         getPlacement().setValue(Base::Placement());
 
-        Base::Placement basePlacement;
-        if (_baseProps.attacher && _baseProps.attacher->mapMode != mmDeactivated) {
-            basePlacement
-                = _baseProps.attacher->calculateAttachedPlacement(Base::Placement(), &subChanged);
-            if (subChanged) {
-                _baseProps.attachment->setValues(
-                    _baseProps.attachment->getValues(),
-                    _baseProps.attacher->getSubValues()
-                );
-            }
-        }
-
-        subChanged = false;
+        const Base::Placement basePlacement = calculateBaseAttachmentPlacement();
         _props.attacher->setOffset(AttachmentOffset.getValue() * basePlacement.inverse());
-        auto placement = _props.attacher->calculateAttachedPlacement(plaOriginal, &subChanged);
+
+        Base::Placement solverInput = originalPlacement;
+        if (modernTranslate) {
+            solverInput.setRotation(TranslateBaseRotation.getValue());
+        }
+        const Base::Placement* recoveryReference = modernTranslate ? &originalPlacement : nullptr;
+        auto placement = _props.attacher->calculateAttachedPlacement(
+            solverInput,
+            &subChanged,
+            modernTranslate,
+            recoveryReference
+        );
         if (subChanged) {
             Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(
                 App::Property::User3,
@@ -389,16 +478,15 @@ bool AttachExtension::positionBySupport()
         return true;
     }
     catch (ExceptionCancel&) {
-        // disabled, don't do anything
-        getPlacement().setValue(plaOriginal);
+        getPlacement().setValue(originalPlacement);
         return false;
     }
     catch (Base::Exception&) {
-        getPlacement().setValue(plaOriginal);
+        getPlacement().setValue(originalPlacement);
         throw;
     }
     catch (Standard_Failure&) {
-        getPlacement().setValue(plaOriginal);
+        getPlacement().setValue(originalPlacement);
         throw;
     }
 }
@@ -410,7 +498,11 @@ bool AttachExtension::isAttacherActive() const
         try {
             updateAttacherVals(/*base*/ false);
             updateAttacherVals(/*base*/ true);
-            _props.attacher->calculateAttachedPlacement(getPlacement().getValue());
+            const bool modernTranslate = _props.attacher->mapMode == mmTranslate
+                && TranslateState.getValue() != TranslateLegacy;
+            _props.attacher->calculateAttachedPlacement(
+                getPlacement().getValue(), nullptr, modernTranslate
+            );
             _active = 1;
         }
         catch (Base::Exception&) {
@@ -444,9 +536,36 @@ App::DocumentObjectExecReturn* AttachExtension::extensionExecute()
     return App::DocumentObjectExtension::extensionExecute();
 }
 
+void AttachExtension::onExtendedSetupObject()
+{
+    if (TranslateState.getValue() == TranslateLegacy) {
+        TranslateState.setValue(TranslateModernUninitialized);
+    }
+    App::DocumentObjectExtension::onExtendedSetupObject();
+}
+
+
+
 void AttachExtension::extensionOnChanged(const App::Property* prop)
 {
     if (!getExtendedObject()->isRestoring()) {
+        if (prop == &getPlacement() && !_settingDerivedPlacement
+            && MapMode.getValue() == mmTranslate
+            && TranslateState.getValue() != TranslateLegacy) {
+            try {
+                captureTranslateBase(getPlacement().getValue());
+            }
+            catch (Base::Exception& e) {
+                getExtendedObject()->setStatus(App::Error, true);
+                Base::Console().error("Failed to capture modern Translate base: {}\n", e.what());
+            }
+            catch (Standard_Failure& e) {
+                getExtendedObject()->setStatus(App::Error, true);
+                Base::Console().error(
+                    "Failed to capture modern Translate base: {}\n", e.GetMessageString()
+                );
+            }
+        }
         // If we change anything that affects our position, update it immediately so you can see it
         // interactively.
         if ((prop == &AttachmentSupport || prop == &MapMode || prop == &MapPathParameter

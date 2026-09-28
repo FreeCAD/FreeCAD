@@ -63,3 +63,9 @@ Part::LocalCoordinateSystem::LocalCoordinateSystem()
 {
     AttachExtension::initExtension(this);
 }
+
+void Part::LocalCoordinateSystem::setupObject()
+{
+    App::LocalCoordinateSystem::setupObject();
+    App::DocumentObject::setupObject();
+}

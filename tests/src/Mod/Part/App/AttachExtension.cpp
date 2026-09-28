@@ -4,6 +4,7 @@
 
 #include <cmath>
 #include <numbers>
+#include <set>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -12,8 +13,10 @@
 #include <Base/Interpreter.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
+#include <App/Datums.h>
 #include <App/Document.h>
 #include <App/PropertyLinks.h>
+#include <Mod/Part/App/Datums.h>
 #include <Mod/Part/App/FeaturePartBox.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
 
@@ -355,4 +358,88 @@ TEST_F(AttachExtensionTest, testNonEmptyLegacySupportReplacesAttachmentSupport)
     ASSERT_EQ(object->AttachmentSupport.getSubValues().size(), 1);
     EXPECT_EQ(object->AttachmentSupport.getSubValues().front(), "Face2");
     EXPECT_STREQ(object->MapMode.getValueAsString(), "Deactivated");
+}
+
+TEST_F(AttachExtensionTest, testPartLocalCoordinateSystemNewSetupDispatch)
+{
+    const auto objectsBefore = getDocument()->getObjects().size();
+    auto lcs = getDocument()->addObject<Part::LocalCoordinateSystem>("PartLCS");
+    ASSERT_NE(lcs, nullptr);
+
+    // The normal new-object path must dispatch AttachExtension setup exactly once.
+    EXPECT_STREQ(lcs->TranslateState.getValueAsString(), "MODERN_UNINITIALIZED");
+    const auto& children = lcs->OriginFeatures.getValues();
+    ASSERT_EQ(children.size(), 7U);
+    const std::set<App::DocumentObject*> uniqueChildren(children.begin(), children.end());
+    EXPECT_EQ(uniqueChildren.size(), children.size());
+    EXPECT_EQ(getDocument()->getObjects().size(), objectsBefore + 8U);
+}
+
+TEST_F(AttachExtensionTest, testAppLocalCoordinateSystemSetupNoRegression)
+{
+    const auto objectsBefore = getDocument()->getObjects().size();
+    auto lcs = getDocument()->addObject<App::LocalCoordinateSystem>("AppLCS");
+    ASSERT_NE(lcs, nullptr);
+
+    const auto& children = lcs->OriginFeatures.getValues();
+    ASSERT_EQ(children.size(), 7U);
+    std::set<App::DocumentObject*> uniqueChildren(children.begin(), children.end());
+    EXPECT_EQ(uniqueChildren.size(), children.size());
+    EXPECT_EQ(getDocument()->getObjects().size(), objectsBefore + 8U);
+
+    std::set<std::string> roles;
+    std::size_t lineCount = 0;
+    std::size_t planeCount = 0;
+    std::size_t pointCount = 0;
+    for (auto* child : children) {
+        ASSERT_NE(child, nullptr);
+        ASSERT_TRUE(child->isDerivedFrom<App::DatumElement>());
+        auto* datum = static_cast<App::DatumElement*>(child);
+        roles.emplace(datum->Role.getValue());
+        lineCount += child->isDerivedFrom<App::Line>();
+        planeCount += child->isDerivedFrom<App::Plane>();
+        pointCount += child->isDerivedFrom<App::Point>();
+    }
+    EXPECT_EQ(roles, (std::set<std::string>{
+                          "X_Axis", "Y_Axis", "Z_Axis", "XY_Plane",
+                          "XZ_Plane", "YZ_Plane", "Origin"}));
+    EXPECT_EQ(lineCount, 3U);
+    EXPECT_EQ(planeCount, 3U);
+    EXPECT_EQ(pointCount, 1U);
+}
+
+TEST_F(AttachExtensionTest, testPartLocalCoordinateSystemOriginFeaturesRemainStable)
+{
+    auto lcs = getDocument()->addObject<Part::LocalCoordinateSystem>("PartLCS");
+    ASSERT_NE(lcs, nullptr);
+    const auto objectsAfterSetup = getDocument()->getObjects().size();
+    const auto& children = lcs->OriginFeatures.getValues();
+    ASSERT_EQ(children.size(), 7U);
+
+    std::set<App::DocumentObject*> uniqueChildren(children.begin(), children.end());
+    std::set<std::string> roles;
+    std::size_t lineCount = 0;
+    std::size_t planeCount = 0;
+    std::size_t pointCount = 0;
+    for (auto* child : children) {
+        ASSERT_NE(child, nullptr);
+        ASSERT_TRUE(child->isDerivedFrom<App::DatumElement>());
+        auto* datum = static_cast<App::DatumElement*>(child);
+        roles.emplace(datum->Role.getValue());
+        lineCount += child->isDerivedFrom<App::Line>();
+        planeCount += child->isDerivedFrom<App::Plane>();
+        pointCount += child->isDerivedFrom<App::Point>();
+    }
+    EXPECT_EQ(uniqueChildren.size(), children.size());
+    EXPECT_EQ(roles, (std::set<std::string>{
+                          "X_Axis", "Y_Axis", "Z_Axis", "XY_Plane",
+                          "XZ_Plane", "YZ_Plane", "Origin"}));
+    EXPECT_EQ(lineCount, 3U);
+    EXPECT_EQ(planeCount, 3U);
+    EXPECT_EQ(pointCount, 1U);
+
+    getDocument()->recompute();
+    getDocument()->recompute();
+    EXPECT_EQ(lcs->OriginFeatures.getValues().size(), 7U);
+    EXPECT_EQ(getDocument()->getObjects().size(), objectsAfterSetup);
 }

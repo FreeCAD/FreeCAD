@@ -254,7 +254,9 @@ public:  // methods
 
     Base::Placement calculateAttachedPlacement(
         const Base::Placement& origPlacement,
-        bool* subChanged = 0
+        bool* subChanged = nullptr,
+        bool modernTranslate = false,
+        const Base::Placement* placementForRecovery = nullptr
     );
 
     virtual Base::Placement _calculateAttachedPlacement(

@@ -83,6 +83,9 @@ public:
     {
         return "PartGui::ViewProviderLCS";
     }
+
+protected:
+    void setupObject() override;
 };
 
 }  // namespace Part
