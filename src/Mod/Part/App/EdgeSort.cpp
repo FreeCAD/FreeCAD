@@ -23,7 +23,6 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRep_Tool.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepLib.hxx>
 # include <Geom_Curve.hxx>
 # include <gp_Pnt.hxx>
@@ -126,16 +125,7 @@ EdgeSort::Wire EdgeSort::sortEdges(double tol3d)
             }
             if (pEI->v2.SquareDistance(last) <= tol3d) {
                 last = pEI->v1;
-                double first {};
-                double last {};
-                BRepLib::BuildCurves3d(pEI->edge);
-                const Handle(Geom_Curve) & curve = BRep_Tool::Curve(pEI->edge, first, last);
-                if (!curve.IsNull()) {
-                    first = curve->ReversedParameter(first);
-                    last = curve->ReversedParameter(last);
-                    TopoDS_Edge edgeReversed = BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first);
-                    sorted.push_back(edgeReversed);
-                }
+                sorted.push_back(TopoDS::Edge(pEI->edge.Reversed()));
                 edges.erase(pEI->it);
                 edge_points.erase(pEI);
                 pEI = edge_points.begin();
@@ -143,16 +133,7 @@ EdgeSort::Wire EdgeSort::sortEdges(double tol3d)
             }
             if (pEI->v1.SquareDistance(first) <= tol3d) {
                 first = pEI->v2;
-                double first {};
-                double last {};
-                BRepLib::BuildCurves3d(pEI->edge);
-                const Handle(Geom_Curve) & curve = BRep_Tool::Curve(pEI->edge, first, last);
-                if (!curve.IsNull()) {
-                    first = curve->ReversedParameter(first);
-                    last = curve->ReversedParameter(last);
-                    TopoDS_Edge edgeReversed = BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first);
-                    sorted.push_front(edgeReversed);
-                }
+                sorted.push_front(TopoDS::Edge(pEI->edge.Reversed()));
                 edges.erase(pEI->it);
                 edge_points.erase(pEI);
                 pEI = edge_points.begin();
