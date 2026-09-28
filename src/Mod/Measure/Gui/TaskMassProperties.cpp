@@ -272,6 +272,16 @@ TaskMassProperties::TaskMassProperties()
     hasCurrentDatumPlacement = false;
     currentAxisReference.reset();
 
+    connectDeletedObject = App::GetApplication().signalDeletedObject.connect(
+        [this](const App::DocumentObject& obj) {
+            if (&obj == currentDatum) {
+                currentDatum = nullptr;
+                hasCurrentDatumPlacement = false;
+                panel->ui.customEdit->clear();
+            }
+        }
+    );
+
     qApp->installEventFilter(this);
 
     if (auto* app = Gui::Application::Instance) {
