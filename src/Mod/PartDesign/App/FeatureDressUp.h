@@ -71,6 +71,7 @@ public:
 protected:
     void onChanged(const App::Property* prop) override;
     void onBaseFeatureRerouted(App::DocumentObject* oldBase, App::DocumentObject* newBase) override;
+    void restoreFinished() override;
 
     /// Transforms the references to base shape by forcing them to be of type ConversionTarget.
     /// Eg: If the current's dress-up Selection Mode is set to be solids instead of faces/edges,
@@ -78,6 +79,12 @@ protected:
     /// update the refs. in the Base Property and thus remove needed conversion-code in execute.
     /// This should be called in Restore or execute
     void fixBaseShape(Part::ConversionTarget to);
+    /// Same but ignores the shapes of type ConversionTarget ignore
+    /// Eg: fixBaseShape(Face, Edges) with input [Face1, Solid1, Edge1]
+    /// only Solid1 and Edge1 will go through conversion, resulting in:
+    /// [Face1 (untouched), ...Solid1's edges, Edge1 (already an edge)]
+    /// Duplicates are removed.
+    void fixBaseShape(Part::ConversionTarget ignore, Part::ConversionTarget to);
 };
 
 }  // namespace PartDesign
