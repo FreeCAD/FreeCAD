@@ -171,6 +171,10 @@ class ObjectDressup:
         commands = []
         last = None
         for cmd in PathUtils.getPathWithPlacement(obj.Base).Commands:
+            if cmd.Annotations.get("type") == Constants.ANNOT_LINKING["type"]:
+                # linking moves are travel, not a profile to plunge along
+                machine.addCommand(cmd)
+                continue
             if cmd.Name not in Constants.GCODE_MOVE_MILL:
                 commands.append(cmd)
 

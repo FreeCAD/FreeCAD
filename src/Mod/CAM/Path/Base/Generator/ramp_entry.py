@@ -490,7 +490,10 @@ class RampEntry:
 
             lastX, lastY, lastZ = x, y, z
 
-            outCommands.append(Path.Command(cmd.Name, params))
+            outCommand = Path.Command(cmd.Name, params)
+            # keep annotations, e.g. linking moves must stay recognizable for other dressups
+            outCommand.Annotations = cmd.Annotations
+            outCommands.append(outCommand)
 
         return outCommands
 
@@ -560,6 +563,7 @@ class AnnotatedGCode:
                     }
                 )
         other.command = Path.Command(otherCommandName, otherParams)
+        other.command.Annotations = self.command.Annotations
 
         return other
 
@@ -596,6 +600,8 @@ class AnnotatedGCode:
         firstParams.update({"X": split_point[0], "Y": split_point[1], "Z": split_point[2]})
         first_command = Path.Command(self.command.Name, firstParams)
         second_command = Path.Command(self.command.Name, secondParams)
+        first_command.Annotations = self.command.Annotations
+        second_command.Annotations = self.command.Annotations
         return AnnotatedGCode(first_command, self.start_point), AnnotatedGCode(
             second_command, split_point
         )
