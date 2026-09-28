@@ -758,6 +758,7 @@ SET(FemGuiUtils_SRCS
 
 if(BUILD_FEM_VTK_PYTHON)
     list(APPEND FemGuiUtils_SRCS
+        femguiutils/vtk_module_compatibility_check.py
         femguiutils/vtk_module_handling.py
         femguiutils/vtk_table_view.py
         femguiutils/data_extraction.py
