@@ -30,6 +30,7 @@
 
 #include <App/Datums.h>
 #include <App/Document.h>
+#include <App/DocumentObserver.h>
 #include <App/GeoFeature.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/Origin.h>
@@ -323,19 +324,25 @@ void CmdPartDesignBody::activated(int iMsg)
                         return !features.empty();
                     };
 
-                    // Called by dialog when user hits "OK" and accepter returns true
-                    auto worker = [baseFeature](const std::vector<App::DocumentObject*>& features) {
+                    // Called by dialog when user hits "OK" and accepter returns true. The base
+                    // feature may have been deleted while the dialog was open.
+                    auto baseRef = std::make_shared<App::DocumentObjectWeakPtrT>(baseFeature);
+                    auto worker = [baseRef](const std::vector<App::DocumentObject*>& features) {
                         // may happen when the user switched to an empty document while the
                         // dialog is open
                         if (features.empty()) {
                             return;
                         }
+                        App::DocumentObject* base = baseRef->get<App::DocumentObject>();
+                        if (!base) {
+                            return;
+                        }
                         App::Plane* plane = static_cast<App::Plane*>(features.front());
                         std::string supportString = Gui::Command::getObjectCmd(plane, "(", ", [''])");
 
-                        FCMD_OBJ_CMD(baseFeature, "AttachmentSupport = " << supportString);
+                        FCMD_OBJ_CMD(base, "AttachmentSupport = " << supportString);
                         FCMD_OBJ_CMD(
-                            baseFeature,
+                            base,
                             "MapMode = '"
                                 << Attacher::AttachEngine::getModeName(Attacher::mmFlatFace) << "'"
                         );
