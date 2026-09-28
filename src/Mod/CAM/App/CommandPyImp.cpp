@@ -255,7 +255,11 @@ void CommandPy::setParameters(Py::Dict arg)
     // Assignment replaces the parameter set: keys that are not in the
     // dictionary are removed, and an empty dictionary clears all parameters.
     getCommandPtr()->Parameters = std::move(params);
-    parameters_copy_dict.clear();
+
+    // Drop the cached dictionary rather than clearing it: the getter hands out
+    // the cached object itself, so clearing it would empty a dictionary the
+    // caller may still be holding (and may be about to assign elsewhere).
+    parameters_copy_dict = Py::Dict();
 }
 
 // Annotations attribute get/set

@@ -117,6 +117,13 @@ class TestPathCore(PathTestBase):
         c.Parameters = params
         self.assertEqual(c.Parameters, {"X": 1.0, "F": 2.0, "Y": 7.0})
 
+        # assignment does not empty the caller's dictionary, so the same
+        # dictionary can be assigned to another command afterwards
+        self.assertEqual(params, {"X": 1.0, "F": 2.0, "Y": 7.0})
+        d = Path.Command("G0", {"Z": 10})
+        d.Parameters = params
+        self.assertEqual(d.Parameters, {"X": 1.0, "F": 2.0, "Y": 7.0})
+
         # a bad value leaves the existing parameters untouched
         with self.assertRaises(TypeError):
             c.Parameters = {"X": "one"}
