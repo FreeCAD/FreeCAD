@@ -38,6 +38,7 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/DocumentObserver.h>
 #include <App/ElementNamingUtils.h>
 #include <App/ObjectIdentifier.h>
 #include <App/Datums.h>
@@ -1469,6 +1470,16 @@ TaskDlgAttacher::TaskDlgAttacher(
     assert(ViewProvider);
     setDocumentName(ViewProvider->getDocument()->getDocument()->getName());
 
+    // The dialog is not tied to edit mode, so it stays open if the object is deleted, e.g. by
+    // undoing its creation while the dialog is shown. Forget the view provider when that happens.
+    connectDelObject = ViewProvider->getDocument()->signalDeletedObject.connect(
+        [this](const Gui::ViewProviderDocumentObject& vp) {
+            if (&vp == this->ViewProvider) {
+                this->ViewProvider = nullptr;
+            }
+        }
+    );
+
     if (createBox) {
         parameter = new TaskAttacher(ViewProvider, nullptr, QString(), tr("Attachment"));
         Content.push_back(parameter);
@@ -1533,6 +1544,9 @@ void TaskDlgAttacher::handleMouseButtonCB(void* userdata, SoEventCallback* cb)
     if (mbe->getButton() != SoMouseButtonEvent::BUTTON1 || mbe->getState() != SoButtonEvent::DOWN) {
         return;
     }
+    if (!self->ViewProvider) {
+        return;
+    }
 
     const SbVec2s pos = mbe->getPosition();
     const SbTime now = SbTime::getTimeOfDay();
@@ -1554,13 +1568,15 @@ void TaskDlgAttacher::handleMouseButtonCB(void* userdata, SoEventCallback* cb)
         self->lastClickTime = SbTime();
         self->lastClickPos = SbVec2s(-16000, -16000);
 
-        auto* doc = self->ViewProvider->getDocument()->getDocument();
+        App::DocumentT doc(self->ViewProvider->getDocument()->getDocument());
         QPointer<Gui::View3DInventorViewer> viewer = self->dblClickViewer;
         QTimer::singleShot(0, [doc, viewer]() {
             if (viewer) {
                 viewer->setSelectionEnabled(true);
             }
-            Gui::Control().accept(doc);
+            if (App::Document* appDoc = doc.getDocument()) {
+                Gui::Control().accept(appDoc);
+            }
         });
         return;
     }
@@ -1591,8 +1607,12 @@ bool TaskDlgAttacher::accept()
     try {
         Gui::DocumentT doc(getDocumentName());
         Gui::Document* document = doc.getDocument();
-        if (!document || !ViewProvider) {
+        if (!document) {
             return true;
+        }
+        if (!ViewProvider) {
+            // The attached object was deleted while the dialog was open: nothing to apply
+            return reject();
         }
 
         Part::AttachExtension* pcAttach

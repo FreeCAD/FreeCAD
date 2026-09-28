@@ -258,6 +258,8 @@ private:
     // Double-click accept
     static void handleMouseButtonCB(void* userdata, SoEventCallback* cb);
     QPointer<Gui::View3DInventorViewer> dblClickViewer;
+    // Resets ViewProvider when the attached object is deleted (or its creation undone)
+    fastsignals::scoped_connection connectDelObject;
     SbTime lastClickTime;
     SbVec2s lastClickPos = SbVec2s(-16000, -16000);
 };

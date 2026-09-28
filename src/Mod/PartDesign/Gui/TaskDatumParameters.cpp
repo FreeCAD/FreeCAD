@@ -95,6 +95,10 @@ bool TaskDlgDatumParameters::reject()
 
 bool TaskDlgDatumParameters::accept()
 {
+    if (!ViewProvider) {
+        // The datum was deleted while the dialog was open
+        return reject();
+    }
 
     Part::Datum* pcDatum = ViewProvider->getObject<Part::Datum>();
     auto pcActiveBody = PartDesignGui::getBodyFor(pcDatum, false);
