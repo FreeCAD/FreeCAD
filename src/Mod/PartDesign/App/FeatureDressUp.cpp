@@ -517,4 +517,16 @@ void DressUp::updatePreviewShape()
     PreviewShape.setValue(preview);
 }
 
+void DressUp::fixBaseShape(Part::ConversionTarget to)
+{
+    const auto newRefs = Part::convertShapeElements(
+        getBaseTopoShape(true),
+        Base.getSubValues(),
+        Part::ConversionTarget::All,
+        to
+    );
+    Base.setValue(Base.getValue(), newRefs);
+}
+
+
 }  // namespace PartDesign
