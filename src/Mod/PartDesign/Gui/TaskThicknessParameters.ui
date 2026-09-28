@@ -78,6 +78,9 @@
      </item>
      <item row="1" column="1">
       <widget class="QComboBox" name="modeComboBox">
+       <property name="toolTip">
+        <string>Skin offsets the remaining faces. Recto verso centers the thickness on both sides where supported. Pipe is not implemented.</string>
+       </property>
        <item>
         <property name="text">
          <string>Skin</string>
@@ -104,6 +107,9 @@
      </item>
      <item row="2" column="1">
       <widget class="QComboBox" name="joinComboBox">
+       <property name="toolTip">
+        <string>Arc rounds joins between offset faces. Intersection extends them to meet at sharp corners.</string>
+       </property>
        <item>
         <property name="text">
          <string>Arc</string>
@@ -120,6 +126,9 @@
    </item>
    <item>
     <widget class="QCheckBox" name="checkIntersection">
+     <property name="toolTip">
+      <string>Handle intersections between offset faces to avoid self-intersections in some shapes.</string>
+     </property>
      <property name="text">
       <string>Intersection</string>
      </property>
