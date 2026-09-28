@@ -26,6 +26,7 @@
 #include <TopoDS_Face.hxx>
 #include <boost/signals2.hpp>
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
 #include <QApplication>
@@ -49,6 +50,7 @@
 #include <Mod/Sketcher/Gui/ViewProviderSketch.h>
 
 #include <App/Document.h>
+#include <App/DocumentObserver.h>
 #include <App/Link.h>
 #include <App/Origin.h>
 #include <App/Datums.h>
@@ -622,16 +624,28 @@ private:
             }
         }
 
-        PartDesign::Body* partDesignBody = activeBody;
-        auto onAccept = [partDesignBody, sketch]() {
+        // The attachment dialog can outlive the body and sketch (e.g. they are deleted while it
+        // is open), so the callbacks must not hold raw pointers to them.
+        auto bodyRef = std::make_shared<App::DocumentObjectWeakPtrT>(activeBody);
+        auto sketchRef = std::make_shared<App::DocumentObjectWeakPtrT>(sketch);
+        auto onAccept = [bodyRef, sketchRef]() {
+            auto* partDesignBody = bodyRef->get<PartDesign::Body>();
+            if (!partDesignBody) {
+                return;
+            }
+
             resetOriginVisibility(partDesignBody);
 
             Gui::Selection().clearSelection();
 
-            PartDesignGui::setEdit(sketch, partDesignBody);
+            if (auto* sketchObj = sketchRef->get<App::DocumentObject>()) {
+                PartDesignGui::setEdit(sketchObj, partDesignBody);
+            }
         };
-        auto onReject = [partDesignBody]() {
-            resetOriginVisibility(partDesignBody);
+        auto onReject = [bodyRef]() {
+            if (auto* partDesignBody = bodyRef->get<PartDesign::Body>()) {
+                resetOriginVisibility(partDesignBody);
+            }
         };
 
         Gui::Selection().clearSelection();
