@@ -122,7 +122,8 @@ void TaskThicknessParameters::initControls()
     ui->selectAllSolids->setEnabled(selectionMode != Thickness::SelectionMode::SelectedFaces);
     ui->selectAllSolids->setChecked(selectionMode == Thickness::SelectionMode::AllSolids);
 
-    selectSolids = selectionMode != Thickness::SelectionMode::SelectedFaces;
+    allowSolids = selectionMode != Thickness::SelectionMode::SelectedFaces;
+    allowFaces = allowEdges = !allowSolids;
 
     if (strings.empty()) {
         setSelectionMode(refSel);
@@ -184,6 +185,8 @@ void TaskThicknessParameters::onSelectAllSolidsChanged(bool on)
     ui->buttonRefSel->setEnabled(!on);
 
     ui->selectAllSolids->setEnabled(newValue != Thickness::SelectionMode::SelectedFaces);
+    allowFaces = allowEdges = !allowSolids;
+    convertSelection(ui->listWidgetReferences);
 }
 
 void TaskThicknessParameters::onSelectionModeChanged(int selectionMode)
@@ -204,7 +207,9 @@ void TaskThicknessParameters::onSelectionModeChanged(int selectionMode)
 
     ui->selectAllSolids->setEnabled(newValue != Thickness::SelectionMode::SelectedFaces);
 
-    selectSolids = selectionMode != static_cast<int>(Thickness::SelectionMode::SelectedFaces);
+    allowSolids = selectionMode != static_cast<int>(Thickness::SelectionMode::SelectedFaces);
+    allowFaces = allowEdges = !allowSolids;
+    convertSelection(ui->listWidgetReferences);
 }
 
 void TaskThicknessParameters::onSelectionChanged(const Gui::SelectionChanges& msg)

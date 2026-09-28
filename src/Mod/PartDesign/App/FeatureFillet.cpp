@@ -168,8 +168,6 @@ App::DocumentObjectExecReturn* Fillet::execute()
 void Fillet::Restore(Base::XMLReader& reader)
 {
     DressUp::Restore(reader);
-
-    fixBaseShape(Part::ConversionTarget::Solids);
 }
 
 void Fillet::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
