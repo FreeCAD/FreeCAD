@@ -18,7 +18,7 @@
 
 #include <FCConfig.h>
 
-#if defined(FC_OS_LINUX) || defined(FC_OS_BSD)
+#if (defined(FC_OS_LINUX) || defined(FC_OS_BSD)) && defined(FC_HAVE_FONTCONFIG)
 # include <memory>
 #endif
 
@@ -30,7 +30,7 @@
 
 #include <App/Application.h>
 
-#if defined(FC_OS_LINUX) || defined(FC_OS_BSD)
+#if (defined(FC_OS_LINUX) || defined(FC_OS_BSD)) && defined(FC_HAVE_FONTCONFIG)
 # include <fontconfig/fontconfig.h>
 #endif
 
@@ -49,7 +49,10 @@ QStringList filesInDirectories(const QStringList& directories)
     return files;
 }
 
-#if defined(FC_OS_LINUX) || defined(FC_OS_BSD)
+// Fontconfig locates the system font files on Linux and BSD, but only when it was found while
+// configuring (FC_HAVE_FONTCONFIG). Otherwise, and on any other platform, the Qt font locations
+// below are scanned instead.
+#if (defined(FC_OS_LINUX) || defined(FC_OS_BSD)) && defined(FC_HAVE_FONTCONFIG)
 template<typename T, void (*destroy)(T*)>
 using FcPtr = std::unique_ptr<T, decltype([](T* object) { destroy(object); })>;
 
@@ -101,7 +104,8 @@ QStringList platformFontFiles()
 #else
 QStringList platformFontFiles()
 {
-    // Includes ~/.local/share/fonts, ~/.fonts, and font directories below XDG_DATA_DIRS.
+    // Fallback for Linux and BSD without Fontconfig, and for any other platform: includes
+    // ~/.local/share/fonts, ~/.fonts, and font directories below XDG_DATA_DIRS.
     return filesInDirectories(QStandardPaths::standardLocations(QStandardPaths::FontsLocation));
 }
 #endif

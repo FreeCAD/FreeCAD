@@ -212,8 +212,16 @@ target_include_directories(
 target_link_libraries(SketcherGui ${SketcherGui_LIBS})
 
 if(CMAKE_SYSTEM_NAME MATCHES "^(Linux|FreeBSD|OpenBSD|NetBSD)$")
-    find_package(Fontconfig REQUIRED)
-    target_link_libraries(SketcherGui Fontconfig::Fontconfig)
+    # Fontconfig is only used to locate system font files. Without it FontProvider.cpp falls
+    # back to the font directories reported by Qt, so a missing Fontconfig must not abort
+    # the configuration step.
+    find_package(Fontconfig)
+    if(Fontconfig_FOUND)
+        target_link_libraries(SketcherGui Fontconfig::Fontconfig)
+        target_compile_definitions(SketcherGui PRIVATE FC_HAVE_FONTCONFIG)
+    else()
+        message(STATUS "Fontconfig not found: Sketcher will use Qt's font locations instead")
+    endif()
 endif()
 
 target_compile_warn_error(SketcherGui)
