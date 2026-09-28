@@ -78,9 +78,6 @@
      </item>
      <item row="1" column="1">
       <widget class="QComboBox" name="modeComboBox">
-       <property name="toolTip">
-        <string>Sets the face offset mode. Skin offsets the remaining faces; Pipe and Recto verso are currently unsupported.</string>
-       </property>
        <item>
         <property name="text">
          <string>Skin</string>
@@ -127,7 +124,7 @@
    <item>
     <widget class="QCheckBox" name="checkIntersection">
      <property name="toolTip">
-      <string>Handles intersections between offset faces to avoid self-intersections</string>
+      <string>Enables intersection handling when constructing offset faces</string>
      </property>
      <property name="text">
       <string>Intersection</string>
