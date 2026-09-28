@@ -105,6 +105,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         obj.setEditorMode("Angle", 2)  # hide for default Offset pattern
         obj.UseOutline = False
         FeatureExtensions.set_default_property_values(obj, job)
+        obj.FinishingPasses = (0, 0, 999999, 1)
 
     def areaOpShapes(self, obj):
         """areaOpShapes(obj) ... return shapes representing the solids to be removed."""
