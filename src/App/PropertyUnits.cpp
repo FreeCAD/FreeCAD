@@ -468,6 +468,28 @@ PropertyHeatFlux::PropertyHeatFlux()
 }
 
 //**************************************************************************
+// PropertyMassMomentOfInertia
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyMassMomentOfInertia, App::PropertyQuantity)
+
+PropertyMassMomentOfInertia::PropertyMassMomentOfInertia()
+{
+    setUnit(Base::Unit::MassMomentOfInertia);
+}
+
+//**************************************************************************
+// PropertyAreaMomentOfInertia
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyAreaMomentOfInertia, App::PropertyQuantity)
+
+PropertyAreaMomentOfInertia::PropertyAreaMomentOfInertia()
+{
+    setUnit(Base::Unit::AreaMomentOfInertia);
+}
+
+//**************************************************************************
 // PropertyInverseArea
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
