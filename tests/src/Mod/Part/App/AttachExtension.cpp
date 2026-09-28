@@ -400,9 +400,10 @@ TEST_F(AttachExtensionTest, testAppLocalCoordinateSystemSetupNoRegression)
         planeCount += child->isDerivedFrom<App::Plane>();
         pointCount += child->isDerivedFrom<App::Point>();
     }
-    EXPECT_EQ(roles, (std::set<std::string>{
-                          "X_Axis", "Y_Axis", "Z_Axis", "XY_Plane",
-                          "XZ_Plane", "YZ_Plane", "Origin"}));
+    EXPECT_EQ(
+        roles,
+        (std::set<std::string> {"X_Axis", "Y_Axis", "Z_Axis", "XY_Plane", "XZ_Plane", "YZ_Plane", "Origin"})
+    );
     EXPECT_EQ(lineCount, 3U);
     EXPECT_EQ(planeCount, 3U);
     EXPECT_EQ(pointCount, 1U);
@@ -431,9 +432,10 @@ TEST_F(AttachExtensionTest, testPartLocalCoordinateSystemOriginFeaturesRemainSta
         pointCount += child->isDerivedFrom<App::Point>();
     }
     EXPECT_EQ(uniqueChildren.size(), children.size());
-    EXPECT_EQ(roles, (std::set<std::string>{
-                          "X_Axis", "Y_Axis", "Z_Axis", "XY_Plane",
-                          "XZ_Plane", "YZ_Plane", "Origin"}));
+    EXPECT_EQ(
+        roles,
+        (std::set<std::string> {"X_Axis", "Y_Axis", "Z_Axis", "XY_Plane", "XZ_Plane", "YZ_Plane", "Origin"})
+    );
     EXPECT_EQ(lineCount, 3U);
     EXPECT_EQ(planeCount, 3U);
     EXPECT_EQ(pointCount, 1U);

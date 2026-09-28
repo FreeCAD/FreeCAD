@@ -1265,19 +1265,18 @@ Base::Placement AttachEngine::calculateAttachedPlacement(
     std::map<int, std::pair<std::string, std::string>> subChanges;
     int i = -1;
     auto objs = getRefObjects();
-    auto calculate = [this, &objs, &origPlacement, modernTranslate](
-                         const std::vector<std::string>& subs
-                     ) {
-        auto placement = _calculateAttachedPlacement(objs, subs, origPlacement);
-        if (modernTranslate && mapMode == mmTranslate) {
-            // mmTranslate's legacy result adds offset translation in world coordinates and
-            // retains the input orientation. Recover the support origin, then apply the
-            // effective (AttachmentOffset * BaseAttachment^-1) placement as a local transform.
-            placement.setPosition(placement.getPosition() - attachmentOffset.getPosition());
-            placement *= attachmentOffset;
-        }
-        return placement;
-    };
+    auto calculate =
+        [this, &objs, &origPlacement, modernTranslate](const std::vector<std::string>& subs) {
+            auto placement = _calculateAttachedPlacement(objs, subs, origPlacement);
+            if (modernTranslate && mapMode == mmTranslate) {
+                // mmTranslate's legacy result adds offset translation in world coordinates and
+                // retains the input orientation. Recover the support origin, then apply the
+                // effective (AttachmentOffset * BaseAttachment^-1) placement as a local transform.
+                placement.setPosition(placement.getPosition() - attachmentOffset.getPosition());
+                placement *= attachmentOffset;
+            }
+            return placement;
+        };
     const Base::Placement& recoveryReference = placementForRecovery ? *placementForRecovery
                                                                     : origPlacement;
     for (auto obj : objs) {

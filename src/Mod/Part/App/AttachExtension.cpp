@@ -44,15 +44,29 @@ namespace
 {
 std::vector<std::string> EngineEnums = {"Engine 3D", "Engine Plane", "Engine Line", "Engine Point"};
 std::vector<std::string> TranslateStateEnums = {"LEGACY", "MODERN_UNINITIALIZED", "MODERN_BASE_READY"};
-enum TranslateStateValue { TranslateLegacy = 0, TranslateModernUninitialized = 1, TranslateModernBaseReady = 2 };
+enum TranslateStateValue
+{
+    TranslateLegacy = 0,
+    TranslateModernUninitialized = 1,
+    TranslateModernBaseReady = 2
+};
 
 class ScopedFlag
 {
 public:
-    explicit ScopedFlag(bool& flag) : flag(flag), previous(flag) { flag = true; }
-    ~ScopedFlag() { flag = previous; }
+    explicit ScopedFlag(bool& flag)
+        : flag(flag)
+        , previous(flag)
+    {
+        flag = true;
+    }
+    ~ScopedFlag()
+    {
+        flag = previous;
+    }
     ScopedFlag(const ScopedFlag&) = delete;
     ScopedFlag& operator=(const ScopedFlag&) = delete;
+
 private:
     bool& flag;
     bool previous;
@@ -500,9 +514,8 @@ bool AttachExtension::isAttacherActive() const
             updateAttacherVals(/*base*/ true);
             const bool modernTranslate = _props.attacher->mapMode == mmTranslate
                 && TranslateState.getValue() != TranslateLegacy;
-            _props.attacher->calculateAttachedPlacement(
-                getPlacement().getValue(), nullptr, modernTranslate
-            );
+            _props.attacher
+                ->calculateAttachedPlacement(getPlacement().getValue(), nullptr, modernTranslate);
             _active = 1;
         }
         catch (Base::Exception&) {
@@ -545,13 +558,11 @@ void AttachExtension::onExtendedSetupObject()
 }
 
 
-
 void AttachExtension::extensionOnChanged(const App::Property* prop)
 {
     if (!getExtendedObject()->isRestoring()) {
         if (prop == &getPlacement() && !_settingDerivedPlacement
-            && MapMode.getValue() == mmTranslate
-            && TranslateState.getValue() != TranslateLegacy) {
+            && MapMode.getValue() == mmTranslate && TranslateState.getValue() != TranslateLegacy) {
             try {
                 captureTranslateBase(getPlacement().getValue());
             }
@@ -562,7 +573,8 @@ void AttachExtension::extensionOnChanged(const App::Property* prop)
             catch (Standard_Failure& e) {
                 getExtendedObject()->setStatus(App::Error, true);
                 Base::Console().error(
-                    "Failed to capture modern Translate base: {}\n", e.GetMessageString()
+                    "Failed to capture modern Translate base: {}\n",
+                    e.GetMessageString()
                 );
             }
         }
