@@ -52,7 +52,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Automatically refine model after boolean operation</string>
+         <string>Automatically refine Part Boolean results</string>
         </property>
         <property name="toolTip">
          <string>Automatically cleans up the shape after boolean operations by removing redundant coplanar edges and merging adjacent faces</string>
@@ -77,7 +77,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Automatically refine model after applying operations</string>
+         <string>Automatically refine Part Design features</string>
         </property>
         <property name="toolTip">
          <string>Automatically runs a refinement pass after creating Part Design features to remove unnecessary edges and clean up the geometry</string>
