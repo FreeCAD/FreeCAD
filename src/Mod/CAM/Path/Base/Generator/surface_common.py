@@ -687,43 +687,48 @@ def _filter_vertical(model_faces, tolerance=0.0005):
 # ---------------------------------------------------------------------------
 
 
-def build_avoid_boundary(avoid_faces, avoid_overlap, tolerance):
+def build_avoid_boundary(avoid_faces, avoid_overlap, tool_radius, tolerance):
     """
-    Builds the 2D "keep-out" boundary for user-selected Avoid Faces.
+    Builds the 2D "keep-out" geometry for user-selected Avoid Faces.
 
     Each raw face is first classified and, if needed, capped to a flat
     shape suitable for boundary generation:
 
-      - Planar faces (flat or tilted, including ones with a genuine hole
-        such as an annular/donut selection) are used as-is.
-      - Non-planar faces (the cylindrical, conical, or otherwise curved
-        wall of a hole or pocket) are reduced to a flat cap at their
-        topmost rim, since a standard top-down projection would otherwise
-        distort a tilted or cylindrical wall into an ellipse.
-      - Any face that can't be resolved this way is grouped with the
-        others like it and processed together as a fallback, rather than
-        being left as raw, unprocessed geometry.
+        - Planar faces (flat or tilted, including ones with a genuine hole
+          such as an annular/donut selection) are used as-is.
+        - Non-planar faces (the cylindrical, conical, or otherwise curved
+          wall of a hole or pocket) are reduced to a flat cap at their
+          topmost rim, since a standard top-down projection would otherwise
+          distort a tilted or cylindrical wall into an ellipse.
+        - Any face that can't be resolved this way is grouped with the
+          others like it and processed together as a fallback, rather than
+          being left as raw, unprocessed geometry.
 
-    The resulting faces are then combined and offset by avoid_overlap
-    (expanded outward, with a small extra buffer to avoid path spikes on
-    vertical walls) to produce the final avoid-zone boundary. This
-    boundary is used both to build a collision-safety pillar around each
-    Avoid Face and to cut a matching hole out of the machining area.
+    Two shapes are then built from those prepared faces, because the two
+    consumers need different geometry:
+        - avoid_boundary: This boundary is used to cut a matching hole out of
+          the machining area. Offset by tool_radius and avoid_overlap plus a
+          small buffer to avoid path spikes on vertical walls.
+        - avoid_boundary_stl: This boundary is used to build a collision-safety
+          pillar around each Avoid Face. Offset by avoid_overlap only.
 
     Args:
         avoid_faces (list): Raw Part.Face objects selected by the user as
             Avoid Faces.
         avoid_overlap (float): A negative offset value if Avoid Faces
             Overlap is enabled, or the tool radius otherwise.
+        tool_radius (float): The tool radius.
         tolerance (float): The deflection tolerance for discretizing
             curves smoothly.
 
     Returns:
         Part.Shape: The offset avoid-zone boundary, or None if
-        avoid_faces is empty or boundary generation fails.
+            avoid_faces is empty or boundary generation fails.
+        Part.Shape: The same avoid_zone boundary for safe_stl
+            creation with a smaller offset by the tool_radius.
     """
     if not avoid_faces:
-        return None
+        return None, None
 
     prepared_faces, fallback_faces = _classify_and_cap_faces(avoid_faces)
 
@@ -738,23 +743,31 @@ def build_avoid_boundary(avoid_faces, avoid_overlap, tolerance):
 
     if not prepared_faces:
         Path.Log.debug("build_avoid_boundary: Nothing left to build a boundary from.")
-        return None
+        return None, None
 
-    # Small buffer to avoid "path spikes" on vertical walls
-    epsilon = max(0.01, tolerance + 0.001)
-
-    avoid_boundary = build_optimized_boundary(
+    avoid_boundary_stl = build_optimized_boundary(
         prepared_faces,
-        avoid_overlap + epsilon,
+        -avoid_overlap,
         tolerance,
         avoids=True,
     )
 
-    if not avoid_boundary:
-        Path.Log.warning("Failed to generate boundary for avoid_faces.")
-        return None
+    # Small buffer to avoid "path spikes" on vertical walls
+    epsilon = max(0.01, tolerance + 0.001)
+    avoid_offset = tool_radius - avoid_overlap + epsilon
 
-    return avoid_boundary
+    avoid_boundary = build_optimized_boundary(
+        prepared_faces,
+        avoid_offset,
+        tolerance,
+        avoids=True,
+    )
+
+    if not avoid_boundary or not avoid_boundary_stl:
+        Path.Log.warning("Failed to generate boundary for avoid_faces.")
+        return None, None
+
+    return avoid_boundary, avoid_boundary_stl
 
 
 def _classify_and_cap_faces(raw_faces):

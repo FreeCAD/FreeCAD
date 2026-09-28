@@ -187,7 +187,7 @@ class TestSurfaceMesh(PathTestUtils.PathTestBase):
         # the keep-out zone, exactly as _shape_to_safe_stl() expects to
         # receive it in production (built once, up front, by
         # surface_common.build_avoid_boundary()).
-        avoid_boundary = Part.Face(
+        avoid_boundary_stl = Part.Face(
             Part.makePolygon(
                 [
                     FreeCAD.Vector(7.5, 7.5, 0),
@@ -204,7 +204,7 @@ class TestSurfaceMesh(PathTestUtils.PathTestBase):
             bb_safe=self.box,
             pad_buffer=2.0,
             final_depth=0.0,
-            avoid_boundary=avoid_boundary,
+            avoid_boundary_stl=avoid_boundary_stl,
             start_depth=10.0,
             linear_deflection=0.1,
             angular_deflection=0.5,
@@ -232,7 +232,7 @@ class TestSurfaceMesh(PathTestUtils.PathTestBase):
         - Parameters: A model shape, needs_safe_stl=True, optimize_stl=False
           (so STL face-filtering is skipped and this test stays focused
           on the orchestration itself, not the optimization path).
-        - Input data: A simple box model, no Avoid Faces (avoid_boundary=None).
+        - Input data: A simple box model, no Avoid Faces (avoid_boundary_stl=None).
 
         EXPECTED OUTPUT:
         - Returns two valid ocl.STLSurf objects (stl, safe_stl).
@@ -251,7 +251,7 @@ class TestSurfaceMesh(PathTestUtils.PathTestBase):
             stl_faces=[],
             stl_filter_adj=0.0,
             bb_face=None,
-            avoid_boundary=None,
+            avoid_boundary_stl=None,
             tool_diam=6.0,
             needs_safe_stl=True,
             boundary_adjustment=2.0,
@@ -266,7 +266,7 @@ class TestSurfaceMesh(PathTestUtils.PathTestBase):
         self.assertIsNotNone(safe_stl)
         self.assertGreater(stl.size(), 0)
         self.assertGreater(safe_stl.size(), 0)
-        # With avoid_boundary=None, the safe_stl is still larger due to the base plate
+        # With avoid_boundary_stl=None, the safe_stl is still larger due to the base plate
         self.assertGreater(
             safe_stl.bb.maxpt.x - safe_stl.bb.minpt.x, stl.bb.maxpt.x - stl.bb.minpt.x
         )

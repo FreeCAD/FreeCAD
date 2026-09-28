@@ -386,11 +386,13 @@ class TestSurfaceCommon(PathTestUtils.PathTestBase):
         wall_faces = [f for f in cylinder.Faces if isinstance(f.Surface, Part.Cylinder)]
         self.assertEqual(len(wall_faces), 1, "Expected exactly one cylindrical wall face")
 
-        avoid_boundary = build_avoid_boundary(wall_faces, avoid_overlap=0.0, tolerance=0.01)
+        avoid_boundary, avoid_boundary_stl = build_avoid_boundary(
+            wall_faces, avoid_overlap=0.0, tool_radius=2.5, tolerance=0.01
+        )
 
         self.assertIsNotNone(avoid_boundary)
-        self.assertAlmostEqual(avoid_boundary.BoundBox.XLength, 20.0, delta=0.5)
-        self.assertAlmostEqual(avoid_boundary.BoundBox.YLength, 20.0, delta=0.5)
+        self.assertAlmostEqual(avoid_boundary.BoundBox.XLength, 25.0, delta=0.5)
+        self.assertAlmostEqual(avoid_boundary.BoundBox.YLength, 25.0, delta=0.5)
         self.assertAlmostEqual(
             avoid_boundary.BoundBox.ZMax,
             0.0,
