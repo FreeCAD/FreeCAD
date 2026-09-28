@@ -308,7 +308,7 @@ template<typename T>
 using HintTable = std::vector<StateHints<T>>;
 
 template<typename T>
-static std::list<InputHint> lookupHints(
+inline std::list<InputHint> lookupHints(
     T state,
     HintTable<T> table,
     const std::list<InputHint>& fallback = {}

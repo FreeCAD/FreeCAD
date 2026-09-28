@@ -446,7 +446,8 @@ QStringList FileDialogInternal::nativeFileDialog(
         selectedFilterIndex = 0;
     }
     if (selectedFilterIndex < 0) {
-        Base::Console().error(
+        Base::Console().developerError(
+            "FileDialog",
             "Qt-backed nativeFileDialog returned a selected filter that wasn't in the original "
             "list, defaulting to index 0\nProblem cause filter: \"{}\"\n",
             selectedQtFilter.toStdString()
@@ -616,7 +617,8 @@ QString FileDialog::getSaveFileName(
         actuallySelectedFilterIndex = qtFilterList.indexOf(dlg.selectedNameFilter());
         if (actuallySelectedFilterIndex < 0) {
             // Log an error since this happening means the code is incorrect
-            Base::Console().error(
+            Base::Console().developerError(
+                "FileDialog",
                 "Non-native FileDialog returned a selected filter that wasn't in the original "
                 "list, defaulting to index 0\nProblem cause filter: \"{}\"\n",
                 dlg.selectedNameFilter().toStdString()
@@ -747,7 +749,8 @@ QString FileDialog::getOpenFileName(
         actuallySelectedFilterIndex = qtFilterList.indexOf(dlg.selectedNameFilter());
         if (actuallySelectedFilterIndex < 0) {
             // Log an error since this happening means the code is incorrect
-            Base::Console().error(
+            Base::Console().developerError(
+                "FileDialog",
                 "Non-native FileDialog returned a selected filter that wasn't in the original "
                 "list, defaulting to index 0\nProblem cause filter: \"{}\"\n",
                 dlg.selectedNameFilter().toStdString()
@@ -842,7 +845,8 @@ QStringList FileDialog::getOpenFileNames(
         actuallySelectedFilterIndex = qtFilterList.indexOf(dlg.selectedNameFilter());
         if (actuallySelectedFilterIndex < 0) {
             // Log an error since this happening means the code is incorrect
-            Base::Console().error(
+            Base::Console().developerError(
+                "FileDialog",
                 "Non-native FileDialog returned a selected filter that wasn't in the original "
                 "list, defaulting to index 0\nProblem cause filter: \"{}\"\n",
                 dlg.selectedNameFilter().toStdString()

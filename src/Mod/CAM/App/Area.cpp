@@ -50,10 +50,13 @@ using namespace std;
 #include <BRepLib_MakeFace.hxx>
 #include <BRepLib_FindSurface.hxx>
 #include <BRepTools_WireExplorer.hxx>
+#include <GCPnts_AbscissaPoint.hxx>
 #include <GCPnts_QuasiUniformDeflection.hxx>
 #include <GCPnts_UniformAbscissa.hxx>
 #include <GCPnts_UniformDeflection.hxx>
 #include <GeomAPI_ProjectPointOnCurve.hxx>
+#include <GeomAdaptor_Curve.hxx>
+#include <Geom_TrimmedCurve.hxx>
 #include <gp_Circ.hxx>
 #include <HLRAlgo_Projector.hxx>
 #include <HLRBRep_Algo.hxx>
@@ -75,7 +78,9 @@ using namespace std;
 #include <App/Document.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
+#include <Mod/Part/App/BSplineCurveBiArcs.h>
 #include <Mod/Part/App/CrossSection.h>
+#include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/FaceMakerBullseye.h>
 #include <Mod/Part/App/FuzzyHelper.h>
 #include <Mod/Part/App/PartFeature.h>
@@ -367,14 +372,12 @@ int Area::addShape(
     return skipped;
 }
 
-static std::vector<gp_Pnt> discretize(const TopoDS_Edge& edge, double deflection)
+static std::vector<gp_Pnt> discretize(const Adaptor3d_Curve& curve, bool reversed, double deflection)
 {
     std::vector<gp_Pnt> ret;
-    BRepAdaptor_Curve curve(edge);
     Standard_Real efirst, elast;
     efirst = curve.FirstParameter();
     elast = curve.LastParameter();
-    bool reversed = (edge.Orientation() == TopAbs_REVERSED);
 
     // push the first point
     ret.push_back(curve.Value(reversed ? elast : efirst));
@@ -424,67 +427,138 @@ void Area::addWire(CArea& area, const TopoDS_Wire& wire, const gp_Trsf* trsf, do
         const TopoDS_Edge& edge = TopoDS::Edge(xp.Current());
         BRepAdaptor_Curve curve(edge);
         bool reversed = (xp.Current().Orientation() == TopAbs_REVERSED);
-
         p = curve.Value(reversed ? curve.FirstParameter() : curve.LastParameter());
 
-        switch (curve.GetType()) {
-            case GeomAbs_Line: {
-                ccurve.append(CVertex(Point(p.X(), p.Y())));
-                if (to_edges) {
-                    area.append(ccurve);
-                    ccurve.m_vertices.pop_front();
-                }
-                break;
+        // Helper code for appending a discretized curve
+        auto appendDiscretized = [&](const Adaptor3d_Curve& c) {
+            const auto& pts = discretize(c, reversed, deflection);
+            for (size_t i = 1; i < pts.size(); ++i) {
+                auto& pt = pts[i];
+                ccurve.append(CVertex(Point(pt.X(), pt.Y())));
             }
-            case GeomAbs_Circle: {
-                double first = curve.FirstParameter();
-                double last = curve.LastParameter();
-                gp_Circ circle = curve.Circle();
-                gp_Dir dir = circle.Axis().Direction();
-                gp_Pnt center = circle.Location();
-                int type = dir.Z() < 0 ? -1 : 1;
+        };
+
+        // Helper code for appending an arc
+        auto appendArc = [&](const Adaptor3d_Curve& arc) {
+            double first = arc.FirstParameter();
+            double last = arc.LastParameter();
+            gp_Circ circ = arc.Circle();
+
+            // Arcs not parallel to the XY plane don't project to arcs; discretize them instead
+            if (!circ.Axis().Direction().IsParallel(gp::DZ(), Precision::Confusion())) {
+                appendDiscretized(arc);
+            }
+            else {
+                gp_Pnt center = circ.Location();
+                Point c(center.X(), center.Y());
+                int type = circ.Axis().Direction().Z() < 0 ? -1 : 1;
                 if (reversed) {
                     type = -type;
                 }
                 if (fabs(first - last) > std::numbers::pi) {
                     // Split arc(circle) larger than half circle. Because gcode
                     // can't handle full circle?
-                    gp_Pnt mid = curve.Value((last - first) * 0.5 + first);
-                    ccurve.append(
-                        CVertex(type, Point(mid.X(), mid.Y()), Point(center.X(), center.Y()))
-                    );
+                    gp_Pnt mid = arc.Value((first + last) * 0.5);
+                    ccurve.append(CVertex(type, Point(mid.X(), mid.Y()), c));
                 }
-                ccurve.append(CVertex(type, Point(p.X(), p.Y()), Point(center.X(), center.Y())));
-                if (to_edges) {
-                    ccurve.Discretize();
-                    CCurve c;
-                    c.append(ccurve.m_vertices.front());
-                    auto it = ccurve.m_vertices.begin();
-                    for (++it; it != ccurve.m_vertices.end(); ++it) {
-                        c.append(*it);
-                        area.append(c);
-                        c.m_vertices.pop_front();
+                gp_Pnt end = arc.Value(reversed ? first : last);
+                ccurve.append(CVertex(type, Point(end.X(), end.Y()), c));
+            }
+        };
+
+        switch (curve.GetType()) {
+            case GeomAbs_Line: {
+                ccurve.append(CVertex(Point(p.X(), p.Y())));
+                break;
+            }
+
+            case GeomAbs_Circle: {
+                appendArc(curve);
+                break;
+            }
+
+            case GeomAbs_BSplineCurve:
+            case GeomAbs_BezierCurve:
+            case GeomAbs_Ellipse:
+            case GeomAbs_Hyperbola:
+            case GeomAbs_Parabola: {
+                // Discretize instead of using biarcs for:
+                // - edges with only a pcurve (no 3D curve), which can't be fed to biarcs
+                // - degree 1 BSplines (polylines, no slope continuity at corners)
+                if (!curve.Is3DCurve()
+                    || (curve.GetType() == GeomAbs_BSplineCurve && curve.Degree() == 1)) {
+                    appendDiscretized(curve);
+                    break;
+                }
+
+                // Convert very short curves to single segments
+                if (GCPnts_AbscissaPoint::Length(curve) < Precision::Confusion()) {
+                    ccurve.append(CVertex(Point(p.X(), p.Y())));
+                    break;
+                }
+
+                // Use biarcs to approximate the curve as arcs and lines
+                Handle(Geom_TrimmedCurve) trimmed = new Geom_TrimmedCurve(
+                    curve.Curve().Curve(),
+                    curve.FirstParameter(),
+                    curve.LastParameter()
+                );
+                trimmed->Transform(curve.Trsf());
+                Part::BSplineCurveBiArcs biarcs(trimmed);
+                std::list<Part::Geometry*> segments;
+                bool biarcsFailed = false;
+                try {
+                    segments = biarcs.toBiArcs(deflection);
+                }
+                catch (...) {
+                    biarcsFailed = true;
+                }
+
+                if (biarcsFailed) {
+                    appendDiscretized(curve);
+                }
+                else {
+                    // Append each segment. If the curve is reversed, iterate the reversed list
+                    if (reversed) {
+                        segments.reverse();
                     }
-                    ccurve.m_vertices.clear();
-                    ccurve.append(c.m_vertices.front());
+                    for (Part::Geometry* seg : segments) {
+                        GeomAdaptor_Curve segC(Handle(Geom_Curve)::DownCast(seg->handle()));
+                        if (segC.GetType() == GeomAbs_Circle) {
+                            appendArc(segC);
+                        }
+                        else {
+                            gp_Pnt pt = segC.Value(
+                                reversed ? segC.FirstParameter() : segC.LastParameter()
+                            );
+                            ccurve.append(CVertex(Point(pt.X(), pt.Y())));
+                        }
+                        delete seg;
+                    }
                 }
                 break;
             }
+
             default: {
-                // Discretize all other type of curves
-                const auto& pts = discretize(edge, deflection);
-                for (size_t i = 1; i < pts.size(); ++i) {
-                    auto& pt = pts[i];
-                    ccurve.append(CVertex(Point(pt.X(), pt.Y())));
-                    if (to_edges) {
-                        area.append(ccurve);
-                        ccurve.m_vertices.pop_front();
-                    }
-                }
+                // Fallback for all other type of curves
+                appendDiscretized(curve);
+                break;
             }
         }
     }
-    if (!to_edges) {
+
+    if (to_edges) {
+        // Split the curve into single-edge curves, with arcs discretized
+        ccurve.Discretize();
+        CCurve c;
+        c.append(ccurve.m_vertices.front());
+        for (auto it = std::next(ccurve.m_vertices.begin()); it != ccurve.m_vertices.end(); ++it) {
+            c.append(*it);
+            area.append(c);
+            c.m_vertices.pop_front();
+        }
+    }
+    else {
         if (BRep_Tool::IsClosed(wire) && !ccurve.IsClosed()) {
             AREA_WARN("ccurve not closed");
             ccurve.append(ccurve.m_vertices.front());
@@ -2686,10 +2760,30 @@ TopoDS_Shape Area::toShape(const CCurve& _c, const gp_Trsf* trsf, int reorient)
             gp_Pnt center(v.m_c.x, v.m_c.y, 0);
             double r = center.Distance(pt);
             double r2 = center.Distance(pnext);
+
+            // Replace arcs with their chords if the radius is small (OCCT can't
+            // handle constructing arcs with radii near Precision::Confusion()).
+            // There is a wide range of plausibly acceptible thresholds to choose
+            // from for this; I have tentatively chosen diamter < m_accuracy.
+            //
+            // Also replace arcs if the chord is a very good representation of the
+            // arc (i.e. minor arc of with short cord).
+            //   Exact formula: r - sqrt(r² - d²/4)
+            //   Approximation for small d: d²/(8r)
+            double d = pt.Distance(pnext);
+            bool minorArc = IsLeft(pt, pnext, center) == (v.m_type > 0);
+            bool smallDeviation = d * d / (8.0 * r) < Precision::Confusion();
+            bool smallCircle = 2 * std::max(r, r2) < CArea::get_accuracy();
+            if ((minorArc && smallDeviation) || smallCircle) {
+                auto edge = BRepBuilderAPI_MakeEdge(pt, pnext).Edge();
+                hEdges->Append(edge);
+                pt = pnext;
+                continue;
+            }
+
             bool fix_arc = fabs(r - r2) > Precision::Confusion();
             while (true) {
                 if (fix_arc) {
-                    double d = pt.Distance(pnext);
                     double rr = r * r;
                     double dd = d * d * 0.25;
                     double q = rr <= dd ? 0 : sqrt(rr - dd);
@@ -4167,7 +4261,7 @@ void Area::toPath(
                 }
                     /* FALLTHRU */
                 default: {
-                    const auto& pts = discretize(edge, deflection);
+                    const auto& pts = discretize(curve, reversed, deflection);
                     for (size_t i = 1; i < pts.size(); ++i) {
                         auto& pt = pts[i];
                         addG1(verbose, path, plast, pt, nf, cur_f);

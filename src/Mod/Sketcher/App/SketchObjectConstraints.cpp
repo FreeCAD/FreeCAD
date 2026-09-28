@@ -2705,6 +2705,9 @@ bool SketchObject::AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce, bool
                 // solver level, so they need locking angle calculation, tangency at knot constraint
                 // does not.
                 auto geof = getGeometryFacade(cstr->First);
+                if (!geof) {
+                    return false;
+                }
                 if (geof->isInternalType(InternalType::BSplineKnotPoint)) {
                     // there is point that is a B-Spline knot in a two element constraint
                     // this is not implement using AngleViaPoint (TangencyViaPoint)

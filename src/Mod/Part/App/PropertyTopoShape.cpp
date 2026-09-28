@@ -350,6 +350,28 @@ void PropertyPartShape::getPaths(std::vector<App::ObjectIdentifier>& paths) cons
     );
 }
 
+void PropertyPartShape::getPathsForCompletion(
+    std::vector<App::ObjectIdentifier>& paths,
+    const std::string& subPath
+) const
+{
+    getPaths(paths);
+    if (subPath.empty() || subPath.front() != '.') {
+        return;
+    }
+
+    const std::string member = subPath.substr(1);
+    const auto [type, index] = TopoShape::shapeTypeAndIndex(member.c_str());
+    if (type == TopAbs_EDGE && index > 0) {
+        // Complete the edge type without traversing topology. The expression evaluator
+        // remains responsible for checking whether the entered edge actually exists.
+        paths.push_back(
+            App::ObjectIdentifier(*this) << App::ObjectIdentifier::SimpleComponent(member)
+                                         << App::ObjectIdentifier::SimpleComponent("Length")
+        );
+    }
+}
+
 void PropertyPartShape::beforeSave() const
 {
     _HasherIndex = 0;

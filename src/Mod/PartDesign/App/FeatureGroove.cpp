@@ -65,6 +65,13 @@ Groove::Groove()
         App::PropertyType(App::Prop_ReadOnly | App::Prop_Hidden),
         "Axis"
     );
+    ADD_PROPERTY_TYPE(
+        ProjectAxis,
+        (false),
+        "Groove",
+        App::Prop_None,
+        "Projects the reference axis onto the profile plane"
+    );
     ADD_PROPERTY_TYPE(Angle, (fullAngle), "Side1", App::Prop_None, "Angle");
     ADD_PROPERTY_TYPE(Angle2, (emptyAngle), "Side2", App::Prop_None, "Groove angle in 2nd direction");
     ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Side1", App::Prop_None, "Face where groove will end");

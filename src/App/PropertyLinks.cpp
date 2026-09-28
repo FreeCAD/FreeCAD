@@ -1485,8 +1485,8 @@ PyObject* PropertyLinkSub::getPyObject()
 {
     Py::Tuple tup(2);
     Py::List list(static_cast<int>(_cSubList.size()));
-    if (_pcLinkSub) {
-        tup[0] = Py::asObject(_pcLinkSub->getPyObject());
+    if (_pcLinkSub || !_cSubList.empty()) {
+        tup[0] = _pcLinkSub ? Py::asObject(_pcLinkSub->getPyObject()) : Py::None();
         int i = 0;
         for (auto& sub : getSubValues(testFlag(LinkNewElement))) {
             list[i++] = Py::String(sub);
@@ -1511,16 +1511,20 @@ void PropertyLinkSub::setPyObject(PyObject* value)
         else if (seq.size() != 2) {
             throw Base::ValueError("Expect input sequence of size 2");
         }
-        else if (PyObject_TypeCheck(seq[0].ptr(), &(DocumentObjectPy::Type))) {
-            DocumentObjectPy* pcObj = static_cast<DocumentObjectPy*>(seq[0].ptr());
-            static const char* errMsg =
-                "type of second element in tuple must be str or sequence of str";
+        else if (
+            (seq[0].ptr() == Py_None) || PyObject_TypeCheck(seq[0].ptr(), &(DocumentObjectPy::Type))
+        ) {
+            auto* object = (seq[0].ptr() == Py_None)
+                ? nullptr
+                : static_cast<DocumentObjectPy*>(seq[0].ptr())->getDocumentObjectPtr();
+            static const char* errMsg
+                = "type of second element in tuple must be str or sequence of str";
             PropertyString propString;
             if (seq[1].isString()) {
                 std::vector<std::string> vals;
                 propString.setPyObject(seq[1].ptr());
                 vals.emplace_back(propString.getValue());
-                setValue(pcObj->getDocumentObjectPtr(), std::move(vals));
+                setValue(object, std::move(vals));
             }
             else if (seq[1].isSequence()) {
                 Py::Sequence list(seq[1]);
@@ -1533,15 +1537,15 @@ void PropertyLinkSub::setPyObject(PyObject* value)
                     propString.setPyObject((*it).ptr());
                     vals[i] = propString.getValue();
                 }
-                setValue(pcObj->getDocumentObjectPtr(), std::move(vals));
+                setValue(object, std::move(vals));
             }
             else {
                 throw Base::TypeError(errMsg);
             }
         }
         else {
-            std::string error =
-                std::string("type of first element in tuple must be 'DocumentObject', not ");
+            std::string error
+                = "type of first element in tuple must be 'DocumentObject' or 'NoneType', not ";
             error += seq[0].ptr()->ob_type->tp_name;
             throw Base::TypeError(error);
         }
@@ -1986,7 +1990,9 @@ void PropertyLinkSub::Restore(Base::XMLReader& reader)
 
     reader.readEndElement("LinkSub");
 
-    if (pcObject) {
+    // A deliberately null link can carry a local reference, such as an object axis.
+    // Discard subnames only when a named linked object could not be restored.
+    if (pcObject || name.empty()) {
         setValue(pcObject, std::move(values), std::move(shadows));
         _mapped = std::move(mapped);
     }

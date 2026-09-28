@@ -163,6 +163,20 @@ void CArea::_Clip(
         }
         else if (e1bot.z != 0 || e1top.z != 0 || e2bot.z != 0 || e2top.z != 0) {
             pt.z = metadata.z_next++;
+            metadata.z_to_xy[pt.z] = {pt.x, pt.y};
+        }
+
+        if (pt.z != e1bot.z && pt.z != e1top.z) {
+            metadata.edges[pt.z].push_back(e1bot.z);
+            metadata.edges[e1bot.z].push_back(pt.z);
+            metadata.edges[pt.z].push_back(e1top.z);
+            metadata.edges[e1top.z].push_back(pt.z);
+        }
+        if (pt.z != e2bot.z && pt.z != e2top.z) {
+            metadata.edges[pt.z].push_back(e2bot.z);
+            metadata.edges[e2bot.z].push_back(pt.z);
+            metadata.edges[pt.z].push_back(e2top.z);
+            metadata.edges[e2top.z].push_back(pt.z);
         }
 
         const int64_t e1min = std::min(e1bot.z, e1top.z);
@@ -562,6 +576,7 @@ Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
         }
         const int64_t z = metadata.z_next++;
         metadata.xy_to_z[key] = z;
+        metadata.z_to_xy[z] = key;
         return Point64(p64.x, p64.y, z);
     };
 
@@ -575,8 +590,16 @@ Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
 
     // Iterate through edges
     for (auto vIt = std::next(curve.m_vertices.cbegin()); vIt != curve.m_vertices.cend(); vIt++) {
-        const CVertex& vertex = *vIt;
+        CVertex vertex = *vIt;
         const bool isLoop = std::next(vIt) == curve.m_vertices.end() && curve.IsClosed();
+        if (isLoop) {
+            // IsClosed() uses tolerance-based heeks::Point equality. If the last vertex doesn't
+            // exactly match the first, processing that vertex unmodified will create a new/unique
+            // z coordinate to "close" the curve, and fail to correctly record metadata for the
+            // actual edge back to the start point. To fix this, we coerce the end point to exactly
+            // equal the start point.
+            vertex.m_p = curve.m_vertices.front().m_p;
+        }
         const int edgeTag = tagIt != curve.m_edgeTags.cend() ? *tagIt : 1;
 
         if (vertex.m_type == 0) {
@@ -591,6 +614,8 @@ Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
             // Save metadata for the new segment
             const auto key = std::make_pair(std::min(pPrev.z, newPt.z), std::max(pPrev.z, newPt.z));
             metadata.edgeData[key] = SegmentData {vertex, edgeTag, curveIndex, vertexIndex};
+            metadata.edges[pPrev.z].push_back(newPt.z);
+            metadata.edges[newPt.z].push_back(pPrev.z);
             pPrev = newPt;
         }
         else if (vertex.m_p.x != ptPrev.x || vertex.m_p.y != ptPrev.y) {
@@ -648,6 +673,8 @@ Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
 
                 const auto key = std::make_pair(std::min(pPrev.z, newPt.z), std::max(pPrev.z, newPt.z));
                 metadata.edgeData[key] = SegmentData {vertex, edgeTag, curveIndex, vertexIndex};
+                metadata.edges[pPrev.z].push_back(newPt.z);
+                metadata.edges[newPt.z].push_back(pPrev.z);
                 pPrev = newPt;
             }
         }
@@ -662,6 +689,10 @@ Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
     return result;
 }
 
+
+// In getParentMetadataFallback, we may need to reconstruct a fake parent node for unknown parent
+// edges (fall back to connecting with a line). We use this tag sentinel value in that case.
+const int tagSentinel = -2;
 
 // Convert the provided clipper paths back to CArea/CCurve data, using metadata to correctly
 // infer edge type (arc/line) and arc center information. Only edges tagged 1 (i.e. positive offset
@@ -702,7 +733,7 @@ void CArea::SetFromResult(
         // Initialize state variables: the current curve and its tag, and (for final joining of
         // closed curves) the first curve and its tag.
         CCurve c;
-        int tag = 0;
+        int tag = tagSentinel;
         CCurve* firstCurve = nullptr;
         std::optional<int> firstTag;
 
@@ -712,7 +743,7 @@ void CArea::SetFromResult(
             if (!c.m_vertices.empty()) {
                 CCurve* added = nullptr;
 
-                if (tag == 1) {
+                if (tag == 1 || tag == tagSentinel) {
                     m_curves.push_back(c);
                     added = &m_curves.back();
                 }
@@ -745,9 +776,18 @@ void CArea::SetFromResult(
             const Point64& v0 = path[iEdge];
             const Point64& v1 = path[(iEdge + 1) % path.size()];
 
-            // Parent edge (either the same edge, or the edge that was shortened to create this edge)
-            const auto parentEdge = getParentEdge(v0, v1, metadata);
-            const SegmentData& parentData = metadata.edgeData.find(parentEdge)->second;
+            // Look up the segment data of the parent edge. Check for and handle the tag sentinel
+            // value. The sentinel value is provided only when the parent edge lookup fails.
+            // We handle this by assuming the tag is unchanged.
+            // If the full curve is completed without any non-sentinel tags, it is treated as tag 1
+            SegmentData parentData = getParentMetadata(v0, v1, metadata);
+            if (parentData.edgeTag == tagSentinel) {
+                parentData.edgeTag = tag;
+            }
+            if (tag == tagSentinel) {
+                tag = parentData.edgeTag;
+            }
+
 
             // Check if the tag changed. If it did, end the curve and start a new one
             if (parentData.edgeTag != tag) {
@@ -995,9 +1035,88 @@ void CArea::Thicken(double value)
     _Clip(ClipType::Union, CArea {}, FillRule::Positive);
 }
 
+SegmentData CArea::getParentMetadataFallback(
+    const Point64& p1,
+    const Point64& p2,
+    const ConversionMetadata& metadata
+)
+{
+    // Accumulate a list of edges connecting to p1 or p2
+    std::vector<std::pair<int64_t, int64_t>> edges;
+    auto p1_edges = metadata.edges.find(p1.z);
+    if (p1_edges != metadata.edges.end()) {
+        for (int64_t z : p1_edges->second) {
+            edges.emplace_back(std::min(p1.z, z), std::max(p1.z, z));
+        }
+    }
+
+    auto p2_edges = metadata.edges.find(p2.z);
+    if (p2_edges != metadata.edges.end()) {
+        for (int64_t z : p2_edges->second) {
+            edges.emplace_back(std::min(p2.z, z), std::max(p2.z, z));
+        }
+    }
+
+    // Loop over them, and find the closest one to the provided edge. We require
+    // distance less than half the diagnal of a square, since rounding to the
+    // nearest integer never produces error larger than that.
+    double bestDistSq = 0.5;  // (sqrt(2)/2)^2
+    std::optional<SegmentData> best;
+    for (const auto& [zMin, zMax] : edges) {
+        // Get edge endpoint (x, y) coordinates
+        auto itA = metadata.z_to_xy.find(zMin);
+        auto itB = metadata.z_to_xy.find(zMax);
+        if (itA == metadata.z_to_xy.end() || itB == metadata.z_to_xy.end()) {
+            continue;
+        }
+        const Point64 ptA {itA->second.first, itA->second.second, zMin};
+        const Point64 ptB {itB->second.first, itB->second.second, zMax};
+
+        // Bbox check: skip if either p1 or p2 is outside the edge's bounding box.
+        // If either is, then that point is too far from the edge.
+        if (std::min(p1.x, p2.x) < std::min(ptA.x, ptB.x)
+            || std::max(p1.x, p2.x) > std::max(ptA.x, ptB.x)
+            || std::min(p1.y, p2.y) < std::min(ptA.y, ptB.y)
+            || std::max(p1.y, p2.y) > std::max(ptA.y, ptB.y)) {
+            continue;
+        }
+
+        // Compute the distance from p1 and p2 to line AB.
+        // (P inside AB bounding box implies that the closest point to the line
+        // is also inside the segment.)
+        const double distSq = std::max(
+            PerpendicDistFromLineSqrd(p1, ptA, ptB),
+            PerpendicDistFromLineSqrd(p2, ptA, ptB)
+        );
+
+        if (distSq < bestDistSq) {
+            const auto parentEdge = getParentEdge(ptA, ptB, metadata);
+            if (parentEdge) {
+                auto it = metadata.edgeData.find(*parentEdge);
+                if (it != metadata.edgeData.end()) {
+                    bestDistSq = distSq;
+                    best = it->second;
+                }
+            }
+        }
+    }
+
+    if (best) {
+        return *best;
+    }
+
+    // Final fallback option: pretend that we know it's a line segment.
+    // This fallback requires sentinel values for unknown/missing data:
+    //   edgeTag = tagSentinel, to indicate we don't know the tag
+    //   curveIndex = vertexIndex = -1, acceptable when used for sorting open paths
+    std::cerr << "Warning: getParentMetadataFallback: no parent edge found for z=(" << p1.z << ","
+              << p2.z << "), falling back to line\n";
+    const PointD pt = ToPointD(p2);
+    return {{{pt.x, pt.y}}, tagSentinel, -1, -1};
+}
 
 // Return the parent of the provided edge, specified as (zMin, zMax) of its endpoints
-std::pair<int64_t, int64_t> CArea::getParentEdge(
+std::optional<std::pair<int64_t, int64_t>> CArea::getParentEdge(
     const Point64& p1,
     const Point64& p2,
     const ConversionMetadata& metadata
@@ -1006,7 +1125,7 @@ std::pair<int64_t, int64_t> CArea::getParentEdge(
     // Check for a direct edge p1.z to p2.z
     std::pair<int64_t, int64_t> testEdge = {std::min(p1.z, p2.z), std::max(p1.z, p2.z)};
     if (metadata.edgeData.count(testEdge)) {
-        return testEdge;
+        return {testEdge};
     }
 
     // Check for an edge from p1.z to the intersection log of p2,
@@ -1017,13 +1136,13 @@ std::pair<int64_t, int64_t> CArea::getParentEdge(
         if (p2.z == e1min || p2.z == e1max) {
             testEdge = {e1min, e1max};
             if (metadata.edgeData.count(testEdge)) {
-                return testEdge;
+                return {testEdge};
             }
         }
         if (p2.z == e2min || p2.z == e2max) {
             testEdge = {e2min, e2max};
             if (metadata.edgeData.count(testEdge)) {
-                return testEdge;
+                return {testEdge};
             }
         }
     }
@@ -1034,13 +1153,13 @@ std::pair<int64_t, int64_t> CArea::getParentEdge(
         if (p1.z == e1min || p1.z == e1max) {
             testEdge = {e1min, e1max};
             if (metadata.edgeData.count(testEdge)) {
-                return testEdge;
+                return {testEdge};
             }
         }
         if (p1.z == e2min || p1.z == e2max) {
             testEdge = {e2min, e2max};
             if (metadata.edgeData.count(testEdge)) {
-                return testEdge;
+                return {testEdge};
             }
         }
     }
@@ -1053,24 +1172,45 @@ std::pair<int64_t, int64_t> CArea::getParentEdge(
             if ((e1min == e3min && e1max == e3max) || (e1min == e4min && e1max == e4max)) {
                 testEdge = {e1min, e1max};
                 if (metadata.edgeData.count(testEdge)) {
-                    return testEdge;
+                    return {testEdge};
                 }
             }
             if ((e2min == e3min && e2max == e3max) || (e2min == e4min && e2max == e4max)) {
                 testEdge = {e2min, e2max};
                 if (metadata.edgeData.count(testEdge)) {
-                    return testEdge;
+                    return {testEdge};
                 }
             }
         }
     }
 
+    return {};
+}
+
+SegmentData CArea::getParentMetadata(const Point64& p1, const Point64& p2, const ConversionMetadata& metadata)
+{
+    const auto parentEdge = getParentEdge(p1, p2, metadata);
+
+    if (parentEdge) {
+        const auto it = metadata.edgeData.find(*parentEdge);
+        if (it != metadata.edgeData.end()) {
+            return it->second;
+        }
+    }
+
     // Failed to find the parent edge. This should not happen; the parent edge should always exist.
-    throw std::logic_error(
-        "No parent edge found for z=(" + std::to_string(p1.z) + "," + std::to_string(p2.z) + ")"
-        + " hits=(" + std::to_string(metadata.intersections.count(p1.z)) + ","
-        + std::to_string(metadata.intersections.count(p2.z)) + ")"
-    );
+    //
+    // Update: Unfortunately, it does seem to happen. I've reported a clipper bug for at least one
+    // way it can happen (https://github.com/AngusJohnson/Clipper2/issues/1111). Instead of
+    // throwing, for now we will invoke a more intensive fallback to find the parent edge.
+    return getParentMetadataFallback(p1, p2, metadata);
+    // After the clipper bug is resolved, we can look into removing this fallback code and going
+    // back to throwing an error:
+    // throw std::logic_error(
+    //     "No parent edge found for z=(" + std::to_string(p1.z) + "," + std::to_string(p2.z) + ")"
+    //     + " hits=(" + std::to_string(metadata.intersections.count(p1.z)) + ","
+    //     + std::to_string(metadata.intersections.count(p2.z)) + ")"
+    // );
 }
 
 // For open paths, reorder as needed to produce positively oriented and positively ordered paths
@@ -1093,16 +1233,7 @@ void CArea::ReorderOpenPaths(Paths64& paths, const ConversionMetadata& metadata)
             const Point64& p2 = path[i + 1];
 
             // Look up parent edge metadata
-            const auto parentEdge = getParentEdge(p1, p2, metadata);
-            const auto it = metadata.edgeData.find(parentEdge);
-            if (it == metadata.edgeData.end()) {
-                // This should not happen; there should always be edgeData for parent edges.
-                throw std::logic_error(
-                    "ReorderOpenPaths: no edgeData for parentEdge ("
-                    + std::to_string(parentEdge.first) + "," + std::to_string(parentEdge.second) + ")"
-                );
-            }
-            const SegmentData& seg = it->second;
+            const SegmentData& seg = getParentMetadata(p1, p2, metadata);
 
             // Convert seg endpoint/center to Point64 for consistent units
             const Point64 mp64 = ToPoint64(PointD(seg.orig.m_p.x, seg.orig.m_p.y, 0));

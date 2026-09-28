@@ -58,6 +58,7 @@ namespace sp = std::placeholders;
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Helper Tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Modeling Tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Create Geometry");
+    qApp->translate("Gui::TaskView::TaskWatcherCommands", "Start Part");
     //
     qApp->translate("Workbench", "Measure");
     qApp->translate("Workbench", "Refresh");

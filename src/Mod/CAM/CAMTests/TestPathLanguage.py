@@ -126,3 +126,13 @@ class TestPathLanguage(PathTestUtils.PathTestBase):
 
         mnvr = MNVR("G1 X3 Y4")
         self.assertEqual(mnvr.toPath().toGCode().strip(), "G1 X3.000000 Y4.000000")
+
+    def test70(self):
+        """Verify annotations survive the conversion to instructions and back."""
+        cmd = Path.Command("G1", {"X": 5, "Y": 6})
+        cmd.Annotations = {"type": "linking"}
+        mnvr = PathLanguage.Maneuver.FromPath(Path.Path([cmd]))
+        instr = mnvr.instr[0]
+        self.assertTrue(instr.isLinking())
+        self.assertEqual(instr.toCommand().Annotations, {"type": "linking"})
+        self.assertFalse(INSTR("G1 X5 Y6").isLinking())
