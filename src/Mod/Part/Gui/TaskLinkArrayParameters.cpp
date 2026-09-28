@@ -201,8 +201,19 @@ TaskLinkArrayParameters::TaskLinkArrayParameters(
     : Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap(taskIcon(array)), taskTitle(array), true, parent)
     , Gui::SelectionObserver(false, Gui::ResolveMode::OldStyleElement)
     , array(array)
+    , arrayDocument(array->getDocument())
     , arrayReference(reference)
 {
+    // The dialog is not tied to edit mode, so it stays open if the array is deleted, e.g. from
+    // the Python console
+    connectDeletedObject = array->getDocument()->signalDeletedObject.connect(
+        [this](const App::DocumentObject& obj) {
+            if (&obj == this->array) {
+                onArrayDeleted();
+            }
+        }
+    );
+
     proxy = new QWidget(this);
     ui = std::make_unique<Ui_TaskLinkArrayParameters>();
     ui->setupUi(proxy);
@@ -272,6 +283,15 @@ TaskLinkArrayParameters::~TaskLinkArrayParameters()
     array = nullptr;
     exitLinkedObjectSelectionMode();
     exitReferenceSelectionMode();
+}
+
+void TaskLinkArrayParameters::onArrayDeleted()
+{
+    cancelPendingUpdate();
+    instanceControls.reset();
+    array = nullptr;
+    // the parameter widgets are bound to the deleted array's properties
+    proxy->setDisabled(true);
 }
 
 App::DocumentObject* TaskLinkArrayParameters::getPatternObject() const
@@ -853,7 +873,8 @@ void TaskLinkArrayParameters::exitReferenceSelectionMode()
 bool TaskLinkArrayParameters::accept()
 {
     if (!array) {
-        return true;
+        // deleted while the dialog was open: nothing to apply
+        return reject();
     }
 
     try {
@@ -888,8 +909,8 @@ bool TaskLinkArrayParameters::accept()
 bool TaskLinkArrayParameters::reject()
 {
     cancelPendingUpdate();
-    if (array && array->getDocument()) {
-        array->getDocument()->abortTransaction();
+    if (App::Document* doc = arrayDocument.getDocument()) {
+        doc->abortTransaction();
         Gui::Command::updateActive();
     }
 
