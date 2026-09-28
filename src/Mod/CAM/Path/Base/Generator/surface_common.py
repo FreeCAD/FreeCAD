@@ -681,9 +681,9 @@ def _filter_vertical(model_faces, tolerance=0.0005):
 # ---------------------------------------------------------------------------
 
 
-def build_avoid_boundary(avoid_faces, avoid_overlap):
+def build_avoid_boundary(avoid_faces, avoid_overlap, tool_radius):
     """
-    Builds the 2D "keep-out" boundary for user-selected Avoid Faces.
+    Builds the 2D "keep-out" geometry for user-selected Avoid Faces.
 
     Each raw face is first classified and, if needed, capped to a flat
     shape suitable for boundary generation:
@@ -698,24 +698,29 @@ def build_avoid_boundary(avoid_faces, avoid_overlap):
         others like it and processed together as a fallback, rather than
         being left as raw, unprocessed geometry.
 
-    The resulting faces are then combined and offset by avoid_overlap
-    (expanded outward, with a small extra buffer to avoid path spikes on
-    vertical walls) to produce the final avoid-zone boundary. This
-    boundary is used both to build a collision-safety pillar around each
-    Avoid Face and to cut a matching hole out of the machining area.
+    Two shapes are then built from those prepared faces, because the two
+    consumers need different geometry:
+
+      - avoid_boundary: Outward/Inward offest by tool_radius - avoid_overlap.
+        generate_pattern_mask() cuts this out of the machining area,
+        so the tool never overhangs an avoided face.
+      - avoid_solid: Inward offset by avoid_overlap only, representing
+        the PHYSICAL extent of the avoided faces. _shape_to_safe_stl()
+        turns this into a barrier plate, and the drop-cutter probe adds
+        the tool radius itself.
 
     Args:
         avoid_faces (list): Raw Part.Face objects selected by the user as
             Avoid Faces.
-        avoid_overlap (float): A negative offset value if Avoid Faces
-            Overlap is enabled, or the tool radius otherwise.
+        avoid_overlap (float): Offest value for boundaries.
+        tool_radius (float): The tool radius
 
     Returns:
-        Part.Shape: The offset avoid-zone boundary, or None if
+        tuple: (avoid_boundary, avoid_solid), or (None, None) if
         avoid_faces is empty or boundary generation fails.
     """
     if not avoid_faces:
-        return None
+        return None, None
 
     prepared_faces, fallback_faces = _classify_and_cap_faces(avoid_faces)
 
@@ -733,19 +738,23 @@ def build_avoid_boundary(avoid_faces, avoid_overlap):
 
     if not prepared_faces:
         Path.Log.debug("build_avoid_boundary: Nothing left to build a boundary from.")
-        return None
+        return None, None
 
-    avoid_solid = build_optimized_boundary(prepared_faces, 0.0, avoids=True)
+    avoid_solid = build_optimized_boundary(
+        prepared_faces,
+        -avoid_overlap,
+        avoids=True
+    )
 
     avoid_boundary = build_optimized_boundary(
         prepared_faces,
-        avoid_overlap,
+        tool_radius - avoid_overlap,
         avoids=True,
     )
 
     if not avoid_boundary or not avoid_solid:
         Path.Log.warning("Failed to generate boundary for avoid_faces.")
-        return None
+        return None, None
 
     return avoid_boundary, avoid_solid
 

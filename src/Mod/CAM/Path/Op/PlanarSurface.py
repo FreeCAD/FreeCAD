@@ -1669,7 +1669,7 @@ class ObjectSurface(PathOp.ObjectOp):
         tool_params = self._extractToolParams(obj)
         tool_diam = tool_params.get("diameter", 0.0)
         tool_radius = tool_diam / 2.0
-        avoid_overlap = tool_radius - obj.AvoidFacesOverlap.Value
+        avoid_overlap = obj.AvoidFacesOverlap.Value
 
         # Initialize geometric and OCL containers
         cutter = stl = safe_stl = stl_faces = None
@@ -1766,6 +1766,7 @@ class ObjectSurface(PathOp.ObjectOp):
             avoid_boundary, avoid_solid = surface_common.build_avoid_boundary(
                 avoid_faces,
                 avoid_overlap,
+                tool_radius,
             )
 
         # Create OCL cutter from tool parameters
