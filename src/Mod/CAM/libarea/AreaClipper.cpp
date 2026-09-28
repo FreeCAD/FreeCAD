@@ -618,7 +618,7 @@ Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
             metadata.edges[newPt.z].push_back(pPrev.z);
             pPrev = newPt;
         }
-        else if (vertex.m_p.x != ptPrev.x || vertex.m_p.y != ptPrev.y) {
+        else if (!vertex.m_p.exactlyEquals(ptPrev)) {
             // The current edge is an arc; interpolate many lines in clipper
             assert(vertex.m_type == 1 || vertex.m_type == -1);
 
@@ -825,7 +825,7 @@ void CArea::SetFromResult(
             if (edge.m_type != 0 && edge.m_type == prev.m_type && edge.m_c == prev.m_c) {
                 // It is. If the edge does not complete a circle, we should extend the existing
                 // CVertex instead of adding a new one.
-                const bool fullLoop = std::prev(c.m_vertices.end(), 2)->m_p == edge.m_p;
+                const bool fullLoop = std::prev(c.m_vertices.end(), 2)->m_p.exactlyEquals(edge.m_p);
                 if (!fullLoop) {
                     prev.m_p = edge.m_p;
                 }
@@ -857,7 +857,7 @@ void CArea::SetFromResult(
             CVertex& prev = c.m_vertices.back();
             if (edge.m_type != 0 && edge.m_type == prev.m_type && edge.m_c == prev.m_c) {
                 // It is an extension
-                const bool fullLoop = std::prev(c.m_vertices.end(), 2)->m_p == edge.m_p;
+                const bool fullLoop = std::prev(c.m_vertices.end(), 2)->m_p.exactlyEquals(edge.m_p);
                 if (!fullLoop) {
                     prev.m_p = edge.m_p;
                     firstCurve->m_vertices.pop_front();
@@ -882,7 +882,7 @@ void CArea::SetFromResult(
             CVertex& last = c.m_vertices.back();
             if (last.m_type != 0 && last.m_type == first.m_type && last.m_c == first.m_c) {
                 // It is an extension
-                const bool fullLoop = std::prev(c.m_vertices.end(), 2)->m_p == first.m_p;
+                const bool fullLoop = std::prev(c.m_vertices.end(), 2)->m_p.exactlyEquals(first.m_p);
                 if (!fullLoop) {
                     c.m_vertices.front().m_p = std::prev(c.m_vertices.end(), 2)->m_p;
                     c.m_vertices.pop_back();

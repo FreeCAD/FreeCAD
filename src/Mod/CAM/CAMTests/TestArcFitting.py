@@ -644,6 +644,36 @@ class TestArcFittingOffsets(PathTestBase):
         a = make_mirrored_arcs(x, -y)  # arcs about (0, -+epsilon) that hit x-axis at 5
         self.assert_offset_line_and_arc_count(a, 1, 1, 0, 4)  # 1 curve, 0 lines, 4 CCW arcs
 
+    def test_regression_profile_offset_no_full_loops(self):
+        """Regression test: offsetting this profile must not produce spurious full-circle loops.
+
+        Input captured from the Profile op in cam_profile_issue.FCStd (issue #32993), in a
+        run where the generated toolpath contained a spurious 360 degree loop of tool-radius
+        arcs around a vertex. Uses the clipper scale Path.Area uses (1e7).
+        """
+        a = make_area(
+            make_curve(
+                [
+                    (-5.75750550, 5.72138770),
+                    (-6.26980670, -0.26675220, -1, -85.35090510, 9.51482961),
+                    (-7.24018490, -6.19758460, -1, -82.53221598, 9.16618609),
+                    (5.96435000, -6.19758450),
+                    (6.78940620, -0.42110040, 1, -82.09355169, 9.32690359),
+                    (7.23967320, 5.39673010, 1, -83.87094484, 9.52183613),
+                    (6.32998440, 5.70523940, 1, 6.74018482, 5.41934480),
+                    (-4.83506040, 5.96415700, -1, 0.83330052, 9.53622689),
+                    (-5.75750550, 5.72138770, 1, -5.25807239, 5.69758455),
+                ]
+            )
+        )
+
+        original_scale = area.get_clipper_scale()
+        area.set_clipper_scale(1e7)
+        try:
+            self.assert_offset_line_and_arc_count(a, 2.5, 1, 3, 9, 3)
+        finally:
+            area.set_clipper_scale(original_scale)
+
     def test_canonicalize(self):
         """Test canonicalization of area."""
         # Create a simple square starting at different positions
