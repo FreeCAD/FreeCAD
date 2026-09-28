@@ -26,7 +26,6 @@
 
 
 #include <QMessageBox>
-#include <QTimer>
 
 
 #include <App/Application.h>
@@ -68,7 +67,7 @@ DlgActiveBody::DlgActiveBody(QWidget* parent, App::Document*& doc, const QString
         ui->bodySelect->addItem(item);
 
         if (body == bodyOfActiveObject) {
-            item->setSelected(true);
+            ui->bodySelect->setCurrentItem(item);
         }
 
         // TODO: Any other logic (hover, select effects on view etc.)
@@ -79,16 +78,9 @@ DlgActiveBody::DlgActiveBody(QWidget* parent, App::Document*& doc, const QString
         // can continue by clicking Ok without further action
         QListWidgetItem* first = ui->bodySelect->item(0);
         if (first) {
-            first->setSelected(true);
+            ui->bodySelect->setCurrentItem(first);
         }
     }
-
-    QTimer::singleShot(0, this, [this]() {
-        const auto selected = ui->bodySelect->selectedItems();
-        if (!selected.isEmpty()) {
-            ui->bodySelect->scrollToItem(selected.front(), QAbstractItemView::PositionAtCenter);
-        }
-    });
 }
 
 DlgActiveBody::~DlgActiveBody() = default;
