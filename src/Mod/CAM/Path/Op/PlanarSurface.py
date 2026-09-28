@@ -1115,7 +1115,6 @@ class ObjectSurface(PathOp.ObjectOp):
             avoid_boundary,
             tool_diam / 2.0,
             boundary_adj,
-            obj.LinearDeflection.Value,
         )
 
         scan_bb = surface_pattern.BBox.from_bbox(bb)
@@ -1761,13 +1760,12 @@ class ObjectSurface(PathOp.ObjectOp):
                 )
 
         # Avoid Faces processing
-        avoid_boundary = None
+        avoid_boundary, avoid_solid = None, None
 
         if avoid_faces:
-            avoid_boundary = surface_common.build_avoid_boundary(
+            avoid_boundary, avoid_solid = surface_common.build_avoid_boundary(
                 avoid_faces,
                 avoid_overlap,
-                obj.LinearDeflection.Value,
             )
 
         # Create OCL cutter from tool parameters
@@ -1815,7 +1813,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 stl_faces=stl_faces,
                 stl_filter_adj=stl_filter_adj,
                 bb_face=bb_face,
-                avoid_boundary=avoid_boundary,
+                avoid_solid=avoid_solid,
                 tool_diam=tool_diam,
                 needs_safe_stl=needs_safe_stl,
                 boundary_adjustment=boundary_adjustment,

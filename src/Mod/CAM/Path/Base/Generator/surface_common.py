@@ -216,7 +216,7 @@ def make_safe_cutter(
 # ---------------------------------------------------------------------------
 
 
-def create_boundary_face(faces, offset=0.0, tolerance=0.005, avoids=False, compound=None):
+def create_boundary_face(faces, offset=0.0, avoids=False, compound=None):
     """
     Creates a flat 2D boundary face from 3D faces using Path.Area's HLR
     projection (Outline mode) as primary method, falling back to
@@ -231,7 +231,6 @@ def create_boundary_face(faces, offset=0.0, tolerance=0.005, avoids=False, compo
             used for mesh detection; pass the real list even when
             `compound` is given too, so mesh detection isn't skipped.
         offset (float): Offset to apply to the resulting boundary.
-        tolerance (float): Tolerance for wire joining.
         avoids (bool): 'True' only from _preprocess_avoid_faces.
         compound (Part.Shape, optional): A pre-built shape to use directly
             instead of rebuilding one from `faces` — pass this when the
@@ -361,7 +360,7 @@ def _boundary_via_techdraw(compound, offset, outline):
 
 
 def generate_pattern_mask(
-    is_whole_model_job, bb_face, cutting_faces, avoid_boundary, tool_radius, boundary_adj, tolerance
+    is_whole_model_job, bb_face, cutting_faces, avoid_boundary, tool_radius, boundary_adj
 ):
     """
     Generates a universal 2D boundary face, punching out
@@ -380,7 +379,6 @@ def generate_pattern_mask(
         avoid_boundary (Part.Shape, optional): Pre-built Avoid Faces "keep-out" boundary.
         tool_radius (float): The radius of the active cutter.
         boundary_adj (float): An explicit user-provided offset override.
-        tolerance (float): The deflection tolerance for discretizing curves smoothly.
 
     Returns:
         Part.Face: The final 2D clipping boundary. Returns None on failure.
@@ -393,14 +391,11 @@ def generate_pattern_mask(
     main_boundary = None
     outer_offset = -tool_radius + boundary_adj
 
-    # Add a small buffer to avoid "path spikes" on vertical walls
-    epsilon = max(0.01, tolerance + 0.001)
-
     if is_whole_model_job:
         # Use TechDraw.findShapeOutline for whole model silhouette
         main_boundary = bb_face
     else:
-        main_boundary = build_optimized_boundary([cutting_faces], outer_offset - epsilon, tolerance)
+        main_boundary = build_optimized_boundary([cutting_faces], outer_offset)
 
     if not main_boundary:
         Path.Log.warning("Could not determine geometry for main boundary mask.")
@@ -421,7 +416,7 @@ def generate_pattern_mask(
         return main_boundary
 
 
-def build_optimized_boundary(faces, offset, tolerance=0.005, avoids=False):
+def build_optimized_boundary(faces, offset, avoids=False):
     """
     Acts as a middleman to optimize boundary creation.
 
@@ -433,7 +428,6 @@ def build_optimized_boundary(faces, offset, tolerance=0.005, avoids=False):
     Args:
         faces (list): List of Part.Face objects or nested list of faces.
         offset (float): Offset to apply to each boundary.
-        tolerance (float): Maximum distance to be considered touching.
         avoids (bool): Default 'False'. 'True' only from _preprocess_avoid_faces.
 
     Returns:
@@ -453,13 +447,13 @@ def build_optimized_boundary(faces, offset, tolerance=0.005, avoids=False):
 
     # Process each connected group as a single batch
     for group in touching_groups:
-        bnd = create_boundary_face(group, offset, tolerance, avoids)
+        bnd = create_boundary_face(group, offset, avoids)
         if bnd and not bnd.isNull():
             generated_boundaries.append(bnd)
 
     # Process isolated faces one by one
     for face in isolated_faces:
-        bnd = create_boundary_face([face], offset, tolerance, avoids)
+        bnd = create_boundary_face([face], offset, avoids)
         if bnd and not bnd.isNull():
             generated_boundaries.append(bnd)
 
@@ -687,7 +681,7 @@ def _filter_vertical(model_faces, tolerance=0.0005):
 # ---------------------------------------------------------------------------
 
 
-def build_avoid_boundary(avoid_faces, avoid_overlap, tolerance):
+def build_avoid_boundary(avoid_faces, avoid_overlap):
     """
     Builds the 2D "keep-out" boundary for user-selected Avoid Faces.
 
@@ -715,8 +709,6 @@ def build_avoid_boundary(avoid_faces, avoid_overlap, tolerance):
             Avoid Faces.
         avoid_overlap (float): A negative offset value if Avoid Faces
             Overlap is enabled, or the tool radius otherwise.
-        tolerance (float): The deflection tolerance for discretizing
-            curves smoothly.
 
     Returns:
         Part.Shape: The offset avoid-zone boundary, or None if
@@ -728,7 +720,7 @@ def build_avoid_boundary(avoid_faces, avoid_overlap, tolerance):
     prepared_faces, fallback_faces = _classify_and_cap_faces(avoid_faces)
 
     if fallback_faces:
-        secondary = build_optimized_boundary(fallback_faces, 0.0, 0.001)
+        secondary = build_optimized_boundary(fallback_faces, 0.0,)
         if secondary is not None:
             prepared_faces.append(secondary)
         else:
@@ -740,21 +732,23 @@ def build_avoid_boundary(avoid_faces, avoid_overlap, tolerance):
         Path.Log.debug("build_avoid_boundary: Nothing left to build a boundary from.")
         return None
 
-    # Small buffer to avoid "path spikes" on vertical walls
-    epsilon = max(0.01, tolerance + 0.001)
+    avoid_solid = build_optimized_boundary(
+        prepared_faces,
+        0.0,
+        avoids=True
+    )
 
     avoid_boundary = build_optimized_boundary(
         prepared_faces,
-        avoid_overlap + epsilon,
-        tolerance,
+        avoid_overlap,
         avoids=True,
     )
 
-    if not avoid_boundary:
+    if not avoid_boundary or not avoid_solid:
         Path.Log.warning("Failed to generate boundary for avoid_faces.")
         return None
 
-    return avoid_boundary
+    return avoid_boundary, avoid_solid
 
 
 def _classify_and_cap_faces(raw_faces):
