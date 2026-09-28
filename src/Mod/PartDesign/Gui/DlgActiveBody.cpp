@@ -26,6 +26,7 @@
 
 
 #include <QMessageBox>
+#include <QTimer>
 
 
 #include <App/Application.h>
@@ -81,6 +82,13 @@ DlgActiveBody::DlgActiveBody(QWidget* parent, App::Document*& doc, const QString
             first->setSelected(true);
         }
     }
+
+    QTimer::singleShot(0, this, [this]() {
+        const auto selected = ui->bodySelect->selectedItems();
+        if (!selected.isEmpty()) {
+            ui->bodySelect->scrollToItem(selected.front(), QAbstractItemView::PositionAtCenter);
+        }
+    });
 }
 
 DlgActiveBody::~DlgActiveBody() = default;
