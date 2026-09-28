@@ -740,11 +740,7 @@ def build_avoid_boundary(avoid_faces, avoid_overlap, tool_radius):
         Path.Log.debug("build_avoid_boundary: Nothing left to build a boundary from.")
         return None, None
 
-    avoid_solid = build_optimized_boundary(
-        prepared_faces,
-        -avoid_overlap,
-        avoids=True
-    )
+    avoid_solid = build_optimized_boundary(prepared_faces, -avoid_overlap, avoids=True)
 
     avoid_boundary = build_optimized_boundary(
         prepared_faces,
