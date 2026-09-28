@@ -1102,14 +1102,6 @@ public:
 
     DecodedMappedName& getDecodedMappedName();
 
-    const size_t& getDuplicateIndex() const {
-        return duplicateIndex;
-    };
-
-    void setDuplicateIndex(const size_t& newIndex) {
-        duplicateIndex = newIndex;
-    };
-
     static MappedName fromDecodedMappedName(const DecodedMappedName& name);
 
     static std::string makeEncodedName(const DecodedMappedName& name);
@@ -1155,11 +1147,11 @@ public:
     static std::string makeEncodedSection(
         const std::vector<std::string>& referenceIDs = {},
         const std::vector<MappedName>& linkedNames = {},
-        const std::string& iterationTag = 0,
+        const std::string& iterationTag = "0",
         const char* opCode = "MKR",
-        const std::string& index = 0,
+        const std::string& index = "0",
         const char& elementType = 'E',
-        const std::string& duplicateCount = 0,
+        const std::string& duplicateCount = "0",
         const std::vector<std::string>& mapperFlags = {},
         const  std::vector<MappedName>& connectedElements = {}
     );
@@ -1167,11 +1159,11 @@ public:
     static std::string makeEncodedSection(
         const std::vector<std::string>& referenceIDs = {},
         const std::vector<std::string>& linkedNames = {},
-        const std::string& iterationTag = 0,
+        const std::string& iterationTag = "0",
         const char* opCode = "MKR",
-        const std::string& index = 0,
+        const std::string& index = "0",
         const char& elementType = 'E',
-        const std::string& duplicateCount = 0,
+        const std::string& duplicateCount = "0",
         const std::vector<std::string>& mapperFlags = {},
         const std::vector<std::string>& connectedElements = {}
     );
@@ -1188,7 +1180,6 @@ public:
 private:
     QByteArray data;
     QByteArray postfix;
-    size_t duplicateIndex;
     bool raw;
 };
 
