@@ -249,15 +249,16 @@ def sameWorkplane(a, b, tol=1e-6):
     the same frame for the purpose of reusing generated toolpath geometry.
 
     Compares tool axes only, and that is deliberate even though a work plane's
-    origin is consumed. An operation generates in its plane's frame, but its
-    path is *stored* relative to the Job's zero in the rotated frame, which is
-    the same frame for every operation sharing a tool axis. Two operations on
-    parallel faces at different depths therefore share a stored frame, and
-    rest machining can reuse cleared area between them. The one thing that has
-    to move to make that work is the querying operation's own bounding box,
-    which getClearedAreas() shifts by the plane origin's position in the
-    rotated frame. This is a named predicate so that if the storage convention
-    ever changes, the callers that depend on it change with it."""
+    origin is consumed. An operation generates in its plane's frame, origin
+    included, and its path is stored in that frame with Placement positioning
+    it. Two operations on parallel faces at different depths, or with
+    different in-plane origins, therefore store their paths in frames that
+    differ by a rotation about Z plus a translation, which the path
+    representation carries exactly. Rest machining can reuse cleared area
+    between them by moving one operation's path into the other's frame, which
+    is what getClearedAreas() does. This is a named predicate so that if the
+    storage convention ever changes, the callers that depend on it change
+    with it."""
     axis_a = FreeCAD.Placement(a).Rotation.multVec(FreeCAD.Vector(0, 0, 1))
     axis_b = FreeCAD.Placement(b).Rotation.multVec(FreeCAD.Vector(0, 0, 1))
     return axis_a.isEqual(axis_b, tol)

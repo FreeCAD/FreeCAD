@@ -562,17 +562,18 @@ def getClearedAreas(currentOp, bbox):
     obj.Placement positioning it. Operations whose tool axis differs from the
     current one are skipped: projecting cleared area between non-coplanar
     frames has no 2D meaning. Operations that share the tool axis may still
-    sit on parallel planes at different depths or with different in-plane X,
-    so bbox is carried into each one's frame by the relative placement, the
-    cleared area computed there, and the result carried back. Sharing a tool
-    axis makes that relative placement a rotation about Z plus a translation,
-    which is exact for the path representation.
+    sit on parallel planes at different depths or with different in-plane
+    origins, so each one's path is carried into the current operation's frame
+    by the relative placement before its cleared area is computed, and the
+    result is already in the caller's frame. Sharing a tool axis makes that
+    relative placement a rotation about Z plus a translation, which the path
+    representation carries exactly, arcs included. (Path.Area has no
+    transform, so the path is moved rather than the area.)
     """
     clearedAreas = []
     job = currentOp.Proxy.job
     tol = job.GeometryTolerance.getValueAs("mm")
     currentFrame = PathUtil.workplaneForOp(currentOp)
-    currentWp = currentFrame
     for op in job.Operations.Group:
         baseOp = PathDressup.baseOp(op)
         if baseOp.Name == currentOp.Name:
@@ -582,30 +583,20 @@ def getClearedAreas(currentOp, bbox):
         if not (getattr(baseOp, "Active", False) and op.Path):
             continue
         otherFrame = PathUtil.workplaneForOp(baseOp)
-        if not PathUtil.sameWorkplane(otherFrame, currentWp):
+        if not PathUtil.sameWorkplane(otherFrame, currentFrame):
             continue
 
-        # current frame -> other frame
-        relative = otherFrame.inverse().multiply(currentFrame)
-        if relative.isIdentity(1e-9):
-            localBox = bbox
-            back = None
-        else:
-            localBox = FreeCAD.BoundBox()
-            for x in (bbox.XMin, bbox.XMax):
-                for y in (bbox.YMin, bbox.YMax):
-                    for z in (bbox.ZMin, bbox.ZMax):
-                        localBox.add(relative.multVec(FreeCAD.Vector(x, y, z)))
-            back = relative.inverse().toMatrix()
+        # other frame -> current frame
+        toCurrent = currentFrame.inverse().multiply(otherFrame)
+        path = op.Path
+        if not toCurrent.isIdentity(1e-9):
+            path = PathUtil.applyPlacementToPath(toCurrent, path)
 
         tool = baseOp.ToolController.Tool
         diameter = tool.Diameter.getValueAs("mm")
         # for drills, dz translates to the full width part of the tool
         dz = 0 if not hasattr(tool, "TipAngle") else -drillTipLength(tool)
-        cleared = op.Path.getClearedArea(diameter, localBox.ZMin + tol + dz, localBox)
-        if back is not None and cleared is not None and hasattr(cleared, "transformShape"):
-            cleared.transformShape(back, False, False)
-        clearedAreas.append(cleared)
+        clearedAreas.append(path.getClearedArea(diameter, bbox.ZMin + tol + dz, bbox))
     return clearedAreas
 
 

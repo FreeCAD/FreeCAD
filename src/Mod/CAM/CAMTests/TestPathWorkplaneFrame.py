@@ -501,6 +501,93 @@ class TestGenerateInPlaneFrame(PathTestUtils.PathTestBase):
         bb.add(Vector(50, 50, 10))
         self.assertEqual(len(PathOpUtil.getClearedAreas(cur, bb)), 1)
 
+    def test_clearedAreaOfAnOffsetPlaneComesBackInTheCurrentFrame(self):
+        """Path.Area cannot be transformed, so the other operation's path is
+        moved into the current frame before its cleared area is computed. A
+        previous operation on a Z-up plane with its origin at (30, 10) cleared
+        a rectangle centred on that origin; asked from an operation on the
+        Job's XY, the cleared area is centred there, not on the Job's zero."""
+        offset = PathWorkplane.createWorkplaneFromToolAxis(
+            self.job, Vector(0, 0, 1), origin=Vector(30, 10, 0)
+        )
+        jobXY = PathWorkplane.createWorkplaneFromToolAxis(self.job, Vector(0, 0, 1))
+
+        def custom(name, plane, path):
+            op = PathCustom.Create(name, parentJob=self.job)
+            op.Workplane = plane
+            op.ToolController.Tool.Diameter = 5.0
+            op.Path = path
+            return op
+
+        rect = Path.Path(
+            [
+                Path.Command("G0", {"X": -20, "Y": -20, "Z": 5}),
+                Path.Command("G1", {"Z": -1}),
+                Path.Command("G1", {"X": 20}),
+                Path.Command("G1", {"Y": 20}),
+                Path.Command("G1", {"X": -20}),
+                Path.Command("G1", {"Y": -20}),
+            ]
+        )
+        custom("Prev", offset, rect)
+        cur = custom("Cur", jobXY, rect)
+        bb = FreeCAD.BoundBox()
+        bb.add(Vector(-50, -50, -1))
+        bb.add(Vector(50, 50, 10))
+        areas = PathOpUtil.getClearedAreas(cur, bb)
+        self.assertEqual(len(areas), 1)
+        cleared = areas[0].toTopoShape().BoundBox
+        self.assertTrue(cleared.isValid(), "the previous op cleared something")
+        self.assertRoughly(cleared.Center.x, 30.0, 0.5)
+        self.assertRoughly(cleared.Center.y, 10.0, 0.5)
+
+    def test_boundaryDressupWorksInTheBaseOpsFrameAndCarriesItsPlacement(self):
+        """The Path Boundary dressup reads its base op's stored path, in the
+        op's plane frame, and clips it with the boundary brought into that
+        frame; its retracts are the op's heights, measured from the plane,
+        and its Placement is the op's. Read placed, the whole path lands on
+        the part. Reading the placed base path instead put the cutting moves
+        in the world and the retracts in the plane frame, in one path."""
+        import Path.Dressup.Gui.Boundary2 as PathBoundary2
+
+        plane = PathWorkplane.createWorkplaneFromToolAxis(
+            self.job, Vector(0, 0, 1), origin=Vector(50, 50, 50)
+        )
+        op = PathProfile.Create("P")
+        op.Workplane = plane
+        self.doc.recompute()
+
+        # A world box covering the +X half of the part, with room to spare
+        half = self.doc.addObject("Part::Box", "Half")
+        half.Length, half.Width, half.Height = 60, 120, 80
+        half.Placement = FreeCAD.Placement(Vector(50, -10, -10), FreeCAD.Rotation())
+        dressup = self.doc.addObject("Path::FeaturePython", "Boundary2")
+        PathBoundary2.ObjectDressup(dressup, op)
+        self.job.Proxy.addOperation(dressup, op)
+        dressup.Boundary = half
+        dressup.Side = "Inside"
+        self.doc.recompute()
+
+        self.assertTrue(dressup.Placement.isSame(op.Placement, 1e-9))
+        self.assertFalse(dressup.Placement.isIdentity(1e-9))
+
+        cuts = _cutPoints(dressup.Path)
+        self.assertTrue(cuts, "something survived the boundary")
+        # the +X half of the part is x >= 0 in the plane's frame
+        self.assertTrue(all(p.x >= -1e-6 for p in cuts), "kept the +X half only")
+        # the cut is at the op's depth below the plane, not 50 above it
+        self.assertRoughly(min(p.z for p in cuts), min(p.z for p in _cutPoints(op.Path)), 1e-6)
+        self.assertLessEqual(max(p.z for p in cuts), op.SafeHeight.Value + 1e-6)
+
+        def rapids(path):
+            return [
+                c.Parameters["Z"] for c in path.Commands if c.Name == "G0" and "Z" in c.Parameters
+            ]
+
+        self.assertRoughly(max(rapids(dressup.Path)), op.ClearanceHeight.Value, 1e-6)
+        placed = PathUtils.getPathWithPlacement(dressup)
+        self.assertRoughly(max(rapids(placed)), op.ClearanceHeight.Value + 50.0, 1e-6)
+
 
 class TestPostWorkplaneFrames(PathTestUtils.PathTestBase):
     """The post turns a plane-frame path into what a DWO machine runs."""
