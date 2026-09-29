@@ -71,7 +71,7 @@ if DEBUG:
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
-Values = Dict[str, Any]
+Values = dict[str, Any]
 
 POST_TYPE = "machine"
 
