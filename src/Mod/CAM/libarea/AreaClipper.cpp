@@ -344,12 +344,14 @@ void CArea::NaiveOffset(double offset)
             const Point64 negBack64 = ToPoint64(
                 PointD(cNeg.m_vertices.back().m_p.x, cNeg.m_vertices.back().m_p.y, 0)
             );
-            if ((posTarget64.x == posBack64.x && posTarget64.y == posBack64.y)
-                || (negTarget64.x == negBack64.x && negTarget64.y == negBack64.y)) {
-                // Skip join. I checked if either point is equal in clipper coordinates rather than
-                // both because, besides for rounding error, they should agree with each other, and
-                // I'm not interested in having single-unit clipper lines anyway. We can round
-                // within that range, and the curve data structure ensures connectivity
+            if ((abs(posTarget64.x - posBack64.x) < 2 && abs(posTarget64.y - posBack64.y) < 2)
+                || (abs(negTarget64.x - negBack64.x) < 2 && abs(negTarget64.y - negBack64.y) < 2)) {
+                // Skip the join if the points are already equal, or nearly equal. I chose
+                // `dx > 2 || dy > 2` to be sure that in segments we join, the process of rounding
+                // to integers does't move the points enough to change which side should be joined
+                // by an arc and which should be joined by lines to the center point. Without
+                // allowing this much slack, the decision is sometimes incorrect and the final
+                // output contains spikes to the arc center.
                 return;
             }
 
@@ -775,6 +777,14 @@ void CArea::SetFromResult(
             const size_t iEdge = (startVertex + edgeNum) % path.size();
             const Point64& v0 = path[iEdge];
             const Point64& v1 = path[(iEdge + 1) % path.size()];
+
+            // If length is tiny, skip the edge. This is important because clipper sometimes
+            // silently merges points that are only 1 unit away from each other (Clipper2 issue
+            // #1111), and this can result in incorrect tags on segments that short. Fortunately, it
+            // is acceptable to skip such short segments because it changes the output very little.
+            if (abs(v1.x - v0.x) < 2 && abs(v1.y - v0.y) < 2) {
+                continue;
+            }
 
             // Look up the segment data of the parent edge. Check for and handle the tag sentinel
             // value. The sentinel value is provided only when the parent edge lookup fails.
