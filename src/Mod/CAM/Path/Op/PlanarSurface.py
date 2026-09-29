@@ -1769,6 +1769,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 avoid_overlap,
                 tool_radius,
                 obj.LinearDeflection.Value,
+                needs_safe_stl,
             )
 
         # Create OCL cutter from tool parameters
