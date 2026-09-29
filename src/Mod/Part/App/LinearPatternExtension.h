@@ -111,7 +111,6 @@ public:
     short extensionMustExecute() override;
     void extensionOnChanged(const App::Property* prop) override;
 
-    static const App::PropertyIntegerConstraint::Constraints intOccurrences;
     static const char* ModeEnums[];
 };
 
