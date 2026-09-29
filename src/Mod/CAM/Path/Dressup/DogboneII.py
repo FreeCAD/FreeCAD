@@ -437,8 +437,8 @@ class Proxy(object):
                 if instr.isMove():
                     thisMove = instr
                     bone = None
-                    if thisMove.isPlunge():
-                        # plunge indicate end of the profile
+                    if thisMove.isPlunge() or thisMove.isLinking():
+                        # plunge or linking move indicate end of the profile
                         if lastMove and moveAfterPlunge and lastMove.leadsInto(moveAfterPlunge):
                             # first Bone skipped, so add Bone before plunge in the profile end
                             bone = self.createBone(obj, lastMove, moveAfterPlunge)

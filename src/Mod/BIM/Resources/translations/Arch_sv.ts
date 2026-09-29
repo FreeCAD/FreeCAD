@@ -3801,14 +3801,14 @@ Standardmallen finns på följande plats:
       <translation>Skapa bärande konstruktion</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="204"/>
+      <location filename="../../bimcommands/BimWall.py" line="201"/>
       <source>Next point</source>
       <translation>Nästa punkt</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="460"/>
       <location filename="../../ArchCommands.py" line="1728"/>
-      <location filename="../../bimcommands/BimProfile.py" line="99"/>
+      <location filename="../../bimcommands/BimProfile.py" line="96"/>
       <source>Category</source>
       <translation>Kategori</translation>
     </message>
@@ -3897,7 +3897,7 @@ Standardmallen finns på följande plats:
       <location filename="../../ArchCoveringGui.py" line="672"/>
       <location filename="../../ArchCoveringGui.py" line="683"/>
       <location filename="../../ArchCoveringGui.py" line="742"/>
-      <location filename="../../bimtests/TestArchCoveringGui.py" line="159"/>
+      <location filename="../../bimtests/TestArchCoveringGui.py" line="173"/>
       <source>No selection</source>
       <translation>Ingen markering</translation>
     </message>
@@ -3980,9 +3980,9 @@ Standardmallen finns på följande plats:
     <message>
       <location filename="../../ArchCoveringGui.py" line="842"/>
       <location filename="../../ArchStructure.py" line="467"/>
-      <location filename="../../bimcommands/BimProfile.py" line="106"/>
-      <location filename="../../bimcommands/BimPanel.py" line="204"/>
-      <location filename="../../bimcommands/BimWindow.py" line="450"/>
+      <location filename="../../bimcommands/BimProfile.py" line="103"/>
+      <location filename="../../bimcommands/BimPanel.py" line="201"/>
+      <location filename="../../bimcommands/BimWindow.py" line="447"/>
       <source>Preset</source>
       <translation>Förinställning</translation>
     </message>
@@ -4070,13 +4070,13 @@ Standardmallen finns på följande plats:
       <location filename="../../ArchCoveringGui.py" line="996"/>
       <location filename="../../ArchCoveringGui.py" line="1077"/>
       <location filename="../../ArchStructure.py" line="476"/>
-      <location filename="../../ArchStructure.py" line="1604"/>
+      <location filename="../../ArchStructure.py" line="1624"/>
       <location filename="../../ArchWall.py" line="1857"/>
       <location filename="../../ArchPrecast.py" line="1719"/>
       <location filename="../../ArchCommands.py" line="1361"/>
       <location filename="../../ArchPanel.py" line="576"/>
-      <location filename="../../bimcommands/BimPanel.py" line="214"/>
-      <location filename="../../bimcommands/BimWall.py" line="507"/>
+      <location filename="../../bimcommands/BimPanel.py" line="211"/>
+      <location filename="../../bimcommands/BimWall.py" line="504"/>
       <source>Length</source>
       <translation>Längd</translation>
     </message>
@@ -4089,13 +4089,13 @@ Standardmallen finns på följande plats:
       <location filename="../../ArchCoveringGui.py" line="1002"/>
       <location filename="../../ArchCoveringGui.py" line="1078"/>
       <location filename="../../ArchStructure.py" line="483"/>
-      <location filename="../../ArchStructure.py" line="1605"/>
+      <location filename="../../ArchStructure.py" line="1625"/>
       <location filename="../../ArchWall.py" line="1863"/>
       <location filename="../../ArchPrecast.py" line="1720"/>
       <location filename="../../ArchWindow.py" line="1196"/>
       <location filename="../../ArchPanel.py" line="577"/>
-      <location filename="../../bimcommands/BimPanel.py" line="221"/>
-      <location filename="../../bimcommands/BimWall.py" line="514"/>
+      <location filename="../../bimcommands/BimPanel.py" line="218"/>
+      <location filename="../../bimcommands/BimWall.py" line="511"/>
       <source>Width</source>
       <translation>Bredd</translation>
     </message>
@@ -4247,12 +4247,12 @@ Standardmallen finns på följande plats:
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="490"/>
-      <location filename="../../ArchStructure.py" line="1606"/>
+      <location filename="../../ArchStructure.py" line="1626"/>
       <location filename="../../ArchWall.py" line="1869"/>
       <location filename="../../ArchPrecast.py" line="1721"/>
       <location filename="../../ArchRoof.py" line="1086"/>
       <location filename="../../ArchWindow.py" line="1199"/>
-      <location filename="../../bimcommands/BimWall.py" line="521"/>
+      <location filename="../../bimcommands/BimWall.py" line="518"/>
       <source>Height</source>
       <translation>Höjd</translation>
     </message>
@@ -4272,39 +4272,39 @@ Standardmallen finns på följande plats:
       <translation>Byt plats på längd/bredd</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1070"/>
+      <location filename="../../ArchStructure.py" line="1090"/>
       <location filename="../../ArchWall.py" line="617"/>
       <source>This mesh is an invalid solid</source>
       <translation>Detta nät är inte en giltig solid</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1189"/>
+      <location filename="../../ArchStructure.py" line="1209"/>
       <location filename="../../ArchPanel.py" line="319"/>
       <source>Facemaker returned an error</source>
       <translation>Facemaker returnerade ett fel</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1616"/>
+      <location filename="../../ArchStructure.py" line="1636"/>
       <source>Node Tools</source>
       <translation>Node-verktyg</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1640"/>
+      <location filename="../../ArchStructure.py" line="1660"/>
       <source>Extends the nodes of this element to reach the nodes of another element</source>
       <translation>Förlänger noderna i detta element för att nå noderna i ett annat element</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1651"/>
+      <location filename="../../ArchStructure.py" line="1671"/>
       <source>Connects nodes of this element with the nodes of another element</source>
       <translation>Kopplar samman noder i detta element med noder i ett annat element</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1662"/>
+      <location filename="../../ArchStructure.py" line="1682"/>
       <source>Toggles all structural nodes of the document on/off</source>
       <translation>Visar eller döljer alla bärverksnoder i dokumentet</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1669"/>
+      <location filename="../../ArchStructure.py" line="1689"/>
       <source>Extrusion Tools</source>
       <translation>Verktyg för extrudering</translation>
     </message>
@@ -4330,17 +4330,17 @@ Standardmallen finns på följande plats:
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="294"/>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="94"/>
-      <location filename="../../bimcommands/BimTruss.py" line="83"/>
-      <location filename="../../bimcommands/BimWall.py" line="157"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="91"/>
+      <location filename="../../bimcommands/BimTruss.py" line="80"/>
+      <location filename="../../bimcommands/BimWall.py" line="154"/>
       <source>%1 pick first point</source>
       <translation>%1 välj första punkten</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="296"/>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="96"/>
-      <location filename="../../bimcommands/BimTruss.py" line="85"/>
-      <location filename="../../bimcommands/BimWall.py" line="159"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="93"/>
+      <location filename="../../bimcommands/BimTruss.py" line="82"/>
+      <location filename="../../bimcommands/BimWall.py" line="156"/>
       <source>%1 pick next point</source>
       <translation>%1 välj nästa punkt</translation>
     </message>
@@ -4360,90 +4360,90 @@ Standardmallen finns på följande plats:
       <translation>Alternativ för bärande konstruktioner</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1042"/>
+      <location filename="../../ArchStructure.py" line="1062"/>
       <source>Error: The base shape could not be extruded along this tool object</source>
       <translation>Fel: Basformen kunde inte extruderas längs detta verktygsobjekt</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1621"/>
+      <location filename="../../ArchStructure.py" line="1641"/>
       <source>Reset Nodes</source>
       <translation>Återställ noder</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1627"/>
+      <location filename="../../ArchStructure.py" line="1647"/>
       <source>Edit Nodes</source>
       <translation>Redigera noder</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1633"/>
+      <location filename="../../ArchStructure.py" line="1653"/>
       <source>Extend Nodes</source>
       <translation>Förläng noder</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1646"/>
+      <location filename="../../ArchStructure.py" line="1666"/>
       <source>Connect Nodes</source>
       <translation>Anslut noder</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1657"/>
+      <location filename="../../ArchStructure.py" line="1677"/>
       <source>Toggle All Nodes</source>
       <translation>Visa/dölj alla noder</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1674"/>
-      <location filename="../../ArchStructure.py" line="1875"/>
+      <location filename="../../ArchStructure.py" line="1694"/>
+      <location filename="../../ArchStructure.py" line="1895"/>
       <source>Select Tool</source>
       <translation>Välj verktyg</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1679"/>
+      <location filename="../../ArchStructure.py" line="1699"/>
       <source>Selects object or edges to be used as a tool (extrusion path)</source>
       <translation>Väljer objekt eller kanter som ska användas som verktyg (extruderingsbana)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1703"/>
-      <location filename="../../ArchStructure.py" line="1753"/>
+      <location filename="../../ArchStructure.py" line="1723"/>
+      <location filename="../../ArchStructure.py" line="1773"/>
       <source>Choose another Structure object:</source>
       <translation>Välj en annan bärande konstruktion:</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1709"/>
-      <location filename="../../ArchStructure.py" line="1759"/>
+      <location filename="../../ArchStructure.py" line="1729"/>
+      <location filename="../../ArchStructure.py" line="1779"/>
       <source>The chosen object is not a Structure</source>
       <translation>Det valda objektet är inte en bärande konstruktion</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1714"/>
-      <location filename="../../ArchStructure.py" line="1764"/>
+      <location filename="../../ArchStructure.py" line="1734"/>
+      <location filename="../../ArchStructure.py" line="1784"/>
       <source>The chosen object has no structural nodes</source>
       <translation>Det valda objektet har inga bärverksnoder</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1719"/>
-      <location filename="../../ArchStructure.py" line="1769"/>
+      <location filename="../../ArchStructure.py" line="1739"/>
+      <location filename="../../ArchStructure.py" line="1789"/>
       <source>One of these objects has more than 2 nodes</source>
       <translation>Ett av dessa objekt har fler än 2 noder</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1732"/>
-      <location filename="../../ArchStructure.py" line="1782"/>
+      <location filename="../../ArchStructure.py" line="1752"/>
+      <location filename="../../ArchStructure.py" line="1802"/>
       <source>Unable to find a suitable intersection point</source>
       <translation>Det går inte att hitta en lämplig skärningspunkt</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1736"/>
+      <location filename="../../ArchStructure.py" line="1756"/>
       <source>Intersection found.
 </source>
       <translation>Skärningspunkt hittad.
 </translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1787"/>
+      <location filename="../../ArchStructure.py" line="1807"/>
       <source>Intersection found.</source>
       <translation>Skärningspunkt hittad.</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1840"/>
+      <location filename="../../ArchStructure.py" line="1860"/>
       <source>Done</source>
       <translation>Klar</translation>
     </message>
@@ -4453,12 +4453,12 @@ Standardmallen finns på följande plats:
       <translation>Utrustning</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimEquipment.py" line="61"/>
+      <location filename="../../bimcommands/BimEquipment.py" line="58"/>
       <source>Select a base shape object and optionally a mesh object</source>
       <translation>Välj ett basformsobjekt och eventuellt ett nätobjekt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimEquipment.py" line="81"/>
+      <location filename="../../bimcommands/BimEquipment.py" line="78"/>
       <source>Create Equipment</source>
       <translation>Skapa utrustning</translation>
     </message>
@@ -4473,19 +4473,19 @@ Standardmallen finns på följande plats:
       <translation>Våning</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProfile.py" line="68"/>
-      <location filename="../../bimcommands/BimProfile.py" line="152"/>
+      <location filename="../../bimcommands/BimProfile.py" line="65"/>
+      <location filename="../../bimcommands/BimProfile.py" line="149"/>
       <source>Create Profile</source>
       <translation>Skapa profil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProfile.py" line="79"/>
-      <location filename="../../bimcommands/BimPanel.py" line="129"/>
+      <location filename="../../bimcommands/BimProfile.py" line="76"/>
+      <location filename="../../bimcommands/BimPanel.py" line="126"/>
       <source>%1 pick point</source>
       <translation>%1 välj punkt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProfile.py" line="95"/>
+      <location filename="../../bimcommands/BimProfile.py" line="92"/>
       <source>Profile Settings</source>
       <translation>Profilinställningar</translation>
     </message>
@@ -4500,25 +4500,25 @@ Standardmallen finns på följande plats:
       <translation>Byggplats</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSite.py" line="58"/>
+      <location filename="../../bimcommands/BimSite.py" line="55"/>
       <source>Create Site</source>
       <translation>Skapa byggplats</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRoof.py" line="65"/>
-      <location filename="../../bimcommands/BimRoof.py" line="81"/>
+      <location filename="../../bimcommands/BimRoof.py" line="62"/>
+      <location filename="../../bimcommands/BimRoof.py" line="78"/>
       <source>Create Roof</source>
       <translation>Skapa tak</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRoof.py" line="97"/>
-      <location filename="../../bimcommands/BimSpace.py" line="74"/>
+      <location filename="../../bimcommands/BimRoof.py" line="94"/>
+      <location filename="../../bimcommands/BimSpace.py" line="71"/>
       <source>%1 select a base object</source>
       <translation>%1 välj ett basobjekt</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="829"/>
-      <location filename="../../bimcommands/BimRoof.py" line="92"/>
+      <location filename="../../bimcommands/BimRoof.py" line="89"/>
       <source>Unable to create a roof</source>
       <translation>Det går inte att skapa ett tak</translation>
     </message>
@@ -4585,47 +4585,47 @@ Om Horisontell längd = 0 beräknas den horisontella längden så att höjden bl
       <translation>Öppning</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="64"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="61"/>
       <source>Select two objects, an object to be cut and an object defining a cutting plane, in that order</source>
       <translation>Välj två objekt, ett objekt som ska skäras och ett objekt som definierar ett skärplan, i den ordningen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="69"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="66"/>
       <source>The first object does not have a shape</source>
       <translation>Det första objektet har ingen form</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="74"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="71"/>
       <source>The second object does not define a plane</source>
       <translation>Det andra objektet definierar inte ett plan</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="118"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="115"/>
       <source>Cutting</source>
       <translation>Skärning</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="147"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="144"/>
       <source>Cut Plane</source>
       <translation>Skär med plan</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="148"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="145"/>
       <source>Cut Plane Options</source>
       <translation>Alternativ för skärplan</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="149"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="146"/>
       <source>Which side to cut</source>
       <translation>Vilken sida som ska kapas</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="150"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="147"/>
       <source>Behind</source>
       <translation>Bakom</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="150"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="147"/>
       <source>Front</source>
       <translation>Framför</translation>
     </message>
@@ -4727,7 +4727,7 @@ Om Horisontell längd = 0 beräknas den horisontella längden så att höjden bl
       <translation>Referensfiler</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimReference.py" line="56"/>
+      <location filename="../../bimcommands/BimReference.py" line="53"/>
       <source>Create external reference</source>
       <translation>Skapa extern referens</translation>
     </message>
@@ -4737,7 +4737,7 @@ Om Horisontell längd = 0 beräknas den horisontella längden så att höjden bl
       <translation>Ram</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimFrame.py" line="60"/>
+      <location filename="../../bimcommands/BimFrame.py" line="57"/>
       <source>Create Frame</source>
       <translation>Skapa ram</translation>
     </message>
@@ -4797,44 +4797,44 @@ Om Horisontell längd = 0 beräknas den horisontella längden så att höjden bl
       <translation>Fönster</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="109"/>
-      <location filename="../../bimcommands/BimWindow.py" line="136"/>
-      <location filename="../../bimcommands/BimWindow.py" line="213"/>
+      <location filename="../../bimcommands/BimWindow.py" line="106"/>
+      <location filename="../../bimcommands/BimWindow.py" line="133"/>
+      <location filename="../../bimcommands/BimWindow.py" line="210"/>
       <source>Create Window</source>
       <translation>Skapa fönster</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="154"/>
+      <location filename="../../bimcommands/BimWindow.py" line="151"/>
       <source>Choose a face on an existing object or select a preset</source>
       <translation>Välj en yta på ett befintligt objekt eller välj en förinställning</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="171"/>
+      <location filename="../../bimcommands/BimWindow.py" line="168"/>
       <source>%1 pick point on host</source>
       <translation>%1 välj punkt på värdobjektet</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="263"/>
+      <location filename="../../bimcommands/BimWindow.py" line="260"/>
       <source>Window not based on sketch. Window not aligned or resized.</source>
       <translation>Fönstret är inte baserat på en skiss. Fönstret har inte riktats in eller ändrats i storlek.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="282"/>
+      <location filename="../../bimcommands/BimWindow.py" line="279"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
       <translation>Begränsningen Width eller Height saknas i fönsterskissen. Fönstrets storlek har inte ändrats.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="285"/>
+      <location filename="../../bimcommands/BimWindow.py" line="282"/>
       <source>No window found. Cannot continue.</source>
       <translation>Inget fönster hittades. Det går inte att fortsätta.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="403"/>
+      <location filename="../../bimcommands/BimWindow.py" line="400"/>
       <source>Auto include in host object</source>
       <translation>Automatisk inkludering i värdobjekt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="412"/>
+      <location filename="../../bimcommands/BimWindow.py" line="409"/>
       <source>Sill height</source>
       <translation>Bröstningshöjd</translation>
     </message>
@@ -4857,7 +4857,7 @@ Om Horisontell längd = 0 beräknas den horisontella längden så att höjden bl
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1191"/>
-      <location filename="../../bimcommands/BimWindow.py" line="399"/>
+      <location filename="../../bimcommands/BimWindow.py" line="396"/>
       <source>Window Options</source>
       <translation>Fönsteralternativ</translation>
     </message>
@@ -4928,7 +4928,7 @@ Om Horisontell längd = 0 beräknas den horisontella längden så att höjden bl
       <translation>Hämtar den valda kanten</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1806"/>
+      <location filename="../../ArchSectionPlane.py" line="1805"/>
       <location filename="../../ArchAxis.py" line="999"/>
       <location filename="../../ArchComponent.py" line="2463"/>
       <location filename="../../ArchSpace.py" line="954"/>
@@ -5097,7 +5097,7 @@ Python-modulen ladybug eller pysolar krävs.</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1588"/>
-      <location filename="../../ArchSectionPlane.py" line="1593"/>
+      <location filename="../../ArchSectionPlane.py" line="1592"/>
       <location filename="../../ArchAxis.py" line="831"/>
       <location filename="../../ArchGrid.py" line="384"/>
       <location filename="../../ArchReference.py" line="717"/>
@@ -5139,25 +5139,25 @@ Python-modulen ladybug eller pysolar krävs.</translation>
       <location filename="../../ArchComponent.py" line="2539"/>
       <location filename="../../ArchCommands.py" line="1730"/>
       <location filename="../../ArchWindow.py" line="1717"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="479"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="476"/>
       <source>Type</source>
       <translation>Typ</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="802"/>
-      <location filename="../../ArchStructure.py" line="1599"/>
+      <location filename="../../ArchStructure.py" line="1619"/>
       <location filename="../../ArchMaterial.py" line="897"/>
       <location filename="../../ArchMaterial.py" line="923"/>
       <location filename="../../ArchRoof.py" line="1084"/>
       <location filename="../../ArchPanel.py" line="578"/>
-      <location filename="../../bimcommands/BimPanel.py" line="228"/>
+      <location filename="../../bimcommands/BimPanel.py" line="225"/>
       <source>Thickness</source>
       <translation>Tjocklek</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1725"/>
       <location filename="../../ArchWindow.py" line="1720"/>
-      <location filename="../../bimcommands/BimWall.py" line="537"/>
+      <location filename="../../bimcommands/BimWall.py" line="534"/>
       <source>Offset</source>
       <translation>Förskjutning</translation>
     </message>
@@ -5187,17 +5187,17 @@ Python-modulen ladybug eller pysolar krävs.</translation>
       <translation>Axis-system</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="85"/>
+      <location filename="../../bimcommands/BimAxis.py" line="82"/>
       <source>Only axes must be selected</source>
       <translation>Endast axlar får väljas</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="90"/>
+      <location filename="../../bimcommands/BimAxis.py" line="87"/>
       <source>Create Axis System</source>
       <translation>Skapa axelsystem</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="95"/>
+      <location filename="../../bimcommands/BimAxis.py" line="92"/>
       <source>Select at least one axis</source>
       <translation>Välj minst en axel</translation>
     </message>
@@ -5228,7 +5228,7 @@ Python-modulen ladybug eller pysolar krävs.</translation>
       <translation>Fackverk</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTruss.py" line="116"/>
+      <location filename="../../bimcommands/BimTruss.py" line="113"/>
       <source>Create Truss</source>
       <translation>Skapa fackverk</translation>
     </message>
@@ -5308,17 +5308,17 @@ Python-modulen ladybug eller pysolar krävs.</translation>
       <translation>Ytskikt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimStairs.py" line="58"/>
+      <location filename="../../bimcommands/BimStairs.py" line="55"/>
       <source>Create Stairs</source>
       <translation>Skapa trappor</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="543"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="540"/>
       <source>Create material</source>
       <translation>Skapa material</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="576"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="573"/>
       <source>Create multi-material</source>
       <translation>Skapa multi-material</translation>
     </message>
@@ -5366,7 +5366,7 @@ Python-modulen ladybug eller pysolar krävs.</translation>
       <translation>Fel: Utrymmet ”%s” saknar zon. Avbryter.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="117"/>
+      <location filename="../../bimcommands/BimAxis.py" line="114"/>
       <source>Create Grid</source>
       <translation>Skapa rutnät</translation>
     </message>
@@ -5589,28 +5589,28 @@ Python-modulen ladybug eller pysolar krävs.</translation>
       <translation>Panelblad</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="87"/>
-      <location filename="../../bimcommands/BimPanel.py" line="148"/>
+      <location filename="../../bimcommands/BimPanel.py" line="84"/>
+      <location filename="../../bimcommands/BimPanel.py" line="145"/>
       <source>Create Panel</source>
       <translation>Skapa panel</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="200"/>
+      <location filename="../../bimcommands/BimPanel.py" line="197"/>
       <source>Panel Options</source>
       <translation>Panelalternativ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="237"/>
+      <location filename="../../bimcommands/BimPanel.py" line="234"/>
       <source>Rotate</source>
       <translation>Rotera</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="322"/>
+      <location filename="../../bimcommands/BimPanel.py" line="319"/>
       <source>Create Panel Cut</source>
       <translation>Skapa skärkontur för panel</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="354"/>
+      <location filename="../../bimcommands/BimPanel.py" line="351"/>
       <source>Create Panel Sheet</source>
       <translation>Skapa panelblad</translation>
     </message>
@@ -5620,7 +5620,7 @@ Python-modulen ladybug eller pysolar krävs.</translation>
       <translation>Fel vid beräkning av formen på</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1988"/>
+      <location filename="../../ArchStructure.py" line="2008"/>
       <location filename="../../ArchPanel.py" line="563"/>
       <source>Could not compute a shape</source>
       <translation>Kunde inte beräkna en form</translation>
@@ -5661,7 +5661,7 @@ Python-modulen ladybug eller pysolar krävs.</translation>
       <translation>Redigera positioner för vyer</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="455"/>
+      <location filename="../../bimcommands/BimPanel.py" line="452"/>
       <source>This object has no face</source>
       <translation>Detta objekt har ingen yta</translation>
     </message>
@@ -5671,14 +5671,14 @@ Python-modulen ladybug eller pysolar krävs.</translation>
       <translation>Utfackningsvägg</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="62"/>
-      <location filename="../../bimcommands/BimTruss.py" line="61"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="59"/>
+      <location filename="../../bimcommands/BimTruss.py" line="58"/>
       <source>Select only one base object or none</source>
       <translation>Välj endast ett basobjekt eller inget</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="67"/>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="122"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="64"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="119"/>
       <source>Create Curtain Wall</source>
       <translation>Skapa utfackningsvägg</translation>
     </message>
@@ -6215,23 +6215,23 @@ Python-modulen ladybug eller pysolar krävs.</translation>
       <translation>Rörkoppling</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="62"/>
-      <location filename="../../bimcommands/BimPipe.py" line="71"/>
+      <location filename="../../bimcommands/BimPipe.py" line="59"/>
+      <location filename="../../bimcommands/BimPipe.py" line="68"/>
       <source>Create Pipe</source>
       <translation>Skapa rör</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="106"/>
+      <location filename="../../bimcommands/BimPipe.py" line="103"/>
       <source>Select exactly 2 or 3 pipe objects</source>
       <translation>Välj exakt 2 eller 3 rörobjekt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="112"/>
+      <location filename="../../bimcommands/BimPipe.py" line="109"/>
       <source>Select only pipe objects</source>
       <translation>Välj endast rörobjekt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="116"/>
+      <location filename="../../bimcommands/BimPipe.py" line="113"/>
       <source>Create Connector</source>
       <translation>Skapa anslutare</translation>
     </message>
@@ -6359,7 +6359,7 @@ Python-modulen ladybug eller pysolar krävs.</translation>
       <location filename="../../ArchCommands.py" line="1731"/>
       <location filename="../../ArchSchedule.py" line="988"/>
       <location filename="../../ArchSchedule.py" line="1013"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="480"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="477"/>
       <source>Value</source>
       <translation>Värde</translation>
     </message>
@@ -6407,7 +6407,7 @@ Skapandet av våningen avbröts.</translation>
       <translation>Skapa våningsplan</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="50"/>
+      <location filename="../../bimcommands/BimAxis.py" line="47"/>
       <source>Create Axis</source>
       <translation>Skapa axel</translation>
     </message>
@@ -6514,8 +6514,8 @@ Skapandet av våningen avbröts.</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2132"/>
-      <location filename="../../bimcommands/BimRoof.py" line="94"/>
-      <location filename="../../bimcommands/BimSpace.py" line="71"/>
+      <location filename="../../bimcommands/BimRoof.py" line="91"/>
+      <location filename="../../bimcommands/BimSpace.py" line="68"/>
       <source>Select a base object</source>
       <translation>Välj ett basobjekt</translation>
     </message>
@@ -6584,7 +6584,7 @@ Skapandet av våningen avbröts.</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2538"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="475"/>
       <source>Property</source>
       <translation>Fastighet</translation>
     </message>
@@ -6615,13 +6615,13 @@ Skapandet av våningen avbröts.</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2700"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="635"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="632"/>
       <source>New property</source>
       <translation>Ny objekt</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2737"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="684"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="681"/>
       <source>New property set</source>
       <translation>Ny egenskapsuppsättning</translation>
     </message>
@@ -6631,13 +6631,13 @@ Skapandet av våningen avbröts.</translation>
       <translation>Armeringsjärn</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRebar.py" line="72"/>
-      <location filename="../../bimcommands/BimRebar.py" line="106"/>
+      <location filename="../../bimcommands/BimRebar.py" line="69"/>
+      <location filename="../../bimcommands/BimRebar.py" line="103"/>
       <source>Create Rebar</source>
       <translation>Skapa armeringsjärn</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRebar.py" line="116"/>
+      <location filename="../../bimcommands/BimRebar.py" line="113"/>
       <source>Select a base face on a structural object</source>
       <translation>Välj en basyta på en bärande konstruktion</translation>
     </message>
@@ -6647,114 +6647,114 @@ Skapandet av våningen avbröts.</translation>
       <translation>Snitt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSectionPlane.py" line="65"/>
+      <location filename="../../bimcommands/BimSectionPlane.py" line="62"/>
       <source>Create Section Plane</source>
       <translation>Skapa snittplan</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1799"/>
+      <location filename="../../ArchSectionPlane.py" line="1798"/>
       <source>Scope</source>
       <translation>Omfång</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1802"/>
+      <location filename="../../ArchSectionPlane.py" line="1801"/>
       <source>Placement and Visuals</source>
       <translation>Placering och synlighet</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1805"/>
+      <location filename="../../ArchSectionPlane.py" line="1804"/>
       <source>Objects seen by this section plane</source>
       <translation>Objekt sedda av detta sektionsplan</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1811"/>
+      <location filename="../../ArchSectionPlane.py" line="1810"/>
       <source>Removes highlighted objects from the list above</source>
       <translation>Tar bort framhävda objekt från listan ovan</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1812"/>
+      <location filename="../../ArchSectionPlane.py" line="1811"/>
       <source>Add Selected</source>
       <translation>Lägg till markerade</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1817"/>
+      <location filename="../../ArchSectionPlane.py" line="1816"/>
       <source>Adds selected objects to the scope of this section plane</source>
       <translation>Lägger till valda objekt till omfånget för detta sektionsplan</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1818"/>
+      <location filename="../../ArchSectionPlane.py" line="1817"/>
       <source>Cut View</source>
       <translation>Snittvy</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1825"/>
+      <location filename="../../ArchSectionPlane.py" line="1824"/>
       <source>Creates a live cut in the 3D view, hiding geometry on one side of the plane to see inside your model</source>
       <translation>Skapar ett live-snitt i 3D-vyn och döljer geometrin på ena sidan av planet så att du kan se inuti modellen</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1826"/>
+      <location filename="../../ArchSectionPlane.py" line="1825"/>
       <source>Rotate by 90°</source>
       <translation>Rotera 90°</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1830"/>
+      <location filename="../../ArchSectionPlane.py" line="1829"/>
       <source>Rotates the plane around its local X-axis</source>
       <translation>Roterar planet runt sin lokala X-axel</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1834"/>
+      <location filename="../../ArchSectionPlane.py" line="1833"/>
       <source>Rotates the plane around its local Y-axis</source>
       <translation>Roterar planet runt sin lokala Y-axel</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1838"/>
+      <location filename="../../ArchSectionPlane.py" line="1837"/>
       <source>Rotates the plane around its local Z-axis</source>
       <translation>Roterar planet runt sin lokala Z-axel</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1839"/>
+      <location filename="../../ArchSectionPlane.py" line="1838"/>
       <source>Resize to Fit</source>
       <translation>Storleksändra för att passa</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1845"/>
+      <location filename="../../ArchSectionPlane.py" line="1844"/>
       <source>Recenter Plane</source>
       <translation>Omcentrera plan</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1827"/>
+      <location filename="../../ArchSectionPlane.py" line="1826"/>
       <source>Rotate X</source>
       <translation>Rotera X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1598"/>
+      <location filename="../../ArchSectionPlane.py" line="1597"/>
       <source>Toggle Cut View</source>
       <translation>Växla snittvy</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1831"/>
+      <location filename="../../ArchSectionPlane.py" line="1830"/>
       <source>Rotate Y</source>
       <translation>Rotera Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1835"/>
+      <location filename="../../ArchSectionPlane.py" line="1834"/>
       <source>Rotate Z</source>
       <translation>Rotera Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1844"/>
+      <location filename="../../ArchSectionPlane.py" line="1843"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Ändrar planets storlek så att det passar objekten i listan ovan</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="530"/>
       <location filename="../../ArchWall.py" line="1873"/>
-      <location filename="../../bimcommands/BimWall.py" line="530"/>
+      <location filename="../../bimcommands/BimWall.py" line="527"/>
       <source>Center</source>
       <translation>Centrera</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1850"/>
+      <location filename="../../ArchSectionPlane.py" line="1849"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Centrerar planet på objekten i listan ovan</translation>
     </message>
@@ -6792,7 +6792,7 @@ Skapandet av byggnaden avbröts.</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="281"/>
-      <location filename="../../bimcommands/BimBuildingPart.py" line="90"/>
+      <location filename="../../bimcommands/BimBuildingPart.py" line="87"/>
       <source>Create Building</source>
       <translation>Skapa byggnad</translation>
     </message>
@@ -6802,7 +6802,7 @@ Skapandet av byggnaden avbröts.</translation>
       <translation>Utrymme</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSpace.py" line="59"/>
+      <location filename="../../bimcommands/BimSpace.py" line="56"/>
       <source>Create Space</source>
       <translation>Skapa utrymme</translation>
     </message>
@@ -6857,69 +6857,69 @@ Skapandet av byggnaden avbröts.</translation>
       <translation>Väggar kan endast baseras på Part- eller Mesh-objekt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="110"/>
-      <location filename="../../bimcommands/BimWall.py" line="410"/>
-      <location filename="../../bimcommands/BimWall.py" line="658"/>
+      <location filename="../../bimcommands/BimWall.py" line="107"/>
+      <location filename="../../bimcommands/BimWall.py" line="407"/>
+      <location filename="../../bimcommands/BimWall.py" line="655"/>
       <source>Create Wall</source>
       <translation>Skapa vägg</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="146"/>
+      <location filename="../../bimcommands/BimWall.py" line="143"/>
       <source>First Point of Wall</source>
       <translation>Väggens första punkt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="486"/>
+      <location filename="../../bimcommands/BimWall.py" line="483"/>
       <source>Wall Presets</source>
       <translation>Förinställda väggar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="492"/>
+      <location filename="../../bimcommands/BimWall.py" line="489"/>
       <source>This list shows all the MultiMaterials objects of this document. Create some to define wall types.</source>
       <translation>Den här listan visar alla multimaterialobjekt i dokumentet. Skapa sådana för att definiera väggtyper.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="544"/>
+      <location filename="../../bimcommands/BimWall.py" line="541"/>
       <source>Baseline</source>
       <translation>Baslinje</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="550"/>
+      <location filename="../../bimcommands/BimWall.py" line="547"/>
       <source>No baseline</source>
       <translation>Ingen baslinje</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="551"/>
+      <location filename="../../bimcommands/BimWall.py" line="548"/>
       <source>Draft line</source>
       <translation>Draft-linje</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="552"/>
+      <location filename="../../bimcommands/BimWall.py" line="549"/>
       <source>Sketch</source>
       <translation>Skiss</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="837"/>
       <location filename="../../ArchWall.py" line="1893"/>
-      <location filename="../../bimcommands/BimWall.py" line="528"/>
+      <location filename="../../bimcommands/BimWall.py" line="525"/>
       <source>Alignment</source>
       <translation>Justering</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1872"/>
-      <location filename="../../bimcommands/BimWall.py" line="530"/>
+      <location filename="../../bimcommands/BimWall.py" line="527"/>
       <source>Left</source>
       <translation>Vänster</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1874"/>
-      <location filename="../../bimcommands/BimWall.py" line="531"/>
+      <location filename="../../bimcommands/BimWall.py" line="528"/>
       <source>Right</source>
       <translation>Höger</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="584"/>
-      <location filename="../../bimcommands/BimArchUtils.py" line="609"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="581"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="606"/>
       <source>Merge Walls</source>
       <translation>Sammanfoga väggar</translation>
     </message>
@@ -6945,7 +6945,7 @@ Skapandet av byggnaden avbröts.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1848"/>
-      <location filename="../../bimcommands/BimWall.py" line="481"/>
+      <location filename="../../bimcommands/BimWall.py" line="478"/>
       <source>Wall Options</source>
       <translation>Väggalternativ</translation>
     </message>
@@ -7056,64 +7056,64 @@ Skapandet av byggnaden avbröts.</translation>
       <translation>Aktiverar tvingad B-rep för objektet</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="58"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="55"/>
       <source>Add space boundary</source>
       <translation>Lägg till utrymmesgräns</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="76"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="73"/>
       <source>Grouping</source>
       <translation>Gruppering</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="115"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="112"/>
       <source>Remove space boundary</source>
       <translation>Ta bort utrymmesgränsen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="133"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="130"/>
       <source>Ungrouping</source>
       <translation>Avgruppering</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="176"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="173"/>
       <source>Split Mesh</source>
       <translation>Dela nät</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="224"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="221"/>
       <source>Mesh to shape</source>
       <translation>Nät till form</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="291"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="288"/>
       <source>Remove shape</source>
       <translation>Ta bort form</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="343"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="340"/>
       <source>No problems found!</source>
       <translation>Inga problem hittades!</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="592"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="589"/>
       <source>The selected wall contains no subwalls to merge</source>
       <translation>Den valda väggen innehåller inga underväggar som ska sammanfogas</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="595"/>
-      <location filename="../../bimcommands/BimArchUtils.py" line="599"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="592"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="596"/>
       <source>Select only wall objects</source>
       <translation>Välj endast väggobjekt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="607"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="604"/>
       <source>Walls with different 'Width', 'Height' and 'Align' properties cannot be merged</source>
       <translation>Väggar med olika egenskaper för ”Bredd”, ’Höjd’ och ”Justering” kan inte slås samman</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="415"/>
-      <location filename="../../bimcommands/BimArchUtils.py" line="448"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="412"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="445"/>
       <source>Create Component</source>
       <translation>Skapa komponent</translation>
     </message>
@@ -7123,27 +7123,27 @@ Skapandet av byggnaden avbröts.</translation>
       <translation>Nyckel</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="482"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="479"/>
       <source>Create IFC properties spreadsheet</source>
       <translation>Skapa kalkylblad för IFC-egenskaper</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBuildingPart.py" line="60"/>
+      <location filename="../../bimcommands/BimBuildingPart.py" line="57"/>
       <source>Create Level</source>
       <translation>Skapa nivå</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimFence.py" line="63"/>
+      <location filename="../../bimcommands/BimFence.py" line="60"/>
       <source>Create Fence</source>
       <translation>Skapa staket</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="303"/>
+      <location filename="../../bimcommands/BimBox.py" line="299"/>
       <source>Create Box</source>
       <translation>Skapa rätblock</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="65"/>
+      <location filename="../../bimcommands/BimDrawingView.py" line="62"/>
       <source>Create 2D View</source>
       <translation>Skapa 2D-vy</translation>
     </message>
@@ -7328,7 +7328,7 @@ Skapandet av byggnaden avbröts.</translation>
       <translation>Förfina</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSketch.py" line="57"/>
+      <location filename="../../bimcommands/BimSketch.py" line="54"/>
       <source>Create Sketch</source>
       <translation>Skapa skiss</translation>
     </message>
@@ -7363,7 +7363,7 @@ Skapandet av byggnaden avbröts.</translation>
     <name>App::Property</name>
     <message>
       <location filename="../../ArchStructure.py" line="683"/>
-      <location filename="../../ArchStructure.py" line="1865"/>
+      <location filename="../../ArchStructure.py" line="1885"/>
       <source>An optional extrusion path for this element</source>
       <translation>En valfri extruderingsbana för detta element</translation>
     </message>
@@ -7466,42 +7466,42 @@ Skapandet av byggnaden avbröts.</translation>
       <translation>Välj en uppsättning användardefinierade egenskaper som ska användas för att skapa en variantform med samma ArchSketch </translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1432"/>
+      <location filename="../../ArchStructure.py" line="1452"/>
       <source>If the nodes are visible or not</source>
       <translation>Om noderna är synliga eller inte</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1440"/>
+      <location filename="../../ArchStructure.py" line="1460"/>
       <source>The width of the nodes line</source>
       <translation>Bredden på nodernas linje</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1448"/>
+      <location filename="../../ArchStructure.py" line="1468"/>
       <source>The size of the node points</source>
       <translation>Storleken på nodpunkterna</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1457"/>
+      <location filename="../../ArchStructure.py" line="1477"/>
       <source>The color of the nodes line</source>
       <translation>Färgen på nodernas linje</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1466"/>
+      <location filename="../../ArchStructure.py" line="1486"/>
       <source>The type of structural node</source>
       <translation>Typ av bärverksnod</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1912"/>
+      <location filename="../../ArchStructure.py" line="1932"/>
       <source>Axes systems this structure is built on</source>
       <translation>Axelsystem som denna bärande konstruktion är baserad på</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1922"/>
+      <location filename="../../ArchStructure.py" line="1942"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation>Elementnummer som ska uteslutas när denna bärande konstruktion är baserad på axlar</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1929"/>
+      <location filename="../../ArchStructure.py" line="1949"/>
       <source>If true the element are aligned with axes</source>
       <translation>Om aktiverat riktas elementen in efter axlarna</translation>
     </message>
@@ -8631,7 +8631,7 @@ Skapandet av byggnaden avbröts.</translation>
     </message>
     <message>
       <location filename="../../ArchIFC.py" line="98"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="412"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="409"/>
       <source>IFC properties of this object</source>
       <translation>IFC-egenskaper för detta objekt</translation>
     </message>
@@ -9415,34 +9415,33 @@ Skapandet av byggnaden avbröts.</translation>
       <translation>Transparensen för detta objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1230"/>
-      <location filename="../../ArchSectionPlane.py" line="1247"/>
+      <location filename="../../ArchSectionPlane.py" line="1239"/>
       <source>Show the cut in the 3D view</source>
       <translation>Visa snittet i 3D-vyn</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1238"/>
+      <location filename="../../ArchSectionPlane.py" line="1230"/>
       <source>The color of this object</source>
       <translation>Färgen på detta objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1258"/>
+      <location filename="../../ArchSectionPlane.py" line="1250"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>Avståndet mellan snittplanet och det faktiska snittet (håll detta till ett mycket litet värde, men inte noll)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1267"/>
+      <location filename="../../ArchSectionPlane.py" line="1259"/>
       <source>Show the label in the 3D view</source>
       <translation>Visa etiketten i 3D-vyn</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1275"/>
+      <location filename="../../ArchSectionPlane.py" line="1267"/>
       <location filename="../../ArchSpace.py" line="579"/>
       <source>The name of the font</source>
       <translation>Namnet på teckensnittet</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1284"/>
+      <location filename="../../ArchSectionPlane.py" line="1276"/>
       <location filename="../../ArchSpace.py" line="597"/>
       <source>The size of the text font</source>
       <translation>Storleken på textens teckensnitt</translation>
@@ -9845,12 +9844,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_StructureTools</name>
     <message>
-      <location filename="../../ArchStructure.py" line="2050"/>
+      <location filename="../../ArchStructure.py" line="2070"/>
       <source>Structure Tools</source>
       <translation>Verktyg för bärande konstruktioner</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="2051"/>
+      <location filename="../../ArchStructure.py" line="2071"/>
       <source>Structure tools</source>
       <translation>Verktyg för bärande konstruktioner</translation>
     </message>
@@ -9858,12 +9857,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_Equipment</name>
     <message>
-      <location filename="../../bimcommands/BimEquipment.py" line="43"/>
+      <location filename="../../bimcommands/BimEquipment.py" line="40"/>
       <source>Equipment</source>
       <translation>Utrustning</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimEquipment.py" line="47"/>
+      <location filename="../../bimcommands/BimEquipment.py" line="44"/>
       <source>Creates an equipment from a selected object (Part or Mesh)</source>
       <translation>Skapar ett utrustningsobjekt från ett markerat objekt (Part eller Mesh)</translation>
     </message>
@@ -9982,12 +9981,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_Profile</name>
     <message>
-      <location filename="../../bimcommands/BimProfile.py" line="43"/>
+      <location filename="../../bimcommands/BimProfile.py" line="40"/>
       <source>Profile</source>
       <translation>Profil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProfile.py" line="45"/>
+      <location filename="../../bimcommands/BimProfile.py" line="42"/>
       <source>Creates a profile</source>
       <translation>Skapar en profil</translation>
     </message>
@@ -9995,12 +9994,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_Site</name>
     <message>
-      <location filename="../../bimcommands/BimSite.py" line="46"/>
+      <location filename="../../bimcommands/BimSite.py" line="43"/>
       <source>Site</source>
       <translation>Byggplats</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSite.py" line="48"/>
+      <location filename="../../bimcommands/BimSite.py" line="45"/>
       <source>Creates a site including selected objects</source>
       <translation>Skapar en byggplats med utvalda objekt</translation>
     </message>
@@ -10008,12 +10007,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_Roof</name>
     <message>
-      <location filename="../../bimcommands/BimRoof.py" line="42"/>
+      <location filename="../../bimcommands/BimRoof.py" line="39"/>
       <source>Roof</source>
       <translation>Tak</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRoof.py" line="46"/>
+      <location filename="../../bimcommands/BimRoof.py" line="43"/>
       <source>Creates a roof object from the selected wire.</source>
       <translation>Skapar ett takobjekt från den markerade tråden.</translation>
     </message>
@@ -10021,12 +10020,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_CutPlane</name>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="44"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="41"/>
       <source>Cut With Plane</source>
       <translation>Skär med plan</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="45"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="42"/>
       <source>Cuts an object with a plane</source>
       <translation>Skär ett objekt med ett plan</translation>
     </message>
@@ -10034,12 +10033,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_Reference</name>
     <message>
-      <location filename="../../bimcommands/BimReference.py" line="43"/>
+      <location filename="../../bimcommands/BimReference.py" line="40"/>
       <source>External Reference</source>
       <translation>Extern referens</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimReference.py" line="45"/>
+      <location filename="../../bimcommands/BimReference.py" line="42"/>
       <source>Creates an external reference object</source>
       <translation>Skapar ett externt referensobjekt</translation>
     </message>
@@ -10047,12 +10046,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_Frame</name>
     <message>
-      <location filename="../../bimcommands/BimFrame.py" line="43"/>
+      <location filename="../../bimcommands/BimFrame.py" line="40"/>
       <source>Frame</source>
       <translation>Ram</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimFrame.py" line="48"/>
+      <location filename="../../bimcommands/BimFrame.py" line="45"/>
       <source>Creates a frame object from a planar 2D object (the extrusion path(s)) and a profile. Make sure objects are selected in that order.</source>
       <translation>Skapar ett ramobjekt från ett plant 2D-objekt (extruderingsbanan/banorna) och en profil. Se till att objekten väljs i den ordningen.</translation>
     </message>
@@ -10060,12 +10059,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_Window</name>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="50"/>
+      <location filename="../../bimcommands/BimWindow.py" line="47"/>
       <source>Window</source>
       <translation>Fönster</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="55"/>
+      <location filename="../../bimcommands/BimWindow.py" line="52"/>
       <source>Creates a window object from a selected object (wire, rectangle or sketch)</source>
       <translation>Skapar ett fönsterobjekt från ett markerat objekt (tråd, rektangel eller skiss)</translation>
     </message>
@@ -10073,12 +10072,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_AxisSystem</name>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="69"/>
+      <location filename="../../bimcommands/BimAxis.py" line="66"/>
       <source>Axis System</source>
       <translation>Axis-system</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="73"/>
+      <location filename="../../bimcommands/BimAxis.py" line="70"/>
       <source>Creates an axis system from a set of axes</source>
       <translation>Skapar ett axelsystem från en uppsättning axlar</translation>
     </message>
@@ -10086,12 +10085,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_Truss</name>
     <message>
-      <location filename="../../bimcommands/BimTruss.py" line="43"/>
+      <location filename="../../bimcommands/BimTruss.py" line="40"/>
       <source>Truss</source>
       <translation>Fackverk</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTruss.py" line="47"/>
+      <location filename="../../bimcommands/BimTruss.py" line="44"/>
       <source>Creates a truss object from the selected line or from scratch</source>
       <translation>Skapar ett fackverksobjekt från den markerade linjen eller från början</translation>
     </message>
@@ -10099,12 +10098,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_Stairs</name>
     <message>
-      <location filename="../../bimcommands/BimStairs.py" line="43"/>
+      <location filename="../../bimcommands/BimStairs.py" line="40"/>
       <source>Stairs</source>
       <translation>Trappa</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimStairs.py" line="45"/>
+      <location filename="../../bimcommands/BimStairs.py" line="42"/>
       <source>Creates a flight of stairs</source>
       <translation>Skapar ett trapplopp</translation>
     </message>
@@ -10112,12 +10111,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_Space</name>
     <message>
-      <location filename="../../bimcommands/BimSpace.py" line="43"/>
+      <location filename="../../bimcommands/BimSpace.py" line="40"/>
       <source>Space</source>
       <translation>Utrymme</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSpace.py" line="47"/>
+      <location filename="../../bimcommands/BimSpace.py" line="44"/>
       <source>Creates a space object from selected boundary objects</source>
       <translation>Skapar ett utrymmesobjekt från markerade gränsobjekt</translation>
     </message>
@@ -10125,12 +10124,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_Fence</name>
     <message>
-      <location filename="../../bimcommands/BimFence.py" line="42"/>
+      <location filename="../../bimcommands/BimFence.py" line="39"/>
       <source>Fence</source>
       <translation>Staket</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimFence.py" line="45"/>
+      <location filename="../../bimcommands/BimFence.py" line="42"/>
       <source>Creates a fence object from a selected section, post and path</source>
       <translation>Skapar ett staketobjekt från en vald sektion, stolpe och bana</translation>
     </message>
@@ -10138,12 +10137,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_Material</name>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="533"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="530"/>
       <source>Material</source>
       <translation>Material</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="537"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="534"/>
       <source>Creates or edits the material definition of a selected object.</source>
       <translation>Skapar eller redigerar materialdefinitionen för ett markerat objekt.</translation>
     </message>
@@ -10151,12 +10150,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_MultiMaterial</name>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="568"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="565"/>
       <source>Multi-Material</source>
       <translation>Multimaterial</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="570"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="567"/>
       <source>Creates or edits multi-materials</source>
       <translation>Skapar eller redigerar multimaterial</translation>
     </message>
@@ -10164,12 +10163,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_MaterialTools</name>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="600"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="597"/>
       <source>Material Tools</source>
       <translation>Materialverktyg</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="601"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="598"/>
       <source>Material tools</source>
       <translation>Materialverktyg</translation>
     </message>
@@ -10177,12 +10176,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_Grid</name>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="110"/>
+      <location filename="../../bimcommands/BimAxis.py" line="107"/>
       <source>Grid</source>
       <translation>Rutnät</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="112"/>
+      <location filename="../../bimcommands/BimAxis.py" line="109"/>
       <source>Creates a customizable grid object</source>
       <translation>Skapar ett anpassningsbart rutnätsobjekt</translation>
     </message>
@@ -10250,12 +10249,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_Panel</name>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="55"/>
+      <location filename="../../bimcommands/BimPanel.py" line="52"/>
       <source>Panel</source>
       <translation>Panel</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="60"/>
+      <location filename="../../bimcommands/BimPanel.py" line="57"/>
       <source>Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)</source>
       <translation>Skapar ett panelobjekt från grunden eller från ett markerat objekt (skiss, tråd, yta eller solid)</translation>
     </message>
@@ -10263,12 +10262,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_Panel_Cut</name>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="307"/>
+      <location filename="../../bimcommands/BimPanel.py" line="304"/>
       <source>Panel Cut</source>
       <translation>Skärkontur för panel</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="309"/>
+      <location filename="../../bimcommands/BimPanel.py" line="306"/>
       <source>Creates 2D views of selected panels</source>
       <translation>Skapar 2D-vyer av valda paneler</translation>
     </message>
@@ -10276,12 +10275,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_Panel_Sheet</name>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="340"/>
+      <location filename="../../bimcommands/BimPanel.py" line="337"/>
       <source>Panel Sheet</source>
       <translation>Panelplåt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="344"/>
+      <location filename="../../bimcommands/BimPanel.py" line="341"/>
       <source>Creates a 2D sheet which can contain panel cuts</source>
       <translation>Skapar ett blad i 2D som kan innehålla skärkonturer för paneler</translation>
     </message>
@@ -10289,12 +10288,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_Nest</name>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="379"/>
+      <location filename="../../bimcommands/BimPanel.py" line="376"/>
       <source>Nest</source>
       <translation>Nesta</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="383"/>
+      <location filename="../../bimcommands/BimPanel.py" line="380"/>
       <source>Nests a series of selected shapes in a container</source>
       <translation>Nestar en uppsättning markerade former i en behållare</translation>
     </message>
@@ -10302,12 +10301,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_PanelTools</name>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="555"/>
+      <location filename="../../bimcommands/BimPanel.py" line="552"/>
       <source>Panel Tools</source>
       <translation>Panelverktyg</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="556"/>
+      <location filename="../../bimcommands/BimPanel.py" line="553"/>
       <source>Panel tools</source>
       <translation>Panelverktyg</translation>
     </message>
@@ -10315,12 +10314,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_CurtainWall</name>
     <message>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="43"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="40"/>
       <source>Curtain Wall</source>
       <translation>Utfackningsvägg</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="48"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="45"/>
       <source>Creates a curtain wall object from selected line or from scratch</source>
       <translation>Skapar en utfackningsvägg från en markerad linje eller från grunden</translation>
     </message>
@@ -10328,12 +10327,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_Pipe</name>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="43"/>
+      <location filename="../../bimcommands/BimPipe.py" line="40"/>
       <source>Pipe</source>
       <translation>Rör</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="47"/>
+      <location filename="../../bimcommands/BimPipe.py" line="44"/>
       <source>Creates a pipe object from a given wire or line</source>
       <translation>Skapar ett rörobjekt från en given tråd eller linje</translation>
     </message>
@@ -10341,12 +10340,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_PipeConnector</name>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="87"/>
+      <location filename="../../bimcommands/BimPipe.py" line="84"/>
       <source>Connector</source>
       <translation>Anslutare</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="91"/>
+      <location filename="../../bimcommands/BimPipe.py" line="88"/>
       <source>Creates a connector between 2 or 3 selected pipes</source>
       <translation>Skapar en anslutare mellan 2 eller 3 valda rör</translation>
     </message>
@@ -10354,12 +10353,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_PipeTools</name>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="132"/>
+      <location filename="../../bimcommands/BimPipe.py" line="129"/>
       <source>Pipe Tools</source>
       <translation>Rörverktyg</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="133"/>
+      <location filename="../../bimcommands/BimPipe.py" line="130"/>
       <source>Pipe tools</source>
       <translation>Rörverktyg</translation>
     </message>
@@ -10367,12 +10366,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_Schedule</name>
     <message>
-      <location filename="../../bimcommands/BimSchedule.py" line="42"/>
+      <location filename="../../bimcommands/BimSchedule.py" line="39"/>
       <source>Schedule</source>
       <translation>Förteckning</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSchedule.py" line="45"/>
+      <location filename="../../bimcommands/BimSchedule.py" line="42"/>
       <source>Creates a schedule to collect data from the model</source>
       <translation>Skapar en förteckning för att samla in data från modellen</translation>
     </message>
@@ -10393,12 +10392,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_Axis</name>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="43"/>
+      <location filename="../../bimcommands/BimAxis.py" line="40"/>
       <source>Axis</source>
       <translation>Axel</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="45"/>
+      <location filename="../../bimcommands/BimAxis.py" line="42"/>
       <source>Creates a set of axes</source>
       <translation>Skapar en uppsättning axlar</translation>
     </message>
@@ -10406,12 +10405,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_AxisTools</name>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="137"/>
+      <location filename="../../bimcommands/BimAxis.py" line="134"/>
       <source>Axis Tools</source>
       <translation>Axelverktyg</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="138"/>
+      <location filename="../../bimcommands/BimAxis.py" line="135"/>
       <source>Axis tools</source>
       <translation>Axelverktyg</translation>
     </message>
@@ -10419,12 +10418,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_Rebar</name>
     <message>
-      <location filename="../../bimcommands/BimRebar.py" line="43"/>
+      <location filename="../../bimcommands/BimRebar.py" line="40"/>
       <source>Custom Rebar</source>
       <translation>Anpassad armering</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRebar.py" line="48"/>
+      <location filename="../../bimcommands/BimRebar.py" line="45"/>
       <source>Creates a reinforcement bar from the selected face of solid object and/or a sketch</source>
       <translation>Skapar ett armeringsjärn från den markerade ytan på en solid och/eller en skiss</translation>
     </message>
@@ -10432,12 +10431,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_SectionPlane</name>
     <message>
-      <location filename="../../bimcommands/BimSectionPlane.py" line="44"/>
+      <location filename="../../bimcommands/BimSectionPlane.py" line="41"/>
       <source>Section Plane</source>
       <translation>Sektionsplan</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSectionPlane.py" line="48"/>
+      <location filename="../../bimcommands/BimSectionPlane.py" line="45"/>
       <source>Creates a section plane object, including the selected objects</source>
       <translation>Skapar ett snittplansobjekt som omfattar de markerade objekten</translation>
     </message>
@@ -10446,7 +10445,7 @@ Skapandet av byggnaden avbröts.</translation>
     <name>Arch_Building</name>
     <message>
       <location filename="../../ArchBuilding.py" line="229"/>
-      <location filename="../../bimcommands/BimBuildingPart.py" line="78"/>
+      <location filename="../../bimcommands/BimBuildingPart.py" line="75"/>
       <source>Building</source>
       <translation>Byggnad</translation>
     </message>
@@ -10456,7 +10455,7 @@ Skapandet av byggnaden avbröts.</translation>
       <translation>Skapar ett byggnadsobjekt som inkluderar valda objekt.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBuildingPart.py" line="80"/>
+      <location filename="../../bimcommands/BimBuildingPart.py" line="77"/>
       <source>Creates a building object</source>
       <translation>Skapar ett byggnadsobjekt</translation>
     </message>
@@ -10464,12 +10463,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_Wall</name>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="59"/>
+      <location filename="../../bimcommands/BimWall.py" line="56"/>
       <source>Wall</source>
       <translation>Vägg</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="64"/>
+      <location filename="../../bimcommands/BimWall.py" line="61"/>
       <source>Creates a wall object from scratch or from a selected object (wire, face or solid)</source>
       <translation>Skapar ett väggobjekt från grunden eller från ett markerat objekt (tråd, yta eller solid)</translation>
     </message>
@@ -10477,12 +10476,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_MergeWalls</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="546"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="543"/>
       <source>Merge Walls</source>
       <translation>Sammanfoga väggar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="549"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="546"/>
       <source>Merges the selected walls, if possible</source>
       <translation>Sammanfogar de valda väggarna, om möjligt</translation>
     </message>
@@ -10490,12 +10489,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_Add</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="42"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="39"/>
       <source>Add Component</source>
       <translation>Lägg till komponent</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="45"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="42"/>
       <source>Adds the selected components to the active object</source>
       <translation>Lägger till de valda komponenterna till det aktiva objektet</translation>
     </message>
@@ -10503,12 +10502,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_SplitMesh</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="161"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="158"/>
       <source>Split Mesh</source>
       <translation>Dela nät</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="164"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="161"/>
       <source>Splits selected meshes into independent components</source>
       <translation>Delar upp markerade nät i oberoende komponenter</translation>
     </message>
@@ -10516,12 +10515,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_MeshToShape</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="194"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="191"/>
       <source>Mesh to Shape</source>
       <translation>Nät till form</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="197"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="194"/>
       <source>Turns selected meshes into Part shape objects</source>
       <translation>Omvandlar markerade nät till Part-formobjekt</translation>
     </message>
@@ -10529,12 +10528,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="240"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="237"/>
       <source>Select Non-Manifold Meshes</source>
       <translation>Markera icke-manifolda nät</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="244"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="241"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
       <translation>Markerar alla icke-manifolda nät i dokumentet eller i de markerade grupperna</translation>
     </message>
@@ -10542,12 +10541,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_CloseHoles</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="305"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="302"/>
       <source>Close Holes</source>
       <translation>Slut hål</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="308"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="305"/>
       <source>Closes holes in open shapes, turning them into solids</source>
       <translation>Sluter hål i öppna former och omvandlar dem till solider</translation>
     </message>
@@ -10555,12 +10554,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_Check</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="330"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="327"/>
       <source>Check</source>
       <translation>Kontrollera</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="331"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="328"/>
       <source>Checks the selected objects for problems</source>
       <translation>Kontrollerar de valda objekten för problem</translation>
     </message>
@@ -10568,12 +10567,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_Survey</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="359"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="356"/>
       <source>Survey</source>
       <translation>Mätning</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="360"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="357"/>
       <source>Starts survey</source>
       <translation>Startar mätning</translation>
     </message>
@@ -10581,12 +10580,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_Component</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="401"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="398"/>
       <source>Component</source>
       <translation>Komponent</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="405"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="402"/>
       <source>Creates an undefined architectural component</source>
       <translation>Skapar en odefinierad arkitektonisk komponent</translation>
     </message>
@@ -10594,12 +10593,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_CloneComponent</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="434"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="431"/>
       <source>Clone Component</source>
       <translation>Klona komponent</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="438"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="435"/>
       <source>Clones an object as an undefined architectural component</source>
       <translation>Klonar ett objekt som en odefinierad arkitektonisk komponent</translation>
     </message>
@@ -10607,12 +10606,12 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Arch_ToggleSubs</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="503"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="500"/>
       <source>Toggle Subcomponents</source>
       <translation>Visa/dölj underkomponenter</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="506"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="503"/>
       <source>Shows or hides the subcomponents of this object</source>
       <translation>Visar eller döljer underkomponenterna för detta objekt</translation>
     </message>
@@ -10646,8 +10645,8 @@ Skapandet av byggnaden avbröts.</translation>
     <message>
       <location filename="../../BimStatus.py" line="53"/>
       <location filename="../../BimStatus.py" line="63"/>
-      <location filename="../../bimcommands/BimNudge.py" line="76"/>
-      <location filename="../../bimcommands/BimNudge.py" line="146"/>
+      <location filename="../../bimcommands/BimNudge.py" line="73"/>
+      <location filename="../../bimcommands/BimNudge.py" line="143"/>
       <source>Auto</source>
       <translation>Automatisk</translation>
     </message>
@@ -10686,1196 +10685,1196 @@ Alt+PgUp: förläng extruderingen. Alt+PgDown: förkorta extruderingen. Alt+/: v
       <translation>Snäppning</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="48"/>
-      <location filename="../../bimcommands/BimBox.py" line="174"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="45"/>
+      <location filename="../../bimcommands/BimBox.py" line="170"/>
       <source>Length</source>
       <translation>Längd</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="49"/>
-      <location filename="../../bimcommands/BimBox.py" line="183"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="46"/>
+      <location filename="../../bimcommands/BimBox.py" line="179"/>
       <source>Width</source>
       <translation>Bredd</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="50"/>
-      <location filename="../../bimcommands/BimBox.py" line="192"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="47"/>
+      <location filename="../../bimcommands/BimBox.py" line="188"/>
       <source>Height</source>
       <translation>Höjd</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimClassification.py" line="90"/>
+      <location filename="../../bimcommands/BimClassification.py" line="87"/>
       <source>Search…</source>
       <translation>Sök…</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimClassification.py" line="91"/>
+      <location filename="../../bimcommands/BimClassification.py" line="88"/>
       <source>Searches classes</source>
       <translation>Söker klasser</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimClassification.py" line="110"/>
+      <location filename="../../bimcommands/BimClassification.py" line="107"/>
       <source>Editing</source>
       <translation>Redigerar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="69"/>
+      <location filename="../../bimcommands/BimDiff.py" line="66"/>
       <source>The current document must be the main one. The other contains newer objects to merge into it. Ensure that only the objects intended for comparison are visible in both documents. Proceed?</source>
       <translation>Det aktuella dokumentet måste vara huvuddokumentet. Det andra innehåller nyare objekt som ska sammanfogas med det. Se till att endast de objekt som ska jämföras är synliga i båda dokumenten. Vill du fortsätta?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="328"/>
+      <location filename="../../bimcommands/BimDiff.py" line="325"/>
       <source>objects still have the same shape but have a different material. Update them in the main document?</source>
       <translation>objekt har samma form men ett annat material. Vill du uppdatera dem i huvuddokumentet?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="383"/>
+      <location filename="../../bimcommands/BimDiff.py" line="380"/>
       <source>objects have no IFC ID in the main document, but an identical object with an ID exists in the new document. Transfer these IDs to the original objects?</source>
       <translation>objekt har inget IFC-ID i huvuddokumentet, men ett identiskt objekt med ett ID finns i det nya dokumentet. Överför dessa ID:n till de ursprungliga objekten?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="400"/>
+      <location filename="../../bimcommands/BimDiff.py" line="397"/>
       <source>objects had their name changed. Rename them?</source>
       <translation>objekt har fått nya namn. Vill du byta namn på dem?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="417"/>
+      <location filename="../../bimcommands/BimDiff.py" line="414"/>
       <source>objects had their properties changed. Update?</source>
       <translation>objekt har fått ändrade egenskaper. Vill du uppdatera dem?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="436"/>
+      <location filename="../../bimcommands/BimDiff.py" line="433"/>
       <source>objects have their location changed. Move them to their new position?</source>
       <translation>objekt har flyttats. Vill du flytta dem till deras nya positioner?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="455"/>
+      <location filename="../../bimcommands/BimDiff.py" line="452"/>
       <source>Colorize the objects that have moved in yellow in the other file (to serve as a diff)?</source>
       <translation>Vill du färga flyttade objekt gula i den andra filen för att visa skillnaderna?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="476"/>
+      <location filename="../../bimcommands/BimDiff.py" line="473"/>
       <source>Colorize the objects that have been modified in orange in the other file (to serve as a diff)?</source>
       <translation>Vill du färga ändrade objekt orangea i den andra filen för att visa skillnaderna?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="499"/>
+      <location filename="../../bimcommands/BimDiff.py" line="496"/>
       <source>objects do not exist anymore in the new document. Move them to a 'To Delete' group?</source>
       <translation>objekt finns inte längre i det nya dokumentet. Vill du flytta dem till en grupp med namnet ”To Delete”?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="514"/>
+      <location filename="../../bimcommands/BimDiff.py" line="511"/>
       <source>Colorize the objects that have been removed in red in the other file (to serve as a diff)?</source>
       <translation>Vill du färga borttagna objekt röda i den andra filen för att visa skillnaderna?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="534"/>
+      <location filename="../../bimcommands/BimDiff.py" line="531"/>
       <source>Colorize the objects that have been added in green in the other file (to serve as a diff)?</source>
       <translation>Vill du färga tillagda objekt gröna i den andra filen för att visa skillnaderna?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="555"/>
+      <location filename="../../bimcommands/BimDiff.py" line="552"/>
       <source>Two documents are required to be open to run this tool. One which is the main document, and one that contains new objects to compare against the existing one. Make sure only the objects to compare in both documents are visible.</source>
       <translation>Två dokument måste vara öppna för att det här verktyget ska kunna köras. Ett som är huvuddokumentet och ett som innehåller nya objekt som ska jämföras med det befintliga dokumentet. Se till att endast de objekt som ska jämföras i båda dokumenten är synliga.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="91"/>
-      <location filename="../../bimcommands/BimIfcElements.py" line="460"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="88"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="457"/>
       <source>Create new material</source>
       <translation>Skapa nytt material</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="92"/>
-      <location filename="../../bimcommands/BimIfcElements.py" line="461"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="89"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="458"/>
       <source>Create new multi-material</source>
       <translation>Skapa ett nytt multimaterial</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="139"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="206"/>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="247"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="136"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="203"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="244"/>
       <source>Label</source>
       <translation>Etikett</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="140"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="207"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="137"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="204"/>
       <source>IFC type</source>
       <translation>IFC-typ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="141"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="138"/>
       <source>Material</source>
       <translation>Material</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/__init__.py" line="42"/>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="60"/>
+      <location filename="../../nativeifc/__init__.py" line="45"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="57"/>
       <source>IfcOpenShell was not found on this system. IFC support is disabled</source>
       <translation>IfcOpenShell hittades inte på det här systemet. IFC-stöd är inaktiverat</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="82"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="79"/>
       <source>Objects structure</source>
       <translation>Objektens struktur</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="92"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="89"/>
       <source>Attribute</source>
       <translation>Attribut</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="93"/>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="104"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="90"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="101"/>
       <source>Value</source>
       <translation>Värde</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="103"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="100"/>
       <source>Property</source>
       <translation>Fastighet</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="125"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="122"/>
       <source>Open</source>
       <translation>Öppen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="131"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="128"/>
       <source>Back</source>
       <translation>Tillbaka</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="132"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="129"/>
       <source>Go back to last item selected</source>
       <translation>Gå tillbaka till det senast valda objektet</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="137"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="134"/>
       <source>Insert</source>
       <translation>Infoga</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="143"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="140"/>
       <source>Inserts the selected object and its children in the active document</source>
       <translation>Infogar det markerade objektet och dess underordnade objekt i det aktiva dokumentet</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="149"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="146"/>
       <source>Mesh</source>
       <translation>Nät</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="150"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="147"/>
       <source>Turn mesh display on/off</source>
       <translation>Visa/dölj nät</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="188"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="185"/>
       <source>IFC files (*.ifc)</source>
       <translation>IFC-filer (*.ifc)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="196"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="193"/>
       <source>File not found</source>
       <translation>Filen hittades inte</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="109"/>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="203"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="106"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="200"/>
       <source>IFC Explorer</source>
       <translation>IFC-utforskare</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="126"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="123"/>
       <source>Open another IFC file</source>
       <translation>Öppna en annan IFC-fil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="186"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="183"/>
       <source>Select an IFC File</source>
       <translation>Välj en IFC-fil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="228"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="225"/>
       <source>IfcSite element was not found in %s. Unable to explore.</source>
       <translation>IfcSite-elementet hittades inte i %s. Går inte att utforska.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="485"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="482"/>
       <source>Error in entity</source>
       <translation>Fel i entitet</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="127"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="124"/>
       <source>Custom property sets can be defined in</source>
       <translation>Anpassade egenskapsuppsättningar kan definieras i</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="132"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="129"/>
       <source>Add property</source>
       <translation>Lägg till egenskap</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="134"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="131"/>
       <source>Add property set</source>
       <translation>Lägg till egenskapsuppsättning</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="134"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="131"/>
       <source>New</source>
       <translation>Nytt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="208"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="205"/>
       <source>Search results</source>
       <translation>Sökresultat</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="380"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="377"/>
       <source>Warning: object %1 has old-styled IfcProperties and cannot be updated</source>
       <translation>Varning: objekt %1 använder ett äldre format för IfcProperties och kan inte uppdateras</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="671"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="668"/>
       <source>Please select or create a property set first in which the new property should be placed.</source>
       <translation>Välj eller skapa först en egenskapsuppsättning där den nya egenskapen ska placeras.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="686"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="683"/>
       <source>New Property Set</source>
       <translation>Ny egenskapsuppsättning</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="687"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="684"/>
       <source>Property set name:</source>
       <translation>Egenskapsuppsättningens namn:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="51"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="48"/>
       <source>Area</source>
       <translation>Area</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="52"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="49"/>
       <source>Horizontal Area</source>
       <translation>Horisontell area</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="53"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="50"/>
       <source>Vertical Area</source>
       <translation>Vertikal area</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="54"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="51"/>
       <source>Volume</source>
       <translation>Volym</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="186"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="183"/>
       <source>Add quantity set…</source>
       <translation>Lägg till mängduppsättning …</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="203"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="200"/>
       <source>Adding quantity set</source>
       <translation>Lägger till mängduppsättning</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="438"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="435"/>
       <source>Cannot save quantities settings for object %1</source>
       <translation>Det går inte att spara mängdinställningar för objekt %1</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimImagePlane.py" line="54"/>
+      <location filename="../../bimcommands/BimImagePlane.py" line="51"/>
       <source>Select Image</source>
       <translation>Välj bild</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimImagePlane.py" line="56"/>
+      <location filename="../../bimcommands/BimImagePlane.py" line="53"/>
       <source>Image file (*.png *.jpg *.bmp)</source>
       <translation>Bildfil (*.png *.jpg *.bmp)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimImagePlane.py" line="81"/>
-      <location filename="../../bimcommands/BimBox.py" line="81"/>
+      <location filename="../../bimcommands/BimImagePlane.py" line="78"/>
+      <location filename="../../bimcommands/BimBox.py" line="77"/>
       <source>%1 pick first point</source>
       <translation>%1 välj första punkten</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimImagePlane.py" line="83"/>
+      <location filename="../../bimcommands/BimImagePlane.py" line="80"/>
       <source>%1 pick opposite point</source>
       <translation>%1 välj motsatt punkt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="203"/>
+      <location filename="../../bimcommands/BimLayers.py" line="200"/>
       <source>Warning: The new layer was added to the project</source>
       <translation>Varning: Det nya lagret har lagts till i projektet</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="209"/>
+      <location filename="../../bimcommands/BimLayers.py" line="206"/>
       <source>There is no IFC project in this document</source>
       <translation>Det finns inget IFC-projekt i detta dokument</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="312"/>
+      <location filename="../../bimcommands/BimLayers.py" line="309"/>
       <source>On</source>
       <translation>På</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="313"/>
+      <location filename="../../bimcommands/BimLayers.py" line="310"/>
       <source>Name</source>
       <translation>Namn</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="314"/>
+      <location filename="../../bimcommands/BimLayers.py" line="311"/>
       <source>Line width</source>
       <translation>Linjebredd</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="315"/>
+      <location filename="../../bimcommands/BimLayers.py" line="312"/>
       <source>Draw style</source>
       <translation>Ritstil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="316"/>
+      <location filename="../../bimcommands/BimLayers.py" line="313"/>
       <source>Line color</source>
       <translation>Linjefärg</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="317"/>
+      <location filename="../../bimcommands/BimLayers.py" line="314"/>
       <source>Face color</source>
       <translation>Ytfärg</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="318"/>
+      <location filename="../../bimcommands/BimLayers.py" line="315"/>
       <source>Transparency</source>
       <translation>Genomskinlighet</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="319"/>
+      <location filename="../../bimcommands/BimLayers.py" line="316"/>
       <source>Line print color</source>
       <translation>Linjefärg vid utskrift</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="341"/>
+      <location filename="../../bimcommands/BimLayers.py" line="338"/>
       <source>New Layer</source>
       <translation>Nytt lager</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLeader.py" line="52"/>
+      <location filename="../../bimcommands/BimLeader.py" line="49"/>
       <source>Leader</source>
       <translation>Hänvisningslinje</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLeader.py" line="77"/>
+      <location filename="../../bimcommands/BimLeader.py" line="74"/>
       <source>Create Leader</source>
       <translation>Skapa hänvisningslinje</translation>
     </message>
     <message>
+      <location filename="../../bimcommands/BimLibrary.py" line="184"/>
       <location filename="../../bimcommands/BimLibrary.py" line="187"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="190"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="937"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="941"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="934"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="938"/>
       <source>Preview</source>
       <translation>Förhandsgranskning</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="193"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="190"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="924"/>
       <location filename="../../bimcommands/BimLibrary.py" line="927"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="930"/>
       <source>Options</source>
       <translation>Alternativ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="347"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="344"/>
       <source>It is not possible to link because the main document is closed.</source>
       <translation>Det går inte att länka eftersom huvuddokumentet är stängt.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="307"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="304"/>
       <source>Save the working file before linking.</source>
       <translation>Spara arbetsfilen innan du länkar.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="500"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="497"/>
       <source>No structure in cache. Refresh required.</source>
       <translation>Ingen struktur i cacheminnet. Uppdatering krävs.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="562"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="559"/>
       <source>It is not possible to insert this object because the document has been closed.</source>
       <translation>Det är inte möjligt att infoga detta objekt eftersom dokumentet har stängts.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="608"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="605"/>
       <source>Error: Unable to import SAT files - InventorLoader or CadExchanger addon must be installed</source>
       <translation>Fel: Det går inte att importera SAT-filer. Tillägget InventorLoader eller CadExchanger måste vara installerat</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="634"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="631"/>
       <source>Error: Unable to download</source>
       <translation>Fel: Det går inte att hämta</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="678"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="675"/>
       <source>%1 pick insertion point</source>
       <translation>%1 välj insättningspunkt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="691"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="688"/>
       <source>Insertion Point</source>
       <translation>Insättningspunkt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="702"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="699"/>
       <source>Origin</source>
       <translation>Ursprung</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="703"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="700"/>
       <source>Top left</source>
       <translation>Överst till vänster</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="704"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="701"/>
       <source>Top center</source>
       <translation>Överst i mitten</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="705"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="702"/>
       <source>Top right</source>
       <translation>Överst till höger</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="706"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="703"/>
       <source>Middle left</source>
       <translation>I mitten till vänster</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="707"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="704"/>
       <source>Middle center</source>
       <translation>I mitten</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="708"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="705"/>
       <source>Middle right</source>
       <translation>I mitten till höger</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="709"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="706"/>
       <source>Bottom left</source>
       <translation>Nederst till vänster</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="710"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="707"/>
       <source>Bottom center</source>
       <translation>Nederst i mitten</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="711"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="708"/>
       <source>Bottom right</source>
       <translation>Nederst till höger</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="817"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="814"/>
       <source>Could not fetch library contents</source>
       <translation>Kunde inte hämta bibliotekets innehåll</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="821"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="818"/>
       <source>No results fetched from online library</source>
       <translation>Inga resultat hämtades från nätbiblioteket</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="879"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="876"/>
       <source>Warning, this can take several minutes!</source>
       <translation>Varning, detta kan ta flera minuter!</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="122"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="119"/>
       <source>Clears the search field</source>
       <translation>Rensar sökfältet</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="129"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="126"/>
       <source> Material Operations</source>
       <translation> Materialhantering</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="135"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="132"/>
       <source>New Material</source>
       <translation>Nytt material</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="148"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="145"/>
       <source>Merge Duplicates</source>
       <translation>Sammanfoga dubbletter</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="157"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="154"/>
       <source>Delete Unused</source>
       <translation>Ta bort oanvända</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="108"/>
-      <location filename="../../bimcommands/BimMaterial.py" line="175"/>
+      <location filename="../../bimcommands/BimViews.py" line="105"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="172"/>
       <source>Rename</source>
       <translation>Byt namn</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="177"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="174"/>
       <source>Duplicate</source>
       <translation>Duplicera</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="179"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="176"/>
       <source>Merge To…</source>
       <translation>Sammanfoga till…</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="103"/>
-      <location filename="../../bimcommands/BimMaterial.py" line="181"/>
+      <location filename="../../bimcommands/BimViews.py" line="100"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="178"/>
       <source>Delete</source>
       <translation>Ta bort</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="88"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="85"/>
       <source>Select Material</source>
       <translation>Välj material</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="107"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="104"/>
       <source>Search materials</source>
       <translation>Sök material</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="108"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="105"/>
       <source>Searches for materials in the list</source>
       <translation>Söker efter material i listan</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="141"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="138"/>
       <source>New Multi-Material</source>
       <translation>Nytt multimaterial</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="237"/>
-      <location filename="../../bimcommands/BimMaterial.py" line="247"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="234"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="244"/>
       <source>Merging duplicate material</source>
       <translation>Sammanfogning av duplicerat material</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="256"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="253"/>
       <source>Unable to delete material</source>
       <translation>Det går inte att radera material</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="260"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="257"/>
       <source>InList not empty</source>
       <translation>InList inte tom</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="287"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="284"/>
       <source>Deleting unused material</source>
       <translation>Radering av oanvänt material</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="337"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="334"/>
       <source>Select Material to Merge To</source>
       <translation>Välj material att sammanfoga med</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="382"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="379"/>
       <source>This material is used by:</source>
       <translation>Detta material används av:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="164"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="161"/>
       <source>Passed</source>
       <translation>Godkänd</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="165"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="162"/>
       <source>This test has succeeded.</source>
       <translation>Detta test har lyckats.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="176"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="173"/>
       <source>This test has failed. Press the button to know more</source>
       <translation>Detta test har misslyckats. Tryck på knappen för att få veta mer</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="184"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="181"/>
       <source>Test</source>
       <translation>Test</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="297"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="294"/>
       <source>ifcopenshell is not installed on the system or not available to FreeCAD. This library is responsible for IFC support in FreeCAD, and therefore IFC support is currently disabled. Check %1 to obtain more information.</source>
       <translation>ifcopenshell är inte installerat på systemet eller inte tillgängligt för FreeCAD. Detta bibliotek ansvarar för IFC-stödet i FreeCAD, och därför är IFC-stödet för närvarande inaktiverat. Kontrollera %1 för att få mer information.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="328"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="325"/>
       <source>The version of Ifcopenshell installed on the system could not be parsed</source>
       <translation>Det gick inte att tolka versionen av Ifcopenshell som installerats på systemet</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="340"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="337"/>
       <source>The version of Ifcopenshell installed on the system will produce files with this schema version:</source>
       <translation>Den installerade versionen av IfcOpenShell skapar filer med följande schemaversion:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="441"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="438"/>
       <source>The following building objects have been found to not be included in any Site. You can resolve the situation by creating a Site object, if none is present in your model, and drag and drop the building objects into it in the tree view:</source>
       <translation>Följande byggnadsobjekt ingår inte i någon byggplats. Skapa ett byggplatsobjekt om modellen saknar ett sådant, och dra sedan byggnadsobjekten till det i trädvyn:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="487"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="484"/>
       <source>The following building storey (building parts with their IFC role set as "building storey") objects have been found to not be included in any building. Resolve the situation by creating a building object, if none is present in the model, and drag and drop the building storey objects into it in the tree view:</source>
       <translation>Följande våningsplansobjekt (byggnadsdelar med IFC-rollen Building Storey) ingår inte i någon byggnad. Skapa ett byggnadsobjekt om modellen saknar ett sådant, och dra sedan våningsplansobjekten till det i trädvyn:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="548"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="545"/>
       <source>The following BIM objects have been found to not be included in any building storey (building parts with their IFC role set as "building storey"). Resolve the situation by creating a building storey object, if none is present in the model, and drag and drop these objects into it in the tree view:</source>
       <translation>Följande BIM-objekt ingår inte i något våningsplan (en byggnadsdel med IFC-rollen Building Storey). Skapa ett våningsplansobjekt om modellen saknar ett sådant, och dra sedan dessa objekt till det i trädvyn:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="685"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="682"/>
       <source>The objects below have length, width or height properties, but these properties won't be explicitly exported to IFC. This is not necessarily an issue, unless these quantities are desired to be exported:</source>
       <translation>Objekten nedan har egenskaper för längd, bredd eller höjd som inte exporteras uttryckligen till IFC. Detta är bara ett problem om du vill exportera dessa mängder:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="693"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="690"/>
       <source>To enable exporting of these quantities, use the IFC quantities manager tool located under menu Manage -&gt; Manage IFC Quantities</source>
       <translation>Aktivera export av dessa mängder med verktyget under Hantera → Hantera IFC-mängder.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="765"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="762"/>
       <source>To add common property sets to these objects, use the IFC properties manager tool located under menu Manage -&gt; Manage IFC Properties</source>
       <translation>Lägg till gemensamma egenskapsuppsättningar för dessa objekt med verktyget under Hantera → Hantera IFC-egenskaper.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="858"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="855"/>
       <source>To fix the property sets of these objects, use the IFC properties manager tool located under menu Manage -&gt; Manage IFC Properties</source>
       <translation>Rätta dessa objekts egenskapsuppsättningar med verktyget under Hantera → Hantera IFC-egenskaper.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="1074"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="1071"/>
       <source>An additional object, called "TinyLinesResult" has been added to this model, and selected. It contains all the tiny lines found, for inspection. Be sure to delete the TinyLinesResult object when done!</source>
       <translation>Ett ytterligare objekt, kallat "TinyLinesResult" har lagts till i denna modell och valts. Det innehåller alla de små linjer som hittats, för inspektion. Se till att ta bort TinyLinesResult-objektet när du är klar!</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="386"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="383"/>
       <source>The following types were not found in the project:</source>
       <translation>Följande typer förekom inte i projektet:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="92"/>
-      <location filename="../../bimcommands/BimPreflight.py" line="185"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="89"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="182"/>
       <source>Performs the test</source>
       <translation>Utför testet</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="595"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="592"/>
       <source>The following BIM objects have the "Undefined" type:</source>
       <translation>Följande BIM-objekt har typen Undefined:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="600"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="597"/>
       <source>The following objects are not BIM objects:</source>
       <translation>Följande objekt är inte BIM-objekt:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="607"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="604"/>
       <source>You can turn these objects into BIM objects by using the Modify -&gt; Add Component tool.</source>
       <translation>Du kan omvandla dessa objekt till BIM-objekt med verktyget Ändra → Lägg till komponent.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="642"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="639"/>
       <source>The following BIM objects have an invalid or non-solid geometry:</source>
       <translation>Följande BIM-objekt har ogiltig geometri eller geometri som inte är solid:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="757"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="754"/>
       <source>The objects below have a defined IFC type but do not have the associated common property set:</source>
       <translation>Objekten nedan har en definierad IFC-typ men saknar den tillhörande gemensamma egenskapsuppsättningen:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="839"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="836"/>
       <source>The objects below have a common property set but that property set doesn't contain all the needed properties:</source>
       <translation>Objekten nedan har en gemensam egenskapsuppsättning, men den innehåller inte alla egenskaper som behövs:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="848"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="845"/>
       <source>Verify which properties a certain property set must contain on %1</source>
       <translation>Kontrollera på %1 vilka egenskaper en viss egenskapsuppsättning måste innehålla</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="887"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="884"/>
       <source>The following BIM objects have no material attributed:</source>
       <translation>Följande BIM-objekt saknar tilldelat material:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="928"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="925"/>
       <source>The following BIM objects have no defined standard code:</source>
       <translation>Följande BIM-objekt har ingen definierad standardkod:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="978"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="975"/>
       <source>The following BIM objects are not extrusions:</source>
       <translation>Följande BIM-objekt är inte extruderingar:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="1015"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="1012"/>
       <source>The following BIM objects are not standard cases:</source>
       <translation>Följande BIM-objekt är inte standardfall:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="1064"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="1061"/>
       <source>The objects below have lines smaller than 1/32 inch or 0.79 mm, which is the smallest line size that Revit accepts. These objects will be discarded when imported into Revit:</source>
       <translation>Objekten nedan har linjer som är mindre än 1/32 tum eller 0,79 mm, vilket är den minsta linjestorlek som Revit accepterar. Dessa objekt kommer att kasseras när de importeras till Revit:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="1080"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="1077"/>
       <source>Tip: The results are best viewed in Wireframe mode (menu Views -&gt; Draw Style -&gt; Wireframe)</source>
       <translation>Tips: Resultaten visas bäst i trådramsläget (menyn Vyer -&gt; Ritstil -&gt; Trådram)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="302"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="299"/>
       <source>Building Layout</source>
       <translation>Byggnadens layout</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="315"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="312"/>
       <source>Building Outline</source>
       <translation>Byggnadskontur</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="334"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="331"/>
       <source>Building Label</source>
       <translation>Byggnadsetikett</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="344"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="341"/>
       <source>Vertical Axes</source>
       <translation>Vertikala axlar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="355"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="352"/>
       <source>Horizontal Axes</source>
       <translation>Horisontella axlar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="365"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="362"/>
       <source>Axes</source>
       <translation>Axlar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="376"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="373"/>
       <source>Zero Level Height</source>
       <translation>Nollnivåns höjd</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="377"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="374"/>
       <source>Level height is zero. No levels will be created.</source>
       <translation>Nivåhöjden är noll. Inga nivåer skapas.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="380"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="377"/>
       <source>Set the level height to a non-zero value.</source>
       <translation>Ange ett värde större eller mindre än noll för nivåhöjden.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="390"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="387"/>
       <source>Level</source>
       <translation>Nivå</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="451"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="448"/>
       <source>Save Preset</source>
       <translation>Spara förinställning</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="452"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="449"/>
       <source>Preset name</source>
       <translation>Förinställningens namn</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="507"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="504"/>
       <source>User preset</source>
       <translation>Användarförinställning</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="661"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="658"/>
       <source>Save Template File</source>
       <translation>Spara mallfil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="682"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="679"/>
       <source>Open Template File</source>
       <translation>Öppna mallfil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="796"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="793"/>
       <source>Template successfully loaded into the current document</source>
       <translation>Mallen har lästs in i det aktuella dokumentet</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="156"/>
-      <location filename="../../bimcommands/BimProjectManager.py" line="436"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="153"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="433"/>
       <source>New Group</source>
       <translation>Ny grupp</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="670"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="667"/>
       <source>Template saved successfully</source>
       <translation>Mallen har sparats</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimReorder.py" line="52"/>
+      <location filename="../../bimcommands/BimReorder.py" line="49"/>
       <source>You must choose a group object before using this command</source>
       <translation>Du måste välja ett gruppobjekt innan du använder det här kommandot</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="138"/>
+      <location filename="../../bimcommands/BimSetup.py" line="135"/>
       <source>Some additional workbenches are not installed, that extend BIM functionality:</source>
       <translation>Följande arbetsbänkar som utökar BIM-funktionaliteten är inte installerade:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="142"/>
+      <location filename="../../bimcommands/BimSetup.py" line="139"/>
       <source>Install them from menu Tools -&gt; Addon Manager.</source>
       <translation>Installera dem från menyn Verktyg -&gt; Tilläggshanterare.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="181"/>
+      <location filename="../../bimcommands/BimSetup.py" line="178"/>
       <source>Unit system updated for active document</source>
       <translation>Enhetssystem uppdaterat för aktivt dokument</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="185"/>
+      <location filename="../../bimcommands/BimSetup.py" line="182"/>
       <source>Unit system updated for all opened documents</source>
       <translation>Enhetssystemet uppdaterat för alla öppnade dokument</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="631"/>
+      <location filename="../../bimcommands/BimSetup.py" line="628"/>
       <source>IfcOpenShell Not Found</source>
       <translation>IfcOpenShell hittades inte</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="635"/>
+      <location filename="../../bimcommands/BimSetup.py" line="632"/>
       <source>IfcOpenShell is needed to import and export IFC files. It appears to be missing on the system. Download and install it now? It will be installed in FreeCAD's macros directory.</source>
       <translation>IfcOpenShell behövs för att importera och exportera IFC-filer och verkar saknas på systemet. Vill du hämta och installera det nu? Det installeras i FreeCADs makromapp.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="59"/>
+      <location filename="../../bimcommands/BimSlab.py" line="56"/>
       <source>Select a planar object</source>
       <translation>Välj ett plant objekt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="62"/>
+      <location filename="../../bimcommands/BimSlab.py" line="59"/>
       <source>%1 select a planar object</source>
       <translation>%1 välj ett plant objekt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="85"/>
+      <location filename="../../bimcommands/BimSlab.py" line="82"/>
       <source>Slab</source>
       <translation>Platta</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTDPage.py" line="61"/>
+      <location filename="../../bimcommands/BimTDPage.py" line="58"/>
       <source>Select Page Template</source>
       <translation>Välj sidmall</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTDPage.py" line="73"/>
+      <location filename="../../bimcommands/BimTDPage.py" line="70"/>
       <source>Template</source>
       <translation>Mall</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTrash.py" line="52"/>
+      <location filename="../../bimcommands/BimTrash.py" line="49"/>
       <source>Trash</source>
       <translation>Papperskorg</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTutorial.py" line="130"/>
+      <location filename="../../bimcommands/BimTutorial.py" line="127"/>
       <source>Unable to access the tutorial. Verify the internet connection (This is needed only once).</source>
       <translation>Det går inte att komma åt handledningen. Verifiera internetanslutningen (detta behövs bara en gång).</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTutorial.py" line="160"/>
+      <location filename="../../bimcommands/BimTutorial.py" line="157"/>
       <source>Downloading images…</source>
       <translation>Hämtar bilder…</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTutorial.py" line="244"/>
+      <location filename="../../bimcommands/BimTutorial.py" line="241"/>
       <source>BIM Tutorial - Step</source>
       <translation>BIM-självstudie – steg</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimUnclone.py" line="138"/>
+      <location filename="../../bimcommands/BimUnclone.py" line="135"/>
       <source>Draft clones are not supported yet!</source>
       <translation>Kloner av släppning stöds inte ännu!</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimUnclone.py" line="142"/>
+      <location filename="../../bimcommands/BimUnclone.py" line="139"/>
       <source>The selected object is not a clone</source>
       <translation>Det valda objektet är inte en klon</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimUnclone.py" line="145"/>
+      <location filename="../../bimcommands/BimUnclone.py" line="142"/>
       <source>Select exactly one object</source>
       <translation>Välj exakt ett objekt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="105"/>
+      <location filename="../../bimcommands/BimViews.py" line="102"/>
       <source>Isolate</source>
       <translation>Isolera</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="137"/>
+      <location filename="../../bimcommands/BimViews.py" line="134"/>
       <source>Creates a new working plane proxy</source>
       <translation>Skapar en ny arbetsplansproxy</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="138"/>
+      <location filename="../../bimcommands/BimViews.py" line="135"/>
       <source>Deletes the selected item</source>
       <translation>Raderar det markerade objektet</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="100"/>
-      <location filename="../../bimcommands/BimViews.py" line="701"/>
+      <location filename="../../bimcommands/BimViews.py" line="97"/>
+      <location filename="../../bimcommands/BimViews.py" line="698"/>
       <source>Active</source>
       <translation>Aktiv</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="102"/>
+      <location filename="../../bimcommands/BimViews.py" line="99"/>
       <source>New Working Plane Proxy</source>
       <translation>Skapa arbetsplanproxy</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="104"/>
+      <location filename="../../bimcommands/BimViews.py" line="101"/>
       <source>Toggle Visibility</source>
       <translation>Växla synlighet</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="141"/>
+      <location filename="../../bimcommands/BimViews.py" line="138"/>
       <source>Toggles the visibility of selected items</source>
       <translation>Växlar synligheten för markerade objekt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="144"/>
+      <location filename="../../bimcommands/BimViews.py" line="141"/>
       <source>Turns all items off except the selected ones</source>
       <translation>Döljer alla objekt utom de markerade</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="101"/>
+      <location filename="../../bimcommands/BimViews.py" line="98"/>
       <source>New Level Above</source>
       <translation>Ny nivå ovanför</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="106"/>
+      <location filename="../../bimcommands/BimViews.py" line="103"/>
       <source>Save Camera View</source>
       <translation>Spara kameravy</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="107"/>
+      <location filename="../../bimcommands/BimViews.py" line="104"/>
       <source>Save Visibility of Objects</source>
       <translation>Spara objektens synlighet</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="134"/>
+      <location filename="../../bimcommands/BimViews.py" line="131"/>
       <source>Creates a new level above the highest existing one</source>
       <translation>Skapar en ny nivå ovanför den högsta befintliga</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="147"/>
+      <location filename="../../bimcommands/BimViews.py" line="144"/>
       <source>Saves the current camera view to the selected items</source>
       <translation>Sparar den aktuella kameravyn för de valda objekten</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="148"/>
+      <location filename="../../bimcommands/BimViews.py" line="145"/>
       <source>Renames the selected item</source>
       <translation>Byter namn på det markerade objektet</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="149"/>
-      <location filename="../../bimcommands/BimViews.py" line="704"/>
+      <location filename="../../bimcommands/BimViews.py" line="146"/>
+      <location filename="../../bimcommands/BimViews.py" line="701"/>
       <source>Activates the selected item</source>
       <translation>Aktiverar det valda objektet</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="176"/>
+      <location filename="../../bimcommands/BimViews.py" line="173"/>
       <source>BIM Views Manager</source>
       <translation>BIM-vyhanterare</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="327"/>
+      <location filename="../../bimcommands/BimViews.py" line="324"/>
       <source>2D Views</source>
       <translation>2D-vyer</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="340"/>
+      <location filename="../../bimcommands/BimViews.py" line="337"/>
       <source>Sheets</source>
       <translation>Blad</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="712"/>
+      <location filename="../../bimcommands/BimViews.py" line="709"/>
       <source>Set Working Plane</source>
       <translation>Ange arbetsplan</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="716"/>
+      <location filename="../../bimcommands/BimViews.py" line="713"/>
       <source>Sets the selected item as the current working plane</source>
       <translation>Anger det valda objektet som aktuellt arbetsplan</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindows.py" line="225"/>
+      <location filename="../../bimcommands/BimWindows.py" line="222"/>
       <source>None</source>
       <translation>Ingen</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="127"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="124"/>
       <source>The active document is already an IFC document</source>
       <translation>Det aktiva dokumentet är redan ett IFC-dokument</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_diff.py" line="76"/>
+      <location filename="../../nativeifc/ifc_diff.py" line="73"/>
       <source>The IFC file is not saved. Save once to have an existing IFC file to compare with. Then, run this command again.</source>
       <translation>IFC-filen är inte sparad. Spara den så att det finns en befintlig IFC-fil att jämföra med. Kör sedan kommandot igen.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_diff.py" line="88"/>
+      <location filename="../../nativeifc/ifc_diff.py" line="85"/>
       <source>No changes to display.</source>
       <translation>Inga ändringar att visa.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="75"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="72"/>
       <source>IfcOpenShell Update</source>
       <translation>Uppdatering av IfcOpenShell</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="79"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="76"/>
       <source>The update is installed in your FreeCAD's user directory and will not affect the rest of your system.</source>
       <translation>Uppdateringen installeras i FreeCADs användarmapp och påverkar inte resten av systemet.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="81"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="78"/>
       <source>An update to your installed IfcOpenShell version is available</source>
       <translation>En uppdatering av din installerade IfcOpenShell-version är tillgänglig</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="83"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="80"/>
       <source>Would you like to install that update?</source>
       <translation>Vill du installera den uppdateringen?</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="87"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="84"/>
       <source>Your version of IfcOpenShell is already up to date</source>
       <translation>Din version av IfcOpenShell är redan uppdaterad</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="90"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="87"/>
       <source>No existing IfcOpenShell installation found on this system.</source>
       <translation>Ingen befintlig IfcOpenShell-installation hittades på det här systemet.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="92"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="89"/>
       <source>Would you like to install the most recent version?</source>
       <translation>Vill du installera den senaste versionen?</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="99"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="96"/>
       <source>IfcOpenShell is not installed, and FreeCAD failed to find a suitable version to install. You can still install IfcOpenShell manually, visit https://wiki.freecad.org/IfcOpenShell for further instructions.</source>
       <translation>IfcOpenShell är inte installerat och FreeCAD kunde inte hitta en lämplig version att installera. Du kan fortfarande installera IfcOpenShell manuellt, besök https://wiki.freecad.org/IfcOpenShell för ytterligare instruktioner.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="107"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="104"/>
       <source>IfcOpenShell update successfully installed.</source>
       <translation>IfcOpenShell-uppdateringen har installerats.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="155"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="152"/>
       <source>Unable to run pip. Ensure pip is installed on your system.</source>
       <translation>Det går inte att köra pip. Kontrollera att pip är installerat på ditt system.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="36"/>
+      <location filename="../../nativeifc/ifc_status.py" line="33"/>
       <source>Strict IFC mode is ON (all objects are IFC)</source>
       <translation>Strikt IFC-läge är PÅ (alla objekt är IFC-objekt)</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="39"/>
+      <location filename="../../nativeifc/ifc_status.py" line="36"/>
       <source>Strict IFC mode is OFF (IFC and non-IFC objects allowed)</source>
       <translation>Strikt IFC-läge är AV (både IFC-objekt och andra objekt tillåts)</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="78"/>
+      <location filename="../../nativeifc/ifc_status.py" line="75"/>
       <source>Add IFC property…</source>
       <translation>Lägg till IFC-egenskap…</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="83"/>
+      <location filename="../../nativeifc/ifc_status.py" line="80"/>
       <source>Add standard IFC Property Set…</source>
       <translation>Lägg till standardiserad IFC-egenskapsuppsättning …</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="140"/>
+      <location filename="../../nativeifc/ifc_status.py" line="137"/>
       <source>No Property set provided</source>
       <translation>Ingen egenskapsuppsättning har angetts</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="151"/>
+      <location filename="../../nativeifc/ifc_status.py" line="148"/>
       <source>add property</source>
       <translation>lägg till egenskap</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="214"/>
+      <location filename="../../nativeifc/ifc_status.py" line="211"/>
       <source>Property set already exists</source>
       <translation>Egenskapsuppsättningen finns redan</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="218"/>
+      <location filename="../../nativeifc/ifc_status.py" line="215"/>
       <source>add property set</source>
       <translation>lägg till egenskapsuppsättning</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="226"/>
+      <location filename="../../nativeifc/ifc_status.py" line="223"/>
       <source>Property already exists</source>
       <translation>Egenskapen finns redan</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="81"/>
+      <location filename="../../bimcommands/BimDrawingView.py" line="78"/>
       <source>Viewed lines</source>
       <translation>Visade linjer</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="85"/>
+      <location filename="../../bimcommands/BimDrawingView.py" line="82"/>
       <source>Cut lines</source>
       <translation>Snittlinjer</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_psets.py" line="377"/>
+      <location filename="../../nativeifc/ifc_psets.py" line="374"/>
       <source>Removing property</source>
       <translation>Tar bort egenskap</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_psets.py" line="382"/>
+      <location filename="../../nativeifc/ifc_psets.py" line="379"/>
       <source>Removing property set</source>
       <translation>Tar bort egenskapsuppsättning</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_types.py" line="167"/>
+      <location filename="../../nativeifc/ifc_types.py" line="164"/>
       <source>Error: Incompatible type</source>
       <translation>Fel: Inkompatibel typ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimReextrude.py" line="160"/>
+      <location filename="../../bimcommands/BimReextrude.py" line="157"/>
       <source>Error: Select exactly one base face</source>
       <translation>Fel: Välj exakt en basyta</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTDView.py" line="81"/>
+      <location filename="../../bimcommands/BimTDView.py" line="78"/>
       <source>No section view, Draft object, or page found or selected in the document</source>
       <translation>Ingen snittvy, inget Draft-objekt och ingen sida hittades eller markerades i dokumentet</translation>
     </message>
@@ -11923,93 +11922,93 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
       <translation>Fel i WebGL-exportmall</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="105"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="102"/>
       <source>Deactivate Container</source>
       <translation>Inaktivera behållare</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="107"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="104"/>
       <source>Make Active Container</source>
       <translation>Gör till aktiv behållare</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="111"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="108"/>
       <source>Expand Children</source>
       <translation>Expandera underordnade objekt</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="115"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="112"/>
       <source>Collapse Children</source>
       <translation>Fäll ihop underordnade objekt</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="120"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="117"/>
       <source>Remove Shape</source>
       <translation>Ta bort form</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="122"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="119"/>
       <source>Load Shape</source>
       <translation>Läs in form</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="126"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="123"/>
       <source>Load Representation</source>
       <translation>Läs in representation</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="130"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="127"/>
       <source>Add Geometry Properties</source>
       <translation>Lägg till geometriegenskaper</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="133"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="130"/>
       <source>Show Geometry Tree</source>
       <translation>Visa geometriträd</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="137"/>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="604"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="134"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="601"/>
       <source>Expand Property Sets</source>
       <translation>Expandera egenskapsuppsättningar</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="141"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="138"/>
       <source>Load Material</source>
       <translation>Läs in material</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="145"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="142"/>
       <source>Convert to Type</source>
       <translation>Konvertera till typ</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="429"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="426"/>
       <source>View Diff</source>
       <translation>Visa skillnader</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="433"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="430"/>
       <source>Save IFC File</source>
       <translation>Spara IFC-fil</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="436"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="433"/>
       <source>Save IFC File As…</source>
       <translation>Spara IFC-fil som…</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLink.py" line="30"/>
+      <location filename="../../bimcommands/BimLink.py" line="31"/>
       <source>Select an object to link</source>
       <translation>Välj ett objekt att länka</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="83"/>
+      <location filename="../../bimcommands/BimBox.py" line="79"/>
       <source>%1 pick next point</source>
       <translation>%1 välj nästa punkt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="171"/>
+      <location filename="../../bimcommands/BimBox.py" line="167"/>
       <source>Box Dimensions</source>
       <translation>Rätblockets mått</translation>
     </message>
@@ -12030,12 +12029,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Background</name>
     <message>
-      <location filename="../../bimcommands/BimBackground.py" line="38"/>
+      <location filename="../../bimcommands/BimBackground.py" line="35"/>
       <source>Toggle Background</source>
       <translation>Växla bakgrund</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBackground.py" line="42"/>
+      <location filename="../../bimcommands/BimBackground.py" line="39"/>
       <source>Toggles the 3D View background between simple and gradient</source>
       <translation>Växlar bakgrunden i 3D-vyn mellan enfärgad och tonad</translation>
     </message>
@@ -12043,12 +12042,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Beam</name>
     <message>
-      <location filename="../../bimcommands/BimBeam.py" line="49"/>
+      <location filename="../../bimcommands/BimBeam.py" line="46"/>
       <source>Beam</source>
       <translation>Stråle</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBeam.py" line="50"/>
+      <location filename="../../bimcommands/BimBeam.py" line="47"/>
       <source>Creates a beam between two points</source>
       <translation>Skapar en balk mellan två punkter</translation>
     </message>
@@ -12056,12 +12055,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Box</name>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="39"/>
+      <location filename="../../bimcommands/BimBox.py" line="35"/>
       <source>Box</source>
       <translation>Rätblock</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="42"/>
+      <location filename="../../bimcommands/BimBox.py" line="38"/>
       <source>Graphically creates a generic box in the current document</source>
       <translation>Skapar ett rätblock grafiskt i det aktuella dokumentet</translation>
     </message>
@@ -12069,12 +12068,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>Part_Builder</name>
     <message>
-      <location filename="../../bimcommands/BimBuilder.py" line="38"/>
+      <location filename="../../bimcommands/BimBuilder.py" line="35"/>
       <source>Shape Builder</source>
       <translation>Formbyggare</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBuilder.py" line="39"/>
+      <location filename="../../bimcommands/BimBuilder.py" line="36"/>
       <source>Advanced utility to create shapes</source>
       <translation>Avancerat verktyg för att skapa former</translation>
     </message>
@@ -12082,12 +12081,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>Arch_Level</name>
     <message>
-      <location filename="../../bimcommands/BimBuildingPart.py" line="46"/>
+      <location filename="../../bimcommands/BimBuildingPart.py" line="43"/>
       <source>Level</source>
       <translation>Nivå</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBuildingPart.py" line="50"/>
+      <location filename="../../bimcommands/BimBuildingPart.py" line="47"/>
       <source>Creates a building part object that represents a level</source>
       <translation>Skapar ett byggnadsdelsobjekt som representerar en nivå</translation>
     </message>
@@ -12095,12 +12094,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Clone</name>
     <message>
-      <location filename="../../bimcommands/BimClone.py" line="46"/>
+      <location filename="../../bimcommands/BimClone.py" line="43"/>
       <source>Clone</source>
       <translation>Klona</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimClone.py" line="49"/>
+      <location filename="../../bimcommands/BimClone.py" line="46"/>
       <source>Clones selected objects to another location</source>
       <translation>Klonar valda objekt till en annan plats</translation>
     </message>
@@ -12108,12 +12107,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Column</name>
     <message>
-      <location filename="../../bimcommands/BimColumn.py" line="49"/>
+      <location filename="../../bimcommands/BimColumn.py" line="46"/>
       <source>Column</source>
       <translation>Pelare</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimColumn.py" line="50"/>
+      <location filename="../../bimcommands/BimColumn.py" line="47"/>
       <source>Creates a column at a specified location</source>
       <translation>Skapar en pelare på en angiven plats</translation>
     </message>
@@ -12121,12 +12120,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>Part_Common</name>
     <message>
-      <location filename="../../bimcommands/BimCommon.py" line="38"/>
+      <location filename="../../bimcommands/BimCommon.py" line="35"/>
       <source>Intersection</source>
       <translation>Snitt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCommon.py" line="39"/>
+      <location filename="../../bimcommands/BimCommon.py" line="36"/>
       <source>Creates an intersection of two shapes</source>
       <translation>Skapar snittet av två former</translation>
     </message>
@@ -12134,22 +12133,22 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Convert</name>
     <message>
-      <location filename="../../bimcommands/BimConvert.py" line="38"/>
+      <location filename="../../bimcommands/BimConvert.py" line="35"/>
       <source>Convert to BIM</source>
       <translation>Konvertera till BIM</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimConvert.py" line="39"/>
+      <location filename="../../bimcommands/BimConvert.py" line="36"/>
       <source>Converts any object to a BIM component</source>
       <translation>Konverterar valfritt objekt till en BIM-komponent</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
+      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
       <source>Remove From Group</source>
       <translation>Ta bort från grupp</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="41"/>
+      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
       <source>Removes this object from its parent group</source>
       <translation>Tar bort detta objekt från dess överordnade grupp</translation>
     </message>
@@ -12157,12 +12156,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Copy</name>
     <message>
-      <location filename="../../bimcommands/BimCopy.py" line="43"/>
+      <location filename="../../bimcommands/BimCopy.py" line="40"/>
       <source>Copy</source>
       <translation>Kopiera</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCopy.py" line="44"/>
+      <location filename="../../bimcommands/BimCopy.py" line="41"/>
       <source>Copies selected objects to another location</source>
       <translation>Kopierar valda objekt till en annan plats</translation>
     </message>
@@ -12170,12 +12169,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Cut</name>
     <message>
-      <location filename="../../bimcommands/BimCut.py" line="37"/>
+      <location filename="../../bimcommands/BimCut.py" line="34"/>
       <source>Difference</source>
       <translation>Differens</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCut.py" line="38"/>
+      <location filename="../../bimcommands/BimCut.py" line="35"/>
       <source>Creates a difference between two shapes</source>
       <translation>Skapar differensen mellan två former</translation>
     </message>
@@ -12183,12 +12182,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Diff</name>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="38"/>
+      <location filename="../../bimcommands/BimDiff.py" line="35"/>
       <source>IFC Shape Diff</source>
       <translation>IFC-formjämförelse</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="41"/>
+      <location filename="../../bimcommands/BimDiff.py" line="38"/>
       <source>Shows the difference between two IFC-based documents</source>
       <translation>Visar skillnaden mellan två IFC-baserade dokument</translation>
     </message>
@@ -12196,12 +12195,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Door</name>
     <message>
-      <location filename="../../bimcommands/BimDoor.py" line="43"/>
+      <location filename="../../bimcommands/BimDoor.py" line="40"/>
       <source>Door</source>
       <translation>Dörr</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDoor.py" line="44"/>
+      <location filename="../../bimcommands/BimDoor.py" line="41"/>
       <source>Places a door at a given location</source>
       <translation>Placerar en dörr på en given plats</translation>
     </message>
@@ -12209,18 +12208,18 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_EmptyTrash</name>
     <message>
-      <location filename="../../bimcommands/BimTrash.py" line="82"/>
+      <location filename="../../bimcommands/BimTrash.py" line="79"/>
       <source>Deletes from the trash bin all objects that are not used by any other</source>
       <translation>Tar bort alla objekt i papperskorgen som inte används av andra objekt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimEmptyTrash.py" line="38"/>
-      <location filename="../../bimcommands/BimTrash.py" line="78"/>
+      <location filename="../../bimcommands/BimEmptyTrash.py" line="35"/>
+      <location filename="../../bimcommands/BimTrash.py" line="75"/>
       <source>Empty Trash</source>
       <translation>Töm papperskorgen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimEmptyTrash.py" line="42"/>
+      <location filename="../../bimcommands/BimEmptyTrash.py" line="39"/>
       <source>Deletes all objects from the trash bin that are not used by any other</source>
       <translation>Tar bort alla objekt i papperskorgen som inte används av andra objekt</translation>
     </message>
@@ -12228,12 +12227,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Examples</name>
     <message>
-      <location filename="../../bimcommands/BimExamples.py" line="38"/>
+      <location filename="../../bimcommands/BimExamples.py" line="35"/>
       <source>BIM Examples</source>
       <translation>Exempel på BIM</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimExamples.py" line="42"/>
+      <location filename="../../bimcommands/BimExamples.py" line="39"/>
       <source>Download examples of BIM files made with FreeCAD</source>
       <translation>Hämta exempel på BIM-filer som skapats med FreeCAD</translation>
     </message>
@@ -12241,12 +12240,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Extrude</name>
     <message>
-      <location filename="../../bimcommands/BimExtrude.py" line="38"/>
+      <location filename="../../bimcommands/BimExtrude.py" line="35"/>
       <source>Extrude</source>
       <translation>Extrudera</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimExtrude.py" line="39"/>
+      <location filename="../../bimcommands/BimExtrude.py" line="36"/>
       <source>Extrudes a selected 2D shape</source>
       <translation>Extruderar en vald 2D-form</translation>
     </message>
@@ -12254,7 +12253,7 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>Arch Fence selection</name>
     <message>
-      <location filename="../../bimcommands/BimFence.py" line="59"/>
+      <location filename="../../bimcommands/BimFence.py" line="56"/>
       <source>Select a section, post and path in exactly this order to build a fence.</source>
       <translation>Välj en sektion, en stolpe och en bana i exakt denna ordning för att skapa ett staket.</translation>
     </message>
@@ -12262,12 +12261,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>Part_Fuse</name>
     <message>
-      <location filename="../../bimcommands/BimFuse.py" line="37"/>
+      <location filename="../../bimcommands/BimFuse.py" line="34"/>
       <source>Union</source>
       <translation>Union</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimFuse.py" line="38"/>
+      <location filename="../../bimcommands/BimFuse.py" line="35"/>
       <source>Creates a union of several shapes</source>
       <translation>Skapar unionen av flera former</translation>
     </message>
@@ -12275,12 +12274,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Glue</name>
     <message>
-      <location filename="../../bimcommands/BimGlue.py" line="38"/>
+      <location filename="../../bimcommands/BimGlue.py" line="35"/>
       <source>Glue</source>
       <translation>Limma</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimGlue.py" line="41"/>
+      <location filename="../../bimcommands/BimGlue.py" line="38"/>
       <source>Joins selected shapes into one non-parametric shape</source>
       <translation>Sammanfogar valda former till en icke-parametrisk form</translation>
     </message>
@@ -12288,12 +12287,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Help</name>
     <message>
-      <location filename="../../bimcommands/BimHelp.py" line="38"/>
+      <location filename="../../bimcommands/BimHelp.py" line="35"/>
       <source>BIM Help</source>
       <translation>BIM-hjälp</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimHelp.py" line="42"/>
+      <location filename="../../bimcommands/BimHelp.py" line="39"/>
       <source>Opens the BIM help page on the FreeCAD documentation website</source>
       <translation>Öppnar BIM-hjälpsidan på webbplatsen för FreeCAD-dokumentation</translation>
     </message>
@@ -12301,12 +12300,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_ImagePlane</name>
     <message>
-      <location filename="../../bimcommands/BimImagePlane.py" line="38"/>
+      <location filename="../../bimcommands/BimImagePlane.py" line="35"/>
       <source>Image Plane</source>
       <translation>Bildplan</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimImagePlane.py" line="39"/>
+      <location filename="../../bimcommands/BimImagePlane.py" line="36"/>
       <source>Creates a plane from an image</source>
       <translation>Skapar ett plan från en bild</translation>
     </message>
@@ -12314,12 +12313,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Leader</name>
     <message>
-      <location filename="../../bimcommands/BimLeader.py" line="45"/>
+      <location filename="../../bimcommands/BimLeader.py" line="42"/>
       <source>Leader</source>
       <translation>Hänvisningslinje</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLeader.py" line="48"/>
+      <location filename="../../bimcommands/BimLeader.py" line="45"/>
       <source>Creates a polyline with an arrow at its endpoint</source>
       <translation>Skapar en polylinje med en pil vid dess ändpunkt</translation>
     </message>
@@ -12327,12 +12326,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Library</name>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="86"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="83"/>
       <source>Objects Library</source>
       <translation>Objektbibliotek</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="87"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="84"/>
       <source>Opens the objects library</source>
       <translation>Öppnar objektbiblioteket</translation>
     </message>
@@ -12340,12 +12339,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Material</name>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="61"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="58"/>
       <source>Material</source>
       <translation>Material</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="65"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="62"/>
       <source>Sets or creates a material for selected objects</source>
       <translation>Ställer in eller skapar ett material för valda objekt</translation>
     </message>
@@ -12353,12 +12352,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_MoveView</name>
     <message>
-      <location filename="../../bimcommands/BimMoveView.py" line="38"/>
+      <location filename="../../bimcommands/BimMoveView.py" line="35"/>
       <source>Move View</source>
       <translation>Flytta vy</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMoveView.py" line="39"/>
+      <location filename="../../bimcommands/BimMoveView.py" line="36"/>
       <source>Moves this view to an existing page</source>
       <translation>Flyttar denna vy till en befintlig sida</translation>
     </message>
@@ -12366,7 +12365,7 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Nudge_Switch</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="127"/>
+      <location filename="../../bimcommands/BimNudge.py" line="124"/>
       <source>Nudge Switch</source>
       <translation>Växla förflyttningsläge</translation>
     </message>
@@ -12374,7 +12373,7 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Nudge_Up</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="153"/>
+      <location filename="../../bimcommands/BimNudge.py" line="150"/>
       <source>Nudge Up</source>
       <translation>Flytta ett steg uppåt</translation>
     </message>
@@ -12382,7 +12381,7 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Nudge_Down</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="173"/>
+      <location filename="../../bimcommands/BimNudge.py" line="170"/>
       <source>Nudge Down</source>
       <translation>Flytta ett steg nedåt</translation>
     </message>
@@ -12390,7 +12389,7 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Nudge_Left</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="193"/>
+      <location filename="../../bimcommands/BimNudge.py" line="190"/>
       <source>Nudge Left</source>
       <translation>Flytta ett steg åt vänster</translation>
     </message>
@@ -12398,7 +12397,7 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Nudge_Right</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="213"/>
+      <location filename="../../bimcommands/BimNudge.py" line="210"/>
       <source>Nudge Right</source>
       <translation>Flytta ett steg åt höger</translation>
     </message>
@@ -12406,7 +12405,7 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Nudge_Extend</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="233"/>
+      <location filename="../../bimcommands/BimNudge.py" line="230"/>
       <source>Nudge Extend</source>
       <translation>Förläng ett steg</translation>
     </message>
@@ -12414,7 +12413,7 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Nudge_Shrink</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="257"/>
+      <location filename="../../bimcommands/BimNudge.py" line="254"/>
       <source>Nudge Shrink</source>
       <translation>Förkorta ett steg</translation>
     </message>
@@ -12422,7 +12421,7 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Nudge_RotateLeft</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="281"/>
+      <location filename="../../bimcommands/BimNudge.py" line="278"/>
       <source>Nudge Rotate Left</source>
       <translation>Rotera ett steg åt vänster</translation>
     </message>
@@ -12430,7 +12429,7 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Nudge_RotateRight</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="310"/>
+      <location filename="../../bimcommands/BimNudge.py" line="307"/>
       <source>Nudge Rotate Right</source>
       <translation>Rotera ett steg åt höger</translation>
     </message>
@@ -12438,12 +12437,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>Part_Offset2D</name>
     <message>
-      <location filename="../../bimcommands/BimOffset.py" line="38"/>
+      <location filename="../../bimcommands/BimOffset.py" line="35"/>
       <source>2D Offset</source>
       <translation>2D-förskjutning</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimOffset.py" line="39"/>
+      <location filename="../../bimcommands/BimOffset.py" line="36"/>
       <source>Utility to offset planar shapes</source>
       <translation>Verktyg för att förskjuta plana former</translation>
     </message>
@@ -12451,12 +12450,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Preflight</name>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="64"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="61"/>
       <source>Preflight Checks</source>
       <translation>Förkontroller</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="68"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="65"/>
       <source>Checks several characteristics of this model before exporting to IFC</source>
       <translation>Kontrollerar flera egenskaper hos denna modell innan den exporteras till IFC</translation>
     </message>
@@ -12464,12 +12463,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Project</name>
     <message>
-      <location filename="../../bimcommands/BimProject.py" line="38"/>
+      <location filename="../../bimcommands/BimProject.py" line="35"/>
       <source>IFC Project</source>
       <translation>IFC-projekt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProject.py" line="39"/>
+      <location filename="../../bimcommands/BimProject.py" line="36"/>
       <source>Creates an empty NativeIFC project</source>
       <translation>Skapar ett tomt NativeIFC-projekt</translation>
     </message>
@@ -12477,12 +12476,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_ResetCloneColors</name>
     <message>
-      <location filename="../../bimcommands/BimResetCloneColors.py" line="38"/>
+      <location filename="../../bimcommands/BimResetCloneColors.py" line="35"/>
       <source>Reset Colors</source>
       <translation>Återställ färger</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimResetCloneColors.py" line="42"/>
+      <location filename="../../bimcommands/BimResetCloneColors.py" line="39"/>
       <source>Resets the colors of this object from its cloned original</source>
       <translation>Återställer objektets färger från originalet som det är en klon av</translation>
     </message>
@@ -12490,12 +12489,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Rewire</name>
     <message>
-      <location filename="../../bimcommands/BimRewire.py" line="38"/>
+      <location filename="../../bimcommands/BimRewire.py" line="35"/>
       <source>Rewire</source>
       <translation>Återskapa trådar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRewire.py" line="39"/>
+      <location filename="../../bimcommands/BimRewire.py" line="36"/>
       <source>Recreates wires from selected objects</source>
       <translation>Återskapar trådar från markerade objekt</translation>
     </message>
@@ -12503,12 +12502,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>draft</name>
     <message>
-      <location filename="../../bimcommands/BimShape2DView.py" line="51"/>
+      <location filename="../../bimcommands/BimShape2DView.py" line="48"/>
       <source>Create 2D view</source>
       <translation>Skapa 2D-vy</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimShape2DView.py" line="135"/>
+      <location filename="../../bimcommands/BimShape2DView.py" line="132"/>
       <source>Create 2D Cut</source>
       <translation>Skapa 2D-skärning</translation>
     </message>
@@ -12516,12 +12515,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Sketch</name>
     <message>
-      <location filename="../../bimcommands/BimSketch.py" line="38"/>
+      <location filename="../../bimcommands/BimSketch.py" line="35"/>
       <source>New Sketch</source>
       <translation>Ny skiss</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSketch.py" line="41"/>
+      <location filename="../../bimcommands/BimSketch.py" line="38"/>
       <source>Creates a new sketch in the current working plane</source>
       <translation>Skapar en ny skiss i det aktuella arbetsplanet</translation>
     </message>
@@ -12529,12 +12528,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Slab</name>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="42"/>
+      <location filename="../../bimcommands/BimSlab.py" line="39"/>
       <source>Slab</source>
       <translation>Platta</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="43"/>
+      <location filename="../../bimcommands/BimSlab.py" line="40"/>
       <source>Creates a slab from a planar shape</source>
       <translation>Skapar en platta från en plan form</translation>
     </message>
@@ -12542,12 +12541,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_TDPage</name>
     <message>
-      <location filename="../../bimcommands/BimTDPage.py" line="40"/>
+      <location filename="../../bimcommands/BimTDPage.py" line="37"/>
       <source>New Page</source>
       <translation>Ny sida</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTDPage.py" line="43"/>
+      <location filename="../../bimcommands/BimTDPage.py" line="40"/>
       <source>Creates a new TechDraw page from a template</source>
       <translation>Skapar en ny TechDraw-sida från en mall</translation>
     </message>
@@ -12555,12 +12554,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Text</name>
     <message>
-      <location filename="../../bimcommands/BimText.py" line="37"/>
+      <location filename="../../bimcommands/BimText.py" line="34"/>
       <source>Text</source>
       <translation>Text</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimText.py" line="40"/>
+      <location filename="../../bimcommands/BimText.py" line="37"/>
       <source>Create a text in the current 3D view or TechDraw page</source>
       <translation>Skapa en text i den aktuella 3D-vyn eller TechDraw-sidan</translation>
     </message>
@@ -12568,12 +12567,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Trash</name>
     <message>
-      <location filename="../../bimcommands/BimTrash.py" line="39"/>
+      <location filename="../../bimcommands/BimTrash.py" line="36"/>
       <source>Move to Trash</source>
       <translation>Flytta till papperskorg</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTrash.py" line="42"/>
+      <location filename="../../bimcommands/BimTrash.py" line="39"/>
       <source>Moves the selected objects to the trash folder</source>
       <translation>Flyttar de markerade objekten till papperskorgen</translation>
     </message>
@@ -12581,12 +12580,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Tutorial</name>
     <message>
-      <location filename="../../bimcommands/BimTutorial.py" line="51"/>
+      <location filename="../../bimcommands/BimTutorial.py" line="48"/>
       <source>BIM Tutorial</source>
       <translation>Handledning om BIM</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTutorial.py" line="54"/>
+      <location filename="../../bimcommands/BimTutorial.py" line="51"/>
       <source>Starts or continues the BIM in-game tutorial</source>
       <translation>Startar eller fortsätter den interaktiva BIM-handledningen</translation>
     </message>
@@ -12594,12 +12593,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Unclone</name>
     <message>
-      <location filename="../../bimcommands/BimUnclone.py" line="39"/>
+      <location filename="../../bimcommands/BimUnclone.py" line="36"/>
       <source>Unclone</source>
       <translation>Gör klon oberoende</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimUnclone.py" line="43"/>
+      <location filename="../../bimcommands/BimUnclone.py" line="40"/>
       <source>Creates a selected clone object independent from its original</source>
       <translation>Gör det markerade klonobjektet oberoende av originalet</translation>
     </message>
@@ -12607,12 +12606,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Views</name>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="55"/>
+      <location filename="../../bimcommands/BimViews.py" line="52"/>
       <source>Views Manager</source>
       <translation>Vyhanterare</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="56"/>
+      <location filename="../../bimcommands/BimViews.py" line="53"/>
       <source>Shows or hides the views manager</source>
       <translation>Visar eller döljer vyhanteraren</translation>
     </message>
@@ -12620,12 +12619,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_SetWPFront</name>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="38"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="35"/>
       <source>Working Plane Front</source>
       <translation>Arbetsplanets framsida</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="39"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="36"/>
       <source>Sets the working plane to Front</source>
       <translation>Ställer in arbetsplanet till Framifrån</translation>
     </message>
@@ -12633,12 +12632,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_SetWPSide</name>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="53"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="50"/>
       <source>Working Plane Side</source>
       <translation>Arbetsplan från sidan</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="54"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="51"/>
       <source>Sets the working plane to Side</source>
       <translation>Ställer in arbetsplanet till Från sidan</translation>
     </message>
@@ -12646,12 +12645,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_SetWPTop</name>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="68"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="65"/>
       <source>Working Plane Top</source>
       <translation>Arbetsplan ovanifrån</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="69"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="66"/>
       <source>Sets the working plane to Top</source>
       <translation>Ställer in arbetsplanet till Ovanifrån</translation>
     </message>
@@ -12659,12 +12658,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_WPView</name>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="83"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="80"/>
       <source>Working Plane View</source>
       <translation>Vy över arbetsplanet</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="87"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="84"/>
       <source>Aligns the view to the current item in BIM Views Manager or to the current working plane</source>
       <translation>Justerar vyn efter det aktuella objektet i BIM-vyhanteraren eller efter det aktuella arbetsplanet</translation>
     </message>
@@ -12672,12 +12671,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>IFC_Diff</name>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="52"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="49"/>
       <source>Shows the current unsaved changes in the IFC file</source>
       <translation>Visar de aktuella osparade ändringarna i IFC-filen</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="54"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="51"/>
       <source>IFC File Diff</source>
       <translation>IFC-filjämförelse</translation>
     </message>
@@ -12685,12 +12684,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>IFC_Expand</name>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="75"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="72"/>
       <source>Expands the children of the selected objects or document</source>
       <translation>Expanderar underordnade objekt för de markerade objekten eller dokumentet</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="77"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="74"/>
       <source>IFC Expand</source>
       <translation>Expandera IFC</translation>
     </message>
@@ -12698,12 +12697,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>IFC_ConvertDocument</name>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="115"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="112"/>
       <source>Converts the active document to an IFC document</source>
       <translation>Konverterar det aktiva dokumentet till ett IFC-dokument</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="117"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="114"/>
       <source>Convert Document</source>
       <translation>Konvertera dokument</translation>
     </message>
@@ -12711,12 +12710,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>IFC_MakeProject</name>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="141"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="138"/>
       <source>Converts the current selection to an IFC project</source>
       <translation>Konverterar den aktuella markeringen till ett IFC-projekt</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="143"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="140"/>
       <source>Convert to IFC Project</source>
       <translation>Konvertera till IFC-projekt</translation>
     </message>
@@ -12724,12 +12723,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>IFC_Save</name>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="179"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="176"/>
       <source>Saves the current IFC document</source>
       <translation>Sparar det aktuella IFC-dokumentet</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="181"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="178"/>
       <source>Save IFC File</source>
       <translation>Spara IFC-fil</translation>
     </message>
@@ -12737,12 +12736,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>IFC_SaveAs</name>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="212"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="209"/>
       <source>Saves the current IFC document as another file</source>
       <translation>Sparar det aktuella IFC-dokumentet som en annan fil</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="214"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="211"/>
       <source>Save IFC File As…</source>
       <translation>Spara IFC-fil som…</translation>
     </message>
@@ -12750,12 +12749,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>IFC_UpdateIOS</name>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="44"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="41"/>
       <source>Shows a dialog to update IfcOpenShell</source>
       <translation>Visar en dialogruta för att uppdatera IfcOpenShell</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="46"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="43"/>
       <source>IfcOpenShell Update</source>
       <translation>Uppdatering av IfcOpenShell</translation>
     </message>
@@ -13157,12 +13156,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>Arch_RemoveShape</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="276"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="273"/>
       <source>Remove Shape From BIM</source>
       <translation>Ta bort form från BIM</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="279"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="276"/>
       <source>Removes cubic shapes from BIM components</source>
       <translation>Tar bort rätblocksformade basobjekt från BIM-komponenter</translation>
     </message>
@@ -13170,12 +13169,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_DrawingView</name>
     <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="45"/>
+      <location filename="../../bimcommands/BimDrawingView.py" line="42"/>
       <source>2D Drawing</source>
       <translation>2D-ritning</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="49"/>
+      <location filename="../../bimcommands/BimDrawingView.py" line="46"/>
       <source>Creates a drawing container to contain elements of a 2D view</source>
       <translation>Skapar en ritningsbehållare för att innehålla element i en 2D-vy</translation>
     </message>
@@ -13199,12 +13198,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>Arch_Remove</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="99"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="96"/>
       <source>Remove Component</source>
       <translation>Ta bort komponent</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="103"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="100"/>
       <source>Removes the selected components from their parents, or creates a hole in a component</source>
       <translation>Tar bort de markerade komponenterna från deras överordnade objekt eller skapar ett hål i en komponent</translation>
     </message>
@@ -13212,12 +13211,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>Arch_ToggleIfcBrepFlag</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="378"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="375"/>
       <source>Toggle IFC B-Rep Flag</source>
       <translation>Växla tvingad IFC B-rep</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="381"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="378"/>
       <source>Forces an object to be exported as B-rep or not</source>
       <translation>Tvingar ett objekt att exporteras som B-rep eller inte</translation>
     </message>
@@ -13225,12 +13224,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>Arch_IfcSpreadsheet</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="467"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="464"/>
       <source>New IFC Spreadsheet</source>
       <translation>Nytt IFC-kalkylblad</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="471"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="468"/>
       <source>Creates a spreadsheet to store IFC properties of an object</source>
       <translation>Skapar ett kalkylblad för att lagra IFC-egenskaper för ett objekt</translation>
     </message>
@@ -13238,12 +13237,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Classification</name>
     <message>
-      <location filename="../../bimcommands/BimClassification.py" line="43"/>
+      <location filename="../../bimcommands/BimClassification.py" line="40"/>
       <source>Manage Classification</source>
       <translation>Hantera klassificering</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimClassification.py" line="47"/>
+      <location filename="../../bimcommands/BimClassification.py" line="44"/>
       <source>Manages classification systems and apply classification to objects</source>
       <translation>Hanterar klassificeringssystem och tillämpar klassificering på objekt</translation>
     </message>
@@ -13251,12 +13250,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_DimensionAligned</name>
     <message>
-      <location filename="../../bimcommands/BimDimensions.py" line="43"/>
+      <location filename="../../bimcommands/BimDimensions.py" line="40"/>
       <source>Aligned Dimension</source>
       <translation>Inriktat mått</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDimensions.py" line="44"/>
+      <location filename="../../bimcommands/BimDimensions.py" line="41"/>
       <source>Creates an aligned dimension</source>
       <translation>Skapar ett mått längs sträckan mellan två punkter</translation>
     </message>
@@ -13264,12 +13263,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_DimensionHorizontal</name>
     <message>
-      <location filename="../../bimcommands/BimDimensions.py" line="57"/>
+      <location filename="../../bimcommands/BimDimensions.py" line="54"/>
       <source>Horizontal Dimension</source>
       <translation>Horisontellt mått</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDimensions.py" line="60"/>
+      <location filename="../../bimcommands/BimDimensions.py" line="57"/>
       <source>Creates an horizontal dimension</source>
       <translation>Skapar ett horisontellt mått</translation>
     </message>
@@ -13277,12 +13276,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_DimensionVertical</name>
     <message>
-      <location filename="../../bimcommands/BimDimensions.py" line="79"/>
+      <location filename="../../bimcommands/BimDimensions.py" line="76"/>
       <source>Vertical Dimension</source>
       <translation>Vertikalt mått</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDimensions.py" line="80"/>
+      <location filename="../../bimcommands/BimDimensions.py" line="77"/>
       <source>Creates a vertical dimension</source>
       <translation>Skapar ett vertikalt mått</translation>
     </message>
@@ -13290,12 +13289,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_IfcElements</name>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="39"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="36"/>
       <source>Manage IFC Elements</source>
       <translation>Hantera IFC-element</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="43"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="40"/>
       <source>Manages how the different elements of the BIM project will be exported to IFC</source>
       <translation>Hanterar hur de olika delarna av BIM-projektet ska exporteras till IFC</translation>
     </message>
@@ -13303,12 +13302,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_IfcExplorer</name>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="44"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="41"/>
       <source>IFC Explorer</source>
       <translation>IFC-utforskare</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="45"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="42"/>
       <source>Opens the IFC explorer utility</source>
       <translation>Öppnar IFC-utforskaren</translation>
     </message>
@@ -13316,12 +13315,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_IfcProperties</name>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="44"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="41"/>
       <source>Manage IFC Properties</source>
       <translation>Hantera IFC-egenskaper</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="48"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="45"/>
       <source>Manages the different IFC properties of the BIM objects</source>
       <translation>Hanterar de olika IFC-egenskaperna för BIM-objekten</translation>
     </message>
@@ -13329,12 +13328,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_IfcQuantities</name>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="72"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="69"/>
       <source>Manage IFC Quantities</source>
       <translation>Hantera IFC-mängder</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="76"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="73"/>
       <source>Manages how the quantities of different elements of the BIM project will be exported to IFC</source>
       <translation>Hanterar hur mängderna för olika delar av BIM-projektet ska exporteras till IFC</translation>
     </message>
@@ -13342,12 +13341,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Layers</name>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="57"/>
+      <location filename="../../bimcommands/BimLayers.py" line="54"/>
       <source>Manage Layers</source>
       <translation>Hantera lager</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="60"/>
+      <location filename="../../bimcommands/BimLayers.py" line="57"/>
       <source>Sets/modifies the different layers of your BIM project</source>
       <translation>Ställer in/modifierar de olika lagren i ditt BIM-projekt</translation>
     </message>
@@ -13355,12 +13354,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_ProjectManager</name>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="53"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="50"/>
       <source>Setup Project</source>
       <translation>Konfigurera projekt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="54"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="51"/>
       <source>Creates or manages a BIM project</source>
       <translation>Skapar eller hanterar ett BIM-projekt</translation>
     </message>
@@ -13368,12 +13367,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Reextrude</name>
     <message>
-      <location filename="../../bimcommands/BimReextrude.py" line="38"/>
+      <location filename="../../bimcommands/BimReextrude.py" line="35"/>
       <source>Re-Extrude</source>
       <translation>Extrudera på nytt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimReextrude.py" line="41"/>
+      <location filename="../../bimcommands/BimReextrude.py" line="38"/>
       <source>Recreates an extruded structure from a selected face</source>
       <translation>Återskapar en extruderad bärande konstruktion från en markerad yta</translation>
     </message>
@@ -13381,12 +13380,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Reorder</name>
     <message>
-      <location filename="../../bimcommands/BimReorder.py" line="39"/>
+      <location filename="../../bimcommands/BimReorder.py" line="36"/>
       <source>Reorder Children</source>
       <translation>Ordna om underordnade objekt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimReorder.py" line="41"/>
+      <location filename="../../bimcommands/BimReorder.py" line="38"/>
       <source>Reorders children of the selected object</source>
       <translation>Ordnar om det markerade objektets underordnade objekt</translation>
     </message>
@@ -13394,12 +13393,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Setup</name>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="42"/>
+      <location filename="../../bimcommands/BimSetup.py" line="39"/>
       <source>BIM Setup</source>
       <translation>BIM-inställningar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="45"/>
+      <location filename="../../bimcommands/BimSetup.py" line="42"/>
       <source>Sets common FreeCAD preferences for a BIM workflow</source>
       <translation>Ställer in vanliga FreeCAD-inställningar för ett BIM-arbetsflöde</translation>
     </message>
@@ -13407,12 +13406,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_Shape2DView</name>
     <message>
-      <location filename="../../bimcommands/BimShape2DView.py" line="42"/>
+      <location filename="../../bimcommands/BimShape2DView.py" line="39"/>
       <source>Section View</source>
       <translation>Snittvy</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimShape2DView.py" line="114"/>
+      <location filename="../../bimcommands/BimShape2DView.py" line="111"/>
       <source>Section Cut</source>
       <translation>Snitt</translation>
     </message>
@@ -13420,12 +13419,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_SimpleCopy</name>
     <message>
-      <location filename="../../bimcommands/BimSimpleCopy.py" line="38"/>
+      <location filename="../../bimcommands/BimSimpleCopy.py" line="35"/>
       <source>Simple Copy</source>
       <translation>Enkel kopia</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSimpleCopy.py" line="39"/>
+      <location filename="../../bimcommands/BimSimpleCopy.py" line="36"/>
       <source>Creates a simple non-parametric copy</source>
       <translation>Skapar en enkel icke-parametrisk kopia</translation>
     </message>
@@ -13433,12 +13432,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
   <context>
     <name>BIM_TDView</name>
     <message>
-      <location filename="../../bimcommands/BimTDView.py" line="38"/>
+      <location filename="../../bimcommands/BimTDView.py" line="35"/>
       <source>New View</source>
       <translation>Ny vy</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTDView.py" line="44"/>
+      <location filename="../../bimcommands/BimTDView.py" line="41"/>
       <source>Inserts a drawing view on a page.
 To choose where to insert the view when multiple pages are available,
 select both the view and the page before executing the command.</source>
@@ -13450,12 +13449,12 @@ markera både vyn och sidan innan du utför kommandot.</translation>
   <context>
     <name>BIM_Welcome</name>
     <message>
-      <location filename="../../bimcommands/BimWelcome.py" line="39"/>
+      <location filename="../../bimcommands/BimWelcome.py" line="36"/>
       <source>BIM Welcome Screen</source>
       <translation>BIM-välkomstskärm</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWelcome.py" line="40"/>
+      <location filename="../../bimcommands/BimWelcome.py" line="37"/>
       <source>Shows the BIM workbench welcome screen</source>
       <translation>Visar välkomstskärmen för BIM-arbetsbänken</translation>
     </message>
@@ -13463,12 +13462,12 @@ markera både vyn och sidan innan du utför kommandot.</translation>
   <context>
     <name>BIM_Windows</name>
     <message>
-      <location filename="../../bimcommands/BimWindows.py" line="38"/>
+      <location filename="../../bimcommands/BimWindows.py" line="35"/>
       <source>Manage Doors and Windows</source>
       <translation>Hantera dörrar och fönster</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindows.py" line="42"/>
+      <location filename="../../bimcommands/BimWindows.py" line="39"/>
       <source>Manages the different doors and windows of the BIM project</source>
       <translation>Hanterar de olika dörrarna och fönstren i BIM-projektet</translation>
     </message>
@@ -13674,7 +13673,7 @@ markera både vyn och sidan innan du utför kommandot.</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1758"/>
-      <location filename="../../bimcommands/BimCovering.py" line="83"/>
+      <location filename="../../bimcommands/BimCovering.py" line="97"/>
       <source>Create Covering</source>
       <translation>Skapa ytskikt</translation>
     </message>
@@ -13785,12 +13784,12 @@ Vill du fortsätta?</translation>
   <context>
     <name>BIM_ExtrudeFace</name>
     <message>
-      <location filename="../../bimcommands/BimExtrudeFace.py" line="17"/>
+      <location filename="../../bimcommands/BimExtrudeFace.py" line="18"/>
       <source>Extrude Face</source>
       <translation>Extrudera yta</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimExtrudeFace.py" line="20"/>
+      <location filename="../../bimcommands/BimExtrudeFace.py" line="21"/>
       <source>Extrudes a selected face into a solid</source>
       <translation>Extruderar en markerad yta till en solid</translation>
     </message>
@@ -13798,12 +13797,12 @@ Vill du fortsätta?</translation>
   <context>
     <name>BIM_Covering</name>
     <message>
-      <location filename="../../bimcommands/BimCovering.py" line="44"/>
+      <location filename="../../bimcommands/BimCovering.py" line="58"/>
       <source>Covering</source>
       <translation>Ytskikt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCovering.py" line="47"/>
+      <location filename="../../bimcommands/BimCovering.py" line="61"/>
       <source>Creates a covering (floor finish, cladding) on a selected face</source>
       <translation>Skapar ett ytskikt (golvbeläggning eller beklädnad) på en markerad yta</translation>
     </message>
@@ -13811,12 +13810,12 @@ Vill du fortsätta?</translation>
   <context>
     <name>BIM_Compound</name>
     <message>
-      <location filename="../../bimcommands/BimCompound.py" line="38"/>
+      <location filename="../../bimcommands/BimCompound.py" line="35"/>
       <source>Compound</source>
       <translation>Sammansatt objekt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCompound.py" line="39"/>
+      <location filename="../../bimcommands/BimCompound.py" line="36"/>
       <source>Creates a compound of several shapes</source>
       <translation>Skapar ett sammansatt objekt av flera former</translation>
     </message>
@@ -13824,7 +13823,7 @@ Vill du fortsätta?</translation>
   <context>
     <name>BimWall</name>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="308"/>
+      <location filename="../../bimcommands/BimWall.py" line="305"/>
       <source>Wall Trace</source>
       <translation>Väggspårning</translation>
     </message>
@@ -13832,12 +13831,12 @@ Vill du fortsätta?</translation>
   <context>
     <name>BIM_LinkMake</name>
     <message>
-      <location filename="../../bimcommands/BimLink.py" line="14"/>
+      <location filename="../../bimcommands/BimLink.py" line="15"/>
       <source>Make Link</source>
       <translation>Skapa länk</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLink.py" line="18"/>
+      <location filename="../../bimcommands/BimLink.py" line="19"/>
       <source>Creates a Link to the selected object and immediately enables moving it</source>
       <translation>Skapar en länk till det valda objektet och aktiverar omedelbart flyttning av länken</translation>
     </message>

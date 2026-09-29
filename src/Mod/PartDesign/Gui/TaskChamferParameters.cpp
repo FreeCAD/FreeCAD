@@ -57,7 +57,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskChamferParameters */
 
 TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp* DressUpView, QWidget* parent)
-    : TaskDressUpParameters(DressUpView, true, true, parent)
+    : TaskDressUpParameters(DressUpView, true, true, false, true, parent)
     , ui(new Ui_TaskChamferParameters)
 {
     // we need a separate container widget to add all controls to

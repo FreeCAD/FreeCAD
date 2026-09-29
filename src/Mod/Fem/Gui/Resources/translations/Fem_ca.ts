@@ -716,7 +716,7 @@
     <message>
       <location filename="../../ViewProviderShapeExtension.cpp" line="189"/>
       <source>Edit Shape</source>
-      <translation type="unfinished">Edit Shape</translation>
+      <translation>Edita la forma</translation>
     </message>
   </context>
   <context>
@@ -886,12 +886,12 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="243"/>
       <source>Overwrite CCX defaults</source>
-      <translation type="unfinished">Overwrite CCX defaults</translation>
+      <translation>Sobreescriu els valors per defecte de CCX</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="266"/>
       <source>3D output, unchecked for 2D output</source>
-      <translation type="unfinished">3D output, unchecked for 2D output</translation>
+      <translation>Sortida 3D; desmarcat per a la sortida 2D</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="282"/>
@@ -901,7 +901,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="350"/>
       <source>Geometrical nonlinearity</source>
-      <translation type="unfinished">Geometrical nonlinearity</translation>
+      <translation>No linealitat geomètrica</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="419"/>
@@ -911,7 +911,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="426"/>
       <source>Advanced solver controls</source>
-      <translation type="unfinished">Advanced solver controls</translation>
+      <translation>Controls avançats del solucionador</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="446"/>
@@ -926,12 +926,12 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="504"/>
       <source>Use geometrical nonlinearity</source>
-      <translation type="unfinished">Use geometrical nonlinearity</translation>
+      <translation>Usa la no linealitat geomètrica</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="551"/>
       <source>1D and 2D element output format</source>
-      <translation type="unfinished">1D and 2D element output format</translation>
+      <translation>Format de sortida dels elements 1D i 2D</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="583"/>
@@ -941,7 +941,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="597"/>
       <source>No legacy results (use enhanced solver)</source>
-      <translation type="unfinished">No legacy results (use enhanced solver)</translation>
+      <translation>Sense resultats heretats (usa el solucionador millorat)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="649"/>
@@ -956,17 +956,17 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="718"/>
       <source>Upper frequency bound</source>
-      <translation type="unfinished">Upper frequency bound</translation>
+      <translation>Límit superior de freqüència</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="725"/>
       <source>Number of eigenmodes</source>
-      <translation type="unfinished">Number of eigenmodes</translation>
+      <translation>Nombre de modes propis</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="779"/>
       <source>Lower frequency bound</source>
-      <translation type="unfinished">Lower frequency bound</translation>
+      <translation>Límit inferior de freqüència</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="795"/>
@@ -1099,7 +1099,7 @@ Només té afecte si l'opció 'Només canonada' està marcada</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="209"/>
       <source>Maximum output level</source>
-      <translation type="unfinished">Maximum output level</translation>
+      <translation>Nivell màxim de sortida</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="231"/>
@@ -1159,12 +1159,12 @@ Només té afecte si l'opció 'Només canonada' està marcada</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="144"/>
       <source>MPI path</source>
-      <translation type="unfinished">MPI path</translation>
+      <translation>Camí de l'MPI</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="175"/>
       <source>Leave blank to use default MPI binary file</source>
-      <translation type="unfinished">Leave blank to use default MPI binary file</translation>
+      <translation>Deixeu-ho en blanc per a usar el fitxer binari MPI per defecte</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="191"/>
@@ -1281,41 +1281,41 @@ s'aplica la restricció o el material.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="34"/>
       <source>Working Directory for Solving Analysis and Meshing</source>
-      <translation type="unfinished">Working Directory for Solving Analysis and Meshing</translation>
+      <translation>Directori de treball per a la resolució de l'anàlisi i el mallat</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="79"/>
       <source>Create a directory in the same folder in which the FCStd file of the document is located. Use Subfolder for each object
 (e.g. for a file ./mydoc.FCStd and a solver with the label Elmer002 use ./mydoc/Elmer002).</source>
-      <translation type="unfinished">Create a directory in the same folder in which the FCStd file of the document is located. Use Subfolder for each object
-(e.g. for a file ./mydoc.FCStd and a solver with the label Elmer002 use ./mydoc/Elmer002).</translation>
+      <translation>Crea un directori a la mateixa carpeta on es troba el fitxer FCStd del document. Usa una subcarpeta per a cada objecte
+(p. ex. per a un fitxer ./mydoc.FCStd i un solucionador amb l'etiqueta Elmer002 s'usa ./mydoc/Elmer002).</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="99"/>
       <source>Custom directory</source>
-      <translation type="unfinished">Custom directory</translation>
+      <translation>Directori personalitzat</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="102"/>
       <source>Create own subdirectory for each object. Name directory after the solver label prefixed with the document name.
 Leave blank to use user home directory.</source>
-      <translation type="unfinished">Create own subdirectory for each object. Name directory after the solver label prefixed with the document name.
-Leave blank to use user home directory.</translation>
+      <translation>Crea un subdirectori propi per a cada objecte. Anomena el directori segons l'etiqueta del solucionador amb el nom del document com a prefix.
+Deixeu-ho en blanc per a usar el directori d'inici de l'usuari.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="161"/>
       <source>Input File Editor</source>
-      <translation type="unfinished">Input File Editor</translation>
+      <translation>Editor del fitxer d'entrada</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="178"/>
       <source>Editor path</source>
-      <translation type="unfinished">Editor path</translation>
+      <translation>Camí de l'editor</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="188"/>
       <source>Leave blank to use default FreeCAD internal editor</source>
-      <translation type="unfinished">Leave blank to use default FreeCAD internal editor</translation>
+      <translation>Deixeu-ho en blanc per a usar l'editor intern predeterminat de FreeCAD</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="217"/>
@@ -1393,7 +1393,7 @@ afegir un contenidor d'anàlisis</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneralImp.cpp" line="142"/>
       <source>Directory '%1' not found</source>
-      <translation type="unfinished">Directory '%1' not found</translation>
+      <translation>No s'ha trobat el directori '%1'</translation>
     </message>
   </context>
   <context>
@@ -1641,12 +1641,12 @@ amb els fitxers VTK exportats per FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="156"/>
       <source>Stiffness matrix entries</source>
-      <translation type="unfinished">Stiffness matrix entries</translation>
+      <translation>Entrades de la matriu de rigidesa</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="200"/>
       <source>Coincidence vector entries</source>
-      <translation type="unfinished">Coincidence vector entries</translation>
+      <translation>Entrades del vector de coincidència</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="213"/>
@@ -1656,12 +1656,12 @@ amb els fitxers VTK exportats per FreeCAD.</translation>
 You might need to increase this when using an
 iterative solver and you get the error message
 that "MAXKOI" needs to be increased.</source>
-      <translation type="unfinished">Maximal places in coincidence vector.
-(number of knots per element times
- number of finite elements)
-You might need to increase this when using an
-iterative solver and you get the error message
-that "MAXKOI" needs to be increased.</translation>
+      <translation>Posicions màximes al vector de coincidència.
+(nombre de nodes per element multiplicat pel
+ nombre d'elements finits)
+Pot ser que calgui augmentar-ho quan useu un
+solucionador iteratiu i rebeu el missatge d'error
+que cal augmentar "MAXKOI".</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="169"/>
@@ -1677,17 +1677,17 @@ que "MAXGS" s'ha d'augmentar.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="88"/>
       <source>Successive over-relaxation (SOR)</source>
-      <translation type="unfinished">Successive over-relaxation (SOR)</translation>
+      <translation>Sobrerelaxació successiva (SOR)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="89"/>
       <source>Shifted incomplete Cholesky (SIC)</source>
-      <translation type="unfinished">Shifted incomplete Cholesky (SIC)</translation>
+      <translation>Cholesky incomplet desplaçat (SIC)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="90"/>
       <source>Simple Cholesky</source>
-      <translation type="unfinished">Simple Cholesky</translation>
+      <translation>Cholesky simple</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="108"/>
@@ -1774,7 +1774,7 @@ que "MAXGS" s'ha d'augmentar.</translation>
       <location filename="../../TaskFemConstraintBearing.cpp" line="217"/>
       <location filename="../../TaskFemConstraintBearing.cpp" line="226"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Error de selecció</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="173"/>
@@ -1846,7 +1846,7 @@ que "MAXGS" s'ha d'augmentar.</translation>
       <location filename="../../TaskFemConstraintContact.cpp" line="442"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="451"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Error de selecció</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="150"/>
@@ -1942,7 +1942,7 @@ que "MAXGS" s'ha d'augmentar.</translation>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="324"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="334"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Error de selecció</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="249"/>
@@ -1987,7 +1987,7 @@ que "MAXGS" s'ha d'augmentar.</translation>
       <location filename="../../TaskFemConstraintFixed.cpp" line="196"/>
       <location filename="../../TaskFemConstraintFixed.cpp" line="205"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Error de selecció</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="124"/>
@@ -2077,7 +2077,7 @@ que "MAXGS" s'ha d'augmentar.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="657"/>
       <source>Empty Selection</source>
-      <translation type="unfinished">Empty Selection</translation>
+      <translation>Selecció buida</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="657"/>
@@ -2132,7 +2132,7 @@ que "MAXGS" s'ha d'augmentar.</translation>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="934"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="944"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Error de selecció</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="861"/>
@@ -2177,7 +2177,7 @@ que "MAXGS" s'ha d'augmentar.</translation>
       <location filename="../../TaskFemConstraintForce.cpp" line="210"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="219"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Error de selecció</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="137"/>
@@ -2214,7 +2214,7 @@ que "MAXGS" s'ha d'augmentar.</translation>
       <location filename="../../TaskFemConstraintGear.cpp" line="167"/>
       <location filename="../../TaskFemConstraintGear.cpp" line="176"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Error de selecció</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="158"/>
@@ -2259,7 +2259,7 @@ que "MAXGS" s'ha d'augmentar.</translation>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="371"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="382"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Error de selecció</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="293"/>
@@ -2302,7 +2302,7 @@ que "MAXGS" s'ha d'augmentar.</translation>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="229"/>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="239"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Error de selecció</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="133"/>
@@ -2364,7 +2364,7 @@ que "MAXGS" s'ha d'augmentar.</translation>
       <location filename="../../TaskFemConstraintPressure.cpp" line="196"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="205"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Error de selecció</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="139"/>
@@ -2422,7 +2422,7 @@ que "MAXGS" s'ha d'augmentar.</translation>
       <location filename="../../TaskFemConstraintSpring.cpp" line="197"/>
       <location filename="../../TaskFemConstraintSpring.cpp" line="206"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Error de selecció</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="144"/>
@@ -2466,7 +2466,7 @@ que "MAXGS" s'ha d'augmentar.</translation>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="258"/>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="267"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Error de selecció</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="209"/>
@@ -2505,33 +2505,33 @@ que "MAXGS" s'ha d'augmentar.</translation>
       <location filename="../../TaskFemConstraintTransform.cpp" line="472"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="481"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Error de selecció</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="320"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="330"/>
       <source>Only one face (edge in 2D model) for rectangular local coordinate system!</source>
-      <translation type="unfinished">Only one face (edge in 2D model) for rectangular local coordinate system!</translation>
+      <translation>Només una cara (aresta en un model 2D) per al sistema de coordenades local rectangular!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="363"/>
       <source>Only one face (edge in 2D model) for local coordinate system!</source>
-      <translation type="unfinished">Only one face (edge in 2D model) for local coordinate system!</translation>
+      <translation>Només una cara (aresta en un model 2D) per al sistema de coordenades local!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="377"/>
       <source>Only faces (edges in 2D model) can be picked</source>
-      <translation type="unfinished">Only faces (edges in 2D model) can be picked</translation>
+      <translation>Només es poden triar cares (arestes en un model 2D)</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="395"/>
       <source>Only cylindrical faces (edges in 2D model) can be picked</source>
-      <translation type="unfinished">Only cylindrical faces (edges in 2D model) can be picked</translation>
+      <translation>Només es poden triar cares cilíndriques (arestes en un model 2D)</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="439"/>
       <source>Only transformable faces (edges in 2D model) can be selected! Apply a displacement boundary condition or a force load to a boundary first then apply the local coordinate system.</source>
-      <translation type="unfinished">Only transformable faces (edges in 2D model) can be selected! Apply a displacement boundary condition or a force load to a boundary first then apply the local coordinate system.</translation>
+      <translation>Només es poden seleccionar cares transformables (arestes en un model 2D)! Apliqueu primer una condició de contorn de desplaçament o una càrrega de força a un contorn i, després, apliqueu el sistema de coordenades local.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="312"/>
@@ -2888,12 +2888,12 @@ que "MAXGS" s'ha d'augmentar.</translation>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="70"/>
       <source>Reverse master</source>
-      <translation type="unfinished">Reverse master</translation>
+      <translation>Inverteix el mestre</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="77"/>
       <source>Reverse slave</source>
-      <translation type="unfinished">Reverse slave</translation>
+      <translation>Inverteix l'esclau</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="92"/>
@@ -3097,52 +3097,52 @@ Nota: no té cap efecte si s'ha seleccionat un sòlid</translation>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="348"/>
       <source>Far field approximation assuming spherical symmetry</source>
-      <translation type="unfinished">Far field approximation assuming spherical symmetry</translation>
+      <translation>Aproximació de camp llunyà suposant simetria esfèrica</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="351"/>
       <source>Far field</source>
-      <translation type="unfinished">Far field</translation>
+      <translation>Camp llunyà</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="400"/>
       <source>To define magnetic flux density</source>
-      <translation type="unfinished">To define magnetic flux density</translation>
+      <translation>Per a definir la densitat de flux magnètic</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="403"/>
       <source>Magnetic flux density</source>
-      <translation type="unfinished">Magnetic flux density</translation>
+      <translation>Densitat de flux magnètic</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="459"/>
       <source>Real part of magnetic flux density x-component</source>
-      <translation type="unfinished">Real part of magnetic flux density x-component</translation>
+      <translation>Part real de la component x de la densitat de flux magnètic</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="481"/>
       <source>Imaginary part of magnetic flux density x-component</source>
-      <translation type="unfinished">Imaginary part of magnetic flux density x-component</translation>
+      <translation>Part imaginària de la component x de la densitat de flux magnètic</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="510"/>
       <source>Real part of magnetic flux density y-component</source>
-      <translation type="unfinished">Real part of magnetic flux density y-component</translation>
+      <translation>Part real de la component y de la densitat de flux magnètic</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="532"/>
       <source>Imaginary part of magnetic flux density y-component</source>
-      <translation type="unfinished">Imaginary part of magnetic flux density y-component</translation>
+      <translation>Part imaginària de la component y de la densitat de flux magnètic</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="561"/>
       <source>Real part of magnetic flux density z-component</source>
-      <translation type="unfinished">Real part of magnetic flux density z-component</translation>
+      <translation>Part real de la component z de la densitat de flux magnètic</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="583"/>
       <source>Imaginary part of magnetic flux density z-component</source>
-      <translation type="unfinished">Imaginary part of magnetic flux density z-component</translation>
+      <translation>Part imaginària de la component z de la densitat de flux magnètic</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="624"/>
@@ -3252,35 +3252,35 @@ Nota: no té cap efecte si s'ha seleccionat un sòlid</translation>
     <message>
       <location filename="../ui/MeshShape.ui" line="38"/>
       <source>Define mesh size inside and outside of the shape, with possible transition layer thickness</source>
-      <translation type="unfinished">Define mesh size inside and outside of the shape, with possible transition layer thickness</translation>
+      <translation>Defineix la mida de malla dins i fora de la forma, amb un gruix opcional de capa de transició</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="54"/>
       <location filename="../ui/MeshShape.ui" line="70"/>
       <source>Mesh size within the shape</source>
-      <translation type="unfinished">Mesh size within the shape</translation>
+      <translation>Mida de malla dins de la forma</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="57"/>
       <source>Size inside</source>
-      <translation type="unfinished">Size inside</translation>
+      <translation>Mida interior</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="80"/>
       <location filename="../ui/MeshShape.ui" line="96"/>
       <source>Mesh size outside of the shape</source>
-      <translation type="unfinished">Mesh size outside of the shape</translation>
+      <translation>Mida de malla fora de la forma</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="83"/>
       <source>Size outside</source>
-      <translation type="unfinished">Size outside</translation>
+      <translation>Mida exterior</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="106"/>
       <location filename="../ui/MeshShape.ui" line="122"/>
       <source>Thickness of transition layer between in/out mesh sizes (added outside of the shape)</source>
-      <translation type="unfinished">Thickness of transition layer between in/out mesh sizes (added outside of the shape)</translation>
+      <translation>Gruix de la capa de transició entre les mides de malla interior/exterior (afegida fora de la forma)</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="109"/>
@@ -3478,7 +3478,7 @@ motrius harmòniques/oscilants</translation>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="173"/>
       <source>Concentrated</source>
-      <translation type="unfinished">Concentrated</translation>
+      <translation>Concentrada</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="23"/>
@@ -3499,7 +3499,7 @@ motrius harmòniques/oscilants</translation>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="56"/>
       <source>Drag the refinement that should be altered into the Manipulate object in the document tree</source>
-      <translation type="unfinished">Drag the refinement that should be altered into the Manipulate object in the document tree</translation>
+      <translation>Arrossegueu el refinament que s'ha de modificar a l'objecte Manipula de l'arbre del document</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="70"/>
@@ -3510,23 +3510,23 @@ motrius harmòniques/oscilants</translation>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="84"/>
       <source>Restrict</source>
-      <translation type="unfinished">Restrict</translation>
+      <translation>Restringeix</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="89"/>
       <source>Threshold</source>
-      <translation type="unfinished">Threshold</translation>
+      <translation>Llindar</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="94"/>
       <location filename="../ui/MeshManipulate.ui" line="609"/>
       <source>Mean</source>
-      <translation type="unfinished">Mean</translation>
+      <translation>Mitjana</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="99"/>
       <source>Gradient</source>
-      <translation type="unfinished">Gradient</translation>
+      <translation>Gradient</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="104"/>
@@ -3536,28 +3536,28 @@ motrius harmòniques/oscilants</translation>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="109"/>
       <source>Laplacian</source>
-      <translation type="unfinished">Laplacian</translation>
+      <translation>Laplacià</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="138"/>
       <source>Restrict the application of the child refinement to the selected reference elements.</source>
-      <translation type="unfinished">Restrict the application of the child refinement to the selected reference elements.</translation>
+      <translation>Restringeix l'aplicació del refinament fill als elements de referència seleccionats.</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="160"/>
       <location filename="../ui/MeshManipulate.ui" line="173"/>
       <source>Include the boundary of the selected reference elements</source>
-      <translation type="unfinished">Include the boundary of the selected reference elements</translation>
+      <translation>Inclou el contorn dels elements de referència seleccionats</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="163"/>
       <source>Include boundary</source>
-      <translation type="unfinished">Include boundary</translation>
+      <translation>Inclou el contorn</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="209"/>
       <source>Apply a threshold to the child refinements value</source>
-      <translation type="unfinished">Apply a threshold to the child refinements value</translation>
+      <translation>Aplica un llindar al valor dels refinaments fills</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="236"/>
@@ -3565,19 +3565,19 @@ motrius harmòniques/oscilants</translation>
       <location filename="../ui/MeshAdvanced.ui" line="399"/>
       <location filename="../ui/MeshDistance.ui" line="68"/>
       <source>Mesh size when distance = DistanceMaximum</source>
-      <translation type="unfinished">Mesh size when distance = DistanceMaximum</translation>
+      <translation>Mida de malla quan la distància = DistanceMaximum</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="283"/>
       <location filename="../ui/MeshAdvanced.ui" line="179"/>
       <location filename="../ui/MeshDistance.ui" line="115"/>
       <source>Distance at which the mesh size will be SizeMaximum</source>
-      <translation type="unfinished">Distance at which the mesh size will be SizeMaximum</translation>
+      <translation>Distància a la qual la mida de malla serà SizeMaximum</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="308"/>
       <source>Output size</source>
-      <translation type="unfinished">Output size</translation>
+      <translation>Mida de sortida</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="346"/>
@@ -3585,19 +3585,19 @@ motrius harmòniques/oscilants</translation>
       <location filename="../ui/MeshAdvanced.ui" line="430"/>
       <location filename="../ui/MeshDistance.ui" line="178"/>
       <source>Mesh size when distance &lt; DistanceMinimum</source>
-      <translation type="unfinished">Mesh size when distance &lt; DistanceMinimum</translation>
+      <translation>Mida de malla quan la distància &lt; DistanceMinimum</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="365"/>
       <source>Input value</source>
-      <translation type="unfinished">Input value</translation>
+      <translation>Valor d'entrada</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="387"/>
       <location filename="../ui/MeshAdvanced.ui" line="368"/>
       <location filename="../ui/MeshDistance.ui" line="219"/>
       <source>Distance up to which the mesh size will be SizeMinimum</source>
-      <translation type="unfinished">Distance up to which the mesh size will be SizeMinimum</translation>
+      <translation>Distància fins a la qual la mida de malla serà SizeMinimum</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="434"/>
@@ -3607,23 +3607,23 @@ motrius harmòniques/oscilants</translation>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="185"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="91"/>
       <source>Diagram</source>
-      <translation type="unfinished">Diagram</translation>
+      <translation>Diagrama</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="452"/>
       <source>Linear interpolation</source>
-      <translation type="unfinished">Linear interpolation</translation>
+      <translation>Interpolació lineal</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="462"/>
       <location filename="../ui/MeshDistance.ui" line="326"/>
       <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
-      <translation type="unfinished">Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</translation>
+      <translation>Defineix si la interpolació de la mida de malla entre SizeMinimum i SizeMaximum ha de ser una funció lineal o sigmoide</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="472"/>
       <source>Stop at max input</source>
-      <translation type="unfinished">Stop at max input</translation>
+      <translation>Atura al valor màxim d'entrada</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="493"/>
@@ -3631,7 +3631,7 @@ motrius harmòniques/oscilants</translation>
 
 F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
 </source>
-      <translation type="unfinished">Calculates the mean value of child refinement G:
+      <translation>Calcula el valor mitjà del refinament fill G:
 
 F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
 </translation>
@@ -3642,7 +3642,7 @@ F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - del
       <location filename="../ui/MeshManipulate.ui" line="689"/>
       <location filename="../ui/MeshManipulate.ui" line="761"/>
       <source>Delta</source>
-      <translation type="unfinished">Delta</translation>
+      <translation>Delta</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="527"/>
@@ -3650,7 +3650,7 @@ F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - del
       <location filename="../ui/MeshManipulate.ui" line="708"/>
       <location filename="../ui/MeshManipulate.ui" line="780"/>
       <source>Delta in the aforementioned equation</source>
-      <translation type="unfinished">Delta in the aforementioned equation</translation>
+      <translation>Delta en l'equació esmentada</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="565"/>
@@ -3658,15 +3658,15 @@ F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - del
 
 F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
 </source>
-      <translation type="unfinished">Compute the finite difference gradient of child refinement G:
+      <translation>Calcula el gradient per diferències finites del refinament fill G:
 
-F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
+F = (G(Tipus + Delta/2) - G(Tipus - Delta/2)) / Delta
 </translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="580"/>
       <source>Kind</source>
-      <translation type="unfinished">Kind</translation>
+      <translation>Tipus</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="594"/>
@@ -3810,17 +3810,17 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="48"/>
       <source>AttractorAnisoCurve</source>
-      <translation type="unfinished">AttractorAnisoCurve</translation>
+      <translation>AttractorAnisoCurve</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="53"/>
       <source>MathEval</source>
-      <translation type="unfinished">MathEval</translation>
+      <translation>MathEval</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="58"/>
       <source>MathEvalAniso</source>
-      <translation type="unfinished">MathEvalAniso</translation>
+      <translation>MathEvalAniso</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="63"/>
@@ -3838,23 +3838,23 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="100"/>
       <source>Compute the distance to the selected reference edges and specify the mesh size independently in the direction normal and parallel to the nearest curve. For efficiency each curve is replaced by a set of Sampling points, to which the distance is actually computed.</source>
-      <translation type="unfinished">Compute the distance to the selected reference edges and specify the mesh size independently in the direction normal and parallel to the nearest curve. For efficiency each curve is replaced by a set of Sampling points, to which the distance is actually computed.</translation>
+      <translation>Calcula la distància a les arestes de referència seleccionades i especifica la mida de malla independentment en la direcció normal i paral·lela a la corba més propera. Per eficiència, cada corba se substitueix per un conjunt de punts de mostreig, respecte als quals es calcula realment la distància.</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="134"/>
       <location filename="../ui/MeshAdvanced.ui" line="695"/>
       <source>Anisotropic mesh refinements work only with the BAMG (2D) and MMG3D (3D) algorithms</source>
-      <translation type="unfinished">Anisotropic mesh refinements work only with the BAMG (2D) and MMG3D (3D) algorithms</translation>
+      <translation>Els refinaments de malla anisòtrops només funcionen amb els algorismes BAMG (2D) i MMG3D (3D)</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="315"/>
       <source>Size Tangent</source>
-      <translation type="unfinished">Size Tangent</translation>
+      <translation>Mida tangent</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="449"/>
       <source>Size Normal</source>
-      <translation type="unfinished">Size Normal</translation>
+      <translation>Mida normal</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="460"/>
@@ -3865,13 +3865,13 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="505"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the mesh size from a formula based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the mesh size from a formula based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calcula la mida de malla a partir d'una fórmula basada en les coordenades (x, y, z) i altres refinaments (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="539"/>
       <location filename="../ui/MeshAdvanced.ui" line="659"/>
       <source>Drag refinements into the advanced mesh object in the tree to make them accessible in the Formula</source>
-      <translation type="unfinished">Drag refinements into the advanced mesh object in the tree to make them accessible in the Formula</translation>
+      <translation>Arrossegueu els refinaments a l'objecte de malla avançada de l'arbre per a fer-los accessibles a la fórmula</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="569"/>
@@ -3881,11 +3881,11 @@ functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
-      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
-functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
+      <translation>Estan disponibles les 3 coordenades x,y,z (minúscules) i les funcions matemàtiques
+habituals com Sin, Log (majúscules). A més, tots els refinaments fills es poden
+usar mitjançant la variable F, p. ex. F1, F2, etc. Els operadors admesos són +, -, *, /, ^.
 
-Example: "F2 + Sin(z)"</translation>
+Exemple: "F2 + Sin(z)"</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="576"/>
@@ -3896,22 +3896,22 @@ Example: "F2 + Sin(z)"</translation>
       <location filename="../ui/MeshAdvanced.ui" line="826"/>
       <location filename="../ui/MeshAdvanced.ui" line="847"/>
       <source>Mesh size equation</source>
-      <translation type="unfinished">Mesh size equation</translation>
+      <translation>Equació de la mida de malla</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="590"/>
       <source>EQIcon</source>
-      <translation type="unfinished">EQIcon</translation>
+      <translation>EQIcon</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="625"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the anisotropic mesh size from multiple formulas based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the anisotropic mesh size from multiple formulas based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calcula la mida de malla anisòtropa a partir de diverses fórmules basades en les coordenades (x, y, z) i altres refinaments (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="728"/>
       <source>M12</source>
-      <translation type="unfinished">M12</translation>
+      <translation>M12</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="735"/>
@@ -3925,89 +3925,89 @@ functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
-      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
-functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
+      <translation>Estan disponibles les 3 coordenades x,y,z (minúscules) i les funcions matemàtiques
+habituals com Sin, Log (majúscules). A més, tots els refinaments fills es poden
+usar mitjançant la variable F, p. ex. F1, F2, etc.  Els operadors admesos són +, -, *, /, ^.
 
-Example: "F2 + Sin(z)"</translation>
+Exemple: "F2 + Sin(z)"</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="763"/>
       <source>M33</source>
-      <translation type="unfinished">M33</translation>
+      <translation>M33</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="770"/>
       <source>M22</source>
-      <translation type="unfinished">M22</translation>
+      <translation>M22</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="805"/>
       <source>M11</source>
-      <translation type="unfinished">M11</translation>
+      <translation>M11</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="812"/>
       <source>M23</source>
-      <translation type="unfinished">M23</translation>
+      <translation>M23</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="833"/>
       <source>M13</source>
-      <translation type="unfinished">M13</translation>
+      <translation>M13</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="904"/>
       <source>Compute the distance to the selected reference geometry (vertex, edge and surfaces). For efficiency, curves and surfaces are replaced by a set of points</source>
-      <translation type="unfinished">Compute the distance to the selected reference geometry (vertex, edge and surfaces). For efficiency, curves and surfaces are replaced by a set of points</translation>
+      <translation>Calcula la distància a la geometria de referència seleccionada (vèrtexs, arestes i superfícies). Per eficiència, les corbes i les superfícies se substitueixen per un conjunt de punts</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="952"/>
       <source>Uses a data field from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</source>
-      <translation type="unfinished">Uses a data field from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</translation>
+      <translation>Usa un camp de dades d'una canonada de postprocessament FEM com a mida de malla. Això us permet adaptar la malla segons el comportament físic del resultat.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="95"/>
       <source>Select multiple faces with 3 or 4 edges, optionally with corner vertices of 3-sided faces.</source>
-      <translation type="unfinished">Select multiple faces with 3 or 4 edges, optionally with corner vertices of 3-sided faces.</translation>
+      <translation>Seleccioneu diverses cares amb 3 o 4 arestes, opcionalment amb els vèrtexs de cantonada de les cares de 3 costats.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="108"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;or&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;or&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;o&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="124"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a single face with more than 4 edges and additionally select the 3 or 4 corner nodes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a single face with more than 4 edges and additionally select the 3 or 4 corner nodes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seleccioneu una sola cara amb més de 4 arestes i, addicionalment, seleccioneu els 3 o 4 nodes de cantonada.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="160"/>
       <source>The opposite edges (or wires between corner points) must have an equal number of mesh nodes. The easiest way to achieve this is with transfinite curves.</source>
-      <translation type="unfinished">The opposite edges (or wires between corner points) must have an equal number of mesh nodes. The easiest way to achieve this is with transfinite curves.</translation>
+      <translation>Les arestes oposades (o els filferros entre punts de cantonada) han de tenir el mateix nombre de nodes de malla. La manera més fàcil d'aconseguir-ho és amb corbes transfinites.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="178"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="201"/>
       <source>Define if the triangles on the surface shall be recombined into quads</source>
-      <translation type="unfinished">Define if the triangles on the surface shall be recombined into quads</translation>
+      <translation>Defineix si els triangles de la superfície s'han de recombinar en quadrilàters</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="181"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="323"/>
       <source>Recombine</source>
-      <translation type="unfinished">Recombine</translation>
+      <translation>Recombina</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="188"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="217"/>
       <source>Define how the triangles are oriented within the transfinite mesh (if not recombined)</source>
-      <translation type="unfinished">Define how the triangles are oriented within the transfinite mesh (if not recombined)</translation>
+      <translation>Defineix com s'orienten els triangles dins de la malla transfinita (si no es recombinen)</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="191"/>
       <source>Triangle Orientation</source>
-      <translation type="unfinished">Triangle Orientation</translation>
+      <translation>Orientació dels triangles</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="227"/>
@@ -4018,18 +4018,18 @@ Notes:
 1. User defined curves propagate to the opposite edges of faces, over all selected faces.
 2. Works only for 3- or 4-sided faces. Multi-sided faces need to be done manually.
 3. Works with most faces, either connected or unconnected </source>
-      <translation type="unfinished">If activated, all edges of the selected surfaces that do not have a transfinite curve defined already become transfinite automatically.
-Use strategically placed transfinite curve definitions to guide the automatic algorithm.
+      <translation>Si està activat, totes les arestes de les superfícies seleccionades que encara no tenen definida una corba transfinita esdevenen transfinites automàticament.
+Useu definicions de corbes transfinites col·locades estratègicament per a guiar l'algorisme automàtic.
 
 Notes:
-1. User defined curves propagate to the opposite edges of faces, over all selected faces.
-2. Works only for 3- or 4-sided faces. Multi-sided faces need to be done manually.
-3. Works with most faces, either connected or unconnected </translation>
+1. Les corbes definides per l'usuari es propaguen a les arestes oposades de les cares, en totes les cares seleccionades.
+2. Només funciona amb cares de 3 o 4 costats. Les cares de més costats s'han de fer manualment.
+3. Funciona amb la majoria de cares, tant connectades com no connectades </translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="236"/>
       <source>Auto apply transfinite curves</source>
-      <translation type="unfinished">Auto apply transfinite curves</translation>
+      <translation>Aplica automàticament corbes transfinites</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="245"/>
@@ -4042,7 +4042,7 @@ Notes:
       <location filename="../ui/MeshTransfiniteSurface.ui" line="252"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
       <source>Distribution</source>
-      <translation type="unfinished">Distribution</translation>
+      <translation>Distribució</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="268"/>
@@ -4056,31 +4056,31 @@ Notes:
       <location filename="../ui/MeshTransfiniteCurve.ui" line="150"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="250"/>
       <source>Bump</source>
-      <translation type="unfinished">Bump</translation>
+      <translation>Bump</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="278"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="255"/>
       <source>Bump Inverted</source>
-      <translation type="unfinished">Bump Inverted</translation>
+      <translation>Bump invertit</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
       <source>Progression</source>
-      <translation type="unfinished">Progression</translation>
+      <translation>Progressió</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="288"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="265"/>
       <source>Progression Inverted</source>
-      <translation type="unfinished">Progression Inverted</translation>
+      <translation>Progressió invertida</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="41"/>
       <source>Define mesh element size based on the distance to the chosen reference geometries.</source>
-      <translation type="unfinished">Define mesh element size based on the distance to the chosen reference geometries.</translation>
+      <translation>Defineix la mida dels elements de malla segons la distància a les geometries de referència triades.</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="140"/>
@@ -4090,90 +4090,90 @@ Notes:
     <message>
       <location filename="../ui/MeshDistance.ui" line="284"/>
       <source>Interpolation</source>
-      <translation type="unfinished">Interpolation</translation>
+      <translation>Interpolació</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="291"/>
       <source>Sampling size</source>
-      <translation type="unfinished">Sampling size</translation>
+      <translation>Mida de mostreig</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="304"/>
       <source>Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</source>
-      <translation type="unfinished">Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</translation>
+      <translation>Nombre de punts de mostreig usats per a discretitzar corbes i superfícies. Per a les superfícies, és la mida de mostreig per direcció.</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="329"/>
       <source>Linear</source>
-      <translation type="unfinished">Linear</translation>
+      <translation>Lineal</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="26"/>
       <source>Global refinement preview settings</source>
-      <translation type="unfinished">Global refinement preview settings</translation>
+      <translation>Paràmetres de previsualització del refinament global</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="35"/>
       <location filename="../ui/MeshPreviewSettings.ui" line="51"/>
       <source>Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</source>
-      <translation type="unfinished">Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</translation>
+      <translation>Habilita automàticament la visualització de la mida de malla del refinament en obrir un diàleg de tasca de refinament.</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="54"/>
       <source>Auto enable on open</source>
-      <translation type="unfinished">Auto enable on open</translation>
+      <translation>Habilita automàticament en obrir</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="80"/>
       <source>Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</source>
-      <translation type="unfinished">Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</translation>
+      <translation>Determina com de fina és la malla de previsualització. Un nombre més gran significa una malla més fina (elements de malla més petits)</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="83"/>
       <source>Preview mesh fineness</source>
-      <translation type="unfinished">Preview mesh fineness</translation>
+      <translation>Finor de la malla de previsualització</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="96"/>
       <location filename="../ui/MeshPreview.ui" line="109"/>
       <source>The smallest mesh size in the refinement, marked green in the mesh preview.</source>
-      <translation type="unfinished">The smallest mesh size in the refinement, marked green in the mesh preview.</translation>
+      <translation>La mida de malla més petita del refinament, marcada en verd a la previsualització de la malla.</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="99"/>
       <source>Min</source>
-      <translation type="unfinished">Min</translation>
+      <translation>Mín</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="112"/>
       <source>1.00e+02</source>
-      <translation type="unfinished">1.00e+02</translation>
+      <translation>1.00e+02</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="138"/>
       <location filename="../ui/MeshPreview.ui" line="151"/>
       <source>The largest mesh size in the refinement, marked red in the mesh preview.</source>
-      <translation type="unfinished">The largest mesh size in the refinement, marked red in the mesh preview.</translation>
+      <translation>La mida de malla més gran del refinament, marcada en vermell a la previsualització de la malla.</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="141"/>
       <source>Max</source>
-      <translation type="unfinished">Max</translation>
+      <translation>Màx</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="154"/>
       <source>1.00e+03</source>
-      <translation type="unfinished">1.00e+03</translation>
+      <translation>1.00e+03</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="184"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinement mesh size output - it shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh; thus, details smaller than the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinement mesh size output - it shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh; thus, details smaller than the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualitza la sortida de mida de malla del refinament: mostra les mides de malla donades pel refinament com a colors sobre una malla de previsualització. Tingueu en compte que la previsualització avalua el refinament en una malla grollera; per tant, és possible que els detalls més petits que la mida de malla no siguin visibles.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="187"/>
       <source>Visualize</source>
-      <translation type="unfinished">Visualize</translation>
+      <translation>Visualitza</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="197"/>
@@ -4183,12 +4183,12 @@ Notes:
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="41"/>
       <source>Create a defined number of mesh nodes on edges with a structured algorithm.</source>
-      <translation type="unfinished">Create a defined number of mesh nodes on edges with a structured algorithm.</translation>
+      <translation>Crea un nombre definit de nodes de malla a les arestes amb un algorisme estructurat.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="89"/>
       <source>Number of nodes on the edge</source>
-      <translation type="unfinished">Number of nodes on the edge</translation>
+      <translation>Nombre de nodes a l'aresta</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="124"/>
@@ -4203,27 +4203,27 @@ Notes:
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="217"/>
       <source>Coefficient for bump/progression growth rate</source>
-      <translation type="unfinished">Coefficient for bump/progression growth rate</translation>
+      <translation>Coeficient de la taxa de creixement de bump/progressió</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
       <source>Creates a structured mesh in a volume guided by its transfinite surfaces.</source>
-      <translation type="unfinished">Creates a structured mesh in a volume guided by its transfinite surfaces.</translation>
+      <translation>Crea una malla estructurada en un volum guiada per les seves superfícies transfinites.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
       <source>Select any number of 5- or 6-sided volumes</source>
-      <translation type="unfinished">Select any number of 5- or 6-sided volumes</translation>
+      <translation>Seleccioneu qualsevol nombre de volums de 5 o 6 costats</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="163"/>
       <source>All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</source>
-      <translation type="unfinished">All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</translation>
+      <translation>Totes les superfícies del volum han de ser transfinites. Si les superfícies tenen tipus de malla diferents (quadrilàters i triangles), el volum també s'ha de mallar amb els elements mixtos habilitats.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="183"/>
       <source>Mixed mesh elements</source>
-      <translation type="unfinished">Mixed mesh elements</translation>
+      <translation>Elements de malla mixtos</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="205"/>
@@ -4233,17 +4233,17 @@ Use strategically placed transfinite curve and surface definitions to guide the 
 Notes:
 1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
 2. Works with any number of volumes, either connected or unconnected </source>
-      <translation type="unfinished">If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
-Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
+      <translation>Si està activat, totes les arestes i superfícies que pertanyen als volums seleccionats que encara no tenen una definició transfinita esdevenen transfinites automàticament.
+Useu definicions de corbes i superfícies transfinites col·locades estratègicament per a guiar l'algorisme automàtic.
 
 Notes:
-1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
-2. Works with any number of volumes, either connected or unconnected </translation>
+1. Les corbes definides per l'usuari es propaguen a les arestes oposades de les cares, en totes les cares seleccionades.
+2. Funciona amb qualsevol nombre de volums, tant connectats com no connectats </translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="213"/>
       <source>Auto apply transfinite surfaces and curves</source>
-      <translation type="unfinished">Auto apply transfinite surfaces and curves</translation>
+      <translation>Aplica automàticament superfícies i corbes transfinites</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="304"/>
@@ -4276,7 +4276,7 @@ Notes:
     <message>
       <location filename="../ui/MeshGmsh.ui" line="56"/>
       <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+      <translation>Camí al directori de treball. Deixeu-ho en blanc per a usar les preferències de l'usuari</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="80"/>
@@ -4522,7 +4522,7 @@ Notes:
     <message>
       <location filename="../ui/ResultShow.ui" line="63"/>
       <source>von Mises stress</source>
-      <translation type="unfinished">von Mises stress</translation>
+      <translation>Tensió de von Mises</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="83"/>
@@ -4592,12 +4592,12 @@ Notes:
     <message>
       <location filename="../ui/ResultShow.ui" line="512"/>
       <source> Full cycle</source>
-      <translation type="unfinished"> Full cycle</translation>
+      <translation> Cicle complet</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="528"/>
       <source>Half cycle</source>
-      <translation type="unfinished">Half cycle</translation>
+      <translation>Mig cicle</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="542"/>
@@ -4863,7 +4863,7 @@ Per a les possibles variables, vegeu la caixa de descripció de continuació.</t
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="70"/>
       <source>Box</source>
-      <translation type="unfinished">Box</translation>
+      <translation>Caixa</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="80"/>
@@ -5024,12 +5024,12 @@ Per a les possibles variables, vegeu la caixa de descripció de continuació.</t
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
       <source>Select master geometry of type: Edge, Face; click Add or Remove</source>
-      <translation type="unfinished">Select master geometry of type: Edge, Face; click Add or Remove</translation>
+      <translation>Seleccioneu la geometria mestra de tipus: aresta, cara; feu clic a Afegeix o Elimina</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
       <source>Select slave geometry of type: Edge, Face; click Add or Remove</source>
-      <translation type="unfinished">Select slave geometry of type: Edge, Face; click Add or Remove</translation>
+      <translation>Seleccioneu la geometria esclava de tipus: aresta, cara; feu clic a Afegeix o Elimina</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="150"/>
@@ -5064,12 +5064,12 @@ Per a les possibles variables, vegeu la caixa de descripció de continuació.</t
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="255"/>
       <source>Reverse master</source>
-      <translation type="unfinished">Reverse master</translation>
+      <translation>Inverteix el mestre</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="262"/>
       <source>Reverse slave</source>
-      <translation type="unfinished">Reverse slave</translation>
+      <translation>Inverteix l'esclau</translation>
     </message>
   </context>
   <context>
@@ -6500,7 +6500,7 @@ vector normal de la cara s'utilitza com a direcció</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="364"/>
       <source>von Mises stress</source>
-      <translation type="unfinished">von Mises stress</translation>
+      <translation>Tensió de von Mises</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="376"/>
@@ -6997,7 +6997,7 @@ No s'ha trobat cap mòdul coincident al camí actual de Python.</translation>
     <message>
       <location filename="../../Command.cpp" line="2559"/>
       <source>Defines a contours filter that displays iso contours</source>
-      <translation type="unfinished">Defines a contours filter that displays iso contours</translation>
+      <translation>Defineix un filtre de contorns que mostra isolínies</translation>
     </message>
   </context>
   <context>
@@ -7362,7 +7362,7 @@ No s'ha trobat cap mòdul coincident al camí actual de Python.</translation>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="386"/>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="396"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Error de selecció</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="313"/>
@@ -7524,7 +7524,7 @@ No s'ha trobat cap mòdul coincident al camí actual de Python.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="56"/>
       <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+      <translation>Camí al directori de treball. Deixeu-ho en blanc per a usar les preferències de l'usuari</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="80"/>
@@ -7811,7 +7811,7 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="56"/>
       <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+      <translation>Camí al directori de treball. Deixeu-ho en blanc per a usar les preferències de l'usuari</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="129"/>
@@ -8409,7 +8409,7 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
     <message>
       <location filename="../../../femcommands/commands.py" line="608"/>
       <source>Add non-linear mechanical properties to material</source>
-      <translation type="unfinished">Add non-linear mechanical properties to material</translation>
+      <translation>Afegeix propietats mecàniques no lineals al material</translation>
     </message>
   </context>
   <context>
@@ -8710,42 +8710,42 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
     <message>
       <location filename="../../../Init.py" line="64"/>
       <source>FEM mesh Python</source>
-      <translation type="unfinished">FEM mesh Python</translation>
+      <translation>Malla FEM Python</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="68"/>
       <source>FEM mesh TetGen</source>
-      <translation type="unfinished">FEM mesh TetGen</translation>
+      <translation>Malla FEM TetGen</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="77"/>
       <source>FEM mesh formats</source>
-      <translation type="unfinished">FEM mesh formats</translation>
+      <translation>Formats de malla FEM</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="83"/>
       <source>FEM mesh Nastran</source>
-      <translation type="unfinished">FEM mesh Nastran</translation>
+      <translation>Malla FEM Nastran</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="90"/>
       <source>FEM mesh Fenics</source>
-      <translation type="unfinished">FEM mesh Fenics</translation>
+      <translation>Malla FEM Fenics</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="98"/>
       <source>FEM mesh YAML/JSON</source>
-      <translation type="unfinished">FEM mesh YAML/JSON</translation>
+      <translation>Malla FEM YAML/JSON</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="105"/>
       <source>FEM mesh Z88</source>
-      <translation type="unfinished">FEM mesh Z88</translation>
+      <translation>Malla FEM Z88</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="116"/>
       <source>FEM result VTK</source>
-      <translation type="unfinished">FEM result VTK</translation>
+      <translation>Resultat FEM VTK</translation>
     </message>
   </context>
   <context>
@@ -8753,12 +8753,12 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
     <message>
       <location filename="../../../femcommands/commands.py" line="270"/>
       <source>Electromagnetic Boundary Condition</source>
-      <translation type="unfinished">Electromagnetic Boundary Condition</translation>
+      <translation>Condició de contorn electromagnètica</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="274"/>
       <source>Creates an electromagnetic boundary condition</source>
-      <translation type="unfinished">Creates an electromagnetic boundary condition</translation>
+      <translation>Crea una condició de contorn electromagnètica</translation>
     </message>
   </context>
   <context>
@@ -8766,12 +8766,12 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
     <message>
       <location filename="../../../femcommands/commands.py" line="703"/>
       <source>2D Boundary Layer</source>
-      <translation type="unfinished">2D Boundary Layer</translation>
+      <translation>Capa límit 2D</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="707"/>
       <source>Adds a structured layer of mesh elements on 2D model boundaries</source>
-      <translation type="unfinished">Adds a structured layer of mesh elements on 2D model boundaries</translation>
+      <translation>Afegeix una capa estructurada d'elements de malla als contorns d'un model 2D</translation>
     </message>
   </context>
   <context>
@@ -8779,12 +8779,12 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
     <message>
       <location filename="../../../femcommands/commands.py" line="737"/>
       <source>Clear Mesh Groups</source>
-      <translation type="unfinished">Clear Mesh Groups</translation>
+      <translation>Neteja els grups de malla</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="738"/>
       <source>Remove groups from FEM mesh</source>
-      <translation type="unfinished">Remove groups from FEM mesh</translation>
+      <translation>Elimina els grups de la malla FEM</translation>
     </message>
   </context>
   <context>
@@ -8792,12 +8792,12 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
     <message>
       <location filename="../../../femcommands/commands.py" line="910"/>
       <source>Distance-Based Refinement</source>
-      <translation type="unfinished">Distance-Based Refinement</translation>
+      <translation>Refinament basat en la distància</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="913"/>
       <source>Sets mesh size based on the distance to vertices, edges, and faces</source>
-      <translation type="unfinished">Sets mesh size based on the distance to vertices, edges, and faces</translation>
+      <translation>Estableix la mida de malla segons la distància a vèrtexs, arestes i cares</translation>
     </message>
   </context>
   <context>
@@ -8805,12 +8805,12 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
     <message>
       <location filename="../../../femcommands/commands.py" line="923"/>
       <source>Manipulate Refinement</source>
-      <translation type="unfinished">Manipulate Refinement</translation>
+      <translation>Manipula el refinament</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="926"/>
       <source>Allows to manipulate the output of a refinement in various ways</source>
-      <translation type="unfinished">Allows to manipulate the output of a refinement in various ways</translation>
+      <translation>Permet manipular la sortida d'un refinament de diverses maneres</translation>
     </message>
   </context>
   <context>
@@ -8818,12 +8818,12 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
     <message>
       <location filename="../../../femcommands/commands.py" line="936"/>
       <source>Advanced Refinement Types</source>
-      <translation type="unfinished">Advanced Refinement Types</translation>
+      <translation>Tipus de refinament avançats</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="939"/>
       <source>Allows to define the mesh size by various advanced means</source>
-      <translation type="unfinished">Allows to define the mesh size by various advanced means</translation>
+      <translation>Permet definir la mida de malla per diversos mitjans avançats</translation>
     </message>
   </context>
   <context>
@@ -8831,7 +8831,7 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
     <message>
       <location filename="../../../femcommands/commands.py" line="949"/>
       <source>Shape-Based Refinement</source>
-      <translation type="unfinished">Shape-Based Refinement</translation>
+      <translation>Refinament basat en la forma</translation>
     </message>
   </context>
   <context>
@@ -8839,7 +8839,7 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
     <message>
       <location filename="../../../femcommands/commands.py" line="953"/>
       <source>Sets mesh size within and outside of a geometric shape (box, sphere, cylinder)</source>
-      <translation type="unfinished">Sets mesh size within and outside of a geometric shape (box, sphere, cylinder)</translation>
+      <translation>Estableix la mida de malla dins i fora d'una forma geomètrica (caixa, esfera, cilindre)</translation>
     </message>
   </context>
   <context>
@@ -8847,12 +8847,12 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
     <message>
       <location filename="../../../femcommands/commands.py" line="965"/>
       <source>Structured Transfinite Curve</source>
-      <translation type="unfinished">Structured Transfinite Curve</translation>
+      <translation>Corba transfinita estructurada</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="969"/>
       <source>Creates a fixed number of nodes on an edge with a structured algorithm</source>
-      <translation type="unfinished">Creates a fixed number of nodes on an edge with a structured algorithm</translation>
+      <translation>Crea un nombre fix de nodes en una aresta amb un algorisme estructurat</translation>
     </message>
   </context>
   <context>
@@ -8860,12 +8860,12 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
     <message>
       <location filename="../../../femcommands/commands.py" line="981"/>
       <source>Structured Transfinite Surface</source>
-      <translation type="unfinished">Structured Transfinite Surface</translation>
+      <translation>Superfície transfinita estructurada</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="984"/>
       <source>Creates a structured mesh on a face</source>
-      <translation type="unfinished">Creates a structured mesh on a face</translation>
+      <translation>Crea una malla estructurada en una cara</translation>
     </message>
   </context>
   <context>
@@ -8873,12 +8873,12 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
     <message>
       <location filename="../../../femcommands/commands.py" line="996"/>
       <source>Structured Transfinite Volume</source>
-      <translation type="unfinished">Structured Transfinite Volume</translation>
+      <translation>Volum transfinit estructurat</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1000"/>
       <source>Creates a structured mesh in a 4- or 5-sided volume bounded by transfinite surfaces</source>
-      <translation type="unfinished">Creates a structured mesh in a 4- or 5-sided volume bounded by transfinite surfaces</translation>
+      <translation>Crea una malla estructurada en un volum de 4 o 5 costats delimitat per superfícies transfinites</translation>
     </message>
   </context>
   <context>
@@ -8886,12 +8886,12 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
     <message>
       <location filename="../../../femcommands/commands.py" line="1360"/>
       <source>Solvers</source>
-      <translation type="unfinished">Solvers</translation>
+      <translation>Solucionadors</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1361"/>
       <source>Creates a FEM solver</source>
-      <translation type="unfinished">Creates a FEM solver</translation>
+      <translation>Crea un solucionador FEM</translation>
     </message>
   </context>
   <context>
@@ -8899,7 +8899,7 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
     <message>
       <location filename="../../../femtaskpanels/task_constraint_tie.py" line="81"/>
       <source>Master Geometry Reference Selector</source>
-      <translation type="unfinished">Master Geometry Reference Selector</translation>
+      <translation>Selector de referència de la geometria mestra</translation>
     </message>
   </context>
   <context>
@@ -8907,7 +8907,7 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
     <message>
       <location filename="../../../femtaskpanels/task_constraint_tie.py" line="86"/>
       <source>Slave Geometry Reference Selector</source>
-      <translation type="unfinished">Slave Geometry Reference Selector</translation>
+      <translation>Selector de referència de la geometria esclava</translation>
     </message>
   </context>
   <context>
@@ -8958,7 +8958,7 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
     <message>
       <location filename="../ui/SolverElmer.ui" line="56"/>
       <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+      <translation>Camí al directori de treball. Deixeu-ho en blanc per a usar les preferències de l'usuari</translation>
     </message>
     <message>
       <location filename="../ui/SolverElmer.ui" line="74"/>
@@ -8986,7 +8986,7 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
     <message>
       <location filename="../ui/SolverZ88.ui" line="14"/>
       <source>Solver Z88 Control</source>
-      <translation type="unfinished">Solver Z88 Control</translation>
+      <translation>Control del solucionador Z88</translation>
     </message>
     <message>
       <location filename="../ui/SolverZ88.ui" line="20"/>
@@ -9006,7 +9006,7 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
     <message>
       <location filename="../ui/SolverZ88.ui" line="56"/>
       <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+      <translation>Camí al directori de treball. Deixeu-ho en blanc per a usar les preferències de l'usuari</translation>
     </message>
     <message>
       <location filename="../ui/SolverZ88.ui" line="74"/>
@@ -9016,7 +9016,7 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
     <message>
       <location filename="../ui/SolverZ88.ui" line="82"/>
       <source>Solver type</source>
-      <translation type="unfinished">Solver type</translation>
+      <translation>Tipus de solucionador</translation>
     </message>
     <message>
       <location filename="../ui/SolverZ88.ui" line="122"/>
