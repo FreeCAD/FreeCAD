@@ -480,12 +480,12 @@ void PropertyEditor::closeEditor(QWidget* editor, QAbstractItemDelegate::EndEdit
         return;
     }
 
-    closeTransaction();
-
     // If we are not removing rows, then QTreeView::closeEditor() does nothing
     // because we are using persistent editor, so we have to call our own
     // version of closeEditor()
     this->closeEditor();
+
+    closeTransaction();
 
     QModelIndex indexSaved = currentIndex();
 
