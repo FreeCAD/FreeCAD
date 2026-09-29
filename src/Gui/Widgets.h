@@ -516,7 +516,6 @@ public:
 
 protected:
     bool eventFilter(QObject* o, QEvent* e) override;
-
     QString wrapForDisplay(const QString& original, const QWidget* widget);
 };
 
