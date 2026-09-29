@@ -776,7 +776,7 @@ def build_avoid_boundary(avoid_faces, avoid_overlap, tool_radius, tolerance, nee
             tolerance,
             avoids=True,
         )
-        if avoid_boundary_stl.isNull():
+        if avoid_boundary_stl is not None and avoid_boundary_stl.isNull():
             avoid_boundary_stl = None
 
     return avoid_boundary, avoid_boundary_stl
