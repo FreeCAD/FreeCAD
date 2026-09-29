@@ -1274,7 +1274,8 @@ void CmdPartMakeSolid::activated(int iMsg)
     };
     static const Base::Type meshid = Base::Type::fromName("Mesh::Feature");
     // An edge belonging to only one face is a free boundary, i.e. a gap in the
-    // surface. Part.Solid() accepts such a shape and returns an invalid solid.     // The Closed() flag is unreliable, so we check directly.
+    // surface. Part.Solid() accepts such a shape and returns an invalid solid.     // The Closed()
+    // flag is unreliable, so we check directly.
     auto countFreeEdges = [](const TopoDS_Shape& s) {
         TopTools_IndexedDataMapOfShapeListOfShape edgeToFace;
         TopExp::MapShapesAndAncestors(s, TopAbs_EDGE, TopAbs_FACE, edgeToFace);
@@ -1305,11 +1306,15 @@ void CmdPartMakeSolid::activated(int iMsg)
             Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
         );
         if (shape.IsNull()) {
-	    QString objLabel = QString::fromUtf8(it->Label.getValue());
+            QString objLabel = QString::fromUtf8(it->Label.getValue());
             if (it->isDerivedFrom(meshid)) {
-		complain(QObject::tr("%1 is a mesh, not a shape. Use Part > Shape from mesh "
-                                     "to convert it first.")
-                             .arg(objLabel));
+                complain(
+                    QObject::tr(
+                        "%1 is a mesh, not a shape. Use Part > Shape from mesh "
+                        "to convert it first."
+                    )
+                        .arg(objLabel)
+                );
             }
             else {
                 complain(QObject::tr("%1 has no shape to convert.").arg(objLabel));
@@ -1351,9 +1356,13 @@ void CmdPartMakeSolid::activated(int iMsg)
                           .arg(name, QString::fromUtf8(label.c_str()));
             }
             else {
-                complain(QObject::tr("%1 is neither a shell nor a compound, so there is "
-                                     "nothing to convert.")
-                             .arg(objLabel));
+                complain(
+                    QObject::tr(
+                        "%1 is neither a shell nor a compound, so there is "
+                        "nothing to convert."
+                    )
+                        .arg(objLabel)
+                );
             }
 
             try {
@@ -1361,17 +1370,23 @@ void CmdPartMakeSolid::activated(int iMsg)
                     runCommand(Doc, str.toUtf8());
                     int freeEdges = countFreeEdges(shape);
                     if (freeEdges > 0) {
-                        complain(QObject::tr("%1 was converted, but the result is not a closed "
-                                             "solid: %2 edge(s) lie on a boundary, so the surface "
-                                             "has gaps. If it came from a mesh, the mesh has holes.")
-                                     .arg(objLabel)
-                                     .arg(freeEdges));
+                        complain(
+                            QObject::tr(
+                                "%1 was converted, but the result is not a closed "
+                                "solid: %2 edge(s) lie on a boundary, so the surface "
+                                "has gaps. If it came from a mesh, the mesh has holes."
+                            )
+                                .arg(objLabel)
+                                .arg(freeEdges)
+                        );
                     }
                 }
             }
             catch (const Base::Exception& e) {
-                complain(QObject::tr("%1 could not be converted: %2")
-                             .arg(objLabel, QString::fromUtf8(e.what())));
+                complain(
+                    QObject::tr("%1 could not be converted: %2")
+                        .arg(objLabel, QString::fromUtf8(e.what()))
+                );
             }
         }
     }
