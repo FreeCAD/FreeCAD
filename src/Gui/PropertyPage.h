@@ -109,6 +109,7 @@ public:
 
     void loadSettings() override;
     void saveSettings() override;
+    void resetSettingsToDefaults() override;
 
     QWidget* form();
 

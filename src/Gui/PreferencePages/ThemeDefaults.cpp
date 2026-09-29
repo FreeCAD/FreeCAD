@@ -22,10 +22,12 @@
  ***************************************************************************/
 
 #include <filesystem>
+#include <map>
 #include <set>
 
 #include <QFileInfo>
 #include <QString>
+#include <QWidget>
 
 #include <App/Application.h>
 #include <Base/Console.h>
@@ -33,6 +35,7 @@
 #include <Base/Parameter.h>
 #include "Application.h"
 #include "PreferencePackManager.h"
+#include "PrefWidgets.h"
 
 #include "ThemeDefaults.h"
 
@@ -112,6 +115,21 @@ void removeColors(const std::string& groupPath, const std::vector<std::string>& 
     auto grp = userGroup(groupPath);
     for (const auto& key : keys) {
         grp->RemoveUnsigned(key.c_str());
+    }
+}
+
+void applyWidgetColors(QWidget* page)
+{
+    std::map<std::string, std::vector<std::string>> byGroup;
+    for (auto* button : page->findChildren<PrefColorButton*>()) {
+        const QByteArray path = button->paramGrpPath();
+        const QByteArray entry = button->entryName();
+        if (!path.isEmpty() && !entry.isEmpty()) {
+            byGroup["BaseApp/Preferences/" + path.toStdString()].push_back(entry.toStdString());
+        }
+    }
+    for (const auto& [group, keys] : byGroup) {
+        applyColors(group, keys);
     }
 }
 

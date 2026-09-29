@@ -28,6 +28,8 @@
 
 #include <FCGlobal.h>
 
+class QWidget;
+
 namespace Gui::ThemeDefaults
 {
 /// Copy the listed unsigned (color) keys from the active theme's preference pack
@@ -37,5 +39,9 @@ GuiExport void applyColors(const std::string& groupPath, const std::vector<std::
 
 /// Remove the listed unsigned keys from the user's config.
 GuiExport void removeColors(const std::string& groupPath, const std::vector<std::string>& keys);
+
+/// Apply theme defaults to every PrefColorButton on the page, using each button's
+/// own prefPath/prefEntry. For pages without a hand-written key list (e.g. .ui-only pages).
+GuiExport void applyWidgetColors(QWidget* page);
 
 }  // namespace Gui::ThemeDefaults
