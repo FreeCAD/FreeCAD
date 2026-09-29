@@ -123,7 +123,7 @@ void TaskThicknessParameters::initControls()
     ui->selectAllSolids->setChecked(selectionMode == Thickness::SelectionMode::AllSolids);
 
     allowSolids = selectionMode != Thickness::SelectionMode::SelectedFaces;
-    allowFaces = allowEdges = !allowSolids;
+    allowFaces = !allowSolids;
 
     Base::Console().log("using: {}\n", static_cast<int>(selectionMode));
 
@@ -187,7 +187,7 @@ void TaskThicknessParameters::onSelectAllSolidsChanged(bool on)
     ui->buttonRefSel->setEnabled(!on);
 
     ui->selectAllSolids->setEnabled(newValue != Thickness::SelectionMode::SelectedFaces);
-    allowFaces = allowEdges = !allowSolids;
+    allowFaces = !allowSolids;
     convertSelection(ui->listWidgetReferences);
 }
 
@@ -210,7 +210,7 @@ void TaskThicknessParameters::onSelectionModeChanged(int selectionMode)
     ui->selectAllSolids->setEnabled(newValue != Thickness::SelectionMode::SelectedFaces);
 
     allowSolids = selectionMode != static_cast<int>(Thickness::SelectionMode::SelectedFaces);
-    allowFaces = allowEdges = !allowSolids;
+    allowFaces = !allowSolids;
     convertSelection(ui->listWidgetReferences);
 }
 
@@ -450,7 +450,7 @@ bool TaskDlgThicknessParameters::accept()
     FCMD_OBJ_CMD(obj, "Mode = " << draftparameter->getMode());
     FCMD_OBJ_CMD(obj, "Intersection = " << draftparameter->getIntersection());
     FCMD_OBJ_CMD(obj, "Join = " << draftparameter->getJoinType());
-    FCMD_OBJ_CMD(obj, "Selection = " << draftparameter->getSelectionMode());
+    FCMD_OBJ_CMD(obj, "SelectionType = " << draftparameter->getSelectionMode());
 
     return TaskDlgDressUpParameters::accept();
 }
