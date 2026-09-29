@@ -25,6 +25,7 @@
 
 #include <QAction>
 #include <QListWidget>
+#include <QMessageBox>
 
 
 #include <App/Application.h>
@@ -35,6 +36,7 @@
 #include <Base/Console.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/MainWindow.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/Command.h>
@@ -595,6 +597,18 @@ bool TaskDlgTransformedParameters::accept()
 {
     parameter->exitSelectionMode();
     parameter->apply();
+
+    App::DocumentObject* feature = getObject();
+    App::Document* doc = feature ? feature->getDocument() : nullptr;
+    const char* reason = doc ? doc->getErrorDescription(feature) : nullptr;
+    if (reason != nullptr || (feature != nullptr && !feature->isValid())) {
+        QString message = tr("The feature could not be recomputed with the given parameters.");
+        if (reason != nullptr) {
+            message += QStringLiteral("\n\n%1").arg(QString::fromUtf8(reason));
+        }
+        QMessageBox::critical(Gui::getMainWindow(), tr("FreeCAD"), message);
+        return false;
+    }
 
     return TaskDlgFeatureParameters::accept();
 }
