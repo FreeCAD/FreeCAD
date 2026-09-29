@@ -2673,6 +2673,8 @@ void Application::runApplication()
 
     setAppNameAndIcon();
 
+    mainApp.installEventFilter(new Gui::ToolTipWrapFilter(&mainApp));
+
     StartupProcess process;
     process.execute();
 
