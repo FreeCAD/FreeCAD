@@ -326,7 +326,8 @@ void TaskPatternParameters::updateInstanceControls()
 
     auto* view = getTopTransformedView();
     auto* editDocument = Gui::Application::Instance->editDocument([view](Gui::Document* document) {
-        return document->getInEdit() == view;
+        // The viewer has not entered edit mode while this task is being constructed.
+        return document->getEditViewProvider() == view;
     });
     if (!editDocument) {
         instanceControls->clear();
