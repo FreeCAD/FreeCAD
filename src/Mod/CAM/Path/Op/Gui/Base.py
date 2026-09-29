@@ -1705,7 +1705,9 @@ class TaskPanel:
             page.pageUpdateData(obj, prop)
 
     def needsFullSpace(self):
-        return self.taskPanelLayout >= 2
+        return self.taskPanelLayout >= 2 or any(
+            getattr(page, "needsFullSpace", False) for page in self.featurePages
+        )
 
     def updateSelection(self):
         sel = FreeCADGui.Selection.getSelectionEx()
