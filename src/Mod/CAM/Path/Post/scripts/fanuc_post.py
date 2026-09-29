@@ -431,7 +431,7 @@ class FanucPost(PostProcessor):
             if command_name in Constants.GCODE_P_IS_DWELL and self.values.get(
                 "DWELL_IN_MILLISECONDS", True
             ):
-                return str(int(round(float(value) * 1000)))
+                return str(round(float(value) * 1000))
         return super().format_parameter(param_name, value, command_name)
 
     def _convert_drill_cycle(self, command: Path.Command) -> str:
