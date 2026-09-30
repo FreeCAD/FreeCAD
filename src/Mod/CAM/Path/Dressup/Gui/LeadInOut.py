@@ -506,8 +506,10 @@ class ObjectDressup:
             obj.Path = Path.Path("(inactive operation)")
             return
 
+        PathDressup.placeWithBase(obj)
+
         if not obj.LeadIn and not obj.LeadOut:
-            obj.Path = PathUtils.getPathWithPlacement(obj.Base)
+            obj.Path = obj.Base.Path
 
         if obj.RadiusIn <= 0:
             obj.RadiusIn = 1
@@ -555,7 +557,7 @@ class ObjectDressup:
             return
 
         args = {
-            "path": PathUtils.getPathWithPlacement(obj.Base),
+            "path": obj.Base.Path,
             "side": self.side,
             "direction": self.direction,
             "leadIn": obj.LeadIn,

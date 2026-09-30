@@ -1995,7 +1995,11 @@ G1 X20.000 Y10.000 F6000.000
         """
         Test that pre/post rotary blocks are inserted around rotary axis moves.
 
-        Expected: 2 rotary groups → 2 pre-rotary + 2 post-rotary blocks.
+        Expected: 3 pre-rotary + 3 post-rotary blocks. On a machine with
+        rotary axes the post commands every operation's pose before it - here
+        the rotaries home, since the operation has no work plane - and that
+        move is wrapped like any other; the path's own 2 rotary groups are the
+        other two.
         """
         config = self._get_full_machine_config()
         machine = Machine.from_dict(config)
@@ -2018,13 +2022,13 @@ G1 X20.000 Y10.000 F6000.000
 
             self.assertEqual(
                 gcode.count("(prerotary)"),
-                2,
-                "Should have 2 pre-rotary blocks (one per rotary group)",
+                3,
+                "Should have 3 pre-rotary blocks (the initial pose, then one per rotary group)",
             )
             self.assertEqual(
                 gcode.count("(Postrotary)"),
-                2,
-                "Should have 2 post-rotary blocks (one per rotary group)",
+                3,
+                "Should have 3 post-rotary blocks (the initial pose, then one per rotary group)",
             )
 
     def test142_fixture_change_blocks_insertion(self):

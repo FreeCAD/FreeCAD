@@ -22,6 +22,7 @@ import FreeCAD
 import FreeCADGui
 import Part
 import Path
+import Path.Base.Util as PathUtil
 import Path.Dressup.Utils as PathDressup
 from Path.Base import FeedRate
 from Path.Base.Generator import linking
@@ -126,14 +127,30 @@ class ObjectDressup:
             obj.Path = Path.Path()
             return
 
+        # The base operation's path is in its work plane's frame, its heights
+        # are measured from that plane, and this dressup stores its own path
+        # in the same frame, carrying the base's Placement. The boundary and
+        # the model are world geometry: bring both into that frame, or the
+        # cutting moves and the retracts would be read in different frames.
+        PathDressup.placeWithBase(obj)
+        frame = PathUtil.workplaneForOp(obj)
+        toFrame = None if frame.isIdentity(1e-9) else frame.inverse().toMatrix()
+
+        def inFrame(shape):
+            if toFrame is None:
+                return shape
+            # checkScale=False preserves arcs and circles
+            return shape.copy().transformShape(toFrame, False, False)
+
+        boundary = inFrame(obj.Boundary.Shape)
         if obj.Offset:
             offset = obj.Offset
             if obj.Side == "Inside":
                 offset = -offset
-            shapes = Path.Geom.uncompound(obj.Boundary.Shape)
+            shapes = Path.Geom.uncompound(boundary)
             boundaryShapes = [sh.makeOffsetShape(offset, tolerance=0.1, join=2) for sh in shapes]
         else:
-            boundaryShapes = [obj.Boundary.Shape]
+            boundaryShapes = [boundary]
 
         baseOp = PathDressup.baseOp(obj)
         job = PathUtils.findParentJob(obj)
@@ -143,7 +160,7 @@ class ObjectDressup:
         if hasattr(baseOp, "CollisionClearance"):
             collision_clearance = baseOp.CollisionClearance.Value
 
-        wires = Path.Geom.wiresForPath(PathUtils.getPathWithPlacement(obj.Base))
+        wires = Path.Geom.wiresForPath(obj.Base.Path)
         boundaryWires = []
         for wire in wires:
             if obj.Side == "Inside":
@@ -158,7 +175,7 @@ class ObjectDressup:
             "start_position": None,
             "target_position": None,
             "heights_clearance": (safeHeight, clearanceHeight),
-            "solids": [base.Shape for base in job.Model.Group],
+            "solids": [inFrame(base.Shape) for base in job.Model.Group],
             "tool_shape": None,
             "tool_diameter": None,
             "collision_clearance": collision_clearance,
