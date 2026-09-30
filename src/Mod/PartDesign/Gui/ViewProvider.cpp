@@ -276,7 +276,7 @@ void ViewProvider::syncToolPreview()
     auto* addSubFeature = getObject<PartDesign::FeatureAddSub>();
     // the raw cutting tool is only for editing; a preselection preview shows only the delta
     const bool showTool = previewToolShape && addSubFeature
-        && addSubFeature->getAddSubType() == PartDesign::FeatureAddSub::Subtractive;
+        && addSubFeature->getAddSubType() == PartDesign::FeatureAddSub::Type::Subtractive;
 
     if (showTool) {
         updatePreviewShape(addSubFeature->AddSubShape.getShape(), pcToolPreview);
