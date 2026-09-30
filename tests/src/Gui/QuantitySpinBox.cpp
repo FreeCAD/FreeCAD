@@ -15,6 +15,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Expression.h>
+#include <App/ExpressionParser.h>
 #include <App/ObjectIdentifier.h>
 #include <App/Property.h>
 #include <App/PropertyStandard.h>
@@ -1438,6 +1439,64 @@ private Q_SLOTS:
         QCOMPARE(spinBox.text(), QStringLiteral("12,345.67 mm"));
         QCOMPARE(spinBox.rawValue(), 12345.67);
         QVERIFY(spinBox.hasValidInput());
+    }
+
+    void test_ExpressionCommitUpdatesPreview_data()  // NOLINT
+    {
+        QTest::addColumn<QString>("commitMethod");
+        QTest::newRow("formula-dialog") << QStringLiteral("formula");
+        QTest::newRow("inline-return") << QStringLiteral("return");
+        QTest::newRow("inline-focus-out") << QStringLiteral("focus-out");
+    }
+
+    void test_ExpressionCommitUpdatesPreview()  // NOLINT
+    {
+        QFETCH(QString, commitMethod);
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::One);
+        spin.bind(pathFloat());
+        QSignalSpy changed(&spin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged));
+        int previewUpdates = 0;
+        // Match task panels: commit the value and recompute when the widget notifies them.
+        QObject::connect(
+            &spin,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            &spin,
+            [this, &previewUpdates](double value) {
+                targetFloat->setValue(value);
+                doc->recompute();
+                ++previewUpdates;
+            }
+        );
+        setEditorText(spin, QStringLiteral("10"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QVERIFY(previewUpdates > 0);
+        QCOMPARE(targetFloat->getValue(), 10.0);
+        changed.clear();
+        previewUpdates = 0;
+
+        if (commitMethod == QStringLiteral("formula")) {
+            // Exercise the formula dialog's acceptance path independently of inline entry.
+            std::shared_ptr<App::Expression> expression = App::ExpressionParser::parse(target, "42");
+            static_cast<Gui::ExpressionSpinBox&>(spin).setExpression(expression);
+        }
+        else {
+            setEditorText(spin, QStringLiteral("x=42"));
+            if (commitMethod == QStringLiteral("return")) {
+                QTest::keyClick(&spin, Qt::Key_Return);
+            }
+            else {
+                QFocusEvent focusOut(QEvent::FocusOut, Qt::TabFocusReason);
+                QCoreApplication::sendEvent(&spin, &focusOut);
+            }
+        }
+
+        QCOMPARE(spin.rawValue(), 42.0);
+        QVERIFY(target->getExpression(pathFloat()).expression != nullptr);
+        // No explicit recompute here: accepting the expression must update the preview now.
+        QCOMPARE(targetFloat->getValue(), 42.0);
+        QCOMPARE(changed.count(), 1);
+        QCOMPARE(previewUpdates, 1);
     }
 
     void test_InlineAssignmentCreatesParametersVarSet()  // NOLINT

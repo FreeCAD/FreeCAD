@@ -515,7 +515,8 @@ void QuantitySpinBox::evaluateExpression()
 
 void Gui::QuantitySpinBox::setNumberExpression(App::NumberExpression* expr)
 {
-    commitQuantity(expr->getQuantity(), TextPolicy::ReformatEditor, false);
+    // Expression commits must notify task panels so their feature previews recompute.
+    commitQuantity(expr->getQuantity(), TextPolicy::ReformatEditor, true);
 }
 
 bool QuantitySpinBox::apply(const std::string& propName)
