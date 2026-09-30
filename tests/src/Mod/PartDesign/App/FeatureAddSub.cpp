@@ -13,6 +13,7 @@
 #include <Base/Vector3D.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/App/FeatureHole.h>
 #include <Mod/PartDesign/App/FeaturePad.h>
 #include <Mod/PartDesign/App/FeaturePocket.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -90,6 +91,32 @@ protected:
         return pocket;
     }
 
+    /// Add a threaded hole drilled up through the pad and out the other side.
+    PartDesign::Hole* addThreadedHole(bool modelThread)
+    {
+        auto* sketch = _doc->addObject<Sketcher::SketchObject>("HoleSketch");
+        _body->addObject(sketch);
+        sketch->AttachmentSupport.setValue(_doc->getObject("XY_Plane"), "");
+        sketch->MapMode.setValue("FlatFace");
+        Part::GeomCircle circle;
+        circle.setRadius(3.0);
+        sketch->addGeometry(&circle, false);
+
+        auto* hole = _doc->addObject<PartDesign::Hole>("Hole");
+        _body->addObject(hole);
+        hole->Profile.setValue(sketch, {""});
+        hole->Threaded.setValue(true);
+        // set the type first, it repopulates the size enumeration
+        hole->ThreadType.setValue("ISOMetricProfile");
+        hole->ThreadSize.setValue("M6x1.0");
+        hole->ModelThread.setValue(modelThread);
+        hole->DepthType.setValue("Dimension");
+        hole->Depth.setValue(20.0);
+        hole->Reversed.setValue(true);
+        _doc->recompute();
+        return hole;
+    }
+
     PartDesign::Pad* getPad() const
     {
         return _pad;
@@ -165,6 +192,46 @@ TEST_F(FeatureAddSubTest, PreviewFallsBackToTheToolWhenNothingIsRemoved)
 
     ASSERT_GT(volumeOf(tool), 0.0);
     EXPECT_NEAR(volumeOf(preview), volumeOf(tool), Precision::Confusion());
+}
+
+TEST_F(FeatureAddSubTest, ModeledThreadPreviewSkipsTheTrim)
+{
+    // a swept thread makes the removed volume booleans too slow to be worth it
+    PartDesign::Hole* hole = addThreadedHole(true);
+    hole->updatePreviewShape();
+
+    const Part::TopoShape preview = hole->PreviewShape.getShape();
+    const Part::TopoShape tool = hole->AddSubShape.getShape();
+
+    ASSERT_FALSE(preview.isNull());
+    const double previewHeight = preview.getBoundBox().LengthZ();
+    const double toolHeight = tool.getBoundBox().LengthZ();
+    const double baseHeight = getPad()->Shape.getBoundingBox().LengthZ();
+
+    // guard the premise: a tool inside the pad would survive the trim unchanged
+    ASSERT_GT(toolHeight, baseHeight);
+
+    EXPECT_NEAR(previewHeight, toolHeight, Precision::Confusion());
+}
+
+TEST_F(FeatureAddSubTest, CosmeticThreadPreviewIsTrimmedToTheBase)
+{
+    // without a modeled thread the hole is an ordinary subtractive tool
+    PartDesign::Hole* hole = addThreadedHole(false);
+    hole->updatePreviewShape();
+
+    const Part::TopoShape preview = hole->PreviewShape.getShape();
+    const Part::TopoShape tool = hole->AddSubShape.getShape();
+
+    ASSERT_FALSE(preview.isNull());
+    const double previewHeight = preview.getBoundBox().LengthZ();
+    const double toolHeight = tool.getBoundBox().LengthZ();
+    const double baseHeight = getPad()->Shape.getBoundingBox().LengthZ();
+
+    ASSERT_GT(toolHeight, baseHeight);
+
+    EXPECT_LT(previewHeight, toolHeight);
+    EXPECT_LE(previewHeight, baseHeight + Precision::Confusion());
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
