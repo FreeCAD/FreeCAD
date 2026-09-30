@@ -40,6 +40,7 @@ import Path.Main.Sanity.ReportGenerator as ReportGenerator
 import os
 import Path.Base.Util as PathUtil
 import Path.Dressup.Utils as PathDressup
+import Path.Op.Base as PathOp
 import PathScripts.PathUtils as PathUtils
 
 translate = FreeCAD.Qt.translate
@@ -248,6 +249,8 @@ class CAMSanity:
             if "Stop" in op.Name and hasattr(op, "Stop") and op.Stop is True:
                 data["optionalstops"] = "True"
 
+        data["squawkData"].extend(self._deprecationSquawks())
+
         if obj.LastPostProcessOutput == "":
             data["filesize"] = str(0.0)
             data["linecount"] = str(0)
@@ -276,6 +279,48 @@ class CAMSanity:
                 )
 
         return data
+
+    def _deprecationSquawks(self):
+        """One squawk per operation that carries a deprecation notice.
+
+        Ops declare notices through opDeprecationNotice(obj) on their proxy (see
+        Path.Op.Base). Dressups are unwrapped so a deprecated op inside one is
+        still reported. A deprecated op keeps working, so its squawk is a NOTE. A
+        deleted op (Path.Op.Base.RemovedOp) generates no toolpath, so the program is
+        missing its moves and the squawk is a CAUTION."""
+        squawks = []
+        for op in self.job.Operations.Group:
+            base_op = PathDressup.baseOp(op)
+            proxy = getattr(base_op, "Proxy", None)
+            if not hasattr(proxy, "opDeprecationNotice"):
+                continue
+            try:
+                notice = proxy.opDeprecationNotice(base_op)
+            except Exception as e:
+                Path.Log.debug(f"opDeprecationNotice failed for {base_op.Label}: {e}")
+                continue
+            if not isinstance(notice, str) or not notice:
+                continue
+            if isinstance(proxy, PathOp.RemovedOp):
+                squawks.append(
+                    self.squawk(
+                        "CAMSanity",
+                        translate(
+                            "CAM_Sanity", "Operation '{}' is missing from the output: {}"
+                        ).format(base_op.Label, notice),
+                        squawkType="CAUTION",
+                    )
+                )
+                continue
+            squawks.append(
+                self.squawk(
+                    "CAMSanity",
+                    translate("CAM_Sanity", "Operation '{}' is deprecated: {}").format(
+                        base_op.Label, notice
+                    ),
+                )
+            )
+        return squawks
 
     def _runData(self):
         obj = self.job

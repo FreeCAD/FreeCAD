@@ -207,6 +207,15 @@ class ViewProvider:
         if 0 == mode:
             if vobj is None:
                 vobj = self.vobj
+            proxy = getattr(vobj.Object, "Proxy", None)
+            if isinstance(proxy, PathOp.RemovedOp):
+                # The op's page module went with its implementation: show the notice instead.
+                QtGui.QMessageBox.warning(
+                    FreeCADGui.getMainWindow(),
+                    translate("PathOp", "Operation Deleted"),
+                    proxy.opDeprecationNotice(vobj.Object),
+                )
+                return False
             # Mark as selected and update workplane visualization
             self._selected = True
             self.updateWorkplaneVisualization()
@@ -369,6 +378,31 @@ class ViewProvider:
             % operation.Label
             + "\n"
         )
+
+
+def makeDeprecationBanner(parent=None):
+    """makeDeprecationBanner(parent=None) ... a hidden QLabel styled as a deprecation banner.
+    Fill it with setDeprecationBanner(label, notice)."""
+    label = QtGui.QLabel(parent)
+    label.setObjectName("deprecationWarning")
+    label.setStyleSheet(
+        "QLabel { background-color: #ffcc00; color: #000000; padding: 8px; "
+        "border: 2px solid #ff9900; border-radius: 4px; font-weight: bold; }"
+    )
+    label.setWordWrap(True)
+    label.setAlignment(QtCore.Qt.AlignCenter)
+    label.hide()
+    return label
+
+
+def setDeprecationBanner(label, notice):
+    """setDeprecationBanner(label, notice) ... show the banner with notice, or hide it if
+    notice is None."""
+    if notice:
+        label.setText(translate("PathOp", "\u26a0 Deprecated: {}").format(notice))
+        label.show()
+    else:
+        label.hide()
 
 
 class TaskPanelPage:
@@ -1555,25 +1589,58 @@ class TaskPanel:
             tabwidget.setWindowTitle(opTitle)
             if opPage.getIcon(obj):
                 tabwidget.setWindowIcon(QtGui.QIcon(opPage.getIcon(obj)))
-            self.form = tabwidget
+            self.form = self._withDeprecationBanner(tabwidget)
         elif taskPanelLayout == 2:
-            forms = []
+            forms = [self._deprecationBannerForm(obj)]
             for page in self.featurePages:
                 page.form.setWindowTitle(page.getTitle(obj))
                 forms.append(page.form)
             self.form = forms
         elif taskPanelLayout == 3:
-            forms = []
+            forms = [self._deprecationBannerForm(obj)]
             for page in reversed(self.featurePages):
                 page.form.setWindowTitle(page.getTitle(obj))
                 forms.append(page.form)
             self.form = forms
+        self.updateDeprecationBanner()
 
         self.selectionFactory = selectionFactory
         self.obj = obj
         self.isdirty = deleteOnReject
         self.visibility = obj.ViewObject.Visibility
         obj.ViewObject.Visibility = True
+
+    def _withDeprecationBanner(self, widget):
+        """_withDeprecationBanner(widget) ... wrap widget so the deprecation banner sits above it.
+        The wrapper carries the window title and icon the task panel reads."""
+        self.deprecationBanner = makeDeprecationBanner()
+        wrapper = QtGui.QWidget()
+        wrapper.setWindowTitle(widget.windowTitle())
+        wrapper.setWindowIcon(widget.windowIcon())
+        layout = QtGui.QVBoxLayout(wrapper)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.addWidget(self.deprecationBanner)
+        layout.addWidget(widget)
+        return wrapper
+
+    def _deprecationBannerForm(self, obj):
+        """_deprecationBannerForm(obj) ... the banner as its own task box, for the layouts
+        that show each page as a separate box."""
+        self.deprecationBanner = makeDeprecationBanner()
+        self.deprecationBanner.setWindowTitle(translate("PathOp", "Deprecated"))
+        return self.deprecationBanner
+
+    def updateDeprecationBanner(self):
+        """updateDeprecationBanner() ... show or hide the banner from the op's
+        opDeprecationNotice(obj), which may depend on the current property values."""
+        proxy = getattr(self.obj, "Proxy", None)
+        notice = None
+        if hasattr(proxy, "opDeprecationNotice"):
+            try:
+                notice = proxy.opDeprecationNotice(self.obj)
+            except Exception as e:
+                Path.Log.debug(f"opDeprecationNotice failed: {e}")
+        setDeprecationBanner(self.deprecationBanner, notice)
 
     def isDirty(self):
         """isDirty() ... returns true if the model is not in sync with the UI anymore."""
@@ -1713,6 +1780,7 @@ class TaskPanel:
         # Path.Log.track(obj.Label, prop) # creates a lot of noise
         for page in self.featurePages:
             page.pageUpdateData(obj, prop)
+        self.updateDeprecationBanner()
         if prop == "Side" and not self._reofferingSide:
             self._sideSetByUser = True
         elif prop == "Workplane" and self._sideOffered and not self._sideSetByUser:
