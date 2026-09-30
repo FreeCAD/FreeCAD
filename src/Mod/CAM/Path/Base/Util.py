@@ -184,6 +184,8 @@ def baseOp(obj):
         and getattr(obj, "Base", None)
     ):
         return baseOp(obj.Base)
+    elif hasattr(obj, "isDerivedFrom") and obj.isDerivedFrom("App::Link"):
+        return baseOp(obj.LinkedObject)
     return obj
 
 
