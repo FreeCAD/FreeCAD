@@ -712,11 +712,12 @@ def build_avoid_boundary(avoid_faces, avoid_overlap, tool_radius, tolerance, nee
 
     Two shapes are then built from those prepared faces, because the two
     consumers need different geometry:
-        - avoid_boundary: This boundary is used to cut a matching hole out of
-          the machining area. Offset by tool_radius and avoid_overlap plus a
-          small buffer to avoid path spikes on vertical walls.
-        - avoid_boundary_stl: This boundary is used to build a collision-safety
-          pillar around each Avoid Face. Offset by avoid_overlap only.
+        - avoid_boundary: Cuts a matching hole out of the machining area.
+          Offset by tool_radius - avoid_overlap plus a small buffer (epsilon)
+          to avoid path spikes on vertical walls.
+        - avoid_boundary_stl: Builds a collision-safety pillar around each
+          Avoid Face. The same footprint without tool_radius (the OCL cutter
+          already accounts for it): -avoid_overlap plus epsilon.
 
     Args:
         avoid_faces (list): Raw Part.Face objects selected by the user as
