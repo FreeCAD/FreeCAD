@@ -361,8 +361,9 @@ CmdSurfaceIntersectionCurve::CmdSurfaceIntersectionCurve()
     sGroup = QT_TR_NOOP("Surface");
     sMenuText = QT_TR_NOOP("Intersection Curve");
     sToolTipText = QT_TR_NOOP(
-        "Creates the intersection of two sketches or planar wires extruded along their normals.\n"
-        "Select two whole profiles. Extrusion directions can be edited in the properties."
+        "Creates intersection curves or points from two shapes, faces, or edges.\n"
+        "Two whole curve profiles are extruded along their normals in Automatic mode.\n"
+        "Use Direct mode to intersect curves without extrusion."
     );
     sStatusTip = sToolTipText;
     sWhatsThis = "Surface_IntersectionCurve";
@@ -373,13 +374,27 @@ void CmdSurfaceIntersectionCurve::activated(int message)
 {
     Q_UNUSED(message);
     const auto selection = getSelection().getSelectionEx();
-    if (selection.size() != 2 || selection.front().hasSubNames() || selection.back().hasSubNames()
-        || !Part::Feature::hasShapeOwner(selection.front().getObject())
-        || !Part::Feature::hasShapeOwner(selection.back().getObject())) {
+    std::vector<std::pair<const Gui::SelectionObject*, std::string>> inputs;
+    for (const auto& item : selection) {
+        if (item.hasSubNames()) {
+            for (const auto& sub : item.getSubNames()) {
+                inputs.emplace_back(&item, sub);
+            }
+        }
+        else {
+            inputs.emplace_back(&item, "");
+        }
+    }
+    if (inputs.size() != 2
+        || !Part::Feature::hasShapeOwner(inputs.front().first->getObject(), inputs.front().second.c_str())
+        || !Part::Feature::hasShapeOwner(
+            inputs.back().first->getObject(),
+            inputs.back().second.c_str()
+        )) {
         QMessageBox::warning(
             Gui::getMainWindow(),
             qApp->translate("Surface_IntersectionCurve", "Invalid selection"),
-            qApp->translate("Surface_IntersectionCurve", "Select two whole sketches or wires.")
+            qApp->translate("Surface_IntersectionCurve", "Select two shapes, faces, or edges.")
         );
         return;
     }
@@ -392,14 +407,21 @@ void CmdSurfaceIntersectionCurve::activated(int message)
             .arg(QString::fromStdString(name))
             .toUtf8()
     );
-    for (size_t index = 0; index < selection.size(); ++index) {
+    for (size_t index = 0; index < inputs.size(); ++index) {
+        const auto& [item, sub] = inputs.at(index);
+        const Gui::SelectionChanges change(
+            Gui::SelectionChanges::AddSelection,
+            item->getDocName(),
+            item->getFeatName(),
+            sub.c_str()
+        );
+        const Gui::SelectionObject input(change);
         runCommand(
             Doc,
-            QStringLiteral("App.ActiveDocument.%1.Curve%2 = App.getDocument('%3').getObject('%4')")
+            QStringLiteral("App.ActiveDocument.%1.Curve%2 = %3")
                 .arg(QString::fromStdString(name))
                 .arg(index + 1)
-                .arg(QString::fromUtf8(selection.at(index).getDocName()))
-                .arg(QString::fromUtf8(selection.at(index).getFeatName()))
+                .arg(QString::fromStdString(input.getAsPropertyLinkSubString()))
                 .toUtf8()
         );
     }

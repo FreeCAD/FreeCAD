@@ -1,11 +1,13 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-"""Regression tests for extruded-profile intersection curves."""
+"""Regression tests for shape intersections and extruded-profile curves."""
 
 import importlib
 import os
 import tempfile
 import unittest
+import zipfile
+import xml.etree.ElementTree as ET
 
 import FreeCAD as App
 import Part
@@ -149,8 +151,8 @@ class TestIntersectionCurve(unittest.TestCase):
         self.assertTrue(curve.Shape.isValid())
         self.assertEqual(len(curve.Shape.Wires), 2)
 
-    def test_empty_and_face_inputs(self):
-        """Reject empty profiles and profiles containing faces."""
+    def test_empty_input_and_curve_plane(self):
+        """Reject empty shapes and preserve curve-plane intersection points."""
         _, _, curve = self.profiles()
         invalid = self.doc.addObject("Part::Feature", "InvalidProfile")
         curve.Curve1 = invalid
@@ -159,8 +161,222 @@ class TestIntersectionCurve(unittest.TestCase):
         self.assertTrue(curve.Shape.isNull())
         invalid.Shape = Part.makePlane(10, 10)
         self.doc.recompute()
+        self.assertNotIn("Invalid", curve.State)
+        self.assertEqual(len(curve.Shape.Edges), 0)
+        self.assertEqual(len(curve.Shape.Vertexes), 1)
+        self.assertLess(curve.Shape.Vertexes[0].Point.Length, 1e-6)
+
+    def feature(self, shape):
+        """Wrap geometry in a document object."""
+        obj = self.doc.addObject("Part::Feature", "Input")
+        obj.Shape = shape
+        return obj
+
+    def intersection(self, first, second, mode="Automatic"):
+        """Create and recompute an intersection with the requested mode."""
+        curve = self.doc.addObject("Surface::IntersectionCurve", "IntersectionCurve")
+        curve.Curve1, curve.Curve2 = first, second
+        curve.Mode = mode
+        self.doc.recompute()
+        return curve
+
+    def test_plane_plane(self):
+        """Intersect two bounded planes and clear a result after they separate."""
+        first = self.feature(Part.makePlane(10, 10))
+        second = self.feature(Part.makePlane(10, 10))
+        second.Placement = App.Placement(
+            App.Vector(0, 5, -5), App.Rotation(App.Vector(1, 0, 0), 90)
+        )
+        curve = self.intersection(first, second)
+        self.assertCurve(curve)
+        self.assertAlmostEqual(curve.Shape.Length, 10, places=6)
+        self.assertAlmostEqual(curve.Shape.BoundBox.YMin, 5, places=6)
+        self.assertAlmostEqual(curve.Shape.BoundBox.ZMin, 0, places=6)
+        second.Placement.Base.y = 20
+        self.doc.recompute()
         self.assertIn("Invalid", curve.State)
         self.assertTrue(curve.Shape.isNull())
+
+    def test_curved_surface_plane_and_solid(self):
+        """Accept curved faces, shells, and solids without profile extrusion."""
+        cylinder = Part.makeCylinder(5, 10)
+        surface = self.feature(cylinder.Faces[0])
+        plane = self.feature(Part.makePlane(20, 20, App.Vector(-10, -10, 5)))
+        for shape in (cylinder.Faces[0], Part.makeShell([cylinder.Faces[0]]), cylinder):
+            with self.subTest(shape=shape.ShapeType):
+                surface.Shape = shape
+                curve = self.intersection(surface, plane)
+                self.assertCurve(curve)
+                self.assertAlmostEqual(curve.Shape.Length, 10 * 3.141592653589793, places=5)
+                self.assertAlmostEqual(curve.Shape.BoundBox.ZMin, 5, places=6)
+
+    def test_curve_surface_both_orders(self):
+        """Preserve the point where an edge crosses a face in either input order."""
+        line = self.feature(Part.makeLine(App.Vector(5, 5, -5), App.Vector(5, 5, 5)))
+        plane = self.feature(Part.makePlane(10, 10))
+        for inputs in ((line, plane), (plane, line)):
+            with self.subTest(reverse=inputs[0] == plane):
+                curve = self.intersection(*inputs)
+                self.assertNotIn("Invalid", curve.State)
+                self.assertEqual(len(curve.Shape.Edges), 0)
+                self.assertEqual(len(curve.Shape.Vertexes), 1)
+                self.assertLess((curve.Shape.Vertexes[0].Point - App.Vector(5, 5, 0)).Length, 1e-6)
+
+    def test_direct_curves_and_mode_recompute(self):
+        """Intersect coplanar edges directly and recompute when the mode changes."""
+        first = self.feature(Part.makeLine(App.Vector(), App.Vector(10, 10, 0)))
+        second = self.feature(Part.makeLine(App.Vector(0, 10, 0), App.Vector(10, 0, 0)))
+        curve = self.intersection(first, second, "Direct")
+        self.assertNotIn("Invalid", curve.State)
+        self.assertEqual(len(curve.Shape.Vertexes), 1)
+        self.assertLess((curve.Shape.Vertexes[0].Point - App.Vector(5, 5, 0)).Length, 1e-6)
+        curve.Mode = "ExtrudedProfiles"
+        self.doc.recompute()
+        self.assertIn("Invalid", curve.State)
+        self.assertTrue(curve.Shape.isNull())
+        curve.Mode = "Direct"
+        self.doc.recompute()
+        self.assertNotIn("Invalid", curve.State)
+
+    def test_subelements_of_same_object(self):
+        """Resolve distinct faces of one object and reject invalid references."""
+        box = self.feature(Part.makeBox(10, 10, 10))
+        curve = self.intersection((box, ["Face1"]), (box, ["Face3"]))
+        self.assertCurve(curve)
+        self.assertAlmostEqual(curve.Shape.Length, 10, places=6)
+        curve.Curve2 = (box, ["Face1"])
+        self.doc.recompute()
+        self.assertIn("Invalid", curve.State)
+        self.assertTrue(curve.Shape.isNull())
+        curve.Curve2 = (box, ["MissingFace"])
+        self.doc.recompute()
+        self.assertIn("Invalid", curve.State)
+        curve.Curve2 = (box, ["Face2", "Face3"])
+        self.doc.recompute()
+        self.assertIn("Invalid", curve.State)
+
+    def test_selected_edges_intersect_directly(self):
+        """Treat selected edges as direct geometry in Automatic mode."""
+        shape = Part.makeCompound(
+            [
+                Part.makeLine(App.Vector(), App.Vector(10, 10, 0)),
+                Part.makeLine(App.Vector(0, 10, 0), App.Vector(10, 0, 0)),
+            ]
+        )
+        obj = self.feature(shape)
+        curve = self.intersection((obj, ["Edge1"]), (obj, ["Edge2"]))
+        self.assertNotIn("Invalid", curve.State)
+        self.assertEqual(len(curve.Shape.Vertexes), 1)
+
+    @unittest.skipUnless(App.GuiUp, "Requires the GUI command")
+    def test_gui_command_selection(self):
+        """Create intersections from whole, mixed, and same-object selections."""
+        import FreeCADGui as Gui
+
+        __import__("SurfaceGui")
+        box = self.feature(Part.makeBox(10, 10, 10))
+        plane = self.feature(Part.makePlane(20, 20, App.Vector(-5, -5, 5)))
+        for inputs, length in (
+            (((box, "Face1"), (box, "Face3")), 10),
+            (((box, ""), (plane, "")), 40),
+            (((box, "Face1"), (plane, "")), 10),
+        ):
+            with self.subTest(inputs=inputs):
+                Gui.Selection.clearSelection()
+                for obj, sub in inputs:
+                    Gui.Selection.addSelection(obj, sub)
+                before = set(self.doc.Objects)
+                Gui.runCommand("Surface_IntersectionCurve", 0)
+                added = set(self.doc.Objects) - before
+                self.assertEqual(len(added), 1)
+                curve = added.pop()
+                self.assertCurve(curve)
+                self.assertAlmostEqual(curve.Shape.Length, length, places=5)
+                self.doc.removeObject(curve.Name)
+        Gui.Selection.clearSelection()
+
+    def test_mixed_wire_and_point_result(self):
+        """Retain isolated points alongside intersection wires."""
+        first = self.feature(
+            Part.makeCompound(
+                [
+                    Part.makePlane(10, 10),
+                    Part.makeLine(App.Vector(15, 0, 0), App.Vector(15, 10, 0)),
+                ]
+            )
+        )
+        second = self.feature(Part.makePlane(20, 10))
+        second.Placement = App.Placement(
+            App.Vector(0, 5, -5), App.Rotation(App.Vector(1, 0, 0), 90)
+        )
+        curve = self.intersection(first, second)
+        self.assertCurve(curve)
+        self.assertAlmostEqual(curve.Shape.Length, 10, places=6)
+        self.assertEqual(len(curve.Shape.Vertexes), 3)
+
+    def test_link_placement_and_selected_face_restore(self):
+        """Resolve a linked face in document coordinates and restore its reference."""
+        surface = self.feature(Part.makeCylinder(5, 10))
+        link = self.doc.addObject("App::Link", "SurfaceLink")
+        link.LinkedObject = surface
+        link.LinkPlacement.Base = App.Vector(20, 0, 0)
+        plane = self.feature(Part.makePlane(20, 20, App.Vector(10, -10, 5)))
+        curve = self.intersection((link, ["Face1"]), plane)
+        self.assertCurve(curve)
+        self.assertAlmostEqual(curve.Shape.CenterOfMass.x, 20, places=5)
+        self.assertAlmostEqual(curve.Shape.Length, 10 * 3.141592653589793, places=5)
+        with tempfile.TemporaryDirectory() as directory:
+            path = os.path.join(directory, "SelectedIntersection.FCStd")
+            self.doc.saveAs(path)
+            App.closeDocument(self.doc.Name)
+            self.doc = App.openDocument(path)
+            self.doc.IntersectionCurve.touch()
+            self.doc.recompute()
+            self.assertCurve(self.doc.IntersectionCurve)
+            self.assertEqual(self.doc.IntersectionCurve.Curve1[1], ["Face1"])
+            App.closeDocument(self.doc.Name)
+            self.doc = App.newDocument("TestIntersectionCurve")
+
+    def test_restore_legacy_object_links(self):
+        """Migrate old whole-object links and default to the original extrusion mode."""
+        self.profiles()
+        with tempfile.TemporaryDirectory() as directory:
+            path = os.path.join(directory, "LegacyIntersection.FCStd")
+            self.doc.saveAs(path)
+            App.closeDocument(self.doc.Name)
+            with zipfile.ZipFile(path) as archive:
+                files = {name: archive.read(name) for name in archive.namelist()}
+            root = ET.fromstring(files["Document.xml"])
+            for obj in root.findall("./ObjectData/Object"):
+                if obj.get("name") == "IntersectionCurve":
+                    props = obj.find("Properties")
+                    for prop in list(props):
+                        if prop.get("name") in ("Curve1", "Curve2"):
+                            value = prop.find("LinkSub").get("value")
+                            prop.set("type", "App::PropertyLink")
+                            prop.remove(prop.find("LinkSub"))
+                            ET.SubElement(prop, "Link", value=value)
+                        elif prop.get("name") == "Mode":
+                            props.remove(prop)
+                    props.set("Count", str(len(props.findall("Property"))))
+            ET.indent(root)
+            files["Document.xml"] = (
+                ET.tostring(root, encoding="utf-8", xml_declaration=True) + b"\n"
+            )
+            with zipfile.ZipFile(path, "w") as archive:
+                for name, data in files.items():
+                    archive.writestr(name, data)
+            self.doc = App.openDocument(path)
+            self.doc.IntersectionCurve.touch()
+            self.doc.recompute()
+            self.assertCurve(self.doc.IntersectionCurve)
+            self.assertEqual(self.doc.IntersectionCurve.Mode, "Automatic")
+            self.assertEqual(self.doc.IntersectionCurve.Curve1[0], self.doc.First)
+            self.doc.Second.Placement.Base = App.Vector(0, 0, 5)
+            self.doc.recompute()
+            self.assertAlmostEqual(self.doc.IntersectionCurve.Shape.BoundBox.ZMin, 5, places=5)
+            App.closeDocument(self.doc.Name)
+            self.doc = App.newDocument("TestIntersectionCurve")
 
     def test_save_restore(self):
         """Restore linked profiles and recompute a saved intersection."""
