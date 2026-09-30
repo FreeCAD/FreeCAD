@@ -3183,7 +3183,7 @@ void Application::processCmdLineFiles()
     else if (processed.empty() && files.size() == 1 && mConfig["RunMode"] == "Cmd") {
         // In case we are in console mode and the argument is not a file but Python code
         // then execute it. This is to behave like the standard Python executable.
-        const std::string& arg = files.front();
+        const auto& arg = files.front();
         if (!isPathName(arg) || !Base::FileInfo(arg).exists()) {
             Base::Interpreter().runString(arg.c_str());
             mConfig["RunMode"] = "Exit";
