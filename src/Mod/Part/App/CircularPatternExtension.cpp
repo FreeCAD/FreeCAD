@@ -168,7 +168,8 @@ gp_Ax2 CircularPatternExtension::getRotation() const
 
     gp_Pnt base;
     gp_Dir direction;
-    if (auto* sketch = freecad_cast<Part::Part2DObject*>(reference)) {
+    if (auto* sketch = freecad_cast<Part::Part2DObject*>(reference); sketch
+        && (subname.empty() || subname == "H_Axis" || subname == "V_Axis" || subname == "N_Axis")) {
         Base::Axis axis;
         if (subname == "H_Axis") {
             axis = sketch->getAxis(Part::Part2DObject::H_Axis);

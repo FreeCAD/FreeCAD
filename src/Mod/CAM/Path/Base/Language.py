@@ -34,17 +34,21 @@ __doc__ = "Functions to extract and convert between Path.Command and Part.Edge a
 class Instruction:
     """An Instruction is a pure python replacement of Path.Command which also tracks its begin position."""
 
-    def __init__(self, begin, cmd, param=None):
+    def __init__(self, begin, cmd, param=None, annotations=None):
         self.begin = begin
+        self.annotations = {}
         if isinstance(cmd, Path.Command):
             self.cmd = cmd.Name
             self.param = cmd.Parameters
+            self.annotations = dict(cmd.Annotations)
         else:
             self.cmd = cmd
             if param is None:
                 self.param = {}
             else:
                 self.param = param
+        if annotations:
+            self.annotations = dict(annotations)
 
     def anglesOfTangents(self):
         return (0, 0)
@@ -74,6 +78,10 @@ class Instruction:
 
     def isRapid(self):
         return False
+
+    def isLinking(self):
+        """isLinking() ... return true if this move was generated as a linking (travel) move"""
+        return self.annotations.get("type") == Constants.ANNOT_LINKING["type"]
 
     def isPlunge(self):
         """isPlunge() ... return true if this moves is vertical"""
@@ -127,7 +135,10 @@ class Instruction:
 
     def toCommand(self):
         """toCommand(instr) ... return Path.Command object"""
-        return Path.Command(self.cmd, self.param)
+        cmd = Path.Command(self.cmd, self.param)
+        if self.annotations:
+            cmd.Annotations = self.annotations
+        return cmd
 
 
 class MoveStraight(Instruction):
@@ -271,12 +282,12 @@ class Maneuver:
             begin = FreeCAD.Vector(0, 0, 0)
 
         if cmd.Name in Constants.GCODE_MOVE_LINE:
-            return MoveStraight(begin, cmd.Name, cmd.Parameters)
+            return MoveStraight(begin, cmd.Name, cmd.Parameters, cmd.Annotations)
         if cmd.Name in Constants.GCODE_MOVE_CW:
-            return MoveArcCW(begin, cmd.Name, cmd.Parameters)
+            return MoveArcCW(begin, cmd.Name, cmd.Parameters, cmd.Annotations)
         if cmd.Name in Constants.GCODE_MOVE_CCW:
-            return MoveArcCCW(begin, cmd.Name, cmd.Parameters)
-        return Instruction(begin, cmd.Name, cmd.Parameters)
+            return MoveArcCCW(begin, cmd.Name, cmd.Parameters, cmd.Annotations)
+        return Instruction(begin, cmd.Name, cmd.Parameters, cmd.Annotations)
 
     @classmethod
     def FromPath(cls, path, begin=None, skipZeroLength=False):

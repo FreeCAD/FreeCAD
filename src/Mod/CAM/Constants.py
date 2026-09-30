@@ -33,6 +33,7 @@ GCODE_MOVE_ARC = GCODE_MOVE_CW + GCODE_MOVE_CCW
 
 # Canned drilling cycles
 GCODE_MOVE_DRILL = ["G73", "G81", "G82", "G83", "G85"]
+EXPANDABLE_DRILL_CYCLES = ["G73", "G81", "G82", "G83", "G85"]  # currently the same
 
 # Additional drilling cycles
 GCODE_DRILL_EXTENDED = ["G74", "G84", "G88", "G89"]
@@ -70,7 +71,6 @@ GCODE_CUTTER_COMPENSATION = ["G40", "G41", "G42"]
 GCODE_CYCLE_CANCEL = ["G80"]
 
 # Additional drilling cycles
-EXPANDABLE_DRILL_CYCLES = ["G81", "G82", "G83", "G73"]
 GCODE_DRILL_COMMANDS = sorted(set(GCODE_MOVE_DRILL + GCODE_DRILL_EXTENDED + ["G85", "G87"]))
 
 # Probing

@@ -105,7 +105,6 @@ def parse(pathobj):
             newparams = c.Parameters
             newparams.pop("Z", None)
             flatcommand = Path.Command(c.Name, newparams)
-            c.Parameters = newparams
         else:
             flatcommand = c
 

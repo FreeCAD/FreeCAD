@@ -20,8 +20,8 @@ class Measurement(BaseClass):
     License: LGPL-2.1-or-later
     """
 
-    def addReference3D(self) -> Any:
-        """add a geometric reference"""
+    def addReference3D(self, object_name: str, sub_name: str, /) -> None:
+        """add a geometric reference to a subelement of a named object in the active document"""
         ...
 
     def has3DReferences(self) -> Any:
@@ -29,7 +29,7 @@ class Measurement(BaseClass):
         ...
 
     def clear(self) -> Any:
-        """measure the difference between references to obtain resultant vector"""
+        """clear all references and reset the measurement"""
         ...
 
     def delta(self) -> Any:

@@ -1,26 +1,24 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2018 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileCopyrightText: 2021 Schildkroet
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
-# *   Copyright (c) 2021 Schildkroet                                        *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
 import Path
@@ -552,59 +550,30 @@ def offsetWireCompat(wire, base, offset, Side=None, tolerance=0.01):
         area.set_accuracy(original_accuracy)
 
 
-_ROTARY_AXES = ("A", "B", "C", "U", "V", "W")
-
-
-def _stripRotaryAxes(path):
-    """Return a copy of path with rotary-axis parameters removed.
-
-    PathSegmentWalker accumulates A/B/C state and applies compensateRotation()
-    to every subsequent move, mapping rotated-frame X/Y/Z back to world coords.
-    For 3+2 ops the X/Y/Z stored in the gcode are already in the rotated
-    workplane frame, so that compensation produces the wrong positions when we
-    just want to read the toolpath geometry as-emitted (e.g. to compute a
-    cleared area to compare against another op in the same rotated frame).
-    Stripping the rotary parameters keeps the walker's internal A/B/C at zero
-    so positions are passed through unrotated.
-    """
-    stripped = []
-    for cmd in path.Commands:
-        params = {k: v for k, v in cmd.Parameters.items() if k not in _ROTARY_AXES}
-        if not params and any(k in cmd.Parameters for k in _ROTARY_AXES):
-            # Pure rotary command (e.g. the leading G0 A45) — drop entirely.
-            continue
-        stripped.append(Path.Command(cmd.Name, params))
-    return Path.Path(stripped)
-
-
 def getClearedAreas(currentOp, bbox):
     """
     Returns the cleared area relevant to the operation
     - currentOp: the operation we are checking for. Only operations performed
       before this operation will be considered
     - bbox: the cleared region is only generated where it is close enough to
-      impact the bbox region
+      impact the bbox region, given in currentOp's frame
 
-    Operations whose Workplane differs from the current op's are skipped:
-    each op's Path stores X/Y/Z in the rotated workplane frame used at
-    generation time, and projecting cleared area between non-coplanar
-    workplanes has no meaningful 2D interpretation. For ops that share a
-    non-Z-up Workplane the path's leading rotary G0 is stripped before
-    walking so positions are read in the same rotated frame as bbox.
-
-    Frames are compared with PathUtil.sameWorkplane() rather than by hand.
-    That predicate compares tool axes only, which is correct while a
-    Workplane's origin is recorded but not consumed; when origins are
-    consumed, two operations sharing a tool axis but not an origin stop
-    being the same frame and this reuse becomes wrong. Changing the
-    predicate has to change this function with it.
+    Every operation's path is stored in its own work plane's frame, with
+    obj.Placement positioning it. Operations whose tool axis differs from the
+    current one are skipped: projecting cleared area between non-coplanar
+    frames has no 2D meaning. Operations that share the tool axis may still
+    sit on parallel planes at different depths or with different in-plane
+    origins, so each one's path is carried into the current operation's frame
+    by the relative placement before its cleared area is computed, and the
+    result is already in the caller's frame. Sharing a tool axis makes that
+    relative placement a rotation about Z plus a translation, which the path
+    representation carries exactly, arcs included. (Path.Area has no
+    transform, so the path is moved rather than the area.)
     """
     clearedAreas = []
     job = currentOp.Proxy.job
-    z = bbox.ZMin + job.GeometryTolerance.getValueAs("mm")
-    identity = FreeCAD.Placement()
-    currentWp = PathUtil.workplaneForOp(currentOp)
-    rotated = not PathUtil.sameWorkplane(currentWp, identity)
+    tol = job.GeometryTolerance.getValueAs("mm")
+    currentFrame = PathUtil.workplaneForOp(currentOp)
     for op in job.Operations.Group:
         baseOp = PathDressup.baseOp(op)
         if baseOp.Name == currentOp.Name:
@@ -613,14 +582,21 @@ def getClearedAreas(currentOp, bbox):
             op = baseOp
         if not (getattr(baseOp, "Active", False) and op.Path):
             continue
-        if not PathUtil.sameWorkplane(PathUtil.workplaneForOp(baseOp), currentWp):
+        otherFrame = PathUtil.workplaneForOp(baseOp)
+        if not PathUtil.sameWorkplane(otherFrame, currentFrame):
             continue
+
+        # other frame -> current frame
+        toCurrent = currentFrame.inverse().multiply(otherFrame)
+        path = op.Path
+        if not toCurrent.isIdentity(1e-9):
+            path = PathUtil.applyPlacementToPath(toCurrent, path)
+
         tool = baseOp.ToolController.Tool
         diameter = tool.Diameter.getValueAs("mm")
         # for drills, dz translates to the full width part of the tool
         dz = 0 if not hasattr(tool, "TipAngle") else -drillTipLength(tool)
-        opPath = _stripRotaryAxes(op.Path) if rotated else op.Path
-        clearedAreas.append(opPath.getClearedArea(diameter, z + dz, bbox))
+        clearedAreas.append(path.getClearedArea(diameter, bbox.ZMin + tol + dz, bbox))
     return clearedAreas
 
 
@@ -653,8 +629,12 @@ def getOpSide(obj, default="Outside"):
     isRoughly = Path.Geom.isRoughly
     isHorizontal = Path.Geom.isHorizontal
     base, subNames = obj.Base[0]
+    shape = base.Shape
+    frame = PathUtil.workplaneForOp(obj)
+    if not frame.isIdentity(1e-9):
+        shape = shape.transformed(frame.inverse().toMatrix())
     if "Face" in subNames[0]:
-        faces = [base.Shape.getElement(sub) for sub in subNames if sub.startswith("Face")]
+        faces = [shape.getElement(sub) for sub in subNames if sub.startswith("Face")]
         vFaces = []
         hFaces = []
         for face in faces:
@@ -668,26 +648,25 @@ def getOpSide(obj, default="Outside"):
                 return "Outside"
             # check if vertical faces creates a closed area
             fzMin = min(e.BoundBox.ZMin for f in vFaces for e in f.Edges)
-            bEdges = [e for f in vFaces for e in f.Edges if isRoughly(e.BoundBox.ZMax, fzMin)]
-            wire = Part.Wire(Part.__sortEdges__(bEdges))
-            if not wire.isClosed():  # for open area always offer 'Outside'
-                return "Outside"
-            if volume < 0 and not isRoughly(volume, 0):  # negative volume forms inner area
-                return "Inside"
+            if bEdges := [e for f in vFaces for e in f.Edges if isRoughly(e.BoundBox.ZMax, fzMin)]:
+                wire = Part.Wire(Part.__sortEdges__(bEdges))
+                if not wire.isClosed():  # for open area always offer 'Outside'
+                    return "Outside"
+            return "Inside"  # negative volume forms inner area
         if hFaces:
-            vFaces = getVerticalFaces(hFaces[0].OuterWire.Edges, base.Shape)
+            vFaces = getVerticalFaces(hFaces[0].OuterWire.Edges, shape)
             volume = Part.Compound(vFaces).Volume
             if volume < 0 and not isRoughly(volume, 0):  # negative volume forms inner area
                 return "Inside"
             else:
                 return "Outside"
     elif "Edge" in subNames[0]:
-        edges = [base.Shape.getElement(sub) for sub in subNames if sub.startswith("Edge")]
+        edges = [shape.getElement(sub) for sub in subNames if sub.startswith("Edge")]
         cluster = Part.getSortedClusters(edges)[0]
         wire = Part.Wire(Part.__sortEdges__(cluster))
         if not wire.isClosed():  # for open wire always offer 'Outside'
             return "Outside"
-        vFaces = getVerticalFaces(edges, base.Shape)
+        vFaces = getVerticalFaces(edges, shape)
         volume = Part.Compound(vFaces).Volume
         if volume < 0 and not isRoughly(volume, 0):  # negative volume forms inner area
             return "Inside"

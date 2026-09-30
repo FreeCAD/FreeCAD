@@ -149,8 +149,6 @@ class AssetPreferencesPage:
         self.machines_list.itemDoubleClicked.connect(self.edit_machine)
 
         for name, filename in MachineFactory.list_configuration_files():
-            if name == "<any>" or filename is None:
-                continue
             item = QtGui.QListWidgetItem(name)
             item.setData(QtCore.Qt.UserRole, filename)
             self.machines_list.addItem(item)

@@ -113,6 +113,24 @@ def isStrictlyGreater(float1, float2, error=Tolerance):
     return float1 > float2 and not isRoughly(float1, float2, error)
 
 
+def isStrictlyLess(float1, float2, error=Tolerance):
+    """isStrictlyLess(float1, float2, [error=Tolerance])
+    Returns true if float1 is less than float2 by more than a given error."""
+    return float1 < float2 and not isRoughly(float1, float2, error)
+
+
+def isLessEqual(float1, float2, error=Tolerance):
+    """isLessEqual(float1, float2, [error=Tolerance])
+    Returns true if float1 is less than float2 or the same within a given error."""
+    return float1 < float2 or isRoughly(float1, float2, error)
+
+
+def isGreaterEqual(float1, float2, error=Tolerance):
+    """isGreaterEqual(float1, float2, [error=Tolerance])
+    Returns true if float1 is greater than float2 or the same within a given error."""
+    return float1 > float2 or isRoughly(float1, float2, error)
+
+
 def pointsCoincide(p1, p2, error=Tolerance):
     """pointsCoincide(p1, p2, [error=Tolerance])
     Return True if two points are roughly identical (see also isRoughly)."""
@@ -292,8 +310,7 @@ def speedBetweenPoints(p0, p1, hSpeed, vSpeed):
     while pitch > 1:
         pitch = pitch - 1
     Path.Log.debug(
-        "  pitch = %g %g (%.2f, %.2f, %.2f) -> %.2f"
-        % (pitch, math.atan2(xy(d).Length, d.z), d.x, d.y, d.z, xy(d).Length)
+        f"  pitch = {pitch:g} {math.atan2(xy(d).Length, d.z):g} ({d.x:.2f}, {d.y:.2f}, {d.z:.2f}) -> {xy(d).Length:.2f}"
     )
     speed = vSpeed + pitch * (hSpeed - vSpeed)
     if speed > hSpeed and speed > vSpeed:
@@ -552,8 +569,9 @@ def wiresForPath(path, startPoint=Vector(0, 0, 0)):
         edges = []
         for cmd in path.Commands:
             if cmd.Name in CmdMove:
-                edges.append(edgeForCmd(cmd, startPoint))
-                startPoint = commandEndPoint(cmd, startPoint)
+                if edge := edgeForCmd(cmd, startPoint):
+                    edges.append(edge)
+                    startPoint = commandEndPoint(cmd, startPoint)
             elif cmd.Name in CmdMoveRapid:
                 if len(edges) > 0:
                     wires.append(Part.Wire(edges))
@@ -886,7 +904,7 @@ def makeBoundBoxFace(bBox, offset=0.0, zHeight=0.0):
 
 
 # Method to combine faces if connected
-def combineHorizontalFaces(faces, keepOrder=False):
+def combineHorizontalFaces(faces, keepOrder=False, z=0, tol=0.01):
     """combineHorizontalFaces(faces)...
     This function successfully identifies and combines multiple connected faces and
     works on multiple independent faces with multiple connected faces within the list.
@@ -896,17 +914,15 @@ def combineHorizontalFaces(faces, keepOrder=False):
     Attempts to do the same shape connecting failed with TechDraw.findShapeOutline() and
     Path.Geom.combineConnectedShapes(), so this algorithm was created.
 
-    If keepOrder is True, returns shapes with original order
+    keepOrder: returns shapes with original order
+    z: returns faces at needed height
+    tol: set tolerance for fuzzy boolean operations
     """
-    horizontal = list()
+    horizontal = []
     offset = 10.0
-    topFace = None
-    innerFaces = list()
 
-    # Verify all incoming faces are at Z=0.0
-    for f in faces:
-        if f.BoundBox.ZMin != 0.0:
-            f.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - f.BoundBox.ZMin))
+    for f in faces:  # translate all faces to z
+        f.translate(FreeCAD.Vector(0, 0, z - f.BoundBox.ZMin))
 
     # Make offset compound boundbox solid and cut incoming face extrusions from it
     allFaces = Part.makeCompound(faces)
@@ -918,60 +934,9 @@ def combineHorizontalFaces(faces, keepOrder=False):
         Path.Log.info(msg)
         return horizontal
 
-    afbb = allFaces.BoundBox
-    bboxFace = makeBoundBoxFace(afbb, offset, -5.0)
-    bboxSolid = bboxFace.extrude(FreeCAD.Vector(0.0, 0.0, 10.0))
-    extrudedFaces = list()
-    for f in faces:
-        extrudedFaces.append(f.extrude(FreeCAD.Vector(0.0, 0.0, 6.0)))
-
-    # Fuse all extruded faces together
-    allFacesSolid = extrudedFaces.pop()
-    for i in range(len(extrudedFaces)):
-        temp = extrudedFaces.pop().fuse(allFacesSolid)
-        allFacesSolid = temp
-    cut = bboxSolid.cut(allFacesSolid)
-
-    # Debug
-    # Part.show(cut)
-    # FreeCAD.ActiveDocument.ActiveObject.Label = "cut"
-
-    # Identify top face and floating inner faces that are the holes in incoming faces
-    for f in cut.Faces:
-        fbb = f.BoundBox
-        if isRoughly(fbb.ZMin, 5.0) and isRoughly(fbb.ZMax, 5.0):
-            if (
-                isRoughly(afbb.XMin - offset, fbb.XMin)
-                and isRoughly(afbb.XMax + offset, fbb.XMax)
-                and isRoughly(afbb.YMin - offset, fbb.YMin)
-                and isRoughly(afbb.YMax + offset, fbb.YMax)
-            ):
-                topFace = f
-            else:
-                innerFaces.append(f)
-
-    if not topFace:
-        return horizontal
-
-    outer = [Part.Face(w) for w in topFace.Wires[1:] if w.isClosed()]
-
-    if outer:
-        for f in outer:
-            f.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - f.BoundBox.ZMin))
-
-        if innerFaces:
-            # inner = [Part.Face(f.Wire1) for f in innerFaces]
-            inner = innerFaces
-
-            for f in inner:
-                f.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - f.BoundBox.ZMin))
-            innerComp = Part.makeCompound(inner)
-            outerComp = Part.makeCompound(outer)
-            cut = outerComp.cut(innerComp)
-            for f in cut.Faces:
-                horizontal.append(f)
-        else:
-            horizontal = outer
+    bboxFace = makeBoundBoxFace(allFaces.BoundBox, offset, z)
+    cut = bboxFace.cut(faces, tol)
+    horizontal = Part.makeFace(cut.Wires[1:], "Part::FaceMakerBullseye").Faces
 
     # restore order
     if keepOrder and len(horizontal) > 1:

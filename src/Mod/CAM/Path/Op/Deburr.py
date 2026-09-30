@@ -258,32 +258,6 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
                 sub = base.Shape.getElement(f)
 
                 if type(sub) == Part.Edge:  # Edge
-                    # Debug: examine the edge geometry
-                    if hasattr(sub, "Curve") and sub.Curve:
-                        Path.Log.debug(f"    Edge type: {type(sub.Curve).__name__}")
-                        if hasattr(sub.Curve, "Center"):
-                            Path.Log.debug(f"    Edge center: {sub.Curve.Center}")
-                        if hasattr(sub.Curve, "Radius"):
-                            Path.Log.debug(f"    Edge radius: {sub.Curve.Radius}")
-                        # Check if BSpline came from a circle
-                        if type(sub.Curve).__name__ == "BSplineCurve":
-                            try:
-                                arcs = sub.Curve.toBiArcs(0.001)
-                                if (
-                                    arcs
-                                    and len(arcs) == 1
-                                    and hasattr(arcs[0], "Center")
-                                    and hasattr(arcs[0], "Radius")
-                                ):
-                                    Path.Log.debug(
-                                        f"    BSpline approximates circle with center {arcs[0].Center} and radius {arcs[0].Radius}"
-                                    )
-                                else:
-                                    Path.Log.debug(
-                                        f"    BSpline toBiArcs returned {len(arcs) if arcs else 0} segment(s)"
-                                    )
-                            except Exception:
-                                Path.Log.debug(f"    BSpline cannot be converted to arc/circle")
                     # Check edge vertices
                     for i, v in enumerate(sub.Vertexes):
                         Path.Log.debug(f"    Vertex {i}: {v.Point}")

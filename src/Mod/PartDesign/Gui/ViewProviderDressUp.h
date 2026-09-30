@@ -63,9 +63,31 @@ public:
     std::string featureIcon() const;
     QString menuName;
 
+    inline bool getHighlightEdgesAsSolid() const
+    {
+        return highlightEdgesAsSolid;
+    }
+    inline void setHighlightEdgesAsSolid(bool b)
+    {
+        this->highlightEdgesAsSolid = b;
+    }
+
+    inline bool getHighlightFacesAsSolid() const
+    {
+        return highlightFacesAsSolid;
+    }
+    inline void setHighlightFacesAsSolid(bool b)
+    {
+        this->highlightFacesAsSolid = b;
+    }
+
 protected:
     bool setEdit(int ModNum) override;
     void updatePreviewColor() override;
+
+private:
+    bool highlightEdgesAsSolid;
+    bool highlightFacesAsSolid;
 };
 
 

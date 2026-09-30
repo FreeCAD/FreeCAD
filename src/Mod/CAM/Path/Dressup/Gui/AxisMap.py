@@ -157,9 +157,10 @@ class ObjectDressup:
             obj.Path = Path.Path()
             return
 
+        PathDressup.placeWithBase(obj)
         job = PathUtils.findParentJob(obj)
         deflection = job.GeometryTolerance.Value
-        path = PathUtils.getPathWithPlacement(obj.Base)
+        path = obj.Base.Path
         path = PostUtils.splitArcs(path, deflection=deflection)
 
         newcommandlist = []
@@ -178,6 +179,7 @@ class ObjectDressup:
                     feed = cmd.Parameters.get("F", lastPar["F"])
                     newparams.update({"F": math.degrees(feed / obj.Radius.Value)})
                 newcommand = Path.Command(cmd.Name, newparams)
+                newcommand.Annotations = cmd.Annotations
                 newcommandlist.append(newcommand)
                 lastPar.update(newparams)
             else:
