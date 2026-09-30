@@ -974,6 +974,13 @@ class Joint:
         if not sameDir:
             moving_part_global_jcs = UtilsAssembly.flipPlacement(moving_part_global_jcs)
 
+        if joint.JointType == "Slider":
+            # Keep the current separation along the slider's free (local Z) axis.
+            relative_jcs = fixed_part_global_jcs.inverse() * moving_part_global_jcs
+            fixed_part_global_jcs = fixed_part_global_jcs * App.Placement(
+                App.Vector(0, 0, relative_jcs.Base.z), App.Rotation()
+            )
+
         transform_plc = fixed_part_global_jcs * moving_part_global_jcs.inverse()
 
         for part in parts_to_move:

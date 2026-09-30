@@ -87,6 +87,114 @@ class AssemblyTestBase(unittest.TestCase):
 
 
 class TestCore(AssemblyTestBase):
+    def _create_presolve_joint(
+        self, joint_type, fixed_placement, moving_placement, moving_first=False
+    ):
+        self.assembly.Type = "Assembly"
+        fixed = self.assembly.newObject("Part::Box", "FixedPart")
+        moving = self.assembly.newObject("Part::Box", "MovingPart")
+        fixed.Placement = fixed_placement
+        moving.Placement = moving_placement
+        ground = self.jointgroup.newObject("App::FeaturePython", "GroundedJoint")
+        JointObject.GroundedJoint(ground, fixed)
+        joint = self.jointgroup.newObject("App::FeaturePython", "Joint")
+        JointObject.Joint(joint, JointObject.JointTypes.index(joint_type))
+        if App.GuiUp:
+            JointObject.ViewProviderJoint(joint.ViewObject)
+        parts = [moving, fixed] if moving_first else [fixed, moving]
+        joint.Reference1 = (parts[0], ["", ""])
+        joint.Reference2 = (parts[1], ["", ""])
+        self.assertIs(joint.Proxy.getAssembly(joint), self.assembly)
+        return fixed, moving, joint
+
+    def test_slider_presolve_preserves_axial_separation(self):
+        rotations = [
+            App.Rotation(),
+            App.Rotation(App.Vector(1, 0, 0), -90),
+            App.Rotation(15, 25, 35),
+        ]
+        for rotation in rotations:
+            for distance in (-35, 35):
+                for moving_first in (False, True):
+                    with self.subTest(
+                        rotation=rotation, distance=distance, moving_first=moving_first
+                    ):
+                        fixed_plc = App.Placement(App.Vector(10, 20, 30), rotation)
+                        moving_plc = fixed_plc * App.Placement(
+                            App.Vector(0, 0, distance), App.Rotation()
+                        )
+                        fixed, moving, joint = self._create_presolve_joint(
+                            "Slider", fixed_plc, moving_plc, moving_first
+                        )
+                        self.assertTrue(joint.Proxy.matchJCS(joint))
+                        self.assertTrue(fixed.Placement.isSame(fixed_plc, 1e-6))
+                        self.assertTrue(moving.Placement.isSame(moving_plc, 1e-6))
+
+    def test_slider_presolve_aligns_offset_connectors(self):
+        fixed_plc = App.Placement(App.Vector(10, 20, 30), App.Rotation(15, 25, 35))
+        moving_plc = App.Placement(App.Vector(40, 50, 60), App.Rotation(45, 55, 65))
+        fixed, moving, joint = self._create_presolve_joint("Slider", fixed_plc, moving_plc)
+        joint.Detach1 = True
+        joint.Detach2 = True
+        joint.Placement1 = App.Placement(App.Vector(2, 3, 4), App.Rotation(10, 20, 30))
+        joint.Placement2 = App.Placement(App.Vector(5, 6, 7), App.Rotation(30, 20, 10))
+        fixed_jcs = UtilsAssembly.getJcsGlobalPlc(joint.Placement1, joint.Reference1)
+        moving_jcs = UtilsAssembly.getJcsGlobalPlc(joint.Placement2, joint.Reference2)
+        distance = (fixed_jcs.inverse() * moving_jcs).Base.z
+        same_direction = joint.Proxy.areJcsSameDir(joint)
+
+        self.assertTrue(joint.Proxy.matchJCS(joint))
+        moved_jcs = UtilsAssembly.getJcsGlobalPlc(joint.Placement2, joint.Reference2)
+        if not same_direction:
+            moved_jcs = UtilsAssembly.flipPlacement(moved_jcs)
+        relative_jcs = fixed_jcs.inverse() * moved_jcs
+        self.assertAlmostEqual(relative_jcs.Base.x, 0, places=6)
+        self.assertAlmostEqual(relative_jcs.Base.y, 0, places=6)
+        self.assertAlmostEqual(relative_jcs.Base.z, distance, places=6)
+        self.assertTrue(relative_jcs.Rotation.isSame(App.Rotation(), 1e-6))
+        self.assertTrue(fixed.Placement.isSame(fixed_plc, 1e-6))
+        joint.Proxy.undoPreSolve(joint)
+        self.assertTrue(moving.Placement.isSame(moving_plc, 1e-6))
+
+    def test_fixed_presolve_still_matches_origins(self):
+        fixed_plc = App.Placement(App.Vector(10, 20, 30), App.Rotation(15, 25, 35))
+        moving_plc = fixed_plc * App.Placement(App.Vector(0, 0, 35), App.Rotation())
+        fixed, moving, joint = self._create_presolve_joint("Fixed", fixed_plc, moving_plc)
+        self.assertTrue(joint.Proxy.matchJCS(joint))
+        self.assertTrue(fixed.Placement.isSame(fixed_plc, 1e-6))
+        self.assertTrue(moving.Placement.isSame(fixed_plc, 1e-6))
+
+    def test_slider_presolve_flipped_axis_keeps_separation(self):
+        flip = App.Rotation(App.Vector(1, 0, 0), 180)
+        for reverse in (False, True):
+            with self.subTest(reverse=reverse):
+                fixed_plc = App.Placement(App.Vector(10, 20, 30), App.Rotation(15, 25, 35))
+                moving_plc = fixed_plc * App.Placement(
+                    App.Vector(0, 0, 35), App.Rotation() if reverse else flip
+                )
+                fixed, moving, joint = self._create_presolve_joint("Slider", fixed_plc, moving_plc)
+                self.assertTrue(joint.Proxy.matchJCS(joint, reverse=reverse))
+                expected = fixed_plc * App.Placement(App.Vector(0, 0, 35), flip)
+                self.assertTrue(moving.Placement.isSame(expected, 1e-6))
+                self.assertTrue(fixed.Placement.isSame(fixed_plc, 1e-6))
+
+    def test_slider_expression_recompute_preserves_axial_separation(self):
+        fixed_plc = App.Placement()
+        moving_plc = App.Placement(App.Vector(0, 0, 35), App.Rotation())
+        fixed, moving, joint = self._create_presolve_joint("Slider", fixed_plc, moving_plc)
+        variables = self.doc.addObject("App::VarSet", "Offsets")
+        variables.addProperty("App::PropertyLength", "ConnectorOffset")
+        variables.ConnectorOffset = 1
+        joint.setExpression("Offset2.Base.x", "Offsets.ConnectorOffset")
+        self.doc.recompute()
+        moving.Placement = App.Placement(App.Vector(-1, 0, 35), App.Rotation())
+
+        variables.ConnectorOffset = 2
+        self.doc.recompute()
+        self.assertTrue(fixed.Placement.isSame(fixed_plc, 1e-6))
+        self.assertAlmostEqual(moving.Placement.Base.x, -2, places=6)
+        self.assertAlmostEqual(moving.Placement.Base.z, 35, places=6)
+
     def test_component_count_for_link_array(self):
         source = self.doc.addObject("Part::Box", "ArraySource")
         array = self.assembly.newObject("App::Link", "Array")
