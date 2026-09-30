@@ -31,6 +31,7 @@ add_executable(Gui_tests_run
         SelectionTest.cpp
         SoFCSwitch.cpp
         SoMouseWheelEventTest.cpp
+        ViewProviderModeSwitch.cpp
 )
 
 # Qt tests
