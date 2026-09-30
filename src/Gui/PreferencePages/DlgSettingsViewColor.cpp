@@ -55,6 +55,17 @@ const std::vector<std::string>& treeViewColors()
     };
     return colors;
 }
+
+const std::vector<std::string>& viewBools()
+{
+    static const std::vector<std::string> bools = {
+        "Simple",
+        "Gradient",
+        "RadialGradient",
+        "UseBackgroundColorMid",
+    };
+    return bools;
+}
 }  // namespace
 
 
@@ -140,6 +151,7 @@ void DlgSettingsViewColor::loadThemeDefaults()
 {
     ThemeDefaults::applyColors(viewGroup, viewColors());
     ThemeDefaults::applyColors(treeViewGroup, treeViewColors());
+    ThemeDefaults::applyBools(viewGroup, viewBools());
 }
 
 void DlgSettingsViewColor::resetSettingsToDefaults()

@@ -48,6 +48,17 @@ const std::vector<std::string>& accentColors()
     return colors;
 }
 constexpr const char* themesGroup = "BaseApp/Preferences/Themes";
+
+constexpr const char* mainWindowGroup = "BaseApp/Preferences/MainWindow";
+
+const std::vector<std::string>& styleSheetKeys()
+{
+    static const std::vector<std::string> keys = {
+        "StyleSheet",
+        "OverlayActiveStyleSheet",
+    };
+    return keys;
+}
 }  // namespace
 
 
@@ -146,6 +157,7 @@ void DlgSettingsUI::loadStyleSheet()
 void DlgSettingsUI::loadThemeDefaults()
 {
     ThemeDefaults::applyColors(themesGroup, accentColors());
+    ThemeDefaults::applyStrings(mainWindowGroup, styleSheetKeys());
 }
 
 
