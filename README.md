@@ -12,7 +12,7 @@
 
 [![Release](https://img.shields.io/github/release/freecad/freecad.svg)](https://github.com/freecad/freecad/releases/latest) [![Crowdin](https://d322cqt584bo4o.cloudfront.net/freecad/localized.svg)](https://crowdin.com/project/freecad)
 
-<img src="/.github/images/partdesign.jpg" width="800"/>
+<img src="/.github/images/partdesign.webp" width="600"/>
 
 Overview
 --------
