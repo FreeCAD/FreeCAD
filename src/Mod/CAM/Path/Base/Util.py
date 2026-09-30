@@ -344,6 +344,36 @@ def jobHasRotaryMachine(job):
     return bool(machine is not None and getattr(machine, "has_rotary_axes", False))
 
 
+def schemaUsesMinutes(schema_id):
+    """schemaUsesMinutes(schema_id) ... True if the unit schema expresses velocity per minute.
+
+    Feed rates in G-code are per minute. A schema that displays velocity per
+    second (for example the MKS schema) is unsafe for CAM: a feed the user
+    reads as 100 mm/s is emitted as 100 mm/min."""
+    try:
+        q = FreeCAD.Units.Quantity(1, FreeCAD.Units.Velocity)
+        r = FreeCAD.Units.schemaTranslate(q, schema_id)
+        return "/min" in r[2]
+    except (IndexError, TypeError, ValueError):
+        return False
+
+
+def documentUnitSchema(doc):
+    """documentUnitSchema(doc) ... The unit schema index of doc, or None if unknown.
+
+    The document's UnitSystem enumeration lists the schemas in schema-index
+    order, so the position of the current value is the index that
+    FreeCAD.Units.schemaTranslate expects."""
+    try:
+        names = doc.getEnumerationsOfProperty("UnitSystem")
+        current = doc.UnitSystem
+        if isinstance(current, str) and names and current in names:
+            return list(names).index(current)
+    except Exception:
+        pass
+    return None
+
+
 def getPathWithPlacement(pathobj):
     """
     Applies the rotation, and then position of the obj's Placement

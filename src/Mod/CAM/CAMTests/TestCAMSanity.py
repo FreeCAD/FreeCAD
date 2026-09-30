@@ -541,6 +541,97 @@ class TestCAMSanity(PathTestBase):
             f"Expected squawk mentioning post-processing, got: {squawks}",
         )
 
+    def _schema_indices(self):
+        """Return (per_minute_name, per_second_name) from the document's UnitSystem enumeration."""
+        import Path.Base.Util as PathUtil
+
+        names = self.doc.getEnumerationsOfProperty("UnitSystem")
+        per_minute = next((n for i, n in enumerate(names) if PathUtil.schemaUsesMinutes(i)), None)
+        per_second = next(
+            (n for i, n in enumerate(names) if not PathUtil.schemaUsesMinutes(i)), None
+        )
+        return per_minute, per_second
+
+    def test245_per_second_unit_schema_squawk(self):
+        """A document whose unit schema expresses velocity per second should produce a WARNING.
+
+        Given: The boxtest document with its UnitSystem set to a per-second schema.
+        When: _designData() is called.
+        Then: squawkData contains a WARNING mentioning "unit schema".
+
+        Example: doc.UnitSystem = "Standard (mm, kg, s, degree)"
+          → squawkData contains {"squawkType": "WARNING", "Note": "Document unit schema ..."}
+        """
+        per_minute, per_second = self._schema_indices()
+        if per_second is None:
+            self.skipTest("No per-second unit schema available")
+
+        original = self.doc.UnitSystem
+        try:
+            self.doc.UnitSystem = per_second
+            with patch(
+                "Path.Main.Sanity.ImageBuilder.ImageBuilderFactory.get_image_builder"
+            ) as mock_factory:
+                mock_factory.return_value = DummyImageBuilder(self.temp_file.name)
+                with patch.object(Sanity.CAMSanity, "summarize", return_value={}):
+                    S = Sanity.CAMSanity(self.job, output_file=self.temp_file.name)
+            squawks = S._designData().get("squawkData", [])
+        finally:
+            self.doc.UnitSystem = original
+
+        warnings = [s for s in squawks if s["squawkType"] == "WARNING"]
+        self.assertTrue(
+            any("unit schema" in s["Note"].lower() for s in warnings),
+            f"Expected WARNING squawk for per-second unit schema, got: {squawks}",
+        )
+        self.assertTrue(any(per_second in s["Note"] for s in warnings))
+
+    def test246_per_minute_unit_schema_no_squawk(self):
+        """A document whose unit schema expresses velocity per minute produces no schema squawk.
+
+        Given: The boxtest document with its UnitSystem set to a per-minute schema.
+        When: validate_job() is called.
+        Then: No squawk mentions "unit schema".
+        """
+        per_minute, per_second = self._schema_indices()
+        if per_minute is None:
+            self.skipTest("No per-minute unit schema available")
+
+        original = self.doc.UnitSystem
+        try:
+            self.doc.UnitSystem = per_minute
+            all_squawks, critical = Sanity.CAMSanity.validate_job(self.job)
+        finally:
+            self.doc.UnitSystem = original
+
+        self.assertFalse(
+            any("unit schema" in s["Note"].lower() for s in all_squawks),
+            f"Unexpected unit schema squawk under per-minute schema: {all_squawks}",
+        )
+
+    def test247_per_second_unit_schema_is_critical(self):
+        """validate_job() reports the per-second schema squawk as critical.
+
+        Given: The boxtest document with its UnitSystem set to a per-second schema.
+        When: CAMSanity.validate_job(job) is called.
+        Then: critical_squawks contains a squawk mentioning "unit schema".
+        """
+        per_minute, per_second = self._schema_indices()
+        if per_second is None:
+            self.skipTest("No per-second unit schema available")
+
+        original = self.doc.UnitSystem
+        try:
+            self.doc.UnitSystem = per_second
+            all_squawks, critical = Sanity.CAMSanity.validate_job(self.job)
+        finally:
+            self.doc.UnitSystem = original
+
+        self.assertTrue(
+            any("unit schema" in s["Note"].lower() for s in critical),
+            f"Expected critical unit schema squawk, got: {critical}",
+        )
+
     def test250_no_operations_squawk(self):
         """A job with no operations should produce a WARNING from _validate_job_structure().
 
