@@ -437,24 +437,23 @@ void TaskMultiTransformParameters::onTransformAddCircularPattern()
     }
 
     FCMD_OBJ_CMD(pcBody, "newObject('PartDesign::CircularPattern','" << newFeatName << "')");
-    auto Feat = pcBody->getDocument()->getObject(newFeatName.c_str());
-    if (!Feat) {
+    auto* feat = pcBody->getDocument()->getObject(newFeatName.c_str());
+    if (!feat) {
         return;
     }
 
-    App::DocumentObject* sketch = getSketchObject();
-    if (sketch) {
-        FCMD_OBJ_CMD(Feat, "Axis = (" << Gui::Command::getObjectCmd(sketch) << ",['N_Axis'])");
+    if (auto* sketch = getSketchObject()) {
+        FCMD_OBJ_CMD(feat, "Axis = (" << Gui::Command::getObjectCmd(sketch) << ",['N_Axis'])");
     }
     else {
         FCMD_OBJ_CMD(
-            Feat,
+            feat,
             "Axis = (" << Gui::Command::getObjectCmd(pcBody->getOrigin()->getZ()) << ",[''])"
         );
     }
 
     finishAdd(newFeatName);
-    if (!Feat->isError()) {
+    if (!feat->isError()) {
         TransformedView->getObject()->Visibility.setValue(true);
     }
 }
