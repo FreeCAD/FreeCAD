@@ -271,7 +271,7 @@ App::DocumentObjectExecReturn* Thickness::identifySolids(ThicknessParameters& pa
 
         switch (shape.ShapeType()) {
             case TopAbs_SOLID: {
-                const int solidIndex = std::stoi(subString.substr(5));
+                const int solidIndex = std::stoi(subString.substr(subString.rfind("Solid") + 5));
                 params.selectedShapes[solidIndex] = {};
                 break;
             }
