@@ -288,7 +288,7 @@ void TaskPatternParameters::setupInstanceControls()
         instanceControls.get(),
         &PartGui::PatternInstanceControls::toggleRequested,
         this,
-        [this](int index, bool suppress) { setInstanceSuppressed(index, suppress); }
+        &TaskPatternParameters::setInstanceSuppressed
     );
     updateInstanceControls();
 }
@@ -590,14 +590,8 @@ Base::Vector3d TaskPatternParameters::getStartPoint() const
         // 3. If we collected any shapes, calculate the center of their combined bounding box.
         if (!compoundShape.IsNull()) {
             try {
-                Bnd_Box bndBox;
-                BRepBndLib::Add(compoundShape, bndBox);
-                if (!bndBox.IsVoid()) {
-                    double xmin, ymin, zmin, xmax, ymax, zmax;
-                    bndBox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
-                    startPoint.x = (xmin + xmax) / 2.0;
-                    startPoint.y = (ymin + ymax) / 2.0;
-                    startPoint.z = (zmin + zmax) / 2.0;
+                if (const auto center = shapeCenter(compoundShape)) {
+                    startPoint = *center;
                 }
             }
             catch (const Base::Exception& e) {
