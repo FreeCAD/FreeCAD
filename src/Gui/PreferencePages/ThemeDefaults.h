@@ -44,4 +44,10 @@ GuiExport void removeColors(const std::string& groupPath, const std::vector<std:
 /// own prefPath/prefEntry. For pages without a hand-written key list (e.g. .ui-only pages).
 GuiExport void applyWidgetColors(QWidget* page);
 
+/// Copy the listed boolean keys from the active theme's pack into the user's config.
+GuiExport void applyBools(const std::string& groupPath, const std::vector<std::string>& keys);
+
+/// Copy the listed string keys from the active theme's pack into the user's config.
+GuiExport void applyStrings(const std::string& groupPath, const std::vector<std::string>& keys);
+
 }  // namespace Gui::ThemeDefaults

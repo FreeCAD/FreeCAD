@@ -77,35 +77,53 @@ std::string resolveThemeName()
     return (!similar.isEmpty() ? similar : classic).toStdString();
 }
 
-}  // namespace
-
-
-void applyColors(const std::string& groupPath, const std::vector<std::string>& keys)
+// Loads the active theme's pack, or returns an invalid reference if there is none.
+Base::Reference<ParameterManager> loadThemePack()
 {
     const std::string theme = resolveThemeName();
     if (theme.empty()) {
-        return;
+        return {};
     }
-
     std::filesystem::path cfg = std::filesystem::path(App::Application::getResourceDir()) / "Gui"
         / "PreferencePacks" / theme / (theme + ".cfg");
     if (!std::filesystem::exists(cfg)) {
-#ifdef FC_DEBUG
-        Base::Console().warning("ThemeDefaults: no config for theme '%s'\n", theme.c_str());
-#endif
+        return {};
+    }
+    auto params = ParameterManager::Create();
+    params->LoadDocument(Base::FileInfo::pathToString(cfg).c_str());
+    return params;
+}
+
+}  // namespace
+
+void applyColors(const std::string& groupPath, const std::vector<std::string>& keys)
+{
+    auto themeParams = loadThemePack();
+    if (!themeParams.isValid()) {
         return;
     }
-
-    auto themeParams = ParameterManager::Create();
-    themeParams->LoadDocument(Base::FileInfo::pathToString(cfg).c_str());
-
     auto src = themeParams->GetGroup(groupPath.c_str());
     auto dst = userGroup(groupPath);
-
     const std::set<std::string> wanted(keys.begin(), keys.end());
     for (const auto& [name, value] : src->GetUnsignedMap()) {
         if (wanted.contains(name)) {
             dst->SetUnsigned(name.c_str(), value);
+        }
+    }
+}
+
+void applyBools(const std::string& groupPath, const std::vector<std::string>& keys)
+{
+    auto themeParams = loadThemePack();
+    if (!themeParams.isValid()) {
+        return;
+    }
+    auto src = themeParams->GetGroup(groupPath.c_str());
+    auto dst = userGroup(groupPath);
+    const std::set<std::string> wanted(keys.begin(), keys.end());
+    for (const auto& [name, value] : src->GetBoolMap()) {
+        if (wanted.contains(name)) {
+            dst->SetBool(name.c_str(), value);
         }
     }
 }
@@ -133,4 +151,19 @@ void applyWidgetColors(QWidget* page)
     }
 }
 
+void applyStrings(const std::string& groupPath, const std::vector<std::string>& keys)
+{
+    auto themeParams = loadThemePack();
+    if (!themeParams.isValid()) {
+        return;
+    }
+    auto src = themeParams->GetGroup(groupPath.c_str());
+    auto dst = userGroup(groupPath);
+    const std::set<std::string> wanted(keys.begin(), keys.end());
+    for (const auto& [name, value] : src->GetASCIIMap()) {
+        if (wanted.contains(name)) {
+            dst->SetASCII(name.c_str(), value.c_str());
+        }
+    }
+}
 }  // namespace Gui::ThemeDefaults
