@@ -109,7 +109,7 @@ def setStatusIcons(show=True):
                     id="BIMStatusWidget",
                     title=text,
                     slot="Right",
-                    # Workbench band (550-699): just left of the Bottom Panel Toggle.
+                    # Workbench band (550-699): just left of Notifications.
                     order=570,
                 )
 

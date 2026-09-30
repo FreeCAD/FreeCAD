@@ -45,7 +45,7 @@ from draftutils.init_tools import get_draft_snap_commands
 from draftutils.translate import translate
 
 # Order keys within MainWindow's status-bar registry (Right slot). Workbench
-# widgets use the 550-699 band so they sit just left of the Bottom Panel Toggle.
+# widgets use the 550-699 band so they sit just left of Notifications.
 _SNAP_ORDER = 550
 _SCALE_ORDER = 560
 
