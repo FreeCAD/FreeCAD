@@ -25,16 +25,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QComboBox" name="cutSide">
-        <property name="toolTip">
-         <string>Specify if the profile should be performed inside or outside the base geometry features. This only matters if 'Use compensation' is checked (the default).</string>
-        </property>
-        <item>
-         <property name="text">
-          <string>PLACEHOLDER</string>
-         </property>
-        </item>
-       </widget>
+       <widget class="QComboBox" name="cutSide"/>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="directionLabel">
@@ -44,49 +35,53 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="direction">
-        <property name="toolTip">
-         <string>The direction in which the profile is performed, clockwise or counterclockwise</string>
-        </property>
-        <item>
-         <property name="text">
-          <string>PLACEHOLDER</string>
-         </property>
-        </item>
-       </widget>
+       <widget class="QComboBox" name="direction"/>
       </item>
       <item row="2" column="0">
+       <widget class="QLabel" name="startAtLabel">
+        <property name="text">
+         <string>Start at</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QComboBox" name="startAt"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="sortingLabel">
+        <property name="text">
+         <string>Sorting</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QComboBox" name="sorting"/>
+      </item>
+      <item row="4" column="0">
        <widget class="QLabel" name="extraOffsetLabel">
         <property name="text">
          <string>Radial stock to leave</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
-       <widget class="Gui::QuantitySpinBox" name="extraOffset">
-        <property name="toolTip">
-         <string>How much stock to leave on the walls for this operation</string>
-        </property>
-       </widget>
+      <item row="4" column="1">
+       <widget class="Gui::QuantitySpinBox" name="extraOffset"/>
       </item>
-      <item row="3" column="0">
+      <item row="5" column="0">
        <widget class="QLabel" name="thresholdLabel">
         <property name="text">
          <string>Retract threshold</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
+      <item row="5" column="1">
        <widget class="Gui::QuantitySpinBox" name="threshold">
-        <property name="toolTip">
-         <string>Distance which will attempts to avoid unnecessary retractions</string>
-        </property>
         <property name="minimum">
           <double>0</double>
         </property>
        </widget>
       </item>
-      <item row="3" column="2">
+      <item row="5" column="2">
        <widget class="QToolButton" name="thresholdToggle">
         <property name="toolTip">
          <string>Toggle retract threshold between 0 and tool diameter</string>
@@ -101,14 +96,14 @@
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
+      <item row="6" column="0">
        <widget class="QLabel" name="numPassesLabel">
         <property name="text">
          <string>Number of passes</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="1">
+      <item row="6" column="1">
        <widget class="Gui::IntSpinBox" name="numPasses">
          <property name="minimum">
            <number>1</number>
@@ -116,24 +111,64 @@
          <property name="maximum">
            <number>999999</number>
          </property>
-        <property name="toolTip">
-         <string>The number of passes to do. If more than one, requires a non-zero value for 'Pass stepover'.</string>
-        </property>
        </widget>
       </item>
-      <item row="6" column="0">
+      <item row="7" column="0">
        <widget class="QLabel" name="stepoverLabel">
         <property name="text">
          <string>Pass stepover</string>
         </property>
        </widget>
       </item>
-      <item row="6" column="1">
-       <widget class="Gui::QuantitySpinBox" name="stepover">
-        <property name="toolTip">
-         <string>If doing multiple passes, the extra offset of each additional pass</string>
+      <item row="7" column="1">
+       <widget class="Gui::QuantitySpinBox" name="stepover"/>
+      </item>
+      <item row="8" column="0">
+       <widget class="QLabel" name="finishingPassedLabel">
+        <property name="text">
+         <string>Finishing passes</string>
         </property>
        </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="Gui::IntSpinBox" name="finishingPasses">
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>999999</number>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="0">
+       <widget class="QLabel" name="finishingOffsetLabel">
+        <property name="text">
+         <string>Finishing offset</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="1">
+       <widget class="Gui::QuantitySpinBox" name="finishingOffset"/>
+      </item>
+      <item row="10" column="0">
+       <widget class="QLabel" name="rampMethodLabel">
+        <property name="text">
+         <string>Ramp</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="1">
+       <widget class="QComboBox" name="rampMethod"/>
+      </item>
+      <item row="11" column="0">
+       <widget class="QLabel" name="rampAngleLabel">
+        <property name="text">
+         <string>Ramp angle</string>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="1">
+       <widget class="Gui::QuantitySpinBox" name="rampAngle"/>
       </item>
      </layout>
     </widget>
@@ -141,11 +176,15 @@
    <item row="1" column="0">
     <widget class="QWidget" name="widget_2">
      <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="finishingOneStepDown">
+        <property name="text">
+         <string>Finishing one step down</string>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="1">
        <widget class="QCheckBox" name="processHoles">
-        <property name="toolTip">
-         <string>Check if this profile operation should also process holes in the base geometry. Found holes are automatically offset on the opposite cut side and performed in the opposite direction as perimeters. Note that this does not include cylindrical holes, the assumption being that they will get drilled</string>
-        </property>
         <property name="text">
          <string>Process holes</string>
         </property>
@@ -153,9 +192,6 @@
       </item>
       <item row="1" column="0">
        <widget class="QCheckBox" name="useCompensation">
-        <property name="toolTip">
-         <string>If checked, the profile operation is offset by the tool radius. The offset direction is determined by 'Cut side'.</string>
-        </property>
         <property name="text">
          <string>Use Compensation</string>
         </property>
@@ -163,9 +199,6 @@
       </item>
       <item row="1" column="1">
        <widget class="QCheckBox" name="processCircles">
-        <property name="toolTip">
-         <string>Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled. This can be useful if no drill of adequate size is available or the number of holes don't warrant a tool change. Note that the cut side and direction is reversed in respect to the specified values.</string>
-        </property>
         <property name="text">
          <string>Process circles</string>
         </property>
@@ -173,25 +206,26 @@
       </item>
       <item row="2" column="1">
        <widget class="QCheckBox" name="processPerimeter">
-        <property name="toolTip">
-         <string>Check if this profile operation should also process the outside perimeter of the base geometry shapes</string>
-        </property>
         <property name="text">
          <string>Process Perimeter</string>
         </property>
        </widget>
       </item>
       <item row="3" column="0">
-       <widget class="QCheckBox" name="useStartPoint">
-        <property name="toolTip">
-         <string>Check if this operation should use a starting point</string>
+       <widget class="QCheckBox" name="useLongestEdge">
+        <property name="text">
+         <string>Use longest edge</string>
         </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QCheckBox" name="useStartPoint">
         <property name="text">
          <string>Use start point</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
+      <item row="3" column="2">
        <widget class="QToolButton" name="setStartPoint">
         <property name="toolTip">
          <string>Set picked point as start point</string>
