@@ -370,12 +370,17 @@ def generate_pattern_mask(
     The process follows three main steps:
     1.  It generates the main outer boundary from the 'cutting_faces', shrinking it
         inwards by the tool radius to ensure the tool stays contained.
-    2.  It generates "keep-out" zones from the 'avoid_faces', expanding them outwards
-        by the tool radius to create a safety buffer.
+    2.  It takes the pre-built 'avoid_boundary' keep-out zones, which already
+        include the tool radius offset.
     3.  It performs a boolean cut, subtracting the keep-out zones from the main
         boundary to create the final, correctly-holed mask.
 
     Args:
+        is_whole_model_job (bool): True if the job covers the whole model. The
+            main boundary is then taken from 'bb_face'.
+        bb_face (Part.Face): The whole-model boundary, already offset inward by
+            the tool radius and boundary adjustment. Used only when
+            is_whole_model_job is True.
         cutting_faces (list): A list of Part.Face objects to derive the main boundary from.
         avoid_boundary (Part.Shape, optional): Pre-built Avoid Faces "keep-out" boundary.
         tool_radius (float): The radius of the active cutter.
@@ -397,7 +402,8 @@ def generate_pattern_mask(
     epsilon = max(0.01, tolerance + 0.001)
 
     if is_whole_model_job:
-        # Use TechDraw.findShapeOutline for whole model silhouette
+        # Use the pre-built whole-model boundary (bb_face), already offset
+        # by boundary_adj - tool_radius when it was created
         main_boundary = bb_face
     else:
         main_boundary = build_optimized_boundary([cutting_faces], outer_offset - epsilon, tolerance)
