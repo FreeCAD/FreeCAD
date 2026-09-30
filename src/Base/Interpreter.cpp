@@ -1200,23 +1200,25 @@ void InterpreterSingleton::runMethod(
     ...
 ) /* convert to python */
 {
-    va_list argslist; /* "pobject.method(args)" */
-    va_start(argslist, argfmt);
-
     PyGILStateLocker locker;
     Py::Object pmeth = Py::Object(pobject).getAttr(method);
     if (pmeth.isNull()) { /* get callable object */
-        va_end(argslist);
+        PyErr_Clear();    // consume the failed attribute lookup
         throw AttributeError(
             "Error running InterpreterSingleton::RunMethod() method not defined"
         ); /* bound method?
               has self */
     }
 
+    // NOLINTBEGIN
+    va_list argslist; /* "pobject.method(args)" */
+    va_start(argslist, argfmt);
     Py::Object pargs = Py::asObject(Py_VaBuildValue(argfmt, argslist)); /* args: c->python */
     va_end(argslist);
+    // NOLINTEND
 
     if (pargs.isNull()) {
+        PyErr_Clear();  // consume the failed argument conversion
         throw TypeError("InterpreterSingleton::RunMethod() wrong arguments");
     }
 

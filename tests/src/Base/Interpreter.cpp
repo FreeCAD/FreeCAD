@@ -198,9 +198,21 @@ TEST_F(InterpreterTest, runMethodErrorsMapToFreeCadExceptions)  // NOLINT
 
     int result = 0;
     EXPECT_THROW(
+        Base::Interpreter().runMethod(target, "missing_method", "i", &result, "()"),
+        Base::AttributeError
+    );
+    // The failed attribute lookup must not leave a stale Python error behind.
+    EXPECT_EQ(PyErr_Occurred(), nullptr);
+
+    EXPECT_THROW(Base::Interpreter().runMethod(target, "add", "i", &result, "("), Base::TypeError);
+    // The failed argument conversion must not leave a stale Python error behind.
+    EXPECT_EQ(PyErr_Occurred(), nullptr);
+
+    EXPECT_THROW(
         Base::Interpreter().runMethod(target, "add", "i", &result, "(i)", 1),
         Base::RuntimeError
     );
+    EXPECT_EQ(PyErr_Occurred(), nullptr);
 
     Py_DECREF(target);
 }
