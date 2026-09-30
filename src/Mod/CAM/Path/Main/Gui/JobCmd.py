@@ -107,8 +107,9 @@ class CommandJobTemplateExport:
 
     def GetJob(self):
         # if there's only one Job in the document ...
-        jobs = PathJob.Instances()
-        if not jobs:
+        from PathScripts.PathUtils import jobInstances
+
+        if not (jobs := jobInstances()):
             return None
         if len(jobs) == 1:
             return jobs[0]
