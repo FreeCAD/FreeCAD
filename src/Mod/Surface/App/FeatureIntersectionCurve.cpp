@@ -4,12 +4,16 @@
 #include <cstring>
 
 #include <BRepAlgoAPI_Section.hxx>
+#include <BRepAdaptor_Surface.hxx>
 #include <BRepBndLib.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepLib_FindSurface.hxx>
 #include <Bnd_Box.hxx>
 #include <Geom_Plane.hxx>
+#include <IntAna_QuadQuadGeo.hxx>
 #include <Precision.hxx>
 #include <TopExp_Explorer.hxx>
+#include <TopoDS.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Trsf.hxx>
 
@@ -102,7 +106,9 @@ Part::TopoShape inputShape(const App::PropertyLinkSub& link)
             | Part::ShapeOption::NeedSubElement | Part::ShapeOption::DontSimplifyCompound,
         subName(link)
     );
-    if (shape.isNull() || !shape.hasSubShape(TopAbs_VERTEX)) {
+    if (shape.isNull()
+        || (!shape.hasSubShape(TopAbs_VERTEX) && !shape.hasSubShape(TopAbs_EDGE)
+            && !shape.hasSubShape(TopAbs_FACE))) {
         throw Base::ValueError("Select nonempty shapes or subelements.");
     }
     return shape;
@@ -110,7 +116,24 @@ Part::TopoShape inputShape(const App::PropertyLinkSub& link)
 
 bool isProfile(const Part::TopoShape& shape)
 {
-    return shape.hasSubShape(TopAbs_EDGE) && !shape.hasSubShape(TopAbs_FACE);
+    return shape.hasSubShape(TopAbs_EDGE) && shape.hasSubShape(TopAbs_VERTEX)
+        && !shape.hasSubShape(TopAbs_FACE);
+}
+
+bool unboundedPlane(const Part::TopoShape& shape, gp_Pln& plane)
+{
+    if (shape.getShape().ShapeType() != TopAbs_FACE) {
+        return false;
+    }
+    BRepAdaptor_Surface surface(TopoDS::Face(shape.getShape()));
+    if (surface.GetType() != GeomAbs_Plane || !Precision::IsInfinite(surface.FirstUParameter())
+        || !Precision::IsInfinite(surface.LastUParameter())
+        || !Precision::IsInfinite(surface.FirstVParameter())
+        || !Precision::IsInfinite(surface.LastVParameter())) {
+        return false;
+    }
+    plane = surface.Plane();
+    return true;
 }
 
 gp_Vec extrusionDirection(
@@ -201,20 +224,37 @@ App::DocumentObjectExecReturn* IntersectionCurve::execute()
             first = extrude(first, direction1, extent);
             second = extrude(second, direction2, extent);
         }
-        BRepAlgoAPI_Section section;
-        section.Init1(first.getShape());
-        section.Init2(second.getShape());
-        section.Approximation(true);
-        section.Build();
-        if (!section.IsDone()) {
-            throw Base::ValueError("The intersection calculation failed.");
-        }
         Part::TopoShape result;
-        result.makeElementShape(section, {first, second}, Part::OpCodes::Section);
-        if (!result.hasSubShape(TopAbs_VERTEX)) {
+        gp_Pln plane1, plane2;
+        if (unboundedPlane(first, plane1) && unboundedPlane(second, plane2)) {
+            // The Boolean section algorithm can return an empty result for two infinite faces.
+            IntAna_QuadQuadGeo intersection(plane1, plane2, Precision::Angular(), Precision::Confusion());
+            if (!intersection.IsDone() || intersection.TypeInter() != IntAna_Line) {
+                throw Base::ValueError("The planes do not intersect in a unique line.");
+            }
+            BRepBuilderAPI_MakeEdge edge(intersection.Line(1));
+            result.makeElementShape(edge, {first, second}, Part::OpCodes::Section);
+        }
+        else {
+            BRepAlgoAPI_Section section;
+            section.Init1(first.getShape());
+            section.Init2(second.getShape());
+            section.Approximation(true);
+            section.Build();
+            if (!section.IsDone()) {
+                throw Base::ValueError("The intersection calculation failed.");
+            }
+            result.makeElementShape(section, {first, second}, Part::OpCodes::Section);
+        }
+        if (!result.hasSubShape(TopAbs_VERTEX) && !result.hasSubShape(TopAbs_EDGE)) {
             throw Base::ValueError("The inputs do not intersect.");
         }
-        if (result.hasSubShape(TopAbs_EDGE)) {
+        // Unbounded plane intersections have no endpoint vertices and cannot be joined into wires.
+        const auto edges = result.getSubTopoShapes(TopAbs_EDGE);
+        const bool boundedEdges = std::all_of(edges.begin(), edges.end(), [](const auto& edge) {
+            return edge.hasSubShape(TopAbs_VERTEX);
+        });
+        if (!edges.empty() && boundedEdges) {
             // Preserve disconnected wires and isolated intersection points.
             std::vector<Part::TopoShape> pieces {result.makeElementWires()};
             for (TopExp_Explorer vertex(result.getShape(), TopAbs_VERTEX, TopAbs_EDGE); vertex.More();

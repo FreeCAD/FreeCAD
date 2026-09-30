@@ -222,6 +222,27 @@ class TestIntersectionCurve(unittest.TestCase):
                 self.assertEqual(len(curve.Shape.Vertexes), 1)
                 self.assertLess((curve.Shape.Vertexes[0].Point - App.Vector(5, 5, 0)).Length, 1e-6)
 
+    def test_datum_plane_and_curve(self):
+        """Accept an unbounded datum plane and retain its intersection with an edge."""
+        plane = self.doc.addObject("App::Plane", "DatumPlane")
+        line = self.feature(Part.makeLine(App.Vector(5, 5, -5), App.Vector(5, 5, 5)))
+        curve = self.intersection(line, plane)
+        self.assertNotIn("Invalid", curve.State)
+        self.assertEqual(len(curve.Shape.Vertexes), 1)
+        self.assertLess((curve.Shape.Vertexes[0].Point - App.Vector(5, 5, 0)).Length, 1e-6)
+
+    def test_datum_plane_plane(self):
+        """Keep the unbounded intersection line of two perpendicular datum planes."""
+        first = self.doc.addObject("App::Plane", "FirstDatumPlane")
+        second = self.doc.addObject("App::Plane", "SecondDatumPlane")
+        second.Placement.Rotation = App.Rotation(App.Vector(1, 0, 0), 90)
+        curve = self.intersection(first, second)
+        self.assertNotIn("Invalid", curve.State)
+        self.assertTrue(curve.Shape.isValid())
+        self.assertEqual(len(curve.Shape.Edges), 1)
+        self.assertEqual(len(curve.Shape.Vertexes), 0)
+        self.assertAlmostEqual(abs(curve.Shape.Edges[0].Curve.Direction.x), 1, places=6)
+
     def test_direct_curves_and_mode_recompute(self):
         """Intersect coplanar edges directly and recompute when the mode changes."""
         first = self.feature(Part.makeLine(App.Vector(), App.Vector(10, 10, 0)))
