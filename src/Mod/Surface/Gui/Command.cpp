@@ -385,12 +385,11 @@ void CmdSurfaceIntersectionCurve::activated(int message)
             inputs.emplace_back(&item, "");
         }
     }
-    if (inputs.size() != 2
+    if (
+        inputs.size() != 2
         || !Part::Feature::hasShapeOwner(inputs.front().first->getObject(), inputs.front().second.c_str())
-        || !Part::Feature::hasShapeOwner(
-            inputs.back().first->getObject(),
-            inputs.back().second.c_str()
-        )) {
+        || !Part::Feature::hasShapeOwner(inputs.back().first->getObject(), inputs.back().second.c_str())
+    ) {
         QMessageBox::warning(
             Gui::getMainWindow(),
             qApp->translate("Surface_IntersectionCurve", "Invalid selection"),
