@@ -1248,7 +1248,7 @@ bool ToolTipWrapFilter::eventFilter(QObject* o, QEvent* e)
         const QString newStr = wrapForDisplay(original, widget);
 
         if (newStr != original) {
-            QToolTip::showText(he->globalPos(), newStr, widget);
+            QToolTip::showText(he->globalPos(), newStr, widget, QRect(), widget->toolTipDuration());
             return true;
         }
         return false;
