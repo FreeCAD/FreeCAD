@@ -399,14 +399,16 @@ class TestCore(AssemblyTestBase):
         self.assertLess(slider_axis.cross(rack_axis).Length, 1e-7)
 
         # The rack and pinion joint must reach the solver: it is silently dropped when
-        # the rack cannot be identified from its slider.
+        # the rack cannot be identified from its slider. Look for its pitchRadius field
+        # rather than its type name, which the solver derives from the compiler-specific
+        # typeid name and is only readable with MSVC.
         with tempfile.TemporaryDirectory() as temp_dir:
             fileName = os.path.join(temp_dir, "rackPinion.asmt")
             self.assembly.exportAsASMT(fileName)
             with open(fileName) as asmt:
                 content = asmt.read()
         self.assertIn(
-            "RackPinionJoint",
+            "pitchRadius",
             content,
             "'{}' failed - joint not exported; slider state: {}, rack-pinion state: {}; "
             "exported assembly: {}".format(
