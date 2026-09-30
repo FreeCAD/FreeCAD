@@ -38,6 +38,7 @@ import Path.Log
 import Path.Main.Sanity.ImageBuilder as ImageBuilder
 import Path.Main.Sanity.ReportGenerator as ReportGenerator
 import os
+import Path.Base.Util as PathUtil
 import Path.Dressup.Utils as PathDressup
 import PathScripts.PathUtils as PathUtils
 
@@ -177,7 +178,32 @@ class CAMSanity:
         data["Sequence"] = "{} of {}".format(n, m)
         data["JobType"] = "2.5D Milling"  # improve after job types added
 
+        data["squawkData"].extend(self._unitSchemaSquawks(obj.Document))
+
         return data
+
+    def _unitSchemaSquawks(self, doc):
+        """Warn when the document's unit schema expresses velocity per second.
+
+        G-code feed rates are per minute. Under a per-second schema the feed
+        the user sees in the UI is not the feed the post-processor emits, so
+        the job creation dialog marks such schemas unsafe. Repeat that here so
+        a job created or edited under one is caught before machining."""
+        schema = PathUtil.documentUnitSchema(doc)
+        if schema is None or PathUtil.schemaUsesMinutes(schema):
+            return []
+        return [
+            self.squawk(
+                "CAMSanity",
+                translate(
+                    "CAM_Sanity",
+                    "Document unit schema '{}' expresses velocity per second. "
+                    "Feed rates will not match what the G-code emits. "
+                    "Use a schema with velocity per minute.",
+                ).format(doc.UnitSystem),
+                squawkType="WARNING",
+            )
+        ]
 
     def _fixtureData(self):
         obj = self.job
