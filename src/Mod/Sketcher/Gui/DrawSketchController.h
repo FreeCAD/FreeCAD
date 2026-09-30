@@ -357,6 +357,9 @@ public:
     {
         // we call this on a current OnViewParameter when pressed CTRL+ENTER to accept
         // input on all visible ovps of current mode
+        if (!commitPendingOnViewParameterInputs()) {
+            return;
+        }
 
         // we check for initial state, since `onViewValueChanged` can process to next mode
         // if we set hasFinishedEditing on current mode
@@ -462,6 +465,23 @@ public:
     /// function to create constraints based on control information for infinite DSH (polyline).
     virtual void addStepConstraints()
     {}
+
+    bool commitPendingOnViewParameterInputs()
+    {
+        for (size_t i = 0; i < onViewParameters.size(); ++i) {
+            auto& parameter = onViewParameters[i];
+            if (!parameter) {
+                continue;
+            }
+            if (!isOnViewParameterOfCurrentMode(i) || !isOnViewParameterVisible(i)) {
+                continue;
+            }
+            if (!parameter->commitPendingInlineExpression()) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     /// Configures on-view parameters
     void configureOnViewParameters()

@@ -502,11 +502,16 @@ void DSHPolygonController::addConstraints()
     App::DocumentObject* obj = handler->sketchgui->getObject();
 
     int lastCurve = handler->getHighestCurveIndex();
+    int firstCurve = lastCurve - static_cast<int>(handler->numberOfCorners);
 
     auto x0 = onViewParameters[OnViewParameter::First]->getValue();
     auto y0 = onViewParameters[OnViewParameter::Second]->getValue();
     auto radius = onViewParameters[OnViewParameter::Third]->getValue();
-    auto angle = Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
+    auto angle = onViewParameters[OnViewParameter::Fourth]->getValue();
+    auto x0Expr = onViewParameters[OnViewParameter::First]->constraintExpression();
+    auto y0Expr = onViewParameters[OnViewParameter::Second]->constraintExpression();
+    auto radiusExpr = onViewParameters[OnViewParameter::Third]->constraintExpression();
+    auto angleExpr = onViewParameters[OnViewParameter::Fourth]->constraintExpression();
 
     auto x0set = onViewParameters[OnViewParameter::First]->isSet;
     auto y0set = onViewParameters[OnViewParameter::Second]->isSet;
@@ -514,80 +519,50 @@ void DSHPolygonController::addConstraints()
     auto angleSet = onViewParameters[OnViewParameter::Fourth]->isSet;
 
     using namespace Sketcher;
+    const double angleOffsetDeg = 90.0 + 180.0 / static_cast<double>(handler->numberOfCorners);
+    const std::string angleConstraintExpr = angleExpr.empty()
+        ? std::string()
+        : "(" + angleExpr + ") + " + std::to_string(angleOffsetDeg) + " deg";
 
     auto constraintx0 = [&]() {
-        ConstraintToAttachment(GeoElementId(lastCurve, PointPos::mid), GeoElementId::VAxis, x0, obj);
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
+        ConstraintToAttachment(
+            GeoElementId(lastCurve, PointPos::mid),
+            GeoElementId::VAxis,
+            x0,
+            obj,
+            !x0Expr.empty()
+        );
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, x0Expr);
     };
 
     auto constrainty0 = [&]() {
-        ConstraintToAttachment(GeoElementId(lastCurve, PointPos::mid), GeoElementId::HAxis, y0, obj);
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
+        ConstraintToAttachment(
+            GeoElementId(lastCurve, PointPos::mid),
+            GeoElementId::HAxis,
+            y0,
+            obj,
+            !y0Expr.empty()
+        );
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, y0Expr);
     };
 
     auto constraintradius = [&]() {
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
         Gui::cmdAppObjectArgs(obj, "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ", lastCurve, radius);
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, radiusExpr);
     };
 
-    auto constraintAngle = [&]() {
-        int circleGeoId = lastCurve;
-        int lastSideGeoId = lastCurve - 1;
-
-        using std::numbers::pi;
-        // for horizontal/vertical angles add according constraint instead of angle constraint
-        if (fabs(std::remainder(angle, pi)) < Precision::Confusion()) {
-            Gui::cmdAppObjectArgs(
-                obj,
-                "addConstraint(Sketcher.Constraint('Horizontal',%d,%d,%d,%d)) ",
-                circleGeoId,
-                static_cast<int>(PointPos::mid),
-                lastSideGeoId,
-                static_cast<int>(PointPos::end)
-            );
-        }
-        else if (fabs(std::remainder(angle, pi / 2)) < Precision::Confusion()) {
-            Gui::cmdAppObjectArgs(
-                obj,
-                "addConstraint(Sketcher.Constraint('Vertical',%d,%d,%d,%d)) ",
-                circleGeoId,
-                static_cast<int>(PointPos::mid),
-                lastSideGeoId,
-                static_cast<int>(PointPos::end)
-            );
-        }
-        else {
-            Gui::cmdAppObjectArgs(
-                obj,
-                "addGeometry(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),True)",
-                handler->centerPoint.x,
-                handler->centerPoint.y,
-                handler->firstCorner.x,
-                handler->firstCorner.y
-            );
-
-            int radialGeoId = handler->getHighestCurveIndex();
-            Gui::cmdAppObjectArgs(
-                obj,
-                "addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d))",
-                radialGeoId,
-                static_cast<int>(PointPos::start),
-                circleGeoId,
-                static_cast<int>(PointPos::mid)
-            );
-            Gui::cmdAppObjectArgs(
-                obj,
-                "addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d))",
-                radialGeoId,
-                static_cast<int>(PointPos::end),
-                lastSideGeoId,
-                static_cast<int>(PointPos::end)
-            );
-
-            Gui::cmdAppObjectArgs(
-                obj,
-                "addConstraint(Sketcher.Constraint('Angle',%d,%f))",
-                radialGeoId,
-                angle
-            );
-        }
+    auto constraintangle = [&]() {
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
+        ConstraintLineByAngle(firstCurve, Base::toRadians(angle + angleOffsetDeg), obj, true);
+        applyExpressionToLatestConstraint(
+            handler->getSketchObject(),
+            oldConstraintCount,
+            obj,
+            angleConstraintExpr
+        );
     };
 
     // NOTE: if AutoConstraints is empty, we can add constraints directly without any diagnose. No
@@ -606,7 +581,7 @@ void DSHPolygonController::addConstraints()
         }
 
         if (angleSet) {
-            constraintAngle();
+            constraintangle();
         }
     }
     else {  // There is a valid diagnose.
@@ -644,7 +619,7 @@ void DSHPolygonController::addConstraints()
         }
 
         if (angleSet) {
-            constraintAngle();
+            constraintangle();
         }
     }
 }

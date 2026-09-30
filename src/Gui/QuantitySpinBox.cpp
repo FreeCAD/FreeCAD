@@ -37,17 +37,18 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/ExpressionParser.h>
+#include <App/PropertyStandard.h>
 #include <App/QuantityInput.h>
 #include <Base/Exception.h>
 #include <Base/NumericFormatting.h>
 #include <Base/NumericInput.h>
-#include <Base/UnitsApi.h>
 #include <Base/UnitsSchema.h>
+#include <Base/UnitsApi.h>
 
 #include "QuantitySpinBox.h"
 #include "QuantitySpinBox_p.h"
-#include "Command.h"
 #include "Dialogs/DlgExpressionInput.h"
+#include "InlineExpression.h"
 #include "NumericLocale.h"
 #include "Tools.h"
 #include "Widgets.h"
@@ -119,6 +120,47 @@ public:
         return result;
     }
 
+    // Determine whether the text is owned by the standard quantity input path. Quantity text
+    // (valid, invalid, or incomplete) is interpreted by the quantity grammar and must not be
+    // routed to the inline expression commit. Only text the quantity grammar rejects as
+    // expression syntax is a candidate for inline expression handling.
+    bool isQuantityOwnedInput(const QString& input) const
+    {
+        Q_Q(const QuantitySpinBox);
+        App::QuantityConstraints constraints;
+        if (unit != Base::Unit::One) {
+            constraints.requiredUnit = unit;
+        }
+        constraints.minimum = minimum;
+        constraints.maximum = maximum;
+        const auto result = App::interpretQuantityInput(
+            input.toUtf8().toStdString(),
+            App::QuantityInputGrammar::Quantity,
+            q_ptr->getPath(),
+            displayUnit,
+            Gui::numericLocaleContextFor(q->locale()),
+            App::InputPhase::Commit,
+            constraints
+        );
+        if (result.status == App::InputStatus::Acceptable
+            || result.status == App::InputStatus::Incomplete) {
+            return true;
+        }
+        if (result.diagnostic) {
+            switch (result.diagnostic->kind) {
+                case App::InputDiagnosticKind::IncompleteNumber:
+                case App::InputDiagnosticKind::MalformedGrouping:
+                case App::InputDiagnosticKind::InvalidNumber:
+                case App::InputDiagnosticKind::IncompatibleUnit:
+                case App::InputDiagnosticKind::OutOfRange:
+                    return true;
+                default:
+                    break;
+            }
+        }
+        return false;
+    }
+
     QLocale locale;
     bool validInput;
     bool pendingEmit;
@@ -137,6 +179,7 @@ public:
     double maximum;
     double minimum;
     double singleStep;
+    std::string unboundExpressionText;
     QuantitySpinBox* q_ptr;
     std::unique_ptr<Base::UnitsSchema> scheme;
     Q_DECLARE_PUBLIC(QuantitySpinBox)
@@ -241,6 +284,228 @@ QString Gui::QuantitySpinBox::expressionText() const
     return {};
 }
 
+std::string QuantitySpinBox::takeUnboundExpressionText()
+{
+    Q_D(QuantitySpinBox);
+    std::string expression = std::move(d->unboundExpressionText);
+    d->unboundExpressionText.clear();
+    return expression;
+}
+
+Base::Type QuantitySpinBox::determineInlineAssignmentType() const
+{
+    if (isBound()) {
+        if (const App::Property* prop = getPath().getProperty()) {
+            const Base::Type type = prop->getTypeId();
+            if (type == App::PropertyString::getClassTypeId()
+                || type.isDerivedFrom(App::PropertyFloat::getClassTypeId())
+                || type.isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+                return type;
+            }
+        }
+    }
+
+    const std::string unitType = unit().getTypeString();
+    if (!unitType.empty()) {
+        const std::string typeName = "App::Property" + unitType;
+        const Base::Type unitTypeId = Base::Type::fromName(typeName.c_str());
+        if (!unitTypeId.isBad()) {
+            return unitTypeId;
+        }
+    }
+
+    return App::PropertyFloat::getClassTypeId();
+}
+
+QuantitySpinBox::InlineCommitResult QuantitySpinBox::commitInlineExpression(QString& error)
+{
+    Q_D(QuantitySpinBox);
+
+    QString text = InlineExpression::normalizeInput(lineEdit()->text());
+    if (text.isEmpty()) {
+        return InlineCommitResult::NotHandled;
+    }
+
+    const InlineExpression::Assignment assignment = InlineExpression::parseAssignment(text);
+    if (!assignment.isAssignment) {
+        // Quantity text (valid, invalid, or incomplete) belongs to the standard input path,
+        // which owns its diagnostics and commit behavior. Only text the quantity grammar
+        // rejects as expression syntax is a candidate for inline expression handling.
+        if (d->isQuantityOwnedInput(text) || !InlineExpression::looksLikeExpressionInput(text)) {
+            return InlineCommitResult::NotHandled;
+        }
+    }
+
+    App::Document* doc = nullptr;
+    App::DocumentObject* owner = InlineExpression::resolveExpressionOwner(
+        isBound() ? getPath().getDocumentObject() : nullptr,
+        doc
+    );
+    if (!owner || !doc) {
+        error = tr("Unknown document");
+        return InlineCommitResult::Error;
+    }
+
+    if (assignment.isAssignment) {
+        if (!InlineExpression::isValidName(assignment.name, error)) {
+            return InlineCommitResult::Error;
+        }
+
+        std::shared_ptr<App::Expression> rhsExpr;
+        Base::Quantity rhsQuantity;
+        QString rhsText = InlineExpression::qualifyDefaultVarSetNames(doc, assignment.valueExpr);
+        if (!InlineExpression::parseNumberExpression(owner, rhsText, rhsExpr, rhsQuantity, error)) {
+            return InlineCommitResult::Error;
+        }
+
+        // Mirror the implied-unit compatibility check from DlgExpressionInput: an expression result
+        // whose unit is incompatible with the field's unit must be rejected instead of silently
+        // flipping the field's unit (setValue() adopts the value's unit). A dimensionless result is
+        // interpreted in the field's unit, and a unitful result in a dimensionless field has its
+        // unit discarded, matching DlgExpressionInput's "unit discarded" handling.
+        if (d->unit != Base::Unit::One) {
+            if (!rhsQuantity.isDimensionless() && rhsQuantity.getUnit() != d->unit) {
+                error = tr("Unit mismatch between result and required unit");
+                return InlineCommitResult::Error;
+            }
+        }
+        rhsQuantity.setUnit(d->unit);
+
+        App::DocumentObject* varSet = InlineExpression::resolveVarSet(doc, assignment, true, error);
+        if (!varSet) {
+            return InlineCommitResult::Error;
+        }
+
+        App::Property* prop = InlineExpression::ensureProperty(
+            varSet,
+            assignment.name,
+            determineInlineAssignmentType(),
+            InlineExpression::DefaultVarSetGroup
+        );
+        if (!prop) {
+            error = tr("Could not create variable property.");
+            return InlineCommitResult::Error;
+        }
+
+        if (!InlineExpression::assignExpressionToProperty(varSet, prop, rhsExpr.get(), error)) {
+            return InlineCommitResult::Error;
+        }
+
+        const std::string refExpr = InlineExpression::makeReferenceExpression(varSet, assignment.name);
+        if (refExpr.empty()) {
+            error = tr("Could not create variable reference expression.");
+            return InlineCommitResult::Error;
+        }
+
+        if (isBound()) {
+            std::shared_ptr<App::Expression> ref;
+            try {
+                ref = ExpressionParser::parse(getPath().getDocumentObject(), refExpr.c_str());
+            }
+            catch (const Base::Exception& e) {
+                error = QString::fromUtf8(e.what());
+                return InlineCommitResult::Error;
+            }
+
+            if (!ref) {
+                error = tr("Invalid expression.");
+                return InlineCommitResult::Error;
+            }
+
+            d->pendingEmit = false;
+            d->validInput = true;
+            setExpression(ref);
+            updateExpression();
+            return InlineCommitResult::Success;
+        }
+
+        {
+            QSignalBlocker blocker(this);
+            setValue(rhsQuantity);
+        }
+        d->pendingEmit = false;
+        d->validInput = true;
+        d->unboundExpressionText = refExpr;
+        return InlineCommitResult::Success;
+    }
+
+    QString parseText = InlineExpression::qualifyDefaultVarSetNames(doc, text);
+    std::shared_ptr<App::Expression> expr;
+    Base::Quantity quantity;
+    if (!InlineExpression::parseNumberExpression(owner, parseText, expr, quantity, error)) {
+        return InlineCommitResult::Error;
+    }
+
+    // Mirror the implied-unit compatibility check from DlgExpressionInput: an expression result
+    // whose unit is incompatible with the field's unit must be rejected instead of silently
+    // flipping the field's unit (setValue() adopts the value's unit). A dimensionless result is
+    // interpreted in the field's unit, and a unitful result in a dimensionless field has its unit
+    // discarded, matching DlgExpressionInput's "unit discarded" handling.
+    if (d->unit != Base::Unit::One) {
+        if (!quantity.isDimensionless() && quantity.getUnit() != d->unit) {
+            error = tr("Unit mismatch between result and required unit");
+            return InlineCommitResult::Error;
+        }
+    }
+    quantity.setUnit(d->unit);
+
+    d->pendingEmit = false;
+    d->validInput = true;
+    if (isBound()) {
+        setExpression(expr);
+        updateExpression();
+        return InlineCommitResult::Success;
+    }
+
+    {
+        QSignalBlocker blocker(this);
+        setValue(quantity);
+    }
+    // store document-qualified name
+    d->unboundExpressionText = parseText.toStdString();
+    return InlineCommitResult::Success;
+}
+
+bool QuantitySpinBox::commitInlineExpressionText()
+{
+    QString error;
+    return commitInlineExpression(error) == InlineCommitResult::Success;
+}
+
+void QuantitySpinBox::emitCommittedUnboundValue()
+{
+    Q_D(const QuantitySpinBox);
+    Q_EMIT valueChanged(d->quantity);
+    Q_EMIT valueChanged(d->quantity.getValue());
+    Q_EMIT textChanged(getUserString(d->quantity));
+}
+
+void QuantitySpinBox::showInlineExpressionError(const QString& error)
+{
+    if (error.isEmpty()) {
+        return;
+    }
+    lineEdit()->setToolTip(error);
+    QToolTip::showText(mapToGlobal(QPoint(0, height())), error, this);
+}
+
+bool QuantitySpinBox::commitInlineExpressionTextForUi()
+{
+    QString error;
+    const InlineCommitResult result = commitInlineExpression(error);
+    if (result == InlineCommitResult::Error) {
+        showInlineExpressionError(error);
+        return false;
+    }
+    if (result == InlineCommitResult::Success) {
+        if (!isBound()) {
+            emitCommittedUnboundValue();
+        }
+        return true;
+    }
+    return false;
+}
+
 void QuantitySpinBox::evaluateExpression()
 {
     if (isBound() && getExpression()) {
@@ -274,6 +539,22 @@ void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent* event)
     Q_D(QuantitySpinBox);
 
     const auto isEnter = event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return;
+    if (isEnter) {
+        QString error;
+        const InlineCommitResult result = commitInlineExpression(error);
+        if (result == InlineCommitResult::Success) {
+            if (!isBound()) {
+                emitCommittedUnboundValue();
+            }
+            QAbstractSpinBox::keyPressEvent(event);
+            Q_EMIT returnPressed();
+            return;
+        }
+        if (result == InlineCommitResult::Error) {
+            showInlineExpressionError(error);
+            return;
+        }
+    }
 
     if (event->key() == Qt::Key_Escape) {
         d->pendingEmit = false;
@@ -645,6 +926,10 @@ void QuantitySpinBox::userInput(const QString& text)
     Q_D(QuantitySpinBox);
     if (d->updatingText) {
         return;
+    }
+
+    if (!isBound()) {
+        d->unboundExpressionText.clear();
     }
 
     const App::ObjectIdentifier& path = getPath();
@@ -1043,6 +1328,22 @@ void QuantitySpinBox::focusInEvent(QFocusEvent* event)
 void QuantitySpinBox::focusOutEvent(QFocusEvent* event)
 {
     Q_D(const QuantitySpinBox);
+
+    QString error;
+    const InlineCommitResult result = commitInlineExpression(error);
+    if (result == InlineCommitResult::Success) {
+        if (!isBound()) {
+            emitCommittedUnboundValue();
+        }
+        QToolTip::hideText();
+        QAbstractSpinBox::focusOutEvent(event);
+        return;
+    }
+    if (result == InlineCommitResult::Error) {
+        showInlineExpressionError(error);
+        QAbstractSpinBox::focusOutEvent(event);
+        return;
+    }
 
     validateInput();
 
