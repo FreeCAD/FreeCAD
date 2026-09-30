@@ -53,7 +53,6 @@ const std::vector<std::string>& sketcherViewColors()
         "SketchEdgeColor",
         "SketchVertexColor",
         "EditedEdgeColor",
-        "EditedVertexColor",  // pending the git grep check
         "ConstructionColor",
         "ExternalColor",
         "ExternalDefiningColor",
@@ -65,7 +64,6 @@ const std::vector<std::string>& sketcherViewColors()
         "FullyConstraintElementColor",
         "FullyConstraintConstructionElementColor",
         "FullyConstraintInternalAlignmentColor",
-        "FullyConstraintConstructionPointColor",  // pending the git grep check
         "InternalAlignedGeoColor",
         "DeactivatedConstrDimColor",
         "ExprBasedConstrDimColor",
@@ -85,6 +83,14 @@ const std::vector<std::string>& sketcherGeneralColors()
 
     };
     return colors;
+}
+// resolve line icon color from the stylesheet rather than the widget palette,
+// which on linux may still hold the host palette - see src/Gui/Application.cpp
+QBrush lineIconBrush()
+{
+    QLabel dummyLabel;
+    dummyLabel.show();
+    return {dummyLabel.palette().color(QPalette::Text)};
 }
 }  // namespace
 
@@ -416,7 +422,7 @@ bool SketcherSettingsGrid::event(QEvent* event)
     if (event->type() == QEvent::StyleChange) {
         PreferencePage::event(event);
         const qreal dpr = devicePixelRatioF();
-        const QBrush brush = palette().windowText();
+        const QBrush brush = lineIconBrush();
         for (size_t i = 0; i < PenStyles.size(); ++i) {
             const QIcon icon = PenStyles[i].toIcon(LineIconSize, dpr, brush);
             ui->gridLinePattern->setItemIcon(i, icon);
@@ -577,6 +583,14 @@ void SketcherSettingsDisplay::loadSettings()
     ui->checkBoxTVSectionView->onRestore();
     ui->axisTransparency->onRestore();
     ui->occludedAxisTransparency->onRestore();
+}
+
+void SketcherSettingsGrid::resetSettingsToDefaults()
+{
+    PreferencePage::resetSettingsToDefaults();
+    // theme colors are applied after the base reset, which clears Pref* widget params
+    Gui::ThemeDefaults::applyWidgetColors(this);
+    loadSettings();
 }
 
 /**
@@ -767,13 +781,7 @@ bool SketcherSettingsAppearance::event(QEvent* event)
     if (event->type() == QEvent::StyleChange) {
         PreferencePage::event(event);
         const qreal dpr = devicePixelRatioF();
-
-        // Resolve color from qss source - see src/Gui/Application.cpp (2869)
-        QLabel dummyLabel;
-        dummyLabel.show();
-
-        QColor textColor = dummyLabel.palette().color(QPalette::Text);
-        QBrush brush = QBrush(textColor);
+        const QBrush brush = lineIconBrush();
 
         for (size_t i = 0; i < PenStyles.size(); ++i) {
             const QIcon icon = PenStyles[i].toIcon(LineIconSize, dpr, brush);
