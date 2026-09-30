@@ -2505,27 +2505,25 @@ void CmdPartDesignCircularPattern::activated(int iMsg)
         return;
     }
 
-    Gui::Command* cmd = this;
-    auto worker = [cmd,
-                   pcActiveBody](App::DocumentObject* Feat, std::vector<App::DocumentObject*> features) {
-        bool direction = false;
+    auto worker = [cmd = this,
+                   pcActiveBody](App::DocumentObject* feat, std::vector<App::DocumentObject*> features) {
+        bool hasDirection = false;
         auto* profile = features.empty() ? nullptr
                                          : freecad_cast<PartDesign::ProfileBased*>(features.front());
         if (profile) {
-            Part::Part2DObject* sketch = profile->getVerifiedSketch(/* silent =*/true);
-            if (sketch) {
-                FCMD_OBJ_CMD(Feat, "Axis = (" << Gui::Command::getObjectCmd(sketch) << ",['N_Axis'])");
-                direction = true;
+            if (auto* sketch = profile->getVerifiedSketch(/* silent =*/true)) {
+                FCMD_OBJ_CMD(feat, "Axis = (" << Gui::Command::getObjectCmd(sketch) << ",['N_Axis'])");
+                hasDirection = true;
             }
         }
-        if (!direction) {
+        if (!hasDirection) {
             FCMD_OBJ_CMD(
-                Feat,
+                feat,
                 "Axis = (" << Gui::Command::getObjectCmd(pcActiveBody->getOrigin()->getZ()) << ",[''])"
             );
         }
 
-        finishTransformed(cmd, Feat);
+        finishTransformed(cmd, feat);
     };
 
     prepareTransformed(pcActiveBody, this, "CircularPattern", worker);
@@ -2562,10 +2560,10 @@ void CmdPartDesignPathPattern::activated(int iMsg)
         return;
     }
 
-    Gui::Command* cmd = this;
-    auto worker = [cmd](App::DocumentObject* Feat, std::vector<App::DocumentObject*> /*features*/) {
-        finishTransformed(cmd, Feat);
-    };
+    auto worker =
+        [cmd = this](App::DocumentObject* feat, std::vector<App::DocumentObject*> /*features*/) {
+            finishTransformed(cmd, feat);
+        };
     prepareTransformed(pcActiveBody, this, "PathPattern", worker);
 }
 
@@ -2602,10 +2600,10 @@ void CmdPartDesignPointPattern::activated(int iMsg)
         return;
     }
 
-    Gui::Command* cmd = this;
-    auto worker = [cmd](App::DocumentObject* Feat, std::vector<App::DocumentObject*> /*features*/) {
-        finishTransformed(cmd, Feat);
-    };
+    auto worker =
+        [cmd = this](App::DocumentObject* feat, std::vector<App::DocumentObject*> /*features*/) {
+            finishTransformed(cmd, feat);
+        };
     prepareTransformed(pcActiveBody, this, "PointPattern", worker);
 }
 
