@@ -18,8 +18,9 @@ class SurfaceExport IntersectionCurve: public Part::Feature
 public:
     IntersectionCurve();
 
-    App::PropertyLink Curve1;
-    App::PropertyLink Curve2;
+    App::PropertyLinkSub Curve1;
+    App::PropertyLinkSub Curve2;
+    App::PropertyEnumeration Mode;
     App::PropertyVector Direction1;
     App::PropertyVector Direction2;
 
@@ -29,6 +30,13 @@ public:
     {
         return "SurfaceGui::ViewProviderIntersectionCurve";
     }
+
+protected:
+    void handleChangedPropertyType(
+        Base::XMLReader& reader,
+        const char* typeName,
+        App::Property* prop
+    ) override;
 };
 
 }  // namespace Surface
