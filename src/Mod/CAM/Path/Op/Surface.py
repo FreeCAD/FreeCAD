@@ -584,6 +584,15 @@ class ObjectSurface(PathOp.ObjectOp):
         if prop == "Active" and obj.ViewObject:
             obj.ViewObject.signalChangeIcon()
 
+    def opDeprecationNotice(self, obj):
+        if getattr(obj, "ScanType", None) != "Rotational":
+            return None
+        return PathOp.deprecationNotice(
+            translate("CAM_Surface", "The Rotational scan type"),
+            translate("CAM_Surface", "the Rotary Surface operation"),
+            stage=PathOp.DeprecationStage.Warning,
+        )
+
     def opOnDocumentRestored(self, obj):
         self.propertiesReady = False
         job = PathUtils.findParentJob(obj)

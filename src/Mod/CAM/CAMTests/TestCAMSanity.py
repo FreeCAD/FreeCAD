@@ -541,6 +541,71 @@ class TestCAMSanity(PathTestBase):
             f"Expected squawk mentioning post-processing, got: {squawks}",
         )
 
+    def test242_deprecated_operation_squawk(self):
+        """An operation with a deprecation notice produces a NOTE in _outputData().
+
+        Given: A job with two operations, one whose Proxy.opDeprecationNotice() returns
+               a message and one whose returns None.
+        When: _outputData() is called.
+        Then: squawkData contains exactly one NOTE naming the deprecated op and its notice.
+        """
+        deprecated = MagicMock()
+        deprecated.Name = "Tapping"
+        deprecated.Label = "Tapping"
+        deprecated.Proxy.__module__ = "Path.Op.Tapping"
+        deprecated.Proxy.opDeprecationNotice.return_value = "Use Drilling instead."
+
+        current = MagicMock()
+        current.Name = "Profile"
+        current.Label = "Profile"
+        current.Proxy.__module__ = "Path.Op.Profile"
+        current.Proxy.opDeprecationNotice.return_value = None
+
+        mock_job = MagicMock()
+        mock_job.LastPostProcessDate = ""
+        mock_job.LastPostProcessOutput = ""
+        mock_job.PostProcessor = "linuxcnc"
+        mock_job.PostProcessorArgs = ""
+        mock_job.PostProcessorOutputFile = ""
+        mock_job.Operations.Group = [deprecated, current]
+
+        S = self._make_sanity_with_mock_job(mock_job)
+        squawks = [s for s in S._outputData()["squawkData"] if "deprecated" in s["Note"]]
+
+        self.assertEqual(len(squawks), 1, f"Expected one deprecation squawk, got: {squawks}")
+        self.assertEqual(squawks[0]["squawkType"], "NOTE")
+        self.assertIn("Tapping", squawks[0]["Note"])
+        self.assertIn("Use Drilling instead.", squawks[0]["Note"])
+
+    def test243_deleted_operation_squawk(self):
+        """An operation whose proxy is a RemovedOp produces a CAUTION in _outputData().
+
+        Given: A job with one operation whose Proxy is a Path.Op.Base.RemovedOp.
+        When: _outputData() is called.
+        Then: squawkData contains one CAUTION naming the op and carrying its notice.
+        """
+        import Path.Op.Base as PathOp
+
+        deleted = MagicMock()
+        deleted.Name = "Tapping"
+        deleted.Label = "Tapping"
+        deleted.Proxy = PathOp.RemovedOp()
+
+        mock_job = MagicMock()
+        mock_job.LastPostProcessDate = ""
+        mock_job.LastPostProcessOutput = ""
+        mock_job.PostProcessor = "linuxcnc"
+        mock_job.PostProcessorArgs = ""
+        mock_job.PostProcessorOutputFile = ""
+        mock_job.Operations.Group = [deleted]
+
+        S = self._make_sanity_with_mock_job(mock_job)
+        squawks = [s for s in S._outputData()["squawkData"] if "Tapping" in s["Note"]]
+
+        self.assertEqual(len(squawks), 1, f"Expected one squawk, got: {squawks}")
+        self.assertEqual(squawks[0]["squawkType"], "CAUTION")
+        self.assertIn("has been deleted", squawks[0]["Note"])
+
     def _schema_indices(self):
         """Return (per_minute_name, per_second_name) from the document's UnitSystem enumeration."""
         import Path.Base.Util as PathUtil
