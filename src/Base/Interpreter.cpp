@@ -205,12 +205,39 @@ struct PythonErrorState
     Py::Object exceptionType;
     Py::Object traceback;
     Py::Object errorDict;
+    /// Heap-allocated exception types captured so far. PyException borrows the raw type
+    /// pointer without owning a reference, and unlike static types (PyExc_*, PyExc_FC_*)
+    /// heap types can be deallocated, so they are retained for the process lifetime.
+    /// Duplicates are ignored: growth is bounded by the number of distinct heap types.
+    std::vector<Py::Object> retainedExceptionTypes;
 };
 
 PythonErrorState& pythonErrorState()
 {
     static auto* state = new PythonErrorState();  // NOLINT(cppcoreguidelines-owning-memory)
     return *state;
+}
+
+/// Keep a captured heap exception type alive for the process lifetime so that the raw
+/// pointer borrowed by PyException can never dangle. Static types are never deallocated
+/// by CPython and need no retention; duplicates are ignored.
+void retainExceptionType(const Py::Object& type, PythonErrorState& state)
+{
+    if (type.isNull() || !PyType_Check(type.ptr())) {
+        return;
+    }
+    // NOLINTBEGIN
+    if (!PyType_HasFeature(reinterpret_cast<PyTypeObject*>(type.ptr()), Py_TPFLAGS_HEAPTYPE)) {
+        return;
+    }
+    // NOLINTEND
+    const bool alreadyRetained = std::ranges::any_of(
+        state.retainedExceptionTypes,
+        [&type](const Py::Object& item) { return item.ptr() == type.ptr(); }
+    );
+    if (!alreadyRetained) {
+        state.retainedExceptionTypes.push_back(type);
+    }
 }
 
 /// Initialize the interpreter on first use through InterpreterSingleton::init().
@@ -257,12 +284,12 @@ void readTracebackData(const Py::Object& errorTraceback, PythonErrorState& state
     if (!traceOk) {
         if (PyFrameObject* frame = PyEval_GetFrame(); frame != nullptr) {
             const int line = PyFrame_GetLineNumber(frame);
-            const Py::Object code = Py::asObject(
-                reinterpret_cast<PyObject*>(PyFrame_GetCode(frame))
-            );  // NOLINT
+            // NOLINTBEGIN
+            const Py::Object code = Py::asObject(reinterpret_cast<PyObject*>(PyFrame_GetCode(frame)));
             const char* file = PyUnicode_AsUTF8(
-                reinterpret_cast<PyCodeObject*>(code.ptr())->co_filename  // NOLINT
+                reinterpret_cast<PyCodeObject*>(code.ptr())->co_filename
             );
+            // NOLINTEND
             if (file != nullptr) {
                 const auto pref = fs::path::preferred_separator + "src"s
                     + fs::path::preferred_separator;
@@ -354,6 +381,7 @@ void fetchPythonErrorState()
     // PyException keeps borrowing the exception type object to avoid
     // reference book-keeping in its copy constructor.
     state.exceptionType = errorType;
+    retainExceptionType(errorType, state);
     state.traceback = errorTraceback;
     if (hasErrorDict) {
         state.errorDict = errorData;
@@ -412,7 +440,9 @@ PyException::PyException(const Py::Object& obj)
     const Py::Type type = obj.type();
     _exceptionType = type.ptr();
     _errorType = reinterpret_cast<PyTypeObject*>(type.ptr())->tp_name;
-    pythonErrorState().exceptionType = static_cast<const Py::Object&>(type);
+    auto& state = pythonErrorState();
+    state.exceptionType = static_cast<const Py::Object&>(type);
+    retainExceptionType(type, state);
     // NOLINTEND
 }
 

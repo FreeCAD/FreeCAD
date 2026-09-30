@@ -252,6 +252,65 @@ TEST_F(InterpreterTest, pyExceptionKeepsDynamicExceptionTypeAlive)  // NOLINT
     EXPECT_STREQ(reinterpret_cast<PyTypeObject*>(captured)->tp_name, "_InterpreterTestDynamicError");
 }
 
+TEST_F(InterpreterTest, pyExceptionKeepsEarlierDynamicExceptionTypeAlive)  // NOLINT
+{
+    Py::Object weakrefRef = Base::Interpreter().runStringObject("__import__('weakref').ref");
+    ASSERT_FALSE(weakrefRef.isNull());
+
+    // Capture a first error whose type is dynamically created, and let the error indicator
+    // be the only owner of the type afterwards.
+    Py::Object firstType = Base::Interpreter().runStringObject(
+        "type('_InterpreterTestFirstDynamicError', (Exception,), {})"
+    );
+    ASSERT_FALSE(firstType.isNull());
+    Py::Object firstInstance = Py::Callable(firstType).apply(Py::TupleN(Py::String("first")));
+    ASSERT_FALSE(firstInstance.isNull());
+    Py::Object firstWeak = Py::Callable(weakrefRef).apply(Py::TupleN(firstType));
+    ASSERT_FALSE(firstWeak.isNull());
+    PyErr_SetObject(firstType.ptr(), firstInstance.ptr());
+    firstInstance = Py::Object();
+    firstType = Py::Object();
+
+    const Base::PyException first;
+
+    // A second capture replaces the error state and would deallocate the first type while
+    // `first` still borrows it, unless earlier heap types are retained.
+    Py::Object secondType = Base::Interpreter().runStringObject(
+        "type('_InterpreterTestSecondDynamicError', (Exception,), {})"
+    );
+    ASSERT_FALSE(secondType.isNull());
+    Py::Object secondInstance = Py::Callable(secondType).apply(Py::TupleN(Py::String("second")));
+    ASSERT_FALSE(secondInstance.isNull());
+    PyErr_SetObject(secondType.ptr(), secondInstance.ptr());
+    secondInstance = Py::Object();
+    secondType = Py::Object();
+
+    const Base::PyException second;
+
+    // Heap types are part of a reference cycle (their MRO contains the type itself), so
+    // releasing the last reference does not deallocate them immediately; force a
+    // collection so a missing retention shows up deterministically.
+    PyGC_Collect();
+
+    // The weakref turns a use-after-free into an observable None instead of reading freed
+    // memory: the first exception's borrowed type must still be alive and identical.
+    Py::Object resolved = Py::Callable(firstWeak).apply();
+    ASSERT_FALSE(resolved.isNone()) << "dynamic exception type of an earlier PyException was freed";
+    EXPECT_EQ(resolved.ptr(), first.getPyExceptionType());
+    EXPECT_STREQ(
+        reinterpret_cast<PyTypeObject*>(resolved.ptr())->tp_name,
+        "_InterpreterTestFirstDynamicError"
+    );
+
+    PyObject* secondCaptured = second.getPyExceptionType();
+    ASSERT_NE(secondCaptured, nullptr);
+    ASSERT_TRUE(PyType_Check(secondCaptured));
+    EXPECT_STREQ(
+        reinterpret_cast<PyTypeObject*>(secondCaptured)->tp_name,
+        "_InterpreterTestSecondDynamicError"
+    );
+}
+
 TEST_F(InterpreterTest, runStringFailureRaisesBaseException)  // NOLINT
 {
     EXPECT_THROW(Base::Interpreter().runString("raise ValueError('boom')"), Base::Exception);
