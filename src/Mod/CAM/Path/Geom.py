@@ -924,16 +924,16 @@ def combineHorizontalFaces(faces, keepOrder=False, z=0, tol=0.01):
     for f in faces:  # translate all faces to z
         f.translate(FreeCAD.Vector(0, 0, z - f.BoundBox.ZMin))
 
-    # Make offset compound boundbox solid and cut incoming face extrusions from it
+    # Make compound from incoming shapes
     allFaces = Part.makeCompound(faces)
-    if hasattr(allFaces, "Area") and isRoughly(allFaces.Area, 0.0):
-        msg = translate(
-            "PathGeom",
-            "Zero working area to process. Check your selection and settings.",
-        )
+
+    # Ckeck if incoming shapes have area
+    if isRoughly(allFaces.Area, 0):
+        msg = translate("PathGeom", "combineHorizontalFaces: Zero working area to process")
         Path.Log.info(msg)
         return horizontal
 
+    # Make boundbox face with offset and cut incoming faces from it
     bboxFace = makeBoundBoxFace(allFaces.BoundBox, offset, z)
     cut = bboxFace.cut(faces, tol)
     horizontal = Part.makeFace(cut.Wires[1:], "Part::FaceMakerBullseye").Faces

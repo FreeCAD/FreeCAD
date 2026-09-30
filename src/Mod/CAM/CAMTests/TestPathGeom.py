@@ -884,14 +884,26 @@ class TestPathGeom(PathTestBase):
         """combineHorizontalFaces"""
         faces = []
 
+        # rectangle
         face = Part.makePlane(100, 100, Vector())
         face.translate(Vector(0, 0, 10.001))
         faces.append(face)
 
+        # rectangle
         face = Part.makePlane(100, 100, Vector(50, 50, 0))
         face.translate(Vector(0, 0, -10.001))
         faces.append(face)
 
+        # rectangle with circular island
+        s = 100
+        w1 = Part.makePolygon(
+            [Vector(), Vector(-s, 0, 0), Vector(-s, s, 0), Vector(0, s, 0), Vector()]
+        )
+        w2 = Part.Wire(Part.makeCircle(10, Vector(-20, 20, 0), Vector(0, 0, 1)))
+        face = Part.makeFace([w1, w2], "Part::FaceMakerBullseye").Faces[0]
+        faces.append(face)
+
+        # circle
         circle = Part.makeCircle(50, Vector(30, 130, 0), Vector(0, 0, 1))
         edge = Part.Edge(circle)
         wire = Part.Wire(edge)
@@ -899,6 +911,7 @@ class TestPathGeom(PathTestBase):
         face = Part.Face(wire)
         faces.append(face)
 
+        # ellipse
         ellipse = Part.Ellipse(Vector(150, 0, 0), 100, 60)
         edge = Part.Edge(ellipse)
         wire = Part.Wire(edge)
@@ -906,6 +919,7 @@ class TestPathGeom(PathTestBase):
         face = Part.Face(wire)
         faces.append(face)
 
+        # bspline
         spline = Part.BSplineCurve()
         points = [
             Vector(14, -11, 0),
@@ -932,7 +946,7 @@ class TestPathGeom(PathTestBase):
         self.assertEqual(len(comb[0].Faces), 1)
 
         # check result face area
-        self.assertRoughly(comb[0].Area, 41096, 1)
+        self.assertRoughly(comb[0].Area, 50166, 1)
 
         # check face z
         self.assertRoughly(comb[0].Faces[0].BoundBox.ZMax, z)
