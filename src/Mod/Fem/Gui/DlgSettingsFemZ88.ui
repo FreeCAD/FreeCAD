@@ -183,6 +183,9 @@ that &quot;MAXGS&quot; needs to be increased.</string>
           <property name="singleStep">
            <number>10000000</number>
           </property>
+          <property name="stepType">
+           <enum>QAbstractSpinBox::StepType::AdaptiveDecimalStepType</enum>
+          </property>
           <property name="value">
            <number>100000000</number>
           </property>
@@ -228,6 +231,9 @@ that &quot;MAXKOI&quot; needs to be increased.</string>
           </property>
           <property name="singleStep">
            <number>100000</number>
+          </property>
+          <property name="stepType">
+           <enum>QAbstractSpinBox::StepType::AdaptiveDecimalStepType</enum>
           </property>
           <property name="value">
            <number>2800000</number>
