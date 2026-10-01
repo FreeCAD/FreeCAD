@@ -50,6 +50,9 @@ protected:
     void SetUp() override
     {
         root = new SoSeparator;
+        // an override changes traversal without touching a node, so a cached
+        // bounding box would survive it and report the previous result
+        root->boundingBoxCaching = SoSeparator::OFF;
         root->ref();
 
         node = new SoFCSwitch;
