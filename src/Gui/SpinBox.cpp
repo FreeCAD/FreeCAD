@@ -21,6 +21,8 @@
  ***************************************************************************/
 
 #include <limits>
+#include <QScopeGuard>
+#include <QPointer>
 #include <QKeyEvent>
 #include <QLineEdit>
 #include <QStyle>
@@ -246,14 +248,23 @@ void ExpressionSpinBox::updateExpression()
 
 void ExpressionSpinBox::setExpression(std::shared_ptr<Expression> expr)
 {
-    Q_ASSERT(isBound());
+    QString error;
+    if (!trySetExpression(std::move(expr), error)) {
+        showInvalidExpression(error);
+    }
+}
 
+bool ExpressionSpinBox::trySetExpression(std::shared_ptr<Expression> expr, QString& error)
+{
+    Q_ASSERT(isBound());
     try {
-        ExpressionBinding::setExpression(expr);
+        ExpressionBinding::setExpression(std::move(expr));
         validateInput();
+        return true;
     }
     catch (const Base::Exception& e) {
-        showInvalidExpression(QString::fromLatin1(e.what()));
+        error = QString::fromUtf8(e.what());
+        return false;
     }
 }
 
@@ -585,6 +596,15 @@ Base::Type UIntSpinBox::determineInlineAssignmentType() const
 
 UIntSpinBox::InlineCommitResult UIntSpinBox::commitInlineExpression(QString& error)
 {
+    const QPointer<QLineEdit> editor = lineEdit();
+    const QString originalText = editor->text();
+    const auto preserveRejectedInput = qScopeGuard([editor, originalText, &error]() {
+        if (editor && !error.isEmpty()) {
+            const QSignalBlocker blocker(editor);
+            editor->setText(originalText);
+        }
+    });
+
     QString text = InlineExpression::normalizeInput(lineEdit()->text());
     if (text.isEmpty()) {
         return InlineCommitResult::NotHandled;
@@ -606,6 +626,7 @@ UIntSpinBox::InlineCommitResult UIntSpinBox::commitInlineExpression(QString& err
     }
 
     if (assignment.isAssignment) {
+        InlineExpression::AssignmentGuard guard(doc, isBound() ? getPath().getProperty() : nullptr);
         if (!InlineExpression::isValidName(assignment.name, error)) {
             return InlineCommitResult::Error;
         }
@@ -617,11 +638,21 @@ UIntSpinBox::InlineCommitResult UIntSpinBox::commitInlineExpression(QString& err
             return InlineCommitResult::Error;
         }
 
+        if (!std::isfinite(rhsQuantity.getValue())
+            || !(
+                boost::math::round(rhsQuantity.getValue()) >= minimum()
+                && boost::math::round(rhsQuantity.getValue()) <= maximum()
+            )) {
+            error = tr("Expression result is outside the allowed range");
+            return InlineCommitResult::Error;
+        }
+
         App::DocumentObject* varSet = InlineExpression::resolveVarSet(doc, assignment, true, error);
         if (!varSet) {
             return InlineCommitResult::Error;
         }
 
+        guard.watch(varSet);
         App::Property* prop = InlineExpression::ensureProperty(
             varSet,
             assignment.name,
@@ -658,12 +689,16 @@ UIntSpinBox::InlineCommitResult UIntSpinBox::commitInlineExpression(QString& err
                 return InlineCommitResult::Error;
             }
 
-            setExpression(ref);
+            if (!trySetExpression(ref, error)) {
+                return InlineCommitResult::Error;
+            }
             updateExpression();
+            guard.commit();
             return InlineCommitResult::Success;
         }
 
         setValue(boost::math::round(rhsQuantity.getValue()));
+        guard.commit();
         return InlineCommitResult::Success;
     }
 
@@ -674,8 +709,19 @@ UIntSpinBox::InlineCommitResult UIntSpinBox::commitInlineExpression(QString& err
         return InlineCommitResult::Error;
     }
 
+    if (!std::isfinite(quantity.getValue())
+        || !(
+            boost::math::round(quantity.getValue()) >= minimum()
+            && boost::math::round(quantity.getValue()) <= maximum()
+        )) {
+        error = tr("Expression result is outside the allowed range");
+        return InlineCommitResult::Error;
+    }
+
     if (isBound()) {
-        setExpression(expr);
+        if (!trySetExpression(expr, error)) {
+            return InlineCommitResult::Error;
+        }
         updateExpression();
         return InlineCommitResult::Success;
     }

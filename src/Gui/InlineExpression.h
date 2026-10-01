@@ -23,6 +23,19 @@ namespace Gui::InlineExpression
 inline constexpr const char* DefaultVarSetName = "Parameters";
 inline constexpr const char* DefaultVarSetGroup = "Variables";
 
+class GuiExport AssignmentGuard
+{
+public:
+    AssignmentGuard(App::Document* doc, App::Property* target = nullptr);
+    ~AssignmentGuard();
+    void watch(App::DocumentObject* varSet);
+    void commit();
+
+private:
+    struct State;
+    std::unique_ptr<State> state;
+};
+
 struct Assignment
 {
     bool isAssignment = false;

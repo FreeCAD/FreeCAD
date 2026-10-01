@@ -647,6 +647,7 @@ void DlgExpressionInput::accept()
 
             App::DocumentObject* docObj = path.getDocumentObject();
             App::Document* doc = docObj ? docObj->getDocument() : nullptr;
+            InlineExpression::AssignmentGuard guard(doc, path.getProperty());
             App::DocumentObject* varSet = InlineExpression::resolveVarSet(doc, assignment, true, error);
             if (!varSet) {
                 throw Base::RuntimeError(error.toStdString().c_str());
@@ -656,6 +657,7 @@ void DlgExpressionInput::accept()
             if (type.isBad()) {
                 throw Base::RuntimeError("Cannot determine variable type.");
             }
+            guard.watch(varSet);
             App::Property* prop = InlineExpression::ensureProperty(
                 varSet,
                 assignment.name,
@@ -673,7 +675,12 @@ void DlgExpressionInput::accept()
             const std::string refExpr
                 = InlineExpression::makeReferenceExpression(varSet, assignment.name);
             expression = ExpressionParser::parse(path.getDocumentObject(), refExpr.c_str());
+            const auto bindingError = docObj->ExpressionEngine.validateExpression(path, expression);
+            if (!bindingError.empty()) {
+                throw Base::RuntimeError(bindingError.c_str());
+            }
             QDialog::accept();
+            guard.commit();
             return;
         }
         catch (Base::Exception& e) {
@@ -692,7 +699,19 @@ void DlgExpressionInput::accept()
             return;
         }
         try {
+            QString nameDoc = getValue(ui->comboBoxVarSet, DocRole);
+            auto* doc = App::GetApplication().getDocument(nameDoc.toUtf8());
+            InlineExpression::AssignmentGuard guard(doc, path.getProperty());
+            guard.watch(doc->getObject(getValue(ui->comboBoxVarSet, VarSetNameRole).toUtf8()));
             acceptWithVarSet();
+            const auto error
+                = path.getDocumentObject()->ExpressionEngine.validateExpression(path, expression);
+            if (!error.empty()) {
+                throw Base::RuntimeError(error.c_str());
+            }
+            QDialog::accept();
+            guard.commit();
+            return;
         }
         catch (Base::Exception& e) {
             message = e.what();

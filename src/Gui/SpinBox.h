@@ -56,6 +56,7 @@ public:
     }
 
 protected:
+    bool trySetExpression(std::shared_ptr<App::Expression> expr, QString& error);
     /*! Expression handling */
     //@{
     enum class Number

@@ -10,8 +10,12 @@
 #include <limits>
 #include <map>
 #include <memory>
+#include <optional>
+#include <set>
+#include <algorithm>
 
 #include <App/Application.h>
+#include <App/AutoTransaction.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Expression.h>
@@ -238,6 +242,126 @@ namespace Gui::InlineExpression
 QString normalizeInput(QString text)
 {
     return trimTrailingStatementDelimiter(text);
+}
+
+struct AssignmentGuard::State
+{
+    App::Document* doc;
+    std::optional<App::AutoTransaction> transaction;
+    bool accepted = false;
+    struct Snapshot
+    {
+        std::string object;
+        std::map<std::string, std::unique_ptr<App::Property>> properties;
+    };
+    std::vector<Snapshot> snapshots;
+    std::vector<std::string> objects;
+    std::set<std::string> participants;
+};
+
+AssignmentGuard::AssignmentGuard(App::Document* doc, App::Property* target)
+    : state(std::make_unique<State>())
+{
+    state->doc = doc;
+    if (doc->getBookedTransactionID() == 0) {
+        state->transaction.emplace(doc, "Assign inline expression");
+        return;
+    }
+    for (auto* object : doc->getObjects()) {
+        state->objects.emplace_back(object->getNameInDocument());
+        if (object->isDerivedFrom(App::VarSet::getClassTypeId())) {
+            State::Snapshot snapshot;
+            snapshot.object = object->getNameInDocument();
+            std::map<std::string, App::Property*> properties;
+            object->getPropertyMap(properties);
+            for (auto& [name, property] : properties) {
+                snapshot.properties.emplace(name, property->Copy());
+            }
+            state->snapshots.push_back(std::move(snapshot));
+        }
+    }
+    if (target) {
+        auto* owner = static_cast<App::DocumentObject*>(target->getContainer());
+        state->participants.emplace(owner->getNameInDocument());
+        if (!owner->isDerivedFrom(App::VarSet::getClassTypeId())) {
+            State::Snapshot snapshot;
+            snapshot.object = owner->getNameInDocument();
+            snapshot.properties.emplace(target->getName(), target->Copy());
+            snapshot.properties.emplace("ExpressionEngine", owner->ExpressionEngine.Copy());
+            state->snapshots.push_back(std::move(snapshot));
+        }
+    }
+}
+
+AssignmentGuard::~AssignmentGuard()
+{
+    if (state->accepted) {
+        return;
+    }
+    if (state->transaction) {
+        state->transaction->close(App::TransactionCloseMode::Abort);
+        return;
+    }
+    try {
+        // Restore only assignment participants; the surrounding tool transaction stays open.
+        for (auto& snapshot : state->snapshots) {
+            if (!state->participants.count(snapshot.object)) {
+                continue;
+            }
+            auto* object = state->doc->getObject(snapshot.object.c_str());
+            if (!object) {
+                continue;
+            }
+            const bool isVarSet = object->isDerivedFrom(App::VarSet::getClassTypeId());
+            if (isVarSet) {
+                std::map<std::string, App::Property*> properties;
+                object->getPropertyMap(properties);
+                for (auto& [name, property] : properties) {
+                    if (!snapshot.properties.count(name)) {
+                        object->removeDynamicProperty(name.c_str());
+                    }
+                }
+            }
+            for (auto& [name, property] : snapshot.properties) {
+                if (auto* current = object->getPropertyByName(name.c_str())) {
+                    if (name == "ExpressionEngine" || object->getDynamicPropertyByName(name.c_str())
+                        || !isVarSet) {
+                        current->Paste(*property);
+                    }
+                }
+            }
+        }
+        std::vector<std::string> created;
+        for (auto* object : state->doc->getObjects()) {
+            if (object->isDerivedFrom(App::VarSet::getClassTypeId())
+                && state->participants.count(object->getNameInDocument())
+                && std::find(state->objects.begin(), state->objects.end(), object->getNameInDocument())
+                    == state->objects.end()) {
+                created.emplace_back(object->getNameInDocument());
+            }
+        }
+        for (const auto& name : created) {
+            state->doc->removeObject(name.c_str());
+        }
+    }
+    catch (const Base::Exception& error) {
+        error.reportException();
+    }
+}
+
+void AssignmentGuard::watch(App::DocumentObject* varSet)
+{
+    if (varSet) {
+        state->participants.emplace(varSet->getNameInDocument());
+    }
+}
+
+void AssignmentGuard::commit()
+{
+    state->accepted = true;
+    if (state->transaction) {
+        state->transaction->close();
+    }
 }
 
 Assignment parseAssignment(const QString& text)

@@ -62,6 +62,44 @@ private Q_SLOTS:
         docName.clear();
     }
 
+    void assignment_acceptanceBindingSharesUndo()
+    {
+        QWidget parent;
+        Gui::Dialog::DlgExpressionInput dlg(path(), nullptr, Base::Unit::One, &parent);
+        connect(&dlg, &QDialog::accepted, &dlg, [&]() {
+            target->ExpressionEngine.setValue(path(), dlg.getExpression());
+        });
+        setInputText(dlg, QStringLiteral("undoValue=42"));
+        QVERIFY(okButton(dlg)->isEnabled());
+        dlg.accept();
+        QVERIFY(doc->getObject("Parameters"));
+        QVERIFY(target->getExpression(path()).expression);
+        doc->undo();
+        QVERIFY(!doc->getObject("Parameters"));
+        QVERIFY(!target->getExpression(path()).expression);
+        doc->redo();
+        QVERIFY(doc->getObject("Parameters"));
+        QVERIFY(target->getExpression(path()).expression);
+    }
+
+    void assignment_targetCyclePreservesToolEdits()
+    {
+        targetProp->setValue(5);
+        doc->openTransaction("Pending tool edits");
+        target->Label.setValue("Pending edit");
+        const auto transaction = doc->getBookedTransactionID();
+        QWidget parent;
+        Gui::Dialog::DlgExpressionInput dlg(path(), nullptr, Base::Unit::One, &parent);
+        setInputText(dlg, QStringLiteral("cycle=Target.TargetValue"));
+        dlg.accept();
+        QCOMPARE(dlg.result(), static_cast<int>(QDialog::Rejected));
+        QVERIFY(!doc->getObject("Parameters"));
+        QCOMPARE(doc->getBookedTransactionID(), transaction);
+        QCOMPARE(QString::fromUtf8(target->Label.getValue()), QStringLiteral("Pending edit"));
+        QCOMPARE(targetProp->getValue(), 5.0);
+        doc->abortTransaction();
+    }
+
     void defaultAssignment_createsParametersVarSet()  // NOLINT
     {
         QVERIFY(doc->getObject("Parameters") == nullptr);

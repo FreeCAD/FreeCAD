@@ -21,6 +21,8 @@
  ***************************************************************************/
 
 #include <limits>
+#include <QScopeGuard>
+#include <QPointer>
 #include <QApplication>
 #include <QDebug>
 #include <QFocusEvent>
@@ -321,6 +323,15 @@ QuantitySpinBox::InlineCommitResult QuantitySpinBox::commitInlineExpression(QStr
 {
     Q_D(QuantitySpinBox);
 
+    const QPointer<QLineEdit> editor = lineEdit();
+    const QString originalText = editor->text();
+    const auto preserveRejectedInput = qScopeGuard([editor, originalText, &error]() {
+        if (editor && !error.isEmpty()) {
+            const QSignalBlocker blocker(editor);
+            editor->setText(originalText);
+        }
+    });
+
     QString text = InlineExpression::normalizeInput(lineEdit()->text());
     if (text.isEmpty()) {
         return InlineCommitResult::NotHandled;
@@ -347,6 +358,7 @@ QuantitySpinBox::InlineCommitResult QuantitySpinBox::commitInlineExpression(QStr
     }
 
     if (assignment.isAssignment) {
+        InlineExpression::AssignmentGuard guard(doc, isBound() ? getPath().getProperty() : nullptr);
         if (!InlineExpression::isValidName(assignment.name, error)) {
             return InlineCommitResult::Error;
         }
@@ -370,12 +382,18 @@ QuantitySpinBox::InlineCommitResult QuantitySpinBox::commitInlineExpression(QStr
             }
         }
         rhsQuantity.setUnit(d->unit);
+        if (d->checkRangeInExpression
+            && !(rhsQuantity.getValue() >= d->minimum && rhsQuantity.getValue() <= d->maximum)) {
+            error = tr("Expression result is outside the allowed range");
+            return InlineCommitResult::Error;
+        }
 
         App::DocumentObject* varSet = InlineExpression::resolveVarSet(doc, assignment, true, error);
         if (!varSet) {
             return InlineCommitResult::Error;
         }
 
+        guard.watch(varSet);
         App::Property* prop = InlineExpression::ensureProperty(
             varSet,
             assignment.name,
@@ -414,8 +432,11 @@ QuantitySpinBox::InlineCommitResult QuantitySpinBox::commitInlineExpression(QStr
 
             d->pendingEmit = false;
             d->validInput = true;
-            setExpression(ref);
+            if (!trySetExpression(ref, error)) {
+                return InlineCommitResult::Error;
+            }
             updateExpression();
+            guard.commit();
             return InlineCommitResult::Success;
         }
 
@@ -426,6 +447,7 @@ QuantitySpinBox::InlineCommitResult QuantitySpinBox::commitInlineExpression(QStr
         d->pendingEmit = false;
         d->validInput = true;
         d->unboundExpressionText = refExpr;
+        guard.commit();
         return InlineCommitResult::Success;
     }
 
@@ -448,11 +470,18 @@ QuantitySpinBox::InlineCommitResult QuantitySpinBox::commitInlineExpression(QStr
         }
     }
     quantity.setUnit(d->unit);
+    if (d->checkRangeInExpression
+        && !(quantity.getValue() >= d->minimum && quantity.getValue() <= d->maximum)) {
+        error = tr("Expression result is outside the allowed range");
+        return InlineCommitResult::Error;
+    }
 
     d->pendingEmit = false;
     d->validInput = true;
     if (isBound()) {
-        setExpression(expr);
+        if (!trySetExpression(expr, error)) {
+            return InlineCommitResult::Error;
+        }
         updateExpression();
         return InlineCommitResult::Success;
     }

@@ -24,6 +24,8 @@
 
 #include "Gui/Application.h"
 #include "Gui/MainWindow.h"
+#include "Gui/EditableDatumLabel.h"
+#include "Gui/View3DInventorViewer.h"
 #include "Gui/QuantitySpinBox.h"
 #include "Gui/PrefWidgets.h"
 #include "Gui/SpinBox.h"
@@ -1497,6 +1499,301 @@ private Q_SLOTS:
         QCOMPARE(targetFloat->getValue(), 42.0);
         QCOMPARE(changed.count(), 1);
         QCOMPARE(previewUpdates, 1);
+    }
+
+    void test_OnViewExpressionSurvivesRepeatedCommit_data()
+    {
+        QTest::addColumn<int>("key");
+        QTest::newRow("Return") << int(Qt::Key_Return);
+        QTest::newRow("Tab") << int(Qt::Key_Tab);
+        QTest::newRow("CtrlEnter") << int(Qt::Key_Enter);
+        QTest::newRow("Click") << 0;
+    }
+
+    void test_OnViewExpressionSurvivesRepeatedCommit()
+    {
+        QFETCH(int, key);
+        ensureGuiApplication();
+        QWidget parent;
+        Gui::View3DInventorViewer viewer(&parent);
+        Gui::EditableDatumLabel parameter(&viewer, Base::Placement());
+        connect(&parameter, &Gui::EditableDatumLabel::finishEditingOnAllOVPs, &parameter, [&parameter]() {
+            parameter.commitPendingInlineExpression();
+        });
+        parameter.startEdit(0, nullptr, true);
+        auto* spin = parent.findChild<Gui::QuantitySpinBox*>();
+        QVERIFY(spin);
+        auto* editor = spin->findChild<QLineEdit*>();
+        editor->selectAll();
+        QTest::keyClicks(editor, "ovp=0");
+        if (key) {
+            QTest::keyClick(
+                editor,
+                static_cast<Qt::Key>(key),
+                key == Qt::Key_Enter ? Qt::ControlModifier : Qt::NoModifier
+            );
+        }
+        else {
+            QVERIFY(parameter.commitPendingInlineExpression());
+        }
+        const auto expression = parameter.constraintExpression();
+        QVERIFY(!expression.empty());
+        QVERIFY(parameter.commitPendingInlineExpression());
+        QVERIFY(parameter.commitPendingInlineExpression());
+        QCOMPARE(parameter.constraintExpression(), expression);
+        editor->selectAll();
+        QTest::keyClicks(editor, "12");
+        QVERIFY(parameter.commitPendingInlineExpression());
+        QVERIFY(parameter.constraintExpression().empty());
+        editor->selectAll();
+        QTest::keyClick(editor, Qt::Key_Backspace);
+        QVERIFY(parameter.constraintExpression().empty());
+    }
+
+    void test_InlineAssignmentRangePolicy_data()
+    {
+        QTest::addColumn<bool>("enabled");
+        QTest::addColumn<double>("value");
+        QTest::addColumn<bool>("accepted");
+        QTest::newRow("lower") << true << 0.0 << true;
+        QTest::newRow("upper") << true << 10.0 << true;
+        QTest::newRow("below") << true << -1.0 << false;
+        QTest::newRow("above") << true << 11.0 << false;
+        QTest::newRow("disabled") << false << 11.0 << true;
+    }
+
+    void test_InlineAssignmentRangePolicy()
+    {
+        QFETCH(bool, enabled);
+        QFETCH(double, value);
+        QFETCH(bool, accepted);
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::One);
+        spin.setRange(0, 10);
+        spin.checkRangeInExpression(enabled);
+        spin.bind(pathFloat());
+        setEditorText(spin, QStringLiteral("limit=%1").arg(value));
+        QSignalSpy returned(&spin, &Gui::QuantitySpinBox::returnPressed);
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCOMPARE(returned.count(), accepted ? 1 : 0);
+        QCOMPARE(doc->getObject("Parameters") != nullptr, accepted);
+        QCOMPARE(target->getExpression(pathFloat()).expression != nullptr, accepted);
+    }
+
+    void test_InlineReferenceRangeAndInvalidBinding_data()
+    {
+        QTest::addColumn<QString>("input");
+        QTest::addColumn<bool>("rangeCheck");
+        QTest::addColumn<bool>("accepted");
+        QTest::newRow("outside-reference") << QStringLiteral("Target.Other") << true << false;
+        QTest::newRow("disabled-reference") << QStringLiteral("Target.Other") << false << true;
+        QTest::newRow("invalid-reference") << QStringLiteral("Target.Missing") << false << false;
+    }
+
+    void test_InlineReferenceRangeAndInvalidBinding()
+    {
+        QFETCH(QString, input);
+        QFETCH(bool, rangeCheck);
+        QFETCH(bool, accepted);
+        auto* other = static_cast<App::PropertyFloat*>(
+            target->addDynamicProperty("App::PropertyFloat", "Other")
+        );
+        other->setValue(20);
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::One);
+        spin.setRange(0, 10);
+        spin.checkRangeInExpression(rangeCheck);
+        spin.bind(pathFloat());
+        target->ExpressionEngine.setValue(pathFloat(), App::ExpressionParser::parse(target, "5"));
+        QSignalSpy returned(&spin, &Gui::QuantitySpinBox::returnPressed);
+        setEditorText(spin, input);
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCOMPARE(returned.count(), accepted ? 1 : 0);
+        if (!accepted) {
+            QCOMPARE(editorText(spin), input);
+        }
+        QCOMPARE(
+            target->getExpression(pathFloat()).expression->toString(),
+            accepted ? std::string("Other") : std::string("5")
+        );
+        QVERIFY(!doc->getObject("Parameters"));
+    }
+
+    void test_InlineAssignmentRollbackPreservesToolTransaction_data()
+    {
+        QTest::addColumn<bool>("toolTransaction");
+        QTest::newRow("owned") << false;
+        QTest::newRow("tool") << true;
+    }
+
+    void test_InlineAssignmentRollbackPreservesToolTransaction()
+    {
+        QFETCH(bool, toolTransaction);
+        auto* parameters = doc->addObject("App::VarSet", "Parameters");
+        auto* variable = static_cast<App::PropertyFloat*>(
+            parameters->addDynamicProperty("App::PropertyFloat", "cycle", "Variables")
+        );
+        variable->setValue(7);
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::One);
+        spin.bind(pathFloat());
+        target->ExpressionEngine.setValue(
+            pathFloat(),
+            App::ExpressionParser::parse(target, "Parameters.cycle")
+        );
+        const auto previous = target->getExpression(pathFloat()).expression->toString();
+        if (toolTransaction) {
+            doc->openTransaction("Pending tool edits");
+            target->Label.setValue("Pending edit");
+        }
+        const auto transaction = doc->getBookedTransactionID();
+        setEditorText(spin, QStringLiteral("cycle=Parameters.cycle+1"));
+        QSignalSpy returned(&spin, &Gui::QuantitySpinBox::returnPressed);
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCOMPARE(returned.count(), 0);
+        QCOMPARE(variable->getValue(), 7.0);
+        QCOMPARE(target->getExpression(pathFloat()).expression->toString(), previous);
+        QCOMPARE(doc->getBookedTransactionID(), transaction);
+        if (toolTransaction) {
+            QCOMPARE(QString::fromUtf8(target->Label.getValue()), QStringLiteral("Pending edit"));
+            doc->abortTransaction();
+        }
+    }
+
+    void test_InlineTargetCycleRollsBackAssignment_data()
+    {
+        QTest::addColumn<bool>("tool");
+        QTest::addColumn<bool>("existing");
+        QTest::newRow("owned-new") << false << false;
+        QTest::newRow("owned-existing") << false << true;
+        QTest::newRow("tool-new") << true << false;
+        QTest::newRow("tool-existing") << true << true;
+    }
+
+    void test_InlineTargetCycleRollsBackAssignment()
+    {
+        QFETCH(bool, tool);
+        QFETCH(bool, existing);
+        App::VarSet* parameters = nullptr;
+        if (existing) {
+            parameters = static_cast<App::VarSet*>(doc->addObject("App::VarSet", "Parameters"));
+            auto* variable = static_cast<App::PropertyFloat*>(
+                parameters->addDynamicProperty("App::PropertyFloat", "cycle", "Variables")
+            );
+            variable->setValue(2);
+            auto* dependent
+                = parameters->addDynamicProperty("App::PropertyFloat", "dependent", "Variables");
+            parameters->ExpressionEngine.setValue(
+                App::ObjectIdentifier(*dependent),
+                App::ExpressionParser::parse(parameters, "cycle*2")
+            );
+            parameters->ExpressionEngine.execute();
+        }
+        targetFloat->setValue(5);
+        target->ExpressionEngine.setValue(pathFloat(), App::ExpressionParser::parse(target, "5"));
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::One);
+        spin.bind(pathFloat());
+        if (tool) {
+            doc->openTransaction("Pending tool edits");
+            target->Label.setValue("Pending edit");
+        }
+        const auto transaction = doc->getBookedTransactionID();
+        const QString input = QStringLiteral("cycle=Target.TargetFloat");
+        setEditorText(spin, input);
+        QSignalSpy returned(&spin, &Gui::QuantitySpinBox::returnPressed);
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCOMPARE(returned.count(), 0);
+        QCOMPARE(editorText(spin), input);
+        QCOMPARE(doc->getBookedTransactionID(), transaction);
+        QCOMPARE(targetFloat->getValue(), 5.0);
+        QCOMPARE(target->getExpression(pathFloat()).expression->toString(), std::string("5"));
+        if (existing) {
+            QCOMPARE(
+                static_cast<App::PropertyFloat*>(parameters->getPropertyByName("cycle"))->getValue(),
+                2.0
+            );
+            QCOMPARE(
+                static_cast<App::PropertyFloat*>(parameters->getPropertyByName("dependent"))->getValue(),
+                4.0
+            );
+            QVERIFY(!parameters
+                         ->getExpression(App::ObjectIdentifier(*parameters->getPropertyByName("cycle")))
+                         .expression);
+        }
+        else {
+            QVERIFY(!doc->getObject("Parameters"));
+        }
+        if (tool) {
+            QCOMPARE(QString::fromUtf8(target->Label.getValue()), QStringLiteral("Pending edit"));
+            doc->abortTransaction();
+        }
+    }
+
+    void test_UIntInlineConversionLimits_data()
+    {
+        QTest::addColumn<QString>("input");
+        QTest::addColumn<bool>("accepted");
+        QTest::newRow("negative") << QStringLiteral("limit=-1") << false;
+        QTest::newRow("overflow") << QStringLiteral("limit=2147483647*2+2") << false;
+        QTest::newRow("fractional-integer-assignment") << QStringLiteral("limit=1.4") << false;
+        QTest::newRow("upper") << QStringLiteral("limit=2147483647*2+1") << true;
+    }
+
+    void test_UIntInlineConversionLimits()
+    {
+        QFETCH(QString, input);
+        QFETCH(bool, accepted);
+        Gui::UIntSpinBox spin;
+        spin.setRange(0, std::numeric_limits<unsigned int>::max());
+        QCOMPARE(spin.maximum(), std::numeric_limits<unsigned int>::max());
+        setEditorText(spin, input);
+        QCOMPARE(spin.maximum(), std::numeric_limits<unsigned int>::max());
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QVERIFY2(
+            (doc->getObject("Parameters") != nullptr) == accepted,
+            qPrintable(spin.findChild<QLineEdit*>()->toolTip())
+        );
+        if (!accepted) {
+            QCOMPARE(editorText(spin), input);
+        }
+    }
+
+    void test_UIntInlineReferenceRoundsBeforeConversion()
+    {
+        auto* parameters = doc->addObject("App::VarSet", "Parameters");
+        auto* fraction = static_cast<App::PropertyFloat*>(
+            parameters->addDynamicProperty("App::PropertyFloat", "fraction")
+        );
+        fraction->setValue(1.4);
+        Gui::UIntSpinBox spin;
+        spin.setRange(0, 1);
+        setEditorText(spin, QStringLiteral("Parameters.fraction"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCOMPARE(spin.value(), 1U);
+        fraction->setValue(1.5);
+        const QString input = QStringLiteral("Parameters.fraction");
+        setEditorText(spin, input);
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCOMPARE(spin.value(), 1U);
+        QCOMPARE(editorText(spin), input);
+    }
+
+    void test_InlineAssignmentUndoRedo()
+    {
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::One);
+        spin.bind(pathFloat());
+        setEditorText(spin, QStringLiteral("undoValue=42"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QVERIFY(doc->getObject("Parameters"));
+        QVERIFY(target->getExpression(pathFloat()).expression);
+        doc->undo();
+        QVERIFY(!doc->getObject("Parameters"));
+        QVERIFY(!target->getExpression(pathFloat()).expression);
+        doc->redo();
+        QVERIFY(doc->getObject("Parameters"));
+        QVERIFY(target->getExpression(pathFloat()).expression);
     }
 
     void test_InlineAssignmentCreatesParametersVarSet()  // NOLINT
