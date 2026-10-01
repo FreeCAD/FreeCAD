@@ -176,8 +176,8 @@ void FeatureAddSub::updatePreviewShape()
                 BRepGProp::VolumeProperties(result.getShape(), propsAfter);
 
                 const double removed = propsBefore.Mass() - propsAfter.Mass();
-                // an empty or zero volume intersection would draw nothing at all
-                const bool nothingRemoved = common.isEmpty() || removed <= Precision::Confusion();
+                // with nothing removed there is no delta to draw, so show the tool
+                const bool nothingRemoved = removed <= Precision::Confusion();
 
                 if (nothingRemoved) {
                     notifyWarning(
