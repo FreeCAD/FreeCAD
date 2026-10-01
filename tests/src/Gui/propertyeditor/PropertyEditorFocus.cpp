@@ -138,7 +138,8 @@ private Q_SLOTS:
         QFETCH(QString, propertyType);
         TestDocument fixture;
         auto* object = fixture.object;
-        auto* property = object->addDynamicProperty(propertyType.toUtf8().constData(), "Length2", "Side2");
+        auto* property
+            = object->addDynamicProperty(propertyType.toUtf8().constData(), "Length2", "Side2");
         property->setStatus(App::Property::ReadOnly, !readOnly);
 
         PaintTrackingPropertyEditor view;
@@ -156,7 +157,10 @@ private Q_SLOTS:
         const auto valueIndex = view.model()->buddy(nameIndex);
         QCOMPARE(bool(valueIndex.flags() & Qt::ItemIsEditable), !readOnly);
         for (int row = 0; row < view.model()->rowCount(nameIndex); ++row) {
-            QCOMPARE(bool(view.model()->index(row, 1, nameIndex).flags() & Qt::ItemIsEditable), !readOnly);
+            QCOMPARE(
+                bool(view.model()->index(row, 1, nameIndex).flags() & Qt::ItemIsEditable),
+                !readOnly
+            );
         }
         QTRY_VERIFY(view.paints > 0);
     }
@@ -187,9 +191,10 @@ private Q_SLOTS:
     }
 
     /// Covers editor closing on Return, related to https://github.com/FreeCAD/FreeCAD/issues/14350.
-    /// possibly related to a tab-switch report with a hidden status bar: https://github.com/FreeCAD/FreeCAD/issues/24660.
-    /// The macOS document-tab switch in https://github.com/FreeCAD/FreeCAD/issues/14350
-    /// requires the full main window and is not reproduced here.
+    /// possibly related to a tab-switch report with a hidden status bar:
+    /// https://github.com/FreeCAD/FreeCAD/issues/24660. The macOS document-tab switch in
+    /// https://github.com/FreeCAD/FreeCAD/issues/14350 requires the full main window and is not
+    /// reproduced here.
     void ordinaryEditorClosesOnReturn()
     {
         TestDocument fixture;
@@ -356,7 +361,7 @@ private Q_SLOTS:
         const bool backwards = key == Qt::Key_Backtab && !singleEditableProperty;
         const auto startIndex = backwards ? lastIndex : firstIndex;
         const auto nextIndex = singleEditableProperty ? firstIndex
-            : (backwards ? firstIndex : lastIndex);
+                                                      : (backwards ? firstIndex : lastIndex);
         auto* property = backwards ? last : first;
         view.openEditor(startIndex);
         QPointer<QWidget> editor = view.indexWidget(startIndex);
@@ -375,13 +380,11 @@ private Q_SLOTS:
         int commits = 0;
         bool nextEditorWasOpenAtCommit = false;
         long valueAtCommit = 0;
-        auto connection = fixture.document->signalCommitTransaction.connect(
-            [&](const App::Document&) {
-                ++commits;
-                nextEditorWasOpenAtCommit = view.indexWidget(nextIndex) != nullptr;
-                valueAtCommit = property->getValue();
-            }
-        );
+        auto connection = fixture.document->signalCommitTransaction.connect([&](const App::Document&) {
+            ++commits;
+            nextEditorWasOpenAtCommit = view.indexWidget(nextIndex) != nullptr;
+            valueAtCommit = property->getValue();
+        });
         const auto disconnect = qScopeGuard([&] { connection.disconnect(); });
 
         QTest::keyClick(editor, static_cast<Qt::Key>(key));
@@ -482,8 +485,9 @@ private Q_SLOTS:
     /// Covers child-focus and modal-dialog handling related to the TechDraw template crash:
     /// https://github.com/FreeCAD/FreeCAD/issues/6583
     /// https://forum.freecad.org/viewtopic.php?p=579530#p579530
-    /// Also related to the points-editor dialog crash: https://forum.freecad.org/viewtopic.php?t=66992
-    /// Uses a file editor to exercise shared focus handling; it does not reproduce those workbench dialogs.
+    /// Also related to the points-editor dialog crash:
+    /// https://forum.freecad.org/viewtopic.php?t=66992 Uses a file editor to exercise shared focus
+    /// handling; it does not reproduce those workbench dialogs.
     void compoundEditorLifecycle()
     {
         QFETCH(bool, automaticUpdate);
@@ -495,9 +499,13 @@ private Q_SLOTS:
         auto* property = static_cast<App::PropertyFile*>(
             object->addDynamicProperty("App::PropertyFile", "Filename", "Values")
         );
-        auto parameters = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Dialog");
+        auto parameters = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Dialog"
+        );
         const bool oldNative = parameters->GetBool("DontUseNativeDialog", false);
-        const auto restore = qScopeGuard([&] { parameters->SetBool("DontUseNativeDialog", oldNative); });
+        const auto restore = qScopeGuard([&] {
+            parameters->SetBool("DontUseNativeDialog", oldNative);
+        });
         parameters->SetBool("DontUseNativeDialog", true);
         QTemporaryFile original;
         QVERIFY(original.open());

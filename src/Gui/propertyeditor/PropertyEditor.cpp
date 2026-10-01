@@ -78,11 +78,16 @@ PropertyEditor::PropertyEditor(QWidget* parent)
     delegate = new PropertyItemDelegate(this);
     delegate->setItemEditorFactory(new PropertyItemEditorFactory);
     setItemDelegate(delegate);
-    connect(delegate, &PropertyItemDelegate::editorCreated, this, [this](QWidget* editor, const QModelIndex& index) {
-        activeEditor = editor;
-        editingIndex = index;
-        openTransaction();
-    });
+    connect(
+        delegate,
+        &PropertyItemDelegate::editorCreated,
+        this,
+        [this](QWidget* editor, const QModelIndex& index) {
+            activeEditor = editor;
+            editingIndex = index;
+            openTransaction();
+        }
+    );
     setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     setAlternatingRowColors(true);
