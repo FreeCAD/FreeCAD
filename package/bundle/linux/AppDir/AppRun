@@ -1,8 +1,61 @@
 #!/bin/bash
+# This script has translatable strings. Extract them using:
+# bash --dump-po-strings AppRun > AppRun.pot
 set -eu
 
 HERE="$(dirname "$(readlink -f "${0}")")"
 export PREFIX="${HERE}/usr"
+
+# Do not export these variables!
+TEXTDOMAIN="AppRun"
+TEXTDOMAINDIR="${HERE}/locale"
+
+requirements_not_met() {
+    TITLE=$"FreeCAD launch error"
+    NOTMET=$"FreeCAD cannot run because the following requirements are not met:"
+    TEXT="${NOTMET}"$'\n'"${1}"
+    echo "${TEXT}" >&2
+    if [ -n "${DISPLAY:-}" ] || [ -n "${WAYLAND_DISPLAY:-}" ]; then
+        if command -v zenity >/dev/null 2>&1; then
+            zenity --error --text="${TEXT}" --title="${TITLE}" --icon-name="${HERE}/launch-error.svg"
+        elif command -v yad >/dev/null 2>&1; then
+            yad --text="${TEXT}" --title="${TITLE}" --image="${HERE}/launch-error.svg" --escape-ok
+        elif command -v kdialog >/dev/null 2>&1; then
+            kdialog --error "${TEXT}" --title "${TITLE}"
+        elif command -v notify-send >/dev/null 2>&1; then
+            notify-send -u normal -a FreeCAD -n "${HERE}/org.freecad.FreeCAD.svg" -i "${HERE}/launch-error.svg" "${TITLE}" "${TEXT}"
+        elif command -v gxmessage >/dev/null 2>&1; then
+            gxmessage "${TEXT}"
+        elif command -v xmessage >/dev/null 2>&1; then
+            xmessage "${TEXT}"
+        fi
+    fi
+    exit 127
+}
+
+# Check for CPU architecture version. x86 Conda has started requiring x86-64-v2:
+# https://www.anaconda.com/blog/updated-cpu-requirements-linux-recommendations-windows
+ARCH="$(uname -m)"
+if [ "${ARCH}" = x86_64 ]; then
+    # x86-64 architecture level detection from https://unix.stackexchange.com/a/631226
+    ARCHVER="$(awk -f- <<'EOF'
+BEGIN {
+    while (!/flags/) if (getline < "/proc/cpuinfo" != 1) exit 1
+    if (/lm/&&/cmov/&&/cx8/&&/fpu/&&/fxsr/&&/mmx/&&/syscall/&&/sse2/) level = 1
+    if (level == 1 && /cx16/&&/lahf/&&/popcnt/&&/sse4_1/&&/sse4_2/&&/ssse3/) level = 2
+    if (level == 2 && /avx/&&/avx2/&&/bmi1/&&/bmi2/&&/f16c/&&/fma/&&/abm/&&/movbe/&&/xsave/) level = 3
+    if (level == 3 && /avx512f/&&/avx512bw/&&/avx512cd/&&/avx512dq/&&/avx512vl/) level = 4
+    print level
+    exit 0
+}
+EOF
+)"
+    MIN_ARCHVER=2
+    if [ "${ARCHVER}" -lt "${MIN_ARCHVER}" ]; then
+        requirements_not_met $"Your computer's processor is too old (x86_64-v${ARCHVER}, minimum required is x86_64-v${MIN_ARCHVER})."
+    fi
+fi
+
 # export LD_LIBRARY_PATH="${HERE}/usr/lib${LD_LIBRARY_PATH:+':'}$LD_LIBRARY_PATH"
 export PYTHONHOME="${HERE}/usr"
 export PATH_TO_FREECAD_LIBDIR="${HERE}/usr/lib"
