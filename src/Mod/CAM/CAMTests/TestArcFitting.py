@@ -1010,12 +1010,13 @@ class TestArcFittingOffsets(PathTestBase):
         # Offsets/starts to test. For debugging, leave all_* as is and modify test_* to the desired
         # test/debugging parameters. An assert at the end prevents accidentally shipping code with
         # test_* set to something other than all_*.
-        _numV = len(self._make_32677_test_geometry().getCurves()[0].getVertices())
+        numV = len(self._make_32677_test_geometry().getCurves()[0].getVertices())
+        self.assertTrue(numV > 0, "This assert exists so CodeQL knows numV is used")
         all_offsets = (-1.6, -5.1, -8.6, -12.1, -15.6, -19.1)
         all_starts = [0, 111]
 
         test_offsets = all_offsets  # temporarily set to (val,) to test a specific offset
-        test_starts = all_starts  # temporarily set to range(_numV) for complete/intensive testing
+        test_starts = all_starts  # temporarily set to range(numV) for complete/intensive testing
 
         canon = {}  # offset -> (startV, canonical area) of the first start vertex tried
         for offset, startV in itertools.product(test_offsets, test_starts):
