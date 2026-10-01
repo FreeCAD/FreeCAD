@@ -2955,11 +2955,11 @@ public:
 
         setCheckable(false);
 
-        addCommand("Part_LinkArrayCircular");
         addCommand("Part_LinkArrayLinear");
+        addCommand("Part_LinkArrayPolar");
+        addCommand("Part_LinkArrayCircular");
         addCommand("Part_LinkArrayPath");
         addCommand("Part_LinkArrayPoint");
-        addCommand("Part_LinkArrayPolar");
     }
 
     const char* className() const override
