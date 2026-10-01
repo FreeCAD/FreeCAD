@@ -892,7 +892,7 @@ void DSHArcController::addConstraints()
             GeoElementId::VAxis,
             x0,
             obj,
-            !x0Expr.empty()
+            !x0Expr.empty() || !y0Expr.empty()
         );
         applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, x0Expr);
     };
@@ -904,7 +904,7 @@ void DSHArcController::addConstraints()
             GeoElementId::HAxis,
             y0,
             obj,
-            !y0Expr.empty()
+            !x0Expr.empty() || !y0Expr.empty()
         );
         applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, y0Expr);
     };
@@ -938,7 +938,7 @@ void DSHArcController::addConstraints()
             GeoElementId::VAxis,
             p3,
             obj,
-            !p3Expr.empty()
+            !p3Expr.empty() || !p4Expr.empty()
         );
         applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, p3Expr);
     };
@@ -950,14 +950,14 @@ void DSHArcController::addConstraints()
             GeoElementId::HAxis,
             p4,
             obj,
-            !p4Expr.empty()
+            !p3Expr.empty() || !p4Expr.empty()
         );
         applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, p4Expr);
     };
 
 
     if (handler->AutoConstraints.empty()) {  // No valid diagnosis. Every constraint can be added.
-        if (x0set && y0set && x0 == 0. && y0 == 0.) {
+        if (x0set && y0set && x0 == 0. && y0 == 0. && x0Expr.empty() && y0Expr.empty()) {
             ConstraintToAttachment(GeoElementId(firstCurve, pos1), GeoElementId::RtPnt, 0., obj);
         }
         else {
@@ -980,7 +980,7 @@ void DSHArcController::addConstraints()
             }
         }
         else {
-            if (p3set && p4set && p3 == 0. && p4 == 0.) {
+            if (p3set && p4set && p3 == 0. && p4 == 0. && p3Expr.empty() && p4Expr.empty()) {
                 ConstraintToAttachment(
                     GeoElementId(firstCurve, handler->arcPos2),
                     GeoElementId::RtPnt,

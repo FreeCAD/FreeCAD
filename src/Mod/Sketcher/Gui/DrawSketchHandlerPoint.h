@@ -118,11 +118,24 @@ private:
     {
 
         if (!sugConstraints[0].empty()) {
-            DrawSketchHandler::createAutoConstraints(
-                sugConstraints[0],
-                getHighestCurveIndex(),
-                Sketcher::PointPos::start
-            );
+            if (toolWidgetManager.hasParameterExpression(0)
+                || toolWidgetManager.hasParameterExpression(1)) {
+                // A snap must not fix a coordinate that its expression can later move.
+                generateAutoConstraintsOnElement(
+                    sugConstraints[0],
+                    getHighestCurveIndex(),
+                    Sketcher::PointPos::start
+                );
+                removeRedundantAutoConstraints();
+                createGeneratedAutoConstraints(true);
+            }
+            else {
+                DrawSketchHandler::createAutoConstraints(
+                    sugConstraints[0],
+                    getHighestCurveIndex(),
+                    Sketcher::PointPos::start
+                );
+            }
             sugConstraints[0].clear();
         }
     }
@@ -274,7 +287,7 @@ void DSHPointController::addConstraints()
 
     using namespace Sketcher;
 
-    if (x0set && y0set && x0 == 0. && y0 == 0.) {
+    if (x0set && y0set && x0 == 0. && y0 == 0. && x0Expr.empty() && y0Expr.empty()) {
         ConstraintToAttachment(
             GeoElementId(firstCurve, PointPos::start),
             GeoElementId::RtPnt,
@@ -290,7 +303,7 @@ void DSHPointController::addConstraints()
                 GeoElementId::VAxis,
                 x0,
                 handler->sketchgui->getObject(),
-                !x0Expr.empty()
+                !x0Expr.empty() || !y0Expr.empty()
             );
             applyExpressionToLatestConstraint(
                 handler->getSketchObject(),
@@ -307,7 +320,7 @@ void DSHPointController::addConstraints()
                 GeoElementId::HAxis,
                 y0,
                 handler->sketchgui->getObject(),
-                !y0Expr.empty()
+                !x0Expr.empty() || !y0Expr.empty()
             );
             applyExpressionToLatestConstraint(
                 handler->getSketchObject(),

@@ -235,6 +235,12 @@ private:
     };
 
 public:
+    bool hasParameterExpression(size_t index) const
+    {
+        return index < onViewParameters.size()
+            && !onViewParameters[index]->constraintExpression().empty();
+    }
+
     /** Creates the controller.
      *  @param dshandler a controllable DSH handler
      */

@@ -1690,7 +1690,17 @@ private:
             typeB = Sketcher::Horizontal;
         }
 
-        if (fabs(angle) < Precision::Confusion() || constructionMethod() == ConstructionMethod::Diagonal
+        if ((fabs(angle) < Precision::Confusion()
+             && !(
+                 constructionMethod() == ConstructionMethod::ThreePoints
+                 && toolWidgetManager.hasParameterExpression(3)
+             )
+             && !(
+                 (constructionMethod() == ConstructionMethod::ThreePoints
+                  || constructionMethod() == ConstructionMethod::CenterAnd3Points)
+                 && toolWidgetManager.hasParameterExpression(5)
+             ))
+            || constructionMethod() == ConstructionMethod::Diagonal
             || constructionMethod() == ConstructionMethod::CenterAndCorner) {
             addToShapeConstraints(typeA, firstCurve);
             addToShapeConstraints(typeA, firstCurve + 2);
@@ -1710,7 +1720,8 @@ private:
                 Sketcher::PointPos::none,
                 firstCurve + 3
             );
-            if (fabs(angle123 - std::numbers::pi / 2) < Precision::Confusion()) {
+            if (fabs(angle123 - std::numbers::pi / 2) < Precision::Confusion()
+                && !toolWidgetManager.hasParameterExpression(5)) {
                 addToShapeConstraints(
                     Sketcher::Perpendicular,
                     firstCurve,
@@ -1739,7 +1750,17 @@ private:
             typeB = Sketcher::Horizontal;
         }
 
-        if (fabs(angle) < Precision::Confusion() || constructionMethod() == ConstructionMethod::Diagonal
+        if ((fabs(angle) < Precision::Confusion()
+             && !(
+                 constructionMethod() == ConstructionMethod::ThreePoints
+                 && toolWidgetManager.hasParameterExpression(3)
+             )
+             && !(
+                 (constructionMethod() == ConstructionMethod::ThreePoints
+                  || constructionMethod() == ConstructionMethod::CenterAnd3Points)
+                 && toolWidgetManager.hasParameterExpression(5)
+             ))
+            || constructionMethod() == ConstructionMethod::Diagonal
             || constructionMethod() == ConstructionMethod::CenterAndCorner) {
             addToShapeConstraints(typeA, geoId);      // NOLINT
             addToShapeConstraints(typeA, geoId + 2);  // NOLINT
@@ -2981,6 +3002,11 @@ void DSHRectangleController::addConstraints()
     auto angle = Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
     auto innerAngle = Base::toRadians(onViewParameters[OnViewParameter::Sixth]->getValue());
 
+    auto angleExpr = onViewParameters[OnViewParameter::Fourth]->constraintExpression();
+    auto innerAngleExpr = onViewParameters[OnViewParameter::Sixth]->constraintExpression();
+    auto corner1xExpr = onViewParameters[OnViewParameter::Third]->constraintExpression();
+    auto corner1yExpr = onViewParameters[OnViewParameter::Fourth]->constraintExpression();
+
     auto corner1xSet = onViewParameters[OnViewParameter::Third]->isSet;
     auto corner1ySet = onViewParameters[OnViewParameter::Fourth]->isSet;
     auto angleSet = onViewParameters[OnViewParameter::Fourth]->isSet;
@@ -3145,11 +3171,20 @@ void DSHRectangleController::addConstraints()
     // therefore, they are necessarily constrainable were applicable.
 
     if (handler->constructionMethod() == ConstructionMethod::ThreePoints) {
-        if (angleSet) {
-            ConstraintLineByAngle(firstCurve, angle, obj);
+        if (angleSet || (!innerAngleExpr.empty() && fabs(angle) < Precision::Confusion())) {
+            const int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
+            ConstraintLineByAngle(firstCurve, angle, obj, !angleExpr.empty() || !innerAngleExpr.empty());
+            applyExpressionToLatestConstraint(
+                handler->getSketchObject(),
+                oldConstraintCount,
+                obj,
+                angleExpr
+            );
         }
         if (innerAngleSet) {
-            if (fabs(fmod(fabs(innerAngle), pi) - pi / 2) > Precision::Confusion()) {
+            if (!innerAngleExpr.empty()
+                || fabs(fmod(fabs(innerAngle), pi) - pi / 2) > Precision::Confusion()) {
+                const int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
                 // At odd multiples of 90 degrees, a perpendicular constraint was already created.
                 Gui::cmdAppObjectArgs(
                     obj,
@@ -3160,28 +3195,52 @@ void DSHRectangleController::addConstraints()
                     2,
                     innerAngle
                 );
+                applyExpressionToLatestConstraint(
+                    handler->getSketchObject(),
+                    oldConstraintCount,
+                    obj,
+                    innerAngleExpr
+                );
             }
         }
     }
     else if (handler->constructionMethod() == ConstructionMethod::CenterAnd3Points) {
         if (corner1xSet) {
+            const int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
             ConstraintToAttachment(
                 GeoElementId(firstCurve, PointPos::start),
                 GeoElementId::VAxis,
                 corner1x,
-                obj
+                obj,
+                !corner1xExpr.empty()
+            );
+            applyExpressionToLatestConstraint(
+                handler->getSketchObject(),
+                oldConstraintCount,
+                obj,
+                corner1xExpr
             );
         }
         if (corner1ySet) {
+            const int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
             ConstraintToAttachment(
                 GeoElementId(firstCurve, PointPos::start),
                 GeoElementId::HAxis,
                 corner1y,
-                obj
+                obj,
+                !corner1yExpr.empty()
+            );
+            applyExpressionToLatestConstraint(
+                handler->getSketchObject(),
+                oldConstraintCount,
+                obj,
+                corner1yExpr
             );
         }
         if (innerAngleSet) {
-            if (fabs(fmod(fabs(innerAngle), pi) - pi / 2) > Precision::Confusion()) {
+            if (!innerAngleExpr.empty()
+                || fabs(fmod(fabs(innerAngle), pi) - pi / 2) > Precision::Confusion()) {
+                const int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
                 // At odd multiples of 90 degrees, a perpendicular constraint was already created.
                 Gui::cmdAppObjectArgs(
                     obj,
@@ -3191,6 +3250,12 @@ void DSHRectangleController::addConstraints()
                     firstCurve + 3,
                     2,
                     innerAngle
+                );
+                applyExpressionToLatestConstraint(
+                    handler->getSketchObject(),
+                    oldConstraintCount,
+                    obj,
+                    innerAngleExpr
                 );
             }
         }

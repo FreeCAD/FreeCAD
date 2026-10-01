@@ -904,7 +904,7 @@ void DSHArcSlotController::addConstraints()
             GeoElementId::VAxis,
             x0,
             obj,
-            !x0Expr.empty()
+            !x0Expr.empty() || !y0Expr.empty()
         );
         applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, x0Expr);
     };
@@ -916,7 +916,7 @@ void DSHArcSlotController::addConstraints()
             GeoElementId::HAxis,
             y0,
             obj,
-            !y0Expr.empty()
+            !x0Expr.empty() || !y0Expr.empty()
         );
         applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, y0Expr);
     };
@@ -983,7 +983,7 @@ void DSHArcSlotController::addConstraints()
     };
 
     if (handler->AutoConstraints.empty()) {  // No valid diagnosis. Every constraint can be added.
-        if (x0set && y0set && x0 == 0. && y0 == 0.) {
+        if (x0set && y0set && x0 == 0. && y0 == 0. && x0Expr.empty() && y0Expr.empty()) {
             ConstraintToAttachment(GeoElementId(firstCurve, PointPos::mid), GeoElementId::RtPnt, 0., obj);
         }
         else {

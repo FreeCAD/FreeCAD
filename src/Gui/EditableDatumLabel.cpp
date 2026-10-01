@@ -237,6 +237,7 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
         lineEdit->installEventFilter(this);
         connect(lineEdit, &QLineEdit::textEdited, this, [this](const QString&) {
             hasUserEditedText = true;
+            expression.clear();
         });
         connect(lineEdit, &QLineEdit::textChanged, this, [this, lineEdit]() {
             this->updateGeometry(lineEdit);
@@ -297,7 +298,10 @@ bool EditableDatumLabel::syncValueFromSpinBox(bool emitParameterUnset)
         return false;
     }
 
-    expression = spinBox->takeUnboundExpressionText();
+    auto committedExpression = spinBox->takeUnboundExpressionText();
+    if (!committedExpression.empty()) {
+        expression = std::move(committedExpression);
+    }
 
     if (!spinBox->hasValidInput()) {
         expression.clear();
@@ -334,6 +338,8 @@ void EditableDatumLabel::handleSpinBoxInputCleared()
     // Clearing an OVP removes its provisional parameter; it does not create a new numeric value.
     // Keep the committed value intact so Escape and cancellation can still restore it.
     isSet = false;
+    expression.clear();
+    hasUserEditedText = true;
     resetLockedState();
     Q_EMIT parameterUnset();
 }
@@ -493,18 +499,21 @@ bool EditableDatumLabel::commitPendingInlineExpression()
 
     // Untouched OVA fields should not become explicit constraints on click-out.
     // Keep this as a no-op commit so tool flow can continue.
-    if (!hasUserEditedText && !InlineExpression::looksLikeExpressionInput(normalized)) {
+    if (!hasUserEditedText) {
         return true;
     }
 
+    hasUserEditedText = false;
     if (spinBox->commitInlineExpressionTextForUi()) {
         return true;
     }
     if (!spinBox->hasValidInput()) {
+        hasUserEditedText = true;
         return false;
     }
 
     if (InlineExpression::looksLikeExpressionInput(normalized)) {
+        hasUserEditedText = true;
         return false;
     }
     const Base::Quantity quant = spinBox->valueFromText(input);

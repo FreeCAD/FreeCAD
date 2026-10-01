@@ -722,7 +722,7 @@ void DSHLineController::addConstraints()
             GeoElementId::VAxis,
             x0,
             obj,
-            !x0Expr.empty()
+            !x0Expr.empty() || !y0Expr.empty()
         );
         applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, x0Expr);
     };
@@ -734,7 +734,7 @@ void DSHLineController::addConstraints()
             GeoElementId::HAxis,
             y0,
             obj,
-            !y0Expr.empty()
+            !x0Expr.empty() || !y0Expr.empty()
         );
         applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, y0Expr);
     };
@@ -756,7 +756,13 @@ void DSHLineController::addConstraints()
                 fabs(p3)
             );
         }
-        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, p3Expr);
+        applyExpressionToLatestConstraint(
+            handler->getSketchObject(),
+            oldConstraintCount,
+            obj,
+            (handler->endPoint.x < handler->startPoint.x && !p3Expr.empty()) ? "-(" + p3Expr + ")"
+                                                                             : p3Expr
+        );
     };
 
     auto constraintp3length = [&]() {
@@ -799,7 +805,13 @@ void DSHLineController::addConstraints()
                 fabs(p4)
             );
         }
-        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, p4Expr);
+        applyExpressionToLatestConstraint(
+            handler->getSketchObject(),
+            oldConstraintCount,
+            obj,
+            (handler->endPoint.y < handler->startPoint.y && !p4Expr.empty()) ? "-(" + p4Expr + ")"
+                                                                             : p4Expr
+        );
     };
 
     auto constraintp4angle = [&]() {
@@ -822,7 +834,7 @@ void DSHLineController::addConstraints()
 
     if (handler->AutoConstraints.empty()) {  // No valid diagnosis. Every constraint can be added.
 
-        if (x0set && y0set && x0 == 0. && y0 == 0.) {
+        if (x0set && y0set && x0 == 0. && y0 == 0. && x0Expr.empty() && y0Expr.empty()) {
             constraintToOrigin();
         }
         else {
