@@ -136,10 +136,10 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
 
     def setUp(self):
         self.clipper_scale_orig = area.get_clipper_scale()
-        area.set_clipper_scale(1e7)
+        area.set_clipper_scale_and_point_tolerance(1e7)
 
     def tearDown(self):
-        area.set_clipper_scale(self.clipper_scale_orig)
+        area.set_clipper_scale_and_point_tolerance(self.clipper_scale_orig)
 
     def _offsetWire(self, wire, base, offset, pos_compat, compat_flipped, tolerance=None):
         tolerance = tolerance if tolerance is not None else self.tolerance
