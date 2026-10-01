@@ -83,6 +83,18 @@ protected:
         return box.getMax()[0] - box.getMin()[0];
     }
 
+    /// Width measured the way SoFCPathAnnotation does it, along the path.
+    float traversedWidthAlongPath() const
+    {
+        SoGetBoundingBoxAction action(SbViewportRegion(100, 100));
+        action.apply(path);
+        const SbBox3f box = action.getBoundingBox();
+        if (box.isEmpty()) {
+            return 0.0F;
+        }
+        return box.getMax()[0] - box.getMin()[0];
+    }
+
     SoSeparator* root = nullptr;
     SoFCSwitch* node = nullptr;
     SoPath* path = nullptr;
@@ -167,6 +179,22 @@ TEST_F(SoFCSwitchTest, ANullScopeSuppressesAnOuterOverride)
     }
 
     EXPECT_FLOAT_EQ(traversedWidth(), SmallChild);
+}
+
+TEST_F(SoFCSwitchTest, AnOverrideSurvivesACachedBoundingBoxAlongAPath)
+{
+    // mirrors SoFCPathAnnotation::getBoundingBox, which measures along a path with
+    // the override scoped to that same path, so auto clipping counts hidden geometry
+    root->boundingBoxCaching = SoSeparator::AUTO;
+    node->whichChild = SO_SWITCH_NONE;
+    node->defaultChild = 0;
+
+    // prime whatever cache the traversal keeps, the way an ordinary one would
+    ASSERT_FLOAT_EQ(traversedWidthAlongPath(), 0.0F);
+
+    SoFCSwitch::OverrideScope scope(path);
+
+    EXPECT_FLOAT_EQ(traversedWidthAlongPath(), SmallChild);
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
