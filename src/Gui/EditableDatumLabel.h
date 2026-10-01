@@ -23,6 +23,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QObject>
 #include <QPointer>
 #include <QLabel>
@@ -160,6 +162,7 @@ private:
 
     Function function;
     double editStartValue;
+    std::shared_ptr<bool> mAlive;
 };
 
 }  // namespace Gui

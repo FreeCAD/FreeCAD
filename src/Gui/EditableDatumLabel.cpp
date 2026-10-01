@@ -79,6 +79,7 @@ EditableDatumLabel::EditableDatumLabel(
     , pickStyle(nullptr)
     , function(Function::Positioning)
     , editStartValue(0.0)
+    , mAlive(std::make_shared<bool>(true))
 {
     // NOLINTBEGIN
     initColors();
@@ -149,6 +150,10 @@ EditableDatumLabel::EditableDatumLabel(
 
 EditableDatumLabel::~EditableDatumLabel()
 {
+    // Mark the label as dead before tearing anything down, so that code re-entering
+    // from a signal emitted during destruction can detect it via the liveness token.
+    *mAlive = false;
+
     deactivate();
     transform->unref();
     annotation->unref();
@@ -387,7 +392,14 @@ bool EditableDatumLabel::eventFilter(QObject* watched, QEvent* event)
 
                 // Enter or tab with edited input accepts the current value.
                 this->hasFinishedEditing = true;
-                if (this->commitPendingInlineExpression()) {
+                // Committing the value re-enters the tool (via the valueChanged
+                // signal) and may destroy this label; prevent invalid access.
+                const auto alive = this->mAlive;
+                const bool committed = this->commitPendingInlineExpression();
+                if (!*alive) {
+                    return true;
+                }
+                if (committed) {
                     Q_EMIT this->editingFinished(value);
                     return true;
                 }
