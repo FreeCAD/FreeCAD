@@ -23,6 +23,8 @@ except ImportError:
 
 
 PART_PLANE_TYPE = f"{Part.__name__}::Plane"
+PARTDESIGN_BODY_TYPE = f"{PartDesign.__name__}::Body"
+PARTDESIGN_BOX_TYPE = f"{PartDesign.__name__}::AdditiveBox"
 
 
 class TestSelectionVisual(unittest.TestCase):
@@ -259,8 +261,8 @@ class TestSelectionVisual(unittest.TestCase):
         return box
 
     def _create_test_feature(self):
-        body = self.doc.addObject("PartDesign::Body", "Body")
-        feature = self.doc.addObject("PartDesign::AdditiveBox", "Box")
+        body = self.doc.addObject(PARTDESIGN_BODY_TYPE, "Body")
+        feature = self.doc.addObject(PARTDESIGN_BOX_TYPE, "Box")
         feature.Length = 20
         feature.Width = 20
         feature.Height = 20
