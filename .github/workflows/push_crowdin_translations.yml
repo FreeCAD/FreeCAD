@@ -6,7 +6,7 @@ on:
     - cron: "0 0 * * 1"
 
 env:
-  TRANSLATION_REF: "releases/FreeCAD-26-3"
+  TRANSLATION_REF: "main"
 
 permissions:
   contents: read
