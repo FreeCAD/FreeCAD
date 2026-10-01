@@ -98,7 +98,7 @@ def get_draft_modification_commands():
         "Draft_Slope",
         "Draft_FlipDimension",
         "Separator",
-        "Draft_Shape2DView",
+        "Draft_Shape2DViewTools",
     ]
 
 
