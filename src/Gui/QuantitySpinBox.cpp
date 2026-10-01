@@ -259,7 +259,12 @@ void Gui::QuantitySpinBox::setNumberExpression(App::NumberExpression* expr)
     if (quantity.isDimensionless() && d->unit != Base::Unit::One) {
         quantity.setUnit(d->unit);
     }
-    commitQuantity(quantity, TextPolicy::ReformatEditor, false);
+    // An expression result is a semantic change: listeners (task panel previews, bound
+    // feature updates) must be notified, as they were before c152324 via validateInput().
+    // see: https://github.com/FreeCAD/FreeCAD/issues/33098
+    const bool changed = quantity.getValue() != d->quantity.getValue()
+        || quantity.getUnit() != d->quantity.getUnit();
+    commitQuantity(quantity, TextPolicy::ReformatEditor, changed);
 }
 
 bool QuantitySpinBox::apply(const std::string& propName)
