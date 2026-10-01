@@ -1,0 +1,22 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: YYYY-MM-DD\n"
+"Last-Translator: FULLNAME <EMAIL@ADDRESS>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: AppRun:9
+msgid "FreeCAD launch error"
+msgstr "FreeCAD-Startfehler"
+
+#: AppRun:10
+msgid "FreeCAD cannot run because the following requirements are not met:"
+msgstr "FreeCAD kann nicht ausgeführt werden, da die folgenden Anforderungen nicht erfüllt sind:"
+
+#: AppRun:49
+msgid "Your computer's processor is too old (x86_64-v${ARCHVER}, minimum required is x86_64-v${MIN_ARCHVER})."
+msgstr "Der Prozessor dieses Computers ist zu alt (x86_64-v${ARCHVER}, die Mindestanforderung ist x86_64-v${MIN_ARCHVER})"
