@@ -14,6 +14,7 @@ import FreeCAD
 import FreeCADGui
 from FreeCADGui import Selection
 import Part
+import PartDesign
 
 try:
     from PySide6 import QtWidgets
@@ -213,6 +214,39 @@ class TestSelectionVisual(unittest.TestCase):
             "Preselection should not render a hidden object when the preference is off.",
         )
 
+    def test_preselection_previews_a_visible_feature(self):
+        feature = self._create_test_feature()
+        self._set_preselect_hidden(True)
+        self.assertTrue(feature.ViewObject.Visibility, "the test needs a visible feature")
+        self.assertFalse(feature.ViewObject.isPreviewEnabled())
+
+        # a tree preselection answers with the feature's own delta, shown or not
+        Selection.setPreselection(feature, "", 0.0, 0.0, 0.0, self._MSG_SOURCE_TREE_VIEW)
+        self._flush_gui()
+        self.assertTrue(
+            feature.ViewObject.isPreviewEnabled(),
+            "Preselecting a visible feature did not show its preview.",
+        )
+
+        Selection.clearPreselection()
+        self._flush_gui()
+        self.assertFalse(
+            feature.ViewObject.isPreviewEnabled(),
+            "Clearing preselection did not end the preview.",
+        )
+
+    def test_disabled_preference_leaves_a_visible_feature_unpreviewed(self):
+        feature = self._create_test_feature()
+        self._set_preselect_hidden(False)
+
+        # with the preference off a visible feature keeps its ordinary highlight
+        Selection.setPreselection(feature, "", 0.0, 0.0, 0.0, self._MSG_SOURCE_TREE_VIEW)
+        self._flush_gui()
+        self.assertFalse(
+            feature.ViewObject.isPreviewEnabled(),
+            "Preselection should not preview a feature when the preference is off.",
+        )
+
     def _hide_and_sample(self, obj):
         obj.ViewObject.Visibility = False
         self._flush_gui()
@@ -223,6 +257,18 @@ class TestSelectionVisual(unittest.TestCase):
         box.ViewObject.ShapeColor = (0.66, 0.66, 0.74)
         self.doc.recompute()
         return box
+
+    def _create_test_feature(self):
+        body = self.doc.addObject("PartDesign::Body", "Body")
+        feature = self.doc.addObject("PartDesign::AdditiveBox", "Box")
+        feature.Length = 20
+        feature.Width = 20
+        feature.Height = 20
+        body.addObject(feature)
+        self.doc.recompute()
+        feature.ViewObject.Visibility = True
+        self._flush_gui()
+        return feature
 
     def _create_test_plane(self):
         plane = self.doc.addObject(PART_PLANE_TYPE, "Plane")
