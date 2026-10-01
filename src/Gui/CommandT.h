@@ -443,6 +443,159 @@ void cmdAppObjectArgs(const App::DocumentObject* obj, const std::string& cmd, Ar
     try {
         boost::format fmt(cmd);
         _cmd = FormatString::toStr(fmt, std::forward<Args>(args)...);
+        Base::Console().error("Joerg {}:{}: cmdAppObjectArgs {}\n", __FILE__, __LINE__, _cmd);
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.getDocument('%s').getObject('%s').%s",
+            obj->getDocument()->getName(),
+            obj->getNameInDocument(),
+            _cmd.c_str()
+        );
+    }
+    catch (const std::exception& e) {
+        Base::Console().developerError(obj->getFullLabel(), "{}: {}\n", e.what(), cmd);
+    }
+    catch (const Base::Exception&) {
+        Base::Console().developerError(
+            obj->getFullLabel(),
+            "App.getDocument('{}').getObject('{}').{}\n",
+            obj->getDocument()->getName(),
+            obj->getNameInDocument(),
+            _cmd
+        );
+        throw;
+    }
+}
+
+// Helper to manage pending constraint commands
+class ConstraintCommandQueue
+{
+public:
+    static std::vector<std::string>& getBuffer()
+    {
+        static thread_local std::vector<std::string> buffer;
+        return buffer;
+    }
+    static bool isBuffering()
+    {
+        return buffering;
+    }
+    static void setBuffering(bool val)
+    {
+        buffering = val;
+    }
+    static void reset()
+    {
+        Base::Console().error("Joerg {}:{}: reset\n", __FILE__, __LINE__);
+        getBuffer().clear();
+    }
+    static void emit()
+    {
+        Base::Console().error("Joerg {}:{}: emit\n", __FILE__, __LINE__);
+        for (const auto& element : getBuffer()) {
+            Base::Console().error("Joerg {}:{}: emiting {}\n", __FILE__, __LINE__, element);
+            Gui::Command::doCommand(Gui::Command::Doc, "%s", element.c_str());
+        }
+        getBuffer().clear();
+    }
+
+private:
+    inline static thread_local bool buffering = false;
+};
+
+template<typename... Args>
+void cmdSketcherConstraint(const App::DocumentObject* obj, const std::string& cmd, Args&&... args)
+{
+    std::string _cmd;
+    try {
+        boost::format fmt(cmd);
+        _cmd = FormatString::toStr(fmt, std::forward<Args>(args)...);
+
+        std::string fullPythonCmd = std::string("App.getDocument('") + obj->getDocument()->getName()
+            + std::string("').getObject('") + obj->getNameInDocument() + std::string("').") + _cmd;
+
+        if (Gui::ConstraintCommandQueue::isBuffering()) {
+            // BUFFER IT INSTEAD OF RUNNING
+            Base::Console()
+                .error("Joerg {}:{}: cmdSketcherConstraint buffering {}\n", __FILE__, __LINE__, _cmd);
+            Gui::ConstraintCommandQueue::getBuffer().push_back(fullPythonCmd);
+
+            // NOTE: You still want the C++ model to execute immediately
+            // so the 3D view updates live! But we execute via interpreter *without* doCommand,
+            // or let the model action happen via the tool's C++ methods.
+            // Wait, does cmdSketcherConstraint normally execute the Python interpreter?
+            // Yes, via doCommand(). To let C++ update live without logging to console/macro:
+            Base::Interpreter().runString(fullPythonCmd.c_str());
+        }
+        else {
+            // Fallback if not inside a buffered transaction scope
+            Base::Console()
+                .error("Joerg {}:{}: cmdSketcherConstraint doCommand {}\n", __FILE__, __LINE__, _cmd);
+            Gui::Command::doCommand(
+                Gui::Command::Doc,
+                "App.getDocument('%s').getObject('%s').%s",
+                obj->getDocument()->getName(),
+                obj->getNameInDocument(),
+                _cmd.c_str()
+            );
+        }
+    }
+    catch (const std::exception& e) {
+        Base::Console().developerError(obj->getFullLabel(), "{}: {}\n", e.what(), cmd);
+    }
+    catch (const Base::Exception&) {
+        throw;
+    }
+}
+
+
+template<typename... Args>
+void YYYcmdSketcherConstraint(const App::DocumentObject* obj, const std::string& cmd, Args&&... args)
+{
+    std::string _cmd;
+    try {
+        boost::format fmt(cmd);
+        _cmd = FormatString::toStr(fmt, std::forward<Args>(args)...);
+        if (Gui::ConstraintCommandQueue::isBuffering()) {
+            Base::Console().error("Joerg {}:{}: cmdSketcherConstraint {}\n", __FILE__, __LINE__, _cmd);
+            Gui::ConstraintCommandQueue::getBuffer().push_back(_cmd);
+            // Gui::Command::doCommand( Gui::Command::Doc, "App.getDocument('%s').getObject('%s').%s",
+            // obj->getDocument()->getName(), obj->getNameInDocument(), _cmd.c_str());
+            Base::Interpreter().runString(_cmd.c_str());
+        }
+        else {
+            Gui::Command::doCommand(
+                Gui::Command::Doc,
+                "App.getDocument('%s').getObject('%s').%s",
+                obj->getDocument()->getName(),
+                obj->getNameInDocument(),
+                _cmd.c_str()
+            );
+        }
+    }
+    catch (const std::exception& e) {
+        Base::Console().developerError(obj->getFullLabel(), "{}: {}\n", e.what(), cmd);
+    }
+    catch (const Base::Exception&) {
+        Base::Console().developerError(
+            obj->getFullLabel(),
+            "App.getDocument('{}').getObject('{}').{}\n",
+            obj->getDocument()->getName(),
+            obj->getNameInDocument(),
+            _cmd
+        );
+        throw;
+    }
+}
+
+template<typename... Args>
+void XXXcmdSketcherConstraint(const App::DocumentObject* obj, const std::string& cmd, Args&&... args)
+{
+    std::string _cmd;
+    try {
+        boost::format fmt(cmd);
+        _cmd = FormatString::toStr(fmt, std::forward<Args>(args)...);
+        Base::Console().error("Joerg {}:{}: cmdSketcherConstraint {}\n", __FILE__, __LINE__, _cmd);
         Gui::Command::doCommand(
             Gui::Command::Doc,
             "App.getDocument('%s').getObject('%s').%s",
