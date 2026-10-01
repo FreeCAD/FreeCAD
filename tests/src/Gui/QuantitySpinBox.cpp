@@ -1468,6 +1468,38 @@ private Q_SLOTS:
         QCOMPARE(spinBox.valueFromText(QStringLiteral("10")), Base::Quantity(254.0, "mm"));
     }
 
+    void test_ExpressionResultNotifiesListeners()  // NOLINT
+    {
+        // An expression result is a semantic change, so listeners such as task-panel
+        // previews must receive valueChanged. Re-applying an expression that evaluates
+        // to the same value must not emit again, or bound panels would recompute in a loop.
+        // see: https://github.com/FreeCAD/FreeCAD/issues/33098
+        ScopedExpressionOwner owner;
+        QuantitySpinBoxWithExpression spinBox;
+        spinBox.bind(owner.getPath());
+        spinBox.setUnit(Base::Unit::Length);
+
+        QSignalSpy spy(&spinBox, qOverload<double>(&Gui::QuantitySpinBox::valueChanged));
+
+        std::shared_ptr<App::Expression> expr(App::Expression::parse(owner.getObject(), "10 mm"));
+        spinBox.setExpression(expr);
+
+        QCOMPARE(spy.count(), 1);
+        QCOMPARE(spy.takeFirst().at(0).toDouble(), 10.0);
+        QCOMPARE(spinBox.value(), Base::Quantity(10.0, "mm"));
+
+        // same result again: no further notification
+        std::shared_ptr<App::Expression> same(App::Expression::parse(owner.getObject(), "10 mm"));
+        spinBox.setExpression(same);
+        QCOMPARE(spy.count(), 0);
+
+        // a different result notifies again
+        std::shared_ptr<App::Expression> other(App::Expression::parse(owner.getObject(), "20 mm"));
+        spinBox.setExpression(other);
+        QCOMPARE(spy.count(), 1);
+        QCOMPARE(spy.takeFirst().at(0).toDouble(), 20.0);
+    }
+
 private:
     /// Builds a length spin box holding the given input, entered the way the user types it.
     /// isNormalized() inspects the last input accepted by the validator, so callers have to
