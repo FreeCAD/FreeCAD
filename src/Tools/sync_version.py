@@ -185,13 +185,6 @@ def sync_MainGui(filepath: Path, version: VersionInfo) -> tuple[str, bool]:
         updated,
     )
 
-    # argv[0]:             FreeCAD-1.2.0
-    updated = re.sub(
-        r'(argv\[0\]\s*=\s*const_cast<char\*>\(")[^"]+("\);)',
-        rf"\g<1>FreeCAD-{version.simple}\g<2>",
-        updated,
-    )
-
     return updated, updated != content
 
 
@@ -222,6 +215,23 @@ def sync_linux_create_bundle(filepath: Path, version: VersionInfo) -> tuple[str,
     return updated, updated != content
 
 
+def sync_Application(filepath: Path, version: VersionInfo) -> tuple[str, bool]:
+    """Sync Application file
+    Updates:
+             - std::string qtAppName = "FreeCAD-1.2.0";
+    """
+    content = filepath.read_text(encoding="utf-8")
+    updated = content
+
+    updated = re.sub(
+        r'std::string qtAppName = "FreeCAD";',
+        rf'std::string qtAppName = "FreeCAD-{version.simple}";',
+        updated,
+    )
+
+    return updated, updated != content
+
+
 # Each entry is (relative_path, sync_function).
 SYNC_TARGETS = [
     ("pixi.toml", sync_workspace_pixi_toml),
@@ -232,6 +242,7 @@ SYNC_TARGETS = [
     ),
     ("src/Main/MainGui.cpp", sync_MainGui),
     ("package/bundle/linux/create_bundle.sh", sync_linux_create_bundle),
+    ("src/Gui/Application.cpp", sync_Application),
 ]
 
 

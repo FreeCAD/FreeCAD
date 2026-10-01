@@ -17,6 +17,7 @@ from sync_version import (
     sync_desktop_file,
     sync_MainGui,
     sync_linux_create_bundle,
+    sync_Application,
     run,
 )
 
@@ -322,7 +323,6 @@ class TestMainGui(unittest.TestCase):
                 'App::Application::Config()["DesktopFileName"] = "org.freecad.FreeCAD-1.2.0";',
                 result,
             )
-            self.assertIn('argv[0] = const_cast<char*>("FreeCAD-1.2.0");', result)
             self.assertFalse(changed)
 
     def test_unsynced(self):
@@ -335,7 +335,6 @@ class TestMainGui(unittest.TestCase):
                 'App::Application::Config()["DesktopFileName"] = "org.freecad.FreeCAD-1.2.0";',
                 result,
             )
-            self.assertIn('argv[0] = const_cast<char*>("FreeCAD-1.2.0");', result)
             self.assertTrue(changed)
 
     def test_partially_synced(self):
@@ -348,7 +347,6 @@ class TestMainGui(unittest.TestCase):
                 'App::Application::Config()["DesktopFileName"] = "org.freecad.FreeCAD-1.2.0";',
                 result,
             )
-            self.assertIn('argv[0] = const_cast<char*>("FreeCAD-1.2.0");', result)
             self.assertTrue(changed)
 
 
@@ -430,6 +428,46 @@ class TestSyncLinuxCreateBundle(unittest.TestCase):
             )
             self.assertIn(
                 "sed -i 's/Exec=FreeCAD/Exec=AppRun/g' AppDir/org.freecad.FreeCAD-1.2.0.desktop",
+                result,
+            )
+            self.assertTrue(changed)
+
+
+APPLICATION_CPP_SYNCED = """\
+std::string qtArg = "-name";
+std::string qtAppName = "FreeCAD-1.2.0";
+"""
+
+
+APPLICATION_CPP_UNSYNCED = """\
+std::string qtArg = "-name";
+std::string qtAppName = "FreeCAD";
+"""
+
+
+class TestApplication(unittest.TestCase):
+    def test_synced(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            filepath = write_temp_file(Path(tmp), "Application.cpp", APPLICATION_CPP_SYNCED)
+            version = make_version()
+
+            result, changed = sync_Application(filepath, version)
+
+            self.assertIn(
+                'std::string qtAppName = "FreeCAD-1.2.0";',
+                result,
+            )
+            self.assertFalse(changed)
+
+    def test_unsynced(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            filepath = write_temp_file(Path(tmp), "Application.cpp", APPLICATION_CPP_UNSYNCED)
+            version = make_version()
+
+            result, changed = sync_Application(filepath, version)
+
+            self.assertIn(
+                'std::string qtAppName = "FreeCAD-1.2.0";',
                 result,
             )
             self.assertTrue(changed)
@@ -566,10 +604,6 @@ class TestRun(unittest.TestCase):
             )
             self.assertIn(
                 'App::Application::Config()["DesktopFileName"] = "org.freecad.FreeCAD-1.2.0";',
-                content,
-            )
-            self.assertIn(
-                'argv[0] = const_cast<char*>("FreeCAD-1.2.0");',
                 content,
             )
 

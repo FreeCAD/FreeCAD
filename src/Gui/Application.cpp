@@ -2650,7 +2650,18 @@ void Application::runApplication()
     Base::Console().log("Init: Creating Gui::Application and QApplication\n");
 
     int argc = App::Application::GetARGC();
-    GUISingleApplication mainApp(argc, App::Application::GetARGV());
+    char** argv = App::Application::GetARGV();
+
+    // Fix for XWayland window stacking
+    std::string qtArg = "-name";
+    std::string qtAppName = "FreeCAD";
+
+    std::vector<char*> args(argv, argv + argc);
+    args.push_back(qtArg.data());
+    args.push_back(qtAppName.data());
+
+    int new_argc = static_cast<int>(args.size());
+    GUISingleApplication mainApp(new_argc, args.data());
 
 #if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 406) \
     && (defined(FC_OS_LINUX) || defined(FC_OS_BSD))

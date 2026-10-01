@@ -226,7 +226,7 @@ int main(int argc, char** argv)
     App::Application::Config()["SplashWarningColor"] = "#CA333B";
     App::Application::Config()["SplashInfoColor"] = "#000000";
     App::Application::Config()["SplashInfoPosition"] = "6,75";
-    App::Application::Config()["DesktopFileName"] = "org.freecad.FreeCAD-26.3.0";
+    App::Application::Config()["DesktopFileName"] = "org.freecad.FreeCAD";
 
     try {
         // Init phase ===========================================================
@@ -246,10 +246,6 @@ int main(int argc, char** argv)
 # endif
 
 #else
-        // Fix for XWayland window stacking
-        if (argc > 0 && argv && argv[0]) {
-            argv[0] = const_cast<char*>("FreeCAD");
-        }
         App::Application::init(argc, argv);
 #endif
 
@@ -262,11 +258,6 @@ int main(int argc, char** argv)
         if (desktopFileIsAvailable(desktopFileName)) {
             QGuiApplication::setDesktopFileName(desktopFileName);
         }
-
-        // Keep this to protect configurations and native Wayland tracking
-        const QString applicationName = QString::fromStdString(App::Application::Config()["ExeName"]);
-
-        QGuiApplication::setApplicationName(applicationName);
 
         std::map<std::string, std::string>::iterator it = App::Application::Config().find(
             "NavigationStyle"
