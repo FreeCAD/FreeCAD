@@ -196,8 +196,10 @@ def workplanesOf(job):
 
 def operationsUsing(job, workplane):
     """operationsUsing(job, workplane) ... operations of job linked to workplane."""
+    from PathScripts.PathUtils import getOperations
+
     return [
         op
-        for op in job.Operations.Group
+        for op in getOperations(job)
         if getattr(op, "Workplane", None) is not None and op.Workplane == workplane
     ]
