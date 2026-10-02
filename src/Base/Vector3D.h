@@ -174,6 +174,8 @@ public:
     /// Set length to 1.
     Vector3& Normalize();
     Vector3 Normalized() const;
+    /// Returns false if any component is NaN or infinite.
+    [[nodiscard]] bool isFinite() const;
     /// Checks whether this is the null vector
     [[nodiscard]] bool IsNull() const;
     /// Get angle between both vectors. The returned value lies in the interval [0,pi].

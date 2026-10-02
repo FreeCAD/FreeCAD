@@ -40,12 +40,37 @@ namespace App
 class SubObjectPlacementProvider
 {
 public:
+    enum class SnapGeometryType
+    {
+        Unknown,
+        Point,
+        Axis,
+        Plane,
+        AxisSystem
+    };
+
     virtual ~SubObjectPlacementProvider() = default;
 
     /**
     * Returns placement of sub object relative to the base placement.
     */
     virtual Base::Placement calculate(SubObjectT object, Base::Placement basePlacement) const = 0;
+
+    /**
+    * Returns how the sub object should participate in geometry snapping.
+    */
+    virtual SnapGeometryType snapGeometryType(const SubObjectT&) const
+    {
+        return SnapGeometryType::Unknown;
+    }
+
+    /**
+    * Returns the canonical snapping frame in the selected object's local coordinates.
+    */
+    virtual std::optional<Base::Placement> snapPlacement(const SubObjectT&) const
+    {
+        return std::nullopt;
+    }
 
     /**
     * Given a hovered sub-object and the world-space cursor position, optionally returns a

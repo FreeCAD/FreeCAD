@@ -81,6 +81,8 @@ public:
         _rot = Rot;
     }
 
+    /// Checks position and quaternion components for NaN or infinity.
+    bool isFinite() const;
     bool isIdentity() const;
     bool isIdentity(double tol) const;
     void invert();
