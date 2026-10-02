@@ -199,7 +199,7 @@ void TaskFilletParameters::apply()
 {
     ui->filletRadius->apply();
 
-    // Alert user if he created an empty feature (ignore when UseAllEdges)
+    // Alert user if he created an empty feature
     auto fillet = getObject<PartDesign::Fillet>();
     if (ui->listWidgetReferences->count() == 0 && !fillet->UseAllEdges.getValue()) {
         std::string text = tr("Empty fillet created!").toStdString();
