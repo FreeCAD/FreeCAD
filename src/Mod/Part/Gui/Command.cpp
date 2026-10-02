@@ -29,6 +29,8 @@
 #include <Standard_Version.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS_Shape.hxx>
+#include <BRepCheck_Analyzer.hxx>
+#include <QMessageBox>
 
 
 #include <App/Application.h>
@@ -1261,59 +1263,99 @@ void CmdPartMakeSolid::activated(int iMsg)
     addModule(Doc, "Part");
     openCommand("Make solid");
     for (auto it : objs) {
+        // Intercept Mesh objects immediately
+        if (it->isDerivedFrom(Base::Type::fromName("Mesh::Feature"))) {
+            QString objLabel = QString::fromUtf8(it->Label.getValue());
+            Base::Console().warning("{} is a mesh. Use 'Part > Shape from mesh' first.\n", it->Label.getValue());
+            QMessageBox::warning(
+                Gui::getMainWindow(),
+                QObject::tr("Convert to Solid"),
+                QObject::tr("%1 is a mesh, not a shape. Use 'Part > Shape from mesh' to convert it first.").arg(objLabel)
+            );
+            continue;
+        }
+
         const TopoDS_Shape& shape = Part::Feature::getShape(
             it,
             Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
         );
-        if (!shape.IsNull()) {
-            TopAbs_ShapeEnum type = shape.ShapeType();
-            QString str;
-            QString name = QString::fromLatin1(it->getNameInDocument());
-            std::string label = it->Label.getValue();
-            label = Base::Tools::escapeEncodeString(label);
-            if (type == TopAbs_SOLID) {
-                Base::Console().message(
-                    "{} is ignored because it is already a solid.\n",
-                    it->Label.getValue()
-                );
-            }
-            else if (type == TopAbs_COMPOUND || type == TopAbs_COMPSOLID) {
-                str = QStringLiteral(
-                          "__s__=App.ActiveDocument.%1.Shape.Faces\n"
-                          "__s__=Part.Solid(Part.Shell(__s__))\n"
-                          "__o__=App.ActiveDocument.addObject(\"Part::Feature\",\"%1_solid\")\n"
-                          "__o__.Label=\"%2 (Solid)\"\n"
-                          "__o__.Shape=__s__\n"
-                          "del __s__, __o__"
-                )
-                          .arg(name, QString::fromUtf8(label.c_str()));
-            }
-            else if (type == TopAbs_SHELL) {
-                str = QStringLiteral(
-                          "__s__=App.ActiveDocument.%1.Shape\n"
-                          "__s__=Part.Solid(__s__)\n"
-                          "__o__=App.ActiveDocument.addObject(\"Part::Feature\",\"%1_solid\")\n"
-                          "__o__.Label=\"%2 (Solid)\"\n"
-                          "__o__.Shape=__s__\n"
-                          "del __s__, __o__"
-                )
-                          .arg(name, QString::fromUtf8(label.c_str()));
-            }
-            else {
-                Base::Console().message(
-                    "{} is ignored because it is neither a shell nor a compound.\n",
-                    it->Label.getValue()
-                );
-            }
+        if (shape.IsNull()) {
+            Base::Console().warning("{} has no shape to convert.\n", it->Label.getValue());
+            continue;
+        }
 
-            try {
-                if (!str.isEmpty()) {
-                    runCommand(Doc, str.toUtf8());
+        TopAbs_ShapeEnum type = shape.ShapeType();
+        QString str;
+        QString name = QString::fromLatin1(it->getNameInDocument());
+        std::string label = it->Label.getValue();
+        label = Base::Tools::escapeEncodeString(label);
+
+        if (type == TopAbs_SOLID) {
+            Base::Console().message("{} is already a solid.\n", it->Label.getValue());
+            continue; // Skip execution
+        }
+        else if (type == TopAbs_COMPOUND || type == TopAbs_COMPSOLID) {
+            str = QStringLiteral(
+                      "__s__=App.ActiveDocument.%1.Shape.Faces\n"
+                      "__s__=Part.Solid(Part.Shell(__s__))\n"
+                      "__o__=App.ActiveDocument.addObject(\"Part::Feature\",\"%1_solid\")\n"
+                      "__o__.Label=\"%2 (Solid)\"\n"
+                      "__o__.Shape=__s__\n"
+                      "del __s__, __o__"
+            )
+                      .arg(name, QString::fromUtf8(label.c_str()));
+        }
+        else if (type == TopAbs_SHELL) {
+            str = QStringLiteral(
+                      "__s__=App.ActiveDocument.%1.Shape\n"
+                      "__s__=Part.Solid(__s__)\n"
+                      "__o__=App.ActiveDocument.addObject(\"Part::Feature\",\"%1_solid\")\n"
+                      "__o__.Label=\"%2 (Solid)\"\n"
+                      "__o__.Shape=__s__\n"
+                      "del __s__, __o__"
+            )
+                      .arg(name, QString::fromUtf8(label.c_str()));
+        }
+        else {
+            QString objLabel = QString::fromUtf8(it->Label.getValue());
+            Base::Console().warning("{} is neither a shell nor a compound.\n", it->Label.getValue());
+            QMessageBox::warning(
+                Gui::getMainWindow(),
+                QObject::tr("Convert to Solid"),
+                QObject::tr("%1 is neither a shell nor a compound, so there is nothing to convert.").arg(objLabel)
+            );
+            continue;
+        }
+
+        try {
+            if (!str.isEmpty()) {
+                runCommand(Doc, str.toUtf8());
+
+                // Validate the newly created solid
+                std::string solidName = name.toStdString() + "_solid";
+                App::DocumentObject* newObj = it->getDocument()->getObject(solidName.c_str());
+                if (newObj) {
+                    const TopoDS_Shape& newShape = Part::Feature::getShape(
+                        newObj,
+                        Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
+                    );
+                    if (!newShape.IsNull() && newShape.ShapeType() == TopAbs_SOLID) {
+                        BRepCheck_Analyzer analyzer(newShape);
+                        if (!analyzer.IsValid()) {
+                            QString objLabel = QString::fromUtf8(it->Label.getValue());
+                            Base::Console().warning("Conversion produced an invalid solid for {}.\n", it->Label.getValue());
+                            QMessageBox::warning(
+                                Gui::getMainWindow(),
+                                QObject::tr("Invalid Solid Generated"),
+                                QObject::tr("%1 was converted, but the result is not a closed solid (it has gaps or missing faces). If it came from a mesh, the mesh likely has holes.").arg(objLabel)
+                            );
+                        }
+                    }
                 }
             }
-            catch (const Base::Exception& e) {
-                Base::Console().error("Cannot convert {} because {}.\n", it->Label.getValue(), e.what());
-            }
+        }
+        catch (const Base::Exception& e) {
+            Base::Console().error("Cannot convert {} because {}.\n", it->Label.getValue(), e.what());
         }
     }
 
