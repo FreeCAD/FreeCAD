@@ -37,12 +37,12 @@ import math
 
 import FreeCAD
 import ArchCommands
-import Draft
 import Part
 
 from FreeCAD import Units
 from FreeCAD import Vector
 from draftutils import params
+from draftutils import utils
 
 if FreeCAD.GuiUp:
     import re
@@ -1060,7 +1060,7 @@ if FreeCAD.GuiUp:
                 if self.cur_col == _LABEL_COLUMN:
                     sel_len = len(widget.text())
                 else:
-                    sel_len = FreeCADGui.draftToolBar.number_length(widget.text())
+                    sel_len = utils.get_number_length(widget.text())
                 widget.setSelection(0, sel_len)
             return super().eventFilter(widget, event)
 

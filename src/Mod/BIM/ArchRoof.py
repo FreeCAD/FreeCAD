@@ -44,6 +44,7 @@ import Part
 
 from FreeCAD import Units
 from FreeCAD import Vector
+from draftutils import utils
 
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui, QtWidgets
@@ -1110,5 +1111,5 @@ if FreeCAD.GuiUp:
 
         def eventFilter(self, widget, event):
             if event.type() == QtCore.QEvent.FocusIn:
-                widget.setSelection(0, FreeCADGui.draftToolBar.number_length(widget.text()))
+                widget.setSelection(0, utils.get_number_length(widget.text()))
             return super().eventFilter(widget, event)

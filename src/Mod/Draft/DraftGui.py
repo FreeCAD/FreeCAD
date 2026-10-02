@@ -902,7 +902,7 @@ class DraftToolBar:
             and not self._is_field_locked("length")
         ):
             self.lengthValue.setFocus()
-            self.lengthValue.setSelection(0, self.number_length(self.lengthValue.text()))
+            self.lengthValue.setSelection(0, utils.get_number_length(self.lengthValue.text()))
         elif (
             not force_xyz
             and self._is_field_locked("angle")
@@ -910,25 +910,25 @@ class DraftToolBar:
             and not self._is_field_locked("length")
         ):
             self.lengthValue.setFocus()
-            self.lengthValue.setSelection(0, self.number_length(self.lengthValue.text()))
+            self.lengthValue.setSelection(0, utils.get_number_length(self.lengthValue.text()))
         elif f == "x":
             self.xValue.setFocus()
-            self.xValue.setSelection(0, self.number_length(self.xValue.text()))
+            self.xValue.setSelection(0, utils.get_number_length(self.xValue.text()))
         elif f == "y":
             self.yValue.setFocus()
-            self.yValue.setSelection(0, self.number_length(self.yValue.text()))
+            self.yValue.setSelection(0, utils.get_number_length(self.yValue.text()))
         elif f == "z":
             self.zValue.setFocus()
-            self.zValue.setSelection(0, self.number_length(self.zValue.text()))
+            self.zValue.setSelection(0, utils.get_number_length(self.zValue.text()))
         elif f == "radius":
             self.radiusValue.setFocus()
-            self.radiusValue.setSelection(0, self.number_length(self.radiusValue.text()))
+            self.radiusValue.setSelection(0, utils.get_number_length(self.radiusValue.text()))
         else:
             # f is None: focus the first field the cursor can still drive so
             # auto-focus skips locked fields instead of landing on them.
             target = self._first_unlocked_point_field()
             target.setFocus()
-            target.setSelection(0, self.number_length(target.text()))
+            target.setSelection(0, utils.get_number_length(target.text()))
 
     def _first_unlocked_point_field(self):
         """Return the first visible, enabled, unlocked point-entry field.
@@ -946,14 +946,6 @@ class DraftToolBar:
             if widget.isVisible() and widget.isEnabled() and not self._is_field_locked(key):
                 return widget
         return self.xValue
-
-    def number_length(self, st):
-        nl = len(st)
-        for char in st[::-1]:
-            if char in "0123456789.,-+/":
-                break
-            nl -= 1
-        return nl
 
     def extraLineUi(self):
         """shows length and angle controls"""
@@ -1365,7 +1357,7 @@ class DraftToolBar:
     def checkx(self):
         if self.yValue.isEnabled():
             self.yValue.setFocus()
-            self.yValue.setSelection(0, self.number_length(self.yValue.text()))
+            self.yValue.setSelection(0, utils.get_number_length(self.yValue.text()))
             self.updateSnapper()
         else:
             self.checky()
@@ -1373,7 +1365,7 @@ class DraftToolBar:
     def checky(self):
         if self.zValue.isEnabled():
             self.zValue.setFocus()
-            self.zValue.setSelection(0, self.number_length(self.zValue.text()))
+            self.zValue.setSelection(0, utils.get_number_length(self.zValue.text()))
             self.updateSnapper()
         else:
             self.validatePoint()
@@ -1381,7 +1373,7 @@ class DraftToolBar:
     def checklength(self):
         if self.angleValue.isEnabled():
             self.angleValue.setFocus()
-            self.angleValue.setSelection(0, self.number_length(self.angleValue.text()))
+            self.angleValue.setSelection(0, utils.get_number_length(self.angleValue.text()))
             self.updateSnapper()
         else:
             self.validatePoint()
