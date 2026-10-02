@@ -582,6 +582,10 @@ void TaskTransformedParameters::fillPlanesCombo(
 
 void TaskTransformedParameters::recomputeFeature()
 {
+    if (m_recomputeInProgress) {
+        return;
+    }
+    RecomputeInProgressGuard guard(m_recomputeInProgress);
     getTopTransformedView()->recomputeFeature();
 }
 
