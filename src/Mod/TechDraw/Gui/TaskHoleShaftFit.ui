@@ -32,7 +32,7 @@
    <item row="0" column="0">
     <widget class="QLabel" name="labelHole">
      <property name="text">
-      <string>Hole fit:</string>
+      <string>Hole fit</string>
      </property>
     </widget>
    </item>
@@ -42,7 +42,7 @@
    <item row="1" column="0">
     <widget class="QLabel" name="labelShaft">
      <property name="text">
-      <string>Shaft fit:</string>
+      <string>Shaft fit</string>
      </property>
     </widget>
    </item>
@@ -52,7 +52,7 @@
    <item row="2" column="0">
     <widget class="QLabel" name="labelFitType">
      <property name="text">
-      <string>Fit type:</string>
+      <string>Fit type</string>
      </property>
     </widget>
    </item>
