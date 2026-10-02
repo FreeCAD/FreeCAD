@@ -210,7 +210,6 @@ bool ExpressionBinding::assignToProperty(const std::string& propName, double val
     Gui::Command::doCommand(Gui::Command::Doc, "%s = %f", propName.c_str(), value);
     return true;
 }
-
 bool ExpressionBinding::apply(const std::string& propName)
 {
     Q_UNUSED(propName);
@@ -227,13 +226,37 @@ bool ExpressionBinding::apply(const std::string& propName)
             docObj->getDocument()->openTransaction(ss.str().c_str());
         }
 
-        // Apply expression to C++ object state live
+        // Apply to live C++ object
         if (auto expr = getExpression()) {
             docObj->setExpression(path, expr);
         }
 
-        // Dispatch macro/buffered command through CommandT helper
-        Gui::cmdSketcherExpression(docObj, path.toEscapedString(), getEscapedExpressionString());
+        std::string pathStr = path.toEscapedString();
+
+        // If we are buffering inside an active tool transaction, calculate the index offset
+        if (Gui::ConstraintCommandQueue::isBuffering()) {
+            // Count pending addConstraint calls in the buffer for this transaction
+            size_t pendingConstraints = 0;
+            for (const auto& cmd : Gui::ConstraintCommandQueue::getBuffer()) {
+                if (cmd.find("addConstraint") != std::string::npos) {
+                    pendingConstraints++;
+                }
+            }
+
+            // If an addConstraint was buffered before setExpression, adjust the target index
+            if (pendingConstraints > 0) {
+                // If pathStr is "Constraints[11]" and 1 constraint was added, adjust to
+                // "Constraints[12]"
+                int currentIndex = -1;
+                if (sscanf(pathStr.c_str(), "Constraints[%d]", &currentIndex) == 1) {
+                    pathStr = boost::str(
+                        boost::format("Constraints[%d]") % (currentIndex + pendingConstraints)
+                    );
+                }
+            }
+        }
+
+        Gui::cmdSketcherExpression(docObj, pathStr, getEscapedExpressionString());
 
         if (transaction) {
             docObj->getDocument()->commitTransaction();
