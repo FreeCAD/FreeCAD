@@ -985,6 +985,7 @@ struct WireJoiner
         int iEnd[2];    // adjacent list index end
         bool used;
         bool hasBox;
+        int index = -1;  // used to create a stable ordering on edges in findClosedWires
         EdgeInfo(const TopoDS_Edge& e, bool bbox)
             : edge(e)
             , hasBox(false)
@@ -1279,12 +1280,24 @@ struct WireJoiner
         // tolerance of edges which are supposed to be connected. So use a
         // lesser precision below, and call makeCleanWire to fix the tolerance
 
+        // Order by position in `edges` instead of pointer address, so the resulting wire
+        // starts in a stable location
+        struct ByIndex
+        {
+            bool operator()(const EdgeInfo* a, const EdgeInfo* b) const
+            {
+                return a->index < b->index;
+            }
+        };
+
         std::vector<VertexInfo> adjacentList;
-        std::set<EdgeInfo*> edgesToVisit;
+        std::set<EdgeInfo*, ByIndex> edgesToVisit;
         int skips = 0;
 
+        int idx = 0;
         for (auto& info : edges) {
             info.reset();
+            info.index = idx++;
         }
 
         for (auto& info : edges) {
