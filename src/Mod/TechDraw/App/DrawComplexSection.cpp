@@ -56,6 +56,7 @@
 //    - align and distribute the intersections along an "effective" section plane
 //      which is a flattened version of the profile
 
+#include <BOPTools_AlgoTools.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
@@ -80,6 +81,7 @@
 #include <GProp_GProps.hxx>
 #include <Geom_Plane.hxx>
 #include <HLRAlgo_Projector.hxx>
+#include <IntTools_Context.hxx>
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QtConcurrentRun>
@@ -181,7 +183,7 @@ TopoDS_Shape DrawComplexSection::makeCuttingTool(double dMax)
     //       if the sketch can't be made into an appropriate face/prism.
     if (CuttingToolWireObject.getValue()->isDerivedFrom(Base::Type::fromName("Sketcher::SketchObject"))) {
         if (!validateSketchNormal(CuttingToolWireObject.getValue())) {
-            Base::Console().warning("cutting object not aligned with section normal in %s\n", Label.getValue());
+            Base::Console().warning("cutting object not aligned with section normal in {}\n", Label.getValue());
         }
     }
 
@@ -277,7 +279,7 @@ void DrawComplexSection::makeSectionCut(const TopoDS_Shape& baseShape)
         waitingForAlign(true);
     }
     catch (...) {
-        Base::Console().warning("%s failed to make alignedPieces\n", Label.getValue());
+        Base::Console().warning("{} failed to make alignedPieces\n", Label.getValue());
         return;
     }
 
@@ -466,7 +468,7 @@ DrawComplexSection::findSectionPlaneIntersections(const TopoDS_Shape& shapeToInt
 {
     if (shapeToIntersect.IsNull()) {
         // this shouldn't happen
-        Base::Console().warning("DCS::findSectionPlaneInter - %s - cut shape is Null\n",
+        Base::Console().warning("DCS::findSectionPlaneInter - {} - cut shape is Null\n",
                                 getNameInDocument());
         return {};
     }
@@ -731,7 +733,7 @@ TopoDS_Wire DrawComplexSection::makeSectionLineWire()
         }
         else {
             //probably can't happen as cut profile has been checked before this
-            Base::Console().warning("DCS::makeSectionLineGeometry - profile is type: %d\n",
+            Base::Console().warning("DCS::makeSectionLineGeometry - profile is type: {}\n",
                                     static_cast<int>(sScaled.ShapeType()));
             return {};
         }
@@ -820,7 +822,7 @@ bool DrawComplexSection::validateOffsetProfile(const TopoDS_Wire& profile, Base:
         if (angleRad < angleThresholdRad &&
             angleRad > 0.0) {
             // profile segment is slightly skewed. possible bad SectionNormal?
-            Base::Console().warning("%s profile is slightly skewed. Check SectionNormal low decimal places\n",
+            Base::Console().warning("{} profile is slightly skewed. Check SectionNormal low decimal places\n",
                                     getNameInDocument());
             return false;
         }
@@ -1456,6 +1458,64 @@ DrawComplexSection::getSegmentViewDirections(const TopoDS_Wire& profileWire,
     return normalKV;
 }
 
+void DrawComplexSection::assignFaceRepresentations(const std::vector<TechDraw::FacePtr>& faces,
+                                                   const std::vector<TopoDS_Face>& occFaces)
+{
+    showProgressMessage(getNameInDocument(), "is mapping face representations");
+
+    // Take the projector used for HLR when building the geometry
+    HLRAlgo_Projector projector = geometryObject->getProjector(getProjectionCS());
+
+    // Collect all 3D faces of the source shape we have projected
+    TopoDS_Shape shape = getShapeForGeometryBuild();
+    std::vector<TopoDS_Face> shapeFaces;
+    for (TopExp_Explorer explorer(shape, TopAbs_FACE); explorer.More(); explorer.Next()) {
+        shapeFaces.push_back(TopoDS::Face(explorer.Current()));
+    }
+
+    // Map the drawing 2D faces to shape 3D faces with discovering the topmost ones
+    auto mapping = ShapeUtils::mapImageFacesToModelFaces(occFaces, shapeFaces, projector, true);
+
+    // Process all 2D faces, mark them correctly and add the faces identified as sections to the section compound
+    Handle(IntTools_Context) context = new IntTools_Context();
+    BRep_Builder builder;
+    builder.MakeCompound(m_sectionTopoDSFaces);
+
+    for (unsigned int i = 0; i < faces.size(); ++i) {
+        auto it = mapping.find(i);
+        if (it == mapping.end()) {
+            // This 2D face has no corresponding 3D face, thus it is a void
+            faces[i]->setRepresentation(FaceRepresentation::Hollow);
+        }
+        else if (it->second < 0) {
+            // Mapping failed for this face, just mark it as such
+            faces[i]->setRepresentation(FaceRepresentation::Failed);
+        }
+        else {
+            // This 2D face is a result of projecting a solid 3D face, but let's check if it is a section face
+            faces[i]->setRepresentation(FaceRepresentation::Opaque);
+            for (TopExp_Explorer explorer(unprojectedSectionFaces, TopAbs_FACE); explorer.More(); explorer.Next()) {
+                if (BOPTools_AlgoTools::AreFacesSameDomain(TopoDS::Face(explorer.Current()),
+                                                           shapeFaces[it->second], context)) {
+                    // This 2D face is a result of mapping a 3D section face
+                    faces[i]->setRepresentation(FaceRepresentation::Sliced);
+                    builder.Add(m_sectionTopoDSFaces, occFaces[i]);
+                    break;
+                }
+            }
+        }
+    }
+
+    // Clear the unprojected 3D faces compound, we won't need it anymore
+    unprojectedSectionFaces.Nullify();
+
+    // As last step build the geometry section faces from the OCC section faces
+    for (TopExp_Explorer explorer(m_sectionTopoDSFaces, TopAbs_FACE); explorer.More(); explorer.Next()) {
+        TechDraw::FacePtr sectionFace = std::make_shared<TechDraw::Face>(TopoDS::Face(explorer.Current()));
+        m_tdSectionFaces.push_back(sectionFace);
+    }
+}
+
 //! true if the endpoints of edgeToMatch are vertexes of faceToSearch
 bool DrawComplexSection::faceContainsEndpoints(const TopoDS_Edge& edgeToMatch, const TopoDS_Face& faceToSearch)
 {
@@ -1610,7 +1670,7 @@ TopoDS_Shape DrawComplexSection::makeCuttingToolFromClosedProfile(const TopoDS_W
         }
     }
     catch (...) {
-        Base::Console().error("%s could not make tool from closed profile\n", Label.getValue());
+        Base::Console().error("{} could not make tool from closed profile\n", Label.getValue());
         return {};
     }
     gp_Dir gpNormal = getFaceNormal(toolFace);
@@ -1630,7 +1690,7 @@ bool DrawComplexSection::validateProfileAlignment(const TopoDS_Wire& profileWire
         // just a warning here, so don't fail on this
         constexpr double AngleThresholdDeg{5.0};
         if (!validateOffsetProfile(profileWire, SectionNormal.getValue(), AngleThresholdDeg)) {
-            Base::Console().warning("%s: profile and section normal are misaligned\n", Label.getValue());
+            Base::Console().warning("{}: profile and section normal are misaligned\n", Label.getValue());
         }
     }
 
@@ -1638,7 +1698,7 @@ bool DrawComplexSection::validateProfileAlignment(const TopoDS_Wire& profileWire
     //       if the sketch can't be made into an appropriate face/prism.
     if (CuttingToolWireObject.getValue()->isDerivedFrom(Base::Type::fromName("Sketcher::SketchObject"))) {
         if (!validateSketchNormal(CuttingToolWireObject.getValue())) {
-            Base::Console().error("%s: cutting object not aligned with section normal\n", Label.getValue());
+            Base::Console().error("{}: cutting object not aligned with section normal\n", Label.getValue());
             return false;
         }
     }

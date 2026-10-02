@@ -46,6 +46,7 @@ public:
     void show();
     void setShowMessages(bool on);
 
+    static QPixmap defaultSplashImage();
     static QPixmap splashImage();
 
 protected:

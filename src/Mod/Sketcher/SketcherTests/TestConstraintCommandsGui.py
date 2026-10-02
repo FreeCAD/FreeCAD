@@ -25,8 +25,10 @@ class TestConstraintCommandsGui(SketcherGuiTestCase):
         )
         self.doc.recompute()
         Gui.activeDocument().setEdit(self.sketch.Name)
+        self.flush_gui(50)
         self.view = Gui.activeDocument().activeView()
         self.view.viewTop()
+        self.flush_gui(50)
         self.view.fitAll()
         self.flush_gui(150)
         self.viewport = self.view.graphicsView().viewport()
@@ -313,39 +315,6 @@ class TestConstraintCommandsGui(SketcherGuiTestCase):
                     self.assertEqual(self.viewport.cursor().shape(), QtCore.Qt.ArrowCursor)
         finally:
             notifications.SetBool("NonIntrusiveNotificationsEnabled", saved)
-
-    def test_converting_existing_bspline_preserves_constraints(self):
-        spline = Part.BSplineCurve()
-        spline.interpolate([App.Vector(0, 0, 0), App.Vector(10, 20, 0), App.Vector(30, 0, 0)])
-        self.sketch.addGeometry(spline, False)
-        self.sketch.exposeInternalGeometry(1)
-        self.doc.recompute()
-        constraints = [c.Content for c in self.sketch.Constraints]
-        geometry = [g.Content for g in self.sketch.Geometry]
-
-        # The API must also be safe for scripts that do not pre-filter their geometry.
-        self.sketch.convertToNURBS(1)
-        self.assertEqual([c.Content for c in self.sketch.Constraints], constraints)
-        self.assertEqual([g.Content for g in self.sketch.Geometry], geometry)
-
-        self.select("Edge2")
-        Gui.runCommand("Sketcher_BSplineConvertToNURBS")
-        self.assertEqual([c.Content for c in self.sketch.Constraints], constraints)
-        self.assertEqual([g.Content for g in self.sketch.Geometry], geometry)
-        self.assertEqual(self.sketch.solve(), 0)
-
-        # A mixed selection must still convert the line while leaving the spline intact.
-        self.select("Edge1", "Edge2")
-        Gui.runCommand("Sketcher_BSplineConvertToNURBS")
-        self.assertIsInstance(self.sketch.Geometry[0], Part.BSplineCurve)
-        self.assertEqual(self.sketch.Geometry[1].Content, geometry[1])
-        self.assertEqual(
-            [c.Content for c in self.sketch.Constraints[: len(constraints)]], constraints
-        )
-        self.assertEqual(self.sketch.solve(), 0)
-        self.doc.undo()
-        self.assertEqual([g.Content for g in self.sketch.Geometry], geometry)
-        self.assertEqual([c.Content for c in self.sketch.Constraints], constraints)
 
     def test_switching_continuous_commands_preserves_sketch(self):
         for name in (

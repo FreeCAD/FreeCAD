@@ -291,7 +291,7 @@ ViewProviderFemPostObject::~ViewProviderFemPostObject()
     catch (Base::Exception& e) {
         Base::Console().destructorError(
             "ViewProviderFemPostObject",
-            "ViewProviderFemPostObject destructor threw an exception: %s\n",
+            "ViewProviderFemPostObject destructor threw an exception: {}\n",
             e.what()
         );
     }

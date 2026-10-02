@@ -84,7 +84,7 @@ void WindowsCrashReporter::install(const std::string& crashReportDirectory)
         FileInfo::stringToPath(fcrash.dirPath()) / (fcrash.fileNamePure() + ".dmp")
     );
     if (minidumpFilename.length() > MAX_PATH - 1) {
-        Console().warning("CrashReporter: Crash file path too long: %s\n", minidumpFilename);
+        Console().warning("CrashReporter: Crash file path too long: {}\n", minidumpFilename);
         return;
     }
     Writer::setMinidumpPath(minidumpFilename);

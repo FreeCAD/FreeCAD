@@ -58,6 +58,7 @@ rm -rf ${conda_env}/lib/libclang-cpp.so.*
 rm -rf ${conda_env}/lib/libclang.so.*
 rm -rf ${conda_env}/lib/libLLVM-*.so
 rm -rf ${conda_env}/lib/libLLVM.so.*
+rm -rf ${conda_env}/lib/libdrm*.so*
 rm -rf ${conda_env}/lib/node_modules
 rm -rf ${conda_env}/lib/objects-Release
 rm -rf ${conda_env}/lib/perl5

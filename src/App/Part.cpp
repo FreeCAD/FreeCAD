@@ -79,7 +79,7 @@ static App::Part* _getPartOfObject(const DocumentObject* obj,
             if (inObj->isDerivedFrom<App::Part>()) {
                 return static_cast<App::Part*>(inObj);
             }
-            else if (objset) {
+            if (objset) {
                 return _getPartOfObject(inObj, objset);
             }
             // Only one parent geofeature group per object, so break

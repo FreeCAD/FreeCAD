@@ -31,6 +31,7 @@
 #include <csignal>
 #include <cstdio>
 #include <ctime>
+#include <format>
 
 #ifdef FC_OS_WIN32
 #include <crtdbg.h>
@@ -83,8 +84,6 @@
 #include <boost/core/ignore_unused.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/scope_exit.hpp>
-
-#include <fmt/format.h>
 
 // Qt -- only QtCore
 #include <QDir>

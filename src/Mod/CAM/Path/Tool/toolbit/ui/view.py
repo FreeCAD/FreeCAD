@@ -1,26 +1,24 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2019 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileCopyrightText: 2025 Samuel Abels <knipknap@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *
-# *                 2025 Samuel Abels <knipknap@gmail.com>                  *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 from PySide import QtGui
 import FreeCADGui
@@ -29,7 +27,7 @@ from Path.Base.Gui import IconViewProvider
 from Path.Tool.toolbit.ui.panel import TaskPanel
 
 
-class ViewProvider(object):
+class ViewProvider:
     """
     ViewProvider for a ToolBit DocumentObject.
     It's sole job is to provide an icon and invoke the TaskPanel
@@ -85,13 +83,16 @@ class ViewProvider(object):
         self._openTaskPanel(vobj, True)
 
     def setEdit(self, vobj, mode=0):
-        self._openTaskPanel(vobj, False)
-        return True
+        if mode == 1:
+            FreeCADGui.runCommand("Std_TransformManip")
+        elif mode == 0:
+            self._openTaskPanel(vobj, False)
+            return True
 
     def unsetEdit(self, vobj, mode):
-        FreeCADGui.Control.closeDialog()
-        self.panel = None
-        return
+        if mode == 0 and self.panel:
+            FreeCADGui.Control.closeDialog()
+            self.panel = None
 
     def claimChildren(self):
         if self.obj.BitBody:
@@ -99,7 +100,11 @@ class ViewProvider(object):
         return []
 
     def doubleClicked(self, vobj):
-        return self.setEdit(vobj)
+        # Through the document rather than straight to setEdit: that registers
+        # the object as in edit, so unsetEdit runs when the panel closes and
+        # resetEdit in the panel means something.
+        FreeCADGui.ActiveDocument.setEdit(vobj.Object.Name)
+        return True
 
     def setupContextMenu(self, vobj, menu):
         # Override the base class method to prevent adding the "Edit" action

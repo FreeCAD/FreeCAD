@@ -264,7 +264,7 @@ App::CellAddress App::stringToAddress(const char* strAddress, bool silent)
 
         return CellAddress(decodeRow(r, silent), decodeColumn(c, silent), absRow, absCol);
     }
-    else if (silent) {
+    if (silent) {
         return CellAddress();
     }
 

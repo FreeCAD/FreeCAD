@@ -1,28 +1,25 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2021 Russell Johnson (russ4262) <russ4262@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2021 Russell Johnson (russ4262) <russ4262@gmail.com>    *
-# *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
+import Constants
 import FreeCAD
 import Part
 import Path.Op.Adaptive as PathAdaptive
@@ -484,8 +481,8 @@ class TestPathAdaptive(PathTestBase):
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
-        adaptive.setExpression("StepDown", None)
-        # Have to set expression to None before numerical value assignment
+        # Have to clear expression before numerical value assignment
+        adaptive.clearExpression("StepDown")
         adaptive.StepDown.Value = 20.0
 
         _addViewProvider(adaptive)
@@ -516,8 +513,8 @@ class TestPathAdaptive(PathTestBase):
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
-        adaptive.setExpression("StepDown", None)
-        # Have to set expression to None before numerical value assignment
+        # Have to clear expression before numerical value assignment
+        adaptive.clearExpression("StepDown")
         adaptive.StepDown.Value = 20.0
 
         _addViewProvider(adaptive)
@@ -542,8 +539,8 @@ class TestPathAdaptive(PathTestBase):
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOverPercent = 75
         adaptive.UseOutline = True
-        adaptive.setExpression("StepDown", None)
-        # Have to set expression to None before numerical value assignment
+        # Have to clear expression before numerical value assignment
+        adaptive.clearExpression("StepDown")
         adaptive.StepDown.Value = 20.0
 
         _addViewProvider(adaptive)
@@ -581,8 +578,8 @@ class TestPathAdaptive(PathTestBase):
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
-        adaptive.setExpression("StepDown", None)
-        # Have to set expression to None before numerical value assignment
+        # Have to clear expression before numerical value assignment
+        adaptive.clearExpression("StepDown")
         adaptive.StepDown.Value = 20.0
 
         _addViewProvider(adaptive)
@@ -622,8 +619,8 @@ class TestPathAdaptive(PathTestBase):
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
-        adaptive.setExpression("StepDown", None)
-        # Have to set expression to None before numerical value assignment
+        # Have to clear expression before numerical value assignment
+        adaptive.clearExpression("StepDown")
         adaptive.StepDown.Value = 20.0
 
         _addViewProvider(adaptive)
@@ -663,8 +660,8 @@ class TestPathAdaptive(PathTestBase):
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
-        adaptive.setExpression("StepDown", None)
-        # Have to set expression to None before numerical value assignment
+        # Have to clear expression before numerical value assignment
+        adaptive.clearExpression("StepDown")
         adaptive.StepDown.Value = 20.0
 
         _addViewProvider(adaptive)
@@ -704,8 +701,8 @@ class TestPathAdaptive(PathTestBase):
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
-        adaptive.setExpression("StepDown", None)
-        # Have to set expression to None before numerical value assignment
+        # Have to clear expression before numerical value assignment
+        adaptive.clearExpression("StepDown")
         adaptive.StepDown.Value = 20.0
 
         _addViewProvider(adaptive)
@@ -763,9 +760,9 @@ class TestPathAdaptive(PathTestBase):
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
-        adaptive.setExpression("StepDown", None)
+        # Have to clear expression before numerical value assignment
+        adaptive.clearExpression("StepDown")
         adaptive.ModelAwareExperiment = True
-        # Have to set expression to None before numerical value assignment
         adaptive.StepDown.Value = 5.0
 
         _addViewProvider(adaptive)
@@ -777,7 +774,7 @@ class TestPathAdaptive(PathTestBase):
         # - bounding box at Z=5 stays within Face10
         # - No toolpaths at Z=0
 
-        paths = [c for c in adaptive.Path.Commands if c.Name in ["G0", "G00", "G1", "G01"]]
+        paths = [c for c in adaptive.Path.Commands if c.Name in Constants.GCODE_MOVE_LINE]
         toolr = adaptive.OpToolDiameter.Value / 2
         tol = adaptive.Tolerance
 
@@ -827,11 +824,11 @@ class TestPathAdaptive(PathTestBase):
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
-        adaptive.setExpression("StepDown", None)
-        # Have to set expression to None before numerical value assignment
+        # Have to clear expression before numerical value assignment
+        adaptive.clearExpression("StepDown")
         adaptive.StepDown.Value = 5.0
         # Add some Z stock to leave so we avoid Face3 in this stepdown at Z=10
-        adaptive.setExpression("ZStockToLeave", None)
+        adaptive.clearExpression("ZStockToLeave")
         adaptive.ZStockToLeave.Value = 1
 
         _addViewProvider(adaptive)
@@ -855,7 +852,10 @@ class TestPathAdaptive(PathTestBase):
         foffset = self.doc.Fusion.Shape.getElement("Face3").makeOffset2D(moffset)
         # NOTE: Face3 is at Z=10, and the only feed moves will be at Z=10
         lastpt = FreeCAD.Vector(0, 0, 10)
-        for p in [c.Parameters for c in adaptive.Path.Commands if c.Name in ["G1", "G01"]]:
+        parameters = [
+            c.Parameters for c in adaptive.Path.Commands if c.Name in Constants.GCODE_MOVE_STRAIGHT
+        ]
+        for p in parameters:
             pt = FreeCAD.Vector(lastpt)
             if "X" in p:
                 pt.x = p.get("X")
@@ -887,9 +887,9 @@ class TestPathAdaptive(PathTestBase):
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
-        adaptive.setExpression("StepDown", None)
+        # Have to clear expression before numerical value assignment
+        adaptive.clearExpression("StepDown")
         adaptive.ModelAwareExperiment = True
-        # Have to set expression to None before numerical value assignment
         adaptive.StepDown.Value = 5.0
 
         _addViewProvider(adaptive)
@@ -905,7 +905,7 @@ class TestPathAdaptive(PathTestBase):
         # - [Should maybe check] At least one move Z = [10,5] is within the model
         # - [Should maybe check] No moves at Z = 0 are within the model
 
-        paths = [c for c in adaptive.Path.Commands if c.Name in ["G0", "G00", "G1", "G01"]]
+        paths = [c for c in adaptive.Path.Commands if c.Name in Constants.GCODE_MOVE_LINE]
         toolr = adaptive.OpToolDiameter.Value / 2
         tol = adaptive.Tolerance
 
@@ -963,9 +963,9 @@ class TestPathAdaptive(PathTestBase):
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
-        adaptive.setExpression("StepDown", None)
+        # Have to clear expression before numerical value assignment
+        adaptive.clearExpression("StepDown")
         adaptive.ModelAwareExperiment = True
-        # Have to set expression to None before numerical value assignment
         adaptive.StepDown.Value = 5.0
 
         # Create and assign new stock that will create different bounds at
@@ -982,7 +982,7 @@ class TestPathAdaptive(PathTestBase):
         # - Bounding box at Z=10 does not cut the region to the right
         # - Bounding box at Z=5 and Z=0 are outside of stock
 
-        paths = [c for c in adaptive.Path.Commands if c.Name in ["G1", "G01"]]
+        paths = [c for c in adaptive.Path.Commands if c.Name in Constants.GCODE_MOVE_STRAIGHT]
         toolr = adaptive.OpToolDiameter.Value / 2
         tol = adaptive.Tolerance
 
@@ -1070,18 +1070,23 @@ def getPathBoundaries(paths, zLevels):
     return zDict
 
 
-def setDepthsAndHeights(op, strDep=20.0, finDep=0.0):
+def setDepthsAndHeights(op, strDep=20.0, finDep=0.0, safHgt=None, clrHgt=None):
     """setDepthsAndHeights(op, strDep=20.0, finDep=0.0)... Sets default depths and heights for `op` passed to it"""
 
     # Set start and final depth in order to eliminate effects of stock (and its default values)
-    op.setExpression("StartDepth", None)
+    op.clearExpression("StartDepth")
     op.StartDepth.Value = strDep
-    op.setExpression("FinalDepth", None)
+    op.clearExpression("FinalDepth")
     op.FinalDepth.Value = finDep
 
     # Set step down so as to only produce one layer path
-    op.setExpression("StepDown", None)
+    op.clearExpression("StepDown")
     op.StepDown.Value = 20.0
+
+    op.clearExpression("SafeHeight")
+    op.SafeHeight = safHgt if safHgt is not None else op.StartDepth.Value + 1
+    op.clearExpression("ClearanceHeight")
+    op.ClearanceHeight = clrHgt if clrHgt is not None else op.SafeHeight.Value + 1
 
     # Set Heights
     # default values used
@@ -1101,12 +1106,14 @@ def getGcodeMoves(cmdList, includeRapids=True, includeLines=True, includeArcs=Tr
             rval = 0.0  # exclude value -0.0
         return rval
 
-    gcode_list = list()
+    gcode_list = []
     last = FreeCAD.Vector(0.0, 0.0, 0.0)
     for c in cmdList:
         p = c.Parameters
         name = c.Name
-        if (includeRapids and name in ["G0", "G00"]) or (includeLines and name in ["G1", "G01"]):
+        if (includeRapids and name in Constants.GCODE_MOVE_RAPID) or (
+            includeLines and name in Constants.GCODE_MOVE_STRAIGHT
+        ):
             gcode = name
             x = last.x
             y = last.y
@@ -1124,7 +1131,7 @@ def getGcodeMoves(cmdList, includeRapids=True, includeLines=True, includeArcs=Tr
             last.y = y
             last.z = z
             gcode_list.append(gcode)
-        elif includeArcs and name in ["G2", "G3", "G02", "G03"]:
+        elif includeArcs and name in Constants.GCODE_MOVE_ARC:
             gcode = name
             x = last.x
             y = last.y
@@ -1162,12 +1169,11 @@ def getGcodeMoves(cmdList, includeRapids=True, includeLines=True, includeArcs=Tr
 def pathOriginatesInBox(cmd, minPoint, maxPoint):
     p = cmd.Parameters
     name = cmd.Name
-    if name in ["G0", "G00", "G1", "G01"]:
-        if "X" in p and "Y" in p:
-            x = p.get("X")
-            y = p.get("Y")
-            if x > minPoint.x and y > minPoint.y and x < maxPoint.x and y < maxPoint.y:
-                return True
+    if name in Constants.GCODE_MOVE_LINE and "X" in p and "Y" in p:
+        x = p.get("X")
+        y = p.get("Y")
+        if x > minPoint.x and y > minPoint.y and x < maxPoint.x and y < maxPoint.y:
+            return True
     return False
 
 

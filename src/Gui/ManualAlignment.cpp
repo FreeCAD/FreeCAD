@@ -843,7 +843,6 @@ void ManualAlignment::startAlignment(Base::Type mousemodel)
         return;
     }
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     // save the current window state before opening the alignment viewer
     previousWindowState = Qt::WindowNoState;
     if (auto* activeDoc = Gui::Application::Instance->activeDocument()) {
@@ -853,7 +852,6 @@ void ManualAlignment::startAlignment(Base::Type mousemodel)
             }
         }
     }
-#endif
 
     // create a split window for picking the points
     myViewer = new AlignmentView(myDocument, Gui::getMainWindow());
@@ -947,7 +945,6 @@ void ManualAlignment::closeViewer()
     }
     myViewer = nullptr;
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     QTimer::singleShot(0, this, [this]() {
         auto* activeDoc = Gui::Application::Instance->activeDocument();
         if (!activeDoc) {
@@ -973,7 +970,6 @@ void ManualAlignment::closeViewer()
             }
         }
     });
-#endif
 }
 
 /**

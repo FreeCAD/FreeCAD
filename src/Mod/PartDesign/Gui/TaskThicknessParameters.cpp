@@ -49,7 +49,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskThicknessParameters */
 
 TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp* DressUpView, QWidget* parent)
-    : TaskDressUpParameters(DressUpView, false, true, parent)
+    : TaskDressUpParameters(DressUpView, false, true, false, true, parent)
     , ui(new Ui_TaskThicknessParameters)
 {
     addContainerWidget();
@@ -290,7 +290,7 @@ void TaskThicknessParameters::apply()
 {
     // Alert user if he created an empty feature
     if (ui->listWidgetReferences->count() == 0) {
-        Base::Console().warning(tr("Empty thickness created!\n").toStdString().c_str());
+        Base::Console().warning("{}", tr("Empty thickness created!\n").toStdString());
     }
 }
 

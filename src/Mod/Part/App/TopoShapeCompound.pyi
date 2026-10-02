@@ -45,7 +45,7 @@ class TopoShapeCompound(TopoShape):
         """
         ...
 
-    def setFaces(self) -> None:
+    def setFaces(self, data: tuple, accuracy: float = ..., /) -> None:
         """
         A shape is created from points and triangles and set to this object
         """

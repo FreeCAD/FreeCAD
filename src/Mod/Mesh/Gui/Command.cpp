@@ -1503,7 +1503,7 @@ void CmdMeshBoundingBox::activated(int)
         const Base::BoundBox3f& box = rMesh.GetBoundBox();
 
         Base::Console().message(
-            "Boundings: Min=<%f,%f,%f>, Max=<%f,%f,%f>\n",
+            "Boundings: Min=<{:f},{:f},{:f}>, Max=<{:f},{:f},{:f}>\n",
             box.MinX,
             box.MinY,
             box.MinZ,

@@ -32,7 +32,7 @@ class FemPostObject(GeoFeature):
         """
         ...
 
-    def getDataSet(self) -> vtkDataSet:
+    def getDataSet(self) -> vtkDataSet | None:
         """
         Returns the current output dataset.
         For normal filters this is equal to the objects Data property output.

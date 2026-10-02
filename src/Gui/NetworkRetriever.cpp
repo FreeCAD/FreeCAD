@@ -121,7 +121,7 @@ void NetworkRetriever::testFailure()
     if (wget->state() == QProcess::Running) {
         d->fail = false;
         QString msg = tr("Download started…");
-        Base::Console().message("%s\n", msg.toUtf8().constData());
+        Base::Console().message("{}\n", msg.toStdString());
     }
 }
 
@@ -264,7 +264,7 @@ bool NetworkRetriever::startDownload(const QString& startUrl)
         if (!dir.exists(d->dir)) {
             if (!dir.mkdir(d->dir)) {
                 Base::Console().error(
-                    "Directory '%s' could not be created.",
+                    "Directory '{}' could not be created.",
                     (const char*)d->dir.toLatin1()
                 );
                 return true;  // please, no error message
@@ -364,7 +364,7 @@ void NetworkRetriever::wgetFinished(int exitCode, QProcess::ExitStatus status)
     wget->setReadChannel(QProcess::StandardError);
     if (wget->canReadLine()) {
         QByteArray data = wget->readAll();
-        Base::Console().warning(data);
+        Base::Console().warning("{}", data.toStdString());
     }
     Q_EMIT wgetExited();
 }

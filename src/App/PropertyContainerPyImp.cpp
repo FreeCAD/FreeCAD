@@ -401,12 +401,7 @@ PyObject* PropertyContainerPy::getGroupOfProperty(PyObject* args)
     }
 
     const char* Group = getPropertyContainerPtr()->getPropertyGroup(prop);
-    if (Group) {
-        return Py::new_reference_to(Py::String(Group));
-    }
-    else {
-        return Py::new_reference_to(Py::String(""));
-    }
+    return Py::new_reference_to(Py::String(Group ? Group : ""));
 }
 
 PyObject* PropertyContainerPy::setGroupOfProperty(PyObject* args)
@@ -447,12 +442,7 @@ PyObject* PropertyContainerPy::getDocumentationOfProperty(PyObject* args)
     }
 
     const char* docstr = getPropertyContainerPtr()->getPropertyDocumentation(prop);
-    if (docstr) {
-        return Py::new_reference_to(Py::String(docstr));
-    }
-    else {
-        return Py::new_reference_to(Py::String(""));
-    }
+    return Py::new_reference_to(Py::String(docstr ? docstr : ""));
 }
 
 PyObject* PropertyContainerPy::setDocumentationOfProperty(PyObject* args)

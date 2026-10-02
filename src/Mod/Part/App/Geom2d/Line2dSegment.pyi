@@ -41,7 +41,7 @@ class Line2dSegment(Curve2d):
     def __init__(self, Line: "Line2dSegment") -> None: ...
     @overload
     def __init__(self, Point1: object, Point2: object) -> None: ...
-    def setParameterRange(self) -> None:
+    def setParameterRange(self, first: float, last: float, /) -> None:
         """
         Set the parameter range of the underlying line segment geometry.
         """

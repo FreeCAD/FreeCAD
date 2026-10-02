@@ -124,7 +124,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="94"/>
       <source>Inserts the robot tool location into the trajectory</source>
-      <translation type="unfinished">Inserts the robot tool location into the trajectory</translation>
+      <translation>Inserta la posición de la herramienta del robot en la trayectoria</translation>
     </message>
   </context>
   <context>
@@ -245,7 +245,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="510"/>
       <source>Trajectory Compound</source>
-      <translation type="unfinished">Trajectory Compound</translation>
+      <translation>Compuesto de trayectorias</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="511"/>
@@ -263,7 +263,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="446"/>
       <source>Dress-Up Trajectory</source>
-      <translation type="unfinished">Dress-Up Trajectory</translation>
+      <translation>Retocar trayectoria</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="447"/>
@@ -296,19 +296,19 @@
       <location filename="../../CommandTrajectory.cpp" line="181"/>
       <location filename="../../CommandTrajectory.cpp" line="202"/>
       <location filename="../../CommandTrajectory.cpp" line="489"/>
-      <location filename="../../CommandInsertRobot.cpp" line="70"/>
-      <location filename="../../CommandExport.cpp" line="64"/>
-      <location filename="../../CommandExport.cpp" line="147"/>
       <location filename="../../Command.cpp" line="105"/>
       <location filename="../../Command.cpp" line="168"/>
       <location filename="../../Command.cpp" line="272"/>
+      <location filename="../../CommandExport.cpp" line="64"/>
+      <location filename="../../CommandExport.cpp" line="147"/>
+      <location filename="../../CommandInsertRobot.cpp" line="70"/>
       <source>Wrong selection</source>
       <translation>Selección Incorrecta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="55"/>
       <source>Select VRML file for Robot</source>
-      <translation type="unfinished">Select VRML file for Robot</translation>
+      <translation>Seleccione el archivo VRML del robot</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="57"/>
@@ -318,7 +318,7 @@
     <message>
       <location filename="../../Command.cpp" line="69"/>
       <source>Select Kinematic CSV file for Robot</source>
-      <translation type="unfinished">Select Kinematic CSV file for Robot</translation>
+      <translation>Seleccione el archivo CSV de cinemática del robot</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="71"/>
@@ -337,9 +337,9 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="111"/>
+      <location filename="../../Command.cpp" line="273"/>
       <location filename="../../CommandExport.cpp" line="65"/>
       <location filename="../../CommandExport.cpp" line="148"/>
-      <location filename="../../Command.cpp" line="273"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Seleccione un Robot y un objeto de Trayectoria.</translation>
     </message>
@@ -510,7 +510,7 @@
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="72"/>
       <source>Sizing Value</source>
-      <translation type="unfinished">Sizing Value</translation>
+      <translation>Valor de dimensionado</translation>
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="103"/>

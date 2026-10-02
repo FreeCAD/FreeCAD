@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2022 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2022 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """This is the main NativeIFC module"""
 
@@ -828,7 +825,7 @@ def add_properties(obj, ifcfile=None, ifcentity=None, links=False, shapemode=0, 
     elif ifcentity.is_a("IfcControl"):
         ifc_psets.show_psets(obj)
 
-    restore_spatial_data(obj, ifcentity, ifcfile)
+    restore_storey_data(obj, ifcentity, ifcfile)
 
     # link Label2 and Description
     if "Description" in obj.PropertiesList and hasattr(obj, "setExpression"):
@@ -844,7 +841,7 @@ def get_quantity_value(ifcentity, quantity_name):
         pset = rel.RelatingPropertyDefinition
         if not pset or not pset.is_a("IfcElementQuantity"):
             continue
-        for quantity in getattr(pset, "Quantities", []) or []:
+        for quantity in getattr(pset, "Quantities", []):
             if quantity.Name != quantity_name:
                 continue
             for attr in (
@@ -869,7 +866,7 @@ def restore_freecad_property(obj, ifcentity, property_name, ifcfile, pset=None, 
         pset = ifc_psets.get_pset("FreeCADPropertySet", ifcentity)
     if not pset:
         return False
-    for prop in getattr(pset, "HasProperties", []) or []:
+    for prop in getattr(pset, "HasProperties", []):
         if prop.Name != f"FreeCAD_{property_name}" or not getattr(prop, "NominalValue", None):
             continue
         value = prop.NominalValue.wrappedValue
@@ -885,32 +882,31 @@ def restore_freecad_property(obj, ifcentity, property_name, ifcfile, pset=None, 
     return False
 
 
-def restore_spatial_data(obj, ifcentity, ifcfile):
-    """Restores placement and level metadata not covered by geometry import."""
+def restore_storey_data(obj, ifcentity, ifcfile):
+    """Restores storey level metadata not covered by geometry import."""
 
-    if ifcentity.is_a("IfcAnnotation"):
+    if not ifcentity.is_a("IfcBuildingStorey"):
         return
-    placement = getattr(ifcentity, "ObjectPlacement", None)
-    if placement and ("Placement" in obj.PropertiesList):
-        obj.Placement = ifc_export.get_placement(placement, ifcfile)
-    if ifcentity.is_a("IfcBuildingStorey"):
-        elevation = getattr(ifcentity, "Elevation", None)
-        if (not placement) and ("Placement" in obj.PropertiesList) and (elevation is not None):
-            restored = FreeCAD.Placement(obj.Placement)
-            restored.Base.z = elevation * (1 / get_scale(ifcfile))
-            obj.Placement = restored
-        if "LevelOffset" in obj.PropertiesList:
-            restore_freecad_property(obj, ifcentity, "LevelOffset", ifcfile)
-        if ("Height" in obj.PropertiesList) and not restore_freecad_property(
-            obj, ifcentity, "Height", ifcfile
-        ):
-            quantity = get_quantity_value(ifcentity, "Height")
-            if quantity is not None:
-                obj.Height = quantity * (1 / get_scale(ifcfile))
-        if ("Elevation" in obj.PropertiesList) and ("Placement" in obj.PropertiesList):
-            obj.setExpression("Elevation", "Placement.Base.z")
-        if ("RefElevation" in obj.PropertiesList) and ("Elevation" in obj.PropertiesList):
-            obj.setExpression("RefElevation", "Elevation.Value")
+
+    elevation = getattr(ifcentity, "Elevation", None)
+    if elevation is not None and "Placement" in obj.PropertiesList:
+        obj.Placement.Base.z = elevation * (1 / get_scale(ifcfile))
+
+    if "LevelOffset" in obj.PropertiesList:
+        restore_freecad_property(obj, ifcentity, "LevelOffset", ifcfile)
+
+    if ("Height" in obj.PropertiesList) and not restore_freecad_property(
+        obj, ifcentity, "Height", ifcfile
+    ):
+        quantity = get_quantity_value(ifcentity, "Height")
+        if quantity is not None:
+            obj.Height = quantity * (1 / get_scale(ifcfile))
+
+    if ("Elevation" in obj.PropertiesList) and ("Placement" in obj.PropertiesList):
+        obj.setExpression("Elevation", "Placement.Base.z")
+
+    if ("RefElevation" in obj.PropertiesList) and ("Elevation" in obj.PropertiesList):
+        obj.setExpression("RefElevation", "Elevation.Value")
 
 
 def remove_unused_properties(obj):

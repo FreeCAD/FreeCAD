@@ -39,6 +39,7 @@
 #include "MeasureBasePy.h"
 
 #include "MeasureAngle.h"
+#include "MeasureCOM.h"
 #include "MeasureDistance.h"
 #include "MeasurePosition.h"
 #include "MeasureLength.h"
@@ -103,6 +104,7 @@ PyMOD_INIT_FUNC(Measure)
     Measure::MeasureBase::init();
     Measure::MeasurePython::init();
     Measure::MeasureAngle::init();
+    Measure::MeasureCOM::init();
     Measure::MeasureDistance::init();
     Measure::MeasureDistanceDetached::init();
     Measure::MeasurePosition::init();
@@ -178,6 +180,14 @@ PyMOD_INIT_FUNC(Measure)
         MeasureRadius::isPrioritizedSelection
     );
 
+    App::MeasureManager::addMeasureType(
+        "CENTEROFMASS",
+        QT_TRANSLATE_NOOP("TaskMeasure", "Geometric Center"),
+        "Measure::MeasureCOM",
+        MeasureCOM::isValidSelection,
+        nullptr
+    );
+
     // load measure callbacks from Part module
     auto lengthList = Part::MeasureClient::reportLengthCB();
     for (auto& entry : lengthList) {
@@ -230,5 +240,5 @@ PyMOD_INIT_FUNC(Measure)
 // debug print for sketchsolv
 void debugprint(const std::string& text)
 {
-    Base::Console().log("%s", text.c_str());
+    Base::Console().log("{}", text);
 }

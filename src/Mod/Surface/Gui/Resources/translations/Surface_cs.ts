@@ -490,8 +490,8 @@ Tento příkaz funguje pouze s objektem sítě.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../TaskFilling.cpp" line="63"/>
       <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
+      <location filename="../../TaskFilling.cpp" line="63"/>
       <source>Edit Filling</source>
       <translation>Editace výplně</translation>
     </message>

@@ -160,6 +160,7 @@ class ObjectDressup:
             Path.Log.warning(translate("CAM_DressupPlungeMilling", "Negative or zero stepover"))
             return
 
+        PathDressup.placeWithBase(obj)
         baseOp = PathDressup.baseOp(obj)
         peck_retract = obj.PeckRetract.Value if obj.PeckDepth else baseOp.SafeHeight.Value
         toolController = baseOp.ToolController
@@ -170,7 +171,11 @@ class ObjectDressup:
 
         commands = []
         last = None
-        for cmd in PathUtils.getPathWithPlacement(obj.Base).Commands:
+        for cmd in obj.Base.Path.Commands:
+            if cmd.Annotations.get("type") == Constants.ANNOT_LINKING["type"]:
+                # linking moves are travel, not a profile to plunge along
+                machine.addCommand(cmd)
+                continue
             if cmd.Name not in Constants.GCODE_MOVE_MILL:
                 commands.append(cmd)
 

@@ -21,6 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+import Path
 import Path.Base.Language as PathLanguage
 import CAMTests.PathTestUtils as PathTestUtils
 import math
@@ -29,9 +30,8 @@ PI = math.pi
 
 
 def MNVR(gcode, begin=None):
-    # 'turns out the replace() isn't really necessary
-    # leave it here anyway for clarity
-    return PathLanguage.Maneuver.FromGCode(gcode.replace("/", "\n"), begin)
+    pp = Path.Path([Path.Command(x) for x in gcode.split("/") if x != ""])
+    return PathLanguage.Maneuver.FromPath(pp, begin)
 
 
 def INSTR(gcode, begin=None):
@@ -126,3 +126,13 @@ class TestPathLanguage(PathTestUtils.PathTestBase):
 
         mnvr = MNVR("G1 X3 Y4")
         self.assertEqual(mnvr.toPath().toGCode().strip(), "G1 X3.000000 Y4.000000")
+
+    def test70(self):
+        """Verify annotations survive the conversion to instructions and back."""
+        cmd = Path.Command("G1", {"X": 5, "Y": 6})
+        cmd.Annotations = {"type": "linking"}
+        mnvr = PathLanguage.Maneuver.FromPath(Path.Path([cmd]))
+        instr = mnvr.instr[0]
+        self.assertTrue(instr.isLinking())
+        self.assertEqual(instr.toCommand().Annotations, {"type": "linking"})
+        self.assertFalse(INSTR("G1 X5 Y6").isLinking())

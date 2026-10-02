@@ -33,19 +33,19 @@
   <screenshots>
     <screenshot type="default">
       <caption>Part Design</caption>
-      <image>https://raw.githubusercontent.com/FreeCAD/FreeCAD/main/.github/images/partdesign.png</image>
+      <image>https://raw.githubusercontent.com/FreeCAD/FreeCAD/main/.github/images/partdesign.jpg</image>
     </screenshot>
     <screenshot>
       <caption>Assembly</caption>
-      <image>https://raw.githubusercontent.com/FreeCAD/FreeCAD/main/.github/images/assembly.png</image>
+      <image>https://raw.githubusercontent.com/FreeCAD/FreeCAD/main/.github/images/assembly.jpg</image>
     </screenshot>
     <screenshot>
       <caption>BIM</caption>
-      <image>https://raw.githubusercontent.com/FreeCAD/FreeCAD/main/.github/images/bim.png</image>
+      <image>https://raw.githubusercontent.com/FreeCAD/FreeCAD/main/.github/images/bim.jpg</image>
     </screenshot>
     <screenshot>
       <caption>FEM</caption>
-      <image>https://raw.githubusercontent.com/FreeCAD/FreeCAD/main/.github/images/fem.png</image>
+      <image>https://raw.githubusercontent.com/FreeCAD/FreeCAD/main/.github/images/fem.jpg</image>
     </screenshot>
   </screenshots>
   <keywords>
@@ -59,6 +59,7 @@
     <keyword translate="no">design</keyword>
     <keyword translate="no">3d</keyword>
     <keyword translate="no">3d-printing</keyword>
+    <keyword translate="no">engineering</keyword>
     <keyword translate="no">opencascade</keyword>
 	<keyword translate="no">parametric-modeler</keyword>
     <keyword>architecture</keyword>

@@ -16,7 +16,7 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="624"/>
       <source>US customary (in, lb)</source>
-      <translation>US-amerikanska mått (in, lb)</translation>
+      <translation>Amerikanska måttenheter (in, lb)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="681"/>
@@ -26,7 +26,7 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="77"/>
       <source>Imperial decimal (in, lb)</source>
-      <translation>Brittiska enheter (in/lb)</translation>
+      <translation>Brittiska måttenheter, decimalt (in, lb)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="582"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="63"/>
       <source>Meter decimal (m, m², m³)</source>
-      <translation>Meter (m, m², m³)</translation>
+      <translation>Meter, decimalt (m, m², m³)</translation>
     </message>
   </context>
   <context>

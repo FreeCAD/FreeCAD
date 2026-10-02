@@ -13,15 +13,15 @@ class ViewProviderExtension(Extension):
     Licence: LGPL
     """
 
-    def setIgnoreOverlayIcon(self) -> None:
+    def setIgnoreOverlayIcon(self, ignore: bool, name: str, /) -> None:
         """
-        Ignore the overlay icon of an extension
+        Ignore the overlay icon of the named extension
         """
         ...
 
     @constmethod
-    def ignoreOverlayIcon(self) -> None:
+    def ignoreOverlayIcon(self, name: str, /) -> bool:
         """
-        Ignore the overlay icon of an extension
+        Return whether the overlay icon of the named extension is ignored
         """
         ...

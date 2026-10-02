@@ -29,9 +29,8 @@
 #include <QTimer>
 
 
+#include <format>
 #include <ranges>
-
-#include <fmt/format.h>
 
 #include <App/Document.h>
 #include <App/Origin.h>
@@ -361,7 +360,7 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
         // we do know that the created instance is a document object, as obj is one. But we do not
         // know which exact type
         auto* doc = App::GetApplication().getActiveDocument();
-        const auto name = fmt::format("Copy{}", obj->getNameInDocument());
+        const auto name = std::format("Copy{}", obj->getNameInDocument());
         copy = doc->addObject(obj->getTypeId().getName(), name.c_str());
 
         // copy over all properties

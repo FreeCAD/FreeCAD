@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 import FreeCAD as App
 import FreeCADGui
 import Arch
@@ -16,7 +19,7 @@ class TestArchBuildingPartGui(TestArchBaseGui):
         # operation = "Arch BuildingPart"
         # _msg("  Test '{}'".format(operation))
         # Most of the code below taken from testWindow function.
-        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(3000, 0, 0))
+        line = Draft.make_line(App.Vector(0, 0, 0), App.Vector(3000, 0, 0))
         wall = Arch.makeWall(line)
         sk = App.ActiveDocument.addObject("Sketcher::SketchObject", "Sketch001")
         sk.Placement.Rotation = App.Rotation(App.Vector(1, 0, 0), 90)

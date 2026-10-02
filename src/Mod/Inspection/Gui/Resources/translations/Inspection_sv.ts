@@ -55,7 +55,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="17"/>
       <source>Actual</source>
-      <translation>﻿Faktisk</translation>
+      <translation>Faktisk</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="39"/>
@@ -100,7 +100,7 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="508"/>
       <source>Leave Info Mode</source>
-      <translation>Lämna Info-läge</translation>
+      <translation>Lämna informationsläget</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="649"/>

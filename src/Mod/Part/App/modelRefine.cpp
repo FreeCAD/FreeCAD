@@ -1033,12 +1033,12 @@ bool FaceTypedBSpline::isEqual(const TopoDS_Face& faceOne, const TopoDS_Face& fa
         else {
             stream << "FaceTypedBSpline::isEqual: Unknown OCC Error" << std::endl;
         }
-        Base::Console().message(stream.str().c_str());
+        Base::Console().message("{}", stream.str());
     }
     catch (...) {
         std::ostringstream stream;
         stream << "FaceTypedBSpline::isEqual: Unknown Error" << std::endl;
-        Base::Console().message(stream.str().c_str());
+        Base::Console().message("{}", stream.str());
     }
 
     return false;
@@ -1141,9 +1141,10 @@ std::vector<FaceVectorType> FaceTypedBSpline::splitEqual(const FaceVectorType& f
     }
     catch (Standard_Failure& e) {
         auto* exStr = e.GetMessageString();
-        auto msg = "FaceTypedBSpline::splitEqual: OCC Error: "
-            + std::string(exStr ? exStr : "Unknown") + "\n";
-        Base::Console().message(msg.c_str());
+        Base::Console().message(
+            "FaceTypedBSpline::splitEqual: OCC Error: {}\n",
+            exStr ? exStr : "Unknown"
+        );
     }
     catch (...) {
         Base::Console().message("FaceTypedBSpline::splitEqual: Unknown Error\n");

@@ -1195,9 +1195,9 @@ Pokud není zaškrtnuto, budou seřazeny podle jména.</translation>
       <translation>Jinak budou všechny změny ztraceny.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="568"/>
       <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../Array2D.cpp" line="170"/>
+      <location filename="../../MaterialSave.cpp" line="568"/>
       <source>Confirm Delete</source>
       <translation>Potvrdit odstranění</translation>
     </message>

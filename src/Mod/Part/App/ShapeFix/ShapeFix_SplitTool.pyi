@@ -4,6 +4,11 @@ from __future__ import annotations
 
 from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
+from typing import overload
+from Part.TopoShape import TopoShape
+from Part.TopoShapeEdge import TopoShapeEdge
+from Part.TopoShapeFace import TopoShapeFace
+from Part.TopoShapeVertex import TopoShapeVertex
 
 @export(
     PythonName="Part.ShapeFix.SplitTool",
@@ -20,13 +25,36 @@ class ShapeFix_SplitTool(PyObjectBase):
     Licence: LGPL
     """
 
-    def splitEdge(self) -> None:
+    @overload
+    def splitEdge(
+        self,
+        edge: TopoShapeEdge,
+        param1: float,
+        vertex: TopoShapeVertex,
+        face: TopoShapeFace,
+        tol3d: float,
+        tol2d: float,
+        /,
+    ) -> tuple[TopoShape, TopoShape]: ...
+    @overload
+    def splitEdge(
+        self,
+        edge: TopoShapeEdge,
+        param1: float,
+        param2: float,
+        vertex: TopoShapeVertex,
+        face: TopoShapeFace,
+        tol3d: float,
+        tol2d: float,
+        /,
+    ) -> tuple[TopoShape, TopoShape]: ...
+    def splitEdge(self, *args) -> tuple[TopoShape, TopoShape]:
         """
         Split edge on two new edges using new vertex
         """
         ...
 
-    def cutEdge(self) -> None:
+    def cutEdge(self, edge: TopoShapeEdge, pend: float, cut: float, face: TopoShapeFace, /) -> bool:
         """
         Cut edge by parameters pend and cut
         """

@@ -94,8 +94,8 @@ void LineFormat::setCurrentLineFormat(LineFormat& newFormat)
 
 void LineFormat::dump(const char* title)
 {
-    Base::Console().message("LF::dump - %s \n", title);
-    Base::Console().message("LF::dump - %s \n", toString().c_str());
+    Base::Console().message("LF::dump - {} \n", title);
+    Base::Console().message("LF::dump - {} \n", toString());
 }
 
 std::string LineFormat::toString() const

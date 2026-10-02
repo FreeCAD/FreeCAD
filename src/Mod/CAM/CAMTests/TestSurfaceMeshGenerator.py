@@ -34,6 +34,20 @@ try:
 except ImportError:
     _HAS_CPP, _HAS_SIMPLIFICATION = False, False
 
+# Check if OCL is available
+_ocl_available = False
+try:
+    try:
+        import ocl
+
+        _ocl_available = True
+    except ImportError:
+        import opencamlib as ocl
+
+        _ocl_available = True
+except ImportError:
+    pass
+
 
 class TestSurfaceMesh(PathTestUtils.PathTestBase):
     """Tests for surface_mesh: Python/C++ tessellation, simplification, and STL generation."""
@@ -95,6 +109,7 @@ class TestSurfaceMesh(PathTestUtils.PathTestBase):
 
     # -- Mesh Simplification Tests --
 
+    @unittest.skipUnless(_ocl_available, "OpenCamLib not available")
     def test02_main_stl_converter_no_simplification(self):
         """
         Tests the main _shape_to_stl converter with mesh simplification disabled.
@@ -117,6 +132,7 @@ class TestSurfaceMesh(PathTestUtils.PathTestBase):
         self.assertGreater(stl_obj.size(), 0, "STL object should contain triangles")
 
     @unittest.skipUnless(_HAS_SIMPLIFICATION, "fast_simplification library not available")
+    @unittest.skipUnless(_ocl_available, "OpenCamLib not available")
     def test03_mesh_simplification(self):
         """
         Verifies that mesh simplification reduces the triangle count.
@@ -145,6 +161,7 @@ class TestSurfaceMesh(PathTestUtils.PathTestBase):
 
     # -- Safe STL and Orchestrator Tests --
 
+    @unittest.skipUnless(_ocl_available, "OpenCamLib not available")
     def test04_safe_stl_generation(self):
         """
         Tests the generation of the secondary (safety) STL for collision avoidance.
@@ -192,6 +209,7 @@ class TestSurfaceMesh(PathTestUtils.PathTestBase):
             linear_deflection=0.1,
             angular_deflection=0.5,
             mesh_simplification=1,
+            use_cpp=True,
         )
 
         self.assertIsNotNone(safe_stl)
@@ -204,6 +222,7 @@ class TestSurfaceMesh(PathTestUtils.PathTestBase):
         self.assertGreater(safe_bb.maxpt.x - safe_bb.minpt.x, model_bb.XLength)
         self.assertGreater(safe_bb.maxpt.y - safe_bb.minpt.y, model_bb.YLength)
 
+    @unittest.skipUnless(_ocl_available, "OpenCamLib not available")
     def test05_generate_stl_orchestrator(self):
         """
         Tests the main `generate_stl` orchestrator function.

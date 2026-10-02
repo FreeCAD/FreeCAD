@@ -105,6 +105,7 @@ protected:
 
     void attachPreview() override;
     void updatePreview() override;
+    virtual void updatePreviewColor();
 
     virtual void makeChildrenVisible();
     bool onDelete(const std::vector<std::string>&) override;
@@ -121,8 +122,6 @@ protected:
     bool isSetTipIcon {false};
 
 private:
-    void updatePreviewColor();
-
     Gui::CoinPtr<PartGui::SoPreviewShape> pcToolPreview;
 };
 

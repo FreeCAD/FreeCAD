@@ -169,10 +169,10 @@ class TopoShapeFace(TopoShape):
         ...
 
     @constmethod
-    def normalAt(self, pos: float, /) -> Vector:
+    def normalAt(self, u: float, v: float, /) -> Vector:
         """
         Get the normal vector at the given parameter [0|Length] if defined
-        normalAt(pos) -> Vector
+        normalAt(u,v) -> Vector
         """
         ...
 

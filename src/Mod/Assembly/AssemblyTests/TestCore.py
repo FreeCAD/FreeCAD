@@ -23,6 +23,8 @@
 
 import FreeCAD as App
 import Part
+import os
+import tempfile
 import unittest
 
 import UtilsAssembly
@@ -87,6 +89,95 @@ class AssemblyTestBase(unittest.TestCase):
 
 
 class TestCore(AssemblyTestBase):
+    def test_component_count_for_link_array(self):
+        source = self.doc.addObject("Part::Box", "ArraySource")
+        array = self.assembly.newObject("App::Link", "Array")
+        array.LinkedObject = source
+        array.ElementCount = 3
+        array.ShowElement = False
+        self.doc.recompute()
+        self.assertEqual(len(array.ElementList), 0)
+        self.assertEqual(UtilsAssembly.number_of_components_in(self.assembly), 3)
+
+        array.ShowElement = True
+        self.doc.recompute()
+        self.assertEqual(UtilsAssembly.number_of_components_in(self.assembly), 3)
+        array.ElementList[1].Suppressed = True
+        self.doc.recompute()
+        self.assertEqual(UtilsAssembly.number_of_components_in(self.assembly), 2)
+        array.ElementList[1].Suppressed = False
+        self.doc.recompute()
+        self.assertEqual(UtilsAssembly.number_of_components_in(self.assembly), 3)
+
+    def test_generated_array_is_one_component(self):
+        source = self.doc.addObject("Part::Box", "ArraySource")
+        array = self.assembly.newObject("Part::LinkArrayLinear", "Array")
+        array.LinkedObject = source
+        array.Occurrences = 3
+        self.doc.recompute()
+        self.assertEqual(UtilsAssembly.number_of_components_in(self.assembly), 1)
+        self.assertEqual(UtilsAssembly.getSubMovingParts(array, False), [array])
+        self.assertEqual(UtilsAssembly.getObject((array, ["1.Face1"])), array)
+
+    def test_suppressed_link_elements_are_not_movable(self):
+        source = self.doc.addObject("Part::Box", "ArraySource")
+        array = self.assembly.newObject("App::Link", "Array")
+        array.LinkedObject = source
+        array.ElementCount = 3
+        self.doc.recompute()
+        element = array.ElementList[1]
+        element.Suppressed = True
+        self.doc.recompute()
+        self.assertNotIn(element, UtilsAssembly.getMovablePartsWithin(array))
+        element.Suppressed = False
+        self.doc.recompute()
+        self.assertIn(element, UtilsAssembly.getMovablePartsWithin(array))
+
+    def test_assembly_link_synchronizes_element_suppression(self):
+        source = self.doc.addObject("Part::Box", "ArraySource")
+        array = self.assembly.newObject("App::Link", "Array")
+        array.LinkedObject = source
+        array.ElementCount = 3
+        array.ElementList[1].Suppressed = True
+        parent = self.doc.addObject("Assembly::AssemblyObject", "ParentAssembly")
+        instance = parent.newObject("Assembly::AssemblyLink", "Instance")
+        instance.LinkedObject = self.assembly
+        self.doc.recompute()
+        local_array = next(obj for obj in instance.Group if obj.TypeId == "App::Link")
+        self.assertTrue(local_array.ElementList[1].Suppressed)
+        array.ElementList[1].Suppressed = False
+        instance.touch()
+        self.doc.recompute()
+        self.assertFalse(local_array.ElementList[1].Suppressed)
+
+    def test_assembly_link_maps_generated_array_joint(self):
+        self._check_generated_array_joint("Face1")
+
+    def test_assembly_link_maps_generated_array_whole_element_joint(self):
+        self._check_generated_array_joint("")
+
+    def _check_generated_array_joint(self, sub):
+        source = self.doc.addObject("Part::Box", "ArraySource")
+        array = self.assembly.newObject("Part::LinkArrayLinear", "Array")
+        array.LinkedObject = source
+        array.Occurrences = 3
+        array.ShowElement = True
+        self.doc.recompute()
+        joint = self.jointgroup.newObject("App::FeaturePython", "Joint")
+        JointObject.Joint(joint, 0)
+        joint.Reference1 = (array.ElementList[1], [sub])
+        joint.Reference2 = (array.ElementList[2], ["Face1"])
+        parent = self.doc.addObject("Assembly::AssemblyObject", "ParentAssembly")
+        instance = parent.newObject("Assembly::AssemblyLink", "Instance")
+        instance.LinkedObject = self.assembly
+        instance.Rigid = False
+        self.doc.recompute()
+        local_array = next(obj for obj in instance.Group if obj.TypeId == "App::Link")
+        local_group = next(obj for obj in instance.Group if obj.TypeId == "Assembly::JointGroup")
+        local_joint = local_group.Group[0]
+        self.assertEqual(local_joint.Reference1, (local_array, ["1." + sub]))
+        self.assertIsNotNone(local_array.getSubObject("1." + sub))
+
     def test_create_assembly(self):
         """Create an assembly."""
         operation = "Create Assembly Object"
@@ -251,3 +342,76 @@ class TestCore(AssemblyTestBase):
         joint.Proxy.setJointConnectors(joint, refs)
 
         self.assertTrue(box.Placement.isSame(box2.Placement, 1e-6), "'{}'".format(operation))
+
+    def test_rack_pinion_with_slider_offset(self):
+        """Rack and pinion joint whose rack slider has a yaw offset, see
+        github.com/freecad/freecad/issues/17563"""
+        operation = "Rack and pinion with slider offset"
+        _msg("  Test '{}'".format(operation))
+
+        ground = self.assembly.newObject("Part::Box", "Ground")
+        ground.Length = 200
+        ground.Width = 200
+        ground.Height = 10
+
+        rack = self.assembly.newObject("Part::Box", "Rack")
+        rack.Length = 10
+        rack.Width = 100
+        rack.Height = 10
+        rack.Placement.Base = App.Vector(50, 0, 10)
+
+        pinion = self.assembly.newObject("Part::Cylinder", "Pinion")
+        pinion.Radius = 10
+        pinion.Height = 10
+        pinion.Placement.Base = App.Vector(30, 50, 10)
+        self.doc.recompute()
+
+        # Attach to real faces, but specify the JCS explicitly so the test does
+        # not depend on OpenCASCADE's orientation of those faces.
+        along_rack = App.Rotation(App.Vector(1, 0, 0), -90)
+        yaw_offset = App.Rotation(App.Vector(0, 0, 1), -90)
+
+        slider = self.jointgroup.newObject("App::FeaturePython", "Slider")
+        JointObject.Joint(slider, JointObject.JointTypes.index("Slider"))
+        slider.Detach1 = True
+        slider.Detach2 = True
+        slider.Reference1 = (ground, ["Face1"])
+        slider.Reference2 = (rack, ["Face1"])
+        slider.Placement1 = App.Placement(App.Vector(), along_rack)
+        slider.Placement2 = App.Placement(App.Vector(), along_rack * yaw_offset)
+
+        rackPinion = self.jointgroup.newObject("App::FeaturePython", "RackPinion")
+        JointObject.Joint(rackPinion, JointObject.JointTypes.index("RackPinion"))
+        rackPinion.Detach1 = True
+        rackPinion.Reference1 = (rack, ["Face1"])
+        rackPinion.Reference2 = (pinion, ["Face1"])
+        rackPinion.Placement1 = App.Placement(App.Vector(), along_rack)
+        rackPinion.Distance = 10
+
+        self.doc.recompute()
+
+        slider_axis = UtilsAssembly.getJcsGlobalPlc(
+            slider.Placement2, slider.Reference2
+        ).Rotation.multVec(App.Vector(0, 0, 1))
+        rack_axis = UtilsAssembly.getJcsGlobalPlc(
+            rackPinion.Placement1, rackPinion.Reference1
+        ).Rotation.multVec(App.Vector(0, 0, 1))
+        self.assertLess(slider_axis.cross(rack_axis).Length, 1e-7)
+
+        # The rack and pinion joint must reach the solver: it is silently dropped when
+        # the rack cannot be identified from its slider. Look for its pitchRadius field
+        # rather than its type name, which the solver derives from the compiler-specific
+        # typeid name and is only readable with MSVC.
+        with tempfile.TemporaryDirectory() as temp_dir:
+            fileName = os.path.join(temp_dir, "rackPinion.asmt")
+            self.assembly.exportAsASMT(fileName)
+            with open(fileName) as asmt:
+                content = asmt.read()
+        self.assertIn(
+            "pitchRadius",
+            content,
+            "'{}' failed - joint not exported; slider state: {}, rack-pinion state: {}; "
+            "exported assembly: {}".format(
+                operation, slider.State, rackPinion.State, content[-2500:]
+            ),
+        )

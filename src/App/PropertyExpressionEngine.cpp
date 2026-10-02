@@ -167,8 +167,11 @@ struct PropertyExpressionEngine::Private
             buildGraphStructures(expr.first, expr.second.expression, nodes, revNodes, edges);
         }
 
-        // Create graph
-        g = DiGraph(nodes.size());
+        // Create graph.
+        g.clear();
+        for (std::size_t i = 0; i < nodes.size(); ++i) {
+            add_vertex(g);
+        }
 
         // Add edges to graph
         for (const auto& edge : edges) {

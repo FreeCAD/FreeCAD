@@ -239,11 +239,7 @@ install(CODE "
     )
 
     # Fix framework-style Qt dependencies to use flat dylib names
-    if(FREECAD_QT_MAJOR_VERSION STREQUAL \"6\")
-      set(QT_FRAMEWORKS \"QtCore;QtGui;QtWidgets;QtOpenGL;QtPrintSupport;QtSvg;QtNetwork\")
-    else()
-      set(QT_FRAMEWORKS \"QtCore;QtGui;QtWidgets;QtOpenGL;QtPrintSupport;QtSvg;QtNetwork\")
-    endif()
+    set(QT_FRAMEWORKS \"QtCore;QtGui;QtWidgets;QtOpenGL;QtPrintSupport;QtSvg;QtNetwork\")
 
     foreach(FRAMEWORK \${QT_FRAMEWORKS})
       # Change @rpath/QtXXX.framework/Versions/A/QtXXX to @rpath/QtXXX
@@ -255,18 +251,6 @@ install(CODE "
         OUTPUT_QUIET
         ERROR_QUIET
       )
-
-      # Also handle versioned framework paths for Qt5
-      if(FREECAD_QT_MAJOR_VERSION STREQUAL \"5\")
-        execute_process(
-          COMMAND install_name_tool -change
-            \"@rpath/\${FRAMEWORK}.framework/Versions/5/\${FRAMEWORK}\"
-            \"@rpath/\${FRAMEWORK}\"
-            \"\${PLUGIN}\"
-          OUTPUT_QUIET
-          ERROR_QUIET
-        )
-      endif()
     endforeach()
 
     message(STATUS \"Fixed dependencies for: \${PLUGIN}\")

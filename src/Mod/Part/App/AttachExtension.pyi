@@ -33,7 +33,7 @@ class AttachExtension(DocumentObjectExtension):
         """
         ...
 
-    def changeAttacherType(self, typename: str, /) -> None:
+    def changeAttacherType(self, typename: str, /) -> bool:
         """
         changeAttacherType(typename) -> None
 

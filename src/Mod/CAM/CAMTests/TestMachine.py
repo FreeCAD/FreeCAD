@@ -26,6 +26,7 @@ import CAMTests.PathTestUtils as PathTestUtils
 from Machine.models.machine import (
     Machine,
     Toolhead,
+    ToolheadType,
     OutputOptions,
     ProcessingOptions,
     MachineFactory,
@@ -309,6 +310,22 @@ class TestToolhead(PathTestUtils.PathTestBase):
         self.assertEqual(restored.max_power_kw, toolhead.max_power_kw)
         self.assertEqual(restored.toolhead_wait, toolhead.toolhead_wait)
 
+    def test_toolhead_wire_edm_from_dict(self):
+        """Regression: wire_edm must deserialize to a valid toolhead type"""
+        toolhead = Toolhead.from_dict({"name": "EDM Head", "toolhead_type": "wire_edm"})
+
+        self.assertEqual(toolhead.toolhead_type, ToolheadType.WIRE_EDM)
+        self.assertTrue(toolhead.is_wire_edm())
+        self.assertTrue(toolhead.capabilities.has_pulse_control)
+        self.assertTrue(toolhead.capabilities.uses_water)
+        self.assertFalse(toolhead.capabilities.can_rotate)
+
+    def test_toolhead_type_display_names(self):
+        """Display names should be properly capitalized, including abbreviations"""
+        self.assertEqual(ToolheadType.WIRE_EDM.display_name, "Wire EDM")
+        for toolhead_type in ToolheadType:
+            self.assertNotIn("_", toolhead_type.display_name)
+
 
 class TestMachineFactory(PathTestUtils.PathTestBase):
     """Test MachineFactory class for loading/saving configurations"""
@@ -412,9 +429,9 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
         # List configurations
         configs = MachineFactory.list_configuration_files()
 
-        # Should include <any> plus our two machines
-        self.assertGreaterEqual(len(configs), 3)
-        self.assertEqual(configs[0][0], "<any>")
+        # Only real machine files, no placeholder entry
+        self.assertGreaterEqual(len(configs), 2)
+        self.assertTrue(all(path is not None for name, path in configs))
 
         # Check that our machines are in the list (by display name, not filename)
         names = [name for name, path in configs]
@@ -429,7 +446,6 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
         configs = MachineFactory.list_configurations()
 
         self.assertIsInstance(configs, list)
-        self.assertIn("<any>", configs)
         # Returns display name from JSON, not filename
         self.assertIn("Test Machine", configs)
 

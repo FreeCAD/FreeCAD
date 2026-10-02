@@ -22,7 +22,7 @@ class ViewProviderSpreadsheet(ViewProviderDocumentObject):
     License: LGPL-2.1-or-later
     """
 
-    def getView(self) -> Any:
+    def getView(self) -> Any | None:
         """Get access to the sheet view"""
         ...
 

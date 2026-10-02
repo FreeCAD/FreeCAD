@@ -1038,6 +1038,12 @@ class ToolBit(Asset, ABC):
             presets = _get_presets(self.obj)
             if presets:
                 attrs["presets"] = presets
+            else:
+                # _extra_attrs snapshots every key of the source .fctb,
+                # "presets" included, and the merge above reinstates it.
+                # Dropping the last preset has to survive that, or the
+                # stale list is written straight back out.
+                attrs.pop("presets", None)
         except Exception as e:
             Path.Log.warning(
                 f"ToolBit.to_dict: failed to serialize presets for "

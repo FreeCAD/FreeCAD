@@ -266,11 +266,11 @@ bool AbstractPolygonTriangulator::TriangulatePolygon()
         return ok;
     }
     catch (const Base::Exception& e) {
-        Base::Console().log("Triangulation: %s\n", e.what());
+        Base::Console().log("Triangulation: {}\n", e.what());
         return false;
     }
     catch (const std::exception& e) {
-        Base::Console().log("Triangulation: %s\n", e.what());
+        Base::Console().log("Triangulation: {}\n", e.what());
         return false;
     }
     catch (...) {

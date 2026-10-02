@@ -210,6 +210,7 @@ class PythonExport:
     Constructor: bool = False
     NumberProtocol: bool = False
     RichCompare: bool = False
+    Hash: bool = False
     TwinPointer: str = ""
     Delete: bool = False
     Reference: Optional[bool] = None

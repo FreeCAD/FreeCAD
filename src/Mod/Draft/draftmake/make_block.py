@@ -31,9 +31,9 @@
 ## \addtogroup draftmake
 # @{
 import FreeCAD as App
-import draftutils.gui_utils as gui_utils
-
 from draftobjects.block import Block
+from draftutils import gui_utils
+from freecad.deprecation import deprecated
 
 if App.GuiUp:
     from draftviewproviders.view_base import ViewProviderDraftPart
@@ -65,6 +65,14 @@ def make_block(objectslist):
     return obj
 
 
-makeBlock = make_block
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_block()",
+)
+def makeBlock(*args, **kwarg):
+    """DEPRECATED. Use 'make_block'."""
+    return make_block(*args, **kwarg)
+
 
 ## @}

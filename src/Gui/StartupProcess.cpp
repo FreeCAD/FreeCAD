@@ -79,26 +79,15 @@ void StartupProcess::setupApplication()
 #ifdef FC_OS_WIN32
         SetProcessDPIAware();  // call before the main event loop
 #endif
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        QApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
-#endif
     }
     else {
         // Enable automatic scaling based on pixel density of display (added in Qt 5.6)
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-#endif
 #if defined(Q_OS_WIN)
         QGuiApplication::setHighDpiScaleFactorRoundingPolicy(
             Qt::HighDpiScaleFactorRoundingPolicy::PassThrough
         );
 #endif
     }
-
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    // Enable support for highres images (added in Qt 5.1, but off by default)
-    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-#endif
 
     // Use software rendering for OpenGL
     ParameterGrp::handle hOpenGL = App::GetApplication().GetParameterGroupByPath(
@@ -373,7 +362,7 @@ void StartupPostProcess::checkOpenGL()
                                .arg(major)
                                .arg(minor)
                 + QStringLiteral("\n");
-            Base::Console().warning(message.toStdString().c_str());
+            Base::Console().warning("{}", message.toStdString());
             Dialog::DlgCheckableMessageBox::showMessage(
                 QCoreApplication::applicationName() + QStringLiteral(" - ")
                     + QObject::tr("Invalid OpenGL Version"),
@@ -382,7 +371,7 @@ void StartupPostProcess::checkOpenGL()
         }
 #endif
         const char* glVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
-        Base::Console().log("OpenGL version is: %d.%d (%s)\n", major, minor, glVersion);
+        Base::Console().log("OpenGL version is: {}.{} ({})\n", major, minor, glVersion);
     }
 }
 
@@ -462,7 +451,7 @@ void StartupPostProcess::showMainWindow()
         setImportImageFormats();
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("Error in FreeCADGuiInit.py: %s\n", e.what());
+        Base::Console().error("Error in FreeCADGuiInit.py: {}\n", e.what());
         mainWindow->stopSplasher();
         throw;
     }
@@ -477,7 +466,7 @@ void StartupPostProcess::activateWorkbench()
 {
     // Activate the correct workbench
     std::string start = App::Application::Config()["StartWorkbench"];
-    Base::Console().log("Init: Activating default workbench %s\n", start.c_str());
+    Base::Console().log("Init: Activating default workbench {}\n", start);
     std::string autoload = App::GetApplication()
                                .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
                                ->GetASCII("AutoloadModule", start.c_str());

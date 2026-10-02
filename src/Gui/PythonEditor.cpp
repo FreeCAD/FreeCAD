@@ -217,7 +217,7 @@ void PythonEditor::onExecuteInConsole()
             catch (const Base::Exception& e) {
                 QString errorMessage = QString::fromStdString(e.what());
                 Base::Console().error(
-                    "Error executing Python code:\n%s\n",
+                    "Error executing Python code:\n{}\n",
                     errorMessage.toUtf8().constData()
                 );
             }

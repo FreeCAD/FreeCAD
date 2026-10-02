@@ -480,7 +480,7 @@ def viewer(scene=None, background=(1.0, 1.0, 1.0), lightdir=None):
     # Initialize Coin. This returns a main window to use
     from pivy import coin
     from pivy import quarter
-    from PySide2 import QtWidgets
+    from PySide import QtWidgets
 
     app = QtWidgets.QApplication([])
     # Create a Qt widget, which will be our window.

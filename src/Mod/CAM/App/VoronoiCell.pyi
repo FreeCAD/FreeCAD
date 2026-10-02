@@ -36,7 +36,7 @@ class VoronoiCell(BaseClass):
         ...
 
     @constmethod
-    def getSource(self) -> Any:
+    def getSource(self, z: float = 0.0, /) -> Any:
         """Returns the Source for the cell"""
         ...
     Index: Final[int]

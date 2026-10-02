@@ -31,6 +31,9 @@
 #include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoVertexProperty.h>
+#include <Inventor/nodes/SoShaderProgram.h>
+#include <Inventor/nodes/SoVertexShader.h>
+#include <Inventor/nodes/SoFragmentShader.h>
 
 #include "SoFCBackgroundGradient.h"
 
@@ -76,6 +79,43 @@ SoFCBackgroundGradient::SoFCBackgroundGradient()
     linearVertexProperty->materialBinding = SoVertexProperty::PER_VERTEX;
     linearFaces = new SoFaceSet;
     linearFaces->vertexProperty.setValue(linearVertexProperty);
+
+
+    static const char* vertexSource = R"(
+        #version 120
+        varying vec4 vColor;
+
+        void main() {
+        gl_Position = ftransform();
+        vColor = gl_Color; })";
+    static const char* fragmentSource = R"(
+        #version 120
+        varying vec4 vColor;
+
+        vec3 permute(vec3 x) {
+            return mod(((x * 34.0) + 1.0) * x, 289.0); }
+
+        float rand(vec2 co) {
+            vec3 p = permute(permute(co.x + vec3(0.0, 1.0, 2.0)) + (co.y * 26.69));
+            return fract((p.x + p.y + p.z) * 0.6180339887498949); }
+
+        void main() {
+            float triNoise = rand(gl_FragCoord.xy) + rand(gl_FragCoord.yx) - 1.0;
+            vec3 ditheredColor = vColor.rgb + vec3(triNoise * 2.0 / 255.0);
+            gl_FragColor = vec4(ditheredColor, vColor.a); })";
+
+    auto vertexShader = new SoVertexShader;
+    vertexShader->sourceProgram.setValue(vertexSource);
+    vertexShader->sourceType.setValue(SoShaderObject::GLSL_PROGRAM);
+
+    auto fragmentShader = new SoFragmentShader;
+    fragmentShader->sourceProgram.setValue(fragmentSource);
+    fragmentShader->sourceType.setValue(SoShaderObject::GLSL_PROGRAM);
+
+    auto shaderProg = new SoShaderProgram;
+    shaderProg->shaderObject.set1Value(0, vertexShader);
+    shaderProg->shaderObject.set1Value(1, fragmentShader);
+    linearSeparator->addChild(shaderProg);
     linearSeparator->addChild(linearFaces);
 
     // Radial gradient geometry
@@ -93,6 +133,7 @@ SoFCBackgroundGradient::SoFCBackgroundGradient()
     radialRingVertexProperty->materialBinding = SoVertexProperty::PER_VERTEX;
     radialRing = new SoFaceSet;
     radialRing->vertexProperty.setValue(radialRingVertexProperty);
+    radialSeparator->addChild(shaderProg);
     radialSeparator->addChild(radialFan);
     radialSeparator->addChild(radialRing);
 

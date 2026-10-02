@@ -178,9 +178,9 @@ void ImportOCAF::loadShapes(
 
 #ifdef FC_DEBUG
     Base::Console().log(
-        "H:%d, N:%s, T:%d, A:%d, S:%d, C:%d, SS:%d, F:%d, R:%d, C:%d, SS:%d\n",
+        "H:{}, N:{}, T:{}, A:{}, S:{}, C:{}, SS:{}, F:{}, R:{}, C:{}, SS:{}\n",
         hash,
-        part_name.c_str(),
+        part_name,
         aShapeTool->IsTopLevel(label),
         aShapeTool->IsAssembly(label),
         aShapeTool->IsShape(label),

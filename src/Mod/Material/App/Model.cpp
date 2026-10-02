@@ -114,9 +114,9 @@ void ModelProperty::validate(const ModelProperty& other) const
         throw InvalidProperty("Model names don't match");
     }
     if (getDisplayName() != other.getDisplayName()) {
-        Base::Console().log("Local display name '%s'\n", getDisplayName().toStdString().c_str());
-        Base::Console().log("Remote display name '%s'\n",
-                            other.getDisplayName().toStdString().c_str());
+        Base::Console().log("Local display name '{}'\n", getDisplayName().toStdString());
+        Base::Console().log("Remote display name '{}'\n",
+                            other.getDisplayName().toStdString());
         throw InvalidProperty("Model display names don't match");
     }
     if (_propertyType != other._propertyType) {
@@ -136,8 +136,8 @@ void ModelProperty::validate(const ModelProperty& other) const
     }
 
     if (_columns.size() != other._columns.size()) {
-        Base::Console().log("Local property column count %d\n", _columns.size());
-        Base::Console().log("Remote property column count %d\n", other._columns.size());
+        Base::Console().log("Local property column count {}\n", _columns.size());
+        Base::Console().log("Remote property column count {}\n", other._columns.size());
         throw InvalidProperty("Model property column counts don't match");
     }
     for (size_t i = 0; i < _columns.size(); i++) {

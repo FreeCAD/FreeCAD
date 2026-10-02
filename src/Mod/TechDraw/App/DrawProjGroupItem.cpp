@@ -108,7 +108,7 @@ bool DrawProjGroupItem::showLock() const
 
 App::DocumentObjectExecReturn *DrawProjGroupItem::execute()
 {
-//    Base::Console().message("DPGI::execute() - %s / %s\n", getNameInDocument(), Label.getValue());
+//    Base::Console().message("DPGI::execute() - {} / {}\n", getNameInDocument(), Label.getValue());
     if (!keepUpdated()) {
         return DrawView::execute();
     }
@@ -135,7 +135,7 @@ App::DocumentObjectExecReturn *DrawProjGroupItem::execute()
 
 void DrawProjGroupItem::postHlrTasks()
 {
-//    Base::Console().message("DPGI::postHlrTasks() - %s\n", getNameInDocument());
+//    Base::Console().message("DPGI::postHlrTasks() - {}\n", getNameInDocument());
     DrawViewPart::postHlrTasks();
 
     DrawProjGroup* pGroup = getPGroup();
@@ -170,7 +170,7 @@ void DrawProjGroupItem::autoPosition()
 
 void DrawProjGroupItem::onDocumentRestored()
 {
-//    Base::Console().message("DPGI::onDocumentRestored() - %s\n", getNameInDocument());
+//    Base::Console().message("DPGI::onDocumentRestored() - {}\n", getNameInDocument());
     DrawView::onDocumentRestored();
     App::DocumentObjectExecReturn* rc = DrawProjGroupItem::execute();
     if (rc) {
@@ -190,7 +190,7 @@ bool DrawProjGroupItem::isAnchor() const
 
 Base::Vector3d DrawProjGroupItem::getXDirection() const
 {
-//    Base::Console().message("DPGI::getXDirection() - %s\n", Label.getValue());
+//    Base::Console().message("DPGI::getXDirection() - {}\n", Label.getValue());
     Base::Vector3d result(1.0, 0.0, 0.0);               //default X
     App::Property* prop = getPropertyByName("XDirection");
     if (prop) {
@@ -226,7 +226,7 @@ Base::Vector3d DrawProjGroupItem::getLegacyX(const Base::Vector3d& pt,
                                         const Base::Vector3d& axis,
                                         const bool flip)  const
 {
-//    Base::Console().message("DPGI::getLegacyX() - %s\n", Label.getValue());
+//    Base::Console().message("DPGI::getLegacyX() - {}\n", Label.getValue());
     App::Property* prop = getPropertyByName("RotationVector");
     if (prop) {
         Base::Vector3d result = RotationVector.getValue();
@@ -311,7 +311,7 @@ void DrawProjGroupItem::unsetupObject()
     }
 
     if (getPGroup()->getAnchor() == this && !getPGroup()->isUnsetting()) {
-           Base::Console().warning("Warning - DPG (%s/%s) may be corrupt - Anchor deleted\n",
+           Base::Console().warning("Warning - DPG ({}/{}) may be corrupt - Anchor deleted\n",
                                    getPGroup()->getNameInDocument(), getPGroup()->Label.getValue());
            getPGroup()->Anchor.setValue(nullptr);    //this catches situation where DPGI is deleted w/o DPG::removeProjection
     }

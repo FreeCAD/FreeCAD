@@ -25,6 +25,7 @@
 #pragma once
 
 #include <bitset>
+#include <istream>
 #include <map>
 #include <memory>
 #include <string>

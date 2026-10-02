@@ -437,7 +437,7 @@ void TaskFemConstraintFluidBoundary::updateBoundaryTypeUI()
         pcConstraint->Reversed.setValue(false);  // outlet must point outward
     }
     else {
-        Base::Console().error("Error: Fluid boundary type `%s` is not defined\n", boundaryType.c_str());
+        Base::Console().error("Error: Fluid boundary type `{}` is not defined\n", boundaryType);
     }
     // std::string subtypeLabel = boundaryType + std::string(" type");
     // ui->labelSubtype->setText(QString::fromUtf8(subtypeLabel)); // too long to show in UI
@@ -514,7 +514,7 @@ void TaskFemConstraintFluidBoundary::updateSubtypeUI()
         ui->tabBasicBoundary->setEnabled(true);
     }
     else {
-        Base::Console().error("Fluid boundary type `%s` is not defined\n", boundaryType.c_str());
+        Base::Console().error("Fluid boundary type `{}` is not defined\n", boundaryType);
     }
 }
 
@@ -539,7 +539,7 @@ void TaskFemConstraintFluidBoundary::updateTurbulenceUI()
         ui->labelTurbulentLengthValue->setText(tr("Hydraulic Diameter [m]"));
     }
     else {
-        Base::Console().error("turbulence Spec type `%s` is not defined\n", turbulenceSpec.c_str());
+        Base::Console().error("turbulence Spec type `{}` is not defined\n", turbulenceSpec);
     }
 }
 
@@ -581,10 +581,7 @@ void TaskFemConstraintFluidBoundary::updateThermalBoundaryUI()
         ui->spinTemperatureValue->setEnabled(true);
     }
     else {
-        Base::Console().error(
-            "Thermal boundary type `%s` is not defined\n",
-            thermalBoundaryType.c_str()
-        );
+        Base::Console().error("Thermal boundary type `{}` is not defined\n", thermalBoundaryType);
     }
 }
 
@@ -605,8 +602,8 @@ void TaskFemConstraintFluidBoundary::onBoundaryTypeChanged()
     if (!ret) {
         std::string boundaryType = ui->comboBoundaryType->currentText().toStdString();
         Base::Console().error(
-            "Fluid boundary recomputationg failed for boundaryType `%s` \n",
-            boundaryType.c_str()
+            "Fluid boundary recomputationg failed for boundaryType `{}` \n",
+            boundaryType
         );
     }
 }

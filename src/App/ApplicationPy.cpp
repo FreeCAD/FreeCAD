@@ -25,6 +25,7 @@
 
 #include <FCConfig.h>
 
+#include <algorithm>
 #include <array>
 
 #include <Base/Console.h>
@@ -41,6 +42,10 @@
 #include "DocumentObserverPython.h"
 #include "DocumentObjectPy.h"
 #include "RecoverySnapshot.h"
+
+#include <Base/CrashReporter/Manager.h>
+
+#include <Base/CrashReporter/CrashReportPy.h>
 
 
 // using Base::GetConsole;
@@ -1095,5 +1100,52 @@ PyObject* ApplicationPy::sCheckAbort(PyObject* /*self*/, PyObject* args)
         Py_Return;
     }
     PY_CATCH
+}
+
+PyObject* ApplicationPy::sGetLastCrashReport(PyObject* /*self*/, PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    PY_TRY
+    {
+        const auto& reports = CrashReporter::Manager::reports();
+        const auto newest = std::ranges::max_element(
+            reports, {}, &CrashReporter::ParsedCrashReport::timestamp);
+        if (newest == reports.end()) {
+            Py_Return;
+        }
+        return new CrashReportPy(new ParsedCrashReport(*newest));
+    }
+    PY_CATCH
+}
+
+PyObject* ApplicationPy::sGetCrashReports(PyObject* /*self*/, PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    PY_TRY
+    {
+        Py::List list;
+        for (const auto& report : CrashReporter::Manager::reports()) {
+            list.append(Py::asObject(new CrashReportPy(new ParsedCrashReport(report))));
+        }
+        return Py::new_reference_to(list);
+    }
+    PY_CATCH
+}
+
+PyObject* ApplicationPy::sClearCrashReports(PyObject* /*self*/, PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    PY_TRY
+    {
+        CrashReporter::Manager::clear();
+    }
+    PY_CATCH
+    Py_Return;
 }
 // NOLINTEND(cppcoreguidelines-pro-type-*)

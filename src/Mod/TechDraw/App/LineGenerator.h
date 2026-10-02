@@ -41,6 +41,7 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 #include <map>
+#include <vector>
 #include <QPen>
 
 namespace TechDraw {

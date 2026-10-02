@@ -215,52 +215,12 @@ def find_tools(noobsolete=True):
     QT_VERSION = f"{QT_VERSION_MAJOR}.{QT_VERSION_MINOR}.{QT_VERSION_PATCH}"
     print(f"Found Qt {QT_VERSION}")
 
-    if QT_VERSION_MAJOR == 5:
-        if os.system("lupdate -version") == 0:
-            LUPDATE = "lupdate"
-            # TODO: we suppose lupdate is a symlink to lupdate-qt4 for now
-            if noobsolete:
-                LUPDATE += " -no-obsolete"
-        elif os.system("lupdate-qt5 -version") == 0:
-            LUPDATE = "lupdate-qt5"
-            if noobsolete:
-                LUPDATE += " -no-obsolete"
-        else:
-            raise Exception("Cannot find lupdate")
-    else:
-        LUPDATE = "lupdate"
+    LUPDATE = "lupdate"
+    QMAKE = "(qmake not needed for Qt 6 and later)"
+    PYLUPDATE = "(pylupdate not needed for Qt 6 and later)"
 
-    if QT_VERSION_MAJOR == 5:
-        if os.system("qmake -version") == 0:
-            QMAKE = "qmake"
-        elif os.system("qmake-qt5 -version") == 0:
-            QMAKE = "qmake-qt5"
-        else:
-            raise Exception("Cannot find qmake")
-        if os.system("pylupdate -version") == 0:
-            PYLUPDATE = "pylupdate"
-        elif os.system("pylupdate6 --version") == 0:
-            PYLUPDATE = "pylupdate6"
-            if noobsolete:
-                PYLUPDATE += " -no-obsolete"
-        elif os.system("pylupdate5 -version") == 0:
-            PYLUPDATE = "pylupdate5"
-            if noobsolete:
-                PYLUPDATE += " -noobsolete"
-        elif os.system("pyside2-lupdate -version") == 0:
-            PYLUPDATE = "pyside2-lupdate"
-            raise Exception(
-                "Please do not use pyside2-lupdate at the moment, as it shows encoding problems. Please use pylupdate5 or 6 instead."
-            )
-        else:
-            raise Exception("Cannot find pylupdate")
-    else:
-        QMAKE = "(qmake not needed for Qt 6 and later)"
-        PYLUPDATE = "(pylupdate not needed for Qt 6 and later)"
     if os.system("lconvert -h") == 0:
         LCONVERT = "lconvert"
-        if noobsolete and QT_VERSION_MAJOR == 5:
-            LCONVERT += " -no-obsolete"
     else:
         raise Exception("Cannot find lconvert")
     print(
@@ -283,41 +243,7 @@ def update_translation(entry):
     project_filename = entry["tsname"] + ".pro"
     tsBasename = os.path.join(entry["tsdir"], entry["tsname"])
 
-    if QT_VERSION_MAJOR == 5:
-        print("\n\n=============================================")
-        print(f"EXTRACTING STRINGS FOR {entry['tsname']}")
-        print("=============================================", flush=True)
-        execline = []
-        execline.append(
-            f"touch dummy_cpp_file_for_lupdate.cpp"
-        )  # lupdate 5.x requires at least one source file to process the UI files
-        execline.append(f"touch {tsBasename}py.ts")
-        execline.append(f'{PYLUPDATE} `find ./ -name "*.py"` -ts {tsBasename}py.ts {log_redirect}')
-        execline.append(f"{QMAKE} -project -o {project_filename} -r")
-        execline.append(f"{LUPDATE} {project_filename} -ts {tsBasename}.ts {log_redirect}")
-        execline.append(
-            f"sed 's/<translation.*>.*</translation>/<translation type=\"unfinished\"></translation>/g' {tsBasename}.ts > {tsBasename}.ts.temp"
-        )
-        execline.append(f"mv {tsBasename}.ts.temp {tsBasename}.ts")
-        execline.append(
-            f"{LCONVERT} -i {tsBasename}py.ts {tsBasename}.ts -o {tsBasename}.ts {log_redirect}"
-        )
-        execline.append(f"rm {tsBasename}py.ts")
-        execline.append(f"rm dummy_cpp_file_for_lupdate.cpp")
-
-        print(f"Executing commands in {entry['workingdir']}:")
-        for line in execline:
-            print(line)
-            os.system(line)
-        print()
-
-        os.remove(project_filename)
-        # lupdate creates json files since Qt5.something. Remove them here too
-        for jsonfile in [f for f in os.listdir(".") if f.endswith(".json")]:
-            if not jsonfile in existingjsons:
-                os.remove(jsonfile)
-
-    elif QT_VERSION_MAJOR == 6:
+    if QT_VERSION_MAJOR == 6:
         # In Qt6, QMake project files are deprecated, and lupdate directly scans for source files. The same executable is
         # used for all supported programming languages, so it's just a single function call
 
@@ -406,10 +332,9 @@ def update_translation(entry):
                 f"{tsBasename}.ts",
             ]
         )
-
     else:
         print(
-            "ERROR: unrecognized version of lupdate -- found Qt {QT_VERSION_MAJOR}, we only support 5 and 6"
+            "ERROR: unrecognized version of lupdate -- found Qt {QT_VERSION_MAJOR}, we only support 6"
         )
         exit(1)
 

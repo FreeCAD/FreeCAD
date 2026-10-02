@@ -56,7 +56,7 @@
             |   num MINUSSIGN num               { $$ = Quantity($1.getValue() - $3.getValue());     }
             |   num '*' num                     { $$ = Quantity($1.getValue() * $3.getValue());     }
             |   num '/' num                     { $$ = Quantity($1.getValue() / $3.getValue());     }
-            |   '+' num  %prec POS              { $$ = Quantity($2.getValue());                    }
+            |   '+' num  %prec POS              { $$ = Quantity($2.getValue());                     }
             |   MINUSSIGN num  %prec NEG        { $$ = Quantity(-$2.getValue());                    }
             |   num '^' num                     { $$ = Quantity(pow($1.getValue(), $3.getValue())); }
             |   '(' num ')'                     { $$ = $2; }

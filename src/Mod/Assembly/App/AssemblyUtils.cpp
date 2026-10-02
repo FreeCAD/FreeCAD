@@ -42,6 +42,7 @@
 #include <Base/Interpreter.h>
 
 #include <Mod/Part/App/DatumFeature.h>
+#include <Mod/Part/App/LinkArray.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/PartDesign/App/Body.h>
 
@@ -57,6 +58,15 @@ namespace PartApp = Part;
 // ======================================= Utils ======================================
 namespace Assembly
 {
+
+bool isSuppressedLinkElement(const App::DocumentObject* obj)
+{
+    if (!obj || !obj->isDerivedFrom<App::LinkElement>()) {
+        return false;
+    }
+    auto* ext = obj->getExtension<App::SuppressibleExtension>();
+    return ext && ext->Suppressed.getValue();
+}
 
 void swapJCS(const App::DocumentObject* joint)
 {
@@ -593,7 +603,7 @@ App::DocumentObject* getObjFromRef(App::DocumentObject* comp, const std::string&
         else if (obj->isDerivedFrom<PartDesign::Body>()) {
             return handlePartDesignBody(obj, it);
         }
-        else if (obj->isDerivedFrom<PartApp::Feature>()) {
+        else if (obj->isDerivedFrom<PartApp::LinkArray>() || obj->isDerivedFrom<PartApp::Feature>()) {
             // Primitive, fastener, gear, etc.
             return obj;
         }
@@ -602,6 +612,9 @@ App::DocumentObject* getObjFromRef(App::DocumentObject* comp, const std::string&
             if (linked_obj->isDerivedFrom<PartDesign::Body>()) {
                 auto* retObj = handlePartDesignBody(linked_obj, it);
                 return retObj == linked_obj ? obj : retObj;
+            }
+            else if (linked_obj->isDerivedFrom<PartApp::LinkArray>()) {
+                return obj;
             }
             else if (linked_obj->isDerivedFrom<PartApp::Feature>()) {
                 return obj;
@@ -754,7 +767,7 @@ void collectComponentsRecursively(
 )
 {
     for (auto* obj : objects) {
-        if (!obj) {
+        if (!obj || isSuppressedLinkElement(obj)) {
             continue;
         }
 
@@ -772,8 +785,15 @@ void collectComponentsRecursively(
         else if (obj->isLinkGroup()) {
             auto* linkGroup = static_cast<App::Link*>(obj);
             for (auto* elt : linkGroup->ElementList.getValues()) {
+                if (!elt || isSuppressedLinkElement(elt)) {
+                    continue;
+                }
                 results.push_back(elt);
             }
+            continue;
+        }
+        else if (obj->isDerivedFrom<PartApp::LinkArray>()) {
+            results.push_back(obj);
             continue;
         }
         else if (auto* group = freecad_cast<App::DocumentObjectGroup*>(obj)) {
@@ -782,8 +802,12 @@ void collectComponentsRecursively(
         }
         else if (auto* link = freecad_cast<App::Link*>(obj)) {
             obj = link->getLinkedObject();
-            if (obj->isDerivedFrom<App::GeoFeature>()
-                && !obj->isDerivedFrom<App::LocalCoordinateSystem>()) {
+            if (!obj) {
+                continue;
+            }
+            if (obj->isDerivedFrom<PartApp::LinkArray>()
+                || (obj->isDerivedFrom<App::GeoFeature>()
+                    && !obj->isDerivedFrom<App::LocalCoordinateSystem>())) {
                 results.push_back(link);
             }
         }

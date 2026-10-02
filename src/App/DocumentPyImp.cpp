@@ -601,10 +601,8 @@ PyObject* DocumentPy::moveObject(PyObject* args)
     if (move) {
         return move->getPyObject();
     }
-    else {
-        std::string str("Failed to move the object");
-        throw Py::ValueError(str);
-    }
+    std::string str("Failed to move the object");
+    throw Py::ValueError(str);
 }
 
 PyObject* DocumentPy::openTransaction(PyObject* args)

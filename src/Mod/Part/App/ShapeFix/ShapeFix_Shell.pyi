@@ -3,7 +3,10 @@
 from __future__ import annotations
 
 from Metadata import export
+from Part.App.ShapeFix.ShapeFix_Face import ShapeFix_Face
 from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
+from Part.TopoShape import TopoShape
+from Part.TopoShapeShell import TopoShapeShell
 
 @export(
     PythonName="Part.ShapeFix.Shell",
@@ -27,49 +30,51 @@ class ShapeFix_Shell(ShapeFix_Root):
     FixFaceMode: bool = ...
     """Mode for applying fixes using ShapeFix_Face"""
 
-    def init(self) -> None:
+    def init(self, shell: TopoShapeShell, /) -> None:
         """
         Initializes by shell
         """
         ...
 
-    def fixFaceTool(self) -> None:
+    def fixFaceTool(self) -> ShapeFix_Face:
         """
         Returns tool for fixing faces
         """
         ...
 
-    def perform(self) -> None:
+    def perform(self) -> bool:
         """
         Iterates on subshapes and performs fixes
         """
         ...
 
-    def shell(self) -> None:
+    def shell(self) -> TopoShape:
         """
         Returns fixed shell (or subset of oriented faces)
         """
         ...
 
-    def numberOfShells(self) -> None:
+    def numberOfShells(self) -> int:
         """
         Returns the number of obtained shells
         """
         ...
 
-    def shape(self) -> None:
+    def shape(self) -> TopoShape:
         """
         In case of multiconnexity returns compound of fixed shells and one shell otherwise
         """
         ...
 
-    def errorFaces(self) -> None:
+    def errorFaces(self) -> TopoShape:
         """
         Returns not oriented subset of faces
         """
         ...
 
-    def fixFaceOrientation(self) -> None:
+    def fixFaceOrientation(
+        self, shell: TopoShapeShell, multi_conex: bool = ..., non_manifold: bool = ..., /
+    ) -> bool:
         """
         Fixes orientation of faces in shell.
         Changes orientation of face in the shell, if it is oriented opposite
@@ -88,7 +93,7 @@ class ShapeFix_Shell(ShapeFix_Root):
         """
         ...
 
-    def setNonManifoldFlag(self) -> None:
+    def setNonManifoldFlag(self, non_manifold: bool, /) -> None:
         """
         Sets NonManifold flag
         """

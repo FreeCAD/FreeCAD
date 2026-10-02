@@ -151,11 +151,11 @@ void MaterialDelegate::setValue(QAbstractItemModel* model,
         catch (const Base::ValueError&) {
             // Units mismatch
             auto quantity = value.value<Base::Quantity>();
-            Base::Console().log("Units mismatch '%s' = '%s', "
-                                "setting to default property units '%s'\n",
-                                propertyName.toStdString().c_str(),
-                                quantity.getUserString().c_str(),
-                                property->getUnits().toStdString().c_str());
+            Base::Console().log("Units mismatch '{}' = '{}', "
+                                "setting to default property units '{}'\n",
+                                propertyName.toStdString(),
+                                quantity.getUserString(),
+                                property->getUnits().toStdString());
 
             QMessageBox msgBox;
             msgBox.setWindowTitle(QStringLiteral("Property Units Mismatch"));

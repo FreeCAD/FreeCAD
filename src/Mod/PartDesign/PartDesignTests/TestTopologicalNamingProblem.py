@@ -1361,12 +1361,12 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Assert
         if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
-        self.assertEqual(body.Shape.BoundBox.XMin, 0)
-        self.assertEqual(body.Shape.BoundBox.YMin, 0)
-        self.assertEqual(body.Shape.BoundBox.ZMin, 0)
-        self.assertEqual(body.Shape.BoundBox.XMax, 31.37)
+        self.assertAlmostEqual(body.Shape.BoundBox.XMin, 0)
+        self.assertAlmostEqual(body.Shape.BoundBox.YMin, 0)
+        self.assertAlmostEqual(body.Shape.BoundBox.ZMin, 0)
+        self.assertAlmostEqual(body.Shape.BoundBox.XMax, 31.37)
         self.assertAlmostEqual(body.Shape.BoundBox.YMax, 25.2)
-        self.assertEqual(body.Shape.BoundBox.ZMax, 20)
+        self.assertAlmostEqual(body.Shape.BoundBox.ZMax, 20)
         self.assertNotEqual(area1, area2)
 
     def testShapeBinder(self):

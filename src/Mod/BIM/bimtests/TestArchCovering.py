@@ -1,9 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-#
-# Copyright (c) 2026 Furgo
-#
-# This file is part of the FreeCAD BIM workbench.
-# You can find the full license text in the LICENSE file in the root directory.
+# SPDX-FileCopyrightText: 2026 Furgo
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD as App
 import Arch
@@ -208,7 +222,7 @@ class TestArchCovering(TestArchBase.TestArchBase):
         """Verify that open wires are rejected as base objects."""
         self.printTestMessage("open wire guard...")
         # Create an open Draft Line
-        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(500, 0, 0))
+        line = Draft.make_line(App.Vector(0, 0, 0), App.Vector(500, 0, 0))
         self.document.recompute()
 
         covering = Arch.makeCovering(line)

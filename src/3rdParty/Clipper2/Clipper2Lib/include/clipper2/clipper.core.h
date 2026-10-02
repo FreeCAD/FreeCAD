@@ -15,6 +15,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <iterator>
 #include <algorithm>
 #include <numeric>
 #include <cmath>

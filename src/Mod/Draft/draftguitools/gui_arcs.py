@@ -601,7 +601,7 @@ class Arc_3Points(gui_base.GuiCommandBase):
             # Draw a simple `Part::Feature` if the parameter is `True`.
             Gui.addModule("Draft")
             Gui.addModule("WorkingPlane")
-            _cmd = "Draft.make_arc_3points(["
+            _cmd = "Draft.make_arc_3_points(["
             _cmd += "FreeCAD." + str(self.points[0])
             _cmd += ", FreeCAD." + str(self.points[1])
             _cmd += ", FreeCAD." + str(self.points[2])

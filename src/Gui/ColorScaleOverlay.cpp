@@ -24,6 +24,7 @@ using namespace Gui;
 namespace
 {
 constexpr float scientificLimit = 10000.0F;
+constexpr float labelCountEpsilon = 1.0e-4F;
 
 bool isZeroBased(const App::ColorGradient& gradient, float minimum, float maximum)
 {
@@ -35,10 +36,14 @@ int displayedGradientTickCount(const App::ColorGradient& gradient, float minimum
     int count = static_cast<int>(gradient.getCountColors());
     const float scale = std::pow(10.0F, static_cast<float>(precision));
     const float range = std::fabs(maximum - minimum) * scale;
-    const int maximumFixedLabels = static_cast<int>(std::floor(range + 1.0e-4F)) + 1;
 
-    if (maximumFixedLabels >= 2) {
-        count = std::min(count, maximumFixedLabels);
+    // Only convert to int when the scaled range is known to fit within count.
+    if (range < static_cast<float>(count)) {
+        const int fixedLabelCount = static_cast<int>(std::floor(range + labelCountEpsilon)) + 1;
+
+        if (fixedLabelCount >= 2) {
+            count = std::min(count, fixedLabelCount);
+        }
     }
 
     if (isZeroBased(gradient, minimum, maximum) && count > 2 && count % 2 == 0) {

@@ -216,7 +216,7 @@
     <message>
       <location filename="../../TaskFillingVertex.ui" line="20"/>
       <source>Constrains the surface to pass through the selected vertices</source>
-      <translation>Beschränkt die Oberfläche so, dass sie durch die ausgewählten Scheitelpunkte verläuft</translation>
+      <translation>Bestimmt die Oberfläche so, dass sie durch die ausgewählten Knotenpunkte verläuft</translation>
     </message>
     <message>
       <location filename="../../TaskFillingVertex.ui" line="23"/>
@@ -488,8 +488,8 @@ Dieser Befehl funktioniert nur mit einem Netzobjekt.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../TaskFilling.cpp" line="63"/>
       <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
+      <location filename="../../TaskFilling.cpp" line="63"/>
       <source>Edit Filling</source>
       <translation>Füllung bearbeiten</translation>
     </message>

@@ -349,7 +349,7 @@ public:
             e.reportException();
         }
         catch (const std::exception& e) {
-            Base::Console().error("C++ exception in onViewValueChanged: %s\n", e.what());
+            Base::Console().error("C++ exception in onViewValueChanged: {}\n", e.what());
         }
     }
 
@@ -691,6 +691,11 @@ protected:
                 }
             });
 
+            // Keep DSH active parameter index in sync with Qt widget focus
+            QObject::connect(parameter, &Gui::EditableDatumLabel::focusGained, [this, i]() {
+                parameterWithFocus = i;
+            });
+
             // this gets triggered whenever user deletes content in OVP, we remove the
             // constraints and unset everything to give user another change to select stuff
             // with mouse
@@ -735,26 +740,21 @@ protected:
         // before each mode change we reset the dynamic override
         ovpVisibilityManager.resetDynamicOverride();
 
-        bool firstOfMode = true;
-        parameterWithFocus = -1;
-
+        // 1. Deactivate parameters not in the current mode
         for (size_t i = 0; i < onViewParameters.size(); i++) {
-
             if (!isOnViewParameterOfCurrentMode(i)) {
                 onViewParameters[i]->stopEdit();
                 if (!onViewParameters[i]->isSet || handler->state() == SelectMode::End) {
                     onViewParameters[i]->deactivate();
                 }
             }
-            else {
+        }
 
-                if (firstOfMode) {
-                    parameterWithFocus = static_cast<int>(i);
-                    firstOfMode = false;
-                }
-
+        // 2. Activate current mode parameters in REVERSE order
+        // This guarantees parameter 0 is activated last and retains initial focus
+        for (int i = static_cast<int>(onViewParameters.size()) - 1; i >= 0; i--) {
+            if (isOnViewParameterOfCurrentMode(i)) {
                 bool visible = isOnViewParameterVisible(i);
-
                 if (visible) {
                     activateOnViewParameter(i);
                 }

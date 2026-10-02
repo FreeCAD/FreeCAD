@@ -21,7 +21,7 @@ class TrimmedCurve(BoundedCurve):
     Licence: LGPL
     """
 
-    def setParameterRange(self, first: float, last: float, /) -> None:
+    def setParameterRange(self, first: float = ..., last: float = ..., /) -> None:
         """
         Re-trims this curve to the provided parameter range ([Float=First, Float=Last])
         """

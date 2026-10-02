@@ -35,6 +35,7 @@
 # include <BRepLib.hxx>
 # include <BRepLProp_CLProps.hxx>
 # include <BRepTools.hxx>
+# include <BRepTools_WireExplorer.hxx>
 # include <GC_MakeArcOfCircle.hxx>
 # include <GC_MakeEllipse.hxx>
 # include <GC_MakeCircle.hxx>
@@ -103,9 +104,8 @@ Wire::Wire()
 
 Wire::Wire(const TopoDS_Wire &w)
 {
-    TopExp_Explorer edges(w, TopAbs_EDGE);
-    for (; edges.More(); edges.Next()) {
-        const auto edge( TopoDS::Edge(edges.Current()) );
+    for (BRepTools_WireExplorer explorer(w); explorer.More(); explorer.Next()) {
+        TopoDS_Edge edge = explorer.Current();
         BaseGeomPtr bg = BaseGeom::baseFactory(edge);
         if (bg) {
             geoms.push_back(bg);
@@ -136,6 +136,19 @@ TopoDS_Wire Wire::toOccWire() const
 void Wire::dump(std::string s)
 {
     BRepTools::Write(toOccWire(), s.c_str());            //debug
+}
+
+Face::Face(const TopoDS_Face& f) : representation(FaceRepresentation::Common)
+{
+    TopoDS_Wire outerWire = BRepTools::OuterWire(f);
+    wires.push_back(new Wire(outerWire));
+
+    for (TopExp_Explorer explorer(f, TopAbs_WIRE); explorer.More(); explorer.Next()) {
+        const TopoDS_Wire& wire = TopoDS::Wire(explorer.Current());
+        if (!wire.IsSame(outerWire)) {
+            wires.push_back(new Wire(wire));
+        }
+    }
 }
 
 // note that the face returned is inverted in Y
@@ -501,10 +514,6 @@ BaseGeomPtr BaseGeom::baseFactory(TopoDS_Edge edge, bool isCosmetic)
           Handle(Geom_BezierCurve) bez = adapt.Bezier();
           //if (bez->Degree() < 4) {
           result = std::make_shared<BezierSegment>(edge);
-          if (edge.Orientation() == TopAbs_REVERSED) {
-              result->reversed = true;
-          }
-
           //    OCC is quite happy with Degree > 3 but QtGui handles only 2, 3
       } break;
       case GeomAbs_BSplineCurve: {
@@ -533,7 +542,7 @@ BaseGeomPtr BaseGeom::baseFactory(TopoDS_Edge edge, bool isCosmetic)
             break;
         }
         catch (const Standard_Failure& e) {
-            Base::Console().log("Geom::baseFactory - OCC error - %s - while making spline\n",
+            Base::Console().log("Geom::baseFactory - OCC error - {} - while making spline\n",
                               e.GetMessageString());
             break;
         }
@@ -575,7 +584,7 @@ TopoDS_Edge BaseGeom::completeEdge(const TopoDS_Edge &edge) {
         }
     }
     catch (Standard_Failure &e) {
-        Base::Console().error("BaseGeom::completeEdge OCC error: %s\n", e.GetMessageString());
+        Base::Console().error("BaseGeom::completeEdge OCC error: {}\n", e.GetMessageString());
     }
 
     return TopoDS_Edge();
@@ -619,7 +628,7 @@ std::vector<Base::Vector3d> BaseGeom::intersection(TechDraw::BaseGeomPtr geom2)
 
 TopoShape BaseGeom::asTopoShape(double scale)
 {
-//    Base::Console().message("BG::asTopoShape(%.3f) - dump: %s\n", scale, dump().c_str());
+//    Base::Console().message("BG::asTopoShape({:.3f}) - dump: {}\n", scale, dump());
     TopoDS_Shape unscaledShape = ShapeUtils::scaleShape(getOCCEdge(), 1.0 / scale);
     TopoDS_Edge unscaledEdge = TopoDS::Edge(unscaledShape);
     return unscaledEdge;
@@ -681,7 +690,7 @@ AOE::AOE(const TopoDS_Edge &e) : Ellipse(e)
         a = v3.DotCross(v1, v2);
     }
     catch (const Standard_Failure& e) {
-        Base::Console().error("Geom::AOE::AOE - OCC error - %s - while making AOE in ctor\n",
+        Base::Console().error("Geom::AOE::AOE - OCC error - {} - while making AOE in ctor\n",
                               e.GetMessageString());
     }
 
@@ -793,7 +802,6 @@ AOC::AOC(const TopoDS_Edge &e) : Circle(e)
 
     startAngle = fmod(f, 2.0*std::numbers::pi);
     endAngle = fmod(l, 2.0*std::numbers::pi);
-
 
     cw = (a < 0) ? true: false;
     largeArc = (fabs(l-f) > std::numbers::pi) ? true : false;
@@ -1143,6 +1151,8 @@ BSpline::BSpline(const TopoDS_Edge &e)
             GeometryUtils::asLinear(edgeCurve, splineOut);
         }
     } else {
+        // Geom_BSplineCurve::Segment() modifies the curve in-place, thus we must work on a copy
+        splineOut = Handle(Geom_BSplineCurve)::DownCast(edgeCurve.BSpline()->Copy());
         // Geom_BSplineCurve is a Geom_BoundedCurve, but copying from hCurve->BSpline() does
         // not preserve the bounds, so we apply them here.
         splineOut->Segment(std::min(hCurve->FirstParameter(), hCurve->LastParameter()),
@@ -1381,9 +1391,9 @@ void Vertex::restoreVertexTag(Base::XMLReader& reader)
 
 void Vertex::dump(const char* title)
 {
-    Base::Console().message("TD::Vertex - %s - point: %s vis: %d cosmetic: %d  cosLink: %d cosTag: %s\n",
-                            title, DrawUtil::formatVector(pnt).c_str(), hlrVisible, cosmetic, cosmeticLink,
-                            cosmeticTag.c_str());
+    Base::Console().message("TD::Vertex - {} - point: {} vis: {} cosmetic: {}  cosLink: {} cosTag: {}\n",
+                            title, DrawUtil::formatVector(pnt), hlrVisible, cosmetic, cosmeticLink,
+                            cosmeticTag);
 }
 
 TopoShape Vertex::asTopoShape(double scale)
@@ -1669,10 +1679,13 @@ bool GeometryUtils::isLine(const TopoDS_Edge& occEdge)
 {
     BRepAdaptor_Curve adapt(occEdge);
 
-    Handle(Geom_BSplineCurve) spline = adapt.BSpline();
     double firstParm = adapt.FirstParameter();
     double lastParm = adapt.LastParameter();
+
+    // Because Geom_BSplineCurve::Segment() modifies the curve in-place, we must work with a copy
+    Handle(Geom_BSplineCurve) spline = Handle(Geom_BSplineCurve)::DownCast(adapt.BSpline()->Copy());
     spline->Segment(firstParm, lastParm);
+
     auto startPoint = Base::convertTo<Base::Vector3d>(adapt.Value(firstParm));
     auto endPoint = Base::convertTo<Base::Vector3d>(adapt.Value(lastParm));
     auto edgeLong = edgeLength(occEdge);

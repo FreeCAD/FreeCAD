@@ -35,6 +35,7 @@ from draftobjects.clone import Clone
 from draftutils import params
 from draftutils import utils
 from draftutils import gui_utils
+from freecad.deprecation import deprecated
 
 if App.GuiUp:
     from PySide import QtCore
@@ -158,6 +159,14 @@ def make_clone(obj, delta=None, forcedraft=False):
     return cl
 
 
-clone = make_clone
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_clone()",
+)
+def clone(*args, **kwarg):
+    """DEPRECATED. Use 'make_clone'."""
+    return make_clone(*args, **kwarg)
+
 
 ## @}

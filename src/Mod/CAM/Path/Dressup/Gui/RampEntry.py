@@ -67,7 +67,9 @@ class ObjectDressup:
                 "\nRamp Method 2: Travel at start depth along the path"
                 " and Ramp backwards at rampangle along the path to the original plunge end point."
                 "\nRamp Method 3: Ramp down along the path until traveled half of the Z distance,"
-                " change direction and ramp backwards to the original plunge end point.",
+                " change direction and ramp backwards to the original plunge end point."
+                "\nRamp Method 4: Ramp down at rampangle along the path,"
+                " continue with the original path, extend and close the path on the final loop",
             ),
         )
         obj.addProperty(
@@ -124,6 +126,7 @@ class ObjectDressup:
                 (translate("CAM_DressupRampEntry", "RampMethod1"), "RampMethod1"),
                 (translate("CAM_DressupRampEntry", "RampMethod2"), "RampMethod2"),
                 (translate("CAM_DressupRampEntry", "RampMethod3"), "RampMethod3"),
+                (translate("CAM_DressupRampEntry", "RampMethod4"), "RampMethod4"),
             ],
         }
 
@@ -183,6 +186,11 @@ class ObjectDressup:
             )
             obj.RampVertical = True
 
+        # update enumeration
+        for n in self.propertyEnumerations():
+            if n[0] == "Method":
+                setattr(obj, n[0], n[1])
+
         self.setEditorProperties(obj)
 
     def setup(self, obj):
@@ -207,6 +215,8 @@ class ObjectDressup:
             obj.Path = path
             return
 
+        PathDressup.placeWithBase(obj)
+
         if obj.Angle >= 90:
             obj.Angle = 89.9
         elif obj.Angle <= 0:
@@ -215,7 +225,7 @@ class ObjectDressup:
         angle_rad = math.radians(obj.Angle.Value)
 
         args = {
-            "commands": PathUtils.getPathWithPlacement(obj.Base).Commands,
+            "commands": obj.Base.Path.Commands,
             "method": obj.Proxy.propertyEnumerations(dataType="data")[0][1].index(obj.Method),
             "angle_rad": math.pi / 2 - angle_rad if obj.RampVertical else angle_rad,
             "tc": PathDressup.toolController(obj.Base),

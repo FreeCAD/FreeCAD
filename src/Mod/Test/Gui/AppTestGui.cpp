@@ -85,7 +85,7 @@ public:
 
     void runSingleTest(const char* comment, std::string expectedResult)
     {
-        Base::Console().log(comment);
+        Base::Console().log("{}", comment);
         flush();
         Base::Console().log("LOG");
         Base::Console().message("MSG");

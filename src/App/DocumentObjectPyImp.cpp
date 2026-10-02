@@ -76,12 +76,7 @@ Py::Object DocumentObjectPy::getDocument() const
 {
     DocumentObject* object = this->getDocumentObjectPtr();
     Document* doc = object->getDocument();
-    if (!doc) {
-        return Py::None();
-    }
-    else {
-        return Py::Object(doc->getPyObject(), true);
-    }
+    return doc ? Py::Object(doc->getPyObject(), true) : Py::None();
 }
 
 PyObject* DocumentObjectPy::isAttachedToDocument(PyObject* args) const
@@ -648,37 +643,33 @@ PyObject* DocumentObjectPy::getSubObject(PyObject* args, PyObject* keywds)
             if (retEnum == ReturnType::PyObject) {
                 return ret.pyObj;
             }
-            else if (retEnum == ReturnType::DocObject && !pyMat) {
+            if (retEnum == ReturnType::DocObject && !pyMat) {
                 return ret.obj;
             }
-            else if (!ret.sobj) {
+            if (!ret.sobj) {
                 return Py::None();
             }
-            else if (retEnum == ReturnType::Placement) {
+            if (retEnum == ReturnType::Placement) {
                 return Py::Placement(Base::Placement(ret.mat));
             }
-            else if (retEnum == ReturnType::Matrix) {
+            if (retEnum == ReturnType::Matrix) {
                 return Py::Matrix(ret.mat);
             }
-            else if (retEnum == ReturnType::LinkAndPlacement
-                     || retEnum == ReturnType::LinkAndMatrix) {
+            if (retEnum == ReturnType::LinkAndPlacement
+                || retEnum == ReturnType::LinkAndMatrix) {
                 ret.sobj->getLinkedObject(true, &ret.mat, false);
                 if (retEnum == ReturnType::LinkAndPlacement) {
                     return Py::Placement(Base::Placement(ret.mat));
                 }
-                else {
-                    return Py::Matrix(ret.mat);
-                }
+                return Py::Matrix(ret.mat);
             }
-            else {
-                Py::Tuple rret(retEnum == ReturnType::DocObject ? 2 : 3);
-                rret.setItem(0, ret.obj);
-                rret.setItem(1, Py::asObject(new Base::MatrixPy(ret.mat)));
-                if (retEnum != ReturnType::DocObject) {
-                    rret.setItem(2, ret.pyObj);
-                }
-                return rret;
+            Py::Tuple rret(retEnum == ReturnType::DocObject ? 2 : 3);
+            rret.setItem(0, ret.obj);
+            rret.setItem(1, Py::asObject(new Base::MatrixPy(ret.mat)));
+            if (retEnum != ReturnType::DocObject) {
+                rret.setItem(2, ret.pyObj);
             }
+            return rret;
         };
 
         if (single) {

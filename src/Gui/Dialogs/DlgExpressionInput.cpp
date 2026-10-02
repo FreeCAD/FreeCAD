@@ -30,12 +30,11 @@
 #include <QTreeWidget>
 #include <QStyledItemDelegate>
 
-#include <fmt/format.h>
-
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/ExpressionParser.h>
+#include <App/ExpressionTokenizer.h>
 #include <App/VarSet.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
@@ -43,6 +42,7 @@
 
 #include "Dialogs/DlgExpressionInput.h"
 #include "ui_DlgExpressionInput.h"
+#include "NumericLocale.h"
 #include "Application.h"
 #include "CommandT.h"
 #include "Tools.h"
@@ -326,8 +326,9 @@ QPoint DlgExpressionInput::expressionPosition() const
 
 bool DlgExpressionInput::checkCyclicDependencyVarSet(const QString& text)
 {
+    const auto formatting = ::Gui::numericLocaleContextFor(ui->expression->locale());
     std::shared_ptr<Expression> expr(
-        ExpressionParser::parse(path.getDocumentObject(), text.toUtf8().constData())
+        ExpressionParser::parseUserInput(path.getDocumentObject(), text.toUtf8().constData(), formatting)
     );
 
     if (expr) {
@@ -353,8 +354,9 @@ bool DlgExpressionInput::checkCyclicDependencyVarSet(const QString& text)
 void DlgExpressionInput::checkExpression(const QString& text)
 {
     // now handle expression
+    const auto formatting = ::Gui::numericLocaleContextFor(ui->expression->locale());
     std::shared_ptr<Expression> expr(
-        ExpressionParser::parse(path.getDocumentObject(), text.toUtf8().constData())
+        ExpressionParser::parseUserInput(path.getDocumentObject(), text.toUtf8().constData(), formatting)
     );
 
     if (expr) {
@@ -432,6 +434,17 @@ void DlgExpressionInput::textChanged()
     okBtn->setDefault(true);
 
     try {
+        if (text.endsWith(u'.') && ui->expression->textCursor().position() == text.size()) {
+            App::ExpressionTokenizer tokenizer;
+            const QString prefix = tokenizer.perform(text, text.size());
+            if (prefix.size() > 1 && !prefix.front().isDigit() && prefix.endsWith(u'.')) {
+                // Treat member access as unfinished input, but still validate numeric input.
+                message.clear();
+                ui->msg->clear();
+                okBtn->setDisabled(true);
+                return;
+            }
+        }
         checkExpression(text);
         if (varSetsVisible) {
             // If varsets are visible, check whether the varset info also

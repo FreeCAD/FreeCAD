@@ -55,36 +55,10 @@ DrawRichAnno::DrawRichAnno()
 
 void DrawRichAnno::Restore(Base::XMLReader& reader)
 {
-    bool originCenteredFound = false;
-
-    // Start parsing the properties block.
-    reader.readElement("Properties");
-    int propCount = reader.getAttribute<long>("Count");
-
-    for (int i = 0; i < propCount; i++) {
-        reader.readElement("Property");
-        const char* propName = reader.getAttribute<const char*>("name");
-
-        // The "checking" part:
-        if (strcmp(propName, "OriginCentered") == 0) {
-            originCenteredFound = true;
-        }
-
-        // The "restoring" part:
-        App::Property* prop = getPropertyByName(propName);
-        if (prop) {
-            prop->Restore(reader);  // Restore the value
-        }
-
-        reader.readEndElement("Property");
-    }
-
-    reader.readEndElement("Properties");
-
-    // Ensure backward compatibility: Old files have their anno centered on origin.
-    if (!originCenteredFound) {
-        OriginCentered.setValue(true);
-    }
+    // Legacy documents lack OriginCentered. The base restores it when present,
+    // including dynamic properties and their status flags.
+    OriginCentered.setValue(true);
+    DrawView::Restore(reader);
 }
 
 void DrawRichAnno::onChanged(const App::Property* prop)
@@ -116,7 +90,7 @@ short DrawRichAnno::mustExecute() const
 
 App::DocumentObjectExecReturn *DrawRichAnno::execute()
 {
-//    Base::Console().message("DRA::execute() - @ (%.3f, %.3f)\n", X.getValue(), Y.getValue());
+//    Base::Console().message("DRA::execute() - @ ({:.3f}, {:.3f})\n", X.getValue(), Y.getValue());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -126,7 +100,7 @@ App::DocumentObjectExecReturn *DrawRichAnno::execute()
 
 DrawView* DrawRichAnno::getBaseView() const
 {
-//    Base::Console().message("DRA::getBaseView() - %s\n", getNameInDocument());
+//    Base::Console().message("DRA::getBaseView() - {}\n", getNameInDocument());
     return freecad_cast<DrawView*>(AnnoParent.getValue());
 }
 

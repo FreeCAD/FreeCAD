@@ -374,7 +374,7 @@ protected:
             App::Link* link = Reader.document->addObject<App::Link>(linkName.c_str());
             Reader.IncrementCreatedObjectCount();
             if (!link) {
-                Reader.ImportError("Failed to create App::Link for block '%s'", name.c_str());
+                Reader.ImportError("Failed to create App::Link for block '{}'", name.c_str());
                 return;
             }
 
@@ -540,7 +540,7 @@ protected:
             // are created from INSERT entities, not as part of a BLOCK *definition*. If this
             // warning ever appears, it indicates a logic error in the importer.
             Reader.ImportError(
-                "Internal logic error: Attempted to add a DocumentObject ('%s') to a block "
+                "Internal logic error: Attempted to add a DocumentObject ('{}') to a block "
                 "definition.\n",
                 nameBase
             );

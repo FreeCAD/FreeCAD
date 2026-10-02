@@ -88,7 +88,7 @@ jobs:
     steps:
     - name: Harden the runner (Audit all outbound calls)
       if: "!inputs.skipBuild"
-      uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+      uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
       with:
         egress-policy: audit
 
@@ -106,7 +106,7 @@ jobs:
 
     - name: Checkout
       if: "!inputs.skipBuild"
-      uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
     - name: Add GCC Problem Matcher
       if: runner.os == 'Linux' && !inputs.skipBuild
@@ -133,10 +133,11 @@ jobs:
         echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
 
     - if: "!inputs.skipBuild"
-      uses: prefix-dev/setup-pixi@a09b6247153796b190642a2b53fac4241043cf6f # v0.10.0
+      uses: prefix-dev/setup-pixi@d3f436a425481402e6a95a1d1fc10331c708cd9e # v0.10.2
       with:
-        pixi-version: v0.68.1
+        pixi-version: v0.81.0
         cache: false
+        locked: true
 
     - name: Restore Compiler Cache
       id: cache-restore

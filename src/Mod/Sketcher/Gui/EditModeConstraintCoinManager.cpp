@@ -1674,7 +1674,7 @@ Restart:
         catch (Base::Exception& e) {
             Base::Console().developerError(
                 "EditModeConstraintCoinManager",
-                "Exception during draw: %s\n",
+                "Exception during draw: {}\n",
                 e.what()
             );
             e.reportException();

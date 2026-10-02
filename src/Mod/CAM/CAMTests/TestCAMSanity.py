@@ -710,6 +710,10 @@ class TestCAMSanity(PathTestBase):
         mock_job.Machine = "test_machine"
         mock_job.Tools.Group = []
         mock_job.Operations.Group = []
+        # An un-post-processed job: _outputData() must take the "not
+        # post-processed" branch rather than open a path.
+        mock_job.LastPostProcessOutput = ""
+        mock_job.PostProcessorOutputFile = ""
 
         # Create a mock postprocessor with sanity checks
         class MockPostprocessor:
@@ -767,6 +771,8 @@ class TestCAMSanity(PathTestBase):
         mock_job.Machine = "error_machine"
         mock_job.Tools.Group = []
         mock_job.Operations.Group = []
+        mock_job.LastPostProcessOutput = ""
+        mock_job.PostProcessorOutputFile = ""
 
         class ErrorPostprocessor:
             def get_sanity_checks(self, job):
@@ -799,6 +805,8 @@ class TestCAMSanity(PathTestBase):
         mock_job = MagicMock()
         mock_job.Tools.Group = []
         mock_job.Operations.Group = []
+        mock_job.LastPostProcessOutput = ""
+        mock_job.PostProcessorOutputFile = ""
         # No machine attribute
 
         all_squawks, critical_squawks = Sanity.CAMSanity.validate_job(mock_job)

@@ -1108,13 +1108,13 @@ def p_cylinder_action(p):
                     mycyl.Dir = (0,0,h)
                     try :
                         import Draft
-                        mycyl.Base = Draft.makePolygon(n,r1,face=True)
+                        mycyl.Base = Draft.make_polygon(n, r1, face=True)
                     except Exception:
                         # If Draft can't import (probably due to lack of Pivy on Mac and
                         # Linux builds of FreeCAD), this is a fallback.
                         # or old level of FreeCAD
                         if printverbose:
-                            print("Draft makePolygon Failed, falling back on manual polygon")
+                            print("Draft make_polygon failed, falling back on manual polygon")
                         mycyl.Base = myPolygon(n,r1)
 
                     else :
@@ -1210,7 +1210,7 @@ def p_circle_action(p) :
         Draft._Circle(mycircle)
         mycircle.Radius = r
         mycircle.MakeFace = True
-        mycircle = Draft.makeCircle(r,face=True) # would call doc.recompute
+        mycircle = Draft.make_circle(r, face=True)
         FreeCAD.ActiveDocument.recompute()
     else :
         mycircle = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",'polygon')

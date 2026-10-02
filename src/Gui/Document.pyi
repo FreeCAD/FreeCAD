@@ -6,6 +6,9 @@ from Base.Metadata import constmethod
 from Base.Persistence import Persistence
 from Base.Matrix import Matrix
 from typing import Any, Final, List, Optional
+from App.DocumentObject import DocumentObject
+from ViewProvider import ViewProvider as _ViewProvider
+from ViewProviderDocumentObject import ViewProviderDocumentObject as _ViewProviderDocumentObject
 
 class Document(Persistence):
     """
@@ -15,29 +18,29 @@ class Document(Persistence):
     Licence: LGPL
     """
 
-    def show(self, objName: str, /) -> None:
+    def show(self, object_name: str, /) -> None:
         """
         Show an object.
 
-        objName : str
+        object_name : str
             Name of the `Gui.ViewProvider` to show.
         """
         ...
 
-    def hide(self, objName: str, /) -> None:
+    def hide(self, object_name: str, /) -> None:
         """
         Hide an object.
 
-        objName : str
+        object_name : str
             Name of the `Gui.ViewProvider` to hide.
         """
         ...
 
-    def setPos(self, objName: str, matrix: Matrix, /) -> None:
+    def setPos(self, object_name: str, matrix: Matrix, /) -> None:
         """
         Set the position of an object.
 
-        objName : str
+        object_name : str
             Name of the `Gui.ViewProvider`.
 
         matrix : Base.Matrix
@@ -45,15 +48,17 @@ class Document(Persistence):
         """
         ...
 
-    def setEdit(self, obj: Any, mod: int = 0, subName: Optional[str] = None, /) -> bool:
+    def setEdit(
+        self, obj: str | DocumentObject | _ViewProvider, mode: int = 0, subname: str = ..., /
+    ) -> bool:
         """
         Set an object in edit mode.
 
         obj : str, App.DocumentObject, Gui.ViewPrivider
             Object to set in edit mode.
-        mod : int
+        mode : int
             Edit mode.
-        subName : str
+        subname : str
             Subelement name. Optional.
         """
         ...
@@ -70,15 +75,15 @@ class Document(Persistence):
         """
         ...
 
-    def addAnnotation(self, annoName: str, fileName: str, modName: str, /) -> None:
+    def addAnnotation(self, name: str, filename: str, mode: str = "Main", /) -> None:
         """
         Add an Inventor object from a file.
 
-        annoName : str
+        name : str
             Annotation name.
-        fileName : str
+        filename : str
             File name.
-        modName : str
+        mode : str
             Display mode name. Optional.
         """
         ...
@@ -89,11 +94,11 @@ class Document(Persistence):
         """
         ...
 
-    def getObject(self, objName: str, /) -> Optional[Any]:
+    def getObject(self, name: str, /) -> Optional[Any]:
         """
         Return the object with the given name. If no one exists, return None.
 
-        ObjName : str
+        name : str
             Object name.
         """
         ...
@@ -149,29 +154,29 @@ class Document(Persistence):
         """
         ...
 
-    def mergeProject(self, fileName: str, /) -> None:
+    def mergeProject(self, filename: str, /) -> None:
         """
         Merges this document with another project file.
 
-        fileName : str
+        filename : str
             File name.
         """
         ...
 
-    def toggleTreeItem(self, obj: Any, mod: int = 0, subName: Optional[str] = None, /) -> None:
+    def toggleTreeItem(self, obj: DocumentObject, mode: int = 0, subname: str = ..., /) -> None:
         """
         Change TreeItem of a document object.
 
         obj : App.DocumentObject
-        mod : int
+        mode : int
             Item mode.
             0: Toggle, 1: Collapse, 2: Expand, 3: Expand path.
-        subName : str
+        subname : str
             Subelement name. Optional.
         """
         ...
 
-    def scrollToTreeItem(self, obj: Any, /) -> None:
+    def scrollToTreeItem(self, obj: _ViewProviderDocumentObject, /) -> None:
         """
         Scroll the tree view to the item of a view object.
 
@@ -179,7 +184,7 @@ class Document(Persistence):
         """
         ...
 
-    def toggleInSceneGraph(self, obj: Any, /) -> None:
+    def toggleInSceneGraph(self, obj: _ViewProvider, /) -> None:
         """
         Add or remove view object from scene graph of all views depending
         on its canAddToSceneGraph().

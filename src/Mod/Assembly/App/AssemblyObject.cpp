@@ -416,7 +416,7 @@ void AssemblyObject::updateSolveStatus()
         if (!jm) {
             return;
         }
-        // Base::Console().warning("jm->name %s\n", jm->name);
+        // Base::Console().warning("jm->name {}\n", jm->name);
         bool isJointRedundant = false;
 
         jm->constraintsDo([&](std::shared_ptr<MbD::Constraint> con) {
@@ -429,7 +429,7 @@ void AssemblyObject::updateSolveStatus()
             if (spec.rfind("Redundant", 0) == 0) {
                 isJointRedundant = true;
             }
-            // Base::Console().warning("    - %s\n", spec);
+            // Base::Console().warning("    - {}\n", spec);
             --lastDoF;
         });
 
@@ -745,7 +745,7 @@ bool AssemblyObject::validateNewPlacements()
 
                 if (!oldPlc.isSame(newPlacement, Precision::Confusion())) {
                     Base::Console().warning(
-                        "Assembly : Ignoring bad solve, a grounded object (%s) moved.\n",
+                        "Assembly : Ignoring bad solve, a grounded object ({}) moved.\n",
                         obj->getFullLabel()
                     );
                     return false;
@@ -1081,9 +1081,9 @@ void AssemblyObject::setNewPlacements()
         }
         if (!isFinitePlacement(newPlacement)) {
             Base::Console().warning(
-                "Assembly: solver returned a non-finite placement for '%s'; keeping its "
+                "Assembly: solver returned a non-finite placement for '{}'; keeping its "
                 "previous position.\n",
-                obj->getFullName().c_str()
+                obj->getFullName()
             );
             continue;
         }
@@ -2374,7 +2374,7 @@ void AssemblyObject::getRackPinionMarkers(
     Base::Placement plc2 = getPlacementFromProp(joint, "Placement2");
 
     if (!part1 || !obj1) {
-        Base::Console().warning("Reference1 of Joint %s is bad.\n", joint->getFullName());
+        Base::Console().warning("Reference1 of Joint {} is bad.\n", joint->getFullName());
         return;
     }
 
@@ -2441,14 +2441,12 @@ void AssemblyObject::getRackPinionMarkers(
 int AssemblyObject::slidingPartIndex(App::DocumentObject* joint)
 {
     App::DocumentObject* part1 = getMovingPartFromRef(joint, "Reference1");
-    App::DocumentObject* obj1 = getObjFromJointRef(joint, "Reference1");
-    boost::ignore_unused(obj1);
-    Base::Placement plc1 = getPlacementFromProp(joint, "Placement1");
-
     App::DocumentObject* part2 = getMovingPartFromRef(joint, "Reference2");
-    App::DocumentObject* obj2 = getObjFromJointRef(joint, "Reference2");
-    boost::ignore_unused(obj2);
-    Base::Placement plc2 = getPlacementFromProp(joint, "Placement2");
+
+    // Compare the JCS in global coordinates: the slider and this joint may reference
+    // different sub-objects of the same part.
+    Base::Placement plc1 = getJointSideGlobalPlacement(joint, "Reference1", "Placement1");
+    Base::Placement plc2 = getJointSideGlobalPlacement(joint, "Reference2", "Placement2");
 
     int slidingFound = 0;
     for (auto* jt : getJoints()) {
@@ -2460,21 +2458,22 @@ int AssemblyObject::slidingPartIndex(App::DocumentObject* joint)
             if (jpart1 == part1 || jpart1 == part2) {
                 found = (jpart1 == part1) ? 1 : 2;
                 plci = (jpart1 == part1) ? plc1 : plc2;
-                plcjt = getPlacementFromProp(jt, "Placement1");
+                plcjt = getJointSideGlobalPlacement(jt, "Reference1", "Placement1");
             }
             else if (jpart2 == part1 || jpart2 == part2) {
                 found = (jpart2 == part1) ? 1 : 2;
                 plci = (jpart2 == part1) ? plc1 : plc2;
-                plcjt = getPlacementFromProp(jt, "Placement2");
+                plcjt = getJointSideGlobalPlacement(jt, "Reference2", "Placement2");
             }
 
             if (found != 0) {
-                // check the placements plcjt and (jcs1 or jcs2 depending on found value) Z axis are
-                // colinear ie if their pitch and roll are the same.
-                double y1, p1, r1, y2, p2, r2;
-                plcjt.getRotation().getYawPitchRoll(y1, p1, r1);
-                plci.getRotation().getYawPitchRoll(y2, p2, r2);
-                if (fabs(p1 - p2) < Precision::Confusion() && fabs(r1 - r2) < Precision::Confusion()) {
+                // Check that the Z axes of plcjt and plci are parallel. Do not compare
+                // pitch/roll: a yaw offset on the slider JCS (e.g. to align the rack) rotates
+                // about its local Z axis, which keeps the axis but changes pitch and roll
+                // whenever that axis is not the global Z.
+                Base::Vector3d axisjt = plcjt.getRotation().multVec(Base::Vector3d(0, 0, 1));
+                Base::Vector3d axisi = plci.getRotation().multVec(Base::Vector3d(0, 0, 1));
+                if (axisjt.Cross(axisi).Length() < Precision::Confusion()) {
                     slidingFound = found;
                 }
             }
@@ -2497,7 +2496,7 @@ bool AssemblyObject::isMbDJointValid(App::DocumentObject* joint)
     // If this joint is self-referential it must be ignored.
     if (getMbDPart(part1) == getMbDPart(part2)) {
         Base::Console().warning(
-            "Assembly: Ignoring joint (%s) because its parts are connected by a fixed "
+            "Assembly: Ignoring joint ({}) because its parts are connected by a fixed "
             "joint bundle. This joint is a conflicting or redundant constraint.\n",
             joint->getFullLabel()
         );

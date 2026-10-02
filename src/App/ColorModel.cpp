@@ -285,9 +285,7 @@ std::size_t ColorGradient::getMinColors() const
             if ((profile.fMin < 0.0f) && (profile.fMax > 0.0f)) {
                 return colorField1.getMinColors() + colorField2.getMinColors();
             }
-            else {
-                return colorField1.getMinColors();
-            }
+            return colorField1.getMinColors();
         }
     }
     return 2;
@@ -349,12 +347,7 @@ bool ColorLegend::operator==(const ColorLegend& rclCL) const
 
 float ColorLegend::getValue(std::size_t ulPos) const
 {
-    if (ulPos < values.size()) {
-        return values[ulPos];
-    }
-    else {
-        return 0.0f;
-    }
+    return ulPos < values.size() ? values[ulPos] : 0.0f;
 }
 
 bool ColorLegend::setValue(std::size_t ulPos, float fVal)
@@ -363,19 +356,12 @@ bool ColorLegend::setValue(std::size_t ulPos, float fVal)
         values[ulPos] = fVal;
         return true;
     }
-    else {
-        return false;
-    }
+    return false;
 }
 
 Base::Color ColorLegend::getColor(std::size_t ulPos) const
 {
-    if (ulPos < colorFields.size()) {
-        return colorFields[ulPos];
-    }
-    else {
-        return Base::Color();
-    }
+    return ulPos < colorFields.size() ? colorFields[ulPos] : Base::Color();
 }
 
 // color as: 0x00rrggbb
@@ -387,12 +373,7 @@ uint32_t ColorLegend::getPackedColor(std::size_t ulPos) const
 
 std::string ColorLegend::getText(std::size_t ulPos) const
 {
-    if (ulPos < names.size()) {
-        return names[ulPos];
-    }
-    else {
-        return "";
-    }
+    return ulPos < names.size() ? names[ulPos] : "";
 }
 
 std::size_t ColorLegend::addMin(const std::string& rclName)

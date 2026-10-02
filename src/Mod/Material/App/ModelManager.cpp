@@ -334,10 +334,10 @@ void ModelManager::migrateToExternal(const std::shared_ptr<Materials::ModelLibra
         auto uuid = it.getUUID();
         auto path = it.getPath();
         auto name = it.getName();
-        Base::Console().log("\t('%s', '%s', '%s')\n",
-                            uuid.toStdString().c_str(),
-                            path.toStdString().c_str(),
-                            name.toStdString().c_str());
+        Base::Console().log("\t('{}', '{}', '{}')\n",
+                            uuid.toStdString(),
+                            path.toStdString(),
+                            name.toStdString());
 
         auto model = _localManager->getModel(uuid);
         _externalManager->migrateModel(library->getName(), path, *model);
@@ -351,10 +351,10 @@ void ModelManager::validateMigration(const std::shared_ptr<Materials::ModelLibra
         auto uuid = it.getUUID();
         auto path = it.getPath();
         auto name = it.getName();
-        Base::Console().log("\t('%s', '%s', '%s')\n",
-                            uuid.toStdString().c_str(),
-                            path.toStdString().c_str(),
-                            name.toStdString().c_str());
+        Base::Console().log("\t('{}', '{}', '{}')\n",
+                            uuid.toStdString(),
+                            path.toStdString(),
+                            name.toStdString());
 
         auto model = _localManager->getModel(uuid);
         auto externalModel = _externalManager->getModel(uuid);

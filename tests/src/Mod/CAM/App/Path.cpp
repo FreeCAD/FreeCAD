@@ -176,9 +176,9 @@ TEST(PathTest, getCycleTime)
     Path::Command cmd;
     cmd.setFromGCode("G0 X2 Y0");
     path.addCommand(cmd);
-    cmd.setFromGCode("G2 X3 Y1 I0 J1 F10");
+    cmd.setFromGCode("G2 X3 Y1 I0 J1 F1");
     path.addCommand(cmd);
-    EXPECT_NEAR(path.getCycleTime(1.0, 1.0, 1.0, 1.0), 2.0 + std::numbers::pi * 3 / 2, 1e-12);
+    EXPECT_NEAR(path.getCycleTime(1.0, 1.0, 1.0), 2.0 + std::numbers::pi * 3 / 2, 1e-12);
 }
 
 TEST(PathTest, assign)

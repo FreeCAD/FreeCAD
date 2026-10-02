@@ -164,10 +164,10 @@ void ImportOCAFAssembly::loadShapes(
     std::stringstream str;
 
     Base::Console().log(
-        "H:%-9d \tN:%-30s \tTop:%d, Asm:%d, Shape:%d, Compound:%d, Simple:%d, "
-        "Free:%d, Ref:%d, Component:%d, SubShape:%d\tTrf:%s-- Dep:%d  \n",
+        "H:{:<9} \tN:{:<30} \tTop:{}, Asm:{}, Shape:{}, Compound:{}, Simple:{}, "
+        "Free:{}, Ref:{}, Component:{}, SubShape:{}\tTrf:{}-- Dep:{}  \n",
         hash,
-        part_name.c_str(),
+        part_name,
         aShapeTool->IsTopLevel(label),
         aShapeTool->IsAssembly(label),
         aShapeTool->IsShape(label),
@@ -182,7 +182,7 @@ void ImportOCAFAssembly::loadShapes(
     );
 
     label.Dump(str);
-    Base::Console().message(str.str().c_str());
+    Base::Console().message("{}", str.str());
 #endif
 
     std::string asm_name = assembly;

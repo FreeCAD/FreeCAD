@@ -57,7 +57,7 @@ std::unique_ptr<std::map<QString, std::shared_ptr<ModelEntry>>> ModelLoader::_mo
     nullptr;
 
 ModelLoader::ModelLoader(std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> modelMap,
-                         std::shared_ptr<std::list<std::shared_ptr<ModelLibraryLocal>>> libraryList)
+                         std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> libraryList)
     : _modelMap(modelMap)
     , _libraryList(libraryList)
 {
@@ -137,7 +137,7 @@ void ModelLoader::showYaml(const YAML::Node& yaml) const
 
     out << yaml;
     std::string logData = out.str();
-    Base::Console().log("%s\n", logData.c_str());
+    Base::Console().log("{}\n", logData);
 }
 
 void ModelLoader::dereference(const QString& uuid,
@@ -197,8 +197,8 @@ void ModelLoader::dereference(std::shared_ptr<ModelEntry> model,
                 dereference(model->getUUID(), model, child, inheritances);
             }
             catch (const std::out_of_range&) {
-                Base::Console().log("Unable to find '%s' in model map\n",
-                                    nodeName.toStdString().c_str());
+                Base::Console().log("Unable to find '{}' in model map\n",
+                                    nodeName.toStdString());
             }
         }
     }
@@ -283,7 +283,7 @@ void ModelLoader::addToTree(std::shared_ptr<ModelEntry> model,
                 auto cols = yamlProp["Columns"];
                 for (const auto& col : cols) {
                     std::string colName = col.first.as<std::string>();
-                    // Base::Console().Log("\tColumns '%s'\n", colName.c_str());
+                    // Base::Console().Log("\tColumns '{}'\n", colName);
 
                     auto colProp = cols[colName];
                     auto colPropDisplayName = yamlValue(colProp, "DisplayName", "");
@@ -332,7 +332,7 @@ void ModelLoader::loadLibrary(std::shared_ptr<ModelLibraryLocal> library)
                     // showYaml(model->getModel());
                 }
                 catch (InvalidModel const&) {
-                    Base::Console().log("Invalid model '%s'\n", pathname.toStdString().c_str());
+                    Base::Console().log("Invalid model '{}'\n", pathname.toStdString());
                 }
             }
         }
@@ -352,8 +352,13 @@ void ModelLoader::loadLibraries()
 {
     getModelLibraries();
     if (_libraryList) {
-        for (auto it = _libraryList->begin(); it != _libraryList->end(); it++) {
-            loadLibrary(*it);
+        for (auto& it : *_libraryList) {
+            if (it->isLocal()) {
+                auto modelLibrary = std::dynamic_pointer_cast<Materials::ModelLibraryLocal>(it);
+                if (modelLibrary) {
+                    loadLibrary(modelLibrary);
+                }
+            }
         }
     }
 }

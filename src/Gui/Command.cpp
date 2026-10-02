@@ -55,6 +55,7 @@
 #include "PreferencePages/DlgSettingsWorkbenchesImp.h"
 #include "Document.h"
 #include "frameobject.h"
+#include "GeneralParameter.h"
 #include "Macro.h"
 #include "MainWindow.h"
 #include "Python.h"
@@ -246,6 +247,7 @@ Command::Command(const char* name)
     sAppModule = "FreeCAD";
     sGroup = "Standard";
     eType = AlterDoc | Alter3DView | AlterSelection;
+    eMaturity = Base::Maturity::Stable;
     bEnabled = true;
     bCanLog = true;
 }
@@ -265,6 +267,29 @@ QString Command::getShortcut() const
         return _pcAction->shortcut().toString();
     }
     return ShortcutManager::instance()->getShortcut(getName());
+}
+
+void Command::setMaturity(Base::Maturity m)
+{
+    eMaturity = m;
+}
+
+Base::Maturity Command::getMaturity() const
+{
+    return eMaturity;
+}
+
+bool Command::allowedByMaturity() const
+{
+    switch (eMaturity) {
+        case Base::Maturity::Stable:
+            return true;
+        case Base::Maturity::Experimental:
+            return GeneralParameter::instance()->getShowExperimentalFeatures();
+        case Base::Maturity::Development:
+            return GeneralParameter::instance()->getShowDevelopmentPreviewFeatures();
+    }
+    return false;  // Really just to shut the compiler up, should never hit
 }
 
 bool Command::isViewOfType(Base::Type t) const
@@ -294,7 +319,10 @@ void Command::initAction()
         //
         // printConflictingAccelerators();
 #endif
-        setShortcut(ShortcutManager::instance()->getShortcut(getName(), getAccel()));
+
+        if (allowedByMaturity()) {
+            setShortcut(ShortcutManager::instance()->getShortcut(getName(), getAccel()));
+        }
         testActive();
     }
 }
@@ -441,7 +469,7 @@ void Command::invoke(int i, TriggerSource trigger)
 
     // Do not query _pcAction since it isn't created necessarily
 #ifdef FC_LOGUSERACTION
-    Base::Console().log("CmdG: %s\n", sName);
+    Base::Console().log("CmdG: {}\n", sName);
 #endif
 
     _invoke(i, bCanLog && !_busy);
@@ -521,18 +549,18 @@ void Command::_invoke(int id, bool disablelog)
     }
     catch (const XERCES_CPP_NAMESPACE::XMLException& e) {
         char* message = XERCES_CPP_NAMESPACE::XMLString::transcode(e.getMessage());
-        Base::Console().error("XML exception thrown (%s)\n", message);
+        Base::Console().error("XML exception thrown ({})\n", message);
         XERCES_CPP_NAMESPACE::XMLString::release(&message);
     }
     catch (std::exception& e) {
-        Base::Console().error("C++ exception thrown (%s)\n", e.what());
+        Base::Console().error("C++ exception thrown ({})\n", e.what());
     }
     catch (const char* e) {
-        Base::Console().error("%s\n", e);
+        Base::Console().error("{}\n", e);
     }
 #ifndef FC_DEBUG
     catch (...) {
-        Base::Console().error("Gui::Command::activated(%d): Unknown C++ exception thrown\n", id);
+        Base::Console().error("Gui::Command::activated({}): Unknown C++ exception thrown\n", id);
     }
 #endif
 }
@@ -766,7 +794,7 @@ void Command::_doCommand(const char* file, int line, DoCmd_Type eType, const cha
     QByteArray format = cmd.toUtf8();
 
 #ifdef FC_LOGUSERACTION
-    Base::Console().log("CmdC: %s\n", format.constData());
+    Base::Console().log("CmdC: {}\n", format.toStdString());
 #endif
 
     _runCommand(file, line, eType, format.constData());
@@ -1029,8 +1057,25 @@ const char* Command::endCmdHelp()
 
 void Command::applyCommandData(const char* context, Action* action)
 {
-    action->setText(QCoreApplication::translate(context, getMenuText()));
-    action->setToolTip(QCoreApplication::translate(context, getToolTipText()));
+    QString textSuffix;
+    QString toolTipPrefix;
+    if (eMaturity == Base::Maturity::Experimental) {
+        textSuffix = " (" + QCoreApplication::translate("Gui::Command", "Experimental") + ")";
+        toolTipPrefix
+            = QCoreApplication::translate("Gui::Command", "EXPERIMENTAL: this command may change.")
+            + " ";
+    }
+    else if (eMaturity == Base::Maturity::Development) {
+        textSuffix = " (" + QCoreApplication::translate("Gui::Command", "Development preview") + ")";
+        toolTipPrefix = QCoreApplication::translate(
+                            "Gui::Command",
+                            "DEVELOPMENT PREVIEW: this command may change or be removed."
+                        )
+            + " ";
+    }
+    action->setText(QCoreApplication::translate(context, getMenuText()) + textSuffix);
+    action->setToolTip(toolTipPrefix + QCoreApplication::translate(context, getToolTipText()));
+
     action->setWhatsThis(QCoreApplication::translate(context, getWhatsThis()));
     if (sStatusTip) {
         action->setStatusTip(QCoreApplication::translate(context, getStatusTip()));
@@ -1076,7 +1121,7 @@ void Command::printConflictingAccelerators() const
     auto cmd = Application::Instance->commandManager().checkAcceleratorForConflicts(sAccel, this);
     if (cmd) {
         Base::Console().warning(
-            "Accelerator conflict between %s (%s) and %s (%s)\n",
+            "Accelerator conflict between {} ({}) and {} ({})\n",
             sName,
             sAccel,
             cmd->sName,
@@ -1223,7 +1268,7 @@ void GroupCommand::activated(int iMsg)
 
     Action* cmdAction = v.first->getAction();
     if (_pcAction && cmdAction) {
-        _pcAction->setProperty("defaultAction", QVariant((int)v.second));
+        _pcAction->setProperty("defaultAction", QVariant(doesRememberLast() ? (int)v.second : 0));
         setup(_pcAction);
     }
 }
@@ -1492,11 +1537,11 @@ void PythonCommand::activated(int iMsg)
             }
         }
         catch (const Base::PyException& e) {
-            Base::Console().error("Running the Python command '%s' failed:", sName);
+            Base::Console().error("Running the Python command '{}' failed:", sName);
             e.reportException();
         }
         catch (const Base::Exception&) {
-            Base::Console().error("Running the Python command '%s' failed, try to resume", sName);
+            Base::Console().error("Running the Python command '{}' failed, try to resume", sName);
         }
     }
     else {
@@ -1569,7 +1614,7 @@ Action* PythonCommand::createAction()
         }
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("%s\n", e.what());
+        Base::Console().error("{}\n", e.what());
     }
 
     return pcAction;
@@ -1741,7 +1786,7 @@ void PythonGroupCommand::activated(int iMsg)
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException e;
-        Base::Console().error("Running the Python command '%s' failed:", sName);
+        Base::Console().error("Running the Python command '{}' failed:", sName);
         e.reportException();
     }
 }
@@ -1834,7 +1879,7 @@ Action* PythonGroupCommand::createAction()
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException e;
-        Base::Console().error("createAction() of the Python command '%s' failed:", sName);
+        Base::Console().error("createAction() of the Python command '{}' failed:", sName);
         e.reportException();
     }
 
@@ -2114,16 +2159,19 @@ bool CommandManager::addTo(const char* Name, QWidget* pcWidget)
         // the user
 #ifdef FC_DEBUG
         Base::Console().error(
-            "CommandManager::addTo() try to add an unknown command (%s) to a widget!\n",
+            "CommandManager::addTo() try to add an unknown command ({}) to a widget!\n",
             Name
         );
 #else
-        Base::Console().warning("Unknown command '%s'\n", Name);
+        Base::Console().warning("Unknown command '{}'\n", Name);
 #endif
         return false;
     }
     else {
         Command* pCom = _sCommands[Name];
+        if (!pCom->allowedByMaturity()) {
+            return false;
+        }
         pCom->addTo(pcWidget);
         return true;
     }

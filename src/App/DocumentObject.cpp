@@ -140,10 +140,10 @@ void DocumentObject::printInvalidLinks() const
             scopenames.pop_back();
         }
 
-        Base::Console().warning("%s: %s links are out of scope. Out of scope links to: %s\n",
+        Base::Console().warning("{}: {} links are out of scope. Out of scope links to: {}\n",
                                 getTypeId().getName(),
                                 getNameInDocument(),
-                                objnames.c_str());
+                                objnames);
     }
     catch (const Base::Exception& e) {
         e.reportException();
@@ -315,15 +315,13 @@ const char* DocumentObject::getStatusString() const
         const char* text = getDocument()->getErrorDescription(this);
         return text ? text : "Error";
     }
-    else if (isFreezed()){
+    if (isFreezed()){
         return "Freezed";
     }
-    else if (isTouched()) {
+    if (isTouched()) {
         return "Touched";
     }
-    else {
-        return "Valid";
-    }
+    return "Valid";
 }
 
 std::string DocumentObject::getFullName() const
@@ -355,6 +353,12 @@ const char* DocumentObject::getDagKey() const
         return nullptr;
     }
     return pcNameInDocument->c_str();
+}
+
+const char* DocumentObject::getLabelOrName() const
+{
+    const char* label = Label.getValue();
+    return Base::Tools::isNullOrEmpty(label) ? getNameInDocument() : label;
 }
 
 const char* DocumentObject::getNameInDocument() const
@@ -701,12 +705,7 @@ bool DocumentObject::isInInListRecursive(DocumentObject* linkTo) const
 
 bool DocumentObject::isInInList(DocumentObject* linkTo) const
 {
-    if (std::ranges::find(_inList, linkTo) != _inList.end()) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    return std::ranges::find(_inList, linkTo) != _inList.end();
 }
 
 // helper for isInOutListRecursive()
@@ -1508,9 +1507,7 @@ DocumentObject::getExpression(const ObjectIdentifier& path) const
     if (value.type() == typeid(PropertyExpressionEngine::ExpressionInfo)) {
         return boost::any_cast<PropertyExpressionEngine::ExpressionInfo>(value);
     }
-    else {
-        return PropertyExpressionEngine::ExpressionInfo();
-    }
+    return PropertyExpressionEngine::ExpressionInfo();
 }
 
 void DocumentObject::renameObjectIdentifiers(
@@ -1702,9 +1699,7 @@ DocumentObject* DocumentObject::resolve(const char* subname,
                     if (dot == subname) {
                         break;
                     }
-                    else {
-                        continue;
-                    }
+                    continue;
                 }
             }
             if (dot == subname) {

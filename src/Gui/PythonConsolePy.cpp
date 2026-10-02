@@ -194,7 +194,7 @@ Py::Object OutputStdout::write(const Py::Tuple& args)
     PyObject* unicode = PyUnicode_AsEncodedString(output, "utf-8", nullptr);
     if (unicode) {
         const char* string = PyBytes_AsString(unicode);
-        Base::Console().message("%s", string);
+        Base::Console().message("{}", string);
         Py_DECREF(unicode);
     }
 
@@ -255,7 +255,7 @@ Py::Object OutputStderr::write(const Py::Tuple& args)
     PyObject* unicode = PyUnicode_AsEncodedString(output, "utf-8", nullptr);
     if (unicode) {
         const char* string = PyBytes_AsString(unicode);
-        Base::Console().error("%s", string);
+        Base::Console().error("{}", string);
         Py_DECREF(unicode);
     }
 

@@ -258,32 +258,6 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
                 sub = base.Shape.getElement(f)
 
                 if type(sub) == Part.Edge:  # Edge
-                    # Debug: examine the edge geometry
-                    if hasattr(sub, "Curve") and sub.Curve:
-                        Path.Log.debug(f"    Edge type: {type(sub.Curve).__name__}")
-                        if hasattr(sub.Curve, "Center"):
-                            Path.Log.debug(f"    Edge center: {sub.Curve.Center}")
-                        if hasattr(sub.Curve, "Radius"):
-                            Path.Log.debug(f"    Edge radius: {sub.Curve.Radius}")
-                        # Check if BSpline came from a circle
-                        if type(sub.Curve).__name__ == "BSplineCurve":
-                            try:
-                                arcs = sub.Curve.toBiArcs(0.001)
-                                if (
-                                    arcs
-                                    and len(arcs) == 1
-                                    and hasattr(arcs[0], "Center")
-                                    and hasattr(arcs[0], "Radius")
-                                ):
-                                    Path.Log.debug(
-                                        f"    BSpline approximates circle with center {arcs[0].Center} and radius {arcs[0].Radius}"
-                                    )
-                                else:
-                                    Path.Log.debug(
-                                        f"    BSpline toBiArcs returned {len(arcs) if arcs else 0} segment(s)"
-                                    )
-                            except Exception:
-                                Path.Log.debug(f"    BSpline cannot be converted to arc/circle")
                     # Check edge vertices
                     for i, v in enumerate(sub.Vertexes):
                         Path.Log.debug(f"    Vertex {i}: {v.Point}")
@@ -423,20 +397,10 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
             # Set default side
             side = ["Outside"]
 
-            for i, w in enumerate(basewires):
+            for w in basewires:
                 self.adjusted_basewires.append(w)
-                # Debug: examine the wire geometry
-                Path.Log.debug(f"  Wire {i}: {len(w.Edges)} edges")
-                for j, e in enumerate(w.Edges):
-                    if hasattr(e, "Curve") and e.Curve:
-                        Path.Log.debug(f"    Edge {j} type: {type(e.Curve).__name__}")
-                        if hasattr(e.Curve, "Radius"):
-                            Path.Log.debug(f"    Edge {j} radius: {e.Curve.Radius}")
                 tol = self.job.GeometryTolerance.Value if getattr(self, "job", None) else 0.01
-                wire = PathOpUtil.offsetWire(w, base.Shape, offset, True, side, tol)
-                Path.Log.debug(f"  offsetWire returned: {wire is not None}")
-                if wire:
-                    wires.append(wire)
+                wires.extend(PathOpUtil.offsetWireCompat(w, base.Shape, offset, side, tol))
 
         # Set direction of op
         forward = obj.Direction == "CW"

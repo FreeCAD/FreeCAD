@@ -30,6 +30,7 @@
 #include <memory>
 
 class QSessionManager;
+class QWidget;
 
 namespace Gui
 {
@@ -94,6 +95,7 @@ public:
 
 private:
     bool isEnabled() const;
+    void updateFocusPolicy(QWidget* widget) const;
 
     ParameterGrp::handle hGrp;
 };

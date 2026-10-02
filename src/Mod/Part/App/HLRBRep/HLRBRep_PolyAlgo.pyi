@@ -135,7 +135,7 @@ class HLRBRep_PolyAlgo(PyObjectBase):
         """
         ...
 
-    def moreHide(self) -> None:
+    def moreHide(self) -> bool:
         """
         moreHide()
         """
@@ -153,7 +153,7 @@ class HLRBRep_PolyAlgo(PyObjectBase):
         """
         ...
 
-    def moreShow(self) -> None:
+    def moreShow(self) -> bool:
         """
         moreShow()
         """

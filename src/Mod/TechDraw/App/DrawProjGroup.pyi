@@ -5,6 +5,8 @@ from __future__ import annotations
 from typing import Any
 
 from Base.Metadata import export
+from Base.Vector import Vector
+from TechDraw.DrawProjGroupItem import DrawProjGroupItem
 from TechDraw.DrawViewCollection import DrawViewCollection
 
 
@@ -21,11 +23,11 @@ class DrawProjGroup(DrawViewCollection):
     License: LGPL-2.1-or-later
     """
 
-    def addProjection(self) -> Any:
+    def addProjection(self, projection_type: str, /) -> DrawProjGroupItem:
         """addProjection(string projectionType) - Add a new Projection Item to this Group. Returns DocObj."""
         ...
 
-    def removeProjection(self) -> Any:
+    def removeProjection(self, projection_type: str, /) -> int:
         """removeProjection(string projectionType) - Remove specified Projection Item from this Group. Returns int number of views in Group."""
         ...
 
@@ -33,10 +35,10 @@ class DrawProjGroup(DrawViewCollection):
         """purgeProjections() - Remove all Projection Items from this Group. Returns int number of views in Group (0)."""
         ...
 
-    def getItemByLabel(self) -> Any:
+    def getItemByLabel(self, projection_type: str, /) -> DrawProjGroupItem:
         """getItemByLabel(string projectionType) - return specified Projection Item"""
         ...
 
-    def getXYPosition(self) -> Any:
+    def getXYPosition(self, projection_type: str, /) -> Vector:
         """getXYPosition(string projectionType) - return the AutoDistribute position for specified Projection Item"""
         ...

@@ -1446,16 +1446,27 @@ class _ArchWindowTaskPanel:
 
             FreeCADGui.ExpressionBinding(self.widthWidget).bind(self.obj, "Width")
             self.widthWidget.setProperty("value", self.obj.Width)
+            self.widthWidget.setToolTip(
+                translate("App::Property", self.obj.getDocumentationOfProperty("Width"))
+            )
 
             FreeCADGui.ExpressionBinding(self.heightWidget).bind(self.obj, "Height")
             self.heightWidget.setProperty("value", self.obj.Height)
+            self.heightWidget.setToolTip(
+                translate("App::Property", self.obj.getDocumentationOfProperty("Height"))
+            )
 
             FreeCADGui.ExpressionBinding(self.openingWidget).bind(self.obj, "Opening")
+            self.openingWidget.setToolTip(
+                translate("App::Property", self.obj.getDocumentationOfProperty("Opening"))
+            )
             # Opening is a scalar property, as opposed to a quantity property. It appears to have
-            # no "preferred unit" metadata. We cannot set the suffix manually either, but at least
-            # we can set some safe limits. These limits are hardcoded: the Property Editor clamps
-            # the property to these, so it must be reading them from metadata, but they might not
-            # be queryable via Python.
+            # no "preferred unit" metadata, but it is a percentage (App::PropertyPercent), so set
+            # the same " %" suffix the Property Editor uses for that property type. We can also set
+            # some safe limits. These limits are hardcoded: the Property Editor clamps the property
+            # to these, so it must be reading them from metadata, but they might not be queryable
+            # via Python.
+            self.openingWidget.setSuffix(" %")
             self.openingWidget.setProperty("minimum", 0)
             self.openingWidget.setProperty("maximum", 100)
             self.openingWidget.setProperty("value", self.obj.Opening)

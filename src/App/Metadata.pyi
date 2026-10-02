@@ -258,13 +258,13 @@ class Metadata(PyObjectBase):
         """
         ...
 
-    def removeLicense(self, short_code: str, /) -> None:
+    def removeLicense(self, short_code: str, path: str, /) -> None:
         """
         Remove the License.
         """
         ...
 
-    def addUrl(self, url_type: str, url: str, branch: str, /) -> None:
+    def addUrl(self, url_type: str, url: str, branch: str = ..., /) -> None:
         """
         Add a new Url or type 'url_type' (which should be one of 'repository', 'readme',
 
@@ -274,7 +274,7 @@ class Metadata(PyObjectBase):
         """
         ...
 
-    def removeUrl(self, url_type: str, url: str, /) -> None:
+    def removeUrl(self, url_type: str, url: str, branch: str = ..., /) -> None:
         """
         Remove the Url.
         """
@@ -292,41 +292,41 @@ class Metadata(PyObjectBase):
         """
         ...
 
-    def addDepend(self, name: str, kind: str, optional: bool, /) -> None:
+    def addDepend(self, dependency: dict[str, Any], /) -> None:
         """
-        Add a new Dependency on package 'name' of kind 'kind' (optional, one of 'auto' (the default),
+        Add a new Dependency described by the given dictionary.
 
-        'internal', 'addon', or 'python').
-        """
-        ...
-
-    def removeDepend(self, name: str, kind: str, /) -> None:
-        """
-        Remove the Dependency on package 'name' of kind 'kind' (optional - if unspecified any
-
-        matching name is removed).
+        See the `Depend` attribute for the recognized keys.
         """
         ...
 
-    def addConflict(self, name: str, kind: str, /) -> None:
+    def removeDepend(self, dependency: dict[str, Any], /) -> None:
+        """
+        Remove the Dependency described by the given dictionary.
+
+        See the `Depend` attribute for the recognized keys.
+        """
+        ...
+
+    def addConflict(self, dependency: dict[str, Any], /) -> None:
         """
         Add a new Conflict. See documentation for addDepend().
         """
         ...
 
-    def removeConflict(self, name: str, kind: str, /) -> None:
+    def removeConflict(self, dependency: dict[str, Any], /) -> None:
         """
         Remove the Conflict. See documentation for removeDepend().
         """
         ...
 
-    def addReplace(self, name: str, /) -> None:
+    def addReplace(self, dependency: dict[str, Any], /) -> None:
         """
         Add a new Replace.
         """
         ...
 
-    def removeReplace(self, name: str, /) -> None:
+    def removeReplace(self, dependency: dict[str, Any], /) -> None:
         """
         Remove the Replace.
         """

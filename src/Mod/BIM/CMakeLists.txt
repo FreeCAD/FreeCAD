@@ -1,5 +1,3 @@
-find_package(PythonInterp REQUIRED)
-
 # ==============================================================================
 # File Management
 # Define the source files and resources of the BIM workbench
@@ -251,6 +249,7 @@ SET(bimtests_SRCS
     bimtests/TestArchWindowGui.py
     bimtests/TestArchStairs.py
     bimtests/TestArchStructure.py
+    bimtests/test_structure_column_flip_v1_0_v1_1.FCStd
     bimtests/TestArchPipe.py
     bimtests/TestArchCurtainWall.py
     bimtests/TestArchProfile.py
@@ -304,7 +303,7 @@ set(BIM_GENERATED_PARSER ${CMAKE_BINARY_DIR}/Mod/BIM/generated_sql_parser.py)
 
 add_custom_command(
     OUTPUT ${BIM_GENERATED_PARSER}
-    COMMAND ${PYTHON_EXECUTABLE} ${BIM_PARSER_GENERATOR} ${BIM_LARK_GRAMMAR} ${BIM_GENERATED_PARSER}
+    COMMAND ${Python3_EXECUTABLE} ${BIM_PARSER_GENERATOR} ${BIM_LARK_GRAMMAR} ${BIM_GENERATED_PARSER}
     DEPENDS ${BIM_LARK_GRAMMAR} ${BIM_PARSER_GENERATOR}
     COMMENT "Generating Arch SQL parser..."
 )

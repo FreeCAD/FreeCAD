@@ -150,7 +150,7 @@ def _create_objects(doc=None, font_file=None, hatch_file=None, hatch_name=None):
     # Circular arc 3 points
     _msg(16 * "-")
     _msg("Circular arc 3 points")
-    Draft.make_arc_3points([Vector(4250, 0, 0), Vector(4000, 250, 0), Vector(4250, 500, 0)])
+    Draft.make_arc_3_points([Vector(4250, 0, 0), Vector(4000, 250, 0), Vector(4250, 500, 0)])
     _set_text(["Circular arc 3 points"], Vector(4000, -200, 0))
 
     # Circle
@@ -192,7 +192,7 @@ def _create_objects(doc=None, font_file=None, hatch_file=None, hatch_name=None):
     # Cubic bezier
     _msg(16 * "-")
     _msg("Cubic bezier")
-    Draft.make_bezcurve(
+    Draft.make_bez_curve(
         [Vector(10000, 0, 0), Vector(10000, 500, 0), Vector(10500, 0, 0), Vector(10500, 500, 0)],
         degree=3,
     )
@@ -201,7 +201,7 @@ def _create_objects(doc=None, font_file=None, hatch_file=None, hatch_name=None):
     # N-degree bezier
     _msg(16 * "-")
     _msg("N-degree bezier")
-    Draft.make_bezcurve(
+    Draft.make_bez_curve(
         [
             Vector(11000, 0, 0),
             Vector(11100, 400, 0),
@@ -238,7 +238,7 @@ def _create_objects(doc=None, font_file=None, hatch_file=None, hatch_name=None):
     _msg(16 * "-")
     _msg("Shapestring")
     try:
-        shape_string = Draft.make_shapestring("Testing", font_file, 100)
+        shape_string = Draft.make_shape_string("Testing", font_file, 100)
         shape_string.Placement.Base = Vector(14000, 0)
     except Exception:
         _wrn("Shapestring could not be created")
@@ -526,14 +526,14 @@ def _create_objects(doc=None, font_file=None, hatch_file=None, hatch_name=None):
     box.Placement = place
     if App.GuiUp:
         box.ViewObject.Visibility = False
-    Draft.make_shape2dview(box)
+    Draft.make_shape_2d_view(box)
     _set_text(["Shape2DView"], Vector(2000, 5800, 0))
 
     # WorkingPlaneProxy
     _msg(16 * "-")
     _msg("WorkingPlaneProxy")
     place = App.Placement(Vector(3250, 6250, 0), App.Rotation())
-    proxy = Draft.make_workingplaneproxy(place)
+    proxy = Draft.make_working_plane_proxy(place)
     if App.GuiUp:
         proxy.ViewObject.DisplaySize = 500
         proxy.ViewObject.ArrowSize = 50

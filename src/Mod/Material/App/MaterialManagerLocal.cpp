@@ -568,8 +568,8 @@ MaterialManagerLocal::getConfiguredLibraries()
             if (!materialDir.exists()) {
                 // Try creating the user dir if it doesn't exist
                 if (!materialDir.mkpath(resourceDir)) {
-                    Base::Console().log("Unable to create user library '%s'\n",
-                                        resourceDir.toStdString().c_str());
+                    Base::Console().log("Unable to create user library '{}'\n",
+                                        resourceDir.toStdString());
                 }
             }
             if (materialDir.exists()) {

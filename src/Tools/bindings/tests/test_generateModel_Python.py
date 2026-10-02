@@ -174,6 +174,24 @@ class GenerateModelPythonTests(unittest.TestCase):
                 if name == "Rotation":
                     self.assertNotRegex(header, r"PyObject\*\s+__mul__\(")
 
+    def test_hash_export_flag_generates_tp_hash_slot(self):
+        with tempfile.TemporaryDirectory(dir=SRC_DIR) as temp_dir:
+            generate(str(SRC_DIR / "Mod/Part/App/TopoShapeVertex.pyi"), temp_dir)
+            header = (Path(temp_dir) / "TopoShapeVertexPy.h").read_text(encoding="utf-8")
+            source = (Path(temp_dir) / "TopoShapeVertexPy.cpp").read_text(encoding="utf-8")
+
+        self.assertIn("static Py_hash_t hash(PyObject *self);", header)
+        self.assertIn(".tp_hash = Part::TopoShapeVertexPy::hash,", source)
+
+    def test_classes_without_hash_flag_leave_tp_hash_unset(self):
+        with tempfile.TemporaryDirectory(dir=SRC_DIR) as temp_dir:
+            generate(str(SRC_DIR / "Base" / "Vector.pyi"), temp_dir)
+            header = (Path(temp_dir) / "VectorPy.h").read_text(encoding="utf-8")
+            source = (Path(temp_dir) / "VectorPy.cpp").read_text(encoding="utf-8")
+
+        self.assertNotIn("Py_hash_t hash(", header)
+        self.assertNotIn(".tp_hash", source)
+
     def test_feature_area_binding_keeps_cpp_work_plane_accessors(self):
         with tempfile.TemporaryDirectory(dir=SRC_DIR) as temp_dir:
             generate(str(SRC_DIR / "Mod/CAM/App/FeatureArea.pyi"), temp_dir)

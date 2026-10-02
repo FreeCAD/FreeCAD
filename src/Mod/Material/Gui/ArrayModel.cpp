@@ -391,7 +391,7 @@ QVariant Array3DModel::data(const QModelIndex& index, int role) const
         catch (const Materials::InvalidIndex&) {
         }
         catch (const std::exception& e) {
-            Base::Console().error("The error message is: %s\n", e.what());
+            Base::Console().error("The error message is: {}\n", e.what());
         }
 
         try {

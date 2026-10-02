@@ -4,7 +4,4 @@
 
 from __future__ import annotations
 
-try:
-    from PySide6 import __version__ as __version__, __version_info__ as __version_info__
-except ImportError:
-    from PySide2 import __version__ as __version__, __version_info__ as __version_info__
+from PySide6 import __version__ as __version__, __version_info__ as __version_info__

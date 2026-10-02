@@ -59,6 +59,7 @@ public:
     virtual void setPrettySel();
     virtual void setWidth(double w);
     virtual double getWidth() { return m_pen.widthF();}
+    void setEdgeFuzzScale(double scale) { m_edgeFuzz = m_edgeFuzzBase * scale; }
     Qt::PenStyle getStyle() { return m_pen.style(); }
     void setStyle(Qt::PenStyle s);
     void setStyle(int s);
@@ -111,6 +112,7 @@ protected:
     Qt::BrushStyle m_fillNormal;               //current Normal fill style
 
     double m_edgeFuzz;
+    double m_edgeFuzzBase;
     bool m_highlightFill = true;
 };
 
