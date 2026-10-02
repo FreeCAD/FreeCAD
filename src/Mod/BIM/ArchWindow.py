@@ -968,7 +968,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
             clone = None
             base_sapp_mat = obj.ViewObject.ShapeAppearance[0]
             arch_mat = getattr(obj, "Material", None)
-            
+
         solids = obj.Shape.Solids
         sapp = []
         base_children = []
@@ -979,7 +979,9 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                     base_children.append(child)
             # Handle Linkgroup seperately to work around issue #32218.
             # https://github.com/FreeCAD/FreeCAD/issues/32218
-            for child, vis in zip(getattr(obj.Base, "ElementList", []), getattr(obj.Base, "VisibilityList", [])):
+            for child, vis in zip(
+                getattr(obj.Base, "ElementList", []), getattr(obj.Base, "VisibilityList", [])
+            ):
                 if vis and getattr(child, "Shape", None) and child.Shape.Solids:
                     base_children.append(child)
         for i in range(len(solids)):
