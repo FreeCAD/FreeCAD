@@ -1266,11 +1266,15 @@ void CmdPartMakeSolid::activated(int iMsg)
         // Intercept Mesh objects immediately
         if (it->isDerivedFrom(Base::Type::fromName("Mesh::Feature"))) {
             QString objLabel = QString::fromUtf8(it->Label.getValue());
-            Base::Console().warning("{} is a mesh. Use 'Part > Shape from mesh' first.\n", it->Label.getValue());
+            Base::Console().warning(
+                "{} is a mesh. Use 'Part > Shape from mesh' first.\n",
+                it->Label.getValue()
+            );
             QMessageBox::warning(
                 Gui::getMainWindow(),
                 QObject::tr("Convert to Solid"),
-                QObject::tr("%1 is a mesh, not a shape. Use 'Part > Shape from mesh' to convert it first.").arg(objLabel)
+                QObject::tr("%1 is a mesh, not a shape. Use 'Part > Shape from mesh' to convert it first.")
+                    .arg(objLabel)
             );
             continue;
         }
@@ -1292,7 +1296,7 @@ void CmdPartMakeSolid::activated(int iMsg)
 
         if (type == TopAbs_SOLID) {
             Base::Console().message("{} is already a solid.\n", it->Label.getValue());
-            continue; // Skip execution
+            continue;  // Skip execution
         }
         else if (type == TopAbs_COMPOUND || type == TopAbs_COMPSOLID) {
             str = QStringLiteral(
@@ -1322,7 +1326,8 @@ void CmdPartMakeSolid::activated(int iMsg)
             QMessageBox::warning(
                 Gui::getMainWindow(),
                 QObject::tr("Convert to Solid"),
-                QObject::tr("%1 is neither a shell nor a compound, so there is nothing to convert.").arg(objLabel)
+                QObject::tr("%1 is neither a shell nor a compound, so there is nothing to convert.")
+                    .arg(objLabel)
             );
             continue;
         }
@@ -1343,11 +1348,15 @@ void CmdPartMakeSolid::activated(int iMsg)
                         BRepCheck_Analyzer analyzer(newShape);
                         if (!analyzer.IsValid()) {
                             QString objLabel = QString::fromUtf8(it->Label.getValue());
-                            Base::Console().warning("Conversion produced an invalid solid for {}.\n", it->Label.getValue());
+                            Base::Console().warning(
+                                "Conversion produced an invalid solid for {}.\n",
+                                it->Label.getValue()
+                            );
                             QMessageBox::warning(
                                 Gui::getMainWindow(),
                                 QObject::tr("Invalid Solid Generated"),
-                                QObject::tr("%1 was converted, but the result is not a closed solid (it has gaps or missing faces). If it came from a mesh, the mesh likely has holes.").arg(objLabel)
+                                QObject::tr("%1 was converted, but the result is not a closed solid (it has gaps or missing faces). If it came from a mesh, the mesh likely has holes.")
+                                    .arg(objLabel)
                             );
                         }
                     }
