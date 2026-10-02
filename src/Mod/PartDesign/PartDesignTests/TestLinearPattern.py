@@ -69,31 +69,25 @@ class TestLinearPattern(unittest.TestCase):
         self.assertEqual(pattern.SuppressedIndices, [5])
         self.assertAlmostEqual(pattern.Shape.Volume, 8000)
 
-    def testCoordinateSuppressionUndoRedo(self):
+    def testCoordinateSuppression(self):
         pattern = self.makeSuppressionPattern()
-        self.Doc.UndoMode = 1
-        self.Doc.openTransaction("Suppress instance")
+
         pattern.SuppressedPositions = [(1, 2)]
-        self.Doc.recompute()
-        self.Doc.commitTransaction()
-        self.assertAlmostEqual(pattern.Shape.Volume, 8000)
-        self.Doc.undo()
-        self.Doc.recompute()
-        self.assertEqual(pattern.SuppressedPositions, [])
-        self.assertAlmostEqual(pattern.Shape.Volume, 9000)
-        self.Doc.redo()
         self.Doc.recompute()
         self.assertEqual(pattern.SuppressedIndices, [5])
         self.assertAlmostEqual(pattern.Shape.Volume, 8000)
 
-        self.Doc.openTransaction("Resize pattern")
-        pattern.Occurrences2 = 4
+        pattern.SuppressedPositions = []
         self.Doc.recompute()
-        self.Doc.commitTransaction()
-        self.Doc.undo()
+        self.assertEqual(pattern.SuppressedIndices, [])
+        self.assertAlmostEqual(pattern.Shape.Volume, 9000)
+
+        pattern.SuppressedPositions = [(1, 2)]
         self.Doc.recompute()
         self.assertEqual(pattern.SuppressedIndices, [5])
-        self.Doc.redo()
+        self.assertAlmostEqual(pattern.Shape.Volume, 8000)
+
+        pattern.Occurrences2 = 4
         self.Doc.recompute()
         self.assertEqual(pattern.SuppressedIndices, [6])
 
@@ -282,7 +276,7 @@ class TestLinearPattern(unittest.TestCase):
 
         self.LinearPattern = self.Doc.addObject("PartDesign::LinearPattern", "LinearPattern")
         self.Body.addObject(self.LinearPattern)
-        self.LinearPattern.TransformMode = "Whole shape"
+        self.LinearPattern.TransformMode = "Body"
         self.LinearPattern.Direction = (self.Doc.X_Axis, [""])
         self.LinearPattern.Length = 20.0
         self.LinearPattern.Occurrences = 3

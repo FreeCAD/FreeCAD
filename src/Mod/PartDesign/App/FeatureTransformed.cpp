@@ -443,9 +443,9 @@ App::DocumentObjectExecReturn* Transformed::execute()
 
     std::vector<DocumentObject*> originals = getOriginals();
 
-    // if ((mode == Mode::Features || mode == Mode::FeatureResult) && originals.empty()) {
-    //     return App::DocumentObject::StdReturn;
-    // }
+    if ((mode == Mode::Features || mode == Mode::FeatureResult) && originals.empty()) {
+        return App::DocumentObject::StdReturn;
+    }
 
     if (!this->BaseFeature.getValue()) {
         if (auto body = getFeatureBody()) {
@@ -455,7 +455,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
 
     this->positionBySupport();
 
-    // get transformations from subclass by calling virtual method
+    // Get transformations from subclass by calling virtual method.
     std::vector<gp_Trsf> transformations;
     try {
         std::list<gp_Trsf> t_list = getTransformations(originals);
@@ -469,11 +469,10 @@ App::DocumentObjectExecReturn* Transformed::execute()
     }
 
     if (transformations.empty()) {
-        return App::DocumentObject::StdReturn;  // No transformations defined, exit
-                                                // silently
+        return App::DocumentObject::StdReturn;
     }
 
-    // Get the support
+    // Get the support.
     Part::Feature* supportFeature = nullptr;
 
     try {
@@ -484,47 +483,111 @@ App::DocumentObjectExecReturn* Transformed::execute()
     }
 
     const Part::TopoShape& supportTopShape = supportFeature->Shape.getShape();
-    const gp_Trsf trsfInv = supportTopShape.getShape().Location().Transformation().Inverted();
+
     if (supportTopShape.getShape().IsNull()) {
         return new App::DocumentObjectExecReturn(
-            QT_TRANSLATE_NOOP("Exception", "Cannot transform empty support shape")
+            QT_TRANSLATE_NOOP("Exception", "Cannot transform invalid support shape")
         );
     }
 
-    // create an untransformed copy of the support shape
-    Part::TopoShape supportShape;
-    supportShape.makeElementCopy(supportTopShape);
-    supportShape.setTransform(Base::Matrix4D());
+    const gp_Trsf trsfInv = supportTopShape.getShape().Location().Transformation().Inverted();
 
-    // this may be needed if #31581 doesn't get merged
-    // supportShape.fix();
+    // Create an untransformed copy of the support shape.
+    Part::TopoShape supportShape(supportTopShape);
+    Part::TopoShape wholeShapeSource(supportTopShape);
+
+    supportShape.setTransform(Base::Matrix4D());
+    wholeShapeSource.setTransform(Base::Matrix4D());
+
     if (!supportShape.isValid()) {
         return new App::DocumentObjectExecReturn(
             QT_TRANSLATE_NOOP("Exception", "Cannot transform invalid support shape")
         );
     }
 
+    // This is the support before the original transformation.
+    //
+    // When the original occurrence is suppressed, remove the material
+    // contributed by the transformed feature. This is needed because the
+    // support already contains occurrence zero.
+    const auto transformToSupport = [&trsfInv](Part::TopoShape shape) {
+        if (shape.isNull()) {
+            return shape;
+        }
+
+        const gp_Trsf location = shape.getShape().Location().Transformation();
+
+        shape.setTransform(Base::Matrix4D());
+
+        return shape.makeElementTransform(trsfInv.Multiplied(location));
+    };
+
+    if (!hasOriginalTransformation() || isTransformationSuppressed(0)) {
+        if (mode == Mode::WholeShape) {
+            supportShape.setShape(TopoDS_Shape());
+        }
+        else {
+            const auto sortedOriginals = getSortedOriginals();
+
+            for (auto it = sortedOriginals.rbegin(); it != sortedOriginals.rend(); ++it) {
+
+                auto* feature = freecad_cast<FeatureAddSub*>(*it);
+                if (!feature) {
+                    continue;
+                }
+
+                Part::TopoShape before = transformToSupport(feature->getBaseTopoShape(true));
+
+                Part::TopoShape after = transformToSupport(feature->Shape.getShape());
+
+                Part::TopoShape delta;
+
+                if (feature->getAddSubType() == FeatureAddSub::Type::Additive) {
+                    if (before.isNull()) {
+                        delta = after;
+                    }
+                    else {
+                        delta.makeElementCut({after, before});
+                    }
+
+                    if (!delta.isNull() && !supportShape.isNull()) {
+                        supportShape.makeElementCut({supportShape, delta});
+                    }
+                }
+                else if (!before.isNull()) {
+                    delta.makeElementCut({before, after});
+
+                    if (!delta.isNull()) {
+                        if (supportShape.isNull()) {
+                            supportShape = delta;
+                        }
+                        else {
+                            supportShape.makeElementFuse({supportShape, delta});
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     App::DocumentObjectExecReturn* result = nullptr;
 
     switch (mode) {
-        case Mode::Features: {
+        case Mode::Features:
             result = executeFeatures(trsfInv, transformations, supportShape, originals);
             break;
-        }
 
-        case Mode::FeatureResult: {
+        case Mode::FeatureResult:
             result = executeFeatureResult(trsfInv, transformations, supportShape, originals);
             break;
-        }
 
-        case Mode::WholeShape: {
+        case Mode::WholeShape:
             result = executeWholeBody(transformations, supportShape);
             break;
-        }
 
         default:
-            result = new App::DocumentObjectExecReturn("Invalid mode.");
+            result = new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Invalid mode."));
+            break;
     }
 
     if (result) {
@@ -546,6 +609,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
     supportShape = refineShapeIfActive(supportShape);
 
     this->Shape.setValue(getSolid(supportShape));
+
     if (singleSolidRuleMode() == SingleSolidRuleMode::Enforced
         && supportShape.countSubShapes(TopAbs_SOLID) > 0) {
         rejected = getRemainingSolids(supportShape.getShape());
@@ -570,8 +634,9 @@ App::DocumentObjectExecReturn* Transformed::executeFeatures(
         FeatureAddSub::BooleanOperation booleanOperation;
 
         auto* feature = freecad_cast<Feature*>(original);
-        if (auto* a = extractFeature(feature, addShape, subShape, booleanOperation)) {
-            return a;
+
+        if (auto* result = extractFeature(feature, addShape, subShape, booleanOperation)) {
+            return result;
         }
 
         if (addShape.isNull() && subShape.isNull()) {
@@ -579,42 +644,52 @@ App::DocumentObjectExecReturn* Transformed::executeFeatures(
                 QT_TRANSLATE_NOOP("Exception", "Shape of additive/subtractive feature is empty")
             );
         }
+
         gp_Trsf trsf = trsfInv.Multiplied(feature->getLocation().Transformation());
+
         if (!addShape.isNull()) {
-            addShape.makeElementTransform(
+            addShape = addShape.makeElementTransform(
                 addShape,
                 trsf,
                 std::format("Transform_add_{}", feature->getNameInDocument()).c_str()
             );
         }
+
         if (!subShape.isNull()) {
-            subShape.makeElementTransform(
+            subShape = subShape.makeElementTransform(
                 subShape,
                 trsf,
                 std::format("Transform_sub_{}", feature->getNameInDocument()).c_str()
             );
         }
+
         if (!addShape.isNull()) {
             auto shapes = getTransformedCompShape(transformations, supportShape, addShape);
+
             if (Base::Sequencer().wasCanceled()) {
                 return new App::DocumentObjectExecReturn("User aborted");
             }
+
             supportShape.makeElementFuse(
                 shapes,
                 std::format("Fuse_add_{}-{}", feature->getNameInDocument(), shapes.size()).c_str()
             );
         }
+
         if (!subShape.isNull()) {
             auto shapes = getTransformedCompShape(transformations, supportShape, subShape);
+
             if (Base::Sequencer().wasCanceled()) {
                 return new App::DocumentObjectExecReturn("User aborted");
             }
+
             supportShape.makeElementCut(
                 shapes,
                 std::format("Cut_sub_{}-{}", feature->getNameInDocument(), shapes.size()).c_str()
             );
         }
     }
+
     return nullptr;
 }
 
@@ -625,6 +700,12 @@ App::DocumentObjectExecReturn* Transformed::extractFeature(
     FeatureAddSub::BooleanOperation& op
 )
 {
+    if (!feature) {
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception", "Feature is not supported")
+        );
+    }
+
     if (feature->isDerivedFrom<FeatureAddSub>()) {
         auto* addSub = freecad_cast<FeatureAddSub*>(feature);
         addSub->getAddSubShape(addShape, subShape);
@@ -650,12 +731,6 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
     std::vector<FeatureShape>& shapes
 )
 {
-    // compute the difference solid between each Feature and the shape of its previous Feature,
-    // * for additive operations, we take (toolShape-previousShape) and use it to Fuse later.
-    // * for subtractive operations, we take the (toolShape ∩ previousShape) and use it to Cut
-    // later.
-    // Then apply them in order to the shape from the Feature before this FeatureTransformed.
-
     auto checkValidShape = [](const TopoShape& shape, std::string_view text, auto&&... args) {
         if (!shape.isValid()) {
             std::ostringstream details;
@@ -663,6 +738,7 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
 
             std::string message = "Invalid shape after ";
             message += std::vformat(text, std::make_format_args(args...));
+
             if (!details.str().empty()) {
                 message += ":\n";
                 message += details.str();
@@ -675,11 +751,12 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
     for (auto original : originals) {
         Part::TopoShape addShape;
         Part::TopoShape subShape;
-        auto feature = freecad_cast<Feature*>(original);
+
+        auto* feature = freecad_cast<Feature*>(original);
         FeatureAddSub::BooleanOperation booleanOperation;
 
-        if (auto* a = extractFeature(feature, addShape, subShape, booleanOperation)) {
-            return a;
+        if (auto* result = extractFeature(feature, addShape, subShape, booleanOperation)) {
+            return result;
         }
 
         if (addShape.isNull() && subShape.isNull()) {
@@ -688,9 +765,10 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
             );
         }
 
-        // previous feature to compute minimum tool shape
         const auto* prevFeature = feature->getBaseObject(true);
+
         std::optional<Part::TopoShape> prevShape;
+
         gp_Trsf trsf = trsfInv.Multiplied(feature->getLocation().Transformation());
 
         if (prevFeature) {
@@ -703,6 +781,7 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
                 trsf,
                 std::format("Transform_add_{}", feature->getNameInDocument()).c_str()
             );
+
             if (prevFeature) {
                 addShape = addShape.makeElementCut(
                     {addShape, *prevShape},
@@ -732,7 +811,6 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
         if (!subShape.isNull()) {
             if (!prevFeature) {
                 continue;
-                // skip this feature if it is subtractive with nothing to subtract it from
             }
 
             subShape = subShape.makeElementTransform(
@@ -741,15 +819,14 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
                 std::format("Transform_sub_{}", feature->getNameInDocument()).c_str()
             );
 
-            // we need to unwrap the pocket toolShapes because
-            // (COMMON(subShape = compounds(A, B), prevShape = C) = A ∩ B ∩ C)
-            // returns an empty solid if A and B don't intersect.
             std::vector<Part::TopoShape> subShapes;
             TopoShape::expandCompound(subShape, subShapes);
 
             size_t i = 0;
+
             for (auto& s : subShapes) {
                 if (booleanOperation == FeatureAddSub::BooleanOperation::Common) {
+
                     s = s.makeElementCut(
                         {*prevShape, s},
                         std::format(
@@ -763,7 +840,7 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
                 }
                 else {
                     s = s.makeElementCommon(
-                        {*prevShape, s},  // prevShape has to be first because it can be a compound
+                        {*prevShape, s},
                         std::format(
                             "Common_sub_{}[{}]*{}",
                             feature->getNameInDocument(),
@@ -788,7 +865,7 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
                     );
                 }
 
-                i++;
+                ++i;
             }
         }
 
@@ -807,29 +884,28 @@ App::DocumentObjectExecReturn* Transformed::executeFeatureResult(
     const std::vector<DocumentObject*>& originals
 )
 {
-    const auto verifyShape =
-        [](const Part::TopoShape& supportShape, std::string_view text, auto&&... args) {
-            if (!supportShape.isValid()) {
-                std::ostringstream details;
-                supportShape.analyze(false, details);
+    const auto verifyShape = [](const Part::TopoShape& shape, std::string_view text, auto&&... args) {
+        if (!shape.isValid()) {
+            std::ostringstream details;
+            shape.analyze(false, details);
 
-                std::string message = std::vformat(text, std::make_format_args(args...));
-                if (!details.str().empty()) {
-                    message += "\n";
-                    message += details.str();
-                }
+            std::string message = std::vformat(text, std::make_format_args(args...));
 
-                FC_THROWM(Base::CADKernelError, message.c_str());
+            if (!details.str().empty()) {
+                message += "\n";
+                message += details.str();
             }
-        };
+
+            FC_THROWM(Base::CADKernelError, message.c_str());
+        }
+    };
 
     verifyShape(supportShape, "Initial support shape invalid.");
 
     std::vector<FeatureShape> shapes;
-    auto* ret = computeFeatureShapes(trsfInv, originals, shapes);
 
-    if (ret) {
-        return ret;
+    if (auto* result = computeFeatureShapes(trsfInv, originals, shapes)) {
+        return result;
     }
 
     verifyShape(supportShape, "Invalid support shape after computing feature shapes.");
@@ -888,9 +964,11 @@ App::DocumentObjectExecReturn* Transformed::executeWholeBody(
 )
 {
     auto shapes = getTransformedCompShape(transformations, supportShape, supportShape);
+
     if (Base::Sequencer().wasCanceled()) {
         return new App::DocumentObjectExecReturn("User aborted");
     }
+
     supportShape.makeElementFuse(
         shapes,
         std::format(
@@ -900,6 +978,7 @@ App::DocumentObjectExecReturn* Transformed::executeWholeBody(
         )
             .c_str()
     );
+
     return nullptr;
 }
 
@@ -909,25 +988,35 @@ std::vector<TopoShape> Transformed::getTransformedCompShape(
     const Part::TopoShape& origShape
 )
 {
-    std::vector<TopoShape> shapes = {supportShape};
+    std::vector<TopoShape> shapes;
+
+    if (!supportShape.isNull()) {
+        shapes.push_back(supportShape);
+    }
 
     TopoShape shape(origShape);
 
-    int idx = 1;
+    // If the original feature already exists in the support, transformation
+    // zero represents that existing occurrence and must not be generated again.
+    int idx = hasOriginalTransformation() ? 1 : 0;
+
     auto transformIter = transformations.cbegin();
 
-    // ignore first instance
-    if (transformIter != transformations.end()) {
-        transformIter++;
-    }
+    std::advance(transformIter, std::min(idx, static_cast<int>(transformations.size())));
 
-    for (; transformIter != transformations.end(); transformIter++) {
+    for (; transformIter != transformations.end(); ++transformIter) {
         if (Base::Sequencer().wasCanceled()) {
             return {};
         }
 
+        if (isTransformationSuppressed(idx)) {
+            ++idx;
+            continue;
+        }
+
         auto opName = Data::indexSuffix(idx++);
-        shapes.push_back(shape.makeElementTransform(*transformIter, opName.c_str()));
+
+        shapes.emplace_back(shape.makeElementTransform(*transformIter, opName.c_str()));
     }
 
     return shapes;
