@@ -345,7 +345,8 @@ TEST_P(PathSegmentWalkerPlaneTest, SmallDistinctEndpoints)
         if (delta < sweepTolerance) {
             ASSERT_TRUE(spec.start == spec.end);
             // At this scale only guard against a false full turn
-            // sweepTolerance deliberately does not promise the angular accuracy of acos near machine precision
+            // sweepTolerance deliberately does not promise the angular accuracy of acos near
+            // machine precision
         }
         const auto visitor = walk(path);
         ASSERT_EQ(visitor.arcs.size(), 1);
