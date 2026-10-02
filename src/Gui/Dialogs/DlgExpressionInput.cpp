@@ -647,8 +647,9 @@ void DlgExpressionInput::accept()
 
             App::DocumentObject* docObj = path.getDocumentObject();
             App::Document* doc = docObj ? docObj->getDocument() : nullptr;
-            InlineExpression::AssignmentGuard guard(doc, path.getProperty());
-            App::DocumentObject* varSet = InlineExpression::resolveVarSet(doc, assignment, true, error);
+            InlineExpression::AssignmentGuard guard(doc, &path);
+            App::DocumentObject* varSet
+                = InlineExpression::resolveVarSet(doc, assignment, true, error, &guard);
             if (!varSet) {
                 throw Base::RuntimeError(error.toStdString().c_str());
             }
@@ -657,7 +658,7 @@ void DlgExpressionInput::accept()
             if (type.isBad()) {
                 throw Base::RuntimeError("Cannot determine variable type.");
             }
-            guard.watch(varSet);
+            guard.watch(varSet, assignment.name);
             App::Property* prop = InlineExpression::ensureProperty(
                 varSet,
                 assignment.name,
@@ -701,8 +702,11 @@ void DlgExpressionInput::accept()
         try {
             QString nameDoc = getValue(ui->comboBoxVarSet, DocRole);
             auto* doc = App::GetApplication().getDocument(nameDoc.toUtf8());
-            InlineExpression::AssignmentGuard guard(doc, path.getProperty());
-            guard.watch(doc->getObject(getValue(ui->comboBoxVarSet, VarSetNameRole).toUtf8()));
+            InlineExpression::AssignmentGuard guard(doc, &path);
+            guard.watch(
+                doc->getObject(getValue(ui->comboBoxVarSet, VarSetNameRole).toUtf8()),
+                ui->lineEditPropNew->text()
+            );
             acceptWithVarSet();
             const auto error
                 = path.getDocumentObject()->ExpressionEngine.validateExpression(path, expression);

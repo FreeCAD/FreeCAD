@@ -26,9 +26,11 @@ inline constexpr const char* DefaultVarSetGroup = "Variables";
 class GuiExport AssignmentGuard
 {
 public:
-    AssignmentGuard(App::Document* doc, App::Property* target = nullptr);
+    AssignmentGuard(App::Document* doc, const App::ObjectIdentifier* target = nullptr);
     ~AssignmentGuard();
-    void watch(App::DocumentObject* varSet);
+    // Call before creating or changing the assigned parameter.
+    void watch(App::DocumentObject* varSet, const QString& name);
+    void recordCreatedVarSet(App::DocumentObject* varSet);
     void commit();
 
 private:
@@ -62,7 +64,8 @@ App::DocumentObject* resolveVarSet(
     App::Document* doc,
     const Assignment& assignment,
     bool createDefault,
-    QString& message
+    QString& message,
+    AssignmentGuard* guard = nullptr
 );
 
 App::Property* ensureProperty(

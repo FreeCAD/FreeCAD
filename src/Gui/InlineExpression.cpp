@@ -11,7 +11,6 @@
 #include <map>
 #include <memory>
 #include <optional>
-#include <set>
 #include <algorithm>
 
 #include <App/Application.h>
@@ -22,12 +21,12 @@
 #include <App/ExpressionParser.h>
 #include <App/ObjectIdentifier.h>
 #include <App/PropertyStandard.h>
+#include <App/PropertyUnits.h>
 #include <App/VarSet.h>
 #include <Base/Quantity.h>
 #include <Base/Tools.h>
 
 #include "Application.h"
-#include "ExpressionBinding.h"
 #include "ViewProviderDocumentObject.h"
 
 namespace
@@ -59,6 +58,20 @@ bool toIntegerLiteral(double value, long long& integer)
     return true;
 }
 
+// Rollback must restore numeric values exactly, without the engine's epsilon comparison.
+bool sameStoredValue(const App::any& before, const App::any& after)
+{
+    if (before.type() == typeid(double) && after.type() == typeid(double)) {
+        return boost::any_cast<double>(before) == boost::any_cast<double>(after);
+    }
+    if (before.type() == typeid(Base::Quantity) && after.type() == typeid(Base::Quantity)) {
+        const auto& previous = boost::any_cast<const Base::Quantity&>(before);
+        const auto& current = boost::any_cast<const Base::Quantity&>(after);
+        return previous.getValue() == current.getValue() && previous.getUnit() == current.getUnit();
+    }
+    return App::isAnyEqual(before, after);
+}
+
 void clearPropertyExpression(App::DocumentObject* owner, App::Property* prop)
 {
     if (!owner || !prop) {
@@ -88,15 +101,26 @@ bool assignNumberLiteral(App::DocumentObject* owner, App::Property* prop, double
     return false;
 }
 
-class Binding: public Gui::ExpressionBinding
+// Rewrite a copied expression before installing it, leaving other VarSet bindings alone.
+class AssignmentExpressionVisitor: public App::ExpressionVisitor
 {
 public:
-    Binding() = default;
-
-    void setExpression(std::shared_ptr<App::Expression> expr) override
+    AssignmentExpressionVisitor(const App::Expression& expression, const App::ObjectIdentifier& path)
+        : path(path)
     {
-        ExpressionBinding::setExpression(std::move(expr));
+        for (const auto& [identifier, hidden] : expression.getIdentifiers()) {
+            identifiers.emplace(identifier.canonicalPath(), identifier.relativeTo(path));
+        }
     }
+
+    void visit(App::Expression& expression) override
+    {
+        renameObjectIdentifier(expression, identifiers, path);
+    }
+
+private:
+    std::map<App::ObjectIdentifier, App::ObjectIdentifier> identifiers;
+    const App::ObjectIdentifier& path;
 };
 
 bool isIdentifierStart(char c)
@@ -181,7 +205,11 @@ App::DocumentObject* findUniqueVarSetByLabel(App::Document* doc, const QString& 
     return varSet;
 }
 
-App::DocumentObject* getOrCreateDefaultVarSet(App::Document* doc, QString& message)
+App::DocumentObject* getOrCreateDefaultVarSet(
+    App::Document* doc,
+    QString& message,
+    Gui::InlineExpression::AssignmentGuard* guard
+)
 {
     if (!doc) {
         message = QObject::tr("Unknown document");
@@ -212,6 +240,9 @@ App::DocumentObject* getOrCreateDefaultVarSet(App::Document* doc, QString& messa
             return nullptr;
         }
 
+        if (guard) {
+            guard->recordCreatedVarSet(varSet);
+        }
         if (Gui::Application::Instance) {
             if (auto* vp = freecad_cast<Gui::ViewProviderDocumentObject*>(
                     Gui::Application::Instance->getViewProvider(varSet)
@@ -248,54 +279,69 @@ struct AssignmentGuard::State
 {
     App::Document* doc;
     std::optional<App::AutoTransaction> transaction;
-    bool accepted = false;
-    struct Snapshot
+    std::string createdVarSet;
+
+    struct Change
     {
+        App::Document* doc;
         std::string object;
-        std::map<std::string, std::unique_ptr<App::Property>> properties;
+        App::ObjectIdentifier path;
+        bool existed;
+        App::any value;
+        std::shared_ptr<App::Expression> expression;
     };
-    std::vector<Snapshot> snapshots;
-    std::vector<std::string> objects;
-    std::set<std::string> participants;
+    std::vector<Change> changes;
+
+    void remember(const App::ObjectIdentifier& path)
+    {
+        if (transaction || std::any_of(changes.begin(), changes.end(), [&](const Change& change) {
+                return change.path == path;
+            })) {
+            return;
+        }
+        auto* owner = path.getDocumentObject();
+        auto* prop = path.getProperty();
+        Change change {owner->getDocument(), owner->getNameInDocument(), path, prop != nullptr, {}, {}};
+        if (prop) {
+            change.value = prop->getPathValue(path);
+            if (auto expression = owner->getExpression(path).expression) {
+                change.expression = expression->copy();
+            }
+        }
+        changes.push_back(std::move(change));
+    }
 };
 
-AssignmentGuard::AssignmentGuard(App::Document* doc, App::Property* target)
+AssignmentGuard::AssignmentGuard(App::Document* doc, const App::ObjectIdentifier* target)
     : state(std::make_unique<State>())
 {
+    auto* targetOwner = target ? target->getDocumentObject() : nullptr;
+    if (!doc || (target && !targetOwner)) {
+        throw Base::RuntimeError("Unknown document");
+    }
     state->doc = doc;
+    auto* targetDoc = targetOwner ? targetOwner->getDocument() : nullptr;
+    // Formula entry can assign into another document's VarSet. Join its existing tool
+    // transaction, or book the target document under our ID, without closing either tool.
+    if (doc->getBookedTransactionID() == 0 && targetDoc && targetDoc->getBookedTransactionID() != 0) {
+        const auto id = targetDoc->getBookedTransactionID();
+        doc->openTransaction(App::GetApplication().transactionDescription(id)->name, id);
+    }
     if (doc->getBookedTransactionID() == 0) {
         state->transaction.emplace(doc, "Assign inline expression");
-        return;
     }
-    for (auto* object : doc->getObjects()) {
-        state->objects.emplace_back(object->getNameInDocument());
-        if (object->isDerivedFrom(App::VarSet::getClassTypeId())) {
-            State::Snapshot snapshot;
-            snapshot.object = object->getNameInDocument();
-            std::map<std::string, App::Property*> properties;
-            object->getPropertyMap(properties);
-            for (auto& [name, property] : properties) {
-                snapshot.properties.emplace(name, property->Copy());
-            }
-            state->snapshots.push_back(std::move(snapshot));
-        }
+    if (targetDoc && targetDoc != doc && targetDoc->getBookedTransactionID() == 0) {
+        const auto id = doc->getBookedTransactionID();
+        targetDoc->openTransaction(App::GetApplication().transactionDescription(id)->name, id);
     }
     if (target) {
-        auto* owner = static_cast<App::DocumentObject*>(target->getContainer());
-        state->participants.emplace(owner->getNameInDocument());
-        if (!owner->isDerivedFrom(App::VarSet::getClassTypeId())) {
-            State::Snapshot snapshot;
-            snapshot.object = owner->getNameInDocument();
-            snapshot.properties.emplace(target->getName(), target->Copy());
-            snapshot.properties.emplace("ExpressionEngine", owner->ExpressionEngine.Copy());
-            state->snapshots.push_back(std::move(snapshot));
-        }
+        state->remember(*target);
     }
 }
 
 AssignmentGuard::~AssignmentGuard()
 {
-    if (state->accepted) {
+    if (!state) {
         return;
     }
     if (state->transaction) {
@@ -303,45 +349,45 @@ AssignmentGuard::~AssignmentGuard()
         return;
     }
     try {
-        // Restore only assignment participants; the surrounding tool transaction stays open.
-        for (auto& snapshot : state->snapshots) {
-            if (!state->participants.count(snapshot.object)) {
+        // Clear changed bindings first, so restoring old bindings cannot form a temporary cycle.
+        for (const auto& change : state->changes) {
+            auto* owner = change.doc->getObject(change.object.c_str());
+            if (!owner || !change.path.getProperty()) {
                 continue;
             }
-            auto* object = state->doc->getObject(snapshot.object.c_str());
-            if (!object) {
+            auto current = owner->getExpression(change.path).expression;
+            if (current && (!change.expression || !current->isSame(*change.expression))) {
+                owner->ExpressionEngine.setValue(change.path, nullptr);
+            }
+        }
+        for (const auto& change : state->changes) {
+            auto* owner = change.doc->getObject(change.object.c_str());
+            if (!owner) {
                 continue;
             }
-            const bool isVarSet = object->isDerivedFrom(App::VarSet::getClassTypeId());
-            if (isVarSet) {
-                std::map<std::string, App::Property*> properties;
-                object->getPropertyMap(properties);
-                for (auto& [name, property] : properties) {
-                    if (!snapshot.properties.count(name)) {
-                        object->removeDynamicProperty(name.c_str());
-                    }
-                }
+            if (!change.existed) {
+                owner->removeDynamicProperty(change.path.getPropertyName().c_str());
             }
-            for (auto& [name, property] : snapshot.properties) {
-                if (auto* current = object->getPropertyByName(name.c_str())) {
-                    if (name == "ExpressionEngine" || object->getDynamicPropertyByName(name.c_str())
-                        || !isVarSet) {
-                        current->Paste(*property);
-                    }
-                }
+            else if (change.path.getProperty()) {
+                owner->ExpressionEngine.setValue(change.path, change.expression);
             }
         }
-        std::vector<std::string> created;
-        for (auto* object : state->doc->getObjects()) {
-            if (object->isDerivedFrom(App::VarSet::getClassTypeId())
-                && state->participants.count(object->getNameInDocument())
-                && std::find(state->objects.begin(), state->objects.end(), object->getNameInDocument())
-                    == state->objects.end()) {
-                created.emplace_back(object->getNameInDocument());
+        // Restore parameters before the target, whose binding callbacks can update its value.
+        for (auto it = state->changes.rbegin(); it != state->changes.rend(); ++it) {
+            if (!it->existed || !it->doc->getObject(it->object.c_str())) {
+                continue;
+            }
+            if (auto* prop = it->path.getProperty();
+                prop && !sameStoredValue(it->value, prop->getPathValue(it->path))) {
+                // A dimensionless quantity does not reset the unit in setPathValue().
+                if (auto* quantity = freecad_cast<App::PropertyQuantity*>(prop)) {
+                    quantity->setUnit(boost::any_cast<Base::Quantity>(it->value).getUnit());
+                }
+                prop->setPathValue(it->path, it->value);
             }
         }
-        for (const auto& name : created) {
-            state->doc->removeObject(name.c_str());
+        if (!state->createdVarSet.empty()) {
+            state->doc->removeObject(state->createdVarSet.c_str());
         }
     }
     catch (const Base::Exception& error) {
@@ -349,19 +395,24 @@ AssignmentGuard::~AssignmentGuard()
     }
 }
 
-void AssignmentGuard::watch(App::DocumentObject* varSet)
+void AssignmentGuard::watch(App::DocumentObject* varSet, const QString& name)
 {
-    if (varSet) {
-        state->participants.emplace(varSet->getNameInDocument());
+    state->remember(App::ObjectIdentifier(varSet, name.toStdString()));
+}
+
+void AssignmentGuard::recordCreatedVarSet(App::DocumentObject* varSet)
+{
+    if (!state->transaction) {
+        state->createdVarSet = varSet->getNameInDocument();
     }
 }
 
 void AssignmentGuard::commit()
 {
-    state->accepted = true;
-    if (state->transaction) {
+    if (state && state->transaction) {
         state->transaction->close();
     }
+    state.reset();
 }
 
 Assignment parseAssignment(const QString& text)
@@ -510,7 +561,8 @@ App::DocumentObject* resolveVarSet(
     App::Document* doc,
     const Assignment& assignment,
     bool createDefault,
-    QString& message
+    QString& message,
+    AssignmentGuard* guard
 )
 {
     if (!doc) {
@@ -519,7 +571,7 @@ App::DocumentObject* resolveVarSet(
     }
 
     if (!assignment.hasExplicitVarSet) {
-        return createDefault ? getOrCreateDefaultVarSet(doc, message) : nullptr;
+        return createDefault ? getOrCreateDefaultVarSet(doc, message, guard) : nullptr;
     }
 
     if (assignment.isLabelVarSet) {
@@ -609,24 +661,22 @@ bool assignExpressionToProperty(
             }
         }
 
-        {
-            std::map<App::ObjectIdentifier, App::ObjectIdentifier> idsFromObjToVarSet;
-            App::ObjectIdentifier varSetId(*prop);
-            for (const auto& idPair : expression->getIdentifiers()) {
-                const App::ObjectIdentifier exprId = idPair.first;
-                idsFromObjToVarSet[exprId] = exprId.relativeTo(varSetId);
-            }
-
-            Binding binding;
-            binding.bind(*prop);
-            // setExpression() writes to ExpressionEngine and manages a transaction;
-            // apply() is command-dispatch and is intentionally not used here.
-            binding.setExpression(std::shared_ptr<App::Expression>(expression->copy()));
-
-            varSet->renameObjectIdentifiers(idsFromObjToVarSet);
-            varSet->ExpressionEngine.execute();
-            return true;
+        const App::ObjectIdentifier path(*prop);
+        std::shared_ptr<App::Expression> assigned(expression->copy());
+        AssignmentExpressionVisitor visitor(*assigned, path);
+        assigned->visit(visitor);
+        const auto error = varSet->ExpressionEngine.validateExpression(path, assigned);
+        if (!error.empty()) {
+            message = QString::fromStdString(error);
+            return false;
         }
+        const auto value = assigned->getValueAsAny();
+        varSet->ExpressionEngine.setValue(path, assigned);
+        if (!App::isAnyEqual(value, prop->getPathValue(path))) {
+            prop->setPathValue(path, value);
+        }
+        // Dependent parameters are updated by normal document recompute after acceptance.
+        return true;
     }
     catch (const Base::Exception& e) {
         message = QString::fromUtf8(e.what());

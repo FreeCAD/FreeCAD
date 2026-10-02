@@ -358,7 +358,7 @@ QuantitySpinBox::InlineCommitResult QuantitySpinBox::commitInlineExpression(QStr
     }
 
     if (assignment.isAssignment) {
-        InlineExpression::AssignmentGuard guard(doc, isBound() ? getPath().getProperty() : nullptr);
+        InlineExpression::AssignmentGuard guard(doc, isBound() ? &getPath() : nullptr);
         if (!InlineExpression::isValidName(assignment.name, error)) {
             return InlineCommitResult::Error;
         }
@@ -388,12 +388,13 @@ QuantitySpinBox::InlineCommitResult QuantitySpinBox::commitInlineExpression(QStr
             return InlineCommitResult::Error;
         }
 
-        App::DocumentObject* varSet = InlineExpression::resolveVarSet(doc, assignment, true, error);
+        App::DocumentObject* varSet
+            = InlineExpression::resolveVarSet(doc, assignment, true, error, &guard);
         if (!varSet) {
             return InlineCommitResult::Error;
         }
 
-        guard.watch(varSet);
+        guard.watch(varSet, assignment.name);
         App::Property* prop = InlineExpression::ensureProperty(
             varSet,
             assignment.name,

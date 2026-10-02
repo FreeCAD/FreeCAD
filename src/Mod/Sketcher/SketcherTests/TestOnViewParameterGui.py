@@ -697,7 +697,7 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
         self.begin_rectangle_with_visible_ovp(mode=mode)
         first, second = reversed(self.visible_ovp_spinboxes())
         self.focus_ovp_spinbox(first)
-        self.replace_ovp_text(first, "cornerx=20" if mode == "Center, 2 corners" else "20")
+        self.replace_ovp_text(first, "cornerx=20" if mode == "Center, 2 corners" else "20 mm")
         self.key_click(first, QtCore.Qt.Key_Tab, "\t")
         self.focus_ovp_spinbox(second)
         self.replace_ovp_text(
@@ -712,7 +712,7 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
         self.pump(100)
         width, inner = reversed(self.visible_ovp_spinboxes())
         self.focus_ovp_spinbox(width)
-        self.replace_ovp_text(width, "10")
+        self.replace_ovp_text(width, "10 mm")
         self.key_click(width, QtCore.Qt.Key_Tab, "\t")
         self.focus_ovp_spinbox(inner)
         self.replace_ovp_text(inner, "inner=90")
