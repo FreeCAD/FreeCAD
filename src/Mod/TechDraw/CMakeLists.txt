@@ -181,6 +181,7 @@ SET(TDTest_SRCS
     TDTest/__init__.py
     TDTest/DrawHatchTest.py
     TDTest/DrawProjectionGroupTest.py
+    TDTest/DrawSVGTemplateTest.py
     TDTest/DrawViewAnnotationTest.py
     TDTest/DrawViewImageTest.py
     TDTest/DrawViewSymbolTest.py

@@ -77,13 +77,24 @@ PyObject *DrawSVGTemplate::getPyObject()
 void DrawSVGTemplate::onChanged(const App::Property* prop)
 {
     if (prop == &Template && !isRestoring()) {
-        //if we are restoring an existing file we just want the properties set as they were saved,
-        //but if we are not restoring, we need to replace the embedded file and extract the new
-        //EditableTexts.
-        //We could try to find matching field names are preserve the values from
-        //the old template, but there is no guarantee that the same fields will be present.
-        replaceFileIncluded(Template.getValue());
-        EditableTexts.setValues(getEditableTextsFromTemplate());
+        // PropertyString ignores assigning the current path, so this is not a
+        // same-file refresh. Keep values for editable names that still exist,
+        // including empty strings. New names take the template default. Names
+        // that the new file does not have are dropped. An empty path does not
+        // load a file; that still resets texts from the embedded SVG.
+        const std::map<std::string, std::string> oldTexts = EditableTexts.getValues();
+        const std::string newTemplate = Template.getValue();
+        replaceFileIncluded(newTemplate);
+        std::map<std::string, std::string> newTexts = getEditableTextsFromTemplate();
+        if (!newTemplate.empty()) {
+            for (auto& item : newTexts) {
+                auto it = oldTexts.find(item.first);
+                if (it != oldTexts.end()) {
+                    item.second = it->second;
+                }
+            }
+        }
+        EditableTexts.setValues(newTexts);
         QDomDocument templateDocument;
         if (getTemplateDocument(PageResult.getValue(), templateDocument)) {
             extractTemplateAttributes(templateDocument);
