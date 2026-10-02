@@ -29,6 +29,11 @@
 #include "QGCustomText.h"
 #include "QGIUserTypes.h"
 
+namespace TechDraw
+{
+class DrawView;
+}
+
 namespace TechDrawGui
 {
 
@@ -43,6 +48,11 @@ public:
 
     bool m_isEditing = false;
 
+    // Page layout calls setPos to place the caption. That must not write
+    // CaptionSnap / CaptionLocation or opening a drawing marks the document
+    // modified. User drags still persist (default true).
+    void setPersistOnMove(bool enable) { m_persistOnMove = enable; }
+
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
     QPointF snapToView(QPointF pos);
@@ -52,6 +62,9 @@ protected:
 
 private:
     void setEditMode(bool enable);
+    void setCaptionSnapIfChanged(TechDraw::DrawView* viewObj, const char* snapName);
+
+    bool m_persistOnMove = true;
 };
 
 }
