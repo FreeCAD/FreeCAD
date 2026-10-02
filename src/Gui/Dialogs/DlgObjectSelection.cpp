@@ -98,6 +98,8 @@ void DlgObjectSelection::init(
     ui = new Ui_DlgObjectSelection;
     ui->setupUi(this);
 
+    ui->splitter->handle(1)->installEventFilter(this);  // receive double click events to reset splitter
+
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
     ui->checkBoxAutoDeps->setChecked(hGrp->GetBool("ObjectSelectionAutoDeps", true));
     connect(ui->checkBoxAutoDeps, &QCheckBox::toggled, this, &DlgObjectSelection::onAutoDeps);
@@ -178,6 +180,12 @@ void DlgObjectSelection::init(
         this,
         &DlgObjectSelection::onItemSelectionChanged
     );
+    // Preserve custom split on horizontal splitter between the dependency lists
+    connect(ui->splitter, &QSplitter::splitterMoved, this, [this]() {
+        if (ui->depList->topLevelItemCount() > 0 && ui->inList->topLevelItemCount() > 0) {
+            userCustomDepSplit = ui->splitter->sizes();
+        }
+    });
     connect(useOriginalsBtn, &QPushButton::clicked, this, &DlgObjectSelection::onUseOriginalsBtnClicked);
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &DlgObjectSelection::accept);
@@ -194,6 +202,20 @@ DlgObjectSelection::~DlgObjectSelection()
 {
     // no need to delete child widgets, Qt does it all for us
     delete ui;
+}
+
+bool DlgObjectSelection::eventFilter(QObject* o, QEvent* e)
+{
+    if (o == ui->splitter->handle(1) && e->type() == QEvent::MouseButtonDblClick) {
+        if (ui->depList->topLevelItemCount() > 0 && ui->inList->topLevelItemCount() > 0) {
+            auto sizes = ui->splitter->sizes();
+            int total = sizes[0] + sizes[1];
+            ui->splitter->setSizes({total / 2, total - total / 2});
+            userCustomDepSplit.clear();  // empty means revert to equal split
+        }
+        return true;
+    }
+    return QDialog::eventFilter(o, e);
 }
 
 QTreeWidgetItem* DlgObjectSelection::getItem(
@@ -312,6 +334,14 @@ void DlgObjectSelection::updateDepSplitter()
     }
     else if (hasDep && hasIn && (depSizes[0] == 0 || depSizes[1] == 0)) {
         depSizes[0] = depSizes[1] = total / 2;
+        if (userCustomDepSplit.size() == 2) {
+            int customTotal = userCustomDepSplit[0] + userCustomDepSplit[1];
+            if (customTotal > 0) {
+                depSizes[0] = total * userCustomDepSplit[0]
+                    / customTotal;  // in case of window resize
+                depSizes[1] = total - depSizes[0];
+            }
+        }
     }
     // both lists empty - currently show empty lists while dependency checkbox selected
     else if (!hasDep && !hasIn) {
