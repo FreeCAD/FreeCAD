@@ -44,7 +44,7 @@ the rotary move and the rotated path, and puts its dynamic fixture offset
 """
 
 import re
-from typing import Any, Dict
+from typing import Any
 
 import FreeCAD
 import Path

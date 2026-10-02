@@ -27,8 +27,6 @@ from FreeCAD import Vector
 from PySide import QtCore
 import Part
 import Path
-import Path.Main.Job as PathJob
-
 import Path.Base.Util as PathUtil
 import math
 from numpy import linspace
@@ -514,7 +512,9 @@ def findToolController(obj, proxy, name=None):
 def findParentJob(obj):
     """retrieves a parent job object for an operation or other Path object"""
     Path.Log.track()
-    if hasattr(obj, "Proxy") and isinstance(obj.Proxy, PathJob.ObjectJob):
+
+    jobModule = "Path.Main.Job"
+    if getattr(obj, "Proxy", None) and obj.Proxy.__module__ == jobModule:
         return obj
 
     # we need to traverse the document tree in reverse order:
@@ -527,8 +527,8 @@ def findParentJob(obj):
 
     for i in obj.InList:
         if (
-            hasattr(i, "Proxy")
-            and isinstance(i.Proxy, PathJob.ObjectJob)
+            getattr(i, "Proxy", None)
+            and i.Proxy.__module__ == jobModule
             and obj in [i.Operations, i.Model, i.Stock, i.SetupSheet, i.Tools]
         ):
             return i
@@ -543,11 +543,22 @@ def findParentJob(obj):
     return None
 
 
+def jobInstances():
+    """jobInstances() ... Return all Jobs in the current active document."""
+    if doc := FreeCAD.ActiveDocument:
+        return [
+            obj
+            for obj in doc.Objects
+            if getattr(obj, "Proxy", None) and obj.Proxy.__module__ == "Path.Main.Job"
+        ]
+    return []
+
+
 def GetJobs(jobname=None):
     """returns all jobs in the current document.  If name is given, returns that job"""
     if jobname:
-        return [job for job in PathJob.Instances() if job.Name == jobname]
-    return PathJob.Instances()
+        return [job for job in jobInstances() if job.Name == jobname]
+    return jobInstances()
 
 
 def addToJob(obj, jobname=None):
@@ -688,7 +699,7 @@ def guessDepths(objshape, subs=None):
     return depth_params(clearance, safe, start, 1.0, 0.0, final, user_depths=None, equalstep=False)
 
 
-class depth_params(object):
+class depth_params:
     """calculates the intermediate depth values for various operations given the starting, ending, and stepdown parameters
     (self, clearance_height, safe_height, start_depth, step_down, z_finish_depth, final_depth, [user_depths=None], equalstep=False)
 
