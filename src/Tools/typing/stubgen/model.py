@@ -155,19 +155,16 @@ HELPER_PYI_FILES = {
     "src/App/PropertyPythonContracts.pyi",
     "src/App/FreeCADInit.pyi",
 }
-PUBLIC_STUB_DECORATORS = {
-    "classmethod",
-    "deprecated",
-    "overload",
-    "property",
-    "staticmethod",
-}
-
 BindingFamily: TypeAlias = Literal["module_stub", "pycxx_add_method", "pycxx_slot", "pymethoddef"]
 ContextKind: TypeAlias = Literal["pycxx_module", "pymethoddef_table", "python_type", "unknown"]
 MethodKind: TypeAlias = Literal["keyword", "noargs", "varargs"]
-ContextEntry: TypeAlias = tuple[int, ContextKind, str]
-ImportTarget: TypeAlias = tuple[str, str]
+
+
+@dataclass(frozen=True)
+class ContextEntry:
+    position: int
+    kind: ContextKind
+    name: str
 
 
 class ScannerState(Enum):
@@ -209,7 +206,7 @@ class BindingClass:
     class_name: str
     export_name: str
     python_name: str | None
-    public_names: list[str]
+    public_names: tuple[str, ...]
     base_class: str | None
     explicit_export: bool
     cpp_type_names: tuple[str, ...] = ()
@@ -253,7 +250,7 @@ class PublicTypeGroup:
     class_symbol: str
     variable_symbol: str | None
     base_symbols: tuple[str, ...]
-    methods: list[BindingMethod]
+    methods: tuple[BindingMethod, ...]
 
 
 @dataclass(frozen=True)
@@ -263,18 +260,6 @@ class StubSignature:
     class_symbol: str | None = None
     doc: str | None = None
     deprecated_message: str | None = None
-
-
-@dataclass(frozen=True)
-class ImportBinding:
-    module: str
-    name: str | None = None
-
-
-@dataclass(frozen=True)
-class PublicClassStub:
-    source: str
-    import_lines: tuple[str, ...] = ()
 
 
 StubSignatureKey: TypeAlias = tuple[str, str, str]
