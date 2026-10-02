@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
- /**************************************************************************
+/***************************************************************************
  *   Copyright (c) 2020 FreeCAD Developers                                 *
  *   Author: Uwe Stöhr <uwestoehr@lyx.org>                                 *
  *                                                                         *
@@ -45,6 +45,7 @@ public:
 protected:
     void saveSettings() override;
     void loadSettings() override;
+    void resetSettingsToDefaults() override;
     void changeEvent(QEvent *e) override;
 
 private:
