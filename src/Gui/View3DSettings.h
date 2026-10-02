@@ -50,6 +50,9 @@ public:
     bool ignoreDimensions = false;
     bool ignoreRenderCache = false;
     bool ignoreTransparent = false;
+    bool ignoreOrthographic = false;
+
+    void syncOrthographicPref(bool isOrthographic);
 
 private:
     ParameterGrp::handle hGrp;
