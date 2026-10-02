@@ -48,6 +48,7 @@ struct UnitsSchemaSpec
     bool isMultUnitLen {false};
     bool isMultUnitAngle {false};
     const char* description;
+    const char* abbreviation;
     bool isDefault {false};
 
     /**
