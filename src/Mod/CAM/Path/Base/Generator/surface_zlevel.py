@@ -291,6 +291,8 @@ def _process_isolated_face(face, z_level):
             if cap_face and not cap_face.isNull():
                 cap_face.translate(FreeCAD.Vector(0, 0, -cap_face.BoundBox.ZMin))
                 masks.append((z_level, cap_face))
+            else:
+                Path.Log.warning(f"Failed to process isolated face at Z={z_level}")
         else:
             # Flat face with inner holes (Scenario A)
             masks.extend(_cap_flat_face_holes(face, z_level))
@@ -431,7 +433,15 @@ def getTrimFace(border_face, bbFace, wpc):
 # ---------------------------------------------------------------------------
 
 
-def categorize_floor_steps(shape, start_z, final_z, step_down, clear_planar_only, tolerance=0.0001):
+def categorize_floor_steps(
+    shape,
+    start_z,
+    final_z,
+    step_down,
+    clear_planar_only,
+    is_triangulated=False,
+    tolerance=0.0001
+):
     """Reconciles physical model floors with calculated step-down heights.
 
     This function generates a top-down list of Z-depths starting from start_z
@@ -444,6 +454,8 @@ def categorize_floor_steps(shape, start_z, final_z, step_down, clear_planar_only
         start_z: The absolute Z-height where machining begins (mm).
         final_z: The absolute target Z-depth (mm).
         step_down: The desired vertical distance between passes (mm).
+        clear_planar_only: If True, only clears floors detected as Mixed or Extra.
+        is_triangulated (bool): True if the model is a triangulated (mesh-derived) shape.
 
     Returns:
         A list of tuples: (z_height, status, floor_geometry_at_Z0).
@@ -462,7 +474,7 @@ def categorize_floor_steps(shape, start_z, final_z, step_down, clear_planar_only
     z_heights.append(round(final_z, 5))
 
     # 2. Get physical floors from model geometry
-    fused_geometry = _get_fused_floor_geometry(shape, start_z, final_z)
+    fused_geometry = _get_fused_floor_geometry(shape, start_z, final_z, is_triangulated)
 
     final_depth_logic = []
     accounted_floors = set()
@@ -498,7 +510,7 @@ def categorize_floor_steps(shape, start_z, final_z, step_down, clear_planar_only
     return final_depth_logic
 
 
-def _get_fused_floor_geometry(shape, start_z, final_z, tolerance=0.001):
+def _get_fused_floor_geometry(shape, start_z, final_z, is_triangulated, tolerance=0.001):
     """Identifies and fuses horizontal faces within the machining range.
 
     Iterates through all faces of the shape, filtering for planar surfaces
@@ -509,6 +521,7 @@ def _get_fused_floor_geometry(shape, start_z, final_z, tolerance=0.001):
         shape: The Part.Shape to analyze.
         start_z: Upper vertical bound for floor detection (mm).
         final_z: Lower vertical bound for floor detection (mm).
+        is_triangulated: True if the model is a triangulated (mesh-derived) shape.
         tolerance: Distance threshold for considering faces coplanar (mm).
 
     Returns:
@@ -555,7 +568,6 @@ def _get_fused_floor_geometry(shape, start_z, final_z, tolerance=0.001):
     # Detect pre-triangulated models and skip floor detection
     from . import surface_common
 
-    is_triangulated = surface_common._is_triangulated_mesh(shape.Faces)
     if is_triangulated:
         Path.Log.warning(
             "Pre-triangulated model detected. Automatic floor detection disabled for performance. 'Clear Planar Only' disabled."
