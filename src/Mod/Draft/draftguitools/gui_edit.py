@@ -839,6 +839,19 @@ class Edit(gui_base_original.Modifier):
                     obj_gui_tools = None
         return obj_gui_tools
 
+    def _add_wall_base_objects(self, selection):
+        tmp = set(selection)
+        for obj in selection:
+            if utils.get_type(obj) == "Wall":
+                if obj.Base is None:
+                    continue
+                base_typ = utils.get_type(obj.Base)
+                if base_typ == "Sketcher::SketchObject" and edit_sketcher._is_editable(obj.Base):
+                    tmp.add(obj.Base)
+                elif base_typ == "Wire":
+                    tmp.add(obj.Base)
+        return list(tmp)
+
     def getObjsFromSelection(self):
         """Evaluate selection and return a valid object to edit.
 
@@ -850,12 +863,13 @@ class Edit(gui_base_original.Modifier):
                 obj_matrix = selobj.Object.getSubObject(sub, retType=4)
         """
         selection = Gui.Selection.getSelection()
-        self.edited_objects = []
+        selection = self._add_wall_base_objects(selection)
         if len(selection) > self.max_objects:
             _err = translate("draft", "Too many objects selected, maximum number set to:")
             App.Console.PrintMessage(_err + " " + str(self.max_objects) + "\n")
             return None
 
+        self.edited_objects = []
         for obj in selection:
             if self.has_obj_gui_tools(obj):
                 self.edited_objects.append(obj)
