@@ -287,7 +287,9 @@ def _boundary_via_area(compound, offset, outline):
         result = area.getShape()
 
         if not result or result.isNull():
-            Path.Log.debug(f"Path.Area returned an empty shape (offset={offset}, outline={outline}).")
+            Path.Log.debug(
+                f"Path.Area returned an empty shape (offset={offset}, outline={outline})."
+            )
             return None
         return result
 
@@ -425,7 +427,9 @@ def generate_pattern_mask(
             return main_boundary
         return final_mask
     except Exception as e:
-        Path.Log.error(f"Failed to cut the Avoid Faces from the boundary mask: {e}; they will be ignored.")
+        Path.Log.error(
+            f"Failed to cut the Avoid Faces from the boundary mask: {e}; they will be ignored."
+        )
         return main_boundary
 
 
@@ -589,7 +593,8 @@ def _separate_touching_faces(faces, tolerance=0.01):
                     union(i, j)
             except Exception as e:
                 Path.Log.debug(
-                    f"_separatecreate_boundary_face_touching_faces: centroid check failed for " f"faces {i},{j}: {e}"
+                    f"_separatecreate_boundary_face_touching_faces: centroid check failed for "
+                    f"faces {i},{j}: {e}"
                 )
 
     # Collect groups by root

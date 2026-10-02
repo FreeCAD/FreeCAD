@@ -434,13 +434,7 @@ def getTrimFace(border_face, bbFace, wpc):
 
 
 def categorize_floor_steps(
-    shape,
-    start_z,
-    final_z,
-    step_down,
-    clear_planar_only,
-    is_triangulated=False,
-    tolerance=0.0001
+    shape, start_z, final_z, step_down, clear_planar_only, is_triangulated=False, tolerance=0.0001
 ):
     """Reconciles physical model floors with calculated step-down heights.
 

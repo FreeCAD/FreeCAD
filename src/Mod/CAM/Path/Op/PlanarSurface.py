@@ -1913,7 +1913,9 @@ class ObjectSurface(PathOp.ObjectOp):
         elif strategy == "Waterline":
             cmds = self._executeWaterline(obj, JOB, stl, cutter, tool_diam, is_adaptive)
         elif strategy == "ZLevelHybrid":
-            cmds = self._executeZLevelHybrid(obj, JOB, model_shape, bb_face, tool_params, is_triangulated)
+            cmds = self._executeZLevelHybrid(
+                obj, JOB, model_shape, bb_face, tool_params, is_triangulated
+            )
         self.commandlist.extend(cmds)
 
         elapsed = time.strftime("%Hh:%Mm:%Ss", time.gmtime(time.time() - startTime))
