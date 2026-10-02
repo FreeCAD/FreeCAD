@@ -71,7 +71,7 @@ QVariant QGICaption::itemChange(GraphicsItemChange change, const QVariant &value
         return snapToView(value.toPointF());
     }
 
-    if (change == ItemPositionHasChanged) {
+    if (change == ItemPositionHasChanged && !viewObj->isRestoring()) {
         QPointF newPos = value.toPointF();
         Base::Vector3d newLocation(Rez::appX(newPos.x()), Rez::appX(-newPos.y()), 0.0);
         viewObj->CaptionLocation.setValue(newLocation);
@@ -88,6 +88,12 @@ QPointF QGICaption::snapToView(QPointF pos) {
 
     TechDraw::DrawView* viewObj = parentView->getViewObject();
     if (!viewObj) {
+        return pos;
+    }
+
+    // Restore can call setPos before the page MDI has a QGraphicsView.
+    // Do not snap (or touch CaptionSnap) until the document is live.
+    if (viewObj->isRestoring()) {
         return pos;
     }
 
@@ -112,7 +118,15 @@ QPointF QGICaption::snapToView(QPointF pos) {
 
     constexpr double snapDistanceScreenPixels{15.0};
     double zoomFactor = 1.0;
-    zoomFactor = scene()->views().first()->transform().m11();
+    if (QGraphicsScene* sc = scene()) {
+        const auto views = sc->views();
+        if (!views.isEmpty()) {
+            zoomFactor = views.first()->transform().m11();
+        }
+    }
+    if (zoomFactor == 0.0) {
+        zoomFactor = 1.0;
+    }
 
     double snapDistance = snapDistanceScreenPixels / zoomFactor;
 
