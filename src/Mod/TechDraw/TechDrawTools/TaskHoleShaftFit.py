@@ -20,23 +20,21 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the TechDraw HoleShaftFit Task Dialog with full ISO 286 support."""
+"""Provides the TechDraw HoleShaftFit Task Dialog with dual ISO 286 dropdowns."""
 
 __title__ = "TechDrawTools.TaskHoleShaftFit"
 __author__ = "edi"
 __url__ = "https://www.freecad.org"
-__version__ = "00.03"
+__version__ = "00.04"
 __date__ = "2026/10/02"
 
 import os
 import sys
 import re
-from functools import partial
 
 import FreeCAD as App
 import FreeCADGui as Gui
 
-# Force the current directory into Python's path to bypass FreeCAD's relative import blocker
 current_dir = os.path.dirname(os.path.realpath(__file__))
 if current_dir not in sys.path:
     sys.path.insert(0, current_dir)
@@ -48,167 +46,113 @@ translate = App.Qt.translate
 
 class TaskHoleShaftFit:
     def __init__(self, sel):
-
-        loose = translate("TechDraw_HoleShaftFit", "Loose fit")
-        snug = translate("TechDraw_HoleShaftFit", "Snug fit")
-        press = translate("TechDraw_HoleShaftFit", "Press fit")
-        
-        self.isHoleBasis = True
         self.sel = sel
 
-        # Expanded ISO 286 fit combinations [Shaft, Hole, Fit Category] for Shaft Basis
-        self.holeValues = [
-            ["h9", "D10", loose], ["h9", "E9", loose], ["h9", "F8", loose],
-            ["h6", "G7", loose], ["c11", "H11", loose], ["d10", "H10", loose],
-            ["e8", "H8", loose], ["f7", "H8", loose], ["f8", "H8", loose],
-            ["g6", "H7", loose], ["h6", "H7", loose], ["h7", "H8", loose],
-            ["h9", "H9", loose], ["h11", "H11", loose],
-            ["js6", "H7", snug], ["k6", "H7", snug], ["m6", "H7", snug],
-            ["n6", "H7", snug], ["h6", "K7", snug], ["h6", "M7", snug],
-            ["h6", "N7", snug],
-            ["p6", "H7", press], ["r6", "H7", press], ["s6", "H7", press],
-            ["t6", "H7", press], ["u6", "H7", press], ["x6", "H7", press],
-            ["z6", "H7", press], ["h6", "P7", press], ["h6", "R7", press],
-            ["h6", "S7", press], ["h6", "T7", press], ["h6", "U7", press],
+        self.holeClasses = [
+            "- None -", "A11", "B11", "C11", "D10", "E9", "F8", "F7", "G7", "H6", "H7",
+            "H8", "H9", "H11", "JS6", "JS7", "K7", "M7", "N7", "P7", "R7", "S7", "T7", "U7"
         ]
 
-        # Expanded ISO 286 fit combinations [Hole, Shaft, Fit Category] for Hole Basis
-        self.shaftValues = [
-            ["H11", "c11", loose], ["H10", "d10", loose], ["H9", "d9", loose],
-            ["H8", "e8", loose], ["H8", "f7", loose], ["H8", "f8", loose],
-            ["H7", "g6", loose], ["H7", "h6", loose], ["H8", "h7", loose],
-            ["H9", "h9", loose], ["H11", "h11", loose], ["D10", "h9", loose],
-            ["E9", "h9", loose], ["F8", "h9", loose], ["G7", "h6", loose],
-            ["H7", "js6", snug], ["H7", "k6", snug], ["H7", "m6", snug],
-            ["H7", "n6", snug], ["K7", "h6", snug], ["M7", "h6", snug],
-            ["N7", "h6", snug],
-            ["H7", "p6", press], ["H7", "r6", press], ["H7", "s6", press],
-            ["H7", "t6", press], ["H7", "u6", press], ["H7", "x6", press],
-            ["P7", "h6", press], ["R7", "h6", press], ["S7", "h6", press],
-            ["T7", "h6", press], ["U7", "h6", press],
+        self.shaftClasses = [
+            "- None -", "a11", "b11", "c11", "d9", "d10", "e8", "f7", "f8", "g6", "h6",
+            "h7", "h9", "h11", "js6", "js7", "k6", "m6", "n6", "p6", "r6", "s6", "t6", "u6", "x6", "z6"
         ]
 
-        # Safely resolve the UI path
+        # Resolve UI file path
         self._uiPath = os.path.join(current_dir, "Gui", "TaskHoleShaftFit.ui").replace("\\", "/")
-        ui_macro = os.path.join(current_dir, "TaskHoleShaftFit.ui").replace("\\", "/")
-        ui_fallback = os.path.join(App.getHomePath(), "Mod/TechDraw/TechDrawTools/Gui/TaskHoleShaftFit.ui").replace("\\", "/")
-
-        if os.path.exists(self._uiPath):
-            pass
-        elif os.path.exists(ui_macro):
-            self._uiPath = ui_macro
-        else:
-            App.Console.PrintWarning("TaskHoleShaftFit: Local UI not found, falling back to core path.\n")
-            self._uiPath = ui_fallback
+        if not os.path.exists(self._uiPath):
+            self._uiPath = os.path.join(current_dir, "..", "Gui", "TaskHoleShaftFit.ui").replace("\\", "/")
 
         self.form = Gui.PySideUic.loadUi(self._uiPath)
         
         if self.form is None:
-            App.Console.PrintError(f"TaskHoleShaftFit: CRITICAL ERROR - Could not load UI file at {self._uiPath}\n")
+            App.Console.PrintError(f"TaskHoleShaftFit: CRITICAL ERROR - Could not load UI at {self._uiPath}\n")
             return
 
         self.form.setWindowTitle(translate("TechDraw_HoleShaftFit", "Hole/Shaft Fit ISO 286"))
 
-        self.form.rbHoleBase.clicked.connect(partial(self.on_HoleShaftChanged, True))
-        self.form.rbShaftBase.clicked.connect(partial(self.on_HoleShaftChanged, False))
-        self.form.cbField.currentIndexChanged.connect(self.on_FieldChanged)
+        # Populate combo boxes
+        self.form.cbHole.addItems(self.holeClasses)
+        self.form.cbShaft.addItems(self.shaftClasses)
 
-        self.setShaftFields()
+        # Defaults: H7 / g6
+        self.form.cbHole.setCurrentText("H7")
+        self.form.cbShaft.setCurrentText("g6")
+
+        self.form.cbHole.currentIndexChanged.connect(self.on_selection_changed)
+        self.form.cbShaft.currentIndexChanged.connect(self.on_selection_changed)
+
+        self.on_selection_changed()
         App.ActiveDocument.openTransaction("Add hole or shaft fit")
 
-    def setHoleFields(self):
-        """Set shaft-basis fit choices in the combo box."""
-        self.form.cbField.blockSignals(True)
-        self.form.cbField.clear()
-        for value in self.holeValues:
-            # Display format: Hole / Shaft (e.g., D10 / h9)
-            self.form.cbField.addItem(f"{value[1]} / {value[0]}")
-        self.form.cbField.blockSignals(False)
-        
-        if self.holeValues:
-            self.form.lbBaseField.setText("")
-            self.form.lbFitType.setText(self.holeValues[0][2])
+    def on_selection_changed(self):
+        hole = self.form.cbHole.currentText()
+        shaft = self.form.cbShaft.currentText()
 
-    def setShaftFields(self):
-        """Set hole-basis fit choices in the combo box."""
-        self.form.cbField.blockSignals(True)
-        self.form.cbField.clear()
-        for value in self.shaftValues:
-            # Display format: Hole / Shaft (e.g., H7 / g6)
-            self.form.cbField.addItem(f"{value[0]} / {value[1]}")
-        self.form.cbField.blockSignals(False)
-
-        if self.shaftValues:
-            self.form.lbBaseField.setText("")
-            self.form.lbFitType.setText(self.shaftValues[0][2])
-
-    def on_HoleShaftChanged(self, isHoleBasis):
-        """Slot: Change base fit between hole base and shaft base."""
-        self.isHoleBasis = isHoleBasis
-        if self.isHoleBasis:
-            self.setShaftFields()
+        if hole != "- None -" and shaft != "- None -":
+            if shaft in ["p6", "r6", "s6", "t6", "u6", "x6", "z6"] or hole in ["P7", "R7", "S7", "T7", "U7"]:
+                fit_type = translate("TechDraw_HoleShaftFit", "Press fit")
+            elif shaft in ["js6", "js7", "k6", "m6", "n6"] or hole in ["JS6", "JS7", "K7", "M7", "N7"]:
+                fit_type = translate("TechDraw_HoleShaftFit", "Snug fit")
+            else:
+                fit_type = translate("TechDraw_HoleShaftFit", "Loose fit")
+        elif hole != "- None -" or shaft != "- None -":
+            fit_type = translate("TechDraw_HoleShaftFit", "Single tolerance")
         else:
-            self.setHoleFields()
+            fit_type = translate("TechDraw_HoleShaftFit", "- None -")
 
-    def on_FieldChanged(self):
-        """Slot: Handle change of selected tolerance field."""
-        currentIndex = self.form.cbField.currentIndex()
-        if currentIndex < 0:
-            return
-
-        values = self.shaftValues if self.isHoleBasis else self.holeValues
-        if currentIndex < len(values):
-            self.form.lbBaseField.setText("")
-            self.form.lbFitType.setText(values[currentIndex][2])
+        self.form.lbFitType.setText(fit_type)
 
     def accept(self):
-        """Slot: OK button pressed."""
-        currentIndex = self.form.cbField.currentIndex()
-        if currentIndex < 0:
-            return
-
-        selectedField = self.shaftValues[currentIndex][1] if self.isHoleBasis else self.holeValues[currentIndex][1]
-        baseField = self.shaftValues[currentIndex][0] if self.isHoleBasis else self.holeValues[currentIndex][0]
-
-        fitString = f"{baseField}/{selectedField}" if self.isHoleBasis else f"{selectedField}/{baseField}"
-
-        match = re.match(r"([a-zA-Z]+)(\d+)", selectedField)
-        if not match:
-            App.Console.PrintError(f"TaskHoleShaftFit: Could not parse tolerance field '{selectedField}'\n")
-            App.ActiveDocument.abortTransaction()
+        if not self.sel or not hasattr(self.sel[0], "Object"):
             Gui.Control.closeDialog()
+            App.ActiveDocument.abortTransaction()
             return
 
-        fieldChar, quality_str = match.groups()
-        quality = int(quality_str)
+        hole = self.form.cbHole.currentText()
+        shaft = self.form.cbShaft.currentText()
+
+        if hole == "- None -" and shaft == "- None -":
+            Gui.Control.closeDialog()
+            App.ActiveDocument.abortTransaction()
+            return
 
         dim = self.sel[0].Object
         value = dim.getRawValue()
-
         iso = ISO286()
-        iso.calculate(value, fieldChar, quality)
-        rangeValues = iso.getValues()
 
-        mainFormat = dim.FormatSpec
-        dim.FormatSpec = mainFormat + " " + fitString
+        fit_str = ""
+        upper_dev = 0.0
+        lower_dev = 0.0
+        show_numeric = True
+
+        if hole != "- None -" and shaft != "- None -":
+            fit_str = f"{hole}/{shaft}"
+            # Do NOT combine numerical tolerances for assembly fit callouts
+            show_numeric = False 
+        else:
+            selected = hole if hole != "- None -" else shaft
+            fit_str = selected
+            match = re.match(r"([a-zA-Z]+)(\d+)", selected)
+            if match:
+                iso.calculate(value, match.group(1), int(match.group(2)))
+                upper_dev, lower_dev = iso.getValues()
+
+        # Clean prior ISO 286 fit string (e.g. H7, g6, H7/g6) without stripping units (e.g. 'mm')
+        mainFormat = re.sub(r"\s+([A-Za-z]{1,2}\d+(/[a-zA-Z]{1,2}\d+)?)$", "", dim.FormatSpec)
+        dim.FormatSpec = mainFormat + " " + fit_str
         dim.EqualTolerance = False
-        dim.OverTolerance = rangeValues[0]
-        dim.UnderTolerance = rangeValues[1]
+        dim.OverTolerance = upper_dev
+        dim.UnderTolerance = lower_dev
 
-        if dim.OverTolerance < 0:
-            dim.FormatSpecOverTolerance = "(%-0.6w)"
-        elif dim.OverTolerance > 0:
-            dim.FormatSpecOverTolerance = "(+%-0.6w)"
+        if show_numeric:
+            dim.FormatSpecOverTolerance = "(+%.3f)" if dim.OverTolerance > 0 else ("(%.3f)" if dim.OverTolerance < 0 else "( %.3f)")
+            dim.FormatSpecUnderTolerance = "(+%.3f)" if dim.UnderTolerance > 0 else ("(%.3f)" if dim.UnderTolerance < 0 else "( %.3f)")
         else:
-            dim.FormatSpecOverTolerance = "( %-0.6w)"
+            dim.FormatSpecOverTolerance = ""
+            dim.FormatSpecUnderTolerance = ""
 
-        if dim.UnderTolerance < 0:
-            dim.FormatSpecUnderTolerance = "(%-0.6w)"
-        elif dim.UnderTolerance > 0:
-            dim.FormatSpecUnderTolerance = "(+%-0.6w)"
-        else:
-            dim.FormatSpecUnderTolerance = "( %-0.6w)"
-
+        dim.recompute()
         Gui.Control.closeDialog()
         App.ActiveDocument.commitTransaction()
 
@@ -223,7 +167,6 @@ class ISO286:
     def __init__(self):
         self.upperValue = 0.0
         self.lowerValue = 0.0
-        self.nominalRange = 0
 
     def getNominalRange(self, measureValue):
         index = 1
@@ -242,16 +185,16 @@ class ISO286:
         return 0
 
     def calculate(self, value, fieldChar, quality):
-        self.nominalRange = self.getNominalRange(value)
-        itValue = self.getITValue(quality, self.nominalRange)
+        nominalRange = self.getNominalRange(value)
+        itValue = self.getITValue(quality, nominalRange)
 
         if fieldChar in ["js", "JS"]:
-            halfIT = itValue // 2
+            halfIT = itValue / 2.0
             self.upperValue = halfIT
             self.lowerValue = -halfIT
             return
 
-        baseDev = self.getFieldValue(fieldChar, self.nominalRange)
+        baseDev = self.getFieldValue(fieldChar, nominalRange)
 
         if fieldChar.islower():
             if fieldChar <= "h":
