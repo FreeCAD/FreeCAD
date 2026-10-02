@@ -2894,21 +2894,18 @@ Gui::MDIView* Document::getEditingViewOfViewProvider(Gui::ViewProvider* vp) cons
  */
 int Document::openCommand(const char* sName)
 {
-    Base::Console().error("Joerg {}:{}: 3.) openCommand\n", __FILE__, __LINE__);
     Gui::ConstraintCommandQueue::setBuffering(true);
     return getDocument()->openTransaction(App::TransactionName {.name = sName, .temporary = false});
 }
 
 void Document::commitCommand()
 {
-    Base::Console().error("Joerg {}:{}: Document::commitCommand()\n", __FILE__, __LINE__);
     Gui::ConstraintCommandQueue::emit();
     getDocument()->commitTransaction();
 }
 
 void Document::abortCommand()
 {
-    Base::Console().error("Joerg {}:{}: Document::abortCommand()\n", __FILE__, __LINE__);
     Gui::ConstraintCommandQueue::reset();
     getDocument()->abortTransaction();
 }
