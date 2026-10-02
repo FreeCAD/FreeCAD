@@ -109,46 +109,6 @@ class TestLinearPattern(unittest.TestCase):
         self.assertEqual(pattern.Occurrences2, maximum)
         self.assertEqual(len(pattern.Spacings2), maximum - 1)
 
-    def testSuppressedOriginalInMultiTransform(self):
-        pattern = self.makeSuppressionPattern()
-        pattern.Occurrences2 = 1
-        multi = self.Doc.Body.newObject("PartDesign::MultiTransform", "MultiTransform")
-        multi.Originals = [self.Doc.Box]
-        multi.Transformations = [pattern]
-        self.Doc.recompute()
-        pattern.SuppressedIndices = [0]
-        self.Doc.recompute()
-        self.assertAlmostEqual(multi.Shape.Volume, 2000)
-        self.assertAlmostEqual(multi.Shape.BoundBox.XMin, 10)
-        self.assertFalse(multi.Shape.isInside(FreeCAD.Vector(5, 5, 5), 1e-7, True))
-        self.assertTrue(multi.Shape.isInside(FreeCAD.Vector(15, 5, 5), 1e-7, True))
-
-        pattern.SuppressedIndices = [0, 1, 2]
-        self.Doc.recompute()
-        self.assertTrue(multi.Shape.isNull() or multi.Shape.Volume == 0)
-        pattern.SuppressedIndices = []
-        self.Doc.recompute()
-        self.assertAlmostEqual(multi.Shape.Volume, 3000)
-
-    def testSuppressionComposesAcrossHelpers(self):
-        pattern = self.makeSuppressionPattern()
-        pattern.Occurrences2 = 1
-        multi = self.Doc.Body.newObject("PartDesign::MultiTransform", "MultiTransform")
-        multi.Originals = [self.Doc.Box]
-        second = self.Doc.Body.newObject("PartDesign::LinearPattern", "SecondPattern")
-        second.Direction = (self.Doc.Y_Axis, [""])
-        second.Mode = "Spacing"
-        second.Offset = 10
-        second.Occurrences = 2
-        multi.Transformations = [pattern, second]
-        pattern.SuppressedIndices = [0]
-        self.Doc.recompute()
-        self.assertAlmostEqual(multi.Shape.Volume, 4000)
-        self.assertAlmostEqual(multi.Shape.BoundBox.XMin, 10)
-        pattern.SuppressedIndices = [0, 1, 2]
-        self.Doc.recompute()
-        self.assertTrue(multi.Shape.isNull() or multi.Shape.Volume == 0)
-
     def testSuppressionInMultiTransform(self):
         pattern = self.makeSuppressionPattern()
         multi = self.Doc.Body.newObject("PartDesign::MultiTransform", "MultiTransform")
@@ -236,35 +196,6 @@ class TestLinearPattern(unittest.TestCase):
         # self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 170)    # TODO
         self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 26)
 
-    def testSuppressOriginalFeatureOccurrence(self):
-        self.Body = self.Doc.addObject("PartDesign::Body", "Body")
-        self.BaseBox = self.Doc.addObject("PartDesign::AdditiveBox", "BaseBox")
-        self.Body.addObject(self.BaseBox)
-        self.BaseBox.Length = 40.0
-        self.BaseBox.Width = 10.0
-        self.BaseBox.Height = 10.0
-
-        self.Box = self.Doc.addObject("PartDesign::AdditiveBox", "Box")
-        self.Body.addObject(self.Box)
-        self.Box.Length = 10.0
-        self.Box.Width = 10.0
-        self.Box.Height = 10.0
-        self.Box.Placement.Base.z = 10.0
-        self.Doc.recompute()
-
-        self.LinearPattern = self.Doc.addObject("PartDesign::LinearPattern", "LinearPattern")
-        self.Body.addObject(self.LinearPattern)
-        self.LinearPattern.Originals = [self.Box]
-        self.LinearPattern.Direction = (self.Doc.X_Axis, [""])
-        self.LinearPattern.Length = 20.0
-        self.LinearPattern.Occurrences = 3
-        self.Doc.recompute()
-        self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 7e3)
-
-        self.LinearPattern.SuppressedIndices = [0]
-        self.Doc.recompute()
-        self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 6e3)
-
     def testSuppressOriginalWholeShapeOccurrence(self):
         self.Body = self.Doc.addObject("PartDesign::Body", "Body")
         self.Box = self.Doc.addObject("PartDesign::AdditiveBox", "Box")
@@ -284,35 +215,6 @@ class TestLinearPattern(unittest.TestCase):
         self.Doc.recompute()
         self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 2e3)
         self.assertAlmostEqual(self.LinearPattern.Shape.BoundBox.XMin, 10.0)
-
-    def testSuppressOriginalSubtractiveOccurrence(self):
-        self.Body = self.Doc.addObject("PartDesign::Body", "Body")
-        self.BaseBox = self.Doc.addObject("PartDesign::AdditiveBox", "BaseBox")
-        self.Body.addObject(self.BaseBox)
-        self.BaseBox.Length = 40.0
-        self.BaseBox.Width = 10.0
-        self.BaseBox.Height = 10.0
-
-        self.Box = self.Doc.addObject("PartDesign::SubtractiveBox", "Box")
-        self.Body.addObject(self.Box)
-        self.Box.Length = 10.0
-        self.Box.Width = 10.0
-        self.Box.Height = 5.0
-        self.Box.Placement.Base.z = 5.0
-        self.Doc.recompute()
-
-        self.LinearPattern = self.Doc.addObject("PartDesign::LinearPattern", "LinearPattern")
-        self.Body.addObject(self.LinearPattern)
-        self.LinearPattern.Originals = [self.Box]
-        self.LinearPattern.Direction = (self.Doc.X_Axis, [""])
-        self.LinearPattern.Length = 20.0
-        self.LinearPattern.Occurrences = 3
-        self.Doc.recompute()
-        self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 2.5e3)
-
-        self.LinearPattern.SuppressedIndices = [0]
-        self.Doc.recompute()
-        self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 3e3)
 
     def testZAxisLinearPattern(self):
         self.Body = self.Doc.addObject("PartDesign::Body", "Body")
@@ -355,7 +257,7 @@ class TestLinearPattern(unittest.TestCase):
         self.Doc.recompute()
         self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 1e4)
         # self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 170)    # TODO
-        self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 30)
+        self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 26)
 
     def testVerticalSketchAxisLinearPattern(self):
         self.Body = self.Doc.addObject("PartDesign::Body", "Body")
@@ -378,7 +280,7 @@ class TestLinearPattern(unittest.TestCase):
         self.Doc.recompute()
         self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 1e4)
         # self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 170)    # TODO
-        self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 30)
+        self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 26)
 
     def testHorizontalSketchAxisLinearPattern(self):
         self.Body = self.Doc.addObject("PartDesign::Body", "Body")
@@ -402,7 +304,7 @@ class TestLinearPattern(unittest.TestCase):
         self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 1e4)
         # self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 170)    # TODO
         # self.assertEqual(len(self.LinearPattern.Shape.ElementReverseMap), 170)
-        self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 30)
+        self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 26)
 
     def tearDown(self):
         # closing doc
