@@ -270,15 +270,8 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
             if (fullCircle && std::isfinite(angle)) {
                 angle = std::numbers::pi * 2;
             }
-            else if (anorm.*pz < 0) {
-                if (name == "G3" || name == "G03") {
-                    angle = std::numbers::pi * 2 - angle;
-                }
-            }
-            else if (anorm.*pz > 0) {
-                if (name == "G2" || name == "G02") {
-                    angle = std::numbers::pi * 2 - angle;
-                }
+            else if ((anorm.*pz) * (norm.*pz) < 0.0) {
+                angle = std::numbers::pi * 2 - angle;
             }
 
             double amax = std::max(fabs(a - A), std::max(fabs(b - B), fabs(c - C)));
