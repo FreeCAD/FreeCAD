@@ -30,12 +30,45 @@ using namespace Image;
 
 PROPERTY_SOURCE(Image::ImagePlane, App::GeoFeature)
 
+const App::PropertyFloatConstraint::Constraints cropPercent = {0.0, 100.0, 0.01};
 
 ImagePlane::ImagePlane()
 {
     ADD_PROPERTY_TYPE(ImageFile, (nullptr), "ImagePlane", App::Prop_None, "File of the image");
     ADD_PROPERTY_TYPE(XSize, (100), "ImagePlane", App::Prop_None, "Size of a pixel in X");
     ADD_PROPERTY_TYPE(YSize, (100), "ImagePlane", App::Prop_None, "Size of a pixel in Y");
+    ADD_PROPERTY_TYPE(
+        CropLeft,
+        (0.0),
+        "ImagePlane",
+        App::Prop_None,
+        "Left crop, as a percentage of the image width"
+    );
+    CropLeft.setConstraints(&cropPercent);
+    ADD_PROPERTY_TYPE(
+        CropRight,
+        (0.0),
+        "ImagePlane",
+        App::Prop_None,
+        "Right crop, as a percentage of the image width"
+    );
+    CropRight.setConstraints(&cropPercent);
+    ADD_PROPERTY_TYPE(
+        CropTop,
+        (0.0),
+        "ImagePlane",
+        App::Prop_None,
+        "Top crop, as a percentage of the image height"
+    );
+    CropTop.setConstraints(&cropPercent);
+    ADD_PROPERTY_TYPE(
+        CropBottom,
+        (0.0),
+        "ImagePlane",
+        App::Prop_None,
+        "Bottom crop, as a percentage of the image height"
+    );
+    CropBottom.setConstraints(&cropPercent);
 }
 
 int ImagePlane::getXSizeInPixel()
