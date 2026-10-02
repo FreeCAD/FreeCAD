@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <cassert>
 #include <cmath>
+#include <cstdlib>
 #include <cstdio>
 #include <format>
 #include <optional>
@@ -383,8 +384,9 @@ void CArea::NaiveOffset(double offset)
             const Point64 negBack64 = ToPoint64(
                 PointD(cNeg.m_vertices.back().m_p.x, cNeg.m_vertices.back().m_p.y, 0)
             );
-            if ((abs(posTarget64.x - posBack64.x) < 2 && abs(posTarget64.y - posBack64.y) < 2)
-                || (abs(negTarget64.x - negBack64.x) < 2 && abs(negTarget64.y - negBack64.y) < 2)) {
+            if ((std::abs(posTarget64.x - posBack64.x) < 2 && std::abs(posTarget64.y - posBack64.y) < 2)
+                || (std::abs(negTarget64.x - negBack64.x) < 2
+                    && std::abs(negTarget64.y - negBack64.y) < 2)) {
                 // Skip the join if the points are already equal, or nearly equal. I chose
                 // `dx > 2 || dy > 2` to be sure that in segments we join, the process of rounding
                 // to integers does't move the points enough to change which side should be joined
@@ -832,7 +834,7 @@ void CArea::SetFromResult(
                 const Point64& v0 = path[i];
                 const Point64& v1 = path[(i + 1) % path.size()];
 
-                bool isSkip = abs(v1.x - v0.x) < skipDx && abs(v1.y - v0.y) < skipDy;
+                bool isSkip = std::abs(v1.x - v0.x) < skipDx && std::abs(v1.y - v0.y) < skipDy;
                 if (isSkip < bestSkip || (isSkip <= bestSkip && path[i].z <= path[startVertex].z)) {
                     startVertex = i;
                     bestSkip = isSkip;
@@ -858,7 +860,7 @@ void CArea::SetFromResult(
             // keep the curve closed. This process may require extra handling if the adjustment
             // terminates
             //  the segment back at its start point.
-            if (abs(v1.x - v0.x) < skipDx && abs(v1.y - v0.y) < skipDy) {
+            if (std::abs(v1.x - v0.x) < skipDx && std::abs(v1.y - v0.y) < skipDy) {
                 if (c.m_vertices.size()) {
                     const bool fullLoop = std::prev(c.m_vertices.end(), 2)->m_p.exactlyEquals(end);
                     if (!fullLoop) {
