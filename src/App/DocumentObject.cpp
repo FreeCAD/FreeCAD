@@ -68,8 +68,8 @@ DocumentObject::DocumentObject()
     : ExpressionEngine()
 {
     // define Label of type 'Output' to avoid being marked as touched after relabeling
-    ADD_PROPERTY_TYPE(Label, ("Unnamed"), "Base", Prop_Output, "User name of the object (UTF8)");
-    ADD_PROPERTY_TYPE(Label2, (""), "Base", Prop_Hidden, "User description of the object (UTF8)");
+    ADD_PROPERTY_TYPE(Label, ("Unnamed"), "Base", Prop_Output, "User name of the object");
+    ADD_PROPERTY_TYPE(Label2, (""), "Base", Prop_Hidden, "User description of the object");
     Label2.setStatus(App::Property::Output, true);
     ADD_PROPERTY_TYPE(ExpressionEngine, (), "Base", Prop_Hidden, "Property expressions");
 
