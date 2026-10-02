@@ -493,6 +493,10 @@ public:
     {
         Base::Console().error("Joerg {}:{}: emit\n", __FILE__, __LINE__);
         for (const auto& element : getBuffer()) {
+            Base::Console().error("Joerg {}:{}: el: {}\n", __FILE__, __LINE__, element);
+        }
+        Base::Console().error("Joerg {}:{}: EoL\n", __FILE__, __LINE__);
+        for (const auto& element : getBuffer()) {
             Base::Console().error("Joerg {}:{}: emiting {}\n", __FILE__, __LINE__, element);
             Gui::Command::doCommand(Gui::Command::Doc, "%s", element.c_str());
         }
@@ -504,47 +508,74 @@ private:
 };
 
 template<typename... Args>
-void cmdSketcherConstraint(const App::DocumentObject* obj, const std::string& cmd, Args&&... args)
+void cmdSketcherConstraint(const App::DocumentObject* obj, const std::string& format, Args&&... args)
 {
     std::string _cmd;
     try {
-        boost::format fmt(cmd);
+        boost::format fmt(format);
         _cmd = FormatString::toStr(fmt, std::forward<Args>(args)...);
 
         std::string fullPythonCmd = std::string("App.getDocument('") + obj->getDocument()->getName()
             + std::string("').getObject('") + obj->getNameInDocument() + std::string("').") + _cmd;
 
         if (Gui::ConstraintCommandQueue::isBuffering()) {
-            // BUFFER IT INSTEAD OF RUNNING
-            Base::Console()
-                .error("Joerg {}:{}: cmdSketcherConstraint buffering {}\n", __FILE__, __LINE__, _cmd);
+            Base::Console().error(
+                "Joerg {}:{}: cmdSketcherConstraint buffering {}\n",
+                __FILE__,
+                __LINE__,
+                fullPythonCmd
+            );
+            // 1. Buffer the Python statement for macro/console commit
             Gui::ConstraintCommandQueue::getBuffer().push_back(fullPythonCmd);
 
-            // NOTE: You still want the C++ model to execute immediately
-            // so the 3D view updates live! But we execute via interpreter *without* doCommand,
-            // or let the model action happen via the tool's C++ methods.
-            // Wait, does cmdSketcherConstraint normally execute the Python interpreter?
-            // Yes, via doCommand(). To let C++ update live without logging to console/macro:
+            // 2. Execute LIVE in the interpreter so C++ Sketcher model updates NOW
             Base::Interpreter().runString(fullPythonCmd.c_str());
         }
         else {
-            // Fallback if not inside a buffered transaction scope
-            Base::Console()
-                .error("Joerg {}:{}: cmdSketcherConstraint doCommand {}\n", __FILE__, __LINE__, _cmd);
-            Gui::Command::doCommand(
-                Gui::Command::Doc,
-                "App.getDocument('%s').getObject('%s').%s",
-                obj->getDocument()->getName(),
-                obj->getNameInDocument(),
-                _cmd.c_str()
-            );
+            Gui::Command::doCommand(Gui::Command::Doc, "%s", fullPythonCmd.c_str());
         }
     }
     catch (const std::exception& e) {
-        Base::Console().developerError(obj->getFullLabel(), "{}: {}\n", e.what(), cmd);
+        Base::Console().developerError("SketcherConstraint", "{}\n", e.what());
     }
-    catch (const Base::Exception&) {
-        throw;
+}
+
+template<typename... Args>
+void cmdSketcherExpression(
+    const App::DocumentObject* obj,
+    const std::string& pathStr,
+    const std::string& exprStr
+)
+{
+    std::string fullPythonCmd;
+    if (exprStr.empty()) {
+        fullPythonCmd = std::string("App.getDocument('") + obj->getDocument()->getName()
+            + std::string("').") + obj->getNameInDocument() + std::string(".setExpression('")
+            + pathStr + std::string("', None)");
+    }
+    else {
+        fullPythonCmd = std::string("App.getDocument('") + obj->getDocument()->getName()
+            + std::string("').") + obj->getNameInDocument() + std::string(".setExpression('")
+            + pathStr + std::string("', u'") + exprStr + std::string("')");
+    }
+
+    if (Gui::ConstraintCommandQueue::isBuffering()) {
+        Base::Console().error(
+            "Joerg {}:{}: cmdSketcherConstraint buffering {}\n",
+            __FILE__,
+            __LINE__,
+            fullPythonCmd
+        );
+        Gui::ConstraintCommandQueue::getBuffer().push_back(fullPythonCmd);
+    }
+    else {
+        Base::Console().error(
+            "Joerg {}:{}: cmdSketcherConstraint doCommand {}\n",
+            __FILE__,
+            __LINE__,
+            fullPythonCmd
+        );
+        Gui::Command::doCommand(Gui::Command::Doc, "%s", fullPythonCmd.c_str());
     }
 }
 

@@ -36,6 +36,8 @@
 #include <App/ObjectIdentifier.h>
 #include <App/PropertyGeo.h>
 #include <Base/Tools.h>
+#include <Base/Interpreter.h>
+#include <Gui/CommandT.h>
 
 
 FC_LOG_LEVEL_INIT("Expression", true, true)
@@ -213,8 +215,7 @@ bool ExpressionBinding::apply(const std::string& propName)
 {
     Q_UNUSED(propName);
     if (hasExpression()) {
-        DocumentObject* docObj = path.getDocumentObject();
-
+        App::DocumentObject* docObj = path.getDocumentObject();
         if (!docObj) {
             throw Base::RuntimeError("Document object not found.");
         }
@@ -225,47 +226,41 @@ bool ExpressionBinding::apply(const std::string& propName)
             ss << "Set expression " << docObj->Label.getValue();
             docObj->getDocument()->openTransaction(ss.str().c_str());
         }
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            "App.getDocument('%s').%s.setExpression('%s', u'%s')",
-            docObj->getDocument()->getName(),
-            docObj->getNameInDocument(),
-            path.toEscapedString().c_str(),
-            getEscapedExpressionString().c_str()
-        );
+
+        // Apply expression to C++ object state live
+        if (auto expr = getExpression()) {
+            docObj->setExpression(path, expr);
+        }
+
+        // Dispatch macro/buffered command through CommandT helper
+        Gui::cmdSketcherExpression(docObj, path.toEscapedString(), getEscapedExpressionString());
+
         if (transaction) {
             docObj->getDocument()->commitTransaction();
         }
         return true;
     }
     else {
-        if (isBound()) {
-            DocumentObject* docObj = path.getDocumentObject();
-
+        if (isBound() && lastExpression) {
+            App::DocumentObject* docObj = path.getDocumentObject();
             if (!docObj) {
                 throw Base::RuntimeError("Document object not found.");
             }
 
-            if (lastExpression) {
-                bool transaction = docObj->getDocument()->getBookedTransactionID() == 0;
-                if (transaction) {
-                    std::ostringstream ss;
-                    ss << "Discard expression " << docObj->Label.getValue();
-                    docObj->getDocument()->openTransaction(ss.str().c_str());
-                }
-                Gui::Command::doCommand(
-                    Gui::Command::Doc,
-                    "App.getDocument('%s').%s.setExpression('%s', None)",
-                    docObj->getDocument()->getName(),
-                    docObj->getNameInDocument(),
-                    path.toEscapedString().c_str()
-                );
-                if (transaction) {
-                    docObj->getDocument()->commitTransaction();
-                }
+            bool transaction = docObj->getDocument()->getBookedTransactionID() == 0;
+            if (transaction) {
+                std::ostringstream ss;
+                ss << "Discard expression " << docObj->Label.getValue();
+                docObj->getDocument()->openTransaction(ss.str().c_str());
+            }
+
+            // Dispatch discard through helper
+            Gui::cmdSketcherExpression(docObj, path.toEscapedString(), "");
+
+            if (transaction) {
+                docObj->getDocument()->commitTransaction();
             }
         }
-
         return false;
     }
 }
