@@ -321,9 +321,10 @@ class ViewProviderExplodedView:
         return self.app_obj.Group
 
     def doubleClicked(self, vobj):
-        task = Gui.Control.activeTaskDialog()
-        if task:
-            task.reject()
+        # Issue #32494: re-opening while a task is live re-applies explosion moves
+        # and openCommand may commit the create/edit transaction into the assembly.
+        if Gui.Control.activeDialog():
+            return True
 
         assembly = vobj.Object.Proxy.getAssembly(vobj.Object)
 
