@@ -741,14 +741,12 @@ void Command::rename(const std::string& name)
 
 void Command::commitCommand()
 {
-    Base::Console().error("Joerg {}:{}: Command::commitCommand()\n", __FILE__, __LINE__);
     Gui::ConstraintCommandQueue::emit();
     commitCommand(currentTransactionID);
     currentTransactionID = App::NullTransaction;
 }
 void Command::commitCommand(int tid)
 {
-    Base::Console().error("Joerg {}:{}: Command::commitCommand(tid)\n", __FILE__, __LINE__);
     Gui::ConstraintCommandQueue::emit();
     if (tid != App::NullTransaction) {
         App::GetApplication().commitTransaction(tid);
@@ -756,14 +754,12 @@ void Command::commitCommand(int tid)
 }
 void Command::abortCommand()
 {
-    Base::Console().error("Joerg {}:{}: Command::abortCommand()\n", __FILE__, __LINE__);
     Gui::ConstraintCommandQueue::reset();
     abortCommand(currentTransactionID);
     currentTransactionID = App::NullTransaction;
 }
 void Command::abortCommand(int tid)
 {
-    Base::Console().error("Joerg {}:{}: Command::abortCommand(tid)\n", __FILE__, __LINE__);
     Gui::ConstraintCommandQueue::reset();
     if (tid != App::NullTransaction) {
         App::GetApplication().abortTransaction(tid);
