@@ -63,6 +63,7 @@
 
 #include "DrawSketchHandlerTranslate.h"
 #include "DrawSketchHandlerOffset.h"
+#include "DrawSketchHandlerRestricted.h"
 #include "DrawSketchHandlerRotate.h"
 #include "DrawSketchHandlerScale.h"
 #include "DrawSketchHandlerSymmetry.h"
@@ -2477,11 +2478,11 @@ void CmdSketcherOffset::activated(int iMsg)
 
             const Part::Geometry* geo = Obj->getGeometry(geoId);
             if (!isPoint(*geo)
-                && !isBSplineCurve(*geo)
-                && !isEllipse(*geo)
-                && !isArcOfEllipse(*geo)
-                && !isArcOfHyperbola(*geo)
-                && !isArcOfParabola(*geo)
+                // && !isBSplineCurve(*geo)
+                // && !isEllipse(*geo)
+                // && !isArcOfEllipse(*geo)
+                // && !isArcOfHyperbola(*geo)
+                // && !isArcOfParabola(*geo)
                 && !GeometryFacade::isInternalAligned(geo)) {
                 // Currently ellipse/parabola/hyperbola/bspline are not handled correctly.
                 // Occ engine gives offset of those as set of lines and arcs and does not seem to work consistently.
@@ -2502,6 +2503,83 @@ void CmdSketcherOffset::activated(int iMsg)
 }
 
 bool CmdSketcherOffset::isActive()
+{
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
+}
+
+// Restriction tool =====================================================================
+DEF_STD_CMD_A(CmdSketcherRestriction)
+
+CmdSketcherRestriction::CmdSketcherRestriction()
+    : Command("Sketcher_Restriction")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Restriction");
+    sToolTipText = QT_TR_NOOP("Adds a \"restricted\" curve, which follows a portion of the curve exactly");
+    sWhatsThis = "Sketcher_Restriction";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_Restriction";
+    sAccel = "Z, X";
+    eType = ForEdit;
+}
+
+void CmdSketcherRestriction::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    // get the selection
+    std::vector<Gui::SelectionObject> selection;
+    selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+
+    // only one sketch with its subelements are allowed to be selected
+    if (selection.size() != 1) {
+        Gui::TranslatedUserWarning(
+            getActiveGuiDocument(),
+            QObject::tr("Wrong selection"),
+            QObject::tr("Select elements from a single sketch."));
+        return;
+    }
+
+    // get the needed lists and objects
+    auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    const std::vector<std::string>& subNames = selection[0].getSubNames();
+    if (subNames.size() != 1) {
+        Gui::TranslatedUserWarning(
+            getActiveGuiDocument(),
+            QObject::tr("Wrong selection"),
+            QObject::tr("Select exactly one edge from a sketch before calling restriction."));
+        return;
+    }
+
+    int basisGeoId {GeoEnum::GeoUndef};
+    if (isEdge(subNames.front())) {
+        basisGeoId = getEdgeId(subNames.front());
+    }
+    else if (isExternalEdge(subNames.front())) {
+        basisGeoId = getExternalEdgeId(subNames.front());
+    }
+    else {
+        Gui::TranslatedUserWarning(
+            getActiveGuiDocument(),
+            QObject::tr("Wrong selection"),
+            QObject::tr("Selected item is not an edge. Select exactly one edge from a sketch before calling restriction."));
+        return;
+    }
+
+    if (basisGeoId != GeoEnum::GeoUndef) {
+        ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerRestrictedCurve>(basisGeoId));
+    }
+    else {
+        getSelection().clearSelection();
+        // TODO: finalize text
+        Gui::NotifyUserError(Obj,
+            QT_TRANSLATE_NOOP("Notifications", "Invalid selection"),
+            QT_TRANSLATE_NOOP("Notifications", "Could not identify basis for restricted curve from selection."));
+    }
+}
+
+bool CmdSketcherRestriction::isActive()
 {
     return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
@@ -2625,6 +2703,7 @@ void CreateSketcherCommandsConstraintAccel()
     rcCmdMgr.addCommand(new CmdSketcherRestoreInternalAlignmentGeometry());
     rcCmdMgr.addCommand(new CmdSketcherTranslate());
     rcCmdMgr.addCommand(new CmdSketcherOffset());
+    rcCmdMgr.addCommand(new CmdSketcherRestriction());
     rcCmdMgr.addCommand(new CmdSketcherRotate());
     rcCmdMgr.addCommand(new CmdSketcherScale());
     rcCmdMgr.addCommand(new CmdSketcherSymmetry());
