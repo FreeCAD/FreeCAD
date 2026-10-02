@@ -881,7 +881,11 @@ void QGIView::drawBorder()
         finalCaptionPos = QPointF(Rez::guiX(captionLocation.x), Rez::guiX(-captionLocation.y));
     }
 
+    // Layout placement is not a user edit. Persisting it marks the document
+    // modified on every open of a page with view Captions.
+    m_caption->setPersistOnMove(false);
     m_caption->setPos(finalCaptionPos);
+    m_caption->setPersistOnMove(true);
     m_label->setPos(finalLabelPos);
     m_lock->setPos(finalLockPos);
     m_lock->setZValue(ZVALUE::LOCK);
