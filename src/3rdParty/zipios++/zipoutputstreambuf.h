@@ -59,6 +59,9 @@ public:
       supported. */
   void setMethod( StorageMethod method ) ;
 
+  /** Sets whether the date & time fields are filled with current time or left empty. */
+  void setStoreDate( bool store ) ;
+
   /** Destructor. */
   virtual ~ZipOutputStreambuf() ;
 
@@ -83,6 +86,7 @@ private:
   bool _open ;
   StorageMethod _method ;
   int _level ;
+  bool _storeDate ;
 };
 
 
