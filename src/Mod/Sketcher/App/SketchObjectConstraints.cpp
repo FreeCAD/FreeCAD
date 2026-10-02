@@ -137,12 +137,8 @@ SketchSolveStatus SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
     }
 
     if (lastHasMalformedConstraints) {
-        Base::Console().send<
-            Base::LogStyle::Error,
-            Base::IntendedRecipient::All,
-            Base::ContentType::Untranslated>(
+        Base::Console().error(
             this->getFullLabel(),
-            "{}",
             QT_TRANSLATE_NOOP("Notifications", "The Sketch has malformed constraints!") "\n");
     }
 
@@ -162,10 +158,7 @@ SketchSolveStatus SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
             "\"%1\" has partially redundant constraint(s)."
         ).arg(ref);
 
-        Base::Console().send<Base::LogStyle::Warning>(
-            this->getFullLabel(),
-            "{}\n",
-            msg.toStdString());
+        Base::Console().warning(this->getFullLabel(), "{}\n", msg.toStdString());
     }
 
     lastSolveTime = solvedSketch.getSolveTime();

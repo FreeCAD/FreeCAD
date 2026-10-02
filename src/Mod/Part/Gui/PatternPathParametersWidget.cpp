@@ -105,6 +105,9 @@ void PatternPathParametersWidget::bindProperties(
         const QSignalBlocker endOffsetBlocker(ui->endOffset);
         ui->count->setRange(countProperty->getMinimum(), countProperty->getMaximum());
         ui->count->bind(*countProperty);
+        ui->spacing->setUnit(Base::Unit::Length);
+        ui->startOffset->setUnit(Base::Unit::Length);
+        ui->endOffset->setUnit(Base::Unit::Length);
         ui->spacing->bind(*spacingProperty);
         ui->startOffset->bind(*startOffsetProperty);
         ui->endOffset->bind(*endOffsetProperty);

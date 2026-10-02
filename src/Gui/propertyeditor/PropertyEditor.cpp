@@ -316,7 +316,8 @@ void PropertyEditor::closeEditor()
         // Brute-force workaround for https://github.com/FreeCAD/FreeCAD/issues/14350
         int currentIndex = 0;
         QTabBar* tabBar = nullptr;
-        if (auto mdiArea = Gui::MainWindow::getInstance()->findChild<QMdiArea*>()) {
+        auto mainWindow = Gui::MainWindow::getInstance();
+        if (auto mdiArea = mainWindow ? mainWindow->findChild<QMdiArea*>() : nullptr) {
             tabBar = mdiArea->findChild<QTabBar*>();
             if (tabBar) {
                 currentIndex = tabBar->currentIndex();
