@@ -908,11 +908,7 @@ App::DocumentObjectExecReturn* Transformed::executeWholeBody(
     Part::TopoShape& supportShape
 )
 {
-    auto shapes = getTransformedCompShape(
-        transformations,
-        supportShape,
-        supportShape
-    );
+    auto shapes = getTransformedCompShape(transformations, supportShape, supportShape);
 
     if (Base::Sequencer().wasCanceled()) {
         return new App::DocumentObjectExecReturn("User aborted");
@@ -927,10 +923,10 @@ App::DocumentObjectExecReturn* Transformed::executeWholeBody(
         shapes,
         std::format(
             "Fuse_add_{}",
-            this->getFeatureBody() == nullptr
-                ? "<no body>"
-                : this->getFeatureBody()->getNameInDocument()
-        ).c_str()
+            this->getFeatureBody() == nullptr ? "<no body>"
+                                              : this->getFeatureBody()->getNameInDocument()
+        )
+            .c_str()
     );
 
     return nullptr;
@@ -976,13 +972,8 @@ std::vector<TopoShape> Transformed::getTransformedCompShape(
         shapes.emplace_back(shape.makeElementTransform(*transformIter, opName.c_str()));
     }
 
-    const bool noShapes =
-               shapes.empty()
-               || std::ranges::all_of(shapes,
-                   [](const auto& shape) {
-                       return shape.isNull();
-                   }
-               );
+    const bool noShapes = shapes.empty()
+        || std::ranges::all_of(shapes, [](const auto& shape) { return shape.isNull(); });
     if (noShapes) {
         shapes.clear();
     }
