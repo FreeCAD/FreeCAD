@@ -48,6 +48,11 @@ on:
         default: false
         type: boolean
         required: false
+      buildResults:
+        description: "Build job conclusions from an earlier run of the same PR and HEAD SHA"
+        default: ""
+        type: string
+        required: false
     outputs:
       reportFile:
         value: ${{ jobs.Build.outputs.reportFile }}
@@ -86,6 +91,19 @@ jobs:
         os: [windows-2022, ubuntu-latest, macos-latest]
 
     steps:
+    - name: Report existing build result
+      if: inputs.skipBuild && inputs.buildResults != ''
+      uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+      env:
+        BUILD_RESULT: ${{ fromJSON(inputs.buildResults || '{}')[format('Pixi / build_with_pixi ({0})', matrix.os)] }}
+      with:
+        script: |
+          const result = process.env.BUILD_RESULT;
+          core.info(`Existing build conclusion: ${result || 'missing'}`);
+          if (result !== 'success') {
+            core.setFailed(`Existing build did not succeed: ${result || 'missing'}`);
+          }
+
     - name: Harden the runner (Audit all outbound calls)
       if: "!inputs.skipBuild"
       uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1

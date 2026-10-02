@@ -26,13 +26,12 @@
 # It lives in a separate workflow from CI_primary.yml so that adding a
 # label does not cancel the in-progress Linux build and lint run.
 #
-# Instead of using cancel-in-progress, a Gate job decides whether to
-# proceed or bail out:
-#   - On code changes (synchronize, opened, reopened, push): cancel any
+# Instead of using cancel-in-progress, a Gate job handles cancellation:
+#   - On PR code changes (synchronize, opened, reopened): cancel any
 #     older in-progress runs for the same branch, then proceed.
-#   - On label additions: check whether macOS/Windows builds already ran
-#     (or are running) for the same HEAD SHA.  If so, bail out so we do
-#     not restart builds that are already covered.
+#   - On label additions: reuse existing build results for the same PR
+#     and HEAD SHA, waiting for unfinished runs without canceling them.
+#     Report those results under the required matrix check names.
 
 name: FreeCAD CI approved
 
@@ -56,6 +55,7 @@ jobs:
       actions: write
     outputs:
       should-run: ${{ steps.check.outputs.should-run }}
+      build-results: ${{ steps.check.outputs.build-results }}
     steps:
       - name: Harden the runner (Audit all outbound calls)
         uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
@@ -70,41 +70,57 @@ jobs:
             const isPR = context.eventName === 'pull_request';
             const action = context.payload.action;
 
-            // For labeled events, check whether builds already exist for this SHA.
             if (isPR && action === 'labeled') {
-              const headSha = context.payload.pull_request.head.sha;
-              const { data: { workflow_runs: runs } } = await github.rest.actions.listWorkflowRuns({
+              const pr = context.payload.pull_request;
+              const runs = await github.paginate(github.rest.actions.listWorkflowRuns, {
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 workflow_id: 'CI_approved.yml',
-                head_sha: headSha,
+                event: 'pull_request',
+                branch: pr.head.ref,
+                head_sha: pr.head.sha,
+                per_page: 100,
               });
+              // Fork runs can have no PR association in the Actions API.
+              const otherRuns = runs.filter(r =>
+                r.id < context.runId
+                && r.head_repository.id === pr.head.repo.id
+                && (r.pull_requests.length === 0 || r.pull_requests.some(p => p.number === pr.number))
+              ).sort((a, b) => b.id - a.id);
 
-              const otherRuns = runs.filter(r => r.id !== context.runId);
-
-              for (const run of otherRuns) {
-                // Look at the individual jobs to see if builds actually ran
-                // (as opposed to being skipped due to missing label).
-                const { data: { jobs } } = await github.rest.actions.listJobsForWorkflowRun({
+              for (let run of otherRuns) {
+                // A previous Gate/Prepare may not have created build jobs yet.
+                // Only wait for older runs so concurrent label events cannot deadlock.
+                while (run.status !== 'completed') {
+                  core.info(`Waiting for run ${run.id} for SHA ${pr.head.sha}`);
+                  await new Promise(resolve => setTimeout(resolve, 30000));
+                  ({ data: run } = await github.rest.actions.getWorkflowRun({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    run_id: run.id,
+                  }));
+                }
+                const jobs = await github.paginate(github.rest.actions.listJobsForWorkflowRun, {
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   run_id: run.id,
+                  filter: 'all',
+                  per_page: 100,
                 });
-                const skipPrefixes = ['Gate', 'Prepare', 'WrapUp'];
                 const buildJobs = jobs.filter(j =>
-                  !skipPrefixes.some(p => j.name.startsWith(p))
+                  j.name.startsWith('Pixi / ') || j.name.startsWith('Windows / ')
                 );
-                const activeOrRan = buildJobs.filter(j =>
-                  j.conclusion !== 'skipped'
-                );
-                if (activeOrRan.length > 0) {
-                  core.info(`Skipping: run ${run.id} already covers SHA ${headSha}`);
+                if (buildJobs.length > 0) {
+                  core.info(`Reusing build results from ${run.html_url}`);
+                  // Keep the newest attempt for each job when a run was retried.
+                  core.setOutput('build-results', JSON.stringify(Object.fromEntries(
+                    buildJobs.sort((a, b) => a.id - b.id).map(j => [j.name, j.conclusion])
+                  )));
                   core.setOutput('should-run', 'false');
                   return;
                 }
               }
 
-              // No existing run with real build jobs -- proceed.
               core.setOutput('should-run', 'true');
               return;
             }
@@ -127,7 +143,7 @@ jobs:
                 branch: branch,
                 status: status,
               });
-              for (const run of runs.filter(r => r.id !== context.runId)) {
+              for (const run of runs.filter(r => r.id < context.runId)) {
                 core.info(`Canceling stale run ${run.id} (status: ${status})`);
                 try {
                   await github.rest.actions.cancelWorkflowRun({
@@ -154,19 +170,21 @@ jobs:
     needs: [Gate, Prepare]
     if: >-
       needs.Prepare.result == 'success'
-      && needs.Gate.outputs.should-run == 'true'
+      && (needs.Gate.outputs.should-run == 'true' || needs.Gate.outputs.build-results != '')
       && (github.event_name != 'pull_request'
           || startsWith(github.event.pull_request.base.ref, 'releases/')
           || contains(toJSON(github.event.pull_request.labels.*.name), 'Approved:'))
     uses: ./.github/workflows/sub_buildPixi.yml
     with:
       artifactBasename: Pixi-${{ github.run_id }}
+      skipBuild: ${{ needs.Gate.outputs.should-run != 'true' }}
+      buildResults: ${{ needs.Gate.outputs.build-results }}
 
   Windows:
     needs: [Gate, Prepare]
     if: >-
       needs.Prepare.result == 'success'
-      && needs.Gate.outputs.should-run == 'true'
+      && (needs.Gate.outputs.should-run == 'true' || needs.Gate.outputs.build-results != '')
       && !startsWith(github.head_ref, 'refs/heads/backport-')
       && (github.event_name != 'pull_request'
           || startsWith(github.event.pull_request.base.ref, 'releases/')
@@ -174,6 +192,8 @@ jobs:
     uses: ./.github/workflows/sub_buildWindows.yml
     with:
       artifactBasename: Windows-${{ github.run_id }}
+      skipBuild: ${{ needs.Gate.outputs.should-run != 'true' }}
+      buildResults: ${{ needs.Gate.outputs.build-results }}
 
   WrapUp:
     needs: [

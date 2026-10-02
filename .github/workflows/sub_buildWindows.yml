@@ -54,6 +54,11 @@ on:
         required: false
         default: false
         type: boolean
+      buildResults:
+        description: "Build job conclusions from an earlier run of the same PR and HEAD SHA"
+        default: ""
+        type: string
+        required: false
     outputs:
       reportFile:
         value: ${{ jobs.Build.outputs.reportFile }}
@@ -89,6 +94,19 @@ jobs:
       reportFile: ${{ steps.Init.outputs.reportFile }}
 
     steps:
+      - name: Report existing build result
+        if: inputs.skipBuild && inputs.buildResults != ''
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          BUILD_RESULT: ${{ fromJSON(inputs.buildResults || '{}')['Windows / Build'] }}
+        with:
+          script: |
+            const result = process.env.BUILD_RESULT;
+            core.info(`Existing build conclusion: ${result || 'missing'}`);
+            if (result !== 'success') {
+              core.setFailed(`Existing build did not succeed: ${result || 'missing'}`);
+            }
+
       - name: Harden the runner (Audit all outbound calls)
         if: "!inputs.skipBuild"
         uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
@@ -164,6 +182,7 @@ jobs:
           -DFREECAD_COPY_PLUGINS_BIN_TO_BUILD=ON
 
       - name: Add msbuild to PATH
+        if: "!inputs.skipBuild"
         uses: microsoft/setup-msbuild@30375c66a4eea26614e0d39710365f22f8b0af57 # v3.0.0
 
       - name: Compiling sources
