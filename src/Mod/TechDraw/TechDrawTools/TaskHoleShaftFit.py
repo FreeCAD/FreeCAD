@@ -20,20 +20,28 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the TechDraw HoleShaftFit Task Dialog."""
+"""Provides the TechDraw HoleShaftFit Task Dialog with full ISO 286 support."""
 
 __title__ = "TechDrawTools.TaskHoleShaftFit"
 __author__ = "edi"
 __url__ = "https://www.freecad.org"
-__version__ = "00.01"
-__date__ = "2023/02/07"
+__version__ = "00.03"
+__date__ = "2026/10/02"
+
+import os
+import sys
+import re
+from functools import partial
 
 import FreeCAD as App
 import FreeCADGui as Gui
 
-from functools import partial
+# Force the current directory into Python's path to bypass FreeCAD's relative import blocker
+current_dir = os.path.dirname(os.path.realpath(__file__))
+if current_dir not in sys.path:
+    sys.path.insert(0, current_dir)
 
-import os
+from iso286_tables import MEASURE_RANGES, IT_TABLE, DEVIATIONS
 
 translate = App.Qt.translate
 
@@ -44,133 +52,163 @@ class TaskHoleShaftFit:
         loose = translate("TechDraw_HoleShaftFit", "Loose fit")
         snug = translate("TechDraw_HoleShaftFit", "Snug fit")
         press = translate("TechDraw_HoleShaftFit", "Press fit")
-        self.isHole = True
+        
+        self.isHoleBasis = True
         self.sel = sel
+
+        # Expanded ISO 286 fit combinations [Shaft, Hole, Fit Category] for Shaft Basis
         self.holeValues = [
-            ["h9", "D10", loose],
-            ["h9", "E9", loose],
-            ["h9", "F8", loose],
-            ["h6", "G7", loose],
-            ["c11", "H11", loose],
-            ["f7", "H8", loose],
-            ["h6", "H7", loose],
-            ["h7", "H8", loose],
-            ["k6", "H7", snug],
-            ["n6", "H7", snug],
-            ["r6", "H7", press],
-            ["s6", "H7", press],
-            ["h6", "K7", snug],
+            ["h9", "D10", loose], ["h9", "E9", loose], ["h9", "F8", loose],
+            ["h6", "G7", loose], ["c11", "H11", loose], ["d10", "H10", loose],
+            ["e8", "H8", loose], ["f7", "H8", loose], ["f8", "H8", loose],
+            ["g6", "H7", loose], ["h6", "H7", loose], ["h7", "H8", loose],
+            ["h9", "H9", loose], ["h11", "H11", loose],
+            ["js6", "H7", snug], ["k6", "H7", snug], ["m6", "H7", snug],
+            ["n6", "H7", snug], ["h6", "K7", snug], ["h6", "M7", snug],
             ["h6", "N7", snug],
-            ["h6", "R7", press],
-            ["h6", "S7", press],
+            ["p6", "H7", press], ["r6", "H7", press], ["s6", "H7", press],
+            ["t6", "H7", press], ["u6", "H7", press], ["x6", "H7", press],
+            ["z6", "H7", press], ["h6", "P7", press], ["h6", "R7", press],
+            ["h6", "S7", press], ["h6", "T7", press], ["h6", "U7", press],
         ]
+
+        # Expanded ISO 286 fit combinations [Hole, Shaft, Fit Category] for Hole Basis
         self.shaftValues = [
-            ["H11", "c11", loose],
-            ["H8", "f7", loose],
-            ["H7", "h6", loose],
-            ["H8", "h7", loose],
-            ["D10", "h9", loose],
-            ["E9", "h9", loose],
-            ["F8", "h9", loose],
-            ["G7", "h6", loose],
-            ["K7", "h6", snug],
+            ["H11", "c11", loose], ["H10", "d10", loose], ["H9", "d9", loose],
+            ["H8", "e8", loose], ["H8", "f7", loose], ["H8", "f8", loose],
+            ["H7", "g6", loose], ["H7", "h6", loose], ["H8", "h7", loose],
+            ["H9", "h9", loose], ["H11", "h11", loose], ["D10", "h9", loose],
+            ["E9", "h9", loose], ["F8", "h9", loose], ["G7", "h6", loose],
+            ["H7", "js6", snug], ["H7", "k6", snug], ["H7", "m6", snug],
+            ["H7", "n6", snug], ["K7", "h6", snug], ["M7", "h6", snug],
             ["N7", "h6", snug],
-            ["R7", "h6", press],
-            ["S7", "h6", press],
-            ["H7", "k6", snug],
-            ["H7", "n6", snug],
-            ["H7", "r6", press],
-            ["H7", "s6", press],
+            ["H7", "p6", press], ["H7", "r6", press], ["H7", "s6", press],
+            ["H7", "t6", press], ["H7", "u6", press], ["H7", "x6", press],
+            ["P7", "h6", press], ["R7", "h6", press], ["S7", "h6", press],
+            ["T7", "h6", press], ["U7", "h6", press],
         ]
 
-        self._uiPath = App.getHomePath()
-        self._uiPath = os.path.join(
-            self._uiPath, "Mod/TechDraw/TechDrawTools/Gui/TaskHoleShaftFit.ui"
-        )
-        self.form = Gui.PySideUic.loadUi(self._uiPath)
+        # Safely resolve the UI path
+        self._uiPath = os.path.join(current_dir, "Gui", "TaskHoleShaftFit.ui").replace("\\", "/")
+        ui_macro = os.path.join(current_dir, "TaskHoleShaftFit.ui").replace("\\", "/")
+        ui_fallback = os.path.join(App.getHomePath(), "Mod/TechDraw/TechDrawTools/Gui/TaskHoleShaftFit.ui").replace("\\", "/")
 
-        self.form.setWindowTitle(
-            translate("TechDraw_HoleShaftFit", "Hole/Shaft Fit ISO 286")
-        )
+        if os.path.exists(self._uiPath):
+            pass
+        elif os.path.exists(ui_macro):
+            self._uiPath = ui_macro
+        else:
+            App.Console.PrintWarning("TaskHoleShaftFit: Local UI not found, falling back to core path.\n")
+            self._uiPath = ui_fallback
+
+        self.form = Gui.PySideUic.loadUi(self._uiPath)
+        
+        if self.form is None:
+            App.Console.PrintError(f"TaskHoleShaftFit: CRITICAL ERROR - Could not load UI file at {self._uiPath}\n")
+            return
+
+        self.form.setWindowTitle(translate("TechDraw_HoleShaftFit", "Hole/Shaft Fit ISO 286"))
 
         self.form.rbHoleBase.clicked.connect(partial(self.on_HoleShaftChanged, True))
         self.form.rbShaftBase.clicked.connect(partial(self.on_HoleShaftChanged, False))
         self.form.cbField.currentIndexChanged.connect(self.on_FieldChanged)
 
+        self.setShaftFields()
         App.ActiveDocument.openTransaction("Add hole or shaft fit")
 
     def setHoleFields(self):
-        """set hole fields in the combo box"""
-        for i in range(self.form.cbField.count()):
-            self.form.cbField.removeItem(0)
+        """Set shaft-basis fit choices in the combo box."""
+        self.form.cbField.blockSignals(True)
+        self.form.cbField.clear()
         for value in self.holeValues:
-            self.form.cbField.addItem(value[1])
-        self.form.lbBaseField.setText("             " + self.holeValues[0][0] + " /")
-        self.form.lbFitType.setText(self.holeValues[0][2])
+            # Display format: Hole / Shaft (e.g., D10 / h9)
+            self.form.cbField.addItem(f"{value[1]} / {value[0]}")
+        self.form.cbField.blockSignals(False)
+        
+        if self.holeValues:
+            self.form.lbBaseField.setText("")
+            self.form.lbFitType.setText(self.holeValues[0][2])
 
     def setShaftFields(self):
-        """set shaft fields in the combo box"""
-        for i in range(self.form.cbField.count()):
-            self.form.cbField.removeItem(0)
+        """Set hole-basis fit choices in the combo box."""
+        self.form.cbField.blockSignals(True)
+        self.form.cbField.clear()
         for value in self.shaftValues:
-            self.form.cbField.addItem(value[1])
-        self.form.lbBaseField.setText("             " + self.shaftValues[0][0] + " /")
-        self.form.lbFitType.setText(self.shaftValues[0][2])
+            # Display format: Hole / Shaft (e.g., H7 / g6)
+            self.form.cbField.addItem(f"{value[0]} / {value[1]}")
+        self.form.cbField.blockSignals(False)
 
-    def on_HoleShaftChanged(self, isHole):
-        """slot: change the used base fit hole/shaft"""
-        if isHole:
-            self.isHole = isHole
+        if self.shaftValues:
+            self.form.lbBaseField.setText("")
+            self.form.lbFitType.setText(self.shaftValues[0][2])
+
+    def on_HoleShaftChanged(self, isHoleBasis):
+        """Slot: Change base fit between hole base and shaft base."""
+        self.isHoleBasis = isHoleBasis
+        if self.isHoleBasis:
             self.setShaftFields()
         else:
-            self.isHole = isHole
             self.setHoleFields()
 
     def on_FieldChanged(self):
-        """slot: change of the desired field"""
+        """Slot: Handle change of selected tolerance field."""
         currentIndex = self.form.cbField.currentIndex()
-        if self.isHole:
-            self.form.lbBaseField.setText(
-                "             " + self.shaftValues[currentIndex][0] + " /"
-            )
-            self.form.lbFitType.setText(self.shaftValues[currentIndex][2])
-        else:
-            self.form.lbBaseField.setText(
-                "             " + self.holeValues[currentIndex][0] + " /"
-            )
-            self.form.lbFitType.setText(self.holeValues[currentIndex][2])
+        if currentIndex < 0:
+            return
+
+        values = self.shaftValues if self.isHoleBasis else self.holeValues
+        if currentIndex < len(values):
+            self.form.lbBaseField.setText("")
+            self.form.lbFitType.setText(values[currentIndex][2])
 
     def accept(self):
-        """slot: OK pressed"""
+        """Slot: OK button pressed."""
         currentIndex = self.form.cbField.currentIndex()
-        if self.isHole:
-            selectedField = self.shaftValues[currentIndex][1]
-        else:
-            selectedField = self.holeValues[currentIndex][1]
-        fieldChar = selectedField[0]
-        quality = int(selectedField[1:])
+        if currentIndex < 0:
+            return
+
+        selectedField = self.shaftValues[currentIndex][1] if self.isHoleBasis else self.holeValues[currentIndex][1]
+        baseField = self.shaftValues[currentIndex][0] if self.isHoleBasis else self.holeValues[currentIndex][0]
+
+        fitString = f"{baseField}/{selectedField}" if self.isHoleBasis else f"{selectedField}/{baseField}"
+
+        match = re.match(r"([a-zA-Z]+)(\d+)", selectedField)
+        if not match:
+            App.Console.PrintError(f"TaskHoleShaftFit: Could not parse tolerance field '{selectedField}'\n")
+            App.ActiveDocument.abortTransaction()
+            Gui.Control.closeDialog()
+            return
+
+        fieldChar, quality_str = match.groups()
+        quality = int(quality_str)
+
         dim = self.sel[0].Object
         value = dim.getRawValue()
+
         iso = ISO286()
         iso.calculate(value, fieldChar, quality)
         rangeValues = iso.getValues()
+
         mainFormat = dim.FormatSpec
-        dim.FormatSpec = mainFormat + " " + selectedField
+        dim.FormatSpec = mainFormat + " " + fitString
         dim.EqualTolerance = False
         dim.OverTolerance = rangeValues[0]
         dim.UnderTolerance = rangeValues[1]
+
         if dim.OverTolerance < 0:
             dim.FormatSpecOverTolerance = "(%-0.6w)"
         elif dim.OverTolerance > 0:
             dim.FormatSpecOverTolerance = "(+%-0.6w)"
         else:
             dim.FormatSpecOverTolerance = "( %-0.6w)"
+
         if dim.UnderTolerance < 0:
             dim.FormatSpecUnderTolerance = "(%-0.6w)"
         elif dim.UnderTolerance > 0:
             dim.FormatSpecUnderTolerance = "(+%-0.6w)"
         else:
             dim.FormatSpecUnderTolerance = "( %-0.6w)"
+
         Gui.Control.closeDialog()
         App.ActiveDocument.commitTransaction()
 
@@ -180,700 +218,55 @@ class TaskHoleShaftFit:
 
 
 class ISO286:
-    """This class represents a subset of the ISO 286 standard"""
+    """Calculates ISO 286 tolerance deviations and IT grades up to 500mm."""
+
+    def __init__(self):
+        self.upperValue = 0.0
+        self.lowerValue = 0.0
+        self.nominalRange = 0
 
     def getNominalRange(self, measureValue):
-        """return index of selected nominal range field, 0 < measureValue < 500 mm"""
-        measureRanges = [
-            0,
-            3,
-            6,
-            10,
-            14,
-            18,
-            24,
-            30,
-            40,
-            50,
-            65,
-            80,
-            100,
-            120,
-            140,
-            160,
-            180,
-            200,
-            225,
-            250,
-            280,
-            315,
-            355,
-            400,
-            450,
-            500,
-        ]
         index = 1
-        while measureValue > measureRanges[index]:
-            index = index + 1
-        return index - 1
+        while index < len(MEASURE_RANGES) and measureValue > MEASURE_RANGES[index]:
+            index += 1
+        return max(0, index - 1)
 
-    def getITValue(self, valueQuality, valueNominalRange):
-        """return IT-value  (value of quality in micrometers)"""
-        """tables IT6 to IT11 from 0 to 500 mm"""
-        IT6 = [
-            6,
-            8,
-            9,
-            11,
-            11,
-            13,
-            13,
-            16,
-            16,
-            19,
-            19,
-            22,
-            22,
-            25,
-            25,
-            25,
-            29,
-            29,
-            29,
-            32,
-            32,
-            36,
-            36,
-            40,
-            40,
-        ]
-        IT7 = [
-            10,
-            12,
-            15,
-            18,
-            18,
-            21,
-            21,
-            25,
-            25,
-            30,
-            30,
-            35,
-            35,
-            40,
-            40,
-            40,
-            46,
-            46,
-            46,
-            52,
-            52,
-            57,
-            57,
-            63,
-            63,
-        ]
-        IT8 = [
-            14,
-            18,
-            22,
-            27,
-            27,
-            33,
-            33,
-            39,
-            39,
-            46,
-            46,
-            54,
-            54,
-            63,
-            63,
-            63,
-            72,
-            72,
-            72,
-            81,
-            81,
-            89,
-            89,
-            97,
-            97,
-        ]
-        IT9 = [
-            25,
-            30,
-            36,
-            43,
-            43,
-            52,
-            52,
-            62,
-            62,
-            74,
-            74,
-            87,
-            87,
-            100,
-            100,
-            100,
-            115,
-            115,
-            115,
-            130,
-            130,
-            140,
-            140,
-            155,
-            155,
-        ]
-        IT10 = [
-            40,
-            48,
-            58,
-            70,
-            70,
-            84,
-            84,
-            100,
-            100,
-            120,
-            120,
-            140,
-            140,
-            160,
-            160,
-            160,
-            185,
-            185,
-            185,
-            210,
-            210,
-            230,
-            230,
-            250,
-            250,
-        ]
-        IT11 = [
-            60,
-            75,
-            90,
-            110,
-            110,
-            130,
-            130,
-            160,
-            160,
-            190,
-            190,
-            220,
-            220,
-            250,
-            250,
-            250,
-            290,
-            290,
-            290,
-            320,
-            320,
-            360,
-            360,
-            400,
-            400,
-        ]
-        qualityTable = [IT6, IT7, IT8, IT9, IT10, IT11]
-        return qualityTable[valueQuality - 6][valueNominalRange]
+    def getITValue(self, quality, nominalRangeIndex):
+        if quality in IT_TABLE:
+            return IT_TABLE[quality][nominalRangeIndex]
+        return IT_TABLE[7][nominalRangeIndex]
 
-    def getFieldValue(self, fieldCharacter, valueNominalRange):
-        """return es or ES value of the field in micrometers"""
-        cField = [
-            -60,
-            -70,
-            -80,
-            -95,
-            -95,
-            -110,
-            -110,
-            -120,
-            -130,
-            -140,
-            -150,
-            -170,
-            -180,
-            -200,
-            -210,
-            -230,
-            -240,
-            -260,
-            -280,
-            -300,
-            -330,
-            -360,
-            -400,
-            -440,
-            -480,
-        ]
-        fField = [
-            -6,
-            -10,
-            -13,
-            -16,
-            -16,
-            -20,
-            -20,
-            -25,
-            -25,
-            -30,
-            -30,
-            -36,
-            -36,
-            -43,
-            -43,
-            -43,
-            -50,
-            -50,
-            -50,
-            -56,
-            -56,
-            -62,
-            -62,
-            -68,
-            -68,
-        ]
-        gField = [
-            -2,
-            -4,
-            -5,
-            -6,
-            -6,
-            -7,
-            -7,
-            -9,
-            -9,
-            -10,
-            -10,
-            -12,
-            -12,
-            -14,
-            -14,
-            -14,
-            -15,
-            -15,
-            -15,
-            -17,
-            -17,
-            -18,
-            -18,
-            -20,
-            -20,
-        ]
-        hField = [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-        ]
-        kField = [
-            6,
-            9,
-            10,
-            12,
-            12,
-            15,
-            15,
-            18,
-            18,
-            21,
-            21,
-            25,
-            25,
-            28,
-            28,
-            28,
-            33,
-            33,
-            33,
-            36,
-            36,
-            40,
-            40,
-            45,
-            45,
-        ]
-        nField = [
-            10,
-            16,
-            19,
-            23,
-            23,
-            28,
-            28,
-            33,
-            33,
-            39,
-            39,
-            45,
-            45,
-            52,
-            52,
-            60,
-            60,
-            66,
-            66,
-            73,
-            73,
-            80,
-            80,
-        ]
-        rField = [
-            16,
-            23,
-            28,
-            34,
-            34,
-            41,
-            41,
-            50,
-            50,
-            60,
-            62,
-            73,
-            76,
-            88,
-            90,
-            93,
-            106,
-            109,
-            113,
-            126,
-            130,
-            144,
-            150,
-            166,
-            172,
-        ]
-        sField = [
-            20,
-            27,
-            32,
-            39,
-            39,
-            48,
-            48,
-            59,
-            59,
-            72,
-            78,
-            93,
-            101,
-            117,
-            125,
-            133,
-            151,
-            159,
-            169,
-            190,
-            202,
-            226,
-            244,
-            272,
-            292,
-        ]
-        DField = [
-            60,
-            78,
-            98,
-            120,
-            120,
-            149,
-            149,
-            180,
-            180,
-            220,
-            220,
-            260,
-            260,
-            305,
-            305,
-            305,
-            355,
-            355,
-            355,
-            400,
-            400,
-            440,
-            440,
-            480,
-            480,
-        ]
-        EField = [
-            39,
-            50,
-            61,
-            75,
-            75,
-            92,
-            92,
-            112,
-            112,
-            134,
-            134,
-            159,
-            159,
-            185,
-            185,
-            185,
-            215,
-            215,
-            215,
-            240,
-            240,
-            265,
-            265,
-            290,
-            290,
-        ]
-        FField = [
-            20,
-            28,
-            35,
-            43,
-            43,
-            53,
-            53,
-            64,
-            64,
-            76,
-            76,
-            90,
-            90,
-            106,
-            106,
-            106,
-            122,
-            122,
-            122,
-            137,
-            137,
-            151,
-            151,
-            165,
-            165,
-        ]
-        GField = [
-            12,
-            16,
-            20,
-            24,
-            24,
-            28,
-            28,
-            34,
-            34,
-            40,
-            40,
-            47,
-            47,
-            54,
-            54,
-            54,
-            61,
-            61,
-            61,
-            69,
-            69,
-            75,
-            75,
-            83,
-            83,
-        ]
-        HField = [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-        ]
-        KField = [
-            0,
-            3,
-            5,
-            6,
-            6,
-            6,
-            6,
-            7,
-            7,
-            9,
-            9,
-            10,
-            10,
-            12,
-            12,
-            12,
-            13,
-            13,
-            13,
-            16,
-            16,
-            17,
-            17,
-            18,
-            18,
-        ]
-        NField = [
-            -4,
-            -4,
-            -4,
-            -5,
-            -5,
-            -7,
-            -7,
-            -8,
-            -8,
-            -9,
-            -9,
-            -10,
-            -10,
-            -12,
-            -12,
-            -12,
-            -14,
-            -14,
-            -14,
-            -14,
-            -14,
-            -16,
-            -16,
-            -17,
-            -17,
-        ]
-        RField = [
-            -10,
-            -11,
-            -13,
-            -16,
-            -16,
-            -20,
-            -20,
-            -25,
-            -25,
-            -30,
-            -32,
-            -38,
-            -41,
-            -48,
-            -50,
-            -53,
-            -60,
-            -63,
-            -67,
-            -74,
-            -78,
-            -87,
-            -93,
-            -103,
-            -109,
-        ]
-        SField = [
-            -14,
-            -15,
-            -17,
-            -21,
-            -21,
-            -27,
-            -27,
-            -34,
-            -34,
-            -42,
-            -48,
-            -58,
-            -66,
-            -77,
-            -85,
-            -93,
-            -105,
-            -113,
-            -123,
-            -138,
-            -150,
-            -169,
-            -187,
-            -209,
-            -229,
-        ]
-        fieldDict = {
-            "c": cField,
-            "f": fField,
-            "g": gField,
-            "h": hField,
-            "k": kField,
-            "n": nField,
-            "r": rField,
-            "s": sField,
-            "D": DField,
-            "E": EField,
-            "F": FField,
-            "G": GField,
-            "H": HField,
-            "K": KField,
-            "N": NField,
-            "R": RField,
-            "S": SField,
-        }
-        return fieldDict[fieldCharacter][valueNominalRange]
+    def getFieldValue(self, fieldChar, nominalRangeIndex):
+        if fieldChar in DEVIATIONS:
+            return DEVIATIONS[fieldChar][nominalRangeIndex]
+        return 0
 
     def calculate(self, value, fieldChar, quality):
-        """calculate upper and lower field values"""
         self.nominalRange = self.getNominalRange(value)
-        self.upperValue = self.getFieldValue(fieldChar, self.nominalRange)
-        self.lowerValue = self.upperValue - self.getITValue(quality, self.nominalRange)
-        if fieldChar == "H":
-            self.upperValue = -self.lowerValue
-            self.lowerValue = 0
+        itValue = self.getITValue(quality, self.nominalRange)
+
+        if fieldChar in ["js", "JS"]:
+            halfIT = itValue // 2
+            self.upperValue = halfIT
+            self.lowerValue = -halfIT
+            return
+
+        baseDev = self.getFieldValue(fieldChar, self.nominalRange)
+
+        if fieldChar.islower():
+            if fieldChar <= "h":
+                self.upperValue = baseDev
+                self.lowerValue = self.upperValue - itValue
+            else:
+                self.lowerValue = baseDev
+                self.upperValue = self.lowerValue + itValue
+        else:
+            if fieldChar <= "H":
+                self.lowerValue = baseDev
+                self.upperValue = self.lowerValue + itValue
+            else:
+                self.upperValue = baseDev
+                self.lowerValue = self.upperValue - itValue
 
     def getValues(self):
-        """return range values in mm"""
-        return (self.upperValue / 1000, self.lowerValue / 1000)
+        return (self.upperValue / 1000.0, self.lowerValue / 1000.0)
