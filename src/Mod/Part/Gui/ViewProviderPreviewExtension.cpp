@@ -148,6 +148,7 @@ void ViewProviderPreviewExtension::extensionAttach(App::DocumentObject* document
 
     pcPreviewRoot = new SoSeparator;
     pcPreviewShape = new SoPreviewShape;
+    pcPreviewShape->color.setValue(Base::convertTo<SbColor>(PreviewColor.getValue()));
 
     attachPreview();
 
@@ -213,7 +214,7 @@ void ViewProviderPreviewExtension::showPreview(bool enable)
 
 void ViewProviderPreviewExtension::extensionOnChanged(const App::Property* prop)
 {
-    if (prop == &PreviewColor) {
+    if (prop == &PreviewColor && pcPreviewShape) {
         pcPreviewShape->color.setValue(Base::convertTo<SbColor>(PreviewColor.getValue()));
     }
 
