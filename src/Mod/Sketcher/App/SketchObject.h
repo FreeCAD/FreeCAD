@@ -153,9 +153,10 @@ public:
      */
     bool isInGroup(int geoId, bool includeHandle = true) const;
     bool isGroupHandle(int geoId) const;
+    /// All descendants, including handles and members of nested groups.
     std::set<int> getGroupGeometries(int handleGeoId) const;
     /*!
-     \brief Returns geoId if it's not in a group. Or the group handle if it is in a group.
+     \brief Returns the outermost active group handle, or geoId if it is not grouped.
      \param geoId - the geometry id in the sketch
      */
     int getGroupHandleIfInGroup(int geoId);
