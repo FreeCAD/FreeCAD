@@ -114,6 +114,8 @@ class TaskDlgMultiTransformParameters: public TaskDlgTransformedParameters
 public:
     explicit TaskDlgMultiTransformParameters(ViewProviderMultiTransform* MultiTransformView);
 
+    /// is called by the framework if the dialog is accepted (Ok)
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
     // virtual bool reject();
 };

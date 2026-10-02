@@ -565,4 +565,15 @@ TaskDlgMultiTransformParameters::TaskDlgMultiTransformParameters(
     Content.push_back(preview);
 }
 
+bool TaskDlgMultiTransformParameters::accept()
+{
+    // A running recompute can close this dialog on its own.
+    // Skip for now and let it finish first
+    // so the dialog isn't destroyed while it's still running.
+    if (parameter != nullptr && parameter->isRecomputeInProgress()) {
+        return false;
+    }
+    return TaskDlgTransformedParameters::accept();
+}
+
 #include "moc_TaskMultiTransformParameters.cpp"

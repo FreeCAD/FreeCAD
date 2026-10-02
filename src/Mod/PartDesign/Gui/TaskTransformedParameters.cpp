@@ -464,6 +464,10 @@ void TaskTransformedParameters::fillPlanesCombo(Gui::ComboLinks& combolinks, Par
 
 void TaskTransformedParameters::recomputeFeature()
 {
+    if (m_recomputeInProgress) {
+        return;
+    }
+    RecomputeInProgressGuard guard(m_recomputeInProgress);
     getTopTransformedView()->recomputeFeature();
 }
 
