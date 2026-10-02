@@ -443,7 +443,6 @@ void cmdAppObjectArgs(const App::DocumentObject* obj, const std::string& cmd, Ar
     try {
         boost::format fmt(cmd);
         _cmd = FormatString::toStr(fmt, std::forward<Args>(args)...);
-        Base::Console().error("Joerg {}:{}: cmdAppObjectArgs {}\n", __FILE__, __LINE__, _cmd);
         Gui::Command::doCommand(
             Gui::Command::Doc,
             "App.getDocument('%s').getObject('%s').%s",
@@ -486,18 +485,11 @@ public:
     }
     static void reset()
     {
-        Base::Console().error("Joerg {}:{}: reset\n", __FILE__, __LINE__);
         getBuffer().clear();
     }
     static void emit()
     {
-        Base::Console().error("Joerg {}:{}: emit\n", __FILE__, __LINE__);
         for (const auto& element : getBuffer()) {
-            Base::Console().error("Joerg {}:{}: el: {}\n", __FILE__, __LINE__, element);
-        }
-        Base::Console().error("Joerg {}:{}: EoL\n", __FILE__, __LINE__);
-        for (const auto& element : getBuffer()) {
-            Base::Console().error("Joerg {}:{}: emiting {}\n", __FILE__, __LINE__, element);
             Gui::Command::doCommand(Gui::Command::Doc, "%s", element.c_str());
         }
         getBuffer().clear();
@@ -507,6 +499,14 @@ private:
     inline static thread_local bool buffering = false;
 };
 
+/** Runs or buffers a Python command string for a Sketcher constraint operation.
+ * Formats a command string using boost::format/printf-style arguments and either queues
+ * it in the ConstraintCommandQueue during an active transaction or executes it immediately.
+ * @param obj: pointer to the DocumentObject (e.g. Sketcher::SketchObject) being constrained
+ * @param format: command string pattern, supporting boost::format/printf-style specifiers
+ * @param args: variadic arguments matching the format string specifiers
+ * @sa ConstraintCommandQueue, cmdSketcherExpression()
+ */
 template<typename... Args>
 void cmdSketcherConstraint(const App::DocumentObject* obj, const std::string& format, Args&&... args)
 {
@@ -519,13 +519,6 @@ void cmdSketcherConstraint(const App::DocumentObject* obj, const std::string& fo
             + std::string("').getObject('") + obj->getNameInDocument() + std::string("').") + _cmd;
 
         if (Gui::ConstraintCommandQueue::isBuffering()) {
-            Base::Console().error(
-                "Joerg {}:{}: cmdSketcherConstraint buffering {}\n",
-                __FILE__,
-                __LINE__,
-                fullPythonCmd
-            );
-            // 1. Buffer the Python statement for macro/console commit
             Gui::ConstraintCommandQueue::getBuffer().push_back(fullPythonCmd);
 
             // 2. Execute LIVE in the interpreter so C++ Sketcher model updates NOW
@@ -540,6 +533,15 @@ void cmdSketcherConstraint(const App::DocumentObject* obj, const std::string& fo
     }
 }
 
+/** Runs or buffers a Python setExpression command string for a document object.
+ * Formats a setExpression call for the given path and expression, queuing it into
+ * ConstraintCommandQueue if transaction buffering is active, or executing it immediately via
+ * doCommand.
+ * @param obj: pointer to the DocumentObject whose expression property is being set
+ * @param pathStr: escaped property path string (e.g., "Constraints[0]")
+ * @param exprStr: expression formula string; if empty, clears the expression (sets to None)
+ * @sa ConstraintCommandQueue, cmdSketcherConstraint()
+ */
 template<typename... Args>
 void cmdSketcherExpression(
     const App::DocumentObject* obj,
@@ -560,21 +562,9 @@ void cmdSketcherExpression(
     }
 
     if (Gui::ConstraintCommandQueue::isBuffering()) {
-        Base::Console().error(
-            "Joerg {}:{}: cmdSketcherConstraint buffering {}\n",
-            __FILE__,
-            __LINE__,
-            fullPythonCmd
-        );
         Gui::ConstraintCommandQueue::getBuffer().push_back(fullPythonCmd);
     }
     else {
-        Base::Console().error(
-            "Joerg {}:{}: cmdSketcherConstraint doCommand {}\n",
-            __FILE__,
-            __LINE__,
-            fullPythonCmd
-        );
         Gui::Command::doCommand(Gui::Command::Doc, "%s", fullPythonCmd.c_str());
     }
 }
