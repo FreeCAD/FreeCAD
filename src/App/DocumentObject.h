@@ -1158,7 +1158,8 @@ public:
 
     bool removeDynamicProperty(const char* prop) override;
 
-    bool renameDynamicProperty(Property *prop, const char *name) override;
+    bool renameDynamicProperty(Property *prop, const char *name,
+                               RenameLockedPolicy policy = RenameLockedPolicy::Throw) override;
 
     /**
      * @brief Move the dynamic property to a document object.
