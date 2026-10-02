@@ -71,7 +71,7 @@ protected:
 private:
     using SelContext = Gui::SoFCSelectionContext;
     using SelContextPtr = Gui::SoFCSelectionContextPtr;
-    void renderHighlight(SoGLRenderAction* action, SelContextPtr);
+    void renderHighlight(SoGLRenderAction* action, SelContextPtr, int highlightIndex);
     void renderSelection(SoGLRenderAction* action, SelContextPtr, bool push = true);
 
 private:

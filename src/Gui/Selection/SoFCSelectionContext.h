@@ -32,10 +32,37 @@
 
 #include <App/Material.h>
 
+class SoDetail;
 class SoState;
 
 namespace Gui
 {
+
+enum class HighlightPresentation : unsigned int
+{
+    None = 0,
+    DrawOnTop = 1u << 0,
+    FadeOtherElements = 1u << 1,
+};
+
+enum class HighlightTarget
+{
+    None,
+    WholeObject,
+    Subelement,
+};
+
+inline HighlightPresentation operator|(HighlightPresentation first, HighlightPresentation second)
+{
+    return static_cast<HighlightPresentation>(
+        static_cast<unsigned int>(first) | static_cast<unsigned int>(second)
+    );
+}
+
+inline bool hasHighlightPresentation(HighlightPresentation presentation, HighlightPresentation flag)
+{
+    return (static_cast<unsigned int>(presentation) & static_cast<unsigned int>(flag)) != 0u;
+}
 
 class SoFCSelectionRoot;
 struct SoFCSelectionContextBase;
@@ -61,6 +88,12 @@ struct GuiExport SoFCSelectionContext: SoFCSelectionContextBase
     std::set<int> selectionIndex;
     SbColor selectionColor;
     SbColor highlightColor;
+    HighlightPresentation highlightPresentation {HighlightPresentation::None};
+    HighlightTarget highlightTarget {HighlightTarget::None};
+    std::shared_ptr<const SoDetail> highlightDetail;
+    std::vector<SoNode*> highlightPathNodes;
+    std::vector<int> highlightPathIndices;
+    int highlightOwnerPathIndex = -1;
     std::shared_ptr<int> counter;
 
     ~SoFCSelectionContext() override;
@@ -95,11 +128,27 @@ struct GuiExport SoFCSelectionContext: SoFCSelectionContextBase
     void highlightAll()
     {
         highlightIndex = std::numeric_limits<int>::max();
+        highlightTarget = HighlightTarget::WholeObject;
+        highlightDetail.reset();
+        highlightPathNodes.clear();
+        highlightPathIndices.clear();
+        highlightOwnerPathIndex = -1;
     }
 
     void removeHighlight()
     {
         highlightIndex = -1;
+        highlightPresentation = HighlightPresentation::None;
+        highlightTarget = HighlightTarget::None;
+        highlightDetail.reset();
+        highlightPathNodes.clear();
+        highlightPathIndices.clear();
+        highlightOwnerPathIndex = -1;
+    }
+
+    bool hasHighlightPresentation(HighlightPresentation flag) const
+    {
+        return Gui::hasHighlightPresentation(highlightPresentation, flag);
     }
 
     bool removeIndex(int index);

@@ -23,6 +23,7 @@
 
 #pragma once
 
+#include <Inventor/SbColor.h>
 #include <boost/algorithm/string/predicate.hpp>
 #include <Inventor/fields/SoMFInt32.h>
 #include <Inventor/fields/SoSFColor.h>
@@ -38,8 +39,6 @@ class SoCoordinateElement;
 namespace PartGui
 {
 
-class ViewProviderPartExt;
-
 class PartGuiExport SoBrepEdgeSet: public SoIndexedLineSet
 {
     using inherited = SoIndexedLineSet;
@@ -49,11 +48,6 @@ class PartGuiExport SoBrepEdgeSet: public SoIndexedLineSet
 public:
     static void initClass();
     SoBrepEdgeSet();
-
-    void setViewProvider(ViewProviderPartExt* vp)
-    {
-        viewProvider = vp;
-    }
 
     /*! Returned by lineIndexFromEdge() for an edge that has no rendered line. */
     static constexpr int InvalidLine = -1;
@@ -80,6 +74,7 @@ public:
 
     SoMFInt32 highlightCoordIndex;
     SoMFInt32 selectionCoordIndex;
+    SoMFInt32 faceEdgeIndex;
     SoSFColor highlightColor;
     SoSFColor selectionColor;
 
@@ -103,7 +98,20 @@ private:
 
     void renderHighlight(SoGLRenderAction* action, SelContextPtr);
     void renderSelection(SoGLRenderAction* action, SelContextPtr, bool push = true);
+    void renderFaceHighlight(SoGLRenderAction* action, Gui::SoFCSelectionContextPtr context);
+    void renderPresentationLines(
+        SoGLRenderAction* action,
+        const int32_t* indices,
+        int numIndices,
+        const SbColor& accentColor,
+        const SbColor& haloColor,
+        Gui::HighlightPresentation presentation,
+        float lineWidth = 0.0F,
+        float haloLineWidth = 0.0F
+    );
     bool validIndexes(const SoCoordinateElement*, const std::vector<int32_t>&) const;
+    void appendLineCoordIndex(int lineIndex, std::vector<int32_t>& out) const;
+    void appendFaceEdgeCoordIndex(int faceIndex, std::vector<int32_t>& out) const;
 
 
 private:
@@ -119,9 +127,6 @@ private:
     SelContextPtr selContext2;
     Gui::SoFCSelectionCounter selCounter;
     SoIndexedLineSet* overlayLineSet {nullptr};
-
-    // backreference to viewprovider that owns this node
-    ViewProviderPartExt* viewProvider = nullptr;
 };
 
 }  // namespace PartGui

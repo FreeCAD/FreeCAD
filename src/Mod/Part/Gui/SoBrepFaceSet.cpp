@@ -23,6 +23,7 @@
 
 #include <algorithm>
 #include <limits>
+#include <map>
 #include <set>
 #include <vector>
 #include <Inventor/SoPickedPoint.h>
@@ -47,13 +48,12 @@
 #include <Base/Profiler.h>
 
 #include <Gui/SoFCInteractiveElement.h>
-#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionColors.h>
 #include <Gui/Selection/SoFCSelectionAction.h>
 #include <Gui/Selection/SoFCUnifiedSelection.h>
 #include <Gui/Inventor/So3DAnnotation.h>
 
 #include "SoBrepFaceSet.h"
-#include "ViewProviderExt.h"
 
 using namespace PartGui;
 
@@ -147,7 +147,13 @@ static void renderOverlayFaces(
     const uint32_t packed = color.getPackedValue(0.0f);
     SoLazyElement::setPacked(state, faceSet, 1, &packed, false);
 
-    faceSet->coordIndex.setValues(0, static_cast<int32_t>(coordIndex.size()), coordIndex.data());
+    // setValues() does not shrink the field. Replacing a highly tessellated
+    // face with a smaller one would otherwise retain the old face's trailing
+    // indices and draw both overlays.
+    faceSet->coordIndex.setNum(static_cast<int>(coordIndex.size()));
+    int32_t* overlayIndices = faceSet->coordIndex.startEditing();
+    std::copy(coordIndex.begin(), coordIndex.end(), overlayIndices);
+    faceSet->coordIndex.finishEditing();
     faceSet->GLRender(action);
 
     state->pop();
@@ -222,12 +228,12 @@ void SoBrepFaceSet::doAction(SoAction* action)
             SelContextPtr ctx
                 = Gui::SoFCSelectionRoot::getActionContext(action, this, selContext, false);
             if (ctx) {
-                ctx->highlightIndex = -1;
-                touch();
+                ctx->removeHighlight();
             }
-            if (viewProvider) {
-                viewProvider->setFaceHighlightActive(false);
-            }
+            // Detailed highlight state lives on SoFCSelectionRoot rather than
+            // in this local context, but it still changes this node's transient
+            // render pass and therefore invalidates its render cache.
+            touch();
             return;
         }
 
@@ -236,6 +242,7 @@ void SoBrepFaceSet::doAction(SoAction* action)
             SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action, this, selContext);
             ctx->highlightIndex = std::numeric_limits<int>::max();
             ctx->highlightColor = hlaction->getColor();
+            ctx->highlightPresentation = hlaction->getHighlightPresentation();
             touch();
         }
         else {
@@ -243,18 +250,14 @@ void SoBrepFaceSet::doAction(SoAction* action)
                 SelContextPtr ctx
                     = Gui::SoFCSelectionRoot::getActionContext(action, this, selContext, false);
                 if (ctx) {
-                    ctx->highlightIndex = -1;
+                    ctx->removeHighlight();
                     touch();
-                }
-                if (viewProvider) {
-                    viewProvider->setFaceHighlightActive(false);
                 }
             }
             else {
-                int index = static_cast<const SoFaceDetail*>(detail)->getPartIndex();
-                SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action, this, selContext);
-                ctx->highlightIndex = index;
-                ctx->highlightColor = hlaction->getColor();
+                // Element details are stored once by SoFCSelectionRoot and
+                // shared by the face and edge renderers below this root. The
+                // normal-depth face tint changes this node's transient pass.
                 touch();
             }
         }
@@ -387,9 +390,9 @@ void SoBrepFaceSet::doAction(SoAction* action)
     inherited::doAction(action);
 }
 
-void SoBrepFaceSet::renderHighlight(SoGLRenderAction* action, SelContextPtr ctx)
+void SoBrepFaceSet::renderHighlight(SoGLRenderAction* action, Gui::SoFCSelectionContextPtr ctx, int id)
 {
-    if (!ctx || ctx->highlightIndex < 0) {
+    if (!ctx || id < 0) {
         return;
     }
 
@@ -398,7 +401,6 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction* action, SelContextPtr ctx)
     const int32_t* ci = this->coordIndex.getValues(0);
     const int ciCount = this->coordIndex.getNum();
 
-    const int id = ctx->highlightIndex;
     if (id != std::numeric_limits<int>::max() && (id < 0 || id >= partCount)) {
         SoDebugError::postWarning("SoBrepFaceSet::renderHighlight", "highlightIndex out of range");
         return;
@@ -411,10 +413,7 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction* action, SelContextPtr ctx)
     }
     buildOverlayCoordIndex(overlayCoordIndex, ci, ciCount, partCounts, partCount, parts, selectAll);
 
-    const bool onTop = Gui::Selection().isClarifySelectionActive()
-        && Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths;
-
-    renderOverlayFaces(action, overlayFaceSet, overlayCoordIndex, ctx->highlightColor, onTop);
+    renderOverlayFaces(action, overlayFaceSet, overlayCoordIndex, ctx->highlightColor, false);
 }
 
 void SoBrepFaceSet::renderSelection(SoGLRenderAction* action, SelContextPtr ctx, bool /*push*/)
@@ -450,14 +449,26 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction* action, SelContextPtr ctx,
     renderOverlayFaces(action, overlayFaceSet, overlayCoordIndex, ctx->selectionColor, false);
 }
 
-bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction* action, SelContextPtr ctx, SelContextPtr ctx2)
+bool SoBrepFaceSet::overrideMaterialBinding(
+    SoGLRenderAction* action,
+    SelContextPtr ctx,
+    SelContextPtr ctx2,
+    Gui::SoFCSelectionContextPtr highlightContext
+)
 {
     // SoBrepFaceSet groups rendered triangles into topological faces via
     // partIndex. Coin's IndexedFaceSet consumes one material index per
     // rendered triangle face, so any per-part coloring must be remapped to
     // per-face indices before GLRender(). Selection/highlight overlays reuse
     // the same remap path.
-    const bool hasPrimary = ctx && (ctx->isHighlighted() || !ctx->selectionIndex.empty());
+    const auto* faceDetail = highlightContext && highlightContext->highlightDetail
+            && highlightContext->highlightDetail->isOfType(SoFaceDetail::getClassTypeId())
+        ? static_cast<const SoFaceDetail*>(highlightContext->highlightDetail.get())
+        : nullptr;
+    const int fadedFaceIndex = faceDetail ? faceDetail->getPartIndex() : -1;
+    const bool fadeOtherFaces = highlightContext
+        && highlightContext->highlightTarget == Gui::HighlightTarget::Subelement
+        && highlightContext->hasHighlightPresentation(Gui::HighlightPresentation::FadeOtherElements);
     const bool hasSecondary = ctx2 && (!ctx2->colors.empty() || !ctx2->selectionIndex.empty());
     auto* state = action->getState();
     const auto mb = SoMaterialBindingElement::get(state);
@@ -465,6 +476,9 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction* action, SelContext
     if (partCount <= 0) {
         return false;
     }
+    const bool hasFaceHighlight = faceDetail && fadedFaceIndex >= 0 && fadedFaceIndex < partCount;
+    const bool hasPrimary = (ctx && (ctx->isHighlighted() || !ctx->selectionIndex.empty()))
+        || fadeOtherFaces;
 
     auto* element = SoLazyElement::getInstance(state);
     const SbColor* diffuse = element->getDiffusePointer();
@@ -527,7 +541,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction* action, SelContext
 
     const bool partialRender = ctx2 && !ctx2->selectionIndex.empty() && !ctx2->isSelectAll();
 
-    if (singleColor > 0 && !partialRender) {
+    if (singleColor > 0 && !partialRender && !fadeOtherFaces && !hasFaceHighlight) {
         SoMaterialBindingElement::set(state, SoMaterialBindingElement::OVERALL);
         SoOverrideElement::setMaterialBindingOverride(state, this, true);
         packedColors.push_back(diffuseColor);
@@ -637,6 +651,35 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction* action, SelContext
         }
     }
 
+    if (fadeOtherFaces) {
+        std::map<uint32_t, int32_t> fadedMaterialIndex;
+        for (int part = 0; part < partCount; ++part) {
+            if (part == fadedFaceIndex
+                || (ctx && (ctx->selectionIndex.contains(part) || ctx->highlightIndex == part))
+                || (ctx2 && ctx2->selectionIndex.contains(part))) {
+                continue;
+            }
+
+            const auto materialIndex = perPartMaterialIndex[static_cast<size_t>(part)];
+            if (materialIndex < 0 || static_cast<size_t>(materialIndex) >= packedColors.size()) {
+                continue;
+            }
+            const uint32_t packedColor = packedColors[static_cast<size_t>(materialIndex)];
+            auto [it, inserted]
+                = fadedMaterialIndex.emplace(packedColor, static_cast<int32_t>(packedColors.size()));
+            if (inserted) {
+                SbColor color;
+                float transparency = 0.0f;
+                color.setPackedValue(packedColor, transparency);
+                transparency = 1.0f
+                    - (1.0f - transparency)
+                        * (1.0f - Gui::SelectionColors::highlightFadeTransparency());
+                packedColors.push_back(color.getPackedValue(transparency));
+            }
+            perPartMaterialIndex[static_cast<size_t>(part)] = it->second;
+        }
+    }
+
     const int32_t* partCounts = this->partIndex.getValues(0);
     // partIndex groups triangles into topological faces, while SoIndexedFaceSet
     // consumes one material index per rendered triangle face.
@@ -656,7 +699,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction* action, SelContext
     }
 
     const bool usesTransparencyMask = partialRender;
-    const bool hasTransparency = hasBaseTransparency || usesTransparencyMask;
+    const bool hasTransparency = hasBaseTransparency || usesTransparencyMask || fadeOtherFaces;
 
     SoMaterialBindingElement::set(state, this, SoMaterialBindingElement::PER_FACE_INDEXED);
     SoLazyElement::setPacked(state, this, packedColors.size(), packedColors.data(), hasTransparency);
@@ -677,7 +720,38 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction* action)
     const bool hasSecondaryColors = ctx2 && !ctx2->colors.empty();
     const bool hasOverlayFields = (highlightPartIndex.getNum() > 0)
         || (selectionPartIndex.getNum() > 0);
+    auto state = action->getState();
+    selCounter.checkRenderCache(state);
+
+    auto highlightContext = Gui::SoFCSelectionRoot::getCurrentHighlightContext();
+    int highlightIndex = -1;
+    if (highlightContext && highlightContext->highlightDetail
+        && highlightContext->highlightDetail->isOfType(SoFaceDetail::getClassTypeId())) {
+        highlightIndex = static_cast<const SoFaceDetail*>(highlightContext->highlightDetail.get())
+                             ->getPartIndex();
+    }
+    else if (
+        highlightContext && highlightContext->highlightTarget == Gui::HighlightTarget::WholeObject
+    ) {
+        highlightIndex = std::numeric_limits<int>::max();
+    }
+    else if (ctx && ctx->isHighlighted()) {
+        highlightContext = ctx;
+        highlightIndex = ctx->highlightIndex;
+    }
+
+    const bool hasContextHighlight = highlightContext
+        && (highlightIndex == std::numeric_limits<int>::max()
+            || (highlightIndex >= 0 && highlightIndex < partIndex.getNum()));
+
+    // An empty secondary context suppresses the base face set for partial-render
+    // previews. Detailed preselection is independent transient state, so its
+    // depth-tested tint must still be rendered on Assembly/link paths carrying
+    // such a context.
     if (!hasOverlayFields && ctx2 && ctx2->selectionIndex.empty() && !hasSecondaryColors) {
+        if (hasContextHighlight) {
+            renderHighlight(action, highlightContext, highlightIndex);
+        }
         return;
     }
     if (selContext2->checkGlobal(ctx)) {
@@ -687,30 +761,9 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction* action)
         ctx.reset();
     }
 
-    auto state = action->getState();
-    selCounter.checkRenderCache(state);
-
-    const bool hasContextHighlight = ctx && ctx->isHighlighted() && !ctx->isHighlightAll()
-        && ctx->highlightIndex >= 0 && ctx->highlightIndex < partIndex.getNum();
-
-    // Clarify selection: render highlight as delayed annotation on top.
-    if (Gui::Selection().isClarifySelectionActive() && hasContextHighlight) {
-        if (!Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths) {
-            if (viewProvider) {
-                viewProvider->setFaceHighlightActive(true);
-            }
-            const SoPath* currentPath = action->getCurPath();
-            Gui::SoDelayedAnnotationsElement::addDelayedPath(state, currentPath->copy(), 100);
-            return;
-        }
-        inherited::GLRender(action);
-        renderHighlight(action, ctx);
-        return;
-    }
-
     SoMaterialBundle mb(action);
     mb.sendFirst();
-    const bool pushed = overrideMaterialBinding(action, ctx, ctx2);
+    const bool pushed = overrideMaterialBinding(action, ctx, ctx2, highlightContext);
     if (!this->shouldGLRender(action)) {
         if (pushed) {
             state->pop();
@@ -733,9 +786,14 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction* action)
         if (ctx && !ctx->selectionIndex.empty()) {
             renderSelection(action, ctx);
         }
-        if (ctx) {
-            renderHighlight(action, ctx);
-        }
+    }
+
+    // Detailed preselection is transient rendering state. Keep it out of the
+    // persistent materialIndex remap and draw its face tint with normal depth
+    // testing after the base geometry. Clarify boundaries are handled by the
+    // edge set's delayed overlay.
+    if (hasContextHighlight && !hasOverlayFields) {
+        renderHighlight(action, highlightContext, highlightIndex);
     }
 
     // Optional overlay rendering for deterministic tests (and programmatic usage).
@@ -763,13 +821,13 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction* action)
                 SelContextPtr octx = std::make_shared<SelContext>();
                 octx->highlightIndex = vals[i];
                 octx->highlightColor = highlightColor.getValue();
-                renderHighlight(action, octx);
+                renderHighlight(action, octx, octx->highlightIndex);
             }
         }
         // Keep live face preselection on top when it overlaps the explicit
         // overlay selection/highlight fields.
         if (hasContextHighlight) {
-            renderHighlight(action, ctx);
+            renderHighlight(action, highlightContext, highlightIndex);
         }
 
         if (oldDepthFunc != GL_LEQUAL) {
