@@ -58,6 +58,7 @@
 #include "InputField.h"
 #include "QuantitySpinBox.h"
 #include "PrefWidgets.h"
+#include "SearchableComboBox.h"
 #include "ToolBarManager.h"
 
 using namespace Gui;
@@ -131,5 +132,6 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new WidgetProducer<Gui::DoubleSpinBox>;
     new WidgetProducer<Gui::QuantitySpinBox>;
     new WidgetProducer<Gui::ExpLineEdit>;
+    new WidgetProducer<Gui::SearchableComboBox>;
 }
 // clang-format on

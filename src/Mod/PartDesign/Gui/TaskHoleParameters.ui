@@ -1265,7 +1265,7 @@ Note that the calculation can take some time</string>
   <customwidget>
    <class>Gui::SearchableComboBox</class>
    <extends>QComboBox</extends>
-   <header>ComboBox/SearchableComboBox.h</header>
+   <header>SearchableComboBox.h</header>
   </customwidget>
  </customwidgets>
  <resources>
