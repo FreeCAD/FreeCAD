@@ -80,6 +80,13 @@ SET(FeaturesDressUp_SRCS
 )
 SOURCE_GROUP("DressUpFeatures" FILES ${FeaturesDressUp_SRCS})
 
+# Isolated profile-based Rib feature.
+SET(Rib_SRCS
+    FeatureRib.cpp
+    FeatureRib.h
+)
+SOURCE_GROUP("Rib" FILES ${Rib_SRCS})
+
 SET(FeaturesSketchBased_SRCS
     FeatureExtrude.cpp
     FeatureExtrude.h
@@ -140,6 +147,7 @@ SET(PartDesign_SRCS
     ${DatumFeatures_SRCS}
     ${FeaturesTransformed_SRCS}
     ${FeaturesSketchBased_SRCS}
+    ${Rib_SRCS}
     ${FeaturesDressUp_SRCS}
     ${Module_SRCS}
     ${Python_SRCS}
