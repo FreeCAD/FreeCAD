@@ -98,6 +98,16 @@ class BoundBox2d;
 
 namespace Gui
 {
+namespace Inventor
+{
+class SoFCSectionCap;
+struct SectionCapStyle;
+struct SectionCapRecord;
+}  // namespace Inventor
+}  // namespace Gui
+
+namespace Gui
+{
 class NavigationAnimation;
 class View3DInventor;
 class ViewProvider;
@@ -468,6 +478,14 @@ public:
     /** Checks whether a clipping plane is set or not. */
     bool hasClippingPlane() const;
 
+    /** Section caps for the active clip planes (see SoFCSectionCap). */
+    void setSectionCapping(bool on);
+    bool isSectionCapping() const;
+    /// "capped", "no-plane", ... or "off"
+    std::string getSectionCapStatus() const;
+    /// Per occurrence and plane, for the last frame.
+    std::vector<Gui::Inventor::SectionCapRecord> getSectionCapRecords() const;
+
     /** Project the given normalized 2d point onto the near plane */
     SbVec3f projectOnNearPlane(const SbVec2f&) const;
 
@@ -699,6 +717,7 @@ private:
     SoFCUnifiedSelection* selectionRoot;
 
     SoClipPlane* pcClipPlane;
+    Gui::Inventor::SoFCSectionCap* pcSectionCap {nullptr};
 
     RenderType renderType;
     QOpenGLFramebufferObject* framebuffer;
