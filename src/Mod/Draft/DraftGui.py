@@ -241,6 +241,27 @@ class DraftToolBar:
         self.display_point_active = False  # prevent cyclic processing of point values
         self._locks = InputFieldLockGroup(on_change=self._on_lock_change)
         self._angle_lock_axis = None
+        FreeCAD.addDocumentObserver(self)
+        
+    def slotDeletedDocument(self, doc):
+        """Document observer callback."""
+        if (
+            self.tray is None
+            or not self.tray.isEnabled()
+            or FreeCAD.ActiveDocument is not None
+        ):
+            return
+        self.tray.setEnabled(False)
+
+
+    def slotActivateDocument(self, doc):
+        """Document observer callback."""
+        if (
+            self.tray is None
+            or self.tray.isEnabled()
+        ):
+            return
+        self.tray.setEnabled(True)
 
     # ---------------------------------------------------------------------------
     # General UI setup
