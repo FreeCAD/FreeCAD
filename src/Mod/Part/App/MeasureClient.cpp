@@ -36,6 +36,7 @@
 #include <BRepGProp.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
+#include <GCPnts_AbscissaPoint.hxx>
 #include <Geom_BezierCurve.hxx>
 #include <Geom_BSplineCurve.hxx>
 #include <TopExp.hxx>
@@ -45,6 +46,7 @@
 #include <gp_Circ.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <GeomLib_IsPlanarSurface.hxx>
+#include <Standard_Failure.hxx>
 
 #include <DatumFeature.h>
 #include <App/Datums.h>
@@ -286,10 +288,25 @@ MeasureLengthInfoPtr MeasureLengthHandler(const App::SubObjectT& subject)
         return std::make_shared<MeasureLengthInfo>(false, 0.0, Base::Matrix4D());
     }
 
-    // Get Center of mass as the attachment point of the label
+    // Attach the label halfway along the edge; a curved edge's center of mass lies off it.
+    // Fall back to the center of mass for edges without a usable curve (e.g. degenerated).
     GProp_GProps gprops;
     BRepGProp::LinearProperties(shape, gprops);
-    auto origin = gprops.CentreOfMass();
+    gp_Pnt origin = gprops.CentreOfMass();
+
+    const TopoDS_Edge& edge = TopoDS::Edge(shape);
+    if (!BRep_Tool::Degenerated(edge)) {
+        try {
+            BRepAdaptor_Curve curve(edge);
+            double halfLength = GCPnts_AbscissaPoint::Length(curve) / 2.0;
+            GCPnts_AbscissaPoint midPoint(curve, halfLength, curve.FirstParameter());
+            if (midPoint.IsDone()) {
+                origin = curve.Value(midPoint.Parameter());
+            }
+        }
+        catch (const Standard_Failure&) {
+        }
+    }
 
     Base::Placement placement(Base::Vector3d(origin.X(), origin.Y(), origin.Z()), Base::Rotation());
     return std::make_shared<MeasureLengthInfo>(true, getLength(shape), placement);
