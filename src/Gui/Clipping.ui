@@ -220,6 +220,19 @@
     </widget>
    </item>
    <item row="4" column="0">
+    <widget class="QCheckBox" name="checkBoxCaps">
+     <property name="toolTip">
+      <string>Fill the clipped faces of solids, each part in its own color and hatch pattern.</string>
+     </property>
+     <property name="text">
+      <string>Section caps</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -248,6 +261,7 @@
   <tabstop>dirX</tabstop>
   <tabstop>dirY</tabstop>
   <tabstop>dirZ</tabstop>
+  <tabstop>checkBoxCaps</tabstop>
  </tabstops>
  <resources/>
  <connections>
