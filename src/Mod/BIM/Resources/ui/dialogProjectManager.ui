@@ -396,7 +396,7 @@
              </widget>
             </item>
             <item row="3" column="1">
-             <widget class="QComboBox" name="buildingUse">
+             <widget class="Gui::SearchableComboBox" name="buildingUse">
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
@@ -408,6 +408,15 @@
               </property>
               <property name="minimumContentsLength">
                <number>0</number>
+              </property>
+              <property name="searchable">
+               <bool>true</bool>
+              </property>
+              <property name="grid">
+               <bool>true</bool>
+              </property>
+              <property name="gridFixedColumns">
+               <number>5</number>
               </property>
              </widget>
             </item>
@@ -750,6 +759,11 @@
    <class>Gui::ColorButton</class>
    <extends>QPushButton</extends>
    <header>Gui/Widgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::SearchableComboBox</class>
+   <extends>QComboBox</extends>
+   <header>SearchableComboBox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

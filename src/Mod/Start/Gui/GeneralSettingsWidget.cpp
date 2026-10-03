@@ -30,7 +30,7 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
-#include <Gui/ComboBox/SearchableComboBox.h>
+#include <../../../Gui/SearchableComboBox.h>
 #include <algorithm>
 #include "GeneralSettingsWidget.h"
 #include <gsl/pointers>

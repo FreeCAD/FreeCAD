@@ -74,6 +74,8 @@ class BIM_ProjectManager:
         )
 
         # set things up
+        print(self.form.buildingUse)
+        print(self.form.buildingUse.property("grid"))
         self.form.buildingUse.addItems(ArchBuildingPart.BuildingTypes)
         self.form.setWindowIcon(QtGui.QIcon(":/icons/BIM_ProjectManager.svg"))
         self.form.buttonAdd.clicked.connect(self.addGroup)

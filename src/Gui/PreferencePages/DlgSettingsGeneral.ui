@@ -573,7 +573,7 @@ and spin boxes with hover focus</string>
   <customwidget>
    <class>Gui::SearchableComboBox</class>
    <extends>QComboBox</extends>
-   <header>ComboBox/SearchableComboBox.h</header>
+   <header>SearchableComboBox.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
