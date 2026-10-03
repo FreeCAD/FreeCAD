@@ -5794,6 +5794,7 @@ void PropertyXLinkContainer::breakLink(App::DocumentObject* obj, bool clear)
             obj->_removeBackLinkProp(getName(), owner);
         }
         _Deps.erase(it);
+        removePropDeps(obj, owner);
         onRemoveDep(obj);
         hasSetValue();
         return;
@@ -5811,6 +5812,7 @@ void PropertyXLinkContainer::breakLink(App::DocumentObject* obj, bool clear)
             key->_removeBackLink(owner);
         }
     }
+    removePropDeps(nullptr, owner);
     _XLinks.clear();
     _Deps.clear();
 }
@@ -5936,6 +5938,7 @@ void PropertyXLinkContainer::aboutToSetChildValue(App::Property& prop)
             _onBreakLink(xlink->getValue());
             onRemoveDep(obj);
         }
+        removePropDeps(obj, nullptr);
     }
 }
 
@@ -6132,9 +6135,25 @@ void PropertyXLinkContainer::clearDeps()
         }
     }
 
+    removePropDeps(nullptr, owner->testStatus(ObjectStatus::Destroy) ? nullptr : owner);
     _Deps.clear();
     _XLinks.clear();
     _LinkRestored = false;
+}
+
+void PropertyXLinkContainer::removePropDeps(DocumentObject* obj, DocumentObject* owner)
+{
+    std::erase_if(_PropDeps, [&](auto const& kv) {
+        auto const& [pair, hidden] = kv;
+        DocumentObject* dep = pair.second;
+        if (obj && dep != obj) {
+            return false;
+        }
+        if (owner && !hidden && dep && dep->isAttachedToDocument()) {
+            dep->_removeBackLinkProp(getName(), owner, pair.first.c_str());
+        }
+        return true;
+    });
 }
 
 void PropertyXLinkContainer::getLinks(std::vector<App::DocumentObject*>& objs,
