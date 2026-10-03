@@ -64,6 +64,10 @@ public:
     void extractTemplateAttributes(QDomDocument& templateDocument);
     bool getTemplateDocument(std::string sourceFile, QDomDocument& templateDocument) const;
 
+    /// Copy the source SVG into the document again. Matching editable fields are
+    /// kept. An empty Template path does nothing. Throws if the file cannot be read.
+    void reloadTemplate();
+
     void translateLabel(std::string context, std::string baseName, std::string uniqueName);
 
 

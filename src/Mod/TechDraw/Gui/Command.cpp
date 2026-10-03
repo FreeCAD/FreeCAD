@@ -34,6 +34,7 @@
 #include <App/Link.h>
 
 #include <Base/Console.h>
+#include <Base/Exception.h>
 #include <Base/Tools.h>
 
 #include <Gui/Action.h>
@@ -263,6 +264,127 @@ bool CmdTechDrawRedrawPage::isActive()
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, false);
     return (havePage && haveView);
+}
+
+//===========================================================================
+// TechDraw_ReloadTemplate
+//===========================================================================
+
+namespace
+{
+
+TechDraw::DrawSVGTemplate* svgTemplateOf(TechDraw::DrawPage* page)
+{
+    if (!page) {
+        return nullptr;
+    }
+    App::DocumentObject* obj = page->Template.getValue();
+    if (obj && obj->isDerivedFrom<TechDraw::DrawSVGTemplate>()) {
+        return static_cast<TechDraw::DrawSVGTemplate*>(obj);
+    }
+    return nullptr;
+}
+
+void refreshOpenTemplate(TechDraw::DrawSVGTemplate* svg)
+{
+    TechDraw::DrawPage* page = svg->getParentPage();
+    if (!page) {
+        return;
+    }
+    auto* vpp = dynamic_cast<ViewProviderPage*>(Gui::Application::Instance->getViewProvider(page));
+    // The sheet is painted from the embedded copy. A same-path reload does not
+    // change the Template property, so repaint an open page explicitly.
+    if (!vpp || !vpp->getMDIView() || !vpp->getQGSPage()) {
+        return;
+    }
+    vpp->getQGSPage()->attachTemplate(svg);
+    vpp->getQGSPage()->matchSceneRectToTemplate();
+}
+
+}  // namespace
+
+DEF_STD_CMD_A(CmdTechDrawReloadTemplate)
+
+CmdTechDrawReloadTemplate::CmdTechDrawReloadTemplate() : Command("TechDraw_ReloadTemplate")
+{
+    sAppModule = "TechDraw";
+    sGroup = QT_TR_NOOP("TechDraw");
+    sMenuText = QT_TR_NOOP("Reload Template");
+    sToolTipText = QT_TR_NOOP(
+        "Reloads the SVG template from its source file and keeps matching editable fields");
+    sWhatsThis = "TechDraw_ReloadTemplate";
+    sStatusTip = sToolTipText;
+    sPixmap = "view-refresh";
+}
+
+void CmdTechDrawReloadTemplate::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    std::vector<TechDraw::DrawSVGTemplate*> templates;
+    for (auto* obj : getSelection().getObjectsOfType(TechDraw::DrawSVGTemplate::getClassTypeId())) {
+        templates.push_back(static_cast<TechDraw::DrawSVGTemplate*>(obj));
+    }
+    if (templates.empty()) {
+        TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+        if (!page) {
+            return;
+        }
+        auto* svg = svgTemplateOf(page);
+        if (!svg) {
+            QMessageBox::information(
+                Gui::getMainWindow(),
+                QObject::tr("Reload Template"),
+                QObject::tr("This page does not use an SVG template."));
+            return;
+        }
+        templates.push_back(svg);
+    }
+
+    for (auto* svg : templates) {
+        if (std::string(svg->Template.getValue()).empty()) {
+            QMessageBox::warning(
+                Gui::getMainWindow(),
+                QObject::tr("Reload Template"),
+                QObject::tr("The template has no source file to reload."));
+            return;
+        }
+    }
+
+    try {
+        openCommand(QT_TRANSLATE_NOOP("Command", "Reload template"));
+        for (auto* svg : templates) {
+            svg->reloadTemplate();
+            // Repaint while the transaction is open. Painting reads the template
+            // and writes page size, which marks the document modified.
+            refreshOpenTemplate(svg);
+        }
+        commitCommand();
+    }
+    catch (const Base::Exception& e) {
+        abortCommand();
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            QObject::tr("Reload Template"),
+            QString::fromUtf8(e.getMessage().c_str()));
+        return;
+    }
+}
+
+bool CmdTechDrawReloadTemplate::isActive()
+{
+    if (!hasActiveDocument()) {
+        return false;
+    }
+    if (!getSelection().getObjectsOfType(TechDraw::DrawSVGTemplate::getClassTypeId()).empty()) {
+        return true;
+    }
+    for (auto* obj : getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId())) {
+        if (svgTemplateOf(static_cast<TechDraw::DrawPage*>(obj))) {
+            return true;
+        }
+    }
+    return false;
 }
 
 //===========================================================================
@@ -2034,6 +2156,7 @@ void CreateTechDrawCommands()
     rcCmdMgr.addCommand(new CmdTechDrawPageDefault());
     rcCmdMgr.addCommand(new CmdTechDrawPageTemplate());
     rcCmdMgr.addCommand(new CmdTechDrawRedrawPage());
+    rcCmdMgr.addCommand(new CmdTechDrawReloadTemplate());
     rcCmdMgr.addCommand(new CmdTechDrawPrintAll());
     rcCmdMgr.addCommand(new CmdTechDrawView());
     rcCmdMgr.addCommand(new CmdTechDrawActiveView());
