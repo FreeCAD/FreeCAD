@@ -102,6 +102,7 @@ class SketchObject;
 namespace SketcherGui
 {
 
+class AnnotationManager;
 class EditModeCoinManager;
 class SnapManager;
 class DrawSketchHandler;
@@ -545,6 +546,13 @@ public:
     App::PropertyBool AutoColor;
     App::PropertyString EditingWorkbench;
     SketcherGui::PropertyVisualLayerList VisualLayerList;
+    App::PropertyIntegerList HiddenAnnotations;
+    AnnotationManager& annotationManager();
+    /// Whether cosmetics are offered in the interface (their task box and toolbar).
+    bool areCosmeticsEnabled() const
+    {
+        return showCosmetics;
+    }
     //@}
 
     const ToolManager toolManager;
@@ -718,6 +726,10 @@ public:
     void deleteSelected();
 
     bool isSelected(const std::string& ss) const;
+    /// Edges joined end to end with geoId, including geoId itself (first). Closed curves
+    /// (circles, ellipses, periodic B-splines) have no end points: the result is empty
+    /// for them and they never join another edge.
+    std::vector<int> getConnectedEdges(int geoId, bool includeExternal = true) const;
     void rmvSelection(const std::string& subNameSuffix);
     bool addSelection(const std::string& subNameSuffix, float x = 0, float y = 0, float z = 0);
     bool addSelection2(const std::string& subNameSuffix, float x = 0, float y = 0, float z = 0);
@@ -859,9 +871,16 @@ private:
         const SbVec2s& pos,
         const Gui::View3DInventorViewer* viewer
     ) const;
+    /// Fills an existing list so a single ray pick can serve several consumers.
+    void collectPickedPointsOnRay(
+        const SbVec2s& pos,
+        const Gui::View3DInventorViewer* viewer,
+        SoPickedPointList& picks
+    ) const;
     EditModeCoinManager::PreselectionResult getPreselectionResultAtViewportPos(
         const SbVec2s& pos,
-        const Gui::View3DInventorViewer* viewer
+        const Gui::View3DInventorViewer* viewer,
+        const SoPickedPointList* picked = nullptr
     ) const;
     void cachePreselectionResult(
         const SbVec2s& pos,
@@ -1046,6 +1065,10 @@ private:
     //@}
 
 private:
+    std::unique_ptr<AnnotationManager> annotations;
+    /// Moves the annotation scene between the display-mode and edit-mode parents. The
+    /// node must have exactly one parent or it is traversed, drawn and picked twice.
+    void reparentAnnotations(bool editing);
     fastsignals::connection connectUndoDocument;
     fastsignals::connection connectRedoDocument;
     fastsignals::connection connectSolverUpdate;
@@ -1084,6 +1107,7 @@ private:
     std::unique_ptr<DrawSketchHandlerDragAutoConstraint> dragAutoConstraintHandler;
 
     ViewProviderParameters viewProviderParameters;
+    bool showCosmetics {true};
 
     using Connection = fastsignals::connection;
     Connection connectionToolWidget;
