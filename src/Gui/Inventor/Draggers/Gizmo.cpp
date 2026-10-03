@@ -910,9 +910,9 @@ Qt::KeyboardModifier GizmoContainer::getFineSnapModifier()
 InputHint::UserInput GizmoContainer::getFineSnapKey()
 {
     if (getFineSnapModifier() == Qt::ControlModifier) {
-        return InputHint::UserInput::ModifierCtrl;
+        return Qt::ControlModifier;
     }
-    return InputHint::UserInput::ModifierShift;
+    return Qt::ShiftModifier;
 }
 
 bool GizmoContainer::isCoarseByDefault()

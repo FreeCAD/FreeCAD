@@ -380,20 +380,18 @@ protected:
 public:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        using enum Gui::InputHint::UserInput;
-
         return Gui::lookupHints<SelectMode>(
             Mode,
             {
                 {.state = STATUS_SEEK_First,
                  .hints =
                      {
-                         {tr("%1 pick edge to extend", "Sketcher Extend: hint"), {MouseLeft}},
+                         {tr("%1 pick edge to extend", "Sketcher Extend: hint"), {{Gui::MouseInput::MouseLeft}}},
                      }},
                 {.state = STATUS_SEEK_Second,
                  .hints =
                      {
-                         {tr("%1 set extension length", "Sketcher Extend: hint"), {MouseLeft}},
+                         {tr("%1 set extension length", "Sketcher Extend: hint"), {{Gui::MouseInput::MouseLeft}}},
                      }},
             });
     }
