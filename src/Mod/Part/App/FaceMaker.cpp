@@ -231,7 +231,12 @@ void Part::FaceMaker::postBuild()
 
     this->myTopoShape.Tag = MyTag;
     this->myTopoShape.Hasher = this->MyHasher;
-    this->myTopoShape.mapSubElement(this->mySourceShapes);
+    this->myTopoShape.mapSubElement(
+        this->mySourceShapes,
+        nullptr,
+        nullptr,
+        App::CopyRemapPolicy::CHANGE_NAME_OWNERSHIP
+    );
 
     // Some makers modify edges before the splitter runs (e.g. splitting
     // self-intersecting B-splines).  If myPreSplitHistory is set, build an
@@ -257,7 +262,13 @@ void Part::FaceMaker::postBuild()
         splitInputShape.setHistoryAlgorithm(MyHistoryAlgorithm);
 
         splitInputShape.makeShapeWithElementMap(mySplitter.Shape(), mapper, splitterSources);
-        myTopoShape.mapSubElement(splitInputShape);
+        myTopoShape.mapSubElement(
+            splitInputShape,
+            nullptr,
+            false,
+            nullptr,
+            App::CopyRemapPolicy::CHANGE_NAME_OWNERSHIP
+        );
     }
     const char* op = this->MyOp;
     if (!op) {

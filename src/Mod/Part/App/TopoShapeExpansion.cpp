@@ -1090,11 +1090,24 @@ void TopoShape::mapSubElement(
                     if (historyVersion == App::HistoryAlgorithm::V1) {
                         ensureElementMap()
                             ->encodeElementName(shapetype[0], name, ss, &sids, Tag, op, Tag);
-                    } else if (historyVersion == App::HistoryAlgorithm::V2 && copyRemapPolicy == App::CopyRemapPolicy::CHANGE_NAME_OWNERSHIP) {
-                        name = changeOwnershipOfName(name, Tag, element.getType()[0]);
+                        ensureElementMap()->setElementName(element, name, Tag, &sids);
+                    } else if (historyVersion == App::HistoryAlgorithm::V2) {
+                        if (copyRemapPolicy == App::CopyRemapPolicy::CHANGE_NAME_OWNERSHIP) {
+                            ensureElementMap()->setElementName(
+                                element,
+                                changeOwnershipOfName(name, Tag, element.getType()[0]),
+                                Tag,
+                                &sids
+                            );
+                        } else if (copyRemapPolicy == App::CopyRemapPolicy::COPY_NAME) {
+                            ensureElementMap()->setElementName(
+                                element,
+                                name,
+                                Tag,
+                                &sids
+                            );
+                        }
                     }
-
-                    ensureElementMap()->setElementName(element, name, Tag, &sids);
                 }
 
                 if (nameMap) {
@@ -5645,18 +5658,20 @@ TopoShape& TopoShape::makeElementShape(
     BRepBuilderAPI_MakeShape& mkShape,
     const TopoShape& source,
     const char* op,
-    ElementMapPolicy elementMapPolicy
+    ElementMapPolicy elementMapPolicy,
+    App::CopyRemapPolicy copyRemapPolicy
 )
 {
     std::vector<TopoShape> sources(1, source);
-    return makeElementShape(mkShape, sources, op, elementMapPolicy);
+    return makeElementShape(mkShape, sources, op, elementMapPolicy, copyRemapPolicy);
 }
 
 TopoShape& TopoShape::makeElementShape(
     BRepBuilderAPI_MakeShape& mkShape,
     const std::vector<TopoShape>& shapes,
     const char* op,
-    ElementMapPolicy elementMapPolicy
+    ElementMapPolicy elementMapPolicy,
+    App::CopyRemapPolicy copyRemapPolicy
 )
 {
     TopoDS_Shape shape;
@@ -5667,14 +5682,15 @@ TopoShape& TopoShape::makeElementShape(
     else {
         shape = mkShape.Shape();
     }
-    return makeShapeWithElementMap(shape, MapperMaker(mkShape), shapes, op, elementMapPolicy);
+    return makeShapeWithElementMap(shape, MapperMaker(mkShape), shapes, op, elementMapPolicy, copyRemapPolicy);
 }
 
 TopoShape& TopoShape::makeElementShape(
     BRepFeat_MakePrism& mkShape,
     const std::vector<TopoShape>& sources,
     const TopoShape& upTo,
-    const char* op
+    const char* op,
+    App::CopyRemapPolicy copyRemapPolicy
 )
 {
     const App::HistoryAlgorithm& historyAlgorithm = getHistoryAlgorithm();
@@ -5689,7 +5705,7 @@ TopoShape& TopoShape::makeElementShape(
     }
 
     MapperPrism mapper(mkShape, upTo, sources, historyAlgorithm);
-    makeShapeWithElementMap(mkShape.Shape(), mapper, sources, op);
+    makeShapeWithElementMap(mkShape.Shape(), mapper, sources, op, ElementMapPolicy::Propagate, copyRemapPolicy);
     return *this;
 }
 
@@ -5816,7 +5832,9 @@ TopoShape& TopoShape::makeElementLoft(
         aGenerator.Shape(),
         MapperThruSections(aGenerator, profiles),
         shapes,
-        op
+        op,
+        ElementMapPolicy::Propagate,
+        App::CopyRemapPolicy::CHANGE_NAME_OWNERSHIP
     );
 }
 
@@ -5829,7 +5847,7 @@ TopoShape& TopoShape::makeElementPrism(const TopoShape& base, const gp_Vec& vec,
         FC_THROWM(NullShapeException, "Null shape");
     }
     BRepPrimAPI_MakePrism mkPrism(base.getShape(), vec);
-    return makeElementShape(mkPrism, base, op);
+    return makeElementShape(mkPrism, base, op, ElementMapPolicy::Propagate, base.Tag == Tag ? App::CopyRemapPolicy::COPY_NAME : App::CopyRemapPolicy::CHANGE_NAME_OWNERSHIP);
 }
 
 TopoShape& TopoShape::makeElementPrismUntil(
@@ -6019,7 +6037,7 @@ TopoShape& TopoShape::makeElementPrismUntil(
                         result.Tag = Tag;
                     }
 
-                    result.makeElementShape(PrismMaker, srcShapes, uptoface, op);
+                    result.makeElementShape(PrismMaker, srcShapes, uptoface, op, App::CopyRemapPolicy::CHANGE_NAME_OWNERSHIP);
                 }
             } else if (historyAlgorithm == App::HistoryAlgorithm::V2) {
                 prismShapes.clear();
@@ -6053,7 +6071,7 @@ TopoShape& TopoShape::makeElementPrismUntil(
                         FC_THROWM(Base::CADKernelError, "BRepFeat_MakePrism: extrusion failed");
                     }
 
-                    prismShape.makeElementShape(PrismMaker, srcShapes, uptoface, op);
+                    prismShape.makeElementShape(PrismMaker, srcShapes, uptoface, op, App::CopyRemapPolicy::CHANGE_NAME_OWNERSHIP);
                     prismShapes.push_back(prismShape);
                 }
 

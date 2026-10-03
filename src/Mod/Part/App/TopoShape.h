@@ -3141,7 +3141,8 @@ public:
         BRepBuilderAPI_MakeShape& mkShape,
         const std::vector<TopoShape>& sources,
         const char* op = nullptr,
-        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate,
+        App::CopyRemapPolicy copyRemapPolicy = App::CopyRemapPolicy::COPY_NAME
     );
     /** Generic shape making with mapped element name from shape history
      *
@@ -3161,7 +3162,8 @@ public:
         BRepBuilderAPI_MakeShape& mkShape,
         const TopoShape& source,
         const char* op = nullptr,
-        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate,
+        App::CopyRemapPolicy copyRemapPolicy = App::CopyRemapPolicy::COPY_NAME
     );
     /** Generic shape making with mapped element name from shape history
      *
@@ -3177,7 +3179,8 @@ public:
     TopoShape makeElementShape(
         BRepBuilderAPI_MakeShape& mkShape,
         const char* op = nullptr,
-        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate,
+        App::CopyRemapPolicy copyRemapPolicy = App::CopyRemapPolicy::COPY_NAME
     ) const
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
@@ -3187,7 +3190,7 @@ public:
             newShape.Tag = Tag;
         }
 
-        return newShape.makeElementShape(mkShape, *this, op, elementMapPolicy);
+        return newShape.makeElementShape(mkShape, *this, op, elementMapPolicy, copyRemapPolicy);
     }
 
     /** Specialized shape making for BRepBuilderAPI_MakePrism with mapped element name
@@ -3207,7 +3210,8 @@ public:
         BRepFeat_MakePrism& mkShape,
         const std::vector<TopoShape>& sources,
         const TopoShape& uptoface,
-        const char* op
+        const char* op,
+        App::CopyRemapPolicy copyRemapPolicy = App::CopyRemapPolicy::COPY_NAME
     );
 
     /* Toponaming migration, February 2024:
