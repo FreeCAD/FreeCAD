@@ -566,6 +566,9 @@
           <property name="singleStep">
            <number>10</number>
           </property>
+          <property name="stepType">
+           <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+          </property>
           <property name="value">
            <number>2000</number>
           </property>
