@@ -781,8 +781,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
     if (DockWindowManager::instance()->isOverlayActivated()) {
         *view << "Std_DockOverlay";
     }
-    *view << "Std_ToggleBottomPanels"
-          << "Separator"
+    *view << "Separator"
           << "Std_LinkSelectActions"
           << "Std_TreeViewActions"
           << "Std_ViewStatusBar";

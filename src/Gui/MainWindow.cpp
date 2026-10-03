@@ -454,11 +454,11 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
 
     // Canonical status-bar order (slot + order). Items always appear in this fixed
     // sequence regardless of the order they register at runtime. The menu uses the
-    // same order. Workbenches use the 550-699 band so they land just left of the
-    // Bottom Panel Toggle; see also Draft/BIM/Tux and ToolBarManager::setupStatusBar.
+    // same order. Workbenches use the 550-699 band so they land just left of
+    // Notifications; see also Draft/BIM/Tux and ToolBarManager::setupStatusBar.
     //   Left : Preselection(0), Progress(50)
     //   Right: Input Hints(100), Quick Measure(400), ToolBarArea(500), [workbench 550-699],
-    //          Bottom Panel Toggle(700), Notifications(800), Navigation Styles(900),
+    //          Notifications(800), Navigation Styles(900),
     //          Unit System(1000, rightmost)
     d->actionLabel = new StatusBarLabel(statusBar());
     d->actionLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
@@ -531,31 +531,6 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
          .title = tr("Quick Measure"),
          .slot = StatusBarSlot::Right,
          .order = 400,
-         .persistentVisibility = true}
-    );
-
-    auto* toggleBottomPanelsButton = new QToolButton(statusBar());
-    toggleBottomPanelsButton->setIconSize(QSize(16, 16));
-    toggleBottomPanelsButton->setIcon(BitmapFactory().pixmap("Std_ToggleBottomPanels"));
-    toggleBottomPanelsButton->setCheckable(true);
-    // Starts checked because FreeCAD shows bottom panels by default on first launch. On subsequent
-    // launches the command restores the persisted state, but that happens after this point, so
-    // the button state is always an approximation until the first toggle.
-    toggleBottomPanelsButton->setChecked(true);
-    //: Tooltip for the status bar button that toggles bottom dock panels
-    toggleBottomPanelsButton->setToolTip(tr("Toggles the bottom dock panels"));
-    toggleBottomPanelsButton->setAutoRaise(true);
-    connect(toggleBottomPanelsButton, &QToolButton::clicked, this, []() {
-        Application::Instance->commandManager().runCommandByName("Std_ToggleBottomPanels");
-    });
-    addStatusBarItem(
-        toggleBottomPanelsButton,
-        {.id = "toggleBottomPanelsButton",
-         //: A context menu action used to show or hide the Toggle Bottom Panels button in the
-         //: status bar
-         .title = tr("Bottom Panel Toggle"),
-         .slot = StatusBarSlot::Right,
-         .order = 700,
          .persistentVisibility = true}
     );
 
