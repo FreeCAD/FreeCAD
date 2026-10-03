@@ -24,6 +24,7 @@
 
 #include <Base/Reader.h>
 
+#include <App/FeaturePythonPyImp.h>
 #include "DrawRichAnno.h"
 #include "DrawRichAnnoPy.h"  // generated from DrawRichAnnoPy.xml
 
@@ -138,6 +139,15 @@ namespace App {
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawRichAnnoPython, TechDraw::DrawRichAnno)
 template<> const char* TechDraw::DrawRichAnnoPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderRichAnno";
+}
+template<>
+PyObject* TechDraw::DrawRichAnnoPython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawRichAnnoPy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

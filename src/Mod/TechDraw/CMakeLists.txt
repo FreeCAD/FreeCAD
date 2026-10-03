@@ -183,6 +183,7 @@ SET(TDTest_SRCS
     TDTest/DrawProjectionGroupTest.py
     TDTest/DrawViewAnnotationTest.py
     TDTest/DrawViewImageTest.py
+    TDTest/PythonFeatureTest.py
     TDTest/DrawViewSymbolTest.py
     TDTest/DrawViewDimensionTest.py
     TDTest/DrawViewPartTest.py

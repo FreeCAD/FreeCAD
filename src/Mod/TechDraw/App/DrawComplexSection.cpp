@@ -123,7 +123,9 @@
 
 #include <Mod/Part/App/PartFeature.h>
 
+#include <App/FeaturePythonPyImp.h>
 #include "DrawComplexSection.h"
+#include "DrawViewPartPy.h"
 #include "DrawUtil.h"
 #include "GeometryObject.h"
 #include "ShapeUtils.h"
@@ -1865,6 +1867,15 @@ PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawComplexSectionPython, TechDraw::DrawCompl
 template<> const char* TechDraw::DrawComplexSectionPython::getViewProviderName() const
 {
     return "TechDrawGui::ViewProviderDrawingView";
+}
+template<>
+PyObject* TechDraw::DrawComplexSectionPython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawViewPartPy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 
