@@ -829,6 +829,46 @@ def get2DShape(representation, scaling=1000, notext=False):
         r = ent.Radius * scaling
         return Part.makeCircle(r, c)
 
+    def getArc(ent):
+        base = ent.BasisCurve
+        t1 = ent.Trim1[0].wrappedValue
+        t2 = ent.Trim2[0].wrappedValue
+        if not ent.SenseAgreement:
+            t1, t2 = t2, t1
+        bc = getCircle(base)
+        if math.isclose(t1, t2, abs_tol=1e-7):
+            return bc
+        e = Part.ArcOfCircle(bc.Curve, math.radians(t1), math.radians(t2)).toShape()
+        d = base.Position.RefDirection.DirectionRatios
+        v = FreeCAD.Vector(d[0], d[1], d[2] if len(d) > 2 else 0)
+        a = -DraftVecUtils.angle(v)
+        e.rotate(bc.Curve.Center, FreeCAD.Vector(0, 0, 1), math.degrees(a))
+        return e
+
+    def getTrimmedCurve(ent):
+        base = ent.BasisCurve
+        if base.is_a("IfcPolyline"):
+            return getPolyline(base)
+        elif base.is_a("IfcCircle"):
+            return getArc(ent)
+        else:
+            return None
+
+    def getCompositeCurve(ent):
+        result = []
+        for segm in ent.Segments:
+            base = segm.ParentCurve
+            if base.is_a("IfcPolyline"):
+                result.append(getPolyline(base))
+            elif base.is_a("IfcCircle"):
+                result.append(getArc(segm))
+            elif base.is_a("IfcTrimmedCurve"):
+                curve = getTrimmedCurve(base)
+                if curve is None:
+                    return []
+                result.append(curve)
+        return result
+
     def getCurveSet(ent):
         result = []
         if ent.is_a() in ["IfcGeometricCurveSet", "IfcGeometricSet"]:
@@ -855,35 +895,17 @@ def get2DShape(representation, scaling=1000, notext=False):
             elif el.is_a("IfcCircle"):
                 result.append(getCircle(el))
             elif el.is_a("IfcTrimmedCurve"):
-                base = el.BasisCurve
-                t1 = el.Trim1[0].wrappedValue
-                t2 = el.Trim2[0].wrappedValue
-                if not el.SenseAgreement:
-                    t1, t2 = t2, t1
-                if base.is_a("IfcPolyline"):
-                    bc = getPolyline(base)
-                    result.append(bc)
-                elif base.is_a("IfcCircle"):
-                    bc = getCircle(base)
-                    e = Part.ArcOfCircle(bc.Curve, math.radians(t1), math.radians(t2)).toShape()
-                    d = base.Position.RefDirection.DirectionRatios
-                    v = FreeCAD.Vector(d[0], d[1], d[2] if len(d) > 2 else 0)
-                    a = -DraftVecUtils.angle(v)
-                    e.rotate(bc.Curve.Center, FreeCAD.Vector(0, 0, 1), math.degrees(a))
-                    result.append(e)
+                curve = getTrimmedCurve(el)
+                if curve is None:
+                    print("getCurveSet: unhandled entity: ", el)
+                    return []
+                result.append(curve)
             elif el.is_a("IfcCompositeCurve"):
-                for base in el.Segments:
-                    if base.ParentCurve.is_a("IfcPolyline"):
-                        bc = getPolyline(base.ParentCurve)
-                        result.append(bc)
-                    elif base.ParentCurve.is_a("IfcCircle"):
-                        bc = getCircle(base.ParentCurve)
-                        e = Part.ArcOfCircle(bc.Curve, math.radians(t1), math.radians(t2)).toShape()
-                        d = base.Position.RefDirection.DirectionRatios
-                        v = FreeCAD.Vector(d[0], d[1], d[2] if len(d) > 2 else 0)
-                        a = -DraftVecUtils.angle(v)
-                        e.rotate(bc.Curve.Center, FreeCAD.Vector(0, 0, 1), math.degrees(a))
-                        result.append(e)
+                curves = getCompositeCurve(el)
+                if not curves:
+                    print("getCurveSet: unhandled entity: ", el)
+                    return []
+                result.extend(curves)
             elif el.is_a("IfcIndexedPolyCurve"):
                 coords = el.Points.CoordList
 
@@ -902,14 +924,16 @@ def get2DShape(representation, scaling=1000, notext=False):
                     verts = [v.multiply(scaling) for v in verts]
                     result.append(Part.makePolygon(verts))
                 else:
-                    for s in el.Segments:
-                        if s.is_a("IfcLineIndex"):
-                            result.append(Part.makePolygon(index2points(s)))
-                        elif s.is_a("IfcArcIndex"):
-                            [p1, p2, p3] = index2points(s)
+                    for segm in el.Segments:
+                        if segm.is_a("IfcLineIndex"):
+                            result.append(Part.makePolygon(index2points(segm)))
+                        elif segm.is_a("IfcArcIndex"):
+                            [p1, p2, p3] = index2points(segm)
                             result.append(Part.Arc(p1, p2, p3))
                         else:
-                            raise RuntimeError("Illegal IfcIndexedPolyCurve segment: " + s.is_a())
+                            raise RuntimeError(
+                                "Illegal IfcIndexedPolyCurve segment: " + segm.is_a()
+                            )
             else:
                 print("importIFCHelper.getCurveSet: unhandled element: ", el)
 
@@ -944,6 +968,7 @@ def get2DShape(representation, scaling=1000, notext=False):
                     # do not return because there might be more than one representation
                     # return []  # TODO dirty hack... Object creation should not be done here
     elif representation.is_a() in [
+        "IfcLine",
         "IfcPolyline",
         "IfcCircle",
         "IfcTrimmedCurve",
