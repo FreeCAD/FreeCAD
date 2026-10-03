@@ -190,7 +190,7 @@ class ObjectOp(PathOp.ObjectOp):
         self.areaOpSetDefaultValues(obj, job)
 
     def setParamsDebug(self, obj, prop, paramsTuples):
-        """setAreaParamsDebug(obj,prop, paramsTuples) ... set debug data
+        """setParamsDebug(obj,prop, paramsTuples) ... set debug data
         Save as string for legacy PropertyString or list of string for PropertyStringList"""
         valLst = [f"{k}: {v}" for k, v in paramsTuples]
         valStr = ", ".join(valLst)
@@ -260,6 +260,7 @@ class ObjectOp(PathOp.ObjectOp):
                 "ignoreAbove": obj.StartDepth.Value,
             }
             reverseOpenWire = False
+            zigzag = False
             oneStepDown = False
             middleEdge = False
             pocketCenter = False
@@ -317,8 +318,10 @@ class ObjectOp(PathOp.ObjectOp):
                         oneStepDown = True
                         rampParams["method"] = 0
                         rampParams["pitch"] = obj.StepDown.Value
-                if obj.CutMode == "Climb":
+                if obj.CutMode == "Climb" and obj.ClearingPattern in ("Grid", "Line"):
                     reverseOpenWire = True
+                if obj.ClearingPattern == "ZigZag":
+                    zigzag = True
 
             area = Path.Area()
             area.setPlane(PathUtils.makeWorkplane(shape))
@@ -372,16 +375,16 @@ class ObjectOp(PathOp.ObjectOp):
                 continue
             sortFrom = sh.CenterOfGravity if pocketCenter else self.endVector
             while wires:
-                if wires[0].isClosed():
+                if wires[0].isClosed() or zigzag:
                     v = Part.Vertex(sortFrom)
-                    wire = min(wires, key=lambda w: v.distToShape(w)[0])  # nearest closed wire
+                    wire = min(wires, key=lambda w: v.distToShape(w)[0])  # nearest wire
                     if middleEdge:
                         # get middle point of the longest edge from wire
                         longestEdge = max(wire.Edges, key=lambda edge: edge.Length)
                         start = longestEdge.discretize(3)[1]
                     else:
                         start = self.endVector
-                else:  # open wire (pocket ZigZag, Line, Grid)
+                else:  # open wire from pocket (Line or Grid)
                     iV = -1 if reverseOpenWire else 0
                     wire = min(wires, key=lambda w: (sortFrom - w.Vertexes[iV].Point).Length)
                     start = wire.Vertexes[iV].Point
