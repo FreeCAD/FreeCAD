@@ -129,6 +129,7 @@ public:
     static void initClass();
     SoFrameLabel();
     void setIcon(const QPixmap& pixMap);
+    void prepareImage(SoState* state);
 
     SoMFString string;
     SoSFColor textColor;
@@ -149,7 +150,6 @@ protected:
     void GLRender(SoGLRenderAction* action) override;
 
 private:
-    void prepareImage(SoState* state);
     void drawImage(const SbColor& effectiveBackground, const SbColor& effectiveText);
 
     bool imageDirty {true};
