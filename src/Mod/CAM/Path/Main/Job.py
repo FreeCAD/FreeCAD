@@ -1,25 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2014 Yorik van Havre <yorik@uncreated.net>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 from Path.Op.Util import getCycleTimeEstimate
 from Path.Post.Processor import PostProcessorFactory  # PostProcessor,
@@ -71,16 +69,14 @@ class JobTemplate:
 
 
 def isResourceClone(obj, propLink, resourceName):
-    if hasattr(propLink, "PathResource") and (
+    return hasattr(propLink, "PathResource") and (
         resourceName is None or resourceName == propLink.PathResource
-    ):
-        return True
-    return False
+    )
 
 
 def createResourceClone(obj, orig, name, icon):
     clone = Draft.clone(orig)
-    clone.Label = "%s-%s" % (name, orig.Label)
+    clone.Label = f"{name}-{orig.Label}"
     clone.addProperty("App::PropertyString", "PathResource")
     clone.PathResource = name
     if clone.ViewObject:
@@ -290,7 +286,7 @@ class ObjectJob:
         if dataType == "raw":
             return enums
 
-        data = list()
+        data = []
         idx = 0 if dataType == "translated" else 1
 
         Path.Log.debug(enums)
@@ -350,13 +346,16 @@ class ObjectJob:
         order across objects is not guaranteed, so the Job picks them up."""
         if not getattr(obj, "Workplanes", None) or not getattr(obj, "Operations", None):
             return
-        held = set(o.Name for o in obj.Workplanes.Group)
+        held = {o.Name for o in obj.Workplanes.Group}
         for op in obj.Operations.Group:
             workplane = getattr(op, "Workplane", None)
-            if workplane is not None and hasattr(workplane, "Placement"):
-                if workplane.Name not in held:
-                    obj.Workplanes.addObject(workplane)
-                    held.add(workplane.Name)
+            if (
+                workplane is not None
+                and hasattr(workplane, "Placement")
+                and workplane.Name not in held
+            ):
+                obj.Workplanes.addObject(workplane)
+                held.add(workplane.Name)
 
     def setupSetupSheet(self, obj):
         if not getattr(obj, "SetupSheet", None):
@@ -456,6 +455,12 @@ class ObjectJob:
     def modelBoundBox(self, obj):
         return PathStock.shapeBoundBox(obj.Model.Group)
 
+    def removeJob(self, obj):
+        """removeJob(obj) ... remove Job and child objects from document
+        To call from macro use: obj.Proxy.removeJob(obj)"""
+        self.onDelete(obj)
+        obj.Document.removeObject(obj.Name)
+
     def onDelete(self, obj, arg2=None):
         """Called by the view provider, there doesn't seem to be a callback on the obj itself."""
         Path.Log.track(obj.Label, arg2)
@@ -487,7 +492,7 @@ class ObjectJob:
         # base doesn't depend on anything inside job
         if getattr(obj, "Model", None):
             for base in obj.Model.Group:
-                Path.Log.debug("taking down base %s" % base.Label)
+                Path.Log.debug(f"taking down base {base.Label}")
                 self.removeBase(obj, base, False)
             obj.Model.Group = []
             doc.removeObject(obj.Model.Name)
@@ -527,24 +532,6 @@ class ObjectJob:
 
         return True
 
-    def fixupOperations(self, obj):
-        if getattr(obj.Operations, "ViewObject", None):
-            try:
-                obj.Operations.ViewObject.DisplayMode
-            except Exception:
-                name = obj.Operations.Name
-                label = obj.Operations.Label
-                ops = FreeCAD.ActiveDocument.addObject("Path::FeatureCompoundPython", "Operations")
-                ops.ViewObject.Proxy = 0
-                ops.Group = obj.Operations.Group
-                obj.Operations.Group = []
-                obj.Operations = ops
-                FreeCAD.ActiveDocument.removeObject(name)
-                if label == "Unnamed":
-                    ops.Label = "Operations"
-                else:
-                    ops.Label = label
-
     def ensureMachineProperty(self, obj):
         """Ensure the Machine property exists as a String.
         Migrates from Enumeration to String if needed (legacy documents)."""
@@ -568,7 +555,6 @@ class ObjectJob:
 
     def onDocumentRestored(self, obj):
         self.setupBaseModel(obj)
-        self.fixupOperations(obj)
         self.setupSetupSheet(obj)
 
         # Update PostProcessor enumeration to legacy-only posts
@@ -692,9 +678,12 @@ class ObjectJob:
 
     def baseObject(self, obj, base):
         """Return the base object, not its clone."""
-        if isResourceClone(obj, base, "Model") or isResourceClone(obj, base, "Base"):
-            if hasattr(base, "Objects") and base.Objects:
-                return base.Objects[0]
+        if (
+            (isResourceClone(obj, base, "Model") or isResourceClone(obj, base, "Base"))
+            and hasattr(base, "Objects")
+            and base.Objects
+        ):
+            return base.Objects[0]
         return base
 
     def baseObjects(self, obj):
@@ -770,7 +759,7 @@ class ObjectJob:
                 if attrs.get(JobTemplate.SplitOutput):
                     obj.SplitOutput = attrs.get(JobTemplate.SplitOutput)
 
-                Path.Log.debug("setting tool controllers (%d)" % len(tcs))
+                Path.Log.debug(f"setting tool controllers ({len(tcs)})")
                 if tcs:
                     obj.Tools.Group = tcs
             else:
@@ -816,7 +805,6 @@ class ObjectJob:
             if hasattr(obj, "Proxy") and obj.Proxy == self:
                 self.obj = obj
                 break
-        return None
 
     def execute(self, obj):
         if not obj.GeometryTolerance:
@@ -881,29 +869,21 @@ class ObjectJob:
         # returns the next available toolnumber in the job
         group = self.obj.Tools.Group
         if len(group) > 0:
-            return sorted([t.ToolNumber for t in group])[-1] + 1
+            return max(t.ToolNumber for t in group) + 1
         else:
             return 1
 
     def addToolController(self, tc):
         group = self.obj.Tools.Group
-        Path.Log.debug("addToolController(%s): %s" % (tc.Label, [t.Label for t in group]))
+        Path.Log.debug(f"addToolController({tc.Label}): {[t.Label for t in group]}")
         if tc.Name not in [str(t.Name) for t in group]:
             tc.setExpression(
                 "VertRapid",
-                "%s.%s"
-                % (
-                    self.obj.SetupSheet.Proxy.expressionReference(),
-                    PathSetupSheet.Template.VertRapid,
-                ),
+                f"{self.obj.SetupSheet.Proxy.expressionReference()}.{PathSetupSheet.Template.VertRapid}",
             )
             tc.setExpression(
                 "HorizRapid",
-                "%s.%s"
-                % (
-                    self.obj.SetupSheet.Proxy.expressionReference(),
-                    PathSetupSheet.Template.HorizRapid,
-                ),
+                f"{self.obj.SetupSheet.Proxy.expressionReference()}.{PathSetupSheet.Template.HorizRapid}",
             )
             self.obj.Tools.addObject(tc)
             Notification.updateTC.emit(self.obj, tc)
