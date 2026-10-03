@@ -1708,10 +1708,9 @@ bool GeometryUtils::isLine(const TopoDS_Edge& occEdge)
     double lenTotal = 0.0;
     for (int i = 0; i < high; i++) {
         gp_Pnt p1 = poles.At(i);
-        Base::Vector3d v1 = Base::convertTo<Base::Vector3d>(p1);
         gp_Pnt p2 = poles.At(i+1);
-        Base::Vector3d v2 = Base::convertTo<Base::Vector3d>(p2);
-        lenTotal += (v2-v1).Length();
+        auto v = Base::convertTo<Base::Vector3d>(p2.XYZ() - p1.XYZ());
+        lenTotal += v.Length();
     }
 
     return DrawUtil::fpCompare(lenTotal, endPointLength, EWTOLERANCE);
