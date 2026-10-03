@@ -15,6 +15,31 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Selection</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="selectionMode">
+       <item>
+        <property name="text">
+         <string>Open Thickness</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Closed Thickness</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <widget class="QToolButton" name="buttonRefSel">
      <property name="toolTip">
       <string>Toggles between selection and preview mode</string>
@@ -34,7 +59,20 @@
 - double-click on an item to see the features</string>
      </property>
      <property name="selectionMode">
-      <enum>QAbstractItemView::MultiSelection</enum>
+      <enum>QAbstractItemView::NoSelection</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="selectAllSolids">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="text">
+      <string>All solids</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -48,23 +86,23 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="Gui::QuantitySpinBox" name="Value">
-       <property name="keyboardTracking">
+      <widget class="Gui::QuantitySpinBox" name="Value" native="true">
+       <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
        <property name="unit" stdset="0">
         <string notr="true">mm</string>
        </property>
-       <property name="minimum">
+       <property name="minimum" stdset="0">
         <double>0.000000000000000</double>
        </property>
-       <property name="maximum">
+       <property name="maximum" stdset="0">
         <double>999999999.000000000000000</double>
        </property>
-       <property name="singleStep">
+       <property name="singleStep" stdset="0">
         <double>0.100000000000000</double>
        </property>
-       <property name="value">
+       <property name="value" stdset="0">
         <double>1.000000000000000</double>
        </property>
       </widget>
