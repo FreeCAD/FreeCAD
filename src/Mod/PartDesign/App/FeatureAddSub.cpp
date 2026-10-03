@@ -55,12 +55,12 @@ FeatureAddSub::FeatureAddSub()
 }
 
 
-FeatureAddSub::Type FeatureAddSub::getAddSubType()
+FeatureAddSub::Type FeatureAddSub::getAddSubType() const
 {
     return addSubType;
 }
 
-FeatureAddSub::BooleanOperation FeatureAddSub::getBooleanOperation()
+FeatureAddSub::BooleanOperation FeatureAddSub::getBooleanOperation() const
 {
     return booleanOperation;
 }
