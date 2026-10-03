@@ -44,6 +44,7 @@
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
 #include <Base/Tools.h>
+#include <Gui/CommandT.h>
 
 #include "Command.h"
 #include "Action.h"
@@ -740,22 +741,26 @@ void Command::rename(const std::string& name)
 
 void Command::commitCommand()
 {
+    Gui::ConstraintCommandQueue::emit();
     commitCommand(currentTransactionID);
     currentTransactionID = App::NullTransaction;
 }
 void Command::commitCommand(int tid)
 {
+    Gui::ConstraintCommandQueue::emit();
     if (tid != App::NullTransaction) {
         App::GetApplication().commitTransaction(tid);
     }
 }
 void Command::abortCommand()
 {
+    Gui::ConstraintCommandQueue::reset();
     abortCommand(currentTransactionID);
     currentTransactionID = App::NullTransaction;
 }
 void Command::abortCommand(int tid)
 {
+    Gui::ConstraintCommandQueue::reset();
     if (tid != App::NullTransaction) {
         App::GetApplication().abortTransaction(tid);
     }

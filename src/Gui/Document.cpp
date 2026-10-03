@@ -52,6 +52,7 @@
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 #include <Base/Tools.h>
+#include <Gui/CommandT.h>
 
 #include "Document.h"
 #include "DocumentPy.h"
@@ -2893,16 +2894,19 @@ Gui::MDIView* Document::getEditingViewOfViewProvider(Gui::ViewProvider* vp) cons
  */
 int Document::openCommand(const char* sName)
 {
+    Gui::ConstraintCommandQueue::setBuffering(true);
     return getDocument()->openTransaction(App::TransactionName {.name = sName, .temporary = false});
 }
 
 void Document::commitCommand()
 {
+    Gui::ConstraintCommandQueue::emit();
     getDocument()->commitTransaction();
 }
 
 void Document::abortCommand()
 {
+    Gui::ConstraintCommandQueue::reset();
     getDocument()->abortTransaction();
 }
 
