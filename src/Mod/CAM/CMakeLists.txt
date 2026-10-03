@@ -352,6 +352,7 @@ SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/dxf_post.py
     Path/Post/scripts/dynapath_legacy_post.py
     Path/Post/scripts/dynapath_4060_legacy_post.py
+    Path/Post/scripts/dynapath_post.py
     Path/Post/scripts/estlcam_legacy_post.py
     Path/Post/scripts/fablin_legacy_post.py
     Path/Post/scripts/fanuc_legacy_post.py
@@ -581,6 +582,8 @@ SET(Tests_SRCS
     CAMTests/TestCentroidLegacyPost.py
     CAMTests/TestCentroidPost.py
     CAMTests/TestDxfPost.py
+    CAMTests/TestDynapath4060Post.py
+    CAMTests/TestDynapathPost.py
     CAMTests/TestFanucLegacyPost.py
     CAMTests/TestFanucPost.py
     CAMTests/TestGenericPost.py

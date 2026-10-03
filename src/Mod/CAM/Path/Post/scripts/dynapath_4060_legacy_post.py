@@ -120,6 +120,7 @@ LINENR = 0  # Line number starting value.
 DWELL_TIME = 1  # Number of seconds to allow spindle to come up to speed.
 RETRACT_MODE = False
 QCYCLE_RANGE = (
+    "G74",
     "G81",
     "G82",
     "G83",
@@ -151,8 +152,9 @@ GCODE_MAP = {
     "G59": "E06",
 }
 
-# Create following variable for use with the 2nd reference plane.
-clearanceHeight = None
+# Dynapath requires an XYZ move after a tool change. Set when M6 is seen and
+# consumed by the first G0 Z move that follows it.
+XYZ_MOVE_PENDING = False
 
 
 def processArguments(argstring):
@@ -180,8 +182,6 @@ def processArguments(argstring):
         if args.no_show_editor:
             SHOW_EDITOR = False
             print("Show editor = %r" % (SHOW_EDITOR))
-        if args.precision is not None:
-            PRECISION = int(args.precision)
         if args.preamble is not None:
             PREAMBLE = args.preamble.replace("\\n", "\n")
         if args.postamble is not None:
@@ -191,6 +191,8 @@ def processArguments(argstring):
             UNIT_SPEED_FORMAT = "in/min"
             UNIT_FORMAT = "in"
             PRECISION = 3
+        if args.precision is not None:
+            PRECISION = int(args.precision)
         if args.modal:
             MODAL = True
             print("Command duplicates suppressed")
@@ -210,7 +212,9 @@ def export(objectslist, filename, argstring):
     global UNITS
     global UNIT_FORMAT
     global UNIT_SPEED_FORMAT
-    global clearanceHeight
+    global XYZ_MOVE_PENDING
+
+    XYZ_MOVE_PENDING = False
 
     for obj in objectslist:
         if not hasattr(obj, "Path"):
@@ -244,9 +248,6 @@ def export(objectslist, filename, argstring):
         # Skip inactive operations
         if not PathUtil.activeForOp(obj):
             continue
-
-        if hasattr(obj, "ClearanceHeight"):
-            clearanceHeight = obj.ClearanceHeight.Value
 
         # Fix fixture Offset label. Needed by Dynapath.
         if obj.Label in GCODE_MAP:
@@ -327,6 +328,12 @@ def linenumber():
     return ""
 
 
+def fmtLength(value):
+    """Format a length, given in mm as Path stores it, in the output units."""
+    pos = Units.Quantity(value, FreeCAD.Units.Length)
+    return format(float(pos.getValueAs(UNIT_FORMAT)), "." + str(PRECISION) + "f")
+
+
 def parse(pathobj):
     global PRECISION
     global MODAL
@@ -335,7 +342,7 @@ def parse(pathobj):
     global UNIT_SPEED_FORMAT
     global RETRACT_MODE
     global DWELL_TIME
-    global clearanceHeight
+    global XYZ_MOVE_PENDING
 
     lastX = 0
     lastY = 0
@@ -387,6 +394,12 @@ def parse(pathobj):
         for c in PostUtils.cannedCycleTerminator(PathUtils.getPathWithPlacement(pathobj)).Commands:
             outstring = []
             command = c.Name
+
+            # G98/G99, which the cycle terminator writes before each cycle group, are
+            # not used by Dynapath: the retract planes of a canned cycle are R and O.
+            if command in ("G98", "G99"):
+                continue
+
             # Convert G54-G59 Fixture offsets to E01-E06 for Dynapath Delta Control
             if command in GCODE_MAP:
                 command = GCODE_MAP[command]
@@ -447,37 +460,17 @@ def parse(pathobj):
                                     precision_string,
                                 )
                             )
-                    # Inserts "X0 Y0" in front of a G0 Z + clearanceHeight movement.
-                    # This fixes an error thrown by Dynapath due to missing and
-                    # required XYZ move after Tool change.
-                    elif param == "Z" and (
-                        c.Parameters["Z"] == clearanceHeight and command in ["G0", "G00"]
-                    ):
-                        x = 0
-                        y = 0
-                        outstring.insert(
-                            1,
-                            "X"
-                            + PostUtils.fmt(x, PRECISION, UNITS)
-                            + "Y"
-                            + PostUtils.fmt(y, PRECISION, UNITS),
-                        )
-                        outstring.append(param + PostUtils.fmt(c.Parameters["Z"], PRECISION, UNITS))
-                    elif param == "X" and (command in QCYCLE_RANGE):
-                        pos = Units.Quantity(c.Parameters["X"], FreeCAD.Units.Length)
-                        outstring.append(
-                            param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
-                        )
-                    elif param == "Y" and (command in QCYCLE_RANGE):
-                        pos = Units.Quantity(c.Parameters["Y"], FreeCAD.Units.Length)
-                        outstring.append(
-                            param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
-                        )
-                    # Remove X and Y between QCYCLE's since we already included them.
-                    # This is needed to prevent Path of inserting additional XY codes between
-                    # Canned cycle holes.
-                    elif lastcommand in QCYCLE_RANGE and (param == "X" or "Y"):
-                        outstring = []
+                    # Dynapath throws an error when no XYZ move follows a tool change.
+                    # The first rapid after M6 is the retract to clearance height; give
+                    # it X0 Y0 when it carries no XY of its own.
+                    elif param == "Z" and XYZ_MOVE_PENDING and command in ["G0", "G00"]:
+                        XYZ_MOVE_PENDING = False
+                        if "X" not in c.Parameters and "Y" not in c.Parameters:
+                            outstring.insert(1, "X" + fmtLength(0) + "Y" + fmtLength(0))
+                        outstring.append(param + fmtLength(c.Parameters["Z"]))
+                    # Every hole of a canned cycle carries its own XY, even with --axis-modal.
+                    elif param in ("X", "Y") and command in QCYCLE_RANGE:
+                        outstring.append(param + fmtLength(c.Parameters[param]))
                     elif param == "S":
                         SPINDLE_SPEED = c.Parameters["S"]
                         outstring.append(
@@ -493,13 +486,13 @@ def parse(pathobj):
                         i = c.Parameters["I"]
                         if ABSOLUTE_CIRCLE_CENTER:
                             i += lastX
-                            outstring.append(param + PostUtils.fmt(i, PRECISION, UNITS))
+                            outstring.append(param + fmtLength(i))
                     elif param == "J" and (command == "G2" or command == "G3"):
                         # Convert incremental arc center to absolute in I and J
                         j = c.Parameters["J"]
                         if ABSOLUTE_CIRCLE_CENTER:
                             j += lastY
-                            outstring.append(param + PostUtils.fmt(j, PRECISION, UNITS))
+                            outstring.append(param + fmtLength(j))
                     elif param == "K" and (command == "G2" or command == "G3"):
                         # Convert incremental arc center to absolute in K (Z axis arc)
                         k = c.Parameters["K"]
@@ -508,26 +501,20 @@ def parse(pathobj):
                         if command == (
                             "G18" or "G19"
                         ):  # Dynapath supports G18/G19 for Z axis arcs in Y or X.
-                            outstring.append(param + PostUtils.fmt(k, PRECISION, UNITS))
+                            outstring.append(param + fmtLength(k))
                     # Converts "Q" to "K" as needed by Dynapath.
                     elif param == "Q":
-                        pos = Units.Quantity(c.Parameters["Q"], FreeCAD.Units.Length)
-                        outstring.append(
-                            "K" + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
-                        )
+                        outstring.append("K" + fmtLength(c.Parameters["Q"]))
                     # Following inserts a 2nd reference plane in all canned cycles (dynapath).
                     # This provides the ability to manually go in and bump up the "O" offset in
                     # order to avoid obstacles. The "O" overrides "R", so set them both equal if you
                     # don't need the 2nd reference plane.
                     elif (param == "R") and ((command in QCYCLE_RANGE)):
-                        pos = Units.Quantity(pathobj.ClearanceHeight.Value, FreeCAD.Units.Length)
                         outstring.insert(
-                            6,
-                            "O" + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string),
+                            6, "O" + fmtLength(pathobj.ClearanceHeight.Value)
                         )  # Insert "O" param for 2nd reference plane (Clearance Height)
-                        pos = Units.Quantity(c.Parameters["R"], FreeCAD.Units.Length)
                         outstring.append(
-                            param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
+                            param + fmtLength(c.Parameters["R"])
                         )  # First Reference plan (Safe Height)
                     elif param == "P":
                         outstring.append(
@@ -541,10 +528,7 @@ def parse(pathobj):
                         ):
                             continue
                         else:
-                            pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
-                            outstring.append(
-                                param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
-                            )
+                            outstring.append(param + fmtLength(c.Parameters[param]))
             # save the last X, Y values
             if "X" in c.Parameters:
                 lastX = c.Parameters["X"]
@@ -557,19 +541,18 @@ def parse(pathobj):
             lastcommand = command
             currLocation.update(c.Parameters)
 
-            # Check for Tool Change:
+            # Check for Tool Change: stop the spindle first, and require an XYZ move after.
             if command == "M6":
                 if OUTPUT_COMMENTS:
                     out += linenumber() + "(T)" + "BEGIN TOOLCHANGE$\n"
+                out += linenumber() + "M05\n"
+                XYZ_MOVE_PENDING = True
 
             if command == "message":
                 if OUTPUT_COMMENTS is False:
                     out = []
                 else:
                     outstring.pop(0)  # remove the command
-            # G98 is not used by dynapath and G99 is not used in Drilling/Boring/Tapping.
-            if c.Name == "G98" or (c.Name == "G99" and pathobj.Label == "Drilling"):
-                outstring = []
 
             # prepend a line number and append a newline
             if len(outstring) >= 1:
