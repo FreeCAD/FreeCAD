@@ -1848,6 +1848,14 @@ void DrawViewDimension::setReferences2d(const ReferenceVector& refsAll)
         subNames.push_back(ref.getSubName());
     }
 
+    // Autocorrect calls this with the reference that is already stored.
+    // PropertyLinkSubList::setValues signals even then, which marks the
+    // document modified.
+    if (objects == References2D.getValues() && subNames == References2D.getSubValues()) {
+        m_referencesCorrect = true;
+        return;
+    }
+
     References2D.setValues(objects, subNames);
     m_referencesCorrect = true;
 }
@@ -1880,6 +1888,11 @@ void DrawViewDimension::setReferences3d(const ReferenceVector &refsAll)
         if (firstParent) {
             m_3dObjectCache.insert(firstParent->getNameInDocument());
         }
+    }
+
+    if (objects == References3D.getValues() && subNames == References3D.getSubValues()) {
+        m_referencesCorrect = true;
+        return;
     }
 
     References3D.setValues(objects, subNames);

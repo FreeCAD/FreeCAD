@@ -1561,6 +1561,7 @@ void PropertyLinkSub::setPyObject(PyObject* value)
     }
 }
 
+template<typename AboutToSet>
 static bool updateLinkReference(App::PropertyLinkBase* prop,
                                 App::DocumentObject* feature,
                                 bool reverse,
@@ -1568,7 +1569,8 @@ static bool updateLinkReference(App::PropertyLinkBase* prop,
                                 App::DocumentObject* link,
                                 std::vector<std::string>& subs,
                                 std::vector<int>& mapped,
-                                std::vector<PropertyLinkBase::ShadowSub>& shadows)
+                                std::vector<PropertyLinkBase::ShadowSub>& shadows,
+                                AboutToSet aboutToSet)
 {
     if (!feature) {
         shadows.clear();
@@ -1582,15 +1584,15 @@ static bool updateLinkReference(App::PropertyLinkBase* prop,
     if (owner && owner->isRestoring()) {
         return false;
     }
+    // Opening a document refreshes element-map shadows. That refresh often
+    // stores the same subname. Signaling it marks the document modified, so
+    // closing a drawing you did not edit asks you to save.
+    const std::vector<std::string> subsBefore = subs;
+    const std::vector<PropertyLinkBase::ShadowSub> shadowsBefore = shadows;
     int i = 0;
     bool touched = false;
     for (auto& sub : subs) {
-        if (prop->_updateElementReference(feature,
-                                          link,
-                                          sub,
-                                          shadows[i++],
-                                          reverse,
-                                          notify && !touched)) {
+        if (prop->_updateElementReference(feature, link, sub, shadows[i++], reverse, false)) {
             touched = true;
         }
     }
@@ -1603,10 +1605,21 @@ static bool updateLinkReference(App::PropertyLinkBase* prop,
         }
     }
     mapped.clear();
+    const bool subsChanged = subs != subsBefore;
+    if (notify && subsChanged) {
+        // Snapshot the pre-change value for undo, then put the new names back.
+        std::vector<std::string> subsAfter = std::move(subs);
+        std::vector<PropertyLinkBase::ShadowSub> shadowsAfter = std::move(shadows);
+        subs = subsBefore;
+        shadows = shadowsBefore;
+        aboutToSet();
+        subs = std::move(subsAfter);
+        shadows = std::move(shadowsAfter);
+    }
     if (owner && feature) {
         owner->onUpdateElementReference(prop);
     }
-    return true;
+    return subsChanged;
 }
 
 void PropertyLinkSub::afterRestore()
@@ -1641,7 +1654,10 @@ void PropertyLinkSub::updateElementReference(DocumentObject* feature, bool rever
                              _pcLinkSub,
                              _cSubList,
                              _mapped,
-                             _ShadowSubList)) {
+                             _ShadowSubList,
+                             [&]() {
+                                 aboutToSetValue();
+                             })) {
         return;
     }
     if (notify) {
@@ -2807,16 +2823,16 @@ void PropertyLinkSubList::updateElementReference(DocumentObject* feature, bool r
     if (owner && owner->isRestoring()) {
         return;
     }
+    // Same as updateLinkReference: a shadow refresh that keeps the stored
+    // subname must not announce a change. TechDraw writes SavedGeometry from
+    // that announcement, and the Gui document is then marked modified on open.
+    const std::vector<std::string> subsBefore = _lSubList;
+    const std::vector<ShadowSub> shadowsBefore = _ShadowSubList;
     int i = 0;
     bool touched = false;
     for (auto& sub : _lSubList) {
         auto obj = _lValueList[i];
-        if (_updateElementReference(feature,
-                                    obj,
-                                    sub,
-                                    _ShadowSubList[i++],
-                                    reverse,
-                                    notify && !touched)) {
+        if (_updateElementReference(feature, obj, sub, _ShadowSubList[i++], reverse, false)) {
             touched = true;
         }
     }
@@ -2837,10 +2853,20 @@ void PropertyLinkSubList::updateElementReference(DocumentObject* feature, bool r
         }
     }
     _mapped.swap(mapped);
+    const bool subsChanged = _lSubList != subsBefore;
+    if (notify && subsChanged) {
+        std::vector<std::string> subsAfter = std::move(_lSubList);
+        std::vector<ShadowSub> shadowsAfter = std::move(_ShadowSubList);
+        _lSubList = subsBefore;
+        _ShadowSubList = shadowsBefore;
+        aboutToSetValue();
+        _lSubList = std::move(subsAfter);
+        _ShadowSubList = std::move(shadowsAfter);
+    }
     if (owner && feature) {
         owner->onUpdateElementReference(this);
     }
-    if (notify) {
+    if (notify && subsChanged) {
         hasSetValue();
     }
 }
@@ -4170,7 +4196,10 @@ void PropertyXLink::updateElementReference(DocumentObject* feature, bool reverse
                              _pcLink,
                              _SubList,
                              _mapped,
-                             _ShadowSubList)) {
+                             _ShadowSubList,
+                             [&]() {
+                                 aboutToSetValue();
+                             })) {
         return;
     }
     if (notify) {

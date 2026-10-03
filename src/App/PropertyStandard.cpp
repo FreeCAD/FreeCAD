@@ -2322,6 +2322,11 @@ PropertyBool::~PropertyBool() = default;
 
 void PropertyBool::setValue(bool lValue)
 {
+    // An unchanged value must not signal. hasSetValue marks the document modified.
+    if (_lValue == lValue) {
+        return;
+    }
+
     aboutToSetValue();
     _lValue = lValue;
     hasSetValue();
@@ -2380,9 +2385,7 @@ Property* PropertyBool::Copy() const
 
 void PropertyBool::Paste(const Property& from)
 {
-    aboutToSetValue();
-    _lValue = dynamic_cast<const PropertyBool&>(from)._lValue;
-    hasSetValue();
+    setValue(dynamic_cast<const PropertyBool&>(from)._lValue);
 }
 
 void PropertyBool::setPathValue(const ObjectIdentifier& path, const boost::any& value)
