@@ -2819,6 +2819,10 @@ bool SketchObject::convertToNURBS(int GeoId)
     if (geo->is<Part::GeomPoint>())
         return false;
 
+    // Converting a B-spline again would only strip its internal alignment constraints.
+    if (geo->is<Part::GeomBSplineCurve>())
+        return true;
+
     const auto* geo1 = static_cast<const Part::GeomCurve*>(geo);
 
     Part::GeomBSplineCurve* bspline;
