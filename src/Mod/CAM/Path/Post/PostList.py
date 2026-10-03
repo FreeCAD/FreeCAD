@@ -19,7 +19,7 @@
 ################################################################################
 
 import re
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Any, List, Optional, Tuple
 
 import Path
@@ -410,91 +410,146 @@ def buildPostList(processor: Any) -> List[Tuple[str, List]]:
     else:
         final_postlist = [("allitems", [item for sublist in postlist for item in sublist[1]])]
 
-    # Apply early_tool_prep if configured on the machine
-    early_tool_prep = False
-    if (
-        hasattr(processor, "_machine")
-        and processor._machine
-        and hasattr(processor._machine, "processing")
-    ):
-        early_tool_prep = getattr(processor._machine.processing, "early_tool_prep", False)
+    # Apply tool change formatting / early tool prep / tool prep assertion
+    processing = getattr(processor._machine, "processing", None)
 
-    if early_tool_prep:
-        return apply_early_tool_prep(final_postlist)
-    return final_postlist
+    tool_change_format = getattr(getattr(processing, "tool_change_format", None), "value", "m6_t")
+    early_tool_prep = bool(getattr(processing, "early_tool_prep", False))
+    assert_tool_prep = bool(getattr(processing, "assert_tool_prep", False))
+
+    return apply_tool_change_format(
+        final_postlist, tool_change_format, early_tool_prep, assert_tool_prep
+    )
 
 
-def apply_early_tool_prep(postlist: List[Tuple[str, List]]) -> List[Tuple[str, List]]:
+def _t_command_postable(tool_number) -> Postable:
+    """Standalone 'T<n>' command item."""
+    return Postable(
+        item_type="command",
+        label="Command",
+        path=Path.Path([Path.Command(f"T{int(tool_number)}")]),
+        source=None,
+    )
+
+
+def _ends_with_t(item: Postable, tool_number) -> bool:
+    """True if the item's last command is already 'T<tool_number>'."""
+    cmds = item.path.Commands if item.path else []
+    return bool(cmds) and cmds[-1].Name == f"T{int(tool_number)}"
+
+
+def apply_tool_change_format(
+    postlist: List[Tuple[str, List]],
+    tool_change_format: str = "m6_t",
+    early_tool_prep: bool = False,
+    assert_tool_prep: bool = False,
+) -> List[Tuple[str, List]]:
     """
-    Apply early tool preparation optimization to the postlist.
+    Rewrite tool change items according to the machine's tool change settings.
 
-    This function modifies tool change commands to enable early tool preparation:
-    - Always outputs tool changes as "Tn M6" (tool number followed by change command)
-    - Additionally emits standalone "Tn" prep commands immediately after the previous M6
-      to allow the machine to prepare the next tool while the current tool is working
+    tool_change_format (ToolChangeFormat value), applied when the G-code is written:
+        "m6_t"            M6 T4          (tool change to T4)
+        "t_m6"            T4 M6          (tool change to T4)
+        "m6_t_early_prep" M6 T6          (M6 changes to the prepped tool, T6 preps the NEXT tool)
+        "m6_only"         M6             (no T parameter. T parameter may be written by early tool prep)
+        "no_tool_change"                 (No T or M parameters written)
 
-    Example output:
-        T4 M6      <- change to tool 4
-        T5         <- prep tool 5 early (while T4 is working)
-        <gcode>    <- operations with T4
-        T5 M6      <- change to tool 5 (already prepped)
-        T7         <- prep tool 7 early (while T5 is working)
-        <gcode>    <- operations with T5
-        T7 M6      <- change to tool 7 (already prepped)
+    The M6 command itself always keeps T<current tool>; the layout is stored in its
+    annotations ("tool_change_format", "next_tool").
+
+    early_tool_prep:
+        For formats other than "m6_t_early_prep", a standalone "T<next>" is emitted after
+        each tool change so the machine can prep the next tool while the current one cuts.
+        For "m6_t_early_prep" the next tool prep is part of the M6 line, and the first tool
+        of each output group is prepped with a standalone "T<n>" before its M6.
+
+    assert_tool_prep (only active with early_tool_prep):
+        A "T<n>" is written immediately before every M6
+        Useful when starting partway through the file.
+
+    Redundant consecutive T commands for the same tool are never written. Example with
+    early prep + assert, format "m6_only":
+        T4          <- prep / assert
+        M6
+        T6          <- prep next tool
+        (gcode)
+        T6          <- assert
+        M6
     """
-    # Collect all tool controllers across all groups to find the next tool
-    all_tool_controllers = []
-    for group_idx, (name, sublist) in enumerate(postlist):
-        for item_idx, item in enumerate(sublist):
-            if item.item_type == "tool_controller":
-                all_tool_controllers.append((group_idx, item_idx, item))
+    use_early = early_tool_prep
+    use_assert = early_tool_prep and assert_tool_prep
+    early_tool_change_fmt = tool_change_format == "m6_t_early_prep"
+    no_tool_change = tool_change_format == "no_tool_change"
+
+    # Flatten tool controllers across all groups so "next tool" can cross group boundaries.
+    all_tcs = [
+        (g, i)
+        for g, (_, sub) in enumerate(postlist)
+        for i, item in enumerate(sub)
+        if item.item_type == "tool_controller"
+    ]
+    next_lookup = {}
+    for pos, key in enumerate(all_tcs):
+        if pos + 1 < len(all_tcs):
+            ng, ni = all_tcs[pos + 1]
+            next_lookup[key] = postlist[ng][1][ni].data.get("tool_number")
+
+    def add_tool(new_sublist: list, tool_number) -> None:
+        if tool_number is None:
+            return
+        if new_sublist and _ends_with_t(new_sublist[-1], tool_number):
+            return  # redundant, same T directly before
+        new_sublist.append(_t_command_postable(tool_number))
 
     new_postlist = []
-    for group_idx, (name, sublist) in enumerate(postlist):
-        new_sublist = []
-        i = 0
-        while i < len(sublist):
-            item = sublist[i]
-            if item.item_type == "tool_controller":
-                m6_cmd = None
-                for cmd in item.path.Commands:
-                    if cmd.Name == "M6":
-                        m6_cmd = cmd
-                        break
 
-                if m6_cmd and len(m6_cmd.Parameters) > 0:
-                    tc_position = next(
-                        (
-                            idx
-                            for idx, (g_idx, i_idx, tc) in enumerate(all_tool_controllers)
-                            if g_idx == group_idx and i_idx == i
-                        ),
-                        None,
-                    )
-
-                    next_tc = (
-                        all_tool_controllers[tc_position + 1][2]
-                        if tc_position is not None and tc_position + 1 < len(all_tool_controllers)
-                        else None
-                    )
-
-                    new_sublist.append(item)
-
-                    if next_tc is not None:
-                        next_tool_number = next_tc.data["tool_number"]
-                        prep_cmd = Path.Command(f"T{next_tool_number}")
-                        new_sublist.append(
-                            Postable(
-                                item_type="command",
-                                label="Command",
-                                path=Path.Path([prep_cmd]),
-                                source=None,
-                            )
-                        )
-                else:
-                    new_sublist.append(item)
-            else:
+    for g, (name, sublist) in enumerate(postlist):
+        new_sublist: list = []
+        first_in_group = True
+        for i, item in enumerate(sublist):
+            if item.item_type != "tool_controller":
                 new_sublist.append(item)
-            i += 1
+                continue
+
+            cmds = list(item.path.Commands)
+            m6_idx = next((k for k, c in enumerate(cmds) if c.Name == "M6"), None)
+            tool_number = item.data.get("tool_number")
+            if m6_idx is None or tool_number is None:
+                new_sublist.append(item)
+                continue
+
+            next_tool = next_lookup.get((g, i))
+
+            # Formats whose M6 line does not name the tool being changed to need the first
+            # tool of each output group prepped explicitly.
+            needs_initial_prep = first_in_group and (
+                early_tool_change_fmt or (use_early and tool_change_format == "m6_only")
+            )
+            if (needs_initial_prep or use_assert) and not no_tool_change and tool_change_format != "t_m6":
+                # format already leads with this T
+                add_tool(new_sublist, tool_number)
+
+            # The M6 keeps T<current tool> so everything downstream that reads
+            # Parameters["T"] (G43 TLO, tool tracking) keeps working. The requested layout
+            # is an annotations that is applied when the G-code text is written in
+            # Processor._convert_tool_change.
+            annotations = {"tool_change_format": tool_change_format}
+            if next_tool is not None:
+                annotations["next_tool"] = str(int(next_tool))
+            new_m6 = [Path.Command("M6", {"T": int(tool_number)}, annotations)]
+
+            cmds[m6_idx : m6_idx + 1] = new_m6
+            new_sublist.append(replace(item, path=Path.Path(cmds)))
+
+            # Prep for next tool
+            if (
+                use_early
+                and not early_tool_change_fmt
+                and not no_tool_change
+                and next_tool is not None
+            ):
+                new_sublist.append(_t_command_postable(next_tool))
+
+            first_in_group = False
         new_postlist.append((name, new_sublist))
     return new_postlist

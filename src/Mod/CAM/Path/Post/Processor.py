@@ -710,7 +710,7 @@ class PostProcessor:
                 "name": "tool_change",
                 "scope": SCOPE_JOB,
                 "type": "bool",
-                "label": translate("CAM", "Allow tool-change"),
+                "label": translate("CAM", "Allow tool-change (Depreciated)"),
                 "default": True,
                 "help": translate(
                     "CAM",
@@ -1891,7 +1891,10 @@ class PostProcessor:
 
         def prepend(section_name, item, section_state):
             if item.item_type == "tool_controller":
-                if not self.values["TOOL_CHANGE"]:
+                machine = getattr(self, "_machine", None)
+                processing = getattr(machine, "processing", None)
+                tool_change_format = getattr(processing, "tool_change_format", None)
+                if getattr(tool_change_format, "value", None) == "no_tool_change":
                     tool_num = item.data["tool_number"]
                     return (
                         -1,
@@ -2373,33 +2376,6 @@ class PostProcessor:
 
         self._edit_item_list(postables, wrap_rotary)
 
-    def _suppress_tool_change(self, postables):
-        """Suppress M6 if not TOOL_CHANGE"""
-
-        def suppress_m6(section_name: str, item, section_state: dict):
-            """We edit-in-place it with a comment"""
-
-            if item.Path:
-                locations = any(c.Name in ("M6", "M06") for c in item.Path.Commands)
-                if locations:
-                    new_commands = []
-                    for cmd in item.Path.Commands:
-                        if cmd.Name in ("M6", "M06"):
-                            new_commands.append(
-                                Path.Command(f"(Tool change suppressed: {cmd.toGCode()})")
-                            )
-                        else:
-                            new_commands.append(cmd)
-                    item.Path = Path.Path(new_commands)
-                return None, None
-            else:
-                return None, None
-
-        if self.values["TOOL_CHANGE"]:
-            return  # no suppress
-
-        self._edit_item_list(postables, suppress_m6)
-
     def _convert_item_commands(self, item, gcode_lines) -> None:
         """Convert Path.Commands to G-code strings for a single item.
 
@@ -2877,7 +2853,6 @@ class PostProcessor:
         self._expand_xy_before_z(postables)
         self._expand_bcnc_commands(postables)
         self._expand_tool_change(postables)
-        self._suppress_tool_change(postables)
 
         postables = self._expand_post_item(postables)
         self._expand_trailing_lines(postables)
@@ -3164,6 +3139,7 @@ class PostProcessor:
             self._sanity_spindle_speed,
             self._rotation_sanity_checks,
             self._fixture_sanity_checks,
+            self._tool_change_sanity_checks,
         ]
 
     def _sanity_spindle_speed(self, job):
@@ -3296,6 +3272,65 @@ class PostProcessor:
                 ).format(machine=machine.name),
             )
         ]
+
+    def _tool_change_sanity_checks(self, job):
+        """Warns:
+        if early tool prep and T# M6 are both enabled as that is likely
+        a mistake. The T# will likely force a tool change to the wrong tool
+
+        if assert tool prep is on but early tool prep is off as assert early tool
+        prep will do nothing in this instance.
+        """
+        squawks = []
+        machine = getattr(self, "_machine", None)
+        processing = getattr(machine, "processing", None)
+        if processing is None:
+            return squawks
+        tool_change_format = getattr(processing, "tool_change_format", None)
+        if getattr(tool_change_format, "value", None) == "t_m6" and getattr(
+            processing, "early_tool_prep", False
+        ):
+            squawks.append(
+                self._create_squawk(
+                    "WARNING",
+                    translate(
+                        "CAM",
+                        "'T# M6' tool change and early "
+                        "tool prep are both enabled. Depending on the machine this may cause the "
+                        "wrong tool to be loaded",
+                    ).format(machine=machine.name),
+                )
+            )
+        if getattr(processing, "assert_tool_prep", False) and not getattr(
+            processing, "early_tool_prep", False
+        ):
+            squawks.append(
+                self._create_squawk(
+                    "WARNING",
+                    translate(
+                        "CAM",
+                        "Machine '{machine}' uses Assert Tool Prep without Early Tool Prep. "
+                        "No tool prep commands will be written",
+                    ).format(machine=machine.name),
+                )
+            )
+        print(self.values["TOOL_CHANGE"])
+        if (
+            getattr(processing, "tool_change", True) == False or self.values["TOOL_CHANGE"] == False
+        ) and getattr(tool_change_format, "value", None) != "no_tool_change":
+            squawks.append(
+                self._create_squawk(
+                    "WARNING",
+                    translate(
+                        "CAM",
+                        "Machine '{machine}' tries to turn off Tool Changes with "
+                        "Tool Change in options or Allow Tool change under post processor. "
+                        "Use Tool Change Format under the Options tab instead.",
+                    ).format(machine=machine.name),
+                )
+            )
+
+        return squawks
 
     def _fixture_sanity_checks(self, job):
         """Warn about a work plane's Fixture before the post refuses it, and
@@ -3854,13 +3889,49 @@ class PostProcessor:
         """
         return self._convert_move(command)
 
+    def _format_tool_change(self, command: Path.Command, tool_change_format: str) -> str:
+        """Write tool changes according to the machine's tool_change_format.
+        m6_t             M6 T4   (T is the current tool)
+        t_m6             T4 M6   (T is the current tool)
+        m6_t_early_prep  M6 T6   (T is the NEXT tool; should be used with early tool prep)
+        m6_only          M6      (No T written. early tool prep will add a T before this line)
+        no_tool_change   (Tool change suppressed: M6 T4)
+        """
+        tool = command.Parameters.get("T")
+        params = {k: v for k, v in command.Parameters.items() if k != "T"}
+        annotations = command.Annotations
+
+        if tool_change_format == "no_tool_change":
+            text = "M6" if tool is None else f"M6 T{int(tool)}"
+            return self._convert_comment(Path.Command(f"(Tool change suppressed: {text})"))
+
+        if tool_change_format == "t_m6":
+            prefix = f"T{int(tool)} " if tool is not None else ""
+            return prefix + self._convert_move(Path.Command(command.Name, params, annotations))
+
+        if tool_change_format == "m6_t_early_prep":
+            next_tool = annotations.get("next_tool")
+            if next_tool not in (None, ""):
+                params["T"] = int(next_tool)
+            return self._convert_move(Path.Command(command.Name, params, annotations))
+
+        if tool_change_format == "m6_only":
+            return self._convert_move(Path.Command(command.Name, params, annotations))
+
+        return self._convert_move(command)  # "m6_t" and anything unrecognised
+
     def _convert_tool_change(self, command: Path.Command) -> str:
         """
         Converts a tool change command to gcode.
 
         This method can be overridden by derived postprocessors to customize tool change handling.
         """
-        result = self._convert_move(command)
+        tool_change_format = command.Annotations.get("tool_change_format")
+        if tool_change_format is not None:
+            result = self._format_tool_change(command, tool_change_format)
+        else:
+            result = self._convert_move(command)
+
         # Reset modal state after tool change so that subsequent commands
         # (M3 S..., G4 P..., G0 X... etc.) are not suppressed as duplicates.
         self.machine_state.setState(None)
