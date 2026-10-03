@@ -915,10 +915,10 @@ void QuantitySpinBox::stepBy(int steps)
 
     const double displayScale = steppingUnit.getScale().getValue();
     const double displayedValue = base.getValue() / displayScale;
-    
+
     // Apply the modified step size
     const double steppedValue = displayedValue + steps * currentStep;
-    
+
     Quantity quant(steppedValue * displayScale, steppingUnit.getUnit());
     commitQuantity(quant, TextPolicy::ReformatEditor, true);
     update();
