@@ -103,4 +103,5 @@ FreeCAD.__unit_test__ += [
     "TestCornerAxisCrossVisual",
     "TestCoinNodeSnapshots",
     "TestViewProviderLink",
+    "TestLayerWidget",
 ]

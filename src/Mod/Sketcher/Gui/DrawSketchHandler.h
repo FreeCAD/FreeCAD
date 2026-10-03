@@ -196,6 +196,13 @@ public:
         return false;
     }
 
+    /// Whether the tool adds geometry to the active layer, so that it cannot run while that
+    /// layer is locked. Tools that only constrain or modify existing geometry do not.
+    virtual bool addsToActiveLayer() const
+    {
+        return false;
+    }
+
     std::list<Gui::InputHint> getToolHints() const override
     {
         return {};

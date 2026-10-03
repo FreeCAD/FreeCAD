@@ -174,7 +174,7 @@ private:
     long Id;
     InternalType::InternalType InternalGeometryType;
     GeometryModeFlagType GeometryModeFlags;
-    int GeometryLayer;
+    int GeometryLayer;  // -1 until explicitly assigned or inserted into a sketch.
 
 private:
     static std::atomic<long> _GeometryID;
