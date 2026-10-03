@@ -664,11 +664,21 @@ public:
         std::vector<int>& GeoIdList,
         std::vector<PointPos>& PosIdList
     ) const;
-    void getDirectlyCoincidentPoints(
-        const int GeoId1,
-        const int GeoId2,
+
+    /// Returns two synced lists of all the geometries connecting GeoId1 and GeoId2.
+    /// GeoIds3 will only contain the GeoId1, except using verticesOnly = true, in which case it
+    /// could be GeoId2 for some entries.
+    /// If includePointOnObject == false, it'll only include Coincident constraint, so the output
+    /// will automatically only be vertices.
+    /// If PointOnObject constraints are included, the output can contain edges, use verticesOnly =
+    /// true to return the vertex connected to the edge instead of the edge itself
+    int getDirectlyCoincidentPoints(
+        int GeoId1,
+        int GeoId2,
         std::vector<int>& GeoIds3,
-        std::vector<PointPos>& PosIds3
+        std::vector<PointPos>& PosIds3,
+        bool includePointOnObject = false,
+        bool verticesOnly = false
     ) const;
     bool arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2);
 
