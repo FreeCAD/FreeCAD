@@ -907,9 +907,18 @@ void QuantitySpinBox::stepBy(int steps)
     const App::QuantityInputUnit steppingUnit {base.getUnit(), displaySymbol.toStdString()};
     Q_UNUSED(displayFactor);
 
+    // Check for the Shift modifier to apply a 1/10th step size
+    double currentStep = d->singleStep;
+    if (QGuiApplication::keyboardModifiers() & Qt::ShiftModifier) {
+        currentStep = d->singleStep / 10.0;
+    }
+
     const double displayScale = steppingUnit.getScale().getValue();
     const double displayedValue = base.getValue() / displayScale;
-    const double steppedValue = displayedValue + steps * d->singleStep;
+    
+    // Apply the modified step size
+    const double steppedValue = displayedValue + steps * currentStep;
+    
     Quantity quant(steppedValue * displayScale, steppingUnit.getUnit());
     commitQuantity(quant, TextPolicy::ReformatEditor, true);
     update();
