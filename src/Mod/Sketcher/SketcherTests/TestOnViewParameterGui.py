@@ -59,7 +59,7 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
 
     def key_text(self, widget, text):
         for ch in text:
-            self.key_click(widget, self.KEYS[ch], ch)
+            self.key_click(widget, self.KEYS.get(ch, ord(ch.upper())), ch)
 
     def cancel_drawing_tool(self, viewport):
         viewport.setFocus()
@@ -83,8 +83,12 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
             if spinbox.isVisible()
         ]
 
+    def visible_ovp_spinboxes(self):
+        QtCore.QCoreApplication.sendPostedEvents(None, QtCore.QEvent.DeferredDelete)
+        return [spin for spin in self.visible_spinboxes() if self.ovp_lock_icon(spin) is not None]
+
     def ovp_spinboxes(self):
-        spinboxes = self.visible_spinboxes()
+        spinboxes = self.visible_ovp_spinboxes()
         self.assertEqual(len(spinboxes), 2, "Expected exactly two visible rectangle OVPs")
         return spinboxes
 
@@ -122,7 +126,9 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
         self.assert_sketch_edit_active()
         self.assertIsNotNone(self.active_task_dialog(), "Expected the Sketcher task dialog to open")
 
-    def begin_rectangle_with_visible_ovp(self):
+    def begin_rectangle_with_visible_ovp(
+        self, command="Sketcher_CreateRectangle", first_click=True, mode=None
+    ):
         self.begin_sketch_edit_with_task_dialog()
 
         view = FreeCADGui.ActiveDocument.ActiveView
@@ -159,8 +165,17 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
             self.assertIsNotNone(origin_point)
             return origin_point
 
-        FreeCADGui.runCommand("Sketcher_CreateRectangle")
+        FreeCADGui.runCommand(command)
         self.pump(250)
+        if mode is not None:
+            combos = [
+                combo
+                for combo in FreeCADGui.getMainWindow().findChildren(QtGui.QComboBox)
+                if combo.isVisible() and combo.findText(mode) >= 0
+            ]
+            self.assertEqual(len(combos), 1)
+            combos[0].setCurrentIndex(combos[0].findText(mode))
+            self.pump(100)
 
         origin_point = wait_for_origin_point()
         first_point = self.clamp_to_widget(
@@ -174,12 +189,13 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
         )
 
         self.move(viewport, first_point)
-        self.click(viewport, first_point)
+        if first_click:
+            self.click(viewport, first_point)
         self.move(viewport, move_target)
 
         self.assertTrue(
-            self.wait_until(lambda: len(self.visible_spinboxes()) == 2, timeout_ms=1000),
-            "Expected the rectangle OVPs to become visible after the first click",
+            self.wait_until(lambda: len(self.visible_ovp_spinboxes()) == 2, timeout_ms=1000),
+            "Expected two OVPs to become visible after the first click",
         )
         self.ovp_spinboxes()
 
@@ -620,6 +636,187 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
             "Expected accept() to close the Sketcher task dialog",
         )
         self.assert_sketch_edit_inactive()
+
+    def replace_ovp_text(self, spinbox, text):
+        editor = spinbox.findChild(QtGui.QLineEdit)
+        self.assertIsNotNone(editor)
+        editor.selectAll()
+        self.key_text(spinbox, text)
+
+    def test_point_zero_expression_can_become_nonzero(self):
+        self.sketcher_tool_params.SetInt("OnViewParameterVisibility", 2)
+        self.begin_rectangle_with_visible_ovp("Sketcher_CreatePoint", first_click=False)
+        x, y = reversed(self.visible_ovp_spinboxes())
+        self.focus_ovp_spinbox(x)
+        self.replace_ovp_text(x, "zero=0")
+        self.key_click(x, QtCore.Qt.Key_Tab, "\t")
+        self.focus_ovp_spinbox(y)
+        self.replace_ovp_text(y, "0")
+        self.key_click(y, QtCore.Qt.Key_Return, "\r")
+        self.pump(100)
+        self.assertEqual(self.sketch.GeometryCount, 1)
+        self.assertFalse(
+            any(c.Type == "Coincident" for c in self.sketch.Constraints),
+            str(self.sketch.ExpressionEngine) + str(self.sketch.Constraints),
+        )
+        self.assertTrue(any(c.Type == "DistanceY" for c in self.sketch.Constraints))
+        self.assertEqual(len(self.sketch.ExpressionEngine), 1)
+        self.doc.Parameters.zero = 5
+        self.doc.recompute()
+        self.assertEqual(self.sketch.solve(), 0)
+        self.assertAlmostEqual(self.sketch.getPoint(0, 1).x, 5)
+
+    def test_signed_line_expression_tracks_parameter_sign(self):
+        self.begin_rectangle_with_visible_ovp("Sketcher_CreateLine", mode="Point, width, height")
+        width, height = reversed(self.visible_ovp_spinboxes())
+        self.focus_ovp_spinbox(width)
+        self.replace_ovp_text(width, "width=-20")
+        self.key_click(width, QtCore.Qt.Key_Tab, "\t")
+        self.focus_ovp_spinbox(height)
+        self.replace_ovp_text(height, "height=-10")
+        self.key_click(height, QtCore.Qt.Key_Return, "\r")
+        self.pump(100)
+        self.assertEqual(self.sketch.GeometryCount, 1)
+        self.assertEqual(len(self.sketch.ExpressionEngine), 2, str(self.sketch.ExpressionEngine))
+        line = self.sketch.Geometry[0]
+        self.assertAlmostEqual((line.EndPoint - line.StartPoint).x, -20)
+        self.assertAlmostEqual((line.EndPoint - line.StartPoint).y, -10)
+        self.doc.Parameters.setExpression("width", None)
+        self.doc.Parameters.setExpression("height", None)
+        self.doc.Parameters.width = 25
+        self.doc.Parameters.height = 15
+        self.doc.recompute()
+        self.assertEqual(self.sketch.solve(), 0)
+        line = self.sketch.Geometry[0]
+        self.assertAlmostEqual((line.EndPoint - line.StartPoint).x, 25)
+        self.assertAlmostEqual((line.EndPoint - line.StartPoint).y, 15)
+
+    def check_rectangle_expression_angles(self, mode, orientation_expression=True):
+        if mode == "Center, 2 corners":
+            self.sketcher_tool_params.SetInt("OnViewParameterVisibility", 2)
+        self.begin_rectangle_with_visible_ovp(mode=mode)
+        first, second = reversed(self.visible_ovp_spinboxes())
+        self.focus_ovp_spinbox(first)
+        self.replace_ovp_text(first, "cornerx=20" if mode == "Center, 2 corners" else "20 mm")
+        self.key_click(first, QtCore.Qt.Key_Tab, "\t")
+        self.focus_ovp_spinbox(second)
+        self.replace_ovp_text(
+            second,
+            (
+                "cornery=10"
+                if mode == "Center, 2 corners"
+                else "orientation=0" if orientation_expression else "0"
+            ),
+        )
+        self.key_click(second, QtCore.Qt.Key_Return, "\r")
+        self.pump(100)
+        width, inner = reversed(self.visible_ovp_spinboxes())
+        self.focus_ovp_spinbox(width)
+        self.replace_ovp_text(width, "10 mm")
+        self.key_click(width, QtCore.Qt.Key_Tab, "\t")
+        self.focus_ovp_spinbox(inner)
+        self.replace_ovp_text(inner, "inner=90")
+        self.key_click(inner, QtCore.Qt.Key_Return, "\r")
+        self.pump(100)
+        self.assertGreaterEqual(self.sketch.GeometryCount, 4)
+        self.assertEqual(self.sketch.solve(), 0, str(self.sketch.Constraints))
+        self.assertEqual(
+            len(self.sketch.ExpressionEngine),
+            3 if mode == "Center, 2 corners" else 2 if orientation_expression else 1,
+        )
+        self.doc.Parameters.inner = 75
+        self.doc.recompute()
+        self.assertEqual(self.sketch.solve(), 0)
+        if mode == "3 corners" and orientation_expression:
+            self.doc.Parameters.orientation = 30
+        elif mode == "3 corners":
+            pass
+        else:
+            self.doc.Parameters.cornerx = 25
+            self.doc.Parameters.cornery = 15
+        self.doc.recompute()
+        self.assertEqual(self.sketch.solve(), 0)
+
+    def test_rectangle_three_points_expression_right_angles(self):
+        self.check_rectangle_expression_angles("3 corners")
+
+    def test_rectangle_numeric_orientation_expression_inner_angle(self):
+        self.check_rectangle_expression_angles("3 corners", orientation_expression=False)
+
+    def test_rectangle_center_three_points_expression_coordinates(self):
+        self.check_rectangle_expression_angles("Center, 2 corners")
+
+    def check_polygon_inline_angle(self, angle, expression=True, continuous=True):
+        import math
+
+        preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Sketcher")
+        previous = preferences.GetBool("ContinuousCreationMode", True)
+        preferences.SetBool("ContinuousCreationMode", continuous)
+        try:
+            if expression == "reference":
+                parameters = self.doc.addObject("App::VarSet", "Parameters")
+                parameters.addProperty("App::PropertyFloat", "theta")
+                parameters.theta = angle
+            viewport, center = self.begin_rectangle_with_visible_ovp("Sketcher_CreateHexagon")
+            radius, orientation = reversed(self.visible_ovp_spinboxes())
+            self.focus_ovp_spinbox(radius)
+            self.replace_ovp_text(radius, "20")
+            self.key_click(radius, QtCore.Qt.Key_Tab, "\t")
+            self.focus_ovp_spinbox(orientation)
+            text = (
+                "Parameters.theta"
+                if expression == "reference"
+                else (
+                    f"theta={angle} deg"
+                    if expression == "unitful"
+                    else f"theta={angle}" if expression else str(angle)
+                )
+            )
+            self.replace_ovp_text(orientation, text)
+            self.key_click(orientation, QtCore.Qt.Key_Return, "\r")
+            self.pump(250)
+            self.assertEqual(self.sketch.GeometryCount, 8 if expression or angle == 30 else 7)
+            self.assertEqual(self.sketch.solve(), 0)
+            angles = [i for i, c in enumerate(self.sketch.Constraints) if c.Type == "Angle"]
+            if expression:
+                self.assertEqual(len(angles), 1)
+                self.assertEqual(len(self.sketch.ExpressionEngine), 1)
+                binding = self.sketch.ExpressionEngine[0][1]
+                self.assertIn("Parameters.theta", binding)
+                self.assertNotIn("+", binding)
+                self.doc.Parameters.theta = 45
+                self.doc.recompute()
+                self.assertEqual(self.sketch.solve(), 0)
+                line = self.sketch.Geometry[-1]
+                direction = line.EndPoint - line.StartPoint
+                self.assertAlmostEqual(
+                    math.degrees(math.atan2(direction.y, direction.x)), 45, places=5
+                )
+            elif angle in (0, 90):
+                self.assertEqual(angles, [])
+        finally:
+            preferences.SetBool("ContinuousCreationMode", previous)
+
+    def test_polygon_inline_zero_angle_continuous(self):
+        self.check_polygon_inline_angle(0)
+
+    def test_polygon_inline_right_angle_one_shot(self):
+        self.check_polygon_inline_angle(90, continuous=False)
+
+    def test_polygon_inline_arbitrary_angle(self):
+        self.check_polygon_inline_angle(30)
+
+    def test_polygon_inline_dimensionless_reference(self):
+        self.check_polygon_inline_angle(30, expression="reference")
+
+    def test_polygon_inline_unitful_assignment(self):
+        self.check_polygon_inline_angle(30, expression="unitful")
+
+    def test_polygon_numeric_zero_angle(self):
+        self.check_polygon_inline_angle(0, expression=False)
+
+    def test_polygon_numeric_right_angle(self):
+        self.check_polygon_inline_angle(90, expression=False)
 
     def test_rectangle_ovp_enter_finishes_without_crash(self):
         """

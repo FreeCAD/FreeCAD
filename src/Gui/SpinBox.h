@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include <Base/Type.h>
+#include <QFocusEvent>
 #include <QSpinBox>
 #include <QValidator>
 #include "ExpressionBinding.h"
@@ -54,6 +56,7 @@ public:
     }
 
 protected:
+    bool trySetExpression(std::shared_ptr<App::Expression> expr, QString& error);
     /*! Expression handling */
     //@{
     enum class Number
@@ -156,6 +159,7 @@ public:
     void keyPressEvent(QKeyEvent* event) override;
     void resizeEvent(QResizeEvent* event) override;
     void paintEvent(QPaintEvent* event) override;
+    void focusOutEvent(QFocusEvent* event) override;
 
 Q_SIGNALS:
     void unsignedChanged(uint value);
@@ -172,6 +176,16 @@ protected:
     void setNumberExpression(App::NumberExpression*) override;
 
 private:
+    enum class InlineCommitResult
+    {
+        NotHandled,
+        Success,
+        Error
+    };
+
+    InlineCommitResult commitInlineExpression(QString& error);
+    Base::Type determineInlineAssignmentType() const;
+    void showInlineExpressionError(const QString& error);
     void updateValidator();
     UIntSpinBoxPrivate* d;
 };
