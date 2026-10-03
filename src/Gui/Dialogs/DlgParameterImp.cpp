@@ -388,7 +388,7 @@ void DlgParameterImp::onChangeParameterSet(int itemPos)
         return;
     }
 
-    ui->buttonSaveToDisk->setEnabled(rcParMngr->HasSerializer());
+    ui->buttonSaveToDisk->setEnabled(rcParMngr->HasFileName());
 
     // remove all labels
     paramGroup->clear();
