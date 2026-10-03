@@ -58,7 +58,6 @@
 
 static const int DescriptionRole = Qt::UserRole + 2;
 
-
 using namespace MatGui;
 
 /* TRANSLATOR MatGui::MaterialsEditor */
@@ -369,34 +368,45 @@ void MaterialsEditor::propertyChange(const QString& property, const QVariant& va
     else if (_material->hasAppearanceProperty(property)) {
         _material->setAppearanceValue(property, value);
         updatePreview();
-
-        auto treeModel = qobject_cast<QStandardItemModel*>(ui->treeAppearance->model());
-        if (treeModel) {
-            for (int r = 0; r < treeModel->rowCount(); ++r) {
-                auto rootItem = treeModel->item(r);
-                if (!rootItem) continue;
-                for (int c = 0; c < rootItem->rowCount(); ++c) {
-                    auto propItem = rootItem->child(c, 0);
-                    if (!propItem || propItem->data().toString() != property) continue;
-
-                    auto valItem  = rootItem->child(c, 1);
-                    auto typeItem = rootItem->child(c, 2);
-
-                    QString tooltip = buildPropertyTooltip(
-                        propItem->data(DescriptionRole).toString(),
-                        typeItem ? typeItem->text() : QString(),
-                        valItem ? valItem->text() : QString());
-
-                    propItem->setToolTip(tooltip);
-                    if (valItem) valItem->setToolTip(tooltip);
-                    
-                    update();
-                    return;
-                }
-            }
-        }
+        updateAppearanceTooltip(property);
     }
     update();
+}
+
+void MaterialsEditor::updateAppearanceTooltip(const QString& property)
+{
+    auto treeModel = qobject_cast<QStandardItemModel*>(ui->treeAppearance->model());
+    if (!treeModel) {
+        return;
+    }
+
+    for (int r = 0; r < treeModel->rowCount(); ++r) {
+        auto rootItem = treeModel->item(r);
+        if (!rootItem) {
+            continue;
+        }
+        for (int c = 0; c < rootItem->rowCount(); ++c) {
+            auto propItem = rootItem->child(c, 0);
+            if (!propItem || propItem->data().toString() != property) {
+                continue;
+            }
+
+            auto valItem = rootItem->child(c, 1);
+            auto typeItem = rootItem->child(c, 2);
+
+            QString tooltip = buildPropertyTooltip(
+                propItem->data(DescriptionRole).toString(),
+                typeItem ? typeItem->text() : QString(),
+                valItem ? valItem->text() : QString()
+            );
+
+            propItem->setToolTip(tooltip);
+            if (valItem) {
+                valItem->setToolTip(tooltip);
+            }
+            return;
+        }
+    }
 }
 
 void MaterialsEditor::onURL(bool checked)
@@ -1136,12 +1146,15 @@ void MaterialsEditor::updateMaterialAppearance()
                     QList<QStandardItem*> items;
 
                     QString key = itp->first;
+                    QString description = itp->second.getDescription().trimmed();
+                    // auto propertyItem = new QStandardItem(key);
                     auto propertyItem = new QStandardItem(itp->second.getDisplayName());
                     propertyItem->setData(key);
-                    propertyItem->setData(itp->second.getDescription().trimmed(), DescriptionRole);
-                    
+                    propertyItem->setData(description, DescriptionRole);
+
                     QString valStr = _material->getAppearanceValueString(key);
-                    QString tooltip = buildPropertyTooltip(itp->second.getDescription().trimmed(), itp->second.getPropertyType(), valStr);
+                    QString tooltip
+                        = buildPropertyTooltip(description, itp->second.getPropertyType(), valStr);
 
                     propertyItem->setToolTip(tooltip);
                     items.append(propertyItem);
@@ -1411,9 +1424,11 @@ int MaterialsEditor::confirmSave(QWidget* parent)
     return res;
 }
 
-#include "moc_MaterialsEditor.cpp"
-
-QString MaterialsEditor::buildPropertyTooltip(const QString& description, const QString& propertyType, const QString& valueString)
+QString MaterialsEditor::buildPropertyTooltip(
+    const QString& description,
+    const QString& propertyType,
+    const QString& valueString
+)
 {
     QString tooltip = description;
     if (!valueString.trimmed().isEmpty()) {
@@ -1422,9 +1437,12 @@ QString MaterialsEditor::buildPropertyTooltip(const QString& description, const 
         }
         if (propertyType == QStringLiteral("Color")) {
             tooltip += QStringLiteral("Value: %1 %2").arg(getColorHash(valueString), valueString);
-        } else {
+        }
+        else {
             tooltip += QStringLiteral("Value: %1").arg(valueString);
         }
     }
     return tooltip;
 }
+
+#include "moc_MaterialsEditor.cpp"
