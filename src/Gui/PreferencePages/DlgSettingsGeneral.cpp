@@ -79,6 +79,11 @@ DlgSettingsGeneral::DlgSettingsGeneral(QWidget* parent)
 {
     ui->setupUi(this);
 
+    ui->Languages->setGrid(true);
+    ui->Languages->setGridFixedColumns(3);
+    ui->Languages->setPopupScrollBar(false);
+    ui->Languages->setSearchable(false);
+
     recreatePreferencePackMenu();
 
     for (const char* option : Translator::formattingOptions) {
