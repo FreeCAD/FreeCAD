@@ -73,6 +73,7 @@ target_include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}/TaskView
     ${CMAKE_CURRENT_BINARY_DIR}/Quarter
     ${CMAKE_CURRENT_BINARY_DIR}/DAGView
+    ${CMAKE_CURRENT_SOURCE_DIR}/ComboBox
 )
 
 target_include_directories(
@@ -1142,6 +1143,10 @@ SET(Widget_CPP_SRCS
     ElideCheckBox.cpp
     FontScaledSVG.cpp
     SplitButton.cpp
+    ComboBox/ComboBoxFilterModel.cpp
+    ComboBox/ComboBoxGridDelegate.cpp
+    ComboBox/ComboBoxPopup.cpp
+    ComboBox/SearchableComboBox.cpp
 )
 if(WIN32)
     SET(Widget_CPP_SRCS
