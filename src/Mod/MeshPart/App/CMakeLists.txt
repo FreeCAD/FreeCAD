@@ -68,6 +68,7 @@ SET(MeshPart_SRCS
 
 set(MeshPart_Scripts
     ../Init.py
+    ../netgen_mesh.py
 )
 
 if(FREECAD_USE_PCH)
