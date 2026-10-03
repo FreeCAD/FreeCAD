@@ -46,8 +46,11 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     Gui::MenuItem* surface = new Gui::MenuItem;
     root->insertItem(item, surface);
-    surface->setCommand("S&urface");
-    *surface << "Surface_Filling"
+    surface->setCommand("S&urface");  // codespell:ignore urface
+    *surface << "Part_Extrude"
+             << "Part_Loft"
+             << "Surface_IntersectionCurve"
+             << "Surface_Filling"
              << "Surface_GeomFillSurface"
              << "Surface_Sections"
              << "Surface_ExtendFace"
@@ -66,7 +69,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem* surface = new Gui::ToolBarItem(root);
     surface->setCommand("Surface");
-    *surface << "Surface_Filling"
+    *surface << "Part_Extrude"
+             << "Part_Loft"
+             << "Surface_IntersectionCurve"
+             << "Surface_Filling"
              << "Surface_GeomFillSurface"
              << "Surface_Sections"
              << "Surface_ExtendFace"

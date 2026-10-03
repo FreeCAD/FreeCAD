@@ -21,5 +21,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-# Unit test for the Surface module
+"""Expose the Surface application tests to the FreeCAD test runner."""
+
 from SurfaceTests.TestBlendCurve import TestBlendCurve
+from SurfaceTests.TestIntersectionCurve import TestIntersectionCurve
+
+__all__ = ["TestBlendCurve", "TestIntersectionCurve"]
