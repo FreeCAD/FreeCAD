@@ -1,0 +1,13 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="/customtitlebarkit">
+        <file>resources/icons/window-close.svg</file>
+        <file>resources/icons/window-minimize.svg</file>
+        <file>resources/icons/window-maximize.svg</file>
+        <file>resources/icons/window-restore.svg</file>
+        <file>resources/icons/window-close-dark.svg</file>
+        <file>resources/icons/window-minimize-dark.svg</file>
+        <file>resources/icons/window-maximize-dark.svg</file>
+        <file>resources/icons/window-restore-dark.svg</file>
+    </qresource>
+</RCC>
