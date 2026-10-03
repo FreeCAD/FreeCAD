@@ -201,6 +201,11 @@ void ZoomableView::updateView(void)
     centerOn(new_geometry_f.center());
 }
 
+void ZoomableView::focusInEvent(QFocusEvent* event)
+{
+    QAbstractScrollArea::focusInEvent(event);
+}
+
 void ZoomableView::focusOutEvent(QFocusEvent* event)
 {
     switch (event->reason()) {
