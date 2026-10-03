@@ -446,7 +446,11 @@ Value Number::evaluate([[maybe_unused]] const EvaluationContext& context) const
 
 Value StringLiteral::evaluate([[maybe_unused]] const EvaluationContext& context) const
 {
-    return value;
+    if (type == Type::Verbatim) {
+        return value;
+    }
+
+    return context.manager->replacePlaceholders(value, context.context);
 }
 
 Value Color::evaluate([[maybe_unused]] const EvaluationContext& context) const
@@ -569,6 +573,64 @@ bool Parser::peekString(const char* function) const
     return input.compare(pos, strlen(function), function) == 0;
 }
 
+bool Parser::peekStringLiteral() const
+{
+    // ' is for raw strings, that are not processed
+    // " is for normal string, where expressions are evaluated
+    return pos < input.size() && (input[pos] == '"' || input[pos] == '\'');
+}
+
+std::unique_ptr<Expr> Parser::parseStringLiteral()
+{
+    const char quote = input[pos];
+    ++pos;
+
+    const size_t start = pos;
+
+    std::stringstream result;
+
+    const auto parseEscapeSequence = [&] {
+        ++pos;
+
+        if (input[pos] == 'n') {
+            result << "\n";
+        }
+        if (input[pos] == '@' || input[pos] == '\\') {
+            result << input[pos];
+        }
+        else if (input[pos] == quote) {
+            result << quote;
+        }
+        else {
+            THROWM(Base::ParserError, fmt::format("Unknown escape sequence: \\{}", input[pos]));
+        }
+    };
+
+    while (pos < input.size()) {
+        if (input[pos] == '\\') {
+            parseEscapeSequence();
+        }
+        else if (input[pos] == quote) {
+            break;
+        }
+        else {
+            result << input[pos];
+        }
+        ++pos;
+    }
+
+    if (pos >= input.size()) {
+        THROWM(Base::ParserError, fmt::format("Unterminated string literal: {}", input.substr(start)));
+    }
+
+    ++pos;
+
+    return std::make_unique<StringLiteral>(
+        result.str(),
+        quote == '"' ? StringLiteral::Type::Evaluated : StringLiteral::Type::Verbatim
+    );
+}
+
 std::unique_ptr<Expr> Parser::parseExpression()
 {
     auto expr = parseTerm();
@@ -640,6 +702,9 @@ std::unique_ptr<Expr> Parser::parseFactor()
                 }
             }
         }
+    }
+    else if (peekStringLiteral()) {
+        expr = parseStringLiteral();
     }
     else if (peekColor()) {
         expr = parseColor();
