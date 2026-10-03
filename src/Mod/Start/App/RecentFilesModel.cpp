@@ -55,3 +55,12 @@ void RecentFilesModel::recentFileAdded(const QString& filename)
     Q_UNUSED(filename)
     loadRecentFiles();
 }
+
+void RecentFilesModel::removeFile(const QString& filename)
+{
+    // Removal is delegated to Gui::RecentFilesAction by the caller (StartView),
+    // which lives in a Qt-enabled module and can reach MainWindow.  This model
+    // only needs to reload its list once the ParameterGrp has been updated.
+    Q_UNUSED(filename)
+    loadRecentFiles();
+}
