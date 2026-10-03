@@ -33,6 +33,7 @@
 #include <TopoDS_Face.hxx>
 
 
+#include <App/DocumentObserver.h>
 #include <App/Expression.h>
 #include <App/ObjectIdentifier.h>
 #include <App/Origin.h>
@@ -1122,7 +1123,12 @@ void prepareProfileBased(
         return true;
     };
 
-    auto sketch_worker = [&, base_worker](std::vector<App::DocumentObject*> features) {
+    // The pick dialog runs this after it closes, by which time the body may have been deleted
+    auto bodyRef = std::make_shared<App::DocumentObjectWeakPtrT>(pcActiveBody);
+    auto sketch_worker = [bodyRef, base_worker](std::vector<App::DocumentObject*> features) {
+        if (features.empty() || !bodyRef->get<PartDesign::Body>()) {
+            return;
+        }
         base_worker(features.front(), {});
     };
 
@@ -1403,7 +1409,7 @@ void CmdPartDesignRevolution::activated(int iMsg)
     }
 
     Gui::Command* cmd = this;
-    auto worker = [cmd, &pcActiveBody](Part::Feature* sketch, App::DocumentObject* Feat) {
+    auto worker = [cmd, pcActiveBody](Part::Feature* sketch, App::DocumentObject* Feat) {
         if (!Feat) {
             return;
         }
@@ -1465,7 +1471,7 @@ void CmdPartDesignGroove::activated(int iMsg)
     }
 
     Gui::Command* cmd = this;
-    auto worker = [cmd, &pcActiveBody](Part::Feature* sketch, App::DocumentObject* Feat) {
+    auto worker = [cmd, pcActiveBody](Part::Feature* sketch, App::DocumentObject* Feat) {
         if (!Feat) {
             return;
         }
@@ -1733,7 +1739,7 @@ void CmdPartDesignAdditiveHelix::activated(int iMsg)
     }
 
     Gui::Command* cmd = this;
-    auto worker = [cmd, &pcActiveBody](Part::Feature* sketch, App::DocumentObject* Feat) {
+    auto worker = [cmd, pcActiveBody](Part::Feature* sketch, App::DocumentObject* Feat) {
         if (!Feat) {
             return;
         }
@@ -1817,7 +1823,7 @@ void CmdPartDesignSubtractiveHelix::activated(int iMsg)
     }
 
     Gui::Command* cmd = this;
-    auto worker = [cmd, &pcActiveBody](Part::Feature* sketch, App::DocumentObject* Feat) {
+    auto worker = [cmd, pcActiveBody](Part::Feature* sketch, App::DocumentObject* Feat) {
         if (!Feat) {
             return;
         }
