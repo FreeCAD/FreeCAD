@@ -300,8 +300,9 @@ class DynapathPost(PostProcessor):
         full XYZ move.
         """
         second_plane = self.values.get("SECOND_REFERENCE_PLANE", True)
-        xyz_after_change = self.values.get("XYZ_MOVE_AFTER_TOOL_CHANGE", True) and self.values.get(
-            "TOOL_CHANGE", True
+        xyz_after_change = (
+            self.values.get("XYZ_MOVE_AFTER_TOOL_CHANGE", True)
+            and self._tool_change_format() != Constants.ToolChangeFormat.NO_TOOL_CHANGE
         )
         for section_name, sublist in postables:
             xyz_pending = False

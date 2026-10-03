@@ -19,7 +19,9 @@
 #                                                                              #
 ################################################################################
 
+import re
 import FreeCAD
+import Constants
 import Path
 import Path.Post.Command as PathCommand
 import Path.Post.PostList as PostList
@@ -554,119 +556,6 @@ class TestBuildPostList(unittest.TestCase):
         firstoplist = firstoutputitem[1]
         self.assertEqual(len(firstoplist), 6)
         self.assertTrue(firstoutputitem[0] == "G54")
-
-    def _mock_machine_with_early_tool_prep(self):
-        """Return a minimal mock machine that enables early_tool_prep."""
-
-        class _MockProcessing:
-            early_tool_prep = True
-
-        class _MockMachine:
-            processing = _MockProcessing()
-
-        return _MockMachine()
-
-    def test070(self):
-        """
-        Test that early_tool_prep inserts Tn prep commands after each M6 when enabled via machine.
-
-        Given: A job split by tool (SplitOutput=True, OrderOutputBy=Tool) and a machine
-               whose processing.early_tool_prep is True
-        When: _buildPostList() is called (no explicit parameter)
-        Then: The first M6 in the first group targets tool 5, and a T2 prep command
-              appears immediately after, before the second M6.
-
-        Example:
-            M6 T5  <- change to tool 5
-            T2     <- early prep for tool 2
-            <ops with T5>
-            M6 T2  <- change to tool 2
-        """
-        self.job.SplitOutput = True
-        self.job.PostProcessorOutputFile = "%T.nc"
-        self.job.OrderOutputBy = "Tool"
-        self.pp._machine = self._mock_machine_with_early_tool_prep()
-        postables = self.pp._buildPostList()
-        _, sublist = postables[0]
-
-        if self.debug:
-            print(self._format_postables(postables, "test070: Early tool prep, split by tool"))
-
-        commands = []
-        for item in sublist:
-            if item.path and item.path.Commands:
-                commands.extend(item.path.Commands)
-
-        m6_commands = [cmd for cmd in commands if cmd.Name == "M6"]
-        self.assertTrue(len(m6_commands) > 0, "Should have M6 command")
-
-        first_m6 = m6_commands[0]
-        self.assertTrue("T" in first_m6.Parameters, "First M6 should have T parameter")
-        self.assertEqual(first_m6.Parameters["T"], 5.0, "First M6 should be for tool 5")
-
-        t2_commands = [cmd for cmd in commands if cmd.Name == "T2"]
-        self.assertTrue(len(t2_commands) > 0, "Should have T2 early prep command")
-
-        first_m6_index = next((i for i, cmd in enumerate(commands) if cmd.Name == "M6"), None)
-        t2_index = next((i for i, cmd in enumerate(commands) if cmd.Name == "T2"), None)
-        self.assertIsNotNone(first_m6_index, "M6 should exist")
-        self.assertIsNotNone(t2_index, "T2 should exist")
-        self.assertLess(first_m6_index, t2_index, "M6 should come before T2 prep")
-
-    def test080(self):
-        """
-        Test early_tool_prep with combined output (SplitOutput=False).
-
-        Given: A job with combined output (SplitOutput=False, OrderOutputBy=Tool) and a
-               machine whose processing.early_tool_prep is True
-        When: _buildPostList() is called
-        Then: Two M6 commands appear (T5 then T2) and a T2 prep command appears after
-              the first M6 and before the second M6.
-
-        Example:
-            M6 T5  <- change to tool 5
-            T2     <- early prep for tool 2
-            <ops with T5>
-            M6 T2  <- change to tool 2
-        """
-        self.job.SplitOutput = False
-        self.job.OrderOutputBy = "Tool"
-        self.pp._machine = self._mock_machine_with_early_tool_prep()
-
-        postables = self.pp._buildPostList()
-        _, sublist = postables[0]
-
-        if self.debug:
-            print(self._format_postables(postables, "test080: Early tool prep, combined output"))
-
-        commands = []
-        for item in sublist:
-            if item.path and item.path.Commands:
-                commands.extend(item.path.Commands)
-
-        m6_commands = [(i, cmd) for i, cmd in enumerate(commands) if cmd.Name == "M6"]
-        t2_commands = [(i, cmd) for i, cmd in enumerate(commands) if cmd.Name == "T2"]
-
-        self.assertTrue(len(m6_commands) >= 2, "Should have at least 2 M6 commands")
-        self.assertTrue(len(t2_commands) >= 1, "Should have at least 1 T2 early prep command")
-
-        first_m6_idx, first_m6_cmd = m6_commands[0]
-        second_m6_idx, second_m6_cmd = m6_commands[1] if len(m6_commands) >= 2 else (None, None)
-        first_t2_idx = t2_commands[0][0]
-
-        self.assertTrue("T" in first_m6_cmd.Parameters, "First M6 should have T parameter")
-        self.assertEqual(first_m6_cmd.Parameters["T"], 5.0, "First M6 should be for tool 5")
-
-        if second_m6_cmd is not None:
-            self.assertTrue("T" in second_m6_cmd.Parameters, "Second M6 should have T parameter")
-            self.assertEqual(second_m6_cmd.Parameters["T"], 2.0, "Second M6 should be for tool 2")
-
-        self.assertLess(first_m6_idx, first_t2_idx, "T2 prep should come after first M6")
-
-        if second_m6_idx is not None:
-            self.assertLess(
-                first_t2_idx, second_m6_idx, "T2 early prep should come before second M6"
-            )
 
     def test090_buildpostlist_returns_postable_instances(self):
         """
@@ -1263,3 +1152,563 @@ class TestJobPropertyOverrides(unittest.TestCase):
 
         finally:
             MachineFactory.get_machine = original_get_machine
+
+
+class TestToolChangeFormatOutput(unittest.TestCase):
+    """
+    The G-code written for each tool change format.
+
+    PostProcessor._buildPostList() applies the format to the M6 as annotations and
+    the G-code is written by convert_command_to_gcode(). The line number leads the
+    line, block delete leads the line number, and the words are separated by the
+    machine's command_space.
+
+    The job has two tool controllers and an operation for each, T5 then T2, so the
+    next tool, early tool prep and output groups can be tested.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
+        cls.doc = FreeCAD.newDocument("tool_change_format_test")
+
+        import Part
+
+        box = cls.doc.addObject("Part::Box", "TestBox")
+        box.Length = 100
+        box.Width = 100
+        box.Height = 20
+
+        cls.job = PathJob.Create("ToolChangeFormatJob", [box], None)
+        cls.job.PostProcessor = "linuxcnc_legacy"
+        cls.job.PostProcessorOutputFile = ""
+        cls.job.SplitOutput = False
+        cls.job.OrderOutputBy = "Operation"
+        cls.job.Fixtures = ["G54"]
+        cls.job.Machine = "linuxcnc"
+
+        # Two tool controllers, T5 then T2. Recompute to populate their M6
+        cls.job.Tools.Group[0].ToolNumber = 5
+        tc2 = PathToolController.Create()
+        tc2.ToolNumber = 2
+        cls.job.Proxy.addToolController(tc2)
+        cls.job.Tools.Group[0].recompute()
+        cls.job.Tools.Group[1].recompute()
+
+        # A tool controller is only output if an operation uses it
+        for index, name in enumerate(["TestProfile", "TestDrill"]):
+            op = cls.doc.addObject("Path::FeaturePython", name)
+            op.Label = name
+            op.Path = Path.Path(
+                [
+                    Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}),
+                    Path.Command("G1", {"X": 100.0, "Y": 0.0, "Z": -5.0, "F": 100.0}),
+                    Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}),
+                ]
+            )
+            op.addProperty(
+                "App::PropertyLink", "ToolController", "Base", "Tool controller for this operation"
+            )
+            op.ToolController = cls.job.Tools.Group[index]
+            cls.job.Operations.addObject(op)
+
+        cls.doc.recompute()
+
+    @classmethod
+    def tearDownClass(cls):
+        FreeCAD.closeDocument(cls.doc.Name)
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
+
+    def _machine(
+        self,
+        fmt,
+        early=False,
+        assert_prep=False,
+        line_numbers=False,
+        command_space=" ",
+        comments=False,
+    ):
+        """A machine with the tool change settings under test."""
+        from Machine.models.machine import Machine, Toolhead, ToolheadType
+
+        machine = Machine.create_3axis_config()
+        machine.name = "TestMachine"
+        machine.toolheads = [
+            Toolhead(
+                name="Default Toolhead",
+                toolhead_type=ToolheadType.ROTARY,
+                id="toolhead1",
+                max_power_kw=2.2,
+                max_rpm=24000,
+                min_rpm=6000,
+                tool_change="manual",
+                toolhead_wait=1.0,
+            )
+        ]
+        machine.processing.tool_change_format = fmt
+        machine.processing.early_tool_prep = early
+        machine.processing.assert_tool_prep = assert_prep
+        machine.output.formatting.line_numbers = line_numbers
+        machine.output.formatting.line_number_start = 100
+        machine.output.formatting.line_increment = 10
+        machine.output.formatting.command_space = command_space
+        machine.output.comments.enabled = comments
+        return machine
+
+    def _post(self, machine):
+        # one file, in operation order; the postlist tests change this on the job
+        self.job.SplitOutput = False
+        self.job.PostProcessorOutputFile = ""
+        self.job.OrderOutputBy = "Operation"
+        post = PathPost.PostProcessor(self.job, "", "", "mm")
+        post._machine = machine
+        post.apply_configuration_bundle()
+        return post
+
+    def _gcode(self, post, command):
+        """convert_command_to_gcode() needs the machine state that the export loop provides."""
+        with post.use_machine_state():
+            return post.convert_command_to_gcode(command)
+
+    def _m6(self, fmt, line_number=None, block_delete=False, tool=3, next_tool="5"):
+        """An M6 as _buildPostList() writes it, with the N that _add_line_numbers adds."""
+        params = {"T": tool}
+        if line_number is not None:
+            params = {"N": line_number, **params}
+        annotations = {
+            Constants.ANNOT_TOOL_CHANGE_FORMAT: fmt.value,
+            Constants.ANNOT_NEXT_TOOL: next_tool,
+        }
+        if block_delete:
+            annotations["blockdelete"] = "True"  # not set by the post itself
+        return Path.Command("M6", params, annotations)
+
+    @staticmethod
+    def _tool_lines(gcode):
+        """The M6 / T lines of the G-code (line numbers kept, comments skipped)."""
+        lines = []
+        for line in gcode.split("\n"):
+            line = line.strip()
+            if line.startswith("(") or line.startswith(";"):
+                continue
+            if re.search(r"\b(M6|T\d+)\b", line):
+                lines.append(line)
+        return lines
+
+    # ------------------------------------------------------------------
+    # the postlist: what _buildPostList() makes of the tool changes (T5 then T2)
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def _tool_words(sublist):
+        """Names of the M6 and bare T commands in the postables, in order."""
+        words = []
+        for item in sublist:
+            for cmd in item.path.Commands if item.path else []:
+                if cmd.Name in Constants.MCODE_TOOL_CHANGE or cmd.Name.startswith(
+                    tuple(Constants.GCODE_BARE_T)
+                ):
+                    words.append(cmd.Name)
+        return words
+
+    def _tool_change_postlist(self, fmt, early=False, assert_prep=False, split=False):
+        """_buildPostList() with the tool change settings, the tools ordered T5 then T2."""
+        post = self._post(self._machine(fmt, early=early, assert_prep=assert_prep))
+        self.job.SplitOutput = split
+        self.job.PostProcessorOutputFile = "%T.nc" if split else ""
+        self.job.OrderOutputBy = "Tool"
+        return post._buildPostList()
+
+    def test070_tool_change_annotations(self):
+        """
+        Test that the M6 keeps T<current tool> and records the format and next tool.
+
+        Everything downstream that reads Parameters["T"] (G43 TLO, tool tracking)
+        relies on the M6 keeping T<current tool>, whatever the format. The format
+        itself is applied when the G-code is written.
+
+        Expected for T5 then T2, every format:
+            M6 T5  ANNOT_TOOL_CHANGE_FORMAT=<format>, ANNOT_NEXT_TOOL="2"
+            M6 T2  ANNOT_TOOL_CHANGE_FORMAT=<format>, no ANNOT_NEXT_TOOL
+        """
+        for fmt in Constants.ToolChangeFormat:
+            with self.subTest(fmt=fmt):
+                _, sublist = self._tool_change_postlist(fmt)[0]
+                m6s = [
+                    cmd
+                    for item in sublist
+                    if item.item_type == "tool_controller"
+                    for cmd in item.path.Commands
+                    if cmd.Name in Constants.MCODE_TOOL_CHANGE
+                ]
+                self.assertEqual(2, len(m6s))
+                self.assertEqual([5, 2], [int(cmd.Parameters["T"]) for cmd in m6s])
+                for cmd in m6s:
+                    self.assertEqual(fmt.value, cmd.Annotations[Constants.ANNOT_TOOL_CHANGE_FORMAT])
+                self.assertEqual("2", m6s[0].Annotations[Constants.ANNOT_NEXT_TOOL])
+                self.assertNotIn(Constants.ANNOT_NEXT_TOOL, m6s[1].Annotations)
+
+    def test071_no_tool_prep_without_early_tool_prep(self):
+        """
+        Test that no standalone T is written unless early_tool_prep is on.
+        assert_tool_prep does nothing by itself.
+
+        The exception is M6 T<next>: its M6 line names the NEXT tool, so the first
+        tool must be prepped with a T whether or not early_tool_prep is on.
+
+        Expected, with and without assert_tool_prep:
+            m6_t_early_prep   T5, M6, M6
+            every other       M6, M6
+        """
+        for fmt in Constants.ToolChangeFormat:
+            for assert_prep in (False, True):
+                with self.subTest(fmt=fmt, assert_prep=assert_prep):
+                    _, sublist = self._tool_change_postlist(fmt, assert_prep=assert_prep)[0]
+                    expected = ["M6", "M6"]
+                    if fmt == Constants.ToolChangeFormat.M6_T_EARLY_PREP:
+                        expected = ["T5", "M6", "M6"]
+                    self.assertEqual(expected, self._tool_words(sublist))
+
+    def test072_early_tool_prep_m6_only(self):
+        """
+        Test early tool prep with M6 only: each tool is prepped before its M6,
+        the next tool right after each M6.
+
+        Expected:
+            T5
+            M6
+            T2      <- prep next tool
+            (ops with T5)
+            M6      <- changes to the prepped T2
+        """
+        fmt = Constants.ToolChangeFormat.M6_ONLY
+        _, sublist = self._tool_change_postlist(fmt, early=True)[0]
+        self.assertEqual(["T5", "M6", "T2", "M6"], self._tool_words(sublist))
+
+    def test073_assert_tool_prep(self):
+        """
+        Test assert_tool_prep writes the T again right before every M6, so the
+        program can be started partway through. A T that directly follows the
+        same T is not repeated.
+
+        Expected:
+            T5      <- initial prep and assert are one T
+            M6
+            T2      <- prep next tool
+            (ops with T5)
+            T2      <- assert
+            M6
+        """
+        fmt = Constants.ToolChangeFormat.M6_ONLY
+        _, sublist = self._tool_change_postlist(fmt, early=True, assert_prep=True)[0]
+        self.assertEqual(["T5", "M6", "T2", "T2", "M6"], self._tool_words(sublist))
+
+    def test074_early_tool_prep_format_m6_t(self):
+        """
+        Test the M6 T<next> format: the T on the M6 line is the NEXT tool, so the
+        first tool is prepped with a standalone T before its M6 and nothing else
+        is added.
+
+        Expected:
+            T5
+            M6 T2   <- changes to T5, preps T2   (an M6 with next_tool=2)
+            (ops with T5)
+            M6      <- changes to T2, no next tool
+        """
+        fmt = Constants.ToolChangeFormat.M6_T_EARLY_PREP
+        _, sublist = self._tool_change_postlist(fmt, early=True)[0]
+        self.assertEqual(["T5", "M6", "M6"], self._tool_words(sublist))
+
+    def test075_early_tool_prep_with_m6_t(self):
+        """
+        Test early tool prep with the plain M6 T<current> format: the next tool is
+        prepped after each M6.
+
+        Expected:
+            M6 T5
+            T2      <- prep next tool
+            (ops with T5)
+            M6 T2
+        """
+        fmt = Constants.ToolChangeFormat.M6_T
+        _, sublist = self._tool_change_postlist(fmt, early=True)[0]
+        self.assertEqual(["M6", "T2", "M6"], self._tool_words(sublist))
+
+    def test076_no_tool_change_writes_no_tool_prep(self):
+        """
+        Test that no T is added when tool changes are suppressed, even with
+        early_tool_prep and assert_tool_prep on.
+        """
+        fmt = Constants.ToolChangeFormat.NO_TOOL_CHANGE
+        _, sublist = self._tool_change_postlist(fmt, early=True, assert_prep=True)[0]
+        self.assertEqual(["M6", "M6"], self._tool_words(sublist))
+
+    def test077_tool_prep_crosses_output_groups(self):
+        """
+        Test that with output split by tool the next tool crosses the group
+        boundary, and the first tool of each group is prepped even though the
+        previous group already prepped it, since each group is a separate file.
+
+        Expected:
+            group 1:  T5, M6, T2
+            group 2:  T2, M6
+        """
+        fmt = Constants.ToolChangeFormat.M6_ONLY
+        postlist = self._tool_change_postlist(fmt, early=True, split=True)
+        self.assertEqual(2, len(postlist))
+        self.assertEqual(["T5", "M6", "T2"], self._tool_words(postlist[0][1]))
+        self.assertEqual(["T2", "M6"], self._tool_words(postlist[1][1]))
+
+    def test078_tool_change_format_setting(self):
+        """
+        Test how the machine's tool_change_format is read.
+
+        A missing or unrecognised format is M6 T<tool>. A plain value is accepted
+        as well as the enum.
+        """
+        post = self._post(self._machine(Constants.ToolChangeFormat.M6_T))
+        for setting, expected in [
+            (None, Constants.ToolChangeFormat.M6_T),
+            ("not a format", Constants.ToolChangeFormat.M6_T),
+            ("t_m6", Constants.ToolChangeFormat.T_M6),
+            (Constants.ToolChangeFormat.M6_ONLY, Constants.ToolChangeFormat.M6_ONLY),
+        ]:
+            with self.subTest(setting=setting):
+                post._machine.processing.tool_change_format = setting
+                self.assertEqual(expected, post._tool_change_format())
+
+    def test010_convert_tool_change_formats(self):
+        """
+        Test how each format is written.
+
+        Expected for M6 T3, with T5 as the next tool:
+            m6_t             M6 T3
+            t_m6             T3 M6
+            m6_t_early_prep  M6 T5
+            m6_only          M6
+            no_tool_change   (Tool change suppressed: M6 T3)
+        """
+        expected = {
+            Constants.ToolChangeFormat.M6_T: "M6 T3",
+            Constants.ToolChangeFormat.T_M6: "T3 M6",
+            Constants.ToolChangeFormat.M6_T_EARLY_PREP: "M6 T5",
+            Constants.ToolChangeFormat.M6_ONLY: "M6",
+        }
+        for fmt, text in expected.items():
+            with self.subTest(fmt=fmt):
+                post = self._post(self._machine(fmt))
+                self.assertEqual(text, self._gcode(post, self._m6(fmt)).strip())
+
+        fmt = Constants.ToolChangeFormat.NO_TOOL_CHANGE
+        post = self._post(self._machine(fmt, comments=True))
+        gcode = self._gcode(post, self._m6(fmt))
+        self.assertIn("Tool change suppressed: M6 T3", gcode)
+
+        post = self._post(self._machine(fmt, comments=False))
+        self.assertFalse(self._gcode(post, self._m6(fmt)))
+
+    def test011_early_prep_without_next_tool(self):
+        """Test that M6 T<next> with no next tool (the last tool change) is a plain M6."""
+        fmt = Constants.ToolChangeFormat.M6_T_EARLY_PREP
+        post = self._post(self._machine(fmt, early=True))
+        cmd = Path.Command("M6", {"T": 3}, {Constants.ANNOT_TOOL_CHANGE_FORMAT: fmt.value})
+        self.assertEqual("M6", self._gcode(post, cmd).strip())
+
+    def test020_line_number_comes_first(self):
+        """
+        Test that the line number leads the tool change, then the T.
+
+        Expected:
+            m6_t             N100 M6 T3
+            t_m6             N100 T3 M6      <- not: T3 N100 M6
+            m6_t_early_prep  N100 M6 T5
+            m6_only          N100 M6
+        """
+        expected = {
+            Constants.ToolChangeFormat.M6_T: "{n}100 M6 T3",
+            Constants.ToolChangeFormat.T_M6: "{n}100 T3 M6",
+            Constants.ToolChangeFormat.M6_T_EARLY_PREP: "{n}100 M6 T5",
+            Constants.ToolChangeFormat.M6_ONLY: "{n}100 M6",
+        }
+        for fmt, text in expected.items():
+            with self.subTest(fmt=fmt):
+                post = self._post(self._machine(fmt, line_numbers=True))
+                prefix = post.values["LINE_NUMBER_PREFIX"]
+                gcode = self._gcode(post, self._m6(fmt, line_number=100))
+                self.assertEqual(text.format(n=prefix), gcode.strip())
+
+    def test021_block_delete_comes_first(self):
+        """
+        Test that block delete leads the whole line, before the line number.
+
+        Expected:
+            m6_t   /N100 M6 T3
+            t_m6   /N100 T3 M6      <- not: T3 /N100 M6
+        and without a line number:
+            t_m6   /T3 M6
+        """
+        expected = {
+            Constants.ToolChangeFormat.M6_T: "/{n}100 M6 T3",
+            Constants.ToolChangeFormat.T_M6: "/{n}100 T3 M6",
+        }
+        for fmt, text in expected.items():
+            with self.subTest(fmt=fmt):
+                post = self._post(self._machine(fmt, line_numbers=True))
+                prefix = post.values["LINE_NUMBER_PREFIX"]
+                cmd = self._m6(fmt, line_number=100, block_delete=True)
+                self.assertEqual(text.format(n=prefix), self._gcode(post, cmd).strip())
+
+        fmt = Constants.ToolChangeFormat.T_M6
+        post = self._post(self._machine(fmt))
+        cmd = self._m6(fmt, block_delete=True)
+        self.assertEqual("/T3 M6", self._gcode(post, cmd).strip())
+
+    def test030_tool_change_follows_command_space(self):
+        """
+        Test that the T and the M6 are separated by command_space like any other
+        words, not by a fixed space.
+
+        Expected with command_space="":    N100T3M6
+        Expected with command_space="  ":  N100  T3  M6
+        """
+        fmt = Constants.ToolChangeFormat.T_M6
+        for space in ("", "  "):
+            with self.subTest(space=space):
+                post = self._post(self._machine(fmt, line_numbers=True, command_space=space))
+                prefix = post.values["LINE_NUMBER_PREFIX"]
+                gcode = self._gcode(post, self._m6(fmt, line_number=100))
+                self.assertEqual(space.join([f"{prefix}100", "T3", "M6"]), gcode.strip("\n"))
+
+        fmt = Constants.ToolChangeFormat.M6_T
+        post = self._post(self._machine(fmt, command_space=""))
+        self.assertEqual("M6T3", self._gcode(post, self._m6(fmt)).strip())
+
+    def test040_standalone_tool_prep_command(self):
+        """
+        Test the standalone T<n> prep command, with line number and block delete.
+
+        Expected:
+            T6
+            N100 T6
+            /N100 T6
+        """
+        post = self._post(self._machine(Constants.ToolChangeFormat.M6_ONLY, line_numbers=True))
+        prefix = post.values["LINE_NUMBER_PREFIX"]
+
+        self.assertEqual("T6", self._gcode(post, Path.Command("T6")).strip())
+        self.assertEqual(
+            f"{prefix}100 T6",
+            self._gcode(post, Path.Command("T6", {"N": 100})).strip(),
+        )
+        self.assertEqual(
+            f"/{prefix}100 T6",
+            self._gcode(post, 
+                Path.Command("T6", {"N": 100}, {"blockdelete": "True"})
+            ).strip(),
+        )
+
+    def test050_export2_tool_change_formats(self):
+        """
+        Test the formats end to end, T5 then T2.
+
+        Expected:
+            m6_t             M6 T5, M6 T2
+            t_m6             T5 M6, T2 M6
+            m6_t_early_prep  T5, M6 T2, M6   (T5 is prepped, each M6 names the NEXT tool)
+            m6_only          M6, M6
+            no_tool_change   (no M6 or T line)
+        """
+        expected = {
+            Constants.ToolChangeFormat.M6_T: ["M6 T5", "M6 T2"],
+            Constants.ToolChangeFormat.T_M6: ["T5 M6", "T2 M6"],
+            Constants.ToolChangeFormat.M6_T_EARLY_PREP: ["T5", "M6 T2", "M6"],
+            Constants.ToolChangeFormat.M6_ONLY: ["M6", "M6"],
+            Constants.ToolChangeFormat.NO_TOOL_CHANGE: [],
+        }
+        for fmt, lines in expected.items():
+            with self.subTest(fmt=fmt):
+                gcode = self._post(self._machine(fmt)).export2()[0][1]
+                self.assertEqual(lines, self._tool_lines(gcode), gcode)
+    def test051_export2_early_tool_prep(self):
+        """
+        Test early tool prep end to end, T5 then T2.
+
+        Expected:
+            m6_only          T5, M6, T2, M6
+            m6_t_early_prep  T5, M6 T2, M6
+            m6_t             M6 T5, T2, M6 T2
+            m6_only+assert   T5, M6, T2, T2, M6   (the second T2 is the assert)
+
+        t_m6 with early prep is not tested, it is the combination that the sanity
+        check warns about.
+        """
+        cases = [
+            (Constants.ToolChangeFormat.M6_ONLY, False, ["T5", "M6", "T2", "M6"]),
+            (Constants.ToolChangeFormat.M6_T_EARLY_PREP, False, ["T5", "M6 T2", "M6"]),
+            (Constants.ToolChangeFormat.M6_T, False, ["M6 T5", "T2", "M6 T2"]),
+            (Constants.ToolChangeFormat.M6_ONLY, True, ["T5", "M6", "T2", "T2", "M6"]),
+        ]
+        for fmt, assert_prep, lines in cases:
+            with self.subTest(fmt=fmt, assert_prep=assert_prep):
+                machine = self._machine(fmt, early=True, assert_prep=assert_prep)
+                gcode = self._post(machine).export2()[0][1]
+                self.assertEqual(lines, self._tool_lines(gcode), gcode)
+    def test052_export2_line_numbers_with_tool_change(self):
+        """
+        Test that every tool change line is numbered, with the number first.
+
+        Expected, line_numbers on:
+            m6_t             N.. M6 T5, N.. M6 T2
+            t_m6             N.. T5 M6, N.. T2 M6
+            m6_only+early    N.. T5, N.. M6, N.. T2, N.. M6
+        """
+        cases = [
+            (Constants.ToolChangeFormat.M6_T, False, [r"{n}\d+ M6 T5", r"{n}\d+ M6 T2"]),
+            (Constants.ToolChangeFormat.T_M6, False, [r"{n}\d+ T5 M6", r"{n}\d+ T2 M6"]),
+            (
+                Constants.ToolChangeFormat.M6_ONLY,
+                True,
+                [r"{n}\d+ T5", r"{n}\d+ M6", r"{n}\d+ T2", r"{n}\d+ M6"],
+            ),
+        ]
+        for fmt, early, patterns in cases:
+            with self.subTest(fmt=fmt, early=early):
+                post = self._post(self._machine(fmt, early=early, line_numbers=True))
+                gcode = post.export2()[0][1]
+                prefix = re.escape(post.values["LINE_NUMBER_PREFIX"])
+                lines = self._tool_lines(gcode)
+                self.assertEqual(len(patterns), len(lines), gcode)
+                for pattern, line in zip(patterns, lines):
+                    self.assertRegex(line, "^" + pattern.format(n=prefix) + "$")
+    def test060_tool_change_sanity_checks(self):
+        """
+        Test the warnings for tool change settings that do not work together.
+
+        T# M6 with early tool prep:        warns
+        assert_tool_prep, no early prep:   warns
+        tool_change off, but a format:     warns, use the tool change format instead
+        no_tool_change with tool_change off, or the defaults: no warnings
+        """
+
+        def notes(machine):
+            return [s["Note"] for s in self._post(machine)._tool_change_sanity_checks(self.job)]
+
+        self.assertEqual([], notes(self._machine(Constants.ToolChangeFormat.M6_T)))
+
+        found = notes(self._machine(Constants.ToolChangeFormat.T_M6, early=True))
+        self.assertEqual(1, len(found), found)
+        self.assertIn("'T# M6'", found[0])
+
+        found = notes(self._machine(Constants.ToolChangeFormat.M6_ONLY, assert_prep=True))
+        self.assertEqual(1, len(found), found)
+        self.assertIn("Assert Tool Prep", found[0])
+
+        machine = self._machine(Constants.ToolChangeFormat.M6_T)
+        machine.processing.tool_change = False
+        found = notes(machine)
+        self.assertEqual(1, len(found), found)
+        self.assertIn("Tool Change Format", found[0])
+
+        machine = self._machine(Constants.ToolChangeFormat.NO_TOOL_CHANGE)
+        machine.processing.tool_change = False
+        self.assertEqual([], notes(machine))

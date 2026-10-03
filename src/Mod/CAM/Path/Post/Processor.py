@@ -36,6 +36,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 import datetime
 from contextlib import contextmanager
 from itertools import groupby
+from dataclasses import replace
 
 import FreeCAD
 import Constants
@@ -710,7 +711,7 @@ class PostProcessor:
                 "name": "tool_change",
                 "scope": SCOPE_JOB,
                 "type": "bool",
-                "label": translate("CAM", "Allow tool-change"),
+                "label": translate("CAM", "Allow tool-change (Deprecated)"),
                 "default": True,
                 "help": translate(
                     "CAM",
@@ -938,12 +939,154 @@ class PostProcessor:
     def _buildPostList(self):
         """Determine the specific objects and order to postprocess.
 
-        Reads early_tool_prep from self._machine.processing if available.
+        Then applies the machine's tool change format / early tool prep /
+        assert tool prep from self._machine.processing.
 
         Returns:
             List of (name, operations) tuples where every item is a PostList.Postable.
         """
-        return PostList.buildPostList(self)
+        return self._apply_tool_change_format(PostList.buildPostList(self))
+
+    def _tool_change_format(self) -> "Constants.ToolChangeFormat":
+        """The machine's tool change format, M6_T if unset or unrecognised."""
+        processing = getattr(getattr(self, "_machine", None), "processing", None)
+        raw = getattr(processing, "tool_change_format", None)
+        raw = getattr(raw, "value", raw)  # the machine's enum, or already a plain value
+        try:
+            return Constants.ToolChangeFormat(raw)
+        except ValueError:
+            return Constants.ToolChangeFormat.M6_T
+
+    def _tool_prep_postable(self, tool_number) -> Postable:
+        """Standalone 'T<n>' command item."""
+        return self._make_postable("Command", Path.Command(f"{Constants.GCODE_BARE_T[0]}{int(tool_number)}"))
+
+    def _ends_with_tool_prep(self, item: Postable, tool_number) -> bool:
+        """True if the item's last command is already 'T<tool_number>'."""
+        cmds = item.path.Commands if item.path else []
+        return bool(cmds) and cmds[-1].Name == f"{Constants.GCODE_BARE_T[0]}{int(tool_number)}"
+
+    def _apply_tool_change_format(self, postlist: List[Tuple[str, List]]) -> List[Tuple[str, List]]:
+        """
+        Rewrite tool change items according to the machine's tool change settings.
+
+        tool_change_format (Constants.ToolChangeFormat), applied when the G-code is written:
+            M6_T             M6 T4          (tool change to T4)
+            T_M6             T4 M6          (tool change to T4)
+            M6_T_EARLY_PREP  M6 T6          (M6 changes to the prepped tool, T6 preps the NEXT tool)
+            M6_ONLY          M6             (no T parameter. T parameter may be written by early tool prep)
+            NO_TOOL_CHANGE                  (No T or M parameters written)
+
+        The M6 command itself always keeps T<current tool>; the layout is stored in its
+        annotations (Constants.ANNOT_TOOL_CHANGE_FORMAT, Constants.ANNOT_NEXT_TOOL).
+
+        machine.processing.early_tool_prep:
+            For formats other than M6_T_EARLY_PREP, a standalone "T<next>" is emitted after
+            each tool change so the machine can prep the next tool while the current one cuts.
+            For M6_T_EARLY_PREP the next tool prep is part of the M6 line, and the first tool
+            of each output group is prepped with a standalone "T<n>" before its M6.
+
+        machine.processing.assert_tool_prep (only active with early_tool_prep):
+            A "T<n>" is written immediately before every M6
+            Useful when starting partway through the file.
+
+        Redundant consecutive T commands for the same tool are never written. Example with
+        early prep + assert, format M6_ONLY:
+            T4          <- prep / assert
+            M6
+            T6          <- prep next tool
+            (gcode)
+            T6          <- assert
+            M6
+        """
+        fmt = self._tool_change_format()
+        processing = getattr(getattr(self, "_machine", None), "processing", None)
+        early_tool_prep = bool(getattr(processing, "early_tool_prep", False))
+        assert_tool_prep = bool(getattr(processing, "assert_tool_prep", False))
+
+        use_early = early_tool_prep
+        use_assert = early_tool_prep and assert_tool_prep
+        early_tool_change_fmt = fmt == Constants.ToolChangeFormat.M6_T_EARLY_PREP
+        no_tool_change = fmt == Constants.ToolChangeFormat.NO_TOOL_CHANGE
+
+        # Flatten tool controllers across all groups so "next tool" can cross group boundaries.
+        all_tcs = [
+            (g, i)
+            for g, (_, sub) in enumerate(postlist)
+            for i, item in enumerate(sub)
+            if item.item_type == "tool_controller"
+        ]
+        next_lookup = {}
+        for pos, key in enumerate(all_tcs):
+            if pos + 1 < len(all_tcs):
+                ng, ni = all_tcs[pos + 1]
+                next_lookup[key] = postlist[ng][1][ni].data.get("tool_number")
+
+        def add_tool(new_sublist: list, tool_number) -> None:
+            if tool_number is None:
+                return
+            if new_sublist and self._ends_with_tool_prep(new_sublist[-1], tool_number):
+                return  # redundant, same T directly before
+            new_sublist.append(self._tool_prep_postable(tool_number))
+
+        new_postlist = []
+
+        for g, (name, sublist) in enumerate(postlist):
+            new_sublist: list = []
+            first_in_group = True
+            for i, item in enumerate(sublist):
+                if item.item_type != "tool_controller":
+                    new_sublist.append(item)
+                    continue
+
+                cmds = list(item.path.Commands)
+                m6_idx = next(
+                    (k for k, c in enumerate(cmds) if c.Name in Constants.MCODE_TOOL_CHANGE), None
+                )
+                tool_number = item.data.get("tool_number")
+                if m6_idx is None or tool_number is None:
+                    new_sublist.append(item)
+                    continue
+
+                next_tool = next_lookup.get((g, i))
+
+                # Formats whose M6 line does not name the tool being changed to need the first
+                # tool of each output group prepped explicitly.
+                needs_initial_prep = first_in_group and (
+                    early_tool_change_fmt
+                    or (use_early and fmt == Constants.ToolChangeFormat.M6_ONLY)
+                )
+                if (
+                    (needs_initial_prep or use_assert)
+                    and not no_tool_change
+                    and fmt != Constants.ToolChangeFormat.T_M6  # format already leads with this T
+                ):
+                    add_tool(new_sublist, tool_number)
+
+                # The M6 keeps T<current tool> so everything downstream that reads
+                # Parameters["T"] (G43 TLO, tool tracking) keeps working. The requested layout
+                # is an annotation that is applied when the G-code text is written in
+                # _format_tool_change.
+                annotations = {Constants.ANNOT_TOOL_CHANGE_FORMAT: fmt.value}
+                if next_tool is not None:
+                    annotations[Constants.ANNOT_NEXT_TOOL] = str(int(next_tool))
+                cmds[m6_idx : m6_idx + 1] = [
+                    Path.Command(cmds[m6_idx].Name, {"T": int(tool_number)}, annotations)
+                ]
+                new_sublist.append(replace(item, path=Path.Path(cmds)))
+
+                # Prep for next tool
+                if (
+                    use_early
+                    and not early_tool_change_fmt
+                    and not no_tool_change
+                    and next_tool is not None
+                ):
+                    new_sublist.append(self._tool_prep_postable(next_tool))
+
+                first_in_group = False
+            new_postlist.append((name, new_sublist))
+        return new_postlist
 
     def _merge_machine_config(self):
         """Merge machine configuration into the values dict.
@@ -1894,7 +2037,7 @@ class PostProcessor:
 
         def prepend(section_name, item, section_state):
             if item.item_type == "tool_controller":
-                if not self.values["TOOL_CHANGE"]:
+                if self._tool_change_format() == Constants.ToolChangeFormat.NO_TOOL_CHANGE:
                     tool_num = item.data["tool_number"]
                     return (
                         -1,
@@ -2382,33 +2525,6 @@ class PostProcessor:
 
         self._edit_item_list(postables, wrap_rotary)
 
-    def _suppress_tool_change(self, postables):
-        """Suppress M6 if not TOOL_CHANGE"""
-
-        def suppress_m6(section_name: str, item, section_state: dict):
-            """We edit-in-place it with a comment"""
-
-            if item.Path:
-                locations = any(c.Name in ("M6", "M06") for c in item.Path.Commands)
-                if locations:
-                    new_commands = []
-                    for cmd in item.Path.Commands:
-                        if cmd.Name in ("M6", "M06"):
-                            new_commands.append(
-                                Path.Command(f"(Tool change suppressed: {cmd.toGCode()})")
-                            )
-                        else:
-                            new_commands.append(cmd)
-                    item.Path = Path.Path(new_commands)
-                return None, None
-            else:
-                return None, None
-
-        if self.values["TOOL_CHANGE"]:
-            return  # no suppress
-
-        self._edit_item_list(postables, suppress_m6)
-
     def _convert_item_commands(self, item, gcode_lines) -> None:
         """Convert Path.Commands to G-code strings for a single item.
 
@@ -2887,7 +3003,6 @@ class PostProcessor:
         self._expand_xy_before_z(postables)
         self._expand_bcnc_commands(postables)
         self._expand_tool_change(postables)
-        self._suppress_tool_change(postables)
 
         postables = self._expand_post_item(postables)
         self._expand_trailing_lines(postables)
@@ -3174,6 +3289,7 @@ class PostProcessor:
             self._sanity_spindle_speed,
             self._rotation_sanity_checks,
             self._fixture_sanity_checks,
+            self._tool_change_sanity_checks,
         ]
 
     def _sanity_spindle_speed(self, job):
@@ -3306,6 +3422,64 @@ class PostProcessor:
                 ).format(machine=machine.name),
             )
         ]
+
+    def _tool_change_sanity_checks(self, job):
+        """Warns:
+        if early tool prep and T# M6 are both enabled as that is likely
+        a mistake. The T# will likely force a tool change to the wrong tool
+
+        if assert tool prep is on but early tool prep is off as assert early tool
+        prep will do nothing in this instance.
+        """
+        squawks = []
+        machine = getattr(self, "_machine", None)
+        processing = getattr(machine, "processing", None)
+        if processing is None:
+            return squawks
+        tool_change_format = self._tool_change_format()
+        if tool_change_format == Constants.ToolChangeFormat.T_M6 and getattr(
+            processing, "early_tool_prep", False
+        ):
+            squawks.append(
+                self._create_squawk(
+                    "WARNING",
+                    translate(
+                        "CAM",
+                        "'T# M6' tool change and early "
+                        "tool prep are both enabled. Depending on the machine this may cause the "
+                        "wrong tool to be loaded",
+                    ).format(machine=machine.name),
+                )
+            )
+        if getattr(processing, "assert_tool_prep", False) and not getattr(
+            processing, "early_tool_prep", False
+        ):
+            squawks.append(
+                self._create_squawk(
+                    "WARNING",
+                    translate(
+                        "CAM",
+                        "Machine '{machine}' uses Assert Tool Prep without Early Tool Prep. "
+                        "No tool prep commands will be written",
+                    ).format(machine=machine.name),
+                )
+            )
+        if (
+            getattr(processing, "tool_change", True) == False or self.values["TOOL_CHANGE"] == False
+        ) and tool_change_format != Constants.ToolChangeFormat.NO_TOOL_CHANGE:
+            squawks.append(
+                self._create_squawk(
+                    "WARNING",
+                    translate(
+                        "CAM",
+                        "Machine '{machine}' tries to turn off Tool Changes with "
+                        "Tool Change in options or Allow Tool change under post processor. "
+                        "Use Tool Change Format under the Options tab instead.",
+                    ).format(machine=machine.name),
+                )
+            )
+
+        return squawks
 
     def _fixture_sanity_checks(self, job):
         """Warn about a work plane's Fixture before the post refuses it, and
@@ -3716,6 +3890,9 @@ class PostProcessor:
         # Check for blockdelete annotation
         block_delete_string = "/" if annotations.get("blockdelete") else ""  # FIXME: never set
 
+        # Parameter words that are written before the command name, e.g. T4 M6
+        lead_params = annotations.get(Constants.ANNOT_LEAD_PARAMS, "")
+
         # Build command line
         command_line = []
 
@@ -3723,6 +3900,13 @@ class PostProcessor:
         if params.get("N", None) is not None:
             prefix = self.values["LINE_NUMBER_PREFIX"]
             command_line.append(f"{prefix}{ int(params['N']):d}")
+
+        # Lead words follow the line number and precede the command name. They go into
+        # command_line as words, so format_command_line() separates them with COMMAND_SPACE
+        for letter in lead_params:
+            if letter in params:
+                formatted_value = self.format_parameter(letter, params[letter], command_name)
+                command_line.append(f"{letter}{formatted_value}")
 
         # A modal-stripped command has no name. Appending it anyway leaves an
         # empty leading element, which format_command_line renders as a leading
@@ -3745,7 +3929,7 @@ class PostProcessor:
 
         words_emitted = 0
         for parameter in parameter_order:
-            if parameter == normal_word:
+            if parameter == normal_word or parameter in lead_params:
                 continue
             if parameter in params:
                 # Check if we should suppress duplicate parameters
@@ -3900,13 +4084,59 @@ class PostProcessor:
         """
         return self._convert_move(command)
 
+    def _format_tool_change(self, command: Path.Command, tool_change_format: str) -> str:
+        """Write tool changes according to the machine's tool_change_format.
+        M6_T             M6 T4   (T is the current tool)
+        T_M6             T4 M6   (T is the current tool)
+        M6_T_EARLY_PREP  M6 T6   (T is the NEXT tool; should be used with early tool prep)
+        M6_ONLY          M6      (No T written. early tool prep will add a T before this line)
+        NO_TOOL_CHANGE   (Tool change suppressed: M6 T4)
+
+        The line is always assembled by _convert_move(), so the line number, block delete
+        and COMMAND_SPACE are handled the same as for any other command.
+        """
+        try:
+            fmt = Constants.ToolChangeFormat(tool_change_format)
+        except ValueError:
+            fmt = Constants.ToolChangeFormat.M6_T
+
+        tool = command.Parameters.get("T")
+        params = {k: v for k, v in command.Parameters.items() if k != "T"}
+        annotations = command.Annotations
+
+        if fmt == Constants.ToolChangeFormat.NO_TOOL_CHANGE:
+            text = "M6" if tool is None else f"M6 T{int(tool)}"
+            return self._convert_comment(Path.Command(f"(Tool change suppressed: {text})"))
+
+        if fmt == Constants.ToolChangeFormat.T_M6 and tool is not None:
+            # T leads the command name, after any line number: "N100 T4 M6"
+            lead = {**annotations, Constants.ANNOT_LEAD_PARAMS: "T"}
+            return self._convert_move(Path.Command(command.Name, command.Parameters, lead))
+
+        if fmt == Constants.ToolChangeFormat.M6_T_EARLY_PREP:
+            next_tool = annotations.get(Constants.ANNOT_NEXT_TOOL)
+            if next_tool not in (None, ""):
+                params["T"] = int(next_tool)
+            return self._convert_move(Path.Command(command.Name, params, annotations))
+
+        if fmt in (Constants.ToolChangeFormat.M6_ONLY, Constants.ToolChangeFormat.T_M6):
+            # M6_ONLY, or T_M6 with no tool number: no T written
+            return self._convert_move(Path.Command(command.Name, params, annotations))
+
+        return self._convert_move(command)  # M6_T
+
     def _convert_tool_change(self, command: Path.Command) -> str:
         """
         Converts a tool change command to gcode.
 
         This method can be overridden by derived postprocessors to customize tool change handling.
         """
-        result = self._convert_move(command)
+        tool_change_format = command.Annotations.get(Constants.ANNOT_TOOL_CHANGE_FORMAT)
+        if tool_change_format is not None:
+            result = self._format_tool_change(command, tool_change_format)
+        else:
+            result = self._convert_move(command)
+
         # Reset modal state after tool change so that subsequent commands
         # (M3 S..., G4 P..., G0 X... etc.) are not suppressed as duplicates.
         self.machine_state.setState(None)
