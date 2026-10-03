@@ -25,6 +25,7 @@
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Sequencer.h>
 
 #include <Standard_Failure.hxx>
 
@@ -56,6 +57,14 @@ void QtPreviewUpdateScheduler::schedulePreviewRecompute(App::DocumentObject* obj
 
 void QtPreviewUpdateScheduler::flush()
 {
+    // If a sequencer operation is currently running on the document, postpone flushing
+    // the preview to prevent nested/re-entrant document computations.
+    if (Base::Sequencer().isRunning()) {
+        scheduled = true;
+        QMetaObject::invokeMethod(this, &QtPreviewUpdateScheduler::flush, Qt::QueuedConnection);
+        return;
+    }
+
     scheduled = false;
 
     // use std::exchange to prevent race conditions on updates that could occur during a flush
