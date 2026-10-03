@@ -1683,6 +1683,11 @@ bool Document::save()
                 }
             }
 
+            if (docs.size() == 1 && docs.front() == getDocument() && !isModified()
+                && !getDocument()->isTouched() && !dmap[getDocument()]) {
+                return true;
+            }
+
             if (!checkCanonicalPath(dmap)) {
                 return false;
             }
@@ -1831,6 +1836,11 @@ void Document::saveAll()
         if (!gdoc) {
             continue;
         }
+
+        if (!gdoc->isModified() && !doc->isTouched() && !dmap[doc] && doc->isSaved()) {
+            continue;
+        }
+
         if (!doc->isSaved()) {
             if (!gdoc->saveAs()) {
                 break;
