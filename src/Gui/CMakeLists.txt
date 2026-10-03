@@ -543,6 +543,10 @@ SET(Dialog_HPP_SRCS
     Dialogs/DlgObjectSelection.h
     Dialogs/DlgAddProperty.h
     VectorListEditor.h
+    ComboBox/ComboBoxFilterModel.h
+    ComboBox/ComboBoxPopup.h
+    ComboBox/SearchableComboBox.h
+    ComboBox/ComboBoxGridModel.h
 )
 
 SET(Dialog_SRCS
@@ -1144,9 +1148,9 @@ SET(Widget_CPP_SRCS
     FontScaledSVG.cpp
     SplitButton.cpp
     ComboBox/ComboBoxFilterModel.cpp
-    ComboBox/ComboBoxGridDelegate.cpp
     ComboBox/ComboBoxPopup.cpp
     ComboBox/SearchableComboBox.cpp
+    ComboBox/ComboBoxGridModel.cpp
 )
 if(WIN32)
     SET(Widget_CPP_SRCS
