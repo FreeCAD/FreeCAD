@@ -2413,7 +2413,8 @@ SolveStatus System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
         // get the new values
         double err_new;
 
-        // restrict h_dl according to maxStep to prevent parameters (like radius) from becoming negative or invalid
+        // restrict h_dl according to maxStep to prevent parameters (like radius) from becoming
+        // negative or invalid
         double scale = subsys->maxStep(h_dl);
         if (scale < 1.) {
             h_dl *= scale;
