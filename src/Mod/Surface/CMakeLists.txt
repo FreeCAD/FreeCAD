@@ -21,6 +21,12 @@ if(BUILD_GUI)
     list (APPEND Surface_Scripts InitGui.py)
 endif(BUILD_GUI)
 
+list(APPEND Surface_Scripts TestSurfaceFreehandBSpline.py)
+list(APPEND Surface_TestScripts
+    SurfaceTests/TestFreehandBSpline.py
+    SurfaceTests/TestFreehandBSplineGui.py
+)
+
 add_custom_target(SurfaceScripts ALL
     SOURCES ${Surface_Scripts} ${Surface_TestScripts}
 )
