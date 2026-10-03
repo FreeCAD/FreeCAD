@@ -78,7 +78,7 @@ def _parse_motion_lines(gcode):
     out = []
     for raw in gcode.splitlines():
         line = raw.strip()
-        if not line or line.startswith("(") or line.startswith(";"):
+        if not line or line.startswith(("(", ";")):
             continue
         # Strip leading line numbers like "N100 G1 ...".
         line = re.sub(r"^N\d+\s*", "", line)
@@ -187,7 +187,7 @@ class TestPathRotaryPostRegression(PathTestBase):
         cls.op.StepOver = 4.0
         cls.op.AngularResolution = 15.0
         cls.op.setExpression("StepDown", None)
-        cls.op.StepDown = 0.0
+        cls.op.StepDown = 999.0
         cls.op.RadialStockToLeave = 0.0
         cls.op.MaxFeed = 5000.0
         cls.op.LinearDeflection = 0.2
@@ -316,10 +316,13 @@ class TestPathRotaryPostRegression(PathTestBase):
         ref = None
         for cmd in self.op.Path.Commands:
             p = cmd.Parameters
-            if cmd.Name == "G1" and all(ax in p for ax in ("X", "Y", "Z", "A")):
-                if abs(p["A"]) > 1e-3:
-                    ref = (cmd.Name, p)
-                    break
+            if (
+                cmd.Name == "G1"
+                and all(ax in p for ax in ("X", "Y", "Z", "A"))
+                and abs(p["A"]) > 1e-3
+            ):
+                ref = (cmd.Name, p)
+                break
         self.assertIsNotNone(ref, "no compound G1 XYZA cut move in op path — fixture broken")
 
         target_a = ref[1]["A"]
