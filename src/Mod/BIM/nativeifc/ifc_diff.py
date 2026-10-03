@@ -23,13 +23,14 @@
 
 import difflib
 
-import ifcopenshell
-
 import FreeCAD
 import FreeCADGui
 import Arch_rc
 
+from . import ifc_backend
 from . import ifc_tools
+
+ifcopenshell = ifc_backend.get_backend()
 
 translate = FreeCAD.Qt.translate
 
