@@ -80,8 +80,6 @@ class Downgrade(gui_base_original.Modifier):
 
     def proceed(self):
         """Proceed with execution of the command after selection."""
-        if self.call is not None:
-            self.end_callbacks(self.call)
         if Gui.Selection.getSelection():
             Gui.addModule("Draft")
             _cmd = "Draft.downgrade"
@@ -92,6 +90,11 @@ class Downgrade(gui_base_original.Modifier):
             _cmd_list = ["_objs_ = " + _cmd, "FreeCAD.ActiveDocument.recompute()"]
             self.commit(translate("draft", "Downgrade"), _cmd_list)
         self.finish()
+
+    def finish(self):
+        """Terminate the operation."""
+        self.end_callbacks(self.call)
+        super().finish()
 
 
 Gui.addCommand("Draft_Downgrade", Downgrade())
