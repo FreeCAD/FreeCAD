@@ -27,6 +27,7 @@
 
 
 #include <App/FeaturePythonPyImp.h>
+#include <Base/Console.h>
 #include <Mod/Part/App/modelRefine.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
 #include <GProp_GProps.hxx>
@@ -147,7 +148,8 @@ void FeatureAddSub::updatePreviewShape()
         TopoShape base = getBaseTopoShape(true).moved(getLocation().Inverted());
         const TopoShape& tool = AddSubShape.getShape();
 
-        if (!tool.isEmpty()) {
+        // with no base there is nothing to trim against, so preview the tool below
+        if (!tool.isEmpty() && !base.isEmpty()) {
             try {
                 TopoShape common;
                 common.makeElementBoolean(
@@ -174,14 +176,16 @@ void FeatureAddSub::updatePreviewShape()
                 BRepGProp::VolumeProperties(result.getShape(), propsAfter);
 
                 const double removed = propsBefore.Mass() - propsAfter.Mass();
+                // with nothing removed there is no delta to draw, so show the tool
+                const bool nothingRemoved = removed <= Precision::Confusion();
 
-                if (removed <= Precision::Confusion()) {
+                if (nothingRemoved) {
                     notifyWarning(
                         tr("Resulting shape is empty. That may indicate that no material will be "
                            "removed or a problem with the model.")
                     );
                 }
-                PreviewShape.setValue(common);
+                PreviewShape.setValue(nothingRemoved ? tool : common);
                 return;
             }
             catch (Standard_Failure& e) {
