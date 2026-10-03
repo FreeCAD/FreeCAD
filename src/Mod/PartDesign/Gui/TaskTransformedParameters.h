@@ -55,6 +55,27 @@ namespace PartDesignGui
 
 class TaskMultiTransformParameters;
 
+class RecomputeInProgressGuard
+{
+public:
+    explicit RecomputeInProgressGuard(bool& inProgress) noexcept
+        : m_inProgress(inProgress)
+    {
+        m_inProgress = true;
+    }
+
+    ~RecomputeInProgressGuard()
+    {
+        m_inProgress = false;
+    }
+
+    RecomputeInProgressGuard(const RecomputeInProgressGuard&) = delete;
+    RecomputeInProgressGuard& operator=(const RecomputeInProgressGuard&) = delete;
+
+private:
+    bool& m_inProgress;
+};
+
 /**
   The transformed subclasses will be used in two different modes:
   1. As a stand-alone feature
@@ -94,6 +115,11 @@ public:
     void exitSelectionMode();
 
     static void removeItemFromListWidget(QListWidget* widget, const QString& itemstr);
+
+    bool isRecomputeInProgress() const
+    {
+        return m_recomputeInProgress;
+    }
 
 protected:
     /** Setup the standalone UI.
@@ -209,6 +235,9 @@ protected:
 
     /// Lock updateUI(), applying changes to the underlying feature and calling recomputeFeature()
     bool blockUpdate = false;
+
+    /// Set so a re-entrant accept() waits instead of closing early.
+    bool m_recomputeInProgress = false;
 
 private:
     int transactionID = 0;
