@@ -3408,7 +3408,12 @@ void TreeWidget::onOpenFileLocation()
     bool success = false;
 
 #if defined(Q_OS_MAC)
-    success = QProcess::startDetached(QStringLiteral("open"), {filePath});
+    QStringList param;
+    if (!fileInfo.isDir()) {
+        param += QStringLiteral("-R");
+    }
+    param += filePath;
+    success = QProcess::startDetached(QStringLiteral("open"), param);
 #elif defined(Q_OS_WIN)
     QStringList param;
     if (!fileInfo.isDir()) {
