@@ -1978,7 +1978,7 @@ void TaskSketcherElements::onListWidgetItemActivated(QListWidgetItem* item)
         if (constraint->Type == Sketcher::Text && constraint->hasElement(0)) {
             if (constraint->getGeoId(0) == geoId) {
                 // The item is a handle for a text constraint. Open the edit dialog.
-                auto* editDialog = new EditTextDialog(this->sketchView, i);
+                auto* editDialog = new EditTextDialog(this->sketchView, i, this);
                 editDialog->exec();
                 delete editDialog;
                 return;
