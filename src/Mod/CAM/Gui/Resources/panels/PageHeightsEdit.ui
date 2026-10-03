@@ -348,8 +348,7 @@ Retract Height: No collision detection, uses retract height for rapid moves betw
 Clearance Height: No collision detection, uses clearance height for rapid moves between areas
 Line of Sight: fastest - checks the path centerline.
 Tool Diameter: balanced - checks clearance using the tool diameter.
-Tool Shape: safest - checks clearance using the cross section of the tool shape
-          </string>
+Tool Shape: safest - checks clearance using the cross section of the tool shape</string>
         </property>
        </widget>
       </item>
@@ -370,6 +369,17 @@ Tool Shape: safest - checks clearance using the cross section of the tool shape
         </property>
         <property name="maximum">
          <double>999999999.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QCheckBox" name="chkFlexyHeight">
+        <property name="text">
+         <string>Flexy Height</string>
+        </property>
+        <property name="toolTip">
+         <string>Define additional height above the model.
+Allowed only for strategies 'Line of Sight', 'Tool Diameter' and 'Tool Shape'.</string>
         </property>
        </widget>
       </item>
