@@ -415,6 +415,9 @@
               <property name="grid">
                <bool>true</bool>
               </property>
+              <property name="popupScrollBar">
+               <bool>false</bool>
+              </property>
               <property name="gridFixedColumns">
                <number>5</number>
               </property>
