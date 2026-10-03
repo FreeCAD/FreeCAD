@@ -61,6 +61,7 @@
 #include <Gui/ViewParams.h>
 #include <Gui/ViewProviderPlane.h>
 #include <Gui/Selection/SelectionFilter.h>
+#include <Gui/TaskView/TaskDialog.h>
 
 using namespace PartDesignGui;
 
@@ -759,13 +760,7 @@ private:
         PartDesignGui::TaskDlgFeaturePick* pickDlg
             = qobject_cast<PartDesignGui::TaskDlgFeaturePick*>(dlg);
         if (dlg && !pickDlg) {
-            QMessageBox msgBox(Gui::getMainWindow());
-            msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-            msgBox.setInformativeText(QObject::tr("Close this dialog?"));
-            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-            msgBox.setDefaultButton(QMessageBox::Yes);
-            int ret = msgBox.exec();
-            if (ret == QMessageBox::Yes) {
+            if (dlg->canClose()) {
                 Gui::Control().closeDialog();
             }
             else {
