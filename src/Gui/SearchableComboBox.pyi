@@ -1,18 +1,16 @@
 from Base.Metadata import export, constmethod, no_args
+from Base.PyObjectBase import PyObjectBase
 from PySide6 import QComboBoxPy
 
 @export(
     Constructor=True,
     Delete=True,
-    Father="QComboBoxPy",
     Name="SearchableComboBoxPy",
     Twin="SearchableComboBox",
     TwinPointer="SearchableComboBox",
     Include="Gui/SearchableComboBox.h",
-    Namespace="Gui",
-    FatherInclude="QComboBox",
 )
-class SearchableComboBoxPy(QComboBoxPy):
+class SearchableComboBoxPy(PyObjectBase):
     @property
     def searchable(self) -> bool: ...
     @searchable.setter

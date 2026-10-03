@@ -3,183 +3,74 @@
 
 using namespace Gui;
 
-PyObject* SearchableComboBoxPy::PyMake(struct _typeobject*, PyObject*, PyObject*)
+PyObject* SearchableComboBoxPy::PyMake(PyTypeObject* /*type*/, PyObject* /*args*/, PyObject* /*kwds*/)
 {
     return new SearchableComboBoxPy(new SearchableComboBox);
 }
 
+// constructor method
 int SearchableComboBoxPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 {
     return 0;
 }
 
+
 std::string SearchableComboBoxPy::representation() const
 {
-    return "<SearchableComboBox>";
+    return {"<SearchableComboBox object>"};
 }
 
-PyObject* SearchableComboBoxPy::isSearchable(PyObject* args)
+
+Py::Boolean SearchableComboBoxPy::getsearchable() const
 {
-    if (!PyArg_ParseTuple(args, "")) {
-        return nullptr;
-    }
-
-    PY_TRY
-    {
-        return PyBool_FromLong(getSearchableComboBoxPtr()->isSearchable());
-    }
-    PY_CATCH;
+    return Py::Boolean(getSearchableComboBoxPtr()->isSearchable());
 }
 
-PyObject* SearchableComboBoxPy::setSearchable(PyObject* args, PyObject* kwds)
+void SearchableComboBoxPy::setsearchable(Py::Boolean arg)
 {
-    PyObject* value = nullptr;
-
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O", nullptr, &value)) {
-        return nullptr;
-    }
-
-    PY_TRY
-    {
-        if (!PyBool_Check(value)) {
-            PyErr_SetString(PyExc_TypeError, "searchable must be a bool");
-            return nullptr;
-        }
-
-        getSearchableComboBoxPtr()->setSearchable(PyObject_IsTrue(value));
-
-        Py_Return;
-    }
-    PY_CATCH;
+    getSearchableComboBoxPtr()->setSearchable(arg);
 }
 
-PyObject* SearchableComboBoxPy::isGrid(PyObject* args)
+Py::Boolean SearchableComboBoxPy::getgrid() const
 {
-    if (!PyArg_ParseTuple(args, "")) {
-        return nullptr;
-    }
-
-    PY_TRY
-    {
-        return PyBool_FromLong(getSearchableComboBoxPtr()->isGrid());
-    }
-    PY_CATCH;
+    return Py::Boolean(getSearchableComboBoxPtr()->isGrid());
 }
 
-PyObject* SearchableComboBoxPy::setGrid(PyObject* args, PyObject* kwds)
+void SearchableComboBoxPy::setgrid(Py::Boolean arg)
 {
-    PyObject* value = nullptr;
-
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O", nullptr, &value)) {
-        return nullptr;
-    }
-
-    PY_TRY
-    {
-        if (!PyBool_Check(value)) {
-            PyErr_SetString(PyExc_TypeError, "grid must be a bool");
-            return nullptr;
-        }
-
-        getSearchableComboBoxPtr()->setGrid(PyObject_IsTrue(value));
-
-        Py_Return;
-    }
-    PY_CATCH;
+    getSearchableComboBoxPtr()->setGrid(arg);
 }
 
-PyObject* SearchableComboBoxPy::popupMaximumHeight(PyObject* args)
+Py::Long SearchableComboBoxPy::getpopupMaximumHeight() const
 {
-    if (!PyArg_ParseTuple(args, "")) {
-        return nullptr;
-    }
-
-    PY_TRY
-    {
-        return PyLong_FromLong(getSearchableComboBoxPtr()->popupMaximumHeight());
-    }
-    PY_CATCH;
+    return Py::Long(getSearchableComboBoxPtr()->popupMaximumHeight());
 }
 
-PyObject* SearchableComboBoxPy::setPopupMaximumHeight(PyObject* args, PyObject* kwds)
+void SearchableComboBoxPy::setpopupMaximumHeight(Py::Long arg)
 {
-    int height = 0;
-
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "i", nullptr, &height)) {
-        return nullptr;
-    }
-
-    PY_TRY
-    {
-        getSearchableComboBoxPtr()->setPopupMaximumHeight(height);
-        Py_Return;
-    }
-    PY_CATCH;
+    getSearchableComboBoxPtr()->setPopupMaximumHeight(arg);
 }
 
-PyObject* SearchableComboBoxPy::gridFixedColumns(PyObject* args)
+Py::Long SearchableComboBoxPy::getgridFixedColumns() const
 {
-    if (!PyArg_ParseTuple(args, "")) {
-        return nullptr;
-    }
-
-    PY_TRY
-    {
-        return PyLong_FromLong(getSearchableComboBoxPtr()->gridFixedColumns());
-    }
-    PY_CATCH;
+    return Py::Long(getSearchableComboBoxPtr()->gridFixedColumns());
 }
 
-PyObject* SearchableComboBoxPy::setGridFixedColumns(PyObject* args, PyObject* kwds)
+void SearchableComboBoxPy::setgridFixedColumns(Py::Long arg)
 {
-    int columns = 0;
-
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "i", nullptr, &columns)) {
-        return nullptr;
-    }
-
-    PY_TRY
-    {
-        getSearchableComboBoxPtr()->setGridFixedColumns(columns);
-        Py_Return;
-    }
-    PY_CATCH;
+    getSearchableComboBoxPtr()->setGridFixedColumns(arg);
 }
 
-PyObject* SearchableComboBoxPy::popupScrollBar(PyObject* args)
+Py::Boolean SearchableComboBoxPy::getpopupScrollBar() const
 {
-    if (!PyArg_ParseTuple(args, "")) {
-        return nullptr;
-    }
-
-    PY_TRY
-    {
-        return PyBool_FromLong(getSearchableComboBoxPtr()->popupScrollBar());
-    }
-    PY_CATCH;
+    return Py::Boolean(getSearchableComboBoxPtr()->popupScrollBar());
 }
 
-PyObject* SearchableComboBoxPy::setPopupScrollBar(PyObject* args, PyObject* kwds)
+void SearchableComboBoxPy::setpopupScrollBar(Py::Boolean arg)
 {
-    PyObject* value = nullptr;
-
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O", nullptr, &value)) {
-        return nullptr;
-    }
-
-    PY_TRY
-    {
-        if (!PyBool_Check(value)) {
-            PyErr_SetString(PyExc_TypeError, "popupScrollBar must be a bool");
-            return nullptr;
-        }
-
-        getSearchableComboBoxPtr()->setPopupScrollBar(PyObject_IsTrue(value));
-
-        Py_Return;
-    }
-    PY_CATCH;
+    getSearchableComboBoxPtr()->setPopupScrollBar(arg);
 }
+
 
 PyObject* SearchableComboBoxPy::getCustomAttributes(const char* /*attr*/) const
 {
