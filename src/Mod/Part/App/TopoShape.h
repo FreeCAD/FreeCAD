@@ -280,7 +280,7 @@ enum class RevolMode
     None = 2
 };
 
-void expandCompound(const TopoShape& shape, std::vector<TopoShape>& res);
+PartExport void expandCompound(const TopoShape& shape, std::vector<TopoShape>& res);
 
 enum class ConversionTarget : std::uint8_t
 {
@@ -299,12 +299,12 @@ ENABLE_BITMASK_OPERATORS(Part::ConversionTarget)
 namespace Part
 {
 
-constexpr bool hasTarget(ConversionTarget value, ConversionTarget target)
+PartExport constexpr bool hasTarget(ConversionTarget value, ConversionTarget target)
 {
     return (value & target) != ConversionTarget::None;
 }
 
-std::vector<std::string> convertShapeElements(
+PartExport std::vector<std::string> convertShapeElements(
     const TopoShape& shape,
     const std::vector<std::string>& source,
     ConversionTarget sourceConfig,
