@@ -21,12 +21,10 @@
  *                                                                         *
  **************************************************************************/
 
-#include <QMetaType>
 
 #include <Base/Quantity.h>
 #include <Base/QuantityPy.h>
 #include <CXX/Objects.hxx>
-#include <Gui/MetaTypes.h>
 
 #include "MaterialFilter.h"
 
@@ -37,8 +35,8 @@
 using namespace Materials;
 
 // Forward declaration
-// static PyObject* _pyObjectFromVariant(const QVariant& value);
-// static Py::List getList(const QVariant& value);
+// static PyObject* pyObjectFromValue(const Value& value);
+// static Py::List getList(const ValueList& value);
 
 // returns a string which represents the object e.g. when printed in python
 std::string MaterialFilterOptionsPy::representation() const

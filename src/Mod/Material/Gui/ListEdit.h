@@ -66,7 +66,7 @@ private:
     std::unique_ptr<Ui_ListEdit> ui;
     std::shared_ptr<Materials::Material> _material;
     std::shared_ptr<Materials::MaterialProperty> _property;
-    QList<QVariant> _value;
+    Materials::ValueList _value;
 
     QAction _deleteAction;
 

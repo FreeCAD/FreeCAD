@@ -21,54 +21,52 @@
  *                                                                         *
  **************************************************************************/
 
-#include <QVariant>
+#include <string>
+#include <variant>
 
-#include "PyVariants.h"
+#include <Base/Quantity.h>
+#include <Base/QuantityPy.h>
+#include <CXX/Objects.hxx>
+
 #include "Exceptions.h"
+#include "PyVariants.h"
 
-using namespace Materials;
-
-PyObject* Materials::_pyObjectFromVariant(const QVariant& value)
+namespace
 {
-    if (value.isNull()) {
-        Py_RETURN_NONE;
-    }
 
-    if (value.userType() == qMetaTypeId<Base::Quantity>()) {
-        return new Base::QuantityPy(new Base::Quantity(value.value<Base::Quantity>()));
-    }
-    if (value.userType() == QMetaType::Double) {
-        return PyFloat_FromDouble(value.toDouble());
-    }
-    if (value.userType() == QMetaType::Float) {
-        return PyFloat_FromDouble(value.toFloat());
-    }
-    if (value.userType() == QMetaType::Int) {
-        return PyLong_FromLong(value.toInt());
-    }
-    if (value.userType() == QMetaType::Long) {
-        return PyLong_FromLong(value.toInt());
-    }
-    if (value.userType() == QMetaType::Bool) {
-        return Py::new_reference_to(Py::Boolean(value.toBool()));
-    }
-    if (value.userType() == QMetaType::QString) {
-        return PyUnicode_FromString(value.toString().toStdString().c_str());
-    }
-    if (value.userType() == qMetaTypeId<QList<QVariant>>()) {
-        return Py::new_reference_to(getList(value));
-    }
+template<class... Ts>
+struct Overloaded: Ts...
+{
+    using Ts::operator()...;
+};
 
-    throw UnknownValueType();
+}  // namespace
+
+PyObject* Materials::pyObjectFromValue(const Value& value)
+{
+    return std::visit(
+        Overloaded {[](std::monostate) -> PyObject* { Py_RETURN_NONE; },
+                    [](const std::string& text) -> PyObject* {
+                        return PyUnicode_FromStringAndSize(text.data(),
+                                                           static_cast<Py_ssize_t>(text.size()));
+                    },
+                    [](bool flag) -> PyObject* { return Py::new_reference_to(Py::Boolean(flag)); },
+                    [](int number) -> PyObject* { return PyLong_FromLong(number); },
+                    [](double number) -> PyObject* { return PyFloat_FromDouble(number); },
+                    [](const Base::Quantity& quantity) -> PyObject* {
+                        return new Base::QuantityPy(new Base::Quantity(quantity));
+                    },
+                    [](const ValueList& list) -> PyObject* {
+                        return Py::new_reference_to(getList(list));
+                    }},
+        value.variant());
 }
 
-Py::List Materials::getList(const QVariant& value)
+Py::List Materials::getList(const ValueList& value)
 {
-    auto listValue = value.value<QList<QVariant>>();
     Py::List list;
-
-    for (auto& it : listValue) {
-        list.append(Py::Object(_pyObjectFromVariant(it)));
+    for (const auto& item : value) {
+        list.append(Py::asObject(pyObjectFromValue(item)));
     }
 
     return list;

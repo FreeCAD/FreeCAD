@@ -49,6 +49,7 @@
 #include "Array2D.h"
 #include "Array3D.h"
 #include "ArrayDelegate.h"
+#include "MaterialMetaTypes.h"
 #include "MaterialSave.h"
 
 

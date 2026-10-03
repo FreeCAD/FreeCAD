@@ -200,14 +200,16 @@ void DlgMaterialImp::setMaterial(const std::vector<App::DocumentObject*>& object
         if (auto prop = dynamic_cast<Materials::PropertyMaterial*>(it->getPropertyByName("ShapeMaterial"))) {
             try {
                 const auto& material = prop->getValue();
-                d->ui.widgetMaterial->setMaterial(material.getUUID());
+                d->ui.widgetMaterial->setMaterial(
+                    QString::fromStdString(material.getUUID()));
                 return;
             }
             catch (const Materials::MaterialNotFound&) {
             }
         }
     }
-    d->ui.widgetMaterial->setMaterial(Materials::MaterialManager::defaultMaterialUUID());
+    d->ui.widgetMaterial->setMaterial(
+        QString::fromStdString(Materials::MaterialManager::defaultMaterialUUID()));
 }
 
 std::vector<Gui::ViewProvider*> DlgMaterialImp::getSelection() const

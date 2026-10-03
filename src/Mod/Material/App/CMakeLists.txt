@@ -16,10 +16,6 @@ set(Materials_LIBS
     FreeCADApp
 )
 
-list(APPEND Materials_LIBS
-    ${QtConcurrent_LIBRARIES}
-)
-
 if(yaml-cpp_VERSION VERSION_LESS 0.8.0)
     list(APPEND Materials_LIBS
         ${YAML_CPP_LIBRARIES}
@@ -158,7 +154,6 @@ target_include_directories(
     SYSTEM
     PUBLIC
     ${YAML_CPP_INCLUDE_DIR}
-    ${QtConcurrent_INCLUDE_DIRS}
 )
 
 if(BUILD_MATERIAL_EXTERNAL)

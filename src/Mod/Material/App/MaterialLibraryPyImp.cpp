@@ -21,12 +21,10 @@
  *                                                                         *
  **************************************************************************/
 
-#include <QMetaType>
 
 #include <Base/Quantity.h>
 #include <Base/QuantityPy.h>
 #include <CXX/Objects.hxx>
-#include <Gui/MetaTypes.h>
 
 #include "MaterialLibrary.h"
 
@@ -37,8 +35,8 @@
 using namespace Materials;
 
 // Forward declaration
-// static PyObject* _pyObjectFromVariant(const QVariant& value);
-// static Py::List getList(const QVariant& value);
+// static PyObject* pyObjectFromValue(const Value& value);
+// static Py::List getList(const ValueList& value);
 
 // returns a string which represents the object e.g. when printed in python
 std::string MaterialLibraryPy::representation() const
@@ -64,12 +62,12 @@ int MaterialLibraryPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 Py::String MaterialLibraryPy::getName() const
 {
     auto filterName = getMaterialLibraryPtr()->getName();
-    return {filterName.toStdString()};
+    return {filterName};
 }
 
 void MaterialLibraryPy::setName(const Py::String value)
 {
-    getMaterialLibraryPtr()->setName(QString::fromStdString(value));
+    getMaterialLibraryPtr()->setName(value);
 }
 
 Py::Object MaterialLibraryPy::getIcon() const
@@ -93,12 +91,12 @@ void MaterialLibraryPy::setIcon(const Py::Object value)
 Py::String MaterialLibraryPy::getDirectory() const
 {
     auto path = getMaterialLibraryPtr()->getDirectory();
-    return {path.toStdString()};
+    return {path};
 }
 
 void MaterialLibraryPy::setDirectory(const Py::String value)
 {
-    getMaterialLibraryPtr()->setDirectory(QString::fromStdString(value));
+    getMaterialLibraryPtr()->setDirectory(value);
 }
 
 Py::Boolean MaterialLibraryPy::getReadOnly() const

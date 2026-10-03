@@ -15,10 +15,6 @@ set(MatGui_LIBS
     FreeCADGui
 )
 
-list(APPEND MatGui_LIBS
-    ${QtConcurrent_LIBRARIES}
-)
-
 set(Material_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Material_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
     ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
@@ -129,6 +125,9 @@ SET(MatGui_SRCS
     Workbench.h
     WorkbenchManipulator.cpp
     WorkbenchManipulator.h
+    MaterialMetaTypes.h
+    ValueVariant.cpp
+    ValueVariant.h
 )
 if(BUILD_MATERIAL_EXTERNAL)
     list(APPEND MatGui_SRCS
@@ -182,12 +181,6 @@ target_include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-target_include_directories(
-    MatGui
-    SYSTEM
-    PUBLIC
-    ${QtConcurrent_INCLUDE_DIRS}
-)
 target_link_libraries(MatGui ${MatGui_LIBS})
 
 if (MSVC)

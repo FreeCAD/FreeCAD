@@ -49,7 +49,7 @@ void DlgSettingsDefaultMaterial::setupFilters()
     auto filterList = std::make_shared<std::list<std::shared_ptr<Materials::MaterialFilter>>>();
 
     auto filter = std::make_shared<Materials::MaterialFilter>();
-    filter->setName(tr("Physical"));
+    filter->setName(tr("Physical").toStdString());
     filter->addRequiredComplete(Materials::ModelUUIDs::ModelUUID_Mechanical_Density);
     filterList->push_back(filter);
 

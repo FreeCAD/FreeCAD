@@ -21,7 +21,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include <QMutexLocker>
 
 #include <App/Application.h>
 
@@ -35,7 +34,7 @@ using namespace Materials;
 
 /* TRANSLATOR Material::Materials */
 
-QMutex MaterialManagerExternal::_mutex;
+std::mutex MaterialManagerExternal::_mutex;
 LRU::Cache<std::string, std::shared_ptr<Material>>
     MaterialManagerExternal::_cache(DEFAULT_CACHE_SIZE);
 
@@ -48,7 +47,7 @@ MaterialManagerExternal::MaterialManagerExternal()
 
 void MaterialManagerExternal::initCache()
 {
-    QMutexLocker locker(&_mutex);
+    std::lock_guard<std::mutex> locker(_mutex);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Material/ExternalInterface");
@@ -109,7 +108,7 @@ MaterialManagerExternal::getMaterialLibraries()
     return libraryList;
 }
 
-std::shared_ptr<MaterialLibrary> MaterialManagerExternal::getLibrary(const QString& name) const
+std::shared_ptr<MaterialLibrary> MaterialManagerExternal::getLibrary(const std::string& name) const
 {
     try {
         auto lib = ExternalManager::getManager()->getLibrary(name);
@@ -127,36 +126,36 @@ std::shared_ptr<MaterialLibrary> MaterialManagerExternal::getLibrary(const QStri
     }
 }
 
-void MaterialManagerExternal::createLibrary(const QString& libraryName,
+void MaterialManagerExternal::createLibrary(const std::string& libraryName,
                                             const QByteArray& icon,
                                             bool readOnly)
 {
     ExternalManager::getManager()->createLibrary(libraryName, icon, readOnly);
 }
 
-void MaterialManagerExternal::renameLibrary(const QString& libraryName, const QString& newName)
+void MaterialManagerExternal::renameLibrary(const std::string& libraryName, const std::string& newName)
 {
     ExternalManager::getManager()->renameLibrary(libraryName, newName);
 }
 
-void MaterialManagerExternal::changeIcon(const QString& libraryName, const QByteArray& icon)
+void MaterialManagerExternal::changeIcon(const std::string& libraryName, const QByteArray& icon)
 {
     ExternalManager::getManager()->changeIcon(libraryName, icon);
 }
 
-void MaterialManagerExternal::removeLibrary(const QString& libraryName)
+void MaterialManagerExternal::removeLibrary(const std::string& libraryName)
 {
     ExternalManager::getManager()->removeLibrary(libraryName);
 }
 
 std::shared_ptr<std::vector<LibraryObject>>
-MaterialManagerExternal::libraryMaterials(const QString& libraryName)
+MaterialManagerExternal::libraryMaterials(const std::string& libraryName)
 {
     return ExternalManager::getManager()->libraryMaterials(libraryName);
 }
 
 std::shared_ptr<std::vector<LibraryObject>>
-MaterialManagerExternal::libraryMaterials(const QString& libraryName,
+MaterialManagerExternal::libraryMaterials(const std::string& libraryName,
                                           const MaterialFilter& filter,
                                           const MaterialFilterOptions& options)
 {
@@ -170,20 +169,20 @@ MaterialManagerExternal::libraryMaterials(const QString& libraryName,
 //=====
 
 void MaterialManagerExternal::createFolder(const MaterialLibrary& library,
-                                           const QString& path)
+                                           const std::string& path)
 {
     ExternalManager::getManager()->createFolder(library.getName(), path);
 }
 
 void MaterialManagerExternal::renameFolder(const MaterialLibrary& library,
-                                           const QString& oldPath,
-                                           const QString& newPath)
+                                           const std::string& oldPath,
+                                           const std::string& newPath)
 {
     ExternalManager::getManager()->renameFolder(library.getName(), oldPath, newPath);
 }
 
 void MaterialManagerExternal::deleteRecursive(const MaterialLibrary& library,
-                                              const QString& path)
+                                              const std::string& path)
 {
     ExternalManager::getManager()->deleteRecursive(library.getName(), path);
 }
@@ -194,21 +193,21 @@ void MaterialManagerExternal::deleteRecursive(const MaterialLibrary& library,
 //
 //=====
 
-std::shared_ptr<Material> MaterialManagerExternal::materialNotFound(const QString& uuid) const
+std::shared_ptr<Material> MaterialManagerExternal::materialNotFound(const std::string& uuid) const
 {
     // Setting the cache value to nullptr prevents repeated lookups
-    _cache.emplace(uuid.toStdString(), nullptr);
+    _cache.emplace(uuid, nullptr);
     return nullptr;
 }
 
-std::shared_ptr<Material> MaterialManagerExternal::getMaterial(const QString& uuid) const
+std::shared_ptr<Material> MaterialManagerExternal::getMaterial(const std::string& uuid) const
 {
-    if (_cache.contains(uuid.toStdString())) {
-        return _cache.lookup(uuid.toStdString());
+    if (_cache.contains(uuid)) {
+        return _cache.lookup(uuid);
     }
     try {
         auto material = ExternalManager::getManager()->getMaterial(uuid);
-        _cache.emplace(uuid.toStdString(), material);
+        _cache.emplace(uuid, material);
         return material;
     }
     catch (const MaterialNotFound& e) {
@@ -222,19 +221,19 @@ std::shared_ptr<Material> MaterialManagerExternal::getMaterial(const QString& uu
     }
 }
 
-void MaterialManagerExternal::addMaterial(const QString& libraryName,
-                                          const QString& path,
+void MaterialManagerExternal::addMaterial(const std::string& libraryName,
+                                          const std::string& path,
                                           const Material& material)
 {
-    _cache.erase(material.getUUID().toStdString());
+    _cache.erase(material.getUUID());
     ExternalManager::getManager()->addMaterial(libraryName, path, material);
 }
 
-void MaterialManagerExternal::migrateMaterial(const QString& libraryName,
-                                              const QString& path,
+void MaterialManagerExternal::migrateMaterial(const std::string& libraryName,
+                                              const std::string& path,
                                               const Material& material)
 {
-    _cache.erase(material.getUUID().toStdString());
+    _cache.erase(material.getUUID());
     ExternalManager::getManager()->migrateMaterial(libraryName, path, material);
 }
 

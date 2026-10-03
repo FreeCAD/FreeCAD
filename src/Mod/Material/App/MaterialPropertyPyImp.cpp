@@ -55,7 +55,7 @@ Py::Object MaterialPropertyPy::getValue() const
 {
     auto value = getMaterialPropertyPtr()->getValue();
 
-    return Py::Object(_pyObjectFromVariant(value), true);
+    return Py::Object(pyObjectFromValue(value), true);
 }
 
 Py::Boolean MaterialPropertyPy::getEmpty() const

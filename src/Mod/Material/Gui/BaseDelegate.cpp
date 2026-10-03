@@ -48,6 +48,7 @@
 #include <Mod/Material/App/ModelManager.h>
 
 #include "BaseDelegate.h"
+#include "MaterialMetaTypes.h"
 #include "ListModel.h"
 #include "MaterialSave.h"
 

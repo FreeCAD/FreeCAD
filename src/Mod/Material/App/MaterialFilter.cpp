@@ -92,7 +92,7 @@ bool MaterialFilter::modelIncluded(const Material& material) const
     return true;
 }
 
-bool MaterialFilter::modelIncluded(const QString& uuid) const
+bool MaterialFilter::modelIncluded(const std::string& uuid) const
 {
     try {
         auto material = MaterialManager::getManager().getMaterial(uuid);
@@ -103,7 +103,7 @@ bool MaterialFilter::modelIncluded(const QString& uuid) const
     return false;
 }
 
-void MaterialFilter::addRequired(const QString& uuid)
+void MaterialFilter::addRequired(const std::string& uuid)
 {
     // Ignore any uuids already present
     if (!_requiredComplete.contains(uuid)) {
@@ -111,11 +111,11 @@ void MaterialFilter::addRequired(const QString& uuid)
     }
 }
 
-void MaterialFilter::addRequiredComplete(const QString& uuid)
+void MaterialFilter::addRequiredComplete(const std::string& uuid)
 {
     if (_required.contains(uuid)) {
         // Completeness takes priority
-        _required.remove(uuid);
+        _required.erase(uuid);
     }
     _requiredComplete.insert(uuid);
 }
