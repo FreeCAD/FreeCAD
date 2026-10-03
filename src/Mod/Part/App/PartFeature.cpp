@@ -225,6 +225,8 @@ bool Feature::doNamesMatch(Data::MappedName& name1, Data::MappedName& name2, boo
             for (const auto& checkSections : pairedCheckSections) {
                 const Data::DecodedMappedSection& mainCheckSection = checkSections.first;
                 bool pass = false;
+                bool hasNonDuplicateFlag = mainCheckSection.hasMapperFlag(Data::MAPPER_FLAG_NON_DUPLICATE);
+                bool hasLowerFlag = mainCheckSection.hasMapperFlag(Data::MAPPER_FLAG_LOWER);
 
                 for (const Data::DecodedMappedSection& loopCheckSection : checkSections.second) {
                     // first we need to check reference IDs
@@ -278,8 +280,8 @@ bool Feature::doNamesMatch(Data::MappedName& name1, Data::MappedName& name2, boo
                     bool linkedNamePass = false;
                     bool connectedElementPass = false;
 
-                    if (mainCheckSection.hasMapperFlag(Data::MAPPER_FLAG_LOWER)) {
-                        if (mainCheckSection.hasMapperFlag(Data::MAPPER_FLAG_NON_DUPLICATE)
+                    if (hasLowerFlag) {
+                        if (hasNonDuplicateFlag
                             && linkedNameInterference >= 1) {
                             linkedNamePass = true;
                         }

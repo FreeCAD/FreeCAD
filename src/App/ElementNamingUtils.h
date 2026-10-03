@@ -16,6 +16,11 @@ enum class HistoryAlgorithm {
     V2
 };
 
+enum class CopyRemapPolicy {
+    COPY_NAME,
+    CHANGE_NAME_OWNERSHIP
+};
+
 AppExport const HistoryAlgorithm& getDefaultHistoryAlgorithm();
 AppExport HistoryAlgorithm getHistoryAlgorithm(const int& fromUnderlyingInteger);
 AppExport HistoryAlgorithm getHistoryAlgorithm(const std::string& fromString);
@@ -139,6 +144,10 @@ constexpr const char* MAPPER_FLAG_SOURCE                = "SRC";
 constexpr const char* MAPPER_FLAG_INDEX                 = "IDX";
 /// Mapper flag that designates that an element's `LinkedNames` do not share common entries with other names that also have this flag.
 constexpr const char* MAPPER_FLAG_NON_DUPLICATE         = "NDU";
+/// Mapper flag that is used to disambiguate this name from other names. 
+constexpr const char* MAPPER_FLAG_DISAMBIGUATION        = "DSA";
+/// Mapper flag that specifies a change in ownership of a name. 
+constexpr const char* MAPPER_FLAG_CHANGE_OWNER          = "COW";
 
 // Placement indexes of data in sections of MappedNames used by the V2 Topological Naming System.
 // DO NOT CHANGE THESE VALUES EVER!!! Data should only be added to sections, not removed or otherwise altered.

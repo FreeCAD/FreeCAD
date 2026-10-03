@@ -1831,9 +1831,28 @@ public:
         QVector<Data::MappedElement>& names
     ) const;
 
-    void mapSubElement(const TopoShape& other, const char* op = nullptr, bool forceHasher = false, IncludedHistoryMap* nameMap = nullptr);
-    void mapSubElement(const std::vector<TopoShape>& shapes, const char* op = nullptr, IncludedHistoryMap* nameMap = nullptr);
-    void mapSubElementsTo(std::vector<TopoShape>& shapes, const char* op = nullptr, IncludedHistoryMap* nameMap = nullptr) const;
+    void mapSubElement(
+        const TopoShape& other,
+        const char* op = nullptr,
+        bool forceHasher = false,
+        IncludedHistoryMap* nameMap = nullptr,
+        App::CopyRemapPolicy copyRemapPolicy = App::CopyRemapPolicy::COPY_NAME
+    );
+
+    void mapSubElement(
+        const std::vector<TopoShape>& shapes,
+        const char* op = nullptr,
+        IncludedHistoryMap* nameMap = nullptr,
+        App::CopyRemapPolicy copyRemapPolicy = App::CopyRemapPolicy::COPY_NAME
+    );
+
+    void mapSubElementsTo(
+        std::vector<TopoShape>& shapes,
+        const char* op = nullptr,
+        IncludedHistoryMap* nameMap = nullptr,
+        App::CopyRemapPolicy copyRemapPolicy = App::CopyRemapPolicy::COPY_NAME
+    ) const;
+
     bool hasPendingElementMap() const;
 
     void flushElementMap() const override;
@@ -2023,7 +2042,8 @@ public:
         const Mapper& mapper,
         const std::vector<TopoShape>& sources,
         const char* op = nullptr,
-        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate,
+        App::CopyRemapPolicy copyRemapPolicy = App::CopyRemapPolicy::COPY_NAME
     );
     /**
      * When given a single shape to create a compound, two results are possible: either to simply

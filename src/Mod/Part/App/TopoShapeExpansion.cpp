@@ -26,6 +26,7 @@
 #include <cctype>
 #include <limits>
 #include <sstream>
+#include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
@@ -815,6 +816,22 @@ void TopoShape::setupChild(
     }
 }
 
+Data::MappedName changeOwnershipOfName(const Data::MappedName& name, const long& tag, char elementType) {
+    return Data::MappedName(
+        Data::MappedName::makeEncodedSection(
+            {},
+            {name},
+            tag,
+            Data::EMPTY_VALUE,
+            0,
+            elementType,
+            0,
+            {Data::MAPPER_FLAG_DISAMBIGUATION, Data::MAPPER_FLAG_CHANGE_OWNER},
+            {}
+        )
+    );
+}
+
 void TopoShape::copyElementMap(const TopoShape& topoShape, const char* op)
 {
     if (topoShape.isNull() || isNull()) {
@@ -943,7 +960,13 @@ void TopoShape::mapSubElementForShape(const TopoShape& other, const char* op)
     }
 }
 
-void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool forceHasher, IncludedHistoryMap* nameMap)
+void TopoShape::mapSubElement(
+    const TopoShape& other,
+    const char* op,
+    bool forceHasher,
+    IncludedHistoryMap* nameMap,
+    App::CopyRemapPolicy copyRemapPolicy
+)
 {
     if (!canMapElement(other)) {
         return;
@@ -1066,8 +1089,11 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
 
                     if (historyVersion == App::HistoryAlgorithm::V1) {
                         ensureElementMap()
-                            ->encodeElementName(shapetype[0], name, ss, &sids, Tag, op, other.Tag);
+                            ->encodeElementName(shapetype[0], name, ss, &sids, Tag, op, Tag);
+                    } else if (historyVersion == App::HistoryAlgorithm::V2 && copyRemapPolicy == App::CopyRemapPolicy::CHANGE_NAME_OWNERSHIP) {
+                        name = changeOwnershipOfName(name, Tag, element.getType()[0]);
                     }
+
                     ensureElementMap()->setElementName(element, name, Tag, &sids);
                 }
 
@@ -1079,10 +1105,10 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
     }
 }
 
-void TopoShape::mapSubElementsTo(std::vector<TopoShape>& shapes, const char* op, IncludedHistoryMap* nameMap) const
+void TopoShape::mapSubElementsTo(std::vector<TopoShape>& shapes, const char* op, IncludedHistoryMap* nameMap, App::CopyRemapPolicy copyRemapPolicy) const
 {
     for (auto& shape : shapes) {
-        shape.mapSubElement(*this, op, false, nameMap);
+        shape.mapSubElement(*this, op, false, nameMap, copyRemapPolicy);
     }
 }
 
@@ -1139,7 +1165,7 @@ void TopoShape::mapCompoundSubElements(const std::vector<TopoShape>& shapes, con
     setMappedChildElements(children);
 }
 
-void TopoShape::mapSubElement(const std::vector<TopoShape>& shapes, const char* op, IncludedHistoryMap* nameMap)
+void TopoShape::mapSubElement(const std::vector<TopoShape>& shapes, const char* op, IncludedHistoryMap* nameMap, App::CopyRemapPolicy copyRemapPolicy)
 {
     if (shapes.empty()) {
         return;
@@ -1189,7 +1215,7 @@ void TopoShape::mapSubElement(const std::vector<TopoShape>& shapes, const char* 
     }
 
     for (auto& shape : shapes) {
-        mapSubElement(shape, op, false, nameMap);
+        mapSubElement(shape, op, false, nameMap, copyRemapPolicy);
     }
 }
 
@@ -1396,22 +1422,6 @@ struct NameInfo
     const char* shapetype {};
 };
 
-struct DelayedModifiedEntry
-{
-    std::vector<std::pair<Data::MappedName, Data::ElementIDRefs>> incomingElementMappedNames;
-    Data::IndexedName modifiedElementIndexedName;
-    TopoDS_Shape modifiedElement;
-
-    DelayedModifiedEntry(
-        std::vector<std::pair<Data::MappedName, Data::ElementIDRefs>> newIncomingElementMappedNames,
-        Data::IndexedName newModifiedElementIndexedName,
-        TopoDS_Shape newModifiedElement
-    )
-        : incomingElementMappedNames(newIncomingElementMappedNames)
-        , modifiedElementIndexedName(newModifiedElementIndexedName)
-        , modifiedElement(newModifiedElement) {};
-};
-
 struct NamingMapValue
 {
     NamingMapValue() = default;
@@ -1599,6 +1609,16 @@ private:
     bool multiMapBuilt = false;
 };
 
+using ReverseModifiedMap = std::unordered_map<TopoDS_Shape, std::vector<Data::MappedName>, ShapeHasher, ShapeHasher>;
+
+struct DelayedModifiedMapValue {
+    TopoDS_Shape modifiedShape;
+    const TopoShape* incomingParentShape;
+    Data::IndexedName modifiedShapeIdxName;
+    ReverseModifiedMap::iterator reverseMapIterator;
+};
+
+using DelayedModifiedMap = std::unordered_map<Data::MappedName, std::vector<DelayedModifiedMapValue>, Data::MappedNameHasher>;
 
 const std::string& modPostfix()
 {
@@ -1693,7 +1713,8 @@ TopoShape& TopoShape::makeShapeWithElementMap(
     const Mapper& mapper,
     const std::vector<TopoShape>& shapes,
     const char* op,
-    ElementMapPolicy elementMapPolicy
+    ElementMapPolicy elementMapPolicy,
+    App::CopyRemapPolicy copyRemapPolicy
 )
 {
     ZoneScoped;
@@ -2287,15 +2308,17 @@ TopoShape& TopoShape::makeShapeWithElementMap(
         }
     }
     else if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
-        constexpr int MAXIMUM_REMAPPED_INCOMING_NAMES = 3;
+        // constexpr int MAXIMUM_REMAPPED_INCOMING_NAMES = 3;
 
         IncludedHistoryMap includedModifiedNameMap;
-        mapSubElement(shapes, nullptr, &includedModifiedNameMap);  // Intentionally leave the op off here
+        mapSubElement(shapes, nullptr, &includedModifiedNameMap, copyRemapPolicy);  // Intentionally leave the op off here
 
-        // This algorithm has some edgecase detection from the V1 Algorithm, which is why it looks a
-        // little bit copypasted.
         NamingMap generatedNamingMap;
-        NamingMap delayedModifiedNamingMap;
+
+        // source incoming name -> new elements
+        DelayedModifiedMap delayedModifiedMap;
+        // new element -> source incoming names
+        ReverseModifiedMap reverseModifiedMap;
 
         const std::map<std::string, TopAbs_ShapeEnum> upperMapTypes {
             {"Edge", TopAbs_FACE},
@@ -2388,15 +2411,21 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         includedModifiedNameMap[modifiedShape]
                             = {&incomingShape, incomingShapeElementIndexedName, incomingShapeElementMappedNames.front().first};
                         
-                        delayedModifiedNamingMap.add(
-                            modifiedShape,
-                            element,
-                            incomingShapeElementIndexedName,
-                            incomingShapeElement,
-                            incomingShapeElementMappedNames,
-                            incomingShape,
-                            modifiedShapesSize
-                        );
+                        DelayedModifiedMapValue value;
+                        auto reverseMapIterator = reverseModifiedMap.try_emplace(modifiedShape);
+
+                        value.modifiedShape = modifiedShape;
+                        value.incomingParentShape = &incomingShape;
+                        value.modifiedShapeIdxName = element;
+                        value.reverseMapIterator = reverseMapIterator.first;
+
+                        for (const auto& incomingShapeElementMappedNamePair : incomingShapeElementMappedNames) {
+                            const Data::MappedName& incomingShapeElementMappedName = incomingShapeElementMappedNamePair.first;
+
+                            reverseMapIterator.first->second.push_back(incomingShapeElementMappedName);
+
+                            delayedModifiedMap[incomingShapeElementMappedName].push_back(value);
+                        }
                     }
 
                     for (size_t projectedI = 0; projectedI < projectedShapes.size(); projectedI++) {
@@ -2489,219 +2518,166 @@ TopoShape& TopoShape::makeShapeWithElementMap(
             }
         }
 
-        delayedModifiedNamingMap.buildMultiMap();
-
         std::vector<std::pair<const Data::IndexedName*, std::vector<Data::MappedName>>>
             modifiedConnectedElementVector;
         std::unordered_map<Data::MappedName, unsigned int, Data::MappedNameHasher> allModifiedConnectedElementNames;
         unsigned int emptyModifiedConnectedElementsIndex = 0;
 
         // std::unordered_map<std::vector<NamingMapKey>, std::vector<NamingMapValue>, NamingMapKeyHasher>
-        for (const auto& modifiedShapeEntry : delayedModifiedNamingMap.getMultiMap()) {
-            size_t numberOfNewElements = modifiedShapeEntry.first.size();
-            size_t sourceShapesSize = modifiedShapeEntry.second.size();
-
-            if (sourceShapesSize == 0) {
-                continue;
-            }
-
-            std::vector<const NamingMapValue*> filteredMapValues;
-            bool useNominalMapValueMatch = false;
-
-            for (const NamingMapValue& value : modifiedShapeEntry.second) {
-                if (value.totalModifiedShapes == numberOfNewElements) {
-                    if (!useNominalMapValueMatch) {
-                        filteredMapValues.clear();
-                        useNominalMapValueMatch = true;
-                    }
-
-                    filteredMapValues.push_back(&value);
-                }
-
-                if (!useNominalMapValueMatch) {
-                    filteredMapValues.push_back(&value);
-                }
-            }
-
-            for (const NamingMapValue* mapValue : filteredMapValues) {
-                const auto& incomingElementMappedNames = mapValue->incomingElementMappedNames;
-
-                if (numberOfNewElements > 1) {
+        for (const auto& modifiedShapeEntry : delayedModifiedMap) {
+            if (modifiedShapeEntry.second.size() > 1) {
+                for (const DelayedModifiedMapValue& mapValue : modifiedShapeEntry.second) {
                     auto lowerMapTypeEntry = lowerMapTypes.find(
-                        modifiedShapeEntry.first.front().newElementName.getType()
+                        mapValue.modifiedShapeIdxName.getType()
                     );
 
                     auto upperMapTypeEntry = upperMapTypes.find(
-                        modifiedShapeEntry.first.front().newElementName.getType()
+                        mapValue.modifiedShapeIdxName.getType()
                     );
 
                     if (lowerMapTypeEntry != lowerMapTypes.end() && upperMapTypeEntry != upperMapTypes.end()) {
                         ShapeInfo* upperTypeMap = infoMap[upperMapTypeEntry->second];
+                        TopTools_IndexedMapOfShape lowerMap;
+                        TopExp::MapShapes(mapValue.modifiedShape, lowerMapTypeEntry->second, lowerMap);
 
-                        for (const Part::NamingMapKey& elementKey : modifiedShapeEntry.first) {
-                            TopTools_IndexedMapOfShape lowerMap;
-                            TopExp::MapShapes(elementKey.newElementShape, lowerMapTypeEntry->second, lowerMap);
+                        std::vector<Data::MappedName> connectedElements;
+                        ShapeInfo* sameTypeMap = infoMap[mapValue.modifiedShape.ShapeType()];
 
-                            std::vector<Data::MappedName> connectedElements;
-                            ShapeInfo* sameTypeMap = infoMap[elementKey.newElementShape.ShapeType()];
+                        for (int lowerIdx = 1; lowerIdx <= lowerMap.Extent(); lowerIdx++) {
+                            std::vector<Data::MappedName> foundNames;
+                            const TopoDS_Shape& lowerShape = lowerMap(lowerIdx);
+                            auto lowerModifiedShapeMapIterator = includedModifiedNameMap.find(lowerShape);
 
-                            for (int lowerIdx = 1; lowerIdx <= lowerMap.Extent(); lowerIdx++) {
-                                std::vector<Data::MappedName> foundNames;
-                                const TopoDS_Shape& lowerShape = lowerMap(lowerIdx);
-                                auto lowerModifiedShapeMapIterator = includedModifiedNameMap.find(lowerShape);
+                            // check to see if the lower element was directly included in one of the incoming shapes
+                            if (lowerModifiedShapeMapIterator != includedModifiedNameMap.end()) {
+                                foundNames.push_back(lowerModifiedShapeMapIterator->second.incomingShapeElementName);
 
-                                // check to see if the lower element was directly included in one of the incoming shapes
-                                if (lowerModifiedShapeMapIterator != includedModifiedNameMap.end()) {
-                                    foundNames.push_back(lowerModifiedShapeMapIterator->second.incomingShapeElementName);
+                                const TopoShape* lowerIncomingShape = lowerModifiedShapeMapIterator->second.incomingShape;
 
-                                    const TopoShape* lowerIncomingShape = lowerModifiedShapeMapIterator->second.incomingShape;
+                                if (lowerIncomingShape) {
+                                    const TopoDS_Shape& incomingOriginalShape = lowerIncomingShape->getSubShape(
+                                        lowerModifiedShapeMapIterator->second.incomingShapeElementIdx.toString().c_str()
+                                    );
 
-                                    if (lowerIncomingShape) {
-                                        const TopoDS_Shape& incomingOriginalShape = lowerIncomingShape->getSubShape(
-                                            lowerModifiedShapeMapIterator->second.incomingShapeElementIdx.toString().c_str()
-                                        );
+                                    if (!incomingOriginalShape.IsNull()) {
+                                        for (ShapeInfo* typeMap : {upperTypeMap, sameTypeMap}) {
+                                            const char* elementType = shapeName(typeMap->type).c_str();
+                                            const std::vector<int> ancestors = lowerIncomingShape->findAncestors(incomingOriginalShape, typeMap->type);
 
-                                        if (!incomingOriginalShape.IsNull()) {
-                                            for (ShapeInfo* typeMap : {upperTypeMap, sameTypeMap}) {
-                                                const char* elementType = shapeName(typeMap->type).c_str();
-                                                const std::vector<int> ancestors = lowerIncomingShape->findAncestors(incomingOriginalShape, typeMap->type);
+                                            for (const int& ancestorIdx : ancestors) {
+                                                Data::IndexedName ancestorIdxName {elementType, ancestorIdx};
+                                                
+                                                if (ancestorIdxName) {
+                                                    Data::MappedName incomingAncestorMappedName = lowerIncomingShape->getMappedName(ancestorIdxName);
 
-                                                for (const int& ancestorIdx : ancestors) {
-                                                    Data::IndexedName ancestorIdxName {elementType, ancestorIdx};
-                                                    
-                                                    if (ancestorIdxName) {
-                                                        Data::MappedName incomingAncestorMappedName = lowerIncomingShape->getMappedName(ancestorIdxName);
-
-                                                        if (incomingAncestorMappedName) {
-                                                            foundNames.push_back(incomingAncestorMappedName);
-                                                        }
+                                                    if (incomingAncestorMappedName) {
+                                                        foundNames.push_back(incomingAncestorMappedName);
                                                     }
                                                 }
                                             }
                                         }
                                     }
-                                } else {
-                                    for (ShapeInfo* typeMap : {upperTypeMap, sameTypeMap}) {
-                                        const std::vector<int> ancestors = findAncestors(lowerShape, typeMap->type);
+                                }
+                            } else {
+                                for (ShapeInfo* typeMap : {upperTypeMap, sameTypeMap}) {
+                                    const std::vector<int> ancestors = findAncestors(lowerShape, typeMap->type);
 
-                                        for (const int& ancestorIdx : ancestors) {
-                                            const TopoDS_Shape& ancestor = typeMap->find(ancestorIdx);
-                                            auto upperModifiedShapeMapIterator = includedModifiedNameMap.find(ancestor);
+                                    for (const int& ancestorIdx : ancestors) {
+                                        const TopoDS_Shape& ancestor = typeMap->find(ancestorIdx);
+                                        auto upperModifiedShapeMapIterator = includedModifiedNameMap.find(ancestor);
 
-                                            if (upperModifiedShapeMapIterator != includedModifiedNameMap.end()
-                                                && upperModifiedShapeMapIterator->second.incomingShape != mapValue->incomingParentShape)
-                                            {
-                                                foundNames.push_back(upperModifiedShapeMapIterator->second.incomingShapeElementName);
-                                            }
+                                        if (upperModifiedShapeMapIterator != includedModifiedNameMap.end()
+                                            && upperModifiedShapeMapIterator->second.incomingShape != mapValue.incomingParentShape)
+                                        {
+                                            foundNames.push_back(upperModifiedShapeMapIterator->second.incomingShapeElementName);
                                         }
                                     }
                                 }
+                            }
 
-                                for (const Data::MappedName& foundName : foundNames) {
-                                    auto connectedElementIterator = std::find(
-                                        connectedElements.begin(),
-                                        connectedElements.end(),
-                                        foundName
+                            for (const Data::MappedName& foundName : foundNames) {
+                                auto connectedElementIterator = std::find(
+                                    connectedElements.begin(),
+                                    connectedElements.end(),
+                                    foundName
+                                );
+
+                                if (connectedElementIterator == connectedElements.end()) {
+                                    connectedElements.push_back(foundName);
+
+                                    auto allConnectedElementIterator = allModifiedConnectedElementNames.try_emplace(
+                                        {foundName, 0}
                                     );
 
-                                    if (connectedElementIterator == connectedElements.end()) {
-                                        connectedElements.push_back(foundName);
-
-                                        auto allConnectedElementIterator = allModifiedConnectedElementNames.try_emplace(
-                                            foundName,
-                                            0
-                                        );
-
-                                        if (!allConnectedElementIterator.second) {
-                                            allConnectedElementIterator.first->second += 1;
-                                        }
+                                    if (!allConnectedElementIterator.second) {
+                                        allConnectedElementIterator.first->second += 1;
                                     }
                                 }
                             }
-
-                            modifiedConnectedElementVector.emplace_back(
-                                &elementKey.newElementName,
-                                connectedElements
-                            );
-                        }
-                    }
-                    // std::pair<Data::IndexedName, std::vector<Data::MappedName>>
-                    for (const auto& modifiedConnectedElementEntry : modifiedConnectedElementVector) {
-                        std::vector<Data::MappedName> filteredConnectedElements;
-                        std::string newSection;
-                        int index = 0;
-
-                        for (const Data::MappedName& name : modifiedConnectedElementEntry.second) {
-                            auto allConnectedElementIterator = allModifiedConnectedElementNames.find(name);
-
-                            if (allConnectedElementIterator != allModifiedConnectedElementNames.end()
-                                && allConnectedElementIterator->second == 0)
-                            {
-                                filteredConnectedElements.push_back(name);
-                            }
                         }
 
-                        if (filteredConnectedElements.empty()) {
-                            index = emptyModifiedConnectedElementsIndex++;
-                        }
-
-                        newSection = Data::MappedName::makeEncodedSection(
-                            {},
-                            {},
-                            masterTag,
-                            op,
-                            index,
-                            modifiedConnectedElementEntry.first->getType()[0],
-                            0,
-                            {Data::MAPPER_FLAG_MODIFIED},
-                            filteredConnectedElements
-                        );
-
-                        // Since indexed names can have multiple MappedNames assigned to them,
-                        // we want to make sure we include as many as three of them in the new
-                        // ElementMap for reliability sake.
-                        for (size_t incomingMappedNameIdx = 0;
-                                (incomingMappedNameIdx < incomingElementMappedNames.size()
-                                && incomingMappedNameIdx < MAXIMUM_REMAPPED_INCOMING_NAMES);
-                                incomingMappedNameIdx++) 
-                        {
-                            Data::MappedName newName {
-                                incomingElementMappedNames[incomingMappedNameIdx].first
-                            };
-
-                            newName.append(Data::NAME_SECTION_DELIMINATOR);
-                            newName.append(newSection.c_str());
-
-                            ensureElementMap()->setElementName(
-                                *modifiedConnectedElementEntry.first,
-                                newName,
-                                masterTag
-                            );
-                        }
-                    }
-                } else if (numberOfNewElements == 1) {
-                    const Data::IndexedName& newName = modifiedShapeEntry.first.front().newElementName;
-
-                    // Since indexed names can have multiple MappedNames assigned to them,
-                    // we want to make sure we include as many as three of them in the new
-                    // ElementMap for reliability sake.
-                    for (size_t incomingMappedNameIdx = 0;
-                            (incomingMappedNameIdx < incomingElementMappedNames.size()
-                            && incomingMappedNameIdx < MAXIMUM_REMAPPED_INCOMING_NAMES);
-                            incomingMappedNameIdx++) 
-                    {
-                        ensureElementMap()->setElementName(
-                            newName,
-                            incomingElementMappedNames[incomingMappedNameIdx].first,
-                            masterTag
+                        modifiedConnectedElementVector.emplace_back(
+                            &mapValue.modifiedShapeIdxName,
+                            connectedElements
                         );
                     }
                 }
+                // std::pair<Data::IndexedName, std::vector<Data::MappedName>>
+                for (const auto& modifiedConnectedElementEntry : modifiedConnectedElementVector) {
+                    std::vector<Data::MappedName> filteredConnectedElements;
+                    std::string newSection;
+                    int index = 0;
 
-                modifiedConnectedElementVector.clear();
-                allModifiedConnectedElementNames.clear();
-                emptyModifiedConnectedElementsIndex = 0;
+                    for (const Data::MappedName& name : modifiedConnectedElementEntry.second) {
+                        auto allConnectedElementIterator = allModifiedConnectedElementNames.find(name);
+
+                        if (allConnectedElementIterator != allModifiedConnectedElementNames.end()
+                            && allConnectedElementIterator->second == 0)
+                        {
+                            filteredConnectedElements.push_back(name);
+                        }
+                    }
+
+                    if (filteredConnectedElements.empty()) {
+                        index = emptyModifiedConnectedElementsIndex++;
+                    }
+
+                    newSection = Data::MappedName::makeEncodedSection(
+                        {},
+                        {},
+                        masterTag,
+                        op,
+                        index,
+                        modifiedConnectedElementEntry.first->getType()[0],
+                        0,
+                        {Data::MAPPER_FLAG_MODIFIED},
+                        filteredConnectedElements
+                    );
+
+                    Data::MappedName newName {
+                        modifiedShapeEntry.first
+                    };
+
+                    newName.append(Data::NAME_SECTION_DELIMINATOR);
+                    newName.append(newSection.c_str());
+
+                    ensureElementMap()->setElementName(
+                        *modifiedConnectedElementEntry.first,
+                        newName,
+                        masterTag
+                    );
+                }
+            } else {
+                ensureElementMap()->setElementName(
+                    modifiedShapeEntry.second.front().modifiedShapeIdxName,
+                    modifiedShapeEntry.first,
+                    masterTag
+                );
             }
+
+            modifiedConnectedElementVector.clear();
+            allModifiedConnectedElementNames.clear();
+            emptyModifiedConnectedElementsIndex = 0;
         }
 
         // key is the new generated shape, value is a pair where the first value is the `IndexedName`

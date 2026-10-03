@@ -1643,25 +1643,22 @@ void ElementMap::traceElement(const MappedName& name, long masterTag, TraceCallb
 }
 
 void ElementMap::retagElementMap(long newTag) {
-    if (historyAlgorithmRef == nullptr
-        || *historyAlgorithmRef != App::HistoryAlgorithm::V2
-        || newTag == 0)
-    {
+    if (historyAlgorithm != App::HistoryAlgorithm::V2) {
         return;
     }
 
     for (auto& indexedNameEntry : indexedNames) {
         for (MappedNameRef& foundNameRef : indexedNameEntry.second.names) {
-            DecodedMappedName& decodedName = foundNameRef.name.getDecodedMappedName();
+            const DecodedMappedName& decodedName = foundNameRef.name.getDecodedMappedName();
 
             if (decodedName.size()) {
-                DecodedMappedSection& backSection = decodedName.back();
+                if (decodedName.back().iterationTag == "0") {
+                    DecodedMappedName copiedName = decodedName;
 
-                if (backSection.iterationTag == "0") {
-                    backSection.iterationTag = std::to_string(newTag);
+                    copiedName.back().iterationTag = std::to_string(newTag);
 
                     auto it = mappedNames.find(foundNameRef.name);
-                    foundNameRef.name = MappedName::makeEncodedName(decodedName);
+                    foundNameRef.name = MappedName::makeEncodedName(copiedName);
                     
                     if (it != mappedNames.end()) {
                         auto extractedNode = mappedNames.extract(it);

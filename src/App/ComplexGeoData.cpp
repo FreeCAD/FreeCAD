@@ -315,7 +315,7 @@ ElementMapPtr ComplexGeoData::resetElementMap(ElementMapPtr elementMap)
             _elementMap->hasher = Hasher;
         }
 
-        _elementMap->syncHistoryAlgorithm(&selectedHistoryAlgorithm);
+        _elementMap->setHistoryAlgorithm(selectedHistoryAlgorithm);
     }
     return elementMap;
 }
@@ -356,7 +356,7 @@ void ComplexGeoData::setElementMap(const std::vector<MappedElement>& map)
         _elementMap->setElementName(element.index, element.name, Tag);
     }
     
-    _elementMap->syncHistoryAlgorithm(&selectedHistoryAlgorithm);
+    _elementMap->setHistoryAlgorithm(selectedHistoryAlgorithm);
 }
 
 char ComplexGeoData::elementType(const Data::MappedName& name) const
@@ -512,7 +512,7 @@ void ComplexGeoData::Restore(Base::XMLReader& reader)
             _elementMap->restore(Hasher, reader.beginCharStream(Base::CharStreamFormat::Raw));
         
         if (_elementMap) {
-            _elementMap->syncHistoryAlgorithm(&selectedHistoryAlgorithm);
+            _elementMap->setHistoryAlgorithm(selectedHistoryAlgorithm);
         }
 
         reader.endCharStream();
@@ -665,7 +665,7 @@ void ComplexGeoData::RestoreDocFile(Base::Reader& reader)
             resetElementMap(std::make_shared<ElementMap>());
             _elementMap = _elementMap->restore(Hasher, reader);
             if (_elementMap)
-                _elementMap->syncHistoryAlgorithm(&selectedHistoryAlgorithm);
+                _elementMap->setHistoryAlgorithm(selectedHistoryAlgorithm);
             return;
         }
     }

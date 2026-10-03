@@ -308,15 +308,11 @@ public:
     void traceElement(const MappedName& name, long masterTag, TraceCallback cb) const;
 
     const App::HistoryAlgorithm& getHistoryAlgorithm() const {
-        if (historyAlgorithmRef == nullptr) {
-            return App::getDefaultHistoryAlgorithm();
-        } else {
-            return *historyAlgorithmRef;
-        }
+        return historyAlgorithm;
     }
 
-    void syncHistoryAlgorithm(const App::HistoryAlgorithm* geoDataHistoryAlgorithmRef) {
-        historyAlgorithmRef = geoDataHistoryAlgorithmRef;
+    void setHistoryAlgorithm(const App::HistoryAlgorithm& newHistoryAlgorithm) {
+        historyAlgorithm = newHistoryAlgorithm;
     }
 
     /// Retag method, only used with V2 element maps.
@@ -416,7 +412,7 @@ private:
 
     std::map<MappedName, IndexedName, std::less<>> mappedNames;
 
-    const App::HistoryAlgorithm* historyAlgorithmRef = nullptr;
+    App::HistoryAlgorithm historyAlgorithm = App::HistoryAlgorithm::V2;
 
 
     struct ChildMapInfo
