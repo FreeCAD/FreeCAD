@@ -2330,6 +2330,31 @@ public:
     }
 };
 
+// Returns the bottom-most item currently shown in the tree (descending into
+// expanded items), or nullptr if the tree is empty.
+QTreeWidgetItem* lastVisibleItem(const QTreeWidget* tree)
+{
+    QTreeWidgetItem* item = nullptr;
+    for (int i = tree->topLevelItemCount() - 1; i >= 0 && !item; --i) {
+        if (!tree->topLevelItem(i)->isHidden()) {
+            item = tree->topLevelItem(i);
+        }
+    }
+    while (item && item->isExpanded()) {
+        QTreeWidgetItem* child = nullptr;
+        for (int i = item->childCount() - 1; i >= 0 && !child; --i) {
+            if (!item->child(i)->isHidden()) {
+                child = item->child(i);
+            }
+        }
+        if (!child) {
+            break;
+        }
+        item = child;
+    }
+    return item;
+}
+
 QPoint getPos(QEvent* event)
 {
     if (auto* dragMoveEvent = dynamic_cast<QDragMoveEvent*>(event)) {
@@ -2503,6 +2528,22 @@ TreeWidget::TargetItemInfo TreeWidget::getTargetInfo(QEvent* ev)
     }
 
     targetInfo.targetItem = itemAt(pos);
+
+    // Dropping into the empty area below the last row means "move to the end".
+    // Map it to the root-level object that ends the tree and treat it as a drop
+    // just below that object, so it goes through the normal reorder path.
+    bool belowLastItem = false;
+    if (!targetInfo.targetItem) {
+        QTreeWidgetItem* last = lastVisibleItem(this);
+        if (last && pos.y() > visualItemRect(last).bottom()) {
+            while (last->parent() && last->parent()->type() != TreeWidget::DocumentType) {
+                last = last->parent();
+            }
+            targetInfo.targetItem = last;
+            belowLastItem = true;
+        }
+    }
+
     // not dropped onto an item or one of the source items is also the destination item
     if (!targetInfo.targetItem || targetInfo.targetItem->isSelected()) {
         return {};
@@ -2519,6 +2560,12 @@ TreeWidget::TargetItemInfo TreeWidget::getTargetInfo(QEvent* ev)
     }
     else {
         return {};
+    }
+
+    if (belowLastItem) {
+        targetInfo.inBottomHalf = true;
+        targetInfo.inThresholdZone = true;
+        return targetInfo;
     }
 
     // Calculate the position of the mouse relative to the item's rectangle
