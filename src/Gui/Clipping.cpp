@@ -29,6 +29,7 @@
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <QDockWidget>
 #include <QPointer>
+#include <QSignalBlocker>
 
 #include <App/Application.h>
 
@@ -196,6 +197,13 @@ Clipping::Clipping(Gui::View3DInventor* view, App::Document* showOn, QWidget* pa
         d->ui.clipY->setDecimals(minDecimals);
         d->ui.clipZ->setDecimals(minDecimals);
     }
+
+    // Reflect the viewer's current setting; opening the dialog must not turn
+    // section caps on or off behind the user's back.
+    {
+        QSignalBlocker blocker(d->ui.checkBoxCaps);
+        d->ui.checkBoxCaps->setChecked(viewer->isSectionCapping());
+    }
 }
 
 Clipping* Clipping::makeDockWidget(Gui::View3DInventor* view, App::Document* showOn)
@@ -234,6 +242,8 @@ void Clipping::setupConnections()
             this, &Clipping::onGroupBoxYToggled);
     connect(d->ui.groupBoxZ, &QGroupBox::toggled,
             this, &Clipping::onGroupBoxZToggled);
+    connect(d->ui.checkBoxCaps, &QCheckBox::toggled,
+            this, &Clipping::onCheckBoxCapsToggled);
     connect(d->ui.clipX, qOverload<double>(&QDoubleSpinBox::valueChanged),
             this, &Clipping::onClipXValueChanged);
     connect(d->ui.clipY, qOverload<double>(&QDoubleSpinBox::valueChanged),
@@ -283,6 +293,13 @@ void Clipping::onActiveDocument(const App::Document& doc)
         d->dockWidget->hide();
     }
 }
+void Clipping::onCheckBoxCapsToggled(bool on)
+{
+    if (d->view) {
+        d->view->getViewer()->setSectionCapping(on);
+    }
+}
+
 void Clipping::onGroupBoxXToggled(bool on)
 {
     if (on) {
