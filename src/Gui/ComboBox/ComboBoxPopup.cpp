@@ -88,6 +88,17 @@ ComboBoxPopup::ComboBoxPopup(QWidget* parent)
     connect(m_search, &QLineEdit::textChanged, this, [this](const QString& text) {
         m_proxy->setSearchText(text);
 
+        if (m_grid) {
+            m_gridColumns = calculateGridColumns();
+            m_gridModel->setColumnCount(m_gridColumns);
+        }
+
+        setFixedWidth(calculatePopupWidth());
+
+        if (m_grid) {
+            updateGridSize();
+        }
+
         updatePopupSize();
 
         if (m_proxy->rowCount() > 0) {
@@ -326,20 +337,90 @@ int ComboBoxPopup::calculateItemHeight() const
     return itemHeight;
 }
 
-int ComboBoxPopup::calculateGridColumns(int availableWidth) const
+int ComboBoxPopup::calculateGridColumns() const
 {
     if (m_gridFixedColumns > 0) {
         return m_gridFixedColumns;
     }
 
-    constexpr int minimumCellWidth = 100;
+    const int itemCount = m_proxy->rowCount();
 
-    return qMax(1, availableWidth / minimumCellWidth);
+    if (itemCount <= 0) {
+        return 1;
+    }
+
+    // 1 col / 10 items
+    return qMax(1, (itemCount + 9) / 10);
 }
 
 int ComboBoxPopup::calculatePopupWidth() const
 {
-    return m_relativeTo ? m_relativeTo->width() : 200;
+    const QMargins margins = layout()->contentsMargins();
+
+    const int horizontalMargins = margins.left() + margins.right();
+
+    int contentWidth = 0;
+
+    if (!m_grid) {
+        const int rowCount = m_proxy->rowCount();
+
+        for (int row = 0; row < rowCount; ++row) {
+            const QModelIndex index = m_proxy->index(row, 0);
+
+            if (!index.isValid()) {
+                continue;
+            }
+
+            QStyleOptionViewItem option;
+            option.initFrom(m_view);
+            option.font = m_view->font();
+
+            const QSize size = m_view->itemDelegate()->sizeHint(option, index);
+
+            contentWidth = qMax(contentWidth, size.width());
+        }
+
+        // Account for the view's frame.
+        contentWidth += m_view->frameWidth() * 2;
+    }
+    else {
+        const int columns = calculateGridColumns();
+        const int itemCount = m_proxy->rowCount();
+
+        m_gridModel->setColumnCount(columns);
+
+        QVector<int> columnWidths(columns, 0);
+
+        for (int row = 0; row < itemCount; ++row) {
+            const int column = row % columns;
+
+            const QModelIndex index = m_gridModel->index(row / columns, column);
+
+            if (!index.isValid()) {
+                continue;
+            }
+
+            QStyleOptionViewItem option;
+            option.initFrom(m_gridView);
+            option.font = m_gridView->font();
+
+            const QSize size = m_gridView->itemDelegate()->sizeHint(option, index);
+
+            columnWidths[column] = qMax(columnWidths[column], size.width());
+        }
+
+        for (int width : columnWidths) {
+            contentWidth += width;
+        }
+
+        contentWidth += m_gridView->frameWidth() * 2;
+    }
+
+    if (m_searchable) {
+        contentWidth = qMax(contentWidth, m_search->sizeHint().width());
+    }
+
+    return contentWidth + horizontalMargins;
 }
 
 void ComboBoxPopup::updateGridSize()
@@ -348,28 +429,60 @@ void ComboBoxPopup::updateGridSize()
         return;
     }
 
-    const int margins = layout()->contentsMargins().left() + layout()->contentsMargins().right();
+    const QMargins margins = layout()->contentsMargins();
 
-    const int availableWidth = qMax(1, width() - margins);
+    const int availableWidth
+        = qMax(1, width() - margins.left() - margins.right() - m_gridView->frameWidth() * 2);
 
-    m_gridColumns = calculateGridColumns(availableWidth);
+    m_gridColumns = calculateGridColumns();
 
     m_gridModel->setColumnCount(m_gridColumns);
 
-    // exactly x columns
-    const int baseWidth = availableWidth / m_gridColumns;
-    const int remainder = availableWidth % m_gridColumns;
+    QVector<int> columnWidths(m_gridColumns, 0);
+
+    const int itemCount = m_proxy->rowCount();
+
+    for (int row = 0; row < itemCount; ++row) {
+        const int column = row % m_gridColumns;
+
+        const QModelIndex index = m_gridModel->index(row / m_gridColumns, column);
+
+        if (!index.isValid()) {
+            continue;
+        }
+
+        QStyleOptionViewItem option;
+        option.initFrom(m_gridView);
+        option.font = m_gridView->font();
+
+        const QSize size = m_gridView->itemDelegate()->sizeHint(option, index);
+
+        columnWidths[column] = qMax(columnWidths[column], size.width());
+    }
+
+    int measuredWidth = 0;
+
+    for (int width : columnWidths) {
+        measuredWidth += width;
+    }
+
+    // If the popup was sized from the content, this should normally
+    // be the same width. Keep the columns exactly filling the view.
+    if (measuredWidth > 0) {
+        const int extraWidth = availableWidth - measuredWidth;
+
+        if (extraWidth > 0) {
+            columnWidths[m_gridColumns - 1] += extraWidth;
+        }
+    }
 
     for (int column = 0; column < m_gridColumns; ++column) {
-        const int columnWidth = baseWidth + (column < remainder ? 1 : 0);
-
-        m_gridView->setColumnWidth(column, columnWidth);
+        m_gridView->setColumnWidth(column, qMax(1, columnWidths[column]));
     }
 
     const int itemHeight = calculateItemHeight();
 
     m_gridView->verticalHeader()->setDefaultSectionSize(itemHeight);
-
     m_gridView->verticalHeader()->setMinimumSectionSize(itemHeight);
 }
 
@@ -438,10 +551,15 @@ void ComboBoxPopup::popup(QWidget* relativeTo)
     }
 
     m_relativeTo = relativeTo;
-    setFixedWidth(360);
+
+    updateViewMode();
+
+    if (m_grid) {
+        m_gridColumns = calculateGridColumns();
+        m_gridModel->setColumnCount(m_gridColumns);
+    }
 
     setFixedWidth(calculatePopupWidth());
-    updateViewMode();
 
     if (m_grid) {
         updateGridSize();
@@ -450,6 +568,7 @@ void ComboBoxPopup::popup(QWidget* relativeTo)
     updatePopupSize();
 
     const QPoint comboTopLeft = relativeTo->mapToGlobal(QPoint(0, 0));
+
     const QPoint comboBottomLeft = relativeTo->mapToGlobal(QPoint(0, relativeTo->height()));
 
     QScreen* screen = QGuiApplication::screenAt(comboBottomLeft);
@@ -466,9 +585,11 @@ void ComboBoxPopup::popup(QWidget* relativeTo)
         if (position.y() + height() > available.bottom()) {
             position.setY(comboTopLeft.y() - height());
         }
+
         if (position.x() + width() > available.right()) {
             position.setX(available.right() - width());
         }
+
         if (position.x() < available.left()) {
             position.setX(available.left());
         }

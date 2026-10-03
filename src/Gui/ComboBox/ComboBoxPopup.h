@@ -52,7 +52,7 @@ private:
 
     int calculatePopupWidth() const;
     int calculateItemHeight() const;
-    int calculateGridColumns(int availableWidth) const;
+    int calculateGridColumns() const;
     int availablePopupHeight() const;
 
     QLineEdit* m_search = nullptr;
