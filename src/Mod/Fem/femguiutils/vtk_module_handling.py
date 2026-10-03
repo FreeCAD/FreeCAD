@@ -70,10 +70,7 @@ def vtk_module_compatible(folder: str):
     # Try to initialize the VTK library in a subprocess, because it cannot be unloaded
     # after it has been initialized due to persistent state like template overrides (9.7+)
     try:
-        executable = Path(sys.executable)
-        executable_name = executable.stem.removesuffix("Cmd")
-        freecadcmd = executable.with_name(f"{executable_name}Cmd{executable.suffix}")
-        result = subprocess.run([freecadcmd, script], env=environment, check=False)
+        result = subprocess.run([sys.executable, "-c", script], env=environment, check=False)
     except OSError:
         return False
 
