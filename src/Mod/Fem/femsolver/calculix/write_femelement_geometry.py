@@ -48,7 +48,7 @@ def write_femelement_geometry(f, ccxwriter):
                     beam_axis_m[0], beam_axis_m[1], beam_axis_m[2]
                 )
                 if ccxwriter.solver_obj.ExcludeBendingStiffness:
-                    area = beamsec_obj.TrussArea.getValueAs("mm^2").Value
+                    area = ccxwriter.get_coherent_value(beamsec_obj.TrussArea)
                     section_def = f"*SOLID SECTION, {elsetdef}{material}\n"
                     section_geo = f"{area:.13G}\n"
                 else:
@@ -62,35 +62,35 @@ def write_femelement_geometry(f, ccxwriter):
                         # |
                         # .----> (m, 1-direction)
                         #
-                        len_beam_axis_n = beamsec_obj.RectHeight.getValueAs("mm").Value
-                        len_beam_axis_m = beamsec_obj.RectWidth.getValueAs("mm").Value
+                        len_beam_axis_n = ccxwriter.get_coherent_value(beamsec_obj.RectHeight)
+                        len_beam_axis_m = ccxwriter.get_coherent_value(beamsec_obj.RectWidth)
                         section_type = ", SECTION=RECT"
                         section_geo = f"{len_beam_axis_m:.13G},{len_beam_axis_n:.13G}\n"
                         section_def = f"*BEAM SECTION, {elsetdef}{material}{section_type}\n"
                     elif beamsec_obj.SectionType == "Circular":
-                        diameter = beamsec_obj.CircDiameter.getValueAs("mm").Value
+                        diameter = ccxwriter.get_coherent_value(beamsec_obj.CircDiameter)
                         section_type = ", SECTION=CIRC"
                         section_geo = f"{diameter:.13G}\n"
                         section_def = f"*BEAM SECTION, {elsetdef}{material}{section_type}\n"
                     elif beamsec_obj.SectionType == "Elliptical":
-                        axis1 = beamsec_obj.Axis1Length.getValueAs("mm").Value
-                        axis2 = beamsec_obj.Axis2Length.getValueAs("mm").Value
+                        axis1 = ccxwriter.get_coherent_value(beamsec_obj.Axis1Length)
+                        axis2 = ccxwriter.get_coherent_value(beamsec_obj.Axis2Length)
                         section_type = ", SECTION=CIRC"
                         section_geo = f"{axis1:.13G},{axis2:.13G}\n"
                         section_def = f"*BEAM SECTION, {elsetdef}{material}{section_type}\n"
                     elif beamsec_obj.SectionType == "Pipe":
-                        radius = 0.5 * beamsec_obj.PipeDiameter.getValueAs("mm").Value
-                        thickness = beamsec_obj.PipeThickness.getValueAs("mm").Value
+                        radius = ccxwriter.get_coherent_value(0.5 * beamsec_obj.PipeDiameter)
+                        thickness = ccxwriter.get_coherent_value(beamsec_obj.PipeThickness)
                         section_type = ", SECTION=PIPE"
                         section_geo = f"{radius:.13G},{thickness:.13G}\n"
                         section_def = f"*BEAM SECTION, {elsetdef}{material}{section_type}\n"
                     elif beamsec_obj.SectionType == "Box":
-                        box_width = beamsec_obj.BoxWidth.getValueAs("mm").Value
-                        box_height = beamsec_obj.BoxHeight.getValueAs("mm").Value
-                        box_t1 = beamsec_obj.BoxT1.getValueAs("mm").Value
-                        box_t2 = beamsec_obj.BoxT2.getValueAs("mm").Value
-                        box_t3 = beamsec_obj.BoxT3.getValueAs("mm").Value
-                        box_t4 = beamsec_obj.BoxT4.getValueAs("mm").Value
+                        box_width = ccxwriter.get_coherent_value(beamsec_obj.BoxWidth)
+                        box_height = ccxwriter.get_coherent_value(beamsec_obj.BoxHeight)
+                        box_t1 = ccxwriter.get_coherent_value(beamsec_obj.BoxT1)
+                        box_t2 = ccxwriter.get_coherent_value(beamsec_obj.BoxT2)
+                        box_t3 = ccxwriter.get_coherent_value(beamsec_obj.BoxT3)
+                        box_t4 = ccxwriter.get_coherent_value(beamsec_obj.BoxT4)
                         section_type = ", SECTION=BOX"
                         section_geo = f"{box_width:.13G},{box_height:.13G},{box_t1:.13G},{box_t2:.13G},{box_t3:.13G},{box_t4:.13G}\n"
                         section_def = f"*BEAM SECTION, {elsetdef}{material}{section_type}\n"
@@ -133,7 +133,7 @@ def write_femelement_geometry(f, ccxwriter):
                         )
                 else:
                     section_def = f"*SOLID SECTION, {elsetdef}{material}\n"
-                thickness = shellth_obj.Thickness.getValueAs("mm").Value
+                thickness = ccxwriter.get_coherent_value(shellth_obj.Thickness)
                 section_geo = f"{thickness:.13G}\n"
                 f.write(section_def)
                 f.write(section_geo)
@@ -146,35 +146,35 @@ def write_femelement_geometry(f, ccxwriter):
 # Helpers
 def liquid_section_def(obj, section_type):
     if section_type == "PIPE MANNING":
-        manning_area = obj.ManningArea.getValueAs("mm^2").Value
-        manning_radius = obj.ManningRadius.getValueAs("mm").Value
+        manning_area = ccxwriter.get_coherent_value(obj.ManningArea)
+        manning_radius = ccxwriter.get_coherent_value(obj.ManningRadius)
         manning_coefficient = obj.ManningCoefficient
         section_geo = "{:.13G},{:.13G},{:.13G}\n".format(
             manning_area, manning_radius, manning_coefficient
         )
         return section_geo
     elif section_type == "PIPE ENLARGEMENT":
-        enlarge_area1 = obj.EnlargeArea1.getValueAs("mm^2").Value
-        enlarge_area2 = obj.EnlargeArea2.getValueAs("mm^2").Value
+        enlarge_area1 = ccxwriter.get_coherent_value(obj.EnlargeArea1)
+        enlarge_area2 = ccxwriter.get_coherent_value(obj.EnlargeArea2)
         section_geo = f"{enlarge_area1:.13G},{enlarge_area2:.13G}\n"
         return section_geo
     elif section_type == "PIPE CONTRACTION":
-        contract_area1 = obj.ContractArea1.getValueAs("mm^2").Value
-        contract_area2 = obj.ContractArea2.getValueAs("mm^2").Value
+        contract_area1 = ccxwriter.get_coherent_value(obj.ContractArea1)
+        contract_area2 = ccxwriter.get_coherent_value(obj.ContractArea2)
         section_geo = f"{contract_area1:.13G},{contract_area2:.13G}\n"
         return section_geo
     elif section_type == "PIPE ENTRANCE":
-        entrance_pipe_area = obj.EntrancePipeArea.getValueAs("mm^2").Value
-        entrance_area = obj.EntranceArea.getValueAs("mm^2").Value
+        entrance_pipe_area = ccxwriter.get_coherent_value(obj.EntrancePipeArea)
+        entrance_area = ccxwriter.get_coherent_value(obj.EntranceArea)
         section_geo = f"{entrance_pipe_area:.13G},{entrance_area:.13G}\n"
         return section_geo
     elif section_type == "PIPE DIAPHRAGM":
-        diaphragm_pipe_area = obj.DiaphragmPipeArea.getValueAs("mm^2").Value
-        diaphragm_area = obj.DiaphragmArea.getValueAs("mm^2").Value
+        diaphragm_pipe_area = ccxwriter.get_coherent_value(obj.DiaphragmPipeArea)
+        diaphragm_area = ccxwriter.get_coherent_value(obj.DiaphragmArea)
         section_geo = f"{diaphragm_pipe_area:.13G},{diaphragm_area:.13G}\n"
         return section_geo
     elif section_type == "PIPE BEND":
-        bend_pipe_area = obj.BendPipeArea.getValueAs("mm^2").Value
+        bend_pipe_area = ccxwriter.get_coherent_value(obj.BendPipeArea)
         bend_radius_diameter = obj.BendRadiusDiameter
         bend_angle = obj.BendAngle
         bend_loss_coefficient = obj.BendLossCoefficient
@@ -183,14 +183,14 @@ def liquid_section_def(obj, section_type):
         )
         return section_geo
     elif section_type == "PIPE GATE VALVE":
-        gatevalve_pipe_area = obj.GateValvePipeArea.getValueAs("mm^2").Value
+        gatevalve_pipe_area = ccxwriter.get_coherent_value(obj.GateValvePipeArea)
         gatevalve_closing_coeff = obj.GateValveClosingCoeff
         section_geo = f"{gatevalve_pipe_area:.13G},{gatevalve_closing_coeff:.13G}\n"
         return section_geo
     elif section_type == "PIPE WHITE-COLEBROOK":
-        colebrooke_area = obj.ColebrookeArea.getValueAs("mm^2").Value
-        colebrooke_diameter = 2 * obj.ColebrookeRadius.getValueAs("mm")
-        colebrooke_grain_diameter = obj.ColebrookeGrainDiameter.getValueAs("mm")
+        colebrooke_area = ccxwriter.get_coherent_value(obj.ColebrookeArea)
+        colebrooke_diameter = ccxwriter.get_coherent_value(2 * obj.ColebrookeRadius)
+        colebrooke_grain_diameter = ccxwriter.get_coherent_value(obj.ColebrookeGrainDiameter)
         colebrooke_form_factor = obj.ColebrookeFormFactor
         section_geo = "{:.13G},{:.13G},{},{:.13G},{:.13G}\n".format(
             colebrooke_area,

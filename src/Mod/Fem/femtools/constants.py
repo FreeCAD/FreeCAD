@@ -32,31 +32,33 @@ __title__ = "FEM collection of natural constants"
 __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecad.org"
 
+from FreeCAD import Units
+
 
 def gravity():
     # https://en.wikipedia.org/wiki/Gravitational_acceleration
-    return "9.80665 m/s^2"
+    return Units.Quantity("9.80665 m/s^2")
 
 
 def stefan_boltzmann():
     # https://en.wikipedia.org/wiki/Stefan-Boltzmann_constant
-    return "5.67037e-8 W/(m^2*K^4)"
+    return Units.Quantity("5.67037e-8 W/(m^2*K^4)")
 
 
 def vacuum_permeability():
     # https://en.wikipedia.org/wiki/Vacuum_permeability
-    return "1.256637e-6 N/A^2"
+    return Units.Quantity("1.256637e-6 N/A^2")
 
 
 def vacuum_permittivity():
     # https://forum.freecad.org/viewtopic.php?f=18&p=400959#p400959
     # https://en.wikipedia.org/wiki/Permittivity#Vacuum_permittivity
-    return "8.85419e-12 F/m"
+    return Units.Quantity("8.85419e-12 F/m")
 
 
 def boltzmann_constant():
     # https://en.wikipedia.org/wiki/Boltzmann_constant
-    return "1.38065e-23 J/K"
+    return Units.Quantity("1.38065e-23 J/K")
 
 
 """

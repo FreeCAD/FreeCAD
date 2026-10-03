@@ -53,12 +53,10 @@ def write_constraint(f, femobj, selwei_obj, ccxwriter):
         # elset, GRAV, magnitude, direction x, dir y ,dir z
         "{},GRAV,{:.13G},{:.13G},{:.13G},{:.13G}\n".format(
             ccxwriter.ccx_eall,
-            selwei_obj.GravityAcceleration.getValueAs(
-                "mm/s^2"
-            ).Value,  # actual magnitude of gravity vector
-            selwei_obj.GravityDirection.x,  # coordinate x of normalized gravity vector
-            selwei_obj.GravityDirection.y,  # y
-            selwei_obj.GravityDirection.z,  # z
+            ccxwriter.get_coherent_value(selwei_obj.GravityAcceleration),
+            selwei_obj.GravityDirection.x,
+            selwei_obj.GravityDirection.y,
+            selwei_obj.GravityDirection.z,
         )
     )
     f.write("\n")

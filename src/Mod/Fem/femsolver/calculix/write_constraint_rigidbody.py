@@ -27,6 +27,8 @@ __title__ = "FreeCAD FEM calculix constraint rigid body"
 __author__ = "Ajinkya Dahale"
 __url__ = "https://www.freecad.org"
 
+from FreeCAD import Units
+
 
 def get_analysis_types():
     return "all"  # write for all analysis types
@@ -71,9 +73,10 @@ def write_constraint(f, femobj, rb_obj, ccxwriter):
     ref_node_idx = node_count + 2 * rb_obj_idx + 1
     rot_node_idx = node_count + 2 * rb_obj_idx + 2
 
+    rn_pos = [ccxwriter.get_coherent_value(Units.Quantity(p, "mm")) for p in rb_obj.ReferenceNode]
     f.write("*NODE\n")
-    f.write("{},{},{},{}\n".format(ref_node_idx, *rb_obj.ReferenceNode))
-    f.write("{},{},{},{}\n".format(rot_node_idx, *rb_obj.ReferenceNode))
+    f.write("{},{:.13G},{:.13G},{:.13G}\n".format(ref_node_idx, *rn_pos))
+    f.write("{},{:.13G},{:.13G},{:.13G}\n".format(rot_node_idx, *rn_pos))
 
     f.write(f"*NSET,NSET={rb_obj.Name}_RefNode\n")
     f.write(f"{ref_node_idx},\n")

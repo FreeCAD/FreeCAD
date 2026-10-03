@@ -55,6 +55,7 @@ class CalculiXTools(ObjectTools):
     def __init__(self, obj):
         super().__init__(obj)
         self.model_file = ""
+        self.mesh_scale = 1
 
     def prepare(self):
 
@@ -99,6 +100,7 @@ class CalculiXTools(ObjectTools):
             meshdatagetter.mat_geo_sets,
         )
         self.model_file = w.write_solver_input()
+        self.mesh_scale = Fem.getCoherentLengthScale(self.obj.UnitSystem)
         # report to user if task succeeded
         self.input_deck = os.path.splitext(os.path.basename(self.model_file))[0]
 
@@ -198,6 +200,7 @@ class CalculiXTools(ObjectTools):
                 if self.obj.DisplaceMesh:
                     multi_block = self._generate_disp_mesh(multi_block)
                 pipeline.Data = multi_block
+                pipeline.Scale = self.mesh_scale
                 break
 
         pipeline.renameArrays(self.frd_var_conversion(self.obj.AnalysisType))

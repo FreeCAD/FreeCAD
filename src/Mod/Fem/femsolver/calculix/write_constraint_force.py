@@ -52,23 +52,25 @@ def write_meshdata_constraint(f, femobj, force_obj, ccxwriter):
         f.write(f"*CLOAD, AMPLITUDE={force_obj.Name}\n")
     else:
         f.write("*CLOAD\n")
-    direction_vec = femobj["Object"].DirectionVector
+    direction_vec = force_obj.DirectionVector
     dir_zero_tol = 1e-15  # TODO: should this be more generally for more values?
     # be careful with raising the tolerance, a big load would have an impact
     # but compared to the real direction the impact would be small again
+    force = ccxwriter.get_coherent_value(force_obj.Force)
     for ref_shape in femobj["NodeLoadTable"]:
         f.write(f"** {ref_shape[0]}\n")
         for n in sorted(ref_shape[1]):
             node_load = ref_shape[1][n]
-            # the loads in ref_shape[1][n] are without unit
+            # the loads in ref_shape[1][n] are fractions of the unit
+            node_force = force_obj.DirectionVector * node_load * force
             if abs(direction_vec.x) > dir_zero_tol:
-                v1 = f"{(direction_vec.x * node_load).Value:.13G}"
+                v1 = f"{node_force.x:.13G}"
                 f.write(f"{n},1,{v1}\n")
             if abs(direction_vec.y) > dir_zero_tol:
-                v2 = f"{(direction_vec.y * node_load).Value:.13G}"
+                v2 = f"{node_force.y:.13G}"
                 f.write(f"{n},2,{v2}\n")
             if abs(direction_vec.z) > dir_zero_tol:
-                v3 = f"{(direction_vec.z * node_load).Value:.13G}"
+                v3 = f"{node_force.z:.13G}"
                 f.write(f"{n},3,{v3}\n")
         f.write("\n")
     f.write("\n")

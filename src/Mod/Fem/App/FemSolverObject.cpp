@@ -33,6 +33,8 @@
 using namespace Fem;
 using namespace App;
 
+const char* FemSolverObject::unitEnums[] = {"FEM", "Internal", "MKS", "US", nullptr};
+
 PROPERTY_SOURCE(Fem::FemSolverObject, App::DocumentObject)
 
 
@@ -45,7 +47,19 @@ FemSolverObject::FemSolverObject()
         App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
         "Solver results list"
     );
+    ADD_PROPERTY_TYPE(
+        UnitSystem,
+        (long(0)),
+        "Base",
+        App::PropertyType(App::Prop_None),
+        "Solver unit system for length, mass, time, current, temperature:\n"
+        "   FEM: (mm, ton, s, A, K)\n"
+        "   Internal: (mm, kg, s, A, K)\n"
+        "   MKS: (m, kg, s, A, K)\n"
+        "   US: (in, lbf*s^2/in, s, A, K)"
+    );
 
+    UnitSystem.setEnums(unitEnums);
     worker.initExtension(this);
 }
 

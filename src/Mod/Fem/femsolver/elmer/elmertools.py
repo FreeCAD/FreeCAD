@@ -33,6 +33,7 @@ import numpy as np
 import shutil
 
 import FreeCAD
+import Fem
 
 from . import writer
 from .. import settings
@@ -51,15 +52,17 @@ class ElmerTools(ObjectTools):
         self._result_format = ""
         self.frames_info = writer.FRAMES_INFO
         self.frames_values_file = ""
+        self.mesh_scale = 1
 
     def prepare(self):
         w = writer.Writer(self.obj, self.obj.WorkingDirectory)
         w.write_solver_input()
+        self.mesh_scale = Fem.getCoherentLengthScale(self.obj.UnitSystem)
         self.frames_info = w.frames_info
         self.frames_values_file = w.frames_values_file
-        mesh = w.getMesh()
+        mesh = w.get_scaled_mesh()
         mesh_file = os.path.join(self.obj.WorkingDirectory, "mesh.unv")
-        mesh.FemMesh.write(mesh_file)
+        mesh.write(mesh_file)
 
         grid_bin = settings.get_binary("ElmerGrid")
         env = QProcessEnvironment.systemEnvironment()
@@ -145,6 +148,7 @@ class ElmerTools(ObjectTools):
 
         try:
             self._collect_multiframe(pipeline)
+            pipeline.Scale = self.mesh_scale
         except Exception:
             # do nothing
             pass

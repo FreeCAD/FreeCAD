@@ -34,6 +34,7 @@ import os
 from os.path import join
 
 import FreeCAD
+import Fem
 
 from femmesh import meshsetsgetter
 
@@ -206,6 +207,22 @@ class FemInputWriter:
             con_module.write_constraint(f, femobj, the_obj, self)
         if write_after != "":
             f.write(write_after)
+
+    def get_coherent_value(self, quantity):
+        return Fem.getCoherentValue(quantity, self.solver_obj.UnitSystem)
+
+    def get_scaled_mesh(self):
+        scale = Fem.getCoherentLengthScale(self.solver_obj.UnitSystem)
+        mesh = self.mesh_object.FemMesh
+        if scale == 1:
+            return mesh
+
+        mesh = mesh.copy()
+        mat = FreeCAD.Matrix()
+        mat.scale(1 / scale)
+        mesh.transformGeometry(mat)
+
+        return mesh
 
     # ********************************************************************************************
     # deprecated, do not add new constraints

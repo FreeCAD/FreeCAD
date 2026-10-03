@@ -108,7 +108,7 @@ def write_constraint(f, femobj, bodyheatsource_obj, ccxwriter):
         else:
             f.write("*DFLUX\n")
         elset_name = f"{bodyheatsource_obj.Name}_{index}"
-        f.write("{},BF,{:.13G}\n".format(elset_name, heat.getValueAs("t/(mm*s^3)").Value))
+        f.write("{},BF,{:.13G}\n".format(elset_name, ccxwriter.get_coherent_value(heat)))
         f.write("\n")
 
 

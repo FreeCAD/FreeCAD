@@ -74,7 +74,8 @@ def write_mesh(ccxwriter):
         file_name_split = ccxwriter.mesh_name + "_" + write_name + ".inp"
         ccxwriter.femmesh_file = join(ccxwriter.dir_name, file_name_split)
 
-        ccxwriter.femmesh.writeABAQUS(
+        mesh = ccxwriter.get_scaled_mesh()
+        mesh.writeABAQUS(
             ccxwriter.femmesh_file,
             element_param,
             group_param,
@@ -90,7 +91,8 @@ def write_mesh(ccxwriter):
 
     else:
         ccxwriter.femmesh_file = ccxwriter.file_name
-        ccxwriter.femmesh.writeABAQUS(
+        mesh = ccxwriter.get_scaled_mesh()
+        mesh.writeABAQUS(
             ccxwriter.femmesh_file,
             element_param,
             group_param,
