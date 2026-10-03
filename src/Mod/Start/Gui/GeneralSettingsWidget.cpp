@@ -103,11 +103,10 @@ gsl::owner<QComboBox*> GeneralSettingsWidget::createLanguageComboBox()
     QByteArray language = hGrp->GetASCII("Language", langToStr.c_str()).c_str();
     auto comboBox = gsl::owner<Gui::SearchableComboBox*>(new Gui::SearchableComboBox);
     comboBox->setGrid(true);
-    comboBox->setGridFixedColumns(2);
+    comboBox->setGridFixedColumns(3);
     comboBox->setPopupScrollBar(false);
     comboBox->setSearchable(false);
     comboBox->addItem(QStringLiteral("English"), QByteArray("English"));
-    comboBox->setMinimumWidth(200);
     Gui::TStringMap list = Gui::Translator::instance()->supportedLocales();
     int index {1};
     for (auto it = list.begin(); it != list.end(); ++it, ++index) {

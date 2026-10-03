@@ -6,9 +6,6 @@ using namespace Gui;
 SearchableComboBox::SearchableComboBox(QWidget* parent)
     : QComboBox(parent)
 {
-    // combo box shoudldn't follow popup size
-    setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
-
     m_popup = new ComboBoxPopup(nullptr);
 
     connect(m_popup, &ComboBoxPopup::itemSelected, this, [this](int sourceRow) {
