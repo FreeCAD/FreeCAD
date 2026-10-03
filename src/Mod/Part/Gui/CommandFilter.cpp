@@ -33,6 +33,17 @@
 #include <Gui/MainWindow.h>
 #include <Gui/View3DInventor.h>
 
+namespace
+{
+// Gives a dropdown item the same tooltip as a regular toolbar button, including the command name
+void setDropDownToolTip(QAction* action, const QString& helpText, const Gui::Command* cmd)
+{
+    action->setToolTip(
+        Gui::Action::createToolTip(helpText, action->text(), action->font(), cmd->getShortcut(), cmd)
+    );
+}
+}  // namespace
+
 //===============================================================================
 // PartCmdSelectFilter (dropdown toolbar button for Vertex, Edge & Face Selection)
 //===============================================================================
@@ -127,8 +138,10 @@ void PartCmdSelectFilter::languageChange()
         cmd0->setText(
             QApplication::translate("PartCmdVertexSelection", vertexSelection->getMenuText())
         );
-        cmd0->setToolTip(
-            QApplication::translate("PartCmdVertexSelection", vertexSelection->getToolTipText())
+        setDropDownToolTip(
+            cmd0,
+            QApplication::translate("PartCmdVertexSelection", vertexSelection->getToolTipText()),
+            vertexSelection
         );
         cmd0->setStatusTip(
             QApplication::translate("PartCmdVertexSelection", vertexSelection->getStatusTip())
@@ -139,8 +152,10 @@ void PartCmdSelectFilter::languageChange()
     if (edgeSelection) {
         QAction* cmd1 = act[1];
         cmd1->setText(QApplication::translate("PartCmdEdgeSelection", edgeSelection->getMenuText()));
-        cmd1->setToolTip(
-            QApplication::translate("PartCmdEdgeSelection", edgeSelection->getToolTipText())
+        setDropDownToolTip(
+            cmd1,
+            QApplication::translate("PartCmdEdgeSelection", edgeSelection->getToolTipText()),
+            edgeSelection
         );
         cmd1->setStatusTip(
             QApplication::translate("PartCmdEdgeSelection", edgeSelection->getStatusTip())
@@ -151,8 +166,10 @@ void PartCmdSelectFilter::languageChange()
     if (faceSelection) {
         QAction* cmd1 = act[2];
         cmd1->setText(QApplication::translate("PartCmdFaceSelection", faceSelection->getMenuText()));
-        cmd1->setToolTip(
-            QApplication::translate("PartCmdFaceSelection", faceSelection->getToolTipText())
+        setDropDownToolTip(
+            cmd1,
+            QApplication::translate("PartCmdFaceSelection", faceSelection->getToolTipText()),
+            faceSelection
         );
         cmd1->setStatusTip(
             QApplication::translate("PartCmdFaceSelection", faceSelection->getStatusTip())
@@ -165,8 +182,10 @@ void PartCmdSelectFilter::languageChange()
         cmd2->setText(
             QApplication::translate("PartCmdRemoveSelectionGate", removeSelection->getMenuText())
         );
-        cmd2->setToolTip(
-            QApplication::translate("PartCmdRemoveSelectionGate", removeSelection->getToolTipText())
+        setDropDownToolTip(
+            cmd2,
+            QApplication::translate("PartCmdRemoveSelectionGate", removeSelection->getToolTipText()),
+            removeSelection
         );
         cmd2->setStatusTip(
             QApplication::translate("PartCmdRemoveSelectionGate", removeSelection->getStatusTip())
