@@ -10,8 +10,8 @@
 [submodule "src/3rdParty/coin"]
 	path = src/3rdParty/coin
 	url = https://github.com/FreeCAD/coin.git
-	branch = freecad-master
+	branch = freecad-release-26-3
 [submodule "src/3rdParty/pivy"]
 	path = src/3rdParty/pivy
 	url = https://github.com/FreeCAD/pivy.git
-	branch = freecad-master
+	branch = freecad-release-26-3
