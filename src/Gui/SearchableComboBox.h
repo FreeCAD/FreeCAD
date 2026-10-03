@@ -7,7 +7,7 @@ namespace Gui
 
 class ComboBoxPopup;
 
-class SearchableComboBox: public QComboBox
+class GuiExport SearchableComboBox: public QComboBox
 {
     Q_OBJECT
 
