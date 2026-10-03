@@ -7,13 +7,43 @@
     <x>0</x>
     <y>0</y>
     <width>321</width>
-    <height>509</height>
+    <height>449</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string notr="true">Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Offset selection</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="selectionMode">
+       <item>
+        <property name="text">
+         <string>Selected Faces</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Selected Solids</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>All Solids</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
    <item>
     <widget class="QToolButton" name="buttonRefSel">
      <property name="toolTip">
@@ -34,7 +64,7 @@
 - double-click on an item to see the features</string>
      </property>
      <property name="selectionMode">
-      <enum>QAbstractItemView::MultiSelection</enum>
+      <enum>QAbstractItemView::SelectionMode::MultiSelection</enum>
      </property>
     </widget>
    </item>
@@ -47,62 +77,14 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="Gui::QuantitySpinBox" name="Value">
-       <property name="keyboardTracking">
-        <bool>false</bool>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true">mm</string>
-       </property>
-       <property name="minimum">
-        <double>0.000000000000000</double>
-       </property>
-       <property name="maximum">
-        <double>999999999.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>0.100000000000000</double>
-       </property>
-       <property name="value">
-        <double>1.000000000000000</double>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Mode</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QComboBox" name="modeComboBox">
-       <item>
-        <property name="text">
-         <string>Skin</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Pipe</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Recto verso</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="2" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
         <string>Join type</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
+     <item row="1" column="1">
       <widget class="QComboBox" name="joinComboBox">
        <item>
         <property name="text">
@@ -116,6 +98,28 @@
        </item>
       </widget>
      </item>
+     <item row="0" column="1">
+      <widget class="Gui::QuantitySpinBox" name="Value" native="true">
+       <property name="keyboardTracking" stdset="0">
+        <bool>false</bool>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
+       <property name="minimum" stdset="0">
+        <double>0.000000000000000</double>
+       </property>
+       <property name="maximum" stdset="0">
+        <double>999999999.000000000000000</double>
+       </property>
+       <property name="singleStep" stdset="0">
+        <double>0.100000000000000</double>
+       </property>
+       <property name="value" stdset="0">
+        <double>1.000000000000000</double>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
@@ -126,11 +130,43 @@
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="checkReverse">
-     <property name="text">
-      <string>Make thickness inwards</string>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Offset</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::QuantitySpinBox" name="centeringValue" native="true"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QPushButton" name="insideButton">
+       <property name="text">
+        <string>Inside</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="centerButton">
+       <property name="text">
+        <string>Center</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="outsideButton">
+       <property name="text">
+        <string>Outside</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
@@ -144,11 +180,8 @@
  <tabstops>
   <tabstop>buttonRefSel</tabstop>
   <tabstop>listWidgetReferences</tabstop>
-  <tabstop>Value</tabstop>
-  <tabstop>modeComboBox</tabstop>
   <tabstop>joinComboBox</tabstop>
   <tabstop>checkIntersection</tabstop>
-  <tabstop>checkReverse</tabstop>
  </tabstops>
  <resources/>
  <connections/>
