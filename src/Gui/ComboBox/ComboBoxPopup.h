@@ -7,11 +7,13 @@ class QHideEvent;
 class QKeyEvent;
 class QLineEdit;
 class QListView;
+class QTableView;
 
 namespace Gui
 {
 
 class ComboBoxFilterModel;
+class ComboBoxGridModel;
 
 class ComboBoxPopup: public QFrame
 {
@@ -27,6 +29,9 @@ public:
 
     void setCurrentIndex(int index);
     void setMaximumPopupHeight(int height);
+
+    void setGridFixedColumns(int columns);
+    void setPopupScrollBar(bool enabled);
 
     int selectedSourceRow() const;
 
@@ -45,10 +50,17 @@ private:
     void updatePopupSize();
     void updateGridSize();
 
+    int calculatePopupWidth() const;
+    int calculateItemHeight() const;
+    int calculateGridColumns(int availableWidth) const;
+    int availablePopupHeight() const;
+
     QLineEdit* m_search = nullptr;
     QListView* m_view = nullptr;
+    QTableView* m_gridView = nullptr;
 
     ComboBoxFilterModel* m_proxy = nullptr;
+    ComboBoxGridModel* m_gridModel = nullptr;
 
     QAbstractItemModel* m_sourceModel = nullptr;
 
@@ -56,7 +68,15 @@ private:
     bool m_grid = false;
 
     int m_currentSourceRow = -1;
+
     int m_maximumHeight = 400;
+
+    // -1 = automatic.
+    int m_gridFixedColumns = -1;
+    // Actual column count for the currently displayed popup.
+    int m_gridColumns = 1;
+
+    bool m_popupScrollBar = true;
 
     QWidget* m_relativeTo = nullptr;
 };

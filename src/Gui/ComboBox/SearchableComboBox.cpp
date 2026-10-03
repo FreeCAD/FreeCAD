@@ -6,6 +6,9 @@ using namespace Gui;
 SearchableComboBox::SearchableComboBox(QWidget* parent)
     : QComboBox(parent)
 {
+    // combo box shoudldn't follow popup size
+    setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
+
     m_popup = new ComboBoxPopup(nullptr);
 
     connect(m_popup, &ComboBoxPopup::itemSelected, this, [this](int sourceRow) {
@@ -86,6 +89,8 @@ void SearchableComboBox::showPopup()
     m_popup->setSearchable(m_searchable);
     m_popup->setGrid(m_grid);
     m_popup->setMaximumPopupHeight(m_popupMaximumHeight);
+    m_popup->setGridFixedColumns(m_gridFixedColumns);
+    m_popup->setPopupScrollBar(m_popupScrollBar);
     m_popup->setCurrentIndex(currentIndex());
 
     m_popup->popup(this);
@@ -96,4 +101,40 @@ void SearchableComboBox::hidePopup()
     if (m_popup && m_popup->isVisible()) {
         m_popup->hide();
     }
+}
+
+int SearchableComboBox::gridFixedColumns() const
+{
+    return m_gridFixedColumns;
+}
+
+void SearchableComboBox::setGridFixedColumns(int columns)
+{
+    if (columns < 1) {
+        columns = -1;
+    }
+
+    if (m_gridFixedColumns == columns) {
+        return;
+    }
+
+    m_gridFixedColumns = columns;
+
+    m_popup->setGridFixedColumns(columns);
+}
+
+bool SearchableComboBox::popupScrollBar() const
+{
+    return m_popupScrollBar;
+}
+
+void SearchableComboBox::setPopupScrollBar(bool enabled)
+{
+    if (m_popupScrollBar == enabled) {
+        return;
+    }
+
+    m_popupScrollBar = enabled;
+
+    m_popup->setPopupScrollBar(enabled);
 }
