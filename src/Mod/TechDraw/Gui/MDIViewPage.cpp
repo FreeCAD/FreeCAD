@@ -26,7 +26,6 @@
 
 #include <QAction>
 #include <QApplication>
-#include <QEventLoop>
 #include <QContextMenuEvent>
 #include <QMdiSubWindow>
 #include <QMenu>
@@ -90,36 +89,6 @@
 using namespace TechDrawGui;
 using namespace TechDraw;
 namespace sp = std::placeholders;
-
-namespace
-{
-// Screen mode is switched off for the export, then restored. That refresh, and
-// the redraw inside PagePrinter, posts dimension reference maintenance
-// (References2D / SavedGeometry / BoxCorners). Those writes are not a
-// transaction: the values match what was already stored, but they mark the
-// Gui document modified on a later event-loop turn, after PagePrinter has put
-// the flag back. Run the posted updates, then restore the flag we captured
-// before any of this.
-void runWithExportScreenMode(Gui::Document* guiDoc, const std::function<void()>& body)
-{
-    const bool wasModified = guiDoc && guiDoc->isModified();
-    const bool screenMode = PreferencesGui::screenMode();
-    Base::ScopeGuard restore([guiDoc, wasModified, screenMode]() {
-        PreferencesGui::setScreenMode(screenMode);
-        if (qApp) {
-            // One pass delivers the redraw's posted events. A second pass
-            // catches a follow-up timer those handlers may post.
-            qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
-            qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
-        }
-        if (guiDoc) {
-            guiDoc->setModified(wasModified);
-        }
-    });
-    PreferencesGui::setScreenMode(false);
-    body();
-}
-}
 
 /* TRANSLATOR TechDrawGui::MDIViewPage */
 
@@ -785,13 +754,16 @@ QString MDIViewPage::defaultFileName()
 
 void MDIViewPage::saveSVG(std::string filename)
 {
-    auto* vpp = getViewProviderPage();
+    bool screenMode = PreferencesGui::screenMode();
+    PreferencesGui::setScreenMode(false);
+    Base::ScopeGuard restoreScreenMode([screenMode]() {
+        PreferencesGui::setScreenMode(screenMode);
+    });
+    auto vpp = getViewProviderPage();
     if (!vpp) {
         return;
     }
-    runWithExportScreenMode(vpp->getDocument(), [&]() {
-        PagePrinter::saveSVG(vpp, filename);
-    });
+    PagePrinter::saveSVG(vpp, filename);
 }
 
 
@@ -843,13 +815,17 @@ void MDIViewPage::saveDXF()
 
 void MDIViewPage::savePDF(const std::string& filename) const
 {
-    auto* vpp = getViewProviderPage();
+    bool screenMode = PreferencesGui::screenMode();
+    PreferencesGui::setScreenMode(false);
+    Base::ScopeGuard restoreScreenMode([screenMode]() {
+        PreferencesGui::setScreenMode(screenMode);
+    });
+    
+    auto vpp = getViewProviderPage();
     if (!vpp) {
         return;
     }
-    runWithExportScreenMode(vpp->getDocument(), [&]() {
-        PagePrinter::savePDF(vpp, filename);
-    });
+    PagePrinter::savePDF(vpp, filename);
 }
 
 
