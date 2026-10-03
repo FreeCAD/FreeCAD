@@ -1685,6 +1685,7 @@ bool Document::save()
 
             if (docs.size() == 1 && docs.front() == getDocument() && !isModified()
                 && !getDocument()->isTouched() && !dmap[getDocument()]) {
+                    getMainWindow()->showMessage(QObject::tr("Document is already saved."), 2000);
                 return true;
             }
 
