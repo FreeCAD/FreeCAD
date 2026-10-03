@@ -38,6 +38,7 @@ from draftguitools.gui_snapper import Snapper
 from drafttaskpanels.task_circulararray import TaskPanelCircularArray
 from drafttaskpanels.task_polararray import TaskPanelPolarArray
 from drafttests import test_base
+from draftutils import utils
 from draftutils.todo import ToDo
 
 
@@ -407,7 +408,7 @@ class DraftGuiManualInput(test_base.DraftTestCaseDoc):
     def test_deleting_numeric_part_unlocks_field(self):
         self._open_point_ui()
         self._type(self.tb.xValue, "25 mm")
-        numeric_length = self.tb.number_length(self.tb.xValue.text())
+        numeric_length = utils.get_number_length(self.tb.xValue.text())
         self.tb.xValue.setSelection(0, numeric_length)
 
         self._send_key(self.tb.xValue, QtCore.Qt.Key_Delete)
