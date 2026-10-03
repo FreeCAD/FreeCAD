@@ -392,8 +392,6 @@ SET(FreeCADBase_SRCS
     ${FreeCADBase_Pyi_SRCS}
     ${FreeCADBase_UNITAPI_SRCS}
     ${FreeCADBase_CrashReporter_SRCS}
-    PyTools.c
-    PyTools.h
     PreCompiled.h
 )
 
