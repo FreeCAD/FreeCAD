@@ -5748,6 +5748,16 @@ void PropertyXLinkContainer::afterRestore()
     if (!_XLinkRestores) {
         return;
     }
+    auto owner = freecad_cast<DocumentObject*>(getContainer());
+    if (owner && owner->isAttachedToDocument() && !owner->testStatus(ObjectStatus::Destroy)) {
+        for (auto& [obj, hidden] : _Deps) {
+            if (!hidden && obj && obj->isAttachedToDocument()
+                && obj->getDocument() == owner->getDocument()) {
+                obj->_removeBackLink(owner);
+                obj->_removeBackLinkProp(getName(), owner);
+            }
+        }
+    }
     _Deps.clear();
     for (auto& info : *_XLinkRestores) {
         auto obj = info.xlink->getValue();
