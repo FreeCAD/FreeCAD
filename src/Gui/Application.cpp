@@ -154,7 +154,7 @@
 #include "WidgetFactory.h"
 #include "3Dconnexion/navlib/NavlibInterface.h"
 #include "Inventor/SoFCPlacementIndicatorKit.h"
-#include "SearchableComboBoxPy.h"
+#include "LargeComboBoxPy.h"
 
 #include <FreeCADStyle.h>
 #include <OverlayManager.h>

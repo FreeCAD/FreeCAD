@@ -5,12 +5,12 @@ from PySide6 import QComboBoxPy
 @export(
     Constructor=True,
     Delete=True,
-    Name="SearchableComboBoxPy",
-    Twin="SearchableComboBox",
-    TwinPointer="SearchableComboBox",
-    Include="Gui/SearchableComboBox.h",
+    Name="LargeComboBoxPy",
+    Twin="LargeComboBox",
+    TwinPointer="LargeComboBox",
+    Include="Gui/LargeComboBox.h",
 )
-class SearchableComboBoxPy(PyObjectBase):
+class LargeComboBoxPy(PyObjectBase):
     @property
     def searchable(self) -> bool: ...
     @searchable.setter
@@ -27,6 +27,10 @@ class SearchableComboBoxPy(PyObjectBase):
     def gridFixedColumns(self) -> int: ...
     @gridFixedColumns.setter
     def gridFixedColumns(self, value: int) -> None: ...
+    @property
+    def gridRowCount(self) -> int: ...
+    @gridRowCount.setter
+    def gridRowCount(self, value: int) -> None: ...
     @property
     def popupScrollBar(self) -> bool: ...
     @popupScrollBar.setter

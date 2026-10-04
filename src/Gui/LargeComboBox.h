@@ -1,13 +1,14 @@
 #pragma once
 
+#include <FCGlobal.h>
 #include <QComboBox>
 
 namespace Gui
 {
 
-class ComboBoxPopup;
+class LargeComboBoxPopup;
 
-class GuiExport SearchableComboBox: public QComboBox
+class GuiExport LargeComboBox: public QComboBox
 {
     Q_OBJECT
 
@@ -16,10 +17,11 @@ class GuiExport SearchableComboBox: public QComboBox
     Q_PROPERTY(int popupMaximumHeight READ popupMaximumHeight WRITE setPopupMaximumHeight)
     Q_PROPERTY(int gridFixedColumns READ gridFixedColumns WRITE setGridFixedColumns)
     Q_PROPERTY(bool popupScrollBar READ popupScrollBar WRITE setPopupScrollBar)
+    Q_PROPERTY(int gridRowCount READ gridRowCount WRITE setGridFixedColumns)
 
 public:
-    explicit SearchableComboBox(QWidget* parent = nullptr);
-    ~SearchableComboBox() override;
+    explicit LargeComboBox(QWidget* parent = nullptr);
+    ~LargeComboBox() override;
 
     bool isSearchable() const;
     void setSearchable(bool searchable);
@@ -33,18 +35,23 @@ public:
     int gridFixedColumns() const;
     void setGridFixedColumns(int columns);
 
+    int gridRowCount() const;
+    void setGridRowCount(int rows);
+
     bool popupScrollBar() const;
     void setPopupScrollBar(bool enabled);
 
     void showPopup() override;
     void hidePopup() override;
 
+    bool isPopupShown() const;
+
 Q_SIGNALS:
     void searchableChanged(bool searchable);
     void gridChanged(bool grid);
 
 private:
-    ComboBoxPopup* m_popup = nullptr;
+    LargeComboBoxPopup* m_popup = nullptr;
 
     bool m_searchable = true;
     bool m_grid = false;
@@ -53,8 +60,9 @@ private:
 
     // -1 = automatic column count.
     int m_gridFixedColumns = -1;
+    int m_gridRowCount = 10;
 
-    bool m_popupScrollBar = true;
+    bool m_popupScrollBar = false;
 };
 
 }  // namespace Gui

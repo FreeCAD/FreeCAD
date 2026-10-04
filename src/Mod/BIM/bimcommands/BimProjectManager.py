@@ -74,14 +74,6 @@ class BIM_ProjectManager:
         )
 
         # set things up
-        print(self.form.buildingUse)
-        print(type(self.form.buildingUse))
-        print(self.form.buildingUse.metaObject().className())
-        print(self.form.buildingUse.metaObject().superClass().className())
-        print(self.form.buildingUse.property("grid"))
-        self.form.buildingUse.setProperty("grid", True)
-        print(self.form.buildingUse.property("grid"))
-        self.form.buildingUse.setProperty("gridFixedColumns", 5)
         self.form.buildingUse.addItems(ArchBuildingPart.BuildingTypes)
         self.form.setWindowIcon(QtGui.QIcon(":/icons/BIM_ProjectManager.svg"))
         self.form.buttonAdd.clicked.connect(self.addGroup)

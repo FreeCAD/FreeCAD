@@ -5,12 +5,12 @@
 namespace Gui
 {
 
-class ComboBoxFilterModel: public QSortFilterProxyModel
+class LargeComboBoxFilterModel: public QSortFilterProxyModel
 {
     Q_OBJECT
 
 public:
-    explicit ComboBoxFilterModel(QObject* parent = nullptr);
+    explicit LargeComboBoxFilterModel(QObject* parent = nullptr);
 
     void setSearchText(const QString& text);
 

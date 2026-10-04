@@ -12,17 +12,18 @@ class QTableView;
 namespace Gui
 {
 
-class ComboBoxFilterModel;
-class ComboBoxGridModel;
+class LargeComboBoxFilterModel;
+class LargeComboBoxGridModel;
 
-class ComboBoxPopup: public QFrame
+class LargeComboBoxPopup: public QFrame
 {
     Q_OBJECT
 
 public:
-    explicit ComboBoxPopup(QWidget* parent = nullptr);
+    explicit LargeComboBoxPopup(QWidget* parent = nullptr);
 
     void setSourceModel(QAbstractItemModel* model);
+    QAbstractItemModel* getSourceModel();
 
     void setSearchable(bool searchable);
     void setGrid(bool grid);
@@ -32,6 +33,9 @@ public:
 
     void setGridFixedColumns(int columns);
     void setPopupScrollBar(bool enabled);
+
+    int gridRowCount() const;
+    void setGridRowCount(int rows);
 
     int selectedSourceRow() const;
 
@@ -59,8 +63,8 @@ private:
     QListView* m_view = nullptr;
     QTableView* m_gridView = nullptr;
 
-    ComboBoxFilterModel* m_proxy = nullptr;
-    ComboBoxGridModel* m_gridModel = nullptr;
+    LargeComboBoxFilterModel* m_proxy = nullptr;
+    LargeComboBoxGridModel* m_gridModel = nullptr;
 
     QAbstractItemModel* m_sourceModel = nullptr;
 
@@ -75,6 +79,7 @@ private:
     int m_gridFixedColumns = -1;
     // Actual column count for the currently displayed popup.
     int m_gridColumns = 1;
+    int m_gridRowCount = 10;
 
     bool m_popupScrollBar = true;
 

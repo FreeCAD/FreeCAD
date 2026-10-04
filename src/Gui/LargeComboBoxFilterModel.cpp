@@ -1,23 +1,23 @@
-#include "ComboBoxFilterModel.h"
+#include "LargeComboBoxFilterModel.h"
 
 #include <QAbstractItemModel>
 
 using namespace Gui;
 
-ComboBoxFilterModel::ComboBoxFilterModel(QObject* parent)
+LargeComboBoxFilterModel::LargeComboBoxFilterModel(QObject* parent)
     : QSortFilterProxyModel(parent)
 {
     setFilterCaseSensitivity(Qt::CaseInsensitive);
     setDynamicSortFilter(true);
 }
 
-void ComboBoxFilterModel::setSearchText(const QString& text)
+void LargeComboBoxFilterModel::setSearchText(const QString& text)
 {
     m_searchText = text.trimmed();
     invalidateFilter();
 }
 
-bool ComboBoxFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const
+bool LargeComboBoxFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const
 {
     if (m_searchText.isEmpty()) {
         return true;
