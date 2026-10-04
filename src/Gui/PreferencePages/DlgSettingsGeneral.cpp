@@ -383,8 +383,8 @@ void DlgSettingsGeneral::resetSettingsToDefaults()
     );
     // reset "Theme" parameter
     const bool systemDark = Gui::isSystemInDarkMode();
-    const QString systemTheme =
-        systemDark ? QStringLiteral("FreeCAD Dark") : QStringLiteral("FreeCAD Light");
+    const QString systemTheme = systemDark ? QStringLiteral("FreeCAD Dark")
+                                           : QStringLiteral("FreeCAD Light");
     if (ui->themesCombobox->findText(systemTheme) >= 0) {
         hGrp->SetASCII("Theme", systemTheme.toStdString());
     }
@@ -500,7 +500,7 @@ void DlgSettingsGeneral::loadThemes()
     int index = ui->themesCombobox->findText(currentTheme);
     if (index < 0 && !currentTheme.isEmpty()) {
         currentTheme = Gui::isSystemInDarkMode() ? QStringLiteral("FreeCAD Dark")
-                       : QStringLiteral("FreeCAD Light");
+                                                 : QStringLiteral("FreeCAD Light");
         index = ui->themesCombobox->findText(currentTheme);
         if (index >= 0) {
             hGrp->SetASCII("Theme", currentTheme.toStdString());
