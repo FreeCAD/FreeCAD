@@ -1341,6 +1341,10 @@ class Component(ArchIFC.IfcProduct):
         if self.LinkOverrideProperties:
             ArchCommands.override_link_properties(linkObj, self.LinkOverrideProperties)
 
+        # Add features in the SketchArch External Add-on, if present
+        if hasattr(self, "addSketchArchFeatures"):
+            self.addSketchArchFeatures(obj, linkObj)
+
         # Execute features in the SketchArch External Add-on, if present
         if hasattr(self, "executeSketchArchFeatures"):
             self.executeSketchArchFeatures(obj, linkObj, index, linkElement)
