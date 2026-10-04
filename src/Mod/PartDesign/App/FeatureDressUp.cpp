@@ -379,6 +379,11 @@ void DressUp::onBaseFeatureRerouted(App::DocumentObject* oldBase, App::DocumentO
     relinkToMatchingSubelements(Base, oldBase, newBase);
 }
 
+void DressUp::restoreFinished()
+{
+    Feature::restoreFinished();
+}
+
 void DressUp::getAddSubShape(Part::TopoShape& addShape, Part::TopoShape& subShape)
 {
     Part::TopoShape res = AddSubShape.getShape();
@@ -516,5 +521,74 @@ void DressUp::updatePreviewShape()
 
     PreviewShape.setValue(preview);
 }
+
+void DressUp::fixBaseShape(Part::ConversionTarget to)
+{
+    const auto newRefs = Part::convertShapeElements(
+        getBaseTopoShape(true),
+        Base.getSubValues(),
+        Part::ConversionTarget::All,
+        to
+    );
+    Base.setValue(Base.getValue(), newRefs);
+}
+
+void DressUp::fixBaseShape(Part::ConversionTarget ignore, Part::ConversionTarget to)
+{
+    const auto baseShape = getBaseTopoShape(true);
+    const auto subValues = Base.getSubValues();
+
+    const auto matchesAllowed = [ignore](const TopAbs_ShapeEnum type) {
+        Part::ConversionTarget target;
+        switch (type) {
+            case TopAbs_SOLID:
+                target = Part::ConversionTarget::Solids;
+                break;
+            case TopAbs_FACE:
+                target = Part::ConversionTarget::Faces;
+                break;
+            case TopAbs_EDGE:
+                target = Part::ConversionTarget::Edges;
+                break;
+            case TopAbs_VERTEX:
+                target = Part::ConversionTarget::Vertices;
+                break;
+            default:
+                return false;
+        }
+        return hasTarget(ignore, target);
+    };
+
+    std::vector<std::string> allowedRefs;
+    std::vector<std::string> convertRefs;
+
+    allowedRefs.reserve(subValues.size());
+    convertRefs.reserve(subValues.size());
+
+    for (const auto& ref : subValues) {
+        const TopoDS_Shape shape = baseShape.getSubShape(ref.c_str(), true);
+        if (!shape.IsNull() && matchesAllowed(shape.ShapeType())) {
+            allowedRefs.push_back(ref);
+        }
+        else {
+            convertRefs.push_back(ref);
+        }
+    }
+
+    auto convertedRefs
+        = Part::convertShapeElements(baseShape, convertRefs, Part::ConversionTarget::All, to);
+
+    allowedRefs.insert(
+        allowedRefs.end(),
+        std::make_move_iterator(convertedRefs.begin()),
+        std::make_move_iterator(convertedRefs.end())
+    );
+
+    std::ranges::sort(allowedRefs);
+    allowedRefs.erase(std::ranges::unique(allowedRefs).begin(), allowedRefs.end());
+
+    Base.setValue(Base.getValue(), allowedRefs);
+}
+
 
 }  // namespace PartDesign

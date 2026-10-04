@@ -45,6 +45,8 @@ class Feature;
 namespace PartDesignGui
 {
 
+using Part::ConversionTarget;
+
 class TaskDressUpParameters: public TaskFeatureParameters, public Gui::SelectionObserver
 {
     Q_OBJECT
@@ -93,21 +95,13 @@ protected:
     void deleteRef(QListWidget* listWidget);
     void updateFeature(PartDesign::DressUp* pcDressUp, const std::vector<std::string>& refs);
 
-    /// Convert individual face/edges selection to solid selection
-    void convertSelectionToSolids(QListWidget* widget, bool edgesEnabled, bool facesEnabled);
-    void convertSelectionToSolids(
-        std::vector<std::string>& refs,
-        bool edgesEnabled,
-        bool facesEnabled
-    ) const;
-
-    /// Selects ALL faces/edges from any selected solids
-    void convertSelectionToElements(QListWidget* widget, bool edgesEnabled, bool facesEnabled);
-    void convertSelectionToElements(
-        std::vector<std::string>& refs,
-        bool edgesEnabled,
-        bool facesEnabled
-    ) const;
+    /// Convert the selection into other TopoShape references
+    /// Updates the widget AND underlying Feature
+    void convertSelection(QListWidget* widget, ConversionTarget target);
+    /// Updates the std::vector only
+    void convertSelection(std::vector<std::string>& refs, ConversionTarget target) const;
+    /// Uses the currently set allowSolids, allowEdges, allowFaces flags.
+    void convertSelection(QListWidget* widget);
 
 protected:
     enum selectionModes

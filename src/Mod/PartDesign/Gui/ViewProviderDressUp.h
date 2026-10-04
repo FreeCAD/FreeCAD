@@ -50,7 +50,7 @@ public:
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
     /// Highlight the references that have been selected
-    void highlightReferences(const bool on);
+    void highlightReferences(bool on);
 
     /// Set preview parameters to indicate error state
     void setErrorState(bool error);
@@ -86,6 +86,7 @@ protected:
     void updatePreviewColor() override;
 
 private:
+    /// Shows the entire solid to be selected if at least a face is selected
     bool highlightEdgesAsSolid;
     bool highlightFacesAsSolid;
 };

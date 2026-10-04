@@ -35,6 +35,13 @@
 #include <Gui/Application.h>
 #include <Mod/Part/Gui/ReferenceHighlighter.h>
 #include <Mod/PartDesign/App/FeatureDressUp.h>
+
+#include "ViewProviderDressUp.h"
+
+#include "StyleParameters.h"
+#include "TaskDressUpParameters.h"
+#include "TopExp_Explorer.hxx"
+
 #include <Base/ServiceProvider.h>
 #include <Gui/Utilities.h>
 
@@ -116,13 +123,11 @@ void ViewProviderDressUp::highlightReferences(const bool on)
 {
     const auto* pdDressUp = getObject<PartDesign::DressUp>();
     const Part::Feature* base = pdDressUp->getBaseObject(/*silent =*/true);
-
     if (!base) {
         return;
     }
 
     auto* vp = dynamic_cast<ViewProviderPart*>(Gui::Application::Instance->getViewProvider(base));
-
     if (!vp) {
         return;
     }
