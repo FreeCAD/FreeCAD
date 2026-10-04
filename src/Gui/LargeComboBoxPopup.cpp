@@ -186,6 +186,21 @@ LargeComboBoxPopup::LargeComboBoxPopup(QWidget* parent)
     setPopupScrollBar(true);
 }
 
+int LargeComboBoxPopup::gridRowCount() const
+{
+    return m_gridRowCount;
+}
+
+void LargeComboBoxPopup::setGridRowCount(int count)
+{
+    m_gridRowCount = count;
+}
+
+QAbstractItemModel* LargeComboBoxPopup::getSourceModel()
+{
+    return m_sourceModel;
+}
+
 void LargeComboBoxPopup::setSourceModel(QAbstractItemModel* model)
 {
     m_sourceModel = model;
@@ -346,8 +361,12 @@ int LargeComboBoxPopup::calculateGridColumns() const
         return 1;
     }
 
-    // 1 col / 10 items
-    return qMax(1, (itemCount + 9) / 10);
+    int count = m_gridRowCount;
+    if (count <= 0) {
+        count = 10;
+    }
+
+    return qMax(1, (itemCount + count - 1) / count);
 }
 
 int LargeComboBoxPopup::calculatePopupWidth() const
@@ -568,7 +587,6 @@ void LargeComboBoxPopup::popup(QWidget* relativeTo)
     updatePopupSize();
 
     const QPoint comboTopLeft = relativeTo->mapToGlobal(QPoint(0, 0));
-
     const QPoint comboBottomLeft = relativeTo->mapToGlobal(QPoint(0, relativeTo->height()));
 
     QScreen* screen = QGuiApplication::screenAt(comboBottomLeft);
@@ -622,7 +640,6 @@ void LargeComboBoxPopup::keyPressEvent(QKeyEvent* event)
     }
 
     if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
-
         const QModelIndex index = m_view->currentIndex();
 
         if (index.isValid()) {
@@ -642,7 +659,6 @@ void LargeComboBoxPopup::keyPressEvent(QKeyEvent* event)
     }
 
     if (m_searchable && !event->text().isEmpty() && !event->text().at(0).isSpace()) {
-
         const QString text = m_search->text() + event->text();
 
         m_search->setText(text);

@@ -17,6 +17,7 @@ class GuiExport LargeComboBox: public QComboBox
     Q_PROPERTY(int popupMaximumHeight READ popupMaximumHeight WRITE setPopupMaximumHeight)
     Q_PROPERTY(int gridFixedColumns READ gridFixedColumns WRITE setGridFixedColumns)
     Q_PROPERTY(bool popupScrollBar READ popupScrollBar WRITE setPopupScrollBar)
+    Q_PROPERTY(int gridRowCount READ gridRowCount WRITE setGridFixedColumns)
 
 public:
     explicit LargeComboBox(QWidget* parent = nullptr);
@@ -34,11 +35,16 @@ public:
     int gridFixedColumns() const;
     void setGridFixedColumns(int columns);
 
+    int gridRowCount() const;
+    void setGridRowCount(int rows);
+
     bool popupScrollBar() const;
     void setPopupScrollBar(bool enabled);
 
     void showPopup() override;
     void hidePopup() override;
+
+    bool isPopupShown() const;
 
 Q_SIGNALS:
     void searchableChanged(bool searchable);
@@ -54,6 +60,7 @@ private:
 
     // -1 = automatic column count.
     int m_gridFixedColumns = -1;
+    int m_gridRowCount = 10;
 
     bool m_popupScrollBar = false;
 };

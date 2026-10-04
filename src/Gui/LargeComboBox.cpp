@@ -14,6 +14,8 @@ LargeComboBox::LargeComboBox(QWidget* parent)
         }
 
         setCurrentIndex(sourceRow);
+        Q_EMIT activated(sourceRow);
+        hidePopup();
     });
 
     connect(m_popup, &LargeComboBoxPopup::popupClosed, this, []() {
@@ -24,6 +26,21 @@ LargeComboBox::LargeComboBox(QWidget* parent)
 LargeComboBox::~LargeComboBox()
 {
     delete m_popup;
+}
+
+int LargeComboBox::gridRowCount() const
+{
+    return m_gridRowCount;
+}
+
+void LargeComboBox::setGridRowCount(int count)
+{
+    m_gridRowCount = count;
+}
+
+bool LargeComboBox::isPopupShown() const
+{
+    return m_popup && m_popup->isVisible();
 }
 
 bool LargeComboBox::isSearchable() const
@@ -89,6 +106,7 @@ void LargeComboBox::showPopup()
     m_popup->setGridFixedColumns(m_gridFixedColumns);
     m_popup->setPopupScrollBar(m_popupScrollBar);
     m_popup->setCurrentIndex(currentIndex());
+    m_popup->setGridRowCount(m_gridRowCount);
 
     m_popup->popup(this);
 }

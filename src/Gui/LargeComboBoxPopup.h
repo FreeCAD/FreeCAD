@@ -23,6 +23,7 @@ public:
     explicit LargeComboBoxPopup(QWidget* parent = nullptr);
 
     void setSourceModel(QAbstractItemModel* model);
+    QAbstractItemModel* getSourceModel();
 
     void setSearchable(bool searchable);
     void setGrid(bool grid);
@@ -32,6 +33,9 @@ public:
 
     void setGridFixedColumns(int columns);
     void setPopupScrollBar(bool enabled);
+
+    int gridRowCount() const;
+    void setGridRowCount(int rows);
 
     int selectedSourceRow() const;
 
@@ -75,6 +79,7 @@ private:
     int m_gridFixedColumns = -1;
     // Actual column count for the currently displayed popup.
     int m_gridColumns = 1;
+    int m_gridRowCount = 10;
 
     bool m_popupScrollBar = true;
 

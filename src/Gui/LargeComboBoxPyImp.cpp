@@ -61,6 +61,16 @@ void LargeComboBoxPy::setgridFixedColumns(Py::Long arg)
     getLargeComboBoxPtr()->setGridFixedColumns(arg);
 }
 
+Py::Long LargeComboBoxPy::getgridRowCount() const
+{
+    return Py::Long(getLargeComboBoxPtr()->gridRowCount());
+}
+
+void LargeComboBoxPy::setgridRowCount(Py::Long arg)
+{
+    getLargeComboBoxPtr()->setGridRowCount(arg);
+}
+
 Py::Boolean LargeComboBoxPy::getpopupScrollBar() const
 {
     return Py::Boolean(getLargeComboBoxPtr()->popupScrollBar());
