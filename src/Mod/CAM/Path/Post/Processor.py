@@ -1760,7 +1760,13 @@ class PostProcessor:
         Path.Log.debug(f"Added G43 H{tool_num} after M6 in operation {item.label}")
         if Constants.ANNOT_BLOCK_DELETE in command.Annotations:
             if command.Annotations[Constants.ANNOT_BLOCK_DELETE]:
-                return [Path.Command("G43", {"H": tool_num}, {Constants.ANNOT_ADDED_TLO: True, Constants.ANNOT_BLOCK_DELETE:True})]
+                return [
+                    Path.Command(
+                        "G43",
+                        {"H": tool_num},
+                        {Constants.ANNOT_ADDED_TLO: True, Constants.ANNOT_BLOCK_DELETE: True},
+                    )
+                ]
         return [Path.Command("G43", {"H": tool_num}, {Constants.ANNOT_ADDED_TLO: True})]
 
     def _expand_tool_change(self, postables):

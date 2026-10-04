@@ -257,7 +257,7 @@ ANNOT_NO_COLLAPSE_G0 = "no_collapse_g0"
 # Pass through string in annotation as command without any changes
 ANNOT_AS_IS = "as-is"
 
-#Mark line as block delete with \ so the controller can optionally ignore it
+# Mark line as block delete with \ so the controller can optionally ignore it
 ANNOT_BLOCK_DELETE = "blockdelete"
 
 # This tlo g-code was added due to option `output_tool_length_offset`

@@ -23,14 +23,14 @@ out_tooltip = """
 Haas Next Generation post processor, "machine" based.
 
 Has been tested on:
-  
 
-Targets but has not been tested on: 
+
+Targets but has not been tested on:
 - CM1, DM1, DM2, DT-1, DT-2, EC-1600, EC-1600ZT, EC-series
 - GM-2, GR-series, Mini Mill EDU, Mini Mill, TM-series
 - UMC-series, VC-400, VF-series, VS-3
 
-The base PostProcessor already writes the G-code these controls read; 
+The base PostProcessor already writes the G-code these controls read;
 this post adds what is Haas's own:
 
 - the ``%`` tape marks and an ``O`` program number;
@@ -47,7 +47,7 @@ this post adds what is Haas's own:
 - Optionally cycle or measure all tools at start of file
 - Probe arm (M104/M105)
 - Spindle Speed Variation (M138/M139)
-- Safe Starts for all operations that rewrite the preamble, 
+- Safe Starts for all operations that rewrite the preamble,
     WCS and units to the top of each operation
     Note: this should probably be promoted to processor.py
 - Can add Optional stops between operations or tool changes
@@ -62,10 +62,10 @@ Rotation strategies:
 - DWO: the rotary move and the rotated path, with dynamic work offsets
   (G254) switched on before the rotary move and off (``G255``) before the
   next one and at the end of the section.
-- Flat Before Tool Change sends the rotaries home before any tool change 
+- Flat Before Tool Change sends the rotaries home before any tool change
 - A program that ends with rotaries away from zero sends them home
     (``G0 G53 B0 C0``) after the plane is cancelled, behind the machine's
-    Pre-Rotary Move block so the tool is clear first.   
+    Pre-Rotary Move block so the tool is clear first.
 - Tool Center Point Control (``G234``) for simultaneous contouring
     cannot be active with DWO(``G254``) and this option cancels it
     ``G268`` is called before ``G234``
@@ -74,7 +74,7 @@ Rotation strategies:
 - Option to home rotary axes at the end of jobs
 
 If your machine does not support spaces between commands and parameters, edit Command Space in the machine definition to remove the space character.
-                                                            
+
 
 These Features are not yet supported:
 - use Radius for arcs instead of IJK
@@ -104,22 +104,26 @@ import Path
 
 import Constants
 import Path.Base.Util as PathUtil
-from Path.Post.Processor import PostProcessor, SCOPE_MACHINE, SCOPE_JOB, _HeaderBuilder, _sanitize_comment
+from Path.Post.Processor import (
+    PostProcessor,
+    SCOPE_MACHINE,
+    SCOPE_JOB,
+    _HeaderBuilder,
+    _sanitize_comment,
+)
 from Path.Post.CAMErrors import CAMValueError
 from Path.Post.UtilsParse import format_command_line
 import Path.Dressup.Utils as PathDressup
 import Path.Op.Custom
 import Path.Op.Drilling
 
-    
 try:
     # Tilted work planes: the post names its plane command once the base
     # post-processor knows what one is.
     from Path.Post.TiltedWorkPlane import PlaneCommand
 except ImportError:
     PlaneCommand = None
-                   
-                       
+
 
 translate = FreeCAD.Qt.translate
 
@@ -135,11 +139,15 @@ Values = dict[str, Any]
 POST_TYPE = "machine"
 
 TAPE_MARK = "%"
-RIGID_TAP_MODE = "" #Haas machines need a S parameter before rigid tap operations but no M29
+RIGID_TAP_MODE = ""  # Haas machines need a S parameter before rigid tap operations but no M29
 
 # Beyond the base list: the plane select a preamble carries, the extended work
 # offsets a work plane may name, and the program ends a Custom op may write.
-EXTRA_SUPPORTED = ["M0", "M1", "M31", "M33", "G65", "M104", "M105", "M138", "M139", "G17", "G54.1"] + Constants.MCODE_END + Constants.MCODE_END_RESET
+EXTRA_SUPPORTED = (
+    ["M0", "M1", "M31", "M33", "G65", "M104", "M105", "M138", "M139", "G17", "G54.1"]
+    + Constants.MCODE_END
+    + Constants.MCODE_END_RESET
+)
 
 
 HAAS_SMOOTHING_P_WORDS = {"Rough": 1, "Medium": 2, "Finish": 3}
@@ -147,43 +155,60 @@ HAAS_SMOOTHING_P_WORDS = {"Rough": 1, "Medium": 2, "Finish": 3}
 HAAS_COOLANT_PRESSURES = {"Low": 0, "Normal": 1, "High": 2}
 DWO_ON = "G254"
 DWO_OFF = "G255"
-# Brake codes by rotary axis, in alphabetical axis order: A (or the first rotary) is the 4th axis, the next the 5th. (release, engage)                                                                   
-CLAMP_CODES = (("M11", "M10"), ("M13", "M12")) 
+# Brake codes by rotary axis, in alphabetical axis order: A (or the first rotary) is the 4th axis, the next the 5th. (release, engage)
+CLAMP_CODES = (("M11", "M10"), ("M13", "M12"))
 TCP_ON = "G234"  # takes the tool's H word; G49 cancels it
 TCP_OFF = "G49"
-#setup for pre-job probing
-HAAS_TOOL_TYPE = { #TODO missing info for slitting saw, shell mill / boring bar (3)
-    "drill": 1, "reamer": 1,
+# setup for pre-job probing
+HAAS_TOOL_TYPE = {  # TODO missing info for slitting saw, shell mill / boring bar (3)
+    "drill": 1,
+    "reamer": 1,
     "tap": 2,
-    "endmill": 4, "bullnose": 4, "dovetail": 4, "radius": 4 , "taperedballnose": 4,
-    "chamfer": 5, "vbit": 5, "countersink": 5, "counterbore": 5, "threadmill": 5,
+    "endmill": 4,
+    "bullnose": 4,
+    "dovetail": 4,
+    "radius": 4,
+    "taperedballnose": 4,
+    "chamfer": 5,
+    "vbit": 5,
+    "countersink": 5,
+    "counterbore": 5,
+    "threadmill": 5,
     "ballend": 6,
     "probe": 7,
 }
-def haas_probing_type(haas_type, use9023=True): #TODO should this be a hard error or warning and fail or swap to unsupported tool without probe?
+
+
+def haas_probing_type(
+    haas_type, use9023=True
+):  # TODO should this be a hard error or warning and fail or swap to unsupported tool without probe?
     if haas_type not in HAAS_TOOL_TYPE:
         raise ValueError(f"Invalid Haas tool type: {haas_type}")
     int_type = HAAS_TOOL_TYPE[haas_type]
     if int_type in (3, 4):
-        return 23 if use9023 else 1   # rotate
+        return 23 if use9023 else 1  # rotate
     if int_type in (1, 2, 5, 6, 7):
-        return 12 if use9023 else 2   # non-rotate
+        return 12 if use9023 else 2  # non-rotate
     if int_type == 0:
-        return 13 if use9023 else 3 # rotate length and dia
+        return 13 if use9023 else 3  # rotate length and dia
     raise ValueError(f"Invalid Haas tool type: {haas_type}")
 
+
 class HassHeaderBuilder(_HeaderBuilder):
-    def __init__(self, measure_tools=False, cycle_tools=None , tool_arm_drive = None, use_chip_conveyor = False):
+    def __init__(
+        self, measure_tools=False, cycle_tools=None, tool_arm_drive=None, use_chip_conveyor=False
+    ):
         super().__init__()
         self._measure_tools = measure_tools
         self._cycle_tools = cycle_tools
         self._tool_arm_drive = tool_arm_drive
         self._use_chip_conveyor = use_chip_conveyor
-    
-    def add_tool(self, tool_number, tool_name, tool_diameter=None,
-                 tool_body_length=None, tool_type = None):
+
+    def add_tool(
+        self, tool_number, tool_name, tool_diameter=None, tool_body_length=None, tool_type=None
+    ):
         self._tools.append((tool_number, tool_name, tool_diameter, tool_body_length, tool_type))
-    
+
     @property
     def Path(self) -> Path.Path:
         """Return a Path.Path containing Path.Commands as G-code comments for the header."""
@@ -228,23 +253,37 @@ class HassHeaderBuilder(_HeaderBuilder):
         # Add output time
         if self._output_time:
             commands.append(Path.Command(f"(Output Time: {self._output_time})"))
-        
+
         has_tools = False
         tool_cycle_commands = []
         # Add tools
-        if (self._cycle_tools or self._measure_tools):
-            tool_cycle_commands.append(Path.Command("M0", {}, {Constants.ANNOT_BLOCK_DELETE:True}))
-            tool_cycle_commands.append(Path.Command("(With BLOCK DELETE turned off each tool will cycle through)"))
-            tool_cycle_commands.append(Path.Command("(the spindle to verify that the correct tool is in the tool magazine)"))
+        if self._cycle_tools or self._measure_tools:
+            tool_cycle_commands.append(Path.Command("M0", {}, {Constants.ANNOT_BLOCK_DELETE: True}))
+            tool_cycle_commands.append(
+                Path.Command("(With BLOCK DELETE turned off each tool will cycle through)")
+            )
+            tool_cycle_commands.append(
+                Path.Command(
+                    "(the spindle to verify that the correct tool is in the tool magazine)"
+                )
+            )
             if self._measure_tools:
                 tool_cycle_commands.append(Path.Command("(and to automatically measure it)"))
-            tool_cycle_commands.append(Path.Command("(Once the tools are verified turn BLOCK DELETE on to skip verification)"))
+            tool_cycle_commands.append(
+                Path.Command(
+                    "(Once the tools are verified turn BLOCK DELETE on to skip verification)"
+                )
+            )
             if self._measure_tools and self._tool_arm_drive:
                 tool_cycle_commands.append(Path.Command("(Extend tool setting probe arm)"))
-                tool_cycle_commands.append(Path.Command("M104", {}, {Constants.ANNOT_BLOCK_DELETE:True}))
-                
+                tool_cycle_commands.append(
+                    Path.Command("M104", {}, {Constants.ANNOT_BLOCK_DELETE: True})
+                )
+
         for tool_number, tool_name, tool_diameter, tool_body_length, tool_type in self._tools:
-            tool_cycle_commands.append(Path.Command(f"(T{tool_number}={_sanitize_comment(tool_name)})"))
+            tool_cycle_commands.append(
+                Path.Command(f"(T{tool_number}={_sanitize_comment(tool_name)})")
+            )
 
             if tool_type == "probe":
                 continue  # no measuring or cycling for probe tools
@@ -255,16 +294,23 @@ class HassHeaderBuilder(_HeaderBuilder):
                 outstring = f"G65 P9023 A{probing_type} T{tool_number}"
                 if tool_body_length is not None and tool_diameter is not None:
                     outstring += f" H{tool_body_length:g} D{tool_diameter:g}"
-                tool_cycle_commands.append(Path.Command(outstring, {}, {Constants.ANNOT_BLOCK_DELETE:True}))
+                tool_cycle_commands.append(
+                    Path.Command(outstring, {}, {Constants.ANNOT_BLOCK_DELETE: True})
+                )
             elif self._cycle_tools:
-                tool_cycle_commands.append(Path.Command(f"M6 T{tool_number}", {}, {Constants.ANNOT_BLOCK_DELETE:True}))
-                tool_cycle_commands.append(Path.Command("M0", {}, {Constants.ANNOT_BLOCK_DELETE:True}))
+                tool_cycle_commands.append(
+                    Path.Command(f"M6 T{tool_number}", {}, {Constants.ANNOT_BLOCK_DELETE: True})
+                )
+                tool_cycle_commands.append(
+                    Path.Command("M0", {}, {Constants.ANNOT_BLOCK_DELETE: True})
+                )
         if self._measure_tools and self._tool_arm_drive:
             tool_cycle_commands.append(Path.Command("(Retract tool setting probe arm)"))
-            tool_cycle_commands.append(Path.Command("M105", {}, {Constants.ANNOT_BLOCK_DELETE:True}))
+            tool_cycle_commands.append(
+                Path.Command("M105", {}, {Constants.ANNOT_BLOCK_DELETE: True})
+            )
         if has_tools:
             commands += tool_cycle_commands
-            
 
         # Add fixtures (if needed in header)
         for fixture in self._fixtures:
@@ -273,19 +319,20 @@ class HassHeaderBuilder(_HeaderBuilder):
         # Add notes
         for note in self._notes:
             commands.append(Path.Command(f"(Note: {_sanitize_comment(note)})"))
-        
-        #Add Chip Conveyor
+
+        # Add Chip Conveyor
         if self._use_chip_conveyor:
             commands.append(Path.Command("(Chip Conveyor On)"))
             commands.append(Path.Command("M31"))
-        
+
         return Path.Path(commands)
-      
+
+
 class HaasNextGeneration(PostProcessor):
     """Post processor for Haas Next Gen mill controls and Haas Next Gen-compatible G-code."""
 
     ROTATION_STRATEGIES = ("dwo", "twp")
-                                
+
     if PlaneCommand is not None:
         PLANE_COMMAND = PlaneCommand.G268
 
@@ -309,7 +356,7 @@ class HaasNextGeneration(PostProcessor):
                 prop["default"] = "G90 G94 G17"
             elif name == "postamble":
                 prop["default"] = "M5\nM9\nM30"
-            elif name == "safetyblock": #TODO this is being used as safe retracts mode
+            elif name == "safetyblock":  # TODO this is being used as safe retracts mode
                 # The preamble establishes the safe state; a separate block would repeat it.
                 prop["default"] = "G53 G0 Z0\n"
             elif name == "pre_tool_change":
@@ -324,7 +371,7 @@ class HaasNextGeneration(PostProcessor):
             elif name == "spindle_decimals":
                 # S takes an integer.
                 prop["default"] = 0
-            elif name == "pre_rotary_move": #TODO check through this description
+            elif name == "pre_rotary_move":  # TODO check through this description
                 prop["help"] = translate(
                     "CAM",
                     "G-code inserted before the rotary axes move, and before a tilted work "
@@ -335,7 +382,7 @@ class HaasNextGeneration(PostProcessor):
                     "nothing clears the part before the table turns, and the sanity check "
                     "says so.",
                 )
-            elif name == "post_rotary_move": #TODO check through this description
+            elif name == "post_rotary_move":  # TODO check through this description
                 prop["help"] = translate(
                     "CAM",
                     "G-code inserted after the rotary axes have moved. Under the DWO rotation "
@@ -412,7 +459,7 @@ class HaasNextGeneration(PostProcessor):
                     "Enable if the machine has the Tool Center Point Control option (G234).\n "
                     "An operation that moves the rotary axes along the path gets G234 H<tool> "
                     "before it and G49, then the tool length offset again, after it./n "
-                    "G234 cancels G43, cannot be active with G254, and must come after G268",             
+                    "G234 cancels G43, cannot be active with G254, and must come after G268",
                 ),
             },
             {
@@ -469,7 +516,7 @@ class HaasNextGeneration(PostProcessor):
                 ),
             },
             {
-                "name": "useDPMFeeds", #TODO
+                "name": "useDPMFeeds",  # TODO
                 "scope": SCOPE_MACHINE,
                 "type": "bool",
                 "label": translate("CAM", "Rotary Moves Use DPM"),
@@ -492,7 +539,7 @@ class HaasNextGeneration(PostProcessor):
                 ),
             },
             {
-                "name": "optionalStop", #TODO Promote to parent
+                "name": "optionalStop",  # TODO Promote to parent
                 "scope": SCOPE_JOB,
                 "type": "choice",
                 "label": translate("CAM", "Optional Stops"),
@@ -513,7 +560,7 @@ class HaasNextGeneration(PostProcessor):
                 "help": translate(
                     "CAM",
                     "G187 can improve cycle times at the cost of maximum accuracy\n"
-                    "for machines that support it"
+                    "for machines that support it",
                 ),
             },
             {
@@ -605,7 +652,7 @@ class HaasNextGeneration(PostProcessor):
                 ),
             },
             {
-                "name": "useG95forTapping", #TODO
+                "name": "useG95forTapping",  # TODO
                 "scope": SCOPE_MACHINE,
                 "type": "bool",
                 "label": translate("CAM", "Use G95 for tapping"),
@@ -620,7 +667,7 @@ class HaasNextGeneration(PostProcessor):
                 "type": "choice",
                 "scope": SCOPE_JOB,
                 "label": translate("CAM", "VFD Coolant Pressure"),
-                "choices": ["None", "Low", "Normal", "High"], #values of "", P0, P1, P2
+                "choices": ["None", "Low", "Normal", "High"],  # values of "", P0, P1, P2
                 "default": "None",
                 "help": translate(
                     "CAM",
@@ -639,7 +686,7 @@ class HaasNextGeneration(PostProcessor):
                     "M11/M13 release the 4th/5th axis before a rotary move and M10/M12 engage them after it.\n"
                     "This ensures the axes are clamped while cutting.\n"
                     "Axes are numbered in alphabetical order: A, then B, then C.\n"
-                    "A simultaneous operation is always unclamped, and clamped again after it" ,                                                                 
+                    "A simultaneous operation is always unclamped, and clamped again after it",
                 ),
             },
             {
@@ -707,7 +754,7 @@ class HaasNextGeneration(PostProcessor):
     def _as_is(text: str) -> Path.Command:
         return Path.Command("", {}, {Constants.ANNOT_AS_IS: text})
 
-    def _tool_dims(self, tool_number): #TODO make sure this works with imperial
+    def _tool_dims(self, tool_number):  # TODO make sure this works with imperial
         """(diameter, body_length, tool_type) for a tool number."""
         for tc in getattr(getattr(self._job, "Tools", None), "Group", []):
             if tc.ToolNumber == tool_number:
@@ -723,12 +770,16 @@ class HaasNextGeneration(PostProcessor):
             measure_tools=self.values.get("MEASURETOOLS", False),
             cycle_tools=self.values.get("OPTIONALLYCYCLETOOLSATSTART", False),
             tool_arm_drive=self.values.get("TOOLARMDRIVE", False),
-            use_chip_conveyor = self.values.get("GOTCHIPCONVEYOR", False)
+            use_chip_conveyor=self.values.get("GOTCHIPCONVEYOR", False),
         )
         header.__dict__.update(base.__dict__)
         header._tools = []  # drop the base's 2-tuples; rebuild with extra info
 
-        if (self.values["OUTPUT_HEADER"] and self.values["LIST_TOOLS_IN_HEADER"]) or self.values.get("OPTIONALLYCYCLETOOLSATSTART", False) or self.values.get("MEASURETOOLS", False):
+        if (
+            (self.values["OUTPUT_HEADER"] and self.values["LIST_TOOLS_IN_HEADER"])
+            or self.values.get("OPTIONALLYCYCLETOOLSATSTART", False)
+            or self.values.get("MEASURETOOLS", False)
+        ):
             seen = set()
             for _, sublist in postables:
                 for item in sublist:
@@ -750,7 +801,7 @@ class HaasNextGeneration(PostProcessor):
                 item.data["twp_declare"] = True
         return items
 
-    def _rotary_home(self, axes): #this is likely redundant and needs thoroghly tested
+    def _rotary_home(self, axes):  # this is likely redundant and needs thoroghly tested
         """Clear the part, then move the rotaries to zero in machine coordinates.
         The clearance is the machine's own Pre-Rotary Move block, the same one
         that protects every other rotary move; the Post-Rotary block follows.
@@ -759,11 +810,12 @@ class HaasNextGeneration(PostProcessor):
         words = space.join(f"{axis.upper()}0" for axis in axes)
         return (
             self._rotary_block_postables("PRE_ROTARY_MOVE")
-            + self._clamp_rotaries(engage=False)                                    
+            + self._clamp_rotaries(engage=False)
             + [self._make_postable("Post: rotaries home", f"G0{space}G53{space}{words}")]
             + self._clamp_rotaries(engage=True)
             + self._rotary_block_postables("POST_ROTARY_MOVE")
         )
+
     def _clamp_rotaries(self, engage):
         """The brake codes for the rotary axes: M10/M12 engage, M11/M13 release.
 
@@ -801,7 +853,8 @@ class HaasNextGeneration(PostProcessor):
             + items[start:end]
             + self._clamp_rotaries(engage=True)
             + items[end:]
-        )                                                                       
+        )
+
     @staticmethod
     def _moves_rotaries(command):
         return any(word in command.Parameters for word in ("A", "B", "C"))
@@ -829,34 +882,35 @@ class HaasNextGeneration(PostProcessor):
                 item, Path.Command("M6", {"T": tool_number})
             )
             off.append(self._make_postable("Post: tool length offset", tlo))
-        off.extend(self._clamp_rotaries(engage=True))                                              
-        return on, off                                                                 
+        off.extend(self._clamp_rotaries(engage=True))
+        return on, off
+
     def _expand_workplane_frames(self, postables):
         """Haas additions to the base work-plane expansion.
 
         TCP: an operation whose path moves the rotary axes is bracketed with
-        G234 H<tool> and G49 and the tool length offset. 
-        DWO, which G234 cannot share, is cancelled first. 
-        Any G268 plane is already declared, which is the order Haas requires. 
-        The base does not know a simultaneous operation moved the rotaries, 
-        so keep one flat between 3+2 operations that share a pose.                  
+        G234 H<tool> and G49 and the tool length offset.
+        DWO, which G234 cannot share, is cancelled first.
+        Any G268 plane is already declared, which is the order Haas requires.
+        The base does not know a simultaneous operation moved the rotaries,
+        so keep one flat between 3+2 operations that share a pose.
         DWO: G254 is written before each rotary move, and G255 before the next
         one, at a tool or fixture change (the base forgets the pose there, so
         the next operation switches it on again) and at the end of the section.
 
         Clamp codes: the rotary brakes are released before each rotary move
         for the pose change, the home move, and any simultaneous operations and
-        engaged after the axis is stationary.                                                                   
-        
+        engaged after the axis is stationary.
+
         Flat Before Tool Change:  when the rotaries are not zero, this parameter
         moves them back to zero before each tool change
-        
+
         Return Rotaries Home Parameter:
         When a section ends with the rotaries away from zero
         (a G268 plane was declared, or the last rotary move was not to zero),
         the rotaries are sent home after the plane is cancelled
         """
-        
+
         from Machine.models.machine import RotationStrategy
         import Path.Base.Generator.rotation as rotation
 
@@ -868,7 +922,7 @@ class HaasNextGeneration(PostProcessor):
         dwo = strategy == RotationStrategy.DWO
         go_home = self.values.get("RETURN_ROTARIES_HOME", True)
         flat_for_tool = self.values.get("FLAT_BEFORE_TOOL_CHANGE", False)
-        use_tcp = self.values.get("USETCP", False)                                          
+        use_tcp = self.values.get("USETCP", False)
         axes = [axis.name for axis in rotation.build_kinematic_chain(self._machine)]
 
         out = []
@@ -876,10 +930,10 @@ class HaasNextGeneration(PostProcessor):
             rebuilt = []
             dwo_on = False
             away = False  # the rotaries are not at zero
-            tool_number = None                  
+            tool_number = None
             for item in items:
                 if item.item_type == "tool_controller":
-                    tool_number = item.data.get("tool_number")                                       
+                    tool_number = item.data.get("tool_number")
                 if flat_for_tool and away and axes and item.item_type == "tool_controller":
                     # The plane is already cancelled; home with DWO still on.
                     rebuilt.extend(self._rotary_home(axes))
@@ -914,7 +968,7 @@ class HaasNextGeneration(PostProcessor):
                     rebuilt.extend(on)
                     rebuilt.append(item)
                     rebuilt.extend(off)
-                    continue    
+                    continue
                 rebuilt.append(item)
             # Home while DWO is still on, so the offset follows the table down.
             if go_home and away and axes:
@@ -923,8 +977,8 @@ class HaasNextGeneration(PostProcessor):
                 rebuilt.append(self._make_postable("Post: DWO off", DWO_OFF))
             out.append((section_name, rebuilt))
         return out
-        
-    def _expand_postprocessor_commands(self, postables): 
+
+    def _expand_postprocessor_commands(self, postables):
         """Mark up the tapping and drilling cycles before anything else sees them.
 
         A rigid tap gets a S<rpm> block at the top, in its own command so it is
@@ -994,7 +1048,7 @@ class HaasNextGeneration(PostProcessor):
                     changed = True
                 if changed:
                     item.path = Path.Path(commands)
-    
+
     def _expand_prefix(self, postables) -> None:
         """The tape mark and the O number come before everything, header included."""
         super()._expand_prefix(postables)
@@ -1014,23 +1068,33 @@ class HaasNextGeneration(PostProcessor):
         if leading:
             for _, section in postables:
                 section.insert(0, self._make_postable("Post: tape start", leading))
-                
-        for _, section in postables: #per-operation additions
+
+        for _, section in postables:  # per-operation additions
             rebuilt = []
             seen_operation = False
             for item in section:
                 if item.item_type == "operation":
                     if self.values.get("USESSV", False):
-                        if str(getattr(item.data.get("tool_controller").Tool, "ShapeType", "")).lower() not in ["probe", "drill"] and not isinstance(getattr(item, "Proxy", None), Path.Op.Custom.ObjectCustom): 
+                        if str(
+                            getattr(item.data.get("tool_controller").Tool, "ShapeType", "")
+                        ).lower() not in ["probe", "drill"] and not isinstance(
+                            getattr(item, "Proxy", None), Path.Op.Custom.ObjectCustom
+                        ):
                             if not self._ssv_active:
-                                rebuilt.append(self._make_postable("Post: SSV on", ["M138 (SSV On)"]))
+                                rebuilt.append(
+                                    self._make_postable("Post: SSV on", ["M138 (SSV On)"])
+                                )
                                 self._ssv_active = True
                         else:
                             if self._ssv_active:
-                                rebuilt.append(self._make_postable("Post: SSV Off", ["M139 (SSV Off)"]))
+                                rebuilt.append(
+                                    self._make_postable("Post: SSV Off", ["M139 (SSV Off)"])
+                                )
                                 self._ssv_active = False
-                    
-                    smoothing = self.values.get("USESMOOTHING", "Off") #TODO this needs a fine toothed comb. It probably also needs to use the E parameter
+
+                    smoothing = self.values.get(
+                        "USESMOOTHING", "Off"
+                    )  # TODO this needs a fine toothed comb. It probably also needs to use the E parameter
                     if smoothing != "Off":
                         level = 3
                         if smoothing == "Rough":
@@ -1040,27 +1104,47 @@ class HaasNextGeneration(PostProcessor):
                         elif smoothing == "Finish":
                             level = 3
                         elif smoothing == "Automatic":
-                            op = PathDressup.baseOp(item.source) if item.source is not None else None
+                            op = (
+                                PathDressup.baseOp(item.source) if item.source is not None else None
+                            )
                             level = 3
-                            stock_to_leave = getattr(op, 'StockToLeave', 0)
-                            z_stock_to_leave = getattr(op, 'ZStockToLeave', 0)
-                            if max(stock_to_leave,z_stock_to_leave) >= self.values.get("SMOOTHINGROUGHINGTOLERANCE", 0.5):
+                            stock_to_leave = getattr(op, "StockToLeave", 0)
+                            z_stock_to_leave = getattr(op, "ZStockToLeave", 0)
+                            if max(stock_to_leave, z_stock_to_leave) >= self.values.get(
+                                "SMOOTHINGROUGHINGTOLERANCE", 0.5
+                            ):
                                 level = 1
-                            elif max(stock_to_leave,z_stock_to_leave) >= self.values.get("SMOOTHINGSEMIFINISHINGTOLERANCE", 0.1):
+                            elif max(stock_to_leave, z_stock_to_leave) >= self.values.get(
+                                "SMOOTHINGSEMIFINISHINGTOLERANCE", 0.1
+                            ):
                                 level = 2
-                            elif max(stock_to_leave,z_stock_to_leave) > self.values.get("SMOOTHINGFINISHINGTOLERANCE", 0.05):
+                            elif max(stock_to_leave, z_stock_to_leave) > self.values.get(
+                                "SMOOTHINGFINISHINGTOLERANCE", 0.05
+                            ):
                                 level = 3
-                                
-                        if not isinstance(getattr(item, "Proxy", None), Path.Op.Drilling.ObjectDrilling) and not isinstance(getattr(item, "Proxy", None), Path.Op.Custom.ObjectCustom): #TODO this needs to be false on multi-axis ops as well
-                            rebuilt.append(self._make_postable("Post: smoothing", [f"G187 P{level}"]))
-                        else: 
+
+                        if not isinstance(
+                            getattr(item, "Proxy", None), Path.Op.Drilling.ObjectDrilling
+                        ) and not isinstance(
+                            getattr(item, "Proxy", None), Path.Op.Custom.ObjectCustom
+                        ):  # TODO this needs to be false on multi-axis ops as well
+                            rebuilt.append(
+                                self._make_postable("Post: smoothing", [f"G187 P{level}"])
+                            )
+                        else:
                             rebuilt.append(self._make_postable("Post: smoothing", [f"G187"]))
 
-                    if seen_operation: #addions only after the first operation has completed
+                    if seen_operation:  # addions only after the first operation has completed
                         if self.values.get("OPTIONALSTOP", "Off") == "Operation":
-                            rebuilt.append(self._make_postable("Post: op stop", ["M1 (Optional Stop)"]))
-                        if self.values.get("SAFESTARTALLOPERATIONS", False): #TODO this also WCS system
-                            rebuilt.append(self._make_postable("Post: safe start", "(Safe Start Operation)"))
+                            rebuilt.append(
+                                self._make_postable("Post: op stop", ["M1 (Optional Stop)"])
+                            )
+                        if self.values.get(
+                            "SAFESTARTALLOPERATIONS", False
+                        ):  # TODO this also WCS system
+                            rebuilt.append(
+                                self._make_postable("Post: safe start", "(Safe Start Operation)")
+                            )
                             if (lines := self.values["PREAMBLE"]) is not None and lines != "":
                                 rebuilt.append(self._make_postable("Post: preamble", lines))
                             # OUTPUT_UNITS
@@ -1072,18 +1156,19 @@ class HaasNextGeneration(PostProcessor):
 
     def _expand_trailing_lines(self, postables) -> None:
         """Empty-spindle park before the postamble; turn off chip conveyor; the closing tape mark after it."""
-        
-        
+
         if self.values.get("GOTCHIPCONVEYOR", False):
-            block = ["(Stop Chip Conveyor)","M33"]
+            block = ["(Stop Chip Conveyor)", "M33"]
             for _, section in postables:
                 section.append(self._make_postable("Post: conveyor off", block))
 
-        if self.values.get("USESSV", False): #TODO this is only getting appended at the end of the file
+        if self.values.get(
+            "USESSV", False
+        ):  # TODO this is only getting appended at the end of the file
             block = ["M139 (SSV Off)"]
             for _, section in postables:
                 section.append(self._make_postable("Post: ssv off", block))
-        
+
         if self.values.get("END_SPINDLE_EMPTY", False):
             retract = [
                 line
@@ -1093,15 +1178,15 @@ class HaasNextGeneration(PostProcessor):
             block = ["M05"] + retract + ["(End spindle empty)"] + ["M6 T0"]
             for _, section in postables:
                 section.append(self._make_postable("Post: empty spindle", block))
-        
+
         super()._expand_trailing_lines(postables)
-        
+
         if self.values.get("WRAP_IN_PERCENT", True):
             for _, section in postables:
                 section.append(self._make_postable("Post: tape end", [self._as_is(TAPE_MARK)]))
 
     def _convert_coolant_command(self, command):
-        #handle VFD pressure additions
+        # handle VFD pressure additions
         line = self._convert_move(command)
         if not line:
             return line
@@ -1113,7 +1198,7 @@ class HaasNextGeneration(PostProcessor):
             and "P" not in command.Parameters
             and pressure != "None"
         ):
-            
+
             if pressure not in HAAS_COOLANT_PRESSURES:
                 raise ValueError(f"Invalid Haas Coolant Pressure: {pressure}")
             pressure_val = HAAS_COOLANT_PRESSURES[pressure]
@@ -1139,7 +1224,7 @@ class HaasNextGeneration(PostProcessor):
     # Command conversion
     # ------------------------------------------------------------------
 
-    def format_parameter(self, param_name, value, command_name=None): #TODO
+    def format_parameter(self, param_name, value, command_name=None):  # TODO
         """P is a dwell in whole milliseconds on a HaasNextGeneration, unless the control is
         set otherwise; on G54.1 it is the extended WCS offset number."""
         if param_name == "P":
@@ -1155,10 +1240,9 @@ class HaasNextGeneration(PostProcessor):
         outstring = ""
         if self.values.get("OPTIONALSTOP", "Off") == "Tool Change":
             outstring = "M1 (Optional Stop)\n"
-        
+
         outstring += super()._convert_tool_change(command)
-        
-        
+
         return outstring
 
     def _convert_drill_cycle(self, command: Path.Command) -> str:
@@ -1184,7 +1268,7 @@ class HaasNextGeneration(PostProcessor):
         finally:
             self.values["OUTPUT_DOUBLES"] = doubles
 
-    def _convert_generic_command(self, command: Path.Command) -> str: #TODO
+    def _convert_generic_command(self, command: Path.Command) -> str:  # TODO
         """Rigid Tapping S<rpm>: the S must be written even when it repeats the spindle's."""
         if command.Name == RIGID_TAP_MODE:
             words = []
@@ -1205,7 +1289,7 @@ class HaasNextGeneration(PostProcessor):
     # Sanity checks
     # ------------------------------------------------------------------
 
-    def sanity_check_methods(self): #TODO
+    def sanity_check_methods(self):  # TODO
         return super().sanity_check_methods() + [self._sanity_rigid_tapping]
 
     def _sanity_rigid_tapping(self, job):
