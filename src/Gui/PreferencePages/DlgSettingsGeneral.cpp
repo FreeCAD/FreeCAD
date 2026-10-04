@@ -49,6 +49,7 @@
 #include <Gui/OverlayManager.h>
 #include <Gui/ParamHandler.h>
 #include <Gui/PreferencePackManager.h>
+#include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Language/Translator.h>
@@ -381,7 +382,16 @@ void DlgSettingsGeneral::resetSettingsToDefaults()
         "User parameter:BaseApp/Preferences/MainWindow"
     );
     // reset "Theme" parameter
-    hGrp->RemoveASCII("Theme");
+    const bool systemDark = Gui::isSystemInDarkMode();
+    const QString systemTheme =
+        systemDark ? QStringLiteral("FreeCAD Dark") : QStringLiteral("FreeCAD Light");
+    if (ui->themesCombobox->findText(systemTheme) >= 0) {
+        hGrp->SetASCII("Theme", systemTheme.toStdString());
+    }
+    else {
+        hGrp->RemoveASCII("Theme");
+    }
+
     // reset "TiledBackground" parameter
     hGrp->RemoveBool("TiledBackground");
 
@@ -489,9 +499,12 @@ void DlgSettingsGeneral::loadThemes()
 
     int index = ui->themesCombobox->findText(currentTheme);
     if (index < 0 && !currentTheme.isEmpty()) {
-        currentTheme = QStringLiteral("FreeCAD Light");
-        hGrp->SetASCII("Theme", currentTheme.toStdString());
+        currentTheme = Gui::isSystemInDarkMode() ? QStringLiteral("FreeCAD Dark")
+                       : QStringLiteral("FreeCAD Light");
         index = ui->themesCombobox->findText(currentTheme);
+        if (index >= 0) {
+            hGrp->SetASCII("Theme", currentTheme.toStdString());
+        }
     }
     if (index >= 0 && index < ui->themesCombobox->count()) {
         ui->themesCombobox->setCurrentIndex(index);
