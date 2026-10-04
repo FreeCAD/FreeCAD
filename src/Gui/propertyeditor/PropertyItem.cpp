@@ -40,6 +40,8 @@
 #include <QMenu>
 
 #include "PropertyItem.h"
+
+#include "LargeComboBox.h"
 #include "PropertyView.h"
 
 #include <App/Document.h>
@@ -3220,7 +3222,20 @@ QWidget* PropertyEnumItem::createEditor(
     std::shared_ptr<EnumItems> enumItems = getEnumItems(commonModes);
 
     if (!enumItems) {
-        auto cb = new QComboBox(parent);
+        QComboBox* cb;
+        if (commonModes.size() > 10) {
+            auto fx = new LargeComboBox(parent);
+            fx->setSearchable(true);
+            fx->setGrid(true);
+            fx->setPopupScrollBar(false);
+            // 20 should be fine, for 100 elements this makes 5 columns which is acceptable and
+            // very rare
+            fx->setGridRowCount(20);
+            cb = fx;
+        }
+        else {
+            cb = new QComboBox(parent);
+        }
         cb->setFrame(static_cast<bool>(frameOption));
         cb->addItems(commonModes);
         QObject::connect(cb, qOverload<int>(&QComboBox::activated), method);
