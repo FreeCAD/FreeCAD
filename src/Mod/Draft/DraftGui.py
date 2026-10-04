@@ -68,10 +68,23 @@ def _get_incmd_shortcut(itm):
 
 
 class DraftBaseWidget(QtWidgets.QWidget):
-    def __init__(self, parent=None):
-        super().__init__(parent)
+    """custom Widget that filters events"""
+
+    def _activates_push_button(self, widget, event):
+        if not isinstance(widget, QtWidgets.QPushButton):
+            return False
+        return event.key() in (
+            QtCore.Qt.Key_Space,
+            QtCore.Qt.Key_Return,
+            QtCore.Qt.Key_Enter,
+        )
 
     def eventFilter(self, widget, event):
+        if event.type() == QtCore.QEvent.ShortcutOverride and self._activates_push_button(
+            widget, event
+        ):
+            event.accept()
+            return True
         if (
             event.type() == QtCore.QEvent.KeyPress
             and event.text()
@@ -256,6 +269,7 @@ class DraftToolBar:
                 button.setFixedWidth(width)
         else:
             button = QtWidgets.QPushButton(self.baseWidget)
+            button.installEventFilter(self.baseWidget)
         button.setObjectName(name)
         if hide:
             button.hide()
