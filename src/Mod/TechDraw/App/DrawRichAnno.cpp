@@ -47,6 +47,7 @@ DrawRichAnno::DrawRichAnno()
     // Necessary to support legacy files made before #24624.
     ADD_PROPERTY_TYPE(OriginCentered, (false), group, App::Prop_None, "Center the annotation on it's origin.");
     ADD_PROPERTY_TYPE(MaxWidth, (-1.0), group, App::Prop_None, "Width limit before auto wrap");
+    ADD_PROPERTY_TYPE(TextHeight, (0.0), group, App::Prop_None, "Model text height in mm; zero uses the HTML font sizes");
     Caption.setStatus(App::Property::Hidden, true);
     Scale.setStatus(App::Property::Hidden, true);
     ScaleType.setStatus(App::Property::Hidden, true);
@@ -66,7 +67,7 @@ void DrawRichAnno::onChanged(const App::Property* prop)
     if (!isRestoring()) {
         if ((prop == &AnnoText) ||
             (prop == &ShowFrame) ||
-            (prop == &MaxWidth) ) {
+            (prop == &MaxWidth) || (prop == &TextHeight) ) {
             requestPaint();
         }
     }

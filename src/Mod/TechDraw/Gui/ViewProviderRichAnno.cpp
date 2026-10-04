@@ -33,6 +33,7 @@
 
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
     #include <Mod/TechDraw/App/LineGroup.h>
@@ -43,6 +44,9 @@
 #include "TaskRichAnno.h"
 #include "QGSPage.h"
 #include "ViewProviderRichAnno.h"
+#include <Gui/Command.h>
+#include <Gui/Selection/Selection.h>
+#include <App/Document.h>
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -77,6 +81,20 @@ ViewProviderRichAnno::ViewProviderRichAnno()
 
 bool ViewProviderRichAnno::setEdit(int ModNum)
 {
+    auto* object = getObject();
+    if (TechDraw::DrawUtil::isSourceOwnedAnnotation(object)) {
+        // Send the user to the sketch that owns the content instead of a dead editor.
+        auto* link = dynamic_cast<App::PropertyLink*>(object->getPropertyByName("SourceSketch"));
+        auto* sketch = link ? link->getValue() : nullptr;
+        if (sketch && sketch->isAttachedToDocument()) {
+            Gui::Selection().clearSelection();
+            Gui::Selection().addSelection(
+                sketch->getDocument()->getName(),
+                sketch->getNameInDocument()
+            );
+        }
+        return false;
+    }
     if (ModNum != Gui::ViewProvider::Default) {
         return Gui::ViewProviderDocumentObject::setEdit(ModNum);
     }

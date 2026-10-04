@@ -49,6 +49,7 @@ public:
     App::PropertyEnumeration  StartSymbol;
     App::PropertyEnumeration  EndSymbol;
 
+    App::PropertyLength       ArrowSize;
     App::PropertyBool         Scalable;
     App::PropertyBool         AutoHorizontal;
     App::PropertyBool         RotatesWithParent;
