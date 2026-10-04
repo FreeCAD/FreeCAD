@@ -1701,19 +1701,11 @@ bool GeometryUtils::isLine(const TopoDS_Edge& occEdge)
     // from start to end
     double endPointLength = (endPoint - startPoint).Length();
 
-    int low = 0;
-    int high = spline->NbPoles() - 1;
-    TColgp_Array1OfPnt poles(low, high);
-    spline->Poles(poles);
+    const TColgp_Array1OfPnt& poles = spline->Poles();
     double lenTotal = 0.0;
-    for (int i = 0; i < high; i++) {
-#if OCC_VERSION_HEX < 0x080000
-        gp_Pnt p1 = poles[i];
-        gp_Pnt p2 = poles[i+1];
-#else
-        gp_Pnt p1 = poles.At(i);
-        gp_Pnt p2 = poles.At(i+1);
-#endif
+    for (int i = poles.Lower(); i < poles.Upper() - 1; i++) {
+        gp_Pnt p1 = poles.Value(i);
+        gp_Pnt p2 = poles.Value(i+1);
         auto v = Base::convertTo<Base::Vector3d>(p2.XYZ() - p1.XYZ());
         lenTotal += v.Length();
     }
