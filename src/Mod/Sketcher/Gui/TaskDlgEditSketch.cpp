@@ -26,6 +26,7 @@
 #include <Gui/Command.h>
 
 #include "TaskDlgEditSketch.h"
+#include "TaskSketcherLayers.h"
 #include "ViewProviderSketch.h"
 
 
@@ -64,6 +65,7 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch* sketchView)
         Content.push_back(SolverAdvanced);
     }
 
+    Content.push_back(new TaskSketcherLayers(sketchView));
     Content.push_back(Constraints);
     Content.push_back(Elements);
 
