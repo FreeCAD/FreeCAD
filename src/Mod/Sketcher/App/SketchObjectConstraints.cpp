@@ -963,26 +963,7 @@ int SketchObject::addConstraint(std::unique_ptr<Constraint> constraint)
 
 int SketchObject::delConstraint(int ConstrId, DeleteOptions options)
 {
-    // no need to check input data validity as this is an sketchobject managed operation.
-    Base::StateLocker lock(managedoperation, true);
-
-    const std::vector<Constraint*>& vals = this->Constraints.getValues();
-    if (ConstrId < 0 || ConstrId >= int(vals.size())) {
-        return -1;
-    }
-
-    std::vector<Constraint*> newVals(vals);
-    auto ctriter = newVals.begin() + ConstrId;
-    removeGeometryState(*ctriter);
-    newVals.erase(ctriter);
-    this->Constraints.setValues(std::move(newVals));
-
-    // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
-    if (noRecomputes && !options.testFlag(DeleteOption::NoSolve)) {
-        solve(options.testFlag(DeleteOption::UpdateGeometry));
-    }
-
-    return 0;
+    return delConstraints({ConstrId}, options);
 }
 
 int SketchObject::delConstraints(std::vector<int> ConstrIds, DeleteOptions options)
@@ -1002,6 +983,54 @@ int SketchObject::delConstraints(std::vector<int> ConstrIds, DeleteOptions optio
     if (ConstrIds.front() < 0 || ConstrIds.back() >= int(vals.size()))
         return -1;
 
+    // Ungrouping a nested group must leave its members inside the surviving parent.
+    std::map<int, const Constraint*> removedGroups;
+    const std::set<int> removedIndices(ConstrIds.begin(), ConstrIds.end());
+    for (int id : removedIndices) {
+        const auto* c = vals[id];
+        if (c->Type == Group || c->Type == Text) {
+            removedGroups.emplace(c->getGeoId(0), c);
+        }
+    }
+    for (size_t id = 0; id < newVals.size() && !removedGroups.empty(); ++id) {
+        const auto* c = newVals[id];
+        if (removedIndices.contains(static_cast<int>(id)) || c->Type != Group) {
+            continue;
+        }
+        std::vector<int> members;
+        std::set<int> visited {c->getGeoId(0)};
+        for (int i = 1; c->hasElement(i); ++i) {
+            const int member = c->getGeoId(i);
+            if (member != GeoEnum::GeoUndef && visited.insert(member).second) {
+                members.push_back(member);
+            }
+        }
+        bool expanded = false;
+        for (size_t i = 0; i < members.size(); ++i) {
+            auto group = removedGroups.find(members[i]);
+            if (group == removedGroups.end()) {
+                continue;
+            }
+            expanded = true;
+            for (int j = 1; group->second->hasElement(j); ++j) {
+                const int member = group->second->getGeoId(j);
+                if (member != GeoEnum::GeoUndef && visited.insert(member).second) {
+                    members.push_back(member);
+                }
+            }
+        }
+        if (expanded) {
+            auto* replacement = c->clone();
+            replacement->truncateElements(1);
+            for (int member : members) {
+                if (!removedGroups.contains(member)) {
+                    replacement->addElement(GeoElementId(member));
+                }
+            }
+            newVals[id] = replacement;
+        }
+    }
+
     for (auto rit = ConstrIds.rbegin(); rit != ConstrIds.rend(); rit++) {
         auto ctriter = newVals.begin() + *rit;
         removeGeometryState(*ctriter);
@@ -1009,6 +1038,17 @@ int SketchObject::delConstraints(std::vector<int> ConstrIds, DeleteOptions optio
     }
 
     this->Constraints.setValues(std::move(newVals));
+
+    // Ungrouping releases the members, but the group-owned handle is no longer geometry.
+    std::vector<int> removedHandles;
+    for (const auto& [handle, group] : removedGroups) {
+        if (handle >= 0 && handle <= getHighestCurveIndex() && !isGroupHandle(handle)) {
+            removedHandles.push_back(handle);
+        }
+    }
+    if (!removedHandles.empty()) {
+        delGeometriesExclusiveList(removedHandles, DeleteOption::NoSolve);
+    }
 
     // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
     if (noRecomputes && !options.testFlag(DeleteOption::NoSolve)) {
