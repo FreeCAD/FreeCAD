@@ -102,7 +102,7 @@ void DlgInputDialogImp::setType(DlgInputDialogImp::Type t)
         case FloatSpinBox:
             input = ui->floatSpinBox;
             break;
-        case ComboBox:
+        case LargeComboBox:
             input = ui->comboBox;
             break;
         default:
@@ -142,7 +142,7 @@ QLineEdit* DlgInputDialogImp::getLineEdit() const
     return ui->lineEdit;
 }
 
-QComboBox* DlgInputDialogImp::getComboBox() const
+QComboBox* DlgInputDialogImp::getLargeComboBox() const
 {
     return ui->comboBox;
 }

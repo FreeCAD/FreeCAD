@@ -195,7 +195,7 @@
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="Gui::SearchableComboBox" name="ThreadSize">
+         <widget class="Gui::LargeComboBox" name="ThreadSize">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1263,9 +1263,9 @@ Note that the calculation can take some time</string>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>Gui::SearchableComboBox</class>
+   <class>Gui::LargeComboBox</class>
    <extends>QComboBox</extends>
-   <header>SearchableComboBox.h</header>
+   <header>LargeComboBox.h</header>
   </customwidget>
  </customwidgets>
  <resources>

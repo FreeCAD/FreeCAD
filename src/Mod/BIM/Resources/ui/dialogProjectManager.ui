@@ -396,7 +396,7 @@
              </widget>
             </item>
             <item row="3" column="1">
-             <widget class="Gui::SearchableComboBox" name="buildingUse">
+             <widget class="Gui::LargeComboBox" name="buildingUse">
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
@@ -764,9 +764,9 @@
    <header>Gui/Widgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::SearchableComboBox</class>
+   <class>Gui::LargeComboBox</class>
    <extends>QComboBox</extends>
-   <header>Gui/SearchableComboBox.h</header>
+   <header>Gui/LargeComboBox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -1,13 +1,14 @@
 #pragma once
 
+#include <FCGlobal.h>
 #include <QComboBox>
 
 namespace Gui
 {
 
-class ComboBoxPopup;
+class LargeComboBoxPopup;
 
-class GuiExport SearchableComboBox: public QComboBox
+class GuiExport LargeComboBox: public QComboBox
 {
     Q_OBJECT
 
@@ -18,8 +19,8 @@ class GuiExport SearchableComboBox: public QComboBox
     Q_PROPERTY(bool popupScrollBar READ popupScrollBar WRITE setPopupScrollBar)
 
 public:
-    explicit SearchableComboBox(QWidget* parent = nullptr);
-    ~SearchableComboBox() override;
+    explicit LargeComboBox(QWidget* parent = nullptr);
+    ~LargeComboBox() override;
 
     bool isSearchable() const;
     void setSearchable(bool searchable);
@@ -44,7 +45,7 @@ Q_SIGNALS:
     void gridChanged(bool grid);
 
 private:
-    ComboBoxPopup* m_popup = nullptr;
+    LargeComboBoxPopup* m_popup = nullptr;
 
     bool m_searchable = true;
     bool m_grid = false;
@@ -54,7 +55,7 @@ private:
     // -1 = automatic column count.
     int m_gridFixedColumns = -1;
 
-    bool m_popupScrollBar = true;
+    bool m_popupScrollBar = false;
 };
 
 }  // namespace Gui

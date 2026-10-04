@@ -30,7 +30,7 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
-#include <../../../Gui/SearchableComboBox.h>
+#include <../../../Gui/LargeComboBox.h>
 #include <algorithm>
 #include "GeneralSettingsWidget.h"
 #include <gsl/pointers>
@@ -101,7 +101,7 @@ gsl::owner<QComboBox*> GeneralSettingsWidget::createLanguageComboBox()
     );
     auto langToStr = Gui::Translator::instance()->activeLanguage();
     QByteArray language = hGrp->GetASCII("Language", langToStr.c_str()).c_str();
-    auto comboBox = gsl::owner<Gui::SearchableComboBox*>(new Gui::SearchableComboBox);
+    auto comboBox = gsl::owner<Gui::LargeComboBox*>(new Gui::LargeComboBox);
     comboBox->setGrid(true);
     comboBox->setGridFixedColumns(3);
     comboBox->setPopupScrollBar(false);

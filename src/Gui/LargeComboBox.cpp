@@ -1,14 +1,14 @@
-#include "SearchableComboBox.h"
-#include "ComboBoxPopup.h"
+#include "LargeComboBox.h"
+#include "LargeComboBoxPopup.h"
 
 using namespace Gui;
 
-SearchableComboBox::SearchableComboBox(QWidget* parent)
+LargeComboBox::LargeComboBox(QWidget* parent)
     : QComboBox(parent)
 {
-    m_popup = new ComboBoxPopup(nullptr);
+    m_popup = new LargeComboBoxPopup(nullptr);
 
-    connect(m_popup, &ComboBoxPopup::itemSelected, this, [this](int sourceRow) {
+    connect(m_popup, &LargeComboBoxPopup::itemSelected, this, [this](int sourceRow) {
         if (sourceRow < 0 || sourceRow >= count()) {
             return;
         }
@@ -16,22 +16,22 @@ SearchableComboBox::SearchableComboBox(QWidget* parent)
         setCurrentIndex(sourceRow);
     });
 
-    connect(m_popup, &ComboBoxPopup::popupClosed, this, []() {
+    connect(m_popup, &LargeComboBoxPopup::popupClosed, this, []() {
         // Do not invoke QComboBox::hidePopup() here.
     });
 }
 
-SearchableComboBox::~SearchableComboBox()
+LargeComboBox::~LargeComboBox()
 {
     delete m_popup;
 }
 
-bool SearchableComboBox::isSearchable() const
+bool LargeComboBox::isSearchable() const
 {
     return m_searchable;
 }
 
-void SearchableComboBox::setSearchable(bool searchable)
+void LargeComboBox::setSearchable(bool searchable)
 {
     if (m_searchable == searchable) {
         return;
@@ -44,12 +44,12 @@ void SearchableComboBox::setSearchable(bool searchable)
     Q_EMIT searchableChanged(searchable);
 }
 
-bool SearchableComboBox::isGrid() const
+bool LargeComboBox::isGrid() const
 {
     return m_grid;
 }
 
-void SearchableComboBox::setGrid(bool grid)
+void LargeComboBox::setGrid(bool grid)
 {
     if (m_grid == grid) {
         return;
@@ -62,12 +62,12 @@ void SearchableComboBox::setGrid(bool grid)
     Q_EMIT gridChanged(grid);
 }
 
-int SearchableComboBox::popupMaximumHeight() const
+int LargeComboBox::popupMaximumHeight() const
 {
     return m_popupMaximumHeight;
 }
 
-void SearchableComboBox::setPopupMaximumHeight(int height)
+void LargeComboBox::setPopupMaximumHeight(int height)
 {
     height = qMax(100, height);
 
@@ -80,7 +80,7 @@ void SearchableComboBox::setPopupMaximumHeight(int height)
     m_popup->setMaximumPopupHeight(height);
 }
 
-void SearchableComboBox::showPopup()
+void LargeComboBox::showPopup()
 {
     m_popup->setSourceModel(model());
     m_popup->setSearchable(m_searchable);
@@ -93,19 +93,19 @@ void SearchableComboBox::showPopup()
     m_popup->popup(this);
 }
 
-void SearchableComboBox::hidePopup()
+void LargeComboBox::hidePopup()
 {
     if (m_popup && m_popup->isVisible()) {
         m_popup->hide();
     }
 }
 
-int SearchableComboBox::gridFixedColumns() const
+int LargeComboBox::gridFixedColumns() const
 {
     return m_gridFixedColumns;
 }
 
-void SearchableComboBox::setGridFixedColumns(int columns)
+void LargeComboBox::setGridFixedColumns(int columns)
 {
     if (columns < 1) {
         columns = -1;
@@ -120,12 +120,12 @@ void SearchableComboBox::setGridFixedColumns(int columns)
     m_popup->setGridFixedColumns(columns);
 }
 
-bool SearchableComboBox::popupScrollBar() const
+bool LargeComboBox::popupScrollBar() const
 {
     return m_popupScrollBar;
 }
 
-void SearchableComboBox::setPopupScrollBar(bool enabled)
+void LargeComboBox::setPopupScrollBar(bool enabled)
 {
     if (m_popupScrollBar == enabled) {
         return;

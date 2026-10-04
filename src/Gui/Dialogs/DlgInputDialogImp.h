@@ -60,7 +60,7 @@ public:
         SpinBox,
         UIntBox,
         FloatSpinBox,
-        ComboBox
+        LargeComboBox
     };
 
     DlgInputDialogImp(const QString& label, QWidget* parent = nullptr, bool modal = true, Type = LineEdit);
@@ -73,7 +73,7 @@ public:
     Gui::UIntSpinBox* getUIntBox() const;
     QDoubleSpinBox* getFloatSpinBox() const;
     QLineEdit* getLineEdit() const;
-    QComboBox* getComboBox() const;
+    QComboBox* getLargeComboBox() const;
 
 protected Q_SLOTS:
     void textChanged(const QString& s);

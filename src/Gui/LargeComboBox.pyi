@@ -5,12 +5,12 @@ from PySide6 import QComboBoxPy
 @export(
     Constructor=True,
     Delete=True,
-    Name="SearchableComboBoxPy",
-    Twin="SearchableComboBox",
-    TwinPointer="SearchableComboBox",
-    Include="Gui/SearchableComboBox.h",
+    Name="LargeComboBoxPy",
+    Twin="LargeComboBox",
+    TwinPointer="LargeComboBox",
+    Include="Gui/LargeComboBox.h",
 )
-class SearchableComboBoxPy(PyObjectBase):
+class LargeComboBoxPy(PyObjectBase):
     @property
     def searchable(self) -> bool: ...
     @searchable.setter
