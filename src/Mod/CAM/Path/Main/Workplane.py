@@ -60,6 +60,27 @@ def resolveToJobModel(job, obj):
     return None
 
 
+def suggestLabel(job, base=None, sub=None):
+    """suggestLabel(job, base=None, sub=None) ... a label for a new work plane.
+
+    A plane derived from a face is named after the face, a plane at the Job
+    origin is named Workplane. A number is appended if the document already
+    has an object with that label, so the suggestion is the label the plane
+    actually gets."""
+    if base is not None and sub:
+        stem = "%s.%s" % (base.Label, sub)
+    else:
+        stem = "Workplane"
+
+    taken = {o.Label for o in job.Document.Objects}
+    label = stem
+    index = 0
+    while label in taken:
+        index += 1
+        label = "%s%03d" % (stem, index)
+    return label
+
+
 def createWorkplane(job, base=None, sub=None, label=None, placement=None):
     """createWorkplane(job, base=None, sub=None, label=None, placement=None)
     ... add a named work plane to job and return it.
