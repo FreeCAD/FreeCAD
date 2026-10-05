@@ -374,7 +374,7 @@ protected:
             App::Link* link = Reader.document->addObject<App::Link>(linkName.c_str());
             Reader.IncrementCreatedObjectCount();
             if (!link) {
-                Reader.ImportError("Failed to create App::Link for block '{}'", name.c_str());
+                Reader.ImportError("Failed to create App::Link for block '{}'", name);
                 return;
             }
 
