@@ -26,45 +26,25 @@
 #include <QKeyEvent>
 #include <QGraphicsTransform>
 #include <QImage>
-#include <QOpenGLContext>
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
 #include <limits>
-#include <list>
-#include <memory>
 #include <optional>
 #include <qmath.h>
 #include <utility>
 #include <vector>
 
-#include <Inventor/nodes/SoDirectionalLight.h>
-#include <Inventor/nodes/SoEnvironment.h>
 #include <Inventor/nodes/SoFrustumCamera.h>
-#include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoMatrixTransform.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoShapeHints.h>
-#include <Inventor/nodes/SoVertexProperty.h>
 
-#include <BRepBndLib.hxx>
-#include <BRepBuilderAPI_Copy.hxx>
-#include <BRepMesh_IncrementalMesh.hxx>
-#include <BRep_Tool.hxx>
-#include <Bnd_Box.hxx>
-#include <Poly_Triangulation.hxx>
 #include <Precision.hxx>
-#include <Standard_Version.hxx>
-#include <TopAbs_Orientation.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopLoc_Location.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Face.hxx>
-#if OCC_VERSION_HEX < 0x070600
-#include <Poly_Array1OfTriangle.hxx>
-#include <TColgp_Array1OfPnt.hxx>
-#endif
+#include <gp_Ax3.hxx>
+#include <gp_Trsf.hxx>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -75,7 +55,7 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection/Selection.h>
-#include <Gui/SoFCOffscreenRenderer.h>
+#include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Mod/TechDraw/App/CenterLine.h>
@@ -93,6 +73,7 @@
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/Part/App/Tools.h>
+#include <Mod/Part/Gui/ViewProviderExt.h>
 
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
@@ -132,7 +113,7 @@ namespace {
 constexpr double ShadedPixelsPerMillimetre = 12.0;  // approximately 300 dpi
 constexpr int ShadedMaxImageDimension = 4096;
 constexpr double ShadedAngularDeflection = 0.20;
-constexpr int ShadedMeshRetries = 6;
+constexpr double ShadedDeviation = 0.2;
 
 struct ShadedImage
 {
@@ -170,147 +151,73 @@ private:
     QRectF m_rect;
 };
 
-// Render in projection coordinates, with the same Coin lighting pipeline as the
-// 3D viewer. Only tessellation and image composition are performed on the CPU.
+// Render the prepared HLR shape through the shared screenshot pipeline.
 std::optional<ShadedImage> makeShadedImage(DrawViewPart* viewPart, QColor baseColor)
 {
     const auto geometry = viewPart->getGeometryObject();
     if (!geometry || geometry->getProjectionShape().IsNull()) {
         return {};
     }
-    BRepBuilderAPI_Copy copier(geometry->getProjectionShape(), false, false);
-    const TopoDS_Shape displayShape = copier.Shape();
-    Bnd_Box shapeBox;
-    BRepBndLib::Add(displayShape, shapeBox);
-    if (shapeBox.IsVoid()) {
-        return {};
-    }
-    double xMin, yMin, zMin, xMax, yMax, zMax;
-    shapeBox.Get(xMin, yMin, zMin, xMax, yMax, zMax);
-    const double extent = std::max({xMax - xMin, yMax - yMin, zMax - zMin});
-    const double deflection = std::max(Precision::Confusion(), extent / 500.0);
-    BRepMesh_IncrementalMesh mesher(displayShape, deflection, false,
-        ShadedAngularDeflection, true);
-    if (!mesher.IsDone()) {
-        return {};
-    }
-    // The deflection is relative to the whole view, so it can be coarse compared to
-    // small faces. BRepMesh (seen with OCCT 8.0) then fails on some of them and leaves
-    // them without triangulation, which shows up as see-through holes. Retry those
-    // faces alone with a finer deflection.
-    for (TopExp_Explorer explorer(displayShape, TopAbs_FACE); explorer.More(); explorer.Next()) {
-        const TopoDS_Face& face = TopoDS::Face(explorer.Current());
-        TopLoc_Location location;
-        double faceDeflection = deflection;
-        for (int attempt = 0; attempt < ShadedMeshRetries
-             && BRep_Tool::Triangulation(face, location).IsNull(); ++attempt) {
-            faceDeflection = std::max(Precision::Confusion(), faceDeflection / 2.0);
-            BRepMesh_IncrementalMesh(face, faceDeflection, false, ShadedAngularDeflection, false);
-        }
-    }
-
-    auto unref = [](SoSeparator* node) { node->unref(); };
-    std::unique_ptr<SoSeparator, decltype(unref)> root(new SoSeparator, unref);
-    root->ref();
-    // Lights precede the camera, just as in View3DInventorViewer::renderToImage.
-    auto* guiDocument = Gui::Application::Instance->getDocument(viewPart->getDocument());
-    const auto views = guiDocument
-        ? guiDocument->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId())
-        : std::list<Gui::MDIView*>();
-    if (!views.empty()) {
-        auto* viewer = static_cast<Gui::View3DInventor*>(views.front())->getViewer();
-        root->addChild(viewer->getEnvironment()->copy());
-        root->addChild(viewer->getHeadlight()->copy());
-        root->addChild(viewer->getBacklight()->copy());
-        root->addChild(viewer->getFillLight()->copy());
-    }
-    else {
-        root->addChild(new SoEnvironment);
-        root->addChild(new SoDirectionalLight);
-    }
-
-    const bool perspective = geometry->isPerspective();
-    const double focus = std::max(Precision::Confusion(), geometry->getFocus());
-    SoCamera* camera = perspective ? static_cast<SoCamera*>(new SoFrustumCamera)
-                                   : static_cast<SoCamera*>(new SoOrthographicCamera);
-    root->addChild(camera);
+    // Part owns the shape-to-Coin conversion, including meshing, face orientation
+    // and normals. Only the projection and page coordinates belong to TechDraw.
+    const Gui::CoinPtr<SoSeparator> root(new SoSeparator);
     auto* material = new SoMaterial;
     material->diffuseColor.setValue(float(baseColor.redF()), float(baseColor.greenF()),
                                     float(baseColor.blueF()));
     root->addChild(material);
-    auto* hints = new SoShapeHints;
-    // Two-sided lighting for open shells; do not cull reversed/open faces.
-    hints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
-    hints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
-    root->addChild(hints);
+    gp_Trsf projectionTransform;
+    projectionTransform.SetTransformation(gp_Ax3(geometry->getProjectionAxis()));
+    auto* transform = new SoMatrixTransform;
+    transform->matrix = Base::convertTo<SbMatrix>(
+        Base::convertTo<Base::Placement>(projectionTransform).toMatrix()
+    );
+    root->addChild(transform);
+    root->addChild(
+        PartGui::ViewProviderPartExt::createFaceGeometry(
+            geometry->getProjectionShape(),
+            ShadedDeviation,
+            Base::toDegrees(ShadedAngularDeflection)
+        )
+    );
 
-    const gp_Ax2 projection = geometry->getProjectionAxis();
-    const gp_Vec axisX(projection.XDirection());
-    const gp_Vec axisY(projection.YDirection());
-    const gp_Vec axisZ(projection.Direction());
-    double minX = std::numeric_limits<double>::infinity();
-    double minY = minX, minZ = minX;
-    double maxX = -minX, maxY = -minX, maxZ = -minX;
-    for (TopExp_Explorer explorer(displayShape, TopAbs_FACE); explorer.More(); explorer.Next()) {
-        const TopoDS_Face face = TopoDS::Face(explorer.Current());
-        TopLoc_Location location;
-        const auto triangulation = BRep_Tool::Triangulation(face, location);
-        if (triangulation.IsNull()) {
-            continue;
-        }
-        std::vector<gp_Vec> normals;
-        Part::Tools::getPointNormals(face, triangulation, normals);
-        Part::Tools::applyTransformationOnNormals(location, normals);
-        auto* mesh = new SoIndexedFaceSet;
-        root->addChild(mesh);
-        auto* vertices = new SoVertexProperty;
-        mesh->vertexProperty = vertices;
-        vertices->normalBinding = SoVertexProperty::PER_VERTEX_INDEXED;
-        vertices->vertex.setNum(triangulation->NbNodes());
-        vertices->normal.setNum(triangulation->NbNodes());
-        for (int i = 1; i <= triangulation->NbNodes(); ++i) {
-#if OCC_VERSION_HEX < 0x070600
-            gp_Pnt point = triangulation->Nodes()(i);
-#else
-            gp_Pnt point = triangulation->Node(i);
-#endif
-            point.Transform(location.Transformation());
-            const gp_Vec relative(projection.Location(), point);
-            const double x = relative.Dot(axisX), y = relative.Dot(axisY), z = relative.Dot(axisZ);
-            // HLR perspective projects from (0, 0, focus) onto z=0.
-            if (perspective && focus - z <= Precision::Confusion()) {
-                return {}; // A shape crossing the eye plane has no finite image bounds.
-            }
-            const double factor = perspective ? focus / (focus - z) : 1.0;
+    SoGetBoundingBoxAction boundsAction(SbViewportRegion(1, 1));
+    boundsAction.apply(root);
+    const SbBox3f bounds = boundsAction.getBoundingBox();
+    if (bounds.isEmpty()) {
+        return {};
+    }
+    const SbVec3f low = bounds.getMin(), high = bounds.getMax();
+    const double minZ = low[2], maxZ = high[2];
+    const double extent = std::max({double(high[0] - low[0]), double(high[1] - low[1]), maxZ - minZ});
+    const bool perspective = geometry->isPerspective();
+    const double focus = std::max(Precision::Confusion(), geometry->getFocus());
+    // HLR projects from (0, 0, focus) onto z=0. There are no finite image
+    // bounds if any geometry crosses the eye plane.
+    if (perspective && focus - maxZ <= Precision::Confusion()) {
+        return {};
+    }
+    double minX = low[0], minY = low[1], maxX = high[0], maxY = high[1];
+    if (perspective) {
+        minX = minY = std::numeric_limits<double>::infinity();
+        maxX = maxY = -minX;
+        for (int corner = 0; corner < 8; ++corner) {
+            const double x = corner & 1 ? high[0] : low[0];
+            const double y = corner & 2 ? high[1] : low[1];
+            const double z = corner & 4 ? maxZ : minZ;
+            const double factor = focus / (focus - z);
             minX = std::min(minX, x * factor);
             maxX = std::max(maxX, x * factor);
             minY = std::min(minY, y * factor);
             maxY = std::max(maxY, y * factor);
-            minZ = std::min(minZ, z);
-            maxZ = std::max(maxZ, z);
-            const auto& normal = normals.at(size_t(i - 1));
-            vertices->vertex.set1Value(i - 1, float(x), float(y), float(z));
-            vertices->normal.set1Value(i - 1, float(normal.Dot(axisX)),
-                float(normal.Dot(axisY)), float(normal.Dot(axisZ)));
-        }
-        mesh->coordIndex.setNum(4 * triangulation->NbTriangles());
-        for (int i = 1; i <= triangulation->NbTriangles(); ++i) {
-            int a, b, c;
-#if OCC_VERSION_HEX < 0x070600
-            triangulation->Triangles()(i).Get(a, b, c);
-#else
-            triangulation->Triangle(i).Get(a, b, c);
-#endif
-            if (face.Orientation() == TopAbs_REVERSED) {
-                std::swap(b, c);
-            }
-            const int32_t indices[] = {a - 1, b - 1, c - 1, -1};
-            mesh->coordIndex.setValues(4 * (i - 1), 4, indices);
         }
     }
     if (!std::isfinite(minX) || maxX <= minX || maxY <= minY) {
         return {};
     }
+    const Gui::CoinPtr<SoCamera> camera(
+        perspective ? static_cast<SoCamera*>(new SoFrustumCamera)
+                    : static_cast<SoCamera*>(new SoOrthographicCamera)
+    );
     const double pixelsPerUnit = std::min(ShadedPixelsPerMillimetre,
         (ShadedMaxImageDimension - 4.0) / std::max(maxX - minX, maxY - minY));
     minX -= 2.0 / pixelsPerUnit;
@@ -335,7 +242,7 @@ std::optional<ShadedImage> makeShadedImage(DrawViewPart* viewPart, QColor baseCo
     camera->aspectRatio = float(width) / height;
     if (perspective) {
         camera->position.setValue(0, 0, float(eye));
-        auto* frustum = static_cast<SoFrustumCamera*>(camera);
+        auto* frustum = static_cast<SoFrustumCamera*>(camera.get());
         frustum->left = float(minX * nearDistance / focus);
         frustum->right = float(maxX * nearDistance / focus);
         frustum->bottom = float(minY * nearDistance / focus);
@@ -343,52 +250,28 @@ std::optional<ShadedImage> makeShadedImage(DrawViewPart* viewPart, QColor baseCo
     }
     else {
         camera->position.setValue(float(centerX), float((minY + maxY) / 2.0), float(eye));
-        static_cast<SoOrthographicCamera*>(camera)->height = float(maxY - minY);
+        static_cast<SoOrthographicCamera*>(camera.get())->height = float(maxY - minY);
     }
 
-    // The shared renderer color-keys transparent backgrounds. Two opaque passes
-    // instead recover antialiased coverage without white fringes or erasing white
-    // material. This is alpha composition, not a separate lighting calculation.
-    struct RestoreContext
-    {
-        QOpenGLContext* context = QOpenGLContext::currentContext();
-        QSurface* surface = context ? context->surface() : nullptr;
-        ~RestoreContext()
-        {
-            if (context && surface) {
-                context->makeCurrent(surface);
-            }
+    auto* guiDocument = Gui::Application::Instance->getDocument(viewPart->getDocument());
+    Gui::View3DInventorViewer* viewer = nullptr;
+    if (guiDocument) {
+        const auto views = guiDocument->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId());
+        if (!views.empty()) {
+            viewer = static_cast<Gui::View3DInventor*>(views.front())->getViewer();
         }
-    } restoreContext;
-    auto render = [&](float background) {
-        Gui::SoQtOffscreenRenderer renderer{SbViewportRegion(short(width), short(height))};
-        renderer.setNumPasses(4);
-        renderer.setBackgroundColor(SbColor4f(background, background, background, 1.0F));
-        QImage image;
-        if (renderer.render(root.get())) {
-            renderer.writeToImage(image);
-        }
-        return image.convertToFormat(QImage::Format_RGB32);
-    };
-    const QImage black = render(0.0F);
-    const QImage white = render(1.0F);
-    if (black.isNull() || white.isNull()) {
-        return {};
     }
-    QImage image(width, height, QImage::Format_ARGB32_Premultiplied);
-    for (int y = 0; y < height; ++y) {
-        const auto* b = reinterpret_cast<const QRgb*>(black.constScanLine(y));
-        const auto* w = reinterpret_cast<const QRgb*>(white.constScanLine(y));
-        auto* out = reinterpret_cast<QRgb*>(image.scanLine(y));
-        for (int x = 0; x < width; ++x) {
-            const int alpha = std::clamp(255 - std::max({qRed(w[x]) - qRed(b[x]),
-                qGreen(w[x]) - qGreen(b[x]), qBlue(w[x]) - qBlue(b[x])}), 0, 255);
-            const auto channel = [&](int value) {
-                return std::min(value, alpha) * baseColor.alpha() / 255;
-            };
-            out[x] = qRgba(channel(qRed(b[x])), channel(qGreen(b[x])),
-                channel(qBlue(b[x])), alpha * baseColor.alpha() / 255);
-        }
+    Gui::View3DInventorViewer::RenderImageOptions options;
+    options.width = width;
+    options.height = height;
+    options.samples = 4;
+    options.background = Qt::transparent;
+    options.alphaMode = Gui::View3DInventorViewer::AlphaMode::PerPixel;
+    options.camera = camera;
+    options.scene = root;
+    QImage image = Gui::View3DInventorViewer::renderSceneToImage(options, viewer);
+    if (image.isNull()) {
+        return {};
     }
     return ShadedImage{std::move(image),
         QRectF(QPointF(Rez::guiX(minX), Rez::guiX(-maxY)),
