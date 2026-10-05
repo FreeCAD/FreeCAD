@@ -427,8 +427,8 @@ DrawDimHelper::makeDistDim(DrawViewPart* dvp, std::string dimType,
                            bool extent)
 {
     //    Base::Console().message("DDH::makeDistDim() - inMin: {} inMax: {}\n",
-    //                            DrawUtil::formatVector(inMin).c_str(),
-    //                            DrawUtil::formatVector(inMax).c_str());
+    //                            DrawUtil::formatVector(inMin),
+    //                            DrawUtil::formatVector(inMax));
     TechDraw::DrawPage* page = dvp->findParentPage();
     std::string pageName = page->getNameInDocument();
 

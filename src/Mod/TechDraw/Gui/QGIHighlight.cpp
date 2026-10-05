@@ -69,7 +69,7 @@ QGIHighlight::~QGIHighlight()
 void QGIHighlight::onDragFinished()
 {
 //    Base::Console().message("QGIH::onDragFinished - pos: {}\n",
-//                            DrawUtil::formatVector(pos()).c_str());
+//                            DrawUtil::formatVector(pos()));
     QGraphicsItem* parent = parentItem();
     auto qgivp = dynamic_cast<QGIViewPart*>(parent);
     if (qgivp) {

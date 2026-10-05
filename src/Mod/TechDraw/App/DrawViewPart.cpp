@@ -1181,7 +1181,7 @@ double DrawViewPart::getSizeAlongVector(Base::Vector3d alignmentVector)
 Base::Vector3d DrawViewPart::projectPoint(const Base::Vector3d& pt, bool invert) const
 {
     //    Base::Console().message("DVP::projectPoint({}, {}\n",
-    //                            DrawUtil::formatVector(pt).c_str(), invert);
+    //                            DrawUtil::formatVector(pt), invert);
     Base::Vector3d stdOrg(0.0, 0.0, 0.0);
     gp_Ax2 viewAxis = getProjectionCS(stdOrg);
     gp_Pnt gPt(pt.x, pt.y, pt.z);
