@@ -1454,9 +1454,9 @@ To ustawienie zmienia właściwość tłumaczenia.</translation>
       <translation>Domyślna płaszczyzna robocza</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="20"/>
       <location filename="../ui/preferences-draft.ui" line="14"/>
       <location filename="../ui/preferences-draft.ui" line="20"/>
+      <location filename="../ui/preferences-dxf.ui" line="20"/>
       <source>General</source>
       <translation>Ogólne</translation>
     </message>
@@ -2167,8 +2167,8 @@ Wartość ta jest maksymalną długością odcinka.</translation>
       <translation>OCA</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-oca.ui" line="26"/>
       <location filename="../ui/preferences-svg.ui" line="26"/>
+      <location filename="../ui/preferences-oca.ui" line="26"/>
       <source>Import Options</source>
       <translation>Opcje importu</translation>
     </message>
@@ -3107,9 +3107,9 @@ jest wyświetlany tylko podczas wykonywania poleceń</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="809"/>
-      <location filename="../../draftguitools/gui_scale.py" line="229"/>
-      <location filename="../../draftguitools/gui_move.py" line="221"/>
       <location filename="../../draftguitools/gui_rotate.py" line="292"/>
+      <location filename="../../draftguitools/gui_move.py" line="221"/>
+      <location filename="../../draftguitools/gui_scale.py" line="229"/>
       <source>Copy</source>
       <translation>Kopiuj</translation>
     </message>
@@ -3120,8 +3120,8 @@ jest wyświetlany tylko podczas wykonywania poleceń</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="988"/>
-      <location filename="../../draftmake/make_sketch.py" line="124"/>
-      <location filename="../../draftmake/make_sketch.py" line="140"/>
+      <location filename="../../draftmake/make_sketch.py" line="125"/>
+      <location filename="../../draftmake/make_sketch.py" line="141"/>
       <source>All shapes must be coplanar</source>
       <translation>Wszystkie kształty muszą być współpłaszczyznowe</translation>
     </message>
@@ -3240,7 +3240,7 @@ jest wyświetlany tylko podczas wykonywania poleceń</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="709"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="282"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="303"/>
       <source>Angle</source>
       <translation>Kąt</translation>
     </message>
@@ -3335,7 +3335,7 @@ Należy usunąć zaznaczenie, aby używać układu współrzędnych płaszczyzny
       <translation>Modyfikuj obiekty</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2240"/>
+      <location filename="../../DraftGui.py" line="2244"/>
       <source>Facebinder Elements</source>
       <translation>Elementy łącznika ścian</translation>
     </message>
@@ -3481,20 +3481,20 @@ Opcja niedostępna, gdy włączona jest preferencja "Twórz elementy pierwotne �
     <message>
       <location filename="../../DraftGui.py" line="1098"/>
       <location filename="../../DraftGui.py" line="1118"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="278"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="299"/>
       <source>Distance</source>
       <translation>Odległość</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1099"/>
       <location filename="../../DraftGui.py" line="1119"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="279"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="300"/>
       <source>Offset distance</source>
       <translation>Odległość przesunięcia</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1115"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="63"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="84"/>
       <source>Trimex</source>
       <translation>Przytnij / wydłuż</translation>
     </message>
@@ -3530,17 +3530,22 @@ Opcja niedostępna, gdy włączona jest preferencja "Twórz elementy pierwotne �
       <translation>Grupowanie automatyczne:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2237"/>
+      <location filename="../../DraftGui.py" line="2063"/>
+      <source>Create Objects</source>
+      <translation type="unfinished">Create Objects</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="2241"/>
       <source>Faces</source>
       <translation>Ściany</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2238"/>
+      <location filename="../../DraftGui.py" line="2242"/>
       <source>Remove</source>
       <translation>Usuń</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2239"/>
+      <location filename="../../DraftGui.py" line="2243"/>
       <source>Add</source>
       <translation>Dodaj</translation>
     </message>
@@ -3650,29 +3655,29 @@ lub spróbuj zapisać do niższej wersji DWG.</translation>
       <translation>Ustaw skalę użytkownika dla adnotacji w formacie x:x, x=x</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_pointarray.py" line="92"/>
-      <location filename="../../draftmake/make_layer.py" line="56"/>
-      <location filename="../../draftmake/make_layer.py" line="146"/>
-      <location filename="../../draftmake/make_text.py" line="95"/>
-      <location filename="../../draftmake/make_text.py" line="178"/>
-      <location filename="../../draftmake/make_dimension.py" line="266"/>
-      <location filename="../../draftmake/make_dimension.py" line="355"/>
-      <location filename="../../draftmake/make_dimension.py" line="483"/>
-      <location filename="../../draftmake/make_dimension.py" line="604"/>
-      <location filename="../../draftmake/make_array.py" line="85"/>
-      <location filename="../../draftmake/make_label.py" line="201"/>
+      <location filename="../../draftmake/make_label.py" line="202"/>
       <location filename="../../draftmake/make_patharray.py" line="179"/>
-      <location filename="../../draftmake/make_patharray.py" line="328"/>
-      <location filename="../../draftfunctions/cut.py" line="60"/>
-      <location filename="../../draftutils/gui_utils.py" line="924"/>
+      <location filename="../../draftmake/make_patharray.py" line="339"/>
+      <location filename="../../draftmake/make_text.py" line="95"/>
+      <location filename="../../draftmake/make_text.py" line="181"/>
+      <location filename="../../draftmake/make_dimension.py" line="267"/>
+      <location filename="../../draftmake/make_dimension.py" line="356"/>
+      <location filename="../../draftmake/make_dimension.py" line="484"/>
+      <location filename="../../draftmake/make_dimension.py" line="605"/>
+      <location filename="../../draftmake/make_array.py" line="85"/>
+      <location filename="../../draftmake/make_pointarray.py" line="92"/>
+      <location filename="../../draftmake/make_layer.py" line="57"/>
+      <location filename="../../draftmake/make_layer.py" line="150"/>
       <location filename="../../draftutils/utils.py" line="1135"/>
       <location filename="../../draftutils/groups.py" line="101"/>
+      <location filename="../../draftutils/gui_utils.py" line="924"/>
+      <location filename="../../draftfunctions/cut.py" line="60"/>
       <source>No active document. Aborting.</source>
       <translation>Brak aktywnego dokumentu — przerwano.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="932"/>
       <location filename="../../draftutils/groups.py" line="137"/>
+      <location filename="../../draftutils/gui_utils.py" line="932"/>
       <source>Wrong input: object {} not in document.</source>
       <translation>Nieprawidłowe dane wejściowe: obiektu {} nie ma w dokumencie.</translation>
     </message>
@@ -3828,8 +3833,8 @@ Odległość między dwoma punktami bazowymi:</translation>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="77"/>
       <location filename="../../draftguitools/gui_dimensions.py" line="122"/>
-      <location filename="../../draftguitools/gui_rectangles.py" line="71"/>
       <location filename="../../draftguitools/gui_lines.py" line="95"/>
+      <location filename="../../draftguitools/gui_rectangles.py" line="71"/>
       <source>Pick first point</source>
       <translation>Wybierz pierwszy punkt</translation>
     </message>
@@ -3847,13 +3852,6 @@ Odległość między dwoma punktami bazowymi:</translation>
       <location filename="../../draftguitools/gui_lines.py" line="207"/>
       <source>Create Wire</source>
       <translation>Utwórz polilinię</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_lines.py" line="246"/>
-      <location filename="../../drafttests/test_lines_gui.py" line="56"/>
-      <location filename="../../drafttests/test_lines_gui.py" line="94"/>
-      <source>Point identical to previous point</source>
-      <translation>Punkt pokrywa się z poprzednim punktem</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="327"/>
@@ -3972,9 +3970,9 @@ przyciągnij do pierwszego punktu, aby zamknąć</translation>
       <translation>%1 wybierz punkt końcowy</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="126"/>
-      <location filename="../../draftguitools/gui_move.py" line="195"/>
       <location filename="../../draftguitools/gui_rotate.py" line="245"/>
+      <location filename="../../draftguitools/gui_move.py" line="195"/>
+      <location filename="../../draftguitools/gui_scale.py" line="126"/>
       <source>No valid subelements selected</source>
       <translation>Nie wybrano poprawnych elementów podrzędnych</translation>
     </message>
@@ -3984,18 +3982,18 @@ przyciągnij do pierwszego punktu, aby zamknąć</translation>
       <translation>Przesuń</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_polygons.py" line="90"/>
       <location filename="../../draftguitools/gui_arcs.py" line="94"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="90"/>
       <source>Pick center point</source>
       <translation>Wybierz punkt środkowy</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_polygons.py" line="208"/>
-      <location filename="../../draftguitools/gui_polygons.py" line="219"/>
-      <location filename="../../draftguitools/gui_polygons.py" line="282"/>
       <location filename="../../draftguitools/gui_arcs.py" line="269"/>
       <location filename="../../draftguitools/gui_arcs.py" line="286"/>
       <location filename="../../draftguitools/gui_arcs.py" line="430"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="208"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="219"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="282"/>
       <source>Pick radius</source>
       <translation>Wybierz promień</translation>
     </message>
@@ -4092,14 +4090,14 @@ przyciągnij do pierwszego punktu, aby zamknąć</translation>
       <translation>Przytrzymaj %1, aby wybrać krawędź</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_polygons.py" line="312"/>
       <location filename="../../draftguitools/gui_arcs.py" line="490"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="312"/>
       <source>%1 pick center</source>
       <translation>%1 — wybierz środek</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_polygons.py" line="314"/>
       <location filename="../../draftguitools/gui_arcs.py" line="492"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="314"/>
       <source>%1 pick radius</source>
       <translation>%1 — wybierz promień</translation>
     </message>
@@ -4151,15 +4149,15 @@ przyciągnij do pierwszego punktu, aby zamknąć</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="222"/>
-      <location filename="../../draftguitools/gui_rectangles.py" line="219"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="658"/>
       <location filename="../../draftguitools/gui_lines.py" line="318"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="658"/>
+      <location filename="../../draftguitools/gui_rectangles.py" line="219"/>
       <source>%1 pick first point</source>
       <translation>%1 wybierz pierwszy punkt</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="662"/>
       <location filename="../../draftguitools/gui_lines.py" line="322"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="662"/>
       <source>%1 pick second point</source>
       <translation>%1 wybierz kolejny punkt</translation>
     </message>
@@ -4184,13 +4182,6 @@ przyciągnij do pierwszego punktu, aby zamknąć</translation>
       <translation>%1 uruchom Przesunięcie, Obrót lub Skalowanie na elementach podrzędnych</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="179"/>
-      <location filename="../../draftguitools/gui_dimensions.py" line="604"/>
-      <location filename="../../draftguitools/gui_edit.py" line="387"/>
-      <source>%1 finish</source>
-      <translation>%1 zakończ</translation>
-    </message>
-    <message>
       <location filename="../../draftguitools/gui_edit.py" line="298"/>
       <source>Select a Draft object to edit</source>
       <translation>Wybierz obiekt rysunku roboczego do edycji</translation>
@@ -4209,6 +4200,13 @@ przyciągnij do pierwszego punktu, aby zamknąć</translation>
       <location filename="../../draftguitools/gui_edit.py" line="384"/>
       <source>%1 options for hovered node/edge</source>
       <translation>%1 opcje dla wskazanego węzła/krawędzi</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_edit.py" line="387"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="604"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="179"/>
+      <source>%1 finish</source>
+      <translation>%1 zakończ</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="392"/>
@@ -4335,9 +4333,9 @@ Kontynuować?</translation>
       <translation>Utwórz punkt</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_shapestring.py" line="216"/>
       <location filename="../../draftguitools/gui_points.py" line="189"/>
       <location filename="../../draftguitools/gui_texts.py" line="180"/>
+      <location filename="../../drafttaskpanels/task_shapestring.py" line="216"/>
       <source>%1 pick point</source>
       <translation>%1 wybierz punkt</translation>
     </message>
@@ -4421,21 +4419,21 @@ Kąt końcowy będzie równy kątowi podstawowemu plus ta wartość.</translatio
 Zaznacz grupy, które nie są puste lub obiekty wewnątrz grup.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="167"/>
       <location filename="../../draftguitools/gui_groups.py" line="279"/>
       <location filename="../../draftguitools/gui_groups.py" line="317"/>
+      <location filename="../../draftguitools/gui_layers.py" line="167"/>
       <source>New Layer</source>
       <translation>Nowa warstwa</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="168"/>
       <location filename="../../draftguitools/gui_groups.py" line="318"/>
+      <location filename="../../draftguitools/gui_layers.py" line="168"/>
       <source>Layer name</source>
       <translation>Nazwa warstwy</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="169"/>
       <location filename="../../draftguitools/gui_groups.py" line="319"/>
+      <location filename="../../draftguitools/gui_layers.py" line="169"/>
       <source>Layer</source>
       <comment>Object label</comment>
       <translation>Warstwa</translation>
@@ -4523,7 +4521,7 @@ Zaznacz grupy, które nie są puste lub obiekty wewnątrz grup.</translation>
       <translation>Utwórz wielokąt foremny</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="65"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="86"/>
       <source>Select objects to trim or extend</source>
       <translation>Wybierz obiekty do przycięcia lub wydłużenia</translation>
     </message>
@@ -4533,71 +4531,35 @@ Zaznacz grupy, które nie są puste lub obiekty wewnątrz grup.</translation>
       <translation>Ten obiekt nie jest obsługiwany</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="189"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="210"/>
       <source>Only a single face can be extruded</source>
       <translation>Tylko jedna ściana może być wyciągana</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="138"/>
       <location filename="../../draftutils/utils.py" line="385"/>
       <location filename="../../draftutils/utils.py" line="388"/>
       <location filename="../../draftutils/utils.py" line="391"/>
       <location filename="../../draftutils/utils.py" line="396"/>
       <location filename="../../draftutils/utils.py" line="402"/>
       <location filename="../../draftutils/utils.py" line="417"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="159"/>
       <source>Trimex does not support this object type</source>
       <translation>Narzędzie Przytnij / Wydłuż / Wyciągnij, nie obsługuje tego typu obiektu.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="178"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="694"/>
-      <source>Select a single face to extrude</source>
-      <translation>Wybierz pojedynczą ścianę do wyciągnięcia</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="568"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="589"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported</source>
       <translation>Nie można przyciąć tych obiektów, obsługiwane są tylko linie i łuki</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="588"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="609"/>
       <source>These objects do not intersect</source>
       <translation>Te obiekty nie przecinają się</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="591"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="612"/>
       <source>Too many intersection points</source>
       <translation>Zbyt wiele punktów przecięcia</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="667"/>
-      <source>%1 pick target</source>
-      <translation>%1 wybierz cel</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="669"/>
-      <source>Hold %1 free direction</source>
-      <translation>Przytrzymaj %1 dla dowolnego kierunku</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="672"/>
-      <source>Hold %1 keep active endpoint</source>
-      <translation>Przytrzymaj %1 dla zachowania aktywnego punktu końcowego</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="675"/>
-      <source>Hold %1 invert trim direction</source>
-      <translation>Przytrzymaj %1 dla odwrócenia kierunku przycinania</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="684"/>
-      <source>Extrude Face</source>
-      <translation>Wyciągnij ścianę</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="685"/>
-      <source>Select a face to extrude</source>
-      <translation>Wybierz ścianę do wyciągnięcia</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="92"/>
@@ -4615,20 +4577,56 @@ Zaznacz grupy, które nie są puste lub obiekty wewnątrz grup.</translation>
       <translation>%1 wybierz odległość</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="168"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="189"/>
       <location filename="../../draftguitools/gui_offset.py" line="152"/>
       <source>Pick distance</source>
       <translation>Wybierz odległość</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="283"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="199"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="715"/>
+      <source>Select a single face to extrude</source>
+      <translation>Wybierz pojedynczą ścianę do wyciągnięcia</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="304"/>
       <source>Offset angle</source>
       <translation>Kąt odsunięcia</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="571"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="592"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>Nie można przyciąć tych obiektów,  za dużo linii</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="688"/>
+      <source>%1 pick target</source>
+      <translation>%1 wybierz cel</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="690"/>
+      <source>Hold %1 free direction</source>
+      <translation>Przytrzymaj %1 dla dowolnego kierunku</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="693"/>
+      <source>Hold %1 keep active endpoint</source>
+      <translation>Przytrzymaj %1 dla zachowania aktywnego punktu końcowego</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="696"/>
+      <source>Hold %1 invert trim direction</source>
+      <translation>Przytrzymaj %1 dla odwrócenia kierunku przycinania</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="705"/>
+      <source>Extrude Face</source>
+      <translation>Wyciągnij ścianę</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="706"/>
+      <source>Select a face to extrude</source>
+      <translation>Wybierz ścianę do wyciągnięcia</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="75"/>
@@ -4879,7 +4877,7 @@ Zaznacz grupy, które nie są puste lub obiekty wewnątrz grup.</translation>
       <translation>%1 wybierz nową odległość</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_layer.py" line="158"/>
+      <location filename="../../draftmake/make_layer.py" line="162"/>
       <source>Layer</source>
       <translation>Warstwa</translation>
     </message>
@@ -5402,95 +5400,95 @@ Przerwano działanie.</translation>
       <translation>Tryb wyrównania {} nie jest zaimplementowany</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_sketch.py" line="104"/>
+      <location filename="../../draftmake/make_sketch.py" line="105"/>
       <source>No shape found</source>
       <translation>Nie znaleziono kształtu</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_sketch.py" line="110"/>
+      <location filename="../../draftmake/make_sketch.py" line="111"/>
       <source>All shapes must be planar</source>
       <translation>Wszystkie kształty muszą być współpłaszczyznowe</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_arc_3points.py" line="90"/>
-      <location filename="../../draftmake/make_arc_3points.py" line="95"/>
+      <location filename="../../draftmake/make_arc_3points.py" line="91"/>
+      <location filename="../../draftmake/make_arc_3points.py" line="96"/>
       <source>Points:</source>
       <translation>Punkty:</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_arc_3points.py" line="91"/>
+      <location filename="../../draftmake/make_arc_3points.py" line="92"/>
       <source>Wrong input: must be a list or tuple of 3 points exactly.</source>
       <translation>Nieprawidłowe dane wejściowe: spodziewana tupla dokładnie trzech punktów.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_arc_3points.py" line="96"/>
+      <location filename="../../draftmake/make_arc_3points.py" line="97"/>
       <source>Wrong input: must be list or tuple of 3 points exactly.</source>
       <translation>Nieprawidłowe dane wejściowe: spodziewana tupla dokładnie trzech punktów.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_arc_3points.py" line="111"/>
+      <location filename="../../draftmake/make_arc_3points.py" line="112"/>
       <source>Placement:</source>
       <translation>Umiejscowienie:</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_arc_3points.py" line="112"/>
+      <location filename="../../draftmake/make_arc_3points.py" line="113"/>
       <source>Wrong input: incorrect type of placement.</source>
       <translation>Nieprawidłowe dane wejściowe: nieprawidłowy typ umiejscowienia.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_arc_3points.py" line="104"/>
+      <location filename="../../draftmake/make_arc_3points.py" line="105"/>
       <source>Wrong input: incorrect type of points.</source>
       <translation>Nieprawidłowe dane wejściowe: nieprawidłowy typ punktów.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_arc_3points.py" line="118"/>
+      <location filename="../../draftmake/make_arc_3points.py" line="119"/>
       <source>Cannot generate shape:</source>
       <translation>Nie można wygenerować kształtu:</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_circulararray.py" line="135"/>
-      <location filename="../../draftmake/make_pointarray.py" line="97"/>
-      <location filename="../../draftmake/make_orthoarray.py" line="149"/>
-      <location filename="../../draftmake/make_polararray.py" line="111"/>
       <location filename="../../draftmake/make_patharray.py" line="184"/>
-      <location filename="../../draftmake/make_patharray.py" line="333"/>
+      <location filename="../../draftmake/make_patharray.py" line="344"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="149"/>
+      <location filename="../../draftmake/make_circulararray.py" line="135"/>
+      <location filename="../../draftmake/make_polararray.py" line="111"/>
+      <location filename="../../draftmake/make_pointarray.py" line="97"/>
       <source>Wrong input: base_object not in document.</source>
       <translation>Nieprawidłowe dane wejściowe: obiektu base_object nie ma w dokumencie.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_patharray.py" line="189"/>
-      <location filename="../../draftmake/make_patharray.py" line="338"/>
+      <location filename="../../draftmake/make_patharray.py" line="349"/>
       <source>Wrong input: path_object not in document.</source>
       <translation>Nieprawidłowe dane wejściowe: obiektu "path_object" nie ma w dokumencie.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_orthoarray.py" line="139"/>
-      <location filename="../../draftmake/make_layer.py" line="185"/>
-      <location filename="../../draftmake/make_polararray.py" line="123"/>
-      <location filename="../../draftmake/make_label.py" line="317"/>
+      <location filename="../../draftmake/make_label.py" line="318"/>
       <location filename="../../draftmake/make_patharray.py" line="195"/>
       <location filename="../../draftmake/make_patharray.py" line="266"/>
       <location filename="../../draftmake/make_patharray.py" line="273"/>
-      <location filename="../../draftmake/make_patharray.py" line="343"/>
+      <location filename="../../draftmake/make_patharray.py" line="354"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="139"/>
+      <location filename="../../draftmake/make_polararray.py" line="123"/>
+      <location filename="../../draftmake/make_layer.py" line="189"/>
       <source>Wrong input: must be a number.</source>
       <translation>Błędne wejście: musi być liczba.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_circulararray.py" line="165"/>
-      <location filename="../../draftmake/make_dimension.py" line="272"/>
-      <location filename="../../draftmake/make_dimension.py" line="278"/>
-      <location filename="../../draftmake/make_dimension.py" line="285"/>
-      <location filename="../../draftmake/make_dimension.py" line="397"/>
-      <location filename="../../draftmake/make_dimension.py" line="418"/>
-      <location filename="../../draftmake/make_dimension.py" line="536"/>
-      <location filename="../../draftmake/make_dimension.py" line="610"/>
-      <location filename="../../draftmake/make_dimension.py" line="635"/>
-      <location filename="../../draftmake/make_dimension.py" line="642"/>
-      <location filename="../../draftmake/make_polararray.py" line="135"/>
-      <location filename="../../draftmake/make_label.py" line="209"/>
+      <location filename="../../draftmake/make_label.py" line="210"/>
       <location filename="../../draftmake/make_patharray.py" line="202"/>
       <location filename="../../draftmake/make_patharray.py" line="253"/>
       <location filename="../../draftmake/make_patharray.py" line="260"/>
+      <location filename="../../draftmake/make_dimension.py" line="273"/>
+      <location filename="../../draftmake/make_dimension.py" line="279"/>
+      <location filename="../../draftmake/make_dimension.py" line="286"/>
+      <location filename="../../draftmake/make_dimension.py" line="398"/>
+      <location filename="../../draftmake/make_dimension.py" line="419"/>
+      <location filename="../../draftmake/make_dimension.py" line="537"/>
+      <location filename="../../draftmake/make_dimension.py" line="611"/>
+      <location filename="../../draftmake/make_dimension.py" line="636"/>
+      <location filename="../../draftmake/make_dimension.py" line="643"/>
+      <location filename="../../draftmake/make_circulararray.py" line="165"/>
+      <location filename="../../draftmake/make_polararray.py" line="135"/>
       <source>Wrong input: must be a vector.</source>
       <translation>Błędne wejście: musi być wektor.</translation>
     </message>
@@ -5517,8 +5515,8 @@ Przerwano działanie.</translation>
       <translation>Dane wejściowe: pojedyncza wartość rozszerzona do wektora.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_circulararray.py" line="153"/>
       <location filename="../../draftmake/make_orthoarray.py" line="113"/>
+      <location filename="../../draftmake/make_circulararray.py" line="153"/>
       <location filename="../../draftmake/make_polararray.py" line="117"/>
       <source>Wrong input: must be an integer number.</source>
       <translation>Nieprawidłowe dane wejściowe: spodziewana liczba całkowita.</translation>
@@ -5531,69 +5529,69 @@ Przerwano działanie.</translation>
       <translation>Dane wejściowe: liczba elementów musi wynosić co najmniej 1. Jest ustawiona na 1.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_pointarray.py" line="119"/>
+      <location filename="../../draftmake/make_label.py" line="218"/>
       <location filename="../../draftmake/make_text.py" line="113"/>
-      <location filename="../../draftmake/make_label.py" line="217"/>
+      <location filename="../../draftmake/make_pointarray.py" line="119"/>
       <source>Wrong input: must be a placement, a vector, or a rotation.</source>
       <translation>Nieprawidłowe dane wejściowe: spodziewane umiejscowienie, wektor lub obrót.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_label.py" line="228"/>
+      <location filename="../../draftmake/make_label.py" line="229"/>
       <source>Wrong input: target_object must not be a list.</source>
       <translation>Nieprawidłowe dane wejściowe: obiekt "target_object" nie może być listą.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_label.py" line="233"/>
+      <location filename="../../draftmake/make_label.py" line="234"/>
       <source>Wrong input: target_object not in document.</source>
       <translation>Nieprawidłowe dane wejściowe: obiektu "target_object" nie ma w dokumencie.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_label.py" line="249"/>
+      <location filename="../../draftmake/make_label.py" line="250"/>
       <source>Wrong input: subelements must be a list or tuple of strings, or a single string.</source>
       <translation>Nieprawidłowe dane wejściowe: elementy podrzędne muszą być listą lub krotką ciągów lub pojedynczym ciągiem.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_label.py" line="260"/>
+      <location filename="../../draftmake/make_label.py" line="261"/>
       <source>Wrong input: subelement {} not in object.</source>
       <translation>Nieprawidłowe dane wejściowe: element podrzędny: {}, nie należy do obiektu.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_label.py" line="268"/>
+      <location filename="../../draftmake/make_label.py" line="269"/>
       <source>Wrong input: label_type must be a string.</source>
       <translation>Nieprawidłowe dane wejściowe: spodziewany ciąg znaków.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_label.py" line="275"/>
+      <location filename="../../draftmake/make_label.py" line="276"/>
       <source>Wrong input: label_type must be one of the following:</source>
       <translation>Nieprawidłowe dane wejściowe: 
 typ_etykiety musi być jednym z następujących:</translation>
     </message>
     <message>
+      <location filename="../../draftmake/make_label.py" line="286"/>
+      <location filename="../../draftmake/make_label.py" line="290"/>
       <location filename="../../draftmake/make_text.py" line="101"/>
       <location filename="../../draftmake/make_text.py" line="105"/>
-      <location filename="../../draftmake/make_label.py" line="285"/>
-      <location filename="../../draftmake/make_label.py" line="289"/>
       <source>Wrong input: must be a list of strings or a single string.</source>
       <translation>Nieprawidłowe dane wejściowe: spodziewana lista ciągów znaków albo pojedynczy ciąg znaków.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_label.py" line="301"/>
-      <location filename="../../draftmake/make_label.py" line="309"/>
+      <location filename="../../draftmake/make_label.py" line="302"/>
+      <location filename="../../draftmake/make_label.py" line="310"/>
       <source>Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</source>
       <translation>Nieprawidłowe dane wejściowe: spodziewany ciąg znaków 'Poziomy', 'Pionowy' lub 'Niestandardowy'.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_label.py" line="323"/>
+      <location filename="../../draftmake/make_label.py" line="324"/>
       <source>Wrong input: points {} must be a list of at least two vectors.</source>
       <translation>Nieprawidłowe dane wejściowe: obiekt "Punkty" {} musi być listą co najmniej dwóch wektorów.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_label.py" line="356"/>
+      <location filename="../../draftmake/make_label.py" line="357"/>
       <source>Direction is not 'Custom'; points won't be used.</source>
       <translation>Kierunek nie jest zdefiniowany jako "Niestandardowy", punkty nie będą używane.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_label.py" line="391"/>
+      <location filename="../../draftmake/make_label.py" line="395"/>
       <source>Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</source>
       <translation>Nieprawidłowe dane wejściowe: spodziewana lista dwóch elementów. Na przykład [obiekt, "Krawędź1"].</translation>
     </message>
@@ -5608,89 +5606,79 @@ typ_etykiety musi być jednym z następujących:</translation>
       <translation>Nieprawidłowe dane wejściowe: obiekt ma błędny typ.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="225"/>
-      <source>This function is deprecated. Do not use this function directly.</source>
-      <translation>Ta funkcja jest przestarzała. Nie używaj tej funkcji bezpośrednio.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_dimension.py" line="226"/>
-      <source>Use one of 'make_linear_dimension', or 'make_linear_dimension_obj'.</source>
-      <translation>Użyj jednego z "make_linear_dimension", lub "make_linear_dimension_obj".</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_dimension.py" line="359"/>
+      <location filename="../../draftmake/make_dimension.py" line="360"/>
       <source>Wrong input: edge_object must not be a list or tuple.</source>
       <translation>Nieprawidłowe dane wejściowe: obiekt "edge_object" nie może być listą ani krotką.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="364"/>
-      <location filename="../../draftmake/make_dimension.py" line="488"/>
+      <location filename="../../draftmake/make_dimension.py" line="365"/>
+      <location filename="../../draftmake/make_dimension.py" line="489"/>
       <source>Wrong input: edge_object not in document.</source>
       <translation>Nieprawidłowe dane wejściowe: obiektu "edge_object" nie ma w dokumencie.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="368"/>
-      <location filename="../../draftmake/make_dimension.py" line="492"/>
+      <location filename="../../draftmake/make_dimension.py" line="369"/>
+      <location filename="../../draftmake/make_dimension.py" line="493"/>
       <source>Wrong input: object doesn't have a 'Shape' to measure.</source>
       <translation>Nieprawidłowe dane wejściowe: obiekt nie ma 'Kształtu' do pomiaru.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="376"/>
+      <location filename="../../draftmake/make_dimension.py" line="377"/>
       <source>Wrong input: object does not have at least 1 element in 'Vertexes' to use for measuring.</source>
       <translation>Nieprawidłowe dane wejściowe: obiekt nie posiada co najmniej jednego elementu "Wierzchołek", 
 który mógłby zostać użyty do pomiaru.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="382"/>
-      <location filename="../../draftmake/make_dimension.py" line="506"/>
+      <location filename="../../draftmake/make_dimension.py" line="383"/>
+      <location filename="../../draftmake/make_dimension.py" line="507"/>
       <source>Wrong input: must be an integer.</source>
       <translation>Nieprawidłowe dane wejściowe: spodziewana liczba całkowita.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="387"/>
+      <location filename="../../draftmake/make_dimension.py" line="388"/>
       <source>i1: values below 1 are not allowed; will be set to 1.</source>
       <translation>indeks: wartości poniżej 1 nie są dozwolone; zostanie ustawione na 1.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="391"/>
-      <location filename="../../draftmake/make_dimension.py" line="411"/>
+      <location filename="../../draftmake/make_dimension.py" line="392"/>
+      <location filename="../../draftmake/make_dimension.py" line="412"/>
       <source>Wrong input: vertex not in object.</source>
       <translation>Nieprawidłowe dane wejściowe: wierzchołek nie należy do obiektu.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="407"/>
+      <location filename="../../draftmake/make_dimension.py" line="408"/>
       <source>i2: values below 1 are not allowed; will be set to the last vertex in the object.</source>
       <translation>i2: wartości poniżej 1 nie są dozwolone; zostaną ustawione na ostatni wierzchołek w obiekcie.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="500"/>
+      <location filename="../../draftmake/make_dimension.py" line="501"/>
       <source>Wrong input: object doesn't have at least one element in 'Edges' to use for measuring.</source>
       <translation>Nieprawidłowe dane wejściowe: obiekt nie posiada co najmniej jednego elementu 'Krawędzie' do użycia w celu pomiaru.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="511"/>
+      <location filename="../../draftmake/make_dimension.py" line="512"/>
       <source>index: values below 1 are not allowed; will be set to 1.</source>
       <translation>indeks: wartości poniżej 1 nie są dozwolone; zostanie ustawione na 1.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="515"/>
+      <location filename="../../draftmake/make_dimension.py" line="516"/>
       <source>Wrong input: index doesn't correspond to an edge in the object.</source>
       <translation>Nieprawidłowe dane wejściowe: indeks nie odpowiada krawędzi w obiekcie.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="519"/>
+      <location filename="../../draftmake/make_dimension.py" line="520"/>
       <source>Wrong input: index doesn't correspond to a circular edge.</source>
       <translation>Nieprawidłowe dane wejściowe: indeks nie odpowiada krawędzi kołowej.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="525"/>
-      <location filename="../../draftmake/make_dimension.py" line="529"/>
+      <location filename="../../draftmake/make_dimension.py" line="526"/>
+      <location filename="../../draftmake/make_dimension.py" line="530"/>
       <source>Wrong input: must be a string, 'radius' or 'diameter'.</source>
       <translation>Nieprawidłowe dane wejściowe: spodziewany ciąg znaków, "promień" lub "średnica".</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="617"/>
-      <location filename="../../draftmake/make_dimension.py" line="623"/>
+      <location filename="../../draftmake/make_dimension.py" line="618"/>
+      <location filename="../../draftmake/make_dimension.py" line="624"/>
       <source>Wrong input: must be a list with two angles.</source>
       <translation>Nieprawidłowe dane wejściowe: spodziewana lista zawierająca dwa kąty.</translation>
     </message>
@@ -5700,39 +5688,39 @@ który mógłby zostać użyty do pomiaru.</translation>
       <translation>Nieprawidłowe dane wejściowe: spodziewana liczba lub ilość.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_layer.py" line="66"/>
+      <location filename="../../draftmake/make_layer.py" line="67"/>
       <source>Layers</source>
       <translation>Warstwy</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_layer.py" line="153"/>
+      <location filename="../../draftmake/make_layer.py" line="157"/>
       <source>Wrong input: it must be a string.</source>
       <translation>Nieprawidłowe dane wejściowe: spodziewany ciąg znaków.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_layer.py" line="162"/>
       <location filename="../../draftmake/make_layer.py" line="166"/>
-      <location filename="../../draftmake/make_layer.py" line="173"/>
+      <location filename="../../draftmake/make_layer.py" line="170"/>
       <location filename="../../draftmake/make_layer.py" line="177"/>
+      <location filename="../../draftmake/make_layer.py" line="181"/>
       <source>Wrong input: must be a tuple of three floats 0.0 to 1.0.</source>
       <translation>Nieprawidłowe dane wejściowe: spodziewana tupla trzech liczb zmiennoprzecinkowych od 0.0 do 1.0.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_layer.py" line="196"/>
-      <location filename="../../draftmake/make_layer.py" line="204"/>
+      <location filename="../../draftmake/make_layer.py" line="200"/>
+      <location filename="../../draftmake/make_layer.py" line="208"/>
       <source>Wrong input: must be 'Solid', 'Dashed', 'Dotted', or 'Dashdot'.</source>
       <translation>Nieprawidłowe dane wejściowe: spodziewany ciąg "Ciągła", "Kreskowana", "Kropkowana" lub "Kreska-kropka".</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_layer.py" line="212"/>
+      <location filename="../../draftmake/make_layer.py" line="216"/>
       <source>Wrong input: must be a number between 0 and 100.</source>
       <translation>Błędne dane wejściowe: spodziewana liczba z zakresu od 0 do 100.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_base.py" line="470"/>
-      <location filename="../../draftviewproviders/view_clone.py" line="71"/>
-      <location filename="../../draftviewproviders/view_hatch.py" line="87"/>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="284"/>
+      <location filename="../../draftviewproviders/view_base.py" line="470"/>
+      <location filename="../../draftviewproviders/view_hatch.py" line="87"/>
+      <location filename="../../draftviewproviders/view_clone.py" line="71"/>
       <source>Edit</source>
       <translation>Edytuj</translation>
     </message>
@@ -6023,8 +6011,8 @@ istniejących obiektów we wszystkich otwartych dokumentach?</translation>
       <translation>Zmień nachylenie</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_patharray.py" line="114"/>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="92"/>
+      <location filename="../../draftguitools/gui_patharray.py" line="114"/>
       <source>Select exactly 2 objects, the base object and the path object, before calling this command</source>
       <translation>Przed wywołaniem tego polecenia wybierz dokładnie dwa obiekty: 
 obiekt bazowy oraz obiekt określający ścieżkę.</translation>
@@ -6190,6 +6178,13 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <location filename="../../draftviewproviders/view_wpproxy.py" line="97"/>
       <source>Save Camera View</source>
       <translation>Zapisz widok kamery</translation>
+    </message>
+    <message>
+      <location filename="../../drafttests/test_lines_gui.py" line="56"/>
+      <location filename="../../drafttests/test_lines_gui.py" line="94"/>
+      <location filename="../../draftguitools/gui_lines.py" line="246"/>
+      <source>Point identical to previous point</source>
+      <translation>Punkt pokrywa się z poprzednim punktem</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_field_locks.py" line="90"/>
@@ -6384,8 +6379,8 @@ Kliknij ikonę kłódki lub kliknij dwukrotnie, aby odblokować pole.</translati
       <translation>Włącz</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="401"/>
       <location filename="../../draftobjects/label.py" line="326"/>
+      <location filename="../../draftguitools/gui_layers.py" line="401"/>
       <source>Name</source>
       <translation>Nazwa</translation>
     </message>
@@ -6740,12 +6735,12 @@ Jeśli opcja "Kopiuj" jest aktywna, to utworzy obracane kopie.</translation>
   <context>
     <name>Draft_Trimex</name>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="71"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="92"/>
       <source>Trimex</source>
       <translation>Przytnij / wydłuż</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="72"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="93"/>
       <source>Trims or extends the selected object</source>
       <translation>Przycina lub wydłuża wybrany obiekt</translation>
     </message>
@@ -7104,19 +7099,19 @@ ustaw wartość Prawda dla utworzenia połączenia, lub Fałsz dla kształtu zł
     </message>
     <message>
       <location filename="../../draftobjects/rectangle.py" line="61"/>
-      <location filename="../../draftobjects/circle.py" line="61"/>
-      <location filename="../../draftobjects/ellipse.py" line="64"/>
       <location filename="../../draftobjects/polygon.py" line="67"/>
+      <location filename="../../draftobjects/ellipse.py" line="64"/>
+      <location filename="../../draftobjects/circle.py" line="61"/>
       <source>Create a face</source>
       <translation>Utwórz ścianę</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/bezcurve.py" line="66"/>
-      <location filename="../../draftobjects/bspline.py" line="57"/>
-      <location filename="../../draftobjects/rectangle.py" line="70"/>
-      <location filename="../../draftobjects/circle.py" line="64"/>
       <location filename="../../draftobjects/wire.py" line="90"/>
+      <location filename="../../draftobjects/rectangle.py" line="70"/>
+      <location filename="../../draftobjects/bspline.py" line="57"/>
+      <location filename="../../draftobjects/bezcurve.py" line="66"/>
       <location filename="../../draftobjects/polygon.py" line="70"/>
+      <location filename="../../draftobjects/circle.py" line="64"/>
       <source>The area of this object</source>
       <translation>Obszar tego obiektu</translation>
     </message>
@@ -7141,15 +7136,15 @@ ustaw wartość Prawda dla utworzenia połączenia, lub Fałsz dla kształtu zł
       <translation>Jak należy narysować wielokąt z okręgu kontrolnego</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/rectangle.py" line="55"/>
       <location filename="../../draftobjects/wire.py" line="78"/>
+      <location filename="../../draftobjects/rectangle.py" line="55"/>
       <location filename="../../draftobjects/polygon.py" line="61"/>
       <source>Radius to use to fillet the corners</source>
       <translation>Promień użyty do zaokrąglenia narożników</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/rectangle.py" line="58"/>
       <location filename="../../draftobjects/wire.py" line="81"/>
+      <location filename="../../draftobjects/rectangle.py" line="58"/>
       <location filename="../../draftobjects/polygon.py" line="64"/>
       <source>Size of the chamfer to give to the corners</source>
       <translation>Wymiar sfazowania narożników</translation>
@@ -7177,17 +7172,17 @@ ustaw wartość Prawda dla utworzenia połączenia, lub Fałsz dla kształtu zł
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="262"/>
+      <location filename="../../draftobjects/pointarray.py" line="112"/>
       <location filename="../../draftobjects/pathtwistedarray.py" line="150"/>
       <location filename="../../draftobjects/array.py" line="325"/>
-      <location filename="../../draftobjects/pointarray.py" line="112"/>
       <source>Show the individual array elements (only for Link arrays)</source>
       <translation>Pokaż poszczególne elementy szyku (tylko dla szyków powiązań)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="269"/>
+      <location filename="../../draftobjects/pointarray.py" line="118"/>
       <location filename="../../draftobjects/pathtwistedarray.py" line="159"/>
       <location filename="../../draftobjects/array.py" line="148"/>
-      <location filename="../../draftobjects/pointarray.py" line="118"/>
       <source>The placement for each array element</source>
       <translation>Umiejscowienie dla każdego elementu szyku</translation>
     </message>
@@ -7432,9 +7427,9 @@ W przeciwnym razie duplikaty będą miały taką samą orientację jak oryginaln
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="255"/>
+      <location filename="../../draftobjects/pointarray.py" line="86"/>
       <location filename="../../draftobjects/pathtwistedarray.py" line="120"/>
       <location filename="../../draftobjects/array.py" line="129"/>
-      <location filename="../../draftobjects/pointarray.py" line="86"/>
       <source>Specifies if the copies should be fused together if they touch each other (slower)</source>
       <translation>Określa, czy kopie powinny być połączone razem, jeśli dotykają się wzajemnie (wolniej)</translation>
     </message>
@@ -8153,18 +8148,18 @@ Pozostaw puste dla systemowych ustawień domyślnych..
 Użyj "arch", aby wymusić notację architektoniczną amerykańską</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wire.py" line="67"/>
-      <location filename="../../draftviewproviders/view_wire.py" line="80"/>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="144"/>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="159"/>
+      <location filename="../../draftviewproviders/view_wire.py" line="67"/>
+      <location filename="../../draftviewproviders/view_wire.py" line="80"/>
       <source>Arrow size</source>
       <translation>Rozmiar strzałki</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wire.py" line="72"/>
-      <location filename="../../draftviewproviders/view_wire.py" line="85"/>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="149"/>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="166"/>
+      <location filename="../../draftviewproviders/view_wire.py" line="72"/>
+      <location filename="../../draftviewproviders/view_wire.py" line="85"/>
       <source>Arrow type</source>
       <translation>Styl strzałki</translation>
     </message>

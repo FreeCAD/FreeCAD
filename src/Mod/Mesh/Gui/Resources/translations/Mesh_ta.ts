@@ -799,7 +799,7 @@
       <translation>நீக்கு</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="2000"/>
+      <location filename="../../ViewProvider.cpp" line="2001"/>
       <source>Fill hole</source>
       <translation>துளை நிரப்பவும்</translation>
     </message>
@@ -1281,14 +1281,14 @@
   <context>
     <name>MeshGui::DlgRegularSolidImp</name>
     <message>
-      <location filename="../../DlgRegularSolidImp.cpp" line="122"/>
-      <location filename="../../DlgRegularSolidImp.cpp" line="203"/>
-      <location filename="../../DlgRegularSolidImp.cpp" line="211"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="123"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="204"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="212"/>
       <source>Create %1</source>
       <translation>% 1ஐ உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../DlgRegularSolidImp.cpp" line="122"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="123"/>
       <source>No Active Document</source>
       <translation>செயலில் ஆவணம் இல்லை</translation>
     </message>
@@ -2265,8 +2265,8 @@ Visit https://openscad.org/ to install it.</source>
       <translation>காட்சி நிறங்கள்</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCurvature.cpp" line="475"/>
       <location filename="../../ViewProvider.cpp" line="1701"/>
+      <location filename="../../ViewProviderCurvature.cpp" line="475"/>
       <source>Leave Info Mode</source>
       <translation>செய்தி பயன்முறையை விட்டு வெளியேறவும்</translation>
     </message>

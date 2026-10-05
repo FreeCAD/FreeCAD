@@ -11,12 +11,12 @@
     <message>
       <location filename="../../UnitTest.ui" line="17"/>
       <source>FreeCAD Unit Test</source>
-      <translation type="unfinished">FreeCAD Unit Test</translation>
+      <translation>FreeCAD 單位測試</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="44"/>
       <source>Select test name</source>
-      <translation type="unfinished">Select test name</translation>
+      <translation>選擇測試名稱</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="96"/>
@@ -36,7 +36,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="131"/>
       <source>Ctrl+C</source>
-      <translation type="unfinished">Ctrl+C</translation>
+      <translation>Ctrl+C</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="141"/>
@@ -81,7 +81,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="218"/>
       <source>Failures</source>
-      <translation type="unfinished">Failures</translation>
+      <translation>失敗</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="235"/>
@@ -91,12 +91,12 @@
     <message>
       <location filename="../../UnitTest.ui" line="252"/>
       <source>Remaining</source>
-      <translation type="unfinished">Remaining</translation>
+      <translation>剩餘</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="272"/>
       <source>Failures and Errors</source>
-      <translation type="unfinished">Failures and Errors</translation>
+      <translation>失敗與錯誤</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="288"/>
@@ -144,7 +144,7 @@ FreeCAD 單位測試為 FreeCAD 的一部分，支援測試自己的模組編寫
     <message>
       <location filename="../../UnitTestImp.cpp" line="206"/>
       <source>Errors copied to clipboard</source>
-      <translation type="unfinished">Errors copied to clipboard</translation>
+      <translation>錯誤已複製到剪貼簿</translation>
     </message>
   </context>
 </TS>

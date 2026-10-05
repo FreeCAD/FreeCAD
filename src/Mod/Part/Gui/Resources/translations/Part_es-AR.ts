@@ -2733,7 +2733,7 @@ el tamaño del archivo STEP resultante.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="71"/>
-      <location filename="../../DlgExtrusion.cpp" line="260"/>
+      <location filename="../../DlgExtrusion.cpp" line="318"/>
       <source>Select</source>
       <translation>Seleccionar</translation>
     </message>
@@ -2860,17 +2860,24 @@ Si ambas longitudes son cero, se utiliza la magnitud de la dirección.</translat
       <translation>Forma</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="230"/>
+      <location filename="../../DlgExtrusion.cpp" line="288"/>
       <source>Selecting…</source>
       <translation>Seleccionar…</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="506"/>
+      <location filename="../../DlgExtrusion.cpp" line="570"/>
       <source>The document '%1' doesn't exist.</source>
       <translation type="unfinished">The document '%1' doesn't exist.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="567"/>
+      <location filename="../../DlgExtrusion.cpp" line="585"/>
+      <source>Creating extrusion failed.
+No shape could be extruded.</source>
+      <translation type="unfinished">Creating extrusion failed.
+No shape could be extruded.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgExtrusion.cpp" line="610"/>
       <source>Creating extrusion failed.
 %1</source>
       <translation>Error al crear la extrusión.
@@ -2878,36 +2885,36 @@ Si ambas longitudes son cero, se utiliza la magnitud de la dirección.</translat
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="575"/>
+      <location filename="../../DlgExtrusion.cpp" line="618"/>
       <source>Creating Extrusion failed.
 %1</source>
       <translation>Error al crear la extrusión.
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="647"/>
+      <location filename="../../DlgExtrusion.cpp" line="692"/>
       <source>Object not found: %1</source>
       <translation>Objeto no encontrado: %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="712"/>
+      <location filename="../../DlgExtrusion.cpp" line="757"/>
       <source>No shapes selected for extrusion.</source>
       <translation>No se ha seleccionado ninguna forma para la extrusión.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="779"/>
+      <location filename="../../DlgExtrusion.cpp" line="824"/>
       <source>Cannot determine normal vector of shape to be extruded. Use other mode. 
 
 (%1)</source>
       <translation>No se puede determinar el vector normal de la forma que se va a extruir. Utilice otro modo</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="732"/>
+      <location filename="../../DlgExtrusion.cpp" line="777"/>
       <source>Unknown error</source>
       <translation>Error desconocido</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="739"/>
+      <location filename="../../DlgExtrusion.cpp" line="784"/>
       <source>Extrusion direction link is invalid.
 
 %1</source>
@@ -2916,17 +2923,17 @@ Si ambas longitudes son cero, se utiliza la magnitud de la dirección.</translat
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="746"/>
+      <location filename="../../DlgExtrusion.cpp" line="791"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
       <translation>El modo de dirección debe utilizar una arista, pero la arista no está vinculada.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="794"/>
+      <location filename="../../DlgExtrusion.cpp" line="839"/>
       <source>Extrusion direction vector is zero-length. It must be non-zero.</source>
       <translation>El vector de dirección de extrusión es de longitud cero. Debe ser distinto de cero.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="812"/>
+      <location filename="../../DlgExtrusion.cpp" line="857"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
       <translation>Longitud total de extrusión es cero (length1 == - length2). Esta debe ser distinta de cero.</translation>
     </message>
@@ -6778,10 +6785,10 @@ Continue?</source>
       <translation>Selección incorrecta</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>Continuo</translation>
     </message>
@@ -7797,17 +7804,17 @@ Se eliminarán los volúmenes superpuestos de las figuras.</translation>
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="159"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
       <source>Preview requires a Part-based view provider; none found for %1.</source>
       <translation>Para la vista preliminar se necesita un proveedor de vista, y no se encuentra para %1.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="161"/>
       <source>unknown object</source>
       <translation>objeto desconocido</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="303"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="305"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>Error al renderizar la vista previa. Esto suele indicar un error en el modelo.</translation>
     </message>
@@ -7819,6 +7826,19 @@ Se eliminarán los volúmenes superpuestos de las figuras.</translation>
       <source>STEP with colors</source>
       <extracomment>Translation note: "STEP" is a file type end should not be translated</extracomment>
       <translation>STEP con colores</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskLinkArrayParameters</name>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.ui" line="17"/>
+      <source>Linked object</source>
+      <translation>Objeto enlazado</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.ui" line="27"/>
+      <source>Select Object</source>
+      <translation>Seleccionar objeto</translation>
     </message>
   </context>
   <context>
@@ -7852,33 +7872,6 @@ Se eliminarán los volúmenes superpuestos de las figuras.</translation>
       <location filename="../../PatternCircularParametersWidget.ui" line="95"/>
       <source>Symmetry</source>
       <translation>Simetría</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskLinkArrayParameters</name>
-    <message>
-      <location filename="../../TaskLinkArrayParameters.ui" line="17"/>
-      <source>Linked object</source>
-      <translation>Objeto enlazado</translation>
-    </message>
-    <message>
-      <location filename="../../TaskLinkArrayParameters.ui" line="27"/>
-      <source>Select Object</source>
-      <translation>Seleccionar objeto</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartGui::PatternPointParametersWidget</name>
-    <message>
-      <location filename="../../PatternPointParametersWidget.ui" line="8"/>
-      <source>Point object</source>
-      <translation>Objeto de puntos</translation>
-    </message>
-    <message>
-      <location filename="../../PatternPointParametersWidget.ui" line="14"/>
-      <location filename="../../PatternPointParametersWidget.cpp" line="48"/>
-      <source>Select Point Object</source>
-      <translation>Seleccionar objeto de puntos</translation>
     </message>
   </context>
   <context>
@@ -7951,29 +7944,17 @@ Se eliminarán los volúmenes superpuestos de las figuras.</translation>
     </message>
   </context>
   <context>
-    <name>Part::FaceMakerBuildFace</name>
+    <name>PartGui::PatternPointParametersWidget</name>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
-      <source>BuildFace facemaker</source>
-      <translation>Constructor de caras. Crea cara</translation>
+      <location filename="../../PatternPointParametersWidget.ui" line="8"/>
+      <source>Point object</source>
+      <translation>Objeto de puntos</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
-      <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
-      <translation>Divide las aristas en las intersecciones y encuentra todas las regiones de caras delimitadas. Admite geometrías superpuestas arbitrarias.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part::FaceMakerUnified</name>
-    <message>
-      <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
-      <source>Unified facemaker</source>
-      <translation>Facemaker unificado</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
-      <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
-      <translation>Unificado: gestionas agujeros anidados, contornos superpuestos y superficies curvas</translation>
+      <location filename="../../PatternPointParametersWidget.ui" line="14"/>
+      <location filename="../../PatternPointParametersWidget.cpp" line="48"/>
+      <source>Select Point Object</source>
+      <translation>Seleccionar objeto de puntos</translation>
     </message>
   </context>
   <context>
@@ -8203,6 +8184,32 @@ Se eliminarán los volúmenes superpuestos de las figuras.</translation>
       <location filename="../../TaskLinkArrayParameters.cpp" line="862"/>
       <source>Select an object to link.</source>
       <translation>Seleccione un objeto para enlazar.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerBuildFace</name>
+    <message>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
+      <source>BuildFace facemaker</source>
+      <translation>Constructor de caras. Crea cara</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
+      <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
+      <translation>Divide las aristas en las intersecciones y encuentra todas las regiones de caras delimitadas. Admite geometrías superpuestas arbitrarias.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerUnified</name>
+    <message>
+      <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
+      <source>Unified facemaker</source>
+      <translation>Facemaker unificado</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
+      <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
+      <translation>Unificado: gestionas agujeros anidados, contornos superpuestos y superficies curvas</translation>
     </message>
   </context>
 </TS>

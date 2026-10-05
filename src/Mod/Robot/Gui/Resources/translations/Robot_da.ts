@@ -16,7 +16,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="48"/>
       <source>Adds a tool shape to the robot</source>
-      <translation type="unfinished">Adds a tool shape to the robot</translation>
+      <translation>Tilføjer en værktøjsform til robot</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="203"/>
       <source>Place Robot</source>
-      <translation type="unfinished">Place Robot</translation>
+      <translation>Placer robot</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="204"/>
       <source>Places a robot in the scene</source>
-      <translation type="unfinished">Places a robot in the scene</translation>
+      <translation>Placer en robot i scenen</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="58"/>
       <source>Creates a new empty trajectory</source>
-      <translation type="unfinished">Creates a new empty trajectory</translation>
+      <translation>Opret en ny tom bevægelsesbane</translation>
     </message>
   </context>
   <context>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="383"/>
       <source>Edge to Trajectory</source>
-      <translation type="unfinished">Edge to Trajectory</translation>
+      <translation>Kant til bevægelsesbane</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="384"/>
       <source>Generates a trajectory from the selected edges</source>
-      <translation type="unfinished">Generates a trajectory from the selected edges</translation>
+      <translation>Genererer en bevægelsesbane fra de valgte kanter</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../CommandExport.cpp" line="48"/>
       <source>Kuka Compact Subroutine</source>
-      <translation type="unfinished">Kuka Compact Subroutine</translation>
+      <translation>Kuka kompakt underfunktion</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="49"/>
       <source>Exports the trajectory as a compact KRL subroutine</source>
-      <translation type="unfinished">Exports the trajectory as a compact KRL subroutine</translation>
+      <translation>Eksporter bevægelsesbane som kompakt KRL underfunktion</translation>
     </message>
   </context>
   <context>
@@ -101,12 +101,12 @@
     <message>
       <location filename="../../CommandExport.cpp" line="131"/>
       <source>Kuka Full Subroutine</source>
-      <translation type="unfinished">Kuka Full Subroutine</translation>
+      <translation>Kuka fuld underfunktion</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="132"/>
       <source>Exports the trajectory as a full KRL subroutine</source>
-      <translation type="unfinished">Exports the trajectory as a full KRL subroutine</translation>
+      <translation>Eksporter bevægelsesbane som en fuld KRL underfunktion</translation>
     </message>
   </context>
   <context>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="93"/>
       <source>Insert in Trajectory</source>
-      <translation type="unfinished">Insert in Trajectory</translation>
+      <translation>Indsæt bevægelsesbane</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="94"/>
       <source>Inserts the robot tool location into the trajectory</source>
-      <translation type="unfinished">Inserts the robot tool location into the trajectory</translation>
+      <translation>Indsæt robot værktøjslokation i bevægelsesbanen</translation>
     </message>
   </context>
   <context>
@@ -137,12 +137,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="166"/>
       <source>Insert in Trajectory</source>
-      <translation type="unfinished">Insert in Trajectory</translation>
+      <translation>Indsæt bevægelsesbane</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="167"/>
       <source>Inserts the preselection position into the trajectory (W)</source>
-      <translation type="unfinished">Inserts the preselection position into the trajectory (W)</translation>
+      <translation>Indsæt forvalgt position i bevægelsesbanen (W)</translation>
     </message>
   </context>
   <context>
@@ -155,12 +155,12 @@
     <message>
       <location filename="../../Command.cpp" line="148"/>
       <source>Move to Home</source>
-      <translation type="unfinished">Move to Home</translation>
+      <translation>Flyt til hjem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="149"/>
       <source>Moves to the home position</source>
-      <translation type="unfinished">Moves to the home position</translation>
+      <translation>Flytter til hjem position</translation>
     </message>
   </context>
   <context>
@@ -173,12 +173,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="252"/>
       <source>Set Default Orientation</source>
-      <translation type="unfinished">Set Default Orientation</translation>
+      <translation>Angiv standardretning</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="253"/>
       <source>Sets the default orientation for subsequent commands for waypoint creation</source>
-      <translation type="unfinished">Sets the default orientation for subsequent commands for waypoint creation</translation>
+      <translation>Sætter standardretning for efterfølgende kommandoer til vejpunkt oprettelse</translation>
     </message>
   </context>
   <context>
@@ -191,12 +191,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="292"/>
       <source>Set Default Values</source>
-      <translation type="unfinished">Set Default Values</translation>
+      <translation>Angiv standardværdier</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="293"/>
       <source>Sets the default values for speed, acceleration, and continuity for subsequent commands of waypoint creation</source>
-      <translation type="unfinished">Sets the default values for speed, acceleration, and continuity for subsequent commands of waypoint creation</translation>
+      <translation>Angiver standardværdier for hastighed, acceleration og kontinuitet for efterfølgende kommandoer til vejpunkt oprettelse</translation>
     </message>
   </context>
   <context>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../Command.cpp" line="85"/>
       <source>Set Home Position</source>
-      <translation type="unfinished">Set Home Position</translation>
+      <translation>Angiv hjem position</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="86"/>
       <source>Sets the home position</source>
-      <translation type="unfinished">Sets the home position</translation>
+      <translation>Angiver hjem position</translation>
     </message>
   </context>
   <context>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="248"/>
       <source>Simulate Trajectory</source>
-      <translation type="unfinished">Simulate Trajectory</translation>
+      <translation>Simuler bevægelsesbane</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="249"/>
       <source>Simulates robot movement along a selected trajectory</source>
-      <translation type="unfinished">Simulates robot movement along a selected trajectory</translation>
+      <translation>Simuler robot bevægelse langs den valgte bevægelsesbane</translation>
     </message>
   </context>
   <context>
@@ -292,20 +292,6 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="110"/>
-      <location filename="../../CommandTrajectory.cpp" line="181"/>
-      <location filename="../../CommandTrajectory.cpp" line="202"/>
-      <location filename="../../CommandTrajectory.cpp" line="489"/>
-      <location filename="../../Command.cpp" line="105"/>
-      <location filename="../../Command.cpp" line="168"/>
-      <location filename="../../Command.cpp" line="272"/>
-      <location filename="../../CommandExport.cpp" line="64"/>
-      <location filename="../../CommandExport.cpp" line="147"/>
-      <location filename="../../CommandInsertRobot.cpp" line="70"/>
-      <source>Wrong selection</source>
-      <translation>Forkert valg</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="55"/>
       <source>Select VRML file for Robot</source>
       <translation type="unfinished">Select VRML file for Robot</translation>
@@ -326,6 +312,20 @@
       <translation type="unfinished">CSV Files (*.csv)</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="168"/>
+      <location filename="../../Command.cpp" line="272"/>
+      <location filename="../../CommandTrajectory.cpp" line="110"/>
+      <location filename="../../CommandTrajectory.cpp" line="181"/>
+      <location filename="../../CommandTrajectory.cpp" line="202"/>
+      <location filename="../../CommandTrajectory.cpp" line="489"/>
+      <location filename="../../CommandExport.cpp" line="64"/>
+      <location filename="../../CommandExport.cpp" line="147"/>
+      <location filename="../../CommandInsertRobot.cpp" line="70"/>
+      <source>Wrong selection</source>
+      <translation>Forkert valg</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Select one Robot to set home position</source>
       <translation type="unfinished">Select one Robot to set home position</translation>
@@ -336,8 +336,8 @@
       <translation>Vælg en Robot</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="111"/>
       <location filename="../../Command.cpp" line="273"/>
+      <location filename="../../CommandTrajectory.cpp" line="111"/>
       <location filename="../../CommandExport.cpp" line="65"/>
       <location filename="../../CommandExport.cpp" line="148"/>
       <source>Select one Robot and one Trajectory object.</source>

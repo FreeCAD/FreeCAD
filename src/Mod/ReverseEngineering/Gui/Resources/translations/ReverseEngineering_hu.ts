@@ -237,8 +237,8 @@
       <translation>Elhelyezés</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="152"/>
       <location filename="../../FitBSplineSurface.cpp" line="242"/>
+      <location filename="../../FitBSplineCurve.cpp" line="152"/>
       <source>Fit B-spline</source>
       <translation>B-görbe illesztése</translation>
     </message>

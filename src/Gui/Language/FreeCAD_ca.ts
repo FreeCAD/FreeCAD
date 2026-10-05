@@ -4,30 +4,30 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="562"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="563"/>
       <source>&lt;empty&gt;</source>
       <translation>&lt;empty&gt;</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2449"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2738"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2446"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2735"/>
       <source>Angle</source>
       <translation>Angle</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2453"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2742"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2450"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2739"/>
       <source>Axis</source>
       <translation>Eix</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2747"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2744"/>
       <source>Position</source>
       <translation>Posició</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3019"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3016"/>
       <source>Enum</source>
       <translation>Enumerador</translation>
     </message>
@@ -123,7 +123,7 @@
       <translation>Afegir conjunt de variables</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1085"/>
+      <location filename="../ManualAlignment.cpp" line="1081"/>
       <source>Align</source>
       <translation>Alinea</translation>
     </message>
@@ -134,9 +134,9 @@
     </message>
     <message>
       <location filename="../Transform.cpp" line="108"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="514"/>
       <location filename="../TaskTransform.cpp" line="152"/>
       <location filename="../TaskTransform.cpp" line="1069"/>
-      <location filename="../ViewProviderAnnotation.cpp" line="514"/>
       <source>Transform</source>
       <translation>Transforma</translation>
     </message>
@@ -146,8 +146,8 @@
       <translation>Commuta els elements de la matriu</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.cpp" line="342"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
+      <location filename="../TaskView/TaskImage.cpp" line="342"/>
       <source>Edit image</source>
       <translation>Edita la imatge</translation>
     </message>
@@ -496,22 +496,22 @@ La propietat d'aquest objecte farà referència a la propietat del conjunt de va
   <context>
     <name>Gui::Assistant</name>
     <message>
-      <location filename="../Assistant.cpp" line="98"/>
-      <location filename="../Assistant.cpp" line="135"/>
-      <location filename="../Assistant.cpp" line="152"/>
-      <location filename="../Assistant.cpp" line="172"/>
+      <location filename="../Assistant.cpp" line="94"/>
+      <location filename="../Assistant.cpp" line="131"/>
+      <location filename="../Assistant.cpp" line="148"/>
+      <location filename="../Assistant.cpp" line="168"/>
       <source>%1 Help</source>
       <translation>%1 Ajuda</translation>
     </message>
     <message>
-      <location filename="../Assistant.cpp" line="99"/>
+      <location filename="../Assistant.cpp" line="95"/>
       <source>%1 help files not found (%2). You might need to install the %1 documentation package.</source>
       <translation>%1 fitxers d'ajuda no s'han trobat (%2). Potser cal instal·lar el paquet de documentació %1.</translation>
     </message>
     <message>
-      <location filename="../Assistant.cpp" line="136"/>
-      <location filename="../Assistant.cpp" line="153"/>
-      <location filename="../Assistant.cpp" line="173"/>
+      <location filename="../Assistant.cpp" line="132"/>
+      <location filename="../Assistant.cpp" line="149"/>
+      <location filename="../Assistant.cpp" line="169"/>
       <source>Unable to launch Qt Assistant (%1)</source>
       <translation>No es pot executar l'auxiliar de Qt (%1)</translation>
     </message>
@@ -678,34 +678,34 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Individus</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="351"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="348"/>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
       <translation>Organitzacions</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="380"/>
-      <location filename="../Dialogs/DlgAbout.cpp" line="472"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="377"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="469"/>
       <source>License</source>
       <translation>Llicència</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="418"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="415"/>
       <source>Libraries</source>
       <translation>Llibreries</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="440"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="437"/>
       <source>Collection</source>
       <translation>Col·lecció</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="459"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="456"/>
       <source>Privacy Policy</source>
       <translation>Política de privacitat</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="491"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="488"/>
       <source>Copied!</source>
       <translation>Copiat!</translation>
     </message>
@@ -749,37 +749,37 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::CameraDialog</name>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="398"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="397"/>
       <source>Camera Settings</source>
       <translation>Configuració de la càmera</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="405"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="404"/>
       <source>Orientation</source>
       <translation>Orientació</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="419"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="418"/>
       <source>Q0</source>
       <translation>Q0</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="429"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="428"/>
       <source>Q1</source>
       <translation>Q1</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="439"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="438"/>
       <source>Q2</source>
       <translation>Q2</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="449"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="448"/>
       <source>Q3</source>
       <translation>Q3</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="458"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="457"/>
       <source>Current View</source>
       <translation>Vista Actual</translation>
     </message>
@@ -1511,8 +1511,8 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::DlgInspector</name>
     <message>
-      <location filename="../SceneInspector.cpp" line="329"/>
-      <location filename="../SceneInspector.cpp" line="406"/>
+      <location filename="../SceneInspector.cpp" line="330"/>
+      <location filename="../SceneInspector.cpp" line="407"/>
       <source>Scene Inspector</source>
       <translation>Inspector d'escena</translation>
     </message>
@@ -2234,72 +2234,72 @@ Specify another directory.</source>
   <context>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="787"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="788"/>
       <source>Reset Page '%1'</source>
       <translation>Restablir pàgina '%1'</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="790"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="791"/>
       <source>Resets the user settings for the page '%1'</source>
       <translation>Restableix la configuració d'usuari de la pàgina '%1'</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="794"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="795"/>
       <source>Reset Group '%1'</source>
       <translation>Restablir grup '%1'</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="802"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="803"/>
       <source>Reset All</source>
       <translation>Reinicialitza-ho tot</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="820"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="821"/>
       <source>Clear User Settings</source>
       <translation>Esborra els paràmetres d'usuari</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="821"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="822"/>
       <source>Clear all your user settings?</source>
       <translation>Voleu esborrar tota la vostra configuració d'usuari?</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="822"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="823"/>
       <source>All settings will be cleared.</source>
       <translation>S'esborraran tots els paràmetres.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="930"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="931"/>
       <source>Wrong Parameter</source>
       <translation>Paràmetre incorrecte</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="973"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="974"/>
       <source>Restart Required</source>
       <translation>Es necessita reiniciar</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="974"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="975"/>
       <source>Restart FreeCAD for changes to take effect.</source>
       <translation>S'ha de reiniciar FreeCAD perquè els canvis tinguin efecte.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="979"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="980"/>
       <source>Restart Now</source>
       <translation>Reinicia ara</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="980"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="981"/>
       <source>Restart Later</source>
       <translation>Reinicia més endavant</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="799"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="800"/>
       <source>Resets the user settings for the group '%1'</source>
       <translation>Restableix la configuració d'usuari del grup '%1'</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="804"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="805"/>
       <source>Resets the user settings entirely</source>
       <translation>Restableix per complet la configuració d'usuari</translation>
     </message>
@@ -2516,7 +2516,7 @@ Specify another directory.</source>
   <context>
     <name>Gui::Dialog::DlgRevertToBackupConfigImp</name>
     <message>
-      <location filename="../Dialogs/DlgRevertToBackupConfigImp.cpp" line="107"/>
+      <location filename="../Dialogs/DlgRevertToBackupConfigImp.cpp" line="106"/>
       <source>No selection in dialog, cannot load backup file</source>
       <translation>No hi ha cap selecció al diàleg, no es pot carregar el fitxer de còpia de seguretat</translation>
     </message>
@@ -3968,12 +3968,12 @@ També podeu utilitzar la forma: Joan Peris &lt;joan@peris.com&gt;</translation>
       <translation>Estil d'òrbita</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="856"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="877"/>
       <source>Clarify Selection</source>
       <translation>Aclarir la selecció</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="862"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="883"/>
       <source>Enable Clarify Selection on long press of left mouse button.
 When enabled, holding left mouse button shows a menu to select overlapping objects.
 Some navigation styles (OpenInventor, Gesture, OpenSCAD) require Ctrl+LMB instead of just LMB.</source>
@@ -3982,22 +3982,22 @@ Quan està habilitat, si mantens premut el botó esquerre del ratolí, es mostra
 Alguns estils de navegació (OpenInventor, Gesture, OpenSCAD) requereixen Ctrl+Botó esquerre en comptes de només el botó esquerre del ratolí.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="867"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="888"/>
       <source>Enable long press clarify selection</source>
       <translation>Habilita la selecció d'aclariment en prémer llargament</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="883"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="904"/>
       <source>Time in seconds to hold left mouse button before showing clarify selection menu</source>
       <translation>Temps en segons per mantenir el botó esquerre del ratolí abans de mostrar el menú de selecció d'aclariment</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="886"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="907"/>
       <source>Long press timeout</source>
       <translation>Temps d'espera de la pulsació llarga</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="902"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="923"/>
       <source>Duration in seconds to hold left mouse button before clarify selection is triggered</source>
       <translation>Duració en segons per mantenir el botó esquerre del ratolí abans que es mostri la selecció d'aclariment</translation>
     </message>
@@ -4074,49 +4074,58 @@ The value is the diameter of the sphere to fit on the screen.</source>
 El valor és el diàmetre de l’esfera per a ajustar-se a la pantalla.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="765"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="739"/>
+      <source>Two-finger scroll on a touchpad pans the view.
+Shift + scroll orbits, Ctrl + scroll (Cmd on macOS) zooms.
+Applies to touchpads and other devices that report
+pixel-precise scrolling. Ordinary wheel mice keep zooming.</source>
+      <translation type="unfinished">Two-finger scroll on a touchpad pans the view.
+Shift + scroll orbits, Ctrl + scroll (Cmd on macOS) zooms.
+Applies to touchpads and other devices that report
+pixel-precise scrolling. Ordinary wheel mice keep zooming.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="745"/>
+      <source>Touchpad scroll pans instead of zooming</source>
+      <translation type="unfinished">Touchpad scroll pans instead of zooming</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="786"/>
       <source>Animations</source>
       <translation>Animacions</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="787"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="808"/>
       <source>Enable spinning animations that are used in some navigation styles after dragging</source>
       <translation>Habilitar animacions giratòries que són utilitzades en alguns estils de navegació després d'arrossegar</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="790"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="811"/>
       <source>Enable spinning animations</source>
       <translation>Habilitar animacions giratòries</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="774"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="795"/>
       <source>Duration of navigation animations that have a fixed duration</source>
       <translation>Duració de les animacions de navegació que tenen una duració fixa</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="719"/>
-      <source>Prevents view tilting when pinch-zooming.
-Affects only Gesture navigation style.
-Mouse tilting is not disabled by this setting.</source>
-      <translation>Evita la inclinació de la vista quan s'està fent zoom amb els dits. Només afecta l'estil de Navegació amb gestos. Aquesta opció no desactiva la inclinació del ratolí.</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="743"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="764"/>
       <source>Space Mouse</source>
       <translation>Espai ratolí</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="749"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="770"/>
       <source>Enable support of legacy SpaceMouse devices</source>
       <translation>Habilita el suport per a dispositius ratolí heretats</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="777"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="798"/>
       <source>Animation duration</source>
       <translation>Durada de l'animació</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="812"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="833"/>
       <source>The duration of navigation animations in milliseconds</source>
       <translation>La duració de les animacions de navegació en mil·lisegons</translation>
     </message>
@@ -4212,67 +4221,74 @@ Un valor de '1' implica un factor de 7,5 per cada grau d'ampliació.</translatio
       <translation>Invertix el zoom</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="724"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="719"/>
+      <source>Prevents view tilting when pinch-zooming.
+Mouse tilting is not disabled by this setting.</source>
+      <translation type="unfinished">Prevents view tilting when pinch-zooming.
+Mouse tilting is not disabled by this setting.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="723"/>
       <source>Disable touchscreen tilt gesture</source>
       <translation>Desactiva el gest d'inclinació de la pantalla tàctil</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="226"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="263"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="225"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="262"/>
       <source>Isometric</source>
       <translation>Isomètrica</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="227"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="264"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="226"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="263"/>
       <source>Dimetric</source>
       <translation>Dimètric</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="228"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="265"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="227"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="264"/>
       <source>Trimetric</source>
       <translation>Trimètric</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="229"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="266"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="228"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="265"/>
       <source>Top</source>
       <translation>Planta</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="230"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="267"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="229"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="266"/>
       <source>Front</source>
       <translation>Alçat</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="231"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="268"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="230"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="267"/>
       <source>Left</source>
       <translation>Esquerra</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="232"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="269"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="231"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="268"/>
       <source>Right</source>
       <translation>Dreta</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="233"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="270"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="232"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="269"/>
       <source>Rear</source>
       <translation>Posterior</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="234"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="271"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="233"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="270"/>
       <source>Bottom</source>
       <translation>Inferior</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="235"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="272"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="234"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="271"/>
       <source>Custom</source>
       <translation>Personalitzat</translation>
     </message>
@@ -4798,36 +4814,36 @@ La columna 'Estat' mostra si el document es pot recuperar.</translation>
       <translation>&amp;Finalitza</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="643"/>
-      <location filename="../DocumentRecovery.cpp" line="652"/>
+      <location filename="../DocumentRecovery.cpp" line="640"/>
+      <location filename="../DocumentRecovery.cpp" line="649"/>
       <source>Delete</source>
       <translation>Elimina</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="653"/>
+      <location filename="../DocumentRecovery.cpp" line="650"/>
       <source>Delete the selected recovery documents?</source>
       <translation>Voleu suprimir els documents de recuperació seleccionats?</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="654"/>
-      <location filename="../DocumentRecovery.cpp" line="687"/>
+      <location filename="../DocumentRecovery.cpp" line="651"/>
+      <location filename="../DocumentRecovery.cpp" line="684"/>
       <source>Recovery documents cannot be restored after deletion.</source>
       <translation>Els documents de recuperació no es poden restaurar després de suprimir-los.</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="686"/>
+      <location filename="../DocumentRecovery.cpp" line="683"/>
       <source>Delete all recovery documents?</source>
       <translation>Voleu suprimir tots els documents de recuperació?</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="704"/>
+      <location filename="../DocumentRecovery.cpp" line="701"/>
       <source>Recovery documents deleted.</source>
       <translation>S'han suprimit els documents de recuperació.</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.ui" line="42"/>
-      <location filename="../DocumentRecovery.cpp" line="685"/>
-      <location filename="../DocumentRecovery.cpp" line="704"/>
+      <location filename="../DocumentRecovery.cpp" line="682"/>
+      <location filename="../DocumentRecovery.cpp" line="701"/>
       <source>Cleanup</source>
       <translation>Neteja</translation>
     </message>
@@ -5384,7 +5400,7 @@ La columna 'Estat' mostra si el document es pot recuperar.</translation>
   <context>
     <name>Gui::Dialog::SceneModel</name>
     <message>
-      <location filename="../SceneInspector.cpp" line="117"/>
+      <location filename="../SceneInspector.cpp" line="118"/>
       <source>Nodes</source>
       <translation>Nodes</translation>
     </message>
@@ -5851,12 +5867,12 @@ Voleu desar tots els canvis?</translation>
   <context>
     <name>Gui::FileOptionsDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="956"/>
+      <location filename="../FileDialog.cpp" line="960"/>
       <source>Extended</source>
       <translation>Expandit</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="993"/>
+      <location filename="../FileDialog.cpp" line="997"/>
       <source>All files (*.*)</source>
       <translation>Tots els fitxers (*.*)</translation>
     </message>
@@ -5864,27 +5880,27 @@ Voleu desar tots els canvis?</translation>
   <context>
     <name>Gui::Flag</name>
     <message>
-      <location filename="../Flag.cpp" line="164"/>
+      <location filename="../Flag.cpp" line="156"/>
       <source>Top Left</source>
       <translation>Superior esquerra</translation>
     </message>
     <message>
-      <location filename="../Flag.cpp" line="166"/>
+      <location filename="../Flag.cpp" line="158"/>
       <source>Bottom Left</source>
       <translation>Inferior esquerra</translation>
     </message>
     <message>
-      <location filename="../Flag.cpp" line="168"/>
+      <location filename="../Flag.cpp" line="160"/>
       <source>Top Right</source>
       <translation>Superior dreta</translation>
     </message>
     <message>
-      <location filename="../Flag.cpp" line="170"/>
+      <location filename="../Flag.cpp" line="162"/>
       <source>Bottom Right</source>
       <translation>Inferior dreta</translation>
     </message>
     <message>
-      <location filename="../Flag.cpp" line="173"/>
+      <location filename="../Flag.cpp" line="165"/>
       <source>Remove</source>
       <translation>Eliminar</translation>
     </message>
@@ -5892,22 +5908,22 @@ Voleu desar tots els canvis?</translation>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="979"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="955"/>
       <source>Tap OR click left mouse button.</source>
       <translation>Toqueu o feu clic amb el botó esquerre del ratolí.</translation>
     </message>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="981"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="957"/>
       <source>Drag screen with two fingers OR press right mouse button.</source>
       <translation>Arrossegueu la pantalla amb dos dits o premeu el botó dret del ratolí.</translation>
     </message>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="983"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="959"/>
       <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
       <translation>Arrossegueu la pantalla amb un dit o premeu el botó esquerre del ratolí. A Croquis i altres modes d'edició, manteniu a més Alt.</translation>
     </message>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="988"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="964"/>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll mouse wheel OR PgUp/PgDown on keyboard.</source>
       <translation>Pinceu (poseu dos dits en la pantalla i separeu-los o ajunteu-los). O feu girar la rodeta del ratolí. O utilitzeu les tecles Re Pàg/Av Pàg del teclat.</translation>
     </message>
@@ -5955,14 +5971,14 @@ Voleu desar tots els canvis?</translation>
       <translation>Mapa de bits</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="611"/>
-      <source>Export graph</source>
+      <location filename="../GraphvizView.cpp" line="519"/>
+      <location filename="../CommandDoc.cpp" line="762"/>
+      <source>Export Graph</source>
       <translation>Exporta el graf</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="762"/>
-      <location filename="../GraphvizView.cpp" line="519"/>
-      <source>Export Graph</source>
+      <location filename="../GraphvizView.cpp" line="611"/>
+      <source>Export graph</source>
       <translation>Exporta el graf</translation>
     </message>
   </context>
@@ -6121,112 +6137,112 @@ Voleu desar tots els canvis?</translation>
   <context>
     <name>Gui::MainWindow</name>
     <message>
-      <location filename="../MainWindow.cpp" line="201"/>
-      <location filename="../MainWindow.cpp" line="2662"/>
+      <location filename="../MainWindow.cpp" line="197"/>
+      <location filename="../MainWindow.cpp" line="2649"/>
       <source>Dimension</source>
       <translation>Cota</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="204"/>
+      <location filename="../MainWindow.cpp" line="200"/>
       <source>Unit System</source>
       <extracomment>A context menu action used to show or hide the unit system chooser in the status bar</extracomment>
       <translation>Sistema d'unitats</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="480"/>
+      <location filename="../MainWindow.cpp" line="476"/>
       <source>Preselection</source>
       <extracomment>A context menu action used to show or hide the preselection info in the status bar</extracomment>
       <translation>Preselecció</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="495"/>
+      <location filename="../MainWindow.cpp" line="491"/>
       <source>Input Hints</source>
       <extracomment>A context menu action used to show or hide the input hints in the status bar</extracomment>
       <translation>Suggeriments d'entrada</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="535"/>
+      <location filename="../MainWindow.cpp" line="531"/>
       <source>Quick Measure</source>
       <extracomment>A context menu action used to enable or disable quick measure in the status bar</extracomment>
       <translation>Mesura ràpida</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="550"/>
+      <location filename="../MainWindow.cpp" line="546"/>
       <source>Toggles the bottom dock panels</source>
       <extracomment>Tooltip for the status bar button that toggles bottom dock panels</extracomment>
       <translation>Commuta els panells acoblats inferiors</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="560"/>
+      <location filename="../MainWindow.cpp" line="556"/>
       <source>Bottom Panel Toggle</source>
       <extracomment>A context menu action used to show or hide the Toggle Bottom Panels button in the status bar</extracomment>
       <translation>Commutador dels panells inferiors</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="579"/>
+      <location filename="../MainWindow.cpp" line="575"/>
       <source>Notifications</source>
       <extracomment>A context menu action used to show or hide the 'notificationArea' toolbar widget</extracomment>
       <translation>Notificacions</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="637"/>
+      <location filename="../MainWindow.cpp" line="629"/>
       <source>Ready</source>
       <translation>Preparat</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1432"/>
+      <location filename="../MainWindow.cpp" line="1424"/>
       <source>Close All</source>
       <translation>Tanca-ho tot</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1705"/>
-      <location filename="../MainWindow.cpp" line="1706"/>
-      <location filename="../MainWindow.cpp" line="1707"/>
+      <location filename="../MainWindow.cpp" line="1697"/>
+      <location filename="../MainWindow.cpp" line="1698"/>
+      <location filename="../MainWindow.cpp" line="1699"/>
       <source>Toggles this toolbar</source>
       <translation>Commuta la barra d'eines</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1726"/>
-      <location filename="../MainWindow.cpp" line="1727"/>
-      <location filename="../MainWindow.cpp" line="1728"/>
+      <location filename="../MainWindow.cpp" line="1718"/>
+      <location filename="../MainWindow.cpp" line="1719"/>
+      <location filename="../MainWindow.cpp" line="1720"/>
       <source>Toggles this dockable window</source>
       <translation>Commuta la finestra flotant</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1931"/>
+      <location filename="../MainWindow.cpp" line="1927"/>
       <source>Safe mode enabled</source>
       <translation>Mode segur habilitat</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1932"/>
+      <location filename="../MainWindow.cpp" line="1928"/>
       <source>FreeCAD is now running in safe mode.</source>
       <translation>FreeCAD s'està executant en mode segur.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1936"/>
+      <location filename="../MainWindow.cpp" line="1932"/>
       <source>Safe mode temporarily disables your configurations and addons. Restart the application to exit safe mode.</source>
       <translation>El mode segur deshabilita temporalment les teves preferències i els complements. Reinicieu l'aplicació per sortir del mode segur.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2384"/>
-      <location filename="../MainWindow.cpp" line="2538"/>
+      <location filename="../MainWindow.cpp" line="2374"/>
+      <location filename="../MainWindow.cpp" line="2525"/>
       <source>Unsaved document</source>
       <translation>El document no s'ha desat</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2385"/>
+      <location filename="../MainWindow.cpp" line="2375"/>
       <source>The exported object contains external link. Save the documentat least once before exporting.</source>
       <translation>L’objecte exportat conté un enllaç extern. Deseu el documenta almenys una vegada abans d’exportar-lo.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2539"/>
+      <location filename="../MainWindow.cpp" line="2526"/>
       <source>To link to external objects, the document must be saved at least once.
 Save the document now?</source>
       <translation>Per a enllaçar amb objectes externs, el document s’ha de desar almenys una vegada.
 Voleu desar el document ara?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="3049"/>
+      <location filename="../MainWindow.cpp" line="3036"/>
       <source>Safe Mode</source>
       <translation>Mode segur</translation>
     </message>
@@ -6235,10 +6251,10 @@ Voleu desar el document ara?</translation>
     <name>Gui::ManualAlignment</name>
     <message>
       <location filename="../ManualAlignment.cpp" line="831"/>
-      <location filename="../ManualAlignment.cpp" line="1048"/>
-      <location filename="../ManualAlignment.cpp" line="1057"/>
-      <location filename="../ManualAlignment.cpp" line="1066"/>
-      <location filename="../ManualAlignment.cpp" line="1102"/>
+      <location filename="../ManualAlignment.cpp" line="1044"/>
+      <location filename="../ManualAlignment.cpp" line="1053"/>
+      <location filename="../ManualAlignment.cpp" line="1062"/>
+      <location filename="../ManualAlignment.cpp" line="1098"/>
       <source>Manual alignment</source>
       <translation>Alineació manual</translation>
     </message>
@@ -6248,107 +6264,107 @@ Voleu desar el document ara?</translation>
       <translation>La alineació ja està en curs.</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="860"/>
+      <location filename="../ManualAlignment.cpp" line="858"/>
       <source>Alignment[*]</source>
       <translation>Alineació[*]</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="866"/>
+      <location filename="../ManualAlignment.cpp" line="864"/>
       <source>Select at least 1 point in the left and the right view</source>
       <translation>Seleccioneu almenys 1 punt en les vistes esquerra i dreta</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="867"/>
+      <location filename="../ManualAlignment.cpp" line="865"/>
       <source>Select at least %1 points in the left and the right view</source>
       <translation>Selecciioneu almenys %1 punts en les vistes esquerra i dreta</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="929"/>
+      <location filename="../ManualAlignment.cpp" line="927"/>
       <source>Select points in the left and right view</source>
       <translation>Seleccioneu punts en les vistes esquerra i dreta</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1017"/>
+      <location filename="../ManualAlignment.cpp" line="1013"/>
       <source>The alignment has finished</source>
       <translation>L'alineació ha finalitzat.</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1036"/>
+      <location filename="../ManualAlignment.cpp" line="1032"/>
       <source>The alignment has been canceled</source>
       <translation>L'alineació s'ha cancel·lat.</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1049"/>
-      <location filename="../ManualAlignment.cpp" line="1123"/>
+      <location filename="../ManualAlignment.cpp" line="1045"/>
+      <location filename="../ManualAlignment.cpp" line="1119"/>
       <source>Too few points picked in the left view. At least %1 points are needed.</source>
       <translation>No s'han seleccionat prou punts en la vista esquerra. Fan falta almenys %1 punts.</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1058"/>
-      <location filename="../ManualAlignment.cpp" line="1128"/>
+      <location filename="../ManualAlignment.cpp" line="1054"/>
+      <location filename="../ManualAlignment.cpp" line="1124"/>
       <source>Too few points picked in the right view. At least %1 points are needed.</source>
       <translation>No s'han seleccionat prou punts en la vista dreta. Fan falta almenys %1 punts.</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1067"/>
+      <location filename="../ManualAlignment.cpp" line="1063"/>
       <source>Different number of points picked in left and right view.
 On the left view %1 points are picked,
 on the right view %2 points are picked.</source>
       <translation>S'ha seleccionat un nombre diferent de punts en les vistes esquerra i dreta. En la vista esquerra s'han seleccionat %1 punts, mentre que en la vista dreta se n'han seleccionat %2.</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1079"/>
+      <location filename="../ManualAlignment.cpp" line="1075"/>
       <source>Try to align group of views</source>
       <translation>Proveu d'alinear el grup de vistes</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1103"/>
+      <location filename="../ManualAlignment.cpp" line="1099"/>
       <source>The alignment failed.
 How do you want to proceed?</source>
       <translation>Ha fallat l'alineació. Voleu continuar?</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1134"/>
+      <location filename="../ManualAlignment.cpp" line="1130"/>
       <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
       <translation>S'ha seleccionat un nombre diferent de punts en les vistes esquerra i dreta. En la vista esquerra s'han seleccionat %1 punts, mentre que en la vista dreta se n'han seleccionat %2.</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1243"/>
+      <location filename="../ManualAlignment.cpp" line="1239"/>
       <source>Point_%1</source>
       <translation>Punt_%1</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1351"/>
+      <location filename="../ManualAlignment.cpp" line="1347"/>
       <source>Point picked at (%1,%2,%3)</source>
       <translation>Punt seleccionat en (%1,%2,%3)</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1355"/>
+      <location filename="../ManualAlignment.cpp" line="1351"/>
       <source>No point was found on model</source>
       <translation>No s'ha trobat cap punt en el model.</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1360"/>
+      <location filename="../ManualAlignment.cpp" line="1356"/>
       <source>No point was picked</source>
       <translation>No s'ha seleccionat cap punt.</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1379"/>
+      <location filename="../ManualAlignment.cpp" line="1375"/>
       <source>&amp;Align</source>
       <translation>&amp;Alineat</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1380"/>
+      <location filename="../ManualAlignment.cpp" line="1376"/>
       <source>&amp;Remove Last Point</source>
       <translation>&amp;Eliminar el darrer punt</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1386"/>
+      <location filename="../ManualAlignment.cpp" line="1382"/>
       <source>&amp;Synchronize Views</source>
       <translation>&amp;Sincronitza vistes</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1382"/>
+      <location filename="../ManualAlignment.cpp" line="1378"/>
       <source>&amp;Cancel</source>
       <translation>&amp;Cancel·la</translation>
     </message>
@@ -6493,12 +6509,12 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4668"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4665"/>
       <source>Error</source>
       <translation>Error</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4668"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4665"/>
       <source>Object not found</source>
       <translation>No s'ha trobat l'objecte.</translation>
     </message>
@@ -6506,152 +6522,152 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::PropertyEditor</name>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="394"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="381"/>
       <source>Edit</source>
       <translation>Edita</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="405"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="392"/>
       <source>property</source>
       <translation>propietat</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="931"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="918"/>
       <source>Expand/Collapse Properties</source>
       <translation>Expandeix/Replega les propietats</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="933"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="920"/>
       <source>Expand to Default</source>
       <translation>Expandeix a predeterminat</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="935"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="922"/>
       <source>Expand All</source>
       <translation>Expandeix-ho tot</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="937"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="924"/>
       <source>Collapse All</source>
       <translation>Replega-ho tot</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="943"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="930"/>
       <source>Default Expand</source>
       <translation>Expansió predeterminada</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="946"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="933"/>
       <source>Auto Expand</source>
       <translation>Expansió automàtica</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="949"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="936"/>
       <source>Auto Collapse</source>
       <translation>Replegament automàtic</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1039"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1026"/>
       <source>object %1 (%2):
 </source>
       <translation>objecte %1 (%2):
 </translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1046"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1033"/>
       <source>property %1
 </source>
       <translation>propietat %1
 </translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1058"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1045"/>
       <source>document %1:
 </source>
       <translation>document %1:
 </translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1083"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1070"/>
       <source>The property %1 in object %2 (%3) in document %4 is referenced by:</source>
       <translation>La propietat %1 de l'objecte %2 (%3) del document %4 és referenciada per:</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1099"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1086"/>
       <source>(No references found.)</source>
       <translation>(No s'ha trobat cap referència.)</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1117"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1205"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1104"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1192"/>
       <source>Property Uses</source>
       <translation>Usos de la propietat</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1147"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1134"/>
       <source>Copy</source>
       <translation>Copia</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1155"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1142"/>
       <source>Add Property</source>
       <translation>Afegir Propietat</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1162"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1445"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1149"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1432"/>
       <source>Rename Property Group</source>
       <translation>Reanomena el nom del grup de propietats</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1173"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1160"/>
       <source>Cannot rename group: one or more properties have names that start with the group name</source>
       <translation>No es pot reanomenar el grup: una o més propietats tenen noms que comencen pel nom del grup</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1182"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1415"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1169"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1402"/>
       <source>Rename Property</source>
       <translation>Reanomena la propietat</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1183"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1385"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1170"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1372"/>
       <source>Edit Property Tooltip</source>
       <translation>Editar propietats eina de punta</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1200"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1187"/>
       <source>Delete Property</source>
       <translation>Eliminar Propietat</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1215"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1202"/>
       <source>Move Property</source>
       <translation>Mou la propietat</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1386"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1373"/>
       <source>Tooltip</source>
       <translation>Consell</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1225"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1212"/>
       <source>Show Hidden</source>
       <translation>Mostrar ocults</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1242"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1229"/>
       <source>Expression</source>
       <translation>Expressió</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1416"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1403"/>
       <source>Property name</source>
       <translation>Nom de la propietat</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1446"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1433"/>
       <source>Group name:</source>
       <translation>Nom del grup:</translation>
     </message>
@@ -6673,13 +6689,13 @@ How do you want to proceed?</source>
     <name>Gui::PropertyView</name>
     <message>
       <location filename="../PropertyView.cpp" line="91"/>
-      <location filename="../PropertyView.cpp" line="608"/>
+      <location filename="../PropertyView.cpp" line="612"/>
       <source>View</source>
       <translation>Visualització</translation>
     </message>
     <message>
       <location filename="../PropertyView.cpp" line="96"/>
-      <location filename="../PropertyView.cpp" line="609"/>
+      <location filename="../PropertyView.cpp" line="613"/>
       <source>Data</source>
       <translation>Dades</translation>
     </message>
@@ -6727,43 +6743,43 @@ Voleu sortir sense desar les dades?</translation>
       <translation>S'ha produït una excepció de C++ no gestionada desconeguda.</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1348"/>
+      <location filename="../PythonConsole.cpp" line="1334"/>
       <source>&amp;Copy</source>
       <translation>&amp;Copia</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1352"/>
+      <location filename="../PythonConsole.cpp" line="1338"/>
       <source>&amp;Copy Command</source>
       <translation>&amp;Copia l'ordre</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1355"/>
+      <location filename="../PythonConsole.cpp" line="1341"/>
       <source>&amp;Copy History</source>
       <translation>&amp;Copia l'historial</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1358"/>
+      <location filename="../PythonConsole.cpp" line="1344"/>
       <source>Save History As…</source>
       <translation>Anomena i desa l'historial…</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1362"/>
+      <location filename="../PythonConsole.cpp" line="1348"/>
       <source>Saves Python history across %1 sessions</source>
       <translation>Desa l'historial de Python entre %1 sessions</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1368"/>
+      <location filename="../PythonConsole.cpp" line="1354"/>
       <source>&amp;Paste</source>
       <translation>A&amp;pega</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1373"/>
+      <location filename="../PythonConsole.cpp" line="1359"/>
       <source>Select All</source>
       <translation>Selecciona-ho tot</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1361"/>
-      <location filename="../PythonConsole.cpp" line="1414"/>
+      <location filename="../PythonConsole.cpp" line="1347"/>
+      <location filename="../PythonConsole.cpp" line="1400"/>
       <source>Save History</source>
       <translation>Desa l'historial</translation>
     </message>
@@ -6773,22 +6789,22 @@ Voleu sortir sense desar les dades?</translation>
       <translation>Neteja la consola</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1381"/>
+      <location filename="../PythonConsole.cpp" line="1367"/>
       <source>Insert File Name…</source>
       <translation>Inseriu un nom de fitxer…</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1384"/>
+      <location filename="../PythonConsole.cpp" line="1370"/>
       <source>Word Wrap</source>
       <translation>Ajust de les paraules</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1416"/>
+      <location filename="../PythonConsole.cpp" line="1402"/>
       <source>Macro Files</source>
       <translation>Fitxers de macro</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1438"/>
+      <location filename="../PythonConsole.cpp" line="1424"/>
       <source>Insert file name</source>
       <translation>Inseriu un nom de fitxer</translation>
     </message>
@@ -6814,30 +6830,30 @@ Voleu sortir sense desar les dades?</translation>
   <context>
     <name>Gui::RecentFilesAction</name>
     <message>
-      <location filename="../Action.cpp" line="877"/>
+      <location filename="../Action.cpp" line="871"/>
       <source>Open...</source>
       <translation>Obre...</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="878"/>
-      <location filename="../Action.cpp" line="879"/>
+      <location filename="../Action.cpp" line="872"/>
+      <location filename="../Action.cpp" line="873"/>
       <source>Open a document or import files.</source>
       <translation>Obre un document o importa fitxers.</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="894"/>
-      <location filename="../Action.cpp" line="903"/>
+      <location filename="../Action.cpp" line="888"/>
+      <location filename="../Action.cpp" line="897"/>
       <source>Clear Recent Files</source>
       <extracomment>Empties the list of recent files</extracomment>
       <translation>Neteja els fitxers recents</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="904"/>
+      <location filename="../Action.cpp" line="898"/>
       <source>Clear the list of recent files?</source>
       <translation>Voleu netejar la llista de fitxers recents?</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="979"/>
+      <location filename="../Action.cpp" line="973"/>
       <source>Open file %1</source>
       <translation>Obre el fitxer %1</translation>
     </message>
@@ -6845,12 +6861,12 @@ Voleu sortir sense desar les dades?</translation>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-      <location filename="../Action.cpp" line="1154"/>
+      <location filename="../Action.cpp" line="1148"/>
       <source>none</source>
       <translation>cap</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1172"/>
+      <location filename="../Action.cpp" line="1166"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation>Corre la macro %1 (Maj+clic per editar) drecera de teclat: %2</translation>
     </message>
@@ -6914,12 +6930,12 @@ Voleu sortir sense desar les dades?</translation>
   <context>
     <name>Gui::SelectModule</name>
     <message>
-      <location filename="../FileDialog.cpp" line="1372"/>
+      <location filename="../FileDialog.cpp" line="1376"/>
       <source>Select Module</source>
       <translation>Seleccioneu el mòdul</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="1374"/>
+      <location filename="../FileDialog.cpp" line="1378"/>
       <source>Open %1 as</source>
       <translation>Obre %1 com a</translation>
     </message>
@@ -7432,7 +7448,7 @@ Specify another directory?</source>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="4262"/>
+      <location filename="../Tree.cpp" line="4254"/>
       <source>Search</source>
       <translation>Cerca</translation>
     </message>
@@ -7440,234 +7456,234 @@ Specify another directory?</source>
   <context>
     <name>Gui::TreeWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="1312"/>
+      <location filename="../Tree.cpp" line="1317"/>
       <source>Activate Document</source>
       <translation>Activa el document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1319"/>
+      <location filename="../Tree.cpp" line="1324"/>
       <source>Activates document %1</source>
       <translation>Activa el document %1</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1334"/>
+      <location filename="../Tree.cpp" line="1339"/>
       <source>Tree Settings</source>
       <translation>Opcions d'Arbre</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1338"/>
+      <location filename="../Tree.cpp" line="1343"/>
       <source>Show Description</source>
       <translation>Mostra la descripció</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1339"/>
+      <location filename="../Tree.cpp" line="1344"/>
       <source>Show Internal Name</source>
       <translation>Mostrar nom intern</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1360"/>
+      <location filename="../Tree.cpp" line="1365"/>
       <source>Shows an internal name column for items.</source>
       <translation>Mostra un nom de columna interna per als elements.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1408"/>
+      <location filename="../Tree.cpp" line="1413"/>
       <source>Group</source>
       <translation>Grup</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3411"/>
-      <location filename="../Tree.cpp" line="3432"/>
+      <location filename="../Tree.cpp" line="3403"/>
+      <location filename="../Tree.cpp" line="3424"/>
       <source>Error</source>
       <translation>Error</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3411"/>
+      <location filename="../Tree.cpp" line="3403"/>
       <source>File does not exist.</source>
       <translation>El fitxer no existeix.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3432"/>
+      <location filename="../Tree.cpp" line="3424"/>
       <source>Failed to open directory.</source>
       <translation>No s'ha pogut obrir el directori.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3911"/>
+      <location filename="../Tree.cpp" line="3903"/>
       <source>Labels &amp; Attributes</source>
       <translation>Etiquetes i atributs</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3912"/>
+      <location filename="../Tree.cpp" line="3904"/>
       <source>Description</source>
       <translation>Descripció</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3913"/>
+      <location filename="../Tree.cpp" line="3905"/>
       <source>Internal name</source>
       <translation>Nom intern</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3915"/>
+      <location filename="../Tree.cpp" line="3907"/>
       <source>Show Items Hidden in Tree View</source>
       <translation>Mostra objectes amagats en la vista en arbre</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3917"/>
+      <location filename="../Tree.cpp" line="3909"/>
       <source>Shows items that are marked as 'hidden' in the tree view</source>
       <translation>Mostra objectes marcats com a "ocults" a la vista en arbre</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3920"/>
+      <location filename="../Tree.cpp" line="3912"/>
       <source>Toggle Visibility in Tree View</source>
       <translation>Commuta la visibilitat en la vista en arbre</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3925"/>
+      <location filename="../Tree.cpp" line="3917"/>
       <source>Create Group</source>
       <translation>Crear grup</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3926"/>
+      <location filename="../Tree.cpp" line="3918"/>
       <source>Creates a group</source>
       <translation>Crea un grup</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3929"/>
+      <location filename="../Tree.cpp" line="3921"/>
       <source>Renames object</source>
       <translation>Reanomena l'objecte</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3931"/>
+      <location filename="../Tree.cpp" line="3923"/>
       <source>Finish Editing</source>
       <translation>Finalitza l'edició</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3932"/>
+      <location filename="../Tree.cpp" line="3924"/>
       <source>Finishes editing object</source>
       <translation>Finalitza l'edició de l'objecte</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3934"/>
+      <location filename="../Tree.cpp" line="3926"/>
       <source>Add Dependent Objects to Selection</source>
       <translation>Afegiu objectes dependents a la selecció</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3937"/>
+      <location filename="../Tree.cpp" line="3929"/>
       <source>Close Document</source>
       <translation>Tanca document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3938"/>
+      <location filename="../Tree.cpp" line="3930"/>
       <source>Closes the document</source>
       <translation>Tanca el document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3943"/>
+      <location filename="../Tree.cpp" line="3935"/>
       <source>Reveals the current file location in Finder</source>
       <translation>Mostra la ubicació actual del fitxer al buscador</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3946"/>
+      <location filename="../Tree.cpp" line="3938"/>
       <source>Opens the current file location</source>
       <translation>Obre la ubicació actual del fitxer</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3949"/>
+      <location filename="../Tree.cpp" line="3941"/>
       <source>Reload Document</source>
       <translation>Torna a carregar el document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3950"/>
+      <location filename="../Tree.cpp" line="3942"/>
       <source>Reloads a partially loaded document</source>
       <translation>Torna a carregar un document que s'ha carregat parcialment</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3952"/>
+      <location filename="../Tree.cpp" line="3944"/>
       <source>Skip Recomputes</source>
       <translation>Omet el recàlcul</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3953"/>
+      <location filename="../Tree.cpp" line="3945"/>
       <source>Enables or disables the recomputations of document</source>
       <translation>Activa o desactiva els recàlculs del document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3955"/>
+      <location filename="../Tree.cpp" line="3947"/>
       <source>Allow Partial Recomputes</source>
       <translation>Permet recàlculs parcials</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3956"/>
+      <location filename="../Tree.cpp" line="3948"/>
       <source>Enables or disables the recomputating editing object when 'skip recomputation' is enabled</source>
       <translation>Habilita o inhabilita el recàlcul de l'edició d'objectes quan estigui activat «Omet el recàlcul»</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3960"/>
+      <location filename="../Tree.cpp" line="3952"/>
       <source>Mark to Recompute</source>
       <translation>Marca per a recalcular</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3961"/>
+      <location filename="../Tree.cpp" line="3953"/>
       <source>Marks this object to be recomputed</source>
       <translation>Marca aquest objecte per a recalcular-lo</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3964"/>
+      <location filename="../Tree.cpp" line="3956"/>
       <source>Recompute Object</source>
       <translation>Recalcula l'objecte</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3965"/>
+      <location filename="../Tree.cpp" line="3957"/>
       <source>Recomputes the selected object</source>
       <translation>Recalcula l'objecte seleccionat</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3922"/>
+      <location filename="../Tree.cpp" line="3914"/>
       <source>Toggles the visibility of selected items in the tree view</source>
       <translation>Commuta la visibilitat dels objectes seleccionats</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="657"/>
+      <location filename="../Tree.cpp" line="662"/>
       <source>Search Objects</source>
       <translation>Cerca objectes</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="658"/>
+      <location filename="../Tree.cpp" line="663"/>
       <source>Searches for objects in the tree</source>
       <translation>Cerca objectes en l'arbre</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1341"/>
+      <location filename="../Tree.cpp" line="1346"/>
       <source>Shows a description column for items. An item's description can be set by editing the 'label2' property.</source>
       <translation>Mostra una columna de descripció per als elements. La descripció d'un element es pot definir editant la propietat 'label2'.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3928"/>
-      <location filename="../Tree.cpp" line="6626"/>
+      <location filename="../Tree.cpp" line="3920"/>
+      <location filename="../Tree.cpp" line="6613"/>
       <source>Rename</source>
       <translation>Reanomena</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3935"/>
+      <location filename="../Tree.cpp" line="3927"/>
       <source>Adds all dependent objects to the selection</source>
       <translation>Afegiu tots els objectes dependents a la selecció</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3942"/>
+      <location filename="../Tree.cpp" line="3934"/>
       <source>Reveal in Finder</source>
       <translation>Mostra al buscador</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3945"/>
+      <location filename="../Tree.cpp" line="3937"/>
       <source>Open File Location</source>
       <translation>Obre la ubicació del fitxer</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6594"/>
+      <location filename="../Tree.cpp" line="6581"/>
       <source> (but must be executed)</source>
       <translation> (però s'ha d'executar)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6597"/>
+      <location filename="../Tree.cpp" line="6584"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, nom intern: %2</translation>
     </message>
@@ -7716,12 +7732,12 @@ Specify another directory?</source>
   <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
-      <location filename="../Action.cpp" line="738"/>
+      <location filename="../Action.cpp" line="732"/>
       <source>Selects the '%1' workbench</source>
       <translation>Selecciona el banc de treball '%1'</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="766"/>
+      <location filename="../Action.cpp" line="760"/>
       <source>Select the '%1' workbench</source>
       <translation>Selecciona el banc de treball '%1'</translation>
     </message>
@@ -7888,47 +7904,47 @@ Specify another directory?</source>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../MainWindow.cpp" line="739"/>
+      <location filename="../MainWindow.cpp" line="731"/>
       <source>Tasks</source>
       <translation>Tasques</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="756"/>
+      <location filename="../MainWindow.cpp" line="748"/>
       <source>Selection View</source>
       <translation>Vista de selecció</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="774"/>
+      <location filename="../MainWindow.cpp" line="766"/>
       <source>Report View</source>
       <translation>Visualització de l'informe</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="794"/>
+      <location filename="../MainWindow.cpp" line="786"/>
       <source>Python Console</source>
       <translation>Consola Python</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="821"/>
+      <location filename="../MainWindow.cpp" line="813"/>
       <source>Tree View</source>
       <translation>Vista d'Arbre</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="851"/>
+      <location filename="../MainWindow.cpp" line="843"/>
       <source>Property View</source>
       <translation>Visualització de les propietats</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="880"/>
+      <location filename="../MainWindow.cpp" line="872"/>
       <source>Task List</source>
       <translation>Llista de tasques</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="909"/>
+      <location filename="../MainWindow.cpp" line="901"/>
       <source>Model</source>
       <translation>Model</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="939"/>
+      <location filename="../MainWindow.cpp" line="931"/>
       <source>DAG View</source>
       <translation>Vista DAG</translation>
     </message>
@@ -8033,12 +8049,12 @@ Comproveu la vista d'informes per a veure més detalls.</translation>
       <translation>%1</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="368"/>
+      <location filename="../StartupProcess.cpp" line="357"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Upgrade the graphics driver and/or card as required.</source>
       <translation>Aquest sistema està executant OpenGL %1.%2. FreeCAD requereix OpenGL 2.0 o superior. Actualitzeu el controlador de gràfics i/o la targeta segons calgui.</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="379"/>
+      <location filename="../StartupProcess.cpp" line="368"/>
       <source>Invalid OpenGL Version</source>
       <translation>Versió d'OpenGL invàlida</translation>
     </message>
@@ -8137,6 +8153,13 @@ Comproveu la vista d'informes per a veure més detalls.</translation>
       <location filename="../CommandDoc.cpp" line="683"/>
       <source>Merge Document</source>
       <translation>Fusiona el document</translation>
+    </message>
+    <message>
+      <location filename="../CommandDoc.cpp" line="673"/>
+      <location filename="../Document.cpp" line="1749"/>
+      <location filename="../Document.cpp" line="1879"/>
+      <source>%1 document</source>
+      <translation>Document de %1</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="684"/>
@@ -8586,13 +8609,6 @@ Useu 'Anomena i desa…' per a conservar el fitxer original.
       <translation>Desa el document amb un altre nom…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1749"/>
-      <location filename="../Document.cpp" line="1879"/>
-      <location filename="../CommandDoc.cpp" line="673"/>
-      <source>%1 document</source>
-      <translation>Document de %1</translation>
-    </message>
-    <message>
       <location filename="../Document.cpp" line="1865"/>
       <source>Save a copy of the document under new filename…</source>
       <translation>Desa una còpia del document amb un altre nom…</translation>
@@ -8723,12 +8739,12 @@ Trieu «Interromp» per a interrompre</translation>
       <translation>No es pot obrir el navegador del sistema.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3332"/>
+      <location filename="../View3DInventorViewer.cpp" line="3342"/>
       <source>Out of memory</source>
       <translation>No hi ha prou memòria.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3333"/>
+      <location filename="../View3DInventorViewer.cpp" line="3343"/>
       <source>Not enough memory available to display the data.</source>
       <translation>No hi ha prou memòria disponible per a mostrar les dades.</translation>
     </message>
@@ -8744,38 +8760,38 @@ Trieu «Interromp» per a interrompre</translation>
       <translation>No s'ha trobat el fitxer %1 ni en %2 ni en %3</translation>
     </message>
     <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="2665"/>
+      <location filename="../Navigation/NavigationStyle.cpp" line="2801"/>
       <source>Clarify Selection</source>
       <translation>Aclarir la selecció</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1004"/>
+      <location filename="../MainWindow.cpp" line="996"/>
       <location filename="../CommandDoc.cpp" line="1463"/>
       <source>Unsaved Document</source>
       <translation>Document no desat</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1008"/>
+      <location filename="../MainWindow.cpp" line="1000"/>
       <source>Save all changes to document '%1' before closing?</source>
       <translation>Voleu desar tots els canvis al document '%1' abans de tancar?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1009"/>
+      <location filename="../MainWindow.cpp" line="1001"/>
       <source>Save all changes to document before closing?</source>
       <translation>Voleu desar tots els canvis al document '' abans de tancar?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1013"/>
+      <location filename="../MainWindow.cpp" line="1005"/>
       <source>Otherwise, all changes will be lost.</source>
       <translation>Altrament, es perdran tots els canvis.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1139"/>
+      <location filename="../MainWindow.cpp" line="1131"/>
       <source>%1 Document(s) not saved</source>
       <translation>Document (s) %1 no desat</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1140"/>
+      <location filename="../MainWindow.cpp" line="1132"/>
       <source>Some documents could not be saved. Cancel closing?</source>
       <translation>Alguns documents no s'han pogut desar. Vol cancel·lar la sortida?</translation>
     </message>
@@ -8868,13 +8884,13 @@ Trieu «Interromp» per a interrompre</translation>
       <translation>No s'ha pogut afegir la propietat a «%1»: %2</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2787"/>
-      <location filename="../Tree.cpp" line="3184"/>
+      <location filename="../Tree.cpp" line="2779"/>
+      <location filename="../Tree.cpp" line="3176"/>
       <source>Drag &amp; drop failed</source>
       <translation>S'ha produït un error en arrossegar i deixar anar</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1018"/>
+      <location filename="../MainWindow.cpp" line="1010"/>
       <location filename="../ViewProviderLink.cpp" line="3055"/>
       <source>Apply to all</source>
       <translation>Aplicar a tot</translation>
@@ -8986,8 +9002,8 @@ la còpia actual es perdrà.
       <translation>Alterna la superposició</translation>
     </message>
     <message>
+      <location filename="../OverlayWidgets.cpp" line="2594"/>
       <location filename="../OverlayManager.cpp" line="1123"/>
-      <location filename="../OverlayWidgets.cpp" line="2618"/>
       <source>Toggle floating window</source>
       <translation>Alterna la finestra flotant</translation>
     </message>
@@ -9173,11 +9189,6 @@ la còpia actual es perdrà.
       <translation>Aplica-ho a tots els objectes seleccionats (%1) i als seus fills</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="78"/>
-      <source>Part</source>
-      <translation>Peça</translation>
-    </message>
-    <message>
       <location filename="../ViewProviderImagePlane.cpp" line="172"/>
       <source>Edit Image Plane</source>
       <translation>Edita el pla d'imatge</translation>
@@ -9191,6 +9202,11 @@ la còpia actual es perdrà.
       <location filename="../FileDialog.cpp" line="301"/>
       <source>All Files</source>
       <translation>Tots els fitxers</translation>
+    </message>
+    <message>
+      <location filename="../CommandStructure.cpp" line="78"/>
+      <source>Part</source>
+      <translation>Peça</translation>
     </message>
   </context>
   <context>
@@ -9515,8 +9531,8 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdNew</name>
     <message>
-      <location filename="../MainWindow.cpp" line="2655"/>
-      <location filename="../DocumentRecovery.cpp" line="413"/>
+      <location filename="../MainWindow.cpp" line="2642"/>
+      <location filename="../DocumentRecovery.cpp" line="410"/>
       <source>Unnamed</source>
       <translation>Sense nom</translation>
     </message>
@@ -11932,67 +11948,67 @@ la regió no són opacs.</translation>
   <context>
     <name>Gui::OverlayTabWidget</name>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="995"/>
+      <location filename="../OverlayWidgets.cpp" line="991"/>
       <source>Toggle transparent mode</source>
       <translation>Alterna el mode de transparència</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="996"/>
+      <location filename="../OverlayWidgets.cpp" line="992"/>
       <source>None</source>
       <translation>Cap</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="997"/>
+      <location filename="../OverlayWidgets.cpp" line="993"/>
       <source>Turn off auto hide/show</source>
       <translation>Desactiva l'ocultació/mostra automàtica</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="998"/>
+      <location filename="../OverlayWidgets.cpp" line="994"/>
       <source>Auto hide</source>
       <translation>Ocultació automàtica</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="999"/>
+      <location filename="../OverlayWidgets.cpp" line="995"/>
       <source>Auto hide docked widgets on leave</source>
       <translation>Ocultar automàticament els ginys acoblats en sortir</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="1000"/>
+      <location filename="../OverlayWidgets.cpp" line="996"/>
       <source>Hide on edit</source>
       <translation>Ocultar en editar</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="1001"/>
+      <location filename="../OverlayWidgets.cpp" line="997"/>
       <source>Auto hide docked widgets on editing</source>
       <translation>Ocultar automàticament els ginys acoblats en editar</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="1002"/>
+      <location filename="../OverlayWidgets.cpp" line="998"/>
       <source>Show on edit</source>
       <translation>Mostrar en editar</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="1003"/>
+      <location filename="../OverlayWidgets.cpp" line="999"/>
       <source>Auto show docked widgets on editing</source>
       <translation>Mostrar automàticament els ginys acoblats en editar</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="1004"/>
+      <location filename="../OverlayWidgets.cpp" line="1000"/>
       <source>Auto task</source>
       <translation>Tasca automàtica</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="1006"/>
+      <location filename="../OverlayWidgets.cpp" line="1002"/>
       <source>Auto show task view for any current task, and hide the view when there is no task.</source>
       <translation>Mostra automàticament la vista de tasques per a qualsevol tasca actual i amaga la vista quan no hi hagi cap tasca.</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="1008"/>
+      <location filename="../OverlayWidgets.cpp" line="1004"/>
       <source>Toggle overlay</source>
       <translation>Alterna la superposició</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="1152"/>
+      <location filename="../OverlayWidgets.cpp" line="1148"/>
       <source>Select auto show/hide mode</source>
       <translation>Seleccioneu el mode de mostrar/amagar automàticament</translation>
     </message>
@@ -14364,7 +14380,7 @@ Això fa que les finestres acoblables siguin sempre transparents.</translation>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1108"/>
+      <location filename="../ExpressionCompleter.cpp" line="1530"/>
       <source>Exact Match</source>
       <translation>Coincidència exacta</translation>
     </message>
@@ -14372,7 +14388,7 @@ Això fa que les finestres acoblables siguin sempre transparents.</translation>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1297"/>
+      <location filename="../ExpressionCompleter.cpp" line="1715"/>
       <source>Exact Match</source>
       <translation>Coincidència exacta</translation>
     </message>
@@ -14380,13 +14396,13 @@ Això fa que les finestres acoblables siguin sempre transparents.</translation>
   <context>
     <name>Gui::FileChooser</name>
     <message>
-      <location filename="../FileDialog.cpp" line="1259"/>
-      <location filename="../FileDialog.cpp" line="1269"/>
+      <location filename="../FileDialog.cpp" line="1263"/>
+      <location filename="../FileDialog.cpp" line="1273"/>
       <source>Select a File</source>
       <translation>Seleccionar un fitxer</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="1279"/>
+      <location filename="../FileDialog.cpp" line="1283"/>
       <source>Select a Directory</source>
       <translation>Seleccioneu un directori</translation>
     </message>
@@ -14402,7 +14418,7 @@ Això fa que les finestres acoblables siguin sempre transparents.</translation>
   <context>
     <name>Gui::OverlayTitleBar</name>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2258"/>
+      <location filename="../OverlayWidgets.cpp" line="2250"/>
       <source>Mouse pass through, Esc to stop</source>
       <translation>Desplaçar el ratolí, Esc per aturar-ho</translation>
     </message>
@@ -14410,7 +14426,7 @@ Això fa que les finestres acoblables siguin sempre transparents.</translation>
   <context>
     <name>Gui::DockWnd::PropertyDockView</name>
     <message>
-      <location filename="../PropertyView.cpp" line="620"/>
+      <location filename="../PropertyView.cpp" line="624"/>
       <source>Property View</source>
       <translation>Visualització de les propietats</translation>
     </message>
@@ -14418,7 +14434,7 @@ Això fa que les finestres acoblables siguin sempre transparents.</translation>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="4334"/>
+      <location filename="../Tree.cpp" line="4326"/>
       <source>Tree View</source>
       <translation>Vista d'Arbre</translation>
     </message>
@@ -14426,48 +14442,48 @@ Això fa que les finestres acoblables siguin sempre transparents.</translation>
   <context>
     <name>Gui::Dialog::DlgExpressionInput</name>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="80"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="79"/>
       <source>Revert to last calculated value (as constant)</source>
       <translation>Reverteix a l'últim valor calculat (com a constant)</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="407"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="406"/>
       <source> (Warning: unit discarded)</source>
       <translation> (Avís: unitat descartada)</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="513"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="523"/>
       <source>Invalid property name: %1</source>
       <translation>El nom de propietat '%1' no és vàlid</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="517"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="527"/>
       <source>Unknown object</source>
       <translation>Objecte desconegut</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="523"/>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="928"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="533"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="938"/>
       <source>the name cannot be empty</source>
       <translation>el nom no pot estar buit</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="533"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="543"/>
       <source>%1 is a unit</source>
       <translation>%1' és una unitat</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="538"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="548"/>
       <source>%1 is a constant</source>
       <translation>%1' és una constant</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="544"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="554"/>
       <source>%1 already exists</source>
       <translation>%1 ja existeix</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="924"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="934"/>
       <source>Invalid group name: %1</source>
       <translation>El nom de grup no és vàlid: %1</translation>
     </message>
@@ -14541,8 +14557,8 @@ Això fa que les finestres acoblables siguin sempre transparents.</translation>
   <context>
     <name>Gui::Dialog::DlgCustomToolBoxbarsImp</name>
     <message>
-      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="888"/>
-      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="897"/>
+      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="880"/>
+      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="889"/>
       <source>Toolbox Bars</source>
       <translation>Barres de caixes d'eines</translation>
     </message>
@@ -14573,7 +14589,7 @@ Això fa que les finestres acoblables siguin sempre transparents.</translation>
   <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4703"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4700"/>
       <source>Changes the linked object</source>
       <translation>Canvia l'objecte enllaçat</translation>
     </message>
@@ -14594,17 +14610,17 @@ Això fa que les finestres acoblables siguin sempre transparents.</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="307"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="306"/>
       <source>Value out of range (%1 out of [%2, %3])</source>
       <translation>Valor fora de rang (%1 de [%2, %3])</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="392"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="391"/>
       <source>Not a Number</source>
       <translation>No és un nombre</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="400"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="399"/>
       <source>Unit mismatch between result and required unit</source>
       <translation>Discrepància d'unitats entre el resultat i la unitat requerida</translation>
     </message>
@@ -14874,19 +14890,6 @@ treated as shortcut key sequence 'F, F'.</source>
     </message>
   </context>
   <context>
-    <name>StdCmdToggleBottomPanels</name>
-    <message>
-      <location filename="../CommandView.cpp" line="3858"/>
-      <source>Toggle Bottom Panels</source>
-      <translation>Commuta els panells inferiors</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="3859"/>
-      <source>Toggles the bottom dock panels</source>
-      <translation>Commuta els panells acoblats inferiors</translation>
-    </message>
-  </context>
-  <context>
     <name>Gui::Command</name>
     <message>
       <location filename="../Command.cpp" line="1063"/>
@@ -14907,50 +14910,6 @@ treated as shortcut key sequence 'F, F'.</source>
       <location filename="../Command.cpp" line="1070"/>
       <source>DEVELOPMENT PREVIEW: this command may change or be removed.</source>
       <translation>PREVISUALITZACIÓ DE DESENVOLUPAMENT: aquesta ordre pot canviar o ser eliminada.</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdToggleSuppress</name>
-    <message>
-      <location filename="../CommandFeat.cpp" line="240"/>
-      <source>Toggle Suppressed</source>
-      <translation>Commuta l'estat suprimit</translation>
-    </message>
-    <message>
-      <location filename="../CommandFeat.cpp" line="242"/>
-      <source>Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</source>
-      <translation>Commuta l'estat suprimit dels objectes seleccionats. Un objecte suprimit es comporta com si s'hagués eliminat.</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdHelpGroup</name>
-    <message>
-      <location filename="../CommandStd.cpp" line="322"/>
-      <source>Help</source>
-      <translation>Ajuda</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="323"/>
-      <source>Opens the documentation corresponding to the selection</source>
-      <translation>Obre la documentació corresponent a la selecció</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdAnnotationLabel</name>
-    <message>
-      <location filename="../CommandStd.cpp" line="1024"/>
-      <source>Tools</source>
-      <translation>Eines</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="1025"/>
-      <source>Annotation Label</source>
-      <translation>Etiqueta d'anotació</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="1026"/>
-      <source>Creates a new annotation label at the picked location in the 3D view</source>
-      <translation>Crea una etiqueta d'anotació nova a la ubicació triada a la vista 3D</translation>
     </message>
   </context>
   <context>
@@ -14977,19 +14936,6 @@ treated as shortcut key sequence 'F, F'.</source>
       <location filename="../CommandDoc.cpp" line="964"/>
       <source>Saves the active document</source>
       <translation>Desa el document actiu</translation>
-    </message>
-  </context>
-  <context>
-    <name>Gui::PropertyMapEditor</name>
-    <message>
-      <location filename="../Widgets.cpp" line="1913"/>
-      <source>Key</source>
-      <translation>Clau</translation>
-    </message>
-    <message>
-      <location filename="../Widgets.cpp" line="1913"/>
-      <source>Value</source>
-      <translation>Valor</translation>
     </message>
   </context>
   <context>
@@ -15031,17 +14977,87 @@ treated as shortcut key sequence 'F, F'.</source>
     </message>
   </context>
   <context>
+    <name>Gui::PropertyMapEditor</name>
+    <message>
+      <location filename="../Widgets.cpp" line="1913"/>
+      <source>Key</source>
+      <translation>Clau</translation>
+    </message>
+    <message>
+      <location filename="../Widgets.cpp" line="1913"/>
+      <source>Value</source>
+      <translation>Valor</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleSuppress</name>
+    <message>
+      <location filename="../CommandFeat.cpp" line="240"/>
+      <source>Toggle Suppressed</source>
+      <translation>Commuta l'estat suprimit</translation>
+    </message>
+    <message>
+      <location filename="../CommandFeat.cpp" line="242"/>
+      <source>Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</source>
+      <translation>Commuta l'estat suprimit dels objectes seleccionats. Un objecte suprimit es comporta com si s'hagués eliminat.</translation>
+    </message>
+  </context>
+  <context>
     <name>FileDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="578"/>
+      <location filename="../FileDialog.cpp" line="579"/>
       <source>Save As</source>
       <translation>Anomena i desa</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="713"/>
-      <location filename="../FileDialog.cpp" line="808"/>
+      <location filename="../FileDialog.cpp" line="715"/>
+      <location filename="../FileDialog.cpp" line="811"/>
       <source>Open</source>
       <translation>Obre</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdHelpGroup</name>
+    <message>
+      <location filename="../CommandStd.cpp" line="322"/>
+      <source>Help</source>
+      <translation>Ajuda</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="323"/>
+      <source>Opens the documentation corresponding to the selection</source>
+      <translation>Obre la documentació corresponent a la selecció</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdAnnotationLabel</name>
+    <message>
+      <location filename="../CommandStd.cpp" line="1024"/>
+      <source>Tools</source>
+      <translation>Eines</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="1025"/>
+      <source>Annotation Label</source>
+      <translation>Etiqueta d'anotació</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="1026"/>
+      <source>Creates a new annotation label at the picked location in the 3D view</source>
+      <translation>Crea una etiqueta d'anotació nova a la ubicació triada a la vista 3D</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleBottomPanels</name>
+    <message>
+      <location filename="../CommandView.cpp" line="3858"/>
+      <source>Toggle Bottom Panels</source>
+      <translation>Commuta els panells inferiors</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="3859"/>
+      <source>Toggles the bottom dock panels</source>
+      <translation>Commuta els panells acoblats inferiors</translation>
     </message>
   </context>
   <context>
@@ -15055,32 +15071,32 @@ treated as shortcut key sequence 'F, F'.</source>
   <context>
     <name>Gui::PropertyEditor::PropertyMaterialItem</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3591"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3588"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
       <translation>Defineix el color base d'una superfície quan està il·luminada per llum. Representa com l'objecte dispersa la llum uniformement en totes direccions, independentment de l'angle de l'espectador. Aquesta propietat influirà més en el color del material.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3601"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3598"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
       <translation>Defineix el color d'una superfície sota una il·luminació indirecta i uniforme, representant com apareix quan està il·luminada només per llum d'ambient en una escena, sense llum direccional, ombres ni reflexos</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3611"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3608"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
       <translation>Defineix el color i la intensitat dels reflexos brillants i semblants a miralls, que apareixen a les superfícies brillants o reflectants quan la llum hi incideix directament. Estableix colors brillants per a objectes brillants.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3621"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3618"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
       <translation>Defineix el color d'una superfície que sembla emetre com si fos una font de llum, independent de la il·luminació externa, fent que l'objecte sembli autoil·luminat. Estableix-ho a negre per no tenir cap color emissor.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3633"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3630"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
       <translation>Defineix la mida i la nitidesa dels reflexos especulars en una superfície. Els valors més alts produeixen reflexos petits i nítids, mentre que els valors més baixos creen reflexos amplis i suaus. Tingueu en compte que la intensitat del reflex es defineix mitjançant el color especular.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3645"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3642"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
       <translation>Defineix quanta llum passa a través d'un objecte, fent-lo parcialment o totalment transparent</translation>
     </message>
@@ -15088,32 +15104,32 @@ treated as shortcut key sequence 'F, F'.</source>
   <context>
     <name>Gui::PropertyEditor::PropertyMaterialListItem</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3957"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3954"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
       <translation>Defineix el color base d'una superfície quan està il·luminada per llum. Representa com l'objecte dispersa la llum uniformement en totes direccions, independentment de l'angle de l'espectador. Aquesta propietat influirà més en el color del material.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3967"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3964"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
       <translation>Defineix el color d'una superfície sota una il·luminació indirecta i uniforme, representant com apareix quan està il·luminada només per llum d'ambient en una escena, sense llum direccional, ombres ni reflexos</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3977"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3974"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
       <translation>Defineix el color i la intensitat dels reflexos brillants i semblants a miralls, que apareixen a les superfícies brillants o reflectants quan la llum hi incideix directament. Estableix colors brillants per a objectes brillants.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3987"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3984"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
       <translation>Defineix el color d'una superfície que sembla emetre com si fos una font de llum, independent de la il·luminació externa, fent que l'objecte sembli autoil·luminat. Estableix-ho a negre per no tenir cap color emissor.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3999"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3996"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
       <translation>Defineix la mida i la nitidesa dels reflexos especulars en una superfície. Els valors més alts produeixen reflexos petits i nítids, mentre que els valors més baixos creen reflexos amplis i suaus. Tingueu en compte que la intensitat del reflex es defineix mitjançant el color especular.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4011"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4008"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
       <translation>Defineix quanta llum passa a través d'un objecte, fent-lo parcialment o totalment transparent</translation>
     </message>
@@ -15121,7 +15137,7 @@ treated as shortcut key sequence 'F, F'.</source>
   <context>
     <name>Gui::PropertyEditor::PropertyMapItem</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4933"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4930"/>
       <source>Map</source>
       <translation>Mapa</translation>
     </message>

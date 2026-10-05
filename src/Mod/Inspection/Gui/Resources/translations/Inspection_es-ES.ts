@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="76"/>
       <source>Inspection…</source>
-      <translation>Inspección…</translation>
+      <translation>Inspección...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="77"/>

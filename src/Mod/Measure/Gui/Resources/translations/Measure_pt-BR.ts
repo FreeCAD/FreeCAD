@@ -60,103 +60,108 @@
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="223"/>
-      <location filename="../../QuickMeasure.cpp" line="262"/>
+      <location filename="../../QuickMeasure.cpp" line="269"/>
       <source>Nominal distance: %1</source>
       <translation>Distância nominal: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="226"/>
+      <source>Nominal distance: %1, Axis distance: %2</source>
+      <translation type="unfinished">Nominal distance: %1, Axis distance: %2</translation>
+    </message>
+    <message>
+      <location filename="../../QuickMeasure.cpp" line="233"/>
       <source>Area: %1</source>
       <translation>Área: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="232"/>
+      <location filename="../../QuickMeasure.cpp" line="239"/>
       <source>Area: %1, Radius: %2</source>
       <translation>Área: %1, Raio: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="236"/>
+      <location filename="../../QuickMeasure.cpp" line="243"/>
       <source>Area: %1, Diameter: %2</source>
       <translation>Área: %1, Diâmetro: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="245"/>
+      <location filename="../../QuickMeasure.cpp" line="252"/>
       <source>Total area: %1, Axis distance: %2</source>
       <translation>Área total: %1, Distância do Eixo: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="250"/>
+      <location filename="../../QuickMeasure.cpp" line="257"/>
       <source>Total area: %1, Axis distance: %2, Axis angle: %3</source>
       <translation>Total de área: %1, Distância do Eixo: %2, Ângulo do Eixo: %3</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="259"/>
+      <location filename="../../QuickMeasure.cpp" line="266"/>
       <source>Total length: %1</source>
       <translation>Comprimento total: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="265"/>
+      <location filename="../../QuickMeasure.cpp" line="272"/>
       <source>Angle: %1, Total length: %2</source>
       <translation>Ângulo: %1, comprimento total: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="269"/>
+      <location filename="../../QuickMeasure.cpp" line="276"/>
       <source>Length: %1</source>
       <translation>Comprimento: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="272"/>
+      <location filename="../../QuickMeasure.cpp" line="279"/>
       <source>Radius: %1</source>
       <translation>Raio: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="275"/>
+      <location filename="../../QuickMeasure.cpp" line="282"/>
       <source>Diameter: %1</source>
       <translation>Diâmetro: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="278"/>
+      <location filename="../../QuickMeasure.cpp" line="285"/>
       <source>Distance: %1</source>
       <translation>Distância: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="281"/>
+      <location filename="../../QuickMeasure.cpp" line="288"/>
       <source>Minimum distance: %1</source>
       <translation>Distância mínima: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="285"/>
+      <location filename="../../QuickMeasure.cpp" line="292"/>
       <source>Minimum distance: %1, Axis distance: %2</source>
       <translation>Distância mínima: %1, Distância do eixo: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="291"/>
+      <location filename="../../QuickMeasure.cpp" line="298"/>
       <source>Minimum distance: %1, Center distance: %2</source>
       <translation>Distância mínima: %1, Distância do centro: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="298"/>
-      <location filename="../../QuickMeasure.cpp" line="315"/>
+      <location filename="../../QuickMeasure.cpp" line="305"/>
+      <location filename="../../QuickMeasure.cpp" line="322"/>
       <source>Total length: %1, Center distance: %2</source>
       <translation>Comprimento total: %1, Distância do centro: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="305"/>
+      <location filename="../../QuickMeasure.cpp" line="312"/>
       <source>Total length: %1, Center distance: %2, Axis angle: %3</source>
       <translation>Comprimento total: %1, Distância do centro: %2, Ângulo do eixo: %3</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="320"/>
+      <location filename="../../QuickMeasure.cpp" line="327"/>
       <source>Center surface distance: %1</source>
       <translation>Distância central de superfície: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="325"/>
+      <location filename="../../QuickMeasure.cpp" line="332"/>
       <source>Center axis distance: %1</source>
       <translation>Distância do eixo do centro: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="328"/>
+      <location filename="../../QuickMeasure.cpp" line="335"/>
       <source>Center axis distance: %1, Axis angle: %2</source>
       <translation>Distância do eixo do centro: %1, ângulo do eixo: %2</translation>
     </message>
@@ -442,51 +447,16 @@
     </message>
   </context>
   <context>
-    <name>TaskMeasure</name>
+    <name>StdCmdMassProperties</name>
     <message>
-      <location filename="../../../App/AppMeasure.cpp" line="121"/>
-      <source>Distance</source>
-      <translation>Distância</translation>
+      <location filename="../../Command.cpp" line="97"/>
+      <source>Mass Properties</source>
+      <translation>Propriedades de Massa</translation>
     </message>
     <message>
-      <location filename="../../../App/AppMeasure.cpp" line="129"/>
-      <source>Distance Free</source>
-      <translation>Distância Livre</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="137"/>
-      <source>Angle</source>
-      <translation>Ângulo</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="145"/>
-      <source>Length</source>
-      <translation>Comprimento</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="153"/>
-      <source>Position</source>
-      <translation>Posição</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="161"/>
-      <source>Area</source>
-      <translation>Área</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="169"/>
-      <source>Diameter</source>
-      <translation>Diâmetro</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="177"/>
-      <source>Radius</source>
-      <translation>Raio</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="185"/>
-      <source>Geometric Center</source>
-      <translation type="unfinished">Geometric Center</translation>
+      <location filename="../../Command.cpp" line="98"/>
+      <source>Calculates mass properties of selected objects</source>
+      <translation>Calcula as propriedades de massa de objetos selecionados</translation>
     </message>
   </context>
   <context>
@@ -538,16 +508,51 @@
     </message>
   </context>
   <context>
-    <name>StdCmdMassProperties</name>
+    <name>TaskMeasure</name>
     <message>
-      <location filename="../../Command.cpp" line="97"/>
-      <source>Mass Properties</source>
-      <translation>Propriedades de Massa</translation>
+      <location filename="../../../App/AppMeasure.cpp" line="121"/>
+      <source>Distance</source>
+      <translation>Distância</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="98"/>
-      <source>Calculates mass properties of selected objects</source>
-      <translation>Calcula as propriedades de massa de objetos selecionados</translation>
+      <location filename="../../../App/AppMeasure.cpp" line="129"/>
+      <source>Distance Free</source>
+      <translation>Distância Livre</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="137"/>
+      <source>Angle</source>
+      <translation>Ângulo</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="145"/>
+      <source>Length</source>
+      <translation>Comprimento</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="153"/>
+      <source>Position</source>
+      <translation>Posição</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="161"/>
+      <source>Area</source>
+      <translation>Área</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="169"/>
+      <source>Diameter</source>
+      <translation>Diâmetro</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="177"/>
+      <source>Radius</source>
+      <translation>Raio</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="185"/>
+      <source>Geometric Center</source>
+      <translation type="unfinished">Geometric Center</translation>
     </message>
   </context>
 </TS>

@@ -799,7 +799,7 @@
       <translation>Выдаліць</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="2000"/>
+      <location filename="../../ViewProvider.cpp" line="2001"/>
       <source>Fill hole</source>
       <translation>Запоўніць адтуліну</translation>
     </message>
@@ -1281,14 +1281,14 @@
   <context>
     <name>MeshGui::DlgRegularSolidImp</name>
     <message>
-      <location filename="../../DlgRegularSolidImp.cpp" line="122"/>
-      <location filename="../../DlgRegularSolidImp.cpp" line="203"/>
-      <location filename="../../DlgRegularSolidImp.cpp" line="211"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="123"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="204"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="212"/>
       <source>Create %1</source>
       <translation>Стварыць %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRegularSolidImp.cpp" line="122"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="123"/>
       <source>No Active Document</source>
       <translation>Без бягучага дакумента</translation>
     </message>
@@ -2266,8 +2266,8 @@ Visit https://openscad.org/ to install it.</source>
       <translation>Адлюстраваць колеры</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCurvature.cpp" line="475"/>
       <location filename="../../ViewProvider.cpp" line="1701"/>
+      <location filename="../../ViewProviderCurvature.cpp" line="475"/>
       <source>Leave Info Mode</source>
       <translation>Выйсці з інфармацыйнага рэжыму</translation>
     </message>

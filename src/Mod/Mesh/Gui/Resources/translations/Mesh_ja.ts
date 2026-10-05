@@ -799,7 +799,7 @@
       <translation>削除</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="2000"/>
+      <location filename="../../ViewProvider.cpp" line="2001"/>
       <source>Fill hole</source>
       <translation>穴埋め</translation>
     </message>
@@ -1281,14 +1281,14 @@
   <context>
     <name>MeshGui::DlgRegularSolidImp</name>
     <message>
-      <location filename="../../DlgRegularSolidImp.cpp" line="122"/>
-      <location filename="../../DlgRegularSolidImp.cpp" line="203"/>
-      <location filename="../../DlgRegularSolidImp.cpp" line="211"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="123"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="204"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="212"/>
       <source>Create %1</source>
       <translation>%1を作成します。</translation>
     </message>
     <message>
-      <location filename="../../DlgRegularSolidImp.cpp" line="122"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="123"/>
       <source>No Active Document</source>
       <translation>アクティブなドキュメントがありません</translation>
     </message>
@@ -2259,8 +2259,8 @@ Visit https://openscad.org/ to install it.</source>
       <translation>表示色</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCurvature.cpp" line="475"/>
       <location filename="../../ViewProvider.cpp" line="1701"/>
+      <location filename="../../ViewProviderCurvature.cpp" line="475"/>
       <source>Leave Info Mode</source>
       <translation>情報モードを終了</translation>
     </message>

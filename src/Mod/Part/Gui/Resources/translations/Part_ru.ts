@@ -1337,12 +1337,12 @@
     <message>
       <location filename="../../Command.cpp" line="1707"/>
       <source>Shape Builder</source>
-      <translation>Построитель форм</translation>
+      <translation>Построитель фигур</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1709"/>
       <source>Advanced utility to create shapes</source>
-      <translation>Продвинутая утилита для создания форм</translation>
+      <translation>Продвинутый инструмент для создания фигур</translation>
     </message>
   </context>
   <context>
@@ -1409,7 +1409,7 @@
     <message>
       <location filename="../../Command.cpp" line="573"/>
       <source>Join Shapes</source>
-      <translation>Объединить фигуры</translation>
+      <translation>Операции полых фигур</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="575"/>
@@ -1432,7 +1432,7 @@
     <message>
       <location filename="../../Command.cpp" line="1929"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
-      <translation>Инструмент смещения форм (конструирует параллельные формы)</translation>
+      <translation>Инструмент смещения фигур (конструирует параллельные фигуры)</translation>
     </message>
   </context>
   <context>
@@ -1450,7 +1450,7 @@
     <message>
       <location filename="../../Command.cpp" line="689"/>
       <source>Shape splitting and compsolid creation tools</source>
-      <translation>Инструменты для разделения форм и создания составных, соприкасающихся друг с другом твёрдых тел</translation>
+      <translation>Инструменты для разделения фигур и создания составных, соприкасающихся друг с другом твёрдых тел</translation>
     </message>
   </context>
   <context>
@@ -1560,7 +1560,7 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="463"/>
       <source>Removes the selected features from a shape</source>
-      <translation>Удаляет выбранные объекты/операции из фигуры</translation>
+      <translation>Удаляет выбранные доработки из фигуры</translation>
     </message>
   </context>
   <context>
@@ -1573,12 +1573,12 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="359"/>
       <source>Shape Element Copy</source>
-      <translation>Копия элемента формы</translation>
+      <translation>Копия элемента фигуры</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="360"/>
       <source>Creates a non-parametric copy of the selected shape element</source>
-      <translation>Создаёт не параметрическую копию выбранного элемента формы</translation>
+      <translation>Создаёт не параметрическую копию выбранного элемента фигуры</translation>
     </message>
   </context>
   <context>
@@ -1704,7 +1704,7 @@
     <message>
       <location filename="../../Command.cpp" line="1738"/>
       <source>Lofts the selected profiles</source>
-      <translation>Сращивает выбранные профили сечений</translation>
+      <translation>Сращивает выбранные профили</translation>
     </message>
   </context>
   <context>
@@ -1754,12 +1754,12 @@
     <message>
       <location filename="../../Command.cpp" line="1640"/>
       <source>Mirror</source>
-      <translation>Зеркально</translation>
+      <translation>Зеркально отразить</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1641"/>
       <source>Mirrors the selected shape</source>
-      <translation>Отражает зеркально выбранную форму</translation>
+      <translation>Зеркальное отражение выбранной фигуры</translation>
     </message>
   </context>
   <context>
@@ -1772,12 +1772,12 @@
     <message>
       <location filename="../../Command.cpp" line="1795"/>
       <source>3D Offset</source>
-      <translation>3D Смещение</translation>
+      <translation>3-мерное Смещение</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1796"/>
       <source>Offsets shapes in 3D</source>
-      <translation>Создаёт трансформированную смещенную 3D форму</translation>
+      <translation>Создаёт трансформированную смещенную трёхмерную фигуру</translation>
     </message>
   </context>
   <context>
@@ -1790,12 +1790,12 @@
     <message>
       <location filename="../../Command.cpp" line="1862"/>
       <source>2D Offset</source>
-      <translation>2D смещение</translation>
+      <translation>2-мерное смещение</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1863"/>
       <source>Offsets planar shapes in 2D</source>
-      <translation>Создаёт смещённые плоские фигуры в 2D</translation>
+      <translation>Создаёт смещённые в двумерном пространстве плоские фигуры</translation>
     </message>
   </context>
   <context>
@@ -1831,7 +1831,7 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="144"/>
       <source>Creates distributed points from the selected shape</source>
-      <translation>Создаёт распределённые точки из выбранной формы</translation>
+      <translation>Создаёт распределённые точки из выбранной фигуры</translation>
     </message>
   </context>
   <context>
@@ -1886,7 +1886,7 @@ of the projection.</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="387"/>
       <source>Refine Shape</source>
-      <translation>Улучшить форму</translation>
+      <translation>Улучшить фигуру</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="388"/>
@@ -2119,7 +2119,7 @@ of the projection.</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="330"/>
       <source>Creates a non-parametric copy with transformed placement of the selected shapes</source>
-      <translation>Создаёт непараметрическую копию с преобразованным размещением выбранных фигур</translation>
+      <translation>Создаёт непараметрическую копию выбранных фигур с изменённым размещением</translation>
     </message>
   </context>
   <context>
@@ -2183,7 +2183,7 @@ of the projection.</source>
     <message>
       <location filename="../../Command.cpp" line="1889"/>
       <source>Make 2D Offset</source>
-      <translation>Создать смещение 2D</translation>
+      <translation>Создать 2-мерное смещение</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2098"/>
@@ -2253,7 +2253,7 @@ of the projection.</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="405"/>
       <source>Refine shape</source>
-      <translation>Улучшить форму</translation>
+      <translation>Улучшить фигуру</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="475"/>
@@ -2319,7 +2319,7 @@ of the projection.</source>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="213"/>
       <source>Edit mirror</source>
-      <translation>Изменить зеркальное преобразование</translation>
+      <translation>Редактировать зеркальное преобразование</translation>
     </message>
   </context>
   <context>
@@ -2463,7 +2463,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
       <source>Sections</source>
-      <translation>Разрезы</translation>
+      <translation>Сечения</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="83"/>
@@ -2660,7 +2660,7 @@ placement will be encoded into the shape geometry, instead of keeping
 it inside the placement property.</source>
       <translation>Сохраняет информацию о размещении при экспорте одного объекта. 
 При повторном импорте файла STEP размещение будет 
-закодировано в геометрии формы, и не будет сохранено 
+закодировано в геометрии фигуры, вместо сохранения
 в свойстве Размещение.</translation>
     </message>
     <message>
@@ -2738,7 +2738,7 @@ the size of the resulting STEP file.</source>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="71"/>
-      <location filename="../../DlgExtrusion.cpp" line="260"/>
+      <location filename="../../DlgExtrusion.cpp" line="318"/>
       <source>Select</source>
       <translation>Выбрать</translation>
     </message>
@@ -2865,55 +2865,62 @@ If both lengths are zero, magnitude of direction is used.</source>
       <translation>Фигура(ы)</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="230"/>
+      <location filename="../../DlgExtrusion.cpp" line="288"/>
       <source>Selecting…</source>
       <translation>Выбор…</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="506"/>
+      <location filename="../../DlgExtrusion.cpp" line="570"/>
       <source>The document '%1' doesn't exist.</source>
       <translation type="unfinished">The document '%1' doesn't exist.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="567"/>
+      <location filename="../../DlgExtrusion.cpp" line="585"/>
+      <source>Creating extrusion failed.
+No shape could be extruded.</source>
+      <translation type="unfinished">Creating extrusion failed.
+No shape could be extruded.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgExtrusion.cpp" line="610"/>
       <source>Creating extrusion failed.
 %1</source>
       <translation>Ошибка при создании выдавливания.
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="575"/>
+      <location filename="../../DlgExtrusion.cpp" line="618"/>
       <source>Creating Extrusion failed.
 %1</source>
       <translation>Ошибка при создании выдавливания.
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="647"/>
+      <location filename="../../DlgExtrusion.cpp" line="692"/>
       <source>Object not found: %1</source>
       <translation>Объект не найден: %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="712"/>
+      <location filename="../../DlgExtrusion.cpp" line="757"/>
       <source>No shapes selected for extrusion.</source>
       <translation>Не выбраны фигуры для выдавливания.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="779"/>
+      <location filename="../../DlgExtrusion.cpp" line="824"/>
       <source>Cannot determine normal vector of shape to be extruded. Use other mode. 
 
 (%1)</source>
-      <translation>Не удается определить вектор нормали для выдавливания фигуры. Пожалуйста, используйте другой режим. 
+      <translation>Не удается определить вектор нормали для выдавливания фигуры. Используйте другой режим. 
 
 (%1)</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="732"/>
+      <location filename="../../DlgExtrusion.cpp" line="777"/>
       <source>Unknown error</source>
       <translation>Неизвестная ошибка</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="739"/>
+      <location filename="../../DlgExtrusion.cpp" line="784"/>
       <source>Extrusion direction link is invalid.
 
 %1</source>
@@ -2922,17 +2929,17 @@ If both lengths are zero, magnitude of direction is used.</source>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="746"/>
+      <location filename="../../DlgExtrusion.cpp" line="791"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
       <translation>Выбран режим вдоль линии, но ориентировочная линяя не выбрана.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="794"/>
+      <location filename="../../DlgExtrusion.cpp" line="839"/>
       <source>Extrusion direction vector is zero-length. It must be non-zero.</source>
       <translation>Вектор направления выдавливания имеет нулевую длину. Он должен быть не нулевым.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="812"/>
+      <location filename="../../DlgExtrusion.cpp" line="857"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
       <translation>Итоговая длина выдавливания равна нулю (длина1 = -длина2). Она должна быть не нулевой.</translation>
     </message>
@@ -3105,7 +3112,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="1039"/>
       <source>No shape selected</source>
-      <translation>Форма не выбрана</translation>
+      <translation>Фигура не выбрана</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="1097"/>
@@ -3231,7 +3238,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="29"/>
       <source>Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</source>
-      <translation>Объединяет все фигуры в один составной объект при импорте, разрешая экземпляры деталей и применяя преобразования. Увеличивает время импорта, но не влияет на точность геометрии или качество рендеринга.</translation>
+      <translation>Объединяет все фигуры в один составной объект при импорте, разрешая экземпляры деталей и применяя преобразования. Увеличивает время импорта, но не влияет на точность геометрии или качество отображения.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="32"/>
@@ -4297,7 +4304,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgRevolution.cpp" line="285"/>
       <source>Select a shape for revolution.</source>
-      <translation>Выберите форму для вращения.</translation>
+      <translation>Выберите фигуру для вращения.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="304"/>
@@ -4346,7 +4353,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="14"/>
       <source>Shape View</source>
-      <translation>Внешний вид формы</translation>
+      <translation>Отображение фигуры</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="26"/>
@@ -4424,7 +4431,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="33"/>
       <source>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</source>
-      <translation>Выполняет проверку геометрии (BRep) после каждой булевой операции для обнаружения ошибок. Примечание: Это может замедлить работу со сложными моделями.</translation>
+      <translation>Выполняет проверку геометрии после каждой булевой операции для обнаружения ошибок. Примечание: Это может замедлить работу со сложными моделями.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="58"/>
@@ -4439,7 +4446,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="83"/>
       <source>Automatically runs a refinement pass after creating Part Design features to remove unnecessary edges and clean up the geometry</source>
-      <translation>Автоматически выполняет проход уточнения после создания функций Part Design для удаления ненужных ребер и очистки геометрии</translation>
+      <translation>Автоматически выполняет проход уточнения после создания доработок верстака проектирование деталей для удаления ненужных ребер и очистки геометрии</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="108"/>
@@ -4459,7 +4466,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="164"/>
       <source>Features Settings</source>
-      <translation>Параметры функций</translation>
+      <translation>Параметры доработок</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="178"/>
@@ -4474,17 +4481,17 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="194"/>
       <source>Specifies which sketch elements (points, circles, or arcs) the Hole tool should automatically detect and use as hole centers</source>
-      <translation>Определяет, какие элементы эскиза (точки, окружности или дуги) инструмент Hole должен автоматически обнаруживать и использовать в качестве центров отверстий</translation>
+      <translation>Определяет, какие элементы эскиза (точки, окружности или дуги) инструмент Отверстие должен автоматически обнаруживать и использовать в качестве центров отверстий</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="207"/>
       <source>Circles and arcs</source>
-      <translation>Круги и дуги </translation>
+      <translation>Окружности и дуги</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="212"/>
       <source>Points, circles and arcs</source>
-      <translation>Точки, круги и дуги </translation>
+      <translation>Точки, окружности и дуги</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="217"/>
@@ -4494,12 +4501,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="236"/>
       <source>Switch to task panel when entering Part Design workbench</source>
-      <translation>Перейти на панель задач при переходе на верстак Проектная Деталь</translation>
+      <translation>Перейти на панель задач при переходе на верстак Проектирование Детали</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="258"/>
       <source>Always open the attachment dialog when creating a new sketch in Part Design, regardless of selection or holding the Shift key. Without this, only a single face or datum plane selection skips the dialog.</source>
-      <translation>Всегда открывать диалог привязки при создании нового эскиза в Part Design, независимо от выбора или удержания клавиши Shift. Без этого диалог пропускается только при выборе одной грани или базовой плоскости.</translation>
+      <translation>Всегда открывать диалог привязки при создании нового эскиза в верстаке проектирование детали, независимо от выбора или удержания клавиши Shift. Без этого диалог пропускается только при выборе одной грани или базовой плоскости.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="261"/>
@@ -4514,32 +4521,32 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="295"/>
       <source>Displays the fully computed model in the 3D view while editing a feature, showing the final context rather than just the isolated feature</source>
-      <translation>Отображает полностью вычисленную модель в 3D-виде при редактировании функции, показывая конечный контекст, а не только изолированную функцию</translation>
+      <translation>Отображает полностью вычисленную модель в 3-мерном виде при редактировании доработки, показывая конечный контекст, а не только изолированную доработку</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="314"/>
       <source>Show transparent preview overlay by default when editing features</source>
-      <translation>Показывать прозрачное наложение предпросмотра по умолчанию при редактировании функций/операций</translation>
+      <translation>Показывать прозрачное наложение предпросмотра по умолчанию при редактировании доработки</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="317"/>
       <source>Overlays a semi-transparent preview of the result while editing features to visualize changes before they are applied</source>
-      <translation>Накладывает полупрозрачный предварительный просмотр результата при редактировании функций для визуализации изменений до их применения</translation>
+      <translation>Накладывает полупрозрачный предварительный просмотр результата при редактировании доработки для визуализации изменений до их применения</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="339"/>
       <source>Highlight the profile used to create features</source>
-      <translation>Подсветить профиль, используемый для выполнения функций/операций</translation>
+      <translation>Подсветить профиль, используемый для создания доработки</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="342"/>
       <source>Visually highlights the source sketch or geometry used to generate the feature currently being edited</source>
-      <translation>Визуально подсвечивает исходный эскиз или геометрию, использованные для создания редактируемой функции</translation>
+      <translation>Визуально подсвечивает исходный эскиз или геометрию, использованные для создания редактируемой доработки</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="361"/>
       <source>Experimental</source>
-      <translation>Экспериментальные параметры</translation>
+      <translation>Экспериментальные функции</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="367"/>
@@ -4549,12 +4556,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="383"/>
       <source>Show interactive draggers when editing features</source>
-      <translation>Показывать интерактивные ручки при редактировании функций/операций</translation>
+      <translation>Показывать интерактивные ручки при редактировании доработок</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="386"/>
       <source>Enables on-screen handles (draggers) in the 3D view for interactively modifying dimensions and parameters of the feature being edited by dragging</source>
-      <translation>Включает экранные маркеры (перетаскиватели) в 3D-виде для интерактивного изменения размеров и параметров редактируемой функции путем перетаскивания</translation>
+      <translation>Включает экранные маркеры (перетаскиватели) в 3-мерном виде для интерактивного изменения размеров и параметров редактируемой доработки путем перетаскивания</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="408"/>
@@ -4619,7 +4626,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="233"/>
       <source>Automatically switch to the task panel when the Part Design workbench is activated</source>
-      <translation>Автоматически переключиться на панель задач, когда активирован верстак Проектная Деталь</translation>
+      <translation>Автоматически переключиться на панель задач, когда активирован верстак Проектирование Детали</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="280"/>
@@ -4688,7 +4695,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="83"/>
       <source>Ambient shape color</source>
-      <translation>Цвет среды окружающей форму</translation>
+      <translation>Цвет среды окружающей фигуру</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="90"/>
@@ -4698,7 +4705,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="116"/>
       <source>Emissive shape color</source>
-      <translation>Цвет излучаемый формой</translation>
+      <translation>Цвет излучаемый фигурой</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="123"/>
@@ -4708,7 +4715,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="149"/>
       <source>Specular shape color</source>
-      <translation>Отражаемый цвет формы</translation>
+      <translation>Отражаемый цвет фигуры</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="156"/>
@@ -4743,7 +4750,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="262"/>
       <source>The default line color for new shapes</source>
-      <translation>Цвет линий по умолчанию для новой формы</translation>
+      <translation>Цвет линий по умолчанию для новых фигур</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="288"/>
@@ -4753,7 +4760,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="295"/>
       <source>The default line thickness for new shapes</source>
-      <translation>Толщина линии по умолчанию для новой формы</translation>
+      <translation>Толщина линии по умолчанию для новых фигур</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="323"/>
@@ -4783,7 +4790,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="398"/>
       <source>The color of bounding boxes in the 3D view</source>
-      <translation>Цвет охватывающей габаритной рамки в 3D виде</translation>
+      <translation>Цвет охватывающей габаритной рамки в 3-мерном виде</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="424"/>
@@ -4793,7 +4800,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="431"/>
       <source>The font size of bounding boxes in the 3D view</source>
-      <translation>Размер шрифта охватывающей габаритной рамки в 3D виде</translation>
+      <translation>Размер шрифта охватывающей габаритной рамки в 3-мерном виде</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="465"/>
@@ -4987,7 +4994,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../Mirroring.ui" line="14"/>
       <source>Mirror</source>
-      <translation>Зеркально</translation>
+      <translation>Зеркально отразить</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="20"/>
@@ -5037,7 +5044,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../Mirroring.ui" line="142"/>
       <source>Shapes</source>
-      <translation>Формы</translation>
+      <translation>Фигуры</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="150"/>
@@ -5058,7 +5065,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../Mirroring.cpp" line="313"/>
       <source>Select a shape for mirroring.</source>
-      <translation>Выберите форму для создания симметрии.</translation>
+      <translation>Выберите фигуру для зеркального отображения.</translation>
     </message>
     <message>
       <location filename="../../Mirroring.cpp" line="321"/>
@@ -5632,8 +5639,7 @@ but more stable.  Default: false</source>
       <location filename="../../TaskCheckGeometry.cpp" line="1258"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
-      <translation>Развернуть содержимое фигуры.  Изменения вступят в силу при следующем использовании  
-инструмента проверки геометрии.  По умолчанию: ложь</translation>
+      <translation>Развернуть содержимое фигуры.  Изменения вступят в силу при следующем использовании инструмента проверки геометрии.  По умолчанию: нет</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1271"/>
@@ -5644,8 +5650,8 @@ the check geometry tool.  Default: false</source>
       <location filename="../../TaskCheckGeometry.cpp" line="1273"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
-      <translation>Развернуть содержимое формы. Изменения вступят в силу при следующем использовании 
-инструмента геометрии проверки. По умолчанию: false</translation>
+      <translation>Показать дополнительное содержимое фигуры. Изменения вступят в силу при следующем использовании 
+инструмента геометрии проверки. По умолчанию: нет</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1285"/>
@@ -5801,7 +5807,7 @@ Individual boolean operation checks:</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="502"/>
       <source>Infinite shape</source>
-      <translation>Бесконечная форма</translation>
+      <translation>Бесконечная фигура</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="529"/>
@@ -5986,7 +5992,7 @@ Individual boolean operation checks:</source>
       <location filename="../../TaskShapeBuilder.ui" line="14"/>
       <location filename="../../TaskShapeBuilder.ui" line="20"/>
       <source>Create Shape</source>
-      <translation>Создать форму</translation>
+      <translation>Создать фигуру</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="26"/>
@@ -6026,7 +6032,7 @@ Individual boolean operation checks:</source>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="82"/>
       <source>Refine shape</source>
-      <translation>Улучшить форму</translation>
+      <translation>Улучшить фигуру</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="92"/>
@@ -6691,7 +6697,7 @@ Continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
       <source>Join</source>
-      <translation>Соединить тонкостенные</translation>
+      <translation>Операции полых фигур</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
@@ -6760,7 +6766,7 @@ Continue?</source>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="473"/>
       <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
-      <translation>Выберите объект, в котором требуется сделать вырез, потом объект, который должен быть вырезан и используйте этот инструмент.</translation>
+      <translation>Выберите объект, в котором требуется сделать вырез, потом объект, задающий форму выреза и используйте этот инструмент.</translation>
     </message>
   </context>
   <context>
@@ -6791,10 +6797,10 @@ Continue?</source>
       <translation>Некорректный выбор</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>Продолжить</translation>
     </message>
@@ -6864,12 +6870,12 @@ for collision or distance filtering.</source>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="58"/>
       <source>Explode Compound</source>
-      <translation>Разрушить составной объект</translation>
+      <translation>Разъединить составной объект</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="63"/>
       <source>Splits up a compound of shapes into separate objects, creating a compound filter for each shape</source>
-      <translation>Разделяет составную геометрию на отдельные объекты, создавая фильтр составного объекта для каждой разрушенной геометрии</translation>
+      <translation>Разделяет составную геометрию на отдельные объекты, создавая фильтр составного объекта для каждой разъединённой геометрии</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="74"/>
@@ -6992,7 +6998,7 @@ for collision or distance filtering.</source>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="30"/>
       <source>Shape type</source>
-      <translation>Тип формы</translation>
+      <translation>Тип фигуры</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="32"/>
@@ -7037,7 +7043,7 @@ for collision or distance filtering.</source>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="50"/>
       <source>Shapes</source>
-      <translation>Формы</translation>
+      <translation>Фигуры</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="75"/>
@@ -7171,7 +7177,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../DlgScale.ui" line="195"/>
       <source>Select shapes to be scaled</source>
-      <translation>Выберите фигуры/формы для масштабирования</translation>
+      <translation>Выберите фигуры для масштабирования</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="199"/>
@@ -7220,7 +7226,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="82"/>
       <source>Shape must be a wire, edge or compound. Something else was supplied.</source>
-      <translation>Форма должна быть кривой, ребром или составным объектом. 
+      <translation>Фигура должна быть кривой, ребром или составным объектом. 
 Было предоставлено что-то другое.</translation>
     </message>
   </context>
@@ -7486,12 +7492,12 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="223"/>
       <source>Connect Shapes</source>
-      <translation>Объединить пустотелые</translation>
+      <translation>Соединить стенки</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="227"/>
       <source>Fuses shapes, taking care to preserve voids</source>
-      <translation>Соединяет формы, стараясь сохранить пустотелость</translation>
+      <translation>Соединяет объекты, учитывая пустотелость. Работает со сплошными и полыми объектами</translation>
     </message>
   </context>
   <context>
@@ -7499,12 +7505,12 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="338"/>
       <source>Embed Shapes</source>
-      <translation>Внедрить пустотелые</translation>
+      <translation>Встроить в стенку</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="342"/>
       <source>Fuses one shape into another, taking care to preserve voids</source>
-      <translation>Внедряет одну форму в другую, стараясь сохранить пустотелость</translation>
+      <translation>Встраивает один объект в другой, учитывая пустотелость. Работает со сплошными и полыми объектами</translation>
     </message>
   </context>
   <context>
@@ -7512,12 +7518,12 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="454"/>
       <source>Cutout Shape</source>
-      <translation>Вырезать в пустотелом</translation>
+      <translation>Вырез в стенке</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="458"/>
       <source>Creates a cutout in the selected shape to fit another shape</source>
-      <translation>Создаёт вырез в выбранной фигуре, чтобы она соответствовала другой фигуре</translation>
+      <translation>Создаёт в выбранном объекте вырез, соответствующий форме вырезаемого объекта. Работает со сплошными и полыми объектами</translation>
     </message>
   </context>
   <context>
@@ -7630,7 +7636,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../ShapeFromMesh.ui" line="32"/>
       <source>Tolerance for sewing the shape</source>
-      <translation>Допуск на сшивания формы</translation>
+      <translation>Допуск на сшивание фигур</translation>
     </message>
   </context>
   <context>
@@ -7825,17 +7831,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="159"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
       <source>Preview requires a Part-based view provider; none found for %1.</source>
       <translation type="unfinished">Preview requires a Part-based view provider; none found for %1.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="161"/>
       <source>unknown object</source>
       <translation>неизвестный объект</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="303"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="305"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>Ошибка при отрисовке предварительного просмотра: %1. Обычно это указывает на ошибку с моделью.</translation>
     </message>
@@ -7847,6 +7853,19 @@ Overlapping volumes of the shapes will be removed.</source>
       <source>STEP with colors</source>
       <extracomment>Translation note: "STEP" is a file type end should not be translated</extracomment>
       <translation>STEP с цветами</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskLinkArrayParameters</name>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.ui" line="17"/>
+      <source>Linked object</source>
+      <translation type="unfinished">Linked object</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.ui" line="27"/>
+      <source>Select Object</source>
+      <translation type="unfinished">Select Object</translation>
     </message>
   </context>
   <context>
@@ -7880,33 +7899,6 @@ Overlapping volumes of the shapes will be removed.</source>
       <location filename="../../PatternCircularParametersWidget.ui" line="95"/>
       <source>Symmetry</source>
       <translation>Симметрия</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskLinkArrayParameters</name>
-    <message>
-      <location filename="../../TaskLinkArrayParameters.ui" line="17"/>
-      <source>Linked object</source>
-      <translation type="unfinished">Linked object</translation>
-    </message>
-    <message>
-      <location filename="../../TaskLinkArrayParameters.ui" line="27"/>
-      <source>Select Object</source>
-      <translation type="unfinished">Select Object</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartGui::PatternPointParametersWidget</name>
-    <message>
-      <location filename="../../PatternPointParametersWidget.ui" line="8"/>
-      <source>Point object</source>
-      <translation>Точечный объект</translation>
-    </message>
-    <message>
-      <location filename="../../PatternPointParametersWidget.ui" line="14"/>
-      <location filename="../../PatternPointParametersWidget.cpp" line="48"/>
-      <source>Select Point Object</source>
-      <translation>Выбрать объект-точку</translation>
     </message>
   </context>
   <context>
@@ -7979,29 +7971,17 @@ Overlapping volumes of the shapes will be removed.</source>
     </message>
   </context>
   <context>
-    <name>Part::FaceMakerBuildFace</name>
+    <name>PartGui::PatternPointParametersWidget</name>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
-      <source>BuildFace facemaker</source>
-      <translation>Построитель граней BuildFace</translation>
+      <location filename="../../PatternPointParametersWidget.ui" line="8"/>
+      <source>Point object</source>
+      <translation>Точечный объект</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
-      <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
-      <translation>Разбивает ребра в точках пересечения и находит все ограниченные области граней. Обрабатывает произвольную перекрывающуюся геометрию.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part::FaceMakerUnified</name>
-    <message>
-      <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
-      <source>Unified facemaker</source>
-      <translation>Унифицированный построитель граней</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
-      <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
-      <translation>Унифицированный: обрабатывает вложенные отверстия, перекрывающиеся контуры и криволинейные поверхности</translation>
+      <location filename="../../PatternPointParametersWidget.ui" line="14"/>
+      <location filename="../../PatternPointParametersWidget.cpp" line="48"/>
+      <source>Select Point Object</source>
+      <translation>Выбрать объект-точку</translation>
     </message>
   </context>
   <context>
@@ -8231,6 +8211,32 @@ Overlapping volumes of the shapes will be removed.</source>
       <location filename="../../TaskLinkArrayParameters.cpp" line="862"/>
       <source>Select an object to link.</source>
       <translation type="unfinished">Select an object to link.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerBuildFace</name>
+    <message>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
+      <source>BuildFace facemaker</source>
+      <translation>Построитель граней BuildFace</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
+      <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
+      <translation>Разбивает ребра в точках пересечения и находит все ограниченные области граней. Обрабатывает произвольную перекрывающуюся геометрию.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerUnified</name>
+    <message>
+      <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
+      <source>Unified facemaker</source>
+      <translation>Унифицированный построитель граней</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
+      <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
+      <translation>Унифицированный: обрабатывает вложенные отверстия, перекрывающиеся контуры и криволинейные поверхности</translation>
     </message>
   </context>
 </TS>

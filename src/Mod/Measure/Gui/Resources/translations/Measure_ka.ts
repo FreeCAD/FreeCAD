@@ -60,103 +60,108 @@
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="223"/>
-      <location filename="../../QuickMeasure.cpp" line="262"/>
+      <location filename="../../QuickMeasure.cpp" line="269"/>
       <source>Nominal distance: %1</source>
       <translation>ნომინალური მანძილი: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="226"/>
+      <source>Nominal distance: %1, Axis distance: %2</source>
+      <translation type="unfinished">Nominal distance: %1, Axis distance: %2</translation>
+    </message>
+    <message>
+      <location filename="../../QuickMeasure.cpp" line="233"/>
       <source>Area: %1</source>
       <translation>ფართობი %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="232"/>
+      <location filename="../../QuickMeasure.cpp" line="239"/>
       <source>Area: %1, Radius: %2</source>
       <translation>არე: %1, რადიუსი: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="236"/>
+      <location filename="../../QuickMeasure.cpp" line="243"/>
       <source>Area: %1, Diameter: %2</source>
       <translation>არე: %1, დიამეტრი: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="245"/>
+      <location filename="../../QuickMeasure.cpp" line="252"/>
       <source>Total area: %1, Axis distance: %2</source>
       <translation type="unfinished">Total area: %1, Axis distance: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="250"/>
+      <location filename="../../QuickMeasure.cpp" line="257"/>
       <source>Total area: %1, Axis distance: %2, Axis angle: %3</source>
       <translation type="unfinished">Total area: %1, Axis distance: %2, Axis angle: %3</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="259"/>
+      <location filename="../../QuickMeasure.cpp" line="266"/>
       <source>Total length: %1</source>
       <translation>სრული სიგრძე: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="265"/>
+      <location filename="../../QuickMeasure.cpp" line="272"/>
       <source>Angle: %1, Total length: %2</source>
       <translation>კუთხე: %1, ჯამური სიგრძე: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="269"/>
+      <location filename="../../QuickMeasure.cpp" line="276"/>
       <source>Length: %1</source>
       <translation>სიგრძე: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="272"/>
+      <location filename="../../QuickMeasure.cpp" line="279"/>
       <source>Radius: %1</source>
       <translation>რადიუსი: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="275"/>
+      <location filename="../../QuickMeasure.cpp" line="282"/>
       <source>Diameter: %1</source>
       <translation>დიამეტრი: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="278"/>
+      <location filename="../../QuickMeasure.cpp" line="285"/>
       <source>Distance: %1</source>
       <translation>დაშორება: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="281"/>
+      <location filename="../../QuickMeasure.cpp" line="288"/>
       <source>Minimum distance: %1</source>
       <translation>მინიმალური მანძილი: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="285"/>
+      <location filename="../../QuickMeasure.cpp" line="292"/>
       <source>Minimum distance: %1, Axis distance: %2</source>
       <translation type="unfinished">Minimum distance: %1, Axis distance: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="291"/>
+      <location filename="../../QuickMeasure.cpp" line="298"/>
       <source>Minimum distance: %1, Center distance: %2</source>
       <translation type="unfinished">Minimum distance: %1, Center distance: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="298"/>
-      <location filename="../../QuickMeasure.cpp" line="315"/>
+      <location filename="../../QuickMeasure.cpp" line="305"/>
+      <location filename="../../QuickMeasure.cpp" line="322"/>
       <source>Total length: %1, Center distance: %2</source>
       <translation type="unfinished">Total length: %1, Center distance: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="305"/>
+      <location filename="../../QuickMeasure.cpp" line="312"/>
       <source>Total length: %1, Center distance: %2, Axis angle: %3</source>
       <translation type="unfinished">Total length: %1, Center distance: %2, Axis angle: %3</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="320"/>
+      <location filename="../../QuickMeasure.cpp" line="327"/>
       <source>Center surface distance: %1</source>
       <translation>მანძილი ზედაპირის ცენტრებს შორის: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="325"/>
+      <location filename="../../QuickMeasure.cpp" line="332"/>
       <source>Center axis distance: %1</source>
       <translation>ცენტრალური ღერძის დაშორება: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="328"/>
+      <location filename="../../QuickMeasure.cpp" line="335"/>
       <source>Center axis distance: %1, Axis angle: %2</source>
       <translation type="unfinished">Center axis distance: %1, Axis angle: %2</translation>
     </message>
@@ -442,51 +447,16 @@
     </message>
   </context>
   <context>
-    <name>TaskMeasure</name>
+    <name>StdCmdMassProperties</name>
     <message>
-      <location filename="../../../App/AppMeasure.cpp" line="121"/>
-      <source>Distance</source>
-      <translation>დაშორება</translation>
+      <location filename="../../Command.cpp" line="97"/>
+      <source>Mass Properties</source>
+      <translation>წონის თვისებები</translation>
     </message>
     <message>
-      <location filename="../../../App/AppMeasure.cpp" line="129"/>
-      <source>Distance Free</source>
-      <translation>თავისუფალი მანძილი</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="137"/>
-      <source>Angle</source>
-      <translation>კუთხე</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="145"/>
-      <source>Length</source>
-      <translation>სიგრძე</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="153"/>
-      <source>Position</source>
-      <translation>პოზიცია</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="161"/>
-      <source>Area</source>
-      <translation>ფართობი</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="169"/>
-      <source>Diameter</source>
-      <translation>დიამეტრი</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="177"/>
-      <source>Radius</source>
-      <translation>რადიუსი</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="185"/>
-      <source>Geometric Center</source>
-      <translation type="unfinished">Geometric Center</translation>
+      <location filename="../../Command.cpp" line="98"/>
+      <source>Calculates mass properties of selected objects</source>
+      <translation type="unfinished">Calculates mass properties of selected objects</translation>
     </message>
   </context>
   <context>
@@ -538,16 +508,51 @@
     </message>
   </context>
   <context>
-    <name>StdCmdMassProperties</name>
+    <name>TaskMeasure</name>
     <message>
-      <location filename="../../Command.cpp" line="97"/>
-      <source>Mass Properties</source>
-      <translation>წონის თვისებები</translation>
+      <location filename="../../../App/AppMeasure.cpp" line="121"/>
+      <source>Distance</source>
+      <translation>დაშორება</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="98"/>
-      <source>Calculates mass properties of selected objects</source>
-      <translation type="unfinished">Calculates mass properties of selected objects</translation>
+      <location filename="../../../App/AppMeasure.cpp" line="129"/>
+      <source>Distance Free</source>
+      <translation>თავისუფალი მანძილი</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="137"/>
+      <source>Angle</source>
+      <translation>კუთხე</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="145"/>
+      <source>Length</source>
+      <translation>სიგრძე</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="153"/>
+      <source>Position</source>
+      <translation>პოზიცია</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="161"/>
+      <source>Area</source>
+      <translation>ფართობი</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="169"/>
+      <source>Diameter</source>
+      <translation>დიამეტრი</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="177"/>
+      <source>Radius</source>
+      <translation>რადიუსი</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="185"/>
+      <source>Geometric Center</source>
+      <translation type="unfinished">Geometric Center</translation>
     </message>
   </context>
 </TS>

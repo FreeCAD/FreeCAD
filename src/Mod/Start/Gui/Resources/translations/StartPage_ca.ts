@@ -261,7 +261,7 @@ Es poden afegir diverses carpetes mitjançant ";;" per separar els camins.</tran
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppStartGui.cpp" line="140"/>
+      <location filename="../../AppStartGui.cpp" line="90"/>
       <source>Start</source>
       <translation>Inicia</translation>
     </message>

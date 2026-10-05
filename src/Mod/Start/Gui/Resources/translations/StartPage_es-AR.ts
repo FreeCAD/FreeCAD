@@ -261,7 +261,7 @@ Múltiples carpetas pueden ser añadidas usando ";;" para separar las rutas.</tr
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppStartGui.cpp" line="140"/>
+      <location filename="../../AppStartGui.cpp" line="90"/>
       <source>Start</source>
       <translation>Inicio</translation>
     </message>
