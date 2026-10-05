@@ -291,6 +291,8 @@ TaskDlgHatch::TaskDlgHatch(TechDraw::DrawViewPart* inDvp, std::vector<std::strin
                                          widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
+    // Not in edit mode, so nothing closes the dialog if undo deletes the hatch it created
+    setAutoCloseOnTransactionChange(true);
 }
 
 TaskDlgHatch::TaskDlgHatch(TechDrawGui::ViewProviderHatch* inVp) :

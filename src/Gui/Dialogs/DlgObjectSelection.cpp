@@ -113,10 +113,13 @@ void DlgObjectSelection::init(
     ui->depList->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
     ui->depList->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
     ui->depList->header()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+    ui->depList->setTextElideMode(Qt::ElideNone);
     ui->inList->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
     ui->inList->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
     ui->inList->header()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+    ui->inList->setTextElideMode(Qt::ElideNone);
     ui->treeWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+    ui->treeWidget->setTextElideMode(Qt::ElideNone);
 
     ui->depList->headerItem()->setText(0, tr("Depending on"));
     ui->depList->headerItem()->setText(1, tr("Document"));
