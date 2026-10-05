@@ -34,6 +34,7 @@
 #include <QFile>
 #include <QImage>
 #include <QImageWriter>
+#include <QScopeGuard>
 
 #if defined(FC_OS_WIN32)
 # include <windows.h>
@@ -544,7 +545,7 @@ void SoQtOffscreenRenderer::setBackgroundColor(const SbColor4f& color)
 {
     PRIVATE(this)->backgroundcolor = color;
     PRIVATE(this)->backgroundopaque = color;
-    if (color[3] < 1.0) {
+    if (color[3] < 1.0 && !perPixelAlpha) {
         PRIVATE(this)->backgroundopaque.setValue(1, 1, 1, 1);
     }
 }
@@ -601,6 +602,12 @@ GLenum SoQtOffscreenRenderer::internalTextureFormat() const
     return PRIVATE(this)->texFormat;
 }
 
+void SoQtOffscreenRenderer::setPerPixelAlpha(bool enabled)
+{
+    perPixelAlpha = enabled;
+    setBackgroundColor(backgroundcolor);
+}
+
 // *************************************************************************
 
 void SoQtOffscreenRenderer::pre_render_cb(void* /*userdata*/, SoGLRenderAction* action)
@@ -636,6 +643,8 @@ void SoQtOffscreenRenderer::makeFrameBuffer(int width, int height, int samples)
 SbBool SoQtOffscreenRenderer::renderFromBase(SoBase* base)
 {
     const SbVec2s fullsize = this->viewport.getViewportSizePixels();
+    QOpenGLContext* previousContext = QOpenGLContext::currentContext();
+    QSurface* previousSurface = previousContext ? previousContext->surface() : nullptr;
 
     // Start from the application-wide default format so the offscreen context inherits the OpenGL
     // compatibility profile requested in Application::runApplication(). A freshly constructed
@@ -653,7 +662,14 @@ SbBool SoQtOffscreenRenderer::renderFromBase(SoBase* base)
     QOffscreenSurface offscreen;
     offscreen.setFormat(format);
     offscreen.create();
-    context.makeCurrent(&offscreen);
+    auto restoreContext = qScopeGuard([previousContext, previousSurface]() {
+        if (previousContext && previousSurface) {
+            previousContext->makeCurrent(previousSurface);
+        }
+    });
+    if (!context.makeCurrent(&offscreen)) {
+        return false;
+    }
 
     if (!framebuffer) {
         makeFrameBuffer(fullsize[0], fullsize[1], PRIVATE(this)->numSamples);
@@ -663,7 +679,9 @@ SbBool SoQtOffscreenRenderer::renderFromBase(SoBase* base)
         makeFrameBuffer(fullsize[0], fullsize[1], PRIVATE(this)->numSamples);
     }
 
-    framebuffer->bind();  // activate us!
+    if (!framebuffer->isValid() || !framebuffer->bind()) {
+        return false;
+    }
 
     // oldcontext is used to restore the previous context id, in case
     // the render action is not allocated by us.
@@ -764,7 +782,7 @@ SbBool SoQtOffscreenRenderer::render(SoPath* scene)
 void SoQtOffscreenRenderer::writeToImage(QImage& img) const
 {
     img = this->glImage;
-    if (PRIVATE(this)->backgroundcolor[3] < 1.0) {
+    if (PRIVATE(this)->backgroundcolor[3] < 1.0 && !perPixelAlpha) {
         QColor c1, c2;
         c1.setRedF(PRIVATE(this)->backgroundcolor[0]);
         c1.setGreenF(PRIVATE(this)->backgroundcolor[1]);

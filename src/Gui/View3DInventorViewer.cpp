@@ -3153,21 +3153,69 @@ QImage View3DInventorViewer::renderToImage(const RenderImageOptions& options)
     return img;
 }
 
-SoSeparator* View3DInventorViewer::buildCaptureRoot(const RenderImageOptions& options) const
+QImage View3DInventorViewer::renderSceneToImage(
+    const RenderImageOptions& options,
+    View3DInventorViewer* viewer
+)
+{
+    if (!options.scene || !options.camera || options.width <= 0 || options.height <= 0) {
+        return {};
+    }
+    if (viewer && static_cast<QOpenGLWidget*>(viewer->viewport())->isValid()) {  // NOLINT
+        QImage image = viewer->renderToImage(options);
+        if (!image.isNull()) {
+            return image;
+        }
+    }
+
+    // A document can have a 3D view whose GL widget has never been shown (for
+    // example, a hidden-window export). Keep its lighting in the fallback too.
+    const CoinPtr<SoSeparator> root(buildCaptureRoot(options, viewer));
+    SoQtOffscreenRenderer renderer(SbViewportRegion(options.width, options.height));
+    renderer.setNumPasses(options.samples >= 0 ? options.samples : 4);
+    const bool perPixelAlpha = options.alphaMode == AlphaMode::PerPixel;
+    renderer.setPerPixelAlpha(perPixelAlpha);
+    if (perPixelAlpha) {
+        renderer.setInternalTextureFormat(GL_RGBA8);
+    }
+    const QColor background = options.background.isValid() ? options.background : QColor(Qt::black);
+    renderer.setBackgroundColor(SbColor4f(
+        float(background.redF()),
+        float(background.greenF()),
+        float(background.blueF()),
+        float(background.alphaF())
+    ));
+    QImage image;
+    if (renderer.render(root)) {
+        renderer.writeToImage(image);
+    }
+    return image;
+}
+
+SoSeparator* View3DInventorViewer::buildCaptureRoot(
+    const RenderImageOptions& options,
+    const View3DInventorViewer* viewer
+)
 {
     // Skipping the render manager's scene graph leaves the placement indicator, the rotation
     // center and the viewer's own camera out of the capture.
     auto root = new SoSeparator;
 
     if (options.includeViewerLighting) {
-        root->addChild(getHeadlight());
-        root->addChild(getBacklight());
-        root->addChild(getFillLight());
-        root->addChild(environment);
+        if (viewer) {
+            root->addChild(viewer->getHeadlight());
+            root->addChild(viewer->getBacklight());
+            root->addChild(viewer->getFillLight());
+            root->addChild(viewer->getEnvironment());
+        }
+        else {
+            root->addChild(new SoEnvironment);
+            root->addChild(new SoDirectionalLight);
+        }
     }
 
-    root->addChild(options.camera);
-    root->addChild(pcViewProviderRoot);
+    root->addChild(options.camera ? options.camera : viewer->getSoRenderManager()->getCamera());
+    root->addChild(options.scene ? options.scene : viewer->pcViewProviderRoot);
 
     return root;
 }
@@ -3206,7 +3254,7 @@ bool View3DInventorViewer::renderToFramebuffer(
     gl.setCacheContext(id);
     gl.setTransparencyType(SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND);
 
-    if (!this->shading) {
+    if (!options.scene && !this->shading) {
         SoLightModelElement::set(gl.getState(), selectionRoot, SoLightModelElement::BASE_COLOR);
         SoOverrideElement::setLightModelOverride(gl.getState(), selectionRoot, true);
     }
@@ -3216,8 +3264,8 @@ bool View3DInventorViewer::renderToFramebuffer(
     // while creating a new render action has it set to GL_LEQUAL. So, in order to get
     // the exact same result set it explicitly to GL_LESS.
     glDepthFunc(GL_LESS);
-    if (options.camera) {
-        const CoinPtr<SoSeparator> captureRoot(buildCaptureRoot(options));
+    if (options.camera || options.scene) {
+        const CoinPtr<SoSeparator> captureRoot(buildCaptureRoot(options, this));
         gl.apply(captureRoot);
     }
     else if (options.includeViewerLighting) {
@@ -3227,6 +3275,9 @@ bool View3DInventorViewer::renderToFramebuffer(
         gl.apply(this->getSoRenderManager()->getCamera());
         SoNode* scene = this->getSceneGraph();
         gl.apply(scene == this->viewerSceneRoot ? this->selectionRoot : scene);
+    }
+    if (options.scene) {
+        return true;
     }
     renderDelayedAnnotations(&gl);
     gl.apply(this->foregroundroot);

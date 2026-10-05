@@ -114,6 +114,7 @@ PyMOD_INIT_FUNC(TechDrawGui)
     // load dependent module
     try {
         Base::Interpreter().loadModule("TechDraw");
+        Base::Interpreter().loadModule("PartGui");
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
