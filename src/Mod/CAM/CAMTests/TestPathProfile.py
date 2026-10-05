@@ -245,6 +245,31 @@ class TestPathProfile(PathTestBase):
         for obj in (slot, plane):
             self.doc.removeObject(obj.Name)
 
+    def testWorkplaneMovedWithModelKeepsFrameValues(self):
+        """On a work plane set where it is that was moved as the model was, a typed depth and a
+        point kept in the plane's frame stay as they are: the plane moved with the model."""
+        import Path.Main.Workplane as PathWorkplane
+        import Path.Op.Slot as PathSlot
+
+        tilt = FreeCAD.Placement(FreeCAD.Vector(), FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), 90))
+        plane = PathWorkplane.createWorkplane(self.job, placement=tilt, label="Carried")
+        plane.AttachmentSupport = None
+        plane.Placement = tilt
+        slot = PathSlot.Create("SlotCarried")
+        self.doc.recompute()
+        slot.Workplane = plane
+        slot.setExpression("FinalDepth", None)
+        slot.FinalDepth = -3
+        slot.CustomPoint1 = FreeCAD.Vector(1, 2, 0)
+        back = FreeCAD.Placement(FreeCAD.Vector(0, -4, 0), FreeCAD.Rotation())
+        plane.Placement = back.multiply(tilt)
+        PathJob.carryOperationPoints(self.job, back, [plane])
+        PathJob.carryOperationHeights(self.job, back, [plane])
+        self.assertRoughly(slot.FinalDepth.Value, -3)
+        self.assertTrue(slot.CustomPoint1.isEqual(FreeCAD.Vector(1, 2, 0), 1e-9))
+        for obj in (slot, plane):
+            self.doc.removeObject(obj.Name)
+
     def test00(self):
         """test00() Empty test."""
         return
