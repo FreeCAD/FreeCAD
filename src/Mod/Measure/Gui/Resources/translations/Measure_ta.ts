@@ -60,103 +60,108 @@
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="223"/>
-      <location filename="../../QuickMeasure.cpp" line="262"/>
+      <location filename="../../QuickMeasure.cpp" line="269"/>
       <source>Nominal distance: %1</source>
       <translation>பெயரளவு தூரம்:% 1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="226"/>
+      <source>Nominal distance: %1, Axis distance: %2</source>
+      <translation type="unfinished">Nominal distance: %1, Axis distance: %2</translation>
+    </message>
+    <message>
+      <location filename="../../QuickMeasure.cpp" line="233"/>
       <source>Area: %1</source>
       <translation>பகுதி:% 1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="232"/>
+      <location filename="../../QuickMeasure.cpp" line="239"/>
       <source>Area: %1, Radius: %2</source>
       <translation>பகுதி:% 1, ஆரம்:% 2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="236"/>
+      <location filename="../../QuickMeasure.cpp" line="243"/>
       <source>Area: %1, Diameter: %2</source>
       <translation>பகுதி:% 1, விட்டம்:% 2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="245"/>
+      <location filename="../../QuickMeasure.cpp" line="252"/>
       <source>Total area: %1, Axis distance: %2</source>
       <translation>மொத்த பரப்பளவு:% 1, அச்சு தூரம்:% 2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="250"/>
+      <location filename="../../QuickMeasure.cpp" line="257"/>
       <source>Total area: %1, Axis distance: %2, Axis angle: %3</source>
       <translation>மொத்த பரப்பளவு: %1, அச்சு தூரம்:%2, அச்சு கோணம்:%3</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="259"/>
+      <location filename="../../QuickMeasure.cpp" line="266"/>
       <source>Total length: %1</source>
       <translation>மொத்த நீளம்:% 1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="265"/>
+      <location filename="../../QuickMeasure.cpp" line="272"/>
       <source>Angle: %1, Total length: %2</source>
       <translation>கோணம்: % 1, மொத்த நீளம்:% 2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="269"/>
+      <location filename="../../QuickMeasure.cpp" line="276"/>
       <source>Length: %1</source>
       <translation>நீளம்:% 1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="272"/>
+      <location filename="../../QuickMeasure.cpp" line="279"/>
       <source>Radius: %1</source>
       <translation>ஆரம்:% 1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="275"/>
+      <location filename="../../QuickMeasure.cpp" line="282"/>
       <source>Diameter: %1</source>
       <translation>விட்டம்:% 1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="278"/>
+      <location filename="../../QuickMeasure.cpp" line="285"/>
       <source>Distance: %1</source>
       <translation>தூரம்:% 1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="281"/>
+      <location filename="../../QuickMeasure.cpp" line="288"/>
       <source>Minimum distance: %1</source>
       <translation>குறைந்தபட்ச தூரம்:% 1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="285"/>
+      <location filename="../../QuickMeasure.cpp" line="292"/>
       <source>Minimum distance: %1, Axis distance: %2</source>
       <translation>குறைந்தபட்ச தூரம்:% 1, அச்சு தூரம்:%2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="291"/>
+      <location filename="../../QuickMeasure.cpp" line="298"/>
       <source>Minimum distance: %1, Center distance: %2</source>
       <translation>குறைந்தபட்ச தூரம்: % 1, மைய தூரம்: % 2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="298"/>
-      <location filename="../../QuickMeasure.cpp" line="315"/>
+      <location filename="../../QuickMeasure.cpp" line="305"/>
+      <location filename="../../QuickMeasure.cpp" line="322"/>
       <source>Total length: %1, Center distance: %2</source>
       <translation>மொத்த நீளம்: % 1, மைய தூரம்:% 2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="305"/>
+      <location filename="../../QuickMeasure.cpp" line="312"/>
       <source>Total length: %1, Center distance: %2, Axis angle: %3</source>
       <translation>மொத்த நீளம்: %1, மைய தூரம்:%2, அச்சு கோணம்:%3</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="320"/>
+      <location filename="../../QuickMeasure.cpp" line="327"/>
       <source>Center surface distance: %1</source>
       <translation>மைய மேற்பரப்பு தூரம்:% 1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="325"/>
+      <location filename="../../QuickMeasure.cpp" line="332"/>
       <source>Center axis distance: %1</source>
       <translation>மைய அச்சு தூரம்:% 1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="328"/>
+      <location filename="../../QuickMeasure.cpp" line="335"/>
       <source>Center axis distance: %1, Axis angle: %2</source>
       <translation>மைய அச்சு தூரம்: % 1, அச்சு கோணம்:% 2</translation>
     </message>
@@ -442,51 +447,16 @@
     </message>
   </context>
   <context>
-    <name>TaskMeasure</name>
+    <name>StdCmdMassProperties</name>
     <message>
-      <location filename="../../../App/AppMeasure.cpp" line="121"/>
-      <source>Distance</source>
-      <translation>தூரம்</translation>
+      <location filename="../../Command.cpp" line="97"/>
+      <source>Mass Properties</source>
+      <translation>வெகுசன பண்புகள்</translation>
     </message>
     <message>
-      <location filename="../../../App/AppMeasure.cpp" line="129"/>
-      <source>Distance Free</source>
-      <translation>தூரம் இலவசம்</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="137"/>
-      <source>Angle</source>
-      <translation>கோணம்</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="145"/>
-      <source>Length</source>
-      <translation>நீளம்</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="153"/>
-      <source>Position</source>
-      <translation>பதவி</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="161"/>
-      <source>Area</source>
-      <translation>பகுதி</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="169"/>
-      <source>Diameter</source>
-      <translation>விட்டம்</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="177"/>
-      <source>Radius</source>
-      <translation>ஆரம்</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="185"/>
-      <source>Geometric Center</source>
-      <translation type="unfinished">Geometric Center</translation>
+      <location filename="../../Command.cpp" line="98"/>
+      <source>Calculates mass properties of selected objects</source>
+      <translation>தேர்ந்தெடுக்கப்பட்ட பொருட்களின் நிறை பண்புகளை கணக்கிடுகிறது</translation>
     </message>
   </context>
   <context>
@@ -538,16 +508,51 @@
     </message>
   </context>
   <context>
-    <name>StdCmdMassProperties</name>
+    <name>TaskMeasure</name>
     <message>
-      <location filename="../../Command.cpp" line="97"/>
-      <source>Mass Properties</source>
-      <translation>வெகுசன பண்புகள்</translation>
+      <location filename="../../../App/AppMeasure.cpp" line="121"/>
+      <source>Distance</source>
+      <translation>தூரம்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="98"/>
-      <source>Calculates mass properties of selected objects</source>
-      <translation>தேர்ந்தெடுக்கப்பட்ட பொருட்களின் நிறை பண்புகளை கணக்கிடுகிறது</translation>
+      <location filename="../../../App/AppMeasure.cpp" line="129"/>
+      <source>Distance Free</source>
+      <translation>தூரம் இலவசம்</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="137"/>
+      <source>Angle</source>
+      <translation>கோணம்</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="145"/>
+      <source>Length</source>
+      <translation>நீளம்</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="153"/>
+      <source>Position</source>
+      <translation>பதவி</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="161"/>
+      <source>Area</source>
+      <translation>பகுதி</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="169"/>
+      <source>Diameter</source>
+      <translation>விட்டம்</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="177"/>
+      <source>Radius</source>
+      <translation>ஆரம்</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="185"/>
+      <source>Geometric Center</source>
+      <translation type="unfinished">Geometric Center</translation>
     </message>
   </context>
 </TS>

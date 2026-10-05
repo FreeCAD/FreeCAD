@@ -2155,8 +2155,13 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>建立截斷視圖</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="478"/>
+      <location filename="../../Command.cpp" line="1774"/>
+      <source>Create Spreadsheet View</source>
+      <translation>建立試算表視圖</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="1930"/>
+      <location filename="../../PagePrinter.cpp" line="478"/>
       <source>Save page to DXF</source>
       <translation>儲存頁面為 DXF 格式</translation>
     </message>
@@ -2192,11 +2197,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>建立 DraftView</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1774"/>
-      <source>Create Spreadsheet View</source>
-      <translation>建立試算表視圖</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="347"/>
       <source>Create spreadsheet view</source>
       <translation>建立試算表視圖</translation>
@@ -2212,13 +2212,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>新增象限頂點</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="113"/>
-      <source>Edit Annotation</source>
-      <translation>編輯註解</translation>
-    </message>
-    <message>
-      <location filename="../../TaskRichAnno.cpp" line="154"/>
       <location filename="../../CommandAnnotate.cpp" line="545"/>
+      <location filename="../../TaskRichAnno.cpp" line="152"/>
       <source>Create Annotation</source>
       <translation>建立註解</translation>
     </message>
@@ -2481,33 +2476,33 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>更新裝飾圓</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.cpp" line="435"/>
+      <location filename="../../TaskDetail.cpp" line="432"/>
       <source>Create Detail view</source>
       <translation>建立細節視圖</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.cpp" line="477"/>
+      <location filename="../../TaskDetail.cpp" line="478"/>
       <source>Update Detail</source>
       <translation>更新明細</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="346"/>
+      <location filename="../../TaskLeaderLine.cpp" line="345"/>
       <source>Create Leader</source>
       <translation>建立指線</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="433"/>
+      <location filename="../../TaskLeaderLine.cpp" line="432"/>
       <source>Edit Leader</source>
       <translation>編輯指線</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="555"/>
+      <location filename="../../TaskComplexSection.cpp" line="558"/>
       <source>Create Complex Section</source>
       <translation>建立複雜剖面</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="575"/>
-      <location filename="../../TaskComplexSection.cpp" line="651"/>
+      <location filename="../../TaskSectionView.cpp" line="587"/>
+      <location filename="../../TaskComplexSection.cpp" line="659"/>
       <source>Edit Section View</source>
       <translation>編輯剖面視圖</translation>
     </message>
@@ -2777,7 +2772,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>建立中心線</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="495"/>
+      <location filename="../../TaskSectionView.cpp" line="503"/>
       <source>Create Section View</source>
       <translation>建立剖面視圖</translation>
     </message>
@@ -2790,6 +2785,11 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../TaskWeldingSymbol.cpp" line="568"/>
       <source>Edit Weld Symbol</source>
       <translation>編輯焊接符號</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRichAnno.cpp" line="111"/>
+      <source>Edit Annotation</source>
+      <translation>編輯註解</translation>
     </message>
   </context>
   <context>
@@ -3053,25 +3053,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="639"/>
-      <location filename="../../Command.cpp" line="649"/>
-      <location filename="../../Command.cpp" line="866"/>
-      <location filename="../../Command.cpp" line="983"/>
-      <location filename="../../Command.cpp" line="990"/>
-      <location filename="../../Command.cpp" line="995"/>
-      <location filename="../../Command.cpp" line="1033"/>
-      <location filename="../../Command.cpp" line="1132"/>
-      <location filename="../../Command.cpp" line="1399"/>
-      <location filename="../../Command.cpp" line="1416"/>
-      <location filename="../../Command.cpp" line="1421"/>
-      <location filename="../../Command.cpp" line="1430"/>
-      <location filename="../../Command.cpp" line="1483"/>
-      <location filename="../../Command.cpp" line="1502"/>
-      <location filename="../../Command.cpp" line="1627"/>
-      <location filename="../../Command.cpp" line="1705"/>
-      <location filename="../../Command.cpp" line="1711"/>
-      <location filename="../../CommandHelpers.cpp" line="87"/>
-      <location filename="../../CommandHelpers.cpp" line="100"/>
       <location filename="../../CommandAnnotate.cpp" line="117"/>
       <location filename="../../CommandAnnotate.cpp" line="122"/>
       <location filename="../../CommandAnnotate.cpp" line="313"/>
@@ -3099,6 +3080,25 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1358"/>
       <location filename="../../CommandAnnotate.cpp" line="1365"/>
       <location filename="../../CommandAnnotate.cpp" line="1429"/>
+      <location filename="../../Command.cpp" line="639"/>
+      <location filename="../../Command.cpp" line="649"/>
+      <location filename="../../Command.cpp" line="866"/>
+      <location filename="../../Command.cpp" line="983"/>
+      <location filename="../../Command.cpp" line="990"/>
+      <location filename="../../Command.cpp" line="995"/>
+      <location filename="../../Command.cpp" line="1033"/>
+      <location filename="../../Command.cpp" line="1132"/>
+      <location filename="../../Command.cpp" line="1399"/>
+      <location filename="../../Command.cpp" line="1416"/>
+      <location filename="../../Command.cpp" line="1421"/>
+      <location filename="../../Command.cpp" line="1430"/>
+      <location filename="../../Command.cpp" line="1483"/>
+      <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../Command.cpp" line="1627"/>
+      <location filename="../../Command.cpp" line="1705"/>
+      <location filename="../../Command.cpp" line="1711"/>
+      <location filename="../../CommandHelpers.cpp" line="87"/>
+      <location filename="../../CommandHelpers.cpp" line="100"/>
       <source>Wrong selection</source>
       <translation>錯誤的選取</translation>
     </message>
@@ -3174,25 +3174,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>此選取中沒有形狀、群組或鏈結</translation>
     </message>
     <message>
-      <location filename="../../CommandStack.cpp" line="75"/>
-      <location filename="../../CommandStack.cpp" line="191"/>
-      <location filename="../../CommandStack.cpp" line="251"/>
-      <location filename="../../CommandStack.cpp" line="311"/>
-      <location filename="../../CommandExtensionDims.cpp" line="328"/>
-      <location filename="../../CommandExtensionDims.cpp" line="537"/>
-      <location filename="../../CommandExtensionDims.cpp" line="825"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1153"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1524"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1893"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2131"/>
-      <location filename="../../Command.cpp" line="749"/>
-      <location filename="../../Command.cpp" line="842"/>
-      <location filename="../../Command.cpp" line="905"/>
-      <location filename="../../CommandExtensionPack.cpp" line="304"/>
-      <location filename="../../CommandExtensionPack.cpp" line="607"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1227"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1472"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1770"/>
       <location filename="../../CommandAnnotate.cpp" line="102"/>
       <location filename="../../CommandAnnotate.cpp" line="163"/>
       <location filename="../../CommandAnnotate.cpp" line="215"/>
@@ -3208,6 +3189,25 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1264"/>
       <location filename="../../CommandAnnotate.cpp" line="1345"/>
       <location filename="../../CommandAnnotate.cpp" line="1411"/>
+      <location filename="../../Command.cpp" line="749"/>
+      <location filename="../../Command.cpp" line="842"/>
+      <location filename="../../Command.cpp" line="905"/>
+      <location filename="../../CommandExtensionPack.cpp" line="304"/>
+      <location filename="../../CommandExtensionPack.cpp" line="607"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1227"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1472"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1770"/>
+      <location filename="../../CommandExtensionDims.cpp" line="328"/>
+      <location filename="../../CommandExtensionDims.cpp" line="537"/>
+      <location filename="../../CommandExtensionDims.cpp" line="825"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1153"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1524"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1893"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2131"/>
+      <location filename="../../CommandStack.cpp" line="75"/>
+      <location filename="../../CommandStack.cpp" line="191"/>
+      <location filename="../../CommandStack.cpp" line="251"/>
+      <location filename="../../CommandStack.cpp" line="311"/>
       <location filename="../../CommandCreateDims.cpp" line="1501"/>
       <location filename="../../CommandCreateDims.cpp" line="1549"/>
       <location filename="../../CommandCreateDims.cpp" line="1597"/>
@@ -3223,16 +3223,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>工作進行中</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="329"/>
-      <location filename="../../CommandExtensionDims.cpp" line="538"/>
-      <location filename="../../CommandExtensionDims.cpp" line="826"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1154"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1525"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1894"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2132"/>
-      <location filename="../../Command.cpp" line="750"/>
-      <location filename="../../Command.cpp" line="843"/>
-      <location filename="../../Command.cpp" line="906"/>
       <location filename="../../CommandAnnotate.cpp" line="103"/>
       <location filename="../../CommandAnnotate.cpp" line="164"/>
       <location filename="../../CommandAnnotate.cpp" line="216"/>
@@ -3248,6 +3238,16 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1265"/>
       <location filename="../../CommandAnnotate.cpp" line="1346"/>
       <location filename="../../CommandAnnotate.cpp" line="1412"/>
+      <location filename="../../Command.cpp" line="750"/>
+      <location filename="../../Command.cpp" line="843"/>
+      <location filename="../../Command.cpp" line="906"/>
+      <location filename="../../CommandExtensionDims.cpp" line="329"/>
+      <location filename="../../CommandExtensionDims.cpp" line="538"/>
+      <location filename="../../CommandExtensionDims.cpp" line="826"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1154"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1525"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1894"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2132"/>
       <source>Close active task dialog and try again</source>
       <translation>請關閉作用中工作對話方塊後再試</translation>
     </message>
@@ -3436,21 +3436,21 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>選擇要開啟的 SVG 檔</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="1201"/>
+      <location filename="../../Command.cpp" line="1208"/>
+      <location filename="../../Command.cpp" line="1216"/>
+      <location filename="../../Command.cpp" line="1228"/>
+      <location filename="../../TaskDimension.cpp" line="553"/>
       <location filename="../../CommandDecorate.cpp" line="420"/>
       <location filename="../../CommandDecorate.cpp" line="427"/>
       <location filename="../../CommandDecorate.cpp" line="434"/>
       <location filename="../../CommandDecorate.cpp" line="441"/>
       <location filename="../../CommandDecorate.cpp" line="447"/>
-      <location filename="../../TaskDimRepair.cpp" line="139"/>
-      <location filename="../../TaskDimRepair.cpp" line="150"/>
-      <location filename="../../Command.cpp" line="1201"/>
-      <location filename="../../Command.cpp" line="1208"/>
-      <location filename="../../Command.cpp" line="1216"/>
-      <location filename="../../Command.cpp" line="1228"/>
       <location filename="../../CommandExtensionPack.cpp" line="1883"/>
       <location filename="../../CommandExtensionPack.cpp" line="2007"/>
+      <location filename="../../TaskDimRepair.cpp" line="139"/>
+      <location filename="../../TaskDimRepair.cpp" line="150"/>
       <location filename="../../CommandAlign.cpp" line="55"/>
-      <location filename="../../TaskDimension.cpp" line="553"/>
       <location filename="../../CommandCreateDims.cpp" line="2009"/>
       <location filename="../../CommandCreateDims.cpp" line="2025"/>
       <location filename="../../CommandCreateDims.cpp" line="2051"/>
@@ -3496,8 +3496,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>請關閉作用中工作對話方塊後再試。</translation>
     </message>
     <message>
-      <location filename="../../CommandStack.cpp" line="371"/>
       <location filename="../../CommandExtensionPack.cpp" line="1003"/>
+      <location filename="../../CommandStack.cpp" line="371"/>
       <source>Task In Progress</source>
       <translation>任務進行中</translation>
     </message>
@@ -3508,13 +3508,29 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>TechDraw 孔圓</translation>
     </message>
     <message>
-      <location filename="../../CommandStack.cpp" line="372"/>
+      <location filename="../../CommandExtensionPack.cpp" line="122"/>
+      <source>Can not make hole circle for %1</source>
+      <translation>無法為 %1 建立孔圓</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="244"/>
+      <source>TechDraw circle centerlines</source>
+      <translation>TechDraw 圓中心線</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="245"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1678"/>
+      <source>Can not make centerlines for %1</source>
+      <translation>無法為 %1 建立中心線</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="305"/>
       <location filename="../../CommandExtensionPack.cpp" line="608"/>
       <location filename="../../CommandExtensionPack.cpp" line="1004"/>
       <location filename="../../CommandExtensionPack.cpp" line="1228"/>
       <location filename="../../CommandExtensionPack.cpp" line="1473"/>
       <location filename="../../CommandExtensionPack.cpp" line="1771"/>
+      <location filename="../../CommandStack.cpp" line="372"/>
       <source>Close active task dialog and try again.</source>
       <translation>關閉活動任務對話框並重試。</translation>
     </message>
@@ -3532,22 +3548,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandExtensionPack.cpp" line="948"/>
       <source>Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle.</source>
       <translation>選取不是裝飾圓或裝飾圓弧。</translation>
-    </message>
-    <message>
-      <location filename="../../CommandExtensionPack.cpp" line="122"/>
-      <source>Can not make hole circle for %1</source>
-      <translation>無法為 %1 建立孔圓</translation>
-    </message>
-    <message>
-      <location filename="../../CommandExtensionPack.cpp" line="244"/>
-      <source>TechDraw circle centerlines</source>
-      <translation>TechDraw 圓中心線</translation>
-    </message>
-    <message>
-      <location filename="../../CommandExtensionPack.cpp" line="245"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1678"/>
-      <source>Can not make centerlines for %1</source>
-      <translation>無法為 %1 建立中心線</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="984"/>
@@ -3590,12 +3590,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>選取 2 條直線</translation>
     </message>
     <message>
+      <location filename="../../CommandAnnotate.cpp" line="770"/>
+      <location filename="../../CommandAnnotate.cpp" line="1025"/>
       <location filename="../../CommandExtensionPack.cpp" line="902"/>
       <location filename="../../CommandExtensionPack.cpp" line="925"/>
       <location filename="../../CommandExtensionPack.cpp" line="947"/>
       <location filename="../../CommandExtensionPack.cpp" line="983"/>
-      <location filename="../../CommandAnnotate.cpp" line="770"/>
-      <location filename="../../CommandAnnotate.cpp" line="1025"/>
       <source>Wrong Selection</source>
       <translation>錯誤的選擇</translation>
     </message>
@@ -3818,9 +3818,9 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>FreeCAD 無法開啟檔案 %1 寫入。檔案可能被其他程式開啟。</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroup.cpp" line="162"/>
       <location filename="../../ViewProviderPage.cpp" line="221"/>
       <location filename="../../ViewProviderTemplate.cpp" line="203"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="162"/>
       <source>Are you sure you want to continue?</source>
       <translation>您確定要繼續嗎?</translation>
     </message>
@@ -3835,17 +3835,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>切換保持更新</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="219"/>
+      <location filename="../../TaskLeaderLine.cpp" line="218"/>
       <source>New Leader Line</source>
       <translation>新的指線</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="261"/>
+      <location filename="../../TaskLeaderLine.cpp" line="260"/>
       <source>Edit Leader Line</source>
       <translation>編輯指線</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="381"/>
+      <location filename="../../TaskRichAnno.cpp" line="379"/>
       <source>Rich text editor</source>
       <translation>富文字編輯器</translation>
     </message>
@@ -3870,55 +3870,55 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>找不到 3D 檢視器</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="127"/>
+      <location filename="../../TaskSectionView.cpp" line="135"/>
       <source>Create Section View</source>
       <translation>建立剖面視圖</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="153"/>
+      <location filename="../../TaskSectionView.cpp" line="161"/>
       <source>No direction set</source>
       <translation>未設定方向</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="159"/>
+      <location filename="../../TaskSectionView.cpp" line="167"/>
       <source>Edit Section View</source>
       <translation>編輯剖面視圖</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="138"/>
+      <location filename="../../TaskComplexSection.cpp" line="141"/>
       <source>New Complex Section</source>
       <translation>新的複雜剖面</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="179"/>
+      <location filename="../../TaskComplexSection.cpp" line="182"/>
       <source>Edit Complex Section</source>
       <translation>編輯複雜剖面</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="230"/>
-      <location filename="../../TaskComplexSection.cpp" line="217"/>
+      <location filename="../../TaskSectionView.cpp" line="238"/>
+      <location filename="../../TaskComplexSection.cpp" line="220"/>
       <source>Current View Direction</source>
       <translation>目前視圖方向</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="231"/>
-      <location filename="../../TaskComplexSection.cpp" line="218"/>
+      <location filename="../../TaskSectionView.cpp" line="239"/>
+      <location filename="../../TaskComplexSection.cpp" line="221"/>
       <source>The view direction in BaseView coordinates</source>
       <translation>在基礎視圖座標中的視圖方向</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="526"/>
+      <location filename="../../TaskComplexSection.cpp" line="529"/>
       <source>Possible coordinate system error</source>
       <translation>可能的座標系錯誤</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="527"/>
+      <location filename="../../TaskComplexSection.cpp" line="530"/>
       <source>Check SectionNormal, Direction and/or XDirection.</source>
       <translation>請檢查 SectionNormal、Direction 及／或 XDirection。</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="642"/>
-      <location filename="../../TaskComplexSection.cpp" line="718"/>
+      <location filename="../../TaskSectionView.cpp" line="653"/>
+      <location filename="../../TaskComplexSection.cpp" line="726"/>
       <source>Operation Failed</source>
       <translation>操作失敗</translation>
     </message>
@@ -3943,17 +3943,18 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>編輯裝飾線</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.cpp" line="97"/>
+      <location filename="../../TaskDetail.cpp" line="96"/>
       <source>New Detail View</source>
       <translation>新的細節視圖</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.cpp" line="175"/>
+      <location filename="../../TaskDetail.cpp" line="172"/>
       <source>Edit Detail View</source>
       <translation>編輯細節視圖</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDimension.cpp" line="141"/>
+      <location filename="../../ViewProviderRichAnno.cpp" line="103"/>
       <location filename="../../ViewProviderBalloon.cpp" line="88"/>
       <source>Edit %1</source>
       <translation>編輯 %1</translation>
@@ -4088,15 +4089,15 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>工程製圖客製化格式</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2347"/>
-      <location filename="../../CommandExtensionPack.cpp" line="2148"/>
       <location filename="../../CommandAnnotate.cpp" line="1026"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2148"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2347"/>
       <source>Selection is empty</source>
       <translation>選擇為空。</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2363"/>
       <location filename="../../CommandExtensionPack.cpp" line="2155"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2363"/>
       <source>No object selected</source>
       <translation>沒有選擇物件</translation>
     </message>
@@ -4236,12 +4237,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>文件名稱：</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="178"/>
+      <location filename="../../TaskProjGroup.cpp" line="181"/>
       <source>Projection Group</source>
       <translation>投影群組</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="188"/>
+      <location filename="../../TaskProjGroup.cpp" line="191"/>
       <source>New View</source>
       <translation>新視圖</translation>
     </message>
@@ -4266,17 +4267,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>編輯中心線</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="118"/>
+      <location filename="../../TaskRichAnno.cpp" line="116"/>
       <source>Rich Text Editor</source>
       <translation>富文字編輯器</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="157"/>
+      <location filename="../../TaskRichAnno.cpp" line="155"/>
       <source>Rich Text Creator</source>
       <translation>富文字建立器</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="379"/>
+      <location filename="../../TaskRichAnno.cpp" line="377"/>
       <source>Rich text creator</source>
       <translation>富文字建立器</translation>
     </message>
@@ -4286,14 +4287,14 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>調整富文字註解大小</translation>
     </message>
     <message>
-      <location filename="../../TemplateTextField.cpp" line="58"/>
-      <source>Updates the text</source>
-      <translation>更新文字</translation>
-    </message>
-    <message>
       <location filename="../../SymbolChooser.cpp" line="61"/>
       <source>Select a Symbol</source>
       <translation>選取符號</translation>
+    </message>
+    <message>
+      <location filename="../../TemplateTextField.cpp" line="58"/>
+      <source>Updates the text</source>
+      <translation>更新文字</translation>
     </message>
   </context>
   <context>
@@ -4316,18 +4317,18 @@ it has a weld symbol that would become broken.</source>
       <translation>您無法刪除此視圖，因為它具有一個或多個相依視圖，刪除將導致這些相依視圖損壞。</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="167"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="176"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="184"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="192"/>
-      <location filename="../../ViewProviderWeld.cpp" line="145"/>
+      <location filename="../../ViewProviderLeader.cpp" line="214"/>
       <location filename="../../ViewProviderViewPart.cpp" line="409"/>
       <location filename="../../ViewProviderViewPart.cpp" line="424"/>
       <location filename="../../ViewProviderPage.cpp" line="224"/>
-      <location filename="../../ViewProviderLeader.cpp" line="214"/>
       <location filename="../../ViewProviderTemplate.cpp" line="207"/>
+      <location filename="../../ViewProviderWeld.cpp" line="145"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="165"/>
       <source>Object dependencies</source>
       <translation>物件相依</translation>
     </message>
@@ -4664,27 +4665,17 @@ This directory will be used for the symbol selection.</source>
       <translation>邊模糊度</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="87"/>
-      <source>If checked, FreeCAD will use the new face finder algorithm. If not checked, FreeCAD will use the legacy face finder algorithm.</source>
-      <translation>勾選則使用新的尋面演算法；否則使用舊版。</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="90"/>
-      <source>Use new face finder algorithm</source>
-      <translation>使用新的尋面演算法</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="112"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="114"/>
       <source>Dump intermediate results during detail view processing</source>
       <translation>細節視圖處理時傾印中間結果</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="115"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="117"/>
       <source>Debug detail</source>
       <translation>除錯細節</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="134"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="136"/>
       <source>If checked, TechDraw will attempt to build faces using the
 line segments returned by the hidden line removal algorithm.
 Faces must be detected in order to use hatching, but there
@@ -4693,105 +4684,130 @@ can be a performance penalty in complex models.</source>
 面必須被檢測出來以進行填充，但是在複雜模型中會有效能的損失。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="140"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="142"/>
       <source>Detect faces</source>
       <translation>偵測面</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="182"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="184"/>
       <source>Validate shapes</source>
       <translation>驗證形狀</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="204"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="206"/>
       <source>Allow crazy edges</source>
       <translation>允許異常邊</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="217"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="219"/>
       <source>Issue progress messages while building view geometry</source>
       <translation>建立視圖幾何時顯示進度訊息</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="220"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="222"/>
       <source>Report progress</source>
       <translation>回報進度</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="233"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="235"/>
       <source>The number of times FreeCAD should try to remove overlapping edges returned by the hidden line removal algorithm. A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed. Values above 2 are generally not productive. Each pass adds to the time required to produce the drawing.</source>
       <translation>隱藏線處理後嘗試移除重疊邊的次數</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="263"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="260"/>
+      <source>Face finder algorithm</source>
+      <translation>尋面演算法</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="286"/>
+      <source>Use newest or one of the legacy of face finder algorithms</source>
+      <translation>使用最新版，或其中一種舊版尋面演算法</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="299"/>
+      <source>FreeCAD v0.17</source>
+      <translation>FreeCAD 0.17 版</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="304"/>
+      <source>FreeCAD v0.21</source>
+      <translation>FreeCAD 0.21 版</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="309"/>
+      <source>FreeCAD v26.3</source>
+      <translation>FreeCAD 26.3 版</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="322"/>
       <source>Overlap edges scrub passes</source>
       <translation>重疊邊清理遍數</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="275"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="334"/>
       <source>Mark fuzz</source>
       <translation>標記模糊度</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="311"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="370"/>
       <source>Max SVG hatch tiles</source>
       <translation>最大 SVG 剖面線圖塊</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="321"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="380"/>
       <source>Debug bad shape</source>
       <translation>除錯不良形狀</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="345"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="404"/>
       <source>Perform a fuse operation on input shapes before section view processing</source>
       <translation>剖面視圖處理前對輸入形狀執行融合</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="348"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="407"/>
       <source>Fuse before section</source>
       <translation>剖面前先融合</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="421"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="480"/>
       <source>Size of selection area around edges
 Each unit is approximately 0.1mm wide</source>
       <translation>邊周圍選取區域大小／每單位約 0.1mm 寬</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="453"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="512"/>
       <source>Show section edges</source>
       <translation>顯示剖面邊</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="469"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="528"/>
       <source>Maximum PAT hatch segments</source>
       <translation>最大 PAT 剖面線段數</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="476"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="535"/>
       <source>Limits the number of 64×64 pixel SVG tiles used to hatch a single face.
 For large scales, errors may occur due to excessive tiling.
 Increase the limit if necessary.</source>
       <translation>限制單一剖面所用 64×64 像素 SVG 圖塊數量。大比例時可提高。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="511"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="570"/>
       <source>Choose non-conflicting key bindings as some combinations of OS and navigation style key bindings may conflict with the default modifier keys for balloon dragging and view snapping override.</source>
       <translation>請選擇不衝突的快速鍵，部分作業系統與導覽樣式會互相衝突。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="525"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="584"/>
       <source>Use default</source>
       <translation>使用預設</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="542"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="601"/>
       <source>Balloon drag</source>
       <translation>氣球拖曳</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="450"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="509"/>
       <source>Highlights border of section cut in section views</source>
       <translation>在剖面視圖中強調剖面切割的邊界</translation>
     </message>
@@ -4801,96 +4817,110 @@ Increase the limit if necessary.</source>
       <translation>勾選後，在樹狀圖連按兩下頁面會自動切換到工程製圖工作台。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="156"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="158"/>
       <source>If checked, the system will attempt to automatically correct dimension references when the model changes.</source>
       <translation>勾選後，當 3D 模型變更時系統會嘗試自動修正尺寸參考。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="162"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="164"/>
       <source>Auto-correct dimension references</source>
       <translation>自動修正尺寸參考</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="178"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="180"/>
       <source>If checked, input shapes will be checked for errors before use and invalid shapes will be skipped by the shape extractor. Checking for errors is slower, but can prevent crashes from some geometry problems.
 </source>
       <translation>勾選後，使用前會檢查輸入形狀錯誤，無效形狀會被略過。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="201"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="203"/>
       <source>Include edges with unexpected geometry (zero length etc.) in results</source>
       <translation>在結果中包括具有意外幾何形狀 (零長度等) 的邊</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="318"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="377"/>
       <source>If checked, shapes that fail validation will be saved as BREP files for later analysis.</source>
       <translation>勾選後，驗證失敗的形狀會存成 BREP 檔供後續分析。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="522"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="581"/>
       <source>Check this box to use the default modifier keys. Uncheck this box to set a different key combination.</source>
       <translation>勾選使用預設修飾鍵；取消則可自訂快速鍵組合。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="373"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="432"/>
       <source>Selection area around center marks
 Each unit is approx. 0.1 mm wide</source>
       <translation>中心標誌周圍的選擇區域
 每個單位大約是 0.1 mm 寬</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="282"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="87"/>
+      <source>If checked and the face finder algorithm supports it, FreeCAD will attempt
+to decide, whether each drawing face represents either the material, or a hole.
+For large amount of faces the detection can become slow.</source>
+      <translation>若勾選且尋面演算法支援，FreeCAD 會嘗試判斷
+每個繪圖面代表材料或孔洞。
+面數量很多時，偵測可能變慢。</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="92"/>
+      <source>Identify faces representing voids</source>
+      <translation>辨識代表空洞的面</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="341"/>
       <source>Maximum hatch line segments to use
 when hatching a face with a PAT pattern</source>
       <translation>當使用 PAT 樣式來填充一個面時，所使用的最大填充線段值</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="514"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="573"/>
       <source>Behaviour Overrides</source>
       <translation>行為覆蓋</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="549"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="608"/>
       <source>Check this box to include the Alt key in the modifiers.</source>
       <translation>勾選此方塊可將 Alt 鍵包含在修飾鍵中。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="552"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="611"/>
       <source>Alt</source>
       <translation>Alt 鍵</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="559"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="618"/>
       <source>Check this box to include the Shift key in the modifiers.</source>
       <translation>勾選此方塊可將 Shift 鍵包含在修飾鍵中。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="562"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="621"/>
       <source>Shift</source>
       <translation>Shift 鍵</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="569"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="628"/>
       <source>Check this box to include the Meta/Start/Super key in the modifiers.</source>
       <translation>勾選此方塊可將 Meta/Start/Super 鍵包含在修飾鍵中。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="572"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="631"/>
       <source>Meta</source>
       <translation>修飾鍵</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="579"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="638"/>
       <source>Check this box to include the Control key in the modifiers.</source>
       <translation>勾選此方塊可將 Control 鍵包含在修飾鍵中。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="582"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="641"/>
       <source>Control</source>
       <translation>控制</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="600"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="659"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;注意：&lt;/span&gt; 項目為 &lt;span style=&quot; font-style:italic;&quot;&gt;斜體&lt;/span&gt; 是新物件的預設值。它們對現有物件沒有影響。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -6848,18 +6878,18 @@ Do you want to continue?</source>
       <translation>馬上更新</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="174"/>
+      <location filename="../../TaskComplexSection.cpp" line="177"/>
       <source>No direction set</source>
       <translation>未設定方向</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="557"/>
-      <location filename="../../TaskComplexSection.cpp" line="706"/>
+      <location filename="../../TaskComplexSection.cpp" line="560"/>
+      <location filename="../../TaskComplexSection.cpp" line="714"/>
       <source>ComplexSection</source>
       <translation>複雜剖面</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="717"/>
+      <location filename="../../TaskComplexSection.cpp" line="725"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>無法繼續，找不到物件 * %1 或 %2。</translation>
     </message>
@@ -7267,7 +7297,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="184"/>
-      <location filename="../../TaskDetail.cpp" line="254"/>
+      <location filename="../../TaskDetail.cpp" line="251"/>
       <source>Drag Highlight</source>
       <translation>拖曳強調</translation>
     </message>
@@ -7788,8 +7818,8 @@ by negative value of &apos;Overtolerance&apos;.</source>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="84"/>
-      <location filename="../../TaskLeaderLine.cpp" line="226"/>
-      <location filename="../../TaskLeaderLine.cpp" line="501"/>
+      <location filename="../../TaskLeaderLine.cpp" line="225"/>
+      <location filename="../../TaskLeaderLine.cpp" line="500"/>
       <source>Pick Points</source>
       <translation>選擇點</translation>
     </message>
@@ -7881,48 +7911,48 @@ You can pick further points to get line segments.</source>
       <translation>虛線點點</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="532"/>
-      <location filename="../../TaskLeaderLine.cpp" line="584"/>
+      <location filename="../../TaskLeaderLine.cpp" line="531"/>
+      <location filename="../../TaskLeaderLine.cpp" line="583"/>
       <source>Pick a starting point for leader line</source>
       <translation>挑選指線的起始點</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="567"/>
+      <location filename="../../TaskLeaderLine.cpp" line="566"/>
       <source>Click and drag markers to adjust leader line</source>
       <translation>點擊並拖曳標記以調整指線</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="274"/>
-      <location filename="../../TaskLeaderLine.cpp" line="515"/>
-      <location filename="../../TaskLeaderLine.cpp" line="688"/>
-      <location filename="../../TaskLeaderLine.cpp" line="759"/>
-      <location filename="../../TaskLeaderLine.cpp" line="781"/>
+      <location filename="../../TaskLeaderLine.cpp" line="273"/>
+      <location filename="../../TaskLeaderLine.cpp" line="514"/>
+      <location filename="../../TaskLeaderLine.cpp" line="687"/>
+      <location filename="../../TaskLeaderLine.cpp" line="758"/>
+      <location filename="../../TaskLeaderLine.cpp" line="780"/>
       <source>Edit Points</source>
       <translation>編輯點</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="535"/>
+      <location filename="../../TaskLeaderLine.cpp" line="534"/>
       <source>Save Points</source>
       <translation>儲存點</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="570"/>
-      <location filename="../../TaskLeaderLine.cpp" line="587"/>
+      <location filename="../../TaskLeaderLine.cpp" line="569"/>
+      <location filename="../../TaskLeaderLine.cpp" line="586"/>
       <source>Save Changes</source>
       <translation>儲存變更</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="618"/>
+      <location filename="../../TaskLeaderLine.cpp" line="617"/>
       <source>Left click to set a point</source>
       <translation>點擊滑鼠左鍵來設定一個點</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="644"/>
+      <location filename="../../TaskLeaderLine.cpp" line="643"/>
       <source>Press OK or Cancel to continue</source>
       <translation>按下 OK 或取消來繼續</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="776"/>
+      <location filename="../../TaskLeaderLine.cpp" line="775"/>
       <source>In progress edit abandoned. Start over.</source>
       <translation>放棄進行的編輯。重新來過。</translation>
     </message>
@@ -8145,8 +8175,8 @@ You can pick further points to get line segments.</source>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="362"/>
-      <location filename="../../TaskProjGroup.cpp" line="661"/>
-      <location filename="../../TaskProjGroup.cpp" line="668"/>
+      <location filename="../../TaskProjGroup.cpp" line="664"/>
+      <location filename="../../TaskProjGroup.cpp" line="671"/>
       <source>Top</source>
       <translation>上視圖</translation>
     </message>
@@ -8157,8 +8187,8 @@ You can pick further points to get line segments.</source>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="409"/>
-      <location filename="../../TaskProjGroup.cpp" line="663"/>
-      <location filename="../../TaskProjGroup.cpp" line="665"/>
+      <location filename="../../TaskProjGroup.cpp" line="666"/>
+      <location filename="../../TaskProjGroup.cpp" line="668"/>
       <source>Left</source>
       <translation>左視圖</translation>
     </message>
@@ -8169,14 +8199,14 @@ You can pick further points to get line segments.</source>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="449"/>
-      <location filename="../../TaskProjGroup.cpp" line="663"/>
-      <location filename="../../TaskProjGroup.cpp" line="665"/>
+      <location filename="../../TaskProjGroup.cpp" line="666"/>
+      <location filename="../../TaskProjGroup.cpp" line="668"/>
       <source>Right</source>
       <translation>右視圖</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="466"/>
-      <location filename="../../TaskProjGroup.cpp" line="666"/>
+      <location filename="../../TaskProjGroup.cpp" line="669"/>
       <source>Rear</source>
       <translation>後視圖</translation>
     </message>
@@ -8187,8 +8217,8 @@ You can pick further points to get line segments.</source>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="516"/>
-      <location filename="../../TaskProjGroup.cpp" line="661"/>
-      <location filename="../../TaskProjGroup.cpp" line="668"/>
+      <location filename="../../TaskProjGroup.cpp" line="664"/>
+      <location filename="../../TaskProjGroup.cpp" line="671"/>
       <source>Bottom</source>
       <translation>底視圖</translation>
     </message>
@@ -8244,31 +8274,31 @@ using the given X/Y spacings</source>
       <translation>投影邊界之間的垂直空間</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="660"/>
-      <location filename="../../TaskProjGroup.cpp" line="669"/>
+      <location filename="../../TaskProjGroup.cpp" line="663"/>
+      <location filename="../../TaskProjGroup.cpp" line="672"/>
       <source>FrontTopLeft</source>
       <translation>前上左</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="660"/>
-      <location filename="../../TaskProjGroup.cpp" line="669"/>
+      <location filename="../../TaskProjGroup.cpp" line="663"/>
+      <location filename="../../TaskProjGroup.cpp" line="672"/>
       <source>FrontBottomRight</source>
       <translation>前底右</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="662"/>
-      <location filename="../../TaskProjGroup.cpp" line="667"/>
+      <location filename="../../TaskProjGroup.cpp" line="665"/>
+      <location filename="../../TaskProjGroup.cpp" line="670"/>
       <source>FrontTopRight</source>
       <translation>前上右</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="662"/>
-      <location filename="../../TaskProjGroup.cpp" line="667"/>
+      <location filename="../../TaskProjGroup.cpp" line="665"/>
+      <location filename="../../TaskProjGroup.cpp" line="670"/>
       <source>FrontBottomLeft</source>
       <translation>前底左</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="664"/>
+      <location filename="../../TaskProjGroup.cpp" line="667"/>
       <source>Front</source>
       <translation>前視圖</translation>
     </message>
@@ -8467,7 +8497,7 @@ using the given X/Y spacings</source>
       <translation>虛線點點</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="676"/>
+      <location filename="../../TaskRichAnno.cpp" line="674"/>
       <source>RichTextAnnotation</source>
       <translation>富文本註釋</translation>
     </message>
@@ -8590,19 +8620,19 @@ using the given X/Y spacings</source>
       <translation>剖面位置</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskSectionView.cpp" line="428"/>
+      <location filename="../../TaskSectionView.cpp" line="436"/>
       <source>%n update(s) pending</source>
       <translation>
         <numerusform>%n 更新待處理</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="438"/>
+      <location filename="../../TaskSectionView.cpp" line="446"/>
       <source>Nothing to apply. No section direction picked yet</source>
       <translation>無法套用。尚未挑選剖面方向</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="641"/>
+      <location filename="../../TaskSectionView.cpp" line="652"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>無法繼續，找不到物件 * %1 或 %2。</translation>
     </message>
@@ -9972,22 +10002,22 @@ there is an open task dialog.</source>
   <context>
     <name>TechDrawGui::DirectionEditDialog</name>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="970"/>
+      <location filename="../../TaskProjGroup.cpp" line="973"/>
       <source>Direction</source>
       <translation>方向</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="1007"/>
+      <location filename="../../TaskProjGroup.cpp" line="1010"/>
       <source>OK</source>
       <translation>確定</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="1008"/>
+      <location filename="../../TaskProjGroup.cpp" line="1011"/>
       <source>Cancel</source>
       <translation>取消</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="1014"/>
+      <location filename="../../TaskProjGroup.cpp" line="1017"/>
       <source>Rotate by</source>
       <translation>旋轉依據</translation>
     </message>
@@ -10144,7 +10174,7 @@ there is an open task dialog.</source>
   <context>
     <name>TaskComplexSection</name>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="478"/>
+      <location filename="../../TaskComplexSection.cpp" line="481"/>
       <source> updates pending</source>
       <translation> 更新待處理</translation>
     </message>
@@ -10425,6 +10455,79 @@ there is an open task dialog.</source>
     </message>
   </context>
   <context>
+    <name>Cmd2LineCenterLine</name>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="655"/>
+      <source>Centerline Between 2 Lines</source>
+      <translation>兩線之間的中心線</translation>
+    </message>
+  </context>
+  <context>
+    <name>Cmd2PointCenterLine</name>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="659"/>
+      <source>Centerline Between 2 Points</source>
+      <translation>兩點之間的中心線</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskSpreadsheetView</name>
+    <message>
+      <location filename="../../TaskSpreadsheetView.cpp" line="187"/>
+      <source>Invalid Range</source>
+      <translation>無效範圍</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.cpp" line="187"/>
+      <source>The specified cell range is invalid. Please correct it.</source>
+      <translation>指定的儲存格範圍無效，請修正。</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskDlgSpreadsheetView</name>
+    <message>
+      <location filename="../../TaskSpreadsheetView.cpp" line="727"/>
+      <source>Create Spreadsheet View</source>
+      <translation>建立試算表視圖</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.cpp" line="728"/>
+      <source>Edit Spreadsheet View</source>
+      <translation>編輯試算表視圖</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawExportPagePDF</name>
+    <message>
+      <location filename="../../Command.cpp" line="1949"/>
+      <source>File</source>
+      <translation>檔案</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1950"/>
+      <source>Export Page as PDF</source>
+      <translation>匯出頁面為 PDF</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1951"/>
+      <source>Exports the current page as a PDF</source>
+      <translation>將目前頁面匯出為 PDF</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawExportGroup</name>
+    <message>
+      <location filename="../../Command.cpp" line="1979"/>
+      <source>TechDraw</source>
+      <translation>工程製圖</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1980"/>
+      <source>Print All Pages</source>
+      <translation>列印全部頁面</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdTechDrawToggleFrame</name>
     <message>
       <location filename="../../CommandDecorate.cpp" line="77"/>
@@ -10461,58 +10564,11 @@ there is an open task dialog.</source>
     </message>
   </context>
   <context>
-    <name>CmdTechDrawExportPagePDF</name>
-    <message>
-      <location filename="../../Command.cpp" line="1949"/>
-      <source>File</source>
-      <translation>檔案</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1950"/>
-      <source>Export Page as PDF</source>
-      <translation>匯出頁面為 PDF</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1951"/>
-      <source>Exports the current page as a PDF</source>
-      <translation>將目前頁面匯出為 PDF</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdTechDrawExportGroup</name>
-    <message>
-      <location filename="../../Command.cpp" line="1979"/>
-      <source>TechDraw</source>
-      <translation>工程製圖</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1980"/>
-      <source>Print All Pages</source>
-      <translation>列印全部頁面</translation>
-    </message>
-  </context>
-  <context>
     <name>TechDrawGui::TaskDlgLineDecor</name>
     <message>
       <location filename="../../TaskLineDecor.cpp" line="458"/>
       <source>Restore Invisible Lines</source>
       <translation>恢復隱形線</translation>
-    </message>
-  </context>
-  <context>
-    <name>Cmd2LineCenterLine</name>
-    <message>
-      <location filename="../../CommandAnnotate.cpp" line="655"/>
-      <source>Centerline Between 2 Lines</source>
-      <translation>兩線之間的中心線</translation>
-    </message>
-  </context>
-  <context>
-    <name>Cmd2PointCenterLine</name>
-    <message>
-      <location filename="../../CommandAnnotate.cpp" line="659"/>
-      <source>Centerline Between 2 Points</source>
-      <translation>兩點之間的中心線</translation>
     </message>
   </context>
   <context>
@@ -10526,32 +10582,6 @@ there is an open task dialog.</source>
       <location filename="../../QGIViewSpreadsheet.cpp" line="431"/>
       <source>Add column</source>
       <translation>新增欄位</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDrawGui::TaskSpreadsheetView</name>
-    <message>
-      <location filename="../../TaskSpreadsheetView.cpp" line="187"/>
-      <source>Invalid Range</source>
-      <translation>無效範圍</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSpreadsheetView.cpp" line="187"/>
-      <source>The specified cell range is invalid. Please correct it.</source>
-      <translation>指定的儲存格範圍無效，請修正。</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDrawGui::TaskDlgSpreadsheetView</name>
-    <message>
-      <location filename="../../TaskSpreadsheetView.cpp" line="727"/>
-      <source>Create Spreadsheet View</source>
-      <translation>建立試算表視圖</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSpreadsheetView.cpp" line="728"/>
-      <source>Edit Spreadsheet View</source>
-      <translation>編輯試算表視圖</translation>
     </message>
   </context>
 </TS>

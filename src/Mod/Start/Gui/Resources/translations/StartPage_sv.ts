@@ -261,7 +261,7 @@ Flera mappar kan läggas till med hjälp av ";;" för att separera sökvägar.</
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppStartGui.cpp" line="140"/>
+      <location filename="../../AppStartGui.cpp" line="90"/>
       <source>Start</source>
       <translation>Start</translation>
     </message>

@@ -2156,8 +2156,13 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>Crear una vista trencada</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="478"/>
+      <location filename="../../Command.cpp" line="1774"/>
+      <source>Create Spreadsheet View</source>
+      <translation>Crea una vista de full de càlcul</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="1930"/>
+      <location filename="../../PagePrinter.cpp" line="478"/>
       <source>Save page to DXF</source>
       <translation>Desar pàgina com a DXF</translation>
     </message>
@@ -2193,11 +2198,6 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>Crea una vista d'Esbós</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1774"/>
-      <source>Create Spreadsheet View</source>
-      <translation>Crea una vista de full de càlcul</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="347"/>
       <source>Create spreadsheet view</source>
       <translation>Crea una vista de full de càlcul</translation>
@@ -2213,13 +2213,8 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>Afegeix vèrtexs de quadrant</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="113"/>
-      <source>Edit Annotation</source>
-      <translation>Edita l'anotació</translation>
-    </message>
-    <message>
-      <location filename="../../TaskRichAnno.cpp" line="154"/>
       <location filename="../../CommandAnnotate.cpp" line="545"/>
+      <location filename="../../TaskRichAnno.cpp" line="152"/>
       <source>Create Annotation</source>
       <translation>Crear Anotació</translation>
     </message>
@@ -2482,33 +2477,33 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>Actualitza cercle cosmètic</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.cpp" line="435"/>
+      <location filename="../../TaskDetail.cpp" line="432"/>
       <source>Create Detail view</source>
       <translation>Crea una vista de detall</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.cpp" line="477"/>
+      <location filename="../../TaskDetail.cpp" line="478"/>
       <source>Update Detail</source>
       <translation>Actualitza el detall</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="346"/>
+      <location filename="../../TaskLeaderLine.cpp" line="345"/>
       <source>Create Leader</source>
       <translation>Crea una línia de referència</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="433"/>
+      <location filename="../../TaskLeaderLine.cpp" line="432"/>
       <source>Edit Leader</source>
       <translation>Edita una línia de referència</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="555"/>
+      <location filename="../../TaskComplexSection.cpp" line="558"/>
       <source>Create Complex Section</source>
       <translation>Crea selecció complexa</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="575"/>
-      <location filename="../../TaskComplexSection.cpp" line="651"/>
+      <location filename="../../TaskSectionView.cpp" line="587"/>
+      <location filename="../../TaskComplexSection.cpp" line="659"/>
       <source>Edit Section View</source>
       <translation>Edita la vista de secció</translation>
     </message>
@@ -2778,7 +2773,7 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>Crea una línia central</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="495"/>
+      <location filename="../../TaskSectionView.cpp" line="503"/>
       <source>Create Section View</source>
       <translation>Crea una vista de secció</translation>
     </message>
@@ -2791,6 +2786,11 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <location filename="../../TaskWeldingSymbol.cpp" line="568"/>
       <source>Edit Weld Symbol</source>
       <translation>Edita el símbol de soldadura</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRichAnno.cpp" line="111"/>
+      <source>Edit Annotation</source>
+      <translation>Edita l'anotació</translation>
     </message>
   </context>
   <context>
@@ -3054,25 +3054,6 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="639"/>
-      <location filename="../../Command.cpp" line="649"/>
-      <location filename="../../Command.cpp" line="866"/>
-      <location filename="../../Command.cpp" line="983"/>
-      <location filename="../../Command.cpp" line="990"/>
-      <location filename="../../Command.cpp" line="995"/>
-      <location filename="../../Command.cpp" line="1033"/>
-      <location filename="../../Command.cpp" line="1132"/>
-      <location filename="../../Command.cpp" line="1399"/>
-      <location filename="../../Command.cpp" line="1416"/>
-      <location filename="../../Command.cpp" line="1421"/>
-      <location filename="../../Command.cpp" line="1430"/>
-      <location filename="../../Command.cpp" line="1483"/>
-      <location filename="../../Command.cpp" line="1502"/>
-      <location filename="../../Command.cpp" line="1627"/>
-      <location filename="../../Command.cpp" line="1705"/>
-      <location filename="../../Command.cpp" line="1711"/>
-      <location filename="../../CommandHelpers.cpp" line="87"/>
-      <location filename="../../CommandHelpers.cpp" line="100"/>
       <location filename="../../CommandAnnotate.cpp" line="117"/>
       <location filename="../../CommandAnnotate.cpp" line="122"/>
       <location filename="../../CommandAnnotate.cpp" line="313"/>
@@ -3100,6 +3081,25 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <location filename="../../CommandAnnotate.cpp" line="1358"/>
       <location filename="../../CommandAnnotate.cpp" line="1365"/>
       <location filename="../../CommandAnnotate.cpp" line="1429"/>
+      <location filename="../../Command.cpp" line="639"/>
+      <location filename="../../Command.cpp" line="649"/>
+      <location filename="../../Command.cpp" line="866"/>
+      <location filename="../../Command.cpp" line="983"/>
+      <location filename="../../Command.cpp" line="990"/>
+      <location filename="../../Command.cpp" line="995"/>
+      <location filename="../../Command.cpp" line="1033"/>
+      <location filename="../../Command.cpp" line="1132"/>
+      <location filename="../../Command.cpp" line="1399"/>
+      <location filename="../../Command.cpp" line="1416"/>
+      <location filename="../../Command.cpp" line="1421"/>
+      <location filename="../../Command.cpp" line="1430"/>
+      <location filename="../../Command.cpp" line="1483"/>
+      <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../Command.cpp" line="1627"/>
+      <location filename="../../Command.cpp" line="1705"/>
+      <location filename="../../Command.cpp" line="1711"/>
+      <location filename="../../CommandHelpers.cpp" line="87"/>
+      <location filename="../../CommandHelpers.cpp" line="100"/>
       <source>Wrong selection</source>
       <translation>Selecció incorrecta</translation>
     </message>
@@ -3175,25 +3175,6 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>No hi ha formes, grups, ni enllaços en aquesta selecció</translation>
     </message>
     <message>
-      <location filename="../../CommandStack.cpp" line="75"/>
-      <location filename="../../CommandStack.cpp" line="191"/>
-      <location filename="../../CommandStack.cpp" line="251"/>
-      <location filename="../../CommandStack.cpp" line="311"/>
-      <location filename="../../CommandExtensionDims.cpp" line="328"/>
-      <location filename="../../CommandExtensionDims.cpp" line="537"/>
-      <location filename="../../CommandExtensionDims.cpp" line="825"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1153"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1524"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1893"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2131"/>
-      <location filename="../../Command.cpp" line="749"/>
-      <location filename="../../Command.cpp" line="842"/>
-      <location filename="../../Command.cpp" line="905"/>
-      <location filename="../../CommandExtensionPack.cpp" line="304"/>
-      <location filename="../../CommandExtensionPack.cpp" line="607"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1227"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1472"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1770"/>
       <location filename="../../CommandAnnotate.cpp" line="102"/>
       <location filename="../../CommandAnnotate.cpp" line="163"/>
       <location filename="../../CommandAnnotate.cpp" line="215"/>
@@ -3209,6 +3190,25 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <location filename="../../CommandAnnotate.cpp" line="1264"/>
       <location filename="../../CommandAnnotate.cpp" line="1345"/>
       <location filename="../../CommandAnnotate.cpp" line="1411"/>
+      <location filename="../../Command.cpp" line="749"/>
+      <location filename="../../Command.cpp" line="842"/>
+      <location filename="../../Command.cpp" line="905"/>
+      <location filename="../../CommandExtensionPack.cpp" line="304"/>
+      <location filename="../../CommandExtensionPack.cpp" line="607"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1227"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1472"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1770"/>
+      <location filename="../../CommandExtensionDims.cpp" line="328"/>
+      <location filename="../../CommandExtensionDims.cpp" line="537"/>
+      <location filename="../../CommandExtensionDims.cpp" line="825"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1153"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1524"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1893"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2131"/>
+      <location filename="../../CommandStack.cpp" line="75"/>
+      <location filename="../../CommandStack.cpp" line="191"/>
+      <location filename="../../CommandStack.cpp" line="251"/>
+      <location filename="../../CommandStack.cpp" line="311"/>
       <location filename="../../CommandCreateDims.cpp" line="1501"/>
       <location filename="../../CommandCreateDims.cpp" line="1549"/>
       <location filename="../../CommandCreateDims.cpp" line="1597"/>
@@ -3224,16 +3224,6 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>Tasca en curs</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="329"/>
-      <location filename="../../CommandExtensionDims.cpp" line="538"/>
-      <location filename="../../CommandExtensionDims.cpp" line="826"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1154"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1525"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1894"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2132"/>
-      <location filename="../../Command.cpp" line="750"/>
-      <location filename="../../Command.cpp" line="843"/>
-      <location filename="../../Command.cpp" line="906"/>
       <location filename="../../CommandAnnotate.cpp" line="103"/>
       <location filename="../../CommandAnnotate.cpp" line="164"/>
       <location filename="../../CommandAnnotate.cpp" line="216"/>
@@ -3249,6 +3239,16 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <location filename="../../CommandAnnotate.cpp" line="1265"/>
       <location filename="../../CommandAnnotate.cpp" line="1346"/>
       <location filename="../../CommandAnnotate.cpp" line="1412"/>
+      <location filename="../../Command.cpp" line="750"/>
+      <location filename="../../Command.cpp" line="843"/>
+      <location filename="../../Command.cpp" line="906"/>
+      <location filename="../../CommandExtensionDims.cpp" line="329"/>
+      <location filename="../../CommandExtensionDims.cpp" line="538"/>
+      <location filename="../../CommandExtensionDims.cpp" line="826"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1154"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1525"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1894"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2132"/>
       <source>Close active task dialog and try again</source>
       <translation>Tanqueu el diàleg de la tasca activa i torneu-ho a provar</translation>
     </message>
@@ -3437,21 +3437,21 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>Triar un fitxer SVG per obrir</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="1201"/>
+      <location filename="../../Command.cpp" line="1208"/>
+      <location filename="../../Command.cpp" line="1216"/>
+      <location filename="../../Command.cpp" line="1228"/>
+      <location filename="../../TaskDimension.cpp" line="553"/>
       <location filename="../../CommandDecorate.cpp" line="420"/>
       <location filename="../../CommandDecorate.cpp" line="427"/>
       <location filename="../../CommandDecorate.cpp" line="434"/>
       <location filename="../../CommandDecorate.cpp" line="441"/>
       <location filename="../../CommandDecorate.cpp" line="447"/>
-      <location filename="../../TaskDimRepair.cpp" line="139"/>
-      <location filename="../../TaskDimRepair.cpp" line="150"/>
-      <location filename="../../Command.cpp" line="1201"/>
-      <location filename="../../Command.cpp" line="1208"/>
-      <location filename="../../Command.cpp" line="1216"/>
-      <location filename="../../Command.cpp" line="1228"/>
       <location filename="../../CommandExtensionPack.cpp" line="1883"/>
       <location filename="../../CommandExtensionPack.cpp" line="2007"/>
+      <location filename="../../TaskDimRepair.cpp" line="139"/>
+      <location filename="../../TaskDimRepair.cpp" line="150"/>
       <location filename="../../CommandAlign.cpp" line="55"/>
-      <location filename="../../TaskDimension.cpp" line="553"/>
       <location filename="../../CommandCreateDims.cpp" line="2009"/>
       <location filename="../../CommandCreateDims.cpp" line="2025"/>
       <location filename="../../CommandCreateDims.cpp" line="2051"/>
@@ -3498,8 +3498,8 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>Tanca el quadre de diàleg de tasca actiu i intenta-ho altra vegada.</translation>
     </message>
     <message>
-      <location filename="../../CommandStack.cpp" line="371"/>
       <location filename="../../CommandExtensionPack.cpp" line="1003"/>
+      <location filename="../../CommandStack.cpp" line="371"/>
       <source>Task In Progress</source>
       <translation>Tasca en procés</translation>
     </message>
@@ -3510,13 +3510,29 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>Cercle de forat de TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandStack.cpp" line="372"/>
+      <location filename="../../CommandExtensionPack.cpp" line="122"/>
+      <source>Can not make hole circle for %1</source>
+      <translation>No es pot crear el cercle de forats per a %1</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="244"/>
+      <source>TechDraw circle centerlines</source>
+      <translation>Línies centrals del cercle de TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="245"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1678"/>
+      <source>Can not make centerlines for %1</source>
+      <translation>No es poden crear les línies centrals per a %1</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="305"/>
       <location filename="../../CommandExtensionPack.cpp" line="608"/>
       <location filename="../../CommandExtensionPack.cpp" line="1004"/>
       <location filename="../../CommandExtensionPack.cpp" line="1228"/>
       <location filename="../../CommandExtensionPack.cpp" line="1473"/>
       <location filename="../../CommandExtensionPack.cpp" line="1771"/>
+      <location filename="../../CommandStack.cpp" line="372"/>
       <source>Close active task dialog and try again.</source>
       <translation>Tanca el quadre de diàleg de tasques actiu i intenta-ho altra vegada.</translation>
     </message>
@@ -3534,22 +3550,6 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <location filename="../../CommandExtensionPack.cpp" line="948"/>
       <source>Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle.</source>
       <translation>La selecció no és un cercle cosmètic ni un arc de cercle cosmètic.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandExtensionPack.cpp" line="122"/>
-      <source>Can not make hole circle for %1</source>
-      <translation>No es pot crear el cercle de forats per a %1</translation>
-    </message>
-    <message>
-      <location filename="../../CommandExtensionPack.cpp" line="244"/>
-      <source>TechDraw circle centerlines</source>
-      <translation>Línies centrals del cercle de TechDraw</translation>
-    </message>
-    <message>
-      <location filename="../../CommandExtensionPack.cpp" line="245"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1678"/>
-      <source>Can not make centerlines for %1</source>
-      <translation>No es poden crear les línies centrals per a %1</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="984"/>
@@ -3592,12 +3592,12 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>Seleccioneu 2 línies rectes</translation>
     </message>
     <message>
+      <location filename="../../CommandAnnotate.cpp" line="770"/>
+      <location filename="../../CommandAnnotate.cpp" line="1025"/>
       <location filename="../../CommandExtensionPack.cpp" line="902"/>
       <location filename="../../CommandExtensionPack.cpp" line="925"/>
       <location filename="../../CommandExtensionPack.cpp" line="947"/>
       <location filename="../../CommandExtensionPack.cpp" line="983"/>
-      <location filename="../../CommandAnnotate.cpp" line="770"/>
-      <location filename="../../CommandAnnotate.cpp" line="1025"/>
       <source>Wrong Selection</source>
       <translation>Selecció incorrecta</translation>
     </message>
@@ -3820,9 +3820,9 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>El FreeCAD no pot obrir el fitxer %1 per a escriure-hi.  És possible que el fitxer estigui obert en un altre programa.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroup.cpp" line="162"/>
       <location filename="../../ViewProviderPage.cpp" line="221"/>
       <location filename="../../ViewProviderTemplate.cpp" line="203"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="162"/>
       <source>Are you sure you want to continue?</source>
       <translation>Segur que voleu continuar?</translation>
     </message>
@@ -3837,17 +3837,17 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>Commuta per l'actualització automàtica</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="219"/>
+      <location filename="../../TaskLeaderLine.cpp" line="218"/>
       <source>New Leader Line</source>
       <translation>Línia guia nova</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="261"/>
+      <location filename="../../TaskLeaderLine.cpp" line="260"/>
       <source>Edit Leader Line</source>
       <translation>Edita la línia guia</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="381"/>
+      <location filename="../../TaskRichAnno.cpp" line="379"/>
       <source>Rich text editor</source>
       <translation>Editor de text enriquit</translation>
     </message>
@@ -3872,55 +3872,55 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>No s'ha pogut trobar cap visor 3D</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="127"/>
+      <location filename="../../TaskSectionView.cpp" line="135"/>
       <source>Create Section View</source>
       <translation>Crea una vista de secció</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="153"/>
+      <location filename="../../TaskSectionView.cpp" line="161"/>
       <source>No direction set</source>
       <translation>No s'ha definit direcció</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="159"/>
+      <location filename="../../TaskSectionView.cpp" line="167"/>
       <source>Edit Section View</source>
       <translation>Edita la vista de secció</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="138"/>
+      <location filename="../../TaskComplexSection.cpp" line="141"/>
       <source>New Complex Section</source>
       <translation>Nova selecció complexa</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="179"/>
+      <location filename="../../TaskComplexSection.cpp" line="182"/>
       <source>Edit Complex Section</source>
       <translation>Editar selecció complexa</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="230"/>
-      <location filename="../../TaskComplexSection.cpp" line="217"/>
+      <location filename="../../TaskSectionView.cpp" line="238"/>
+      <location filename="../../TaskComplexSection.cpp" line="220"/>
       <source>Current View Direction</source>
       <translation>Direcció de vista actual</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="231"/>
-      <location filename="../../TaskComplexSection.cpp" line="218"/>
+      <location filename="../../TaskSectionView.cpp" line="239"/>
+      <location filename="../../TaskComplexSection.cpp" line="221"/>
       <source>The view direction in BaseView coordinates</source>
       <translation>La direcció de la vista en coordenades de la vista base</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="526"/>
+      <location filename="../../TaskComplexSection.cpp" line="529"/>
       <source>Possible coordinate system error</source>
       <translation>Possible error del sistema de coordenades</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="527"/>
+      <location filename="../../TaskComplexSection.cpp" line="530"/>
       <source>Check SectionNormal, Direction and/or XDirection.</source>
       <translation>Comproveu SeccióNormal, Direcció i/o DireccióX.</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="642"/>
-      <location filename="../../TaskComplexSection.cpp" line="718"/>
+      <location filename="../../TaskSectionView.cpp" line="653"/>
+      <location filename="../../TaskComplexSection.cpp" line="726"/>
       <source>Operation Failed</source>
       <translation>Ha fallat l'operació</translation>
     </message>
@@ -3945,17 +3945,18 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>Edita la línia cosmètica</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.cpp" line="97"/>
+      <location filename="../../TaskDetail.cpp" line="96"/>
       <source>New Detail View</source>
       <translation>Nova vista de detall</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.cpp" line="175"/>
+      <location filename="../../TaskDetail.cpp" line="172"/>
       <source>Edit Detail View</source>
       <translation>Edita la vista de detall</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDimension.cpp" line="141"/>
+      <location filename="../../ViewProviderRichAnno.cpp" line="103"/>
       <location filename="../../ViewProviderBalloon.cpp" line="88"/>
       <source>Edit %1</source>
       <translation>Editar %1</translation>
@@ -4090,15 +4091,15 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>TechDraw Personalitzar el format</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2347"/>
-      <location filename="../../CommandExtensionPack.cpp" line="2148"/>
       <location filename="../../CommandAnnotate.cpp" line="1026"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2148"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2347"/>
       <source>Selection is empty</source>
       <translation>La selecció és buida</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2363"/>
       <location filename="../../CommandExtensionPack.cpp" line="2155"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2363"/>
       <source>No object selected</source>
       <translation>No hi ha cap objecte seleccionat</translation>
     </message>
@@ -4238,12 +4239,12 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>Nom del document:</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="178"/>
+      <location filename="../../TaskProjGroup.cpp" line="181"/>
       <source>Projection Group</source>
       <translation>Grup de projecció</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="188"/>
+      <location filename="../../TaskProjGroup.cpp" line="191"/>
       <source>New View</source>
       <translation>Vista nova</translation>
     </message>
@@ -4268,17 +4269,17 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>Edita la línia central</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="118"/>
+      <location filename="../../TaskRichAnno.cpp" line="116"/>
       <source>Rich Text Editor</source>
       <translation>Editor de text enriquit</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="157"/>
+      <location filename="../../TaskRichAnno.cpp" line="155"/>
       <source>Rich Text Creator</source>
       <translation>Creador de text enriquit</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="379"/>
+      <location filename="../../TaskRichAnno.cpp" line="377"/>
       <source>Rich text creator</source>
       <translation>Creador de text enriquit</translation>
     </message>
@@ -4288,14 +4289,14 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>Redimensiona l'anotació enriquida</translation>
     </message>
     <message>
-      <location filename="../../TemplateTextField.cpp" line="58"/>
-      <source>Updates the text</source>
-      <translation>Actualitza el text</translation>
-    </message>
-    <message>
       <location filename="../../SymbolChooser.cpp" line="61"/>
       <source>Select a Symbol</source>
       <translation>Seleccioneu un símbol</translation>
+    </message>
+    <message>
+      <location filename="../../TemplateTextField.cpp" line="58"/>
+      <source>Updates the text</source>
+      <translation>Actualitza el text</translation>
     </message>
   </context>
   <context>
@@ -4317,18 +4318,18 @@ it has a weld symbol that would become broken.</source>
       <translation>No podeu suprimir aquesta vista perquè conté una o més vistes dependents que es trencarien.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="167"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="176"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="184"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="192"/>
-      <location filename="../../ViewProviderWeld.cpp" line="145"/>
+      <location filename="../../ViewProviderLeader.cpp" line="214"/>
       <location filename="../../ViewProviderViewPart.cpp" line="409"/>
       <location filename="../../ViewProviderViewPart.cpp" line="424"/>
       <location filename="../../ViewProviderPage.cpp" line="224"/>
-      <location filename="../../ViewProviderLeader.cpp" line="214"/>
       <location filename="../../ViewProviderTemplate.cpp" line="207"/>
+      <location filename="../../ViewProviderWeld.cpp" line="145"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="165"/>
       <source>Object dependencies</source>
       <translation>Dependències de l'objecte</translation>
     </message>
@@ -4666,27 +4667,17 @@ Aquest directori s'utilitza per a la selecció del símbol.</translation>
       <translation>Aresta difusa</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="87"/>
-      <source>If checked, FreeCAD will use the new face finder algorithm. If not checked, FreeCAD will use the legacy face finder algorithm.</source>
-      <translation>Si està marcat, FreeCAD utilitzarà el nou algorisme de cerca de cares. Si no està marcat, FreeCAD utilitzarà l'algorisme antic.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="90"/>
-      <source>Use new face finder algorithm</source>
-      <translation>Utilitza el nou algorisme de cerca de cares</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="112"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="114"/>
       <source>Dump intermediate results during detail view processing</source>
       <translation>Aboca els resultats intermedis durant el processament de la vista de detall</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="115"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="117"/>
       <source>Debug detail</source>
       <translation>Detall de depuració</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="134"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="136"/>
       <source>If checked, TechDraw will attempt to build faces using the
 line segments returned by the hidden line removal algorithm.
 Faces must be detected in order to use hatching, but there
@@ -4694,84 +4685,109 @@ can be a performance penalty in complex models.</source>
       <translation>Si està marcada, TechDraw intentarà crear cares utilitzant els segments de línia retornats per l'algoritme d'eliminació de la línia oculta. S'han de detectar cares per a utilitzar el tramat, però en models complexos hi pot haver problemes de baix rendiment.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="140"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="142"/>
       <source>Detect faces</source>
       <translation>Detecta les cares</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="182"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="184"/>
       <source>Validate shapes</source>
       <translation>Validar les formes</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="204"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="206"/>
       <source>Allow crazy edges</source>
       <translation>Permet arestes extravagants</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="217"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="219"/>
       <source>Issue progress messages while building view geometry</source>
       <translation>Emetre missatges de progrés mentre es construeix la geometria de vista</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="220"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="222"/>
       <source>Report progress</source>
       <translation>Informar progrés</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="233"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="235"/>
       <source>The number of times FreeCAD should try to remove overlapping edges returned by the hidden line removal algorithm. A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed. Values above 2 are generally not productive. Each pass adds to the time required to produce the drawing.</source>
       <translation>El nombre de vegades que FreeCAD hauria d'intentar eliminar les vores superposades retornades per l'algorisme d'eliminació de línies ocultes. Un valor de 0 indica que no s'eliminen, 1 indica una sola passada i 2 indica que s'hauria de realitzar una segona passada. Els valors superiors a 2 generalment no són productius. Cada passada augmenta el temps necessari per produir el dibuix.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="263"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="260"/>
+      <source>Face finder algorithm</source>
+      <translation type="unfinished">Face finder algorithm</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="286"/>
+      <source>Use newest or one of the legacy of face finder algorithms</source>
+      <translation type="unfinished">Use newest or one of the legacy of face finder algorithms</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="299"/>
+      <source>FreeCAD v0.17</source>
+      <translation type="unfinished">FreeCAD v0.17</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="304"/>
+      <source>FreeCAD v0.21</source>
+      <translation type="unfinished">FreeCAD v0.21</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="309"/>
+      <source>FreeCAD v26.3</source>
+      <translation type="unfinished">FreeCAD v26.3</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="322"/>
       <source>Overlap edges scrub passes</source>
       <translation>Passades en l'eliminació de vores superposades</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="275"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="334"/>
       <source>Mark fuzz</source>
       <translation>Marca difusa</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="311"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="370"/>
       <source>Max SVG hatch tiles</source>
       <translation>Nombre màxim de mosaics de la trama SGV</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="321"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="380"/>
       <source>Debug bad shape</source>
       <translation>Debug forma dolenta</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="345"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="404"/>
       <source>Perform a fuse operation on input shapes before section view processing</source>
       <translation>Realitza una operació de fusió sobre les formes d'entrada abans de processar la vista de secció</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="348"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="407"/>
       <source>Fuse before section</source>
       <translation>Fusiona abans de la secció</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="421"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="480"/>
       <source>Size of selection area around edges
 Each unit is approximately 0.1mm wide</source>
       <translation>Mida de l'àrea de selecció al voltant de les arestes
 Cada unitat té aproximadament 0,1 mm d'amplada</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="453"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="512"/>
       <source>Show section edges</source>
       <translation>Mostra les arestes de la secció</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="469"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="528"/>
       <source>Maximum PAT hatch segments</source>
       <translation>Nombre màxim de segments de tramat PAT</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="476"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="535"/>
       <source>Limits the number of 64×64 pixel SVG tiles used to hatch a single face.
 For large scales, errors may occur due to excessive tiling.
 Increase the limit if necessary.</source>
@@ -4780,22 +4796,22 @@ A escales grans, poden produir-se errors per excés de mosaic.
 Augmenteu el límit si cal.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="511"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="570"/>
       <source>Choose non-conflicting key bindings as some combinations of OS and navigation style key bindings may conflict with the default modifier keys for balloon dragging and view snapping override.</source>
       <translation>Tria combinacions de tecles que no entrin en conflicte, ja que algunes combinacions de tecles d'estil de navegació i del SO poden entrar en conflicte amb les tecles modificadores predeterminades per arrossegar camp d'anotació i anul·lar l'ajust de la vista.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="525"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="584"/>
       <source>Use default</source>
       <translation>Utilitza el valor per defecte</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="542"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="601"/>
       <source>Balloon drag</source>
       <translation>Arrossegament de camp d'anotació</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="450"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="509"/>
       <source>Highlights border of section cut in section views</source>
       <translation>Ressalta la vora del tall de la secció en les vistes de secció</translation>
     </message>
@@ -4805,97 +4821,111 @@ Augmenteu el límit si cal.</translation>
       <translation>Si aquesta casella està marcada, fent doble clic en una pàgina de l'arbre canviarà automàticament a TechDraw i la pàgina es farà visible.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="156"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="158"/>
       <source>If checked, the system will attempt to automatically correct dimension references when the model changes.</source>
       <translation>Si està marcat, el sistema intentarà corregir automàticament les referències de dimensions quan canviï el model.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="162"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="164"/>
       <source>Auto-correct dimension references</source>
       <translation>Correcció automàtica de les referències de cota</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="178"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="180"/>
       <source>If checked, input shapes will be checked for errors before use and invalid shapes will be skipped by the shape extractor. Checking for errors is slower, but can prevent crashes from some geometry problems.
 </source>
       <translation>Si està marcat, les formes d'entrada es comprovaran per si hi ha errors abans d'utilitzar-les i les formes no vàlides seran omeses per l'extractor de formes. La comprovació d'errors és més lenta, però pot evitar bloquejos per alguns problemes de geometria.
 </translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="201"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="203"/>
       <source>Include edges with unexpected geometry (zero length etc.) in results</source>
       <translation>Inclou les arestes amb una geometria inesperada (longitud zero, etc.) en els resultats</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="318"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="377"/>
       <source>If checked, shapes that fail validation will be saved as BREP files for later analysis.</source>
       <translation>Si està marcada, les formes en què falli la validació es desaran com a fitxers BREP per a una anàlisi posterior.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="522"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="581"/>
       <source>Check this box to use the default modifier keys. Uncheck this box to set a different key combination.</source>
       <translation>Marqueu aquesta casella per a utilitzar les tecles modificadores predeterminades. Desmarqueu-la per a establir una combinació de tecles diferent.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="373"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="432"/>
       <source>Selection area around center marks
 Each unit is approx. 0.1 mm wide</source>
       <translation>Àrea de selecció al voltant de les marques centrals
 Cada unitat té una amplada aproximada de 0.1 mm</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="282"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="87"/>
+      <source>If checked and the face finder algorithm supports it, FreeCAD will attempt
+to decide, whether each drawing face represents either the material, or a hole.
+For large amount of faces the detection can become slow.</source>
+      <translation type="unfinished">If checked and the face finder algorithm supports it, FreeCAD will attempt
+to decide, whether each drawing face represents either the material, or a hole.
+For large amount of faces the detection can become slow.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="92"/>
+      <source>Identify faces representing voids</source>
+      <translation type="unfinished">Identify faces representing voids</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="341"/>
       <source>Maximum hatch line segments to use
 when hatching a face with a PAT pattern</source>
       <translation>Nombre màxim de segments de tramat que s'han d'utilitzar en aplicar un tramat en una cara amb un patró PAT</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="514"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="573"/>
       <source>Behaviour Overrides</source>
       <translation>Sobreescriure comportament</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="549"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="608"/>
       <source>Check this box to include the Alt key in the modifiers.</source>
       <translation>Marqueu aquesta casella per a incloure la tecla Alt com a modificadora.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="552"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="611"/>
       <source>Alt</source>
       <translation>Alt</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="559"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="618"/>
       <source>Check this box to include the Shift key in the modifiers.</source>
       <translation>Marqueu aquesta casella per a incloure la tecla Shift com a modificadora.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="562"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="621"/>
       <source>Shift</source>
       <translation>Shift</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="569"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="628"/>
       <source>Check this box to include the Meta/Start/Super key in the modifiers.</source>
       <translation>Marqueu aquesta casella per a incloure la tecla Meta/Start/Super com a modificadora.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="572"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="631"/>
       <source>Meta</source>
       <translation>Meta</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="579"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="638"/>
       <source>Check this box to include the Control key in the modifiers.</source>
       <translation>Marqueu aquesta casella per a incloure la tecla Control com a modificadora.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="582"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="641"/>
       <source>Control</source>
       <translation>Control</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="600"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="659"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Nota:&lt;/span&gt; Els elements en &lt;span style=&quot; font-style:italic;&quot;&gt;cursiva&lt;/span&gt; són els valors predeterminats per a objectes nous. No tenen cap efecte sobre els objectes existents.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -6868,18 +6898,18 @@ Do you want to continue?</source>
       <translation>Actualitzar ara</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="174"/>
+      <location filename="../../TaskComplexSection.cpp" line="177"/>
       <source>No direction set</source>
       <translation>No s'ha definit direcció</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="557"/>
-      <location filename="../../TaskComplexSection.cpp" line="706"/>
+      <location filename="../../TaskComplexSection.cpp" line="560"/>
+      <location filename="../../TaskComplexSection.cpp" line="714"/>
       <source>ComplexSection</source>
       <translation>Secció complexa</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="717"/>
+      <location filename="../../TaskComplexSection.cpp" line="725"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>No es pot continuar. No s'ha trobat l'objecte * %1 o %2.</translation>
     </message>
@@ -7287,7 +7317,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="184"/>
-      <location filename="../../TaskDetail.cpp" line="254"/>
+      <location filename="../../TaskDetail.cpp" line="251"/>
       <source>Drag Highlight</source>
       <translation>Arrossega el ressaltat</translation>
     </message>
@@ -7808,8 +7838,8 @@ el valor negat per 'Sobretolerància'.</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="84"/>
-      <location filename="../../TaskLeaderLine.cpp" line="226"/>
-      <location filename="../../TaskLeaderLine.cpp" line="501"/>
+      <location filename="../../TaskLeaderLine.cpp" line="225"/>
+      <location filename="../../TaskLeaderLine.cpp" line="500"/>
       <source>Pick Points</source>
       <translation>Selecciona punts</translation>
     </message>
@@ -7903,48 +7933,48 @@ Podeu triar més punts per obtenir segments de línia.</translation>
       <translation>Guió punt punt</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="532"/>
-      <location filename="../../TaskLeaderLine.cpp" line="584"/>
+      <location filename="../../TaskLeaderLine.cpp" line="531"/>
+      <location filename="../../TaskLeaderLine.cpp" line="583"/>
       <source>Pick a starting point for leader line</source>
       <translation>Trieu un punt inicial per a la línia guia</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="567"/>
+      <location filename="../../TaskLeaderLine.cpp" line="566"/>
       <source>Click and drag markers to adjust leader line</source>
       <translation>Feu clic i arrossegueu els marcadors per a ajustar la línia guia</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="274"/>
-      <location filename="../../TaskLeaderLine.cpp" line="515"/>
-      <location filename="../../TaskLeaderLine.cpp" line="688"/>
-      <location filename="../../TaskLeaderLine.cpp" line="759"/>
-      <location filename="../../TaskLeaderLine.cpp" line="781"/>
+      <location filename="../../TaskLeaderLine.cpp" line="273"/>
+      <location filename="../../TaskLeaderLine.cpp" line="514"/>
+      <location filename="../../TaskLeaderLine.cpp" line="687"/>
+      <location filename="../../TaskLeaderLine.cpp" line="758"/>
+      <location filename="../../TaskLeaderLine.cpp" line="780"/>
       <source>Edit Points</source>
       <translation>Edita els punts</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="535"/>
+      <location filename="../../TaskLeaderLine.cpp" line="534"/>
       <source>Save Points</source>
       <translation>Desa els punts</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="570"/>
-      <location filename="../../TaskLeaderLine.cpp" line="587"/>
+      <location filename="../../TaskLeaderLine.cpp" line="569"/>
+      <location filename="../../TaskLeaderLine.cpp" line="586"/>
       <source>Save Changes</source>
       <translation>Desa els canvis</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="618"/>
+      <location filename="../../TaskLeaderLine.cpp" line="617"/>
       <source>Left click to set a point</source>
       <translation>Feu clic al botó esquerre per a definir un punt</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="644"/>
+      <location filename="../../TaskLeaderLine.cpp" line="643"/>
       <source>Press OK or Cancel to continue</source>
       <translation>Premeu D'acord o Cancel·la per a continuar</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="776"/>
+      <location filename="../../TaskLeaderLine.cpp" line="775"/>
       <source>In progress edit abandoned. Start over.</source>
       <translation>S'ha abandonat l'edició en procés. Torna a començar.</translation>
     </message>
@@ -8168,8 +8198,8 @@ Podeu triar més punts per obtenir segments de línia.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="362"/>
-      <location filename="../../TaskProjGroup.cpp" line="661"/>
-      <location filename="../../TaskProjGroup.cpp" line="668"/>
+      <location filename="../../TaskProjGroup.cpp" line="664"/>
+      <location filename="../../TaskProjGroup.cpp" line="671"/>
       <source>Top</source>
       <translation>Planta</translation>
     </message>
@@ -8180,8 +8210,8 @@ Podeu triar més punts per obtenir segments de línia.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="409"/>
-      <location filename="../../TaskProjGroup.cpp" line="663"/>
-      <location filename="../../TaskProjGroup.cpp" line="665"/>
+      <location filename="../../TaskProjGroup.cpp" line="666"/>
+      <location filename="../../TaskProjGroup.cpp" line="668"/>
       <source>Left</source>
       <translation>Esquerra</translation>
     </message>
@@ -8192,14 +8222,14 @@ Podeu triar més punts per obtenir segments de línia.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="449"/>
-      <location filename="../../TaskProjGroup.cpp" line="663"/>
-      <location filename="../../TaskProjGroup.cpp" line="665"/>
+      <location filename="../../TaskProjGroup.cpp" line="666"/>
+      <location filename="../../TaskProjGroup.cpp" line="668"/>
       <source>Right</source>
       <translation>Dreta</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="466"/>
-      <location filename="../../TaskProjGroup.cpp" line="666"/>
+      <location filename="../../TaskProjGroup.cpp" line="669"/>
       <source>Rear</source>
       <translation>Posterior</translation>
     </message>
@@ -8210,8 +8240,8 @@ Podeu triar més punts per obtenir segments de línia.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="516"/>
-      <location filename="../../TaskProjGroup.cpp" line="661"/>
-      <location filename="../../TaskProjGroup.cpp" line="668"/>
+      <location filename="../../TaskProjGroup.cpp" line="664"/>
+      <location filename="../../TaskProjGroup.cpp" line="671"/>
       <source>Bottom</source>
       <translation>Inferior</translation>
     </message>
@@ -8268,31 +8298,31 @@ utilitzant els espaiats X/Y donats</translation>
       <translation>Espai vertical entre límits de les projeccions</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="660"/>
-      <location filename="../../TaskProjGroup.cpp" line="669"/>
+      <location filename="../../TaskProjGroup.cpp" line="663"/>
+      <location filename="../../TaskProjGroup.cpp" line="672"/>
       <source>FrontTopLeft</source>
       <translation>Frontal a dalt a l'esquerra</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="660"/>
-      <location filename="../../TaskProjGroup.cpp" line="669"/>
+      <location filename="../../TaskProjGroup.cpp" line="663"/>
+      <location filename="../../TaskProjGroup.cpp" line="672"/>
       <source>FrontBottomRight</source>
       <translation>Frontal avall a la dreta</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="662"/>
-      <location filename="../../TaskProjGroup.cpp" line="667"/>
+      <location filename="../../TaskProjGroup.cpp" line="665"/>
+      <location filename="../../TaskProjGroup.cpp" line="670"/>
       <source>FrontTopRight</source>
       <translation>Frontal a dalt a la dreta</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="662"/>
-      <location filename="../../TaskProjGroup.cpp" line="667"/>
+      <location filename="../../TaskProjGroup.cpp" line="665"/>
+      <location filename="../../TaskProjGroup.cpp" line="670"/>
       <source>FrontBottomLeft</source>
       <translation>Frontal avall a l'esquerra</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="664"/>
+      <location filename="../../TaskProjGroup.cpp" line="667"/>
       <source>Front</source>
       <translation>Alçat</translation>
     </message>
@@ -8491,7 +8521,7 @@ utilitzant els espaiats X/Y donats</translation>
       <translation>Guió punt punt</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="676"/>
+      <location filename="../../TaskRichAnno.cpp" line="674"/>
       <source>RichTextAnnotation</source>
       <translation>Anotació de text enriquit</translation>
     </message>
@@ -8614,7 +8644,7 @@ utilitzant els espaiats X/Y donats</translation>
       <translation>Ubicació del pla de secció</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskSectionView.cpp" line="428"/>
+      <location filename="../../TaskSectionView.cpp" line="436"/>
       <source>%n update(s) pending</source>
       <translation>
         <numerusform>%n actualització pendent</numerusform>
@@ -8622,12 +8652,12 @@ utilitzant els espaiats X/Y donats</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="438"/>
+      <location filename="../../TaskSectionView.cpp" line="446"/>
       <source>Nothing to apply. No section direction picked yet</source>
       <translation>No hi ha res a aplicar. Encara no s'ha triat la direcció de la secció</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="641"/>
+      <location filename="../../TaskSectionView.cpp" line="652"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>No es pot continuar. No s'ha trobat l'objecte * %1 o %2.</translation>
     </message>
@@ -9998,22 +10028,22 @@ hi ha un diàleg de tasca obert.</translation>
   <context>
     <name>TechDrawGui::DirectionEditDialog</name>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="970"/>
+      <location filename="../../TaskProjGroup.cpp" line="973"/>
       <source>Direction</source>
       <translation>Direcció</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="1007"/>
+      <location filename="../../TaskProjGroup.cpp" line="1010"/>
       <source>OK</source>
       <translation>D'acord</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="1008"/>
+      <location filename="../../TaskProjGroup.cpp" line="1011"/>
       <source>Cancel</source>
       <translation>Cancel·la</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="1014"/>
+      <location filename="../../TaskProjGroup.cpp" line="1017"/>
       <source>Rotate by</source>
       <translation>Rotar per</translation>
     </message>
@@ -10170,7 +10200,7 @@ hi ha un diàleg de tasca obert.</translation>
   <context>
     <name>TaskComplexSection</name>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="478"/>
+      <location filename="../../TaskComplexSection.cpp" line="481"/>
       <source> updates pending</source>
       <translation> actualitzacions pendents</translation>
     </message>
@@ -10451,6 +10481,79 @@ hi ha un diàleg de tasca obert.</translation>
     </message>
   </context>
   <context>
+    <name>Cmd2LineCenterLine</name>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="655"/>
+      <source>Centerline Between 2 Lines</source>
+      <translation>Línia central entre 2 línies</translation>
+    </message>
+  </context>
+  <context>
+    <name>Cmd2PointCenterLine</name>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="659"/>
+      <source>Centerline Between 2 Points</source>
+      <translation>Línia central entre 2 línies</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskSpreadsheetView</name>
+    <message>
+      <location filename="../../TaskSpreadsheetView.cpp" line="187"/>
+      <source>Invalid Range</source>
+      <translation>Interval no vàlid</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.cpp" line="187"/>
+      <source>The specified cell range is invalid. Please correct it.</source>
+      <translation>L'interval de cel·les especificat no és vàlid. Corregiu-lo.</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskDlgSpreadsheetView</name>
+    <message>
+      <location filename="../../TaskSpreadsheetView.cpp" line="727"/>
+      <source>Create Spreadsheet View</source>
+      <translation>Crea una vista de full de càlcul</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.cpp" line="728"/>
+      <source>Edit Spreadsheet View</source>
+      <translation>Edita la vista de full de càlcul</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawExportPagePDF</name>
+    <message>
+      <location filename="../../Command.cpp" line="1949"/>
+      <source>File</source>
+      <translation>Fitxer</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1950"/>
+      <source>Export Page as PDF</source>
+      <translation>Exporta la pàgina com a PDF</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1951"/>
+      <source>Exports the current page as a PDF</source>
+      <translation>Exporta la pàgina actual com a PDF</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawExportGroup</name>
+    <message>
+      <location filename="../../Command.cpp" line="1979"/>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1980"/>
+      <source>Print All Pages</source>
+      <translation>Imprimir totes les pàgines</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdTechDrawToggleFrame</name>
     <message>
       <location filename="../../CommandDecorate.cpp" line="77"/>
@@ -10487,58 +10590,11 @@ hi ha un diàleg de tasca obert.</translation>
     </message>
   </context>
   <context>
-    <name>CmdTechDrawExportPagePDF</name>
-    <message>
-      <location filename="../../Command.cpp" line="1949"/>
-      <source>File</source>
-      <translation>Fitxer</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1950"/>
-      <source>Export Page as PDF</source>
-      <translation>Exporta la pàgina com a PDF</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1951"/>
-      <source>Exports the current page as a PDF</source>
-      <translation>Exporta la pàgina actual com a PDF</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdTechDrawExportGroup</name>
-    <message>
-      <location filename="../../Command.cpp" line="1979"/>
-      <source>TechDraw</source>
-      <translation>TechDraw</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1980"/>
-      <source>Print All Pages</source>
-      <translation>Imprimir totes les pàgines</translation>
-    </message>
-  </context>
-  <context>
     <name>TechDrawGui::TaskDlgLineDecor</name>
     <message>
       <location filename="../../TaskLineDecor.cpp" line="458"/>
       <source>Restore Invisible Lines</source>
       <translation>Restaura les línies no visibles</translation>
-    </message>
-  </context>
-  <context>
-    <name>Cmd2LineCenterLine</name>
-    <message>
-      <location filename="../../CommandAnnotate.cpp" line="655"/>
-      <source>Centerline Between 2 Lines</source>
-      <translation>Línia central entre 2 línies</translation>
-    </message>
-  </context>
-  <context>
-    <name>Cmd2PointCenterLine</name>
-    <message>
-      <location filename="../../CommandAnnotate.cpp" line="659"/>
-      <source>Centerline Between 2 Points</source>
-      <translation>Línia central entre 2 línies</translation>
     </message>
   </context>
   <context>
@@ -10552,32 +10608,6 @@ hi ha un diàleg de tasca obert.</translation>
       <location filename="../../QGIViewSpreadsheet.cpp" line="431"/>
       <source>Add column</source>
       <translation>Afegeix una columna</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDrawGui::TaskSpreadsheetView</name>
-    <message>
-      <location filename="../../TaskSpreadsheetView.cpp" line="187"/>
-      <source>Invalid Range</source>
-      <translation>Interval no vàlid</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSpreadsheetView.cpp" line="187"/>
-      <source>The specified cell range is invalid. Please correct it.</source>
-      <translation>L'interval de cel·les especificat no és vàlid. Corregiu-lo.</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDrawGui::TaskDlgSpreadsheetView</name>
-    <message>
-      <location filename="../../TaskSpreadsheetView.cpp" line="727"/>
-      <source>Create Spreadsheet View</source>
-      <translation>Crea una vista de full de càlcul</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSpreadsheetView.cpp" line="728"/>
-      <source>Edit Spreadsheet View</source>
-      <translation>Edita la vista de full de càlcul</translation>
     </message>
   </context>
 </TS>

@@ -261,7 +261,7 @@ Višestruke mape se mogu dodati koristeći ";;" za razdvajanje putanji.</transla
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppStartGui.cpp" line="140"/>
+      <location filename="../../AppStartGui.cpp" line="90"/>
       <source>Start</source>
       <translation>Počni</translation>
     </message>

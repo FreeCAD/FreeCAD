@@ -417,10 +417,10 @@ W LibreOffice w wersji 6.x i nowszych: należy użyć Arkusz → Wstaw arkusz…
       <translation>Zostań zalogowany w trakcie sesji FreeCAD</translation>
     </message>
     <message>
-      <location filename="../ui/dialogPhases.ui" line="14"/>
-      <location filename="../ui/DialogDisplayText.ui" line="14"/>
       <location filename="../ui/dialogQuantitySurveying.ui" line="14"/>
+      <location filename="../ui/dialogPhases.ui" line="14"/>
       <location filename="../ui/dialogListWidget.ui" line="14"/>
+      <location filename="../ui/DialogDisplayText.ui" line="14"/>
       <location filename="../ui/dialogExport.ui" line="14"/>
       <source>Dialog</source>
       <translation>Okno dialogowe</translation>
@@ -442,8 +442,8 @@ W LibreOffice w wersji 6.x i nowszych: należy użyć Arkusz → Wstaw arkusz…
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="30"/>
-      <location filename="../ui/dialogIfcProperties.ui" line="39"/>
       <location filename="../ui/dialogIfcQuantities.ui" line="30"/>
+      <location filename="../ui/dialogIfcProperties.ui" line="39"/>
       <source>Only visible BIM objects</source>
       <translation>Tylko widoczne obiekty BIM</translation>
     </message>
@@ -464,8 +464,8 @@ W LibreOffice w wersji 6.x i nowszych: należy użyć Arkusz → Wstaw arkusz…
     </message>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="53"/>
-      <location filename="../ui/dialogIfcProperties.ui" line="141"/>
       <location filename="../ui/dialogIfcQuantities.ui" line="80"/>
+      <location filename="../ui/dialogIfcProperties.ui" line="141"/>
       <source>Select All</source>
       <translation>Zaznacz wszystko</translation>
     </message>
@@ -583,8 +583,8 @@ Struktura może być również dodana samodzielnie na późniejszym etapie.</tra
 Nowe dokumenty nie będą automatycznie konwertowane do IFC, ale konwersja pozostaje możliwa później przez Narzędzia → Utwórz projekt IFC.</translation>
     </message>
     <message>
-      <location filename="../ui/dialogCreateProject.ui" line="30"/>
       <location filename="../ui/dialogConvertDocument.ui" line="43"/>
+      <location filename="../ui/dialogCreateProject.ui" line="30"/>
       <source>Do not ask again</source>
       <translation>Nie pytaj ponownie</translation>
     </message>
@@ -814,9 +814,9 @@ Zaleca się pozostawienie tej opcji odznaczonej i wczytywanie materiałów póź
       <translation>Anuluj</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLayersIFC.ui" line="104"/>
       <location filename="../ui/dialogQuantitySurveying.ui" line="26"/>
       <location filename="../ui/dialogPreflightResults.ui" line="103"/>
+      <location filename="../ui/dialogLayersIFC.ui" line="104"/>
       <location filename="../ui/dialogProjectManager.ui" line="717"/>
       <source>OK</source>
       <translation>OK</translation>
@@ -878,9 +878,9 @@ Zaleca się pozostawienie tej opcji odznaczonej i wczytywanie materiałów póź
     </message>
     <message>
       <location filename="../ui/dialogAddPSet.ui" line="43"/>
-      <location filename="../ui/dialogAddProperty.ui" line="87"/>
       <location filename="../ui/dialogProjectManager.ui" line="246"/>
       <location filename="../ui/dialogProjectManager.ui" line="366"/>
+      <location filename="../ui/dialogAddProperty.ui" line="87"/>
       <source>Name</source>
       <translation>Nazwa</translation>
     </message>
@@ -1328,12 +1328,12 @@ Pozostaw wartość 0, aby nie określać tego teraz.</translation>
       <translation>Informacje o przestrzeni</translation>
     </message>
     <message>
+      <location filename="../ui/dialogSpaces.ui" line="92"/>
       <location filename="../ui/dialogProjectManager.ui" line="457"/>
       <location filename="../ui/dialogProjectManager.ui" line="480"/>
       <location filename="../ui/dialogProjectManager.ui" line="493"/>
       <location filename="../ui/dialogProjectManager.ui" line="506"/>
       <location filename="../ui/dialogProjectManager.ui" line="615"/>
-      <location filename="../ui/dialogSpaces.ui" line="92"/>
       <source>0</source>
       <translation>0</translation>
     </message>
@@ -1751,9 +1751,9 @@ Pozostaw wartość 0, aby nie określać tego teraz.</translation>
       <translation>Klasa</translation>
     </message>
     <message>
+      <location filename="../ui/dialogClasses.ui" line="39"/>
       <location filename="../ui/dialogWindows.ui" line="80"/>
       <location filename="../ui/dialogWindows.ui" line="182"/>
-      <location filename="../ui/dialogClasses.ui" line="39"/>
       <source>Material</source>
       <translation>Materiał</translation>
     </message>
@@ -2163,15 +2163,10 @@ Jeśli plik IFC ma być używany w Revit, zaleca się wyłączenie tego zachowan
       <translation>L'export IfcRectangleProfileDef est-il désactivé ? (Revit seulement)</translation>
     </message>
     <message>
-      <location filename="../ui/dialogViews.ui" line="14"/>
       <location filename="../ui/dialogReorder.ui" line="14"/>
+      <location filename="../ui/dialogViews.ui" line="14"/>
       <source>Form</source>
       <translation>Formularz</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogViews.ui" line="69"/>
-      <source>Elevation</source>
-      <translation>Wysokość</translation>
     </message>
     <message>
       <location filename="../ui/dialogReorder.ui" line="20"/>
@@ -2244,6 +2239,11 @@ p, li { white-space: pre-wrap; }
       <translation>Element</translation>
     </message>
     <message>
+      <location filename="../ui/dialogViews.ui" line="69"/>
+      <source>Elevation</source>
+      <translation>Wysokość</translation>
+    </message>
+    <message>
       <location filename="../ui/dialogViews.ui" line="84"/>
       <source>2D Views</source>
       <translation>Widoki 2D</translation>
@@ -2313,8 +2313,8 @@ Mogą być modyfikowane pojedynczo lub razem</translation>
       <translation>Etykieta</translation>
     </message>
     <message>
-      <location filename="../ui/dialogWindows.ui" line="175"/>
       <location filename="../ui/dialogViews.ui" line="74"/>
+      <location filename="../ui/dialogWindows.ui" line="175"/>
       <source>Height</source>
       <translation>Wysokość</translation>
     </message>
@@ -3229,8 +3229,8 @@ Ustaw na 1, aby użyć trybu wielordzeniowego w trybie jednordzeniowym.
 To jest bezpieczniejsze, gdy występują problemy przy ustawieniu wielu rdzeni.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-sh3d-import.ui" line="67"/>
       <location filename="../ui/preferences-ifc.ui" line="135"/>
+      <location filename="../ui/preferences-sh3d-import.ui" line="67"/>
       <source>Import Options</source>
       <translation>Opcje importu</translation>
     </message>
@@ -3361,9 +3361,9 @@ This will slow down the import, but one can watch the import.</source>
 Spowoduje to spowolnienie importu, ale można obserwować przebieg importu.</translation>
     </message>
     <message>
+      <location filename="../ui/preferences-ifc.ui" line="411"/>
       <location filename="../ui/preferences-sh3d-import.ui" line="464"/>
       <location filename="../ui/preferences-sh3d-import.ui" line="467"/>
-      <location filename="../ui/preferences-ifc.ui" line="411"/>
       <source>Fit view while importing</source>
       <translation>Dopasuj widok podczas importowania</translation>
     </message>
@@ -3447,9 +3447,9 @@ Jeśli używasz Netgen, upewnij się, że jest on dostępny.</translation>
       <translation>Rozdrobnienie</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dae.ui" line="26"/>
       <location filename="../ui/preferences-webgl.ui" line="26"/>
       <location filename="../ui/preferences-ifc-export.ui" line="35"/>
+      <location filename="../ui/preferences-dae.ui" line="26"/>
       <source>Export Options</source>
       <translation>Opcje eksportu</translation>
     </message>
@@ -3688,8 +3688,8 @@ Wyłączenie tej opcji spowoduje wygenerowanie niestandardowego pliku IFC.</tran
       <translation>Eksport do formatu IFC</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-sh3d-import.ui" line="26"/>
       <location filename="../ui/preferences-ifc.ui" line="26"/>
+      <location filename="../ui/preferences-sh3d-import.ui" line="26"/>
       <source>General Options</source>
       <translation>Ustawienia ogólne</translation>
     </message>
@@ -3839,13 +3839,13 @@ Szablon domyślny znajduje się w katalogu:
   <context>
     <name>Arch</name>
     <message>
-      <location filename="../../ArchStructure.py" line="449"/>
+      <location filename="../../ArchStructure.py" line="450"/>
       <location filename="../../Arch.py" line="2576"/>
       <source>Beam</source>
       <translation>Belka</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="450"/>
+      <location filename="../../ArchStructure.py" line="451"/>
       <location filename="../../Arch.py" line="2580"/>
       <source>Column</source>
       <translation>Słup</translation>
@@ -3856,18 +3856,18 @@ Szablon domyślny znajduje się w katalogu:
       <translation>System Konstrukcyjny</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="115"/>
+      <location filename="../../ArchStructure.py" line="116"/>
       <source>Create Structures From Selection</source>
       <translation>Utwórz konstrukcje z zaznaczonych elementów</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="184"/>
+      <location filename="../../ArchStructure.py" line="185"/>
       <source>Create Structural System</source>
       <translation>Utwórz układ konstrukcyjny</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="247"/>
-      <location filename="../../ArchStructure.py" line="337"/>
+      <location filename="../../ArchStructure.py" line="248"/>
+      <location filename="../../ArchStructure.py" line="338"/>
       <source>Create Structure</source>
       <translation>Utwórz konstrukcję</translation>
     </message>
@@ -3877,644 +3877,248 @@ Szablon domyślny znajduje się w katalogu:
       <translation>Następny punkt</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="460"/>
+      <location filename="../../ArchStructure.py" line="461"/>
       <location filename="../../ArchCommands.py" line="1728"/>
       <location filename="../../bimcommands/BimProfile.py" line="96"/>
       <source>Category</source>
       <translation>Kategoria</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="524"/>
-      <source>Solid Tiles</source>
-      <translation>Pełne płytki</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="525"/>
-      <source>Parametric Pattern</source>
-      <translation>Wzór parametryczny</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="526"/>
-      <source>Monolithic</source>
-      <translation>Monolityczny</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="527"/>
-      <source>Hatch Pattern</source>
-      <translation>Wzór kreskowania</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="531"/>
-      <source>Top Left</source>
-      <translation>Lewy górny</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="532"/>
-      <source>Top Right</source>
-      <translation>Prawy górny</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="533"/>
-      <source>Bottom Left</source>
-      <translation>Lewy dolny</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="534"/>
-      <source>Bottom Right</source>
-      <translation>Prawy dolny</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="537"/>
-      <source>Stacked (None)</source>
-      <translation>Układany (brak)</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="538"/>
-      <source>Half Bond (1/2)</source>
-      <translation>Wiązanie połówkowe (1/2)</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="539"/>
-      <source>Third Bond (1/3)</source>
-      <translation>Wiązanie trzecinkowe (1/3)</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="540"/>
-      <source>Quarter Bond (1/4)</source>
-      <translation>Wiązanie ćwiartkowe (1/4)</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="541"/>
-      <location filename="../../ArchCoveringGui.py" line="862"/>
-      <source>Custom</source>
-      <translation>Użytkownika</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="619"/>
-      <source>Covering Definition</source>
-      <translation>Definicja okładziny</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="634"/>
-      <source>Layout and Boundaries</source>
-      <translation>Układ i granice</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="640"/>
-      <source>Visuals</source>
-      <translation>Wygląd</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="672"/>
-      <location filename="../../ArchCoveringGui.py" line="683"/>
-      <location filename="../../ArchCoveringGui.py" line="742"/>
-      <location filename="../../bimtests/TestArchCoveringGui.py" line="173"/>
-      <source>No selection</source>
-      <translation>Brak zaznaczenia</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="675"/>
-      <location filename="../../ArchCoveringGui.py" line="731"/>
-      <source>The object or face this covering is applied to:</source>
-      <translation>Obiekt lub ściana, do której stosowana jest okładzina:</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="686"/>
-      <location filename="../../ArchCoveringGui.py" line="746"/>
-      <source>The object or face this covering is applied to</source>
-      <translation>Obiekt lub ściana, do której stosowana jest okładzina</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="718"/>
-      <source>%1 (%2 faces)</source>
-      <translation>%1 (%2 ścian)</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="725"/>
-      <source>%1 objects selected</source>
-      <translation>%1 obiektów zaznaczonych</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="748"/>
-      <location filename="../../ArchCoveringGui.py" line="771"/>
-      <source>Pick</source>
-      <translation>Wybierz</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="752"/>
-      <source>Enable interactive face selection in the 3D view</source>
-      <translation>Włącz interaktywne zaznaczanie ścian w widoku 3D</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="770"/>
-      <source>Picking…</source>
-      <translation>Wybieranie…</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="779"/>
-      <source>Base</source>
-      <translation>Baza</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="793"/>
-      <source>How the finish is created and displayed:
-- Solid Tiles: Physical 3D tiles with real gaps. Best for accurate detail and counting.
-- Parametric Pattern: A grid of lines on a single slab. Faster to display than real tiles.
-- Monolithic: A single smooth surface. Ideal for paint, plaster, or seamless flooring.
-- Hatch Pattern: Technical drafting symbols (hatching) on a single slab.</source>
-      <translation>Sposób tworzenia i wyświetlania wykończenia:
-- Pełne płytki: Fizyczne płytki 3D z prawdziwymi fugami. Najlepsze dla dokładnych szczegółów i liczenia.
-- Wzór parametryczny: Siatka linii na jednej płycie. Szybsze wyświetlanie niż prawdziwe płytki.
-- Monolityczny: Pojedyncza gładka powierzchnia. Idealna do farby, tynku lub bezspoinowej podłogi.
-- Wzór kreskowania: Techniczne symbole rysunkowe (kreskowanie) na jednej płycie.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="796"/>
-      <source>Mode</source>
-      <translation>Tryb</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="801"/>
-      <source>The thickness of the finish</source>
-      <translation>Grubość wykończenia</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="817"/>
-      <source>Continue</source>
-      <translation>Kontynuuj</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="824"/>
-      <source>If checked, the dialog stays open after creating the covering, allowing to pick another face</source>
-      <translation>Jeśli zaznaczono, okno dialogowe pozostaje otwarte po utworzeniu okładziny, umożliwiając wybranie kolejnej ściany</translation>
-    </message>
-    <message>
+      <location filename="../../ArchStructure.py" line="468"/>
       <location filename="../../ArchCoveringGui.py" line="842"/>
-      <location filename="../../ArchStructure.py" line="467"/>
-      <location filename="../../bimcommands/BimProfile.py" line="103"/>
       <location filename="../../bimcommands/BimPanel.py" line="201"/>
+      <location filename="../../bimcommands/BimProfile.py" line="103"/>
       <location filename="../../bimcommands/BimWindow.py" line="447"/>
       <source>Preset</source>
       <translation>Nastawa wstępna</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="847"/>
-      <source>Use standard corner or center alignment relative to the boundary</source>
-      <translation>Użyj standardowego wyrównania do narożnika lub środka względem granicy</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="855"/>
-      <source>Select which part of the usable boundary to anchor the pattern origin to</source>
-      <translation>Wybierz część użytecznej granicy, do której zostanie zakotwiony punkt bazowy wzoru</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="867"/>
-      <source>Use a manually picked 3D point or match the current Working Plane</source>
-      <translation>Użyj ręcznie wybranego punktu 3D lub dopasuj do bieżącej płaszczyzny roboczej</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="868"/>
-      <source>Interactive</source>
-      <translation>Interaktywny</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="878"/>
-      <source>Enter interactive mode to visually place the grid origin and rotate the grid. Click to finish and set the origin. Optionally press R / Shift+R to rotate the tile preview by the PickRotationStep angle (configurable in the View properties).</source>
-      <translation>Wejdź w tryb interaktywny, aby wizualnie umieścić punkt bazowy siatki i obrócić siatkę. Kliknij, aby zakończyć i ustawić punkt bazowy. Opcjonalnie naciśnij R / Shift+R, aby obrócić podgląd płytki o kąt PickRotationStep (konfigurowalny we właściwościach widoku).</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="879"/>
-      <source>Match Working Plane</source>
-      <translation>Dopasuj do płaszczyzny roboczej</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="885"/>
-      <source>Use the position and orientation of the active Working Plane for the covering</source>
-      <translation>Użyj pozycji i orientacji aktywnej płaszczyzny roboczej dla okładziny</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="895"/>
-      <source>Shift the grid along U</source>
-      <translation>Przesuń siatkę wzdłuż U</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="900"/>
-      <source>Shift the grid along V</source>
-      <translation>Przesuń siatkę wzdłuż V</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="904"/>
-      <source>U offset</source>
-      <translation>Odsunięcie U</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="905"/>
-      <source>V offset</source>
-      <translation>Odsunięcie V</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="912"/>
-      <source>Manual rotation of the tile grid</source>
-      <translation>Ręczny obrót siatki płytek</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="925"/>
-      <source>Boundaries</source>
-      <translation>Granice powierzchni</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="930"/>
-      <source>Distance to offset the covering inwards from the boundary</source>
-      <translation>Odległość odsunięcia okładziny do wewnątrz od granicy</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="932"/>
-      <source>Border setback</source>
-      <translation>Odsunięcie od krawędzi</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="995"/>
-      <source>The length of the tiles</source>
-      <translation>Długość płytek</translation>
-    </message>
-    <message>
+      <location filename="../../ArchStructure.py" line="477"/>
+      <location filename="../../ArchStructure.py" line="1610"/>
       <location filename="../../ArchCoveringGui.py" line="996"/>
       <location filename="../../ArchCoveringGui.py" line="1077"/>
-      <location filename="../../ArchStructure.py" line="476"/>
-      <location filename="../../ArchStructure.py" line="1624"/>
-      <location filename="../../ArchWall.py" line="1857"/>
+      <location filename="../../ArchPanel.py" line="576"/>
       <location filename="../../ArchPrecast.py" line="1719"/>
       <location filename="../../ArchCommands.py" line="1361"/>
-      <location filename="../../ArchPanel.py" line="576"/>
-      <location filename="../../bimcommands/BimPanel.py" line="211"/>
+      <location filename="../../ArchWall.py" line="1814"/>
       <location filename="../../bimcommands/BimWall.py" line="504"/>
+      <location filename="../../bimcommands/BimPanel.py" line="211"/>
       <source>Length</source>
       <translation>Długość</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="1001"/>
-      <source>The width of the tiles</source>
-      <translation>Szerokość płytek</translation>
-    </message>
-    <message>
+      <location filename="../../ArchStructure.py" line="484"/>
+      <location filename="../../ArchStructure.py" line="1611"/>
       <location filename="../../ArchCoveringGui.py" line="1002"/>
       <location filename="../../ArchCoveringGui.py" line="1078"/>
-      <location filename="../../ArchStructure.py" line="483"/>
-      <location filename="../../ArchStructure.py" line="1625"/>
-      <location filename="../../ArchWall.py" line="1863"/>
+      <location filename="../../ArchPanel.py" line="577"/>
       <location filename="../../ArchPrecast.py" line="1720"/>
       <location filename="../../ArchWindow.py" line="1196"/>
-      <location filename="../../ArchPanel.py" line="577"/>
-      <location filename="../../bimcommands/BimPanel.py" line="218"/>
+      <location filename="../../ArchWall.py" line="1823"/>
       <location filename="../../bimcommands/BimWall.py" line="511"/>
+      <location filename="../../bimcommands/BimPanel.py" line="218"/>
       <source>Width</source>
       <translation>Szerokość</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="1007"/>
-      <source>The width of the joints between tiles</source>
-      <translation>Szerokość fug między płytkami</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1008"/>
-      <source>Joint width</source>
-      <translation>Szerokość fugi</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1022"/>
-      <source>The horizontal shift applied to every second row:
-- Stacked: all joints align vertically
-- Half/Third/Quarter Bond: shifts by a fraction of the tile length
-- Custom: manual offset value</source>
-      <translation>Poziome przesunięcie stosowane do każdego drugiego rzędu:
-- Układany: wszystkie fugi wyrównane pionowo
-- Wiązanie połówkowe/trzecinkowe/ćwiartkowe: przesunięcie o ułamek długości płytki
-- Niestandardowe: ręczna wartość odsunięcia</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1028"/>
-      <source>Custom offset for running bond rows</source>
-      <translation>Niestandardowe odsunięcie dla rzędów wiązania bieżącego</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1030"/>
-      <source>Stagger</source>
-      <translation>Przesunięcie rzędów</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1041"/>
-      <source>The PAT file to use for hatching</source>
-      <translation>Plik PAT używany do kreskowania</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1048"/>
-      <source>Pattern file</source>
-      <translation>Plik wzoru</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1052"/>
-      <source>The name of the pattern to use</source>
-      <translation>Nazwa wzoru do użycia</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1053"/>
-      <source>Pattern name</source>
-      <translation>Nazwa wzoru</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1058"/>
-      <source>The scale of the hatch pattern</source>
-      <translation>Skala wzoru kreskowania</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1060"/>
-      <source>Pattern scale</source>
-      <translation>Skala wzoru</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1072"/>
-      <source>Texture repeat interval along U</source>
-      <translation>Interwał powtarzania tekstury wzdłuż U</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1075"/>
-      <source>Texture repeat interval along V</source>
-      <translation>Interwał powtarzania tekstury wzdłuż V</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1086"/>
-      <source>Note: In Monolithic mode, dimensions control the repeat interval of the optional surface texture.</source>
-      <translation>Uwaga: W trybie monolitycznym wymiary kontrolują interwał powtarzania opcjonalnej tekstury powierzchni.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1097"/>
-      <source>An image file to map onto each tile or substrate</source>
-      <translation>Plik obrazu nakładany na każdą płytkę lub podłoże</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1104"/>
-      <source>Texture image</source>
-      <translation>Obraz tekstury</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1111"/>
-      <source>Horizontal texture multiplier</source>
-      <translation>Poziomy mnożnik tekstury</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1115"/>
-      <source>Vertical texture multiplier</source>
-      <translation>Pionowy mnożnik tekstury</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1118"/>
-      <source>Texture scale</source>
-      <translation>Skala tekstury</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1165"/>
-      <source>Select Texture</source>
-      <translation>Wybierz teksturę</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1174"/>
-      <source>Select Pattern</source>
-      <translation>Wybierz wzór</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1390"/>
-      <source>Could not resolve base geometry.</source>
-      <translation>Nie można rozwiązać geometrii bazowej.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1589"/>
-      <source>%1 pick tile origin</source>
-      <translation>%1 wybierz punkt bazowy płytki</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1593"/>
-      <source>%1 rotate tile CW / Shift+%1 rotate tile CCW</source>
-      <translation>%1 obróć płytkę zgodnie z ruchem wskazówek zegara / Shift+%1 obróć przeciwnie</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1601"/>
-      <source>%1 pick new base face or object</source>
-      <translation>%1 wybierz nową ścianę bazową lub obiekt</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1605"/>
-      <source>%1+%2 add face or object</source>
-      <translation>%1+%2 dodaj ścianę lub obiekt</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1612"/>
-      <source>%1 pick planar face or object</source>
-      <translation>%1 wybierz płaską ścianę lub obiekt</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1616"/>
-      <source>%1+%2 add planar face or object</source>
-      <translation>%1+%2 dodaj płaską ścianę lub obiekt</translation>
-    </message>
-    <message>
-      <location filename="../../ArchStructure.py" line="490"/>
-      <location filename="../../ArchStructure.py" line="1626"/>
-      <location filename="../../ArchWall.py" line="1869"/>
-      <location filename="../../ArchPrecast.py" line="1721"/>
+      <location filename="../../ArchStructure.py" line="491"/>
+      <location filename="../../ArchStructure.py" line="1612"/>
       <location filename="../../ArchRoof.py" line="1086"/>
+      <location filename="../../ArchPrecast.py" line="1721"/>
       <location filename="../../ArchWindow.py" line="1199"/>
+      <location filename="../../ArchWall.py" line="1832"/>
       <location filename="../../bimcommands/BimWall.py" line="518"/>
       <source>Height</source>
       <translation>Wysokość</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="448"/>
+      <location filename="../../ArchStructure.py" line="449"/>
       <source>Parameters of the structure</source>
       <translation>Parametry konstrukcji</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="497"/>
+      <location filename="../../ArchStructure.py" line="498"/>
       <source>Switch Length/Height</source>
       <translation>Przełącz długość/wysokość</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="499"/>
+      <location filename="../../ArchStructure.py" line="500"/>
       <source>Switch Length/Width</source>
       <translation>Przełącz długość/szerokość</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1090"/>
+      <location filename="../../ArchStructure.py" line="1091"/>
       <location filename="../../ArchWall.py" line="617"/>
       <source>This mesh is an invalid solid</source>
       <translation>Ta siatka nie jest poprawną bryłą</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1209"/>
+      <location filename="../../ArchStructure.py" line="1195"/>
       <location filename="../../ArchPanel.py" line="319"/>
       <source>Facemaker returned an error</source>
       <translation>Kreator ścian zwrócił błąd</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1636"/>
+      <location filename="../../ArchStructure.py" line="1622"/>
       <source>Node Tools</source>
       <translation>Narzędzia węzłów</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1660"/>
+      <location filename="../../ArchStructure.py" line="1646"/>
       <source>Extends the nodes of this element to reach the nodes of another element</source>
       <translation>Rozszerza punkty węzłów tego elementu, aby dosięgnąć punktów węzłów innego elementu</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1671"/>
+      <location filename="../../ArchStructure.py" line="1657"/>
       <source>Connects nodes of this element with the nodes of another element</source>
       <translation>Łączy węzły tego elementu z węzłami innego elementu</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1682"/>
+      <location filename="../../ArchStructure.py" line="1668"/>
       <source>Toggles all structural nodes of the document on/off</source>
       <translation>Włącza / wyłącza wszystkie węzły konstrukcyjne dokumentu</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1689"/>
+      <location filename="../../ArchStructure.py" line="1675"/>
       <source>Extrusion Tools</source>
       <translation>Narzędzia do wyciągania</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="153"/>
+      <location filename="../../ArchStructure.py" line="154"/>
       <source>Select the base object first and then the edges to use as extrusion paths</source>
       <translation>Wybierz najpierw obiekt bazowy, a następnie krawędzie, które mają być użyte jako ścieżki wyciągnięcia</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="206"/>
+      <location filename="../../ArchStructure.py" line="207"/>
       <source>Select at least an axis object</source>
       <translation>Wybierz co najmniej jeden obiekt</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="277"/>
+      <location filename="../../ArchStructure.py" line="278"/>
       <source>First Point of Beam</source>
       <translation>Pierwszy punkt belki</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="279"/>
+      <location filename="../../ArchStructure.py" line="280"/>
       <source>Base Point of Column</source>
       <translation>Punkt bazowy słupa</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="294"/>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="91"/>
+      <location filename="../../ArchStructure.py" line="295"/>
       <location filename="../../bimcommands/BimTruss.py" line="80"/>
       <location filename="../../bimcommands/BimWall.py" line="154"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="91"/>
       <source>%1 pick first point</source>
       <translation>%1 wybierz pierwszy punkt</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="296"/>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="93"/>
+      <location filename="../../ArchStructure.py" line="297"/>
       <location filename="../../bimcommands/BimTruss.py" line="82"/>
       <location filename="../../bimcommands/BimWall.py" line="156"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="93"/>
       <source>%1 pick next point</source>
       <translation>%1 wybierz kolejny punkt</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="298"/>
+      <location filename="../../ArchStructure.py" line="299"/>
       <source>%1 pick base point</source>
       <translation>%1 wybierz punkt bazowy</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="327"/>
+      <location filename="../../ArchStructure.py" line="328"/>
       <source>Next Point</source>
       <translation>Następny punkt</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="444"/>
+      <location filename="../../ArchStructure.py" line="445"/>
       <source>Structure Options</source>
       <translation>Opcje konstrukcji</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1062"/>
+      <location filename="../../ArchStructure.py" line="1063"/>
       <source>Error: The base shape could not be extruded along this tool object</source>
       <translation>Błąd: Nie udało się wyciągnąć bryły bazowej wzdłuż tego obiektu narzędzia.</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1641"/>
+      <location filename="../../ArchStructure.py" line="1627"/>
       <source>Reset Nodes</source>
       <translation>Zresetuj węzły</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1647"/>
+      <location filename="../../ArchStructure.py" line="1633"/>
       <source>Edit Nodes</source>
       <translation>Edytuj węzły</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1653"/>
+      <location filename="../../ArchStructure.py" line="1639"/>
       <source>Extend Nodes</source>
       <translation>Rozszerz węzły</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1666"/>
+      <location filename="../../ArchStructure.py" line="1652"/>
       <source>Connect Nodes</source>
       <translation>Połącz węzły</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1677"/>
+      <location filename="../../ArchStructure.py" line="1663"/>
       <source>Toggle All Nodes</source>
       <translation>Przełącz wszystkie węzły</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1694"/>
-      <location filename="../../ArchStructure.py" line="1895"/>
+      <location filename="../../ArchStructure.py" line="1680"/>
+      <location filename="../../ArchStructure.py" line="1881"/>
       <source>Select Tool</source>
       <translation>Wybierz narzędzie</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1699"/>
+      <location filename="../../ArchStructure.py" line="1685"/>
       <source>Selects object or edges to be used as a tool (extrusion path)</source>
       <translation>Wybiera obiekt lub krawędzie do użycia jako narzędzie (ścieżka wyciągnięcia)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1723"/>
-      <location filename="../../ArchStructure.py" line="1773"/>
+      <location filename="../../ArchStructure.py" line="1709"/>
+      <location filename="../../ArchStructure.py" line="1759"/>
       <source>Choose another Structure object:</source>
       <translation>Wybierz inny obiekt konstrukcji:</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1729"/>
-      <location filename="../../ArchStructure.py" line="1779"/>
+      <location filename="../../ArchStructure.py" line="1715"/>
+      <location filename="../../ArchStructure.py" line="1765"/>
       <source>The chosen object is not a Structure</source>
       <translation>Wybrany obiekt nie jest konstrukcją</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1734"/>
-      <location filename="../../ArchStructure.py" line="1784"/>
+      <location filename="../../ArchStructure.py" line="1720"/>
+      <location filename="../../ArchStructure.py" line="1770"/>
       <source>The chosen object has no structural nodes</source>
       <translation>Wybrany obiekt nie ma węzłów konstrukcyjnych</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1739"/>
-      <location filename="../../ArchStructure.py" line="1789"/>
+      <location filename="../../ArchStructure.py" line="1725"/>
+      <location filename="../../ArchStructure.py" line="1775"/>
       <source>One of these objects has more than 2 nodes</source>
       <translation>Jeden z tych obiektów ma więcej niż 2 węzły</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1752"/>
-      <location filename="../../ArchStructure.py" line="1802"/>
+      <location filename="../../ArchStructure.py" line="1738"/>
+      <location filename="../../ArchStructure.py" line="1788"/>
       <source>Unable to find a suitable intersection point</source>
       <translation>Nie można znaleźć odpowiedniego punktu przecięcia</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1756"/>
+      <location filename="../../ArchStructure.py" line="1742"/>
       <source>Intersection found.
 </source>
       <translation>Znaleziono przecięcie.
 </translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1807"/>
+      <location filename="../../ArchStructure.py" line="1793"/>
       <source>Intersection found.</source>
       <translation>Znaleziono przecięcie.</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1860"/>
+      <location filename="../../ArchStructure.py" line="1846"/>
       <source>Done</source>
       <translation>Gotowe</translation>
     </message>
@@ -4548,12 +4152,6 @@ Szablon domyślny znajduje się w katalogu:
       <location filename="../../bimcommands/BimProfile.py" line="149"/>
       <source>Create Profile</source>
       <translation>Utwórz profil</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimProfile.py" line="76"/>
-      <location filename="../../bimcommands/BimPanel.py" line="126"/>
-      <source>%1 pick point</source>
-      <translation>%1 wybierz punkt</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProfile.py" line="92"/>
@@ -4629,8 +4227,8 @@ Jeżeli Rozbieg = 0, rozbieg jest obliczany tak, aby wysokość była taka sama 
       <translation>Nawis</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1155"/>
       <location filename="../../ArchRoof.py" line="1070"/>
+      <location filename="../../Arch.py" line="1155"/>
       <source>Roof</source>
       <translation>Dach</translation>
     </message>
@@ -4912,13 +4510,13 @@ Jeżeli Rozbieg = 0, rozbieg jest obliczany tak, aby wysokość była taka sama 
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1099"/>
-      <location filename="../../ArchWindow.py" line="1745"/>
+      <location filename="../../ArchWindow.py" line="1756"/>
       <source>Invert Opening Direction</source>
       <translation>Odwróć kierunek otwierania</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1114"/>
-      <location filename="../../ArchWindow.py" line="1748"/>
+      <location filename="../../ArchWindow.py" line="1759"/>
       <source>Invert Hinge Position</source>
       <translation>Odwróć pozycję zawiasów</translation>
     </message>
@@ -4934,322 +4532,173 @@ Jeżeli Rozbieg = 0, rozbieg jest obliczany tak, aby wysokość była taka sama 
       <translation>Opcje okna</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1505"/>
-      <location filename="../../ArchWindow.py" line="1556"/>
+      <location filename="../../ArchWindow.py" line="1516"/>
+      <location filename="../../ArchWindow.py" line="1567"/>
       <source>Get selected edge</source>
       <translation>Pobierz wybraną krawędź</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1658"/>
+      <location filename="../../ArchWindow.py" line="1669"/>
       <source>Unable to create component</source>
       <translation>Nie można utworzyć komponentu</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1696"/>
+      <location filename="../../ArchWindow.py" line="1707"/>
       <source>Window Elements</source>
       <translation>Elementy okna</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1697"/>
+      <location filename="../../ArchWindow.py" line="1708"/>
       <source>Hole wire</source>
       <translation>Szkielet otworu</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1704"/>
+      <location filename="../../ArchWindow.py" line="1715"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation>Numer polilinii definiującej otwór w obiekcie nadrzędnym. Wartość zero automatycznie przyjmie najdłuższą polilinię</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1705"/>
+      <location filename="../../ArchWindow.py" line="1716"/>
       <source>Pick Selected</source>
       <translation>Wybierz zaznaczone</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1711"/>
+      <location filename="../../ArchWindow.py" line="1722"/>
       <source>Create/Update Component</source>
       <translation>Utwórz / uaktualnij komponent</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1715"/>
+      <location filename="../../ArchWindow.py" line="1726"/>
       <source>Create new Component</source>
       <translation>Utwórz nowy komponent</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1719"/>
+      <location filename="../../ArchWindow.py" line="1730"/>
       <source>Frame depth</source>
       <translation>Głębokość ramki</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1721"/>
+      <location filename="../../ArchWindow.py" line="1732"/>
       <source>Hinge/Track</source>
       <translation>Zawias/prowadnica</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1730"/>
+      <location filename="../../ArchWindow.py" line="1741"/>
       <source>If this is checked, the window's Frame property value will be added to the value entered here</source>
       <translation>Jeżeli ta opcja jest zaznaczona, wartość właściwości Frame okna zostanie dodana do wartości wprowadzonej tutaj.</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1738"/>
+      <location filename="../../ArchWindow.py" line="1749"/>
       <source>If this is checked, the window's Offset property value will be added to the value entered here</source>
       <translation>Jeśli to pole jest zaznaczone, wartość odsunięcia okna zostanie dodana do wartości wprowadzonej tutaj</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1742"/>
+      <location filename="../../ArchWindow.py" line="1753"/>
       <source>Retrieves the selected edge</source>
       <translation>Pozyskuje wybraną krawędź</translation>
     </message>
     <message>
+      <location filename="../../ArchAxisSystem.py" line="338"/>
       <location filename="../../ArchSectionPlane.py" line="1805"/>
       <location filename="../../ArchAxis.py" line="999"/>
-      <location filename="../../ArchComponent.py" line="2463"/>
       <location filename="../../ArchSpace.py" line="954"/>
-      <location filename="../../ArchAxisSystem.py" line="338"/>
-      <location filename="../../ArchWindow.py" line="1706"/>
+      <location filename="../../ArchWindow.py" line="1717"/>
+      <location filename="../../ArchComponent.py" line="2463"/>
       <source>Remove</source>
       <translation>Usuń</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1000"/>
-      <location filename="../../ArchComponent.py" line="2464"/>
-      <location filename="../../ArchSpace.py" line="949"/>
       <location filename="../../ArchAxisSystem.py" line="339"/>
-      <location filename="../../ArchWindow.py" line="1707"/>
+      <location filename="../../ArchAxis.py" line="1000"/>
+      <location filename="../../ArchSpace.py" line="949"/>
+      <location filename="../../ArchWindow.py" line="1718"/>
+      <location filename="../../ArchComponent.py" line="2464"/>
       <source>Add</source>
       <translation>Dodaj</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="1053"/>
-      <source>Solar Diagrams</source>
-      <translation>Diagramy słoneczne</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1057"/>
-      <source>Location</source>
-      <translation>Umiejscowienie</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1072"/>
-      <source>The latitude of this site in decimal degrees.
-Positive values are north of the Equator, negative values are south.</source>
-      <translation>Szerokość geograficzna tej lokalizacji w stopniach dziesiętnych.
-Wartości dodatnie są na północ od równika, ujemne na południe.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1073"/>
-      <source>Latitude</source>
-      <translation>Szerokość geograficzna</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1087"/>
-      <source>The longitude of this site in decimal degrees.
-Positive values are east of the Prime Meridian, negative values are west.</source>
-      <translation>Długość geograficzna tej lokalizacji w stopniach dziesiętnych.
-Wartości dodatnie są na wschód od południka zerowego, ujemne na zachód.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1088"/>
-      <source>Longitude</source>
-      <translation>Długość geograficzna</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1100"/>
-      <source>The UTC offset of the time zone where this site is located.
-Used when calculating the sun position.</source>
-      <translation>Przesunięcie UTC strefy czasowej, w której znajduje się ta lokalizacja.
-Używane przy obliczaniu pozycji słońca.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1101"/>
-      <source>Time zone</source>
-      <translation>Strefa czasowa</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1118"/>
-      <source>The angle between the model's north and geographic north.
-Drives the compass orientation and the declination used to
-align the solar diagram and sun path.</source>
-      <translation>Kąt między północą modelu a północą geograficzną.
-Określa orientację kompasu i deklinację używaną do
-wyrównania diagramu słonecznego i ścieżki słońca.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1119"/>
-      <source>North offset</source>
-      <translation>Odsunięcie północy</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1123"/>
-      <source>Diagrams</source>
-      <translation>Diagramy</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1126"/>
-      <source>Solar Diagram</source>
-      <translation>Diagram słoneczny</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1136"/>
-      <source>Shows a sun path arc diagram projected onto the site,
-computed from the site's latitude, longitude and north offset.</source>
-      <translation>Pokazuje diagram łuku ścieżki słońca rzutowany na lokalizację,
-obliczony na podstawie szerokości, długości geograficznej i odsunięcia północy.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1139"/>
-      <source>Compass</source>
-      <translation>Kompas</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1147"/>
-      <source>Shows a compass rose overlay on the site,
-oriented according to the north offset.</source>
-      <translation>Pokazuje nałożenie różY kompasu na lokalizację,
-zorientowanej zgodnie z odsunięciem północy.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1153"/>
-      <source>Sun Position</source>
-      <translation>Pozycja słońca</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1164"/>
-      <source>Shows a sphere and ray indicating the sun position
-for the selected date and time.</source>
-      <translation>Pokazuje sferę i promień wskazujący pozycję słońca
-dla wybranej daty i godziny.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1184"/>
-      <source>The day and month for which the sun position is shown.
-The year is ignored.</source>
-      <translation>Dzień i miesiąc, dla których pokazywana jest pozycja słońca.
-Rok jest ignorowany.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1185"/>
-      <source>Date</source>
-      <translation>Data</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1196"/>
-      <source>The time of day for which the sun position is shown,
-in 24-hour local time. Steps in half-hour increments.</source>
-      <translation>Pora dnia, dla której pokazywana jest pozycja słońca,
-w lokalnym czasie 24-godzinnym. Kroki co pół godziny.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1209"/>
-      <source>Hour</source>
-      <translation>Godzina</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1214"/>
-      <source>Show Hour Labels</source>
-      <translation>Pokaż etykiety godzin</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1220"/>
-      <source>Shows text labels at key hours along the sun path arc</source>
-      <translation>Pokazuje etykiety tekstowe w kluczowych godzinach wzdłuż łuku ścieżki słońca</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1233"/>
-      <source>Solar calculations require the ladybug or pysolar Python module,
-which was not found.</source>
-      <translation>Obliczenia słoneczne wymagają modułu Python ladybug lub pysolar,
-którego nie znaleziono.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1243"/>
-      <source>Solar calculations unavailable.
-The ladybug or pysolar Python module is required.</source>
-      <translation>Obliczenia słoneczne niedostępne.
-Wymagany jest moduł Python ladybug lub pysolar.</translation>
-    </message>
-    <message>
+      <location filename="../../ArchAxisSystem.py" line="222"/>
       <location filename="../../ArchSite.py" line="1588"/>
       <location filename="../../ArchSectionPlane.py" line="1592"/>
+      <location filename="../../ArchReference.py" line="717"/>
+      <location filename="../../ArchIFCView.py" line="63"/>
+      <location filename="../../ArchSchedule.py" line="765"/>
       <location filename="../../ArchAxis.py" line="831"/>
       <location filename="../../ArchGrid.py" line="384"/>
-      <location filename="../../ArchReference.py" line="717"/>
-      <location filename="../../ArchComponent.py" line="1971"/>
+      <location filename="../../ArchWindow.py" line="1719"/>
       <location filename="../../ArchMaterial.py" line="471"/>
       <location filename="../../ArchMaterial.py" line="798"/>
-      <location filename="../../ArchIFCView.py" line="63"/>
-      <location filename="../../ArchAxisSystem.py" line="222"/>
-      <location filename="../../ArchSchedule.py" line="765"/>
-      <location filename="../../ArchWindow.py" line="1708"/>
+      <location filename="../../ArchComponent.py" line="1971"/>
       <source>Edit</source>
       <translation>Edytuj</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1712"/>
+      <location filename="../../ArchWindow.py" line="1723"/>
       <source>Base 2D object</source>
       <translation>Podstawowy obiekt 2D</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1713"/>
-      <location filename="../../ArchWindow.py" line="1718"/>
+      <location filename="../../ArchWindow.py" line="1724"/>
+      <location filename="../../ArchWindow.py" line="1729"/>
       <source>Wires</source>
       <translation>Polilinie</translation>
     </message>
     <message>
+      <location filename="../../ArchWindow.py" line="1725"/>
       <location filename="../../ArchComponent.py" line="2471"/>
-      <location filename="../../ArchWindow.py" line="1714"/>
       <source>Components</source>
       <translation>Komponenty</translation>
     </message>
     <message>
+      <location filename="../../ArchWindow.py" line="1727"/>
       <location filename="../../ArchMaterial.py" line="895"/>
       <location filename="../../ArchMaterial.py" line="921"/>
-      <location filename="../../ArchWindow.py" line="1716"/>
       <source>Name</source>
       <translation>Nazwa</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2539"/>
       <location filename="../../ArchCommands.py" line="1730"/>
-      <location filename="../../ArchWindow.py" line="1717"/>
+      <location filename="../../ArchWindow.py" line="1728"/>
+      <location filename="../../ArchComponent.py" line="2539"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="476"/>
       <source>Type</source>
       <translation>Typ</translation>
     </message>
     <message>
+      <location filename="../../ArchStructure.py" line="1605"/>
+      <location filename="../../ArchRoof.py" line="1084"/>
       <location filename="../../ArchCoveringGui.py" line="802"/>
-      <location filename="../../ArchStructure.py" line="1619"/>
+      <location filename="../../ArchPanel.py" line="578"/>
       <location filename="../../ArchMaterial.py" line="897"/>
       <location filename="../../ArchMaterial.py" line="923"/>
-      <location filename="../../ArchRoof.py" line="1084"/>
-      <location filename="../../ArchPanel.py" line="578"/>
       <location filename="../../bimcommands/BimPanel.py" line="225"/>
       <source>Thickness</source>
       <translation>Grubość</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1725"/>
-      <location filename="../../ArchWindow.py" line="1720"/>
+      <location filename="../../ArchWindow.py" line="1731"/>
       <location filename="../../bimcommands/BimWall.py" line="534"/>
       <source>Offset</source>
       <translation>Odsunięcie</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1722"/>
+      <location filename="../../ArchWindow.py" line="1733"/>
       <source>Opening mode</source>
       <translation>Rodzaj otwierania</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1723"/>
+      <location filename="../../ArchWindow.py" line="1734"/>
       <source>+ Frame property</source>
       <translation>+ Właściwość ramy</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1731"/>
+      <location filename="../../ArchWindow.py" line="1742"/>
       <source>+ Offset property</source>
       <translation>+ Właściwość odsunięcia</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1739"/>
+      <location filename="../../ArchWindow.py" line="1750"/>
       <source>Get Selected Edge</source>
       <translation>Pobierz wybraną krawędź</translation>
     </message>
@@ -5274,10 +4723,10 @@ Wymagany jest moduł Python ladybug lub pysolar.</translation>
       <translation>Wybierz co najmniej jedną oś</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="998"/>
-      <location filename="../../ArchComponent.py" line="2470"/>
-      <location filename="../../Arch.py" line="102"/>
       <location filename="../../ArchAxisSystem.py" line="337"/>
+      <location filename="../../ArchAxis.py" line="998"/>
+      <location filename="../../Arch.py" line="102"/>
+      <location filename="../../ArchComponent.py" line="2470"/>
       <source>Axes</source>
       <translation>Osie</translation>
     </message>
@@ -5289,8 +4738,8 @@ Wymagany jest moduł Python ladybug lub pysolar.</translation>
     <message>
       <location filename="../../importers/importOBJ.py" line="300"/>
       <location filename="../../importers/importOBJ.py" line="338"/>
-      <location filename="../../importers/importWebGL.py" line="372"/>
       <location filename="../../importers/importJSON.py" line="62"/>
+      <location filename="../../importers/importWebGL.py" line="372"/>
       <source>Successfully written</source>
       <translation>Zapisano pomyślnie</translation>
     </message>
@@ -5395,9 +4844,9 @@ Wymagany jest moduł Python ladybug lub pysolar.</translation>
       <translation>Tworzy materiał wielowarstwowy</translation>
     </message>
     <message>
+      <location filename="../../Arch.py" line="540"/>
       <location filename="../../ArchMaterial.py" line="896"/>
       <location filename="../../ArchMaterial.py" line="922"/>
-      <location filename="../../Arch.py" line="540"/>
       <source>Material</source>
       <translation>Materiał</translation>
     </message>
@@ -5493,8 +4942,8 @@ Wymagany jest moduł Python ladybug lub pysolar.</translation>
       <translation>Usuń przęsło</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="488"/>
       <location filename="../../Arch.py" line="504"/>
+      <location filename="../../ArchGrid.py" line="488"/>
       <source>Grid</source>
       <translation>Siatka</translation>
     </message>
@@ -5645,10 +5094,406 @@ Wymagany jest moduł Python ladybug lub pysolar.</translation>
       <translation>Poziom</translation>
     </message>
     <message>
+      <location filename="../../ArchCoveringGui.py" line="524"/>
+      <source>Solid Tiles</source>
+      <translation>Pełne płytki</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="525"/>
+      <source>Parametric Pattern</source>
+      <translation>Wzór parametryczny</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="526"/>
+      <source>Monolithic</source>
+      <translation>Monolityczny</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="527"/>
+      <source>Hatch Pattern</source>
+      <translation>Wzór kreskowania</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="531"/>
+      <source>Top Left</source>
+      <translation>Lewy górny</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="532"/>
+      <source>Top Right</source>
+      <translation>Prawy górny</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="533"/>
+      <source>Bottom Left</source>
+      <translation>Lewy dolny</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="534"/>
+      <source>Bottom Right</source>
+      <translation>Prawy dolny</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="537"/>
+      <source>Stacked (None)</source>
+      <translation>Układany (brak)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="538"/>
+      <source>Half Bond (1/2)</source>
+      <translation>Wiązanie połówkowe (1/2)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="539"/>
+      <source>Third Bond (1/3)</source>
+      <translation>Wiązanie trzecinkowe (1/3)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="540"/>
+      <source>Quarter Bond (1/4)</source>
+      <translation>Wiązanie ćwiartkowe (1/4)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="541"/>
+      <location filename="../../ArchCoveringGui.py" line="862"/>
+      <source>Custom</source>
+      <translation>Użytkownika</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="619"/>
+      <source>Covering Definition</source>
+      <translation>Definicja okładziny</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="634"/>
+      <source>Layout and Boundaries</source>
+      <translation>Układ i granice</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="640"/>
+      <source>Visuals</source>
+      <translation>Wygląd</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="672"/>
+      <location filename="../../ArchCoveringGui.py" line="683"/>
+      <location filename="../../ArchCoveringGui.py" line="742"/>
+      <location filename="../../bimtests/TestArchCoveringGui.py" line="173"/>
+      <source>No selection</source>
+      <translation>Brak zaznaczenia</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="675"/>
+      <location filename="../../ArchCoveringGui.py" line="731"/>
+      <source>The object or face this covering is applied to:</source>
+      <translation>Obiekt lub ściana, do której stosowana jest okładzina:</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="686"/>
+      <location filename="../../ArchCoveringGui.py" line="746"/>
+      <source>The object or face this covering is applied to</source>
+      <translation>Obiekt lub ściana, do której stosowana jest okładzina</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="718"/>
+      <source>%1 (%2 faces)</source>
+      <translation>%1 (%2 ścian)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="725"/>
+      <source>%1 objects selected</source>
+      <translation>%1 obiektów zaznaczonych</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="748"/>
+      <location filename="../../ArchCoveringGui.py" line="771"/>
+      <source>Pick</source>
+      <translation>Wybierz</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="752"/>
+      <source>Enable interactive face selection in the 3D view</source>
+      <translation>Włącz interaktywne zaznaczanie ścian w widoku 3D</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="770"/>
+      <source>Picking…</source>
+      <translation>Wybieranie…</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="779"/>
+      <source>Base</source>
+      <translation>Baza</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="793"/>
+      <source>How the finish is created and displayed:
+- Solid Tiles: Physical 3D tiles with real gaps. Best for accurate detail and counting.
+- Parametric Pattern: A grid of lines on a single slab. Faster to display than real tiles.
+- Monolithic: A single smooth surface. Ideal for paint, plaster, or seamless flooring.
+- Hatch Pattern: Technical drafting symbols (hatching) on a single slab.</source>
+      <translation>Sposób tworzenia i wyświetlania wykończenia:
+- Pełne płytki: Fizyczne płytki 3D z prawdziwymi fugami. Najlepsze dla dokładnych szczegółów i liczenia.
+- Wzór parametryczny: Siatka linii na jednej płycie. Szybsze wyświetlanie niż prawdziwe płytki.
+- Monolityczny: Pojedyncza gładka powierzchnia. Idealna do farby, tynku lub bezspoinowej podłogi.
+- Wzór kreskowania: Techniczne symbole rysunkowe (kreskowanie) na jednej płycie.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="796"/>
+      <source>Mode</source>
+      <translation>Tryb</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="801"/>
+      <source>The thickness of the finish</source>
+      <translation>Grubość wykończenia</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="817"/>
+      <source>Continue</source>
+      <translation>Kontynuuj</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="824"/>
+      <source>If checked, the dialog stays open after creating the covering, allowing to pick another face</source>
+      <translation>Jeśli zaznaczono, okno dialogowe pozostaje otwarte po utworzeniu okładziny, umożliwiając wybranie kolejnej ściany</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="847"/>
+      <source>Use standard corner or center alignment relative to the boundary</source>
+      <translation>Użyj standardowego wyrównania do narożnika lub środka względem granicy</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="855"/>
+      <source>Select which part of the usable boundary to anchor the pattern origin to</source>
+      <translation>Wybierz część użytecznej granicy, do której zostanie zakotwiony punkt bazowy wzoru</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="867"/>
+      <source>Use a manually picked 3D point or match the current Working Plane</source>
+      <translation>Użyj ręcznie wybranego punktu 3D lub dopasuj do bieżącej płaszczyzny roboczej</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="868"/>
+      <source>Interactive</source>
+      <translation>Interaktywny</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="878"/>
+      <source>Enter interactive mode to visually place the grid origin and rotate the grid. Click to finish and set the origin. Optionally press R / Shift+R to rotate the tile preview by the PickRotationStep angle (configurable in the View properties).</source>
+      <translation>Wejdź w tryb interaktywny, aby wizualnie umieścić punkt bazowy siatki i obrócić siatkę. Kliknij, aby zakończyć i ustawić punkt bazowy. Opcjonalnie naciśnij R / Shift+R, aby obrócić podgląd płytki o kąt PickRotationStep (konfigurowalny we właściwościach widoku).</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="879"/>
+      <source>Match Working Plane</source>
+      <translation>Dopasuj do płaszczyzny roboczej</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="885"/>
+      <source>Use the position and orientation of the active Working Plane for the covering</source>
+      <translation>Użyj pozycji i orientacji aktywnej płaszczyzny roboczej dla okładziny</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="895"/>
+      <source>Shift the grid along U</source>
+      <translation>Przesuń siatkę wzdłuż U</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="900"/>
+      <source>Shift the grid along V</source>
+      <translation>Przesuń siatkę wzdłuż V</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="904"/>
+      <source>U offset</source>
+      <translation>Odsunięcie U</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="905"/>
+      <source>V offset</source>
+      <translation>Odsunięcie V</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="912"/>
+      <source>Manual rotation of the tile grid</source>
+      <translation>Ręczny obrót siatki płytek</translation>
+    </message>
+    <message>
       <location filename="../../ArchCoveringGui.py" line="913"/>
       <location filename="../../ArchPrecast.py" line="1724"/>
       <source>Rotation</source>
       <translation>Obracanie</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="925"/>
+      <source>Boundaries</source>
+      <translation>Granice powierzchni</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="930"/>
+      <source>Distance to offset the covering inwards from the boundary</source>
+      <translation>Odległość odsunięcia okładziny do wewnątrz od granicy</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="932"/>
+      <source>Border setback</source>
+      <translation>Odsunięcie od krawędzi</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="995"/>
+      <source>The length of the tiles</source>
+      <translation>Długość płytek</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1001"/>
+      <source>The width of the tiles</source>
+      <translation>Szerokość płytek</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1007"/>
+      <source>The width of the joints between tiles</source>
+      <translation>Szerokość fug między płytkami</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1008"/>
+      <source>Joint width</source>
+      <translation>Szerokość fugi</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1022"/>
+      <source>The horizontal shift applied to every second row:
+- Stacked: all joints align vertically
+- Half/Third/Quarter Bond: shifts by a fraction of the tile length
+- Custom: manual offset value</source>
+      <translation>Poziome przesunięcie stosowane do każdego drugiego rzędu:
+- Układany: wszystkie fugi wyrównane pionowo
+- Wiązanie połówkowe/trzecinkowe/ćwiartkowe: przesunięcie o ułamek długości płytki
+- Niestandardowe: ręczna wartość odsunięcia</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1028"/>
+      <source>Custom offset for running bond rows</source>
+      <translation>Niestandardowe odsunięcie dla rzędów wiązania bieżącego</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1030"/>
+      <source>Stagger</source>
+      <translation>Przesunięcie rzędów</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1041"/>
+      <source>The PAT file to use for hatching</source>
+      <translation>Plik PAT używany do kreskowania</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1048"/>
+      <source>Pattern file</source>
+      <translation>Plik wzoru</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1052"/>
+      <source>The name of the pattern to use</source>
+      <translation>Nazwa wzoru do użycia</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1053"/>
+      <source>Pattern name</source>
+      <translation>Nazwa wzoru</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1058"/>
+      <source>The scale of the hatch pattern</source>
+      <translation>Skala wzoru kreskowania</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1060"/>
+      <source>Pattern scale</source>
+      <translation>Skala wzoru</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1072"/>
+      <source>Texture repeat interval along U</source>
+      <translation>Interwał powtarzania tekstury wzdłuż U</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1075"/>
+      <source>Texture repeat interval along V</source>
+      <translation>Interwał powtarzania tekstury wzdłuż V</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1086"/>
+      <source>Note: In Monolithic mode, dimensions control the repeat interval of the optional surface texture.</source>
+      <translation>Uwaga: W trybie monolitycznym wymiary kontrolują interwał powtarzania opcjonalnej tekstury powierzchni.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1097"/>
+      <source>An image file to map onto each tile or substrate</source>
+      <translation>Plik obrazu nakładany na każdą płytkę lub podłoże</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1104"/>
+      <source>Texture image</source>
+      <translation>Obraz tekstury</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1111"/>
+      <source>Horizontal texture multiplier</source>
+      <translation>Poziomy mnożnik tekstury</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1115"/>
+      <source>Vertical texture multiplier</source>
+      <translation>Pionowy mnożnik tekstury</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1118"/>
+      <source>Texture scale</source>
+      <translation>Skala tekstury</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1165"/>
+      <source>Select Texture</source>
+      <translation>Wybierz teksturę</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1174"/>
+      <source>Select Pattern</source>
+      <translation>Wybierz wzór</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1390"/>
+      <source>Could not resolve base geometry.</source>
+      <translation>Nie można rozwiązać geometrii bazowej.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1589"/>
+      <source>%1 pick tile origin</source>
+      <translation>%1 wybierz punkt bazowy płytki</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1593"/>
+      <source>%1 rotate tile CW / Shift+%1 rotate tile CCW</source>
+      <translation>%1 obróć płytkę zgodnie z ruchem wskazówek zegara / Shift+%1 obróć przeciwnie</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1601"/>
+      <source>%1 pick new base face or object</source>
+      <translation>%1 wybierz nową ścianę bazową lub obiekt</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1605"/>
+      <source>%1+%2 add face or object</source>
+      <translation>%1+%2 dodaj ścianę lub obiekt</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1612"/>
+      <source>%1 pick planar face or object</source>
+      <translation>%1 wybierz płaską ścianę lub obiekt</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1616"/>
+      <source>%1+%2 add planar face or object</source>
+      <translation>%1+%2 dodaj płaską ścianę lub obiekt</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="658"/>
@@ -5665,6 +5510,12 @@ Wymagany jest moduł Python ladybug lub pysolar.</translation>
       <location filename="../../bimcommands/BimPanel.py" line="145"/>
       <source>Create Panel</source>
       <translation>Utwórz panel</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimPanel.py" line="126"/>
+      <location filename="../../bimcommands/BimProfile.py" line="76"/>
+      <source>%1 pick point</source>
+      <translation>%1 wybierz punkt</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="197"/>
@@ -5692,7 +5543,7 @@ Wymagany jest moduł Python ladybug lub pysolar.</translation>
       <translation>Błąd obliczania kształtu</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="2008"/>
+      <location filename="../../ArchStructure.py" line="1994"/>
       <location filename="../../ArchPanel.py" line="563"/>
       <source>Could not compute a shape</source>
       <translation>Nie można obliczyć kształtu</translation>
@@ -5743,8 +5594,8 @@ Wymagany jest moduł Python ladybug lub pysolar.</translation>
       <translation>Ściana kurtynowa</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="59"/>
       <location filename="../../bimcommands/BimTruss.py" line="58"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="59"/>
       <source>Select only one base object or none</source>
       <translation>Wybierz tylko jeden obiekt bazowy lub żaden</translation>
     </message>
@@ -5922,6 +5773,15 @@ Wymagany jest moduł Python ladybug lub pysolar.</translation>
       <location filename="../../ArchReport.py" line="1048"/>
       <source>SQL Query:</source>
       <translation>Zapytanie SQL:</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1050"/>
+      <location filename="../../ArchReport.py" line="1872"/>
+      <location filename="../../ArchSql.py" line="2255"/>
+      <location filename="../../ArchSql.py" line="2282"/>
+      <location filename="../../ArchSql.py" line="2304"/>
+      <source>Ready</source>
+      <translation>Gotowe</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1078"/>
@@ -6277,7 +6137,7 @@ Wymagany jest moduł Python ladybug lub pysolar.</translation>
       <translation>FreeCAD nie mógł otworzyć pliku. Sprawdź, czy masz skonfigurowany domyślny edytor tekstu w systemie operacyjnym.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2475"/>
+      <location filename="../../ArchReport.py" line="2468"/>
       <source>BIM SQL Cheatsheet</source>
       <translation>Ściągawka SQL BIM</translation>
     </message>
@@ -6384,6 +6244,18 @@ Wymagany jest moduł Python ladybug lub pysolar.</translation>
       <translation>Nie można pobrać wartości z obiektu</translation>
     </message>
     <message>
+      <location filename="../../ArchSchedule.py" line="987"/>
+      <location filename="../../ArchSchedule.py" line="1011"/>
+      <source>Operation</source>
+      <translation>Operacja</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSchedule.py" line="936"/>
+      <location filename="../../ArchCommands.py" line="1454"/>
+      <source>Export CSV File</source>
+      <translation>Eksportuj plik CSV</translation>
+    </message>
+    <message>
       <location filename="../../ArchSchedule.py" line="771"/>
       <source>Remove Spreadsheet</source>
       <translation>Usuń arkusz kalkulacyjny</translation>
@@ -6397,18 +6269,6 @@ Wymagany jest moduł Python ladybug lub pysolar.</translation>
       <location filename="../../ArchSchedule.py" line="899"/>
       <source>Import CSV File</source>
       <translation>Importuj plik CSV</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSchedule.py" line="987"/>
-      <location filename="../../ArchSchedule.py" line="1011"/>
-      <source>Operation</source>
-      <translation>Operacja</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="1454"/>
-      <location filename="../../ArchSchedule.py" line="936"/>
-      <source>Export CSV File</source>
-      <translation>Eksportuj plik CSV</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="963"/>
@@ -6427,18 +6287,18 @@ Wymagany jest moduł Python ladybug lub pysolar.</translation>
       <translation>Obiekt nie posiada ustawialnych atrybutów IFC</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2540"/>
-      <location filename="../../ArchCommands.py" line="1731"/>
       <location filename="../../ArchSchedule.py" line="988"/>
       <location filename="../../ArchSchedule.py" line="1013"/>
+      <location filename="../../ArchCommands.py" line="1731"/>
+      <location filename="../../ArchComponent.py" line="2540"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="477"/>
       <source>Value</source>
       <translation>Wartość</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1732"/>
       <location filename="../../ArchSchedule.py" line="989"/>
       <location filename="../../ArchSchedule.py" line="1015"/>
+      <location filename="../../ArchCommands.py" line="1732"/>
       <source>Unit</source>
       <translation>Jednostka</translation>
     </message>
@@ -6494,8 +6354,8 @@ Tworzenie piętra zostało przerwane.</translation>
       <translation>Odległość</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1005"/>
       <location filename="../../ArchRoof.py" line="1081"/>
+      <location filename="../../ArchAxis.py" line="1005"/>
       <source>Angle</source>
       <translation>Kąt</translation>
     </message>
@@ -6530,13 +6390,13 @@ Tworzenie piętra zostało przerwane.</translation>
       <translation>ma nieprawidłowy kształt</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1171"/>
       <location filename="../../ArchPrecast.py" line="192"/>
       <location filename="../../ArchPrecast.py" line="324"/>
       <location filename="../../ArchPrecast.py" line="444"/>
       <location filename="../../ArchPrecast.py" line="605"/>
       <location filename="../../ArchPrecast.py" line="773"/>
       <location filename="../../ArchPrecast.py" line="894"/>
+      <location filename="../../ArchComponent.py" line="1171"/>
       <source>has a null shape</source>
       <translation>ma kształt zerowy</translation>
     </message>
@@ -6568,6 +6428,155 @@ Tworzenie piętra zostało przerwane.</translation>
       <translation>Zły typ bazy</translation>
     </message>
     <message>
+      <location filename="../../ArchSite.py" line="1053"/>
+      <source>Solar Diagrams</source>
+      <translation>Diagramy słoneczne</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1057"/>
+      <source>Location</source>
+      <translation>Umiejscowienie</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1072"/>
+      <source>The latitude of this site in decimal degrees.
+Positive values are north of the Equator, negative values are south.</source>
+      <translation>Szerokość geograficzna tej lokalizacji w stopniach dziesiętnych.
+Wartości dodatnie są na północ od równika, ujemne na południe.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1073"/>
+      <source>Latitude</source>
+      <translation>Szerokość geograficzna</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1087"/>
+      <source>The longitude of this site in decimal degrees.
+Positive values are east of the Prime Meridian, negative values are west.</source>
+      <translation>Długość geograficzna tej lokalizacji w stopniach dziesiętnych.
+Wartości dodatnie są na wschód od południka zerowego, ujemne na zachód.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1088"/>
+      <source>Longitude</source>
+      <translation>Długość geograficzna</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1100"/>
+      <source>The UTC offset of the time zone where this site is located.
+Used when calculating the sun position.</source>
+      <translation>Przesunięcie UTC strefy czasowej, w której znajduje się ta lokalizacja.
+Używane przy obliczaniu pozycji słońca.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1101"/>
+      <source>Time zone</source>
+      <translation>Strefa czasowa</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1118"/>
+      <source>The angle between the model's north and geographic north.
+Drives the compass orientation and the declination used to
+align the solar diagram and sun path.</source>
+      <translation>Kąt między północą modelu a północą geograficzną.
+Określa orientację kompasu i deklinację używaną do
+wyrównania diagramu słonecznego i ścieżki słońca.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1119"/>
+      <source>North offset</source>
+      <translation>Odsunięcie północy</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1123"/>
+      <source>Diagrams</source>
+      <translation>Diagramy</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1126"/>
+      <source>Solar Diagram</source>
+      <translation>Diagram słoneczny</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1136"/>
+      <source>Shows a sun path arc diagram projected onto the site,
+computed from the site's latitude, longitude and north offset.</source>
+      <translation>Pokazuje diagram łuku ścieżki słońca rzutowany na lokalizację,
+obliczony na podstawie szerokości, długości geograficznej i odsunięcia północy.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1139"/>
+      <source>Compass</source>
+      <translation>Kompas</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1147"/>
+      <source>Shows a compass rose overlay on the site,
+oriented according to the north offset.</source>
+      <translation>Pokazuje nałożenie różY kompasu na lokalizację,
+zorientowanej zgodnie z odsunięciem północy.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1153"/>
+      <source>Sun Position</source>
+      <translation>Pozycja słońca</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1164"/>
+      <source>Shows a sphere and ray indicating the sun position
+for the selected date and time.</source>
+      <translation>Pokazuje sferę i promień wskazujący pozycję słońca
+dla wybranej daty i godziny.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1184"/>
+      <source>The day and month for which the sun position is shown.
+The year is ignored.</source>
+      <translation>Dzień i miesiąc, dla których pokazywana jest pozycja słońca.
+Rok jest ignorowany.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1185"/>
+      <source>Date</source>
+      <translation>Data</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1196"/>
+      <source>The time of day for which the sun position is shown,
+in 24-hour local time. Steps in half-hour increments.</source>
+      <translation>Pora dnia, dla której pokazywana jest pozycja słońca,
+w lokalnym czasie 24-godzinnym. Kroki co pół godziny.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1209"/>
+      <source>Hour</source>
+      <translation>Godzina</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1214"/>
+      <source>Show Hour Labels</source>
+      <translation>Pokaż etykiety godzin</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1220"/>
+      <source>Shows text labels at key hours along the sun path arc</source>
+      <translation>Pokazuje etykiety tekstowe w kluczowych godzinach wzdłuż łuku ścieżki słońca</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1233"/>
+      <source>Solar calculations require the ladybug or pysolar Python module,
+which was not found.</source>
+      <translation>Obliczenia słoneczne wymagają modułu Python ladybug lub pysolar,
+którego nie znaleziono.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1243"/>
+      <source>Solar calculations unavailable.
+The ladybug or pysolar Python module is required.</source>
+      <translation>Obliczenia słoneczne niedostępne.
+Wymagany jest moduł Python ladybug lub pysolar.</translation>
+    </message>
+    <message>
       <location filename="../../ArchSite.py" line="1594"/>
       <location filename="../../ArchComponent.py" line="1978"/>
       <source>Toggle Subcomponents</source>
@@ -6579,17 +6588,10 @@ Tworzenie piętra zostało przerwane.</translation>
       <translation>Zamykanie edycji szkicu</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2462"/>
       <location filename="../../ArchCommands.py" line="315"/>
+      <location filename="../../ArchComponent.py" line="2462"/>
       <source>Component</source>
       <translation>Komponent</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="2132"/>
-      <location filename="../../bimcommands/BimRoof.py" line="91"/>
-      <location filename="../../bimcommands/BimSpace.py" line="68"/>
-      <source>Select a base object</source>
-      <translation>Wybierz obiekt bazowy</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1435"/>
@@ -6619,6 +6621,13 @@ Wartości powierzchni zostaną zresetowane do 0.
 </source>
       <translation>Wystąpił błąd podczas obliczania powierzchni dla {self.obj.Label}: nie można połączyć rzutowanych płaszczyzn poziomych. Wartości powierzchni zostaną zresetowane do 0.
 </translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="2132"/>
+      <location filename="../../bimcommands/BimRoof.py" line="91"/>
+      <location filename="../../bimcommands/BimSpace.py" line="68"/>
+      <source>Select a base object</source>
+      <translation>Wybierz obiekt bazowy</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2466"/>
@@ -6821,7 +6830,7 @@ Wartości powierzchni zostaną zresetowane do 0.
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="530"/>
-      <location filename="../../ArchWall.py" line="1873"/>
+      <location filename="../../ArchWall.py" line="1837"/>
       <location filename="../../bimcommands/BimWall.py" line="527"/>
       <source>Center</source>
       <translation>Środek</translation>
@@ -6832,8 +6841,8 @@ Wartości powierzchni zostaną zresetowane do 0.
       <translation>Wyśrodkuje płaszczyznę na obiektach znajdujących się powyżej</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="232"/>
       <location filename="../../ArchBuilding.py" line="214"/>
+      <location filename="../../Arch.py" line="232"/>
       <source>Building</source>
       <translation>Budynek</translation>
     </message>
@@ -6974,19 +6983,19 @@ Utwórz kilka, aby zdefiniować typy ścian.</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="837"/>
-      <location filename="../../ArchWall.py" line="1893"/>
+      <location filename="../../ArchWall.py" line="1860"/>
       <location filename="../../bimcommands/BimWall.py" line="525"/>
       <source>Alignment</source>
       <translation>Wyśrodkowane</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1872"/>
+      <location filename="../../ArchWall.py" line="1836"/>
       <location filename="../../bimcommands/BimWall.py" line="527"/>
       <source>Left</source>
       <translation>W lewo</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1874"/>
+      <location filename="../../ArchWall.py" line="1838"/>
       <location filename="../../bimcommands/BimWall.py" line="528"/>
       <source>Right</source>
       <translation>W prawo</translation>
@@ -6998,12 +7007,12 @@ Utwórz kilka, aby zdefiniować typy ścian.</translation>
       <translation>Połącz ściany</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1661"/>
+      <location filename="../../ArchWall.py" line="1615"/>
       <source>Cannot compute blocks for wall</source>
       <translation>Nie można obliczyć bloków dla ściany</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="749"/>
+      <location filename="../../ArchWall.py" line="720"/>
       <source>Error: Unable to modify the base object of this wall</source>
       <translation>Błąd: Nie można zmodyfikować obiektu podstawowego tej ściany</translation>
     </message>
@@ -7013,18 +7022,18 @@ Utwórz kilka, aby zdefiniować typy ścian.</translation>
       <translation>Nie można utworzyć ani zaktualizować {obj.Label}, ponieważ jego długość, wysokość lub szerokość wynosi zero i nie ma brył w jego dodaniach</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1474"/>
+      <location filename="../../ArchWall.py" line="1428"/>
       <source>No supported edges in Base object of {obj.Label} (line, circle, arc, ellipse)</source>
       <translation>W obiekcie bazowym {obj.Label} nie ma obsługiwanych krawędzi (linia, okrąg, łuk, elipsa)</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1848"/>
+      <location filename="../../ArchWall.py" line="1802"/>
       <location filename="../../bimcommands/BimWall.py" line="478"/>
       <source>Wall Options</source>
       <translation>Opcje ściany</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="2115"/>
+      <location filename="../../ArchWall.py" line="2082"/>
       <source>Flip Direction</source>
       <translation>Odwróć kierunek</translation>
     </message>
@@ -7238,6 +7247,22 @@ Anuluj tworzenie arkusza kalkulacyjnego dla obiektu:</translation>
       <translation>Zapisz widok kamery</translation>
     </message>
     <message>
+      <location filename="../../ArchBuildingPart.py" line="1183"/>
+      <source>New Group</source>
+      <translation>Nowa grupa</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="1187"/>
+      <location filename="../../ArchMaterial.py" line="100"/>
+      <source>Reorder Children Alphabetically</source>
+      <translation>Zmień kolejność podrzędnych alfabetycznie</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="1191"/>
+      <source>Clone Level Up</source>
+      <translation>Sklonuj poziom wyżej</translation>
+    </message>
+    <message>
       <location filename="../../ArchBuildingPart.py" line="1219"/>
       <source>Active working plane set to Top</source>
       <translation>Aktywna płaszczyzna robocza ustawiona na Góra</translation>
@@ -7248,20 +7273,54 @@ Anuluj tworzenie arkusza kalkulacyjnego dla obiektu:</translation>
       <translation>Aktywna płaszczyzna robocza ustawiona na {self.Object.Label}</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1183"/>
-      <source>New Group</source>
-      <translation>Nowa grupa</translation>
+      <location filename="../../ArchEquipment.py" line="64"/>
+      <source>Model</source>
+      <translation>Model</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="100"/>
-      <location filename="../../ArchBuildingPart.py" line="1187"/>
-      <source>Reorder Children Alphabetically</source>
-      <translation>Zmień kolejność podrzędnych alfabetycznie</translation>
+      <location filename="../../ArchEquipment.py" line="65"/>
+      <source>Equipment Power</source>
+      <translation>Moc wyposażenia</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1191"/>
-      <source>Clone Level Up</source>
-      <translation>Sklonuj poziom wyżej</translation>
+      <location filename="../../ArchCurtainWall.py" line="725"/>
+      <source>Vertical Sections</source>
+      <translation>Sekcje pionowe</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="726"/>
+      <source>Horizontal Sections</source>
+      <translation>Sekcje poziome</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="727"/>
+      <source>Vertical Mullion Width</source>
+      <translation>Szerokość słupka pionowego</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="730"/>
+      <source>Vertical Mullion Height</source>
+      <translation>Wysokość słupka pionowego</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="734"/>
+      <source>Horizontal Mullion Width</source>
+      <translation>Szerokość słupka poziomego</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="738"/>
+      <source>Horizontal Mullion Height</source>
+      <translation>Wysokość słupka poziomego</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="740"/>
+      <source>Panel Thickness</source>
+      <translation>Grubość panelu</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="741"/>
+      <source>Refine</source>
+      <translation>Ulepsz</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="414"/>
@@ -7335,15 +7394,6 @@ Odsunięcie zostało pominięte.</translation>
       <translation>Otwór jest większy niż zmniejszony obszar. Ten otwór zostanie pominięty.</translation>
     </message>
     <message>
-      <location filename="../../ArchSql.py" line="2255"/>
-      <location filename="../../ArchSql.py" line="2282"/>
-      <location filename="../../ArchSql.py" line="2304"/>
-      <location filename="../../ArchReport.py" line="1050"/>
-      <location filename="../../ArchReport.py" line="1872"/>
-      <source>Ready</source>
-      <translation>Gotowe</translation>
-    </message>
-    <message>
       <location filename="../../ArchSql.py" line="2312"/>
       <source>Typing…</source>
       <translation>Wpisywanie…</translation>
@@ -7354,56 +7404,6 @@ Odsunięcie zostało pominięte.</translation>
       <translation>Zapytanie jest prawidłowe, ale znaleziono 0 obiektów.</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="64"/>
-      <source>Model</source>
-      <translation>Model</translation>
-    </message>
-    <message>
-      <location filename="../../ArchEquipment.py" line="65"/>
-      <source>Equipment Power</source>
-      <translation>Moc wyposażenia</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="732"/>
-      <source>Vertical Sections</source>
-      <translation>Sekcje pionowe</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="733"/>
-      <source>Horizontal Sections</source>
-      <translation>Sekcje poziome</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="734"/>
-      <source>Vertical Mullion Width</source>
-      <translation>Szerokość słupka pionowego</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="737"/>
-      <source>Vertical Mullion Height</source>
-      <translation>Wysokość słupka pionowego</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="741"/>
-      <source>Horizontal Mullion Width</source>
-      <translation>Szerokość słupka poziomego</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="745"/>
-      <source>Horizontal Mullion Height</source>
-      <translation>Wysokość słupka poziomego</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="747"/>
-      <source>Panel Thickness</source>
-      <translation>Grubość panelu</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="748"/>
-      <source>Refine</source>
-      <translation>Ulepsz</translation>
-    </message>
-    <message>
       <location filename="../../bimcommands/BimSketch.py" line="54"/>
       <source>Create Sketch</source>
       <translation>Utwórz szkic</translation>
@@ -7412,12 +7412,12 @@ Odsunięcie zostało pominięte.</translation>
   <context>
     <name>Arch_StructuresFromSelection</name>
     <message>
-      <location filename="../../ArchStructure.py" line="99"/>
+      <location filename="../../ArchStructure.py" line="100"/>
       <source>Multiple Structures</source>
       <translation>Wiele konstrukcji</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="103"/>
+      <location filename="../../ArchStructure.py" line="104"/>
       <source>Creates multiple BIM Structures from a selected base, using each selected edge as an extrusion path</source>
       <translation>Tworzy wiele konstrukcji BIM z wybranej bazy, używając każdej wybranej krawędzi jako ścieżki wyciągnięcia</translation>
     </message>
@@ -7425,12 +7425,12 @@ Odsunięcie zostało pominięte.</translation>
   <context>
     <name>Arch_StructuralSystem</name>
     <message>
-      <location filename="../../ArchStructure.py" line="166"/>
+      <location filename="../../ArchStructure.py" line="167"/>
       <source>Structural System</source>
       <translation>Układ konstrukcyjny</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="170"/>
+      <location filename="../../ArchStructure.py" line="171"/>
       <source>Create a structural system from a selected structure and axis</source>
       <translation>Utwórz obiekt Układu konstrukcyjnego z wybranej konstrukcji i osi</translation>
     </message>
@@ -7438,148 +7438,150 @@ Odsunięcie zostało pominięte.</translation>
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../ArchStructure.py" line="683"/>
-      <location filename="../../ArchStructure.py" line="1885"/>
+      <location filename="../../ArchStructure.py" line="684"/>
+      <location filename="../../ArchStructure.py" line="1871"/>
       <source>An optional extrusion path for this element</source>
       <translation>Opcjonalna ścieżka wyciągnięcia dla tego elementu</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="691"/>
+      <location filename="../../ArchStructure.py" line="692"/>
       <source>The computed length of the extrusion path</source>
       <translation>Obliczona długość ścieżki wyciągnięcia</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="703"/>
+      <location filename="../../ArchStructure.py" line="704"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim)</source>
       <translation>Rozpocznij odległość odsunięcia wzdłuż ścieżki wyciągnięcia (dodatnie: wydłuż, ujemne: przytnij)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="714"/>
+      <location filename="../../ArchStructure.py" line="715"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim)</source>
       <translation>Zakończ odległość odsunięcia wzdłuż ścieżki wyciągnięcia (dodatnie: wydłuż, ujemne: przytnij)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="725"/>
+      <location filename="../../ArchStructure.py" line="726"/>
       <source>Automatically align the Base of the Structure perpendicular to the Tool axis</source>
       <translation>Wyrównaj automatycznie podstawę konstrukcji prostopadle do osi narzędzia</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="736"/>
+      <location filename="../../ArchStructure.py" line="737"/>
       <source>X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
       <translation>Odsunięcie w kierunku X pomiędzy punktem bazowym i osią narzędzia (używane wyłącznie, gdy parametr BasePerpendicularToTool ma wartość Prawda)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="747"/>
+      <location filename="../../ArchStructure.py" line="748"/>
       <source>Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
       <translation>Przesunięcie w kierunku Y pomiędzy punktem bazowym i osią narzędzia (używane wyłącznie, gdy parametr BasePerpendicularToTool ma wartość Prawda)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="758"/>
+      <location filename="../../ArchStructure.py" line="759"/>
       <source>Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</source>
       <translation>Odbicie lustrzane bazy wzdłuż jej osi Y (używane tylko jeśli parametr BasePerpendicularToTool ma wartość Prawda)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="769"/>
+      <location filename="../../ArchStructure.py" line="770"/>
       <source>Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</source>
       <translation>Obrót bazy wokół osi narzędzia (używany, tylko jeśli parametr BasePerpendicularToTool ma wartość Prawda)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="779"/>
+      <location filename="../../ArchStructure.py" line="780"/>
       <location filename="../../ArchPanel.py" line="85"/>
       <source>The length of this element, if not based on a profile</source>
       <translation>Długość tego elementu, jeśli nie jest oparta na profilu</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="789"/>
+      <location filename="../../ArchStructure.py" line="790"/>
       <location filename="../../ArchPanel.py" line="95"/>
       <source>The width of this element, if not based on a profile</source>
       <translation>Szerokość tego elementu, jeśli nie jest oparta na profilu</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="800"/>
-      <source>The height or extrusion depth of this element. Keep 0 for automatic</source>
-      <translation>Wysokość lub głębokość wyciągnięcia tego elementu. Zostaw 0 dla automatycznej wartości</translation>
+      <location filename="../../ArchStructure.py" line="801"/>
+      <source>The height or extrusion depth of this element.
+Keep 0 to automatically match the height of the enclosing Level or Building.</source>
+      <translation type="unfinished">The height or extrusion depth of this element.
+Keep 0 to automatically match the height of the enclosing Level or Building.</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="811"/>
-      <location filename="../../ArchWall.py" line="272"/>
+      <location filename="../../ArchStructure.py" line="812"/>
       <location filename="../../ArchPanel.py" line="209"/>
+      <location filename="../../ArchWall.py" line="272"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
       <translation>Kierunek normalny wyciągnięcia tego obiektu (zostaw (0,0,0) dla automatycznego kierunku normalnego)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="819"/>
+      <location filename="../../ArchStructure.py" line="820"/>
       <location filename="../../ArchPrecast.py" line="101"/>
       <source>The structural nodes of this element</source>
       <translation>Węzły konstrukcyjne tego elementu</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="830"/>
+      <location filename="../../ArchStructure.py" line="831"/>
       <source>A description of the standard profile this element is based upon</source>
       <translation>Opis standardowego profilu, na ktorym ten element jest oparty</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="840"/>
+      <location filename="../../ArchStructure.py" line="841"/>
       <source>Offset distance between the centerline and the nodes line</source>
       <translation>Odległość odsunięcia między linią środkową a linią węzłów</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="850"/>
+      <location filename="../../ArchStructure.py" line="851"/>
       <location filename="../../ArchPanel.py" line="197"/>
       <source>The facemaker type to use to build the profile of this object</source>
       <translation>Typ kreatora ścian używany do utworzenia profilu tego obiektu</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="874"/>
-      <location filename="../../ArchStructure.py" line="891"/>
+      <location filename="../../ArchStructure.py" line="875"/>
+      <location filename="../../ArchStructure.py" line="892"/>
       <source>Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this BIM Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</source>
       <translation>Wybrano krawędzie (lub grupę krawędzi) bazowego Szkicu Architektonicznego, aby użyć ich do tworzenia kształtu tej konstrukcji BIM (zamiast używać domyślnie wszystkich krawędzi kształtu podstawowego). Dane wejściowe to numery indeksów krawędzi lub grup.</translation>
     </message>
     <message>
+      <location filename="../../ArchStructure.py" line="904"/>
       <location filename="../../ArchStairs.py" line="547"/>
-      <location filename="../../ArchStructure.py" line="903"/>
       <source>Select User Defined PropertySet to use in creating variant shape, with same ArchSketch </source>
       <translation>Wybierz zestaw właściwości zdefiniowany przez użytkownika, który ma zostać użyty przy tworzeniu kształtu wariantowego z tym samym ArchSketch 
 
 Wybierz właściwość użytkownika PropertySet do użycia przy tworzeniu wariantu kształtu, z tym samym obiektem ArchSketch </translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1452"/>
+      <location filename="../../ArchStructure.py" line="1438"/>
       <source>If the nodes are visible or not</source>
       <translation>Jeśli węzły są widoczne lub nie</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1460"/>
+      <location filename="../../ArchStructure.py" line="1446"/>
       <source>The width of the nodes line</source>
       <translation>Szerokość linii węzłów</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1468"/>
+      <location filename="../../ArchStructure.py" line="1454"/>
       <source>The size of the node points</source>
       <translation>Rozmiar punktów węzła</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1477"/>
+      <location filename="../../ArchStructure.py" line="1463"/>
       <source>The color of the nodes line</source>
       <translation>Kolor linii węzłów</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1486"/>
+      <location filename="../../ArchStructure.py" line="1472"/>
       <source>The type of structural node</source>
       <translation>Typ węzła strukturalnego</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1932"/>
+      <location filename="../../ArchStructure.py" line="1918"/>
       <source>Axes systems this structure is built on</source>
       <translation>Systemy osi, na których zbudowana jest ta struktura</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1942"/>
+      <location filename="../../ArchStructure.py" line="1928"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation>Numery elementów do wykluczenia, gdy konstrukcja oparta jest na osiach</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1949"/>
+      <location filename="../../ArchStructure.py" line="1935"/>
       <source>If true the element are aligned with axes</source>
       <translation>Jeśli to prawda, element jest wyrównany z osiami</translation>
     </message>
@@ -7610,15 +7612,15 @@ Wybierz właściwość użytkownika PropertySet do użycia przy tworzeniu warian
       <translation>Zapotrzebowanie na moc elektryczną osprzętu w Watach [W]</translation>
     </message>
     <message>
+      <location filename="../../ArchBuilding.py" line="308"/>
       <location filename="../../Arch.py" line="235"/>
       <location filename="../../Arch.py" line="317"/>
-      <location filename="../../ArchBuilding.py" line="308"/>
       <source>The type of this building</source>
       <translation>Typ tego budynku</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="236"/>
       <location filename="../../ArchBuildingPart.py" line="230"/>
+      <location filename="../../ArchFloor.py" line="236"/>
       <source>The height of this object</source>
       <translation>Wysokość tego obiektu</translation>
     </message>
@@ -7634,20 +7636,20 @@ jeśli wysokość tych obiektów jest ustawiona na 0</translation>
       <translation>Poziom koty (0,0,0) tej kondygnacji</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="244"/>
       <location filename="../../ArchBuildingPart.py" line="258"/>
+      <location filename="../../ArchFloor.py" line="244"/>
       <source>The computed floor area of this floor</source>
       <translation>Obliczona powierzchnia rzutu tego piętra</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="250"/>
       <location filename="../../ArchBuildingPart.py" line="266"/>
+      <location filename="../../ArchComponent.py" line="250"/>
       <source>An optional description for this component</source>
       <translation>Opcjonalny opis dla tego elementu</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="258"/>
       <location filename="../../ArchBuildingPart.py" line="274"/>
+      <location filename="../../ArchComponent.py" line="258"/>
       <source>An optional tag for this component</source>
       <translation>Opcjonalny znacznik dla tego elementu</translation>
     </message>
@@ -9007,122 +9009,122 @@ Ostrzeżenie: nie jest tolerancyjne na błąd względem nazewnictwa topologiczne
       <translation>Włącza / wyłącza wyświetlanie tekstury słojów drewna</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="104"/>
+      <location filename="../../ArchCurtainWall.py" line="105"/>
       <source>An optional host object for this curtain wall</source>
       <translation>Opcjonalny obiekt hosta dla tej ściany osłonowej</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="114"/>
+      <location filename="../../ArchCurtainWall.py" line="115"/>
       <source>The height of the curtain wall, if based on an edge</source>
       <translation>Wysokość ściany osłonowej, jeśli opiera się na krawędzi</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="123"/>
+      <location filename="../../ArchCurtainWall.py" line="124"/>
       <source>The number of vertical mullions</source>
       <translation>Liczba szprosów pionowych</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="135"/>
+      <location filename="../../ArchCurtainWall.py" line="136"/>
       <source>If the profile of the vertical mullions get aligned with the surface or not</source>
       <translation>Czy profil szprosów pionowych jest wyrównany z powierzchnią czy nie</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="145"/>
+      <location filename="../../ArchCurtainWall.py" line="146"/>
       <source>The number of vertical sections of this curtain wall</source>
       <translation>Liczba pionowych sekcji ściany osłonowej</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="161"/>
+      <location filename="../../ArchCurtainWall.py" line="162"/>
       <source>The height of the vertical mullions profile, if no profile is used</source>
       <translation>Wysokość profilu szprosów pionowych, jeśli nie jest używany żaden profil</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="173"/>
+      <location filename="../../ArchCurtainWall.py" line="174"/>
       <source>The width of the vertical mullions profile, if no profile is used</source>
       <translation>Szerokość profilu szprosów pionowych, jeśli żaden profil nie jest używany</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="185"/>
+      <location filename="../../ArchCurtainWall.py" line="186"/>
       <source>A profile for vertical mullions (disables vertical mullion size)</source>
       <translation>Profil dla szprosów pionowych (wyłącza rozmiar szprosów pionowych)</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="193"/>
+      <location filename="../../ArchCurtainWall.py" line="194"/>
       <source>The number of horizontal mullions</source>
       <translation>Liczba szprosów poziomych</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="205"/>
+      <location filename="../../ArchCurtainWall.py" line="206"/>
       <source>If the profile of the horizontal mullions gets aligned with the surface or not</source>
       <translation>Czy profil szprosów poziomych jest wyrównany z powierzchnią czy nie</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="215"/>
+      <location filename="../../ArchCurtainWall.py" line="216"/>
       <source>The number of horizontal sections of this curtain wall</source>
       <translation>Liczba sekcji poziomych ściany kurtynowej</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="231"/>
+      <location filename="../../ArchCurtainWall.py" line="232"/>
       <source>The height of the horizontal mullions profile, if no profile is used</source>
       <translation>Wysokość profilu szprosów poziomych, jeśli nie jest używany żaden profil</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="243"/>
+      <location filename="../../ArchCurtainWall.py" line="244"/>
       <source>The width of the horizontal mullions profile, if no profile is used</source>
       <translation>Szerokość profilu szprosów poziomych, jeśli nie jest używany żaden profil</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="255"/>
+      <location filename="../../ArchCurtainWall.py" line="256"/>
       <source>A profile for horizontal mullions (disables horizontal mullion size)</source>
       <translation>Profil dla szprosów poziomych (wyłącza rozmiar szprosów poziomych)</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="263"/>
+      <location filename="../../ArchCurtainWall.py" line="264"/>
       <source>The number of diagonal mullions</source>
       <translation>Liczba szprosów poziomych</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="275"/>
+      <location filename="../../ArchCurtainWall.py" line="276"/>
       <source>The size of the diagonal mullions, if any, if no profile is used</source>
       <translation>Rozmiar szprosów ukośnych, jeśli występują, w przypadku gdy nie jest stosowany profil</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="287"/>
+      <location filename="../../ArchCurtainWall.py" line="288"/>
       <source>A profile for diagonal mullions, if any (disables horizontal mullion size)</source>
       <translation>Profil dla szprosów ukośnych, jeśli istnieje (wyłącza rozmiar szprosów poziomych)</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="295"/>
+      <location filename="../../ArchCurtainWall.py" line="296"/>
       <source>The number of panels</source>
       <translation>Liczba paneli</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="304"/>
+      <location filename="../../ArchCurtainWall.py" line="305"/>
       <source>The thickness of the panels</source>
       <translation>Grubość paneli</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="313"/>
+      <location filename="../../ArchCurtainWall.py" line="314"/>
       <source>Swaps horizontal and vertical lines</source>
       <translation>Zamienia linie poziome i pionowe</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="323"/>
+      <location filename="../../ArchCurtainWall.py" line="324"/>
       <source>Perform subtractions between components so none overlap</source>
       <translation>Wykonaj odejmowanie pomiędzy komponentami tak, aby żaden z nich nie nakładał się na siebie</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="331"/>
+      <location filename="../../ArchCurtainWall.py" line="332"/>
       <source>Centers the profile over the edges or not</source>
       <translation>Wyśrodkowuje profil na krawędziach lub nie</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="343"/>
+      <location filename="../../ArchCurtainWall.py" line="344"/>
       <source>The vertical direction reference to be used by this object to deduce vertical/horizontal directions. Keep it close to the actual vertical direction of your curtain wall</source>
       <translation>Odniesienie kierunku pionowego, które ma być używane przez ten obiekt do wyznaczania kierunków pionowych i poziomych. Staraj się, aby był on zbliżony do rzeczywistego kierunku pionowego twojej ściany osłonowej</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="355"/>
+      <location filename="../../ArchCurtainWall.py" line="356"/>
       <source>Input are index numbers of edges of Base ArchSketch/Sketch geometries (in Edit mode).  Selected edges are used to create the shape of this Arch Curtain Wall (instead of using all edges by default).  [ENHANCED by ArchSketch] GUI 'Edit Curtain Wall' Tool is provided in external Add-on ('SketchArch') to let users to select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used. Property is ignored if Base ArchSketch provided the selected edges.</source>
       <translation>Dane wejściowe to indeksy krawędzi geometrii bazowej SzkicArchitektury / Szkic (w trybie edycji). Wybrane krawędzie są używane do tworzenia kształtu tej ściany kurtynowej (zamiast domyślnego używania wszystkich krawędzi).
   [ULEPSZENIE przez ArchSketch] 
@@ -9614,8 +9616,12 @@ obiekty bez brył też będą cięte, z możliwością pojawienia się błędów
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="570"/>
-      <source>The text to show. Use $area, $label, $longname, $description or any other property name preceded with $ (case insensitive), or $floor, $walls, $ceiling for finishes, to insert the respective data</source>
-      <translation>Tekst do pokazania. Użyj $area, $label, $longname, $description lub innej nazwy właściwości poprzedzonej $ (wielkość liter nie ma znaczenia), lub $floor, $walls, $ceiling do wykończeń, aby wprowadzić odpowiednie dane</translation>
+      <source>Template for the space's label text.
+Use $area, $label, $longname, $description or any other property name preceded with $ (case insensitive),
+or $floor, $walls, $ceiling for finishes, to insert the respective data.</source>
+      <translation type="unfinished">Template for the space's label text.
+Use $area, $label, $longname, $description or any other property name preceded with $ (case insensitive),
+or $floor, $walls, $ceiling for finishes, to insert the respective data.</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="588"/>
@@ -9653,11 +9659,6 @@ obiekty bez brył też będą cięte, z możliwością pojawienia się błędów
       <translation>Pokaż symbol jednostki</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="238"/>
-      <source>The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid</source>
-      <translation>Wysokość ściany. Zachowaj 0 dla automatycznej. Nie używane, jeżeli ta ściana opiera się na bryle</translation>
-    </message>
-    <message>
       <location filename="../../ArchWall.py" line="248"/>
       <source>The area of this wall as a simple Height * Length calculation</source>
       <translation>Powierzchnia tej ściany jako prosta kalkulacja wysokość * długość</translation>
@@ -9666,17 +9667,6 @@ obiekty bez brył też będą cięte, z możliwością pojawienia się błędów
       <location filename="../../ArchWall.py" line="282"/>
       <source>The face number of the base object used to build this wall</source>
       <translation>Numer ścianki bazowego obiektu użytego do zbudowania tej ściany</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="192"/>
-      <source>The width of this wall. Not used if this wall is based on a face. Disabled and ignored if Base object (ArchSketch) provides the information.</source>
-      <translation>Szerokość tej ściany. Nieużywane, jeśli ściana jest oparta na powierzchni. Wyłączone i ignorowane, jeśli obiekt bazowy (ArchSketch) dostarcza informacji.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="181"/>
-      <source>The length of this wall. Read-only if this wall is not based on an unconstrained sketch with a single edge, or on a Draft Wire with a single edge. Refer to wiki for details how length is deduced.</source>
-      <translation>Długość tej ściany. 
-Tylko do odczytu, jeśli ściana nie jest oparta na niezwiązanym szkicu z pojedynczą krawędzią lub na polilinii z pojedynczą krawędzią. Szczegółowe informacje na temat sposobu obliczania długości można znaleźć na wiki.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="205"/>
@@ -9710,9 +9700,32 @@ Tylko do odczytu, jeśli ściana nie jest oparta na niezwiązanym szkicu z pojed
  Właściwość jest ignorowana, jeśli Baza SzkicArchitektury dostarczyła wybrane krawędzie. </translation>
     </message>
     <message>
+      <location filename="../../ArchWall.py" line="181"/>
+      <source>The length of this wall.
+Editable only if this wall's baseline is a Draft line, an unconstrained sketch with a single line, or none.</source>
+      <translation type="unfinished">The length of this wall.
+Editable only if this wall's baseline is a Draft line, an unconstrained sketch with a single line, or none.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="192"/>
+      <source>The width of this wall.
+Ignored if this wall is based on a solid or a face.</source>
+      <translation type="unfinished">The width of this wall.
+Ignored if this wall is based on a solid or a face.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="238"/>
+      <source>The height of this wall.
+Keep 0 to automatically match the height of the enclosing Level or Building.
+Ignored if this wall is based on a solid.</source>
+      <translation type="unfinished">The height of this wall.
+Keep 0 to automatically match the height of the enclosing Level or Building.
+Ignored if this wall is based on a solid.</translation>
+    </message>
+    <message>
       <location filename="../../ArchWall.py" line="260"/>
-      <source>The alignment of this wall on its base object, if applicable. Disabled and ignored if Base object (ArchSketch) provides the information.</source>
-      <translation>Wyrównanie tej ściany względem obiektu bazowego, jeśli dotyczy. Wyłączone i ignorowane, jeśli obiekt bazowy (ArchSketch) dostarcza informacji.</translation>
+      <source>The alignment of this wall on its base object, if applicable.</source>
+      <translation type="unfinished">The alignment of this wall on its base object, if applicable.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="293"/>
@@ -9777,10 +9790,35 @@ Narzędzie GUI „Edytuj segment ściany” jest dostępne w zewnętrznym dodatk
       <translation>Wybierz zestaw właściwości zdefiniowany przez użytkownika, który ma zostać użyty do utworzenia wariantu kształtu, warstw ściany Arch Wall z tym samym szkicem ArchSketch </translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="862"/>
+      <location filename="../../ArchStructure.py" line="863"/>
       <location filename="../../ArchWall.py" line="381"/>
       <source>Use Base ArchSketch (if used) data (e.g. widths, aligns, offsets) instead of Wall's properties</source>
       <translation>Użyj danych bazowych ArchSketch (jeśli są używane) (np. szerokości, wyrównania, odsunięcia) zamiast właściwości ściany.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="483"/>
+      <source>The list of SQL statements to execute (managed by the Task Panel)</source>
+      <translation>Lista instrukcji SQL do wykonania (zarządzana przez panel zadań)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="493"/>
+      <source>The spreadsheet for the results</source>
+      <translation>Arkusz kalkulacyjny dla wyników</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="502"/>
+      <source>If True, update report when document recomputes</source>
+      <translation>Jeśli Prawda, aktualizuj raport przy przeliczaniu dokumentu</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="530"/>
+      <source>The name of the BIM Report that uses this spreadsheet</source>
+      <translation>Nazwa raportu BIM używającego tego arkusza kalkulacyjnego</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="62"/>
+      <source>Rotation step (degrees) applied per R / Shift+R keypress during interactive grid placement.</source>
+      <translation>Krok obrotu (stopnie) stosowany przy każdym naciśnięciu R / Shift+R podczas interaktywnego umieszczania siatki.</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="104"/>
@@ -9930,41 +9968,16 @@ Narzędzie GUI „Edytuj segment ściany” jest dostępne w zewnętrznym dodatk
       <source>The specific IFC subtype of this covering. Exported as IfcCovering.PredefinedType.</source>
       <translation>Specyficzny podtyp IFC tej okładziny. Eksportowany jako IfcCovering.PredefinedType.</translation>
     </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="62"/>
-      <source>Rotation step (degrees) applied per R / Shift+R keypress during interactive grid placement.</source>
-      <translation>Krok obrotu (stopnie) stosowany przy każdym naciśnięciu R / Shift+R podczas interaktywnego umieszczania siatki.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="483"/>
-      <source>The list of SQL statements to execute (managed by the Task Panel)</source>
-      <translation>Lista instrukcji SQL do wykonania (zarządzana przez panel zadań)</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="493"/>
-      <source>The spreadsheet for the results</source>
-      <translation>Arkusz kalkulacyjny dla wyników</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="502"/>
-      <source>If True, update report when document recomputes</source>
-      <translation>Jeśli Prawda, aktualizuj raport przy przeliczaniu dokumentu</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="530"/>
-      <source>The name of the BIM Report that uses this spreadsheet</source>
-      <translation>Nazwa raportu BIM używającego tego arkusza kalkulacyjnego</translation>
-    </message>
   </context>
   <context>
     <name>Arch_StructureTools</name>
     <message>
-      <location filename="../../ArchStructure.py" line="2070"/>
+      <location filename="../../ArchStructure.py" line="2056"/>
       <source>Structure Tools</source>
       <translation>Narzędzia konstrukcyjne</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="2071"/>
+      <location filename="../../ArchStructure.py" line="2057"/>
       <source>Structure tools</source>
       <translation>Narzędzia konstrukcyjne</translation>
     </message>
@@ -10744,7 +10757,7 @@ Narzędzie GUI „Edytuj segment ściany” jest dostępne w zewnętrznym dodatk
       <translation>Rysunek roboczy</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="859"/>
+      <location filename="../../InitGui.py" line="863"/>
       <source>Import-Export</source>
       <translation>Import — Eksport</translation>
     </message>
@@ -10795,7 +10808,22 @@ Alt+PgUp rozszerz wytłaczanieAlt+PgDown zmniejsz wytłaczanieAlt+/ przełącz m
       <translation>BIM</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="784"/>
+      <location filename="../../InitGui.py" line="683"/>
+      <source>2D Drafting</source>
+      <translation type="unfinished">2D Drafting</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="684"/>
+      <source>3D/BIM Geometry</source>
+      <translation type="unfinished">3D/BIM Geometry</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="685"/>
+      <source>Modify</source>
+      <translation>Zmodyfikuj</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="788"/>
       <source>Snapping</source>
       <translation>Przyciąganie</translation>
     </message>
@@ -10910,15 +10938,15 @@ Upewnij się, że tylko obiekty do porównania w obu dokumentach są widoczne.</
       <translation>Utwórz nowy materiał wielowarstwowy</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="136"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="203"/>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="244"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="203"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="136"/>
       <source>Label</source>
       <translation>Etykieta</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="137"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="204"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="137"/>
       <source>IFC type</source>
       <translation>Typ IFC</translation>
     </message>
@@ -11116,12 +11144,6 @@ Nie można eksplorować.</translation>
       <location filename="../../bimcommands/BimImagePlane.py" line="53"/>
       <source>Image file (*.png *.jpg *.bmp)</source>
       <translation>Plik obrazu (*.png *.jpg *.bmp)</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimImagePlane.py" line="78"/>
-      <location filename="../../bimcommands/BimBox.py" line="77"/>
-      <source>%1 pick first point</source>
-      <translation>%1 wybierz pierwszy punkt</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimImagePlane.py" line="80"/>
@@ -12104,7 +12126,7 @@ Sprawdź swoją instalację FreeCAD lub wprowadź niestandardowy szablon w menu 
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="134"/>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="601"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="607"/>
       <source>Expand Property Sets</source>
       <translation>Rozwiń zestawy właściwości</translation>
     </message>
@@ -12137,6 +12159,12 @@ Sprawdź swoją instalację FreeCAD lub wprowadź niestandardowy szablon w menu 
       <location filename="../../bimcommands/BimLink.py" line="31"/>
       <source>Select an object to link</source>
       <translation>Wybierz obiekt do połączenia</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimBox.py" line="77"/>
+      <location filename="../../bimcommands/BimImagePlane.py" line="78"/>
+      <source>%1 pick first point</source>
+      <translation>%1 wybierz pierwszy punkt</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBox.py" line="79"/>
@@ -12202,19 +12230,6 @@ Sprawdź swoją instalację FreeCAD lub wprowadź niestandardowy szablon w menu 
     </message>
   </context>
   <context>
-    <name>Part_Builder</name>
-    <message>
-      <location filename="../../bimcommands/BimBuilder.py" line="35"/>
-      <source>Shape Builder</source>
-      <translation>Konstruktor kształtu</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimBuilder.py" line="36"/>
-      <source>Advanced utility to create shapes</source>
-      <translation>Zaawansowane narzędzie do tworzenia kształtów</translation>
-    </message>
-  </context>
-  <context>
     <name>Arch_Level</name>
     <message>
       <location filename="../../bimcommands/BimBuildingPart.py" line="43"/>
@@ -12251,19 +12266,6 @@ Sprawdź swoją instalację FreeCAD lub wprowadź niestandardowy szablon w menu 
       <location filename="../../bimcommands/BimColumn.py" line="47"/>
       <source>Creates a column at a specified location</source>
       <translation>Créer une colonne à un emplacement spécifié</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part_Common</name>
-    <message>
-      <location filename="../../bimcommands/BimCommon.py" line="35"/>
-      <source>Intersection</source>
-      <translation>Przecięcie</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimCommon.py" line="36"/>
-      <source>Creates an intersection of two shapes</source>
-      <translation>Tworzy przecięcie dwóch kształtów</translation>
     </message>
   </context>
   <context>
@@ -12393,19 +12395,6 @@ Sprawdź swoją instalację FreeCAD lub wprowadź niestandardowy szablon w menu 
       <source>Select a section, post and path in exactly this order to build a fence.</source>
       <translation>Wybierz przekrój, słupek i ścieżkę
  dokładnie w tej kolejności, aby zbudować ogrodzenie.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part_Fuse</name>
-    <message>
-      <location filename="../../bimcommands/BimFuse.py" line="34"/>
-      <source>Union</source>
-      <translation>Połączenie</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimFuse.py" line="35"/>
-      <source>Creates a union of several shapes</source>
-      <translation>Tworzy połączenie kilku kształtów</translation>
     </message>
   </context>
   <context>
@@ -12572,19 +12561,6 @@ Sprawdź swoją instalację FreeCAD lub wprowadź niestandardowy szablon w menu 
     </message>
   </context>
   <context>
-    <name>Part_Offset2D</name>
-    <message>
-      <location filename="../../bimcommands/BimOffset.py" line="35"/>
-      <source>2D Offset</source>
-      <translation>Odsunięcie 2D</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimOffset.py" line="36"/>
-      <source>Utility to offset planar shapes</source>
-      <translation>Narzędzie do odsuwania płaskich kształtów</translation>
-    </message>
-  </context>
-  <context>
     <name>BIM_Preflight</name>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="61"/>
@@ -12639,12 +12615,12 @@ Sprawdź swoją instalację FreeCAD lub wprowadź niestandardowy szablon w menu 
   <context>
     <name>draft</name>
     <message>
-      <location filename="../../bimcommands/BimShape2DView.py" line="48"/>
+      <location filename="../../bimcommands/BimShape2DView.py" line="52"/>
       <source>Create 2D view</source>
       <translation>Utwórz widok 2D</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimShape2DView.py" line="132"/>
+      <location filename="../../bimcommands/BimShape2DView.py" line="140"/>
       <source>Create 2D Cut</source>
       <translation>Utwórz wycinek 2D</translation>
     </message>
@@ -13558,9 +13534,11 @@ lub tworzy otwór w komponencie</translation>
       <translation>Widok przekroju</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimShape2DView.py" line="111"/>
-      <source>Section Cut</source>
-      <translation>Cięcie przekroju</translation>
+      <location filename="../../bimcommands/BimShape2DView.py" line="44"/>
+      <source>Creates a 2D projection of the selected objects on the XY-plane.
+The initial projection direction is the opposite of the current active view direction.</source>
+      <translation>Tworzy rzut 2D wybranych obiektów na płaszczyznę XY.
+Początkowy kierunek rzutowania jest przeciwny do bieżącego aktywnego kierunku widoku.</translation>
     </message>
   </context>
   <context>
@@ -13721,6 +13699,29 @@ wybierz zarówno widok, jak i stronę przed wykonaniem polecenia.</translation>
     </message>
   </context>
   <context>
+    <name>BIMStatusWidget</name>
+    <message>
+      <location filename="../../BimStatus.py" line="105"/>
+      <source>BIM Status Widget</source>
+      <comment>A context menu action used to show or hide this toolbar widget</comment>
+      <translation>Widget statusu BIM</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="128"/>
+      <source>Edit Covering</source>
+      <translation>Edytuj okładzinę</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1758"/>
+      <location filename="../../bimcommands/BimCovering.py" line="97"/>
+      <source>Create Covering</source>
+      <translation>Utwórz okładzinę</translation>
+    </message>
+  </context>
+  <context>
     <name>ArchSql</name>
     <message>
       <location filename="../../ArchSql.py" line="578"/>
@@ -13812,51 +13813,6 @@ wybierz zarówno widok, jak i stronę przed wykonaniem polecenia.</translation>
     </message>
   </context>
   <context>
-    <name>Command</name>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="128"/>
-      <source>Edit Covering</source>
-      <translation>Edytuj okładzinę</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1758"/>
-      <location filename="../../bimcommands/BimCovering.py" line="97"/>
-      <source>Create Covering</source>
-      <translation>Utwórz okładzinę</translation>
-    </message>
-  </context>
-  <context>
-    <name>ArchComponent</name>
-    <message>
-      <location filename="../../ArchWall.py" line="1543"/>
-      <source>Unsupported Base</source>
-      <translation>Nieobsługiwana podstawa</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="1548"/>
-      <source>The base of this wall is not a single straight line.</source>
-      <translation>Podstawa tej ściany nie jest pojedynczą prostą linią.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="1555"/>
-      <source>Removing the base of this complex wall will alter its shape and reset its position.
-
-Do you want to proceed?</source>
-      <translation>Usunięcie podstawy tej złożonej ściany zmieni jej kształt i zresetuje jej pozycję.
-
-Czy chcesz kontynuować?</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIMStatusWidget</name>
-    <message>
-      <location filename="../../BimStatus.py" line="105"/>
-      <source>BIM Status Widget</source>
-      <comment>A context menu action used to show or hide this toolbar widget</comment>
-      <translation>Widget statusu BIM</translation>
-    </message>
-  </context>
-  <context>
     <name>BIM_ArcTools</name>
     <message>
       <location filename="../../InitGui.py" line="240"/>
@@ -13929,6 +13885,36 @@ Czy chcesz kontynuować?</translation>
     </message>
   </context>
   <context>
+    <name>ArchComponent</name>
+    <message>
+      <location filename="../../ArchWall.py" line="1497"/>
+      <source>Unsupported Base</source>
+      <translation>Nieobsługiwana podstawa</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="1502"/>
+      <source>The base of this wall is not a single straight line.</source>
+      <translation>Podstawa tej ściany nie jest pojedynczą prostą linią.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="1509"/>
+      <source>Removing the base of this complex wall will alter its shape and reset its position.
+
+Do you want to proceed?</source>
+      <translation>Usunięcie podstawy tej złożonej ściany zmieni jej kształt i zresetuje jej pozycję.
+
+Czy chcesz kontynuować?</translation>
+    </message>
+  </context>
+  <context>
+    <name>BimWall</name>
+    <message>
+      <location filename="../../bimcommands/BimWall.py" line="305"/>
+      <source>Wall Trace</source>
+      <translation>Ślad ściany</translation>
+    </message>
+  </context>
+  <context>
     <name>BIM_ExtrudeFace</name>
     <message>
       <location filename="../../bimcommands/BimExtrudeFace.py" line="18"/>
@@ -13942,16 +13928,29 @@ Czy chcesz kontynuować?</translation>
     </message>
   </context>
   <context>
-    <name>BIM_Covering</name>
+    <name>BIM_Fuse</name>
     <message>
-      <location filename="../../bimcommands/BimCovering.py" line="58"/>
-      <source>Covering</source>
-      <translation>Okładzina</translation>
+      <location filename="../../bimcommands/BimFuse.py" line="34"/>
+      <source>Union</source>
+      <translation>Połączenie</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCovering.py" line="61"/>
-      <source>Creates a covering (floor finish, cladding) on a selected face</source>
-      <translation>Tworzy okładzinę (wykończenie podłogi, oblicowanie) na wybranej ścianie</translation>
+      <location filename="../../bimcommands/BimFuse.py" line="35"/>
+      <source>Creates a union of several shapes</source>
+      <translation type="unfinished">Creates a union of several shapes</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_LinkMake</name>
+    <message>
+      <location filename="../../bimcommands/BimLink.py" line="15"/>
+      <source>Make Link</source>
+      <translation>Utwórz łącze</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimLink.py" line="19"/>
+      <source>Creates a Link to the selected object and immediately enables moving it</source>
+      <translation>Tworzy łącze do wybranego obiektu i natychmiast umożliwia jego przesunięcie</translation>
     </message>
   </context>
   <context>
@@ -13968,24 +13967,68 @@ Czy chcesz kontynuować?</translation>
     </message>
   </context>
   <context>
-    <name>BimWall</name>
+    <name>BIM_Covering</name>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="305"/>
-      <source>Wall Trace</source>
-      <translation>Ślad ściany</translation>
+      <location filename="../../bimcommands/BimCovering.py" line="58"/>
+      <source>Covering</source>
+      <translation>Okładzina</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimCovering.py" line="61"/>
+      <source>Creates a covering (floor finish, cladding) on a selected face</source>
+      <translation>Tworzy okładzinę (wykończenie podłogi, oblicowanie) na wybranej ścianie</translation>
     </message>
   </context>
   <context>
-    <name>BIM_LinkMake</name>
+    <name>BIM_Common</name>
     <message>
-      <location filename="../../bimcommands/BimLink.py" line="15"/>
-      <source>Make Link</source>
-      <translation>Utwórz łącze</translation>
+      <location filename="../../bimcommands/BimCommon.py" line="35"/>
+      <source>Intersection</source>
+      <translation>Przecięcie</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLink.py" line="19"/>
-      <source>Creates a Link to the selected object and immediately enables moving it</source>
-      <translation>Tworzy łącze do wybranego obiektu i natychmiast umożliwia jego przesunięcie</translation>
+      <location filename="../../bimcommands/BimCommon.py" line="36"/>
+      <source>Creates an intersection of two shapes</source>
+      <translation type="unfinished">Creates an intersection of two shapes</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_Builder</name>
+    <message>
+      <location filename="../../bimcommands/BimBuilder.py" line="35"/>
+      <source>Shape Builder</source>
+      <translation type="unfinished">Shape Builder</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimBuilder.py" line="36"/>
+      <source>Advanced utility to create shapes</source>
+      <translation>Zaawansowane narzędzie do tworzenia kształtów</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_Shape2DCut</name>
+    <message>
+      <location filename="../../bimcommands/BimShape2DView.py" line="115"/>
+      <source>Section Cut</source>
+      <translation type="unfinished">Section Cut</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimShape2DView.py" line="120"/>
+      <source>Creates a 2D projection of only the intersecting faces of the selected objects on the XY-plane.</source>
+      <translation type="unfinished">Creates a 2D projection of only the intersecting faces of the selected objects on the XY-plane.</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_Offset2D</name>
+    <message>
+      <location filename="../../bimcommands/BimOffset.py" line="35"/>
+      <source>2D Offset</source>
+      <translation type="unfinished">2D Offset</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimOffset.py" line="36"/>
+      <source>Utility to offset planar shapes</source>
+      <translation type="unfinished">Utility to offset planar shapes</translation>
     </message>
   </context>
 </TS>

@@ -382,11 +382,6 @@
       <translation>Limpar cor de fundo</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="226"/>
-      <source>Recompute Cells</source>
-      <translation>Recalcular células</translation>
-    </message>
-    <message>
       <location filename="../../SheetTableView.cpp" line="327"/>
       <source>Insert Rows</source>
       <translation>Inserir linhas</translation>
@@ -397,18 +392,23 @@
       <translation>Remover linhas</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="367"/>
-      <source>Remove Columns</source>
-      <translation>Remover colunas</translation>
-    </message>
-    <message>
       <location filename="../../SheetTableView.cpp" line="340"/>
       <source>Insert Columns</source>
       <translation>Inserir colunas</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="179"/>
+      <location filename="../../SheetTableView.cpp" line="226"/>
+      <source>Recompute Cells</source>
+      <translation>Recalcular células</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="367"/>
+      <source>Remove Columns</source>
+      <translation>Remover colunas</translation>
+    </message>
+    <message>
       <location filename="../../SheetTableView.cpp" line="582"/>
+      <location filename="../../SpreadsheetView.cpp" line="179"/>
       <source>Clear Cells</source>
       <translation>Limpar células</translation>
     </message>

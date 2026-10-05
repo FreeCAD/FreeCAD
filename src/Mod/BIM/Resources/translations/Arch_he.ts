@@ -410,10 +410,10 @@ of that project, no matter if they are expanded or not.</source>
       <translation>הישאר מחובר לאורך הפעלות של FreeCAD</translation>
     </message>
     <message>
-      <location filename="../ui/dialogPhases.ui" line="14"/>
-      <location filename="../ui/DialogDisplayText.ui" line="14"/>
       <location filename="../ui/dialogQuantitySurveying.ui" line="14"/>
+      <location filename="../ui/dialogPhases.ui" line="14"/>
       <location filename="../ui/dialogListWidget.ui" line="14"/>
+      <location filename="../ui/DialogDisplayText.ui" line="14"/>
       <location filename="../ui/dialogExport.ui" line="14"/>
       <source>Dialog</source>
       <translation>תיבת דו שיח</translation>
@@ -435,8 +435,8 @@ of that project, no matter if they are expanded or not.</source>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="30"/>
-      <location filename="../ui/dialogIfcProperties.ui" line="39"/>
       <location filename="../ui/dialogIfcQuantities.ui" line="30"/>
+      <location filename="../ui/dialogIfcProperties.ui" line="39"/>
       <source>Only visible BIM objects</source>
       <translation>רק אובייקטי BIM גלויים</translation>
     </message>
@@ -457,8 +457,8 @@ of that project, no matter if they are expanded or not.</source>
     </message>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="53"/>
-      <location filename="../ui/dialogIfcProperties.ui" line="141"/>
       <location filename="../ui/dialogIfcQuantities.ui" line="80"/>
+      <location filename="../ui/dialogIfcProperties.ui" line="141"/>
       <source>Select All</source>
       <translation>בחר הכל</translation>
     </message>
@@ -568,8 +568,8 @@ of that project, no matter if they are expanded or not.</source>
       <translation>מונע הנחיות נוספות בעת יצירת מסמכי FreeCAD חדשים. מסמכים חדשים לא יומרו ל-IFC באופן אוטומטי, אך ההמרה נשארת אפשרית מאוחר יותר באמצעות Utils → Create IFC Project.</translation>
     </message>
     <message>
-      <location filename="../ui/dialogCreateProject.ui" line="30"/>
       <location filename="../ui/dialogConvertDocument.ui" line="43"/>
+      <location filename="../ui/dialogCreateProject.ui" line="30"/>
       <source>Do not ask again</source>
       <translation>אל תשאל שוב</translation>
     </message>
@@ -783,9 +783,9 @@ of that project, no matter if they are expanded or not.</source>
       <translation>ביטול</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLayersIFC.ui" line="104"/>
       <location filename="../ui/dialogQuantitySurveying.ui" line="26"/>
       <location filename="../ui/dialogPreflightResults.ui" line="103"/>
+      <location filename="../ui/dialogLayersIFC.ui" line="104"/>
       <location filename="../ui/dialogProjectManager.ui" line="717"/>
       <source>OK</source>
       <translation>אישור</translation>
@@ -847,9 +847,9 @@ of that project, no matter if they are expanded or not.</source>
     </message>
     <message>
       <location filename="../ui/dialogAddPSet.ui" line="43"/>
-      <location filename="../ui/dialogAddProperty.ui" line="87"/>
       <location filename="../ui/dialogProjectManager.ui" line="246"/>
       <location filename="../ui/dialogProjectManager.ui" line="366"/>
+      <location filename="../ui/dialogAddProperty.ui" line="87"/>
       <source>Name</source>
       <translation>שם</translation>
     </message>
@@ -1286,12 +1286,12 @@ of that project, no matter if they are expanded or not.</source>
       <translation>מידע על שטח</translation>
     </message>
     <message>
+      <location filename="../ui/dialogSpaces.ui" line="92"/>
       <location filename="../ui/dialogProjectManager.ui" line="457"/>
       <location filename="../ui/dialogProjectManager.ui" line="480"/>
       <location filename="../ui/dialogProjectManager.ui" line="493"/>
       <location filename="../ui/dialogProjectManager.ui" line="506"/>
       <location filename="../ui/dialogProjectManager.ui" line="615"/>
-      <location filename="../ui/dialogSpaces.ui" line="92"/>
       <source>0</source>
       <translation>0</translation>
     </message>
@@ -1708,9 +1708,9 @@ of that project, no matter if they are expanded or not.</source>
       <translation>מַחלָקָה</translation>
     </message>
     <message>
+      <location filename="../ui/dialogClasses.ui" line="39"/>
       <location filename="../ui/dialogWindows.ui" line="80"/>
       <location filename="../ui/dialogWindows.ui" line="182"/>
-      <location filename="../ui/dialogClasses.ui" line="39"/>
       <source>Material</source>
       <translation>חומר גלם</translation>
     </message>
@@ -2112,15 +2112,10 @@ of that project, no matter if they are expanded or not.</source>
       <translation>האם ייצוא IfcRectangleProfileDef מושבת? (רק Revit)</translation>
     </message>
     <message>
-      <location filename="../ui/dialogViews.ui" line="14"/>
       <location filename="../ui/dialogReorder.ui" line="14"/>
+      <location filename="../ui/dialogViews.ui" line="14"/>
       <source>Form</source>
       <translation>טופס</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogViews.ui" line="69"/>
-      <source>Elevation</source>
-      <translation>גובה</translation>
     </message>
     <message>
       <location filename="../ui/dialogReorder.ui" line="20"/>
@@ -2193,6 +2188,11 @@ p, li { רווח לבן: pre-wrap; }
       <translation>אֵלֵמֶנט</translation>
     </message>
     <message>
+      <location filename="../ui/dialogViews.ui" line="69"/>
+      <source>Elevation</source>
+      <translation>גובה</translation>
+    </message>
+    <message>
       <location filename="../ui/dialogViews.ui" line="84"/>
       <source>2D Views</source>
       <translation>תצוגות דו-ממדיות</translation>
@@ -2261,8 +2261,8 @@ p, li { רווח לבן: pre-wrap; }
       <translation>תווית</translation>
     </message>
     <message>
-      <location filename="../ui/dialogWindows.ui" line="175"/>
       <location filename="../ui/dialogViews.ui" line="74"/>
+      <location filename="../ui/dialogWindows.ui" line="175"/>
       <source>Height</source>
       <translation>גובה</translation>
     </message>
@@ -3166,8 +3166,8 @@ if crashes occur when multiple cores are set.</source>
 אם קריסות מתרחשות כאשר מספר ליבות מוגדרות.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-sh3d-import.ui" line="67"/>
       <location filename="../ui/preferences-ifc.ui" line="135"/>
+      <location filename="../ui/preferences-sh3d-import.ui" line="67"/>
       <source>Import Options</source>
       <translation>אפשרויות ייבוא</translation>
     </message>
@@ -3297,9 +3297,9 @@ This will slow down the import, but one can watch the import.</source>
 זה יאט את הייבוא, אבל אפשר לצפות בייבוא.</translation>
     </message>
     <message>
+      <location filename="../ui/preferences-ifc.ui" line="411"/>
       <location filename="../ui/preferences-sh3d-import.ui" line="464"/>
       <location filename="../ui/preferences-sh3d-import.ui" line="467"/>
-      <location filename="../ui/preferences-ifc.ui" line="411"/>
       <source>Fit view while importing</source>
       <translation>תצוגת התאמה בזמן ייבוא</translation>
     </message>
@@ -3384,9 +3384,9 @@ If using Netgen, make sure that it is available.</source>
       <translation>פְּסִיפָס</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dae.ui" line="26"/>
       <location filename="../ui/preferences-webgl.ui" line="26"/>
       <location filename="../ui/preferences-ifc-export.ui" line="35"/>
+      <location filename="../ui/preferences-dae.ui" line="26"/>
       <source>Export Options</source>
       <translation>אפשרויות ייצוא</translation>
     </message>
@@ -3621,8 +3621,8 @@ Warning: The IFC standard asks for at least one building in each file. By turnin
       <translation>ייצוא IFC</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-sh3d-import.ui" line="26"/>
       <location filename="../ui/preferences-ifc.ui" line="26"/>
+      <location filename="../ui/preferences-sh3d-import.ui" line="26"/>
       <source>General Options</source>
       <translation>אפשרויות כלליות</translation>
     </message>
@@ -3768,13 +3768,13 @@ The default template is located at:
   <context>
     <name>Arch</name>
     <message>
-      <location filename="../../ArchStructure.py" line="449"/>
+      <location filename="../../ArchStructure.py" line="450"/>
       <location filename="../../Arch.py" line="2576"/>
       <source>Beam</source>
       <translation>קורה</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="450"/>
+      <location filename="../../ArchStructure.py" line="451"/>
       <location filename="../../Arch.py" line="2580"/>
       <source>Column</source>
       <translation>עמודה</translation>
@@ -3785,18 +3785,18 @@ The default template is located at:
       <translation>מערכת מבנית</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="115"/>
+      <location filename="../../ArchStructure.py" line="116"/>
       <source>Create Structures From Selection</source>
       <translation>צור מבנים מתוך בחירה</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="184"/>
+      <location filename="../../ArchStructure.py" line="185"/>
       <source>Create Structural System</source>
       <translation>יצירת מערכת מבנית</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="247"/>
-      <location filename="../../ArchStructure.py" line="337"/>
+      <location filename="../../ArchStructure.py" line="248"/>
+      <location filename="../../ArchStructure.py" line="338"/>
       <source>Create Structure</source>
       <translation>צור מבנה</translation>
     </message>
@@ -3806,643 +3806,247 @@ The default template is located at:
       <translation>הנקודה הבאה</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="460"/>
+      <location filename="../../ArchStructure.py" line="461"/>
       <location filename="../../ArchCommands.py" line="1728"/>
       <location filename="../../bimcommands/BimProfile.py" line="96"/>
       <source>Category</source>
       <translation>קטגוריה</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="524"/>
-      <source>Solid Tiles</source>
-      <translation>אריחים מוצקים</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="525"/>
-      <source>Parametric Pattern</source>
-      <translation>דפוס פרמטרי</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="526"/>
-      <source>Monolithic</source>
-      <translation>מוֹנוֹלִיטִי</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="527"/>
-      <source>Hatch Pattern</source>
-      <translation>דפוס הבקעה</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="531"/>
-      <source>Top Left</source>
-      <translation>שמאל למעלה</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="532"/>
-      <source>Top Right</source>
-      <translation>למעלה מימין</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="533"/>
-      <source>Bottom Left</source>
-      <translation>שמאל למטה</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="534"/>
-      <source>Bottom Right</source>
-      <translation>ימין למטה</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="537"/>
-      <source>Stacked (None)</source>
-      <translation>מוערמים (אין)</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="538"/>
-      <source>Half Bond (1/2)</source>
-      <translation>חצי בונד (1/2)</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="539"/>
-      <source>Third Bond (1/3)</source>
-      <translation>ערבות שלישית (1/3)</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="540"/>
-      <source>Quarter Bond (1/4)</source>
-      <translation>רבעון בונד (1/4)</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="541"/>
-      <location filename="../../ArchCoveringGui.py" line="862"/>
-      <source>Custom</source>
-      <translation>מותאם אישית</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="619"/>
-      <source>Covering Definition</source>
-      <translation>הגדרה מכסה</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="634"/>
-      <source>Layout and Boundaries</source>
-      <translation>פריסה וגבולות</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="640"/>
-      <source>Visuals</source>
-      <translation>חזותיים</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="672"/>
-      <location filename="../../ArchCoveringGui.py" line="683"/>
-      <location filename="../../ArchCoveringGui.py" line="742"/>
-      <location filename="../../bimtests/TestArchCoveringGui.py" line="173"/>
-      <source>No selection</source>
-      <translation>אין בחירה</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="675"/>
-      <location filename="../../ArchCoveringGui.py" line="731"/>
-      <source>The object or face this covering is applied to:</source>
-      <translation>החפץ או הפנים כיסוי זה מוחל על:</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="686"/>
-      <location filename="../../ArchCoveringGui.py" line="746"/>
-      <source>The object or face this covering is applied to</source>
-      <translation>האובייקט או הפנים שעליו מוחל חיפוי זה</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="718"/>
-      <source>%1 (%2 faces)</source>
-      <translation>% 1 (% 2 פרצופים)</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="725"/>
-      <source>%1 objects selected</source>
-      <translation>נבחרו %1 אובייקטים</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="748"/>
-      <location filename="../../ArchCoveringGui.py" line="771"/>
-      <source>Pick</source>
-      <translation>לִבחוֹר</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="752"/>
-      <source>Enable interactive face selection in the 3D view</source>
-      <translation>אפשר בחירת פנים אינטראקטיבית בתצוגת התלת-ממד</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="770"/>
-      <source>Picking…</source>
-      <translation>בוחר...</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="779"/>
-      <source>Base</source>
-      <translation>בסיס</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="793"/>
-      <source>How the finish is created and displayed:
-- Solid Tiles: Physical 3D tiles with real gaps. Best for accurate detail and counting.
-- Parametric Pattern: A grid of lines on a single slab. Faster to display than real tiles.
-- Monolithic: A single smooth surface. Ideal for paint, plaster, or seamless flooring.
-- Hatch Pattern: Technical drafting symbols (hatching) on a single slab.</source>
-      <translation>כיצד נוצר ומוצג הגימור:
-- אריחים מוצקים: אריחי תלת מימד פיזיים עם פערים אמיתיים. הטוב ביותר עבור פירוט מדויק וספירה.
-- דפוס פרמטרי: רשת של קווים על לוח בודד. מהיר יותר לתצוגה מאשר אריחים אמיתיים.
-- מונוליטי: משטח חלק אחד. אידיאלי עבור צבע, טיח, או ריצוף חלק.
-- דפוס בוקעים: סמלי שרטוט טכניים (בקיעה) על לוח בודד.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="796"/>
-      <source>Mode</source>
-      <translation>מצב</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="801"/>
-      <source>The thickness of the finish</source>
-      <translation>עובי הגימור</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="817"/>
-      <source>Continue</source>
-      <translation>לְהַמשִׁיך</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="824"/>
-      <source>If checked, the dialog stays open after creating the covering, allowing to pick another face</source>
-      <translation>אם מסומן, תיבת הדו-שיח נשארת פתוחה לאחר יצירת הכיסוי, ומאפשרת לבחור פנים אחר</translation>
-    </message>
-    <message>
+      <location filename="../../ArchStructure.py" line="468"/>
       <location filename="../../ArchCoveringGui.py" line="842"/>
-      <location filename="../../ArchStructure.py" line="467"/>
-      <location filename="../../bimcommands/BimProfile.py" line="103"/>
       <location filename="../../bimcommands/BimPanel.py" line="201"/>
+      <location filename="../../bimcommands/BimProfile.py" line="103"/>
       <location filename="../../bimcommands/BimWindow.py" line="447"/>
       <source>Preset</source>
       <translation>מוגדר מראש</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="847"/>
-      <source>Use standard corner or center alignment relative to the boundary</source>
-      <translation>השתמש ביישור פינתי או מרכז סטנדרטי ביחס לגבול</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="855"/>
-      <source>Select which part of the usable boundary to anchor the pattern origin to</source>
-      <translation>בחר באיזה חלק מהגבול השמיש לעגן את מקור הדפוס</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="867"/>
-      <source>Use a manually picked 3D point or match the current Working Plane</source>
-      <translation>השתמש בנקודת תלת ממד שנבחרה ידנית או התאם למישור העבודה הנוכחי</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="868"/>
-      <source>Interactive</source>
-      <translation>אינטראקטיבי</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="878"/>
-      <source>Enter interactive mode to visually place the grid origin and rotate the grid. Click to finish and set the origin. Optionally press R / Shift+R to rotate the tile preview by the PickRotationStep angle (configurable in the View properties).</source>
-      <translation>היכנס למצב אינטראקטיבי כדי למקם חזותית את מקור הרשת ולסובב את הרשת. לחץ כדי לסיים ולהגדיר את המקור. אופציונלי הקש R / Shift+R כדי לסובב את התצוגה המקדימה של האריח לפי זווית PickRotationStep (ניתן להגדרה במאפייני התצוגה).</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="879"/>
-      <source>Match Working Plane</source>
-      <translation>התאמה למטוס עבודה</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="885"/>
-      <source>Use the position and orientation of the active Working Plane for the covering</source>
-      <translation>השתמש במיקום ובכיוון של מישור העבודה הפעיל לכיסוי</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="895"/>
-      <source>Shift the grid along U</source>
-      <translation>העבר את הרשת לאורך U</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="900"/>
-      <source>Shift the grid along V</source>
-      <translation>העבר את הרשת לאורך V</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="904"/>
-      <source>U offset</source>
-      <translation>קיזוז U</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="905"/>
-      <source>V offset</source>
-      <translation>היסט V</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="912"/>
-      <source>Manual rotation of the tile grid</source>
-      <translation>סיבוב ידני של רשת האריחים</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="925"/>
-      <source>Boundaries</source>
-      <translation>גבולות</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="930"/>
-      <source>Distance to offset the covering inwards from the boundary</source>
-      <translation>מרחק לקיזוז החיפוי פנימה מהגבול</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="932"/>
-      <source>Border setback</source>
-      <translation>נסיגה בגבול</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="995"/>
-      <source>The length of the tiles</source>
-      <translation>אורך האריחים</translation>
-    </message>
-    <message>
+      <location filename="../../ArchStructure.py" line="477"/>
+      <location filename="../../ArchStructure.py" line="1610"/>
       <location filename="../../ArchCoveringGui.py" line="996"/>
       <location filename="../../ArchCoveringGui.py" line="1077"/>
-      <location filename="../../ArchStructure.py" line="476"/>
-      <location filename="../../ArchStructure.py" line="1624"/>
-      <location filename="../../ArchWall.py" line="1857"/>
+      <location filename="../../ArchPanel.py" line="576"/>
       <location filename="../../ArchPrecast.py" line="1719"/>
       <location filename="../../ArchCommands.py" line="1361"/>
-      <location filename="../../ArchPanel.py" line="576"/>
-      <location filename="../../bimcommands/BimPanel.py" line="211"/>
+      <location filename="../../ArchWall.py" line="1814"/>
       <location filename="../../bimcommands/BimWall.py" line="504"/>
+      <location filename="../../bimcommands/BimPanel.py" line="211"/>
       <source>Length</source>
       <translation>אורך</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="1001"/>
-      <source>The width of the tiles</source>
-      <translation>רוחב האריחים</translation>
-    </message>
-    <message>
+      <location filename="../../ArchStructure.py" line="484"/>
+      <location filename="../../ArchStructure.py" line="1611"/>
       <location filename="../../ArchCoveringGui.py" line="1002"/>
       <location filename="../../ArchCoveringGui.py" line="1078"/>
-      <location filename="../../ArchStructure.py" line="483"/>
-      <location filename="../../ArchStructure.py" line="1625"/>
-      <location filename="../../ArchWall.py" line="1863"/>
+      <location filename="../../ArchPanel.py" line="577"/>
       <location filename="../../ArchPrecast.py" line="1720"/>
       <location filename="../../ArchWindow.py" line="1196"/>
-      <location filename="../../ArchPanel.py" line="577"/>
-      <location filename="../../bimcommands/BimPanel.py" line="218"/>
+      <location filename="../../ArchWall.py" line="1823"/>
       <location filename="../../bimcommands/BimWall.py" line="511"/>
+      <location filename="../../bimcommands/BimPanel.py" line="218"/>
       <source>Width</source>
       <translation>רוחב</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="1007"/>
-      <source>The width of the joints between tiles</source>
-      <translation>רוחב החיבורים בין אריחים</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1008"/>
-      <source>Joint width</source>
-      <translation>רוחב מפרק</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1022"/>
-      <source>The horizontal shift applied to every second row:
-- Stacked: all joints align vertically
-- Half/Third/Quarter Bond: shifts by a fraction of the tile length
-- Custom: manual offset value</source>
-      <translation>ההזזה האופקית שהוחלה על כל שורה שנייה:
-- מוערמים: כל המפרקים מיושרים אנכית
-- חצי/שלישי/רבע בונד: תזוזה בשבריר מאורך האריח
-- מותאם אישית: ערך היסט ידני</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1028"/>
-      <source>Custom offset for running bond rows</source>
-      <translation>קיזוז מותאם אישית להפעלת שורות אג"ח</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1030"/>
-      <source>Stagger</source>
-      <translation>לְהִתְנוֹדֵד</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1041"/>
-      <source>The PAT file to use for hatching</source>
-      <translation>קובץ ה-PAT לשימוש לבקיעה</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1048"/>
-      <source>Pattern file</source>
-      <translation>קובץ דפוס</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1052"/>
-      <source>The name of the pattern to use</source>
-      <translation>שם התבנית שבה יש להשתמש</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1053"/>
-      <source>Pattern name</source>
-      <translation>שם תבנית</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1058"/>
-      <source>The scale of the hatch pattern</source>
-      <translation>קנה המידה של תבנית הצוהר</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1060"/>
-      <source>Pattern scale</source>
-      <translation>סולם דפוסים</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1072"/>
-      <source>Texture repeat interval along U</source>
-      <translation>מרווח חוזר של מרקם לאורך U</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1075"/>
-      <source>Texture repeat interval along V</source>
-      <translation>מרווח חוזר של מרקם לאורך V</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1086"/>
-      <source>Note: In Monolithic mode, dimensions control the repeat interval of the optional surface texture.</source>
-      <translation>הערה: במצב מונוליטי, מידות שולטות במרווח החזרה של מרקם השטח האופציונלי.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1097"/>
-      <source>An image file to map onto each tile or substrate</source>
-      <translation>קובץ תמונה למיפוי על כל אריח או מצע</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1104"/>
-      <source>Texture image</source>
-      <translation>תמונת מרקם</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1111"/>
-      <source>Horizontal texture multiplier</source>
-      <translation>מכפיל מרקם אופקי</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1115"/>
-      <source>Vertical texture multiplier</source>
-      <translation>מכפיל מרקם אנכי</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1118"/>
-      <source>Texture scale</source>
-      <translation>סולם מרקם</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1165"/>
-      <source>Select Texture</source>
-      <translation>בחר מרקם</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1174"/>
-      <source>Select Pattern</source>
-      <translation>בחר דפוס</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1390"/>
-      <source>Could not resolve base geometry.</source>
-      <translation>לא ניתן היה לפתור את גיאומטריית הבסיס.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1589"/>
-      <source>%1 pick tile origin</source>
-      <translation>%1 בחר מקור אריח</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1593"/>
-      <source>%1 rotate tile CW / Shift+%1 rotate tile CCW</source>
-      <translation>%1 לסובב אריח CW / Shift+%1 לסובב אריח CCW</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1601"/>
-      <source>%1 pick new base face or object</source>
-      <translation>% 1 בחר פנים או אובייקט בסיס חדשים</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1605"/>
-      <source>%1+%2 add face or object</source>
-      <translation>%1+%2 הוסף פנים או אובייקט</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1612"/>
-      <source>%1 pick planar face or object</source>
-      <translation>%1 בחר פנים או אובייקט מישוריים</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1616"/>
-      <source>%1+%2 add planar face or object</source>
-      <translation>%1+%2 הוסף פנים או אובייקט מישוריים</translation>
-    </message>
-    <message>
-      <location filename="../../ArchStructure.py" line="490"/>
-      <location filename="../../ArchStructure.py" line="1626"/>
-      <location filename="../../ArchWall.py" line="1869"/>
-      <location filename="../../ArchPrecast.py" line="1721"/>
+      <location filename="../../ArchStructure.py" line="491"/>
+      <location filename="../../ArchStructure.py" line="1612"/>
       <location filename="../../ArchRoof.py" line="1086"/>
+      <location filename="../../ArchPrecast.py" line="1721"/>
       <location filename="../../ArchWindow.py" line="1199"/>
+      <location filename="../../ArchWall.py" line="1832"/>
       <location filename="../../bimcommands/BimWall.py" line="518"/>
       <source>Height</source>
       <translation>גובה</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="448"/>
+      <location filename="../../ArchStructure.py" line="449"/>
       <source>Parameters of the structure</source>
       <translation>פרמטרים של המבנה</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="497"/>
+      <location filename="../../ArchStructure.py" line="498"/>
       <source>Switch Length/Height</source>
       <translation>מתג אורך/גובה</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="499"/>
+      <location filename="../../ArchStructure.py" line="500"/>
       <source>Switch Length/Width</source>
       <translation>מתג אורך/רוחב</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1090"/>
+      <location filename="../../ArchStructure.py" line="1091"/>
       <location filename="../../ArchWall.py" line="617"/>
       <source>This mesh is an invalid solid</source>
       <translation>רשת זו היא מוצק לא חוקי</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1209"/>
+      <location filename="../../ArchStructure.py" line="1195"/>
       <location filename="../../ArchPanel.py" line="319"/>
       <source>Facemaker returned an error</source>
       <translation>Facemaker החזיר שגיאה</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1636"/>
+      <location filename="../../ArchStructure.py" line="1622"/>
       <source>Node Tools</source>
       <translation>כלי צומת</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1660"/>
+      <location filename="../../ArchStructure.py" line="1646"/>
       <source>Extends the nodes of this element to reach the nodes of another element</source>
       <translation>מרחיב את הצמתים של אלמנט זה כדי להגיע לצמתים של אלמנט אחר</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1671"/>
+      <location filename="../../ArchStructure.py" line="1657"/>
       <source>Connects nodes of this element with the nodes of another element</source>
       <translation>מחבר צמתים של אלמנט זה עם צמתים של אלמנט אחר</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1682"/>
+      <location filename="../../ArchStructure.py" line="1668"/>
       <source>Toggles all structural nodes of the document on/off</source>
       <translation>מפעיל/כבוי את כל הצמתים המבניים של המסמך</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1689"/>
+      <location filename="../../ArchStructure.py" line="1675"/>
       <source>Extrusion Tools</source>
       <translation>כלי שחול</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="153"/>
+      <location filename="../../ArchStructure.py" line="154"/>
       <source>Select the base object first and then the edges to use as extrusion paths</source>
       <translation>בחר תחילה את אובייקט הבסיס ולאחר מכן את הקצוות לשימוש כשבילי שחול</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="206"/>
+      <location filename="../../ArchStructure.py" line="207"/>
       <source>Select at least an axis object</source>
       <translation>בחר לפחות אובייקט ציר</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="277"/>
+      <location filename="../../ArchStructure.py" line="278"/>
       <source>First Point of Beam</source>
       <translation>נקודת אלומה ראשונה</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="279"/>
+      <location filename="../../ArchStructure.py" line="280"/>
       <source>Base Point of Column</source>
       <translation>נקודת בסיס של עמודה</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="294"/>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="91"/>
+      <location filename="../../ArchStructure.py" line="295"/>
       <location filename="../../bimcommands/BimTruss.py" line="80"/>
       <location filename="../../bimcommands/BimWall.py" line="154"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="91"/>
       <source>%1 pick first point</source>
       <translation>%1 בחר נקודה ראשונה</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="296"/>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="93"/>
+      <location filename="../../ArchStructure.py" line="297"/>
       <location filename="../../bimcommands/BimTruss.py" line="82"/>
       <location filename="../../bimcommands/BimWall.py" line="156"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="93"/>
       <source>%1 pick next point</source>
       <translation>%1 בחר את הנקודה הבאה</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="298"/>
+      <location filename="../../ArchStructure.py" line="299"/>
       <source>%1 pick base point</source>
       <translation>%1 בחר נקודת בסיס</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="327"/>
+      <location filename="../../ArchStructure.py" line="328"/>
       <source>Next Point</source>
       <translation>הנקודה הבאה</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="444"/>
+      <location filename="../../ArchStructure.py" line="445"/>
       <source>Structure Options</source>
       <translation>אפשרויות מבנה</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1062"/>
+      <location filename="../../ArchStructure.py" line="1063"/>
       <source>Error: The base shape could not be extruded along this tool object</source>
       <translation>שגיאה: לא ניתן היה להוציא את צורת הבסיס לאורך אובייקט הכלי הזה</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1641"/>
+      <location filename="../../ArchStructure.py" line="1627"/>
       <source>Reset Nodes</source>
       <translation>אפס צמתים</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1647"/>
+      <location filename="../../ArchStructure.py" line="1633"/>
       <source>Edit Nodes</source>
       <translation>ערוך צמתים</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1653"/>
+      <location filename="../../ArchStructure.py" line="1639"/>
       <source>Extend Nodes</source>
       <translation>הרחבת צמתים</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1666"/>
+      <location filename="../../ArchStructure.py" line="1652"/>
       <source>Connect Nodes</source>
       <translation>חבר צמתים</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1677"/>
+      <location filename="../../ArchStructure.py" line="1663"/>
       <source>Toggle All Nodes</source>
       <translation>החלף את כל הצמתים</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1694"/>
-      <location filename="../../ArchStructure.py" line="1895"/>
+      <location filename="../../ArchStructure.py" line="1680"/>
+      <location filename="../../ArchStructure.py" line="1881"/>
       <source>Select Tool</source>
       <translation>בחר כלי</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1699"/>
+      <location filename="../../ArchStructure.py" line="1685"/>
       <source>Selects object or edges to be used as a tool (extrusion path)</source>
       <translation>בוחר אובייקט או קצוות לשימוש ככלי (נתיב שחול)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1723"/>
-      <location filename="../../ArchStructure.py" line="1773"/>
+      <location filename="../../ArchStructure.py" line="1709"/>
+      <location filename="../../ArchStructure.py" line="1759"/>
       <source>Choose another Structure object:</source>
       <translation>בחר אובייקט מבנה אחר:</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1729"/>
-      <location filename="../../ArchStructure.py" line="1779"/>
+      <location filename="../../ArchStructure.py" line="1715"/>
+      <location filename="../../ArchStructure.py" line="1765"/>
       <source>The chosen object is not a Structure</source>
       <translation>האובייקט הנבחר אינו מבנה</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1734"/>
-      <location filename="../../ArchStructure.py" line="1784"/>
+      <location filename="../../ArchStructure.py" line="1720"/>
+      <location filename="../../ArchStructure.py" line="1770"/>
       <source>The chosen object has no structural nodes</source>
       <translation>לאובייקט הנבחר אין צמתים מבניים</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1739"/>
-      <location filename="../../ArchStructure.py" line="1789"/>
+      <location filename="../../ArchStructure.py" line="1725"/>
+      <location filename="../../ArchStructure.py" line="1775"/>
       <source>One of these objects has more than 2 nodes</source>
       <translation>לאחד מהאובייקטים הללו יש יותר מ-2 צמתים</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1752"/>
-      <location filename="../../ArchStructure.py" line="1802"/>
+      <location filename="../../ArchStructure.py" line="1738"/>
+      <location filename="../../ArchStructure.py" line="1788"/>
       <source>Unable to find a suitable intersection point</source>
       <translation>לא מצליח למצוא נקודת צומת מתאימה</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1756"/>
+      <location filename="../../ArchStructure.py" line="1742"/>
       <source>Intersection found.
 </source>
       <translation>נמצא צומת.</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1807"/>
+      <location filename="../../ArchStructure.py" line="1793"/>
       <source>Intersection found.</source>
       <translation>נמצא צומת.</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1860"/>
+      <location filename="../../ArchStructure.py" line="1846"/>
       <source>Done</source>
       <translation>בוצע</translation>
     </message>
@@ -4476,12 +4080,6 @@ The default template is located at:
       <location filename="../../bimcommands/BimProfile.py" line="149"/>
       <source>Create Profile</source>
       <translation>צור פרופיל</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimProfile.py" line="76"/>
-      <location filename="../../bimcommands/BimPanel.py" line="126"/>
-      <source>%1 pick point</source>
-      <translation>נקודת בחירת %1</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProfile.py" line="92"/>
@@ -4557,8 +4155,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>תליה</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1155"/>
       <location filename="../../ArchRoof.py" line="1070"/>
+      <location filename="../../Arch.py" line="1155"/>
       <source>Roof</source>
       <translation>גַג</translation>
     </message>
@@ -4839,13 +4437,13 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1099"/>
-      <location filename="../../ArchWindow.py" line="1745"/>
+      <location filename="../../ArchWindow.py" line="1756"/>
       <source>Invert Opening Direction</source>
       <translation>הפוך את כיוון הפתיחה</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1114"/>
-      <location filename="../../ArchWindow.py" line="1748"/>
+      <location filename="../../ArchWindow.py" line="1759"/>
       <source>Invert Hinge Position</source>
       <translation>הפוך את מיקום הציר</translation>
     </message>
@@ -4861,322 +4459,173 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>אפשרויות חלון</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1505"/>
-      <location filename="../../ArchWindow.py" line="1556"/>
+      <location filename="../../ArchWindow.py" line="1516"/>
+      <location filename="../../ArchWindow.py" line="1567"/>
       <source>Get selected edge</source>
       <translation>קבל קצה נבחר</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1658"/>
+      <location filename="../../ArchWindow.py" line="1669"/>
       <source>Unable to create component</source>
       <translation>לא ניתן ליצור רכיב</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1696"/>
+      <location filename="../../ArchWindow.py" line="1707"/>
       <source>Window Elements</source>
       <translation>אלמנטים של חלון</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1697"/>
+      <location filename="../../ArchWindow.py" line="1708"/>
       <source>Hole wire</source>
       <translation>חוט חור</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1704"/>
+      <location filename="../../ArchWindow.py" line="1715"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation>מספר החוט שמגדיר חור באובייקט המארח. ערך של אפס יאמץ אוטומטית את החוט הגדול ביותר</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1705"/>
+      <location filename="../../ArchWindow.py" line="1716"/>
       <source>Pick Selected</source>
       <translation>בחר נבחר</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1711"/>
+      <location filename="../../ArchWindow.py" line="1722"/>
       <source>Create/Update Component</source>
       <translation>צור/עדכן רכיב</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1715"/>
+      <location filename="../../ArchWindow.py" line="1726"/>
       <source>Create new Component</source>
       <translation>צור רכיב חדש</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1719"/>
+      <location filename="../../ArchWindow.py" line="1730"/>
       <source>Frame depth</source>
       <translation>עומק מסגרת</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1721"/>
+      <location filename="../../ArchWindow.py" line="1732"/>
       <source>Hinge/Track</source>
       <translation>ציר/מסלול</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1730"/>
+      <location filename="../../ArchWindow.py" line="1741"/>
       <source>If this is checked, the window's Frame property value will be added to the value entered here</source>
       <translation>אם זה מסומן, ערך מאפיין המסגרת של החלון יתווסף לערך שהוזן כאן</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1738"/>
+      <location filename="../../ArchWindow.py" line="1749"/>
       <source>If this is checked, the window's Offset property value will be added to the value entered here</source>
       <translation>אם זה מסומן, ערך המאפיין Offset של החלון יתווסף לערך שהוזן כאן</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1742"/>
+      <location filename="../../ArchWindow.py" line="1753"/>
       <source>Retrieves the selected edge</source>
       <translation>מאחזר את הקצה שנבחר</translation>
     </message>
     <message>
+      <location filename="../../ArchAxisSystem.py" line="338"/>
       <location filename="../../ArchSectionPlane.py" line="1805"/>
       <location filename="../../ArchAxis.py" line="999"/>
-      <location filename="../../ArchComponent.py" line="2463"/>
       <location filename="../../ArchSpace.py" line="954"/>
-      <location filename="../../ArchAxisSystem.py" line="338"/>
-      <location filename="../../ArchWindow.py" line="1706"/>
+      <location filename="../../ArchWindow.py" line="1717"/>
+      <location filename="../../ArchComponent.py" line="2463"/>
       <source>Remove</source>
       <translation>הסר</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1000"/>
-      <location filename="../../ArchComponent.py" line="2464"/>
-      <location filename="../../ArchSpace.py" line="949"/>
       <location filename="../../ArchAxisSystem.py" line="339"/>
-      <location filename="../../ArchWindow.py" line="1707"/>
+      <location filename="../../ArchAxis.py" line="1000"/>
+      <location filename="../../ArchSpace.py" line="949"/>
+      <location filename="../../ArchWindow.py" line="1718"/>
+      <location filename="../../ArchComponent.py" line="2464"/>
       <source>Add</source>
       <translation>הוסף</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="1053"/>
-      <source>Solar Diagrams</source>
-      <translation>דיאגרמות שמש</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1057"/>
-      <source>Location</source>
-      <translation>מיקום</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1072"/>
-      <source>The latitude of this site in decimal degrees.
-Positive values are north of the Equator, negative values are south.</source>
-      <translation>קו הרוחב של אתר זה במעלות עשרוניות.
-ערכים חיוביים מצפון לקו המשווה, ערכים שליליים מדרום.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1073"/>
-      <source>Latitude</source>
-      <translation>קו רוחב</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1087"/>
-      <source>The longitude of this site in decimal degrees.
-Positive values are east of the Prime Meridian, negative values are west.</source>
-      <translation>קו האורך של אתר זה במעלות עשרוניות.
-ערכים חיוביים נמצאים מזרחית למרידיאן פריים, ערכים שליליים הם מערבים.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1088"/>
-      <source>Longitude</source>
-      <translation>קו אורך</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1100"/>
-      <source>The UTC offset of the time zone where this site is located.
-Used when calculating the sun position.</source>
-      <translation>קיזוז UTC של אזור הזמן שבו נמצא אתר זה.
-משמש בעת חישוב מיקום השמש.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1101"/>
-      <source>Time zone</source>
-      <translation>אזור זמן</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1118"/>
-      <source>The angle between the model's north and geographic north.
-Drives the compass orientation and the declination used to
-align the solar diagram and sun path.</source>
-      <translation>הזווית בין צפון הדגם לצפון הגיאוגרפי.
-מניע את כיוון המצפן ואת הנטייה הרגילה
-יישר את דיאגרמת השמש ואת נתיב השמש.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1119"/>
-      <source>North offset</source>
-      <translation>קיזוז צפון</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1123"/>
-      <source>Diagrams</source>
-      <translation>דיאגרמות</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1126"/>
-      <source>Solar Diagram</source>
-      <translation>דיאגרמה סולארית</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1136"/>
-      <source>Shows a sun path arc diagram projected onto the site,
-computed from the site's latitude, longitude and north offset.</source>
-      <translation>מציג דיאגרמת קשת של נתיב השמש המוקרנת על האתר,
-מחושב מקו הרוחב, קו האורך והיסט הצפון של האתר.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1139"/>
-      <source>Compass</source>
-      <translation>מצפן</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1147"/>
-      <source>Shows a compass rose overlay on the site,
-oriented according to the north offset.</source>
-      <translation>מציג שכבת-על של ורד מצפן באתר,
-מכוון לפי ההיסט הצפוני.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1153"/>
-      <source>Sun Position</source>
-      <translation>מיקום שמש</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1164"/>
-      <source>Shows a sphere and ray indicating the sun position
-for the selected date and time.</source>
-      <translation>מציג כדור וקרן המציינים את מיקום השמש
-עבור התאריך והשעה שנבחרו.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1184"/>
-      <source>The day and month for which the sun position is shown.
-The year is ignored.</source>
-      <translation>היום והחודש שעבורם מוצגת מיקום השמש.
-מתעלמים מהשנה.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1185"/>
-      <source>Date</source>
-      <translation>תַאֲרִיך</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1196"/>
-      <source>The time of day for which the sun position is shown,
-in 24-hour local time. Steps in half-hour increments.</source>
-      <translation>השעה ביום שעבורה מוצגת מיקום השמש,
-בזמן מקומי של 24 שעות. צעדים במרווחים של חצי שעה.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1209"/>
-      <source>Hour</source>
-      <translation>שָׁעָה</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1214"/>
-      <source>Show Hour Labels</source>
-      <translation>הצג תוויות שעות</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1220"/>
-      <source>Shows text labels at key hours along the sun path arc</source>
-      <translation>מציג תוויות טקסט בשעות מפתח לאורך קשת נתיב השמש</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1233"/>
-      <source>Solar calculations require the ladybug or pysolar Python module,
-which was not found.</source>
-      <translation>חישובי שמש דורשים את מודול פרת משה רבנו או pysolar Python,
-שלא נמצא.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1243"/>
-      <source>Solar calculations unavailable.
-The ladybug or pysolar Python module is required.</source>
-      <translation>חישובי שמש אינם זמינים.
-נדרש מודול פרת משה רבנו או pysolar Python.</translation>
-    </message>
-    <message>
+      <location filename="../../ArchAxisSystem.py" line="222"/>
       <location filename="../../ArchSite.py" line="1588"/>
       <location filename="../../ArchSectionPlane.py" line="1592"/>
+      <location filename="../../ArchReference.py" line="717"/>
+      <location filename="../../ArchIFCView.py" line="63"/>
+      <location filename="../../ArchSchedule.py" line="765"/>
       <location filename="../../ArchAxis.py" line="831"/>
       <location filename="../../ArchGrid.py" line="384"/>
-      <location filename="../../ArchReference.py" line="717"/>
-      <location filename="../../ArchComponent.py" line="1971"/>
+      <location filename="../../ArchWindow.py" line="1719"/>
       <location filename="../../ArchMaterial.py" line="471"/>
       <location filename="../../ArchMaterial.py" line="798"/>
-      <location filename="../../ArchIFCView.py" line="63"/>
-      <location filename="../../ArchAxisSystem.py" line="222"/>
-      <location filename="../../ArchSchedule.py" line="765"/>
-      <location filename="../../ArchWindow.py" line="1708"/>
+      <location filename="../../ArchComponent.py" line="1971"/>
       <source>Edit</source>
       <translation>עריכה</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1712"/>
+      <location filename="../../ArchWindow.py" line="1723"/>
       <source>Base 2D object</source>
       <translation>אובייקט דו מימדי בסיסי</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1713"/>
-      <location filename="../../ArchWindow.py" line="1718"/>
+      <location filename="../../ArchWindow.py" line="1724"/>
+      <location filename="../../ArchWindow.py" line="1729"/>
       <source>Wires</source>
       <translation>חוטים</translation>
     </message>
     <message>
+      <location filename="../../ArchWindow.py" line="1725"/>
       <location filename="../../ArchComponent.py" line="2471"/>
-      <location filename="../../ArchWindow.py" line="1714"/>
       <source>Components</source>
       <translation>רכיבים</translation>
     </message>
     <message>
+      <location filename="../../ArchWindow.py" line="1727"/>
       <location filename="../../ArchMaterial.py" line="895"/>
       <location filename="../../ArchMaterial.py" line="921"/>
-      <location filename="../../ArchWindow.py" line="1716"/>
       <source>Name</source>
       <translation>שם</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2539"/>
       <location filename="../../ArchCommands.py" line="1730"/>
-      <location filename="../../ArchWindow.py" line="1717"/>
+      <location filename="../../ArchWindow.py" line="1728"/>
+      <location filename="../../ArchComponent.py" line="2539"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="476"/>
       <source>Type</source>
       <translation>סוג</translation>
     </message>
     <message>
+      <location filename="../../ArchStructure.py" line="1605"/>
+      <location filename="../../ArchRoof.py" line="1084"/>
       <location filename="../../ArchCoveringGui.py" line="802"/>
-      <location filename="../../ArchStructure.py" line="1619"/>
+      <location filename="../../ArchPanel.py" line="578"/>
       <location filename="../../ArchMaterial.py" line="897"/>
       <location filename="../../ArchMaterial.py" line="923"/>
-      <location filename="../../ArchRoof.py" line="1084"/>
-      <location filename="../../ArchPanel.py" line="578"/>
       <location filename="../../bimcommands/BimPanel.py" line="225"/>
       <source>Thickness</source>
       <translation>עובי</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1725"/>
-      <location filename="../../ArchWindow.py" line="1720"/>
+      <location filename="../../ArchWindow.py" line="1731"/>
       <location filename="../../bimcommands/BimWall.py" line="534"/>
       <source>Offset</source>
       <translation>היסט</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1722"/>
+      <location filename="../../ArchWindow.py" line="1733"/>
       <source>Opening mode</source>
       <translation>מצב פתיחה</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1723"/>
+      <location filename="../../ArchWindow.py" line="1734"/>
       <source>+ Frame property</source>
       <translation>+ מאפיין מסגרת</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1731"/>
+      <location filename="../../ArchWindow.py" line="1742"/>
       <source>+ Offset property</source>
       <translation>+ נכס קיזוז</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1739"/>
+      <location filename="../../ArchWindow.py" line="1750"/>
       <source>Get Selected Edge</source>
       <translation>קבל Selected Edge</translation>
     </message>
@@ -5201,10 +4650,10 @@ The ladybug or pysolar Python module is required.</source>
       <translation>בחר ציר אחד לפחות</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="998"/>
-      <location filename="../../ArchComponent.py" line="2470"/>
-      <location filename="../../Arch.py" line="102"/>
       <location filename="../../ArchAxisSystem.py" line="337"/>
+      <location filename="../../ArchAxis.py" line="998"/>
+      <location filename="../../Arch.py" line="102"/>
+      <location filename="../../ArchComponent.py" line="2470"/>
       <source>Axes</source>
       <translation>צירים</translation>
     </message>
@@ -5216,8 +4665,8 @@ The ladybug or pysolar Python module is required.</source>
     <message>
       <location filename="../../importers/importOBJ.py" line="300"/>
       <location filename="../../importers/importOBJ.py" line="338"/>
-      <location filename="../../importers/importWebGL.py" line="372"/>
       <location filename="../../importers/importJSON.py" line="62"/>
+      <location filename="../../importers/importWebGL.py" line="372"/>
       <source>Successfully written</source>
       <translation>נכתב בהצלחה</translation>
     </message>
@@ -5322,9 +4771,9 @@ The ladybug or pysolar Python module is required.</source>
       <translation>צור ריבוי חומרים</translation>
     </message>
     <message>
+      <location filename="../../Arch.py" line="540"/>
       <location filename="../../ArchMaterial.py" line="896"/>
       <location filename="../../ArchMaterial.py" line="922"/>
-      <location filename="../../Arch.py" line="540"/>
       <source>Material</source>
       <translation>חומר גלם</translation>
     </message>
@@ -5420,8 +4869,8 @@ The ladybug or pysolar Python module is required.</source>
       <translation>Remove Span</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="488"/>
       <location filename="../../Arch.py" line="504"/>
+      <location filename="../../ArchGrid.py" line="488"/>
       <source>Grid</source>
       <translation>מטריצה</translation>
     </message>
@@ -5572,10 +5021,406 @@ The ladybug or pysolar Python module is required.</source>
       <translation>רָמָה</translation>
     </message>
     <message>
+      <location filename="../../ArchCoveringGui.py" line="524"/>
+      <source>Solid Tiles</source>
+      <translation>אריחים מוצקים</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="525"/>
+      <source>Parametric Pattern</source>
+      <translation>דפוס פרמטרי</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="526"/>
+      <source>Monolithic</source>
+      <translation>מוֹנוֹלִיטִי</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="527"/>
+      <source>Hatch Pattern</source>
+      <translation>דפוס הבקעה</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="531"/>
+      <source>Top Left</source>
+      <translation>שמאל למעלה</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="532"/>
+      <source>Top Right</source>
+      <translation>למעלה מימין</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="533"/>
+      <source>Bottom Left</source>
+      <translation>שמאל למטה</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="534"/>
+      <source>Bottom Right</source>
+      <translation>ימין למטה</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="537"/>
+      <source>Stacked (None)</source>
+      <translation>מוערמים (אין)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="538"/>
+      <source>Half Bond (1/2)</source>
+      <translation>חצי בונד (1/2)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="539"/>
+      <source>Third Bond (1/3)</source>
+      <translation>ערבות שלישית (1/3)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="540"/>
+      <source>Quarter Bond (1/4)</source>
+      <translation>רבעון בונד (1/4)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="541"/>
+      <location filename="../../ArchCoveringGui.py" line="862"/>
+      <source>Custom</source>
+      <translation>מותאם אישית</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="619"/>
+      <source>Covering Definition</source>
+      <translation>הגדרה מכסה</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="634"/>
+      <source>Layout and Boundaries</source>
+      <translation>פריסה וגבולות</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="640"/>
+      <source>Visuals</source>
+      <translation>חזותיים</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="672"/>
+      <location filename="../../ArchCoveringGui.py" line="683"/>
+      <location filename="../../ArchCoveringGui.py" line="742"/>
+      <location filename="../../bimtests/TestArchCoveringGui.py" line="173"/>
+      <source>No selection</source>
+      <translation>אין בחירה</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="675"/>
+      <location filename="../../ArchCoveringGui.py" line="731"/>
+      <source>The object or face this covering is applied to:</source>
+      <translation>החפץ או הפנים כיסוי זה מוחל על:</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="686"/>
+      <location filename="../../ArchCoveringGui.py" line="746"/>
+      <source>The object or face this covering is applied to</source>
+      <translation>האובייקט או הפנים שעליו מוחל חיפוי זה</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="718"/>
+      <source>%1 (%2 faces)</source>
+      <translation>% 1 (% 2 פרצופים)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="725"/>
+      <source>%1 objects selected</source>
+      <translation>נבחרו %1 אובייקטים</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="748"/>
+      <location filename="../../ArchCoveringGui.py" line="771"/>
+      <source>Pick</source>
+      <translation>לִבחוֹר</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="752"/>
+      <source>Enable interactive face selection in the 3D view</source>
+      <translation>אפשר בחירת פנים אינטראקטיבית בתצוגת התלת-ממד</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="770"/>
+      <source>Picking…</source>
+      <translation>בוחר...</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="779"/>
+      <source>Base</source>
+      <translation>בסיס</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="793"/>
+      <source>How the finish is created and displayed:
+- Solid Tiles: Physical 3D tiles with real gaps. Best for accurate detail and counting.
+- Parametric Pattern: A grid of lines on a single slab. Faster to display than real tiles.
+- Monolithic: A single smooth surface. Ideal for paint, plaster, or seamless flooring.
+- Hatch Pattern: Technical drafting symbols (hatching) on a single slab.</source>
+      <translation>כיצד נוצר ומוצג הגימור:
+- אריחים מוצקים: אריחי תלת מימד פיזיים עם פערים אמיתיים. הטוב ביותר עבור פירוט מדויק וספירה.
+- דפוס פרמטרי: רשת של קווים על לוח בודד. מהיר יותר לתצוגה מאשר אריחים אמיתיים.
+- מונוליטי: משטח חלק אחד. אידיאלי עבור צבע, טיח, או ריצוף חלק.
+- דפוס בוקעים: סמלי שרטוט טכניים (בקיעה) על לוח בודד.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="796"/>
+      <source>Mode</source>
+      <translation>מצב</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="801"/>
+      <source>The thickness of the finish</source>
+      <translation>עובי הגימור</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="817"/>
+      <source>Continue</source>
+      <translation>לְהַמשִׁיך</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="824"/>
+      <source>If checked, the dialog stays open after creating the covering, allowing to pick another face</source>
+      <translation>אם מסומן, תיבת הדו-שיח נשארת פתוחה לאחר יצירת הכיסוי, ומאפשרת לבחור פנים אחר</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="847"/>
+      <source>Use standard corner or center alignment relative to the boundary</source>
+      <translation>השתמש ביישור פינתי או מרכז סטנדרטי ביחס לגבול</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="855"/>
+      <source>Select which part of the usable boundary to anchor the pattern origin to</source>
+      <translation>בחר באיזה חלק מהגבול השמיש לעגן את מקור הדפוס</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="867"/>
+      <source>Use a manually picked 3D point or match the current Working Plane</source>
+      <translation>השתמש בנקודת תלת ממד שנבחרה ידנית או התאם למישור העבודה הנוכחי</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="868"/>
+      <source>Interactive</source>
+      <translation>אינטראקטיבי</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="878"/>
+      <source>Enter interactive mode to visually place the grid origin and rotate the grid. Click to finish and set the origin. Optionally press R / Shift+R to rotate the tile preview by the PickRotationStep angle (configurable in the View properties).</source>
+      <translation>היכנס למצב אינטראקטיבי כדי למקם חזותית את מקור הרשת ולסובב את הרשת. לחץ כדי לסיים ולהגדיר את המקור. אופציונלי הקש R / Shift+R כדי לסובב את התצוגה המקדימה של האריח לפי זווית PickRotationStep (ניתן להגדרה במאפייני התצוגה).</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="879"/>
+      <source>Match Working Plane</source>
+      <translation>התאמה למטוס עבודה</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="885"/>
+      <source>Use the position and orientation of the active Working Plane for the covering</source>
+      <translation>השתמש במיקום ובכיוון של מישור העבודה הפעיל לכיסוי</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="895"/>
+      <source>Shift the grid along U</source>
+      <translation>העבר את הרשת לאורך U</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="900"/>
+      <source>Shift the grid along V</source>
+      <translation>העבר את הרשת לאורך V</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="904"/>
+      <source>U offset</source>
+      <translation>קיזוז U</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="905"/>
+      <source>V offset</source>
+      <translation>היסט V</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="912"/>
+      <source>Manual rotation of the tile grid</source>
+      <translation>סיבוב ידני של רשת האריחים</translation>
+    </message>
+    <message>
       <location filename="../../ArchCoveringGui.py" line="913"/>
       <location filename="../../ArchPrecast.py" line="1724"/>
       <source>Rotation</source>
       <translation>רוֹטַציָה</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="925"/>
+      <source>Boundaries</source>
+      <translation>גבולות</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="930"/>
+      <source>Distance to offset the covering inwards from the boundary</source>
+      <translation>מרחק לקיזוז החיפוי פנימה מהגבול</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="932"/>
+      <source>Border setback</source>
+      <translation>נסיגה בגבול</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="995"/>
+      <source>The length of the tiles</source>
+      <translation>אורך האריחים</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1001"/>
+      <source>The width of the tiles</source>
+      <translation>רוחב האריחים</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1007"/>
+      <source>The width of the joints between tiles</source>
+      <translation>רוחב החיבורים בין אריחים</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1008"/>
+      <source>Joint width</source>
+      <translation>רוחב מפרק</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1022"/>
+      <source>The horizontal shift applied to every second row:
+- Stacked: all joints align vertically
+- Half/Third/Quarter Bond: shifts by a fraction of the tile length
+- Custom: manual offset value</source>
+      <translation>ההזזה האופקית שהוחלה על כל שורה שנייה:
+- מוערמים: כל המפרקים מיושרים אנכית
+- חצי/שלישי/רבע בונד: תזוזה בשבריר מאורך האריח
+- מותאם אישית: ערך היסט ידני</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1028"/>
+      <source>Custom offset for running bond rows</source>
+      <translation>קיזוז מותאם אישית להפעלת שורות אג"ח</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1030"/>
+      <source>Stagger</source>
+      <translation>לְהִתְנוֹדֵד</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1041"/>
+      <source>The PAT file to use for hatching</source>
+      <translation>קובץ ה-PAT לשימוש לבקיעה</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1048"/>
+      <source>Pattern file</source>
+      <translation>קובץ דפוס</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1052"/>
+      <source>The name of the pattern to use</source>
+      <translation>שם התבנית שבה יש להשתמש</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1053"/>
+      <source>Pattern name</source>
+      <translation>שם תבנית</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1058"/>
+      <source>The scale of the hatch pattern</source>
+      <translation>קנה המידה של תבנית הצוהר</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1060"/>
+      <source>Pattern scale</source>
+      <translation>סולם דפוסים</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1072"/>
+      <source>Texture repeat interval along U</source>
+      <translation>מרווח חוזר של מרקם לאורך U</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1075"/>
+      <source>Texture repeat interval along V</source>
+      <translation>מרווח חוזר של מרקם לאורך V</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1086"/>
+      <source>Note: In Monolithic mode, dimensions control the repeat interval of the optional surface texture.</source>
+      <translation>הערה: במצב מונוליטי, מידות שולטות במרווח החזרה של מרקם השטח האופציונלי.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1097"/>
+      <source>An image file to map onto each tile or substrate</source>
+      <translation>קובץ תמונה למיפוי על כל אריח או מצע</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1104"/>
+      <source>Texture image</source>
+      <translation>תמונת מרקם</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1111"/>
+      <source>Horizontal texture multiplier</source>
+      <translation>מכפיל מרקם אופקי</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1115"/>
+      <source>Vertical texture multiplier</source>
+      <translation>מכפיל מרקם אנכי</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1118"/>
+      <source>Texture scale</source>
+      <translation>סולם מרקם</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1165"/>
+      <source>Select Texture</source>
+      <translation>בחר מרקם</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1174"/>
+      <source>Select Pattern</source>
+      <translation>בחר דפוס</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1390"/>
+      <source>Could not resolve base geometry.</source>
+      <translation>לא ניתן היה לפתור את גיאומטריית הבסיס.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1589"/>
+      <source>%1 pick tile origin</source>
+      <translation>%1 בחר מקור אריח</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1593"/>
+      <source>%1 rotate tile CW / Shift+%1 rotate tile CCW</source>
+      <translation>%1 לסובב אריח CW / Shift+%1 לסובב אריח CCW</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1601"/>
+      <source>%1 pick new base face or object</source>
+      <translation>% 1 בחר פנים או אובייקט בסיס חדשים</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1605"/>
+      <source>%1+%2 add face or object</source>
+      <translation>%1+%2 הוסף פנים או אובייקט</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1612"/>
+      <source>%1 pick planar face or object</source>
+      <translation>%1 בחר פנים או אובייקט מישוריים</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1616"/>
+      <source>%1+%2 add planar face or object</source>
+      <translation>%1+%2 הוסף פנים או אובייקט מישוריים</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="658"/>
@@ -5592,6 +5437,12 @@ The ladybug or pysolar Python module is required.</source>
       <location filename="../../bimcommands/BimPanel.py" line="145"/>
       <source>Create Panel</source>
       <translation>צור פאנל</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimPanel.py" line="126"/>
+      <location filename="../../bimcommands/BimProfile.py" line="76"/>
+      <source>%1 pick point</source>
+      <translation>נקודת בחירת %1</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="197"/>
@@ -5619,7 +5470,7 @@ The ladybug or pysolar Python module is required.</source>
       <translation>שגיאה בחישוב הצורה של</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="2008"/>
+      <location filename="../../ArchStructure.py" line="1994"/>
       <location filename="../../ArchPanel.py" line="563"/>
       <source>Could not compute a shape</source>
       <translation>לא ניתן היה לחשב צורה</translation>
@@ -5670,8 +5521,8 @@ The ladybug or pysolar Python module is required.</source>
       <translation>קיר מסך</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="59"/>
       <location filename="../../bimcommands/BimTruss.py" line="58"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="59"/>
       <source>Select only one base object or none</source>
       <translation>בחר רק אובייקט בסיס אחד או אף אחד</translation>
     </message>
@@ -5849,6 +5700,15 @@ The ladybug or pysolar Python module is required.</source>
       <location filename="../../ArchReport.py" line="1048"/>
       <source>SQL Query:</source>
       <translation>שאילתת SQL:</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1050"/>
+      <location filename="../../ArchReport.py" line="1872"/>
+      <location filename="../../ArchSql.py" line="2255"/>
+      <location filename="../../ArchSql.py" line="2282"/>
+      <location filename="../../ArchSql.py" line="2304"/>
+      <source>Ready</source>
+      <translation>מוּכָן</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1078"/>
@@ -6204,7 +6064,7 @@ The ladybug or pysolar Python module is required.</source>
       <translation>FreeCAD לא הצליח לפתוח את הקובץ. אנא בדוק אם יש לך עורך טקסט המוגדר כברירת מחדל במערכת ההפעלה שלך.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2475"/>
+      <location filename="../../ArchReport.py" line="2468"/>
       <source>BIM SQL Cheatsheet</source>
       <translation>BIM SQL Cheatsheet</translation>
     </message>
@@ -6311,6 +6171,18 @@ The ladybug or pysolar Python module is required.</source>
       <translation>לא ניתן לאחזר ערך מהאובייקט</translation>
     </message>
     <message>
+      <location filename="../../ArchSchedule.py" line="987"/>
+      <location filename="../../ArchSchedule.py" line="1011"/>
+      <source>Operation</source>
+      <translation>פעולה</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSchedule.py" line="936"/>
+      <location filename="../../ArchCommands.py" line="1454"/>
+      <source>Export CSV File</source>
+      <translation>ייצא קובץ CSV</translation>
+    </message>
+    <message>
       <location filename="../../ArchSchedule.py" line="771"/>
       <source>Remove Spreadsheet</source>
       <translation>הסר גיליון אלקטרוני</translation>
@@ -6324,18 +6196,6 @@ The ladybug or pysolar Python module is required.</source>
       <location filename="../../ArchSchedule.py" line="899"/>
       <source>Import CSV File</source>
       <translation>ייבוא ​​קובץ CSV</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSchedule.py" line="987"/>
-      <location filename="../../ArchSchedule.py" line="1011"/>
-      <source>Operation</source>
-      <translation>פעולה</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="1454"/>
-      <location filename="../../ArchSchedule.py" line="936"/>
-      <source>Export CSV File</source>
-      <translation>ייצא קובץ CSV</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="963"/>
@@ -6354,18 +6214,18 @@ The ladybug or pysolar Python module is required.</source>
       <translation>לאובייקט אין תכונות IFC הניתנות להגדרה</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2540"/>
-      <location filename="../../ArchCommands.py" line="1731"/>
       <location filename="../../ArchSchedule.py" line="988"/>
       <location filename="../../ArchSchedule.py" line="1013"/>
+      <location filename="../../ArchCommands.py" line="1731"/>
+      <location filename="../../ArchComponent.py" line="2540"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="477"/>
       <source>Value</source>
       <translation>ערך</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1732"/>
       <location filename="../../ArchSchedule.py" line="989"/>
       <location filename="../../ArchSchedule.py" line="1015"/>
+      <location filename="../../ArchCommands.py" line="1732"/>
       <source>Unit</source>
       <translation>יחידה</translation>
     </message>
@@ -6421,8 +6281,8 @@ Floor creation aborted.</source>
       <translation>מֶרְחָק</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1005"/>
       <location filename="../../ArchRoof.py" line="1081"/>
+      <location filename="../../ArchAxis.py" line="1005"/>
       <source>Angle</source>
       <translation>זווית</translation>
     </message>
@@ -6457,13 +6317,13 @@ Floor creation aborted.</source>
       <translation>יש צורה לא חוקית</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1171"/>
       <location filename="../../ArchPrecast.py" line="192"/>
       <location filename="../../ArchPrecast.py" line="324"/>
       <location filename="../../ArchPrecast.py" line="444"/>
       <location filename="../../ArchPrecast.py" line="605"/>
       <location filename="../../ArchPrecast.py" line="773"/>
       <location filename="../../ArchPrecast.py" line="894"/>
+      <location filename="../../ArchComponent.py" line="1171"/>
       <source>has a null shape</source>
       <translation>יש צורה אפסית</translation>
     </message>
@@ -6494,6 +6354,155 @@ Floor creation aborted.</source>
       <translation>סוג בסיס שגוי</translation>
     </message>
     <message>
+      <location filename="../../ArchSite.py" line="1053"/>
+      <source>Solar Diagrams</source>
+      <translation>דיאגרמות שמש</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1057"/>
+      <source>Location</source>
+      <translation>מיקום</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1072"/>
+      <source>The latitude of this site in decimal degrees.
+Positive values are north of the Equator, negative values are south.</source>
+      <translation>קו הרוחב של אתר זה במעלות עשרוניות.
+ערכים חיוביים מצפון לקו המשווה, ערכים שליליים מדרום.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1073"/>
+      <source>Latitude</source>
+      <translation>קו רוחב</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1087"/>
+      <source>The longitude of this site in decimal degrees.
+Positive values are east of the Prime Meridian, negative values are west.</source>
+      <translation>קו האורך של אתר זה במעלות עשרוניות.
+ערכים חיוביים נמצאים מזרחית למרידיאן פריים, ערכים שליליים הם מערבים.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1088"/>
+      <source>Longitude</source>
+      <translation>קו אורך</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1100"/>
+      <source>The UTC offset of the time zone where this site is located.
+Used when calculating the sun position.</source>
+      <translation>קיזוז UTC של אזור הזמן שבו נמצא אתר זה.
+משמש בעת חישוב מיקום השמש.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1101"/>
+      <source>Time zone</source>
+      <translation>אזור זמן</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1118"/>
+      <source>The angle between the model's north and geographic north.
+Drives the compass orientation and the declination used to
+align the solar diagram and sun path.</source>
+      <translation>הזווית בין צפון הדגם לצפון הגיאוגרפי.
+מניע את כיוון המצפן ואת הנטייה הרגילה
+יישר את דיאגרמת השמש ואת נתיב השמש.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1119"/>
+      <source>North offset</source>
+      <translation>קיזוז צפון</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1123"/>
+      <source>Diagrams</source>
+      <translation>דיאגרמות</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1126"/>
+      <source>Solar Diagram</source>
+      <translation>דיאגרמה סולארית</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1136"/>
+      <source>Shows a sun path arc diagram projected onto the site,
+computed from the site's latitude, longitude and north offset.</source>
+      <translation>מציג דיאגרמת קשת של נתיב השמש המוקרנת על האתר,
+מחושב מקו הרוחב, קו האורך והיסט הצפון של האתר.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1139"/>
+      <source>Compass</source>
+      <translation>מצפן</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1147"/>
+      <source>Shows a compass rose overlay on the site,
+oriented according to the north offset.</source>
+      <translation>מציג שכבת-על של ורד מצפן באתר,
+מכוון לפי ההיסט הצפוני.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1153"/>
+      <source>Sun Position</source>
+      <translation>מיקום שמש</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1164"/>
+      <source>Shows a sphere and ray indicating the sun position
+for the selected date and time.</source>
+      <translation>מציג כדור וקרן המציינים את מיקום השמש
+עבור התאריך והשעה שנבחרו.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1184"/>
+      <source>The day and month for which the sun position is shown.
+The year is ignored.</source>
+      <translation>היום והחודש שעבורם מוצגת מיקום השמש.
+מתעלמים מהשנה.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1185"/>
+      <source>Date</source>
+      <translation>תַאֲרִיך</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1196"/>
+      <source>The time of day for which the sun position is shown,
+in 24-hour local time. Steps in half-hour increments.</source>
+      <translation>השעה ביום שעבורה מוצגת מיקום השמש,
+בזמן מקומי של 24 שעות. צעדים במרווחים של חצי שעה.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1209"/>
+      <source>Hour</source>
+      <translation>שָׁעָה</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1214"/>
+      <source>Show Hour Labels</source>
+      <translation>הצג תוויות שעות</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1220"/>
+      <source>Shows text labels at key hours along the sun path arc</source>
+      <translation>מציג תוויות טקסט בשעות מפתח לאורך קשת נתיב השמש</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1233"/>
+      <source>Solar calculations require the ladybug or pysolar Python module,
+which was not found.</source>
+      <translation>חישובי שמש דורשים את מודול פרת משה רבנו או pysolar Python,
+שלא נמצא.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1243"/>
+      <source>Solar calculations unavailable.
+The ladybug or pysolar Python module is required.</source>
+      <translation>חישובי שמש אינם זמינים.
+נדרש מודול פרת משה רבנו או pysolar Python.</translation>
+    </message>
+    <message>
       <location filename="../../ArchSite.py" line="1594"/>
       <location filename="../../ArchComponent.py" line="1978"/>
       <source>Toggle Subcomponents</source>
@@ -6505,17 +6514,10 @@ Floor creation aborted.</source>
       <translation>סגירת עריכת סקיצה</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2462"/>
       <location filename="../../ArchCommands.py" line="315"/>
+      <location filename="../../ArchComponent.py" line="2462"/>
       <source>Component</source>
       <translation>רְכִיב</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="2132"/>
-      <location filename="../../bimcommands/BimRoof.py" line="91"/>
-      <location filename="../../bimcommands/BimSpace.py" line="68"/>
-      <source>Select a base object</source>
-      <translation>בחר אובייקט בסיס</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1435"/>
@@ -6540,6 +6542,13 @@ Floor creation aborted.</source>
       <source>Error computing areas for {self.obj.Label}: unable to combine projected horizontal faces. Area values will be reset to 0.
 </source>
       <translation>שגיאה בחישוב אזורים עבור {self.obj.Label}: אין אפשרות לשלב פרצופים אופקיים מוקרנים. ערכי השטח יאופסו ל-0.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="2132"/>
+      <location filename="../../bimcommands/BimRoof.py" line="91"/>
+      <location filename="../../bimcommands/BimSpace.py" line="68"/>
+      <source>Select a base object</source>
+      <translation>בחר אובייקט בסיס</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2466"/>
@@ -6742,7 +6751,7 @@ Floor creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="530"/>
-      <location filename="../../ArchWall.py" line="1873"/>
+      <location filename="../../ArchWall.py" line="1837"/>
       <location filename="../../bimcommands/BimWall.py" line="527"/>
       <source>Center</source>
       <translation>מרכז</translation>
@@ -6753,8 +6762,8 @@ Floor creation aborted.</source>
       <translation>מרכז את המישור על העצמים ברשימה למעלה</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="232"/>
       <location filename="../../ArchBuilding.py" line="214"/>
+      <location filename="../../Arch.py" line="232"/>
       <source>Building</source>
       <translation>בניין</translation>
     </message>
@@ -6894,19 +6903,19 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="837"/>
-      <location filename="../../ArchWall.py" line="1893"/>
+      <location filename="../../ArchWall.py" line="1860"/>
       <location filename="../../bimcommands/BimWall.py" line="525"/>
       <source>Alignment</source>
       <translation>מַעֲרָך</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1872"/>
+      <location filename="../../ArchWall.py" line="1836"/>
       <location filename="../../bimcommands/BimWall.py" line="527"/>
       <source>Left</source>
       <translation>שְׁמֹאל</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1874"/>
+      <location filename="../../ArchWall.py" line="1838"/>
       <location filename="../../bimcommands/BimWall.py" line="528"/>
       <source>Right</source>
       <translation>יָמִינָה</translation>
@@ -6918,12 +6927,12 @@ Building creation aborted.</source>
       <translation>מיזוג קירות</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1661"/>
+      <location filename="../../ArchWall.py" line="1615"/>
       <source>Cannot compute blocks for wall</source>
       <translation>לא ניתן לחשב בלוקים לקיר</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="749"/>
+      <location filename="../../ArchWall.py" line="720"/>
       <source>Error: Unable to modify the base object of this wall</source>
       <translation>שגיאה: לא ניתן לשנות את אובייקט הבסיס של הקיר הזה</translation>
     </message>
@@ -6933,18 +6942,18 @@ Building creation aborted.</source>
       <translation>לא ניתן ליצור או לעדכן את {obj.Label} מכיוון שהאורך, הגובה או הרוחב שלו הם אפס, ואין מוצקים בתוספות שלו</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1474"/>
+      <location filename="../../ArchWall.py" line="1428"/>
       <source>No supported edges in Base object of {obj.Label} (line, circle, arc, ellipse)</source>
       <translation>אין קצוות נתמכים באובייקט הבסיס של {obj.Label} (קו, עיגול, קשת, אליפסה)</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1848"/>
+      <location filename="../../ArchWall.py" line="1802"/>
       <location filename="../../bimcommands/BimWall.py" line="478"/>
       <source>Wall Options</source>
       <translation>אפשרויות קיר</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="2115"/>
+      <location filename="../../ArchWall.py" line="2082"/>
       <source>Flip Direction</source>
       <translation>Flip Direction</translation>
     </message>
@@ -7157,6 +7166,22 @@ Building creation aborted.</source>
       <translation type="unfinished">Save Camera View</translation>
     </message>
     <message>
+      <location filename="../../ArchBuildingPart.py" line="1183"/>
+      <source>New Group</source>
+      <translation>קבוצה חדשה</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="1187"/>
+      <location filename="../../ArchMaterial.py" line="100"/>
+      <source>Reorder Children Alphabetically</source>
+      <translation>סדר את הילדים בסדר אלפביתי</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="1191"/>
+      <source>Clone Level Up</source>
+      <translation>שיבוט רמה למעלה</translation>
+    </message>
+    <message>
       <location filename="../../ArchBuildingPart.py" line="1219"/>
       <source>Active working plane set to Top</source>
       <translation>מטוס עבודה פעיל מוגדר למעלה</translation>
@@ -7167,20 +7192,54 @@ Building creation aborted.</source>
       <translation>מישור עבודה פעיל מוגדר ל-{self.Object.Label}</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1183"/>
-      <source>New Group</source>
-      <translation>קבוצה חדשה</translation>
+      <location filename="../../ArchEquipment.py" line="64"/>
+      <source>Model</source>
+      <translation>דֶגֶם</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="100"/>
-      <location filename="../../ArchBuildingPart.py" line="1187"/>
-      <source>Reorder Children Alphabetically</source>
-      <translation>סדר את הילדים בסדר אלפביתי</translation>
+      <location filename="../../ArchEquipment.py" line="65"/>
+      <source>Equipment Power</source>
+      <translation>כוח ציוד</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1191"/>
-      <source>Clone Level Up</source>
-      <translation>שיבוט רמה למעלה</translation>
+      <location filename="../../ArchCurtainWall.py" line="725"/>
+      <source>Vertical Sections</source>
+      <translation>קטעים אנכיים</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="726"/>
+      <source>Horizontal Sections</source>
+      <translation>חתכים אופקיים</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="727"/>
+      <source>Vertical Mullion Width</source>
+      <translation>רוחב מוט אנכי</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="730"/>
+      <source>Vertical Mullion Height</source>
+      <translation>גובה מוט אנכי</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="734"/>
+      <source>Horizontal Mullion Width</source>
+      <translation>רוחב עמוד אופקי</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="738"/>
+      <source>Horizontal Mullion Height</source>
+      <translation>גובה מוט אופקי</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="740"/>
+      <source>Panel Thickness</source>
+      <translation>עובי פאנל</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="741"/>
+      <source>Refine</source>
+      <translation>לְעַדֵן</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="414"/>
@@ -7253,15 +7312,6 @@ Building creation aborted.</source>
       <translation>חור גדול יותר מהשטח המכווץ. דילוג על החור הזה.</translation>
     </message>
     <message>
-      <location filename="../../ArchSql.py" line="2255"/>
-      <location filename="../../ArchSql.py" line="2282"/>
-      <location filename="../../ArchSql.py" line="2304"/>
-      <location filename="../../ArchReport.py" line="1050"/>
-      <location filename="../../ArchReport.py" line="1872"/>
-      <source>Ready</source>
-      <translation>מוּכָן</translation>
-    </message>
-    <message>
       <location filename="../../ArchSql.py" line="2312"/>
       <source>Typing…</source>
       <translation>הַקלָדָה…</translation>
@@ -7272,56 +7322,6 @@ Building creation aborted.</source>
       <translation>השאילתה חוקית, אך נמצאו 0 אובייקטים.</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="64"/>
-      <source>Model</source>
-      <translation>דֶגֶם</translation>
-    </message>
-    <message>
-      <location filename="../../ArchEquipment.py" line="65"/>
-      <source>Equipment Power</source>
-      <translation>כוח ציוד</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="732"/>
-      <source>Vertical Sections</source>
-      <translation>קטעים אנכיים</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="733"/>
-      <source>Horizontal Sections</source>
-      <translation>חתכים אופקיים</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="734"/>
-      <source>Vertical Mullion Width</source>
-      <translation>רוחב מוט אנכי</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="737"/>
-      <source>Vertical Mullion Height</source>
-      <translation>גובה מוט אנכי</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="741"/>
-      <source>Horizontal Mullion Width</source>
-      <translation>רוחב עמוד אופקי</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="745"/>
-      <source>Horizontal Mullion Height</source>
-      <translation>גובה מוט אופקי</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="747"/>
-      <source>Panel Thickness</source>
-      <translation>עובי פאנל</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="748"/>
-      <source>Refine</source>
-      <translation>לְעַדֵן</translation>
-    </message>
-    <message>
       <location filename="../../bimcommands/BimSketch.py" line="54"/>
       <source>Create Sketch</source>
       <translation type="unfinished">Create Sketch</translation>
@@ -7330,12 +7330,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_StructuresFromSelection</name>
     <message>
-      <location filename="../../ArchStructure.py" line="99"/>
+      <location filename="../../ArchStructure.py" line="100"/>
       <source>Multiple Structures</source>
       <translation>מבנים מרובים</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="103"/>
+      <location filename="../../ArchStructure.py" line="104"/>
       <source>Creates multiple BIM Structures from a selected base, using each selected edge as an extrusion path</source>
       <translation>יוצר מבני BIM מרובים מבסיס נבחר, תוך שימוש בכל קצה שנבחר כנתיב שחול</translation>
     </message>
@@ -7343,12 +7343,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_StructuralSystem</name>
     <message>
-      <location filename="../../ArchStructure.py" line="166"/>
+      <location filename="../../ArchStructure.py" line="167"/>
       <source>Structural System</source>
       <translation>מערכת מבנית</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="170"/>
+      <location filename="../../ArchStructure.py" line="171"/>
       <source>Create a structural system from a selected structure and axis</source>
       <translation>צור מערכת מבנית ממבנה וציר נבחרים</translation>
     </message>
@@ -7356,146 +7356,148 @@ Building creation aborted.</source>
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../ArchStructure.py" line="683"/>
-      <location filename="../../ArchStructure.py" line="1885"/>
+      <location filename="../../ArchStructure.py" line="684"/>
+      <location filename="../../ArchStructure.py" line="1871"/>
       <source>An optional extrusion path for this element</source>
       <translation>נתיב שחול אופציונלי עבור אלמנט זה</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="691"/>
+      <location filename="../../ArchStructure.py" line="692"/>
       <source>The computed length of the extrusion path</source>
       <translation>האורך המחושב של נתיב האקסטרוזיה</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="703"/>
+      <location filename="../../ArchStructure.py" line="704"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim)</source>
       <translation>התחל מרחק היסט לאורך נתיב האקסטרוזיה (חיובי: הארכה, שלילי: חיתוך)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="714"/>
+      <location filename="../../ArchStructure.py" line="715"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim)</source>
       <translation>מרחק היסט לאורך נתיב האקסטרוזיה (חיובי: הארכה, שלילי: חיתוך)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="725"/>
+      <location filename="../../ArchStructure.py" line="726"/>
       <source>Automatically align the Base of the Structure perpendicular to the Tool axis</source>
       <translation>יישר אוטומטית את בסיס המבנה בניצב לציר הכלי</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="736"/>
+      <location filename="../../ArchStructure.py" line="737"/>
       <source>X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
       <translation>היסט X בין מקור הבסיס לציר הכלי (בשימוש רק אם BasePerpendicularToTool הוא True)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="747"/>
+      <location filename="../../ArchStructure.py" line="748"/>
       <source>Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
       <translation>היסט Y בין מקור הבסיס לציר הכלי (בשימוש רק אם BasePerpendicularToTool הוא True)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="758"/>
+      <location filename="../../ArchStructure.py" line="759"/>
       <source>Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</source>
       <translation>שיקוף את הבסיס לאורך ציר ה-Y שלו (בשימוש רק אם BasePerpendicularToTool הוא True)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="769"/>
+      <location filename="../../ArchStructure.py" line="770"/>
       <source>Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</source>
       <translation>סיבוב בסיס סביב ציר הכלי (בשימוש רק אם BasePerpendicularToTool הוא True)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="779"/>
+      <location filename="../../ArchStructure.py" line="780"/>
       <location filename="../../ArchPanel.py" line="85"/>
       <source>The length of this element, if not based on a profile</source>
       <translation>האורך של אלמנט זה, אם לא מבוסס על פרופיל</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="789"/>
+      <location filename="../../ArchStructure.py" line="790"/>
       <location filename="../../ArchPanel.py" line="95"/>
       <source>The width of this element, if not based on a profile</source>
       <translation>הרוחב של אלמנט זה, אם לא מבוסס על פרופיל</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="800"/>
-      <source>The height or extrusion depth of this element. Keep 0 for automatic</source>
-      <translation>הגובה או עומק האקסטרוזיה של אלמנט זה. שמור על 0 עבור אוטומטי</translation>
+      <location filename="../../ArchStructure.py" line="801"/>
+      <source>The height or extrusion depth of this element.
+Keep 0 to automatically match the height of the enclosing Level or Building.</source>
+      <translation type="unfinished">The height or extrusion depth of this element.
+Keep 0 to automatically match the height of the enclosing Level or Building.</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="811"/>
-      <location filename="../../ArchWall.py" line="272"/>
+      <location filename="../../ArchStructure.py" line="812"/>
       <location filename="../../ArchPanel.py" line="209"/>
+      <location filename="../../ArchWall.py" line="272"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
       <translation>כיוון השחול הרגיל של אובייקט זה (שמור (0,0,0) לנורמלי אוטומטי)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="819"/>
+      <location filename="../../ArchStructure.py" line="820"/>
       <location filename="../../ArchPrecast.py" line="101"/>
       <source>The structural nodes of this element</source>
       <translation>הצמתים המבניים של אלמנט זה</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="830"/>
+      <location filename="../../ArchStructure.py" line="831"/>
       <source>A description of the standard profile this element is based upon</source>
       <translation>תיאור של הפרופיל הסטנדרטי שאלמנט זה מבוסס עליו</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="840"/>
+      <location filename="../../ArchStructure.py" line="841"/>
       <source>Offset distance between the centerline and the nodes line</source>
       <translation>מרחק היסט בין קו המרכז לקו הצמתים</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="850"/>
+      <location filename="../../ArchStructure.py" line="851"/>
       <location filename="../../ArchPanel.py" line="197"/>
       <source>The facemaker type to use to build the profile of this object</source>
       <translation>סוג מייקר הפנים לשימוש כדי לבנות את הפרופיל של אובייקט זה</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="874"/>
-      <location filename="../../ArchStructure.py" line="891"/>
+      <location filename="../../ArchStructure.py" line="875"/>
+      <location filename="../../ArchStructure.py" line="892"/>
       <source>Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this BIM Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</source>
       <translation>קצוות נבחרים (או קבוצת קצוות) של הבסיס ArchSketch, לשימוש ביצירת הצורה של מבנה BIM זה (במקום להשתמש בכל הקצוות של צורת הבסיס כברירת מחדל).  הקלט הוא מספרי אינדקס של קצוות או קבוצות.</translation>
     </message>
     <message>
+      <location filename="../../ArchStructure.py" line="904"/>
       <location filename="../../ArchStairs.py" line="547"/>
-      <location filename="../../ArchStructure.py" line="903"/>
       <source>Select User Defined PropertySet to use in creating variant shape, with same ArchSketch </source>
       <translation>בחר User Defined PropertySet לשימוש ביצירת צורת וריאנט, עם אותו ArchSketch</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1452"/>
+      <location filename="../../ArchStructure.py" line="1438"/>
       <source>If the nodes are visible or not</source>
       <translation>אם הצמתים גלויים או לא</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1460"/>
+      <location filename="../../ArchStructure.py" line="1446"/>
       <source>The width of the nodes line</source>
       <translation>רוחב קו הצמתים</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1468"/>
+      <location filename="../../ArchStructure.py" line="1454"/>
       <source>The size of the node points</source>
       <translation>גודל נקודות הצומת</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1477"/>
+      <location filename="../../ArchStructure.py" line="1463"/>
       <source>The color of the nodes line</source>
       <translation>צבע קו הצמתים</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1486"/>
+      <location filename="../../ArchStructure.py" line="1472"/>
       <source>The type of structural node</source>
       <translation>סוג הצומת המבני</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1932"/>
+      <location filename="../../ArchStructure.py" line="1918"/>
       <source>Axes systems this structure is built on</source>
       <translation>מערכות צירים מבנה זה בנוי</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1942"/>
+      <location filename="../../ArchStructure.py" line="1928"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation>מספרי האלמנטים שיש לא לכלול כאשר מבנה זה מבוסס על צירים</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1949"/>
+      <location filename="../../ArchStructure.py" line="1935"/>
       <source>If true the element are aligned with axes</source>
       <translation>אם זה נכון, האלמנט מיושר עם צירים</translation>
     </message>
@@ -7526,15 +7528,15 @@ Building creation aborted.</source>
       <translation>הכוח החשמלי הדרוש לציוד זה בוואט</translation>
     </message>
     <message>
+      <location filename="../../ArchBuilding.py" line="308"/>
       <location filename="../../Arch.py" line="235"/>
       <location filename="../../Arch.py" line="317"/>
-      <location filename="../../ArchBuilding.py" line="308"/>
       <source>The type of this building</source>
       <translation>סוג הבניין הזה</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="236"/>
       <location filename="../../ArchBuildingPart.py" line="230"/>
+      <location filename="../../ArchFloor.py" line="236"/>
       <source>The height of this object</source>
       <translation>גובהו של חפץ זה</translation>
     </message>
@@ -7549,20 +7551,20 @@ Building creation aborted.</source>
       <translation>רמת הנקודה (0,0,0) של רמה זו</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="244"/>
       <location filename="../../ArchBuildingPart.py" line="258"/>
+      <location filename="../../ArchFloor.py" line="244"/>
       <source>The computed floor area of this floor</source>
       <translation>שטח הרצפה המחושב של קומה זו</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="250"/>
       <location filename="../../ArchBuildingPart.py" line="266"/>
+      <location filename="../../ArchComponent.py" line="250"/>
       <source>An optional description for this component</source>
       <translation>תיאור אופציונלי עבור רכיב זה</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="258"/>
       <location filename="../../ArchBuildingPart.py" line="274"/>
+      <location filename="../../ArchComponent.py" line="258"/>
       <source>An optional tag for this component</source>
       <translation>תג אופציונלי עבור רכיב זה</translation>
     </message>
@@ -8917,122 +8919,122 @@ Building creation aborted.</source>
       <translation>מפעיל/כיבוי את התצוגה של מרקם גרגירי העץ</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="104"/>
+      <location filename="../../ArchCurtainWall.py" line="105"/>
       <source>An optional host object for this curtain wall</source>
       <translation>אובייקט מארח אופציונלי עבור קיר מסך זה</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="114"/>
+      <location filename="../../ArchCurtainWall.py" line="115"/>
       <source>The height of the curtain wall, if based on an edge</source>
       <translation>גובה קיר המסך, אם מבוסס על קצה</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="123"/>
+      <location filename="../../ArchCurtainWall.py" line="124"/>
       <source>The number of vertical mullions</source>
       <translation>מספר העמודים האנכיים</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="135"/>
+      <location filename="../../ArchCurtainWall.py" line="136"/>
       <source>If the profile of the vertical mullions get aligned with the surface or not</source>
       <translation>אם הפרופיל של העמודים האנכיים יתיישר עם פני השטח או לא</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="145"/>
+      <location filename="../../ArchCurtainWall.py" line="146"/>
       <source>The number of vertical sections of this curtain wall</source>
       <translation>מספר הקטעים האנכיים של קיר מסך זה</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="161"/>
+      <location filename="../../ArchCurtainWall.py" line="162"/>
       <source>The height of the vertical mullions profile, if no profile is used</source>
       <translation>גובה פרופיל העמודים האנכיים, אם לא נעשה שימוש בפרופיל</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="173"/>
+      <location filename="../../ArchCurtainWall.py" line="174"/>
       <source>The width of the vertical mullions profile, if no profile is used</source>
       <translation>רוחב פרופיל העמודים האנכיים, אם לא נעשה שימוש בפרופיל</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="185"/>
+      <location filename="../../ArchCurtainWall.py" line="186"/>
       <source>A profile for vertical mullions (disables vertical mullion size)</source>
       <translation>פרופיל עבור עמודים אנכיים (משבית את גודל העמודים האנכיים)</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="193"/>
+      <location filename="../../ArchCurtainWall.py" line="194"/>
       <source>The number of horizontal mullions</source>
       <translation>מספר העמודים האופקיים</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="205"/>
+      <location filename="../../ArchCurtainWall.py" line="206"/>
       <source>If the profile of the horizontal mullions gets aligned with the surface or not</source>
       <translation>אם הפרופיל של העמודים האופקיים מיושר עם פני השטח או לא</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="215"/>
+      <location filename="../../ArchCurtainWall.py" line="216"/>
       <source>The number of horizontal sections of this curtain wall</source>
       <translation>מספר הקטעים האופקיים של קיר מסך זה</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="231"/>
+      <location filename="../../ArchCurtainWall.py" line="232"/>
       <source>The height of the horizontal mullions profile, if no profile is used</source>
       <translation>גובה הפרופיל האופקי, אם לא נעשה שימוש בפרופיל</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="243"/>
+      <location filename="../../ArchCurtainWall.py" line="244"/>
       <source>The width of the horizontal mullions profile, if no profile is used</source>
       <translation>רוחב פרופיל העמודים האופקיים, אם לא נעשה שימוש בפרופיל</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="255"/>
+      <location filename="../../ArchCurtainWall.py" line="256"/>
       <source>A profile for horizontal mullions (disables horizontal mullion size)</source>
       <translation>פרופיל עבור עמודים אופקיים (משבית את גודל העמוד האופקי)</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="263"/>
+      <location filename="../../ArchCurtainWall.py" line="264"/>
       <source>The number of diagonal mullions</source>
       <translation>מספר העמודים האלכסוניים</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="275"/>
+      <location filename="../../ArchCurtainWall.py" line="276"/>
       <source>The size of the diagonal mullions, if any, if no profile is used</source>
       <translation>גודל העמודים האלכסוניים, אם יש, אם לא נעשה שימוש בפרופיל</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="287"/>
+      <location filename="../../ArchCurtainWall.py" line="288"/>
       <source>A profile for diagonal mullions, if any (disables horizontal mullion size)</source>
       <translation>פרופיל עבור עמודים אלכסוניים, אם יש (משבית את גודל העמוד האופקי)</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="295"/>
+      <location filename="../../ArchCurtainWall.py" line="296"/>
       <source>The number of panels</source>
       <translation>מספר הפאנלים</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="304"/>
+      <location filename="../../ArchCurtainWall.py" line="305"/>
       <source>The thickness of the panels</source>
       <translation>עובי הלוחות</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="313"/>
+      <location filename="../../ArchCurtainWall.py" line="314"/>
       <source>Swaps horizontal and vertical lines</source>
       <translation>מחליף קווים אופקיים ואנכיים</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="323"/>
+      <location filename="../../ArchCurtainWall.py" line="324"/>
       <source>Perform subtractions between components so none overlap</source>
       <translation>בצע חיסורים בין רכיבים כך שאף אחד לא חופף</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="331"/>
+      <location filename="../../ArchCurtainWall.py" line="332"/>
       <source>Centers the profile over the edges or not</source>
       <translation>מרכז את הפרופיל על הקצוות או לא</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="343"/>
+      <location filename="../../ArchCurtainWall.py" line="344"/>
       <source>The vertical direction reference to be used by this object to deduce vertical/horizontal directions. Keep it close to the actual vertical direction of your curtain wall</source>
       <translation>התייחסות הכיוון האנכי שתשמש את האובייקט הזה כדי להסיק כיוונים אנכיים/אופקיים. שמור אותו קרוב לכיוון האנכי בפועל של קיר המסך שלך</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="355"/>
+      <location filename="../../ArchCurtainWall.py" line="356"/>
       <source>Input are index numbers of edges of Base ArchSketch/Sketch geometries (in Edit mode).  Selected edges are used to create the shape of this Arch Curtain Wall (instead of using all edges by default).  [ENHANCED by ArchSketch] GUI 'Edit Curtain Wall' Tool is provided in external Add-on ('SketchArch') to let users to select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used. Property is ignored if Base ArchSketch provided the selected edges.</source>
       <translation>הקלט הוא מספרי אינדקס של קצוות של גיאומטריות Base ArchSketch/Sketch (במצב עריכה).  קצוות נבחרים משמשים ליצירת הצורה של קיר מסך קשת זה (במקום להשתמש בכל הקצוות כברירת מחדל).  [משופר על ידי ArchSketch] כלי 'עריכת קיר מסך' של ממשק המשתמש מסופק בתוספת חיצונית ('SketchArch') כדי לאפשר למשתמשים לבחור את הקצוות באופן אינטראקטיבי.  'Toponaming-Tolerant' אם נעשה שימוש ב-ArchSketch ב-Base (והתוסף של SketchArch מותקן).  אזהרה: לא 'טופונאמי-סובלני' אם משתמשים רק ב-Sketch. מתעלמים מהנכס אם Base ArchSketch סיפק את הקצוות שנבחרו.</translation>
     </message>
@@ -9517,8 +9519,12 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="570"/>
-      <source>The text to show. Use $area, $label, $longname, $description or any other property name preceded with $ (case insensitive), or $floor, $walls, $ceiling for finishes, to insert the respective data</source>
-      <translation>הטקסט להראות. השתמש ב-$area, $label, $longname, $description או כל שם מאפיין אחר שלפניו $ (לא תלוי רישיות), או $floor, $walls, $ceiling עבור גימורים, כדי להוסיף את הנתונים המתאימים</translation>
+      <source>Template for the space's label text.
+Use $area, $label, $longname, $description or any other property name preceded with $ (case insensitive),
+or $floor, $walls, $ceiling for finishes, to insert the respective data.</source>
+      <translation type="unfinished">Template for the space's label text.
+Use $area, $label, $longname, $description or any other property name preceded with $ (case insensitive),
+or $floor, $walls, $ceiling for finishes, to insert the respective data.</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="588"/>
@@ -9556,11 +9562,6 @@ Building creation aborted.</source>
       <translation>הצג את סיומת היחידה</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="238"/>
-      <source>The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid</source>
-      <translation>גובה הקיר הזה. השאר 0 עבור אוטומטי. לא בשימוש אם קיר זה מבוסס על מוצק</translation>
-    </message>
-    <message>
       <location filename="../../ArchWall.py" line="248"/>
       <source>The area of this wall as a simple Height * Length calculation</source>
       <translation>שטח הקיר הזה כחישוב פשוט גובה * אורך</translation>
@@ -9569,16 +9570,6 @@ Building creation aborted.</source>
       <location filename="../../ArchWall.py" line="282"/>
       <source>The face number of the base object used to build this wall</source>
       <translation>מספר הפנים של חפץ הבסיס המשמש לבניית הקיר הזה</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="192"/>
-      <source>The width of this wall. Not used if this wall is based on a face. Disabled and ignored if Base object (ArchSketch) provides the information.</source>
-      <translation>רוחב הקיר הזה. לא בשימוש אם קיר זה מבוסס על פנים. מושבת ומתעלם אם אובייקט Base (ArchSketch) מספק את המידע.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="181"/>
-      <source>The length of this wall. Read-only if this wall is not based on an unconstrained sketch with a single edge, or on a Draft Wire with a single edge. Refer to wiki for details how length is deduced.</source>
-      <translation>אורך הקיר הזה. לקריאה בלבד אם קיר זה אינו מבוסס על שרטוט לא מוגבל עם קצה יחיד, או על חוט טיוטה עם קצה יחיד. עיין בוויקיפדיה לפרטים כיצד מסיקים את האורך.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="205"/>
@@ -9596,9 +9587,32 @@ Building creation aborted.</source>
       <translation>זה עוקף את תכונת ההיסט כדי להגדיר את ההיסט של כל קטע של הקיר.  מושבת ומתעלם אם אובייקט Base (ArchSketch) מספק מידע Offsets, עם שיטת getOffsets() (אם ערך הוא אפס, הערך של 'Offset' יעקוב).  [משופר על ידי ArchSketch] כלי 'עריכת פלח קיר' של ממשק המשתמש מסופק בתוסף חיצוני ('SketchArch') כדי לאפשר למשתמשים לבחור את הקצוות באופן אינטראקטיבי.  'Toponaming-Tolerant' אם נעשה שימוש ב-ArchSketch ב-Base (והתוסף של SketchArch מותקן).  אזהרה: לא 'טופונאמי-סובלני' אם משתמשים רק ב-Sketch. מתעלמים מהנכס אם Base ArchSketch סיפק את הקצוות שנבחרו.</translation>
     </message>
     <message>
+      <location filename="../../ArchWall.py" line="181"/>
+      <source>The length of this wall.
+Editable only if this wall's baseline is a Draft line, an unconstrained sketch with a single line, or none.</source>
+      <translation type="unfinished">The length of this wall.
+Editable only if this wall's baseline is a Draft line, an unconstrained sketch with a single line, or none.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="192"/>
+      <source>The width of this wall.
+Ignored if this wall is based on a solid or a face.</source>
+      <translation type="unfinished">The width of this wall.
+Ignored if this wall is based on a solid or a face.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="238"/>
+      <source>The height of this wall.
+Keep 0 to automatically match the height of the enclosing Level or Building.
+Ignored if this wall is based on a solid.</source>
+      <translation type="unfinished">The height of this wall.
+Keep 0 to automatically match the height of the enclosing Level or Building.
+Ignored if this wall is based on a solid.</translation>
+    </message>
+    <message>
       <location filename="../../ArchWall.py" line="260"/>
-      <source>The alignment of this wall on its base object, if applicable. Disabled and ignored if Base object (ArchSketch) provides the information.</source>
-      <translation>יישור הקיר הזה על עצם הבסיס שלו, אם ישים. מושבת ומתעלם אם אובייקט Base (ArchSketch) מספק את המידע.</translation>
+      <source>The alignment of this wall on its base object, if applicable.</source>
+      <translation type="unfinished">The alignment of this wall on its base object, if applicable.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="293"/>
@@ -9656,10 +9670,35 @@ Building creation aborted.</source>
       <translation>בחר User Defined PropertySet לשימוש ביצירת צורת וריאנט, שכבות של Arch Wall עם אותו ArchSketch</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="862"/>
+      <location filename="../../ArchStructure.py" line="863"/>
       <location filename="../../ArchWall.py" line="381"/>
       <source>Use Base ArchSketch (if used) data (e.g. widths, aligns, offsets) instead of Wall's properties</source>
       <translation>השתמש בנתוני Base ArchSketch (אם נעשה בו שימוש) (למשל רוחב, יישור, היסט) במקום במאפיינים של Wall</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="483"/>
+      <source>The list of SQL statements to execute (managed by the Task Panel)</source>
+      <translation>רשימת הצהרות SQL לביצוע (מנוהלת על ידי לוח המשימות)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="493"/>
+      <source>The spreadsheet for the results</source>
+      <translation>הגיליון האלקטרוני לתוצאות</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="502"/>
+      <source>If True, update report when document recomputes</source>
+      <translation>אם נכון, עדכן דוח כאשר המסמך מחושב מחדש</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="530"/>
+      <source>The name of the BIM Report that uses this spreadsheet</source>
+      <translation>השם של דוח BIM המשתמש בגיליון האלקטרוני הזה</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="62"/>
+      <source>Rotation step (degrees) applied per R / Shift+R keypress during interactive grid placement.</source>
+      <translation>שלב סיבוב (מעלות) מוחל בכל לחיצת מקש R / Shift+R במהלך הצבת רשת אינטראקטיבית.</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="104"/>
@@ -9809,41 +9848,16 @@ Building creation aborted.</source>
       <source>The specific IFC subtype of this covering. Exported as IfcCovering.PredefinedType.</source>
       <translation>תת-סוג ה-IFC הספציפי של כיסוי זה. מיוצא כ- IfcCovering.PredefinedType.</translation>
     </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="62"/>
-      <source>Rotation step (degrees) applied per R / Shift+R keypress during interactive grid placement.</source>
-      <translation>שלב סיבוב (מעלות) מוחל בכל לחיצת מקש R / Shift+R במהלך הצבת רשת אינטראקטיבית.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="483"/>
-      <source>The list of SQL statements to execute (managed by the Task Panel)</source>
-      <translation>רשימת הצהרות SQL לביצוע (מנוהלת על ידי לוח המשימות)</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="493"/>
-      <source>The spreadsheet for the results</source>
-      <translation>הגיליון האלקטרוני לתוצאות</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="502"/>
-      <source>If True, update report when document recomputes</source>
-      <translation>אם נכון, עדכן דוח כאשר המסמך מחושב מחדש</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="530"/>
-      <source>The name of the BIM Report that uses this spreadsheet</source>
-      <translation>השם של דוח BIM המשתמש בגיליון האלקטרוני הזה</translation>
-    </message>
   </context>
   <context>
     <name>Arch_StructureTools</name>
     <message>
-      <location filename="../../ArchStructure.py" line="2070"/>
+      <location filename="../../ArchStructure.py" line="2056"/>
       <source>Structure Tools</source>
       <translation>כלי מבנה</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="2071"/>
+      <location filename="../../ArchStructure.py" line="2057"/>
       <source>Structure tools</source>
       <translation>כלי מבנה</translation>
     </message>
@@ -10623,7 +10637,7 @@ Building creation aborted.</source>
       <translation>שרטוט</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="859"/>
+      <location filename="../../InitGui.py" line="863"/>
       <source>Import-Export</source>
       <translation>ייבוא-ייצוא</translation>
     </message>
@@ -10674,7 +10688,22 @@ Alt+PgUp להרחבת שחול Alt+PgDown כדי לכווץ שחול Alt+/ כד�
       <translation>BIM</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="784"/>
+      <location filename="../../InitGui.py" line="683"/>
+      <source>2D Drafting</source>
+      <translation type="unfinished">2D Drafting</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="684"/>
+      <source>3D/BIM Geometry</source>
+      <translation type="unfinished">3D/BIM Geometry</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="685"/>
+      <source>Modify</source>
+      <translation>שנה</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="788"/>
       <source>Snapping</source>
       <translation>מצלמת</translation>
     </message>
@@ -10784,15 +10813,15 @@ Alt+PgUp להרחבת שחול Alt+PgDown כדי לכווץ שחול Alt+/ כד�
       <translation>צור רב חומר חדש</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="136"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="203"/>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="244"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="203"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="136"/>
       <source>Label</source>
       <translation>תווית</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="137"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="204"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="137"/>
       <source>IFC type</source>
       <translation>סוג IFC</translation>
     </message>
@@ -10988,12 +11017,6 @@ Alt+PgUp להרחבת שחול Alt+PgDown כדי לכווץ שחול Alt+/ כד�
       <location filename="../../bimcommands/BimImagePlane.py" line="53"/>
       <source>Image file (*.png *.jpg *.bmp)</source>
       <translation>קובץ תמונה (*.png *.jpg *.bmp)</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimImagePlane.py" line="78"/>
-      <location filename="../../bimcommands/BimBox.py" line="77"/>
-      <source>%1 pick first point</source>
-      <translation>%1 בחר נקודה ראשונה</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimImagePlane.py" line="80"/>
@@ -11962,7 +11985,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="134"/>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="601"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="607"/>
       <source>Expand Property Sets</source>
       <translation>הרחב את ערכות המאפיינים</translation>
     </message>
@@ -11995,6 +12018,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <location filename="../../bimcommands/BimLink.py" line="31"/>
       <source>Select an object to link</source>
       <translation>בחר אובייקט לקישור</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimBox.py" line="77"/>
+      <location filename="../../bimcommands/BimImagePlane.py" line="78"/>
+      <source>%1 pick first point</source>
+      <translation>%1 בחר נקודה ראשונה</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBox.py" line="79"/>
@@ -12060,19 +12089,6 @@ Please check your FreeCAD installation or provide a custom template under menu P
     </message>
   </context>
   <context>
-    <name>Part_Builder</name>
-    <message>
-      <location filename="../../bimcommands/BimBuilder.py" line="35"/>
-      <source>Shape Builder</source>
-      <translation>בונה צורות</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimBuilder.py" line="36"/>
-      <source>Advanced utility to create shapes</source>
-      <translation>כלי מתקדם ליצירת צורות</translation>
-    </message>
-  </context>
-  <context>
     <name>Arch_Level</name>
     <message>
       <location filename="../../bimcommands/BimBuildingPart.py" line="43"/>
@@ -12109,19 +12125,6 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <location filename="../../bimcommands/BimColumn.py" line="47"/>
       <source>Creates a column at a specified location</source>
       <translation>יוצר עמודה במיקום מוגדר</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part_Common</name>
-    <message>
-      <location filename="../../bimcommands/BimCommon.py" line="35"/>
-      <source>Intersection</source>
-      <translation>חיתוך</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimCommon.py" line="36"/>
-      <source>Creates an intersection of two shapes</source>
-      <translation>יוצר צומת של שתי צורות</translation>
     </message>
   </context>
   <context>
@@ -12250,19 +12253,6 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <location filename="../../bimcommands/BimFence.py" line="56"/>
       <source>Select a section, post and path in exactly this order to build a fence.</source>
       <translation>בחר קטע, עמוד ושביל בדיוק בסדר הזה לבניית גדר.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part_Fuse</name>
-    <message>
-      <location filename="../../bimcommands/BimFuse.py" line="34"/>
-      <source>Union</source>
-      <translation>איחוד</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimFuse.py" line="35"/>
-      <source>Creates a union of several shapes</source>
-      <translation>יוצר איחוד של מספר צורות</translation>
     </message>
   </context>
   <context>
@@ -12429,19 +12419,6 @@ Please check your FreeCAD installation or provide a custom template under menu P
     </message>
   </context>
   <context>
-    <name>Part_Offset2D</name>
-    <message>
-      <location filename="../../bimcommands/BimOffset.py" line="35"/>
-      <source>2D Offset</source>
-      <translation>2D offset</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimOffset.py" line="36"/>
-      <source>Utility to offset planar shapes</source>
-      <translation>כלי עזר לקיזוז צורות מישוריות</translation>
-    </message>
-  </context>
-  <context>
     <name>BIM_Preflight</name>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="61"/>
@@ -12496,12 +12473,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>draft</name>
     <message>
-      <location filename="../../bimcommands/BimShape2DView.py" line="48"/>
+      <location filename="../../bimcommands/BimShape2DView.py" line="52"/>
       <source>Create 2D view</source>
       <translation>צור תצוגה דו מימדית</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimShape2DView.py" line="132"/>
+      <location filename="../../bimcommands/BimShape2DView.py" line="140"/>
       <source>Create 2D Cut</source>
       <translation>צור חיתוך דו מימדי</translation>
     </message>
@@ -13405,9 +13382,11 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <translation>תצוגת מקטע</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimShape2DView.py" line="111"/>
-      <source>Section Cut</source>
-      <translation>חתך חתך</translation>
+      <location filename="../../bimcommands/BimShape2DView.py" line="44"/>
+      <source>Creates a 2D projection of the selected objects on the XY-plane.
+The initial projection direction is the opposite of the current active view direction.</source>
+      <translation>יוצר הקרנה דו-ממדית של האובייקטים שנבחרו במישור XY.
+כיוון ההקרנה הראשוני הוא הפוך מכיוון התצוגה הפעיל הנוכחי.</translation>
     </message>
   </context>
   <context>
@@ -13568,6 +13547,29 @@ select both the view and the page before executing the command.</source>
     </message>
   </context>
   <context>
+    <name>BIMStatusWidget</name>
+    <message>
+      <location filename="../../BimStatus.py" line="105"/>
+      <source>BIM Status Widget</source>
+      <comment>A context menu action used to show or hide this toolbar widget</comment>
+      <translation>ווידג'ט סטטוס BIM</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="128"/>
+      <source>Edit Covering</source>
+      <translation>ערוך כיסוי</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1758"/>
+      <location filename="../../bimcommands/BimCovering.py" line="97"/>
+      <source>Create Covering</source>
+      <translation>צור כיסוי</translation>
+    </message>
+  </context>
+  <context>
     <name>ArchSql</name>
     <message>
       <location filename="../../ArchSql.py" line="578"/>
@@ -13659,51 +13661,6 @@ select both the view and the page before executing the command.</source>
     </message>
   </context>
   <context>
-    <name>Command</name>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="128"/>
-      <source>Edit Covering</source>
-      <translation>ערוך כיסוי</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1758"/>
-      <location filename="../../bimcommands/BimCovering.py" line="97"/>
-      <source>Create Covering</source>
-      <translation>צור כיסוי</translation>
-    </message>
-  </context>
-  <context>
-    <name>ArchComponent</name>
-    <message>
-      <location filename="../../ArchWall.py" line="1543"/>
-      <source>Unsupported Base</source>
-      <translation>בסיס לא נתמך</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="1548"/>
-      <source>The base of this wall is not a single straight line.</source>
-      <translation>בסיס הקיר הזה אינו קו ישר אחד.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="1555"/>
-      <source>Removing the base of this complex wall will alter its shape and reset its position.
-
-Do you want to proceed?</source>
-      <translation>הסרת הבסיס של הקיר המורכב הזה תשנה את צורתו ותאפס את מיקומו.
-
-האם אתה רוצה להמשיך?</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIMStatusWidget</name>
-    <message>
-      <location filename="../../BimStatus.py" line="105"/>
-      <source>BIM Status Widget</source>
-      <comment>A context menu action used to show or hide this toolbar widget</comment>
-      <translation>ווידג'ט סטטוס BIM</translation>
-    </message>
-  </context>
-  <context>
     <name>BIM_ArcTools</name>
     <message>
       <location filename="../../InitGui.py" line="240"/>
@@ -13776,6 +13733,36 @@ Do you want to proceed?</source>
     </message>
   </context>
   <context>
+    <name>ArchComponent</name>
+    <message>
+      <location filename="../../ArchWall.py" line="1497"/>
+      <source>Unsupported Base</source>
+      <translation>בסיס לא נתמך</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="1502"/>
+      <source>The base of this wall is not a single straight line.</source>
+      <translation>בסיס הקיר הזה אינו קו ישר אחד.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="1509"/>
+      <source>Removing the base of this complex wall will alter its shape and reset its position.
+
+Do you want to proceed?</source>
+      <translation>הסרת הבסיס של הקיר המורכב הזה תשנה את צורתו ותאפס את מיקומו.
+
+האם אתה רוצה להמשיך?</translation>
+    </message>
+  </context>
+  <context>
+    <name>BimWall</name>
+    <message>
+      <location filename="../../bimcommands/BimWall.py" line="305"/>
+      <source>Wall Trace</source>
+      <translation>עקבות קיר</translation>
+    </message>
+  </context>
+  <context>
     <name>BIM_ExtrudeFace</name>
     <message>
       <location filename="../../bimcommands/BimExtrudeFace.py" line="18"/>
@@ -13789,16 +13776,29 @@ Do you want to proceed?</source>
     </message>
   </context>
   <context>
-    <name>BIM_Covering</name>
+    <name>BIM_Fuse</name>
     <message>
-      <location filename="../../bimcommands/BimCovering.py" line="58"/>
-      <source>Covering</source>
-      <translation>מִכסֶה</translation>
+      <location filename="../../bimcommands/BimFuse.py" line="34"/>
+      <source>Union</source>
+      <translation>איחוד</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCovering.py" line="61"/>
-      <source>Creates a covering (floor finish, cladding) on a selected face</source>
-      <translation>יוצר חיפוי (גימור רצפה, חיפוי) על פנים נבחרות</translation>
+      <location filename="../../bimcommands/BimFuse.py" line="35"/>
+      <source>Creates a union of several shapes</source>
+      <translation type="unfinished">Creates a union of several shapes</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_LinkMake</name>
+    <message>
+      <location filename="../../bimcommands/BimLink.py" line="15"/>
+      <source>Make Link</source>
+      <translation>צור קישור</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimLink.py" line="19"/>
+      <source>Creates a Link to the selected object and immediately enables moving it</source>
+      <translation>יוצר קישור לאובייקט שנבחר ומאפשר מיד את הזזתו</translation>
     </message>
   </context>
   <context>
@@ -13815,24 +13815,68 @@ Do you want to proceed?</source>
     </message>
   </context>
   <context>
-    <name>BimWall</name>
+    <name>BIM_Covering</name>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="305"/>
-      <source>Wall Trace</source>
-      <translation>עקבות קיר</translation>
+      <location filename="../../bimcommands/BimCovering.py" line="58"/>
+      <source>Covering</source>
+      <translation>מִכסֶה</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimCovering.py" line="61"/>
+      <source>Creates a covering (floor finish, cladding) on a selected face</source>
+      <translation>יוצר חיפוי (גימור רצפה, חיפוי) על פנים נבחרות</translation>
     </message>
   </context>
   <context>
-    <name>BIM_LinkMake</name>
+    <name>BIM_Common</name>
     <message>
-      <location filename="../../bimcommands/BimLink.py" line="15"/>
-      <source>Make Link</source>
-      <translation>צור קישור</translation>
+      <location filename="../../bimcommands/BimCommon.py" line="35"/>
+      <source>Intersection</source>
+      <translation>חיתוך</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLink.py" line="19"/>
-      <source>Creates a Link to the selected object and immediately enables moving it</source>
-      <translation>יוצר קישור לאובייקט שנבחר ומאפשר מיד את הזזתו</translation>
+      <location filename="../../bimcommands/BimCommon.py" line="36"/>
+      <source>Creates an intersection of two shapes</source>
+      <translation type="unfinished">Creates an intersection of two shapes</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_Builder</name>
+    <message>
+      <location filename="../../bimcommands/BimBuilder.py" line="35"/>
+      <source>Shape Builder</source>
+      <translation type="unfinished">Shape Builder</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimBuilder.py" line="36"/>
+      <source>Advanced utility to create shapes</source>
+      <translation>כלי מתקדם ליצירת צורות</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_Shape2DCut</name>
+    <message>
+      <location filename="../../bimcommands/BimShape2DView.py" line="115"/>
+      <source>Section Cut</source>
+      <translation type="unfinished">Section Cut</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimShape2DView.py" line="120"/>
+      <source>Creates a 2D projection of only the intersecting faces of the selected objects on the XY-plane.</source>
+      <translation type="unfinished">Creates a 2D projection of only the intersecting faces of the selected objects on the XY-plane.</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_Offset2D</name>
+    <message>
+      <location filename="../../bimcommands/BimOffset.py" line="35"/>
+      <source>2D Offset</source>
+      <translation type="unfinished">2D Offset</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimOffset.py" line="36"/>
+      <source>Utility to offset planar shapes</source>
+      <translation type="unfinished">Utility to offset planar shapes</translation>
     </message>
   </context>
 </TS>

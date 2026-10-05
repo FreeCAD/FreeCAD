@@ -60,103 +60,108 @@
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="223"/>
-      <location filename="../../QuickMeasure.cpp" line="262"/>
+      <location filename="../../QuickMeasure.cpp" line="269"/>
       <source>Nominal distance: %1</source>
       <translation>Nominalna oddaljenost: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="226"/>
+      <source>Nominal distance: %1, Axis distance: %2</source>
+      <translation type="unfinished">Nominal distance: %1, Axis distance: %2</translation>
+    </message>
+    <message>
+      <location filename="../../QuickMeasure.cpp" line="233"/>
       <source>Area: %1</source>
       <translation>Površina: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="232"/>
+      <location filename="../../QuickMeasure.cpp" line="239"/>
       <source>Area: %1, Radius: %2</source>
       <translation>Površina: %1, polmer: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="236"/>
+      <location filename="../../QuickMeasure.cpp" line="243"/>
       <source>Area: %1, Diameter: %2</source>
       <translation>Površina: %1, premer: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="245"/>
+      <location filename="../../QuickMeasure.cpp" line="252"/>
       <source>Total area: %1, Axis distance: %2</source>
       <translation>Skupna površina: %1, os oddaljenosti: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="250"/>
+      <location filename="../../QuickMeasure.cpp" line="257"/>
       <source>Total area: %1, Axis distance: %2, Axis angle: %3</source>
       <translation>Skupna površina: %1, os oddaljenosti: %2, os kota: %3</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="259"/>
+      <location filename="../../QuickMeasure.cpp" line="266"/>
       <source>Total length: %1</source>
       <translation>Skupna dolžina: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="265"/>
+      <location filename="../../QuickMeasure.cpp" line="272"/>
       <source>Angle: %1, Total length: %2</source>
       <translation>Kot: %1, skupna dolžina: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="269"/>
+      <location filename="../../QuickMeasure.cpp" line="276"/>
       <source>Length: %1</source>
       <translation>Dolžina: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="272"/>
+      <location filename="../../QuickMeasure.cpp" line="279"/>
       <source>Radius: %1</source>
       <translation>Polmer: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="275"/>
+      <location filename="../../QuickMeasure.cpp" line="282"/>
       <source>Diameter: %1</source>
       <translation>Premer: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="278"/>
+      <location filename="../../QuickMeasure.cpp" line="285"/>
       <source>Distance: %1</source>
       <translation>Razdalja: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="281"/>
+      <location filename="../../QuickMeasure.cpp" line="288"/>
       <source>Minimum distance: %1</source>
       <translation>Minimalna oddaljenost: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="285"/>
+      <location filename="../../QuickMeasure.cpp" line="292"/>
       <source>Minimum distance: %1, Axis distance: %2</source>
       <translation>Minimalna oddaljenost: %1, os oddaljenosti: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="291"/>
+      <location filename="../../QuickMeasure.cpp" line="298"/>
       <source>Minimum distance: %1, Center distance: %2</source>
       <translation>Minimalna oddaljenost: %1, središče oddaljenosti: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="298"/>
-      <location filename="../../QuickMeasure.cpp" line="315"/>
+      <location filename="../../QuickMeasure.cpp" line="305"/>
+      <location filename="../../QuickMeasure.cpp" line="322"/>
       <source>Total length: %1, Center distance: %2</source>
       <translation>Skupna dolžina: %1, središče oddaljenosti: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="305"/>
+      <location filename="../../QuickMeasure.cpp" line="312"/>
       <source>Total length: %1, Center distance: %2, Axis angle: %3</source>
       <translation>Skupna dolžina: %1, središče oddaljenosti: %2, os kota: %3</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="320"/>
+      <location filename="../../QuickMeasure.cpp" line="327"/>
       <source>Center surface distance: %1</source>
       <translation>Središče površinske oddaljenosti: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="325"/>
+      <location filename="../../QuickMeasure.cpp" line="332"/>
       <source>Center axis distance: %1</source>
       <translation>Središče osne oddaljenosti: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="328"/>
+      <location filename="../../QuickMeasure.cpp" line="335"/>
       <source>Center axis distance: %1, Axis angle: %2</source>
       <translation>Središče osne oddaljenosti: %1, os kota: %2</translation>
     </message>
@@ -442,51 +447,16 @@
     </message>
   </context>
   <context>
-    <name>TaskMeasure</name>
+    <name>StdCmdMassProperties</name>
     <message>
-      <location filename="../../../App/AppMeasure.cpp" line="121"/>
-      <source>Distance</source>
-      <translation>Oddaljenost</translation>
+      <location filename="../../Command.cpp" line="97"/>
+      <source>Mass Properties</source>
+      <translation type="unfinished">Mass Properties</translation>
     </message>
     <message>
-      <location filename="../../../App/AppMeasure.cpp" line="129"/>
-      <source>Distance Free</source>
-      <translation>Prosta oddaljenost</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="137"/>
-      <source>Angle</source>
-      <translation>Kot</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="145"/>
-      <source>Length</source>
-      <translation>Dolžina</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="153"/>
-      <source>Position</source>
-      <translation>Položaj</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="161"/>
-      <source>Area</source>
-      <translation>Površina</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="169"/>
-      <source>Diameter</source>
-      <translation>Premer</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="177"/>
-      <source>Radius</source>
-      <translation>Polmer</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="185"/>
-      <source>Geometric Center</source>
-      <translation type="unfinished">Geometric Center</translation>
+      <location filename="../../Command.cpp" line="98"/>
+      <source>Calculates mass properties of selected objects</source>
+      <translation type="unfinished">Calculates mass properties of selected objects</translation>
     </message>
   </context>
   <context>
@@ -538,16 +508,51 @@
     </message>
   </context>
   <context>
-    <name>StdCmdMassProperties</name>
+    <name>TaskMeasure</name>
     <message>
-      <location filename="../../Command.cpp" line="97"/>
-      <source>Mass Properties</source>
-      <translation type="unfinished">Mass Properties</translation>
+      <location filename="../../../App/AppMeasure.cpp" line="121"/>
+      <source>Distance</source>
+      <translation>Oddaljenost</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="98"/>
-      <source>Calculates mass properties of selected objects</source>
-      <translation type="unfinished">Calculates mass properties of selected objects</translation>
+      <location filename="../../../App/AppMeasure.cpp" line="129"/>
+      <source>Distance Free</source>
+      <translation>Prosta oddaljenost</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="137"/>
+      <source>Angle</source>
+      <translation>Kot</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="145"/>
+      <source>Length</source>
+      <translation>Dolžina</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="153"/>
+      <source>Position</source>
+      <translation>Položaj</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="161"/>
+      <source>Area</source>
+      <translation>Površina</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="169"/>
+      <source>Diameter</source>
+      <translation>Premer</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="177"/>
+      <source>Radius</source>
+      <translation>Polmer</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="185"/>
+      <source>Geometric Center</source>
+      <translation type="unfinished">Geometric Center</translation>
     </message>
   </context>
 </TS>

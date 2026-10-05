@@ -4,30 +4,30 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="562"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="563"/>
       <source>&lt;empty&gt;</source>
       <translation>&lt;空&gt;</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2449"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2738"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2446"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2735"/>
       <source>Angle</source>
       <translation>角度</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2453"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2742"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2450"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2739"/>
       <source>Axis</source>
       <translation>軸</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2747"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2744"/>
       <source>Position</source>
       <translation>位置</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3019"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3016"/>
       <source>Enum</source>
       <translation>列挙型</translation>
     </message>
@@ -123,7 +123,7 @@
       <translation>変数セットを追加</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1085"/>
+      <location filename="../ManualAlignment.cpp" line="1081"/>
       <source>Align</source>
       <translation>整列</translation>
     </message>
@@ -134,9 +134,9 @@
     </message>
     <message>
       <location filename="../Transform.cpp" line="108"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="514"/>
       <location filename="../TaskTransform.cpp" line="152"/>
       <location filename="../TaskTransform.cpp" line="1069"/>
-      <location filename="../ViewProviderAnnotation.cpp" line="514"/>
       <source>Transform</source>
       <translation>変換</translation>
     </message>
@@ -146,8 +146,8 @@
       <translation>整列要素の切り替え</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.cpp" line="342"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
+      <location filename="../TaskView/TaskImage.cpp" line="342"/>
       <source>Edit image</source>
       <translation>画像の編集</translation>
     </message>
@@ -496,22 +496,22 @@ The property of this object will refer to the property of the Variable Set.</sou
   <context>
     <name>Gui::Assistant</name>
     <message>
-      <location filename="../Assistant.cpp" line="98"/>
-      <location filename="../Assistant.cpp" line="135"/>
-      <location filename="../Assistant.cpp" line="152"/>
-      <location filename="../Assistant.cpp" line="172"/>
+      <location filename="../Assistant.cpp" line="94"/>
+      <location filename="../Assistant.cpp" line="131"/>
+      <location filename="../Assistant.cpp" line="148"/>
+      <location filename="../Assistant.cpp" line="168"/>
       <source>%1 Help</source>
       <translation>%1 ヘルプ</translation>
     </message>
     <message>
-      <location filename="../Assistant.cpp" line="99"/>
+      <location filename="../Assistant.cpp" line="95"/>
       <source>%1 help files not found (%2). You might need to install the %1 documentation package.</source>
       <translation>%1のヘルプファイル (%2) が見つかりません。 %1 ドキュメント・パッケージをインストールする必要があります。</translation>
     </message>
     <message>
-      <location filename="../Assistant.cpp" line="136"/>
-      <location filename="../Assistant.cpp" line="153"/>
-      <location filename="../Assistant.cpp" line="173"/>
+      <location filename="../Assistant.cpp" line="132"/>
+      <location filename="../Assistant.cpp" line="149"/>
+      <location filename="../Assistant.cpp" line="169"/>
       <source>Unable to launch Qt Assistant (%1)</source>
       <translation>Qt アシスタント (%1) を起動できません。</translation>
     </message>
@@ -678,34 +678,34 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>個人</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="351"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="348"/>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
       <translation>団体</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="380"/>
-      <location filename="../Dialogs/DlgAbout.cpp" line="472"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="377"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="469"/>
       <source>License</source>
       <translation>ライセンス</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="418"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="415"/>
       <source>Libraries</source>
       <translation>ライブラリ</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="440"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="437"/>
       <source>Collection</source>
       <translation>コレクション</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="459"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="456"/>
       <source>Privacy Policy</source>
       <translation>プライバシーポリシー</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="491"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="488"/>
       <source>Copied!</source>
       <translation>コピーしました！</translation>
     </message>
@@ -749,37 +749,37 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::CameraDialog</name>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="398"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="397"/>
       <source>Camera Settings</source>
       <translation>カメラ設定</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="405"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="404"/>
       <source>Orientation</source>
       <translation>向き</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="419"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="418"/>
       <source>Q0</source>
       <translation>Q0</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="429"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="428"/>
       <source>Q1</source>
       <translation>Q1</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="439"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="438"/>
       <source>Q2</source>
       <translation>Q2</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="449"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="448"/>
       <source>Q3</source>
       <translation>Q3</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="458"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="457"/>
       <source>Current View</source>
       <translation>現在の表示</translation>
     </message>
@@ -1512,8 +1512,8 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::DlgInspector</name>
     <message>
-      <location filename="../SceneInspector.cpp" line="329"/>
-      <location filename="../SceneInspector.cpp" line="406"/>
+      <location filename="../SceneInspector.cpp" line="330"/>
+      <location filename="../SceneInspector.cpp" line="407"/>
       <source>Scene Inspector</source>
       <translation>シーンインスペクタ</translation>
     </message>
@@ -2235,72 +2235,72 @@ Specify another directory.</source>
   <context>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="787"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="788"/>
       <source>Reset Page '%1'</source>
       <translation>ページ「%1」をリセット</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="790"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="791"/>
       <source>Resets the user settings for the page '%1'</source>
       <translation>ページ '%1' のユーザー設定をリセット</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="794"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="795"/>
       <source>Reset Group '%1'</source>
       <translation>グループ「%1」をリセット</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="802"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="803"/>
       <source>Reset All</source>
       <translation>すべてリセット</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="820"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="821"/>
       <source>Clear User Settings</source>
       <translation>ユーザー設定をクリア</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="821"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="822"/>
       <source>Clear all your user settings?</source>
       <translation>すべてのユーザー設定をクリアしますか？</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="822"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="823"/>
       <source>All settings will be cleared.</source>
       <translation>すべての設定がクリアされます。</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="930"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="931"/>
       <source>Wrong Parameter</source>
       <translation>間違ったパラメーター</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="973"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="974"/>
       <source>Restart Required</source>
       <translation>再起動が必要です</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="974"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="975"/>
       <source>Restart FreeCAD for changes to take effect.</source>
       <translation>変更を有効にするにはFreeCADを再起動してください。</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="979"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="980"/>
       <source>Restart Now</source>
       <translation>今すぐ再起動</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="980"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="981"/>
       <source>Restart Later</source>
       <translation>後で再起動</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="799"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="800"/>
       <source>Resets the user settings for the group '%1'</source>
       <translation>グループ '%1' のユーザー設定をリセット</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="804"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="805"/>
       <source>Resets the user settings entirely</source>
       <translation>ユーザー設定を完全にリセット</translation>
     </message>
@@ -2517,7 +2517,7 @@ Specify another directory.</source>
   <context>
     <name>Gui::Dialog::DlgRevertToBackupConfigImp</name>
     <message>
-      <location filename="../Dialogs/DlgRevertToBackupConfigImp.cpp" line="107"/>
+      <location filename="../Dialogs/DlgRevertToBackupConfigImp.cpp" line="106"/>
       <source>No selection in dialog, cannot load backup file</source>
       <translation>ダイアログで何も選択されていないため、バックアップファイルを読み込めません。</translation>
     </message>
@@ -3950,12 +3950,12 @@ John Doe &lt;john@doe.com&gt; 形式を使用することもできます。</tra
       <translation>軌道スタイル</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="856"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="877"/>
       <source>Clarify Selection</source>
       <translation>選択対象の明確化</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="862"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="883"/>
       <source>Enable Clarify Selection on long press of left mouse button.
 When enabled, holding left mouse button shows a menu to select overlapping objects.
 Some navigation styles (OpenInventor, Gesture, OpenSCAD) require Ctrl+LMB instead of just LMB.</source>
@@ -3963,22 +3963,22 @@ Some navigation styles (OpenInventor, Gesture, OpenSCAD) require Ctrl+LMB instea
 有効になっている場合、マウス左ボタンの長押しで重なったオブジェクトの選択メニューが表示されます。一部のナビゲーションスタイル（OpenInventor、ジェスチャー、OpenSCAD）ではマウス左ボタンの代わりにCtrl+マウス左ボタンを押す必要があります。</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="867"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="888"/>
       <source>Enable long press clarify selection</source>
       <translation>長押しによる選択対象の明確化を有効にする</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="883"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="904"/>
       <source>Time in seconds to hold left mouse button before showing clarify selection menu</source>
       <translation>選択対象の明確化メニューを表示するまでのマウス左ボタンの長押し秒数</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="886"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="907"/>
       <source>Long press timeout</source>
       <translation>長押しタイムアウト</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="902"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="923"/>
       <source>Duration in seconds to hold left mouse button before clarify selection is triggered</source>
       <translation>選択対象の明確化が実行されるまでのマウス左ボタンの長押し継続秒数</translation>
     </message>
@@ -4055,49 +4055,58 @@ The value is the diameter of the sphere to fit on the screen.</source>
 値は画面にちょうど収まる球の直径。</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="765"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="739"/>
+      <source>Two-finger scroll on a touchpad pans the view.
+Shift + scroll orbits, Ctrl + scroll (Cmd on macOS) zooms.
+Applies to touchpads and other devices that report
+pixel-precise scrolling. Ordinary wheel mice keep zooming.</source>
+      <translation type="unfinished">Two-finger scroll on a touchpad pans the view.
+Shift + scroll orbits, Ctrl + scroll (Cmd on macOS) zooms.
+Applies to touchpads and other devices that report
+pixel-precise scrolling. Ordinary wheel mice keep zooming.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="745"/>
+      <source>Touchpad scroll pans instead of zooming</source>
+      <translation type="unfinished">Touchpad scroll pans instead of zooming</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="786"/>
       <source>Animations</source>
       <translation>アニメーション</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="787"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="808"/>
       <source>Enable spinning animations that are used in some navigation styles after dragging</source>
       <translation>ドラッグ後に一部のナビゲーションスタイルで使用される回転アニメーションを有効にする</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="790"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="811"/>
       <source>Enable spinning animations</source>
       <translation>回転アニメーションを有効</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="774"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="795"/>
       <source>Duration of navigation animations that have a fixed duration</source>
       <translation>固定時間のナビゲーションアニメーションの表示時間</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="719"/>
-      <source>Prevents view tilting when pinch-zooming.
-Affects only Gesture navigation style.
-Mouse tilting is not disabled by this setting.</source>
-      <translation>ピンチズーム時のビューのチルトを防ぎます。ジェスチャーナビゲーションスタイルに対してのみ有効です。この設定ではマウスでのチルトは無効化されません。</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="743"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="764"/>
       <source>Space Mouse</source>
       <translation>スペースマウス</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="749"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="770"/>
       <source>Enable support of legacy SpaceMouse devices</source>
       <translation>旧来のスペースマウスデバイスのサポートを有効</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="777"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="798"/>
       <source>Animation duration</source>
       <translation>アニメーション速度</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="812"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="833"/>
       <source>The duration of navigation animations in milliseconds</source>
       <translation>ミリ秒単位でのナビゲーションアニメーションの速度</translation>
     </message>
@@ -4192,67 +4201,74 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
       <translation>ズームを反転</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="724"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="719"/>
+      <source>Prevents view tilting when pinch-zooming.
+Mouse tilting is not disabled by this setting.</source>
+      <translation type="unfinished">Prevents view tilting when pinch-zooming.
+Mouse tilting is not disabled by this setting.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="723"/>
       <source>Disable touchscreen tilt gesture</source>
       <translation>タッチスクリーンのチルトジェスチャーを無効化</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="226"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="263"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="225"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="262"/>
       <source>Isometric</source>
       <translation>等角投影</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="227"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="264"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="226"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="263"/>
       <source>Dimetric</source>
       <translation>二等角投影</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="228"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="265"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="227"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="264"/>
       <source>Trimetric</source>
       <translation>斜方投影</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="229"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="266"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="228"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="265"/>
       <source>Top</source>
       <translation>上面</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="230"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="267"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="229"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="266"/>
       <source>Front</source>
       <translation>前面</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="231"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="268"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="230"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="267"/>
       <source>Left</source>
       <translation>左面</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="232"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="269"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="231"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="268"/>
       <source>Right</source>
       <translation>右面</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="233"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="270"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="232"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="269"/>
       <source>Rear</source>
       <translation>後面</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="234"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="271"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="233"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="270"/>
       <source>Bottom</source>
       <translation>下面</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="235"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="272"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="234"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="271"/>
       <source>Custom</source>
       <translation>カスタム</translation>
     </message>
@@ -4780,36 +4796,36 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>終了(&amp;F)</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="643"/>
-      <location filename="../DocumentRecovery.cpp" line="652"/>
+      <location filename="../DocumentRecovery.cpp" line="640"/>
+      <location filename="../DocumentRecovery.cpp" line="649"/>
       <source>Delete</source>
       <translation>削除</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="653"/>
+      <location filename="../DocumentRecovery.cpp" line="650"/>
       <source>Delete the selected recovery documents?</source>
       <translation>選択した復旧用ドキュメントを削除しますか？</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="654"/>
-      <location filename="../DocumentRecovery.cpp" line="687"/>
+      <location filename="../DocumentRecovery.cpp" line="651"/>
+      <location filename="../DocumentRecovery.cpp" line="684"/>
       <source>Recovery documents cannot be restored after deletion.</source>
       <translation>削除後、復元用ドキュメントは元に戻せません。</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="686"/>
+      <location filename="../DocumentRecovery.cpp" line="683"/>
       <source>Delete all recovery documents?</source>
       <translation>復旧用ドキュメントをすべて削除しますか？</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="704"/>
+      <location filename="../DocumentRecovery.cpp" line="701"/>
       <source>Recovery documents deleted.</source>
       <translation>復旧用ドキュメントを削除しました。</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.ui" line="42"/>
-      <location filename="../DocumentRecovery.cpp" line="685"/>
-      <location filename="../DocumentRecovery.cpp" line="704"/>
+      <location filename="../DocumentRecovery.cpp" line="682"/>
+      <location filename="../DocumentRecovery.cpp" line="701"/>
       <source>Cleanup</source>
       <translation>クリーンアップ</translation>
     </message>
@@ -5366,7 +5382,7 @@ The 'Status' column shows whether the document could be recovered.</source>
   <context>
     <name>Gui::Dialog::SceneModel</name>
     <message>
-      <location filename="../SceneInspector.cpp" line="117"/>
+      <location filename="../SceneInspector.cpp" line="118"/>
       <source>Nodes</source>
       <translation>ノード</translation>
     </message>
@@ -5832,12 +5848,12 @@ Save all changes?</source>
   <context>
     <name>Gui::FileOptionsDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="956"/>
+      <location filename="../FileDialog.cpp" line="960"/>
       <source>Extended</source>
       <translation>拡張</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="993"/>
+      <location filename="../FileDialog.cpp" line="997"/>
       <source>All files (*.*)</source>
       <translation>全てのファイル (*.*)</translation>
     </message>
@@ -5845,27 +5861,27 @@ Save all changes?</source>
   <context>
     <name>Gui::Flag</name>
     <message>
-      <location filename="../Flag.cpp" line="164"/>
+      <location filename="../Flag.cpp" line="156"/>
       <source>Top Left</source>
       <translation>左上</translation>
     </message>
     <message>
-      <location filename="../Flag.cpp" line="166"/>
+      <location filename="../Flag.cpp" line="158"/>
       <source>Bottom Left</source>
       <translation>左下</translation>
     </message>
     <message>
-      <location filename="../Flag.cpp" line="168"/>
+      <location filename="../Flag.cpp" line="160"/>
       <source>Top Right</source>
       <translation>右上</translation>
     </message>
     <message>
-      <location filename="../Flag.cpp" line="170"/>
+      <location filename="../Flag.cpp" line="162"/>
       <source>Bottom Right</source>
       <translation>右下</translation>
     </message>
     <message>
-      <location filename="../Flag.cpp" line="173"/>
+      <location filename="../Flag.cpp" line="165"/>
       <source>Remove</source>
       <translation>削除</translation>
     </message>
@@ -5873,22 +5889,22 @@ Save all changes?</source>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="979"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="955"/>
       <source>Tap OR click left mouse button.</source>
       <translation>タップ、または左マウスボタンをクリック</translation>
     </message>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="981"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="957"/>
       <source>Drag screen with two fingers OR press right mouse button.</source>
       <translation>二本指ですスクリーンをドラッグするか、右マウスボタンを押します。</translation>
     </message>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="983"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="959"/>
       <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
       <translation>画面を1本の指でドラッグするか、マウス左ボタンを押します。スケッチャーなどの編集モードではさらにALTキーを押しっぱなしにします。</translation>
     </message>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="988"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="964"/>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll mouse wheel OR PgUp/PgDown on keyboard.</source>
       <translation>ピンチ（スクリーンに二本の指を置き、互いに離すようにドラッグ）、またはマウスホイールをスクロール、またはキーボードのPgUp/PgDownキーを押す。</translation>
     </message>
@@ -5936,14 +5952,14 @@ Save all changes?</source>
       <translation>ビットマップ</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="611"/>
-      <source>Export graph</source>
+      <location filename="../GraphvizView.cpp" line="519"/>
+      <location filename="../CommandDoc.cpp" line="762"/>
+      <source>Export Graph</source>
       <translation>グラフをエクスポート</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="762"/>
-      <location filename="../GraphvizView.cpp" line="519"/>
-      <source>Export Graph</source>
+      <location filename="../GraphvizView.cpp" line="611"/>
+      <source>Export graph</source>
       <translation>グラフをエクスポート</translation>
     </message>
   </context>
@@ -6102,112 +6118,112 @@ Save all changes?</source>
   <context>
     <name>Gui::MainWindow</name>
     <message>
-      <location filename="../MainWindow.cpp" line="201"/>
-      <location filename="../MainWindow.cpp" line="2662"/>
+      <location filename="../MainWindow.cpp" line="197"/>
+      <location filename="../MainWindow.cpp" line="2649"/>
       <source>Dimension</source>
       <translation>寸法</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="204"/>
+      <location filename="../MainWindow.cpp" line="200"/>
       <source>Unit System</source>
       <extracomment>A context menu action used to show or hide the unit system chooser in the status bar</extracomment>
       <translation>使用する単位</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="480"/>
+      <location filename="../MainWindow.cpp" line="476"/>
       <source>Preselection</source>
       <extracomment>A context menu action used to show or hide the preselection info in the status bar</extracomment>
       <translation>事前選択</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="495"/>
+      <location filename="../MainWindow.cpp" line="491"/>
       <source>Input Hints</source>
       <extracomment>A context menu action used to show or hide the input hints in the status bar</extracomment>
       <translation>入力のヒント</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="535"/>
+      <location filename="../MainWindow.cpp" line="531"/>
       <source>Quick Measure</source>
       <extracomment>A context menu action used to enable or disable quick measure in the status bar</extracomment>
       <translation>クイック測定</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="550"/>
+      <location filename="../MainWindow.cpp" line="546"/>
       <source>Toggles the bottom dock panels</source>
       <extracomment>Tooltip for the status bar button that toggles bottom dock panels</extracomment>
       <translation>下部ドックパネルを切り替え</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="560"/>
+      <location filename="../MainWindow.cpp" line="556"/>
       <source>Bottom Panel Toggle</source>
       <extracomment>A context menu action used to show or hide the Toggle Bottom Panels button in the status bar</extracomment>
       <translation>下部パネルの切り替え</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="579"/>
+      <location filename="../MainWindow.cpp" line="575"/>
       <source>Notifications</source>
       <extracomment>A context menu action used to show or hide the 'notificationArea' toolbar widget</extracomment>
       <translation>通知</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="637"/>
+      <location filename="../MainWindow.cpp" line="629"/>
       <source>Ready</source>
       <translation>準備完了</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1432"/>
+      <location filename="../MainWindow.cpp" line="1424"/>
       <source>Close All</source>
       <translation>すべて閉じる</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1705"/>
-      <location filename="../MainWindow.cpp" line="1706"/>
-      <location filename="../MainWindow.cpp" line="1707"/>
+      <location filename="../MainWindow.cpp" line="1697"/>
+      <location filename="../MainWindow.cpp" line="1698"/>
+      <location filename="../MainWindow.cpp" line="1699"/>
       <source>Toggles this toolbar</source>
       <translation>このツールバーを切り替えます</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1726"/>
-      <location filename="../MainWindow.cpp" line="1727"/>
-      <location filename="../MainWindow.cpp" line="1728"/>
+      <location filename="../MainWindow.cpp" line="1718"/>
+      <location filename="../MainWindow.cpp" line="1719"/>
+      <location filename="../MainWindow.cpp" line="1720"/>
       <source>Toggles this dockable window</source>
       <translation>このドッキング可能なウィンドウを切り替える</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1931"/>
+      <location filename="../MainWindow.cpp" line="1927"/>
       <source>Safe mode enabled</source>
       <translation>セーフモード有効</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1932"/>
+      <location filename="../MainWindow.cpp" line="1928"/>
       <source>FreeCAD is now running in safe mode.</source>
       <translation>FreeCAD は現在セーフモードで実行されています。</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1936"/>
+      <location filename="../MainWindow.cpp" line="1932"/>
       <source>Safe mode temporarily disables your configurations and addons. Restart the application to exit safe mode.</source>
       <translation>セーフモードでは設定とアドオンが一時的に無効になります。セーフモードを終了するにはアプリケーションを再起動してください。</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2384"/>
-      <location filename="../MainWindow.cpp" line="2538"/>
+      <location filename="../MainWindow.cpp" line="2374"/>
+      <location filename="../MainWindow.cpp" line="2525"/>
       <source>Unsaved document</source>
       <translation>未保存のドキュメント</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2385"/>
+      <location filename="../MainWindow.cpp" line="2375"/>
       <source>The exported object contains external link. Save the documentat least once before exporting.</source>
       <translation>エクスポートされたオブジェクトには外部リンクがふくまれています。エクスポートの前に少なくとも一度ドキュメントを保存してください。</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2539"/>
+      <location filename="../MainWindow.cpp" line="2526"/>
       <source>To link to external objects, the document must be saved at least once.
 Save the document now?</source>
       <translation>外部オブジェクトにリンクするにはドキュメントを保存する必要があります。
 ドキュメントを保存しますか？</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="3049"/>
+      <location filename="../MainWindow.cpp" line="3036"/>
       <source>Safe Mode</source>
       <translation>セーフモード</translation>
     </message>
@@ -6216,10 +6232,10 @@ Save the document now?</source>
     <name>Gui::ManualAlignment</name>
     <message>
       <location filename="../ManualAlignment.cpp" line="831"/>
-      <location filename="../ManualAlignment.cpp" line="1048"/>
-      <location filename="../ManualAlignment.cpp" line="1057"/>
-      <location filename="../ManualAlignment.cpp" line="1066"/>
-      <location filename="../ManualAlignment.cpp" line="1102"/>
+      <location filename="../ManualAlignment.cpp" line="1044"/>
+      <location filename="../ManualAlignment.cpp" line="1053"/>
+      <location filename="../ManualAlignment.cpp" line="1062"/>
+      <location filename="../ManualAlignment.cpp" line="1098"/>
       <source>Manual alignment</source>
       <translation>手動による整列</translation>
     </message>
@@ -6229,107 +6245,107 @@ Save the document now?</source>
       <translation>既に整列処理中です。</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="860"/>
+      <location filename="../ManualAlignment.cpp" line="858"/>
       <source>Alignment[*]</source>
       <translation>Alignment[*]</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="866"/>
+      <location filename="../ManualAlignment.cpp" line="864"/>
       <source>Select at least 1 point in the left and the right view</source>
       <translation>左右のビューから少なくとも1個の点を選択</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="867"/>
+      <location filename="../ManualAlignment.cpp" line="865"/>
       <source>Select at least %1 points in the left and the right view</source>
       <translation>左右のビューから少なくとも %1 個の点を選択</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="929"/>
+      <location filename="../ManualAlignment.cpp" line="927"/>
       <source>Select points in the left and right view</source>
       <translation>左右のビューから点をピック</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1017"/>
+      <location filename="../ManualAlignment.cpp" line="1013"/>
       <source>The alignment has finished</source>
       <translation>整列が完了しました</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1036"/>
+      <location filename="../ManualAlignment.cpp" line="1032"/>
       <source>The alignment has been canceled</source>
       <translation>整列がキャンセルされました</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1049"/>
-      <location filename="../ManualAlignment.cpp" line="1123"/>
+      <location filename="../ManualAlignment.cpp" line="1045"/>
+      <location filename="../ManualAlignment.cpp" line="1119"/>
       <source>Too few points picked in the left view. At least %1 points are needed.</source>
       <translation>左のビューでピックされた点が少なすぎます。少なくとも %1 個の点が必要です。</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1058"/>
-      <location filename="../ManualAlignment.cpp" line="1128"/>
+      <location filename="../ManualAlignment.cpp" line="1054"/>
+      <location filename="../ManualAlignment.cpp" line="1124"/>
       <source>Too few points picked in the right view. At least %1 points are needed.</source>
       <translation>右のビューでピックされた点が少なすぎます。少なくとも %1 個の点が必要です。</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1067"/>
+      <location filename="../ManualAlignment.cpp" line="1063"/>
       <source>Different number of points picked in left and right view.
 On the left view %1 points are picked,
 on the right view %2 points are picked.</source>
       <translation>左のビューと右のビューでピックされた点の数が異なります。左のビューでは %1 個の点がピックされていますが、右のビューでは %2 個の点がピックされています。</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1079"/>
+      <location filename="../ManualAlignment.cpp" line="1075"/>
       <source>Try to align group of views</source>
       <translation>ビューのグループの整列を試みます</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1103"/>
+      <location filename="../ManualAlignment.cpp" line="1099"/>
       <source>The alignment failed.
 How do you want to proceed?</source>
       <translation>整列に失敗しました。どのように続行しますか。</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1134"/>
+      <location filename="../ManualAlignment.cpp" line="1130"/>
       <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
       <translation>左のビューと右のビューでピックされた点の数が異なります。左のビューでは %1 個の点がピックされていますが、右のビューでは %2 個の点がピックされています。</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1243"/>
+      <location filename="../ManualAlignment.cpp" line="1239"/>
       <source>Point_%1</source>
       <translation>Point_%1</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1351"/>
+      <location filename="../ManualAlignment.cpp" line="1347"/>
       <source>Point picked at (%1,%2,%3)</source>
       <translation>(%1,%2,%3) の点がピックされました</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1355"/>
+      <location filename="../ManualAlignment.cpp" line="1351"/>
       <source>No point was found on model</source>
       <translation>モデルにおいて、点が見つかりません</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1360"/>
+      <location filename="../ManualAlignment.cpp" line="1356"/>
       <source>No point was picked</source>
       <translation>ピックされた点はありません</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1379"/>
+      <location filename="../ManualAlignment.cpp" line="1375"/>
       <source>&amp;Align</source>
       <translation>整列(&amp;A)</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1380"/>
+      <location filename="../ManualAlignment.cpp" line="1376"/>
       <source>&amp;Remove Last Point</source>
       <translation>最後の点を削除(&amp;R)</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1386"/>
+      <location filename="../ManualAlignment.cpp" line="1382"/>
       <source>&amp;Synchronize Views</source>
       <translation>ビューを同期(&amp;S)</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1382"/>
+      <location filename="../ManualAlignment.cpp" line="1378"/>
       <source>&amp;Cancel</source>
       <translation>キャンセル(&amp;C)</translation>
     </message>
@@ -6474,12 +6490,12 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4668"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4665"/>
       <source>Error</source>
       <translation>エラー</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4668"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4665"/>
       <source>Object not found</source>
       <translation>オブジェクトが見つかりません</translation>
     </message>
@@ -6487,152 +6503,152 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::PropertyEditor</name>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="394"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="381"/>
       <source>Edit</source>
       <translation>編集</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="405"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="392"/>
       <source>property</source>
       <translation>プロパティ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="931"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="918"/>
       <source>Expand/Collapse Properties</source>
       <translation>プロパティを展開/折りたたみ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="933"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="920"/>
       <source>Expand to Default</source>
       <translation>デフォルトで展開</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="935"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="922"/>
       <source>Expand All</source>
       <translation>すべて展開</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="937"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="924"/>
       <source>Collapse All</source>
       <translation>すべて折りたたむ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="943"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="930"/>
       <source>Default Expand</source>
       <translation>デフォルトで展開</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="946"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="933"/>
       <source>Auto Expand</source>
       <translation>自動展開</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="949"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="936"/>
       <source>Auto Collapse</source>
       <translation>自動折りたたみ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1039"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1026"/>
       <source>object %1 (%2):
 </source>
       <translation>オブジェクト %1 (%2)：
 </translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1046"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1033"/>
       <source>property %1
 </source>
       <translation>プロパティ %1
 </translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1058"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1045"/>
       <source>document %1:
 </source>
       <translation>ドキュメント %1：
 </translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1083"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1070"/>
       <source>The property %1 in object %2 (%3) in document %4 is referenced by:</source>
       <translation>ドキュメント %4 内のオブジェクト %2 (%3) のプロパティ %1 は以下によって参照されています：</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1099"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1086"/>
       <source>(No references found.)</source>
       <translation>（参照は見つかりませんでした）</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1117"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1205"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1104"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1192"/>
       <source>Property Uses</source>
       <translation>プロパティの使用</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1147"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1134"/>
       <source>Copy</source>
       <translation>コピー</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1155"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1142"/>
       <source>Add Property</source>
       <translation>プロパティを追加</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1162"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1445"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1149"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1432"/>
       <source>Rename Property Group</source>
       <translation>プロパティ・グループの名前を変更</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1173"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1160"/>
       <source>Cannot rename group: one or more properties have names that start with the group name</source>
       <translation>グループ名を変更できません: グループ名で始まる名前を持つプロパティが1つまたは複数あります</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1182"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1415"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1169"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1402"/>
       <source>Rename Property</source>
       <translation>プロパティ名を変更</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1183"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1385"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1170"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1372"/>
       <source>Edit Property Tooltip</source>
       <translation>プロパティのツールチップを編集</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1200"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1187"/>
       <source>Delete Property</source>
       <translation>プロパティを削除</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1215"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1202"/>
       <source>Move Property</source>
       <translation>プロパティの移動</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1386"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1373"/>
       <source>Tooltip</source>
       <translation>ツールチップ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1225"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1212"/>
       <source>Show Hidden</source>
       <translation>非表示項目を表示</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1242"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1229"/>
       <source>Expression</source>
       <translation>式</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1416"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1403"/>
       <source>Property name</source>
       <translation>プロパティ名</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1446"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1433"/>
       <source>Group name:</source>
       <translation>グループ名:</translation>
     </message>
@@ -6654,13 +6670,13 @@ How do you want to proceed?</source>
     <name>Gui::PropertyView</name>
     <message>
       <location filename="../PropertyView.cpp" line="91"/>
-      <location filename="../PropertyView.cpp" line="608"/>
+      <location filename="../PropertyView.cpp" line="612"/>
       <source>View</source>
       <translation>ビュー</translation>
     </message>
     <message>
       <location filename="../PropertyView.cpp" line="96"/>
-      <location filename="../PropertyView.cpp" line="609"/>
+      <location filename="../PropertyView.cpp" line="613"/>
       <source>Data</source>
       <translation>データ</translation>
     </message>
@@ -6708,43 +6724,43 @@ Exit without saving all data?</source>
       <translation>処理されていない不明な C++ 例外。</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1348"/>
+      <location filename="../PythonConsole.cpp" line="1334"/>
       <source>&amp;Copy</source>
       <translation>&amp;コピー</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1352"/>
+      <location filename="../PythonConsole.cpp" line="1338"/>
       <source>&amp;Copy Command</source>
       <translation>コマンドをコピー(&amp;C)</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1355"/>
+      <location filename="../PythonConsole.cpp" line="1341"/>
       <source>&amp;Copy History</source>
       <translation>履歴をコピー(&amp;C)</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1358"/>
+      <location filename="../PythonConsole.cpp" line="1344"/>
       <source>Save History As…</source>
       <translation>名前を付けて履歴を保存…</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1362"/>
+      <location filename="../PythonConsole.cpp" line="1348"/>
       <source>Saves Python history across %1 sessions</source>
       <translation>%1 セッションでPythonの履歴を保存します</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1368"/>
+      <location filename="../PythonConsole.cpp" line="1354"/>
       <source>&amp;Paste</source>
       <translation>&amp;貼り付け</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1373"/>
+      <location filename="../PythonConsole.cpp" line="1359"/>
       <source>Select All</source>
       <translation>全て選択</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1361"/>
-      <location filename="../PythonConsole.cpp" line="1414"/>
+      <location filename="../PythonConsole.cpp" line="1347"/>
+      <location filename="../PythonConsole.cpp" line="1400"/>
       <source>Save History</source>
       <translation>履歴を保存</translation>
     </message>
@@ -6754,22 +6770,22 @@ Exit without saving all data?</source>
       <translation>コンソールをクリア</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1381"/>
+      <location filename="../PythonConsole.cpp" line="1367"/>
       <source>Insert File Name…</source>
       <translation>ファイル名を挿入…</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1384"/>
+      <location filename="../PythonConsole.cpp" line="1370"/>
       <source>Word Wrap</source>
       <translation>文字列折り返し</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1416"/>
+      <location filename="../PythonConsole.cpp" line="1402"/>
       <source>Macro Files</source>
       <translation>マクロファイル</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1438"/>
+      <location filename="../PythonConsole.cpp" line="1424"/>
       <source>Insert file name</source>
       <translation>ファイル名を挿入</translation>
     </message>
@@ -6795,30 +6811,30 @@ Exit without saving all data?</source>
   <context>
     <name>Gui::RecentFilesAction</name>
     <message>
-      <location filename="../Action.cpp" line="877"/>
+      <location filename="../Action.cpp" line="871"/>
       <source>Open...</source>
       <translation>開く...</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="878"/>
-      <location filename="../Action.cpp" line="879"/>
+      <location filename="../Action.cpp" line="872"/>
+      <location filename="../Action.cpp" line="873"/>
       <source>Open a document or import files.</source>
       <translation>ドキュメントを開く、またはファイルをインポート</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="894"/>
-      <location filename="../Action.cpp" line="903"/>
+      <location filename="../Action.cpp" line="888"/>
+      <location filename="../Action.cpp" line="897"/>
       <source>Clear Recent Files</source>
       <extracomment>Empties the list of recent files</extracomment>
       <translation>最近使ったファイルをクリア</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="904"/>
+      <location filename="../Action.cpp" line="898"/>
       <source>Clear the list of recent files?</source>
       <translation>最近使ったファイルのリストを削除しますか？</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="979"/>
+      <location filename="../Action.cpp" line="973"/>
       <source>Open file %1</source>
       <translation>%1 ファイルを開く</translation>
     </message>
@@ -6826,12 +6842,12 @@ Exit without saving all data?</source>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-      <location filename="../Action.cpp" line="1154"/>
+      <location filename="../Action.cpp" line="1148"/>
       <source>none</source>
       <translation>なし</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1172"/>
+      <location filename="../Action.cpp" line="1166"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation>マクロ実行 %1 (Shift + クリックで編集) キーボードショートカット: %2</translation>
     </message>
@@ -6895,12 +6911,12 @@ Exit without saving all data?</source>
   <context>
     <name>Gui::SelectModule</name>
     <message>
-      <location filename="../FileDialog.cpp" line="1372"/>
+      <location filename="../FileDialog.cpp" line="1376"/>
       <source>Select Module</source>
       <translation>モジュールを選択</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="1374"/>
+      <location filename="../FileDialog.cpp" line="1378"/>
       <source>Open %1 as</source>
       <translation>%1 を開く</translation>
     </message>
@@ -7417,7 +7433,7 @@ Specify another directory?</source>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="4262"/>
+      <location filename="../Tree.cpp" line="4254"/>
       <source>Search</source>
       <translation>検索　</translation>
     </message>
@@ -7425,234 +7441,234 @@ Specify another directory?</source>
   <context>
     <name>Gui::TreeWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="1312"/>
+      <location filename="../Tree.cpp" line="1317"/>
       <source>Activate Document</source>
       <translation>ドキュメントをアクティブ化</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1319"/>
+      <location filename="../Tree.cpp" line="1324"/>
       <source>Activates document %1</source>
       <translation>ドキュメント %1をアクティブ化</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1334"/>
+      <location filename="../Tree.cpp" line="1339"/>
       <source>Tree Settings</source>
       <translation>ツリー設定</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1338"/>
+      <location filename="../Tree.cpp" line="1343"/>
       <source>Show Description</source>
       <translation>説明を表示</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1339"/>
+      <location filename="../Tree.cpp" line="1344"/>
       <source>Show Internal Name</source>
       <translation>内部名を表示</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1360"/>
+      <location filename="../Tree.cpp" line="1365"/>
       <source>Shows an internal name column for items.</source>
       <translation>アイテムの内部名列を表示します。</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1408"/>
+      <location filename="../Tree.cpp" line="1413"/>
       <source>Group</source>
       <translation>グループ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3411"/>
-      <location filename="../Tree.cpp" line="3432"/>
+      <location filename="../Tree.cpp" line="3403"/>
+      <location filename="../Tree.cpp" line="3424"/>
       <source>Error</source>
       <translation>エラー</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3411"/>
+      <location filename="../Tree.cpp" line="3403"/>
       <source>File does not exist.</source>
       <translation>ファイルが存在しません。</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3432"/>
+      <location filename="../Tree.cpp" line="3424"/>
       <source>Failed to open directory.</source>
       <translation>ディレクトリを開けませんでした。</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3911"/>
+      <location filename="../Tree.cpp" line="3903"/>
       <source>Labels &amp; Attributes</source>
       <translation>ラベルと属性</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3912"/>
+      <location filename="../Tree.cpp" line="3904"/>
       <source>Description</source>
       <translation>説明</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3913"/>
+      <location filename="../Tree.cpp" line="3905"/>
       <source>Internal name</source>
       <translation>内部名</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3915"/>
+      <location filename="../Tree.cpp" line="3907"/>
       <source>Show Items Hidden in Tree View</source>
       <translation>ツリービューの非表示アイテムを表示</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3917"/>
+      <location filename="../Tree.cpp" line="3909"/>
       <source>Shows items that are marked as 'hidden' in the tree view</source>
       <translation>ツリービューで「非表示」としてマークされているアイテムを表示</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3920"/>
+      <location filename="../Tree.cpp" line="3912"/>
       <source>Toggle Visibility in Tree View</source>
       <translation>ツリー ビューでの表示を切り替え</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3925"/>
+      <location filename="../Tree.cpp" line="3917"/>
       <source>Create Group</source>
       <translation>グループを作成</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3926"/>
+      <location filename="../Tree.cpp" line="3918"/>
       <source>Creates a group</source>
       <translation>グループを作成</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3929"/>
+      <location filename="../Tree.cpp" line="3921"/>
       <source>Renames object</source>
       <translation>オブジェクトの名前を変更</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3931"/>
+      <location filename="../Tree.cpp" line="3923"/>
       <source>Finish Editing</source>
       <translation>編集を終了</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3932"/>
+      <location filename="../Tree.cpp" line="3924"/>
       <source>Finishes editing object</source>
       <translation>オブジェクトの編集を終了</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3934"/>
+      <location filename="../Tree.cpp" line="3926"/>
       <source>Add Dependent Objects to Selection</source>
       <translation>依存オブジェクトを追加選択</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3937"/>
+      <location filename="../Tree.cpp" line="3929"/>
       <source>Close Document</source>
       <translation>ドキュメントを閉じる</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3938"/>
+      <location filename="../Tree.cpp" line="3930"/>
       <source>Closes the document</source>
       <translation>ドキュメントを閉じる</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3943"/>
+      <location filename="../Tree.cpp" line="3935"/>
       <source>Reveals the current file location in Finder</source>
       <translation>Finderで現在のファイルの場所を表示</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3946"/>
+      <location filename="../Tree.cpp" line="3938"/>
       <source>Opens the current file location</source>
       <translation>現在のファイルの場所を開く</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3949"/>
+      <location filename="../Tree.cpp" line="3941"/>
       <source>Reload Document</source>
       <translation>ドキュメントを再読み込み</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3950"/>
+      <location filename="../Tree.cpp" line="3942"/>
       <source>Reloads a partially loaded document</source>
       <translation>部分的に読み込まれたドキュメントを再読み込み</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3952"/>
+      <location filename="../Tree.cpp" line="3944"/>
       <source>Skip Recomputes</source>
       <translation>再計算をスキップ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3953"/>
+      <location filename="../Tree.cpp" line="3945"/>
       <source>Enables or disables the recomputations of document</source>
       <translation>ドキュメントの再計算の有効、無効を切り替え</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3955"/>
+      <location filename="../Tree.cpp" line="3947"/>
       <source>Allow Partial Recomputes</source>
       <translation>部分的な再計算を許可</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3956"/>
+      <location filename="../Tree.cpp" line="3948"/>
       <source>Enables or disables the recomputating editing object when 'skip recomputation' is enabled</source>
       <translation>「再計算のスキップ」が有効な場合の編集オブジェクト再計算の有効、無効を切り替え</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3960"/>
+      <location filename="../Tree.cpp" line="3952"/>
       <source>Mark to Recompute</source>
       <translation>再計算を指定</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3961"/>
+      <location filename="../Tree.cpp" line="3953"/>
       <source>Marks this object to be recomputed</source>
       <translation>このオブジェクトを再計算を指定</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3964"/>
+      <location filename="../Tree.cpp" line="3956"/>
       <source>Recompute Object</source>
       <translation>オブジェクトを再計算</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3965"/>
+      <location filename="../Tree.cpp" line="3957"/>
       <source>Recomputes the selected object</source>
       <translation>選択したオブジェクトを再計算</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3922"/>
+      <location filename="../Tree.cpp" line="3914"/>
       <source>Toggles the visibility of selected items in the tree view</source>
       <translation>ツリー ビューで選択したアイテムの表示を切り替えます。</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="657"/>
+      <location filename="../Tree.cpp" line="662"/>
       <source>Search Objects</source>
       <translation>オブジェクトを検索</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="658"/>
+      <location filename="../Tree.cpp" line="663"/>
       <source>Searches for objects in the tree</source>
       <translation>ツリー内のオブジェクトを検索</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1341"/>
+      <location filename="../Tree.cpp" line="1346"/>
       <source>Shows a description column for items. An item's description can be set by editing the 'label2' property.</source>
       <translation>アイテムの説明列を表示します。 アイテムの説明は「label2」プロパティを編集することで設定できます。</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3928"/>
-      <location filename="../Tree.cpp" line="6626"/>
+      <location filename="../Tree.cpp" line="3920"/>
+      <location filename="../Tree.cpp" line="6613"/>
       <source>Rename</source>
       <translation>名前の変更</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3935"/>
+      <location filename="../Tree.cpp" line="3927"/>
       <source>Adds all dependent objects to the selection</source>
       <translation>すべての依存オブジェクトを追加選択</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3942"/>
+      <location filename="../Tree.cpp" line="3934"/>
       <source>Reveal in Finder</source>
       <translation>Finderで表示</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3945"/>
+      <location filename="../Tree.cpp" line="3937"/>
       <source>Open File Location</source>
       <translation>ファイルの場所を開く</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6594"/>
+      <location filename="../Tree.cpp" line="6581"/>
       <source> (but must be executed)</source>
       <translation> (実行する必要があります)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6597"/>
+      <location filename="../Tree.cpp" line="6584"/>
       <source>%1, Internal name: %2</source>
       <translation>%1、内部名: %2</translation>
     </message>
@@ -7701,12 +7717,12 @@ Specify another directory?</source>
   <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
-      <location filename="../Action.cpp" line="738"/>
+      <location filename="../Action.cpp" line="732"/>
       <source>Selects the '%1' workbench</source>
       <translation>ワークベンチ「%1」を選択</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="766"/>
+      <location filename="../Action.cpp" line="760"/>
       <source>Select the '%1' workbench</source>
       <translation>ワークベンチ'%1'を選択</translation>
     </message>
@@ -7873,47 +7889,47 @@ Specify another directory?</source>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../MainWindow.cpp" line="739"/>
+      <location filename="../MainWindow.cpp" line="731"/>
       <source>Tasks</source>
       <translation>タスク</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="756"/>
+      <location filename="../MainWindow.cpp" line="748"/>
       <source>Selection View</source>
       <translation>選択ビュー</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="774"/>
+      <location filename="../MainWindow.cpp" line="766"/>
       <source>Report View</source>
       <translation>レポートビュー</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="794"/>
+      <location filename="../MainWindow.cpp" line="786"/>
       <source>Python Console</source>
       <translation>Pythonコンソール</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="821"/>
+      <location filename="../MainWindow.cpp" line="813"/>
       <source>Tree View</source>
       <translation>ツリービュー</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="851"/>
+      <location filename="../MainWindow.cpp" line="843"/>
       <source>Property View</source>
       <translation>プロパティビュー</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="880"/>
+      <location filename="../MainWindow.cpp" line="872"/>
       <source>Task List</source>
       <translation>タスクリスト</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="909"/>
+      <location filename="../MainWindow.cpp" line="901"/>
       <source>Model</source>
       <translation>モデル</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="939"/>
+      <location filename="../MainWindow.cpp" line="931"/>
       <source>DAG View</source>
       <translation>DAGビュー</translation>
     </message>
@@ -8018,12 +8034,12 @@ Check the report view for more details.</source>
       <translation>%1</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="368"/>
+      <location filename="../StartupProcess.cpp" line="357"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Upgrade the graphics driver and/or card as required.</source>
       <translation>このシステムは OpenGL %1.%2 を実行しています。FreeCAD では OpenGL 2.0 以上が必要です。必要に応じてグラフィックドライバーやカードを更新してください。</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="379"/>
+      <location filename="../StartupProcess.cpp" line="368"/>
       <source>Invalid OpenGL Version</source>
       <translation>無効な OpenGL バージョンです。</translation>
     </message>
@@ -8121,6 +8137,13 @@ Check the report view for more details.</source>
       <location filename="../CommandDoc.cpp" line="683"/>
       <source>Merge Document</source>
       <translation>ドキュメントを統合</translation>
+    </message>
+    <message>
+      <location filename="../CommandDoc.cpp" line="673"/>
+      <location filename="../Document.cpp" line="1749"/>
+      <location filename="../Document.cpp" line="1879"/>
+      <source>%1 document</source>
+      <translation>%1 ドキュメント</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="684"/>
@@ -8571,13 +8594,6 @@ Use 'Save As…' to preserve the original file.
       <translation>新しいファイル名でドキュメントを保存…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1749"/>
-      <location filename="../Document.cpp" line="1879"/>
-      <location filename="../CommandDoc.cpp" line="673"/>
-      <source>%1 document</source>
-      <translation>%1 ドキュメント</translation>
-    </message>
-    <message>
       <location filename="../Document.cpp" line="1865"/>
       <source>Save a copy of the document under new filename…</source>
       <translation>新しいファイル名でドキュメントのコピーを保存…</translation>
@@ -8708,12 +8724,12 @@ Choose 'Abort' to abort</source>
       <translation>お使いのシステムのブラウザーを開くことができません。</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3332"/>
+      <location filename="../View3DInventorViewer.cpp" line="3342"/>
       <source>Out of memory</source>
       <translation>メモリ不足</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3333"/>
+      <location filename="../View3DInventorViewer.cpp" line="3343"/>
       <source>Not enough memory available to display the data.</source>
       <translation>データを表示するのに十分なメモリがありません。</translation>
     </message>
@@ -8729,38 +8745,38 @@ Choose 'Abort' to abort</source>
       <translation>%2 にも %3 にもファイル %1 が見つかりません。</translation>
     </message>
     <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="2665"/>
+      <location filename="../Navigation/NavigationStyle.cpp" line="2801"/>
       <source>Clarify Selection</source>
       <translation>選択対象の明確化</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1004"/>
+      <location filename="../MainWindow.cpp" line="996"/>
       <location filename="../CommandDoc.cpp" line="1463"/>
       <source>Unsaved Document</source>
       <translation>未保存のドキュメント</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1008"/>
+      <location filename="../MainWindow.cpp" line="1000"/>
       <source>Save all changes to document '%1' before closing?</source>
       <translation>閉じる前にドキュメント「 %1 」の変更をすべて保存しますか？</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1009"/>
+      <location filename="../MainWindow.cpp" line="1001"/>
       <source>Save all changes to document before closing?</source>
       <translation>閉じる前にすべての変更をドキュメントに保存しますか？</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1013"/>
+      <location filename="../MainWindow.cpp" line="1005"/>
       <source>Otherwise, all changes will be lost.</source>
       <translation>そうしない場合、すべての変更が失われます。</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1139"/>
+      <location filename="../MainWindow.cpp" line="1131"/>
       <source>%1 Document(s) not saved</source>
       <translation>%1 ドキュメントは保存されていません</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1140"/>
+      <location filename="../MainWindow.cpp" line="1132"/>
       <source>Some documents could not be saved. Cancel closing?</source>
       <translation>一部のドキュメントを保存できませんでした。閉じるのをキャンセルしますか？</translation>
     </message>
@@ -8853,13 +8869,13 @@ Choose 'Abort' to abort</source>
       <translation>'%1' へプロパティの追加に失敗しました: %2</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2787"/>
-      <location filename="../Tree.cpp" line="3184"/>
+      <location filename="../Tree.cpp" line="2779"/>
+      <location filename="../Tree.cpp" line="3176"/>
       <source>Drag &amp; drop failed</source>
       <translation>ドラッグ&amp;ドロップ失敗</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1018"/>
+      <location filename="../MainWindow.cpp" line="1010"/>
       <location filename="../ViewProviderLink.cpp" line="3055"/>
       <source>Apply to all</source>
       <translation>すべてに適用</translation>
@@ -8968,8 +8984,8 @@ the current copy will be lost.
       <translation>オーバーレイの切り替え</translation>
     </message>
     <message>
+      <location filename="../OverlayWidgets.cpp" line="2594"/>
       <location filename="../OverlayManager.cpp" line="1123"/>
-      <location filename="../OverlayWidgets.cpp" line="2618"/>
       <source>Toggle floating window</source>
       <translation>フローティングウィンドウの切り替え</translation>
     </message>
@@ -9155,11 +9171,6 @@ the current copy will be lost.
       <translation>選択したすべてのオブジェクト (%1) とその子要素に適用</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="78"/>
-      <source>Part</source>
-      <translation>部品</translation>
-    </message>
-    <message>
       <location filename="../ViewProviderImagePlane.cpp" line="172"/>
       <source>Edit Image Plane</source>
       <translation>画像平面を編集</translation>
@@ -9173,6 +9184,11 @@ the current copy will be lost.
       <location filename="../FileDialog.cpp" line="301"/>
       <source>All Files</source>
       <translation>すべてのファイル</translation>
+    </message>
+    <message>
+      <location filename="../CommandStructure.cpp" line="78"/>
+      <source>Part</source>
+      <translation>部品</translation>
     </message>
   </context>
   <context>
@@ -9497,8 +9513,8 @@ the current copy will be lost.
   <context>
     <name>StdCmdNew</name>
     <message>
-      <location filename="../MainWindow.cpp" line="2655"/>
-      <location filename="../DocumentRecovery.cpp" line="413"/>
+      <location filename="../MainWindow.cpp" line="2642"/>
+      <location filename="../DocumentRecovery.cpp" line="410"/>
       <source>Unnamed</source>
       <translation>Unnamed</translation>
     </message>
@@ -11905,67 +11921,67 @@ the region are non-opaque.</source>
   <context>
     <name>Gui::OverlayTabWidget</name>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="995"/>
+      <location filename="../OverlayWidgets.cpp" line="991"/>
       <source>Toggle transparent mode</source>
       <translation>透明モードの切り替え</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="996"/>
+      <location filename="../OverlayWidgets.cpp" line="992"/>
       <source>None</source>
       <translation>なし</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="997"/>
+      <location filename="../OverlayWidgets.cpp" line="993"/>
       <source>Turn off auto hide/show</source>
       <translation>自動表示/非表示をオフ</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="998"/>
+      <location filename="../OverlayWidgets.cpp" line="994"/>
       <source>Auto hide</source>
       <translation>自動非表示</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="999"/>
+      <location filename="../OverlayWidgets.cpp" line="995"/>
       <source>Auto hide docked widgets on leave</source>
       <translation>放置時にドッキング中のウィジェットを自動非表示</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="1000"/>
+      <location filename="../OverlayWidgets.cpp" line="996"/>
       <source>Hide on edit</source>
       <translation>編集時に非表示</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="1001"/>
+      <location filename="../OverlayWidgets.cpp" line="997"/>
       <source>Auto hide docked widgets on editing</source>
       <translation>編集時にドッキング中のウィジェットを自動非表示</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="1002"/>
+      <location filename="../OverlayWidgets.cpp" line="998"/>
       <source>Show on edit</source>
       <translation>編集時に表示</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="1003"/>
+      <location filename="../OverlayWidgets.cpp" line="999"/>
       <source>Auto show docked widgets on editing</source>
       <translation>編集時にドッキング中のウィジェットを自動表示</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="1004"/>
+      <location filename="../OverlayWidgets.cpp" line="1000"/>
       <source>Auto task</source>
       <translation>自動タスク</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="1006"/>
+      <location filename="../OverlayWidgets.cpp" line="1002"/>
       <source>Auto show task view for any current task, and hide the view when there is no task.</source>
       <translation>タスクがある場合はタスクビューを自動表示し、タスクがない場合は非表示にします。</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="1008"/>
+      <location filename="../OverlayWidgets.cpp" line="1004"/>
       <source>Toggle overlay</source>
       <translation>オーバーレイの切り替え</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="1152"/>
+      <location filename="../OverlayWidgets.cpp" line="1148"/>
       <source>Select auto show/hide mode</source>
       <translation>自動表示/非表示モードを選択</translation>
     </message>
@@ -14337,7 +14353,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1108"/>
+      <location filename="../ExpressionCompleter.cpp" line="1530"/>
       <source>Exact Match</source>
       <translation>完全一致</translation>
     </message>
@@ -14345,7 +14361,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1297"/>
+      <location filename="../ExpressionCompleter.cpp" line="1715"/>
       <source>Exact Match</source>
       <translation>完全一致</translation>
     </message>
@@ -14353,13 +14369,13 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::FileChooser</name>
     <message>
-      <location filename="../FileDialog.cpp" line="1259"/>
-      <location filename="../FileDialog.cpp" line="1269"/>
+      <location filename="../FileDialog.cpp" line="1263"/>
+      <location filename="../FileDialog.cpp" line="1273"/>
       <source>Select a File</source>
       <translation>ファイルを選択</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="1279"/>
+      <location filename="../FileDialog.cpp" line="1283"/>
       <source>Select a Directory</source>
       <translation>ディレクトリを選択</translation>
     </message>
@@ -14375,7 +14391,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::OverlayTitleBar</name>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2258"/>
+      <location filename="../OverlayWidgets.cpp" line="2250"/>
       <source>Mouse pass through, Esc to stop</source>
       <translation>マウスによるパススルー。Escで停止。</translation>
     </message>
@@ -14383,7 +14399,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::DockWnd::PropertyDockView</name>
     <message>
-      <location filename="../PropertyView.cpp" line="620"/>
+      <location filename="../PropertyView.cpp" line="624"/>
       <source>Property View</source>
       <translation>プロパティビュー</translation>
     </message>
@@ -14391,7 +14407,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="4334"/>
+      <location filename="../Tree.cpp" line="4326"/>
       <source>Tree View</source>
       <translation>ツリービュー</translation>
     </message>
@@ -14399,48 +14415,48 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::Dialog::DlgExpressionInput</name>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="80"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="79"/>
       <source>Revert to last calculated value (as constant)</source>
       <translation>最後に計算した (定数) 値を元に戻す</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="407"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="406"/>
       <source> (Warning: unit discarded)</source>
       <translation>（警告: 単位が破棄されました）</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="513"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="523"/>
       <source>Invalid property name: %1</source>
       <translation>無効なプロパティ名: %1</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="517"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="527"/>
       <source>Unknown object</source>
       <translation>不明なオブジェクト</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="523"/>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="928"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="533"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="938"/>
       <source>the name cannot be empty</source>
       <translation>名前を空にすることはできません</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="533"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="543"/>
       <source>%1 is a unit</source>
       <translation>%1 は単位です</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="538"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="548"/>
       <source>%1 is a constant</source>
       <translation>%1 は定数です</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="544"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="554"/>
       <source>%1 already exists</source>
       <translation>%1 は既に存在します</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="924"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="934"/>
       <source>Invalid group name: %1</source>
       <translation>無効なグループ名: %1</translation>
     </message>
@@ -14514,8 +14530,8 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::Dialog::DlgCustomToolBoxbarsImp</name>
     <message>
-      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="888"/>
-      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="897"/>
+      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="880"/>
+      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="889"/>
       <source>Toolbox Bars</source>
       <translation>ツールボックスバー</translation>
     </message>
@@ -14546,7 +14562,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4703"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4700"/>
       <source>Changes the linked object</source>
       <translation>リンクされたオブジェクトを変更</translation>
     </message>
@@ -14567,17 +14583,17 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="307"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="306"/>
       <source>Value out of range (%1 out of [%2, %3])</source>
       <translation>値が範囲外です（%1 は [%2, %3]外）</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="392"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="391"/>
       <source>Not a Number</source>
       <translation>数値ではありません</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="400"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="399"/>
       <source>Unit mismatch between result and required unit</source>
       <translation>結果の単位と必要な単位が一致しません</translation>
     </message>
@@ -14849,19 +14865,6 @@ treated as shortcut key sequence 'F, F'.</source>
     </message>
   </context>
   <context>
-    <name>StdCmdToggleBottomPanels</name>
-    <message>
-      <location filename="../CommandView.cpp" line="3858"/>
-      <source>Toggle Bottom Panels</source>
-      <translation>下部パネルを切り替え</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="3859"/>
-      <source>Toggles the bottom dock panels</source>
-      <translation>下部ドックパネルを切り替え</translation>
-    </message>
-  </context>
-  <context>
     <name>Gui::Command</name>
     <message>
       <location filename="../Command.cpp" line="1063"/>
@@ -14882,50 +14885,6 @@ treated as shortcut key sequence 'F, F'.</source>
       <location filename="../Command.cpp" line="1070"/>
       <source>DEVELOPMENT PREVIEW: this command may change or be removed.</source>
       <translation type="unfinished">DEVELOPMENT PREVIEW: this command may change or be removed.</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdToggleSuppress</name>
-    <message>
-      <location filename="../CommandFeat.cpp" line="240"/>
-      <source>Toggle Suppressed</source>
-      <translation>抑制状態を切り替え</translation>
-    </message>
-    <message>
-      <location filename="../CommandFeat.cpp" line="242"/>
-      <source>Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</source>
-      <translation>選択したオブジェクトの抑制状態を切り替えます。抑制されたオブジェクトは削除された時と同じように動作します。</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdHelpGroup</name>
-    <message>
-      <location filename="../CommandStd.cpp" line="322"/>
-      <source>Help</source>
-      <translation>ヘルプ</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="323"/>
-      <source>Opens the documentation corresponding to the selection</source>
-      <translation>選択したものに対応するドキュメントを開く</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdAnnotationLabel</name>
-    <message>
-      <location filename="../CommandStd.cpp" line="1024"/>
-      <source>Tools</source>
-      <translation>ツール</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="1025"/>
-      <source>Annotation Label</source>
-      <translation>注釈ラベル</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="1026"/>
-      <source>Creates a new annotation label at the picked location in the 3D view</source>
-      <translation>3Dビュー内の選択位置に新しい注釈ラベルを作成</translation>
     </message>
   </context>
   <context>
@@ -14952,19 +14911,6 @@ treated as shortcut key sequence 'F, F'.</source>
       <location filename="../CommandDoc.cpp" line="964"/>
       <source>Saves the active document</source>
       <translation>アクティブなドキュメントを保存</translation>
-    </message>
-  </context>
-  <context>
-    <name>Gui::PropertyMapEditor</name>
-    <message>
-      <location filename="../Widgets.cpp" line="1913"/>
-      <source>Key</source>
-      <translation>キー名</translation>
-    </message>
-    <message>
-      <location filename="../Widgets.cpp" line="1913"/>
-      <source>Value</source>
-      <translation>値</translation>
     </message>
   </context>
   <context>
@@ -15006,17 +14952,87 @@ treated as shortcut key sequence 'F, F'.</source>
     </message>
   </context>
   <context>
+    <name>Gui::PropertyMapEditor</name>
+    <message>
+      <location filename="../Widgets.cpp" line="1913"/>
+      <source>Key</source>
+      <translation>キー名</translation>
+    </message>
+    <message>
+      <location filename="../Widgets.cpp" line="1913"/>
+      <source>Value</source>
+      <translation>値</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleSuppress</name>
+    <message>
+      <location filename="../CommandFeat.cpp" line="240"/>
+      <source>Toggle Suppressed</source>
+      <translation>抑制状態を切り替え</translation>
+    </message>
+    <message>
+      <location filename="../CommandFeat.cpp" line="242"/>
+      <source>Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</source>
+      <translation>選択したオブジェクトの抑制状態を切り替えます。抑制されたオブジェクトは削除された時と同じように動作します。</translation>
+    </message>
+  </context>
+  <context>
     <name>FileDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="578"/>
+      <location filename="../FileDialog.cpp" line="579"/>
       <source>Save As</source>
       <translation>名前をつけて保存</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="713"/>
-      <location filename="../FileDialog.cpp" line="808"/>
+      <location filename="../FileDialog.cpp" line="715"/>
+      <location filename="../FileDialog.cpp" line="811"/>
       <source>Open</source>
       <translation>開く</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdHelpGroup</name>
+    <message>
+      <location filename="../CommandStd.cpp" line="322"/>
+      <source>Help</source>
+      <translation>ヘルプ</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="323"/>
+      <source>Opens the documentation corresponding to the selection</source>
+      <translation>選択したものに対応するドキュメントを開く</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdAnnotationLabel</name>
+    <message>
+      <location filename="../CommandStd.cpp" line="1024"/>
+      <source>Tools</source>
+      <translation>ツール</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="1025"/>
+      <source>Annotation Label</source>
+      <translation>注釈ラベル</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="1026"/>
+      <source>Creates a new annotation label at the picked location in the 3D view</source>
+      <translation>3Dビュー内の選択位置に新しい注釈ラベルを作成</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleBottomPanels</name>
+    <message>
+      <location filename="../CommandView.cpp" line="3858"/>
+      <source>Toggle Bottom Panels</source>
+      <translation>下部パネルを切り替え</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="3859"/>
+      <source>Toggles the bottom dock panels</source>
+      <translation>下部ドックパネルを切り替え</translation>
     </message>
   </context>
   <context>
@@ -15030,32 +15046,32 @@ treated as shortcut key sequence 'F, F'.</source>
   <context>
     <name>Gui::PropertyEditor::PropertyMaterialItem</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3591"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3588"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
       <translation>光で照らされた表面の基本色を定義します。表示方向には関係無く、どのようにオブジェクトが全方向に均等に光を散乱するかを表します。このプロパティはマテリアルの色に最も影響します。</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3601"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3598"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
       <translation>間接的な均一の照明下の表面の色を定義し、環境光のみに照らされた時にどのように表示されるかを表現します。</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3611"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3608"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
       <translation>光が直接あたった時に　光沢または反射のある面に表示される鏡面的なハイライトの色と強度を定義します。 光沢のあるオブジェクトの明るい色を設定します。</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3621"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3618"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
       <translation>光源として発光しているように表示される表面の色を定義し、外部の照明とは無関係に物体が自ら発光しているように見せます。発光色が無い場合は黒に設定します。</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3633"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3630"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
       <translation>表面上の鏡面ハイライトの大きさとシャープさを定義します。 値が大きいほど小さくシャープな表示になり、値が小さいほど広範囲なぼんやりとした表示になります。ハイライトの強度は鏡面反射色で定義されることに注意してください。</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3645"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3642"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
       <translation>オブジェクトを通過する光の量を定義し、部分的または完全に光を透過させます。</translation>
     </message>
@@ -15063,32 +15079,32 @@ treated as shortcut key sequence 'F, F'.</source>
   <context>
     <name>Gui::PropertyEditor::PropertyMaterialListItem</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3957"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3954"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
       <translation>光で照らされた表面の基本色を定義します。表示方向には関係無く、どのようにオブジェクトが全方向に均等に光を散乱するかを表します。このプロパティはマテリアルの色に最も影響します。</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3967"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3964"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
       <translation>間接的な均一の照明下の表面の色を定義し、直接光やシェーディング、ハイライト無しの、環境光のみに照らされた時にどのように表示されるかを表現します。</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3977"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3974"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
       <translation>光が直接あたった時に　光沢または反射のある面に表示される鏡面的なハイライトの色と強度を定義します。 光沢のあるオブジェクトの明るい色を設定します。</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3987"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3984"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
       <translation>光源として発光しているように表示される表面の色を定義し、外部の照明とは無関係に物体が自ら発光しているように見せます。発光色が無い場合は黒に設定します。</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3999"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3996"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
       <translation>表面上の鏡面ハイライトの大きさとシャープさを定義します。 値が大きいほど小さくシャープな表示になり、値が小さいほど広範囲なぼんやりとした表示になります。ハイライトの強度は鏡面反射色で定義されることに注意してください。</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4011"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4008"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
       <translation>オブジェクトを通過する光の量を定義し、部分的または完全に光を透過させます。</translation>
     </message>
@@ -15096,7 +15112,7 @@ treated as shortcut key sequence 'F, F'.</source>
   <context>
     <name>Gui::PropertyEditor::PropertyMapItem</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4933"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4930"/>
       <source>Map</source>
       <translation>マップ</translation>
     </message>

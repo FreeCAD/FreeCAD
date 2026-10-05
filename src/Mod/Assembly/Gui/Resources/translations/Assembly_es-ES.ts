@@ -48,7 +48,7 @@
       <translation>Ensamblaje</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="155"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="156"/>
       <source>Active object</source>
       <translation>Objeto activo</translation>
     </message>
@@ -1015,52 +1015,52 @@ Los archivos se llaman "runPreDrag. smt" y "dragging.log" y están ubicados en e
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="223"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="224"/>
       <source>The object is associated to one or more joints.</source>
       <translation>El objeto es asociado a una o más articulaciones.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="225"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="226"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>¿Quiere mover el objeto y eliminar las articulaciones asociadas?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1142"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1143"/>
       <source>Move part</source>
       <translation>Mover parte</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1897"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1898"/>
       <source>Empty Assembly</source>
       <translation>Ensamblaje vacío</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1909"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1910"/>
       <source>Over-constrained:</source>
       <translation>Sobre-restringido:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1917"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1918"/>
       <source>Malformed joints:</source>
       <translation>Articulaciones malformadas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1882"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1883"/>
       <source>and %1 more</source>
       <translation>y %1 más</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1941"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1942"/>
       <source>Solver failed to converge</source>
       <translation>El solver falló al converger</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1949"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1950"/>
       <source>Under-constrained:</source>
       <translation>Sub-restringido:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1951"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1952"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n grado de libertad</numerusform>
@@ -1068,7 +1068,7 @@ Los archivos se llaman "runPreDrag. smt" y "dragging.log" y están ubicados en e
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1955"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1956"/>
       <source>Fully constrained</source>
       <translation>Totalmente restringido</translation>
     </message>

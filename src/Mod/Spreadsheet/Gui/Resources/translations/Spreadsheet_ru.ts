@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="523"/>
       <source>Aligns cell contents to the bottom</source>
-      <translation>Выравнивает содержимое ячейки по нижнему краю</translation>
+      <translation>Выравнивает содержимое ячейки вертикально по нижнему краю</translation>
     </message>
   </context>
   <context>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../Command.cpp" line="348"/>
       <source>Align Horizontal &amp;Center</source>
-      <translation>По горизонтали и центру</translation>
+      <translation>Горизонтально по центру</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="349"/>
       <source>Aligns cell contents to the horizontal center</source>
-      <translation>Выравнивает содержимое ячейки по горизонтали и центру</translation>
+      <translation>Выравнивает содержимое ячейки горизонтально по центру</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="291"/>
       <source>Aligns cell contents to the left</source>
-      <translation>Выравнивает содержимое ячейки по левому краю</translation>
+      <translation>Выравнивает содержимое ячейки горизонтально по левому краю</translation>
     </message>
   </context>
   <context>
@@ -88,7 +88,7 @@
     <message>
       <location filename="../../Command.cpp" line="407"/>
       <source>Aligns cell contents to the right</source>
-      <translation>Выравнивает содержимое ячейки по правому краю</translation>
+      <translation>Выравнивает содержимое ячейки горизонтально по правому краю</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="465"/>
       <source>Aligns cell contents to the top</source>
-      <translation>Выравнивает содержимое ячейки по верхнему краю</translation>
+      <translation>Выравнивает содержимое ячейки вертикально по верхнему краю</translation>
     </message>
   </context>
   <context>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="580"/>
       <source>Align &amp;Vertical Center</source>
-      <translation>По вертикали и центру</translation>
+      <translation>Вертикально по центру</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="581"/>
       <source>Aligns cell contents to the vertical center</source>
-      <translation>Выравнивает содержимое ячейки по вертикали и центру</translation>
+      <translation>Выравнивает содержимое ячейки вертикально по центру</translation>
     </message>
   </context>
   <context>
@@ -250,7 +250,7 @@
     <message>
       <location filename="../../Command.cpp" line="725"/>
       <source>Sets the text in the selected cells italic</source>
-      <translation>Форматирует текст в выделенных ячейках курсивными шрифтом</translation>
+      <translation>Форматирует текст в выделенных ячейках курсивным шрифтом</translation>
     </message>
   </context>
   <context>
@@ -286,7 +286,7 @@
     <message>
       <location filename="../../qtcolorpicker.cpp" line="653"/>
       <source>Custom Color</source>
-      <translation>﻿Пользовательский цвет</translation>
+      <translation>Пользовательский цвет</translation>
     </message>
   </context>
   <context>
@@ -382,11 +382,6 @@
       <translation>Очистить цвет фона</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="226"/>
-      <source>Recompute Cells</source>
-      <translation>Пересчитать ячейки</translation>
-    </message>
-    <message>
       <location filename="../../SheetTableView.cpp" line="327"/>
       <source>Insert Rows</source>
       <translation>Вставка строк</translation>
@@ -397,18 +392,23 @@
       <translation>Удаление строк</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="367"/>
-      <source>Remove Columns</source>
-      <translation>Удалить столбцы</translation>
-    </message>
-    <message>
       <location filename="../../SheetTableView.cpp" line="340"/>
       <source>Insert Columns</source>
       <translation>Вставка столбцов</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="179"/>
+      <location filename="../../SheetTableView.cpp" line="226"/>
+      <source>Recompute Cells</source>
+      <translation>Пересчитать ячейки</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="367"/>
+      <source>Remove Columns</source>
+      <translation>Удалить столбцы</translation>
+    </message>
+    <message>
       <location filename="../../SheetTableView.cpp" line="582"/>
+      <location filename="../../SpreadsheetView.cpp" line="179"/>
       <source>Clear Cells</source>
       <translation>Очистка ячеек</translation>
     </message>
@@ -430,7 +430,7 @@
     <message>
       <location filename="../../DlgBindSheet.cpp" line="297"/>
       <source>Unbind cells</source>
-      <translation>Отвязать ячейку</translation>
+      <translation>Отвязать ячейки</translation>
     </message>
   </context>
   <context>
@@ -759,7 +759,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
       <location filename="../../SpreadsheetView.cpp" line="483"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>Обращайтесь к ячейке по псевдониму, например
+      <translation>Обращаться к ячейке по псевдониму, например
 Spreadsheet.my_alias_name вместо Spreadsheet.B1</translation>
     </message>
     <message>
@@ -901,7 +901,7 @@ Spreadsheet.my_alias_name вместо Spreadsheet.B1</translation>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="494"/>
       <source>Custom Color</source>
-      <translation>﻿Пользовательский цвет</translation>
+      <translation>Пользовательский цвет</translation>
     </message>
   </context>
   <context>
@@ -920,7 +920,7 @@ Spreadsheet.my_alias_name вместо Spreadsheet.B1</translation>
       <location filename="../../Sheet.ui" line="52"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>Обращайтесь к ячейке по псевдониму, например
+      <translation>Обращаться к ячейке по псевдониму, например
 Spreadsheet.my_alias_name вместо Spreadsheet.B1</translation>
     </message>
     <message>
@@ -1076,7 +1076,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="137"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;body&gt;&lt;p&gt;Символ экранирования (Escape character), обычно это обратная косая черта (\), используется для обозначения специальных непечатных символов, например, \t ― табуляция. Должен быть одиночным символом.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;body&gt;&lt;p&gt;Символ экранирования, обычно это обратная косая черта (\), используется для обозначения специальных непечатных символов, например, \t ― табуляция. Должен быть одиночным символом.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>

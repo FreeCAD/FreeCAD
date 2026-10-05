@@ -53,7 +53,7 @@ s'assurer que le fichier est &lt;b&gt;ouvert dans la session en cours&lt;/b&gt;&
       <translation>Assemblage</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="155"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="156"/>
       <source>Active object</source>
       <translation>Activer/désactiver l'objet</translation>
     </message>
@@ -1028,52 +1028,52 @@ Les fichiers sont nommés « runPreDrag.asmt » et « dragging.log » et se trou
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="223"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="224"/>
       <source>The object is associated to one or more joints.</source>
       <translation>L'objet est associé à une ou plusieurs liaisons.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="225"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="226"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Voulez-vous déplacer l'objet et supprimer les liaisons associées ?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1142"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1143"/>
       <source>Move part</source>
       <translation>Déplacer une pièce</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1897"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1898"/>
       <source>Empty Assembly</source>
       <translation>Assemblage vide</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1909"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1910"/>
       <source>Over-constrained:</source>
       <translation>Esquisse sur-contrainte :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1917"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1918"/>
       <source>Malformed joints:</source>
       <translation>Liaisons défectueuses :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1882"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1883"/>
       <source>and %1 more</source>
       <translation>et %1 de plus</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1941"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1942"/>
       <source>Solver failed to converge</source>
       <translation>Le solveur n'a pas pu converger</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1949"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1950"/>
       <source>Under-constrained:</source>
       <translation>Esquisse sous-contrainte :</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1951"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1952"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n degrés de liberté</numerusform>
@@ -1081,7 +1081,7 @@ Les fichiers sont nommés « runPreDrag.asmt » et « dragging.log » et se trou
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1955"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1956"/>
       <source>Fully constrained</source>
       <translation>Esquisse entièrement contrainte</translation>
     </message>

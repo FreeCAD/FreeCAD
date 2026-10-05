@@ -60,103 +60,108 @@
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="223"/>
-      <location filename="../../QuickMeasure.cpp" line="262"/>
+      <location filename="../../QuickMeasure.cpp" line="269"/>
       <source>Nominal distance: %1</source>
       <translation>מרחק נומינלי: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="226"/>
+      <source>Nominal distance: %1, Axis distance: %2</source>
+      <translation type="unfinished">Nominal distance: %1, Axis distance: %2</translation>
+    </message>
+    <message>
+      <location filename="../../QuickMeasure.cpp" line="233"/>
       <source>Area: %1</source>
       <translation>אזור: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="232"/>
+      <location filename="../../QuickMeasure.cpp" line="239"/>
       <source>Area: %1, Radius: %2</source>
       <translation>אזור: %1, רדיוס: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="236"/>
+      <location filename="../../QuickMeasure.cpp" line="243"/>
       <source>Area: %1, Diameter: %2</source>
       <translation>אזור: %1, קוטר: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="245"/>
+      <location filename="../../QuickMeasure.cpp" line="252"/>
       <source>Total area: %1, Axis distance: %2</source>
       <translation>שטח כולל: %1, מרחק ציר: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="250"/>
+      <location filename="../../QuickMeasure.cpp" line="257"/>
       <source>Total area: %1, Axis distance: %2, Axis angle: %3</source>
       <translation>שטח כולל: %1, מרחק ציר: %2, זווית ציר: %3</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="259"/>
+      <location filename="../../QuickMeasure.cpp" line="266"/>
       <source>Total length: %1</source>
       <translation>אורך כולל: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="265"/>
+      <location filename="../../QuickMeasure.cpp" line="272"/>
       <source>Angle: %1, Total length: %2</source>
       <translation>זווית: %1, אורך כולל: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="269"/>
+      <location filename="../../QuickMeasure.cpp" line="276"/>
       <source>Length: %1</source>
       <translation>אורך: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="272"/>
+      <location filename="../../QuickMeasure.cpp" line="279"/>
       <source>Radius: %1</source>
       <translation>רדיוס: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="275"/>
+      <location filename="../../QuickMeasure.cpp" line="282"/>
       <source>Diameter: %1</source>
       <translation>קוטר: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="278"/>
+      <location filename="../../QuickMeasure.cpp" line="285"/>
       <source>Distance: %1</source>
       <translation>מרחק: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="281"/>
+      <location filename="../../QuickMeasure.cpp" line="288"/>
       <source>Minimum distance: %1</source>
       <translation>מרחק מינימלי: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="285"/>
+      <location filename="../../QuickMeasure.cpp" line="292"/>
       <source>Minimum distance: %1, Axis distance: %2</source>
       <translation>מרחק מינימלי: %1, מרחק ציר: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="291"/>
+      <location filename="../../QuickMeasure.cpp" line="298"/>
       <source>Minimum distance: %1, Center distance: %2</source>
       <translation>מרחק מינימלי: %1, מרחק מרכז: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="298"/>
-      <location filename="../../QuickMeasure.cpp" line="315"/>
+      <location filename="../../QuickMeasure.cpp" line="305"/>
+      <location filename="../../QuickMeasure.cpp" line="322"/>
       <source>Total length: %1, Center distance: %2</source>
       <translation>אורך כולל: %1, מרחק מרכז: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="305"/>
+      <location filename="../../QuickMeasure.cpp" line="312"/>
       <source>Total length: %1, Center distance: %2, Axis angle: %3</source>
       <translation>אורך כולל: %1, מרחק מרכז: %2, זווית ציר: %3</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="320"/>
+      <location filename="../../QuickMeasure.cpp" line="327"/>
       <source>Center surface distance: %1</source>
       <translation>מרחק משטח מרכז: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="325"/>
+      <location filename="../../QuickMeasure.cpp" line="332"/>
       <source>Center axis distance: %1</source>
       <translation>מרחק ציר מרכז: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="328"/>
+      <location filename="../../QuickMeasure.cpp" line="335"/>
       <source>Center axis distance: %1, Axis angle: %2</source>
       <translation>מרחק ציר מרכז: %1, זווית ציר: %2</translation>
     </message>
@@ -442,51 +447,16 @@
     </message>
   </context>
   <context>
-    <name>TaskMeasure</name>
+    <name>StdCmdMassProperties</name>
     <message>
-      <location filename="../../../App/AppMeasure.cpp" line="121"/>
-      <source>Distance</source>
-      <translation>מֶרְחָק</translation>
+      <location filename="../../Command.cpp" line="97"/>
+      <source>Mass Properties</source>
+      <translation>מסה נכסים</translation>
     </message>
     <message>
-      <location filename="../../../App/AppMeasure.cpp" line="129"/>
-      <source>Distance Free</source>
-      <translation>מרחק חינם</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="137"/>
-      <source>Angle</source>
-      <translation>זווית</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="145"/>
-      <source>Length</source>
-      <translation>אורך</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="153"/>
-      <source>Position</source>
-      <translation>מַצָב</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="161"/>
-      <source>Area</source>
-      <translation>אֵזוֹר</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="169"/>
-      <source>Diameter</source>
-      <translation>קוֹטֶר</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="177"/>
-      <source>Radius</source>
-      <translation>רַדִיוּס</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="185"/>
-      <source>Geometric Center</source>
-      <translation type="unfinished">Geometric Center</translation>
+      <location filename="../../Command.cpp" line="98"/>
+      <source>Calculates mass properties of selected objects</source>
+      <translation>מחשב מאפייני מסה של אובייקטים נבחרים</translation>
     </message>
   </context>
   <context>
@@ -538,16 +508,51 @@
     </message>
   </context>
   <context>
-    <name>StdCmdMassProperties</name>
+    <name>TaskMeasure</name>
     <message>
-      <location filename="../../Command.cpp" line="97"/>
-      <source>Mass Properties</source>
-      <translation>מסה נכסים</translation>
+      <location filename="../../../App/AppMeasure.cpp" line="121"/>
+      <source>Distance</source>
+      <translation>מֶרְחָק</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="98"/>
-      <source>Calculates mass properties of selected objects</source>
-      <translation>מחשב מאפייני מסה של אובייקטים נבחרים</translation>
+      <location filename="../../../App/AppMeasure.cpp" line="129"/>
+      <source>Distance Free</source>
+      <translation>מרחק חינם</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="137"/>
+      <source>Angle</source>
+      <translation>זווית</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="145"/>
+      <source>Length</source>
+      <translation>אורך</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="153"/>
+      <source>Position</source>
+      <translation>מַצָב</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="161"/>
+      <source>Area</source>
+      <translation>אֵזוֹר</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="169"/>
+      <source>Diameter</source>
+      <translation>קוֹטֶר</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="177"/>
+      <source>Radius</source>
+      <translation>רַדִיוּס</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="185"/>
+      <source>Geometric Center</source>
+      <translation type="unfinished">Geometric Center</translation>
     </message>
   </context>
 </TS>

@@ -48,7 +48,7 @@
       <translation type="unfinished">Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="155"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="156"/>
       <source>Active object</source>
       <translation>Réad gníomhach</translation>
     </message>
@@ -1014,52 +1014,52 @@ Is iad "runPreDrag.asmt" agus "dragging.log" na hainmneacha ar na comhaid agus t
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="223"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="224"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Tá an réad bainteach le hailt amháin nó níos mó.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="225"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="226"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Ar mhaith leat an réad a bhogadh agus hailt ghaolmhara a scriosadh?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1142"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1143"/>
       <source>Move part</source>
       <translation>Bog cuid</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1897"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1898"/>
       <source>Empty Assembly</source>
       <translation>Tionól Folamh</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1909"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1910"/>
       <source>Over-constrained:</source>
       <translation>Ró-shrianta:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1917"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1918"/>
       <source>Malformed joints:</source>
       <translation>Ailt mhífhoirmithe:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1882"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1883"/>
       <source>and %1 more</source>
       <translation>agus %1 eile</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1941"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1942"/>
       <source>Solver failed to converge</source>
       <translation>Theip ar an réiteoir teacht le chéile</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1949"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1950"/>
       <source>Under-constrained:</source>
       <translation>Faoi shrianta:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1951"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1952"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Céim Saoirse</numerusform>
@@ -1070,7 +1070,7 @@ Is iad "runPreDrag.asmt" agus "dragging.log" na hainmneacha ar na comhaid agus t
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1955"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1956"/>
       <source>Fully constrained</source>
       <translation>Srianta go hiomlán</translation>
     </message>

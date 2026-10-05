@@ -48,7 +48,7 @@
       <translation type="unfinished">Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="155"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="156"/>
       <source>Active object</source>
       <translation>செயலில் உள்ள பொருள்</translation>
     </message>
@@ -1015,52 +1015,52 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="223"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="224"/>
       <source>The object is associated to one or more joints.</source>
       <translation>பொருள் ஒன்று அல்லது அதற்கு மேற்பட்ட மூட்டுகளுடன் தொடர்புடையது.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="225"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="226"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>பொருளை நகர்த்தவும் தொடர்புடைய மூட்டுகளை நீக்கவும் விரும்புகிறீர்களா?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1142"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1143"/>
       <source>Move part</source>
       <translation>பகுதியை நகர்த்தவும்</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1897"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1898"/>
       <source>Empty Assembly</source>
       <translation>காலியான பேரவை</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1909"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1910"/>
       <source>Over-constrained:</source>
       <translation>அதிகப்படியான கட்டுப்பாடு:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1917"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1918"/>
       <source>Malformed joints:</source>
       <translation>தவறான மூட்டுகள்:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1882"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1883"/>
       <source>and %1 more</source>
       <translation>மேலும் % 1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1941"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1942"/>
       <source>Solver failed to converge</source>
       <translation>கரைப்பான் ஒன்றிணைக்க முடியவில்லை</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1949"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1950"/>
       <source>Under-constrained:</source>
       <translation>கீழ்-கட்டுப்படுத்தப்பட்டவை:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1951"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1952"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>சுதந்திரத்தின் %n டிகிரி</numerusform>
@@ -1068,7 +1068,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1955"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1956"/>
       <source>Fully constrained</source>
       <translation>முழுமையாக கட்டுப்படுத்தப்பட்டது</translation>
     </message>

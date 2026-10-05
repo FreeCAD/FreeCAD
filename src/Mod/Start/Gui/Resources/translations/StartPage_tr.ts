@@ -261,7 +261,7 @@ Dizinleri ayırmak için ";;" kullanılarak birden fazla klasör eklenebilir.</t
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppStartGui.cpp" line="140"/>
+      <location filename="../../AppStartGui.cpp" line="90"/>
       <source>Start</source>
       <translation>Başla</translation>
     </message>

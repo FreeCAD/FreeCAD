@@ -48,7 +48,7 @@
       <translation type="unfinished">Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="155"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="156"/>
       <source>Active object</source>
       <translation>Aktivni objekat</translation>
     </message>
@@ -177,12 +177,12 @@
     <message>
       <location filename="../../../JointObject.py" line="1248"/>
       <source>Edit Joint</source>
-      <translation type="unfinished">Edit Joint</translation>
+      <translation>Uredi Spoj</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1430"/>
       <source>Update Stored Positions</source>
-      <translation type="unfinished">Update Stored Positions</translation>
+      <translation>Ažuriraj sačuvane položaje</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1875"/>
@@ -499,7 +499,7 @@ SLOPE definiše nagib prelaza između 0 i H1, i H2 do 0 oko vremena = T1 i T2 re
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1093"/>
       <source>Pillow (PIL) is not installed. It is required for video export.</source>
-      <translation type="unfinished">Pillow (PIL) is not installed. It is required for video export.</translation>
+      <translation>Pillow (PIL) nije instaliran. Neophodan je za izvoz videa.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1100"/>
@@ -524,12 +524,12 @@ SLOPE definiše nagib prelaza između 0 i H1, i H2 do 0 oko vremena = T1 i T2 re
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1186"/>
       <source>PyAv is not installed. It is required for video export.</source>
-      <translation type="unfinished">PyAv is not installed. It is required for video export.</translation>
+      <translation>PyAv nije instaliran. Neophodan je za izvoz videa.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1205"/>
       <source>Unknown video export format</source>
-      <translation type="unfinished">Unknown video export format</translation>
+      <translation>Nepoznat format za izvoz videa</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="170"/>
@@ -569,7 +569,7 @@ SLOPE definiše nagib prelaza između 0 i H1, i H2 do 0 oko vremena = T1 i T2 re
     <message>
       <location filename="../../../CommandCreateView.py" line="394"/>
       <source>Radial Translation</source>
-      <translation type="unfinished">Radial Translation</translation>
+      <translation>Radijalno pomeranje</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="397"/>
@@ -584,17 +584,17 @@ SLOPE definiše nagib prelaza između 0 i H1, i H2 do 0 oko vremena = T1 i T2 re
     <message>
       <location filename="../../../CommandCreateView.py" line="988"/>
       <source>Angle of this exploded-view move</source>
-      <translation type="unfinished">Angle of this exploded-view move</translation>
+      <translation>Ugao ovog pomeranja na rastavljenom sklopu</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="998"/>
       <source>Distance of this exploded-view move</source>
-      <translation type="unfinished">Distance of this exploded-view move</translation>
+      <translation>Rastojanje ovog pomeranja na rastavljenom sklopu</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="1038"/>
       <source>Edit placement</source>
-      <translation type="unfinished">Edit placement</translation>
+      <translation>Uredi položaj</translation>
     </message>
   </context>
   <context>
@@ -719,7 +719,7 @@ SLOPE definiše nagib prelaza između 0 i H1, i H2 do 0 oko vremena = T1 i T2 re
     <message>
       <location filename="../../../JointObject.py" line="1294"/>
       <source>List of references to compnents to group together</source>
-      <translation type="unfinished">List of references to compnents to group together</translation>
+      <translation>Spisak referenci za komponente koje treba grupisati</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1453"/>
@@ -790,22 +790,22 @@ SLOPE definiše nagib prelaza između 0 i H1, i H2 do 0 oko vremena = T1 i T2 re
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="113"/>
       <source>List of components captured in this snapshot.</source>
-      <translation type="unfinished">List of components captured in this snapshot.</translation>
+      <translation>Spisak komponenti obuhvaćenih ovim snimkom stanja.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="124"/>
       <source>List of corresponding placements for the components.</source>
-      <translation type="unfinished">List of corresponding placements for the components.</translation>
+      <translation>Spisak odgovarajućih položaja komponenti.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="135"/>
       <source>List of visibility states for the components.</source>
-      <translation type="unfinished">List of visibility states for the components.</translation>
+      <translation>Spisak stanja vidljivosti komponenti.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="146"/>
       <source>If true, applying the snapshot will solve the assembly after restoring the placements.</source>
-      <translation type="unfinished">If true, applying the snapshot will solve the assembly after restoring the placements.</translation>
+      <translation>Ako je označeno, tokom primene snimka će se ponovo proračunati pozicije komponenata sklopa.</translation>
     </message>
   </context>
   <context>
@@ -1014,52 +1014,52 @@ Datoteke se zovu „runPreDrag.asmt“ i „dragging.log“ i nalaze se u podraz
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="223"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="224"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Objektu su pridruženi jedan ili više spojeva.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="225"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="226"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Da li želiš pomeriti objekat i obrisati pridružene spojeve?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1142"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1143"/>
       <source>Move part</source>
       <translation>Pomeri deo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1897"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1898"/>
       <source>Empty Assembly</source>
       <translation>Prazan sklop</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1909"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1910"/>
       <source>Over-constrained:</source>
       <translation>Previše ograničena skica:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1917"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1918"/>
       <source>Malformed joints:</source>
       <translation>Oštećeni spojevi:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1882"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1883"/>
       <source>and %1 more</source>
       <translation>i %1 više</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1941"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1942"/>
       <source>Solver failed to converge</source>
       <translation>Solver nije uspeo da se približi</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1949"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1950"/>
       <source>Under-constrained:</source>
       <translation>Nedovoljno ograničena skica:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1951"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1952"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Stepeni slobode</numerusform>
@@ -1068,7 +1068,7 @@ Datoteke se zovu „runPreDrag.asmt“ i „dragging.log“ i nalaze se u podraz
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1955"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1956"/>
       <source>Fully constrained</source>
       <translation>Potpuno ograničena skica</translation>
     </message>
@@ -1623,8 +1623,8 @@ Datoteke se zovu „runPreDrag.asmt“ i „dragging.log“ i nalaze se u podraz
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom.
 Selects these unconstrained components.
 Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</source>
-      <translation>Sklop ima delove kojima nisu ograničeni svi stepeni slobode.
-Izaberi ovakve delove.
+      <translation>Sklop ima komponente kojima nisu ograničeni svi stepeni slobode.
+Izaberi ovakve komponente.
 Napomena: Trenutno se biraju samo delovi bez spojeva, delovi sa spojevima koji i dalje imaju stepene slobode se ne biraju.</translation>
     </message>
     <message>
@@ -1638,22 +1638,22 @@ Napomena: Trenutno se biraju samo delovi bez spojeva, delovi sa spojevima koji i
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
       <source>Snapshot</source>
-      <translation type="unfinished">Snapshot</translation>
+      <translation>Snimak</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="53"/>
       <source>Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</source>
-      <translation type="unfinished">Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</translation>
+      <translation>Snima trenutno stanje sklopa (položaje i vidljivost). Dvostruki klik na objekat Snimak vraća sklop u stanje snimljeno na tom snimku.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="70"/>
       <source>Create Snapshot</source>
-      <translation type="unfinished">Create Snapshot</translation>
+      <translation>Napravi Snimak</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="249"/>
       <source>Restore Snapshot</source>
-      <translation type="unfinished">Restore Snapshot</translation>
+      <translation>Vrati Snimak</translation>
     </message>
   </context>
   <context>
@@ -1661,17 +1661,17 @@ Napomena: Trenutno se biraju samo delovi bez spojeva, delovi sa spojevima koji i
     <message>
       <location filename="../../../CommandCreateJoint.py" line="413"/>
       <source>Select at least 2 components to create a rigid group</source>
-      <translation type="unfinished">Select at least 2 components to create a rigid group</translation>
+      <translation>Da bi napravio krutu grupu izaberi najmanje 2 komponenete</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="536"/>
       <source>Create Rigid Group</source>
-      <translation type="unfinished">Create Rigid Group</translation>
+      <translation>Napravi krutu grupu</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="542"/>
       <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Napravi krutu grupu.&lt;/p&gt;&lt;p&gt;Napravi krutu grupu u kojoj su izabrane komponente međusobno trajno povezane i zaključane.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

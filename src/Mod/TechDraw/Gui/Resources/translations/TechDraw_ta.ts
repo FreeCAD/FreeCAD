@@ -2156,8 +2156,13 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>உடைந்த காட்சியை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="478"/>
+      <location filename="../../Command.cpp" line="1774"/>
+      <source>Create Spreadsheet View</source>
+      <translation type="unfinished">Create Spreadsheet View</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="1930"/>
+      <location filename="../../PagePrinter.cpp" line="478"/>
       <source>Save page to DXF</source>
       <translation>பக்கத்தை DXF இல் சேமிக்கவும்</translation>
     </message>
@@ -2193,11 +2198,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>வரைவு காட்சியை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1774"/>
-      <source>Create Spreadsheet View</source>
-      <translation type="unfinished">Create Spreadsheet View</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="347"/>
       <source>Create spreadsheet view</source>
       <translation>விரிதாள் காட்சியை உருவாக்கவும்</translation>
@@ -2213,13 +2213,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">Add Quadrant vertices</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="113"/>
-      <source>Edit Annotation</source>
-      <translation type="unfinished">Edit Annotation</translation>
-    </message>
-    <message>
-      <location filename="../../TaskRichAnno.cpp" line="154"/>
       <location filename="../../CommandAnnotate.cpp" line="545"/>
+      <location filename="../../TaskRichAnno.cpp" line="152"/>
       <source>Create Annotation</source>
       <translation>சிறுகுறிப்பை உருவாக்கவும்</translation>
     </message>
@@ -2482,33 +2477,33 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>ஒப்பனை வட்டத்தைப் புதுப்பிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.cpp" line="435"/>
+      <location filename="../../TaskDetail.cpp" line="432"/>
       <source>Create Detail view</source>
       <translation>விரிவான காட்சியை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.cpp" line="477"/>
+      <location filename="../../TaskDetail.cpp" line="478"/>
       <source>Update Detail</source>
       <translation>புதுப்பிப்பு விவரம்</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="346"/>
+      <location filename="../../TaskLeaderLine.cpp" line="345"/>
       <source>Create Leader</source>
       <translation>தலைவரை உருவாக்குங்கள்</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="433"/>
+      <location filename="../../TaskLeaderLine.cpp" line="432"/>
       <source>Edit Leader</source>
       <translation>தலைவரைத் திருத்து</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="555"/>
+      <location filename="../../TaskComplexSection.cpp" line="558"/>
       <source>Create Complex Section</source>
       <translation>சிக்கலான பகுதியை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="575"/>
-      <location filename="../../TaskComplexSection.cpp" line="651"/>
+      <location filename="../../TaskSectionView.cpp" line="587"/>
+      <location filename="../../TaskComplexSection.cpp" line="659"/>
       <source>Edit Section View</source>
       <translation>பகுதிக் காட்சியைத் திருத்து</translation>
     </message>
@@ -2778,7 +2773,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>சென்டர்லைனை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="495"/>
+      <location filename="../../TaskSectionView.cpp" line="503"/>
       <source>Create Section View</source>
       <translation>பிரிவு காட்சியை உருவாக்கவும்</translation>
     </message>
@@ -2791,6 +2786,11 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../TaskWeldingSymbol.cpp" line="568"/>
       <source>Edit Weld Symbol</source>
       <translation>வெல்ட் சின்னத்தைத் திருத்து</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRichAnno.cpp" line="111"/>
+      <source>Edit Annotation</source>
+      <translation type="unfinished">Edit Annotation</translation>
     </message>
   </context>
   <context>
@@ -3054,25 +3054,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="639"/>
-      <location filename="../../Command.cpp" line="649"/>
-      <location filename="../../Command.cpp" line="866"/>
-      <location filename="../../Command.cpp" line="983"/>
-      <location filename="../../Command.cpp" line="990"/>
-      <location filename="../../Command.cpp" line="995"/>
-      <location filename="../../Command.cpp" line="1033"/>
-      <location filename="../../Command.cpp" line="1132"/>
-      <location filename="../../Command.cpp" line="1399"/>
-      <location filename="../../Command.cpp" line="1416"/>
-      <location filename="../../Command.cpp" line="1421"/>
-      <location filename="../../Command.cpp" line="1430"/>
-      <location filename="../../Command.cpp" line="1483"/>
-      <location filename="../../Command.cpp" line="1502"/>
-      <location filename="../../Command.cpp" line="1627"/>
-      <location filename="../../Command.cpp" line="1705"/>
-      <location filename="../../Command.cpp" line="1711"/>
-      <location filename="../../CommandHelpers.cpp" line="87"/>
-      <location filename="../../CommandHelpers.cpp" line="100"/>
       <location filename="../../CommandAnnotate.cpp" line="117"/>
       <location filename="../../CommandAnnotate.cpp" line="122"/>
       <location filename="../../CommandAnnotate.cpp" line="313"/>
@@ -3100,6 +3081,25 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1358"/>
       <location filename="../../CommandAnnotate.cpp" line="1365"/>
       <location filename="../../CommandAnnotate.cpp" line="1429"/>
+      <location filename="../../Command.cpp" line="639"/>
+      <location filename="../../Command.cpp" line="649"/>
+      <location filename="../../Command.cpp" line="866"/>
+      <location filename="../../Command.cpp" line="983"/>
+      <location filename="../../Command.cpp" line="990"/>
+      <location filename="../../Command.cpp" line="995"/>
+      <location filename="../../Command.cpp" line="1033"/>
+      <location filename="../../Command.cpp" line="1132"/>
+      <location filename="../../Command.cpp" line="1399"/>
+      <location filename="../../Command.cpp" line="1416"/>
+      <location filename="../../Command.cpp" line="1421"/>
+      <location filename="../../Command.cpp" line="1430"/>
+      <location filename="../../Command.cpp" line="1483"/>
+      <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../Command.cpp" line="1627"/>
+      <location filename="../../Command.cpp" line="1705"/>
+      <location filename="../../Command.cpp" line="1711"/>
+      <location filename="../../CommandHelpers.cpp" line="87"/>
+      <location filename="../../CommandHelpers.cpp" line="100"/>
       <source>Wrong selection</source>
       <translation>தவறான தேர்வு</translation>
     </message>
@@ -3175,25 +3175,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>இந்தத் தேர்வில் வடிவங்கள், குழுக்கள் அல்லது இணைப்புகள் இல்லை</translation>
     </message>
     <message>
-      <location filename="../../CommandStack.cpp" line="75"/>
-      <location filename="../../CommandStack.cpp" line="191"/>
-      <location filename="../../CommandStack.cpp" line="251"/>
-      <location filename="../../CommandStack.cpp" line="311"/>
-      <location filename="../../CommandExtensionDims.cpp" line="328"/>
-      <location filename="../../CommandExtensionDims.cpp" line="537"/>
-      <location filename="../../CommandExtensionDims.cpp" line="825"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1153"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1524"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1893"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2131"/>
-      <location filename="../../Command.cpp" line="749"/>
-      <location filename="../../Command.cpp" line="842"/>
-      <location filename="../../Command.cpp" line="905"/>
-      <location filename="../../CommandExtensionPack.cpp" line="304"/>
-      <location filename="../../CommandExtensionPack.cpp" line="607"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1227"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1472"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1770"/>
       <location filename="../../CommandAnnotate.cpp" line="102"/>
       <location filename="../../CommandAnnotate.cpp" line="163"/>
       <location filename="../../CommandAnnotate.cpp" line="215"/>
@@ -3209,6 +3190,25 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1264"/>
       <location filename="../../CommandAnnotate.cpp" line="1345"/>
       <location filename="../../CommandAnnotate.cpp" line="1411"/>
+      <location filename="../../Command.cpp" line="749"/>
+      <location filename="../../Command.cpp" line="842"/>
+      <location filename="../../Command.cpp" line="905"/>
+      <location filename="../../CommandExtensionPack.cpp" line="304"/>
+      <location filename="../../CommandExtensionPack.cpp" line="607"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1227"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1472"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1770"/>
+      <location filename="../../CommandExtensionDims.cpp" line="328"/>
+      <location filename="../../CommandExtensionDims.cpp" line="537"/>
+      <location filename="../../CommandExtensionDims.cpp" line="825"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1153"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1524"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1893"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2131"/>
+      <location filename="../../CommandStack.cpp" line="75"/>
+      <location filename="../../CommandStack.cpp" line="191"/>
+      <location filename="../../CommandStack.cpp" line="251"/>
+      <location filename="../../CommandStack.cpp" line="311"/>
       <location filename="../../CommandCreateDims.cpp" line="1501"/>
       <location filename="../../CommandCreateDims.cpp" line="1549"/>
       <location filename="../../CommandCreateDims.cpp" line="1597"/>
@@ -3224,16 +3224,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>பணி நடந்து கொண்டிருக்கிறது</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="329"/>
-      <location filename="../../CommandExtensionDims.cpp" line="538"/>
-      <location filename="../../CommandExtensionDims.cpp" line="826"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1154"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1525"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1894"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2132"/>
-      <location filename="../../Command.cpp" line="750"/>
-      <location filename="../../Command.cpp" line="843"/>
-      <location filename="../../Command.cpp" line="906"/>
       <location filename="../../CommandAnnotate.cpp" line="103"/>
       <location filename="../../CommandAnnotate.cpp" line="164"/>
       <location filename="../../CommandAnnotate.cpp" line="216"/>
@@ -3249,6 +3239,16 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1265"/>
       <location filename="../../CommandAnnotate.cpp" line="1346"/>
       <location filename="../../CommandAnnotate.cpp" line="1412"/>
+      <location filename="../../Command.cpp" line="750"/>
+      <location filename="../../Command.cpp" line="843"/>
+      <location filename="../../Command.cpp" line="906"/>
+      <location filename="../../CommandExtensionDims.cpp" line="329"/>
+      <location filename="../../CommandExtensionDims.cpp" line="538"/>
+      <location filename="../../CommandExtensionDims.cpp" line="826"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1154"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1525"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1894"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2132"/>
       <source>Close active task dialog and try again</source>
       <translation>செயலில் உள்ள பணி உரையாடலை மூடிவிட்டு மீண்டும் முயற்சிக்கவும்</translation>
     </message>
@@ -3437,21 +3437,21 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>திறக்க SVG கோப்பைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="1201"/>
+      <location filename="../../Command.cpp" line="1208"/>
+      <location filename="../../Command.cpp" line="1216"/>
+      <location filename="../../Command.cpp" line="1228"/>
+      <location filename="../../TaskDimension.cpp" line="553"/>
       <location filename="../../CommandDecorate.cpp" line="420"/>
       <location filename="../../CommandDecorate.cpp" line="427"/>
       <location filename="../../CommandDecorate.cpp" line="434"/>
       <location filename="../../CommandDecorate.cpp" line="441"/>
       <location filename="../../CommandDecorate.cpp" line="447"/>
-      <location filename="../../TaskDimRepair.cpp" line="139"/>
-      <location filename="../../TaskDimRepair.cpp" line="150"/>
-      <location filename="../../Command.cpp" line="1201"/>
-      <location filename="../../Command.cpp" line="1208"/>
-      <location filename="../../Command.cpp" line="1216"/>
-      <location filename="../../Command.cpp" line="1228"/>
       <location filename="../../CommandExtensionPack.cpp" line="1883"/>
       <location filename="../../CommandExtensionPack.cpp" line="2007"/>
+      <location filename="../../TaskDimRepair.cpp" line="139"/>
+      <location filename="../../TaskDimRepair.cpp" line="150"/>
       <location filename="../../CommandAlign.cpp" line="55"/>
-      <location filename="../../TaskDimension.cpp" line="553"/>
       <location filename="../../CommandCreateDims.cpp" line="2009"/>
       <location filename="../../CommandCreateDims.cpp" line="2025"/>
       <location filename="../../CommandCreateDims.cpp" line="2051"/>
@@ -3498,8 +3498,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>செயலில் உள்ள பணி உரையாடலை மூடிவிட்டு மீண்டும் முயற்சிக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../CommandStack.cpp" line="371"/>
       <location filename="../../CommandExtensionPack.cpp" line="1003"/>
+      <location filename="../../CommandStack.cpp" line="371"/>
       <source>Task In Progress</source>
       <translation>பணி நடந்து கொண்டிருக்கிறது</translation>
     </message>
@@ -3510,13 +3510,29 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>TechDraw துளை வட்டம்</translation>
     </message>
     <message>
-      <location filename="../../CommandStack.cpp" line="372"/>
+      <location filename="../../CommandExtensionPack.cpp" line="122"/>
+      <source>Can not make hole circle for %1</source>
+      <translation type="unfinished">Can not make hole circle for %1</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="244"/>
+      <source>TechDraw circle centerlines</source>
+      <translation>TechDraw வட்ட மையக் கோடுகள்</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="245"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1678"/>
+      <source>Can not make centerlines for %1</source>
+      <translation type="unfinished">Can not make centerlines for %1</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="305"/>
       <location filename="../../CommandExtensionPack.cpp" line="608"/>
       <location filename="../../CommandExtensionPack.cpp" line="1004"/>
       <location filename="../../CommandExtensionPack.cpp" line="1228"/>
       <location filename="../../CommandExtensionPack.cpp" line="1473"/>
       <location filename="../../CommandExtensionPack.cpp" line="1771"/>
+      <location filename="../../CommandStack.cpp" line="372"/>
       <source>Close active task dialog and try again.</source>
       <translation>செயலில் உள்ள பணி உரையாடலை மூடிவிட்டு மீண்டும் முயற்சிக்கவும்.</translation>
     </message>
@@ -3534,22 +3550,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandExtensionPack.cpp" line="948"/>
       <source>Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle.</source>
       <translation>தேர்வு என்பது காச்மெட்டிக் சர்க்கிள் அல்லது காச்மெடிக் ஆர்க் ஆஃப் சர்க்கிள் அல்ல.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandExtensionPack.cpp" line="122"/>
-      <source>Can not make hole circle for %1</source>
-      <translation type="unfinished">Can not make hole circle for %1</translation>
-    </message>
-    <message>
-      <location filename="../../CommandExtensionPack.cpp" line="244"/>
-      <source>TechDraw circle centerlines</source>
-      <translation>TechDraw வட்ட மையக் கோடுகள்</translation>
-    </message>
-    <message>
-      <location filename="../../CommandExtensionPack.cpp" line="245"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1678"/>
-      <source>Can not make centerlines for %1</source>
-      <translation type="unfinished">Can not make centerlines for %1</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="984"/>
@@ -3592,12 +3592,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>2 நேர் கோடுகளைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
+      <location filename="../../CommandAnnotate.cpp" line="770"/>
+      <location filename="../../CommandAnnotate.cpp" line="1025"/>
       <location filename="../../CommandExtensionPack.cpp" line="902"/>
       <location filename="../../CommandExtensionPack.cpp" line="925"/>
       <location filename="../../CommandExtensionPack.cpp" line="947"/>
       <location filename="../../CommandExtensionPack.cpp" line="983"/>
-      <location filename="../../CommandAnnotate.cpp" line="770"/>
-      <location filename="../../CommandAnnotate.cpp" line="1025"/>
       <source>Wrong Selection</source>
       <translation>தவறான தேர்வு</translation>
     </message>
@@ -3820,9 +3820,9 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroup.cpp" line="162"/>
       <location filename="../../ViewProviderPage.cpp" line="221"/>
       <location filename="../../ViewProviderTemplate.cpp" line="203"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="162"/>
       <source>Are you sure you want to continue?</source>
       <translation>நீங்கள் நிச்சயமாக தொடர விரும்புகிறீர்களா?</translation>
     </message>
@@ -3837,17 +3837,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>புதுப்பித்த நிலையில் இருங்கள்</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="219"/>
+      <location filename="../../TaskLeaderLine.cpp" line="218"/>
       <source>New Leader Line</source>
       <translation>புதிய தலைவர் வரி</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="261"/>
+      <location filename="../../TaskLeaderLine.cpp" line="260"/>
       <source>Edit Leader Line</source>
       <translation>தலைமை வரியைத் திருத்தவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="381"/>
+      <location filename="../../TaskRichAnno.cpp" line="379"/>
       <source>Rich text editor</source>
       <translation>பணக்கார உரை ஆசிரியர்</translation>
     </message>
@@ -3872,55 +3872,55 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>3D வியூவரைக் கண்டுபிடிக்க முடியவில்லை</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="127"/>
+      <location filename="../../TaskSectionView.cpp" line="135"/>
       <source>Create Section View</source>
       <translation>பிரிவு காட்சியை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="153"/>
+      <location filename="../../TaskSectionView.cpp" line="161"/>
       <source>No direction set</source>
       <translation>திசை அமைக்கப்படவில்லை</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="159"/>
+      <location filename="../../TaskSectionView.cpp" line="167"/>
       <source>Edit Section View</source>
       <translation>பகுதிக் காட்சியைத் திருத்து</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="138"/>
+      <location filename="../../TaskComplexSection.cpp" line="141"/>
       <source>New Complex Section</source>
       <translation>புதிய சிக்கலான பிரிவு</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="179"/>
+      <location filename="../../TaskComplexSection.cpp" line="182"/>
       <source>Edit Complex Section</source>
       <translation>சிக்கலான பகுதியைத் திருத்தவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="230"/>
-      <location filename="../../TaskComplexSection.cpp" line="217"/>
+      <location filename="../../TaskSectionView.cpp" line="238"/>
+      <location filename="../../TaskComplexSection.cpp" line="220"/>
       <source>Current View Direction</source>
       <translation>தற்போதைய பார்வை திசை</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="231"/>
-      <location filename="../../TaskComplexSection.cpp" line="218"/>
+      <location filename="../../TaskSectionView.cpp" line="239"/>
+      <location filename="../../TaskComplexSection.cpp" line="221"/>
       <source>The view direction in BaseView coordinates</source>
       <translation>BaseView ஒருங்கிணைப்புகளில் பார்வை திசை</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="526"/>
+      <location filename="../../TaskComplexSection.cpp" line="529"/>
       <source>Possible coordinate system error</source>
       <translation>சாத்தியமான ஒருங்கிணைப்பு அமைப்பு பிழை</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="527"/>
+      <location filename="../../TaskComplexSection.cpp" line="530"/>
       <source>Check SectionNormal, Direction and/or XDirection.</source>
       <translation>SectionNormal, Direction மற்றும்/அல்லது XDirection என்பதைச் சரிபார்க்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="642"/>
-      <location filename="../../TaskComplexSection.cpp" line="718"/>
+      <location filename="../../TaskSectionView.cpp" line="653"/>
+      <location filename="../../TaskComplexSection.cpp" line="726"/>
       <source>Operation Failed</source>
       <translation>ஆபரேசன் தோல்வியடைந்தது</translation>
     </message>
@@ -3945,17 +3945,18 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>ஒப்பனை வரியைத் திருத்தவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.cpp" line="97"/>
+      <location filename="../../TaskDetail.cpp" line="96"/>
       <source>New Detail View</source>
       <translation>புதிய விவரக் காட்சி</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.cpp" line="175"/>
+      <location filename="../../TaskDetail.cpp" line="172"/>
       <source>Edit Detail View</source>
       <translation>விரிவான பார்வையைத் திருத்து</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDimension.cpp" line="141"/>
+      <location filename="../../ViewProviderRichAnno.cpp" line="103"/>
       <location filename="../../ViewProviderBalloon.cpp" line="88"/>
       <source>Edit %1</source>
       <translation>திருத்த % 1</translation>
@@ -4090,15 +4091,15 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>TechDraw Customize வடிவம்</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2347"/>
-      <location filename="../../CommandExtensionPack.cpp" line="2148"/>
       <location filename="../../CommandAnnotate.cpp" line="1026"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2148"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2347"/>
       <source>Selection is empty</source>
       <translation>தேர்வு காலியாக உள்ளது</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2363"/>
       <location filename="../../CommandExtensionPack.cpp" line="2155"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2363"/>
       <source>No object selected</source>
       <translation>பொருள் எதுவும் தேர்ந்தெடுக்கப்படவில்லை</translation>
     </message>
@@ -4235,12 +4236,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>ஆவணத்தின் பெயர்:</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="178"/>
+      <location filename="../../TaskProjGroup.cpp" line="181"/>
       <source>Projection Group</source>
       <translation>திட்டக் குழு</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="188"/>
+      <location filename="../../TaskProjGroup.cpp" line="191"/>
       <source>New View</source>
       <translation>புதிய பார்வை</translation>
     </message>
@@ -4265,17 +4266,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>சென்டர்லைனைத் திருத்தவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="118"/>
+      <location filename="../../TaskRichAnno.cpp" line="116"/>
       <source>Rich Text Editor</source>
       <translation>பணக்கார உரை ஆசிரியர்</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="157"/>
+      <location filename="../../TaskRichAnno.cpp" line="155"/>
       <source>Rich Text Creator</source>
       <translation>வளமான உரையை உருவாக்கியவர்</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="379"/>
+      <location filename="../../TaskRichAnno.cpp" line="377"/>
       <source>Rich text creator</source>
       <translation type="unfinished">Rich text creator</translation>
     </message>
@@ -4285,14 +4286,14 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">Resize Rich Annotation</translation>
     </message>
     <message>
-      <location filename="../../TemplateTextField.cpp" line="58"/>
-      <source>Updates the text</source>
-      <translation type="unfinished">Updates the text</translation>
-    </message>
-    <message>
       <location filename="../../SymbolChooser.cpp" line="61"/>
       <source>Select a Symbol</source>
       <translation type="unfinished">Select a Symbol</translation>
+    </message>
+    <message>
+      <location filename="../../TemplateTextField.cpp" line="58"/>
+      <source>Updates the text</source>
+      <translation type="unfinished">Updates the text</translation>
     </message>
   </context>
   <context>
@@ -4315,18 +4316,18 @@ it has a weld symbol that would become broken.</source>
       <translation>இந்தக் காட்சியை நீக்க முடியாது, ஏனெனில் அதில் ஒன்று அல்லது அதற்கு மேற்பட்ட சார்பு பார்வைகள் உடைந்து போகும்.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="167"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="176"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="184"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="192"/>
-      <location filename="../../ViewProviderWeld.cpp" line="145"/>
+      <location filename="../../ViewProviderLeader.cpp" line="214"/>
       <location filename="../../ViewProviderViewPart.cpp" line="409"/>
       <location filename="../../ViewProviderViewPart.cpp" line="424"/>
       <location filename="../../ViewProviderPage.cpp" line="224"/>
-      <location filename="../../ViewProviderLeader.cpp" line="214"/>
       <location filename="../../ViewProviderTemplate.cpp" line="207"/>
+      <location filename="../../ViewProviderWeld.cpp" line="145"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="165"/>
       <source>Object dependencies</source>
       <translation>பொருள் சார்புகள்</translation>
     </message>
@@ -4665,27 +4666,17 @@ This directory will be used for the symbol selection.</source>
       <translation>எட்ச் ஃபச்</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="87"/>
-      <source>If checked, FreeCAD will use the new face finder algorithm. If not checked, FreeCAD will use the legacy face finder algorithm.</source>
-      <translation>சரிபார்க்கப்பட்டால், FreeCAD புதிய முகம் கண்டுபிடிப்பான் அல்காரிதத்தைப் பயன்படுத்தும். சரிபார்க்கப்படாவிட்டால், FreeCAD மரபு முகம் கண்டுபிடிப்பான் அல்காரிதத்தைப் பயன்படுத்தும்.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="90"/>
-      <source>Use new face finder algorithm</source>
-      <translation>புதிய முகம் கண்டுபிடிப்பான் அல்காரிதத்தைப் பயன்படுத்தவும்</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="112"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="114"/>
       <source>Dump intermediate results during detail view processing</source>
       <translation>விரிவான பார்வை செயலாக்கத்தின் போது இடைநிலை முடிவுகளை டம்ப் செய்யவும்</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="115"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="117"/>
       <source>Debug detail</source>
       <translation>பிழைத்திருத்த விவரம்</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="134"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="136"/>
       <source>If checked, TechDraw will attempt to build faces using the
 line segments returned by the hidden line removal algorithm.
 Faces must be detected in order to use hatching, but there
@@ -4696,84 +4687,109 @@ can be a performance penalty in complex models.</source>
 சிக்கலான மாதிரிகளில் செயல்திறன் அபராதமாக இருக்கலாம்.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="140"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="142"/>
       <source>Detect faces</source>
       <translation>முகங்களைக் கண்டறியவும்</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="182"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="184"/>
       <source>Validate shapes</source>
       <translation>வடிவங்களை சரிபார்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="204"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="206"/>
       <source>Allow crazy edges</source>
       <translation>பைத்தியம் விளிம்புகளை அனுமதிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="217"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="219"/>
       <source>Issue progress messages while building view geometry</source>
       <translation>காட்சி வடிவவியலை உருவாக்கும்போது முன்னேற்றச் செய்திகளை வெளியிடவும்</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="220"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="222"/>
       <source>Report progress</source>
       <translation>முன்னேற்றத்தைப் புகாரளிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="233"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="235"/>
       <source>The number of times FreeCAD should try to remove overlapping edges returned by the hidden line removal algorithm. A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed. Values above 2 are generally not productive. Each pass adds to the time required to produce the drawing.</source>
       <translation>மறைக்கப்பட்ட வரி அகற்றும் வழிமுறையால் திரும்பப்பெறும் விளிம்புகளை அகற்ற FreeCAD எத்தனை முறை முயற்சிக்க வேண்டும். 0 இன் மதிப்பு ச்க்ரப்பிங் இல்லை என்பதைக் குறிக்கிறது, 1 ஒற்றை பாச் என்பதைக் குறிக்கிறது மற்றும் 2 இரண்டாவது பாச் செய்யப்பட வேண்டும் என்பதைக் குறிக்கிறது. 2க்கு மேல் உள்ள மதிப்புகள் பொதுவாக விளைவாக்கம் செய்யாது. ஒவ்வொரு பாசும் வரைபடத்தை உருவாக்க தேவையான நேரத்தை சேர்க்கிறது.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="263"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="260"/>
+      <source>Face finder algorithm</source>
+      <translation type="unfinished">Face finder algorithm</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="286"/>
+      <source>Use newest or one of the legacy of face finder algorithms</source>
+      <translation type="unfinished">Use newest or one of the legacy of face finder algorithms</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="299"/>
+      <source>FreeCAD v0.17</source>
+      <translation type="unfinished">FreeCAD v0.17</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="304"/>
+      <source>FreeCAD v0.21</source>
+      <translation type="unfinished">FreeCAD v0.21</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="309"/>
+      <source>FreeCAD v26.3</source>
+      <translation type="unfinished">FreeCAD v26.3</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="322"/>
       <source>Overlap edges scrub passes</source>
       <translation>ஓவர்லேப் எட்ச்ச் ச்க்ரப் பாச்கள்</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="275"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="334"/>
       <source>Mark fuzz</source>
       <translation>மார்க் ஃபச்ச்</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="311"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="370"/>
       <source>Max SVG hatch tiles</source>
       <translation>அதிகபட்ச SVG அட்ச் ஓடுகள்</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="321"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="380"/>
       <source>Debug bad shape</source>
       <translation>தவறான வடிவத்தை பிழைத்திருத்தவும்</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="345"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="404"/>
       <source>Perform a fuse operation on input shapes before section view processing</source>
       <translation>பகுதி காட்சி செயலாக்கத்திற்கு முன் உள்ளீட்டு வடிவங்களில் உருகி செயல்பாட்டைச் செய்யவும்</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="348"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="407"/>
       <source>Fuse before section</source>
       <translation>பிரிவுக்கு முன் உருகி</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="421"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="480"/>
       <source>Size of selection area around edges
 Each unit is approximately 0.1mm wide</source>
       <translation>விளிம்புகளைச் சுற்றியுள்ள தேர்வுப் பகுதியின் அளவு 
 ஒவ்வொரு அலகும் தோராயமாக 0.1மிமீ அகலம் கொண்டது</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="453"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="512"/>
       <source>Show section edges</source>
       <translation>பிரிவு விளிம்புகளைக் காட்டு</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="469"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="528"/>
       <source>Maximum PAT hatch segments</source>
       <translation>அதிகபட்ச PAT அட்ச் பிரிவுகள்</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="476"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="535"/>
       <source>Limits the number of 64×64 pixel SVG tiles used to hatch a single face.
 For large scales, errors may occur due to excessive tiling.
 Increase the limit if necessary.</source>
@@ -4782,22 +4798,22 @@ Increase the limit if necessary.</source>
 தேவைப்பட்டால் வரம்பை அதிகரிக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="511"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="570"/>
       <source>Choose non-conflicting key bindings as some combinations of OS and navigation style key bindings may conflict with the default modifier keys for balloon dragging and view snapping override.</source>
       <translation>OS மற்றும் வழிசெலுத்தல் பாணி விசை பிணைப்புகள் சில சேர்க்கைகள் பலூன் இழுத்தல் மற்றும் ச்னாப்பிங் மேலெழுதுவதற்கான இயல்புநிலை மாற்றி விசைகளுடன் முரண்படலாம் என்பதால் முரண்பாடற்ற விசை பிணைப்புகளைத் தேர்வு செய்யவும்.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="525"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="584"/>
       <source>Use default</source>
       <translation>இயல்புநிலையைப் பயன்படுத்தவும்</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="542"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="601"/>
       <source>Balloon drag</source>
       <translation>பலூன் இழுத்தல்</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="450"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="509"/>
       <source>Highlights border of section cut in section views</source>
       <translation>பிரிவு காட்சிகளில் வெட்டப்பட்ட பிரிவின் எல்லையை முன்னிலைப்படுத்துகிறது</translation>
     </message>
@@ -4807,98 +4823,112 @@ Increase the limit if necessary.</source>
       <translation>இந்த பெட்டியை தேர்வு செய்தால், மரத்தில் உள்ள ஒரு பக்கத்தில் இருமுறை சொடுக்கு செய்தால் தானாகவே TechDraw க்கு மாறி பக்கம் தெரியும்.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="156"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="158"/>
       <source>If checked, the system will attempt to automatically correct dimension references when the model changes.</source>
       <translation>சரிபார்க்கப்பட்டால், மாதிரி மாறும்போது, ​​கணினி தானாகவே பரிமாணக் குறிப்புகளைச் சரிசெய்ய முயற்சிக்கும்.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="162"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="164"/>
       <source>Auto-correct dimension references</source>
       <translation>தானியங்கு-சரியான பரிமாண குறிப்புகள்</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="178"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="180"/>
       <source>If checked, input shapes will be checked for errors before use and invalid shapes will be skipped by the shape extractor. Checking for errors is slower, but can prevent crashes from some geometry problems.
 </source>
       <translation>சரிபார்த்தால், உள்ளீட்டு வடிவங்கள் பயன்பாட்டிற்கு முன் பிழைகள் சரிபார்க்கப்படும் மற்றும் தவறான வடிவங்கள் வடிவ பிரித்தெடுத்தல் மூலம் தவிர்க்கப்படும். பிழைகளைச் சரிபார்ப்பது மெதுவாக இருக்கும், ஆனால் சில வடிவியல் சிக்கல்களில் இருந்து விபத்துகளைத் தடுக்கலாம்.
 </translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="201"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="203"/>
       <source>Include edges with unexpected geometry (zero length etc.) in results</source>
       <translation>முடிவுகளில் எதிர்பாராத வடிவவியலுடன் (பூச்சிய நீளம் போன்றவை) விளிம்புகளைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="318"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="377"/>
       <source>If checked, shapes that fail validation will be saved as BREP files for later analysis.</source>
       <translation>சரிபார்க்கப்பட்டால், சரிபார்ப்பில் தோல்வியுற்ற வடிவங்கள் பின்னர் பகுப்பாய்வுக்காக BREP கோப்புகளாகச் சேமிக்கப்படும்.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="522"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="581"/>
       <source>Check this box to use the default modifier keys. Uncheck this box to set a different key combination.</source>
       <translation>இயல்புநிலை மாற்றி விசைகளைப் பயன்படுத்த இந்தப் பெட்டியைச் சரிபார்க்கவும். வேறு விசை கலவையை அமைக்க இந்தப் பெட்டியைத் தேர்வுநீக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="373"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="432"/>
       <source>Selection area around center marks
 Each unit is approx. 0.1 mm wide</source>
       <translation>மையக் குறிகளைச் சுற்றியுள்ள பகுதிகளைத் தேர்ந்தெடுக்கவும் 
 ஒவ்வொரு அலகு சுமார். 0.1 மிமீ அகலம்</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="282"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="87"/>
+      <source>If checked and the face finder algorithm supports it, FreeCAD will attempt
+to decide, whether each drawing face represents either the material, or a hole.
+For large amount of faces the detection can become slow.</source>
+      <translation type="unfinished">If checked and the face finder algorithm supports it, FreeCAD will attempt
+to decide, whether each drawing face represents either the material, or a hole.
+For large amount of faces the detection can become slow.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="92"/>
+      <source>Identify faces representing voids</source>
+      <translation type="unfinished">Identify faces representing voids</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="341"/>
       <source>Maximum hatch line segments to use
 when hatching a face with a PAT pattern</source>
       <translation>பயன்படுத்த வேண்டிய அதிகபட்ச அட்ச் லைன் பிரிவுகள் 
 PAT வடிவத்துடன் முகத்தை குஞ்சு பொரிக்கும் போது</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="514"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="573"/>
       <source>Behaviour Overrides</source>
       <translation>நடத்தை மீறுகிறது</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="549"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="608"/>
       <source>Check this box to include the Alt key in the modifiers.</source>
       <translation>மாற்றியமைப்பாளர்களில் மாற்று விசையைச் சேர்க்க இந்தப் பெட்டியைத் தேர்வு செய்யவும்.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="552"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="611"/>
       <source>Alt</source>
       <translation>மாற்று</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="559"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="618"/>
       <source>Check this box to include the Shift key in the modifiers.</source>
       <translation>மாற்றியமைப்பாளர்களில் உயர்த்து விசையைச் சேர்க்க இந்தப் பெட்டியைச் சரிபார்க்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="562"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="621"/>
       <source>Shift</source>
       <translation>உயர்த்து</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="569"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="628"/>
       <source>Check this box to include the Meta/Start/Super key in the modifiers.</source>
       <translation>மாற்றியமைப்பாளர்களில் மெட்டா/ச்டார்ட்/சூப்பர் விசையைச் சேர்க்க இந்தப் பெட்டியைச் சரிபார்க்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="572"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="631"/>
       <source>Meta</source>
       <translation>மெட்டா</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="579"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="638"/>
       <source>Check this box to include the Control key in the modifiers.</source>
       <translation>மாற்றியமைப்பாளர்களில் கட்டுப்பாட்டு விசையைச் சேர்க்க இந்தப் பெட்டியைத் தேர்வு செய்யவும்.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="582"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="641"/>
       <source>Control</source>
       <translation>கட்டுப்பாடு</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="600"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="659"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;குறிப்பு:&lt;/span&gt; &lt;span style=&quot;font-style:italic;&quot;&gt;சாய்வுகளில்&lt;/span&gt; உருப்படிகள் புதிய பொருள்களுக்கான இயல்புநிலை மதிப்புகள். அவை ஏற்கனவே உள்ள பொருட்களில் எந்த விளைவையும் ஏற்படுத்தாது.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -6873,18 +6903,18 @@ Do you want to continue?</source>
       <translation>இப்போது புதுப்பிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="174"/>
+      <location filename="../../TaskComplexSection.cpp" line="177"/>
       <source>No direction set</source>
       <translation>திசை அமைக்கப்படவில்லை</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="557"/>
-      <location filename="../../TaskComplexSection.cpp" line="706"/>
+      <location filename="../../TaskComplexSection.cpp" line="560"/>
+      <location filename="../../TaskComplexSection.cpp" line="714"/>
       <source>ComplexSection</source>
       <translation>சிக்கலான பிரிவு</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="717"/>
+      <location filename="../../TaskComplexSection.cpp" line="725"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>தொடர முடியாது. பொருள் *% 1 அல்லது% 2 காணப்படவில்லை.</translation>
     </message>
@@ -7292,7 +7322,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="184"/>
-      <location filename="../../TaskDetail.cpp" line="254"/>
+      <location filename="../../TaskDetail.cpp" line="251"/>
       <source>Drag Highlight</source>
       <translation>ஐலைட்டை இழுக்கவும்</translation>
     </message>
@@ -7813,8 +7843,8 @@ by negative value of &apos;Overtolerance&apos;.</source>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="84"/>
-      <location filename="../../TaskLeaderLine.cpp" line="226"/>
-      <location filename="../../TaskLeaderLine.cpp" line="501"/>
+      <location filename="../../TaskLeaderLine.cpp" line="225"/>
+      <location filename="../../TaskLeaderLine.cpp" line="500"/>
       <source>Pick Points</source>
       <translation>புள்ளிகளைத் தேர்ந்தெடுங்கள்</translation>
     </message>
@@ -7908,48 +7938,48 @@ You can pick further points to get line segments.</source>
       <translation>DashDotDyot</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="532"/>
-      <location filename="../../TaskLeaderLine.cpp" line="584"/>
+      <location filename="../../TaskLeaderLine.cpp" line="531"/>
+      <location filename="../../TaskLeaderLine.cpp" line="583"/>
       <source>Pick a starting point for leader line</source>
       <translation>லீடர் வரிசைக்கான தொடக்கப் புள்ளியைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="567"/>
+      <location filename="../../TaskLeaderLine.cpp" line="566"/>
       <source>Click and drag markers to adjust leader line</source>
       <translation>லீடர் லைனைச் சரிசெய்ய குறிப்பான்களைக் சொடுக்கு செய்து இழுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="274"/>
-      <location filename="../../TaskLeaderLine.cpp" line="515"/>
-      <location filename="../../TaskLeaderLine.cpp" line="688"/>
-      <location filename="../../TaskLeaderLine.cpp" line="759"/>
-      <location filename="../../TaskLeaderLine.cpp" line="781"/>
+      <location filename="../../TaskLeaderLine.cpp" line="273"/>
+      <location filename="../../TaskLeaderLine.cpp" line="514"/>
+      <location filename="../../TaskLeaderLine.cpp" line="687"/>
+      <location filename="../../TaskLeaderLine.cpp" line="758"/>
+      <location filename="../../TaskLeaderLine.cpp" line="780"/>
       <source>Edit Points</source>
       <translation type="unfinished">Edit Points</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="535"/>
+      <location filename="../../TaskLeaderLine.cpp" line="534"/>
       <source>Save Points</source>
       <translation type="unfinished">Save Points</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="570"/>
-      <location filename="../../TaskLeaderLine.cpp" line="587"/>
+      <location filename="../../TaskLeaderLine.cpp" line="569"/>
+      <location filename="../../TaskLeaderLine.cpp" line="586"/>
       <source>Save Changes</source>
       <translation type="unfinished">Save Changes</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="618"/>
+      <location filename="../../TaskLeaderLine.cpp" line="617"/>
       <source>Left click to set a point</source>
       <translation>புள்ளியை அமைக்க இடது சொடுக்கு செய்யவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="644"/>
+      <location filename="../../TaskLeaderLine.cpp" line="643"/>
       <source>Press OK or Cancel to continue</source>
       <translation>தொடர சரி அல்லது ரத்து என்பதை அழுத்தவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="776"/>
+      <location filename="../../TaskLeaderLine.cpp" line="775"/>
       <source>In progress edit abandoned. Start over.</source>
       <translation>செயலில் உள்ள திருத்தம் கைவிடப்பட்டது. மீண்டும் தொடங்குங்கள்.</translation>
     </message>
@@ -8173,8 +8203,8 @@ You can pick further points to get line segments.</source>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="362"/>
-      <location filename="../../TaskProjGroup.cpp" line="661"/>
-      <location filename="../../TaskProjGroup.cpp" line="668"/>
+      <location filename="../../TaskProjGroup.cpp" line="664"/>
+      <location filename="../../TaskProjGroup.cpp" line="671"/>
       <source>Top</source>
       <translation>மேல்</translation>
     </message>
@@ -8185,8 +8215,8 @@ You can pick further points to get line segments.</source>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="409"/>
-      <location filename="../../TaskProjGroup.cpp" line="663"/>
-      <location filename="../../TaskProjGroup.cpp" line="665"/>
+      <location filename="../../TaskProjGroup.cpp" line="666"/>
+      <location filename="../../TaskProjGroup.cpp" line="668"/>
       <source>Left</source>
       <translation>இடது</translation>
     </message>
@@ -8197,14 +8227,14 @@ You can pick further points to get line segments.</source>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="449"/>
-      <location filename="../../TaskProjGroup.cpp" line="663"/>
-      <location filename="../../TaskProjGroup.cpp" line="665"/>
+      <location filename="../../TaskProjGroup.cpp" line="666"/>
+      <location filename="../../TaskProjGroup.cpp" line="668"/>
       <source>Right</source>
       <translation>வலது</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="466"/>
-      <location filename="../../TaskProjGroup.cpp" line="666"/>
+      <location filename="../../TaskProjGroup.cpp" line="669"/>
       <source>Rear</source>
       <translation>பின்புறம்</translation>
     </message>
@@ -8215,8 +8245,8 @@ You can pick further points to get line segments.</source>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="516"/>
-      <location filename="../../TaskProjGroup.cpp" line="661"/>
-      <location filename="../../TaskProjGroup.cpp" line="668"/>
+      <location filename="../../TaskProjGroup.cpp" line="664"/>
+      <location filename="../../TaskProjGroup.cpp" line="671"/>
       <source>Bottom</source>
       <translation>கீழே</translation>
     </message>
@@ -8273,31 +8303,31 @@ using the given X/Y spacings</source>
       <translation>கணிப்புகளின் எல்லைகளுக்கு இடையில் செங்குத்து இடைவெளி</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="660"/>
-      <location filename="../../TaskProjGroup.cpp" line="669"/>
+      <location filename="../../TaskProjGroup.cpp" line="663"/>
+      <location filename="../../TaskProjGroup.cpp" line="672"/>
       <source>FrontTopLeft</source>
       <translation>முன் மேல் இடது</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="660"/>
-      <location filename="../../TaskProjGroup.cpp" line="669"/>
+      <location filename="../../TaskProjGroup.cpp" line="663"/>
+      <location filename="../../TaskProjGroup.cpp" line="672"/>
       <source>FrontBottomRight</source>
       <translation>முன் கீழ் வலது</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="662"/>
-      <location filename="../../TaskProjGroup.cpp" line="667"/>
+      <location filename="../../TaskProjGroup.cpp" line="665"/>
+      <location filename="../../TaskProjGroup.cpp" line="670"/>
       <source>FrontTopRight</source>
       <translation>முன் மேல் வலது</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="662"/>
-      <location filename="../../TaskProjGroup.cpp" line="667"/>
+      <location filename="../../TaskProjGroup.cpp" line="665"/>
+      <location filename="../../TaskProjGroup.cpp" line="670"/>
       <source>FrontBottomLeft</source>
       <translation>முன் கீழே இடது</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="664"/>
+      <location filename="../../TaskProjGroup.cpp" line="667"/>
       <source>Front</source>
       <translation>முன்</translation>
     </message>
@@ -8496,7 +8526,7 @@ using the given X/Y spacings</source>
       <translation>DashDotDyot</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="676"/>
+      <location filename="../../TaskRichAnno.cpp" line="674"/>
       <source>RichTextAnnotation</source>
       <translation type="unfinished">RichTextAnnotation</translation>
     </message>
@@ -8619,7 +8649,7 @@ using the given X/Y spacings</source>
       <translation>பிரிவு வானூர்தி இடம்</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskSectionView.cpp" line="428"/>
+      <location filename="../../TaskSectionView.cpp" line="436"/>
       <source>%n update(s) pending</source>
       <translation type="unfinished">
         <numerusform>%n update(s) pending</numerusform>
@@ -8627,12 +8657,12 @@ using the given X/Y spacings</source>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="438"/>
+      <location filename="../../TaskSectionView.cpp" line="446"/>
       <source>Nothing to apply. No section direction picked yet</source>
       <translation>விண்ணப்பிக்க எதுவும் இல்லை. எந்தப் பகுதியின் திசையும் இன்னும் தேர்ந்தெடுக்கப்படவில்லை</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="641"/>
+      <location filename="../../TaskSectionView.cpp" line="652"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>தொடர முடியாது. பொருள் *% 1 அல்லது% 2 காணப்படவில்லை.</translation>
     </message>
@@ -10003,22 +10033,22 @@ there is an open task dialog.</source>
   <context>
     <name>TechDrawGui::DirectionEditDialog</name>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="970"/>
+      <location filename="../../TaskProjGroup.cpp" line="973"/>
       <source>Direction</source>
       <translation>திசை</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="1007"/>
+      <location filename="../../TaskProjGroup.cpp" line="1010"/>
       <source>OK</source>
       <translation>சரி</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="1008"/>
+      <location filename="../../TaskProjGroup.cpp" line="1011"/>
       <source>Cancel</source>
       <translation>ரத்துசெய்</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="1014"/>
+      <location filename="../../TaskProjGroup.cpp" line="1017"/>
       <source>Rotate by</source>
       <translation>மூலம் சுழற்று</translation>
     </message>
@@ -10175,7 +10205,7 @@ there is an open task dialog.</source>
   <context>
     <name>TaskComplexSection</name>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="478"/>
+      <location filename="../../TaskComplexSection.cpp" line="481"/>
       <source> updates pending</source>
       <translation>புதுப்பிப்புகள் நிலுவையில் உள்ளன</translation>
     </message>
@@ -10456,6 +10486,79 @@ there is an open task dialog.</source>
     </message>
   </context>
   <context>
+    <name>Cmd2LineCenterLine</name>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="655"/>
+      <source>Centerline Between 2 Lines</source>
+      <translation>2 வரிகளுக்கு இடையே மையக்கோடு</translation>
+    </message>
+  </context>
+  <context>
+    <name>Cmd2PointCenterLine</name>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="659"/>
+      <source>Centerline Between 2 Points</source>
+      <translation>2 புள்ளிகளுக்கு இடையே மையக்கோடு</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskSpreadsheetView</name>
+    <message>
+      <location filename="../../TaskSpreadsheetView.cpp" line="187"/>
+      <source>Invalid Range</source>
+      <translation type="unfinished">Invalid Range</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.cpp" line="187"/>
+      <source>The specified cell range is invalid. Please correct it.</source>
+      <translation type="unfinished">The specified cell range is invalid. Please correct it.</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskDlgSpreadsheetView</name>
+    <message>
+      <location filename="../../TaskSpreadsheetView.cpp" line="727"/>
+      <source>Create Spreadsheet View</source>
+      <translation type="unfinished">Create Spreadsheet View</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.cpp" line="728"/>
+      <source>Edit Spreadsheet View</source>
+      <translation type="unfinished">Edit Spreadsheet View</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawExportPagePDF</name>
+    <message>
+      <location filename="../../Command.cpp" line="1949"/>
+      <source>File</source>
+      <translation>கோப்பு</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1950"/>
+      <source>Export Page as PDF</source>
+      <translation>பக்கத்தை PDF ஆக ஏற்றுமதி செய்யவும்</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1951"/>
+      <source>Exports the current page as a PDF</source>
+      <translation type="unfinished">Exports the current page as a PDF</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawExportGroup</name>
+    <message>
+      <location filename="../../Command.cpp" line="1979"/>
+      <source>TechDraw</source>
+      <translation>டெக் டிரா</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1980"/>
+      <source>Print All Pages</source>
+      <translation>அனைத்து பக்கங்களையும் அச்சிடுக</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdTechDrawToggleFrame</name>
     <message>
       <location filename="../../CommandDecorate.cpp" line="77"/>
@@ -10492,58 +10595,11 @@ there is an open task dialog.</source>
     </message>
   </context>
   <context>
-    <name>CmdTechDrawExportPagePDF</name>
-    <message>
-      <location filename="../../Command.cpp" line="1949"/>
-      <source>File</source>
-      <translation>கோப்பு</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1950"/>
-      <source>Export Page as PDF</source>
-      <translation>பக்கத்தை PDF ஆக ஏற்றுமதி செய்யவும்</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1951"/>
-      <source>Exports the current page as a PDF</source>
-      <translation type="unfinished">Exports the current page as a PDF</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdTechDrawExportGroup</name>
-    <message>
-      <location filename="../../Command.cpp" line="1979"/>
-      <source>TechDraw</source>
-      <translation>டெக் டிரா</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1980"/>
-      <source>Print All Pages</source>
-      <translation>அனைத்து பக்கங்களையும் அச்சிடுக</translation>
-    </message>
-  </context>
-  <context>
     <name>TechDrawGui::TaskDlgLineDecor</name>
     <message>
       <location filename="../../TaskLineDecor.cpp" line="458"/>
       <source>Restore Invisible Lines</source>
       <translation>கண்ணுக்கு தெரியாத வரிகளை மீட்டெடுக்கவும்</translation>
-    </message>
-  </context>
-  <context>
-    <name>Cmd2LineCenterLine</name>
-    <message>
-      <location filename="../../CommandAnnotate.cpp" line="655"/>
-      <source>Centerline Between 2 Lines</source>
-      <translation>2 வரிகளுக்கு இடையே மையக்கோடு</translation>
-    </message>
-  </context>
-  <context>
-    <name>Cmd2PointCenterLine</name>
-    <message>
-      <location filename="../../CommandAnnotate.cpp" line="659"/>
-      <source>Centerline Between 2 Points</source>
-      <translation>2 புள்ளிகளுக்கு இடையே மையக்கோடு</translation>
     </message>
   </context>
   <context>
@@ -10557,32 +10613,6 @@ there is an open task dialog.</source>
       <location filename="../../QGIViewSpreadsheet.cpp" line="431"/>
       <source>Add column</source>
       <translation>நெடுவரிசையைச் சேர்க்கவும்</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDrawGui::TaskSpreadsheetView</name>
-    <message>
-      <location filename="../../TaskSpreadsheetView.cpp" line="187"/>
-      <source>Invalid Range</source>
-      <translation type="unfinished">Invalid Range</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSpreadsheetView.cpp" line="187"/>
-      <source>The specified cell range is invalid. Please correct it.</source>
-      <translation type="unfinished">The specified cell range is invalid. Please correct it.</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDrawGui::TaskDlgSpreadsheetView</name>
-    <message>
-      <location filename="../../TaskSpreadsheetView.cpp" line="727"/>
-      <source>Create Spreadsheet View</source>
-      <translation type="unfinished">Create Spreadsheet View</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSpreadsheetView.cpp" line="728"/>
-      <source>Edit Spreadsheet View</source>
-      <translation type="unfinished">Edit Spreadsheet View</translation>
     </message>
   </context>
 </TS>

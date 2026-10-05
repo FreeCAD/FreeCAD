@@ -314,9 +314,8 @@ Cette commande ne fonctionne qu'avec un objet Mesh, et non avec une face ou une 
       <source>Mesh segments will be grouped according to the color of the object faces.
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
-      <translation>Les segments de maillage seront regroupés en fonction de la couleur des faces de l'objet.
-Ces groupes seront exportés pour les formats des résultats du maillage prenant en charge
-cette fonction (par exemple le format OBJ).</translation>
+      <translation>Les segments de maillage seront regroupés en fonction de la couleur des faces de l'objet. Ces groupes seront exportés pour les
+formats des résultats du maillage prenant en charge cette fonction (par exemple le format OBJ).</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="124"/>
@@ -336,7 +335,7 @@ cette fonction (par exemple le format OBJ).</translation>
     <message>
       <location filename="../../Tessellation.ui" line="20"/>
       <source>Meshing Options</source>
-      <translation>Options de maillage</translation>
+      <translation>Options du maillage</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="41"/>
@@ -353,7 +352,7 @@ cette fonction (par exemple le format OBJ).</translation>
       <source>The maximal linear deviation of a mesh segment will be the specified
 surface deviation multiplied by the length of the current mesh segment (edge)</source>
       <translation>La déviation linéaire maximale d'un segment de maillage sera égale à la déviation de surface spécifiée multipliée par la longueur du
-segment de maillage en cous (arête).</translation>
+segment de maillage en cours (arête).</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="156"/>
@@ -385,32 +384,32 @@ La valeur la plus petite est 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
-      <translation>Très important</translation>
+      <translation>Très grossière</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="239"/>
       <source>Coarse</source>
-      <translation>Important</translation>
+      <translation>Grossière</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="244"/>
       <source>Moderate</source>
-      <translation>Moyen</translation>
+      <translation>Moyenne</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="249"/>
       <source>Fine</source>
-      <translation>Fin</translation>
+      <translation>Fine</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="254"/>
       <source>Very fine</source>
-      <translation>Très fin</translation>
+      <translation>Très fine</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="259"/>
       <source>User defined</source>
-      <translation>Défini par l'utilisateur</translation>
+      <translation>Définie par l'utilisateur</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="269"/>
@@ -450,7 +449,7 @@ Une valeur dans la plage de 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="370"/>
       <source>Whether optimization of surface shape will be done</source>
-      <translation>Si l'optimisation de la forme de la surface sera effectuée</translation>
+      <translation>Si l'optimisation de la forme de la surface sera effectuée.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="373"/>
@@ -460,7 +459,7 @@ Une valeur dans la plage de 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="383"/>
       <source>Whether second order elements will be generated</source>
-      <translation>Si les éléments de second ordre seront générés</translation>
+      <translation>Si les éléments de second ordre seront générés.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="386"/>
@@ -470,7 +469,7 @@ Une valeur dans la plage de 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="393"/>
       <source>Whether meshes will be arranged preferably using quadrilateral faces</source>
-      <translation>Si les maillages seront arrangés de préférence en utilisant des faces de quadrilatères</translation>
+      <translation>Si les maillages seront arrangés de préférence en utilisant des faces de quadrilatères.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="396"/>
@@ -497,18 +496,18 @@ Une valeur dans la plage de 0.2-10.</translation>
       <location filename="../../Tessellation.cpp" line="280"/>
       <source>Error: body without a tip selected.
 Either set the tip of the body or select a different shape.</source>
-      <translation>Erreur : le corps est sans pointe sélectionnée. Définir la pointe du corps ou sélectionner une autre forme.</translation>
+      <translation>Erreur : un corps sans position a été sélectionné. Définir soit la position du corps soit sélectionner une autre forme.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="288"/>
       <source>Error: shape without faces selected.
 Select a different shape.</source>
-      <translation>Erreur : forme sans faces sélectionnées. Sélectionner une forme différente.</translation>
+      <translation>Erreur : une forme sans faces a été sélectionnée. Sélectionner une autre forme.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="293"/>
       <source>Select a shape for meshing, first.</source>
-      <translation>Sélectionner d'abord une forme pour le maillage.</translation>
+      <translation>Sélectionner d'abord une forme pour le maillage</translation>
     </message>
   </context>
   <context>

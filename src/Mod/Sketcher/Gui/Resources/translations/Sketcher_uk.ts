@@ -17,27 +17,27 @@
   <context>
     <name>CmdSketcherCompConstrainRadDia</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8937"/>
+      <location filename="../../CommandConstraints.cpp" line="8960"/>
       <source>Radius/Diameter Dimension</source>
       <translation>Розмір радіуса/діаметра</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8938"/>
+      <location filename="../../CommandConstraints.cpp" line="8961"/>
       <source>Constrains the radius or diameter of an arc or a circle</source>
       <translation>Фіксувати радіус/діаметр дуги/кола</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9048"/>
+      <location filename="../../CommandConstraints.cpp" line="9071"/>
       <source>Constrain radius</source>
       <translation>Обмеження за радіусом</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9054"/>
+      <location filename="../../CommandConstraints.cpp" line="9077"/>
       <source>Constrain diameter</source>
       <translation>Обмеження за діаметром</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9060"/>
+      <location filename="../../CommandConstraints.cpp" line="9083"/>
       <source>Constrain auto radius/diameter</source>
       <translation>Автоматичне обмеження за радіусом/діаметром</translation>
     </message>
@@ -319,356 +319,356 @@ invalid constraints, and degenerate geometry</source>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4620"/>
+      <location filename="../../CommandConstraints.cpp" line="4643"/>
       <source>Add 'Lock' constraint</source>
       <translation>Додати обмеження 'Фіксація'</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4674"/>
+      <location filename="../../CommandConstraints.cpp" line="4697"/>
       <source>Add relative 'Lock' constraint</source>
       <translation>Додайте обмеження відносна 'Фіксація'</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4734"/>
+      <location filename="../../CommandConstraints.cpp" line="4757"/>
       <source>Add fixed constraint</source>
       <translation>Додати фіксуюче обмеження</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4930"/>
+      <location filename="../../CommandConstraints.cpp" line="4953"/>
       <source>Add block constraint</source>
       <translation>Додати обмеження блокування</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5296"/>
-      <location filename="../../CommandConstraints.cpp" line="5483"/>
+      <location filename="../../CommandConstraints.cpp" line="5319"/>
+      <location filename="../../CommandConstraints.cpp" line="5506"/>
       <source>Add coincident constraint</source>
       <translation>Додати обмеження збігу</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5972"/>
-      <location filename="../../CommandConstraints.cpp" line="6226"/>
+      <location filename="../../CommandConstraints.cpp" line="5995"/>
+      <location filename="../../CommandConstraints.cpp" line="6249"/>
       <source>Add distance from horizontal axis constraint</source>
       <translation>Додати обмеження відстані від горизонтальної осі</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5984"/>
-      <location filename="../../CommandConstraints.cpp" line="6240"/>
+      <location filename="../../CommandConstraints.cpp" line="6007"/>
+      <location filename="../../CommandConstraints.cpp" line="6263"/>
       <source>Add distance from vertical axis constraint</source>
       <translation>Додати обмеження відстані від вертикальної осі</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5996"/>
-      <location filename="../../CommandConstraints.cpp" line="6253"/>
+      <location filename="../../CommandConstraints.cpp" line="6019"/>
+      <location filename="../../CommandConstraints.cpp" line="6276"/>
       <source>Add point to point distance constraint</source>
       <translation>Додати обмеження відстані між двома точками</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3051"/>
+      <location filename="../../CommandConstraints.cpp" line="3074"/>
       <source>Add point to line Distance constraint</source>
       <translation>Додати обмеження відстані між точкою та лінією</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6085"/>
-      <location filename="../../CommandConstraints.cpp" line="6377"/>
+      <location filename="../../CommandConstraints.cpp" line="6108"/>
+      <location filename="../../CommandConstraints.cpp" line="6400"/>
       <source>Add circle to circle distance constraint</source>
       <translation>Додати обмеження відстані між двома колами</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6116"/>
+      <location filename="../../CommandConstraints.cpp" line="6139"/>
       <source>Add circle to line distance constraint</source>
       <translation>Додати обмеження відстані між колом та лінією</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3149"/>
       <location filename="../../CommandConstraints.cpp" line="3172"/>
-      <location filename="../../CommandConstraints.cpp" line="3240"/>
-      <location filename="../../CommandConstraints.cpp" line="3324"/>
-      <location filename="../../CommandConstraints.cpp" line="6164"/>
-      <location filename="../../CommandConstraints.cpp" line="6180"/>
-      <location filename="../../CommandConstraints.cpp" line="6289"/>
+      <location filename="../../CommandConstraints.cpp" line="3195"/>
+      <location filename="../../CommandConstraints.cpp" line="3263"/>
+      <location filename="../../CommandConstraints.cpp" line="3347"/>
+      <location filename="../../CommandConstraints.cpp" line="6187"/>
+      <location filename="../../CommandConstraints.cpp" line="6203"/>
+      <location filename="../../CommandConstraints.cpp" line="6312"/>
       <source>Add length constraint</source>
       <translation>Додати обмеження довжини</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2278"/>
-      <location filename="../../CommandConstraints.cpp" line="2543"/>
-      <location filename="../../CommandConstraints.cpp" line="4036"/>
+      <location filename="../../CommandConstraints.cpp" line="2307"/>
+      <location filename="../../CommandConstraints.cpp" line="2566"/>
+      <location filename="../../CommandConstraints.cpp" line="4059"/>
       <source>Dimension</source>
       <translation>Розмірність</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3020"/>
+      <location filename="../../CommandConstraints.cpp" line="3043"/>
       <source>Add lock constraint</source>
       <translation>Додати обмеження блокування</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3016"/>
+      <location filename="../../CommandConstraints.cpp" line="3039"/>
       <source>Add 'Distance to origin' constraint</source>
       <translation>Додати обмеження "Відстань до базової точки"</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3032"/>
-      <location filename="../../CommandConstraints.cpp" line="3646"/>
-      <location filename="../../CommandConstraints.cpp" line="3883"/>
+      <location filename="../../CommandConstraints.cpp" line="3055"/>
+      <location filename="../../CommandConstraints.cpp" line="3669"/>
+      <location filename="../../CommandConstraints.cpp" line="3906"/>
       <source>Add Distance constraint</source>
       <translation>Додати обмеження відстані</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3037"/>
-      <location filename="../../CommandConstraints.cpp" line="3066"/>
-      <location filename="../../CommandConstraints.cpp" line="3100"/>
+      <location filename="../../CommandConstraints.cpp" line="3060"/>
+      <location filename="../../CommandConstraints.cpp" line="3089"/>
+      <location filename="../../CommandConstraints.cpp" line="3123"/>
       <source>Add 'Horizontal' constraints</source>
       <translation>Додати 'Горизонтальне' обмеження</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3041"/>
-      <location filename="../../CommandConstraints.cpp" line="3073"/>
-      <location filename="../../CommandConstraints.cpp" line="3107"/>
+      <location filename="../../CommandConstraints.cpp" line="3064"/>
+      <location filename="../../CommandConstraints.cpp" line="3096"/>
+      <location filename="../../CommandConstraints.cpp" line="3130"/>
       <source>Add 'Vertical' constraints</source>
       <translation>Додати 'Вертикальне' обмеження</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3056"/>
-      <location filename="../../CommandConstraints.cpp" line="3119"/>
+      <location filename="../../CommandConstraints.cpp" line="3079"/>
+      <location filename="../../CommandConstraints.cpp" line="3142"/>
       <source>Add Symmetry constraint</source>
       <translation>Додати обмеження симетрії</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3079"/>
-      <location filename="../../CommandConstraints.cpp" line="3251"/>
+      <location filename="../../CommandConstraints.cpp" line="3102"/>
+      <location filename="../../CommandConstraints.cpp" line="3274"/>
       <source>Add Symmetry constraints</source>
       <translation>Додати обмеження Симетрії</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3124"/>
-      <location filename="../../CommandConstraints.cpp" line="3136"/>
+      <location filename="../../CommandConstraints.cpp" line="3147"/>
+      <location filename="../../CommandConstraints.cpp" line="3159"/>
       <source>Add Distance constraints</source>
       <translation>Додати обмеження за відстанню</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3182"/>
+      <location filename="../../CommandConstraints.cpp" line="3205"/>
       <source>Add Horizontal constraint</source>
       <translation>Додати горизонтальне обмеження</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3187"/>
+      <location filename="../../CommandConstraints.cpp" line="3210"/>
       <source>Add Vertical constraint</source>
       <translation>Додати вертикальне обмеження</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3191"/>
-      <location filename="../../CommandConstraints.cpp" line="4882"/>
+      <location filename="../../CommandConstraints.cpp" line="3214"/>
+      <location filename="../../CommandConstraints.cpp" line="4905"/>
       <source>Add Block constraint</source>
       <translation>Додати обмеження 'блокування'</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3206"/>
+      <location filename="../../CommandConstraints.cpp" line="3229"/>
       <source>Add Angle constraint</source>
       <translation>Додати обмеження кута</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3216"/>
-      <location filename="../../CommandConstraints.cpp" line="3339"/>
-      <location filename="../../CommandConstraints.cpp" line="3349"/>
-      <location filename="../../CommandConstraints.cpp" line="3387"/>
+      <location filename="../../CommandConstraints.cpp" line="3239"/>
+      <location filename="../../CommandConstraints.cpp" line="3362"/>
+      <location filename="../../CommandConstraints.cpp" line="3372"/>
+      <location filename="../../CommandConstraints.cpp" line="3410"/>
       <source>Add Equality constraint</source>
       <translation>Додати обмеження рівності</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3227"/>
+      <location filename="../../CommandConstraints.cpp" line="3250"/>
       <source>Add Equality constraints</source>
       <translation>Додати обмеження рівності</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10406"/>
+      <location filename="../../CommandConstraints.cpp" line="10429"/>
       <source>Add Group constraint</source>
       <translation>Додати групове обмеження</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10826"/>
+      <location filename="../../CommandConstraints.cpp" line="10849"/>
       <source>Activate/Deactivate constraints</source>
       <translation>Активувати/Деактивувати обмеження</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3275"/>
-      <location filename="../../CommandConstraints.cpp" line="3308"/>
+      <location filename="../../CommandConstraints.cpp" line="3298"/>
+      <location filename="../../CommandConstraints.cpp" line="3331"/>
       <source>Add arc angle constraint</source>
       <translation>Додати обмеження кута дуги</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3329"/>
+      <location filename="../../CommandConstraints.cpp" line="3352"/>
       <source>Add concentric and length constraint</source>
       <translation>Додати обмеження концентричності та довжини</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3863"/>
+      <location filename="../../CommandConstraints.cpp" line="3886"/>
       <source>Add DistanceX constraint</source>
       <translation>Додати обмеження відстані по X</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3873"/>
+      <location filename="../../CommandConstraints.cpp" line="3896"/>
       <source>Add DistanceY constraint</source>
       <translation>Додати обмеження відстані по Y</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5214"/>
-      <location filename="../../CommandConstraints.cpp" line="5400"/>
+      <location filename="../../CommandConstraints.cpp" line="5237"/>
+      <location filename="../../CommandConstraints.cpp" line="5423"/>
       <source>Add point on object constraint</source>
       <translation>Додати обмеження точки на об’єкті</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3280"/>
-      <location filename="../../CommandConstraints.cpp" line="3312"/>
+      <location filename="../../CommandConstraints.cpp" line="3303"/>
+      <location filename="../../CommandConstraints.cpp" line="3335"/>
       <source>Add arc length constraint</source>
       <translation>Додати обмеження довжини дуги</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6028"/>
-      <location filename="../../CommandConstraints.cpp" line="6330"/>
+      <location filename="../../CommandConstraints.cpp" line="6051"/>
+      <location filename="../../CommandConstraints.cpp" line="6353"/>
       <source>Add point to line distance constraint</source>
       <translation>Додати обмеження відстані точки до лінії</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6046"/>
+      <location filename="../../CommandConstraints.cpp" line="6069"/>
       <source>Add point to circle distance constraint</source>
       <translation>Додати обмеження відстані точки до кола</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6526"/>
-      <location filename="../../CommandConstraints.cpp" line="6647"/>
+      <location filename="../../CommandConstraints.cpp" line="6549"/>
+      <location filename="../../CommandConstraints.cpp" line="6670"/>
       <source>Add point to point horizontal distance constraint</source>
       <translation>Додати обмеження відстані за горизонталлю між двома точками</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6560"/>
+      <location filename="../../CommandConstraints.cpp" line="6583"/>
       <source>Add fixed x-coordinate constraint</source>
       <translation>Додати обмеження фіксованої X-координати</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6527"/>
-      <location filename="../../CommandConstraints.cpp" line="6648"/>
+      <location filename="../../CommandConstraints.cpp" line="6550"/>
+      <location filename="../../CommandConstraints.cpp" line="6671"/>
       <source>Add point to point vertical distance constraint</source>
       <translation>Додати обмеження відстані за вертикаллю між двома точками</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6561"/>
+      <location filename="../../CommandConstraints.cpp" line="6584"/>
       <source>Add fixed y-coordinate constraint</source>
       <translation>Додати обмеження фіксованої Y-координати</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6817"/>
-      <location filename="../../CommandConstraints.cpp" line="6856"/>
+      <location filename="../../CommandConstraints.cpp" line="6840"/>
+      <location filename="../../CommandConstraints.cpp" line="6879"/>
       <source>Add parallel constraint</source>
       <translation>Додати обмеження паралельності</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6949"/>
-      <location filename="../../CommandConstraints.cpp" line="6985"/>
-      <location filename="../../CommandConstraints.cpp" line="7082"/>
-      <location filename="../../CommandConstraints.cpp" line="7240"/>
-      <location filename="../../CommandConstraints.cpp" line="7287"/>
-      <location filename="../../CommandConstraints.cpp" line="7434"/>
-      <location filename="../../CommandConstraints.cpp" line="7479"/>
-      <location filename="../../CommandConstraints.cpp" line="7533"/>
+      <location filename="../../CommandConstraints.cpp" line="6972"/>
+      <location filename="../../CommandConstraints.cpp" line="7008"/>
+      <location filename="../../CommandConstraints.cpp" line="7105"/>
+      <location filename="../../CommandConstraints.cpp" line="7263"/>
+      <location filename="../../CommandConstraints.cpp" line="7310"/>
+      <location filename="../../CommandConstraints.cpp" line="7457"/>
+      <location filename="../../CommandConstraints.cpp" line="7502"/>
+      <location filename="../../CommandConstraints.cpp" line="7556"/>
       <source>Add perpendicular constraint</source>
       <translation>Додати обмеження перпендикуляру</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7118"/>
+      <location filename="../../CommandConstraints.cpp" line="7141"/>
       <source>Add perpendicularity constraint</source>
       <translation>Додати обмеження перпендикулярності</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7666"/>
+      <location filename="../../CommandConstraints.cpp" line="7689"/>
       <source>Swap coincident+tangency with ptp tangency</source>
       <translation>Перетворити збіг+дотик у дотик точка-точка</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7770"/>
-      <location filename="../../CommandConstraints.cpp" line="7869"/>
-      <location filename="../../CommandConstraints.cpp" line="7915"/>
-      <location filename="../../CommandConstraints.cpp" line="8121"/>
-      <location filename="../../CommandConstraints.cpp" line="8311"/>
-      <location filename="../../CommandConstraints.cpp" line="8380"/>
-      <location filename="../../CommandConstraints.cpp" line="8410"/>
+      <location filename="../../CommandConstraints.cpp" line="7793"/>
+      <location filename="../../CommandConstraints.cpp" line="7892"/>
+      <location filename="../../CommandConstraints.cpp" line="7938"/>
+      <location filename="../../CommandConstraints.cpp" line="8144"/>
+      <location filename="../../CommandConstraints.cpp" line="8334"/>
+      <location filename="../../CommandConstraints.cpp" line="8403"/>
+      <location filename="../../CommandConstraints.cpp" line="8433"/>
       <source>Add tangent constraint</source>
       <translation>Додати обмеження дотику</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7958"/>
-      <location filename="../../CommandConstraints.cpp" line="7972"/>
-      <location filename="../../CommandConstraints.cpp" line="7986"/>
-      <location filename="../../CommandConstraints.cpp" line="8013"/>
-      <location filename="../../CommandConstraints.cpp" line="8028"/>
-      <location filename="../../CommandConstraints.cpp" line="8055"/>
-      <location filename="../../CommandConstraints.cpp" line="8070"/>
-      <location filename="../../CommandConstraints.cpp" line="8098"/>
-      <location filename="../../CommandConstraints.cpp" line="8198"/>
-      <location filename="../../CommandConstraints.cpp" line="8212"/>
-      <location filename="../../CommandConstraints.cpp" line="8227"/>
-      <location filename="../../CommandConstraints.cpp" line="8254"/>
-      <location filename="../../CommandConstraints.cpp" line="8269"/>
-      <location filename="../../CommandConstraints.cpp" line="8296"/>
+      <location filename="../../CommandConstraints.cpp" line="7981"/>
+      <location filename="../../CommandConstraints.cpp" line="7995"/>
+      <location filename="../../CommandConstraints.cpp" line="8009"/>
+      <location filename="../../CommandConstraints.cpp" line="8036"/>
+      <location filename="../../CommandConstraints.cpp" line="8051"/>
+      <location filename="../../CommandConstraints.cpp" line="8078"/>
+      <location filename="../../CommandConstraints.cpp" line="8093"/>
+      <location filename="../../CommandConstraints.cpp" line="8121"/>
+      <location filename="../../CommandConstraints.cpp" line="8221"/>
+      <location filename="../../CommandConstraints.cpp" line="8235"/>
+      <location filename="../../CommandConstraints.cpp" line="8250"/>
+      <location filename="../../CommandConstraints.cpp" line="8277"/>
+      <location filename="../../CommandConstraints.cpp" line="8292"/>
+      <location filename="../../CommandConstraints.cpp" line="8319"/>
       <source>Add tangent constraint point</source>
       <translation>Додати обмеження дотику до точки</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3284"/>
-      <location filename="../../CommandConstraints.cpp" line="3288"/>
-      <location filename="../../CommandConstraints.cpp" line="3295"/>
-      <location filename="../../CommandConstraints.cpp" line="3300"/>
-      <location filename="../../CommandConstraints.cpp" line="8483"/>
+      <location filename="../../CommandConstraints.cpp" line="3307"/>
+      <location filename="../../CommandConstraints.cpp" line="3311"/>
+      <location filename="../../CommandConstraints.cpp" line="3318"/>
+      <location filename="../../CommandConstraints.cpp" line="3323"/>
+      <location filename="../../CommandConstraints.cpp" line="8506"/>
       <source>Add radius constraint</source>
       <translation>Додати обмеження радіусу</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8485"/>
+      <location filename="../../CommandConstraints.cpp" line="8508"/>
       <source>Add diameter constraint</source>
       <translation>Додати обмеження діаметру</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8487"/>
+      <location filename="../../CommandConstraints.cpp" line="8510"/>
       <source>Add radiam constraint</source>
       <translation>Додати обмеження радіусу/діаметру</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="568"/>
-      <location filename="../../CommandConstraints.cpp" line="9183"/>
-      <location filename="../../CommandConstraints.cpp" line="9287"/>
-      <location filename="../../CommandConstraints.cpp" line="9302"/>
-      <location filename="../../CommandConstraints.cpp" line="9380"/>
-      <location filename="../../CommandConstraints.cpp" line="9409"/>
+      <location filename="../../CommandConstraints.cpp" line="570"/>
+      <location filename="../../CommandConstraints.cpp" line="9206"/>
+      <location filename="../../CommandConstraints.cpp" line="9310"/>
+      <location filename="../../CommandConstraints.cpp" line="9325"/>
+      <location filename="../../CommandConstraints.cpp" line="9403"/>
+      <location filename="../../CommandConstraints.cpp" line="9432"/>
       <source>Add angle constraint</source>
       <translation>Додати обмеження кута</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7689"/>
+      <location filename="../../CommandConstraints.cpp" line="7712"/>
       <source>Swap point on object and tangency with point to curve tangency</source>
       <translation>Замінити "точка на об'єкті + дотичність" на "дотичність до кривої"</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9633"/>
-      <location filename="../../CommandConstraints.cpp" line="9683"/>
+      <location filename="../../CommandConstraints.cpp" line="9656"/>
+      <location filename="../../CommandConstraints.cpp" line="9706"/>
       <source>Add equality constraint</source>
       <translation>Додати обмеження рівності</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9829"/>
-      <location filename="../../CommandConstraints.cpp" line="9883"/>
-      <location filename="../../CommandConstraints.cpp" line="9899"/>
-      <location filename="../../CommandConstraints.cpp" line="10010"/>
-      <location filename="../../CommandConstraints.cpp" line="10049"/>
-      <location filename="../../CommandConstraints.cpp" line="10120"/>
+      <location filename="../../CommandConstraints.cpp" line="9852"/>
+      <location filename="../../CommandConstraints.cpp" line="9906"/>
+      <location filename="../../CommandConstraints.cpp" line="9922"/>
+      <location filename="../../CommandConstraints.cpp" line="10033"/>
+      <location filename="../../CommandConstraints.cpp" line="10072"/>
+      <location filename="../../CommandConstraints.cpp" line="10143"/>
       <source>Add symmetric constraint</source>
       <translation>Додати обмеження симетрії</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10277"/>
+      <location filename="../../CommandConstraints.cpp" line="10300"/>
       <source>Add Snell's law constraint</source>
       <translation>Додати обмеження за законом заломлення Снеліуса</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10739"/>
+      <location filename="../../CommandConstraints.cpp" line="10762"/>
       <source>Toggle constraint to driving/reference</source>
       <translation>Перемкнути обмеження між допоміжними/основними</translation>
     </message>
@@ -770,7 +770,7 @@ invalid constraints, and degenerate geometry</source>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerExternal.h" line="181"/>
-      <location filename="../../CommandConstraints.cpp" line="2020"/>
+      <location filename="../../CommandConstraints.cpp" line="2049"/>
       <source>Add external geometry</source>
       <translation>Додати зовнішню геометрію</translation>
     </message>
@@ -881,28 +881,28 @@ invalid constraints, and degenerate geometry</source>
       <translation>Перейменувати обмеження ескізу</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2207"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2206"/>
       <source>Drag Point</source>
       <translation>Перетягнути точку</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2207"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2206"/>
       <source>Drag Curve</source>
       <translation>Перетягнути криву</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2208"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2207"/>
       <source>Drag geometries</source>
       <translation>Перетягнути геометрії</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1411"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1410"/>
       <source>Drag Constraint</source>
       <translation>Перетягнути обмеження</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1660"/>
-      <location filename="../../CommandConstraints.cpp" line="10604"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1659"/>
+      <location filename="../../CommandConstraints.cpp" line="10627"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1350"/>
       <source>Modify sketch constraints</source>
       <translation>Змінити обмеження ескізу</translation>
@@ -1180,123 +1180,9 @@ invalid constraints, and degenerate geometry</source>
       <translation>Не прикріплювати</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="171"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="329"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="423"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="491"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="580"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="634"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1023"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1144"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="231"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="242"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="127"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
-      <location filename="../../CommandConstraints.cpp" line="478"/>
-      <location filename="../../CommandConstraints.cpp" line="485"/>
-      <location filename="../../CommandConstraints.cpp" line="3625"/>
-      <location filename="../../CommandConstraints.cpp" line="3784"/>
-      <location filename="../../CommandConstraints.cpp" line="3800"/>
-      <location filename="../../CommandConstraints.cpp" line="4185"/>
-      <location filename="../../CommandConstraints.cpp" line="4599"/>
-      <location filename="../../CommandConstraints.cpp" line="4861"/>
-      <location filename="../../CommandConstraints.cpp" line="5208"/>
-      <location filename="../../CommandConstraints.cpp" line="5231"/>
-      <location filename="../../CommandConstraints.cpp" line="5261"/>
-      <location filename="../../CommandConstraints.cpp" line="5278"/>
-      <location filename="../../CommandConstraints.cpp" line="5415"/>
-      <location filename="../../CommandConstraints.cpp" line="5436"/>
-      <location filename="../../CommandConstraints.cpp" line="5465"/>
-      <location filename="../../CommandConstraints.cpp" line="5590"/>
-      <location filename="../../CommandConstraints.cpp" line="5597"/>
-      <location filename="../../CommandConstraints.cpp" line="5604"/>
-      <location filename="../../CommandConstraints.cpp" line="5941"/>
-      <location filename="../../CommandConstraints.cpp" line="6143"/>
-      <location filename="../../CommandConstraints.cpp" line="6151"/>
-      <location filename="../../CommandConstraints.cpp" line="6195"/>
-      <location filename="../../CommandConstraints.cpp" line="6304"/>
-      <location filename="../../CommandConstraints.cpp" line="6392"/>
-      <location filename="../../CommandConstraints.cpp" line="6459"/>
-      <location filename="../../CommandConstraints.cpp" line="6494"/>
-      <location filename="../../CommandConstraints.cpp" line="6548"/>
-      <location filename="../../CommandConstraints.cpp" line="6578"/>
-      <location filename="../../CommandConstraints.cpp" line="6622"/>
-      <location filename="../../CommandConstraints.cpp" line="6802"/>
-      <location filename="../../CommandConstraints.cpp" line="6811"/>
-      <location filename="../../CommandConstraints.cpp" line="6845"/>
-      <location filename="../../CommandConstraints.cpp" line="6928"/>
-      <location filename="../../CommandConstraints.cpp" line="6980"/>
-      <location filename="../../CommandConstraints.cpp" line="7054"/>
-      <location filename="../../CommandConstraints.cpp" line="7064"/>
-      <location filename="../../CommandConstraints.cpp" line="7102"/>
-      <location filename="../../CommandConstraints.cpp" line="7113"/>
-      <location filename="../../CommandConstraints.cpp" line="7140"/>
-      <location filename="../../CommandConstraints.cpp" line="7161"/>
-      <location filename="../../CommandConstraints.cpp" line="7334"/>
-      <location filename="../../CommandConstraints.cpp" line="7355"/>
-      <location filename="../../CommandConstraints.cpp" line="7528"/>
-      <location filename="../../CommandConstraints.cpp" line="7731"/>
-      <location filename="../../CommandConstraints.cpp" line="7765"/>
-      <location filename="../../CommandConstraints.cpp" line="7834"/>
-      <location filename="../../CommandConstraints.cpp" line="7854"/>
-      <location filename="../../CommandConstraints.cpp" line="7863"/>
-      <location filename="../../CommandConstraints.cpp" line="7889"/>
-      <location filename="../../CommandConstraints.cpp" line="7898"/>
-      <location filename="../../CommandConstraints.cpp" line="7909"/>
-      <location filename="../../CommandConstraints.cpp" line="7934"/>
-      <location filename="../../CommandConstraints.cpp" line="8115"/>
-      <location filename="../../CommandConstraints.cpp" line="8155"/>
-      <location filename="../../CommandConstraints.cpp" line="8172"/>
-      <location filename="../../CommandConstraints.cpp" line="8363"/>
-      <location filename="../../CommandConstraints.cpp" line="8405"/>
-      <location filename="../../CommandConstraints.cpp" line="8528"/>
-      <location filename="../../CommandConstraints.cpp" line="8578"/>
-      <location filename="../../CommandConstraints.cpp" line="8602"/>
-      <location filename="../../CommandConstraints.cpp" line="8610"/>
-      <location filename="../../CommandConstraints.cpp" line="8736"/>
-      <location filename="../../CommandConstraints.cpp" line="8744"/>
-      <location filename="../../CommandConstraints.cpp" line="9140"/>
-      <location filename="../../CommandConstraints.cpp" line="9176"/>
-      <location filename="../../CommandConstraints.cpp" line="9262"/>
-      <location filename="../../CommandConstraints.cpp" line="9275"/>
-      <location filename="../../CommandConstraints.cpp" line="9318"/>
-      <location filename="../../CommandConstraints.cpp" line="9402"/>
-      <location filename="../../CommandConstraints.cpp" line="9532"/>
-      <location filename="../../CommandConstraints.cpp" line="9550"/>
-      <location filename="../../CommandConstraints.cpp" line="9557"/>
-      <location filename="../../CommandConstraints.cpp" line="9578"/>
-      <location filename="../../CommandConstraints.cpp" line="9611"/>
-      <location filename="../../CommandConstraints.cpp" line="9627"/>
-      <location filename="../../CommandConstraints.cpp" line="9677"/>
-      <location filename="../../CommandConstraints.cpp" line="9765"/>
-      <location filename="../../CommandConstraints.cpp" line="9798"/>
-      <location filename="../../CommandConstraints.cpp" line="9809"/>
-      <location filename="../../CommandConstraints.cpp" line="9822"/>
-      <location filename="../../CommandConstraints.cpp" line="9845"/>
-      <location filename="../../CommandConstraints.cpp" line="9876"/>
-      <location filename="../../CommandConstraints.cpp" line="9916"/>
-      <location filename="../../CommandConstraints.cpp" line="9947"/>
-      <location filename="../../CommandConstraints.cpp" line="9962"/>
-      <location filename="../../CommandConstraints.cpp" line="10003"/>
-      <location filename="../../CommandConstraints.cpp" line="10025"/>
-      <location filename="../../CommandConstraints.cpp" line="10087"/>
-      <location filename="../../CommandConstraints.cpp" line="10097"/>
-      <location filename="../../CommandConstraints.cpp" line="10107"/>
-      <location filename="../../CommandConstraints.cpp" line="10178"/>
-      <location filename="../../CommandConstraints.cpp" line="10188"/>
-      <location filename="../../CommandConstraints.cpp" line="10213"/>
-      <location filename="../../CommandConstraints.cpp" line="10223"/>
-      <location filename="../../CommandConstraints.cpp" line="10241"/>
-      <location filename="../../CommandConstraints.cpp" line="10367"/>
-      <location filename="../../CommandConstraints.cpp" line="10377"/>
-      <location filename="../../CommandConstraints.cpp" line="10609"/>
-      <location filename="../../CommandConstraints.cpp" line="10685"/>
-      <location filename="../../CommandConstraints.cpp" line="10697"/>
-      <location filename="../../CommandConstraints.cpp" line="10733"/>
-      <location filename="../../CommandConstraints.cpp" line="10808"/>
-      <location filename="../../CommandConstraints.cpp" line="10820"/>
       <location filename="../../CommandSketcherTools.cpp" line="468"/>
       <location filename="../../CommandSketcherTools.cpp" line="1118"/>
       <location filename="../../CommandSketcherTools.cpp" line="1447"/>
@@ -1309,6 +1195,120 @@ invalid constraints, and degenerate geometry</source>
       <location filename="../../CommandSketcherTools.cpp" line="2345"/>
       <location filename="../../CommandSketcherTools.cpp" line="2392"/>
       <location filename="../../CommandSketcherTools.cpp" line="2457"/>
+      <location filename="../../CommandConstraints.cpp" line="480"/>
+      <location filename="../../CommandConstraints.cpp" line="487"/>
+      <location filename="../../CommandConstraints.cpp" line="3648"/>
+      <location filename="../../CommandConstraints.cpp" line="3807"/>
+      <location filename="../../CommandConstraints.cpp" line="3823"/>
+      <location filename="../../CommandConstraints.cpp" line="4208"/>
+      <location filename="../../CommandConstraints.cpp" line="4622"/>
+      <location filename="../../CommandConstraints.cpp" line="4884"/>
+      <location filename="../../CommandConstraints.cpp" line="5231"/>
+      <location filename="../../CommandConstraints.cpp" line="5254"/>
+      <location filename="../../CommandConstraints.cpp" line="5284"/>
+      <location filename="../../CommandConstraints.cpp" line="5301"/>
+      <location filename="../../CommandConstraints.cpp" line="5438"/>
+      <location filename="../../CommandConstraints.cpp" line="5459"/>
+      <location filename="../../CommandConstraints.cpp" line="5488"/>
+      <location filename="../../CommandConstraints.cpp" line="5613"/>
+      <location filename="../../CommandConstraints.cpp" line="5620"/>
+      <location filename="../../CommandConstraints.cpp" line="5627"/>
+      <location filename="../../CommandConstraints.cpp" line="5964"/>
+      <location filename="../../CommandConstraints.cpp" line="6166"/>
+      <location filename="../../CommandConstraints.cpp" line="6174"/>
+      <location filename="../../CommandConstraints.cpp" line="6218"/>
+      <location filename="../../CommandConstraints.cpp" line="6327"/>
+      <location filename="../../CommandConstraints.cpp" line="6415"/>
+      <location filename="../../CommandConstraints.cpp" line="6482"/>
+      <location filename="../../CommandConstraints.cpp" line="6517"/>
+      <location filename="../../CommandConstraints.cpp" line="6571"/>
+      <location filename="../../CommandConstraints.cpp" line="6601"/>
+      <location filename="../../CommandConstraints.cpp" line="6645"/>
+      <location filename="../../CommandConstraints.cpp" line="6825"/>
+      <location filename="../../CommandConstraints.cpp" line="6834"/>
+      <location filename="../../CommandConstraints.cpp" line="6868"/>
+      <location filename="../../CommandConstraints.cpp" line="6951"/>
+      <location filename="../../CommandConstraints.cpp" line="7003"/>
+      <location filename="../../CommandConstraints.cpp" line="7077"/>
+      <location filename="../../CommandConstraints.cpp" line="7087"/>
+      <location filename="../../CommandConstraints.cpp" line="7125"/>
+      <location filename="../../CommandConstraints.cpp" line="7136"/>
+      <location filename="../../CommandConstraints.cpp" line="7163"/>
+      <location filename="../../CommandConstraints.cpp" line="7184"/>
+      <location filename="../../CommandConstraints.cpp" line="7357"/>
+      <location filename="../../CommandConstraints.cpp" line="7378"/>
+      <location filename="../../CommandConstraints.cpp" line="7551"/>
+      <location filename="../../CommandConstraints.cpp" line="7754"/>
+      <location filename="../../CommandConstraints.cpp" line="7788"/>
+      <location filename="../../CommandConstraints.cpp" line="7857"/>
+      <location filename="../../CommandConstraints.cpp" line="7877"/>
+      <location filename="../../CommandConstraints.cpp" line="7886"/>
+      <location filename="../../CommandConstraints.cpp" line="7912"/>
+      <location filename="../../CommandConstraints.cpp" line="7921"/>
+      <location filename="../../CommandConstraints.cpp" line="7932"/>
+      <location filename="../../CommandConstraints.cpp" line="7957"/>
+      <location filename="../../CommandConstraints.cpp" line="8138"/>
+      <location filename="../../CommandConstraints.cpp" line="8178"/>
+      <location filename="../../CommandConstraints.cpp" line="8195"/>
+      <location filename="../../CommandConstraints.cpp" line="8386"/>
+      <location filename="../../CommandConstraints.cpp" line="8428"/>
+      <location filename="../../CommandConstraints.cpp" line="8551"/>
+      <location filename="../../CommandConstraints.cpp" line="8601"/>
+      <location filename="../../CommandConstraints.cpp" line="8625"/>
+      <location filename="../../CommandConstraints.cpp" line="8633"/>
+      <location filename="../../CommandConstraints.cpp" line="8759"/>
+      <location filename="../../CommandConstraints.cpp" line="8767"/>
+      <location filename="../../CommandConstraints.cpp" line="9163"/>
+      <location filename="../../CommandConstraints.cpp" line="9199"/>
+      <location filename="../../CommandConstraints.cpp" line="9285"/>
+      <location filename="../../CommandConstraints.cpp" line="9298"/>
+      <location filename="../../CommandConstraints.cpp" line="9341"/>
+      <location filename="../../CommandConstraints.cpp" line="9425"/>
+      <location filename="../../CommandConstraints.cpp" line="9555"/>
+      <location filename="../../CommandConstraints.cpp" line="9573"/>
+      <location filename="../../CommandConstraints.cpp" line="9580"/>
+      <location filename="../../CommandConstraints.cpp" line="9601"/>
+      <location filename="../../CommandConstraints.cpp" line="9634"/>
+      <location filename="../../CommandConstraints.cpp" line="9650"/>
+      <location filename="../../CommandConstraints.cpp" line="9700"/>
+      <location filename="../../CommandConstraints.cpp" line="9788"/>
+      <location filename="../../CommandConstraints.cpp" line="9821"/>
+      <location filename="../../CommandConstraints.cpp" line="9832"/>
+      <location filename="../../CommandConstraints.cpp" line="9845"/>
+      <location filename="../../CommandConstraints.cpp" line="9868"/>
+      <location filename="../../CommandConstraints.cpp" line="9899"/>
+      <location filename="../../CommandConstraints.cpp" line="9939"/>
+      <location filename="../../CommandConstraints.cpp" line="9970"/>
+      <location filename="../../CommandConstraints.cpp" line="9985"/>
+      <location filename="../../CommandConstraints.cpp" line="10026"/>
+      <location filename="../../CommandConstraints.cpp" line="10048"/>
+      <location filename="../../CommandConstraints.cpp" line="10110"/>
+      <location filename="../../CommandConstraints.cpp" line="10120"/>
+      <location filename="../../CommandConstraints.cpp" line="10130"/>
+      <location filename="../../CommandConstraints.cpp" line="10201"/>
+      <location filename="../../CommandConstraints.cpp" line="10211"/>
+      <location filename="../../CommandConstraints.cpp" line="10236"/>
+      <location filename="../../CommandConstraints.cpp" line="10246"/>
+      <location filename="../../CommandConstraints.cpp" line="10264"/>
+      <location filename="../../CommandConstraints.cpp" line="10390"/>
+      <location filename="../../CommandConstraints.cpp" line="10400"/>
+      <location filename="../../CommandConstraints.cpp" line="10632"/>
+      <location filename="../../CommandConstraints.cpp" line="10708"/>
+      <location filename="../../CommandConstraints.cpp" line="10720"/>
+      <location filename="../../CommandConstraints.cpp" line="10756"/>
+      <location filename="../../CommandConstraints.cpp" line="10831"/>
+      <location filename="../../CommandConstraints.cpp" line="10843"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="231"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="242"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="171"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="329"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="423"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="491"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="580"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="634"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1023"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1144"/>
       <source>Wrong selection</source>
       <translation>Невірний вибір</translation>
     </message>
@@ -1329,526 +1329,526 @@ invalid constraints, and degenerate geometry</source>
       <translation>Обмеження розміру</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="479"/>
+      <location filename="../../CommandConstraints.cpp" line="481"/>
       <source>Cannot add a constraint between two external geometries.</source>
       <translation>Неможливо додати обмеження між двома зовнішніми геометріями.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="486"/>
+      <location filename="../../CommandConstraints.cpp" line="488"/>
       <source>Cannot add a constraint between two fixed geometries. Fixed geometries include external geometry, blocked geometry, and special points such as B-spline knot points.</source>
       <translation>Неможливо додати обмеження між двома фіксованими геометріями. Фіксована геометрія включає зовнішню геометрію, заблоковану геометрію або спеціальні точки такі як вузли B-сплайну.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1049"/>
+      <location filename="../../CommandConstraints.cpp" line="1051"/>
       <source>Sketcher Constraint Substitution</source>
       <translation>Заміна обмеження ескізу</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1161"/>
+      <location filename="../../CommandConstraints.cpp" line="1163"/>
       <source>One of the selected has to be on the sketch.</source>
       <translation>Один із вибраних має бути на ескізі.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4149"/>
-      <location filename="../../CommandConstraints.cpp" line="4158"/>
-      <location filename="../../CommandConstraints.cpp" line="4218"/>
-      <location filename="../../CommandConstraints.cpp" line="4242"/>
-      <location filename="../../CommandConstraints.cpp" line="4296"/>
-      <location filename="../../CommandConstraints.cpp" line="4325"/>
+      <location filename="../../CommandConstraints.cpp" line="4172"/>
+      <location filename="../../CommandConstraints.cpp" line="4181"/>
+      <location filename="../../CommandConstraints.cpp" line="4241"/>
+      <location filename="../../CommandConstraints.cpp" line="4265"/>
+      <location filename="../../CommandConstraints.cpp" line="4319"/>
+      <location filename="../../CommandConstraints.cpp" line="4348"/>
       <source>Impossible constraint</source>
       <translation>Неможливі обмеження</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4219"/>
-      <location filename="../../CommandConstraints.cpp" line="4326"/>
+      <location filename="../../CommandConstraints.cpp" line="4242"/>
+      <location filename="../../CommandConstraints.cpp" line="4349"/>
       <source>The selected edge is not a line segment.</source>
       <translation>Виділене ребро не є сегментом лінії.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4141"/>
-      <location filename="../../CommandConstraints.cpp" line="4872"/>
-      <location filename="../../CommandConstraints.cpp" line="4924"/>
+      <location filename="../../CommandConstraints.cpp" line="4164"/>
+      <location filename="../../CommandConstraints.cpp" line="4895"/>
+      <location filename="../../CommandConstraints.cpp" line="4947"/>
       <source>Double constraint</source>
       <translation>Подвійне обмеження</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4142"/>
+      <location filename="../../CommandConstraints.cpp" line="4165"/>
       <source>The selected edge already has a horizontal constraint!</source>
       <translation>Виділене ребро вже має обмеження по горизонталі!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4150"/>
+      <location filename="../../CommandConstraints.cpp" line="4173"/>
       <source>The selected edge already has a vertical constraint!</source>
       <translation>Виділене ребро вже має обмеження по вертикалі!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4297"/>
+      <location filename="../../CommandConstraints.cpp" line="4320"/>
       <source>There are more than one fixed points selected. Select a maximum of one fixed point!</source>
       <translation>Виділено декілька фіксованих точок. Оберіть максимум одну фіксовану точку!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4600"/>
+      <location filename="../../CommandConstraints.cpp" line="4623"/>
       <source>Select one vertex from the sketch other than the origin.</source>
       <translation>Виділіть одну вершину на ескізі, крім початкової.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4843"/>
+      <location filename="../../CommandConstraints.cpp" line="4866"/>
       <source>Wrong solver status</source>
       <translation>Неправильний статус вирішувача</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4862"/>
+      <location filename="../../CommandConstraints.cpp" line="4885"/>
       <source>Select one edge from the sketch.</source>
       <translation>Виділіть одне ребро на ескізі.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5262"/>
+      <location filename="../../CommandConstraints.cpp" line="5285"/>
       <source>None of the selected points were constrained onto the respective curves, because they are part of the same element, they are both external geometry, or the edge is not eligible.</source>
       <translation>Жодна з виділених точок не була обмежена відповідними кривими тому, що вони є частинами того ж елементу; вони є зовнішньою геометрією або тому, що ребро не підходить.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8116"/>
+      <location filename="../../CommandConstraints.cpp" line="8139"/>
       <source>Only tangent-via-point is supported with a B-spline.</source>
       <translation>B-сплайном підтримується лише дотична до точки.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8611"/>
+      <location filename="../../CommandConstraints.cpp" line="8634"/>
       <source>Select either only one or more B-spline poles or only one or more arcs or circles from the sketch, but not mixed.</source>
       <translation>Виділіть на ескізі лише один чи декілька полюсів B-сплайну або лише одну чи декілька дуг чи кіл, але не змішуйте сплайни та дуги.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9766"/>
-      <location filename="../../CommandConstraints.cpp" line="9846"/>
-      <location filename="../../CommandConstraints.cpp" line="9917"/>
-      <location filename="../../CommandConstraints.cpp" line="10026"/>
+      <location filename="../../CommandConstraints.cpp" line="9789"/>
+      <location filename="../../CommandConstraints.cpp" line="9869"/>
+      <location filename="../../CommandConstraints.cpp" line="9940"/>
+      <location filename="../../CommandConstraints.cpp" line="10049"/>
       <source>Select two points and a symmetry line, two points and a symmetry point, an element and a symmetry line or an element and a symmetry point from the sketch.</source>
       <translation>Виберіть дві точки та лінію симетрії, дві точки та точку симетрії, елемент та лінію симетрії або елемент та точку симетрії з ескізу.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9799"/>
-      <location filename="../../CommandConstraints.cpp" line="9963"/>
-      <location filename="../../CommandConstraints.cpp" line="10098"/>
+      <location filename="../../CommandConstraints.cpp" line="9822"/>
+      <location filename="../../CommandConstraints.cpp" line="9986"/>
+      <location filename="../../CommandConstraints.cpp" line="10121"/>
       <source>Cannot add a symmetry constraint because the first selected element has no endpoints. Select a line or an open curve instead.</source>
       <translation>Не вдається додати обмеження симетрії, оскільки перший вибраний елемент не має кінцевих точок. Виберіть натомість лінію або відкриту криву.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9810"/>
-      <location filename="../../CommandConstraints.cpp" line="10108"/>
+      <location filename="../../CommandConstraints.cpp" line="9833"/>
+      <location filename="../../CommandConstraints.cpp" line="10131"/>
       <source>Cannot add a symmetry constraint because the second selected element is not a line. Select a line or an axis instead.</source>
       <translation>Не вдається додати обмеження симетрії, оскільки другий вибраний елемент не є лінією. Виберіть натомість лінію або вісь.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9823"/>
-      <location filename="../../CommandConstraints.cpp" line="9948"/>
+      <location filename="../../CommandConstraints.cpp" line="9846"/>
+      <location filename="../../CommandConstraints.cpp" line="9971"/>
       <source>Cannot add a symmetry constraint between an element and its end points!</source>
       <translation>Не вдається додати обмеження симетрії між елементом та його кінцевими точками!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10088"/>
+      <location filename="../../CommandConstraints.cpp" line="10111"/>
       <source>Cannot add a symmetry constraint between an element and itself.</source>
       <translation>Не вдається додати обмеження симетрії між елементом та ним самим.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10163"/>
+      <location filename="../../CommandConstraints.cpp" line="10186"/>
       <source>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second to n2, and the value sets the ratio n2/n1.</source>
       <comment>Constraint_SnellsLaw</comment>
       <translation>Виділіть два кінці ліній, які будуть виконувати роль променів, і ребро, що представляє межу розподілу середовищ. Перша обрана точка відповідає індексу n1, друга n2, а значення визначається співвідношенням n2 / n1.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10189"/>
+      <location filename="../../CommandConstraints.cpp" line="10212"/>
       <source>Number of selected objects is not 3</source>
       <translation>Кількість виділених об'єктів не 3</translation>
     </message>
     <message>
+      <location filename="../../CommandConstraints.cpp" line="1080"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="623"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1185"/>
-      <location filename="../../CommandConstraints.cpp" line="1078"/>
       <source>Error</source>
       <translation>Помилка</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5128"/>
+      <location filename="../../CommandConstraints.cpp" line="5151"/>
       <source>Endpoint to endpoint tangency was applied instead.</source>
       <translation>Замість кінцевої точки застосовано дотичну.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5279"/>
+      <location filename="../../CommandConstraints.cpp" line="5302"/>
       <source>Select two or more vertices from the sketch for a coincident constraint, or two or more circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
       <translation>Виберіть дві або більше вершин з ескізу для обмеження збігу, або два або більше кіл, еліпсів, дуг або дуг еліпса для концентричного обмеження.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5466"/>
+      <location filename="../../CommandConstraints.cpp" line="5489"/>
       <source>Select two vertices from the sketch for a coincident constraint, or two circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
       <translation>Виберіть дві вершини з ескізу для обмеження збігу, або два кола, еліпси, дуги або дуги еліпса для концентричного обмеження.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5942"/>
+      <location filename="../../CommandConstraints.cpp" line="5965"/>
       <source>Select exactly one line or one point and one line or two points from the sketch.</source>
       <translation>Виділіть на ескізі лише одну лінію, або одну точку та лінію, або дві точки.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6152"/>
+      <location filename="../../CommandConstraints.cpp" line="6175"/>
       <source>Cannot add a length constraint on an axis!</source>
       <translation>Не можу додати обмеження довжини на вісь!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6196"/>
-      <location filename="../../CommandConstraints.cpp" line="6393"/>
+      <location filename="../../CommandConstraints.cpp" line="6219"/>
+      <location filename="../../CommandConstraints.cpp" line="6416"/>
       <source>Select exactly one line or one point and one line or two points or two circles from the sketch.</source>
       <translation>Виділіть на ескізі рівно одну лінію або одну точку і одну лінію або дві точки, або два кола.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6305"/>
+      <location filename="../../CommandConstraints.cpp" line="6328"/>
       <source>This constraint does not make sense for non-linear curves.</source>
       <translation>Це обмеження не має сенсу для нелінійних кривих.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5080"/>
+      <location filename="../../CommandConstraints.cpp" line="5103"/>
       <source>Endpoint to edge tangency was applied instead.</source>
       <translation>Замість кінцевої точки застосовано дотичну до ребра.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5232"/>
-      <location filename="../../CommandConstraints.cpp" line="5416"/>
-      <location filename="../../CommandConstraints.cpp" line="6981"/>
-      <location filename="../../CommandConstraints.cpp" line="7114"/>
-      <location filename="../../CommandConstraints.cpp" line="7162"/>
-      <location filename="../../CommandConstraints.cpp" line="7356"/>
-      <location filename="../../CommandConstraints.cpp" line="7529"/>
-      <location filename="../../CommandConstraints.cpp" line="7766"/>
-      <location filename="../../CommandConstraints.cpp" line="7910"/>
-      <location filename="../../CommandConstraints.cpp" line="7935"/>
-      <location filename="../../CommandConstraints.cpp" line="8173"/>
-      <location filename="../../CommandConstraints.cpp" line="8406"/>
-      <location filename="../../CommandConstraints.cpp" line="8579"/>
-      <location filename="../../CommandConstraints.cpp" line="8745"/>
-      <location filename="../../CommandConstraints.cpp" line="9177"/>
-      <location filename="../../CommandConstraints.cpp" line="9263"/>
-      <location filename="../../CommandConstraints.cpp" line="9403"/>
-      <location filename="../../CommandConstraints.cpp" line="10242"/>
+      <location filename="../../CommandConstraints.cpp" line="5255"/>
+      <location filename="../../CommandConstraints.cpp" line="5439"/>
+      <location filename="../../CommandConstraints.cpp" line="7004"/>
+      <location filename="../../CommandConstraints.cpp" line="7137"/>
+      <location filename="../../CommandConstraints.cpp" line="7185"/>
+      <location filename="../../CommandConstraints.cpp" line="7379"/>
+      <location filename="../../CommandConstraints.cpp" line="7552"/>
+      <location filename="../../CommandConstraints.cpp" line="7789"/>
+      <location filename="../../CommandConstraints.cpp" line="7933"/>
+      <location filename="../../CommandConstraints.cpp" line="7958"/>
+      <location filename="../../CommandConstraints.cpp" line="8196"/>
+      <location filename="../../CommandConstraints.cpp" line="8429"/>
+      <location filename="../../CommandConstraints.cpp" line="8602"/>
+      <location filename="../../CommandConstraints.cpp" line="8768"/>
+      <location filename="../../CommandConstraints.cpp" line="9200"/>
+      <location filename="../../CommandConstraints.cpp" line="9286"/>
+      <location filename="../../CommandConstraints.cpp" line="9426"/>
+      <location filename="../../CommandConstraints.cpp" line="10265"/>
       <source>Select an edge that is not a B-spline weight.</source>
       <translation>Виділіть ребро, яке не є вагою B-сплайну.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5168"/>
+      <location filename="../../CommandConstraints.cpp" line="5191"/>
       <source>Select either several points, or several conics for concentricity.</source>
       <translation>Виберіть або кілька точок, або кілька конусів для концентричності.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5171"/>
+      <location filename="../../CommandConstraints.cpp" line="5194"/>
       <source>Select either one point and several curves, or one curve and several points</source>
       <translation>Виберіть або одну точку і кілька кривих, або одну криву і кілька точок</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5174"/>
+      <location filename="../../CommandConstraints.cpp" line="5197"/>
       <source>Select either one point and several curves or one curve and several points for pointOnObject, or several points for coincidence, or several conics for concentricity.</source>
       <translation>Виберіть або одну точку і кілька кривих, або одну криву і кілька точок для pointOnObject, або кілька точок для збігу, або кілька конусів для концентричності.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5437"/>
+      <location filename="../../CommandConstraints.cpp" line="5460"/>
       <source>None of the selected points were constrained onto the respective curves, either because they are parts of the same element, or because they are both external geometry.</source>
       <translation>Жодна з виділених точок не була обмежена відповідними кривими тому, що вони є частинами того ж елементу або вони є зовнішньою геометрією.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6144"/>
+      <location filename="../../CommandConstraints.cpp" line="6167"/>
       <source>Cannot add a length constraint on this selection!</source>
       <translation>Неможливо додати обмеження довжини до цього виділення!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6460"/>
-      <location filename="../../CommandConstraints.cpp" line="6579"/>
+      <location filename="../../CommandConstraints.cpp" line="6483"/>
+      <location filename="../../CommandConstraints.cpp" line="6602"/>
       <source>Select exactly one line or up to two points from the sketch.</source>
       <translation>Виділіть на ескізі лише одну лінію або не більше двох точок.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6495"/>
+      <location filename="../../CommandConstraints.cpp" line="6518"/>
       <source>Cannot add a horizontal length constraint on an axis!</source>
       <translation>Не можу додати горизонтального обмеження довжини на вісь!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6549"/>
+      <location filename="../../CommandConstraints.cpp" line="6572"/>
       <source>Cannot add a fixed x-coordinate constraint on the origin point!</source>
       <translation>Не можна обмежити X-координату точки початку координат!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6623"/>
+      <location filename="../../CommandConstraints.cpp" line="6646"/>
       <source>This constraint only makes sense on a line segment or a pair of points.</source>
       <translation>Це обмеження має сенс лише для відрізка або пари точок.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6496"/>
+      <location filename="../../CommandConstraints.cpp" line="6519"/>
       <source>Cannot add a vertical length constraint on an axis!</source>
       <translation>Не можу додати вертикального обмеження довжини на вісь!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6550"/>
+      <location filename="../../CommandConstraints.cpp" line="6573"/>
       <source>Cannot add a fixed y-coordinate constraint on the origin point!</source>
       <translation>Не можна обмежити Y-координату точки початку координат!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6803"/>
+      <location filename="../../CommandConstraints.cpp" line="6826"/>
       <source>One selected edge is not a valid line.</source>
       <translation>Одне виділене ребро не є допустимою лінією.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6812"/>
-      <location filename="../../CommandConstraints.cpp" line="9533"/>
+      <location filename="../../CommandConstraints.cpp" line="6835"/>
+      <location filename="../../CommandConstraints.cpp" line="9556"/>
       <source>Select at least two lines from the sketch.</source>
       <translation>Виділіть на ескізі принаймні дві лінії.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6846"/>
+      <location filename="../../CommandConstraints.cpp" line="6869"/>
       <source>The selected edge is not a valid line.</source>
       <translation>Виділене ребро не є правильною лінією.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7065"/>
-      <location filename="../../CommandConstraints.cpp" line="7103"/>
+      <location filename="../../CommandConstraints.cpp" line="7088"/>
+      <location filename="../../CommandConstraints.cpp" line="7126"/>
       <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
       <translation>Не вдалося застосувати обмеження перпендикулярності, бо виділена точка не є частиною кривої!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7141"/>
-      <location filename="../../CommandConstraints.cpp" line="7335"/>
+      <location filename="../../CommandConstraints.cpp" line="7164"/>
+      <location filename="../../CommandConstraints.cpp" line="7358"/>
       <source>One of the selected edges should be a line.</source>
       <translation>Одне з виділених ребер повинне бути лінією.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7677"/>
+      <location filename="../../CommandConstraints.cpp" line="7700"/>
       <source>Endpoint to endpoint tangency was applied. The coincident constraint was deleted.</source>
       <translation>Застосовано обмеження дотичності між кінцевими точками. Обмеження збігу видалено.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7705"/>
+      <location filename="../../CommandConstraints.cpp" line="7728"/>
       <source>Endpoint to edge tangency was applied. The point on object constraint was deleted.</source>
       <translation>Застосовано обмеження дотичності кінцевої точки до ребра. Обмеження точки на об’єкті було видалено.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7864"/>
-      <location filename="../../CommandConstraints.cpp" line="7899"/>
-      <location filename="../../CommandConstraints.cpp" line="8364"/>
+      <location filename="../../CommandConstraints.cpp" line="7887"/>
+      <location filename="../../CommandConstraints.cpp" line="7922"/>
+      <location filename="../../CommandConstraints.cpp" line="8387"/>
       <source>Cannot add a tangency constraint at an unconnected point!</source>
       <translation>Не можу додати обмеження дотичної у точці, що не належить кривій!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7855"/>
-      <location filename="../../CommandConstraints.cpp" line="7890"/>
+      <location filename="../../CommandConstraints.cpp" line="7878"/>
+      <location filename="../../CommandConstraints.cpp" line="7913"/>
       <source>Tangent constraint at B-spline knot is only supported with lines!</source>
       <translation>Дотичне обмеження на вузлі B-сплайна підтримується лише лініями!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="534"/>
+      <location filename="../../CommandConstraints.cpp" line="536"/>
       <source>One or two point-on-object constraints were deleted, since the latest constraint being applied internally applies point-on-object as well.</source>
       <translation>Одне або два обмеження "точка на об'єкті" було видалено, оскільки останнє застосоване обмеження також внутрішньо застосовує "точка на об'єкті".</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1055"/>
+      <location filename="../../CommandConstraints.cpp" line="1057"/>
       <source>Keep notifying about constraint substitutions</source>
       <translation>Продовжувати сповіщати про заміни обмежень</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1079"/>
+      <location filename="../../CommandConstraints.cpp" line="1081"/>
       <source>Unexpected error. More information may be available in the report view.</source>
       <translation>Неочікувана помилка. Додаткова інформація може бути доступна у вікні звітів.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1129"/>
+      <location filename="../../CommandConstraints.cpp" line="1131"/>
       <source>Only the sketch and its support are allowed to be selected</source>
       <translation>Дозволяється вибирати лише ескіз та його підкладку</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1140"/>
+      <location filename="../../CommandConstraints.cpp" line="1142"/>
       <source>Only the sketch and its support may be selected</source>
       <translation>Можна вибрати лише ескіз та його підкладку</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1152"/>
+      <location filename="../../CommandConstraints.cpp" line="1154"/>
       <source>Only the sketch and its support  may be selected</source>
       <translation>Можна вибрати лише ескіз та його підкладку</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4159"/>
-      <location filename="../../CommandConstraints.cpp" line="4873"/>
-      <location filename="../../CommandConstraints.cpp" line="4925"/>
+      <location filename="../../CommandConstraints.cpp" line="4182"/>
+      <location filename="../../CommandConstraints.cpp" line="4896"/>
+      <location filename="../../CommandConstraints.cpp" line="4948"/>
       <source>The selected edge already has a block constraint!</source>
       <translation>Вибране ребро вже має обмеження блокування!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4186"/>
+      <location filename="../../CommandConstraints.cpp" line="4209"/>
       <source>Select geometry from a single sketch.</source>
       <translation type="unfinished">Select geometry from a single sketch.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4243"/>
+      <location filename="../../CommandConstraints.cpp" line="4266"/>
       <source>The selected items cannot be constrained horizontally or vertically!</source>
       <translation>Вибрані елементи не можна обмежити горизонтально або вертикально!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4844"/>
+      <location filename="../../CommandConstraints.cpp" line="4867"/>
       <source>A block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</source>
       <translation>Обмеження блокування не можна додати, якщо ескіз не вирішено або є надлишкові чи конфліктуючі обмеження.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5147"/>
+      <location filename="../../CommandConstraints.cpp" line="5170"/>
       <source>B-spline knot to endpoint tangency was applied instead.</source>
       <translation>Замість цього застосовано дотичну вузла B-сплайна до кінцевої точки.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5547"/>
-      <location filename="../../CommandConstraints.cpp" line="5553"/>
-      <location filename="../../CommandConstraints.cpp" line="5569"/>
+      <location filename="../../CommandConstraints.cpp" line="5570"/>
       <location filename="../../CommandConstraints.cpp" line="5576"/>
-      <location filename="../../CommandConstraints.cpp" line="5583"/>
+      <location filename="../../CommandConstraints.cpp" line="5592"/>
+      <location filename="../../CommandConstraints.cpp" line="5599"/>
+      <location filename="../../CommandConstraints.cpp" line="5606"/>
       <source>Coincident constraint not added</source>
       <translation type="unfinished">Coincident constraint not added</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5548"/>
+      <location filename="../../CommandConstraints.cpp" line="5571"/>
       <source>The selected points are already coincident.</source>
       <translation type="unfinished">The selected points are already coincident.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5554"/>
+      <location filename="../../CommandConstraints.cpp" line="5577"/>
       <source>Cannot add a coincident constraint because it would collapse geometry to zero length.</source>
       <translation type="unfinished">Cannot add a coincident constraint because it would collapse geometry to zero length.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5570"/>
+      <location filename="../../CommandConstraints.cpp" line="5593"/>
       <source>Cannot add the coincident constraint because it would create redundant constraints.</source>
       <translation type="unfinished">Cannot add the coincident constraint because it would create redundant constraints.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5577"/>
+      <location filename="../../CommandConstraints.cpp" line="5600"/>
       <source>Cannot add the coincident constraint because it would conflict with existing constraints.</source>
       <translation type="unfinished">Cannot add the coincident constraint because it would conflict with existing constraints.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5584"/>
+      <location filename="../../CommandConstraints.cpp" line="5607"/>
       <source>Cannot add the coincident constraint because it would over-constrain the sketch.</source>
       <translation type="unfinished">Cannot add the coincident constraint because it would over-constrain the sketch.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5591"/>
+      <location filename="../../CommandConstraints.cpp" line="5614"/>
       <source>Cannot add the coincident constraint because the sketch has malformed constraints.</source>
       <translation type="unfinished">Cannot add the coincident constraint because the sketch has malformed constraints.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5598"/>
+      <location filename="../../CommandConstraints.cpp" line="5621"/>
       <source>Cannot add the coincident constraint because the solver failed to converge.</source>
       <translation type="unfinished">Cannot add the coincident constraint because the solver failed to converge.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5605"/>
+      <location filename="../../CommandConstraints.cpp" line="5628"/>
       <source>Cannot add the coincident constraint because the sketch contains constraints that refer to invalid geometry.</source>
       <translation type="unfinished">Cannot add the coincident constraint because the sketch contains constraints that refer to invalid geometry.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6929"/>
-      <location filename="../../CommandConstraints.cpp" line="7732"/>
+      <location filename="../../CommandConstraints.cpp" line="6952"/>
+      <location filename="../../CommandConstraints.cpp" line="7755"/>
       <source>Wrong number of selected objects!</source>
       <translation>Неправильна кількість виділених обʼєктів!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7055"/>
-      <location filename="../../CommandConstraints.cpp" line="7835"/>
+      <location filename="../../CommandConstraints.cpp" line="7078"/>
+      <location filename="../../CommandConstraints.cpp" line="7858"/>
       <source>With 3 objects, there must be 2 curves and 1 point.</source>
       <translation>Коли вибрано 3 елементи, це повинні бути 2 криві та одна точка.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8156"/>
+      <location filename="../../CommandConstraints.cpp" line="8179"/>
       <source>Geometry cannot be tangent to itself</source>
       <translation type="unfinished">Geometry cannot be tangent to itself</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8529"/>
-      <location filename="../../CommandConstraints.cpp" line="8603"/>
+      <location filename="../../CommandConstraints.cpp" line="8552"/>
+      <location filename="../../CommandConstraints.cpp" line="8626"/>
       <source>Select one or more arcs or circles from the sketch.</source>
       <translation>Виділіть одну або кілька дуг чи кіл на ескізі.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8737"/>
+      <location filename="../../CommandConstraints.cpp" line="8760"/>
       <source>Constraint only applies to arcs or circles.</source>
       <translation>Обмеження можна застосовувати лише до дуг або кіл.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9141"/>
-      <location filename="../../CommandConstraints.cpp" line="9319"/>
+      <location filename="../../CommandConstraints.cpp" line="9164"/>
+      <location filename="../../CommandConstraints.cpp" line="9342"/>
       <source>Select one or two lines from the sketch. Or select two edges and a point.</source>
       <translation>Виділіть одну або дві лінії на ескізі. Або виділіть два ребра і точку.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="562"/>
+      <location filename="../../CommandConstraints.cpp" line="564"/>
       <source>Parallel lines</source>
       <translation>Паралельні лінії</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="563"/>
+      <location filename="../../CommandConstraints.cpp" line="565"/>
       <source>An angle constraint cannot be set for two parallel lines.</source>
       <translation>Обмеження кута не можна застосувати до паралельних ліній.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9276"/>
+      <location filename="../../CommandConstraints.cpp" line="9299"/>
       <source>Cannot add an angle constraint on an axis!</source>
       <translation>Не можу додати обмеження кута на вісі!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9551"/>
+      <location filename="../../CommandConstraints.cpp" line="9574"/>
       <source>Select two or more compatible edges.</source>
       <translation>Виділіть два або більше сумісних ребра.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9558"/>
+      <location filename="../../CommandConstraints.cpp" line="9581"/>
       <source>Sketch axes cannot be used in equality constraints.</source>
       <translation>Вісі ескізу не можна використовувати в обмеженнях еквівалентності.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9579"/>
+      <location filename="../../CommandConstraints.cpp" line="9602"/>
       <source>Equality for B-spline edge currently unsupported.</source>
       <translation>Обмеження рівності ребра B-сплайну не підтримується.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3626"/>
-      <location filename="../../CommandConstraints.cpp" line="9612"/>
-      <location filename="../../CommandConstraints.cpp" line="9628"/>
-      <location filename="../../CommandConstraints.cpp" line="9678"/>
+      <location filename="../../CommandConstraints.cpp" line="3649"/>
+      <location filename="../../CommandConstraints.cpp" line="9635"/>
+      <location filename="../../CommandConstraints.cpp" line="9651"/>
+      <location filename="../../CommandConstraints.cpp" line="9701"/>
       <source>Select two or more edges of similar type.</source>
       <translation>Виділіть два або більше ребра однакового типу.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10004"/>
+      <location filename="../../CommandConstraints.cpp" line="10027"/>
       <source>Cannot add a symmetry constraint between a line and its end points.</source>
       <translation>Неможливо додати обмеження симетрії між лінією та її кінцевими точками.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3785"/>
-      <location filename="../../CommandConstraints.cpp" line="3801"/>
-      <location filename="../../CommandConstraints.cpp" line="9877"/>
+      <location filename="../../CommandConstraints.cpp" line="3808"/>
+      <location filename="../../CommandConstraints.cpp" line="3824"/>
+      <location filename="../../CommandConstraints.cpp" line="9900"/>
       <source>Cannot add a symmetry constraint between a line and its end points!</source>
       <translation>Неможливо додати обмеження симетрії між лінією та її кінцевими точками!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10172"/>
-      <location filename="../../CommandConstraints.cpp" line="10362"/>
+      <location filename="../../CommandConstraints.cpp" line="10195"/>
+      <location filename="../../CommandConstraints.cpp" line="10385"/>
       <source>Selected objects are not just geometry from one sketch.</source>
       <translation>Виділені обʼєкти з різних ескізів.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10214"/>
+      <location filename="../../CommandConstraints.cpp" line="10237"/>
       <source>Cannot create constraint with external geometry only.</source>
       <translation>Неможливо створити обмеження з використанням тільки зовнішньої геометрії.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10224"/>
+      <location filename="../../CommandConstraints.cpp" line="10247"/>
       <source>Incompatible geometry is selected.</source>
       <translation>Виділено несумісну геометрію.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10378"/>
+      <location filename="../../CommandConstraints.cpp" line="10401"/>
       <source>No geometries selected</source>
       <translation>Геометрії не вибрано</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10610"/>
+      <location filename="../../CommandConstraints.cpp" line="10633"/>
       <source>Select one dimensional constraint from the sketch.</source>
       <translation>Виберіть одне розмірне обмеження з ескізу.</translation>
     </message>
@@ -1856,11 +1856,11 @@ invalid constraints, and degenerate geometry</source>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="117"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="128"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="158"/>
-      <location filename="../../CommandConstraints.cpp" line="10686"/>
-      <location filename="../../CommandConstraints.cpp" line="10698"/>
-      <location filename="../../CommandConstraints.cpp" line="10734"/>
-      <location filename="../../CommandConstraints.cpp" line="10809"/>
-      <location filename="../../CommandConstraints.cpp" line="10821"/>
+      <location filename="../../CommandConstraints.cpp" line="10709"/>
+      <location filename="../../CommandConstraints.cpp" line="10721"/>
+      <location filename="../../CommandConstraints.cpp" line="10757"/>
+      <location filename="../../CommandConstraints.cpp" line="10832"/>
+      <location filename="../../CommandConstraints.cpp" line="10844"/>
       <source>Select constraints from the sketch.</source>
       <translation>Виділіть обмеження на ескізі.</translation>
     </message>
@@ -2002,21 +2002,16 @@ invalid constraints, and degenerate geometry</source>
       <translation>Для видалення вирівнювання осей потрібно вибрати принаймні один не зовнішній геометричний елемент</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="678"/>
-      <location filename="../../TaskSketcherElements.cpp" line="728"/>
+      <location filename="../../TaskSketcherElements.cpp" line="677"/>
+      <location filename="../../TaskSketcherElements.cpp" line="727"/>
       <source>Unsupported visual layer operation</source>
       <translation>Непідтримувана операція із візуальним шаром</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="679"/>
-      <location filename="../../TaskSketcherElements.cpp" line="729"/>
+      <location filename="../../TaskSketcherElements.cpp" line="678"/>
+      <location filename="../../TaskSketcherElements.cpp" line="728"/>
       <source>It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</source>
       <translation>Переміщення зовнішньої геометрії на інший візуальний шар наразі не підтримується. Зовнішню геометрію буде пропущена</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1056"/>
-      <source>Polyline Parameters</source>
-      <translation type="unfinished">Polyline Parameters</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerText.h" line="91"/>
@@ -2048,6 +2043,11 @@ invalid constraints, and degenerate geometry</source>
       <location filename="../../DrawSketchHandlerText.h" line="747"/>
       <source>%1 pick bottom-right point</source>
       <translation>%1 вибрати нижню праву точку</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1056"/>
+      <source>Polyline Parameters</source>
+      <translation type="unfinished">Polyline Parameters</translation>
     </message>
   </context>
   <context>
@@ -2483,12 +2483,12 @@ invalid constraints, and degenerate geometry</source>
       <translation>Співвідношення n2/n1:</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10253"/>
+      <location filename="../../CommandConstraints.cpp" line="10276"/>
       <source>Refractive Index Ratio</source>
       <translation>Коефіцієнт заломлення</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10254"/>
+      <location filename="../../CommandConstraints.cpp" line="10277"/>
       <source>Ratio n2/n1:</source>
       <translation>Співвідношення n2/n1:</translation>
     </message>
@@ -2496,72 +2496,72 @@ invalid constraints, and degenerate geometry</source>
   <context>
     <name>SketcherGui::ElementFilterList</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="355"/>
+      <location filename="../../TaskSketcherElements.cpp" line="354"/>
       <source>Normal</source>
       <translation>Звичайна</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="356"/>
+      <location filename="../../TaskSketcherElements.cpp" line="355"/>
       <source>Construction</source>
       <translation>Допоміжна</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="357"/>
+      <location filename="../../TaskSketcherElements.cpp" line="356"/>
       <source>Internal</source>
       <translation>Внутрішній</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="358"/>
+      <location filename="../../TaskSketcherElements.cpp" line="357"/>
       <source>External</source>
       <translation>Зовнішня</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="359"/>
+      <location filename="../../TaskSketcherElements.cpp" line="358"/>
       <source>All types</source>
       <translation>Всі типи</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="360"/>
+      <location filename="../../TaskSketcherElements.cpp" line="359"/>
       <source>Point</source>
       <translation>Точка</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="361"/>
+      <location filename="../../TaskSketcherElements.cpp" line="360"/>
       <source>Line</source>
       <translation>Лінія</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="362"/>
+      <location filename="../../TaskSketcherElements.cpp" line="361"/>
       <source>Circle</source>
       <translation>Коло</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="363"/>
+      <location filename="../../TaskSketcherElements.cpp" line="362"/>
       <source>Ellipse</source>
       <translation>Еліпс</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="364"/>
+      <location filename="../../TaskSketcherElements.cpp" line="363"/>
       <source>Arc of circle</source>
       <translation>Дуга кола</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="365"/>
+      <location filename="../../TaskSketcherElements.cpp" line="364"/>
       <source>Arc of ellipse</source>
       <translation>Дуга еліпса</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="366"/>
+      <location filename="../../TaskSketcherElements.cpp" line="365"/>
       <source>Arc of hyperbola</source>
       <translation>Дуга гіперболи</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="367"/>
+      <location filename="../../TaskSketcherElements.cpp" line="366"/>
       <source>Arc of parabola</source>
       <translation>Дуга параболи</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="368"/>
+      <location filename="../../TaskSketcherElements.cpp" line="367"/>
       <source>B-spline</source>
       <translation>B-сплайн</translation>
     </message>
@@ -2569,152 +2569,152 @@ invalid constraints, and degenerate geometry</source>
   <context>
     <name>SketcherGui::ElementView</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="73"/>
+      <location filename="../../TaskSketcherElements.cpp" line="72"/>
       <source>Vertical Constraint</source>
       <translation>Вертикальне Обмеження</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="75"/>
+      <location filename="../../TaskSketcherElements.cpp" line="74"/>
       <source>Horizontal Constraint</source>
       <translation>Горизонтальне Обмеження</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="77"/>
+      <location filename="../../TaskSketcherElements.cpp" line="76"/>
       <source>Parallel Constraint</source>
       <translation>Паралельне Обмеження</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="79"/>
+      <location filename="../../TaskSketcherElements.cpp" line="78"/>
       <source>Perpendicular Constraint</source>
       <translation>Перпендикулярне Обмеження</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="81"/>
+      <location filename="../../TaskSketcherElements.cpp" line="80"/>
       <source>Tangent Constraint</source>
       <translation>Обмеження Дотичності</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="87"/>
+      <location filename="../../TaskSketcherElements.cpp" line="86"/>
       <source>Block Constraint</source>
       <translation>Обмеження Блокування</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="83"/>
+      <location filename="../../TaskSketcherElements.cpp" line="82"/>
       <source>Equal Constraint</source>
       <translation>Обмеження рівності</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="69"/>
+      <location filename="../../TaskSketcherElements.cpp" line="68"/>
       <source>Coincident Constraint</source>
       <translation>Обмеження збігу</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="71"/>
+      <location filename="../../TaskSketcherElements.cpp" line="70"/>
       <source>Point-On-Object Constraint</source>
       <translation>Обмеження "точка на об'єкті"</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="85"/>
+      <location filename="../../TaskSketcherElements.cpp" line="84"/>
       <source>Symmetric Constraint</source>
       <translation>Обмеження симетрії</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="91"/>
+      <location filename="../../TaskSketcherElements.cpp" line="90"/>
       <source>Lock Position</source>
       <translation>Заблокувати положення</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="93"/>
+      <location filename="../../TaskSketcherElements.cpp" line="92"/>
       <source>Horizontal Dimension</source>
       <translation>Горизонтальний розмір</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="95"/>
+      <location filename="../../TaskSketcherElements.cpp" line="94"/>
       <source>Vertical Dimension</source>
       <translation>Вертикальний розмір</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="99"/>
+      <location filename="../../TaskSketcherElements.cpp" line="98"/>
       <source>Radius Dimension</source>
       <translation>Розмір радіуса</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="101"/>
+      <location filename="../../TaskSketcherElements.cpp" line="100"/>
       <source>Diameter Dimension</source>
       <translation>Розмір діаметра</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="97"/>
+      <location filename="../../TaskSketcherElements.cpp" line="96"/>
       <source>Distance Dimension</source>
       <translation>Розмір відстані</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="89"/>
+      <location filename="../../TaskSketcherElements.cpp" line="88"/>
       <source>Group Constraint</source>
       <translation>Групове обмеження</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="103"/>
+      <location filename="../../TaskSketcherElements.cpp" line="102"/>
       <source>Radius/Diameter Dimension</source>
       <translation>Розмір радіуса/діаметра</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="105"/>
+      <location filename="../../TaskSketcherElements.cpp" line="104"/>
       <source>Angle Dimension</source>
       <translation>Розмір кута</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="107"/>
+      <location filename="../../TaskSketcherElements.cpp" line="106"/>
       <source>Toggle Construction Geometry</source>
       <translation>Перемкнути допоміжну геометрію</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="109"/>
+      <location filename="../../TaskSketcherElements.cpp" line="108"/>
       <source>Select Constraints</source>
       <translation>Виберіть обмеження</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="111"/>
+      <location filename="../../TaskSketcherElements.cpp" line="110"/>
       <source>Select Origin</source>
       <translation>Виберіть початок координат</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="113"/>
+      <location filename="../../TaskSketcherElements.cpp" line="112"/>
       <source>Select Horizontal Axis</source>
       <translation>Виберіть горизонтальну вісь</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="115"/>
+      <location filename="../../TaskSketcherElements.cpp" line="114"/>
       <source>Select Vertical Axis</source>
       <translation>Виберіть вертикальну вісь</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="767"/>
+      <location filename="../../TaskSketcherElements.cpp" line="766"/>
       <source>Convert to geometries</source>
       <translation>Перетворити на геометрії</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="892"/>
+      <location filename="../../TaskSketcherElements.cpp" line="891"/>
       <source>Layer</source>
       <translation>Шар</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="902"/>
+      <location filename="../../TaskSketcherElements.cpp" line="901"/>
       <source>Layer 0</source>
       <translation>Шар 0</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="903"/>
+      <location filename="../../TaskSketcherElements.cpp" line="902"/>
       <source>Layer 1</source>
       <translation>Шар 1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="904"/>
+      <location filename="../../TaskSketcherElements.cpp" line="903"/>
       <source>Hidden</source>
       <translation>Прихований</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="909"/>
+      <location filename="../../TaskSketcherElements.cpp" line="908"/>
       <source>Delete</source>
       <translation>Видалити</translation>
     </message>
@@ -3737,114 +3737,114 @@ However, no constraints linking to the endpoints were found.</source>
       <translation>Параметри</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2104"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2103"/>
       <source>Construction</source>
       <translation>Допоміжна</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1337"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1336"/>
       <source>Elements</source>
       <translation>Елементи</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2056"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2055"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2199"/>
       <location filename="../../TaskSketcherElements.cpp" line="2200"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2201"/>
       <source>Point</source>
       <translation>Точка</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2107"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2106"/>
       <source>Internal</source>
       <translation>Внутрішній</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2072"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2071"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2202"/>
       <location filename="../../TaskSketcherElements.cpp" line="2203"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2204"/>
       <source>Line</source>
       <translation>Лінія</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2064"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2063"/>
       <source>Group</source>
       <translation>Група</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2067"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2066"/>
       <source>Text</source>
       <translation>Текст</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2076"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2075"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2205"/>
       <location filename="../../TaskSketcherElements.cpp" line="2206"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2207"/>
       <source>Arc</source>
       <translation>Дуга</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2079"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2078"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2208"/>
       <location filename="../../TaskSketcherElements.cpp" line="2209"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2210"/>
       <source>Circle</source>
       <translation>Коло</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2082"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2081"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2211"/>
       <location filename="../../TaskSketcherElements.cpp" line="2212"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2213"/>
       <source>Ellipse</source>
       <translation>Еліпс</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2085"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2216"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2084"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2215"/>
       <source>Elliptical Arc</source>
       <translation>Еліптична дуга</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2217"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2216"/>
       <source>Elliptical arc</source>
       <translation>Еліптична дуга</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2088"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2220"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2087"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2219"/>
       <source>Hyperbolic Arc</source>
       <translation>Гіперболічна дуга</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2221"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2220"/>
       <source>Hyperbolic arc</source>
       <translation>Гіперболічна дуга</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2224"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2223"/>
       <source>Parabolic Arc</source>
       <translation>Параболічна дуга</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2091"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2225"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2090"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2224"/>
       <source>Parabolic arc</source>
       <translation>Параболічна дуга</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2094"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2093"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2226"/>
       <location filename="../../TaskSketcherElements.cpp" line="2227"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2228"/>
       <source>B-spline</source>
       <translation>B-сплайн</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2097"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2096"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2228"/>
       <location filename="../../TaskSketcherElements.cpp" line="2229"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2230"/>
       <source>Other</source>
       <translation>Інші</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2272"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2271"/>
       <source>Extended information</source>
       <translation>Розширена інформація</translation>
     </message>
@@ -4056,112 +4056,112 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4173"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4172"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Діалогове вікно вже відкрито в панелі задач</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4197"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4196"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Ескіз містить помилки та не може бути змінений.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4401"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4400"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Наступне обмеження частково надлишкове:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4402"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4401"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Наступні обмеження частково надлишкові:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4145"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4144"/>
       <source>Edit Sketch</source>
       <translation>Редагувати ескіз</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4174"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4173"/>
       <source>Close this dialog?</source>
       <translation>Закрити цей діалог?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4195"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4194"/>
       <source>Invalid Sketch</source>
       <translation>Некоректний ескіз</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4196"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4195"/>
       <source>Open the sketch validation tool?</source>
       <translation>Відкрити інструмент перевірки ескізу?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4387"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4386"/>
       <source>Remove the following constraint:</source>
       <translation>Видалити таке обмеження:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4388"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4387"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>Видалити щонайменше одне з таких обмежень:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4394"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4393"/>
       <source>Remove the following redundant constraint:</source>
       <translation>Видалити таке надлишкове обмеження:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4395"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4394"/>
       <source>Remove the following redundant constraints:</source>
       <translation>Видалити такі надлишкові обмеження:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4408"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4407"/>
       <source>Remove the following malformed constraint:</source>
       <translation>Видалити таке некоректне обмеження:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4409"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4408"/>
       <source>Remove the following malformed constraints:</source>
       <translation>Видалити такі некоректні обмеження:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4468"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4467"/>
       <source>Empty sketch</source>
       <translation>Порожній ескіз</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4473"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4472"/>
       <source>Over-constrained:</source>
       <translation>Надлишково обмежено:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4479"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4478"/>
       <source>Malformed constraints:</source>
       <translation>Невірні обмеження:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4487"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4486"/>
       <source>Redundant constraints:</source>
       <translation>Надлишкові обмеження:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4493"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4492"/>
       <source>Partially redundant:</source>
       <translation>Частково надлишкові:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4500"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4499"/>
       <source>Solver failed to converge</source>
       <translation>Рішення не сходиться</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4506"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4505"/>
       <source>Under-constrained:</source>
       <translation>Частково обмежений:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4508"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4507"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Степінь свободи</numerusform>
@@ -4171,12 +4171,12 @@ This is done by analyzing the sketch geometries and constraints.</source>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4512"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4511"/>
       <source>Fully constrained</source>
       <translation>Повністю обмежений</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5038"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5037"/>
       <source>Missing external geometry</source>
       <translation type="unfinished">Missing external geometry</translation>
     </message>
@@ -4229,8 +4229,8 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>Sketcher_ConstrainDiameter</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9055"/>
-      <location filename="../../CommandConstraints.cpp" line="9057"/>
+      <location filename="../../CommandConstraints.cpp" line="9078"/>
+      <location filename="../../CommandConstraints.cpp" line="9080"/>
       <source>Fix the diameter of a circle or an arc</source>
       <translation>Задає діаметр кола або дуги</translation>
     </message>
@@ -4667,7 +4667,7 @@ Eigen Dense QR — щільна матриця QR з повним поворот
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4451"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4450"/>
       <source>and %1 more</source>
       <translation>та %1 більше</translation>
     </message>
@@ -4872,68 +4872,63 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObjectConstraints.cpp" line="142"/>
+      <location filename="../../../App/SketchObjectConstraints.cpp" line="146"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>Скетч має помилкові обмеження!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectConstraints.cpp" line="156"/>
+      <location filename="../../../App/SketchObjectConstraints.cpp" line="160"/>
       <source>"%1" has partially redundant constraint(s).</source>
       <translation>"%1" має частково надлишкові обмеження.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1116"/>
-      <location filename="../../../App/SketchObject.cpp" line="1160"/>
+      <location filename="../../../App/SketchObject.cpp" line="1120"/>
+      <location filename="../../../App/SketchObject.cpp" line="1168"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
       <translation>Неконтрольована зміна властивості обмеження призводить до некоректних індексів обмежень.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1672"/>
+      <location filename="../../../App/SketchObject.cpp" line="1681"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Перенесено параболи. Перенесені файли не відкриватимуться у попередніх версіях FreeCAD!!!</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="185"/>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="154"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="237"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="523"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="341"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="186"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="150"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="229"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="220"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="170"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="479"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="511"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1384"/>
-      <location filename="../../DrawSketchHandlerExternal.h" line="209"/>
-      <location filename="../../CommandConstraints.cpp" line="2030"/>
-      <location filename="../../CommandConstraints.cpp" line="2037"/>
-      <location filename="../../CommandConstraints.cpp" line="3964"/>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="200"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="225"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="212"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="214"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="144"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="154"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="390"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="685"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="762"/>
-      <location filename="../../DrawSketchHandlerText.h" line="181"/>
-      <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
       <location filename="../../CommandSketcherTools.cpp" line="1396"/>
       <location filename="../../CommandSketcherTools.cpp" line="1977"/>
       <location filename="../../CommandSketcherTools.cpp" line="2414"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="237"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="214"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="523"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="341"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="144"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="229"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="185"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="209"/>
+      <location filename="../../DrawSketchHandlerText.h" line="181"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="225"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="151"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="479"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="511"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1384"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="226"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="200"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="220"/>
+      <location filename="../../CommandConstraints.cpp" line="2059"/>
+      <location filename="../../CommandConstraints.cpp" line="2066"/>
+      <location filename="../../CommandConstraints.cpp" line="3987"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="212"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="390"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="685"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="762"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="186"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="154"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="170"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="154"/>
       <source>Error</source>
       <translation>Помилка</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="186"/>
-      <source>Failed to add arc of parabola</source>
-      <translation type="unfinished">Failed to add arc of parabola</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2215"/>
@@ -4962,26 +4957,26 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>Вибір не містить припустимих геометрій.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectPyImp.cpp" line="422"/>
+      <location filename="../../../App/SketchObjectPyImp.cpp" line="423"/>
       <source>The constraint has invalid index information and is malformed.</source>
       <translation>Обмеження має невірну індексну інформацію та є помилковим.</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherTools.cpp" line="1182"/>
+      <location filename="../../CommandConstraints.cpp" line="748"/>
+      <location filename="../../CommandConstraints.cpp" line="825"/>
+      <location filename="../../CommandConstraints.cpp" line="917"/>
+      <location filename="../../CommandConstraints.cpp" line="1001"/>
+      <location filename="../../CommandConstraints.cpp" line="7298"/>
+      <location filename="../../CommandConstraints.cpp" line="7493"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="519"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="662"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="910"/>
-      <location filename="../../CommandConstraints.cpp" line="746"/>
-      <location filename="../../CommandConstraints.cpp" line="823"/>
-      <location filename="../../CommandConstraints.cpp" line="915"/>
-      <location filename="../../CommandConstraints.cpp" line="999"/>
-      <location filename="../../CommandConstraints.cpp" line="7275"/>
-      <location filename="../../CommandConstraints.cpp" line="7470"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1182"/>
       <source>Invalid Constraint</source>
       <translation>Неприпустиме обмеження</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1069"/>
+      <location filename="../../CommandConstraints.cpp" line="1071"/>
       <source>Invalid constraint</source>
       <translation>Некоректне обмеження</translation>
     </message>
@@ -5028,9 +5023,9 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
     </message>
     <message>
       <location filename="../../DrawSketchHandlerExternal.h" line="210"/>
-      <location filename="../../CommandConstraints.cpp" line="2031"/>
-      <location filename="../../CommandConstraints.cpp" line="2038"/>
-      <location filename="../../CommandConstraints.cpp" line="3965"/>
+      <location filename="../../CommandConstraints.cpp" line="2060"/>
+      <location filename="../../CommandConstraints.cpp" line="2067"/>
+      <location filename="../../CommandConstraints.cpp" line="3988"/>
       <source>Failed to add external geometry</source>
       <translation>Не вдалося додати зовнішню геометрію</translation>
     </message>
@@ -5040,27 +5035,27 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>Не вдалося створити фаску</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="480"/>
       <location filename="../../DrawSketchHandlerLine.h" line="145"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="480"/>
       <source>Failed to add line</source>
       <translation>Не вдалося додати лінію</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="192"/>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="161"/>
       <location filename="../../DrawSketchHandlerRotate.h" line="244"/>
-      <location filename="../../DrawSketchHandlerArc.h" line="295"/>
       <location filename="../../DrawSketchHandlerRectangle.h" line="530"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="193"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="159"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="236"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="227"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="232"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="219"/>
       <location filename="../../DrawSketchHandlerLine.h" line="151"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="161"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="236"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="192"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="232"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="295"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="160"/>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="233"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="227"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="219"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="193"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="161"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="161"/>
       <source>Tool execution aborted</source>
       <translation>Виконання команди перервано</translation>
     </message>
@@ -5162,7 +5157,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>Некоректний масштабний коефіцієнт. Він має бути позитивним числом.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="151"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="152"/>
       <source>Failed to scale</source>
       <translation>Помилка масштабування</translation>
     </message>
@@ -5182,25 +5177,30 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>Некоректна назва обмеження (має містити лише літери, цифри та підкреслення, і не може починатися з цифри)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="226"/>
-      <source>Failed to add arc of hyperbola</source>
-      <translation type="unfinished">Failed to add arc of hyperbola</translation>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="186"/>
+      <source>Failed to add arc of parabola</source>
+      <translation type="unfinished">Failed to add arc of parabola</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerText.h" line="182"/>
       <source>Failed to add text</source>
       <translation>Не вдалося додати текст</translation>
     </message>
+    <message>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="226"/>
+      <source>Failed to add arc of hyperbola</source>
+      <translation type="unfinished">Failed to add arc of hyperbola</translation>
+    </message>
   </context>
   <context>
     <name>CmdSketcherDimension</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4051"/>
+      <location filename="../../CommandConstraints.cpp" line="4074"/>
       <source>Dimension</source>
       <translation>Розмірність</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4052"/>
+      <location filename="../../CommandConstraints.cpp" line="4075"/>
       <source>Constrains contextually based on the selection. The type can be changed with the M key.</source>
       <translation>Обмежує контекстуально на основі вибору. Тип можна змінити клавішею M.</translation>
     </message>
@@ -5208,12 +5208,12 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
   <context>
     <name>CmdSketcherCompDimensionTools</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2059"/>
+      <location filename="../../CommandConstraints.cpp" line="2088"/>
       <source>Dimension</source>
       <translation>Розмірність</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2060"/>
+      <location filename="../../CommandConstraints.cpp" line="2089"/>
       <source>Dimension tools</source>
       <translation>Інструменти розмірів</translation>
     </message>
@@ -5779,7 +5779,7 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c1_scale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="670"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="693"/>
       <source>Keep original geometries (U)</source>
       <translation>Зберегти оригінальні геометрії (U)</translation>
     </message>
@@ -5787,12 +5787,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>CmdSketcherCompConstrainTools</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2132"/>
+      <location filename="../../CommandConstraints.cpp" line="2161"/>
       <source>Constrain</source>
       <translation>Обмеження</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2133"/>
+      <location filename="../../CommandConstraints.cpp" line="2162"/>
       <source>Constrain tools</source>
       <translation>Інструменти обмежень</translation>
     </message>
@@ -5896,12 +5896,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c1_bspline</name>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="951"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="954"/>
       <source>Periodic (F)</source>
       <translation type="unfinished">Periodic (F)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="955"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="958"/>
       <source>Create a periodic B-spline.</source>
       <translation>Створити періодичний B-сплайн.</translation>
     </message>
@@ -5909,8 +5909,8 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>Sketcher_ConstrainRadius</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9049"/>
-      <location filename="../../CommandConstraints.cpp" line="9051"/>
+      <location filename="../../CommandConstraints.cpp" line="9072"/>
+      <location filename="../../CommandConstraints.cpp" line="9074"/>
       <source>Fix the radius of an arc or a circle</source>
       <translation>Зафіксувати радіус дуги або кола</translation>
     </message>
@@ -5918,8 +5918,8 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>Sketcher_ConstrainRadiam</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9062"/>
-      <location filename="../../CommandConstraints.cpp" line="9064"/>
+      <location filename="../../CommandConstraints.cpp" line="9085"/>
+      <location filename="../../CommandConstraints.cpp" line="9087"/>
       <source>Fix the radius/diameter of an arc or a circle</source>
       <translation>Зафіксувати радіус/діаметр дуги або кола</translation>
     </message>
@@ -6183,12 +6183,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherCompToggleConstraints</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2163"/>
+      <location filename="../../CommandConstraints.cpp" line="2192"/>
       <source>Toggle Constraints</source>
       <translation>Перемкнути обмеження</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2164"/>
+      <location filename="../../CommandConstraints.cpp" line="2193"/>
       <source>Toggle constrain tools</source>
       <translation>Перемкнути інструменти обмежень</translation>
     </message>
@@ -6196,12 +6196,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherCompHorizontalVertical</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4105"/>
+      <location filename="../../CommandConstraints.cpp" line="4128"/>
       <source>Horizontal/Vertical Constraint</source>
       <translation>Горизонтальне/вертикальне обмеження</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4106"/>
+      <location filename="../../CommandConstraints.cpp" line="4129"/>
       <source>Constrains the selected elements either horizontally or vertically</source>
       <translation>Обмежує вибрані елементи горизонтально або вертикально</translation>
     </message>
@@ -6209,12 +6209,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainHorVer</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4422"/>
+      <location filename="../../CommandConstraints.cpp" line="4445"/>
       <source>Horizontal/Vertical Constraint</source>
       <translation>Горизонтальне/вертикальне обмеження</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4423"/>
+      <location filename="../../CommandConstraints.cpp" line="4446"/>
       <source>Constrains the selected elements either horizontally or vertically, based on their closest alignment</source>
       <translation>Обмежує вибрані елементи горизонтально або вертикально залежно від найближчого вирівнювання</translation>
     </message>
@@ -6222,12 +6222,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4468"/>
+      <location filename="../../CommandConstraints.cpp" line="4491"/>
       <source>Horizontal Constraint</source>
       <translation>Горизонтальне Обмеження</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4469"/>
+      <location filename="../../CommandConstraints.cpp" line="4492"/>
       <source>Constrains the selected elements horizontally</source>
       <translation>Обмежує вибрані елементи горизонтально</translation>
     </message>
@@ -6235,12 +6235,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainVertical</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4513"/>
+      <location filename="../../CommandConstraints.cpp" line="4536"/>
       <source>Vertical Constraint</source>
       <translation>Вертикальне Обмеження</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4514"/>
+      <location filename="../../CommandConstraints.cpp" line="4537"/>
       <source>Constrains the selected elements vertically</source>
       <translation>Обмежує вибрані елементи вертикально</translation>
     </message>
@@ -6248,12 +6248,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainLock</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4559"/>
+      <location filename="../../CommandConstraints.cpp" line="4582"/>
       <source>Lock Position</source>
       <translation>Заблокувати положення</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4560"/>
+      <location filename="../../CommandConstraints.cpp" line="4583"/>
       <source>Constrains the selected vertices by adding horizontal and vertical distance constraints</source>
       <translation>Обмежує вибрані вершини шляхом додавання горизонтальних та вертикальних обмежень відстані</translation>
     </message>
@@ -6261,12 +6261,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainBlock</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4815"/>
+      <location filename="../../CommandConstraints.cpp" line="4838"/>
       <source>Block Constraint</source>
       <translation>Обмеження Блокування</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4816"/>
+      <location filename="../../CommandConstraints.cpp" line="4839"/>
       <source>Constrains the selected edges as fixed</source>
       <translation>Обмежує вибрані ребра як фіксовані</translation>
     </message>
@@ -6274,12 +6274,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainCoincidentUnified</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5033"/>
+      <location filename="../../CommandConstraints.cpp" line="5056"/>
       <source>Coincident Constraint</source>
       <translation>Обмеження збігу</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5034"/>
+      <location filename="../../CommandConstraints.cpp" line="5057"/>
       <source>Constrains the selected elements to be coincident</source>
       <translation>Обмежує вибрані елементи, щоб вони збігалися</translation>
     </message>
@@ -6287,12 +6287,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainCoincident</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5808"/>
+      <location filename="../../CommandConstraints.cpp" line="5831"/>
       <source>Coincident Constraint</source>
       <translation>Обмеження збігу</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5809"/>
+      <location filename="../../CommandConstraints.cpp" line="5832"/>
       <source>Constrains the selected elements to be coincident</source>
       <translation>Обмежує вибрані елементи, щоб вони збігалися</translation>
     </message>
@@ -6300,12 +6300,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainPointOnObject</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5858"/>
+      <location filename="../../CommandConstraints.cpp" line="5881"/>
       <source>Point-On-Object Constraint</source>
       <translation>Обмеження "точка на об'єкті"</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5859"/>
+      <location filename="../../CommandConstraints.cpp" line="5882"/>
       <source>Constrains the selected point onto the selected object</source>
       <translation>Обмежує вибрану точку на вибраному об'єкті</translation>
     </message>
@@ -6313,12 +6313,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainDistance</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5910"/>
+      <location filename="../../CommandConstraints.cpp" line="5933"/>
       <source>Distance Dimension</source>
       <translation>Розмір відстані</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5911"/>
+      <location filename="../../CommandConstraints.cpp" line="5934"/>
       <source>Constrains the vertical distance between two points, or from a point to the origin if one is selected</source>
       <translation>Обмежує відстань між двома точками, або від точки до початку координат якщо вибрана одна</translation>
     </message>
@@ -6326,12 +6326,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainDistanceX</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6431"/>
+      <location filename="../../CommandConstraints.cpp" line="6454"/>
       <source>Horizontal Dimension</source>
       <translation>Горизонтальний розмір</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6432"/>
+      <location filename="../../CommandConstraints.cpp" line="6455"/>
       <source>Constrains the horizontal distance between two points, or from a point to the origin if only one is selected</source>
       <translation>Обмежує горизонтальну відстань між двома точками, або від точки до початку координат якщо вибрана одна</translation>
     </message>
@@ -6339,12 +6339,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainDistanceY</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6697"/>
+      <location filename="../../CommandConstraints.cpp" line="6720"/>
       <source>Vertical Dimension</source>
       <translation>Вертикальний розмір</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6698"/>
+      <location filename="../../CommandConstraints.cpp" line="6721"/>
       <source>Constrains the vertical distance between two points, or from a point to the origin if only one is selected</source>
       <translation>Обмежує вертикальну відстань між двома точками, або від точки до початку координат якщо вибрана одна</translation>
     </message>
@@ -6352,12 +6352,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainParallel</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6750"/>
+      <location filename="../../CommandConstraints.cpp" line="6773"/>
       <source>Parallel Constraint</source>
       <translation>Паралельне Обмеження</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6751"/>
+      <location filename="../../CommandConstraints.cpp" line="6774"/>
       <source>Constrains the selected lines to be parallel</source>
       <translation>Обмежує вибрані лінії, щоб вони були паралельними</translation>
     </message>
@@ -6365,12 +6365,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainPerpendicular</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6889"/>
+      <location filename="../../CommandConstraints.cpp" line="6912"/>
       <source>Perpendicular Constraint</source>
       <translation>Перпендикулярне Обмеження</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6890"/>
+      <location filename="../../CommandConstraints.cpp" line="6913"/>
       <source>Constrains the selected lines to be perpendicular</source>
       <translation>Обмежує вибрані лінії, щоб вони були перпендикулярними</translation>
     </message>
@@ -6378,12 +6378,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainTangent</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7620"/>
+      <location filename="../../CommandConstraints.cpp" line="7643"/>
       <source>Tangent/Collinear Constraint</source>
       <translation>Обмеження дотичності/колінеарності</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7621"/>
+      <location filename="../../CommandConstraints.cpp" line="7644"/>
       <source>Constrains the selected elements to be tangent or collinear</source>
       <translation>Обмежує вибрані елементи, щоб вони були дотичними або колінеарними</translation>
     </message>
@@ -6391,12 +6391,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainRadius</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8799"/>
+      <location filename="../../CommandConstraints.cpp" line="8822"/>
       <source>Radius Dimension</source>
       <translation>Розмір радіуса</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8800"/>
+      <location filename="../../CommandConstraints.cpp" line="8823"/>
       <source>Constrains the radius of the selected circle or arc</source>
       <translation>Обмежує радіус вибраного кола або дуги</translation>
     </message>
@@ -6404,12 +6404,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainDiameter</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8850"/>
+      <location filename="../../CommandConstraints.cpp" line="8873"/>
       <source>Diameter Dimension</source>
       <translation>Розмір діаметра</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8851"/>
+      <location filename="../../CommandConstraints.cpp" line="8874"/>
       <source>Constrains the diameter of the selected circle or arc</source>
       <translation>Обмежує діаметр вибраного кола або дуги</translation>
     </message>
@@ -6417,12 +6417,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainRadiam</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8901"/>
+      <location filename="../../CommandConstraints.cpp" line="8924"/>
       <source>Radius/Diameter Dimension</source>
       <translation>Розмір радіуса/діаметра</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8902"/>
+      <location filename="../../CommandConstraints.cpp" line="8925"/>
       <source>Constrains the radius of the selected arc or the diameter of the selected circle</source>
       <translation>Обмежує радіус вибраної дуги або діаметр вибраного кола</translation>
     </message>
@@ -6430,12 +6430,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9097"/>
+      <location filename="../../CommandConstraints.cpp" line="9120"/>
       <source>Angle Dimension</source>
       <translation>Розмір кута</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9098"/>
+      <location filename="../../CommandConstraints.cpp" line="9121"/>
       <source>Constrains the angle between two straight lines or between one line and the X-axis of the sketch if only one is selected</source>
       <translation>Обмежує кут між двома прямими лініями або між однією лінією та віссю X ескізу якщо вибрана одна</translation>
     </message>
@@ -6443,12 +6443,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainEqual</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9502"/>
+      <location filename="../../CommandConstraints.cpp" line="9525"/>
       <source>Equal Constraint</source>
       <translation>Обмеження рівності</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9504"/>
+      <location filename="../../CommandConstraints.cpp" line="9527"/>
       <source>Constrains the selected edges or circles to be equal</source>
       <translation>Обмежує вибрані ребра або кола, щоб вони були рівними</translation>
     </message>
@@ -6456,12 +6456,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainSymmetric</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9728"/>
+      <location filename="../../CommandConstraints.cpp" line="9751"/>
       <source>Symmetric Constraint</source>
       <translation>Обмеження симетрії</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9729"/>
+      <location filename="../../CommandConstraints.cpp" line="9752"/>
       <source>Constrains the selected elements to be symmetric</source>
       <translation>Обмежує вибрані елементи, щоб вони були симетричними</translation>
     </message>
@@ -6469,12 +6469,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainSnellsLaw</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10143"/>
+      <location filename="../../CommandConstraints.cpp" line="10166"/>
       <source>Refraction Constraint</source>
       <translation>Обмеження заломлення</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10144"/>
+      <location filename="../../CommandConstraints.cpp" line="10167"/>
       <source>Constrains the selected elements based on the refraction law (Snell's Law)</source>
       <translation>Обмежує вибрані елементи на основі закону заломлення (закону Снеля)</translation>
     </message>
@@ -6482,12 +6482,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherChangeDimensionConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10574"/>
+      <location filename="../../CommandConstraints.cpp" line="10597"/>
       <source>Edit Value</source>
       <translation>Редагувати значення</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10575"/>
+      <location filename="../../CommandConstraints.cpp" line="10598"/>
       <source>Edits the value of a dimensional constraint</source>
       <translation>Редагує значення розмірного обмеження</translation>
     </message>
@@ -6495,12 +6495,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherToggleDrivingConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10628"/>
+      <location filename="../../CommandConstraints.cpp" line="10651"/>
       <source>Toggle Driving/Reference Constraints</source>
       <translation>Перемкнути задавальні/довідкові обмеження</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10629"/>
+      <location filename="../../CommandConstraints.cpp" line="10652"/>
       <source>Toggles between driving and reference mode of the selected constraints and commands</source>
       <translation>Перемикає між задавальним та довідковим режимами вибраних обмежень і команд</translation>
     </message>
@@ -6508,12 +6508,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherToggleActiveConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10783"/>
+      <location filename="../../CommandConstraints.cpp" line="10806"/>
       <source>Toggle Constraints</source>
       <translation>Перемкнути обмеження</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10784"/>
+      <location filename="../../CommandConstraints.cpp" line="10807"/>
       <source>Toggles the state of the selected constraints</source>
       <translation>Перемикає стан вибраних обмежень</translation>
     </message>
@@ -8154,17 +8154,17 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::DrawSketchHandlerScale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="179"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="180"/>
       <source>%1 pick reference point</source>
       <translation>%1 вибрати опорну точку</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="184"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="185"/>
       <source>%1 set scale factor</source>
       <translation>%1 встановити масштабний коефіцієнт</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="247"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="248"/>
       <source>Scale Parameters</source>
       <translation>Параметри масштабування</translation>
     </message>
@@ -8278,12 +8278,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>Sketcher_CreateBSpline</name>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="944"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="947"/>
       <source>From control points</source>
       <translation>За контрольними точками</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="945"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="948"/>
       <source>From knots</source>
       <translation>За вузловими точками</translation>
     </message>
@@ -8359,50 +8359,16 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     </message>
   </context>
   <context>
-    <name>CmdSketcherCreatePolylineLegacy</name>
+    <name>TaskSketcherTool_c1_trimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="227"/>
-      <source>Polyline</source>
-      <translation>Ламана лінія</translation>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="282"/>
+      <source>Include axes (U)</source>
+      <translation type="unfinished">Include axes (U)</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="228"/>
-      <source>Creates a continuous polyline. Press the 'M' key to switch segment modes</source>
-      <translation>Створює безперервну полілінію. Натисніть клавішу 'M' для перемикання режимів сегментів</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdSketcherCreateText</name>
-    <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1393"/>
-      <source>Text</source>
-      <translation>Текст</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1394"/>
-      <source>Creates text geometries controlled by a Text constraint.
-To Edit: Double-click the Text constraint to change the text content and font.
-To Position/Size: Apply constraints to the group's construction line.
-Note: While the Text constraint is active, any constraints applied directly to the text geometries will be ignored.
-</source>
-      <translation>Створює геометрії тексту, керовані текстовим обмеженням.
-Для редагування: двічі клацніть текстове обмеження, щоб змінити вміст та шрифт.
-Для позиціонування/розміру: застосуйте обмеження до допоміжної лінії групи.
-Примітка: поки текстове обмеження активне, будь-які обмеження, застосовані безпосередньо до геометрій тексту, ігноруються.
-</translation>
-    </message>
-  </context>
-  <context>
-    <name>ToolWidgetManager_p4</name>
-    <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="342"/>
-      <source>Sides</source>
-      <translation>Сторони</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="994"/>
-      <source>Degree</source>
-      <translation>Кут</translation>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="286"/>
+      <source>Include axes as trim boundaries</source>
+      <translation type="unfinished">Include axes as trim boundaries</translation>
     </message>
   </context>
   <context>
@@ -8429,6 +8395,45 @@ Note: While the Text constraint is active, any constraints applied directly to t
       <location filename="../../Command.cpp" line="456"/>
       <source>Leaves the sketch editing mode</source>
       <translation type="unfinished">Leaves the sketch editing mode</translation>
+    </message>
+  </context>
+  <context>
+    <name>ToolWidgetManager_p4</name>
+    <message>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="342"/>
+      <source>Sides</source>
+      <translation>Сторони</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="997"/>
+      <source>Degree</source>
+      <translation>Кут</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_c1_text</name>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="361"/>
+      <source>Width</source>
+      <translation>Ширина</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="362"/>
+      <source>Height</source>
+      <translation>Висота</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_Text</name>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="368"/>
+      <source>Text</source>
+      <translation>Текст</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="374"/>
+      <source>Font</source>
+      <translation>Шрифт</translation>
     </message>
   </context>
   <context>
@@ -8496,100 +8501,113 @@ Note: While the Text constraint is active, any constraints applied directly to t
     </message>
   </context>
   <context>
+    <name>SketcherGui::EditTextDialog</name>
+    <message>
+      <location filename="../../EditTextDialog.cpp" line="72"/>
+      <source>Font not found</source>
+      <translation>Шрифт не знайдено</translation>
+    </message>
+    <message>
+      <location filename="../../EditTextDialog.cpp" line="73"/>
+      <source>The original font '%1' is not found on your system. A default font has been selected.</source>
+      <translation>Оригінальний шрифт '%1' не знайдено у вашій системі. Вибрано шрифт за замовчуванням.</translation>
+    </message>
+  </context>
+  <context>
     <name>SketcherGui::DrawSketchHandlerDimension</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2641"/>
-      <location filename="../../CommandConstraints.cpp" line="2646"/>
-      <location filename="../../CommandConstraints.cpp" line="2652"/>
-      <location filename="../../CommandConstraints.cpp" line="2667"/>
+      <location filename="../../CommandConstraints.cpp" line="2664"/>
+      <location filename="../../CommandConstraints.cpp" line="2669"/>
+      <location filename="../../CommandConstraints.cpp" line="2675"/>
       <location filename="../../CommandConstraints.cpp" line="2690"/>
-      <location filename="../../CommandConstraints.cpp" line="2709"/>
+      <location filename="../../CommandConstraints.cpp" line="2713"/>
+      <location filename="../../CommandConstraints.cpp" line="2732"/>
       <source>%1 switch to distance</source>
       <translation type="unfinished">%1 switch to distance</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2642"/>
+      <location filename="../../CommandConstraints.cpp" line="2665"/>
       <source>%1 switch to lock</source>
       <translation type="unfinished">%1 switch to lock</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2647"/>
-      <location filename="../../CommandConstraints.cpp" line="2657"/>
-      <location filename="../../CommandConstraints.cpp" line="2674"/>
-      <location filename="../../CommandConstraints.cpp" line="2790"/>
+      <location filename="../../CommandConstraints.cpp" line="2670"/>
+      <location filename="../../CommandConstraints.cpp" line="2680"/>
+      <location filename="../../CommandConstraints.cpp" line="2697"/>
+      <location filename="../../CommandConstraints.cpp" line="2813"/>
       <source>%1 switch to horizontal</source>
       <translation type="unfinished">%1 switch to horizontal</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2648"/>
-      <location filename="../../CommandConstraints.cpp" line="2658"/>
-      <location filename="../../CommandConstraints.cpp" line="2675"/>
-      <location filename="../../CommandConstraints.cpp" line="2791"/>
+      <location filename="../../CommandConstraints.cpp" line="2671"/>
+      <location filename="../../CommandConstraints.cpp" line="2681"/>
+      <location filename="../../CommandConstraints.cpp" line="2698"/>
+      <location filename="../../CommandConstraints.cpp" line="2814"/>
       <source>%1 switch to vertical</source>
       <translation type="unfinished">%1 switch to vertical</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2653"/>
-      <location filename="../../CommandConstraints.cpp" line="2659"/>
-      <location filename="../../CommandConstraints.cpp" line="2666"/>
+      <location filename="../../CommandConstraints.cpp" line="2676"/>
+      <location filename="../../CommandConstraints.cpp" line="2682"/>
+      <location filename="../../CommandConstraints.cpp" line="2689"/>
       <source>%1 switch to symmetry</source>
       <translation type="unfinished">%1 switch to symmetry</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2673"/>
+      <location filename="../../CommandConstraints.cpp" line="2696"/>
       <source>%1 switch to length</source>
       <translation type="unfinished">%1 switch to length</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2676"/>
+      <location filename="../../CommandConstraints.cpp" line="2699"/>
       <source>%1 switch to block</source>
       <translation type="unfinished">%1 switch to block</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2681"/>
+      <location filename="../../CommandConstraints.cpp" line="2704"/>
       <source>%1 switch to equal length</source>
       <translation type="unfinished">%1 switch to equal length</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2692"/>
-      <location filename="../../CommandConstraints.cpp" line="2726"/>
+      <location filename="../../CommandConstraints.cpp" line="2715"/>
+      <location filename="../../CommandConstraints.cpp" line="2749"/>
       <source>%1 switch to equal radius</source>
       <translation type="unfinished">%1 switch to equal radius</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2712"/>
+      <location filename="../../CommandConstraints.cpp" line="2735"/>
       <source>%1 switch to angle</source>
       <translation type="unfinished">%1 switch to angle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2729"/>
+      <location filename="../../CommandConstraints.cpp" line="2752"/>
       <source>%1 switch to concentric distance</source>
       <translation type="unfinished">%1 switch to concentric distance</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2741"/>
-      <location filename="../../CommandConstraints.cpp" line="2751"/>
+      <location filename="../../CommandConstraints.cpp" line="2764"/>
+      <location filename="../../CommandConstraints.cpp" line="2774"/>
       <source>%1 switch to arc angle</source>
       <translation type="unfinished">%1 switch to arc angle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2742"/>
-      <location filename="../../CommandConstraints.cpp" line="2752"/>
+      <location filename="../../CommandConstraints.cpp" line="2765"/>
+      <location filename="../../CommandConstraints.cpp" line="2775"/>
       <source>%1 switch to arc length</source>
       <translation type="unfinished">%1 switch to arc length</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2769"/>
+      <location filename="../../CommandConstraints.cpp" line="2792"/>
       <source>%1 switch to weight</source>
       <translation type="unfinished">%1 switch to weight</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2782"/>
+      <location filename="../../CommandConstraints.cpp" line="2805"/>
       <source>%1 switch to radius</source>
       <translation type="unfinished">%1 switch to radius</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2785"/>
+      <location filename="../../CommandConstraints.cpp" line="2808"/>
       <source>%1 switch to diameter</source>
       <translation type="unfinished">%1 switch to diameter</translation>
     </message>
@@ -8597,27 +8615,48 @@ Note: While the Text constraint is active, any constraints applied directly to t
   <context>
     <name>CmdSketcherConstrainGroup</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10337"/>
+      <location filename="../../CommandConstraints.cpp" line="10360"/>
       <source>Group Constraint</source>
       <translation>Групове обмеження</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10338"/>
+      <location filename="../../CommandConstraints.cpp" line="10361"/>
       <source>Constrains the selected geometries together as a single entity.The position and size of the grouped geometries can be defined by constraining the construction line that is generated.Constraints applied to grouped edges are ignored as long as the Group constraint is here.</source>
       <translation>Обмежує вибрані геометрії разом як єдину сутність. Положення та розмір згрупованих геометрій можна визначити, обмеживши згенеровану допоміжну лінію. Обмеження, застосовані до згрупованих ребер, ігноруються, поки діє групове обмеження.</translation>
     </message>
   </context>
   <context>
-    <name>TaskSketcherTool_c1_trimming</name>
+    <name>CmdSketcherCreatePolylineLegacy</name>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="282"/>
-      <source>Include axes (U)</source>
-      <translation type="unfinished">Include axes (U)</translation>
+      <location filename="../../CommandCreateGeo.cpp" line="227"/>
+      <source>Polyline</source>
+      <translation>Ламана лінія</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="286"/>
-      <source>Include axes as trim boundaries</source>
-      <translation type="unfinished">Include axes as trim boundaries</translation>
+      <location filename="../../CommandCreateGeo.cpp" line="228"/>
+      <source>Creates a continuous polyline. Press the 'M' key to switch segment modes</source>
+      <translation>Створює безперервну полілінію. Натисніть клавішу 'M' для перемикання режимів сегментів</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherCreateText</name>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1393"/>
+      <source>Text</source>
+      <translation>Текст</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1394"/>
+      <source>Creates text geometries controlled by a Text constraint.
+To Edit: Double-click the Text constraint to change the text content and font.
+To Position/Size: Apply constraints to the group's construction line.
+Note: While the Text constraint is active, any constraints applied directly to the text geometries will be ignored.
+</source>
+      <translation>Створює геометрії тексту, керовані текстовим обмеженням.
+Для редагування: двічі клацніть текстове обмеження, щоб змінити вміст та шрифт.
+Для позиціонування/розміру: застосуйте обмеження до допоміжної лінії групи.
+Примітка: поки текстове обмеження активне, будь-які обмеження, застосовані безпосередньо до геометрій тексту, ігноруються.
+</translation>
     </message>
   </context>
   <context>
@@ -8647,45 +8686,6 @@ Note: While the Text constraint is active, any constraints applied directly to t
       <location filename="../../DrawSketchHandlerTranslate.h" line="658"/>
       <source>Rows</source>
       <translation>Рядки</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskSketcherTool_c1_text</name>
-    <message>
-      <location filename="../../DrawSketchHandlerText.h" line="361"/>
-      <source>Width</source>
-      <translation>Ширина</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerText.h" line="362"/>
-      <source>Height</source>
-      <translation>Висота</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskSketcherTool_Text</name>
-    <message>
-      <location filename="../../DrawSketchHandlerText.h" line="368"/>
-      <source>Text</source>
-      <translation>Текст</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerText.h" line="374"/>
-      <source>Font</source>
-      <translation>Шрифт</translation>
-    </message>
-  </context>
-  <context>
-    <name>SketcherGui::EditTextDialog</name>
-    <message>
-      <location filename="../../EditTextDialog.cpp" line="72"/>
-      <source>Font not found</source>
-      <translation>Шрифт не знайдено</translation>
-    </message>
-    <message>
-      <location filename="../../EditTextDialog.cpp" line="73"/>
-      <source>The original font '%1' is not found on your system. A default font has been selected.</source>
-      <translation>Оригінальний шрифт '%1' не знайдено у вашій системі. Вибрано шрифт за замовчуванням.</translation>
     </message>
   </context>
 </TS>

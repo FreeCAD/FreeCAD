@@ -2734,7 +2734,7 @@ za účelem minimalizace velikosti výsledného souboru STEP.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="71"/>
-      <location filename="../../DlgExtrusion.cpp" line="260"/>
+      <location filename="../../DlgExtrusion.cpp" line="318"/>
       <source>Select</source>
       <translation>Vybrat</translation>
     </message>
@@ -2861,41 +2861,48 @@ Jsou-li obě délky nula, pak je použita velikost směru.</translation>
       <translation>Tvar</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="230"/>
+      <location filename="../../DlgExtrusion.cpp" line="288"/>
       <source>Selecting…</source>
       <translation>Výběr…</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="506"/>
+      <location filename="../../DlgExtrusion.cpp" line="570"/>
       <source>The document '%1' doesn't exist.</source>
       <translation type="unfinished">The document '%1' doesn't exist.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="567"/>
+      <location filename="../../DlgExtrusion.cpp" line="585"/>
+      <source>Creating extrusion failed.
+No shape could be extruded.</source>
+      <translation type="unfinished">Creating extrusion failed.
+No shape could be extruded.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgExtrusion.cpp" line="610"/>
       <source>Creating extrusion failed.
 %1</source>
       <translation>Vytvoření extruze selhalo. 
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="575"/>
+      <location filename="../../DlgExtrusion.cpp" line="618"/>
       <source>Creating Extrusion failed.
 %1</source>
       <translation>Vytvoření extruze selhalo. 
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="647"/>
+      <location filename="../../DlgExtrusion.cpp" line="692"/>
       <source>Object not found: %1</source>
       <translation>Objekt nebyl nalezen: %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="712"/>
+      <location filename="../../DlgExtrusion.cpp" line="757"/>
       <source>No shapes selected for extrusion.</source>
       <translation>Žádné tvary nejsou vybírány pro extruzi.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="779"/>
+      <location filename="../../DlgExtrusion.cpp" line="824"/>
       <source>Cannot determine normal vector of shape to be extruded. Use other mode. 
 
 (%1)</source>
@@ -2904,12 +2911,12 @@ Jsou-li obě délky nula, pak je použita velikost směru.</translation>
 (%1)</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="732"/>
+      <location filename="../../DlgExtrusion.cpp" line="777"/>
       <source>Unknown error</source>
       <translation>Neznámá chyba</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="739"/>
+      <location filename="../../DlgExtrusion.cpp" line="784"/>
       <source>Extrusion direction link is invalid.
 
 %1</source>
@@ -2918,17 +2925,17 @@ Jsou-li obě délky nula, pak je použita velikost směru.</translation>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="746"/>
+      <location filename="../../DlgExtrusion.cpp" line="791"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
       <translation>Mód směru je použitelný na hranu, ale hrana není připojená.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="794"/>
+      <location filename="../../DlgExtrusion.cpp" line="839"/>
       <source>Extrusion direction vector is zero-length. It must be non-zero.</source>
       <translation>Vektor směru vysunutí má nulovou délku. Musí být nenulový.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="812"/>
+      <location filename="../../DlgExtrusion.cpp" line="857"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
       <translation>Celková dálka vysunutí je nulová (délka1 == -délka2). Musí být nenulová.</translation>
     </message>
@@ -6788,10 +6795,10 @@ Chcete pokračovat?</translation>
       <translation>Špatný výběr</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>Pokračovat</translation>
     </message>
@@ -7811,17 +7818,17 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="159"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
       <source>Preview requires a Part-based view provider; none found for %1.</source>
       <translation>Pro náhled je zapotřebí poskytovatel zobrazení založený na částech; pro %1 nebyl nalezen žádný.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="161"/>
       <source>unknown object</source>
       <translation>neznámý objekt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="303"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="305"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>Selhání při vykreslování náhledu: %1. To obvykle znamená chybu modelu.</translation>
     </message>
@@ -7833,6 +7840,19 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
       <source>STEP with colors</source>
       <extracomment>Translation note: "STEP" is a file type end should not be translated</extracomment>
       <translation>STEP s barvami</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskLinkArrayParameters</name>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.ui" line="17"/>
+      <source>Linked object</source>
+      <translation type="unfinished">Linked object</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.ui" line="27"/>
+      <source>Select Object</source>
+      <translation type="unfinished">Select Object</translation>
     </message>
   </context>
   <context>
@@ -7866,33 +7886,6 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
       <location filename="../../PatternCircularParametersWidget.ui" line="95"/>
       <source>Symmetry</source>
       <translation>Symetrie</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskLinkArrayParameters</name>
-    <message>
-      <location filename="../../TaskLinkArrayParameters.ui" line="17"/>
-      <source>Linked object</source>
-      <translation type="unfinished">Linked object</translation>
-    </message>
-    <message>
-      <location filename="../../TaskLinkArrayParameters.ui" line="27"/>
-      <source>Select Object</source>
-      <translation type="unfinished">Select Object</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartGui::PatternPointParametersWidget</name>
-    <message>
-      <location filename="../../PatternPointParametersWidget.ui" line="8"/>
-      <source>Point object</source>
-      <translation>Bodový objekt</translation>
-    </message>
-    <message>
-      <location filename="../../PatternPointParametersWidget.ui" line="14"/>
-      <location filename="../../PatternPointParametersWidget.cpp" line="48"/>
-      <source>Select Point Object</source>
-      <translation>Vybrat bodový objek</translation>
     </message>
   </context>
   <context>
@@ -7965,29 +7958,17 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     </message>
   </context>
   <context>
-    <name>Part::FaceMakerBuildFace</name>
+    <name>PartGui::PatternPointParametersWidget</name>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
-      <source>BuildFace facemaker</source>
-      <translation>BuildFace – nástroj pro tvorbu stěn</translation>
+      <location filename="../../PatternPointParametersWidget.ui" line="8"/>
+      <source>Point object</source>
+      <translation>Bodový objekt</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
-      <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
-      <translation>Rozdělí hrany v bodech průsečíků a vyhledá všechny ohraničené oblasti ploch. Zvládá libovolnou překrývající se geometrii.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part::FaceMakerUnified</name>
-    <message>
-      <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
-      <source>Unified facemaker</source>
-      <translation>Unifikovaný nástroj pro tvorbu stěn</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
-      <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
-      <translation>Sjednocené: zpracovává vnořené otvory, překrývající se čáry a zakřivené plochy</translation>
+      <location filename="../../PatternPointParametersWidget.ui" line="14"/>
+      <location filename="../../PatternPointParametersWidget.cpp" line="48"/>
+      <source>Select Point Object</source>
+      <translation>Vybrat bodový objek</translation>
     </message>
   </context>
   <context>
@@ -8217,6 +8198,32 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
       <location filename="../../TaskLinkArrayParameters.cpp" line="862"/>
       <source>Select an object to link.</source>
       <translation type="unfinished">Select an object to link.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerBuildFace</name>
+    <message>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
+      <source>BuildFace facemaker</source>
+      <translation>BuildFace – nástroj pro tvorbu stěn</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
+      <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
+      <translation>Rozdělí hrany v bodech průsečíků a vyhledá všechny ohraničené oblasti ploch. Zvládá libovolnou překrývající se geometrii.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerUnified</name>
+    <message>
+      <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
+      <source>Unified facemaker</source>
+      <translation>Unifikovaný nástroj pro tvorbu stěn</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
+      <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
+      <translation>Sjednocené: zpracovává vnořené otvory, překrývající se čáry a zakřivené plochy</translation>
     </message>
   </context>
 </TS>

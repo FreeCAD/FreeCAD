@@ -799,7 +799,7 @@
       <translation>Supprimer</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="2000"/>
+      <location filename="../../ViewProvider.cpp" line="2001"/>
       <source>Fill hole</source>
       <translation>Remplir le trou</translation>
     </message>
@@ -1281,14 +1281,14 @@
   <context>
     <name>MeshGui::DlgRegularSolidImp</name>
     <message>
-      <location filename="../../DlgRegularSolidImp.cpp" line="122"/>
-      <location filename="../../DlgRegularSolidImp.cpp" line="203"/>
-      <location filename="../../DlgRegularSolidImp.cpp" line="211"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="123"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="204"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="212"/>
       <source>Create %1</source>
       <translation>Créer %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRegularSolidImp.cpp" line="122"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="123"/>
       <source>No Active Document</source>
       <translation>Aucun document actif</translation>
     </message>
@@ -2241,7 +2241,7 @@ Visit https://openscad.org/ to install it.</source>
     <message>
       <location filename="../../PropertyEditorMesh.cpp" line="81"/>
       <source>[Points: %1, Edges: %2, Faces: %3]</source>
-      <translation>[Points : %1, Contours : %2, Faces : %3]</translation>
+      <translation>[Points : %1, Arêtes : %2, Faces : %3]</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="796"/>
@@ -2259,8 +2259,8 @@ Visit https://openscad.org/ to install it.</source>
       <translation>Afficher les couleurs</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCurvature.cpp" line="475"/>
       <location filename="../../ViewProvider.cpp" line="1701"/>
+      <location filename="../../ViewProviderCurvature.cpp" line="475"/>
       <source>Leave Info Mode</source>
       <translation>Quitter le mode Information</translation>
     </message>

@@ -2733,7 +2733,7 @@ the size of the resulting STEP file.</source>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="71"/>
-      <location filename="../../DlgExtrusion.cpp" line="260"/>
+      <location filename="../../DlgExtrusion.cpp" line="318"/>
       <source>Select</source>
       <translation>აირჩიეთ</translation>
     </message>
@@ -2860,41 +2860,48 @@ If both lengths are zero, magnitude of direction is used.</source>
       <translation>ფიგურა</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="230"/>
+      <location filename="../../DlgExtrusion.cpp" line="288"/>
       <source>Selecting…</source>
       <translation>არჩევა…</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="506"/>
+      <location filename="../../DlgExtrusion.cpp" line="570"/>
       <source>The document '%1' doesn't exist.</source>
       <translation type="unfinished">The document '%1' doesn't exist.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="567"/>
+      <location filename="../../DlgExtrusion.cpp" line="585"/>
+      <source>Creating extrusion failed.
+No shape could be extruded.</source>
+      <translation type="unfinished">Creating extrusion failed.
+No shape could be extruded.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgExtrusion.cpp" line="610"/>
       <source>Creating extrusion failed.
 %1</source>
       <translation>გამოწნევის შექმნა ჩავარდა.
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="575"/>
+      <location filename="../../DlgExtrusion.cpp" line="618"/>
       <source>Creating Extrusion failed.
 %1</source>
       <translation>გამოწნევის შექმნის შეცდომა.
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="647"/>
+      <location filename="../../DlgExtrusion.cpp" line="692"/>
       <source>Object not found: %1</source>
       <translation>ობიექტი ნაპოვნი არაა: %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="712"/>
+      <location filename="../../DlgExtrusion.cpp" line="757"/>
       <source>No shapes selected for extrusion.</source>
       <translation>გამოწნევისთვის მოხაზულობები არჩეული არაა.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="779"/>
+      <location filename="../../DlgExtrusion.cpp" line="824"/>
       <source>Cannot determine normal vector of shape to be extruded. Use other mode. 
 
 (%1)</source>
@@ -2903,12 +2910,12 @@ If both lengths are zero, magnitude of direction is used.</source>
 (%1)</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="732"/>
+      <location filename="../../DlgExtrusion.cpp" line="777"/>
       <source>Unknown error</source>
       <translation>უცნობი შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="739"/>
+      <location filename="../../DlgExtrusion.cpp" line="784"/>
       <source>Extrusion direction link is invalid.
 
 %1</source>
@@ -2917,17 +2924,17 @@ If both lengths are zero, magnitude of direction is used.</source>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="746"/>
+      <location filename="../../DlgExtrusion.cpp" line="791"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
       <translation>მიმართულების რეჟიმი იყენებს წიბოს, მაგრამ მიბმული წიბოები არ არსებობს.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="794"/>
+      <location filename="../../DlgExtrusion.cpp" line="839"/>
       <source>Extrusion direction vector is zero-length. It must be non-zero.</source>
       <translation>გამოწნევის მიმართულების სიგრძე უდრის ნულს. ის არ უნდა იყოს ნული.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="812"/>
+      <location filename="../../DlgExtrusion.cpp" line="857"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
       <translation>გამოწნევის ჯამური სიგრძე ნულის ტოლია (სიგრძე1 == -სიგრძე2). არ შეიძლება იყოს ნულის ტოლი.</translation>
     </message>
@@ -6781,10 +6788,10 @@ Continue?</source>
       <translation>არასწორი მონიშნული</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>გაგრძელება</translation>
     </message>
@@ -7804,17 +7811,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="159"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
       <source>Preview requires a Part-based view provider; none found for %1.</source>
       <translation type="unfinished">Preview requires a Part-based view provider; none found for %1.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="161"/>
       <source>unknown object</source>
       <translation type="unfinished">unknown object</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="303"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="305"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>მინიატურის რენდერი ჩავარდა: %1. ეს, ჩვეულებრივ, მოდელის შეცდომას ნიშნავს.</translation>
     </message>
@@ -7826,6 +7833,19 @@ Overlapping volumes of the shapes will be removed.</source>
       <source>STEP with colors</source>
       <extracomment>Translation note: "STEP" is a file type end should not be translated</extracomment>
       <translation>STEP ფერებით</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskLinkArrayParameters</name>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.ui" line="17"/>
+      <source>Linked object</source>
+      <translation type="unfinished">Linked object</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.ui" line="27"/>
+      <source>Select Object</source>
+      <translation type="unfinished">Select Object</translation>
     </message>
   </context>
   <context>
@@ -7859,33 +7879,6 @@ Overlapping volumes of the shapes will be removed.</source>
       <location filename="../../PatternCircularParametersWidget.ui" line="95"/>
       <source>Symmetry</source>
       <translation>სიმეტრია</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskLinkArrayParameters</name>
-    <message>
-      <location filename="../../TaskLinkArrayParameters.ui" line="17"/>
-      <source>Linked object</source>
-      <translation type="unfinished">Linked object</translation>
-    </message>
-    <message>
-      <location filename="../../TaskLinkArrayParameters.ui" line="27"/>
-      <source>Select Object</source>
-      <translation type="unfinished">Select Object</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartGui::PatternPointParametersWidget</name>
-    <message>
-      <location filename="../../PatternPointParametersWidget.ui" line="8"/>
-      <source>Point object</source>
-      <translation type="unfinished">Point object</translation>
-    </message>
-    <message>
-      <location filename="../../PatternPointParametersWidget.ui" line="14"/>
-      <location filename="../../PatternPointParametersWidget.cpp" line="48"/>
-      <source>Select Point Object</source>
-      <translation type="unfinished">Select Point Object</translation>
     </message>
   </context>
   <context>
@@ -7958,29 +7951,17 @@ Overlapping volumes of the shapes will be removed.</source>
     </message>
   </context>
   <context>
-    <name>Part::FaceMakerBuildFace</name>
+    <name>PartGui::PatternPointParametersWidget</name>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
-      <source>BuildFace facemaker</source>
-      <translation type="unfinished">BuildFace facemaker</translation>
+      <location filename="../../PatternPointParametersWidget.ui" line="8"/>
+      <source>Point object</source>
+      <translation type="unfinished">Point object</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
-      <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
-      <translation type="unfinished">Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part::FaceMakerUnified</name>
-    <message>
-      <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
-      <source>Unified facemaker</source>
-      <translation type="unfinished">Unified facemaker</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
-      <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
-      <translation type="unfinished">Unified: handles nested holes, overlapping wires, and curved surfaces</translation>
+      <location filename="../../PatternPointParametersWidget.ui" line="14"/>
+      <location filename="../../PatternPointParametersWidget.cpp" line="48"/>
+      <source>Select Point Object</source>
+      <translation type="unfinished">Select Point Object</translation>
     </message>
   </context>
   <context>
@@ -8210,6 +8191,32 @@ Overlapping volumes of the shapes will be removed.</source>
       <location filename="../../TaskLinkArrayParameters.cpp" line="862"/>
       <source>Select an object to link.</source>
       <translation type="unfinished">Select an object to link.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerBuildFace</name>
+    <message>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
+      <source>BuildFace facemaker</source>
+      <translation type="unfinished">BuildFace facemaker</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
+      <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
+      <translation type="unfinished">Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerUnified</name>
+    <message>
+      <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
+      <source>Unified facemaker</source>
+      <translation type="unfinished">Unified facemaker</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
+      <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
+      <translation type="unfinished">Unified: handles nested holes, overlapping wires, and curved surfaces</translation>
     </message>
   </context>
 </TS>

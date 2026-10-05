@@ -48,7 +48,7 @@
       <translation>Összeállítás</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="155"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="156"/>
       <source>Active object</source>
       <translation>Aktív objektum</translation>
     </message>
@@ -791,22 +791,22 @@ Ezt csak a fogaskerék csatlakozás használja a második sugár megtartására.
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="113"/>
       <source>List of components captured in this snapshot.</source>
-      <translation type="unfinished">List of components captured in this snapshot.</translation>
+      <translation>A pillanatfelvételben rögzített összetevők listája.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="124"/>
       <source>List of corresponding placements for the components.</source>
-      <translation type="unfinished">List of corresponding placements for the components.</translation>
+      <translation>Az összetevőkhöz tartozó elhelyezések listája.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="135"/>
       <source>List of visibility states for the components.</source>
-      <translation type="unfinished">List of visibility states for the components.</translation>
+      <translation>A komponensek láthatósági állapotainak listája.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="146"/>
       <source>If true, applying the snapshot will solve the assembly after restoring the placements.</source>
-      <translation type="unfinished">If true, applying the snapshot will solve the assembly after restoring the placements.</translation>
+      <translation>Ha igaz, a pillanatkép alkalmazása az elhelyezések visszaállítása után megoldja az összeállítást.</translation>
     </message>
   </context>
   <context>
@@ -1015,52 +1015,52 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="223"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="224"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Az objektum egy vagy több csatlakozással rendelkezik.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="225"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="226"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>El akarja mozgatni az objektumot és törölni a hozzá tartozó csatlakozásokat?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1142"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1143"/>
       <source>Move part</source>
       <translation>Mozgassa a részt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1897"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1898"/>
       <source>Empty Assembly</source>
       <translation>Üres összeállítás</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1909"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1910"/>
       <source>Over-constrained:</source>
       <translation>Eltúlzott kényszer:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1917"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1918"/>
       <source>Malformed joints:</source>
       <translation>Hibás csatlakozás:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1882"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1883"/>
       <source>and %1 more</source>
       <translation>és további %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1941"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1942"/>
       <source>Solver failed to converge</source>
       <translation>A megoldó nem tudott hasonlítani</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1949"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1950"/>
       <source>Under-constrained:</source>
       <translation>Nem eléggé kényszerített:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1951"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1952"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Szabadsági fok</numerusform>
@@ -1068,7 +1068,7 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1955"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1956"/>
       <source>Fully constrained</source>
       <translation>Teljesen kényszertett</translation>
     </message>
@@ -1638,22 +1638,22 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
       <source>Snapshot</source>
-      <translation type="unfinished">Snapshot</translation>
+      <translation>Pillanatkép</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="53"/>
       <source>Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</source>
-      <translation type="unfinished">Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</translation>
+      <translation>Rögzíti az összeállítás aktuális állapotát (elrendezések és láthatóság). A Pillanatkép objektumra dupla kattintással az összeállítás visszaállítható erre az állapotra.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="70"/>
       <source>Create Snapshot</source>
-      <translation type="unfinished">Create Snapshot</translation>
+      <translation>Pillanatkép létrehozás</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="249"/>
       <source>Restore Snapshot</source>
-      <translation type="unfinished">Restore Snapshot</translation>
+      <translation>Pillanatkép visszaállítás</translation>
     </message>
   </context>
   <context>

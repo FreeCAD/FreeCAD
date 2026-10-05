@@ -11,12 +11,12 @@
     <message>
       <location filename="../../TaskFillingEdge.ui" line="26"/>
       <source>Constrains the surface to pass through the selected edges</source>
-      <translation>Ограничивает поверхность таким образом, чтобы она проходила через выбранные ребра.</translation>
+      <translation>Поверхность строится с условием прохождения через заданные рёбра</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="29"/>
       <source>Non-Boundary Edges</source>
-      <translation>Неграничные ребра </translation>
+      <translation>Внутренние рёбра</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="46"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="../../TaskFillingEdge.ui" line="146"/>
       <source>Accept</source>
-      <translation>Принять </translation>
+      <translation>Принять</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="156"/>
@@ -54,22 +54,22 @@
     <message>
       <location filename="../../TaskFilling.ui" line="20"/>
       <source>Boundaries</source>
-      <translation>Границы </translation>
+      <translation>Границы</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="28"/>
       <source>Support Surface</source>
-      <translation>Опорная поверхность </translation>
+      <translation>Опорная поверхность</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="44"/>
       <source>Edges that will limit the surface</source>
-      <translation>Края, которые ограничивают поверхность </translation>
+      <translation>Края, которые ограничивают поверхность</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="47"/>
       <source>Boundary Edges</source>
-      <translation>Граничные края </translation>
+      <translation>Граничные края</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="64"/>
@@ -85,7 +85,7 @@
       <location filename="../../TaskFilling.ui" line="95"/>
       <location filename="../../TaskFilling.ui" line="111"/>
       <source>Drag the items to reorder the list</source>
-      <translation>Перетаскивайте элементы, чтобы изменить порядок в списке. </translation>
+      <translation>Перетаскивайте элементы, чтобы изменить порядок в списке</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="131"/>
@@ -100,7 +100,7 @@
     <message>
       <location filename="../../TaskFilling.ui" line="184"/>
       <source>Accept</source>
-      <translation>Принять </translation>
+      <translation>Принять</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="194"/>
@@ -114,12 +114,12 @@
       <location filename="../../TaskSections.ui" line="14"/>
       <location filename="../../TaskSections.ui" line="23"/>
       <source>Sectional Edges</source>
-      <translation>Секционные края </translation>
+      <translation>Секционные рёбра</translation>
     </message>
     <message>
       <location filename="../../TaskSections.ui" line="20"/>
       <source>Constrains the surface to follow the selected sectional edges</source>
-      <translation>Ограничивает поверхность по выбранным краям секции </translation>
+      <translation>Ограничивает поверхность по выбранным рёбрам секции</translation>
     </message>
     <message>
       <location filename="../../TaskSections.ui" line="40"/>
@@ -142,27 +142,27 @@
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="20"/>
       <source>Filling</source>
-      <translation>Наполнение </translation>
+      <translation>Заполнение</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="26"/>
       <source>Fill Type</source>
-      <translation>Тип заполнения </translation>
+      <translation>Тип заполнения</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="38"/>
       <source>Stretch</source>
-      <translation>Растянуть</translation>
+      <translation>Растяжение</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="48"/>
       <source>Coons</source>
-      <translation>Поверхность Кунса </translation>
+      <translation>Поверхность Кунса</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="55"/>
       <source>Curved</source>
-      <translation>Изогнутый</translation>
+      <translation>Изогнутая</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="76"/>
@@ -182,7 +182,7 @@
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="222"/>
       <source>Flip orientation</source>
-      <translation>Обратная ориентация </translation>
+      <translation>Обратная ориентация</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="384"/>
@@ -193,17 +193,17 @@
       <location filename="../../TaskGeomFillSurface.cpp" line="385"/>
       <location filename="../../TaskGeomFillSurface.cpp" line="393"/>
       <source>The tool requires two, three or four edges</source>
-      <translation>Инструмент требует двух, трех-четырех краев </translation>
+      <translation>Инструмент требует двух, трех или четырех рёбер</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="392"/>
       <source>Too less edges</source>
-      <translation>Слишком мало рёбер </translation>
+      <translation>Слишком мало рёбер</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="404"/>
       <source>Invalid object</source>
-      <translation>Недопустимый объект </translation>
+      <translation>Недопустимый объект</translation>
     </message>
   </context>
   <context>
@@ -211,22 +211,22 @@
     <message>
       <location filename="../../TaskFillingVertex.ui" line="14"/>
       <source>Vertex Constraints</source>
-      <translation>Ограничения по вершинам </translation>
+      <translation>Ограничения по вершинам</translation>
     </message>
     <message>
       <location filename="../../TaskFillingVertex.ui" line="20"/>
       <source>Constrains the surface to pass through the selected vertices</source>
-      <translation>Ограничивает поверхность по выделенным вершинам </translation>
+      <translation>Ограничивает поверхность прохождением через выбранные вершины</translation>
     </message>
     <message>
       <location filename="../../TaskFillingVertex.ui" line="23"/>
       <source>Non-Boundary Vertices</source>
-      <translation>Неграниченные вершины </translation>
+      <translation>Внутренние вершины</translation>
     </message>
     <message>
       <location filename="../../TaskFillingVertex.ui" line="40"/>
       <source>Add Vertex</source>
-      <translation>Добавить вершину </translation>
+      <translation>Добавить вершину</translation>
     </message>
     <message>
       <location filename="../../TaskFillingVertex.ui" line="59"/>
@@ -239,12 +239,12 @@
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="14"/>
       <source>Blend Curve</source>
-      <translation>Кривая смешивания </translation>
+      <translation>Сопрягающая кривая</translation>
     </message>
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="20"/>
       <source>Start Edge</source>
-      <translation>Начать ребро </translation>
+      <translation>Начальное ребро</translation>
     </message>
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="26"/>
@@ -273,7 +273,7 @@
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="113"/>
       <source>End Edge</source>
-      <translation>Конец края </translation>
+      <translation>Конечное ребро</translation>
     </message>
   </context>
   <context>
@@ -294,12 +294,12 @@
     <message>
       <location filename="../../Command.cpp" line="55"/>
       <source>Surface Cut</source>
-      <translation>Поверхностный разрез </translation>
+      <translation>Поверхностный разрез</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="56"/>
       <source>Cuts one shape using another</source>
-      <translation>Вырезание одной фигуры с помощью другой фигуры </translation>
+      <translation>Разрезает одну фигуру с помощью другой</translation>
     </message>
   </context>
   <context>
@@ -312,15 +312,16 @@
     <message>
       <location filename="../../Command.cpp" line="113"/>
       <source>Filling</source>
-      <translation>Наполнение </translation>
+      <translation>Заполнение</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="114"/>
       <source>Creates a surface from a series of selected boundary edges.
 Additionally, the surface may be constrained by edges and
 vertices that are not on the boundary.</source>
-      <translation>Создает поверхность из выбранных краев границы.
-Поверхности могут быть ограничены ребрами и вершинами, которые не находятся на границе. </translation>
+      <translation>Создаёт поверхность на основе серии выбранных граничных рёбер
+Дополнительно поверхность можно ограничить рёбрами
+и вершинами, не лежащими на границе поверхности.</translation>
     </message>
   </context>
   <context>
@@ -330,12 +331,12 @@ vertices that are not on the boundary.</source>
       <location filename="../../Command.cpp" line="166"/>
       <location filename="../../Command.cpp" line="345"/>
       <source>Create surface</source>
-      <translation>Создать поверхность </translation>
+      <translation>Создать поверхность</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="248"/>
       <source>Blend Curve</source>
-      <translation>Кривая смешивания </translation>
+      <translation>Сопрягающая кривая</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="303"/>
@@ -345,7 +346,7 @@ vertices that are not on the boundary.</source>
     <message>
       <location filename="../../Blending/TaskBlendCurve.cpp" line="410"/>
       <source>Edit blending curve</source>
-      <translation>Редактировать кривую смешивания </translation>
+      <translation>Редактировать сопрягающую кривую</translation>
     </message>
   </context>
   <context>
@@ -358,12 +359,12 @@ vertices that are not on the boundary.</source>
     <message>
       <location filename="../../Command.cpp" line="149"/>
       <source>Fill Boundary Curves</source>
-      <translation>Заполнить границы кривых </translation>
+      <translation>Поверхность по граничным кривым</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="150"/>
       <source>Creates a surface from 2, 3, or 4 boundary edges</source>
-      <translation>Создает поверхность от 2, 3 или 4 граничных края </translation>
+      <translation>Создаёт поверхность по 2, 3 или 4 граничным рёбрам</translation>
     </message>
   </context>
   <context>
@@ -382,8 +383,8 @@ vertices that are not on the boundary.</source>
       <location filename="../../Command.cpp" line="180"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a mesh object.</source>
-      <translation>Создает приблизительную кривую поверх полигональной сетки.
-Эта команда работает только с объектом 'полигональная сетка'. </translation>
+      <translation>Создаёт приблизительную кривую поверх полигональной сетки.
+Эта команда работает только с объектом 'полигональная сетка'.</translation>
     </message>
   </context>
   <context>
@@ -396,12 +397,12 @@ This command only works with a mesh object.</source>
     <message>
       <location filename="../../Command.cpp" line="221"/>
       <source>Blend Curve</source>
-      <translation>Кривая смешивания </translation>
+      <translation>Сопрягающая кривая</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="222"/>
       <source>Joins 2 edges with continuity</source>
-      <translation>Соединяет 2 ребра с обеспечением непрерывности.</translation>
+      <translation>Соединяет 2 ребра с заданной непрерывностью</translation>
     </message>
   </context>
   <context>
@@ -414,12 +415,12 @@ This command only works with a mesh object.</source>
     <message>
       <location filename="../../Command.cpp" line="287"/>
       <source>Extend Face</source>
-      <translation>Растяжение поверхности </translation>
+      <translation>Растяжение граней</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="288"/>
       <source>Extrapolates the selected face or surface at its boundaries with its local U and V parameters</source>
-      <translation>Экстраполирует выбранную поверхность или поверхность по ее границам с локальными параметрами U и V </translation>
+      <translation>Экстраполирует выбранную грань или поверхность по ее границам с локальными параметрами U и V</translation>
     </message>
   </context>
   <context>
@@ -432,7 +433,7 @@ This command only works with a mesh object.</source>
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Select a single face</source>
-      <translation>Выберите одну грань </translation>
+      <translation>Выберите одну грань</translation>
     </message>
   </context>
   <context>
@@ -445,12 +446,12 @@ This command only works with a mesh object.</source>
     <message>
       <location filename="../../Command.cpp" line="333"/>
       <source>Sections</source>
-      <translation>Разрезы</translation>
+      <translation>Сечения</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="334"/>
       <source>Creates a surface from a series of sectional edges</source>
-      <translation>Создайте поверхность из набора ребер поперечного сечения. </translation>
+      <translation>Создаёт поверхность из рёбер, которые задают поперечные сечения этой поверхности</translation>
     </message>
   </context>
   <context>
@@ -463,16 +464,16 @@ This command only works with a mesh object.</source>
     <message>
       <location filename="../../TaskFillingEdge.cpp" line="329"/>
       <source>Invalid object</source>
-      <translation>Недопустимый объект </translation>
+      <translation>Недопустимый объект</translation>
     </message>
     <message numerus="yes">
       <location filename="../../TaskFillingEdge.cpp" line="407"/>
       <source>Edge has %n adjacent face(s)</source>
       <translation>
         <numerusform>Ребро имеет %n смежную грань</numerusform>
+        <numerusform>Ребро имеет %n смежных граней</numerusform>
         <numerusform>Ребро имеет %n смежных граней </numerusform>
-        <numerusform>Ребро имеет %n смежных граней </numerusform>
-        <numerusform>Ребро имеет %n смежных граней </numerusform>
+        <numerusform>Ребро имеет %n смежных граней</numerusform>
       </translation>
     </message>
     <message>
@@ -492,7 +493,7 @@ This command only works with a mesh object.</source>
       <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
       <location filename="../../TaskFilling.cpp" line="63"/>
       <source>Edit Filling</source>
-      <translation>Редактировать заполнение </translation>
+      <translation>Редактировать заполнение</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="667"/>
@@ -520,16 +521,16 @@ This command only works with a mesh object.</source>
     <message>
       <location filename="../../TaskFilling.cpp" line="497"/>
       <source>Invalid object</source>
-      <translation>Недопустимый объект </translation>
+      <translation>Недопустимый объект</translation>
     </message>
     <message numerus="yes">
       <location filename="../../TaskFilling.cpp" line="615"/>
       <source>Edge has %n adjacent faces</source>
       <translation>
-        <numerusform>Ребро имеет %n смежную грань  </numerusform>
-        <numerusform>Ребро имеет %n смежных граней </numerusform>
-        <numerusform>Ребро имеет %n смежных граней  </numerusform>
-        <numerusform>Ребро имеет %n смежных граней  </numerusform>
+        <numerusform>Ребро имеет %n смежную грань</numerusform>
+        <numerusform>Ребро имеет %n смежных граней</numerusform>
+        <numerusform>Ребро имеет %n смежных граней</numerusform>
+        <numerusform>Ребро имеет %n смежных граней</numerusform>
       </translation>
     </message>
     <message>
@@ -540,7 +541,7 @@ This command only works with a mesh object.</source>
     <message>
       <location filename="../../TaskFilling.cpp" line="640"/>
       <source>Edge has no adjacent faces</source>
-      <translation>Край не имеет прилегающих граней</translation>
+      <translation>Ребро не имеет прилегающих граней</translation>
     </message>
   </context>
   <context>
@@ -553,7 +554,7 @@ This command only works with a mesh object.</source>
     <message>
       <location filename="../../TaskSections.cpp" line="424"/>
       <source>Invalid object</source>
-      <translation>Недопустимый объект </translation>
+      <translation>Недопустимый объект</translation>
     </message>
   </context>
 </TS>
