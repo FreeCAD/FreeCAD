@@ -56,7 +56,6 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesign::LinearPattern, PartDesign::Transform
 LinearPattern::LinearPattern()
 {
     Part::LinearPatternExtension::initExtension(this);
-    SuppressedIndices.setStatus(App::Property::Hidden, true);
 }
 
 bool LinearPattern::isTransformationSuppressed(int index) const
@@ -120,7 +119,6 @@ void LinearPattern::onDocumentRestored()
     Transformed::onDocumentRestored();
     Base::StateLocker guard(syncingSuppression);
     updateSuppressedIndices();
-    SuppressedIndices.setStatus(App::Property::Hidden, true);
 }
 
 gp_Dir LinearPattern::getDirectionFromProperty(const App::PropertyLinkSub& dirProp) const

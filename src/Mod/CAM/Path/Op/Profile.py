@@ -577,7 +577,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     else:
                         vertFaces.append(sub)
 
-        for face in horFaces:
+        keepOrder = obj.SortingMode == "Manual"
+        for face in Path.Geom.combineHorizontalFaces(horFaces, keepOrder=keepOrder, tol=self.tol):
             shapeTups.extend(self._processHorFace(obj, face))
 
         for vertCon in Path.Geom.combineConnectedShapes(vertFaces):

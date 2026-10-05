@@ -56,29 +56,28 @@ __url__ = "https://www.freecad.org"
 __user_input_received = False
 
 
-def vtk_module_compatible():
-    # checks if the VTK library FreeCAD is build against is the one used by
-    # the python module
+def vtk_module_compatible(folder: str):
+    import os
+    import subprocess
+    import sys
+    from pathlib import Path
 
-    # make sure we do not contaminate the modules with vtk to not trick
-    # the check later
-    unload = not _vtk_is_loaded()
+    script = Path(__file__).with_name("vtk_module_compatibility_check.py")
+    environment = os.environ.copy()
+    if folder:
+        environment["FREECAD_FEM_VTK_PYTHON_PATH"] = folder
 
-    import Fem
-    from vtkmodules.vtkCommonCore import vtkVersion, vtkBitArray
-
-    # simple version check
-    if Fem.getVtkVersion() != vtkVersion.GetVTKVersion():
+    # Try to initialize the VTK library in a subprocess, because it cannot be unloaded
+    # after it has been initialized due to persistent state like template overrides (9.7+)
+    try:
+        executable = Path(sys.executable)
+        executable_name = executable.stem.removesuffix("Cmd")
+        freecadcmd = executable.with_name(f"{executable_name}Cmd{executable.suffix}")
+        result = subprocess.run([freecadcmd, script], env=environment, check=False)
+    except OSError:
         return False
 
-    # check binary compatibility
-    result = Fem.isVtkCompatible(vtkBitArray())
-
-    if unload:
-        # cleanup our own import
-        _unload_vtk_modules()
-
-    return result
+    return result.returncode == 0
 
 
 def _vtk_is_loaded():
@@ -87,43 +86,16 @@ def _vtk_is_loaded():
     return any("vtkmodules" in module for module in sys.modules)
 
 
-def _unload_vtk_modules():
-    # unloads all loaded vtk modules
-    # NOTE: does not remove any stored references in objects
-
-    import sys
-
-    for module in sys.modules.copy():
-        if "vtkmodules" in module:
-            del sys.modules[module]
-
-
 def _find_compatible_module():
     # Check all python path folders if they contain a vtk module
 
-    import Fem
     import sys
 
-    # remove module from runtime
-    _unload_vtk_modules()
+    for folder in reversed(sys.path):
+        # use a single folder as path and try to load vtk
+        if vtk_module_compatible(folder):
+            return folder
 
-    path = sys.path.copy()
-
-    for folder in reversed(path):
-        try:
-            # use a single folder as path and try to load vtk
-            sys.path = [folder]
-            if vtk_module_compatible():
-                # we do still unload, to let the user decide if they want to use it
-                _unload_vtk_modules()
-                sys.path = path
-                return folder
-
-        except:
-            continue
-
-    # reset the correct path and indicate that we failed
-    sys.path = path
     return None
 
 
@@ -163,7 +135,7 @@ def vtk_module_handling():
     loaded = _vtk_is_loaded()
 
     # check if we are compatible
-    if not vtk_module_compatible():
+    if not vtk_module_compatible(""):
 
         if not FreeCAD.GuiUp:
             FreeCAD.Console.PrintError(
@@ -240,7 +212,7 @@ def vtk_module_handling():
 # If inform=True the user gets informed by dialog about incompatibilities
 def vtk_compatibility_abort(inform=True):
 
-    if not vtk_module_compatible():
+    if not vtk_module_compatible(""):
 
         if inform:
             # raise a dialog to the user that this functionality is not available

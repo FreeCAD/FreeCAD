@@ -2329,6 +2329,8 @@ QTableView#cells QTableCornerButton::section {
 
 QHeaderView {
   background-color: transparent;
+}
+
 QHeaderView:disabled {
   color: @TextDisabledColor;
 }

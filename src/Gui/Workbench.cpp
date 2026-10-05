@@ -720,7 +720,6 @@ MenuItem* StdWorkbench::setupMenuBar() const
             << "Std_Group"
             << "Std_VarSet"
             << "Std_AnnotationLabel"
-            << "Part_Datums"
             << "Std_LinkActions"
             << "Separator"
             << "Std_TextDocument";

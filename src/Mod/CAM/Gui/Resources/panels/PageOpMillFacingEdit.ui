@@ -37,11 +37,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QComboBox" name="clearingPattern">
-        <property name="toolTip">
-         <string>Pattern for clearing the face: ZigZag, Bidirectional, Directional, or Spiral</string>
-        </property>
-       </widget>
+       <widget class="QComboBox" name="clearingPattern"/>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="cutMode_label">
@@ -51,11 +47,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="cutMode">
-        <property name="toolTip">
-         <string>Climb or Conventional milling direction</string>
-        </property>
-       </widget>
+       <widget class="QComboBox" name="cutMode"/>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="angle_label">
@@ -66,9 +58,6 @@
       </item>
       <item row="2" column="1">
        <widget class="QDoubleSpinBox" name="angle">
-        <property name="toolTip">
-         <string>Rotation angle for angled facing operations</string>
-        </property>
         <property name="suffix">
          <string>°</string>
         </property>
@@ -91,9 +80,6 @@
         <property name="text">
          <string>Reverse</string>
         </property>
-        <property name="toolTip">
-         <string>Reverse the cutting direction for the selected pattern</string>
-        </property>
        </widget>
       </item>
       <item row="3" column="0">
@@ -105,9 +91,6 @@
       </item>
       <item row="3" column="1">
        <widget class="QDoubleSpinBox" name="stepOver">
-        <property name="toolTip">
-         <string>The sideways distance* the cutting tool moves between successive passes (*a percentage of the tool's diameter).</string>
-        </property>
         <property name="suffix">
          <string>%</string>
         </property>
@@ -137,9 +120,6 @@
       </item>
       <item row="4" column="1">
        <widget class="Gui::QuantitySpinBox" name="passExtension">
-        <property name="toolTip">
-         <string>Distance to extend cuts beyond polygon boundary for tool disengagement</string>
-        </property>
         <property name="minimum">
          <double>-999999999.000000000000000</double>
         </property>
@@ -157,9 +137,6 @@
       </item>
       <item row="5" column="1">
        <widget class="Gui::QuantitySpinBox" name="stockExtension">
-        <property name="toolTip">
-         <string>Extends the boundary in both direction</string>
-        </property>
         <property name="minimum">
          <double>-999999999.000000000000000</double>
         </property>
@@ -177,9 +154,6 @@
       </item>
       <item row="6" column="1">
        <widget class="Gui::QuantitySpinBox" name="axialStockToLeave">
-        <property name="toolTip">
-         <string>How much stock to leave on the floor for this operation</string>
-        </property>
         <property name="minimum">
          <double>0.000000000000000</double>
         </property>
