@@ -109,6 +109,14 @@ class Postable:
         if name == "ToolController":
             return data.get("tool_controller", None)
 
+        # A path the post has already placed (WrapperPost._place_operations)
+        # is in world coordinates: report no Placement, so a legacy script's
+        # PathUtils.getPathWithPlacement() does not apply it a second time.
+        if name == "Placement" and data.get("placed"):
+            import FreeCAD
+
+            return FreeCAD.Placement()
+
         try:
             source = object.__getattribute__(self, "source")
         except AttributeError:

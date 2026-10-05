@@ -369,6 +369,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                     "\nManual: uses order of shapes selection",
                 ),
             )
+            obj.SortingMode = ("Automatic", "Manual")
         if hasattr(obj, "ZigZagAngle"):
             obj.renameProperty("ZigZagAngle", "Angle")
         if hasattr(obj, "OffsetPattern"):

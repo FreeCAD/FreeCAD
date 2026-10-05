@@ -25,7 +25,6 @@
 
 #include "LinearPatternExtension.h"
 #include <algorithm>
-#include <limits>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <gp_Dir.hxx>
@@ -40,13 +39,11 @@
 #include <Mod/Part/App/Part2DObject.h>
 #include <App/DocumentObject.h>
 #include "PartFeature.h"
+#include "PatternConstants.h"
 
 using namespace Part;
 
 EXTENSION_PROPERTY_SOURCE(Part::LinearPatternExtension, App::DocumentObjectExtension)
-
-const App::PropertyIntegerConstraint::Constraints LinearPatternExtension::intOccurrences
-    = {1, std::numeric_limits<int>::max(), 1};
 
 const char* LinearPatternExtension::ModeEnums[] = {"Extent", "Spacing", nullptr};
 
@@ -121,7 +118,7 @@ LinearPatternExtension::LinearPatternExtension()
         App::Prop_None,
         "The total number of instances in the first direction, including the original feature."
     );
-    Occurrences.setConstraints(&intOccurrences);
+    Occurrences.setConstraints(PatternConstants::occurrenceConstraints());
     Mode.setEnums(ModeEnums);
     setReadWriteStatusForMode(LinearPatternDirection::First);
 
@@ -189,7 +186,7 @@ LinearPatternExtension::LinearPatternExtension()
         App::Prop_None,
         "The total number of instances in the second direction, including the original feature."
     );
-    Occurrences2.setConstraints(&intOccurrences);
+    Occurrences2.setConstraints(PatternConstants::occurrenceConstraints());
     Mode2.setEnums(ModeEnums);
     setReadWriteStatusForMode(LinearPatternDirection::Second);
 

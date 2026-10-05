@@ -601,9 +601,11 @@ class ObjectJob:
 
         self.setupWorkplanes(obj)
         self.adoptOrphanWorkplanes(obj)
-        if FreeCAD.GuiUp:
-            import Path.Main.Workplane as PathWorkplane
+        import Path.Main.Workplane as PathWorkplane
 
+        for workplane in PathWorkplane.workplanesOf(obj):
+            PathWorkplane.ensureFixtureProperty(workplane)
+        if FreeCAD.GuiUp:
             for workplane in PathWorkplane.workplanesOf(obj):
                 PathWorkplane.configureView(workplane)
 
@@ -985,17 +987,6 @@ class ObjectJob:
     def isBaseCandidate(cls, obj):
         """Answer true if the given object can be used as a Base for a job."""
         return PathUtil.isValidBaseObject(obj)
-
-
-def Instances():
-    """Instances() ... Return all Jobs in the current active document."""
-    if FreeCAD.ActiveDocument:
-        return [
-            job
-            for job in FreeCAD.ActiveDocument.Objects
-            if hasattr(job, "Proxy") and isinstance(job.Proxy, ObjectJob)
-        ]
-    return []
 
 
 def Create(name, base, templateFile=None):

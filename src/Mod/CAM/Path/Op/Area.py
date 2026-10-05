@@ -521,7 +521,7 @@ class ObjectOp(PathOp.ObjectOp):
 
         # Init start point
         if PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
-            self.endVector = obj.StartPoint
+            self.endVector = self.startPoint(obj)
         else:
             self.endVector = FreeCAD.Vector()
 
