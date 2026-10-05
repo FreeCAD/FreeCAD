@@ -408,28 +408,28 @@ TreeWidgetItemDelegate::TreeWidgetItemDelegate(QObject* parent)
 
 QTreeView* TreeWidgetItemDelegate::createStyleTarget() const
 {
-	auto target = new QTreeView(qobject_cast<QWidget*>(parent()));
-	target->setObjectName(QStringLiteral("DocumentTreeItems"));
-	target->setFixedSize(0,0); // ensure it doesn't render
-	return target;
+    auto target = new QTreeView(qobject_cast<QWidget*>(parent()));
+    target->setObjectName(QStringLiteral("DocumentTreeItems"));
+    target->setFixedSize(0, 0);  // ensure it doesn't render
+    return target;
 }
 
 QTreeView* TreeWidgetItemDelegate::styleTarget(const QBrush& background) const
 {
-	if (background.style() == Qt::NoBrush) {
-		return artificial;
-	}
+    if (background.style() == Qt::NoBrush) {
+        return artificial;
+    }
 
-	QTreeView*& target = highlighted[background.color().rgba()];
-	if (!target) {
-		target = createStyleTarget();
-		target->setStyleSheet(
-			QStringLiteral("QTreeView::item:!selected:!hover { background-color: %1; }")
-			    .arg(background.color().name(QColor::HexArgb))
-		);
-		target->ensurePolished();
-	}
-	return target;
+    QTreeView*& target = highlighted[background.color().rgba()];
+    if (!target) {
+        target = createStyleTarget();
+        target->setStyleSheet(
+            QStringLiteral("QTreeView::item:!selected:!hover { background-color: %1; }")
+                .arg(background.color().name(QColor::HexArgb))
+        );
+        target->ensurePolished();
+    }
+    return target;
 }
 
 QRect TreeWidgetItemDelegate::calculateItemRect(const QStyleOptionViewItem& option) const
