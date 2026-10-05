@@ -13,6 +13,11 @@ else()
     set(CLIPPER2_USINGZ ONLY CACHE STRING "Build Clipper2Z with Z-coordinate support" FORCE)
 
     add_subdirectory(src/3rdParty/Clipper2)
+    get_directory_property(
+        Clipper2_VERSION
+        DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src/3rdParty/Clipper2"
+        DEFINITION Clipper2_VERSION
+    )
     add_library(Clipper2::Clipper2Z ALIAS Clipper2Z)
 endif()
 
