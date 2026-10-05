@@ -106,6 +106,9 @@ void View3DSettings::applySettings()
     OnChange(*hGrp, "DimensionsDeltaVisible");
     OnChange(*hGrp, "PickRadius");
     OnChange(*hGrp, "TransparentObjectRenderType");
+    OnChange(*hGrp, "SectionCaps");
+    OnChange(*hGrp, "SectionCapHatching");
+    OnChange(*hGrp, "SectionCapColor");
 
     auto lightSourcesGrp = hGrp->GetGroup("LightSources");
     OnChange(*lightSourcesGrp, "EnableHeadlight");
@@ -398,6 +401,27 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::
         }
         for (auto _viewer : _viewers) {
             _viewer->setGradientBackground(background);
+        }
+    }
+    else if (strcmp(Reason, "SectionCaps") == 0) {
+        // 0 = off, 1 = single color, 2 = a color per part
+        const long mode = rGrp.GetInt("SectionCaps", 1);
+        for (auto _viewer : _viewers) {
+            _viewer->setSectionCapColored(mode == 2);
+            _viewer->setSectionCapping(mode != 0);
+        }
+    }
+    else if (strcmp(Reason, "SectionCapColor") == 0) {
+        float transparency;
+        SbColor color;
+        color.setPackedValue((uint32_t)rGrp.GetUnsigned("SectionCapColor", 0x737880ff), transparency);
+        for (auto _viewer : _viewers) {
+            _viewer->setSectionCapColor(color);
+        }
+    }
+    else if (strcmp(Reason, "SectionCapHatching") == 0) {
+        for (auto _viewer : _viewers) {
+            _viewer->setSectionCapHatched(rGrp.GetBool("SectionCapHatching", false));
         }
     }
     else if (strcmp(Reason, "ShowFPS") == 0) {

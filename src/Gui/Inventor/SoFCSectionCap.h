@@ -91,6 +91,19 @@ public:
 
     /// Drop the proxy (rebuilt on the next frame).
     void invalidate();
+    /// Colored: a color per instance; otherwise the single color for all.
+    void setColored(bool colored);
+    void setSingleColor(const SbColor& color);
+    bool isColored() const
+    {
+        return colored;
+    }
+    /// Hatched: a hatch pattern per instance on top of the color.
+    void setHatched(bool hatched);
+    bool isHatched() const
+    {
+        return hatched;
+    }
 
     const std::vector<SectionCapRecord>& lastRecords() const
     {
@@ -140,6 +153,9 @@ private:
     SoNode* scene {nullptr};
     Resolver resolve;
     Excluder exclude;
+    bool colored {false};
+    SbColor singleColor {0.45f, 0.47f, 0.50f};
+    bool hatched {false};
     std::map<std::string, SectionCapStyle> allocated;
     std::map<std::pair<int, int>, std::string> usedCombos;  // (color, hatch) -> key
 

@@ -583,6 +583,93 @@ Set to 0 to redraw as fast as the graphics driver allows.</string>
           </property>
          </widget>
         </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="sectionCapsLabel">
+          <property name="text">
+           <string>Section caps</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="1">
+         <widget class="Gui::PrefComboBox" name="comboSectionCaps">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Fill the clipped faces of solids: in a single color, or each part in its own color.</string>
+          </property>
+          <property name="currentIndex">
+           <number>1</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>SectionCaps</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>Off</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Single color</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Color per part</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="8" column="0">
+         <widget class="QLabel" name="sectionCapColorLabel">
+          <property name="text">
+           <string>Section cap color</string>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="1">
+         <widget class="Gui::PrefColorButton" name="colorSectionCap">
+          <property name="toolTip">
+           <string>The color of the section caps when 'Single color' is selected.</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>115</red>
+            <green>120</green>
+            <blue>128</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>SectionCapColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="1">
+         <widget class="Gui::PrefCheckBox" name="checkSectionCapHatching">
+          <property name="toolTip">
+           <string>Hatch the section caps, a different pattern for each part.</string>
+          </property>
+          <property name="text">
+           <string>Hatching</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>SectionCapHatching</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>

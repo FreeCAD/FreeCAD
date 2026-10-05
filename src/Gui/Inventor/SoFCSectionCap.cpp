@@ -202,6 +202,30 @@ void SoFCSectionCap::setResolver(Resolver r, Excluder e)
     invalidate();
 }
 
+void SoFCSectionCap::setColored(bool on)
+{
+    colored = on;
+    allocated.clear();
+    usedCombos.clear();
+    touch();
+}
+
+void SoFCSectionCap::setSingleColor(const SbColor& color)
+{
+    singleColor = color;
+    allocated.clear();
+    usedCombos.clear();
+    touch();
+}
+
+void SoFCSectionCap::setHatched(bool on)
+{
+    hatched = on;
+    allocated.clear();
+    usedCombos.clear();
+    touch();
+}
+
 void SoFCSectionCap::invalidate()
 {
     proxyValid = false;
@@ -256,41 +280,70 @@ const std::vector<std::string>& SoFCSectionCap::hatches()
 
 SectionCapStyle SoFCSectionCap::styleFor(const Group& group)
 {
+    if (!colored && !hatched) {
+        SectionCapStyle single;
+        single.color = singleColor;
+        return single;
+    }
     auto found = allocated.find(group.key);
     if (found != allocated.end()) {
         return found->second;
     }
-    // an unused color first, then an unused (color, hatch); both searches
-    // start at the key's digest, so the result is the same on every run
-    const int nc = static_cast<int>(palette().size());
-    const int nh = static_cast<int>(hatches().size());
+    // Spread what varies (colors, else hatches) first, then unused (color, hatch)
+    // pairs; both searches start at the key's digest, so the result is the same
+    // on every run.
+    const int nc = colored ? static_cast<int>(palette().size()) : 1;
+    const int nh = hatched ? static_cast<int>(hatches().size()) : 1;
     const std::uint64_t h = digest(group.key);
     const int c0 = static_cast<int>(h % nc);
     const int t0 = static_cast<int>((h >> 32) % nh);
+    auto used = [this](int c, int t) {
+        return usedCombos.find({c, t}) != usedCombos.end();
+    };
     auto colorUsed = [this](int c) {
         auto it = usedCombos.lower_bound({c, 0});
         return it != usedCombos.end() && it->first.first == c;
     };
+    auto hatchUsed = [&](int t) {
+        for (int c = 0; c < nc; ++c) {
+            if (used(c, t)) {
+                return true;
+            }
+        }
+        return false;
+    };
     int chosen = c0 + t0 * nc;
     bool done = false;
-    for (int k = 0; k < nc && !done; ++k) {
-        const int c = (c0 + k) % nc;
-        if (!colorUsed(c)) {
-            chosen = c + t0 * nc;
-            done = true;
+    if (nc > 1) {
+        for (int k = 0; k < nc && !done; ++k) {
+            const int c = (c0 + k) % nc;
+            if (!colorUsed(c)) {
+                chosen = c + t0 * nc;
+                done = true;
+            }
+        }
+    }
+    else {
+        for (int k = 0; k < nh && !done; ++k) {
+            const int t = (t0 + k) % nh;
+            if (!hatchUsed(t)) {
+                chosen = t * nc;
+                done = true;
+            }
         }
     }
     for (int k = 0; k < nc * nh && !done; ++k) {
         const int idx = (c0 + t0 * nc + k) % (nc * nh);
-        if (usedCombos.find({idx % nc, idx / nc}) == usedCombos.end()) {
+        if (!used(idx % nc, idx / nc)) {
             chosen = idx;
             done = true;
         }
     }
     usedCombos[{chosen % nc, chosen / nc}] = group.key;
     SectionCapStyle style;
-    style.color = palette()[chosen % nc];
-    style.hatch = hatches()[chosen / nc];
+    style.color = colored ? palette()[chosen % nc] : singleColor;
+    style.hatch = hatched ? hatches()[chosen / nc] : std::string("none");
+    style.hatchColor = colored ? SbColor(0.15f, 0.15f, 0.15f) : singleColor * 0.5f;
     allocated[group.key] = style;
     return style;
 }

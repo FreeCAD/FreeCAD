@@ -341,6 +341,32 @@ void View3DInventorPy::init_type()
         &View3DInventorPy::isSectionCapping,
         "isSectionCapping(): whether section caps are on"
     );
+    add_varargs_method(
+        "setSectionCapColored",
+        &View3DInventorPy::setSectionCapColored,
+        "setSectionCapColored(colored=True): a color per instance instead of the single section "
+        "cap color"
+    );
+    add_noargs_method(
+        "isSectionCapColored",
+        &View3DInventorPy::isSectionCapColored,
+        "isSectionCapColored(): whether section caps use a color per instance"
+    );
+    add_varargs_method(
+        "setSectionCapHatched",
+        &View3DInventorPy::setSectionCapHatched,
+        "setSectionCapHatched(hatched=True): a hatch pattern per instance on the section caps"
+    );
+    add_noargs_method(
+        "isSectionCapHatched",
+        &View3DInventorPy::isSectionCapHatched,
+        "isSectionCapHatched(): whether section caps are hatched"
+    );
+    add_varargs_method(
+        "setSectionCapColor",
+        &View3DInventorPy::setSectionCapColor,
+        "setSectionCapColor((r, g, b)): the single section cap color, components 0..1"
+    );
     add_noargs_method(
         "getSectionCaps",
         &View3DInventorPy::getSectionCaps,
@@ -2721,6 +2747,46 @@ Py::Object View3DInventorPy::getSectionCaps()
 Py::Object View3DInventorPy::isSectionCapping()
 {
     return Py::Boolean(getView3DInventorPtr()->getViewer()->isSectionCapping());
+}
+
+Py::Object View3DInventorPy::setSectionCapColored(const Py::Tuple& args)
+{
+    PyObject* on = Py_True;
+    if (!PyArg_ParseTuple(args.ptr(), "|O!", &PyBool_Type, &on)) {
+        throw Py::Exception();
+    }
+    getView3DInventorPtr()->getViewer()->setSectionCapColored(on == Py_True);
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::isSectionCapColored()
+{
+    return Py::Boolean(getView3DInventorPtr()->getViewer()->isSectionCapColored());
+}
+
+Py::Object View3DInventorPy::setSectionCapHatched(const Py::Tuple& args)
+{
+    PyObject* on = Py_True;
+    if (!PyArg_ParseTuple(args.ptr(), "|O!", &PyBool_Type, &on)) {
+        throw Py::Exception();
+    }
+    getView3DInventorPtr()->getViewer()->setSectionCapHatched(on == Py_True);
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::isSectionCapHatched()
+{
+    return Py::Boolean(getView3DInventorPtr()->getViewer()->isSectionCapHatched());
+}
+
+Py::Object View3DInventorPy::setSectionCapColor(const Py::Tuple& args)
+{
+    float r = 0, g = 0, b = 0;
+    if (!PyArg_ParseTuple(args.ptr(), "(fff)", &r, &g, &b)) {
+        throw Py::Exception();
+    }
+    getView3DInventorPtr()->getViewer()->setSectionCapColor(SbColor(r, g, b));
+    return Py::None();
 }
 
 Py::Object View3DInventorPy::getSectionCapStatus()

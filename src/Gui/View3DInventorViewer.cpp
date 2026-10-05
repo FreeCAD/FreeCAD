@@ -1332,9 +1332,6 @@ void View3DInventorViewer::init()
     syncNaviCubeVisibility();
 
     updateColors();
-
-    // Caps are on by default; the node draws nothing until a clip plane exists.
-    setSectionCapping(true);
 }
 
 View3DInventorViewer::~View3DInventorViewer()
@@ -4140,6 +4137,9 @@ void View3DInventorViewer::setSectionCapping(bool on)
     if (on) {
         pcSectionCap = new Gui::Inventor::SoFCSectionCap();
         pcSectionCap->ref();
+        pcSectionCap->setColored(sectionCapColored);
+        pcSectionCap->setHatched(sectionCapHatched);
+        pcSectionCap->setSingleColor(sectionCapColor);
         // search every document: a link's nodes may belong to another one
         auto viewProviderFor = [](SoNode* node) -> ViewProviderDocumentObject* {
             if (!node || !node->isOfType(SoSeparator::getClassTypeId())) {
@@ -4206,6 +4206,48 @@ void View3DInventorViewer::setSectionCapping(bool on)
 bool View3DInventorViewer::isSectionCapping() const
 {
     return pcSectionCap != nullptr;
+}
+
+void View3DInventorViewer::setSectionCapColored(bool colored)
+{
+    sectionCapColored = colored;
+    if (pcSectionCap) {
+        pcSectionCap->setColored(colored);
+        redraw();
+    }
+}
+
+bool View3DInventorViewer::isSectionCapColored() const
+{
+    return sectionCapColored;
+}
+
+void View3DInventorViewer::setSectionCapColor(const SbColor& color)
+{
+    sectionCapColor = color;
+    if (pcSectionCap) {
+        pcSectionCap->setSingleColor(color);
+        redraw();
+    }
+}
+
+SbColor View3DInventorViewer::getSectionCapColor() const
+{
+    return sectionCapColor;
+}
+
+void View3DInventorViewer::setSectionCapHatched(bool hatched)
+{
+    sectionCapHatched = hatched;
+    if (pcSectionCap) {
+        pcSectionCap->setHatched(hatched);
+        redraw();
+    }
+}
+
+bool View3DInventorViewer::isSectionCapHatched() const
+{
+    return sectionCapHatched;
 }
 
 std::string View3DInventorViewer::getSectionCapStatus() const
