@@ -70,6 +70,16 @@ using namespace Gui;
 using namespace TechDraw;
 using namespace TechDrawGui;
 
+namespace
+{
+auto displayStyleButtons(const Ui_TaskProjGroup& ui)
+{
+    return std::to_array<QToolButton*>(
+        {ui.tbAllEdges, ui.tbHiddenEdges, ui.tbVisibleEdges, ui.tbShadedWithEdges, ui.tbShaded}
+    );
+}
+}  // namespace
+
 TaskProjGroup::TaskProjGroup(TechDraw::DrawView* featView, bool mode) :
     Gui::SelectionObserver(true, Gui::ResolveMode::NoResolve),
     ui(new Ui_TaskProjGroup),
@@ -129,13 +139,7 @@ void TaskProjGroup::connectWidgets()
     connect(ui->sbXSpacing, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskProjGroup::spacingChanged);
     connect(ui->sbYSpacing, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskProjGroup::spacingChanged);
 
-    const std::array<QToolButton*, 5> styleButtons {
-        ui->tbAllEdges,
-        ui->tbHiddenEdges,
-        ui->tbVisibleEdges,
-        ui->tbShadedWithEdges,
-        ui->tbShaded
-    };
+    const auto styleButtons = displayStyleButtons(*ui);
     for (size_t i = 0; i < styleButtons.size(); ++i) {
         connect(styleButtons.at(i), &QToolButton::clicked, this, [this, i]() {
             displayStyleChanged(static_cast<int>(i));
@@ -264,13 +268,7 @@ void TaskProjGroup::updateDisplayStyleUi()
         tr("Display Style of: %1")
             .arg(displayStyleTargetDescription(targets, hasSelectedTargets)));
 
-    const std::array<QToolButton*, 5> styleButtons {
-        ui->tbAllEdges,
-        ui->tbHiddenEdges,
-        ui->tbVisibleEdges,
-        ui->tbShadedWithEdges,
-        ui->tbShaded
-    };
+    const auto styleButtons = displayStyleButtons(*ui);
     int commonStyle = -1;
     if (!targets.empty()) {
         commonStyle = targets.front()->DisplayStyle.getValue();
