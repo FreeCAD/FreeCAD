@@ -1472,12 +1472,21 @@ TaskDlgAttacher::TaskDlgAttacher(
     setDocumentName(ViewProvider->getDocument()->getDocument()->getName());
 
     // The dialog is not tied to edit mode, so it stays open if the object is deleted, e.g. by
-    // undoing its creation while the dialog is shown. Forget the view provider when that happens.
+    // undoing its creation while the dialog is shown. Forget the view provider when that happens,
+    // and cancel the dialog once the deletion has completed, as there is nothing left to attach.
     connectDelObject = ViewProvider->getDocument()->signalDeletedObject.connect(
         [this](const Gui::ViewProviderDocumentObject& vp) {
-            if (&vp == this->ViewProvider) {
-                this->ViewProvider = nullptr;
+            if (&vp != this->ViewProvider) {
+                return;
             }
+            this->ViewProvider = nullptr;
+            QTimer::singleShot(0, this, [this]() {
+                App::Document* doc = App::GetApplication().getDocument(getDocumentName().c_str());
+                // the dialog may have been closed in the meantime, don't reject another one
+                if (doc && Gui::Control().activeDialog(doc) == this) {
+                    Gui::Control().reject(doc);
+                }
+            });
         }
     );
 
