@@ -170,6 +170,50 @@ class TestPathRotationGenerator(PathTestUtils.PathTestBase):
         self.assertIn("C", result.angles, "Should return C angle")
         self.assertLess(result.error_norm, 1e-6)
 
+    def test11_tie_does_not_follow_float_noise(self):
+        """
+        Two tool axes of one plane that differ in their last bit get one pose.
+
+        Expected behavior:
+            C -90/A -30 and C +90/A +30 reach the same tilt at the same cost.
+            Float noise in the axis must not pick between them.
+        """
+        machine = self._create_table_table_machine()
+        a = FreeCAD.Vector(0.4999999999999999, 0.0, 0.8660254037844388)
+        b = FreeCAD.Vector(0.4999999999999998, 0.0, 0.8660254037844388)
+
+        ra = orientation.solve_orientation(machine, a)
+        rb = orientation.solve_orientation(machine, b)
+
+        self.assertTrue(ra.success and rb.success)
+        self.assertAlmostEqual(ra.angles["C"], rb.angles["C"], places=6)
+        self.assertAlmostEqual(ra.angles["A"], rb.angles["A"], places=6)
+
+    def test12_tie_stays_at_the_current_pose(self):
+        """
+        Of the poses that tie, the one the axes are already at wins.
+
+        Expected behavior:
+            From C 90/A 30 the same tilt keeps C 90/A 30, not C -90/A -30,
+            and from C 0 an unchanged axis stays at C 0, not C -360.
+        """
+        machine = self._create_table_table_machine()
+        tilt = FreeCAD.Vector(0.4999999999999998, 0.0, 0.8660254037844388)
+
+        result = orientation.solve_orientation(machine, tilt, current_state={"C": 90.0, "A": 30.0})
+
+        self.assertTrue(result.success)
+        self.assertAlmostEqual(result.angles["C"], 90.0, places=6)
+        self.assertAlmostEqual(result.angles["A"], 30.0, places=6)
+
+        first = orientation.solve_orientation(machine, FreeCAD.Vector(0, -1, 1).normalize())
+        again = orientation.solve_orientation(
+            machine, FreeCAD.Vector(0, -1, 1).normalize(), current_state=first.angles
+        )
+
+        self.assertAlmostEqual(again.angles["C"], first.angles["C"], places=6)
+        self.assertAlmostEqual(again.angles["A"], first.angles["A"], places=6)
+
     def test20_axis_limits_active(self):
         """
         Test solving with axis limits that constrain solution.
@@ -223,6 +267,36 @@ class TestPathRotationGenerator(PathTestUtils.PathTestBase):
         self.assertIn("C", result.angles, "Should return C angle (table)")
         self.assertIn("B", result.angles, "Should return B angle (head)")
         self.assertLess(result.error_norm, 1e-6)
+
+    def test41_mixed_machine_head_tilts_the_tool(self):
+        """
+        On a table and a head, the table turns the part's axis to where the head points the tool.
+
+        Expected behavior:
+            The head's angle tilts the tool as a head-head machine's would: for a plane tilted
+            30 degrees toward +X, B is +30 by the right-hand rule about Y, and the table's
+            rotation of the axis equals the head's rotation of Z.
+        """
+        machine = self._create_mixed_machine()
+        desired_axis = FreeCAD.Vector(0.5, 0, 0.8660254037844386)
+
+        result = orientation.solve_orientation(machine, desired_axis)
+
+        self.assertTrue(result.success)
+        self.assertAlmostEqual(result.angles["B"], 30.0, places=6)
+        self.assertAlmostEqual(result.angles["C"], 0.0, places=6)
+
+        for axis in (
+            FreeCAD.Vector(0.3, 0.4, 0.866).normalize(),
+            FreeCAD.Vector(-0.28, 0.549, 0.788).normalize(),
+            FreeCAD.Vector(0, -1, 0),
+        ):
+            result = orientation.solve_orientation(machine, axis)
+            self.assertTrue(result.success)
+            table = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), result.angles["C"])
+            head = FreeCAD.Rotation(FreeCAD.Vector(0, 1, 0), result.angles["B"])
+            achieved = head.multVec(FreeCAD.Vector(0, 0, 1))
+            self.assertLess((achieved - table.multVec(axis)).Length, 1e-6)
 
     def test50_single_axis_solve(self):
         """

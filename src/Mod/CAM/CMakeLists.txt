@@ -676,6 +676,7 @@ SET(Tests_SRCS
     CAMTests/TestPathWorkplane.py
     CAMTests/TestPathWorkplaneFrame.py
     CAMTests/TestPathTiltedWorkPlane.py
+    CAMTests/TestPathJobModelLinks.py
     CAMTests/TestPathSharedWorkplane.py
     CAMTests/TestProcessorOptimizations.py
     CAMTests/TestGrblLegacyPost.py

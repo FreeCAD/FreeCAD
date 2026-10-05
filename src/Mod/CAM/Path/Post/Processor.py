@@ -2081,26 +2081,29 @@ class PostProcessor:
         from. A disabled operation must not block or colour the output."""
         return [op for op in self._operations if PathUtil.activeForOp(op)]
 
-    def _solve_pose(self, placement, chain):
+    def _solve_pose(self, placement, chain, current=None):
         """The rotary positions that index the machine to placement's tool
         axis: zeros when the axis is Z, the solver's answer otherwise.
+        current is where the rotaries are, the previous operation's
+        positions: of the poses that reach the plane the solver prefers the
+        nearest, so operations on one plane keep one pose.
         Returns (positions, reason); positions is None when unreachable."""
         import Path.Base.Generator.rotation as rotation
 
         if not _tool_axis_tilted(placement):
             return {axis.name: 0.0 for axis in chain}, None
         tool_axis = placement.Rotation.multVec(FreeCAD.Vector(0, 0, 1))
-        result = rotation.solve_orientation(self._machine, tool_axis)
+        result = rotation.solve_orientation(self._machine, tool_axis, current_state=current)
         if not result.success:
             return None, result.reason
         return {k: float(v) for k, v in result.angles.items()}, None
 
-    def _solve_positions(self, item, placement, chain):
+    def _solve_positions(self, item, placement, chain, current=None):
         """Rotary positions for an operation, or a refusal naming the plane,
         the machine and its rotary limits."""
         import Path.Dressup.Utils as PathDressup
 
-        positions, reason = self._solve_pose(placement, chain)
+        positions, reason = self._solve_pose(placement, chain, current)
         if positions is not None:
             return positions
         plane = getattr(PathDressup.baseOp(item.source), "Workplane", None)
@@ -2240,6 +2243,9 @@ class PostProcessor:
             return frame, angles
 
         result = []
+        # Where the rotaries are: the last operation's positions. A tool or
+        # fixture change does not move them, so this outlives the pose.
+        positions = None
         for section_name, sublist in postables:
             pose = None  # (frame, angles) the machine is at; None when not assumed
             declared = False  # a TWP plane is in effect
@@ -2284,7 +2290,7 @@ class PostProcessor:
 
                 if tilted:
                     self._check_rotation_strategy(strategy, item)
-                positions = self._solve_positions(item, placement, chain)
+                positions = self._solve_positions(item, placement, chain, positions)
 
                 # A plane that will not be declared has no pose of its own
                 # beyond the rotary angles: two datum planes at different
@@ -3344,12 +3350,14 @@ class PostProcessor:
 
         chain = rotation.build_kinematic_chain(self._machine)
         previous = None
+        current = None
         for op in self._operations_to_post():
             base = PathDressup.baseOp(op)
             placement = getattr(base, "Placement", None) or FreeCAD.Placement()
-            positions, _ = self._solve_pose(placement, chain)
+            positions, _ = self._solve_pose(placement, chain, current)
             if positions is None:
                 continue
+            current = positions
             key = tuple(sorted((k, round(float(v), 6)) for k, v in positions.items()))
             if previous is not None and key != previous:
                 return True
