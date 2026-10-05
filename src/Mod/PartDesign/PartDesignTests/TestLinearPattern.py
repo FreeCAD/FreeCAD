@@ -21,7 +21,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-import ctypes
 import os
 import tempfile
 import unittest
@@ -98,15 +97,23 @@ class TestLinearPattern(unittest.TestCase):
         self.Doc.recompute()
         self.assertEqual(pattern.SuppressedIndices, [6])
 
-    def testSuppressionIndicesUseCheckedIntegerArithmetic(self):
+    def testSuppressedIndicesOnlyProjectPositionsInsideTheGrid(self):
         pattern = self.Doc.addObject("PartDesign::LinearPattern", "LinearPattern")
-        last = 1 << 30
-        pattern.Occurrences = pattern.Occurrences2 = last + 1
-        # Exercise the property projection without generating a huge pattern.
-        pattern.SuppressedPositions = [(0, 1), (last, last), (-1, 0), (last + 1, 0)]
-        index = last * (last + 1) + last
-        maximum = (1 << (ctypes.sizeof(ctypes.c_long) * 8 - 1)) - 1
-        self.assertEqual(pattern.SuppressedIndices, [1, index] if index <= maximum else [1])
+        pattern.Occurrences = 3
+        pattern.Occurrences2 = 2
+        pattern.SuppressedPositions = [(0, 1), (2, 1), (-1, 0), (3, 0), (0, 2)]
+        self.assertEqual(pattern.SuppressedIndices, [1, 5])
+        self.assertEqual(len(pattern.SuppressedPositions), 5)
+
+    def testOccurrencesAreClampedToMaximumPatternOccurrences(self):
+        maximum = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Part").GetInt(
+            "MaximumPatternOccurrences", 1000
+        )
+        pattern = self.Doc.addObject("PartDesign::LinearPattern", "LinearPattern")
+        pattern.Occurrences = pattern.Occurrences2 = 1 << 30
+        self.assertEqual(pattern.Occurrences, maximum)
+        self.assertEqual(pattern.Occurrences2, maximum)
+        self.assertEqual(len(pattern.Spacings2), maximum - 1)
 
     def testSuppressedOriginalInMultiTransform(self):
         pattern = self.makeSuppressionPattern()

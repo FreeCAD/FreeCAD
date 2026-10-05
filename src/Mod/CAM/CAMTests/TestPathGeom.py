@@ -879,3 +879,103 @@ class TestPathGeom(PathTestBase):
         edge = Part.Edge(ellipse, 0.3, 2.1)
         edge.rotate(edge.Curve.Center, Vector(0, 0, 1), -40)
         self.assertEdgeShapesMatch(edge, Path.Geom.flipEdge(edge))
+
+    def test80(self):
+        """combineHorizontalFaces"""
+        faces = []
+
+        # rectangle
+        face = Part.makePlane(100, 100, Vector())
+        face.translate(Vector(0, 0, 10.001))
+        faces.append(face)
+
+        # rectangle
+        face = Part.makePlane(100, 100, Vector(50, 50, 0))
+        face.translate(Vector(0, 0, -10.001))
+        faces.append(face)
+
+        # rectangle with circular island
+        s = 100
+        w1 = Part.makePolygon(
+            [Vector(), Vector(-s, 0, 0), Vector(-s, s, 0), Vector(0, s, 0), Vector()]
+        )
+        w2 = Part.Wire(Part.makeCircle(10, Vector(-20, 20, 0), Vector(0, 0, 1)))
+        face = Part.makeFace([w1, w2], "Part::FaceMakerBullseye").Faces[0]
+        faces.append(face)
+
+        # circle
+        circle = Part.makeCircle(50, Vector(30, 130, 0), Vector(0, 0, 1))
+        edge = Part.Edge(circle)
+        wire = Part.Wire(edge)
+        wire.translate(Vector(0, 0, 1.005))
+        face = Part.Face(wire)
+        faces.append(face)
+
+        # ellipse
+        ellipse = Part.Ellipse(Vector(150, 0, 0), 100, 60)
+        edge = Part.Edge(ellipse)
+        wire = Part.Wire(edge)
+        wire.translate(Vector(0, 0, 4.999))
+        face = Part.Face(wire)
+        faces.append(face)
+
+        # bspline
+        spline = Part.BSplineCurve()
+        points = [
+            Vector(14, -11, 0),
+            Vector(-26, 5, 0),
+            Vector(-3, 36, 0),
+            Vector(20, 19, 0),
+            Vector(39, -9, 0),
+            Vector(14, -11, 0),
+        ]
+        spline.interpolate(points)
+        edge = Part.Edge(spline)
+        wire = Part.Wire(edge)
+        wire.translate(Vector(0, 0, -1.00001))
+        face = Part.Face(wire)
+        faces.append(face)
+
+        z = 10
+        comb = Path.Geom.combineHorizontalFaces(faces, z=z)
+
+        # result only one shape
+        self.assertEqual(len(comb), 1)
+
+        # result shape contains only one face
+        self.assertEqual(len(comb[0].Faces), 1)
+
+        # check result face area
+        self.assertRoughly(comb[0].Area, 50166, 1)
+
+        # check face z
+        self.assertRoughly(comb[0].Faces[0].BoundBox.ZMax, z)
+
+    def test81(self):
+        """combineHorizontalFaces with keep order"""
+        faces = []
+
+        face = Part.makePlane(3, 3, Vector(0, 0, 0))  # face 0
+        faces.append(face)
+
+        face = Part.makePlane(6, 6, Vector(60, 50, 0))  # face 1
+        faces.append(face)
+
+        face = Part.makePlane(4, 4, Vector(10, 10, 0))  # face 2
+        faces.append(face)
+
+        face = Part.makePlane(5, 4, Vector(10, 10, 0))  # face 3
+        faces.append(face)
+
+        face = Part.makePlane(5, 5, Vector(50, 10, 0))  # face 4
+        faces.append(face)
+
+        comb = Path.Geom.combineHorizontalFaces(faces, keepOrder=True, z=10)
+
+        # result contains 4 faces
+        self.assertEqual(len(comb), 4)
+
+        self.assertRoughly(comb[0].Faces[0].Area, 9)
+        self.assertRoughly(comb[1].Faces[0].Area, 36)
+        self.assertRoughly(comb[2].Faces[0].Area, 20)  # face 2 absorbed by face 3
+        self.assertRoughly(comb[3].Faces[0].Area, 25)

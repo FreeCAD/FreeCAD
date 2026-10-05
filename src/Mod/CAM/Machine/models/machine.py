@@ -190,14 +190,50 @@ class BaseFrame:
     orientation_quaternion: List[float] = field(default_factory=lambda: [0, 0, 0, 1])
 
 
+class RotationStrategy(Enum):
+    """How the machine handles an operation on a tilted work plane.
+
+    An operation on a work plane is stored plane-relative; the post has to
+    express it in something the control runs. Which of these the control
+    does decides what the post emits. A machine with rotary axes and NONE
+    refuses to post such an operation rather than guess.
+
+    NONE           : not declared; indexed operations cannot be posted.
+    DWO            : dynamic work offset (Haas G254, Fanuc G54.2/G54.4).
+                     The post commands the rotary positions and emits the
+                     path rotated into the frame the machine reaches; the
+                     control applies the pivot offsets.
+    TWP            : tilted work plane (Fanuc G68.2, Haas G268, Heidenhain
+                     PLANE SPATIAL). The post declares the plane and emits
+                     the path in the plane's own coordinates; the control
+                     positions the rotaries and applies the pivot.
+    POST_TRANSFORM : no control support; the post itself would rotate every
+                     coordinate about the machine's measured pivots. Declared
+                     here so a machine can say so; not emitted yet.
+    """
+
+    NONE = "none"
+    DWO = "dwo"
+    TWP = "twp"
+    POST_TRANSFORM = "post_transform"
+
+
 @dataclass
 class Kinematics:
     """Machine kinematics configuration."""
 
     base_frame: BaseFrame = field(default_factory=BaseFrame)
     tcp_supported: bool = False
-    dwo_supported: bool = False
+    # Which strategy the control can run is the machine's to declare; how the
+    # strategy is spelled (the plane command, whether it positions the
+    # rotaries) is the post-processor's, since that is the control family.
+    rotation_strategy: RotationStrategy = RotationStrategy.NONE
     notes: str = ""
+
+    @property
+    def dwo_supported(self) -> bool:
+        """Older spelling of ``rotation_strategy == DWO``; kept for readers of it."""
+        return self.rotation_strategy == RotationStrategy.DWO
 
 
 @dataclass
@@ -1134,6 +1170,7 @@ class Machine:
                     },
                     "tcp_supported": self.kinematics.tcp_supported,
                     "dwo_supported": self.kinematics.dwo_supported,
+                    "rotation_strategy": self.kinematics.rotation_strategy.value,
                     "notes": self.kinematics.notes,
                 },
                 "axes": axes,
@@ -1575,7 +1612,12 @@ class Machine:
                 "orientation_quaternion", [0, 0, 0, 1]
             )
             config.kinematics.tcp_supported = kinematics_data.get("tcp_supported", False)
-            config.kinematics.dwo_supported = kinematics_data.get("dwo_supported", False)
+            # A file from before rotation_strategy existed said only whether
+            # DWO was supported; that flag still selects the strategy.
+            strategy = kinematics_data.get("rotation_strategy")
+            if strategy is None:
+                strategy = "dwo" if kinematics_data.get("dwo_supported", False) else "none"
+            config.kinematics.rotation_strategy = RotationStrategy(strategy)
             config.kinematics.notes = kinematics_data.get("notes", "")
 
         # Determine primary/secondary rotary axes for legacy compatibility
