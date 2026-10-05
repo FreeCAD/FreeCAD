@@ -46,18 +46,26 @@ class TestSketchAttachmentSupport(unittest.TestCase):
     def setUp(self):
         """
         Create a document.
-        Add inside an object of type Part, including a Box object. Name it original object.
-        Then create object of Link type pointed to Original Part object.
-        Recompute deocument.
+        Add a single Box object in the document.
+        Add an object of type Part, including a Box object.
+        Then create objects of Link type pointed to original:
+        - single Box object,
+        - Box object inside Part object.
+        Recompute document.
         """
         if not GUI_AVAILABLE:
             self.skipTest("GUI not available")
 
         self.doc = App.newDocument("TestSketchAttachmentSupport")
 
-        self.originalPart = self.doc.addObject("App::Part", "OriginalPart")
         self.box = self.doc.addObject("Part::Box", "Box")
-        self.originalPart.addObject(self.box)
+
+        self.originalPart = self.doc.addObject("App::Part", "OriginalPart")
+        self.boxInPart = self.doc.addObject("Part::Box", "BoxInPart")
+        self.originalPart.addObject(self.boxInPart)
+
+        self.linkToBox = self.doc.addObject("App::Link", "LinkToBox")
+        self.linkToBox.setLink(self.box)
 
         self.partWithSketch = self.doc.addObject("App::Part", "PartWithSketch")
         self.linkToPart = self.doc.addObject("App::Link", "LinkToPart")
@@ -73,18 +81,40 @@ class TestSketchAttachmentSupport(unittest.TestCase):
 
     @unittest.skipIf(not GUI_AVAILABLE, "GUI not available")
     def test_attachment_link_to_part(self):
-        Gui.Selection.addSelection(self.doc.Name, self.linkToPart.Name, f"{self.box.Name}.Face6")
+        Gui.Selection.addSelection(self.doc.Name, self.linkToPart.Name, f"{self.boxInPart.Name}.Face6")
 
         self._runCommand()
 
+        self.assertTrue(App.ActiveDocument.Sketch.isValid())
         self.assertEqual(self.sketchSupport[0][0], self.linkToPart)  # compare support object
-        self.assertEqual(self.sketchSupport[0][1][0], "Box.Face6")  # compare support face
+        self.assertEqual(self.sketchSupport[0][1][0], "BoxInPart.Face6")  # compare support face
 
     @unittest.skipIf(not GUI_AVAILABLE, "GUI not available")
     def test_attachment_original_part(self):
-        Gui.Selection.addSelection(self.doc.Name, self.originalPart.Name, f"{self.box.Name}.Face6")
+        Gui.Selection.addSelection(self.doc.Name, self.originalPart.Name, f"{self.boxInPart.Name}.Face6")
 
         self._runCommand()
 
+        self.assertTrue(App.ActiveDocument.Sketch.isValid())
+        self.assertEqual(self.sketchSupport[0][0], self.boxInPart)  # compare support object
+        self.assertEqual(self.sketchSupport[0][1][0], "Face6")  # compare support face
+
+    @unittest.skipIf(not GUI_AVAILABLE, "GUI not available")
+    def test_attachment_link_to_box(self):
+        Gui.Selection.addSelection(self.doc.Name, self.linkToBox.Name, "Face6")
+
+        self._runCommand()
+
+        self.assertTrue(App.ActiveDocument.Sketch.isValid())
+        self.assertEqual(self.sketchSupport[0][0], self.linkToBox)  # compare support object
+        self.assertEqual(self.sketchSupport[0][1][0], "Face6")  # compare support face
+
+    @unittest.skipIf(not GUI_AVAILABLE, "GUI not available")
+    def test_attachment_original_box(self):
+        Gui.Selection.addSelection(self.doc.Name, self.box.Name, "Face6")
+
+        self._runCommand()
+
+        self.assertTrue(App.ActiveDocument.Sketch.isValid())
         self.assertEqual(self.sketchSupport[0][0], self.box)  # compare support object
         self.assertEqual(self.sketchSupport[0][1][0], "Face6")  # compare support face
