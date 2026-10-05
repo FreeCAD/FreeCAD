@@ -205,8 +205,8 @@ public:
     void onAction(QAction*);
     /// Sync relevant actions status with the current auto mode
     void syncAutoMode();
-	// Compare text to background color to determine Dark theme
-	bool isDarkTheme() const;
+    // Compare text to background color to determine Dark theme
+    bool isDarkTheme() const;
     // Rotate the AutoHide icon according to the dock area
     static QPixmap rotateAutoHideIcon(QPixmap pxAutoHide, Qt::DockWidgetArea dockArea);
 

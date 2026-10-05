@@ -824,7 +824,7 @@ bool OverlayTabWidget::eventFilter(QObject* o, QEvent* ev)
         }
     }
     else if (ev->type() == QEvent::StyleChange && o == &autoModeMenu) {
-    	refreshIcons();
+        refreshIcons();
     }
     return QTabWidget::eventFilter(o, ev);
 }
@@ -2147,9 +2147,9 @@ QLayoutItem* OverlayTabWidget::prepareTitleWidget(QWidget* widget, const QList<Q
 
 bool OverlayTabWidget::isDarkTheme() const
 {
-	constexpr int midLightness = 128;
-	autoModeMenu.ensurePolished();
-	return autoModeMenu.palette().color(QPalette::Window).lightness() < midLightness;
+    constexpr int midLightness = 128;
+    autoModeMenu.ensurePolished();
+    return autoModeMenu.palette().color(QPalette::Window).lightness() < midLightness;
 }
 
 QPixmap OverlayTabWidget::rotateAutoHideIcon(QPixmap pxAutoHide, Qt::DockWidgetArea dockArea)
