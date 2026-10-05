@@ -564,7 +564,7 @@ def meshoponobjs(opname, inobjs):
 
 
 def process2D_ObjectsViaOpenSCADShape(ObjList, Operation, doc):
-    # https://www.freecad.org/tracker/view.php?id=3419
+    # https://tracker.freecad.org/view.php?id=3419
     params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
     fn  = params.GetInt('fnForImport',32)
     fnStr = ",$fn=" + str(fn)
@@ -575,7 +575,7 @@ def process2D_ObjectsViaOpenSCADShape(ObjList, Operation, doc):
         outputfilename=os.path.join(dir1,'%s.dxf' % next(tempfilenamegen))
         importDXF.export([item],outputfilename, True, True)
         filenames.append(outputfilename)
-    # https://www.freecad.org/tracker/view.php?id=3419
+    # https://tracker.freecad.org/view.php?id=3419
     dxfimports = ' '.join("import(file = \"%s\" %s);" % \
         #filename \
         (os.path.split(filename)[1], fnStr) for filename in filenames)

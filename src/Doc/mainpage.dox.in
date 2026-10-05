@@ -76,16 +76,16 @@
     @section other_doc Other Documentation
 
     For general help and documentation about the FreeCAD application and how to
-    use it, head first to the [Wiki Documentation](https://www.freecad.org/wiki).
+    use it, head first to the [Wiki Documentation](https://wiki.freecad.org).
 
     Refer to the [Wiki page "The FreeCAD source
-    code"](https://www.freecad.org/wiki/The_FreeCAD_source_code) for a broad
+    code"](https://wiki.freecad.org/The_FreeCAD_source_code) for a broad
     view of how the source code is organized, and browse the modules, classes
     and namespaces from the menu above.
 
-    The [Developer hub](https://www.freecad.org/wiki/Developer_hub) of the wiki
+    The [Developer hub](https://wiki.freecad.org/Developer_hub) of the wiki
     contains additional information for developers and the [Power users /
-    Python scripting section](https://www.freecad.org/wiki/Power_users_hub)
+    Python scripting section](https://wiki.freecad.org/Power_users_hub)
     contains coding documentation that is specifically aimed at Python
     scripting, but that will also be useful to C++ coders, as most of the APIs
     are identical or very similar.
@@ -113,7 +113,7 @@
     utility to browse through the sources.
 
     If you seek information on FreeCAD at large, please consult our
-    <a href="https://www.freecad.org/wiki/Main_Page">Wiki</a>
+    <a href="https://wiki.freecad.org/Main_Page">Wiki</a>
 
     FreeCAD being a fast moving target, don't hesitate to rebuild an up to
     date doc from source as often as needed (\ref makingdocs "more info"). CPU cycles are cheap

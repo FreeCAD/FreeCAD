@@ -10,6 +10,6 @@ To add a translation:
 1. Add a folder named `ll` or `ll-CC` (where `ll` is a 2-letter or 3-letter ISO 639 language code, and `CC` is a 2-letter ISO 3166-1 country code).
 2. Copy over the TechDraw templates in the parent `Templates` folder that you want to translate to your new folder.
 3. [Translate away!](https://wiki.freecad.org/TechDraw_Templates)
-4. [Submit a PR (GitHub Pull Request)](https://freecad.github.io/DevelopersHandbook/gettingstarted/#submitting-a-pr) to get your Tech Draw template translations included in FreeCAD.
+4. [Submit a PR (GitHub Pull Request)](https://www.freecad.org/dev/setup/workflow/#submitting-a-pr) to get your Tech Draw template translations included in FreeCAD.
 
 Use the [FreeCAD forum](https://forum.freecad.org/) if you need further help.

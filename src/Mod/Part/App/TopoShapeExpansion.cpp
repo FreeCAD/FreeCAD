@@ -2887,7 +2887,7 @@ TopoShape& TopoShape::makeElementOffset2D(
             }
 
             // Copying shape to fix strange orientation behavior, OCC7.0.0. See bug #2699
-            //  http://www.freecad.org/tracker/view.php?id=2699
+            //  https://tracker.freecad.org/view.php?id=2699
             offsetShape = shape.makeElementShape(mkOffset, op).makeElementCopy();
         }
         else {

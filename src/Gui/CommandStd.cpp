@@ -651,7 +651,7 @@ void StdCmdFreeCADDonation::activated(int iMsg)
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Websites"
     );
-    std::string url = hURLGrp->GetASCII("DonatePage", "https://www.freecad.org/sponsor");
+    std::string url = hURLGrp->GetASCII("DonatePage", "https://www.freecad.org/donate");
     hURLGrp->SetASCII("DonatePage", url.c_str());
     OpenURLInBrowser(url.c_str());
 }
@@ -685,7 +685,7 @@ void StdCmdDevHandbook::activated(int iMsg)
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Websites"
     );
-    std::string url = hURLGrp->GetASCII("DevHandbook", "https://freecad.github.io/DevelopersHandbook/");
+    std::string url = hURLGrp->GetASCII("DevHandbook", "https://www.freecad.org/dev");
 
     hURLGrp->SetASCII("DevHandbook", url.c_str());
     OpenURLInBrowser(url.c_str());
@@ -744,8 +744,7 @@ void StdCmdFreeCADUserHub::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     std::string defaulturl
-        = QCoreApplication::translate(this->className(), "https://wiki.freecad.org/User_hub")
-              .toStdString();
+        = QCoreApplication::translate(this->className(), "https://freecad.org/docs/").toStdString();
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Websites"
     );
