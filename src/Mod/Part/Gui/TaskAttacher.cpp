@@ -38,6 +38,7 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/DocumentObserver.h>
 #include <App/ElementNamingUtils.h>
 #include <App/ObjectIdentifier.h>
 #include <App/Datums.h>
@@ -333,16 +334,19 @@ TaskAttacher::~TaskAttacher()
 void TaskAttacher::objectDeleted(const Gui::ViewProviderDocumentObject& view)
 {
     if (ViewProvider == &view) {
-        ViewProvider = nullptr;
-        // if the object gets deleted we need to clear all overrides so it does not segfault
-        overrides.clear();
-        this->setDisabled(true);
+        forgetViewProvider();
     }
 }
 
 void TaskAttacher::documentDeleted(const Gui::Document&)
 {
+    forgetViewProvider();
+}
+
+void TaskAttacher::forgetViewProvider()
+{
     ViewProvider = nullptr;
+    overrides.clear();
     this->setDisabled(true);
 }
 
@@ -1467,6 +1471,25 @@ TaskDlgAttacher::TaskDlgAttacher(
     assert(ViewProvider);
     setDocumentName(ViewProvider->getDocument()->getDocument()->getName());
 
+    // The dialog is not tied to edit mode, so it stays open if the object is deleted, e.g. by
+    // undoing its creation while the dialog is shown. Forget the view provider when that happens,
+    // and cancel the dialog once the deletion has completed, as there is nothing left to attach.
+    connectDelObject = ViewProvider->getDocument()->signalDeletedObject.connect(
+        [this](const Gui::ViewProviderDocumentObject& vp) {
+            if (&vp != this->ViewProvider) {
+                return;
+            }
+            this->ViewProvider = nullptr;
+            QTimer::singleShot(0, this, [this]() {
+                App::Document* doc = App::GetApplication().getDocument(getDocumentName().c_str());
+                // the dialog may have been closed in the meantime, don't reject another one
+                if (doc && Gui::Control().activeDialog(doc) == this) {
+                    Gui::Control().reject(doc);
+                }
+            });
+        }
+    );
+
     if (createBox) {
         parameter = new TaskAttacher(ViewProvider, nullptr, QString(), tr("Attachment"));
         Content.push_back(parameter);
@@ -1531,6 +1554,9 @@ void TaskDlgAttacher::handleMouseButtonCB(void* userdata, SoEventCallback* cb)
     if (mbe->getButton() != SoMouseButtonEvent::BUTTON1 || mbe->getState() != SoButtonEvent::DOWN) {
         return;
     }
+    if (!self->ViewProvider) {
+        return;
+    }
 
     const SbVec2s pos = mbe->getPosition();
     const SbTime now = SbTime::getTimeOfDay();
@@ -1552,14 +1578,18 @@ void TaskDlgAttacher::handleMouseButtonCB(void* userdata, SoEventCallback* cb)
         self->lastClickTime = SbTime();
         self->lastClickPos = SbVec2s(-16000, -16000);
 
-        auto* doc = self->ViewProvider->getDocument()->getDocument();
-        QPointer<Gui::View3DInventorViewer> viewer = self->dblClickViewer;
-        QTimer::singleShot(0, [doc, viewer]() {
-            if (viewer) {
-                viewer->setSelectionEnabled(true);
+        QTimer::singleShot(
+            0,
+            [doc = App::DocumentT(self->ViewProvider->getDocument()->getDocument()),
+             viewer = self->dblClickViewer]() {
+                if (viewer) {
+                    viewer->setSelectionEnabled(true);
+                }
+                if (App::Document* appDoc = doc.getDocument()) {
+                    Gui::Control().accept(appDoc);
+                }
             }
-            Gui::Control().accept(doc);
-        });
+        );
         return;
     }
 
@@ -1589,8 +1619,12 @@ bool TaskDlgAttacher::accept()
     try {
         Gui::DocumentT doc(getDocumentName());
         Gui::Document* document = doc.getDocument();
-        if (!document || !ViewProvider) {
+        if (!document) {
             return true;
+        }
+        if (!ViewProvider) {
+            // The attached object was deleted while the dialog was open: nothing to apply
+            return reject();
         }
 
         Part::AttachExtension* pcAttach
