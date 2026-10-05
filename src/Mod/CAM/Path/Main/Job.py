@@ -989,17 +989,6 @@ class ObjectJob:
         return PathUtil.isValidBaseObject(obj)
 
 
-def Instances():
-    """Instances() ... Return all Jobs in the current active document."""
-    if FreeCAD.ActiveDocument:
-        return [
-            job
-            for job in FreeCAD.ActiveDocument.Objects
-            if hasattr(job, "Proxy") and isinstance(job.Proxy, ObjectJob)
-        ]
-    return []
-
-
 def Create(name, base, templateFile=None):
     """Create(name, base, templateFile=None) ... creates a new job and all it's resources.
     If a template file is specified the new job is initialized with the values from the template."""

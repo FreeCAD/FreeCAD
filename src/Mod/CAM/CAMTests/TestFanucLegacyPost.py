@@ -344,10 +344,16 @@ M30
         self.profile_op.Path = Path.Path([c, c2])
         self.job.PostProcessorArgs = "--no-header --no-show-editor"
         gcode = self.post.export()[0][1]
-        self.assertEqual(gcode.splitlines()[18], "G0 X10.000 Y10.000")
-        self.assertEqual(gcode.splitlines()[19], "M29 S1000")
-        self.assertEqual(gcode.splitlines()[20], "G84 Z-10.000 R20.000 F1000.000 P1.000 Q1.000")
-        self.assertEqual(gcode.splitlines()[21], "G80")
+        glines = gcode.splitlines()
+        expected = [
+            "G0 X10.000 Y10.000",
+            "G98",
+            "M29 S1000",
+            "G84 Z-10.000 R20.000 F1000.000 P1.000 Q1.000",
+            "G80",
+        ]
+        self.assertEqual(glines[18 : 18 + len(expected)], expected)
+        self.assertNotEqual(glines[18 + len(expected)], "G80")  # exactly one terminator
 
     def test_comment(self):
         """
@@ -399,18 +405,23 @@ M30
         glines = gcode.splitlines()
         print("Testing drilling")
         print(gcode)
-        expected = "G0 X0.000 Y0.000"
-        self.assertEqual(glines[19], expected)
-        expected = "G83 Z0.000 F6000.000 Q2.000 R10.000"
-        self.assertEqual(glines[20], expected)
-        expected = "G0 X20.000"
-        self.assertEqual(glines[21], expected)
-        expected = "G83 Z0.000 Q2.000 R10.000"
-        self.assertEqual(glines[22], expected)
-        expected = "G0 X40.000"
-        self.assertEqual(glines[23], expected)
-        expected = "G83 Z0.000 Q2.000 R10.000"
-        self.assertEqual(glines[24], expected)
+        # Every hole is its own G98 ... G80 group: the G0 between holes ends
+        # the modal cycle, so each G83 carries its full Q/R parameters again.
+        expected = [
+            "G0 X0.000 Y0.000",
+            "G98",
+            "G83 Z0.000 F6000.000 Q2.000 R10.000",
+            "G80",
+            "G0 X20.000",
+            "G98",
+            "G83 Z0.000 Q2.000 R10.000",
+            "G80",
+            "G0 X40.000",
+            "G98",
+            "G83 Z0.000 Q2.000 R10.000",
+            "G80",
+        ]
+        self.assertEqual(glines[19 : 19 + len(expected)], expected)
 
     def test_drilling_peck_chipbreak(self):
         """
@@ -448,15 +459,20 @@ M30
         glines = gcode.splitlines()
         print("Testing drilling")
         print(gcode)
-        expected = "G0 X0.000 Y0.000"
-        self.assertEqual(glines[19], expected)
-        expected = "G73 Z0.000 F6000.000 Q2.000 R10.000"
-        self.assertEqual(glines[20], expected)
-        expected = "G0 X20.000"
-        self.assertEqual(glines[21], expected)
-        expected = "G73 Z0.000 Q2.000 R10.000"
-        self.assertEqual(glines[22], expected)
-        expected = "G0 X40.000"
-        self.assertEqual(glines[23], expected)
-        expected = "G73 Z0.000 Q2.000 R10.000"
-        self.assertEqual(glines[24], expected)
+        # Every hole is its own G98 ... G80 group: the G0 between holes ends
+        # the modal cycle, so each G73 carries its full Q/R parameters again.
+        expected = [
+            "G0 X0.000 Y0.000",
+            "G98",
+            "G73 Z0.000 F6000.000 Q2.000 R10.000",
+            "G80",
+            "G0 X20.000",
+            "G98",
+            "G73 Z0.000 Q2.000 R10.000",
+            "G80",
+            "G0 X40.000",
+            "G98",
+            "G73 Z0.000 Q2.000 R10.000",
+            "G80",
+        ]
+        self.assertEqual(glines[19 : 19 + len(expected)], expected)
