@@ -2771,6 +2771,9 @@ void Application::setStatus(Status pos, bool on)
 
 void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
 {
+    // Warning: any use of setStyleSheet will stop propagation of the system palette
+    // Breaking the light/dark switch from the system and themes from it.
+
     Gui::MainWindow* mw = getMainWindow();
     auto mdi = mw->findChild<QMdiArea*>();
     mdi->setProperty("showImage", tiledBackground);
@@ -2868,13 +2871,13 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
     }
     else {
         if (tiledBackground) {
-            qApp->setStyleSheet(defaultStyleSheet);
+            qApp->setStyleSheet(QString());
             ActionStyleEvent e(ActionStyleEvent::Restore);
             qApp->sendEvent(getMainWindow(), &e);
             mdi->setBackground(QPixmap(QLatin1String("images:background.png")));
         }
         else {
-            qApp->setStyleSheet(defaultStyleSheet);
+            qApp->setStyleSheet(QString());
             ActionStyleEvent e(ActionStyleEvent::Restore);
             qApp->sendEvent(getMainWindow(), &e);
             mdi->setBackground(QBrush(QColor(160, 160, 160)));
