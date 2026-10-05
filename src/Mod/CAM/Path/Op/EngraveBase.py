@@ -72,7 +72,9 @@ class ObjectOp(PathOp.ObjectOp):
         # Prepare linking arguments for wire-to-wire collision-aware transitions
         solids = []
         if getattr(self, "job", None) and hasattr(self.job, "Model"):
-            solids = [base.Shape for base in self.job.Model.Group if hasattr(base, "Shape")]
+            # self.model: the model in the frame the path is made in, its work plane's
+            model = getattr(self, "model", None) or self.job.Model.Group
+            solids = [base.Shape for base in model if hasattr(base, "Shape")]
         linking_kwargs = {
             "start_position": None,
             "target_position": None,
