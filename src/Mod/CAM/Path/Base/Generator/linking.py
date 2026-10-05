@@ -22,6 +22,7 @@
 import Constants
 import Part
 import Path
+import Path.Base.Util as PathUtil
 from FreeCAD import Vector
 
 if False:
@@ -45,6 +46,13 @@ def get_linking_args(obj, job) -> dict | None:
     solids = []
     if job and hasattr(job, "Model"):
         solids = [b.Shape for b in job.Model.Group if hasattr(b, "Shape")]
+        # The operation generates in its work plane's frame; the model is
+        # world geometry. Bring the solids into that frame, or the collision
+        # checks read world coordinates as plane-local.
+        frame = PathUtil.workplaneForOp(obj)
+        if not frame.isIdentity(1e-9):
+            matrix = frame.inverse().toMatrix()
+            solids = [s.copy().transformShape(matrix, False, False) for s in solids]
 
     tool = obj.ToolController.Tool if getattr(obj, "ToolController", None) else None
     clearance = obj.CollisionClearance.Value

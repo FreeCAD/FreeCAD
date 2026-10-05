@@ -384,7 +384,7 @@ def parse(pathobj):
         if not hasattr(pathobj, "Path"):
             return out
 
-        for c in PathUtils.getPathWithPlacement(pathobj).Commands:
+        for c in PostUtils.cannedCycleTerminator(PathUtils.getPathWithPlacement(pathobj)).Commands:
             outstring = []
             command = c.Name
             # Convert G54-G59 Fixture offsets to E01-E06 for Dynapath Delta Control

@@ -1,6 +1,6 @@
 [workspace]
 name = "FreeCAD"
-version = "26.3.0"
+version = "27.1.0"
 description = "pixi instructions for FreeCAD"
 authors = ["looooo <sppedflyer@gmail.com>"]
 channels = ["conda-forge"]
@@ -197,6 +197,17 @@ cpptrace = "*"
 ## libwinpthread, which ships only the DLL, so the headers come from
 ## winpthreads-devel -- the same package smesh itself builds against.
 winpthreads-devel = "*"
+
+## Linux Activation
+# Conda-forge's xcb-util-cursor 0.1.6 ships with its build environment's paths as the default
+# cursor search path, so Qt falls back to legacy X11 cursors. Mirror the AppImage's AppRun
+# workaround for `pixi run`/`pixi shell`, keeping any XCURSOR_PATH already set by the user.
+# See https://github.com/FreeCAD/FreeCAD/issues/26726
+[target.linux-64.activation.env]
+XCURSOR_PATH = "${XCURSOR_PATH:-$HOME/.local/share/icons:$HOME/.icons:/usr/share/icons:/usr/share/pixmaps:$CONDA_PREFIX/share/icons:$CONDA_PREFIX/share/pixmaps}"
+
+[target.linux-aarch64.activation.env]
+XCURSOR_PATH = "${XCURSOR_PATH:-$HOME/.local/share/icons:$HOME/.icons:/usr/share/icons:/usr/share/pixmaps:$CONDA_PREFIX/share/icons:$CONDA_PREFIX/share/pixmaps}"
 
 [pypi-dependencies]
 freecad-stubs = "*"

@@ -22,6 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <charconv>
+
 #include <BRep_Builder.hxx>
 #include <BRep_Tool.hxx>
 #include <TopExp.hxx>

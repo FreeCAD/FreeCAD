@@ -27,6 +27,7 @@ These are common functions and classes for creating custom post processors.
 from Path.Base.MachineState import MachineState
 from Path.Main.Gui.Editor import CodeEditor
 from Path.Geom import CmdMoveDrill
+from Constants import GCODE_DRILL_EXTENDED, GCODE_MOVE_TAP
 
 from PySide import QtGui
 
@@ -49,6 +50,27 @@ translate = FreeCAD.Qt.translate
 FreeCADGui = None
 if FreeCAD.GuiUp:
     import FreeCADGui
+
+
+def apply_path_substitutions(file_path, job):
+    """Substitute %D, %d, %j and %M in file_path.
+
+    - %D: directory of the job's document
+    - %d: label of the job's document
+    - %j: label of the job
+    - %M: user macro directory
+    """
+    substitutions = {
+        "%D": os.path.dirname(job.Document.FileName or "."),
+        "%d": job.Document.Label,
+        "%j": job.Label,
+        "%M": os.path.dirname(FreeCAD.getUserMacroDir()),
+    }
+    for key, value in substitutions.items():
+        file_path = file_path.replace(key, value)
+
+    Path.Log.debug(f"file_path: {file_path}")
+    return file_path
 
 
 class FilenameGenerator:
@@ -132,17 +154,7 @@ class FilenameGenerator:
 
     def _apply_path_substitutions(self, file_path):
         """Apply substitutions based on job settings and other parameters."""
-        substitutions = {
-            "%D": os.path.dirname(self.job.Document.FileName or "."),
-            "%d": self.job.Document.Label,
-            "%j": self.job.Label,
-            "%M": os.path.dirname(FreeCAD.getUserMacroDir()),
-        }
-        for key, value in substitutions.items():
-            file_path = file_path.replace(key, value)
-
-        Path.Log.debug(f"file_path: {file_path}")
-        return file_path
+        return apply_path_substitutions(file_path, self.job)
 
     def _apply_filename_substitutions(self, file_name):
         Path.Log.debug(f"file_name: {file_name}")
@@ -376,11 +388,24 @@ def cannedCycleTerminator(path):
     # - if retract plane changes
     # - if retract mode (G98/G99) changes
 
+    # Inserted G98/G99/G80 carry the cycle's annotations so posts that key on
+    # them (e.g. linuxcnc rigid tapping on "operation") still recognize them.
+    def modal(name, annotations):
+        cmd = Path.Command(name)
+        if annotations:
+            # Not addAnnotations(): it rejects the numeric values some posts use.
+            cmd.Annotations = dict(annotations)
+        return cmd
+
     result = []
     cycle_active = False
     last_cycle_params = {}
+    last_cycle_annotations = {}
     last_retract_mode = None
     explicit_retract_mode_set = False
+    # Last literal G98/G99 in the path, kept until a G80. Cycles without a
+    # RetractMode annotation (e.g. the deprecated Tapping op) fall back to it.
+    path_retract_mode = None
 
     for command in path.Commands:
         if (
@@ -391,29 +416,33 @@ def cannedCycleTerminator(path):
             cycle_active = False
             last_retract_mode = None
             explicit_retract_mode_set = False
+            path_retract_mode = None
             result.append(command)
         elif command.Name in ["G98", "G99"]:
             # Explicit retract mode in the path - track it
             if cycle_active and last_retract_mode and command.Name != last_retract_mode:
                 # Mode changed while cycle active - terminate
-                result.append(Path.Command("G80"))
+                result.append(modal("G80", last_cycle_annotations))
                 cycle_active = False
             last_retract_mode = command.Name
             explicit_retract_mode_set = True
+            path_retract_mode = command.Name
             result.append(command)
-        elif command.Name in CmdMoveDrill:
+        elif command.Name in CmdMoveDrill + GCODE_DRILL_EXTENDED:
             # Check if this cycle has different parameters than the last one
             current_params = {k: v for k, v in command.Parameters.items() if k not in ["X", "Y"]}
 
             # Get retract mode from annotations
-            current_retract_mode = command.Annotations.get("RetractMode", "G98")
+            current_retract_mode = command.Annotations.get(
+                "RetractMode", path_retract_mode or "G98"
+            )
 
             # Check if we need to terminate the previous cycle
             if cycle_active and (
                 current_params != last_cycle_params or current_retract_mode != last_retract_mode
             ):
                 # Parameters or retract mode changed, terminate previous cycle
-                result.append(Path.Command("G80"))
+                result.append(modal("G80", last_cycle_annotations))
                 cycle_active = False
                 explicit_retract_mode_set = False
 
@@ -422,19 +451,25 @@ def cannedCycleTerminator(path):
             if (
                 not cycle_active or current_retract_mode != last_retract_mode
             ) and not explicit_retract_mode_set:
-                result.append(Path.Command(current_retract_mode))
+                retract = modal(current_retract_mode, command.Annotations)
+                if command.Name in GCODE_MOVE_TAP and result and result[-1].Name == "M29":
+                    # Rigid tap: keep the post's M29 S<rpm> directly before its tap.
+                    result.insert(len(result) - 1, retract)
+                else:
+                    result.append(retract)
 
             # Add the cycle command
             result.append(command)
             cycle_active = True
             last_cycle_params = current_params
+            last_cycle_annotations = command.Annotations
             last_retract_mode = current_retract_mode
             explicit_retract_mode_set = False  # Reset for next cycle
         else:
             # Non-cycle command (not G80 or drill cycle)
             if cycle_active:
                 # Terminate active cycle
-                result.append(Path.Command("G80"))
+                result.append(modal("G80", last_cycle_annotations))
                 cycle_active = False
                 last_retract_mode = None
             explicit_retract_mode_set = False
@@ -442,6 +477,6 @@ def cannedCycleTerminator(path):
 
     # If cycle is still active at the end, terminate it
     if cycle_active:
-        result.append(Path.Command("G80"))
+        result.append(modal("G80", last_cycle_annotations))
 
     return Path.Path(result)
