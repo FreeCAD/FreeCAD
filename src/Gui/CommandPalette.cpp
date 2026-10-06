@@ -27,7 +27,6 @@
 # include <QGuiApplication>
 # include <QKeyEvent>
 # include <QPainter>
-# include <QTextDocument>
 # include <QTimer>
 # include <QVBoxLayout>
 # include <QWindow>
@@ -153,14 +152,9 @@ void CommandItemDelegate::paint(
         QRect tooltipRect = textRect;
         tooltipRect.setTop(titleRect.bottom());
 
-        // strip HTML tags from tooltip
-        QTextDocument doc;
-        doc.setHtml(tooltip);
-        QString plainText = doc.toPlainText();
-
-        // elide if desc is too long
+        // the model gives plain text, elide it if it is too long
         QFontMetrics fm(tooltipFont);
-        QString elidedTooltip = fm.elidedText(plainText, Qt::ElideRight, tooltipRect.width());
+        QString elidedTooltip = fm.elidedText(tooltip, Qt::ElideRight, tooltipRect.width());
 
         painter->drawText(tooltipRect, Qt::AlignLeft | Qt::AlignVCenter, elidedTooltip);
     }
@@ -170,10 +164,9 @@ void CommandItemDelegate::paint(
 
 QSize CommandItemDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-    const QString tooltip = index.data(Qt::ToolTipRole).toString();
-
-    // if there's a tooltip, make the item taller
-    const double height = option.fontMetrics.height() * (tooltip.isEmpty() ? 1.5 : 2.8);
+    Q_UNUSED(index)
+    // every row has room for a description, so the view doesn't have to ask each row for its size
+    const double height = option.fontMetrics.height() * 2.8;
 
     return {option.rect.width(), static_cast<int>(height)};
 }
@@ -228,6 +221,7 @@ void CommandPalette::setupUi()
     commandListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     commandListView->setSelectionMode(QAbstractItemView::SingleSelection);
     commandListView->setItemDelegate(new CommandItemDelegate(this));
+    commandListView->setUniformItemSizes(true);
 
     mainLayout->addWidget(searchLineEdit);
     mainLayout->addWidget(commandListView);

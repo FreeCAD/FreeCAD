@@ -26,6 +26,7 @@
 #include <QLineEdit>
 #include <QAbstractItemView>
 #include <QSortFilterProxyModel>
+#include <QTextDocumentFragment>
 
 #include "Application.h"
 #include "ShortcutManager.h"
@@ -34,6 +35,7 @@
 #include "BitmapFactory.h"
 #include "CommandCompleter.h"
 #include "WorkbenchManager.h"
+#include "Language/Translator.h"
 
 using namespace Gui;
 
@@ -45,10 +47,42 @@ struct CmdInfo
     Command* cmd = nullptr;
     QIcon icon;
     bool iconChecked = false;
+    // the texts are worked out once, they are thrown away with the list when commands, shortcuts
+    // or the language change
+    bool textCached = false;
+    QString display;
+    QString menuText;
+    QString toolTip;
+    QString group;
+    // set before sorting
+    bool active = true;
+    int rank = 0;
 };
 std::vector<CmdInfo> _Commands;
 int _CommandRevision;
+std::string commandsLanguage;
 bool _ShortcutSignalConnected = false;
+
+void cacheText(CmdInfo& info)
+{
+    if (info.textCached) {
+        return;
+    }
+    info.textCached = true;
+
+    info.menuText = Action::commandMenuText(info.cmd);
+    info.display = QStringLiteral("%1 (%2)").arg(info.menuText, QString::fromUtf8(info.cmd->getName()));
+    QString shortcut = info.cmd->getShortcut();
+    if (!shortcut.isEmpty()) {
+        info.display += QStringLiteral(" [%1]").arg(shortcut);
+        info.menuText += QStringLiteral(" [%1]").arg(shortcut);
+    }
+    info.toolTip = Action::commandToolTip(info.cmd, false);
+    if (info.toolTip.contains(QLatin1Char('<'))) {
+        info.toolTip = QTextDocumentFragment::fromHtml(info.toolTip).toPlainText();
+    }
+    info.group = QString::fromUtf8(info.cmd->getGroupName());
+}
 
 class CommandModel: public QAbstractItemModel
 {
@@ -79,17 +113,51 @@ public:
         }
     }
 
+    /// Works out which commands can run and which belong to the active workbench. Returns true if
+    /// the order changes.
+    bool updateRanks()
+    {
+        const QString workbench = QString::fromStdString(WorkbenchManager::instance()->activeName());
+        bool changed = false;
+        for (auto& info : _Commands) {
+            cacheText(info);
+            bool active = true;
+            if (filterInactive) {
+                auto action = info.cmd->getAction();
+                // no action exists so assume inactive
+                active = action && action->action() && action->action()->isEnabled();
+            }
+            // active commands first, then the ones of the active workbench
+            int rank = (active ? 0 : 2) + (info.group == workbench ? 0 : 1);
+            if (active != info.active || rank != info.rank) {
+                info.active = active;
+                info.rank = rank;
+                changed = true;
+            }
+        }
+        if (changed && !_Commands.empty()) {
+            Q_EMIT dataChanged(
+                createIndex(0, 0),
+                createIndex(static_cast<int>(_Commands.size()) - 1, 0)
+            );
+        }
+        return changed;
+    }
+
     void update()
     {
         auto& manager = Application::Instance->commandManager();
-        if (revision == _CommandRevision && _CommandRevision == manager.getRevision()) {
+        const std::string language = Translator::instance()->activeLanguage();
+        if (revision == _CommandRevision && _CommandRevision == manager.getRevision()
+            && language == commandsLanguage) {
             return;
         }
         beginResetModel();
         revision = manager.getRevision();
-        if (revision != _CommandRevision) {
+        if (revision != _CommandRevision || language != commandsLanguage) {
             _CommandRevision = revision;
             _CommandRevision = manager.getRevision();
+            commandsLanguage = language;
             _Commands.clear();
             for (auto& v : manager.getCommands()) {
                 _Commands.emplace_back();
@@ -112,36 +180,17 @@ public:
         }
 
         auto& info = _Commands[index.row()];
-
-        // check if command is active to grey out if not
-        bool isActive = true;
-        if (filterInactive) {
-            if (info.cmd->getAction() && info.cmd->getAction()->action()) {
-                isActive = info.cmd->getAction()->action()->isEnabled();
-            }
-            else {
-                // no action exists so assume inactive
-                isActive = false;
-            }
+        if (role != Qt::DecorationRole && role != CommandNameRole) {
+            cacheText(info);
         }
 
         switch (role) {
             case Qt::DisplayRole:
-            case Qt::EditRole: {
-                QString title = QStringLiteral("%1 (%2)").arg(
-                    Action::commandMenuText(info.cmd),
-                    QString::fromUtf8(info.cmd->getName())
-                );
-                QString shortcut = info.cmd->getShortcut();
-                if (!shortcut.isEmpty()) {
-                    title += QStringLiteral(" [%1]").arg(shortcut);
-                }
-                return title;
-            }
+            case Qt::EditRole:
+                return info.display;
+
             case Qt::ToolTipRole:
-                // return just the tooltip text without formatting for the description line
-                // (richFormat = false)
-                return Action::commandToolTip(info.cmd, false);
+                return info.toolTip;
 
             case Qt::DecorationRole:
                 if (!info.iconChecked) {
@@ -154,7 +203,7 @@ public:
 
             case Qt::ForegroundRole:
                 // grey out inactive commands
-                if (!isActive) {
+                if (filterInactive && !info.active) {
                     return QColor(Qt::gray);
                 }
                 break;
@@ -162,17 +211,11 @@ public:
             case CommandNameRole:
                 return QByteArray(info.cmd->getName());
 
-            case CommandMenuTextRole: {
-                QString title = Action::commandMenuText(info.cmd);
-                QString shortcut = info.cmd->getShortcut();
-                if (!shortcut.isEmpty()) {
-                    title += QStringLiteral(" [%1]").arg(shortcut);
-                }
-                return title;
-            }
+            case CommandMenuTextRole:
+                return info.menuText;
 
             case CommandGroupRole:
-                return QString::fromUtf8(info.cmd->getGroupName());
+                return info.group;
 
             default:
                 break;
@@ -203,20 +246,9 @@ public:
 
         const auto& info = _Commands[index.row()];
 
-        bool isActive = true;
-        if (filterInactive) {
-            if (info.cmd->getAction() && info.cmd->getAction()->action()) {
-                isActive = info.cmd->getAction()->action()->isEnabled();
-            }
-            else {
-                // no action exists, so assume inactive
-                isActive = false;
-            }
-        }
-
         // so if item is visible but not active, keep it, but don't add `ItemIsEnabled` so
         // it won't be possible to select it
-        if (!isActive) {
+        if (filterInactive && !info.active) {
             return Qt::ItemIsSelectable;
         }
 
@@ -238,44 +270,18 @@ public:
 protected:
     bool lessThan(const QModelIndex& left, const QModelIndex& right) const override
     {
-        auto sourceModel = static_cast<CommandModel*>(this->sourceModel());
-        if (!sourceModel) {
+        const int count = static_cast<int>(_Commands.size());
+        if (left.row() < 0 || left.row() >= count || right.row() < 0 || right.row() >= count) {
             return QSortFilterProxyModel::lessThan(left, right);
         }
-
-        std::string activeWorkbench = WorkbenchManager::instance()->activeName();
-        if (left.row() < 0 || left.row() >= static_cast<int>(_Commands.size()) || right.row() < 0
-            || right.row() >= static_cast<int>(_Commands.size())) {
-            return QSortFilterProxyModel::lessThan(left, right);
+        auto& leftInfo = _Commands[left.row()];
+        auto& rightInfo = _Commands[right.row()];
+        if (leftInfo.rank != rightInfo.rank) {
+            return leftInfo.rank < rightInfo.rank;
         }
-
-        const Command* leftCmd = _Commands[left.row()].cmd;
-        const Command* rightCmd = _Commands[right.row()].cmd;
-
-        if (!leftCmd || !rightCmd) {
-            return QSortFilterProxyModel::lessThan(left, right);
-        }
-
-        // check if command is active and prioritize active one if the other is not
-        bool leftActive = (sourceModel->flags(left) & Qt::ItemIsEnabled) != 0;
-        bool rightActive = (sourceModel->flags(right) & Qt::ItemIsEnabled) != 0;
-        if (leftActive != rightActive) {
-            return leftActive > rightActive;
-        }
-
-        // next prioritize commands that are from the same workbench
-        // (currently used)
-        std::string leftGroup = leftCmd->getGroupName();
-        std::string rightGroup = rightCmd->getGroupName();
-        bool leftIsActiveWB = (leftGroup == activeWorkbench);
-        bool rightIsActiveWB = (rightGroup == activeWorkbench);
-
-        if (leftIsActiveWB != rightIsActiveWB) {
-            return leftIsActiveWB > rightIsActiveWB;
-        }
-
-        // use alphabetic sorting as last resort
-        return QSortFilterProxyModel::lessThan(left, right);
+        cacheText(leftInfo);
+        cacheText(rightInfo);
+        return QString::compare(leftInfo.display, rightInfo.display, Qt::CaseInsensitive) < 0;
     }
 };
 
@@ -313,13 +319,12 @@ void CommandCompleter::setFilterInactive(bool filter)
         return;
     }
 
-    // get source model and set filter flag
-    // also re-sort after changing the filter state just to be sure
-    // we get most fresh data
+    // sort again only when the order changes
     if (auto sourceModel = static_cast<CommandModel*>(proxyModel->sourceModel())) {
         sourceModel->setFilterInactive(filter);
-        proxyModel->invalidate();
-        proxyModel->sort(0);
+        if (sourceModel->updateRanks()) {
+            proxyModel->invalidate();
+        }
     }
 }
 
