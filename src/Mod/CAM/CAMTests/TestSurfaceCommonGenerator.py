@@ -366,8 +366,8 @@ class TestSurfaceCommon(PathTestUtils.PathTestBase):
         EXPECTED OUTPUT:
         - Returns a valid, non-None boundary shape.
         - The boundary's footprint is a circle matching the cylinder's
-          own diameter (~20mm across), not empty or distorted the way a
-          naive top-down projection of a vertical wall would produce.
+          own diameter (Mask~25mm, STL~20mm), not empty or distorted the
+          way a naive top-down projection of a vertical wall would produce.
         - The boundary sits at the wall's topmost Z (0), not its bottom
           (-20) -- confirming the true top rim was isolated and used,
           not an arbitrary wire.
@@ -386,14 +386,22 @@ class TestSurfaceCommon(PathTestUtils.PathTestBase):
         wall_faces = [f for f in cylinder.Faces if isinstance(f.Surface, Part.Cylinder)]
         self.assertEqual(len(wall_faces), 1, "Expected exactly one cylindrical wall face")
 
-        avoid_boundary = build_avoid_boundary(wall_faces, avoid_overlap=0.0, tolerance=0.01)
+        avoid_boundary, avoid_boundary_stl = build_avoid_boundary(
+            wall_faces, avoid_overlap=0.0, tool_radius=2.5, tolerance=0.01, needs_safe_stl=True
+        )
 
         self.assertIsNotNone(avoid_boundary)
-        self.assertAlmostEqual(avoid_boundary.BoundBox.XLength, 20.0, delta=0.5)
-        self.assertAlmostEqual(avoid_boundary.BoundBox.YLength, 20.0, delta=0.5)
+        self.assertIsNotNone(avoid_boundary_stl)
+
+        # Mask: 20 mm footprint + tool_radius + epsilon on each side
+        self.assertAlmostEqual(avoid_boundary.BoundBox.XLength, 25.02, delta=0.1)
+        self.assertAlmostEqual(avoid_boundary.BoundBox.YLength, 25.02, delta=0.1)
+        # STL pillar: 20 mm footprint + epsilon only (no tool_radius)
+        self.assertAlmostEqual(avoid_boundary_stl.BoundBox.XLength, 20.02, delta=0.1)
+        self.assertAlmostEqual(avoid_boundary_stl.BoundBox.YLength, 20.02, delta=0.1)
+        # The two differ by exactly the tool diameter
         self.assertAlmostEqual(
-            avoid_boundary.BoundBox.ZMax,
-            0.0,
-            delta=0.5,
-            msg="Boundary should be capped at the wall's TOP rim (Z=0), not its bottom",
+            avoid_boundary.BoundBox.XLength - avoid_boundary_stl.BoundBox.XLength,
+            5.0,
+            delta=0.05,
         )

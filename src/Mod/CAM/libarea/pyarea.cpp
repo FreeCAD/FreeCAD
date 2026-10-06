@@ -106,9 +106,10 @@ static double get_clipper_scale()
     return CArea::get_clipper_scale();
 }
 
-static void set_clipper_scale(double scale)
+static void set_clipper_scale_and_point_tolerance(double scale)
 {
     CArea::set_clipper_scale(scale);
+    CArea::set_tolerance(1.0 / scale);
 }
 
 static CArea copy_area(const CArea& area)
@@ -323,7 +324,7 @@ void init_pyarea(py::module& m)
     m.def("get_fit_arcs", get_fit_arcs);
     m.def("set_fit_arcs", set_fit_arcs);
     m.def("get_clipper_scale", get_clipper_scale);
-    m.def("set_clipper_scale", set_clipper_scale);
+    m.def("set_clipper_scale_and_point_tolerance", set_clipper_scale_and_point_tolerance);
     m.def("copy_area", copy_area);
     m.def("holes_linked", holes_linked);
 

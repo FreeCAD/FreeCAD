@@ -129,6 +129,7 @@ protected:
 private:
     void objectDeleted(const Gui::ViewProviderDocumentObject&);
     void documentDeleted(const Gui::Document&);
+    void forgetViewProvider();
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void updateReferencesUI();
 
@@ -258,6 +259,7 @@ private:
     // Double-click accept
     static void handleMouseButtonCB(void* userdata, SoEventCallback* cb);
     QPointer<Gui::View3DInventorViewer> dblClickViewer;
+    fastsignals::scoped_connection connectDelObject;
     SbTime lastClickTime;
     SbVec2s lastClickPos = SbVec2s(-16000, -16000);
 };

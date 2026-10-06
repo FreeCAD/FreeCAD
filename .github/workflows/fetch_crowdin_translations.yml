@@ -6,7 +6,7 @@ on:
     - cron: "0 0 * * 1"
 
 env:
-  TRANSLATION_REF: "main"
+  TRANSLATION_REF: "releases/FreeCAD-26-3"
 
 # Writes happen via the GH_TOKEN_FOR_CROWDIN_SYNC secret; GITHUB_TOKEN stays read-only.
 permissions:
@@ -23,7 +23,7 @@ jobs:
           egress-policy: audit
 
       - name: Checkout repo
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
           ref: ${{ env.TRANSLATION_REF }}
@@ -34,7 +34,7 @@ jobs:
           echo "PR_BRANCH=update-crowdin-translations-${TRANSLATION_REF//\//-}" >> "$GITHUB_ENV"
 
       - name: Install Qt ≥ 6.8
-        uses: jurplel/install-qt-action@48d3ad6db93f3627c8ee7a0454bc6f3744f7e730
+        uses: jurplel/install-qt-action@a9c63c7c123f3069cff414e7e482d95dfa9d8125
         with:
           aqtversion: "==3.1.*"
           version: "6.8.3"
@@ -43,7 +43,7 @@ jobs:
           arch: "linux_gcc_64"
 
       - name: Setup Python & dependencies
-        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
           python-version: "3.13"
       - name: Install Python packages
