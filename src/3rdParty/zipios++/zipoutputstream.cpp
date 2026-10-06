@@ -47,6 +47,9 @@ void ZipOutputStream::close() {
   ozf->close() ;  
   if ( ofs )
     ofs->close() ;
+
+  if ( ozf->hasWriteFailed() || ( ofs && ofs->fail() ) )
+    setstate( std::ios::badbit ) ;
 }
 
 

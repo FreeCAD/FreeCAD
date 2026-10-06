@@ -54,6 +54,10 @@ public:
       bytes written to the stream. */
   uint32 getCount() const         { return _overflown_bytes ; } 
 
+  /** Returns true if writing to the underlying streambuf has failed
+      at some point, i.e. the output is incomplete. */
+  bool hasWriteFailed() const     { return _write_failed ;    }
+
 protected:
   virtual int overflow( int c = EOF ) ;
   virtual int sync() ;
@@ -76,6 +80,7 @@ protected: // FIXME: reconsider design?
 
   uint32 _crc32 ;
   uint32 _overflown_bytes ;
+  bool _write_failed ;
 };
 
 

@@ -381,6 +381,14 @@ void ZipWriter::writeFiles()
     }
 }
 
+void ZipWriter::close()
+{
+    ZipStream.close();
+    if (ZipStream.fail()) {
+        addError("Incomplete zip archive");
+    }
+}
+
 ZipWriter::~ZipWriter()
 {
     ZipStream.close();

@@ -22,7 +22,8 @@ DeflateOutputStreambuf::DeflateOutputStreambuf( streambuf *outbuf, bool user_ini
     _invecsize      ( 1000             ),
     _invec          ( _invecsize       ),
     _outvecsize     ( 1000             ),
-    _outvec         ( _outvecsize      )
+    _outvec         ( _outvecsize      ),
+    _write_failed   ( false            )
 {
   // NOTICE: It is important that this constructor and the methods it
   // calls doesn't do anything with the output streambuf _outbuf The
@@ -166,7 +167,10 @@ bool DeflateOutputStreambuf::flushOutvec() {
   _zs.next_out = reinterpret_cast< unsigned char * >( &( _outvec[ 0 ] ) ) ;
   _zs.avail_out = _outvecsize ;
 
-  return deflated_bytes == bc ;
+  if ( deflated_bytes != bc )
+    _write_failed = true ;
+
+  return ! _write_failed ;
 }
 
 

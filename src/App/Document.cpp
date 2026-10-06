@@ -2057,7 +2057,22 @@ bool Document::saveToFile(const char* filename) const
 
         // write additional files
         writer.writeFiles();
+
+        // The central directory is written when closing the archive and the
+        // last bytes reach the disk when closing the file, so do both before
+        // deciding whether the save succeeded.
+        writer.close();
+        file.close();
+        if (file.fail()) {
+            writer.addError("Cannot flush data to disk");
+        }
+
         if (writer.hasErrors()) {
+            // don't leave a broken tmp. file behind
+            if (policy) {
+                tmp.deleteFile();
+            }
+
             // retrieve Writer error strings
             std::stringstream message;
             message << "Failed to write all data to file ";

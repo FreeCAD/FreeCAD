@@ -243,6 +243,8 @@ public:
         ZipStream.setLevel(level);
     }
     void putNextEntry(const char* filename, const char* objName = nullptr) override;
+    /// Finishes the archive and records an error if not all data could be written.
+    void close();
 
     ZipWriter(const ZipWriter&) = delete;
     ZipWriter(ZipWriter&&) = delete;

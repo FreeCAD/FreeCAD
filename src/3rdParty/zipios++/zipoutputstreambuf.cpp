@@ -50,6 +50,8 @@ void ZipOutputStreambuf::finish() {
   closeEntry() ;
   ostream os( _outbuf ) ;
   writeCentralDirectory( _entries, EndOfCentralDirectory( _zip_comment), os ) ;
+  if ( os.fail() )
+    _write_failed = true ;
   _open = false ;
 }
 
@@ -76,6 +78,8 @@ void ZipOutputStreambuf::putNextEntry( const ZipCDirEntry &entry ) {
   ent.setMethod( _method ) ;
   
   os << static_cast< ZipLocalEntry >( ent ) ;
+  if ( os.fail() )
+    _write_failed = true ;
 
   _open_entry = true ;
 }
@@ -159,6 +163,8 @@ void ZipOutputStreambuf::updateEntryHeaderInfo() {
   os.seekp( entry.getLocalHeaderOffset() ) ;
   os << static_cast< ZipLocalEntry >( entry ) ;
   os.seekp( curr_pos ) ;
+  if ( os.fail() )
+    _write_failed = true ;
 }
 
 

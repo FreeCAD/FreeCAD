@@ -139,6 +139,12 @@ void writeCompressedRecoverySnapshot(const App::Document& doc, bool saveBinaryBr
     writer.setComment("AutoRecovery file");
     writer.setLevel(1);  // Prefer lower latency over compression ratio for autosave.
     writeRecoverySnapshotContents(doc, writer);
+
+    writer.close();
+    file.close();
+    if (writer.hasErrors() || file.fail()) {
+        throw Base::FileException("Failed to write all data to auto-recovery archive", fileInfo);
+    }
 }
 
 }  // namespace
