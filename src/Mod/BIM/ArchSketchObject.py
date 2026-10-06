@@ -76,8 +76,5 @@ class ArchSketch(ArchSketchObject):
     def __init__(self, obj):
         pass
 
-    def setPropertiesLinkCommon(self, orgFp, linkFp=None, mode=None):
-        pass
-
 
 # from ArchSketchObjectExt import ArchSketch  # Doesn't work
