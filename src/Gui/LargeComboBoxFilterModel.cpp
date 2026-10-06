@@ -15,9 +15,21 @@ LargeComboBoxFilterModel::LargeComboBoxFilterModel(QObject* parent)
 
 void LargeComboBoxFilterModel::setSearchText(const QString& text)
 {
-    m_searchText = text.trimmed();
+    const QString newSearchText = text.trimmed();
+
+    if (m_searchText == newSearchText) {
+        return;
+    }
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 10, 0)
     beginFilterChange();
-    endFilterChange();
+    m_searchText = newSearchText;
+    endFilterChange(Direction::Rows);
+#else
+    m_searchText = newSearchText;
+    invalidateFilter();
+#endif
+
     sort(0, Qt::AscendingOrder);
 }
 
