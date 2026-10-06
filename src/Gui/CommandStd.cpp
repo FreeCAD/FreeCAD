@@ -1101,7 +1101,7 @@ StdCmdCommandPalette::StdCmdCommandPalette()
     sToolTipText = QT_TR_NOOP("Open the command palette to search and execute commands");
     sWhatsThis = "Std_CommandPalette";
     sStatusTip = sToolTipText;
-    sAccel = "Ctrl+Shift+P";
+    sAccel = "F3";
     sPixmap = "accessories-text-editor";
     eType = 0;
 }

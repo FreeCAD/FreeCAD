@@ -63,7 +63,7 @@ public:
  * - Execute commands by pressing Enter or double-clicking
  * - Close the palette with Escape
  *
- * The palette is triggered by a keyboard shortcut (default: Ctrl+Shift+P)
+ * The palette is triggered by a keyboard shortcut (default: F3)
  */
 class GuiExport CommandPalette: public QDialog
 {
