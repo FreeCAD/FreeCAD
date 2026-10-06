@@ -52,7 +52,7 @@ public:
 
     /// Enable or disable filtering of inactive commands
     void setFilterInactive(bool filter);
-    /// List the commands whose title starts with the text first, then those with a word that does
+    /// Filter and order the command palette's commands by how well they match the text
     void setSearchText(const QString& text);
 
 Q_SIGNALS:

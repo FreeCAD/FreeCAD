@@ -21,6 +21,7 @@
  ****************************************************************************/
 
 #include <algorithm>
+#include <tuple>
 #include <unordered_set>
 #include <QApplication>
 #include <QHash>
@@ -36,6 +37,7 @@
 #include "Action.h"
 #include "BitmapFactory.h"
 #include "CommandCompleter.h"
+#include "FuzzyMatcher.h"
 #include "Workbench.h"
 #include "WorkbenchManager.h"
 #include "Language/Translator.h"
@@ -53,13 +55,17 @@ struct CmdInfo
     // thrown away with the list when commands, shortcuts or the language change
     bool textCached = false;
     QString title;
+    QString searchTitle;
     QString display;
+    QString searchDisplay;
     QString menuText;
     QString toolTip;
     QString group;
     bool active = true;
     int rank = 0;
+    bool matched = true;
     int match = 0;
+    int score = 0;
     // a drop-down whose entries are all listed as commands of their own
     bool coveredGroup = false;
 };
@@ -76,6 +82,7 @@ void cacheText(CmdInfo& info)
     info.textCached = true;
 
     info.title = Action::commandMenuText(info.cmd);
+    info.searchTitle = info.title.toLower();
     info.menuText = info.title;
     info.display = QStringLiteral("%1 (%2)").arg(info.title, QString::fromUtf8(info.cmd->getName()));
     QString shortcut = info.cmd->getShortcut();
@@ -83,6 +90,7 @@ void cacheText(CmdInfo& info)
         info.display += QStringLiteral(" [%1]").arg(shortcut);
         info.menuText += QStringLiteral(" [%1]").arg(shortcut);
     }
+    info.searchDisplay = info.display.toLower();
     info.toolTip = Action::commandToolTip(info.cmd, false);
     if (info.toolTip.contains(QLatin1Char('<'))) {
         info.toolTip = QTextDocumentFragment::fromHtml(info.toolTip).toPlainText();
@@ -90,19 +98,32 @@ void cacheText(CmdInfo& info)
     info.group = QString::fromUtf8(info.cmd->getGroupName());
 }
 
-/// 0 when the title starts with the text, 1 when one of its words does, 2 otherwise
-int matchQuality(const QString& title, const QString& text)
+/// match is 0 when the title starts with the text, 1 when one of its words does, 2 when it contains
+/// it elsewhere and 3 when FuzzyMatcher only finds its letters in order or the name or shortcut match
+bool matchCommand(const CmdInfo& info, const QString& lowercaseText, int& match, int& score)
 {
-    if (text.isEmpty() || title.startsWith(text, Qt::CaseInsensitive)) {
-        return 0;
+    match = 0;
+    score = 0;
+    if (lowercaseText.isEmpty()) {
+        return true;
     }
-    for (qsizetype i = 1; i < title.size(); ++i) {
-        if (!title.at(i - 1).isLetterOrNumber()
-            && QStringView(title).mid(i).startsWith(text, Qt::CaseInsensitive)) {
-            return 1;
+    const bool found = FuzzyMatcher::matchLowercase(lowercaseText, info.searchTitle, score);
+    const qsizetype index = info.searchTitle.indexOf(lowercaseText);
+    if (index < 0) {
+        match = 3;
+        return found || info.searchDisplay.contains(lowercaseText);
+    }
+    if (index > 0) {
+        match = 2;
+        for (qsizetype i = index; i < info.searchTitle.size(); ++i) {
+            if (!info.searchTitle.at(i - 1).isLetterOrNumber()
+                && QStringView(info.searchTitle).mid(i).startsWith(lowercaseText)) {
+                match = 1;
+                break;
+            }
         }
     }
-    return 2;
+    return true;
 }
 
 /// The actions in the drop-down of a C++ group are the actions of its commands.
@@ -254,15 +275,20 @@ public:
         return changed;
     }
 
-    /// Returns true if the order changes.
+    /// Returns true if the listed commands or their order change.
     bool setSearchText(const QString& text)
     {
+        const QString lowercaseText = text.toLower();
         bool changed = false;
         for (auto& info : _Commands) {
             cacheText(info);
-            const int match = matchQuality(info.title, text);
-            if (match != info.match) {
+            int match = 0;
+            int score = 0;
+            const bool matched = matchCommand(info, lowercaseText, match, score);
+            if (matched != info.matched || match != info.match || score != info.score) {
+                info.matched = matched;
                 info.match = match;
+                info.score = score;
                 changed = true;
             }
         }
@@ -401,7 +427,8 @@ protected:
         if (!paletteMode || sourceRow < 0 || sourceRow >= static_cast<int>(_Commands.size())) {
             return true;
         }
-        return !_Commands[sourceRow].coveredGroup;
+        const auto& info = _Commands[sourceRow];
+        return info.matched && !info.coveredGroup;
     }
 
     bool lessThan(const QModelIndex& left, const QModelIndex& right) const override
@@ -413,11 +440,14 @@ protected:
         auto& leftInfo = _Commands[left.row()];
         auto& rightInfo = _Commands[right.row()];
         // the ranks are kept with the shared command list, so only the palette may use them
-        if (paletteMode && leftInfo.rank != rightInfo.rank) {
-            return leftInfo.rank < rightInfo.rank;
-        }
-        if (paletteMode && leftInfo.match != rightInfo.match) {
-            return leftInfo.match < rightInfo.match;
+        if (paletteMode) {
+            // commands that only match by their letters in order come after all the others
+            const auto order = [](const CmdInfo& info) {
+                return std::make_tuple(info.rank / 2, info.match == 3, info.rank, info.match, -info.score);
+            };
+            if (order(leftInfo) != order(rightInfo)) {
+                return order(leftInfo) < order(rightInfo);
+            }
         }
         cacheText(leftInfo);
         cacheText(rightInfo);
