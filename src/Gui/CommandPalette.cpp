@@ -180,7 +180,8 @@ CommandPalette::CommandPalette(QWidget* parent)
     setupUi();
 
     setModal(false);
-    setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint | Qt::BypassWindowManagerHint);
+    // a popup closes by itself on a click outside it or on Escape
+    setWindowFlags(Qt::Popup | Qt::FramelessWindowHint);
     setAttribute(Qt::WA_TranslucentBackground, false);
 
     searchLineEdit->installEventFilter(this);
@@ -275,26 +276,6 @@ void CommandPalette::centerOnMainWindow()
 
 bool CommandPalette::eventFilter(QObject* obj, QEvent* event)
 {
-    if (event->type() == QEvent::MouseButtonPress) {
-        QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
-
-        if (mouseEvent->button() == Qt::LeftButton) {
-            QWidget* widget = qobject_cast<QWidget*>(obj);
-            if (widget) {
-                if (widget == this || widget->isAncestorOf(this) || isAncestorOf(widget)) {
-                    return QDialog::eventFilter(obj, event);
-                }
-            }
-
-            // check if click is outside the dialog and close if yes
-            QPoint globalPos = mouseEvent->globalPosition().toPoint();
-            if (isClickOutside(globalPos)) {
-                close();
-                return false;  // propagate further to target widget
-            }
-        }
-    }
-
     if (obj == searchLineEdit && event->type() == QEvent::KeyPress) {
         QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
 
@@ -323,33 +304,6 @@ bool CommandPalette::eventFilter(QObject* obj, QEvent* event)
     }
 
     return QDialog::eventFilter(obj, event);
-}
-
-void CommandPalette::closeEvent(QCloseEvent* event)
-{
-    QDialog::closeEvent(event);
-}
-
-void CommandPalette::showEvent(QShowEvent* event)
-{
-    QDialog::showEvent(event);
-
-    // install application-wide event filter to catch clicks outside
-    qApp->installEventFilter(this);
-}
-
-void CommandPalette::hideEvent(QHideEvent* event)
-{
-    QDialog::hideEvent(event);
-
-    // remove application-wide event filter when hidden
-    qApp->removeEventFilter(this);
-}
-
-bool CommandPalette::isClickOutside(const QPoint& globalPos) const
-{
-    QRect dialogRect = QRect(mapToGlobal(QPoint(0, 0)), size());
-    return !dialogRect.contains(globalPos);
 }
 
 void CommandPalette::onCommandActivated(const QByteArray& commandName)

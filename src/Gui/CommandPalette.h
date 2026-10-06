@@ -76,9 +76,6 @@ public:
 
 protected:
     bool eventFilter(QObject* obj, QEvent* event) override;
-    void closeEvent(QCloseEvent* event) override;
-    void showEvent(QShowEvent* event) override;
-    void hideEvent(QHideEvent* event) override;
 
 private Q_SLOTS:
     void onCommandActivated(const QByteArray& commandName);
@@ -88,7 +85,6 @@ private Q_SLOTS:
 private:
     void setupUi();
     void centerOnMainWindow();
-    bool isClickOutside(const QPoint& globalPos) const;
 
     QLineEdit* searchLineEdit;
     QListView* commandListView;
