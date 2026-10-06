@@ -319,8 +319,9 @@ void CommandCompleter::setFilterInactive(bool filter)
         return;
     }
 
-    // sort again only when the order changes
+    // pick up commands added since the last time, then sort again only when the order changes
     if (auto sourceModel = static_cast<CommandModel*>(proxyModel->sourceModel())) {
+        sourceModel->update();
         sourceModel->setFilterInactive(filter);
         if (sourceModel->updateRanks()) {
             proxyModel->invalidate();
