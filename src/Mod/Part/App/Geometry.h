@@ -544,6 +544,11 @@ public:
     ~GeomRestrictedCurve() override;
     Geometry* copy() const override;
     GeomCurve* createArc(double first, double last) const override;
+
+    // Persistence implementer ---------------------
+    unsigned int getMemSize() const override;
+    void Save(Base::Writer& /*writer*/) const override;
+    void Restore(Base::XMLReader& /*reader*/) override;
 };
 
 class PartExport GeomArcOfConic: public GeomTrimmedCurve
