@@ -2414,7 +2414,7 @@ void AssemblyObject::getRackPinionMarkers(
     Base::Rotation yawRotation(currentZAxis, yawAdjustment);
 
     // Combine the initial rotation with the yaw adjustment
-    Base::Rotation adjustedRotation = rot * yawRotation;
+    Base::Rotation adjustedRotation = yawRotation * rot;
     plc1.setRotation(adjustedRotation);
 
     // Then end of processing similar to handleOneSideOfJoint :
