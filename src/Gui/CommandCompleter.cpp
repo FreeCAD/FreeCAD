@@ -335,13 +335,6 @@ public:
                 }
                 return info.icon;
 
-            case Qt::ForegroundRole:
-                // grey out inactive commands
-                if (filterInactive && !info.active) {
-                    return QColor(Qt::gray);
-                }
-                break;
-
             case CommandNameRole:
                 return QByteArray(info.cmd->getName());
 
