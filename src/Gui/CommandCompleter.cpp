@@ -62,6 +62,8 @@ struct CmdInfo
     bool active = true;
     int rank = 0;
     int match = 0;
+    // a drop-down whose entries are all listed as commands of their own
+    bool coveredGroup = false;
 };
 std::vector<CmdInfo> _Commands;
 int _CommandRevision;
@@ -106,9 +108,59 @@ int matchQuality(const QString& title, const QString& text)
     return 2;
 }
 
+/// The command of each action. The actions in the drop-down of a C++ group are the actions of its
+/// commands.
+QHash<const QAction*, const char*> commandsByAction()
+{
+    QHash<const QAction*, const char*> commandOfAction;
+    for (const auto& info : _Commands) {
+        auto action = info.cmd->getAction();
+        if (action && action->action()) {
+            commandOfAction.insert(action->action(), info.cmd->getName());
+        }
+    }
+    return commandOfAction;
+}
+
+struct GroupEntries
+{
+    std::vector<QByteArray> commands;
+    // false when the drop-down holds an entry that isn't a command of its own
+    bool allCommands = false;
+};
+
+/// The commands in the drop-down of a group command. Python groups name them in a property.
+GroupEntries entriesOfGroup(Command* command, const QHash<const QAction*, const char*>& commandOfAction)
+{
+    GroupEntries entries;
+    auto group = qobject_cast<ActionGroup*>(command->getAction());
+    if (!group) {
+        return entries;
+    }
+    entries.allCommands = true;
+    for (auto action : group->actions()) {
+        if (action->isSeparator()) {
+            continue;
+        }
+        QByteArray name = action->property("CommandName").toByteArray();
+        if (name.isEmpty()) {
+            name = commandOfAction.value(action);
+        }
+        if (name.isEmpty()) {
+            entries.allCommands = false;
+        }
+        else {
+            entries.commands.push_back(name);
+        }
+    }
+    return entries;
+}
+
 /// The commands on the active workbench's own toolbars, including those in their drop-down groups.
 /// The standard toolbars are left out, every workbench shows them.
-std::unordered_set<std::string> commandsOfActiveWorkbench()
+std::unordered_set<std::string> commandsOfActiveWorkbench(
+    const QHash<const QAction*, const char*>& commandOfAction
+)
 {
     std::unordered_set<std::string> names;
     auto workbench = WorkbenchManager::instance()->active();
@@ -128,29 +180,11 @@ std::unordered_set<std::string> commandsOfActiveWorkbench()
         }
     }
 
-    // Python groups name their commands in a property, the actions of C++ groups are the actions
-    // of the commands themselves
-    QHash<const QAction*, const char*> commandOfAction;
-    for (const auto& info : _Commands) {
-        auto action = info.cmd->getAction();
-        if (action && action->action()) {
-            commandOfAction.insert(action->action(), info.cmd->getName());
-        }
-    }
     auto& manager = Application::Instance->commandManager();
     const std::vector<std::string> toolbarCommands(names.begin(), names.end());
     for (const auto& name : toolbarCommands) {
-        auto command = manager.getCommandByName(name.c_str());
-        auto group = command ? qobject_cast<ActionGroup*>(command->getAction()) : nullptr;
-        if (!group) {
-            continue;
-        }
-        for (auto action : group->actions()) {
-            QByteArray child = action->property("CommandName").toByteArray();
-            if (child.isEmpty()) {
-                child = commandOfAction.value(action);
-            }
-            if (!child.isEmpty()) {
+        if (auto command = manager.getCommandByName(name.c_str())) {
+            for (const auto& child : entriesOfGroup(command, commandOfAction).commands) {
                 names.insert(child.toStdString());
             }
         }
@@ -194,24 +228,29 @@ public:
     /// the order changes.
     bool updateRanks()
     {
+        const auto commandOfAction = commandsByAction();
         // the group name of a command can't tell if it belongs to the active workbench, it differs
         // from the workbench name
-        const std::unordered_set<std::string> workbenchCommands = commandsOfActiveWorkbench();
+        const auto workbenchCommands = commandsOfActiveWorkbench(commandOfAction);
         bool changed = false;
         for (auto& info : _Commands) {
             cacheText(info);
             bool active = true;
+            bool coveredGroup = false;
             if (filterInactive) {
                 auto action = info.cmd->getAction();
                 // no action exists so assume inactive
                 active = action && action->action() && action->action()->isEnabled();
+                const auto entries = entriesOfGroup(info.cmd, commandOfAction);
+                coveredGroup = entries.allCommands && !entries.commands.empty();
             }
             // active commands first, then the ones of the active workbench
             const bool inWorkbench = workbenchCommands.count(info.cmd->getName()) > 0;
             int rank = (active ? 0 : 2) + (inWorkbench ? 0 : 1);
-            if (active != info.active || rank != info.rank) {
+            if (active != info.active || rank != info.rank || coveredGroup != info.coveredGroup) {
                 info.active = active;
                 info.rank = rank;
+                info.coveredGroup = coveredGroup;
                 changed = true;
             }
         }
@@ -362,16 +401,25 @@ public:
         setSortRole(Qt::DisplayRole);
     }
 
-    /// The command palette ranks the commands, other command searches list them alphabetically.
-    /// Returns true if this changes.
-    bool setPaletteOrder(bool palette)
+    /// The command palette ranks the commands and leaves out drop-downs whose entries are listed
+    /// anyway; other command searches list all of them alphabetically. Returns true if this changes.
+    bool setPaletteMode(bool palette)
     {
-        const bool changed = paletteOrder != palette;
-        paletteOrder = palette;
+        const bool changed = paletteMode != palette;
+        paletteMode = palette;
         return changed;
     }
 
 protected:
+    bool filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const override
+    {
+        Q_UNUSED(sourceParent)
+        if (!paletteMode || sourceRow < 0 || sourceRow >= static_cast<int>(_Commands.size())) {
+            return true;
+        }
+        return !_Commands[sourceRow].coveredGroup;
+    }
+
     bool lessThan(const QModelIndex& left, const QModelIndex& right) const override
     {
         const int count = static_cast<int>(_Commands.size());
@@ -381,10 +429,10 @@ protected:
         auto& leftInfo = _Commands[left.row()];
         auto& rightInfo = _Commands[right.row()];
         // the ranks are kept with the shared command list, so only the palette may use them
-        if (paletteOrder && leftInfo.rank != rightInfo.rank) {
+        if (paletteMode && leftInfo.rank != rightInfo.rank) {
             return leftInfo.rank < rightInfo.rank;
         }
-        if (paletteOrder && leftInfo.match != rightInfo.match) {
+        if (paletteMode && leftInfo.match != rightInfo.match) {
             return leftInfo.match < rightInfo.match;
         }
         cacheText(leftInfo);
@@ -393,7 +441,7 @@ protected:
     }
 
 private:
-    bool paletteOrder = false;
+    bool paletteMode = false;
 };
 
 }  // anonymous namespace
@@ -434,7 +482,7 @@ void CommandCompleter::setFilterInactive(bool filter)
     if (auto sourceModel = static_cast<CommandModel*>(proxyModel->sourceModel())) {
         sourceModel->update();
         sourceModel->setFilterInactive(filter);
-        const bool reordered = proxyModel->setPaletteOrder(filter);
+        const bool reordered = proxyModel->setPaletteMode(filter);
         if (sourceModel->updateRanks() || reordered) {
             proxyModel->invalidate();
         }
