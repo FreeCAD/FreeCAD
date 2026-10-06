@@ -374,7 +374,8 @@ public:
 
     Qt::ItemFlags flags(const QModelIndex& index) const override
     {
-        if (!index.isValid()) {
+        // another model may have rebuilt the shared list already
+        if (!index.isValid() || index.row() >= static_cast<int>(_Commands.size())) {
             return Qt::NoItemFlags;
         }
 
