@@ -50,15 +50,13 @@ struct CmdInfo
     Command* cmd = nullptr;
     QIcon icon;
     bool iconChecked = false;
-    // the texts are worked out once, they are thrown away with the list when commands, shortcuts
-    // or the language change
+    // thrown away with the list when commands, shortcuts or the language change
     bool textCached = false;
     QString title;
     QString display;
     QString menuText;
     QString toolTip;
     QString group;
-    // set before sorting
     bool active = true;
     int rank = 0;
     int match = 0;
@@ -92,8 +90,7 @@ void cacheText(CmdInfo& info)
     info.group = QString::fromUtf8(info.cmd->getGroupName());
 }
 
-/// How well a title matches the search text: 0 when it starts with it, 1 when one of its words
-/// does, 2 otherwise.
+/// 0 when the title starts with the text, 1 when one of its words does, 2 otherwise
 int matchQuality(const QString& title, const QString& text)
 {
     if (text.isEmpty() || title.startsWith(text, Qt::CaseInsensitive)) {
@@ -108,8 +105,7 @@ int matchQuality(const QString& title, const QString& text)
     return 2;
 }
 
-/// The command of each action. The actions in the drop-down of a C++ group are the actions of its
-/// commands.
+/// The actions in the drop-down of a C++ group are the actions of its commands.
 QHash<const QAction*, const char*> commandsByAction()
 {
     QHash<const QAction*, const char*> commandOfAction;
@@ -129,7 +125,6 @@ struct GroupEntries
     bool allCommands = false;
 };
 
-/// The commands in the drop-down of a group command. Python groups name them in a property.
 GroupEntries entriesOfGroup(Command* command, const QHash<const QAction*, const char*>& commandOfAction)
 {
     GroupEntries entries;
@@ -156,7 +151,6 @@ GroupEntries entriesOfGroup(Command* command, const QHash<const QAction*, const 
     return entries;
 }
 
-/// The commands on the active workbench's own toolbars, including those in their drop-down groups.
 /// The standard toolbars are left out, every workbench shows them.
 std::unordered_set<std::string> commandsOfActiveWorkbench(
     const QHash<const QAction*, const char*>& commandOfAction
@@ -224,8 +218,7 @@ public:
         }
     }
 
-    /// Works out which commands can run and which belong to the active workbench. Returns true if
-    /// the order changes.
+    /// Returns true if the order changes.
     bool updateRanks()
     {
         const auto commandOfAction = commandsByAction();
@@ -239,12 +232,10 @@ public:
             bool coveredGroup = false;
             if (filterInactive) {
                 auto action = info.cmd->getAction();
-                // no action exists so assume inactive
                 active = action && action->action() && action->action()->isEnabled();
                 const auto entries = entriesOfGroup(info.cmd, commandOfAction);
                 coveredGroup = entries.allCommands && !entries.commands.empty();
             }
-            // active commands first, then the ones of the active workbench
             const bool inWorkbench = workbenchCommands.count(info.cmd->getName()) > 0;
             int rank = (active ? 0 : 2) + (inWorkbench ? 0 : 1);
             if (active != info.active || rank != info.rank || coveredGroup != info.coveredGroup) {
@@ -263,7 +254,7 @@ public:
         return changed;
     }
 
-    /// Works out how well each command matches the search text. Returns true if the order changes.
+    /// Returns true if the order changes.
     bool setSearchText(const QString& text)
     {
         bool changed = false;
@@ -395,8 +386,7 @@ public:
         setSortRole(Qt::DisplayRole);
     }
 
-    /// The command palette ranks the commands and leaves out drop-downs whose entries are listed
-    /// anyway; other command searches list all of them alphabetically. Returns true if this changes.
+    /// Only the palette ranks the commands and leaves out covered drop-downs.
     bool setPaletteMode(bool palette)
     {
         const bool changed = paletteMode != palette;

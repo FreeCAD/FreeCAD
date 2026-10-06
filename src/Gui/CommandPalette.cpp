@@ -74,7 +74,6 @@ void CommandItemDelegate::paint(
     constexpr int groupAlpha = 150;
     constexpr int descriptionAlpha = 180;
 
-    // commands that can't run right now are drawn greyed out
     bool isEnabled = (index.flags() & Qt::ItemIsEnabled);
 
     QRect iconRect = rect;
@@ -106,7 +105,6 @@ void CommandItemDelegate::paint(
         titleRect.setHeight(textRect.height() / 2);
     }
 
-    // the group name goes on the right of the title
     if (!groupName.isEmpty()) {
         QFont groupFont = titleFont;
         groupFont.setPointSize(qMax(groupFont.pointSize() - 1, smallestPointSize));
@@ -132,7 +130,6 @@ void CommandItemDelegate::paint(
 
     painter->drawText(titleRect, Qt::AlignLeft | Qt::AlignVCenter, title);
 
-    // the description goes on a second, lighter line
     if (!tooltip.isEmpty()) {
         QFont tooltipFont = option.font;
         tooltipFont.setPointSize(qMax(tooltipFont.pointSize() - 1, smallestPointSize));
@@ -145,7 +142,6 @@ void CommandItemDelegate::paint(
         QRect tooltipRect = textRect;
         tooltipRect.setTop(titleRect.bottom());
 
-        // the model gives plain text, elide it if it is too long
         QFontMetrics fm(tooltipFont);
         QString elidedTooltip = fm.elidedText(tooltip, Qt::ElideRight, tooltipRect.width());
 
@@ -158,8 +154,7 @@ void CommandItemDelegate::paint(
 QSize CommandItemDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
     Q_UNUSED(index)
-    // every row has room for a description, so the view doesn't have to ask each row for its size;
-    // the list view stretches the rows to its width
+    // all rows have room for a description, the list view stretches them to its width
     constexpr double linesPerRow = 2.8;
     const double height = option.fontMetrics.height() * linesPerRow;
 
@@ -258,7 +253,6 @@ void CommandPalette::showPalette()
 
     searchLineEdit->setFocus();
 
-    // the first time the list is filled after the palette is on screen, see paintEvent()
     if (completer) {
         refreshCommands();
     }
@@ -286,7 +280,6 @@ void CommandPalette::centerOnMainWindow()
         return;
     }
 
-    // centred, a quarter of the way down the main window
     constexpr int heightDivisor = 4;
     QRect mainWindowRect = mainWindow->geometry();
 
@@ -301,7 +294,6 @@ bool CommandPalette::eventFilter(QObject* obj, QEvent* event)
     if (obj == searchLineEdit && event->type() == QEvent::KeyPress) {
         QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
 
-        // the arrow and page keys move through the list while typing
         if (keyEvent->key() == Qt::Key_Down || keyEvent->key() == Qt::Key_Up
             || keyEvent->key() == Qt::Key_PageDown || keyEvent->key() == Qt::Key_PageUp) {
             QApplication::sendEvent(commandListView, event);
