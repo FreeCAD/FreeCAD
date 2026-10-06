@@ -339,7 +339,7 @@ void CommandPalette::onCommandActivated(const QByteArray& commandName)
     Command* cmd = Application::Instance->commandManager().getCommandByName(commandName.constData());
     if (!cmd) {
         // not sure how would it be possible to get here, but just as a sanity check
-        Base::Console().warning("CMD Palette:: Command '%s' not found\n", commandName.constData());
+        Base::Console().warning("Command palette: command '{}' not found\n", commandName.constData());
         close();
         return;
     }
@@ -352,14 +352,14 @@ void CommandPalette::onCommandActivated(const QByteArray& commandName)
     }
     catch (const Base::Exception& e) {
         Base::Console().error(
-            "CMD Palette:: Error executing command '%s': %s\n",
+            "Command palette: error running command '{}': {}\n",
             commandName.constData(),
             e.what()
         );
     }
     catch (...) {
         Base::Console().error(
-            "CMD Palette:: Unknown error executing command '%s'\n",
+            "Command palette: unknown error running command '{}'\n",
             commandName.constData()
         );
     }
