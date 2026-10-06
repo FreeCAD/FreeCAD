@@ -566,8 +566,8 @@ void CommandCompleter::onCommandActivated(const QModelIndex& index)
 void CommandCompleter::onTextChanged(const QString& txt)
 {
     // Do not activate completer if less than 3 characters for better
-    // performance, unless called explicitly via complete()
-    if (txt.size() < 3 && txt.size() > 0) {
+    // performance.
+    if (txt.size() < 3 || !widget()) {
         return;
     }
 
