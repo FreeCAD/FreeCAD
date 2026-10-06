@@ -362,6 +362,15 @@ public:
         setSortRole(Qt::DisplayRole);
     }
 
+    /// The command palette ranks the commands, other command searches list them alphabetically.
+    /// Returns true if this changes.
+    bool setPaletteOrder(bool palette)
+    {
+        const bool changed = paletteOrder != palette;
+        paletteOrder = palette;
+        return changed;
+    }
+
 protected:
     bool lessThan(const QModelIndex& left, const QModelIndex& right) const override
     {
@@ -371,16 +380,20 @@ protected:
         }
         auto& leftInfo = _Commands[left.row()];
         auto& rightInfo = _Commands[right.row()];
-        if (leftInfo.rank != rightInfo.rank) {
+        // the ranks are kept with the shared command list, so only the palette may use them
+        if (paletteOrder && leftInfo.rank != rightInfo.rank) {
             return leftInfo.rank < rightInfo.rank;
         }
-        if (leftInfo.match != rightInfo.match) {
+        if (paletteOrder && leftInfo.match != rightInfo.match) {
             return leftInfo.match < rightInfo.match;
         }
         cacheText(leftInfo);
         cacheText(rightInfo);
         return QString::compare(leftInfo.display, rightInfo.display, Qt::CaseInsensitive) < 0;
     }
+
+private:
+    bool paletteOrder = false;
 };
 
 }  // anonymous namespace
@@ -421,7 +434,8 @@ void CommandCompleter::setFilterInactive(bool filter)
     if (auto sourceModel = static_cast<CommandModel*>(proxyModel->sourceModel())) {
         sourceModel->update();
         sourceModel->setFilterInactive(filter);
-        if (sourceModel->updateRanks()) {
+        const bool reordered = proxyModel->setPaletteOrder(filter);
+        if (sourceModel->updateRanks() || reordered) {
             proxyModel->invalidate();
         }
     }
