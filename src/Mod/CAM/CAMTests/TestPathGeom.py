@@ -490,6 +490,12 @@ class TestPathGeom(PathTestBase):
             "CCW",
         )
 
+        # test short arc: issue https://github.com/FreeCAD/FreeCAD/issues/33146
+        startPoint = Vector(-195.121182, 57.494287, -5.999999)
+        cmd = Path.Command("G2 I-2.013849 J1.305531 K0.000000 X-195.122314 Y57.492542 Z-5.999999")
+        edge = Path.Geom.edgeForCmd(cmd, startPoint)
+        self.assertRoughly(edge.Length, 0.002, 0.001)
+
     def test30(self):
         """Verify proper geometry for arcs with rising and fall ing Z-axis are created."""
         # print("------ rising helix -------")
@@ -570,11 +576,11 @@ class TestPathGeom(PathTestBase):
         self.assertCommandEqual(cmds(p1, p4, p3, True), cmd("G2", p1, Vector(0, -10, 0)))
 
     def test41(self):
-        """Verify circle results in proper G2/G3 commands."""
+        """Verify full circle results in proper two G2/G3 commands."""
 
         def cmds(center, radius, up=True):
             norm = Vector(0, 0, 1) if up else Vector(0, 0, -1)
-            return Path.Geom.cmdsForEdge(Part.Edge(Part.Circle(center, norm, radius)))[0]
+            return Path.Geom.cmdsForEdge(Part.Edge(Part.Circle(center, norm, radius)))
 
         def cmd(g, end, off):
             return Path.Command(
@@ -592,9 +598,12 @@ class TestPathGeom(PathTestBase):
         center = Vector(10, 10, 0)
         radius = 5
 
-        self.assertCommandEqual(
-            cmds(center, radius), cmd("G3", Vector(15, 10, 0), Vector(-5, 0, 0))
-        )
+        cmd0 = cmd("G3", Vector(center.x - radius, center.y, center.z), Vector(-radius, 0, 0))
+        cmd1 = cmd("G3", Vector(center.x + radius, center.y, center.z), Vector(radius, 0, 0))
+
+        result = cmds(center, radius)
+        self.assertCommandEqual(result[0], cmd0)
+        self.assertCommandEqual(result[1], cmd1)
 
     def test42(self):
         """Verify ellipsis results in a proper segmentation of G1 commands."""

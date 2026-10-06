@@ -371,6 +371,14 @@ def cmdsForEdge(edge, flip=False, approximation=False, hSpeed=0, vSpeed=0, tol=0
         # use original edge if list is empty
         edges = [edge]
 
+    # split arcs (circles) with angle greater than pi
+    for i in reversed(range(len(edges))):
+        e = edges[i]
+        if isinstance(e.Curve, Part.Circle) and isStrictlyGreater(
+            e.LastParameter - e.FirstParameter, math.pi
+        ):
+            edges[i : i + 1] = splitArcAt(e, e.valueAt((e.FirstParameter + e.LastParameter) / 2))
+
     if flip:
         edges.reverse()
 
@@ -481,7 +489,7 @@ def edgeForCmd(cmd, startPoint):
         B = xy(endPoint - center)
         d = -B.x * A.y + B.y * A.x
 
-        if isRoughly(d, 0, 0.005):
+        if isRoughly(d, 0):
             # Path.Log.debug(
             #    "Half circle arc at: (%.2f, %.2f, %.2f)" % (center.x, center.y, center.z)
             # )
@@ -521,7 +529,7 @@ def edgeForCmd(cmd, startPoint):
             # Path.Log.debug("MidPoint:{}".format(midPoint))
             # Path.Log.debug("EndPoint:{}".format(endPoint))
 
-            if pointsCoincide(startPoint, endPoint, 0.001):
+            if pointsCoincide(startPoint, endPoint):
                 return Part.makeCircle(R, center, FreeCAD.Vector(0, 0, 1))
             else:
                 return Part.Edge(Part.Arc(startPoint, midPoint, endPoint))
@@ -629,19 +637,21 @@ def arcToHelix(edge, z0, z1):
     """arcToHelix(edge, z0, z1)
     Assuming edge is an arc it'll return a helix matching the arc starting at z0 and rising/falling to z1.
     """
+    height = z1 - z0
+    arc_angle = edge.LastParameter - edge.FirstParameter
+    pitch = height * math.fabs(math.tau / arc_angle)
+    radius = edge.Curve.Radius
+    cw = edge.Curve.Axis.z < 0
+    helix_wire = Part.makeHelix(pitch, height, radius, 0, cw)
+    helix_edge = helix_wire.Edges[0]
+    start_point = edge.valueAt(edge.FirstParameter)
+    center = edge.Curve.Location
+    rotation_angle = math.degrees(getAngle(xy(start_point - center)))
+    helix_edge.rotate(Vector(), Vector(0, 0, 1), rotation_angle)
+    helix_start_point = helix_edge.valueAt(helix_edge.FirstParameter)
+    v = start_point - helix_start_point + Vector(0, 0, z0 - start_point.z)
 
-    p1 = edge.valueAt(edge.FirstParameter)
-    # p2 = edge.valueAt(edge.LastParameter)
-
-    cmd = cmdsForEdge(edge)[0]
-    params = cmd.Parameters
-    params.update({"Z": z1, "K": (z1 - z0) / 2})
-    command = Path.Command(cmd.Name, params)
-
-    # print("- (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f): %.2f:%.2f" % (edge.Vertexes[0].X, edge.Vertexes[0].Y, edge.Vertexes[0].Z, edge.Vertexes[1].X, edge.Vertexes[1].Y, edge.Vertexes[1].Z, z0, z1))
-    # print("- %s -> %s" % (cmd, command))
-
-    return edgeForCmd(command, Vector(p1.x, p1.y, z0))
+    return helix_edge.translated(v)
 
 
 def helixToArc(edge, z=0):
@@ -695,9 +705,8 @@ def splitEdgeAt(edge, pt):
 
 def splitArcEdge(edge, tol=0.1):
     """splitArcEdge(edge) -> List(Part.Edge)
-    Returns a list of arc edges, angle each of them not great than 'maxArcAngle'
-    Useful for approximation not horizontal arcs and circles
-    Return a list with original edge, if arc angle less or equal 'maxArcAngle'"""
+    Returns a list of arc edges, which can be converted to G2/G3 moves with given tolerance
+    Useful for approximation not horizontal arcs and circles"""
 
     def isPrecise(arc):
         # compare z of several points of arc and G2 move

@@ -377,8 +377,8 @@ class PathBoundary:
                             hSpeed=tc.HorizFeed.Value,
                             vSpeed=tc.VertFeed.Value,
                         )
-                        # restore G0 movement
-                        edgeCommands[-1].Name = cmd.Name
+                        if cmd.Name in Path.Geom.CmdMoveRapid:  # restore G0 movement
+                            edgeCommands[-1].Name = cmd.Name
                         if cmd.Annotations:
                             # keep linking moves recognizable for other dressups
                             for edgeCommand in edgeCommands:
