@@ -163,7 +163,10 @@ public:
             filterInactive = filter;
             // notify views that all data has changed (for greying out)
             if (!_Commands.empty()) {
-                QAbstractItemModel::dataChanged(createIndex(0, 0), createIndex(_Commands.size() - 1, 0));
+                Q_EMIT dataChanged(
+                    createIndex(0, 0),
+                    createIndex(static_cast<int>(_Commands.size()) - 1, 0)
+                );
             }
         }
     }

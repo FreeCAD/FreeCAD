@@ -1,36 +1,31 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
-/****************************************************************************
- *                                                                          *
- *   Copyright (c) 2026 The FreeCAD Project Association AISBL               *
- *                                                                          *
- *   This file is part of FreeCAD.                                          *
- *                                                                          *
- *   FreeCAD is free software: you can redistribute it and/or modify it     *
- *   under the terms of the GNU Lesser General Public License as            *
- *   published by the Free Software Foundation, either version 2.1 of the   *
- *   License, or (at your option) any later version.                        *
- *                                                                          *
- *   FreeCAD is distributed in the hope that it will be useful, but         *
- *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
- *   Lesser General Public License for more details.                        *
- *                                                                          *
- *   You should have received a copy of the GNU Lesser General Public       *
- *   License along with FreeCAD. If not, see                                *
- *   <https://www.gnu.org/licenses/>.                                       *
- *                                                                          *
- ***************************************************************************/
+// SPDX-FileCopyrightText: 2026 The FreeCAD Project Association AISBL
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QApplication>
-# include <QGuiApplication>
-# include <QKeyEvent>
-# include <QPainter>
-# include <QTimer>
-# include <QVBoxLayout>
-# include <QWindow>
-#endif
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
+
+#include <QApplication>
+#include <QKeyEvent>
+#include <QLineEdit>
+#include <QListView>
+#include <QPainter>
+#include <QTimer>
+#include <QVBoxLayout>
 
 #include "CommandPalette.h"
 #include "CommandCompleter.h"
@@ -73,11 +68,15 @@ void CommandItemDelegate::paint(
     constexpr int iconSize = 24;
     constexpr int margin = 8;
     constexpr int spacing = 8;
+    constexpr int textPadding = 4;
+    constexpr int groupSpacing = 10;
+    constexpr int smallestPointSize = 8;
+    constexpr int groupAlpha = 150;
+    constexpr int descriptionAlpha = 180;
 
-    // check if item is enabled (for graying out)
+    // commands that can't run right now are drawn greyed out
     bool isEnabled = (index.flags() & Qt::ItemIsEnabled);
 
-    // draw icon
     QRect iconRect = rect;
     iconRect.setLeft(rect.left() + margin);
     iconRect.setTop(rect.top() + ((rect.height() - iconSize) / 2));
@@ -88,13 +87,11 @@ void CommandItemDelegate::paint(
         icon.paint(painter, iconRect, Qt::AlignCenter, mode);
     }
 
-    // adjust rect for text (after icon)
     QRect textRect = rect;
     textRect.setLeft(iconRect.right() + spacing);
     textRect.setRight(rect.right() - margin);
-    textRect.adjust(0, 4, 0, -4);
+    textRect.adjust(0, textPadding, 0, -textPadding);
 
-    // draw title
     QFont titleFont = option.font;
     painter->setFont(titleFont);
 
@@ -109,15 +106,14 @@ void CommandItemDelegate::paint(
         titleRect.setHeight(textRect.height() / 2);
     }
 
-    // draw group name on the right if available
+    // the group name goes on the right of the title
     if (!groupName.isEmpty()) {
         QFont groupFont = titleFont;
-        groupFont.setPointSize(qMax(groupFont.pointSize() - 1, 8));
+        groupFont.setPointSize(qMax(groupFont.pointSize() - 1, smallestPointSize));
         painter->setFont(groupFont);
 
         QColor groupColor = textColor;
-        // make group name transparent
-        groupColor.setAlpha(150);
+        groupColor.setAlpha(groupAlpha);
         painter->setPen(groupColor);
 
         QFontMetrics groupFm(groupFont);
@@ -128,25 +124,22 @@ void CommandItemDelegate::paint(
 
         painter->drawText(groupRect, Qt::AlignRight | Qt::AlignVCenter, groupName);
 
-        // adjust title rect to not overlap with group name
-        titleRect.setRight(groupRect.left() - 10);
+        titleRect.setRight(groupRect.left() - groupSpacing);
 
-        // reset font and color for title
         painter->setFont(titleFont);
         painter->setPen(textColor);
     }
 
     painter->drawText(titleRect, Qt::AlignLeft | Qt::AlignVCenter, title);
 
-    // draw tooltip/description and description if it is avaialble
+    // the description goes on a second, lighter line
     if (!tooltip.isEmpty()) {
         QFont tooltipFont = option.font;
-        tooltipFont.setPointSize(qMax(tooltipFont.pointSize() - 1, 8));
+        tooltipFont.setPointSize(qMax(tooltipFont.pointSize() - 1, smallestPointSize));
         painter->setFont(tooltipFont);
 
         QColor tooltipColor = textColor;
-        // make the tooltip a bit transparent
-        tooltipColor.setAlpha(180);
+        tooltipColor.setAlpha(descriptionAlpha);
         painter->setPen(tooltipColor);
 
         QRect tooltipRect = textRect;
@@ -167,7 +160,8 @@ QSize CommandItemDelegate::sizeHint(const QStyleOptionViewItem& option, const QM
     Q_UNUSED(index)
     // every row has room for a description, so the view doesn't have to ask each row for its size;
     // the list view stretches the rows to its width
-    const double height = option.fontMetrics.height() * 2.8;
+    constexpr double linesPerRow = 2.8;
+    const double height = option.fontMetrics.height() * linesPerRow;
 
     return {0, static_cast<int>(height)};
 }
@@ -179,10 +173,8 @@ CommandPalette::CommandPalette(QWidget* parent)
 {
     setupUi();
 
-    setModal(false);
     // a popup closes by itself on a click outside it or on Escape
     setWindowFlags(Qt::Popup | Qt::FramelessWindowHint);
-    setAttribute(Qt::WA_TranslucentBackground, false);
 
     searchLineEdit->installEventFilter(this);
 }
@@ -199,12 +191,12 @@ void CommandPalette::setupUi()
     constexpr int paletteMaxWidth = 800;
     constexpr int paletteMinHeight = 450;
 
-    mainLayout = new QVBoxLayout(this);
+    auto mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(layoutMargin, layoutMargin, layoutMargin, layoutMargin);
     mainLayout->setSpacing(layoutSpacing);
 
     searchLineEdit = new QLineEdit(this);
-    searchLineEdit->setPlaceholderText(tr("Type a command name..."));
+    searchLineEdit->setPlaceholderText(tr("Type a command name…"));
     searchLineEdit->setClearButtonEnabled(true);
     searchLineEdit->setMinimumWidth(searchMinWidth);
     searchLineEdit->setMinimumHeight(searchMinHeight);
@@ -293,10 +285,12 @@ void CommandPalette::centerOnMainWindow()
         return;
     }
 
+    // centred, a quarter of the way down the main window
+    constexpr int heightDivisor = 4;
     QRect mainWindowRect = mainWindow->geometry();
 
     int x = mainWindowRect.x() + ((mainWindowRect.width() - width()) / 2);
-    int y = mainWindowRect.y() + (mainWindowRect.height() / 4);
+    int y = mainWindowRect.y() + (mainWindowRect.height() / heightDivisor);
 
     move(x, y);
 }
@@ -306,15 +300,7 @@ bool CommandPalette::eventFilter(QObject* obj, QEvent* event)
     if (obj == searchLineEdit && event->type() == QEvent::KeyPress) {
         QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
 
-        // esc closes the palette
-        if (keyEvent->key() == Qt::Key_Escape) {
-            if (searchLineEdit->text().isEmpty()) {
-                close();
-                return true;
-            }
-        }
-
-        // forward events to list, but basically they are used for going up/down
+        // the arrow and page keys move through the list while typing
         if (keyEvent->key() == Qt::Key_Down || keyEvent->key() == Qt::Key_Up
             || keyEvent->key() == Qt::Key_PageDown || keyEvent->key() == Qt::Key_PageUp) {
             QApplication::sendEvent(commandListView, event);
@@ -335,10 +321,9 @@ bool CommandPalette::eventFilter(QObject* obj, QEvent* event)
 
 void CommandPalette::onCommandActivated(const QByteArray& commandName)
 {
-    // Get the command
     Command* cmd = Application::Instance->commandManager().getCommandByName(commandName.constData());
     if (!cmd) {
-        // not sure how would it be possible to get here, but just as a sanity check
+        // only a command removed while the palette was open can end up here
         Base::Console().warning("Command palette: command '{}' not found\n", commandName.constData());
         close();
         return;
@@ -346,7 +331,6 @@ void CommandPalette::onCommandActivated(const QByteArray& commandName)
 
     close();
 
-    // run cmd
     try {
         Application::Instance->commandManager().runCommandByName(commandName.constData());
     }
@@ -372,10 +356,8 @@ void CommandPalette::onTextChanged(const QString& text)
         return;
     }
 
-    // update completer filter to match the text
     completer->setCompletionPrefix(text);
 
-    // select first matched item
     if (commandListView->model()->rowCount() > 0) {
         commandListView->setCurrentIndex(commandListView->model()->index(0, 0));
     }
