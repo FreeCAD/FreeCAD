@@ -16,7 +16,8 @@ LargeComboBoxFilterModel::LargeComboBoxFilterModel(QObject* parent)
 void LargeComboBoxFilterModel::setSearchText(const QString& text)
 {
     m_searchText = text.trimmed();
-    invalidateFilter();
+    beginFilterChange();
+    endFilterChange();
     sort(0, Qt::AscendingOrder);
 }
 
