@@ -165,10 +165,11 @@ void CommandItemDelegate::paint(
 QSize CommandItemDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
     Q_UNUSED(index)
-    // every row has room for a description, so the view doesn't have to ask each row for its size
+    // every row has room for a description, so the view doesn't have to ask each row for its size;
+    // the list view stretches the rows to its width
     const double height = option.fontMetrics.height() * 2.8;
 
-    return {option.rect.width(), static_cast<int>(height)};
+    return {0, static_cast<int>(height)};
 }
 
 ////////////////////// CommandPalette implementation //////////////////////
@@ -222,6 +223,7 @@ void CommandPalette::setupUi()
     commandListView->setSelectionMode(QAbstractItemView::SingleSelection);
     commandListView->setItemDelegate(new CommandItemDelegate(this));
     commandListView->setUniformItemSizes(true);
+    commandListView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     mainLayout->addWidget(searchLineEdit);
     mainLayout->addWidget(commandListView);
