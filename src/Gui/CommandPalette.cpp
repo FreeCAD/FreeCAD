@@ -333,7 +333,15 @@ void CommandPalette::onCommandActivated(const QByteArray& commandName)
     close();
 
     try {
-        Application::Instance->commandManager().runCommandByName(commandName.constData());
+        // run it like a click on its button: a toggle command gets its new state and a drop-down
+        // runs its current entry, runCommandByName() would always pass 0
+        auto action = cmd->getAction();
+        if (action && action->action()) {
+            action->action()->trigger();
+        }
+        else {
+            Application::Instance->commandManager().runCommandByName(commandName.constData());
+        }
     }
     catch (const Base::Exception& e) {
         Base::Console().error(
