@@ -2259,6 +2259,7 @@ void setCategoryFilterRules()
     stream << "qt.qpa.mime.warning=false\n";
     stream << "qt.qpa.wayland.warning=false\n";
     stream << "qt.qpa.wayland.*.warning=false\n";
+    stream << "qt.accessibility.table.warning=false\n";
     stream << "qt.svg.warning=false\n";
     stream << "qt.xkb.compose.warning=false\n";
     stream << "kf.*.warning=false\n";
