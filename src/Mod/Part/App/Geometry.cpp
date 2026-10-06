@@ -2614,9 +2614,34 @@ Geometry* GeomRestrictedCurve::copy() const
     return newCurve;
 }
 
-GeomCurve* GeomRestrictedCurve::createArc(double first, double last) const
+GeomCurve* GeomRestrictedCurve::createArc(double /*first*/, double /*last*/) const
 {
     THROWM(Base::NotImplementedError, "createArc: not implemented for this type of curve");
+}
+
+// Persistence implementer
+unsigned int GeomRestrictedCurve::getMemSize() const
+{
+    // TODO: This may just be sizeof(Geom_TrimmedCurve)
+    return sizeof(this->myCurve->BasisCurve()) + 2 * sizeof(double);
+}
+
+void GeomRestrictedCurve::Save(Base::Writer& writer) const
+{
+    Geometry::Save(writer);
+
+    double firstParam;
+    double lastParam;
+    getRange(firstParam, lastParam);
+
+    writer.Stream() << writer.ind() << "<RestrictedCurve "
+                    << "FirstParam=\"" << firstParam << "\" LastParam=\"" << lastParam << "\"/>"
+                    << std::endl;
+}
+
+void GeomRestrictedCurve::Restore(Base::XMLReader& /*reader*/)
+{
+    throw Base::NotImplementedError("GeomRestrictedCurve::Restore");
 }
 
 // -------------------------------------------------
