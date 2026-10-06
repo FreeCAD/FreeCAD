@@ -52,6 +52,8 @@ public:
 
     /// Enable or disable filtering of inactive commands
     void setFilterInactive(bool filter);
+    /// List the commands whose title starts with the text first, then those with a word that does
+    void setSearchText(const QString& text);
 
 Q_SIGNALS:
     /// Triggered when a command is selected in the completer

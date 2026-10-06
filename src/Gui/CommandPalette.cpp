@@ -238,6 +238,7 @@ void CommandPalette::refreshCommands()
 {
     completer->setFilterInactive(true);
     // keep what was typed while the list was being filled
+    completer->setSearchText(searchLineEdit->text());
     completer->setCompletionPrefix(searchLineEdit->text());
 
     if (commandListView->model()->rowCount() > 0) {
@@ -356,6 +357,7 @@ void CommandPalette::onTextChanged(const QString& text)
         return;
     }
 
+    completer->setSearchText(text);
     completer->setCompletionPrefix(text);
 
     if (commandListView->model()->rowCount() > 0) {

@@ -53,6 +53,7 @@ struct CmdInfo
     // the texts are worked out once, they are thrown away with the list when commands, shortcuts
     // or the language change
     bool textCached = false;
+    QString title;
     QString display;
     QString menuText;
     QString toolTip;
@@ -60,6 +61,7 @@ struct CmdInfo
     // set before sorting
     bool active = true;
     int rank = 0;
+    int match = 0;
 };
 std::vector<CmdInfo> _Commands;
 int _CommandRevision;
@@ -73,8 +75,9 @@ void cacheText(CmdInfo& info)
     }
     info.textCached = true;
 
-    info.menuText = Action::commandMenuText(info.cmd);
-    info.display = QStringLiteral("%1 (%2)").arg(info.menuText, QString::fromUtf8(info.cmd->getName()));
+    info.title = Action::commandMenuText(info.cmd);
+    info.menuText = info.title;
+    info.display = QStringLiteral("%1 (%2)").arg(info.title, QString::fromUtf8(info.cmd->getName()));
     QString shortcut = info.cmd->getShortcut();
     if (!shortcut.isEmpty()) {
         info.display += QStringLiteral(" [%1]").arg(shortcut);
@@ -85,6 +88,22 @@ void cacheText(CmdInfo& info)
         info.toolTip = QTextDocumentFragment::fromHtml(info.toolTip).toPlainText();
     }
     info.group = QString::fromUtf8(info.cmd->getGroupName());
+}
+
+/// How well a title matches the search text: 0 when it starts with it, 1 when one of its words
+/// does, 2 otherwise.
+int matchQuality(const QString& title, const QString& text)
+{
+    if (text.isEmpty() || title.startsWith(text, Qt::CaseInsensitive)) {
+        return 0;
+    }
+    for (qsizetype i = 1; i < title.size(); ++i) {
+        if (!title.at(i - 1).isLetterOrNumber()
+            && QStringView(title).mid(i).startsWith(text, Qt::CaseInsensitive)) {
+            return 1;
+        }
+    }
+    return 2;
 }
 
 /// The commands on the active workbench's own toolbars, including those in their drop-down groups.
@@ -201,6 +220,21 @@ public:
                 createIndex(0, 0),
                 createIndex(static_cast<int>(_Commands.size()) - 1, 0)
             );
+        }
+        return changed;
+    }
+
+    /// Works out how well each command matches the search text. Returns true if the order changes.
+    bool setSearchText(const QString& text)
+    {
+        bool changed = false;
+        for (auto& info : _Commands) {
+            cacheText(info);
+            const int match = matchQuality(info.title, text);
+            if (match != info.match) {
+                info.match = match;
+                changed = true;
+            }
         }
         return changed;
     }
@@ -340,6 +374,9 @@ protected:
         if (leftInfo.rank != rightInfo.rank) {
             return leftInfo.rank < rightInfo.rank;
         }
+        if (leftInfo.match != rightInfo.match) {
+            return leftInfo.match < rightInfo.match;
+        }
         cacheText(leftInfo);
         cacheText(rightInfo);
         return QString::compare(leftInfo.display, rightInfo.display, Qt::CaseInsensitive) < 0;
@@ -385,6 +422,19 @@ void CommandCompleter::setFilterInactive(bool filter)
         sourceModel->update();
         sourceModel->setFilterInactive(filter);
         if (sourceModel->updateRanks()) {
+            proxyModel->invalidate();
+        }
+    }
+}
+
+void CommandCompleter::setSearchText(const QString& text)
+{
+    auto proxyModel = static_cast<CommandSortFilterProxyModel*>(this->model());
+    if (!proxyModel) {
+        return;
+    }
+    if (auto sourceModel = static_cast<CommandModel*>(proxyModel->sourceModel())) {
+        if (sourceModel->setSearchText(text)) {
             proxyModel->invalidate();
         }
     }
