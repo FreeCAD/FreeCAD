@@ -1097,7 +1097,7 @@ StdCmdCommandPalette::StdCmdCommandPalette()
     : Command("Std_CommandPalette")
 {
     sGroup = "Tools";
-    sMenuText = QT_TR_NOOP("Command &Palette...");
+    sMenuText = QT_TR_NOOP("Command &Palette");
     sToolTipText = QT_TR_NOOP("Open the command palette to search and execute commands");
     sWhatsThis = "Std_CommandPalette";
     sStatusTip = sToolTipText;
