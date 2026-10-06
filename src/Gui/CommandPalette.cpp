@@ -209,15 +209,7 @@ void CommandPalette::setupUi()
     searchLineEdit->setMinimumWidth(searchMinWidth);
     searchLineEdit->setMinimumHeight(searchMinHeight);
 
-    completer = new CommandCompleter(searchLineEdit, this);
-
-    // Remove widget association to prevent completer's popup; we embed the
-    // completion model inside our own QListView instead.
-    completer->setWidget(nullptr);
-    disconnect(searchLineEdit, nullptr, completer, nullptr);
-
     commandListView = new QListView(this);
-    commandListView->setModel(completer->completionModel());
     commandListView->setMinimumHeight(listMinHeight);
     commandListView->setMaximumHeight(listMaxHeight);
     commandListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -231,20 +223,39 @@ void CommandPalette::setupUi()
 
     connect(searchLineEdit, &QLineEdit::textChanged, this, &CommandPalette::onTextChanged);
     connect(commandListView, &QListView::activated, this, &CommandPalette::onListItemActivated);
-    connect(completer, &CommandCompleter::commandActivated, this, &CommandPalette::onCommandActivated);
 
     setMinimumWidth(paletteMinWidth);
     setMaximumWidth(paletteMaxWidth);
     setMinimumHeight(paletteMinHeight);
 }
 
+void CommandPalette::createCompleter()
+{
+    completer = new CommandCompleter(searchLineEdit, this);
+
+    // Remove widget association to prevent completer's popup; we embed the
+    // completion model inside our own QListView instead.
+    completer->setWidget(nullptr);
+    disconnect(searchLineEdit, nullptr, completer, nullptr);
+
+    commandListView->setModel(completer->completionModel());
+    connect(completer, &CommandCompleter::commandActivated, this, &CommandPalette::onCommandActivated);
+}
+
+void CommandPalette::refreshCommands()
+{
+    completer->setFilterInactive(true);
+    // keep what was typed while the list was being filled
+    completer->setCompletionPrefix(searchLineEdit->text());
+
+    if (commandListView->model()->rowCount() > 0) {
+        commandListView->setCurrentIndex(commandListView->model()->index(0, 0));
+    }
+}
+
 void CommandPalette::showPalette()
 {
     searchLineEdit->clear();
-    completer->setFilterInactive(true);
-
-    // set empty prefix to show all cmds by default
-    completer->setCompletionPrefix(QString());
 
     centerOnMainWindow();
 
@@ -254,8 +265,24 @@ void CommandPalette::showPalette()
 
     searchLineEdit->setFocus();
 
-    if (commandListView->model()->rowCount() > 0) {
-        commandListView->setCurrentIndex(commandListView->model()->index(0, 0));
+    // the first time the list is filled after the palette is on screen, see paintEvent()
+    if (completer) {
+        refreshCommands();
+    }
+}
+
+void CommandPalette::paintEvent(QPaintEvent* event)
+{
+    QDialog::paintEvent(event);
+
+    // Building the command list takes a moment the first time, so show the empty palette right
+    // away and fill it once it has been drawn.
+    if (!completer && !fillPending) {
+        fillPending = true;
+        QTimer::singleShot(0, this, [this] {
+            createCompleter();
+            refreshCommands();
+        });
     }
 }
 
@@ -340,6 +367,11 @@ void CommandPalette::onCommandActivated(const QByteArray& commandName)
 
 void CommandPalette::onTextChanged(const QString& text)
 {
+    // the list isn't filled yet, refreshCommands() takes the text into account
+    if (!completer) {
+        return;
+    }
+
     // update completer filter to match the text
     completer->setCompletionPrefix(text);
 
