@@ -21,7 +21,9 @@
  ****************************************************************************/
 
 #include <algorithm>
+#include <unordered_set>
 #include <QApplication>
+#include <QHash>
 #include <QKeyEvent>
 #include <QLineEdit>
 #include <QAbstractItemView>
@@ -34,6 +36,7 @@
 #include "Action.h"
 #include "BitmapFactory.h"
 #include "CommandCompleter.h"
+#include "Workbench.h"
 #include "WorkbenchManager.h"
 #include "Language/Translator.h"
 
@@ -84,6 +87,58 @@ void cacheText(CmdInfo& info)
     info.group = QString::fromUtf8(info.cmd->getGroupName());
 }
 
+/// The commands on the active workbench's own toolbars, including those in their drop-down groups.
+/// The standard toolbars are left out, every workbench shows them.
+std::unordered_set<std::string> commandsOfActiveWorkbench()
+{
+    std::unordered_set<std::string> names;
+    auto workbench = WorkbenchManager::instance()->active();
+    if (!workbench) {
+        return names;
+    }
+
+    std::unordered_set<std::string> standardCommands;
+    for (const auto& toolbar : StdWorkbench().getToolbarItems()) {
+        standardCommands.insert(toolbar.second.begin(), toolbar.second.end());
+    }
+    for (const auto& toolbar : workbench->getToolbarItems()) {
+        for (const auto& name : toolbar.second) {
+            if (standardCommands.count(name) == 0) {
+                names.insert(name);
+            }
+        }
+    }
+
+    // Python groups name their commands in a property, the actions of C++ groups are the actions
+    // of the commands themselves
+    QHash<const QAction*, const char*> commandOfAction;
+    for (const auto& info : _Commands) {
+        auto action = info.cmd->getAction();
+        if (action && action->action()) {
+            commandOfAction.insert(action->action(), info.cmd->getName());
+        }
+    }
+    auto& manager = Application::Instance->commandManager();
+    const std::vector<std::string> toolbarCommands(names.begin(), names.end());
+    for (const auto& name : toolbarCommands) {
+        auto command = manager.getCommandByName(name.c_str());
+        auto group = command ? qobject_cast<ActionGroup*>(command->getAction()) : nullptr;
+        if (!group) {
+            continue;
+        }
+        for (auto action : group->actions()) {
+            QByteArray child = action->property("CommandName").toByteArray();
+            if (child.isEmpty()) {
+                child = commandOfAction.value(action);
+            }
+            if (!child.isEmpty()) {
+                names.insert(child.toStdString());
+            }
+        }
+    }
+    return names;
+}
+
 class CommandModel: public QAbstractItemModel
 {
     int revision = 0;
@@ -117,7 +172,9 @@ public:
     /// the order changes.
     bool updateRanks()
     {
-        const QString workbench = QString::fromStdString(WorkbenchManager::instance()->activeName());
+        // the group name of a command can't tell if it belongs to the active workbench, it differs
+        // from the workbench name
+        const std::unordered_set<std::string> workbenchCommands = commandsOfActiveWorkbench();
         bool changed = false;
         for (auto& info : _Commands) {
             cacheText(info);
@@ -128,7 +185,8 @@ public:
                 active = action && action->action() && action->action()->isEnabled();
             }
             // active commands first, then the ones of the active workbench
-            int rank = (active ? 0 : 2) + (info.group == workbench ? 0 : 1);
+            const bool inWorkbench = workbenchCommands.count(info.cmd->getName()) > 0;
+            int rank = (active ? 0 : 2) + (inWorkbench ? 0 : 1);
             if (active != info.active || rank != info.rank) {
                 info.active = active;
                 info.rank = rank;
