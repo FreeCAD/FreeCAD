@@ -27,8 +27,7 @@
 #include <App/DocumentObject.h>
 #include <Base/Exception.h>
 #include <Gui/Command.h>
-#include <type_traits>
-#include <typeinfo>
+#include <Gui/Macro.h>
 #include <boost/format.hpp>
 
 
@@ -487,10 +486,15 @@ public:
     {
         getBuffer().clear();
     }
-    static void emit()
+    static void emit(Command::DoCmd_Type eType)
     {
         for (const auto& element : getBuffer()) {
-            Gui::Command::doCommand(Gui::Command::Doc, "%s", element.c_str());
+            if (eType == Command::Gui) {
+                Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui, element.c_str());
+            }
+            else {
+                Gui::Application::Instance->macroManager()->addLine(MacroManager::App, element.c_str());
+            }
         }
         getBuffer().clear();
     }

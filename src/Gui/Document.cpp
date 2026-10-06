@@ -2900,7 +2900,7 @@ int Document::openCommand(const char* sName)
 
 void Document::commitCommand()
 {
-    Gui::ConstraintCommandQueue::emit();
+    Gui::ConstraintCommandQueue::emit(Command::App);
     getDocument()->commitTransaction();
 }
 

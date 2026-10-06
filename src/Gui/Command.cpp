@@ -741,13 +741,13 @@ void Command::rename(const std::string& name)
 
 void Command::commitCommand()
 {
-    Gui::ConstraintCommandQueue::emit();
+    Gui::ConstraintCommandQueue::emit(Gui);
     commitCommand(currentTransactionID);
     currentTransactionID = App::NullTransaction;
 }
 void Command::commitCommand(int tid)
 {
-    Gui::ConstraintCommandQueue::emit();
+    Gui::ConstraintCommandQueue::emit(App);
     if (tid != App::NullTransaction) {
         App::GetApplication().commitTransaction(tid);
     }
