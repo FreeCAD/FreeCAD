@@ -173,6 +173,9 @@ public:
 
     void setState(const QList<QString>& names, State state);
     void setState(const QString& name, State state);
+    bool isAnyVisible(const QList<QString>& names);
+    bool isVisible(const QString& name);
+
 
     int toolBarIconSize(QWidget* widget = nullptr) const;
     void setupToolBarIconSize();
