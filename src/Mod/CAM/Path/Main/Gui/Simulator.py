@@ -203,7 +203,7 @@ class PathSimulation:
             self.opFrame = FreeCAD.Placement(self.operation.Placement)
             self.opCommands = list(self.operation.Path.Commands) if self.operation.Path else []
             start = self.opFrame.inverse().multVec(self.initialPos)
-        self.curpos = FreeCAD.Placement(start, self.stdrot)
+        self.curpos = FreeCAD.Placement(start, self.stdrot) if self.isVoxel else start
         self.cutTool.Placement = self.toolPlacement(self.curpos)
 
     def SimulateMill(self):
@@ -456,13 +456,17 @@ class PathSimulation:
 
     # create radial profile of the tool (90 degrees to the direction of the path)
     def CreateToolProfile(self, tool, dir, pos, rad):
-        type = tool.ToolType
+        type = getattr(tool, "ShapeType", None) or getattr(tool, "ToolType", "EndMill")
+        if type == "Chamfer":
+            raise NotImplementedError(
+                "Modern chamfer tool profiles are not supported by boolean simulation"
+            )
         xf = dir[0] * rad
         yf = dir[1] * rad
         xp = pos[0]
         yp = pos[1]
         zp = pos[2]
-        h = tool.CuttingEdgeHeight
+        h = float(tool.CuttingEdgeHeight)
         if h <= 0.0:  # set default if user fails to avoid freeze
             h = 1.0
             Path.Log.error("SET Tool Length")
@@ -473,7 +477,7 @@ class PathSimulation:
         lT = Part.makeLine(vTR, vTC)
         res = None
         if type == "ChamferMill":
-            ang = 90 - tool.CuttingEdgeAngle / 2.0
+            ang = 90 - float(tool.CuttingEdgeAngle) / 2.0
             ang = min(ang, 80)
             ang = max(ang, 0)
             h1 = min(math.tan(ang * math.pi / 180) * rad, h - 0.1)
@@ -482,7 +486,7 @@ class PathSimulation:
             lB = Part.makeLine(vBC, vBR)
             res = Part.Wire([lB, lR, lT])
 
-        elif type == "BallEndMill":
+        elif type in ("Ballend", "BallEndMill"):
             h1 = rad
             if h1 >= h:
                 h1 = h - 0.1
@@ -493,6 +497,26 @@ class PathSimulation:
             cB = Part.Edge(Part.Arc(vBC, vBCR, vBR))
             lR = Part.makeLine(vBR, vTR)
             res = Part.Wire([cB, lR, lT])
+
+        elif type == "Bullnose" and float(tool.CornerRadius) > 0.0:
+            corner = min(float(tool.CornerRadius), rad, float(h))
+            flat = rad - corner
+            side = Vector(xp + yf, yp - xf, zp + corner)
+            bottom = Vector(xp + yf * flat / rad, yp - xf * flat / rad, zp)
+            middleRadius = flat + corner / math.sqrt(2.0)
+            middle = Vector(
+                xp + yf * middleRadius / rad,
+                yp - xf * middleRadius / rad,
+                zp + corner * (1.0 - 1.0 / math.sqrt(2.0)),
+            )
+            edges = []
+            if flat > 0.0:
+                edges.append(Part.makeLine(vBC, bottom))
+            edges.append(Part.Edge(Part.Arc(bottom, middle, side)))
+            if corner < h:
+                edges.append(Part.makeLine(side, vTR))
+            edges.append(lT)
+            res = Part.Wire(edges)
 
         else:  # default: assume type == "EndMill"
             vBR = Vector(xp + yf, yp - xf, zp)

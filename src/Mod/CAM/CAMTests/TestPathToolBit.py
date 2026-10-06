@@ -64,6 +64,59 @@ class TestPathToolBit(PathTestWithAssets):
         self.assertEqual(bullnose_bit.obj.Diameter, FreeCAD.Units.Quantity("5.0 mm"))
         self.assertEqual(bullnose_bit.obj.CornerRadius, FreeCAD.Units.Quantity("1.5 mm"))
 
+    def testBooleanSimulationToolProfiles(self):
+        """Modern toolbits produce valid sweeps with their actual cutting profiles."""
+        import math
+        from Path.Main.Gui.Simulator import PathSimulation
+        import Part
+        import Path
+
+        simulation = PathSimulation.__new__(PathSimulation)
+        simulation.debug = False
+        for name in ("5mm_Endmill", "6mm_Ball_End", "6mm_Bullnose"):
+            with self.subTest(toolbit=name):
+                tool = self.assets.get("toolbit://" + name).obj
+                self.assertFalse(hasattr(tool, "ToolType"))
+                radius = float(tool.Diameter) / 2.0
+                origin = FreeCAD.Vector(0, 0, 0)
+                profile = simulation.CreateToolProfile(
+                    tool, FreeCAD.Vector(1, 0, 0), origin, radius
+                )
+                self.assertTrue(profile.isValid())
+                solid, end = simulation.GetPathSolid(
+                    tool, Path.Command("G1", {"X": 10.0, "Y": 0.0, "Z": 0.0}), origin
+                )
+                self.assertIsNotNone(solid)
+                self.assertTrue(solid.isValid())
+                self.assertEqual(end, FreeCAD.Vector(10, 0, 0))
+                if tool.ShapeType in ("Ballend", "Bullnose"):
+                    corner = radius if tool.ShapeType == "Ballend" else float(tool.CornerRadius)
+                    self.assertFalse(
+                        solid.isInside(
+                            FreeCAD.Vector(5, radius - corner * 0.1, corner * 0.1), 1e-7, True
+                        )
+                    )
+                    self.assertTrue(solid.isInside(FreeCAD.Vector(5, 0, corner * 0.1), 1e-7, True))
+                if tool.ShapeType == "Bullnose":
+                    cutter = Part.makeSolid(profile.revolve(origin, FreeCAD.Vector(0, 0, 1), 360))
+                    height = float(tool.CuttingEdgeHeight)
+                    flat = radius - corner
+                    expected = math.pi * radius**2 * height - math.pi * (
+                        2 * flat * corner**2 * (1 - math.pi / 4) + corner**3 / 3
+                    )
+                    self.assertAlmostEqual(cutter.Volume, expected, places=5)
+
+        # The legacy pointed profile omits the modern chamfer's flat tip.
+        # Fail explicitly until its actual geometry is supported.
+        chamfer = self.assets.get("toolbit://45degree_chamfer").obj
+        with self.assertRaises(NotImplementedError):
+            simulation.CreateToolProfile(
+                chamfer,
+                FreeCAD.Vector(1, 0, 0),
+                FreeCAD.Vector(0, 0, 0),
+                float(chamfer.Diameter) / 2.0,
+            )
+
     def testToolBitPickle(self):
         """Test if ToolBit is picklable"""
         import pickle
