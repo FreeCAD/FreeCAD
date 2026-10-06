@@ -447,11 +447,11 @@ void CArea::NaiveOffset(double offset)
             const CVertex& v = *it;
 
             // Compute segment start and end normal and tangent directions. Normalize length to offset
-            double sTanX, sTanY;
-            double sNormX, sNormY;
-            double eTanX, eTanY;
-            double eNormX, eNormY;
-            double radius = 0;  // initialized below
+            double sTanX, sTanY;    // tangent vector at the start point
+            double sNormX, sNormY;  // normal vector at the start point
+            double eTanX, eTanY;    // tangent vector at the end point
+            double eNormX, eNormY;  // normal vector at the end point
+            double sRadius = 0;
             if (v.m_type == 0) {
                 const double dx = v.m_p.x - pPrev.x;
                 const double dy = v.m_p.y - pPrev.y;
@@ -467,20 +467,31 @@ void CArea::NaiveOffset(double offset)
             else {
                 assert(v.m_type == 1 || v.m_type == -1);
 
-                const double sx = v.m_type * (pPrev.x - v.m_c.x);
-                const double sy = v.m_type * (pPrev.y - v.m_c.y);
-                const double ex = v.m_type * (v.m_p.x - v.m_c.x);
-                const double ey = v.m_type * (v.m_p.y - v.m_c.y);
-                radius = std::hypot(sx, sy);
-                if (radius == 0) {
+                // Compute dx and dy at start and end points, p - center
+                const double sdx = v.m_type * (pPrev.x - v.m_c.x);
+                const double sdy = v.m_type * (pPrev.y - v.m_c.y);
+                const double edx = v.m_type * (v.m_p.x - v.m_c.x);
+                const double edy = v.m_type * (v.m_p.y - v.m_c.y);
+
+                // Compute the radius at the start and end points.
+                // These are nominally equal, but they can differ a little due to precision issues,
+                // and it is important to normalize each vector by the appropriate length
+                sRadius = std::hypot(sdx, sdy);
+                const double eRadius = std::hypot(edx, edy);
+                if (sRadius == 0 || eRadius == 0) {
                     continue;
                 }
 
-                std::tie(sNormX, sNormY) = std::make_pair(sx / radius * offset, sy / radius * offset);
-                std::tie(eNormX, eNormY) = std::make_pair(ex / radius * offset, ey / radius * offset);
+                // Rescale the start and end normal vectors to length = offset
+                sNormX = sdx / sRadius * offset;
+                sNormY = sdy / sRadius * offset;
+                eNormX = edx / eRadius * offset;
+                eNormY = edy / eRadius * offset;
 
-                std::tie(sTanX, sTanY) = std::make_pair(-sNormY, sNormX);
-                std::tie(eTanX, eTanY) = std::make_pair(-eNormY, eNormX);
+                sTanX = -sNormY;
+                sTanY = sNormX;
+                eTanX = -eNormY;
+                eTanY = eNormX;
             }
 
             // Compute the start and end points of the offset segment
@@ -491,7 +502,7 @@ void CArea::NaiveOffset(double offset)
 
             // If the output curves are empty, intialize the start point and direction
             const bool hasPrev = !cPos.m_vertices.empty();
-            double exitQ = v.m_type == 0 ? 0 : v.m_type / radius;
+            double exitQ = v.m_type == 0 ? 0 : v.m_type / sRadius;
             if (!hasPrev) {
                 cPos.m_vertices.emplace_back(0, pPosS, Point(0, 0));
                 cNeg.m_vertices.emplace_back(0, pNegS, Point(0, 0));
@@ -503,7 +514,7 @@ void CArea::NaiveOffset(double offset)
             if (hasPrev) {
                 addJoin(pPosS, pNegS, pPrev, prevDirX, prevDirY, sTanX, sTanY, enterQ, exitQ);
             }
-            enterQ = v.m_type == 0 ? 0 : v.m_type / radius;
+            enterQ = v.m_type == 0 ? 0 : v.m_type / sRadius;
 
             // Generate the positive and negative offset segments connecting pPosS to pPosE and
             // pNegS to pNegE
@@ -518,7 +529,7 @@ void CArea::NaiveOffset(double offset)
                 // segments back to the point).
                 assert(v.m_type == 1 || v.m_type == -1);
 
-                const bool posCollapse = radius + (offset * v.m_type) <= 0;
+                const bool posCollapse = sRadius + (offset * v.m_type) <= 0;
                 if (posCollapse) {
                     cPos.m_vertices.emplace_back(0, v.m_c, heeks::Point {0, 0});
                     cPos.m_vertices.emplace_back(0, pPosE, heeks::Point {0, 0});
@@ -527,7 +538,7 @@ void CArea::NaiveOffset(double offset)
                     cPos.m_vertices.emplace_back(v.m_type, pPosE, v.m_c);
                 }
 
-                const bool negCollapse = radius - (offset * v.m_type) <= 0;
+                const bool negCollapse = sRadius - (offset * v.m_type) <= 0;
                 if (negCollapse) {
                     cNeg.m_vertices.emplace_back(0, v.m_c, heeks::Point {0, 0});
                     cNeg.m_vertices.emplace_back(0, pNegE, heeks::Point {0, 0});
