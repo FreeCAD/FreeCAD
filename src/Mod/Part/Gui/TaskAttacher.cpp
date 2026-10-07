@@ -57,7 +57,9 @@
 #include <Gui/ViewProvider.h>
 #include <Base/Tools.h>
 #include <Mod/Part/App/AttachExtension.h>
+#include <Mod/Part/App/BodyBase.h>
 #include <Mod/Part/App/DatumFeature.h>
+#include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/Gui/AttacherTexts.h>
 #include <Mod/Part/Gui/TaskAttacher.h>
 
@@ -461,6 +463,57 @@ QLineEdit* TaskAttacher::getLine(unsigned idx)
     }
 }
 
+void TaskAttacher::removeSketchFeatureNesting(
+    App::DocumentObject*& rootObj,
+    std::string& sub,
+    App::DocumentObject* supportObj
+)
+{
+    auto* supportBody = App::GeoFeatureGroupExtension::getGroupOfObject(supportObj);
+    if (!supportBody || !supportBody->isDerivedFrom<Part::BodyBase>()
+        || !supportObj->isDerivedFrom<Part::Part2DObject>()) {
+        return;
+    }
+
+    std::vector<int> offsets;
+    const auto path = rootObj->getSubObjectList(sub.c_str(), &offsets);
+    if (path.size() < 2) {
+        return;
+    }
+
+    // Offsets point past each object name. Keep the sketch name and any geometry suffix together.
+    const size_t sketchIndex = path.size() - 1;
+    const auto sketchReference = sub.substr(offsets[sketchIndex - 1]);
+    const auto geometryReference = sub.substr(offsets[sketchIndex]);
+
+    // Features such as Pad only nest their profile in the tree; both remain body siblings.
+    // Walk towards the root until a container or link must be retained.
+    for (size_t ancestorIndex = sketchIndex; ancestorIndex > 0;) {
+        --ancestorIndex;
+        const auto* ancestor = path[ancestorIndex];
+        const bool isSiblingFeature = ancestor->isDerivedFrom<Part::Feature>()
+            && App::GeoFeatureGroupExtension::getGroupOfObject(ancestor) == supportBody;
+        const bool isLink = ancestor->getLinkedObject() != ancestor;
+        if (isSiblingFeature && !isLink) {
+            continue;
+        }
+
+        // For example, join "Body." and "Sketch.Edge1", dropping the intervening "Pad.".
+        const auto containerPrefix = sub.substr(0, offsets[ancestorIndex]);
+        sub = containerPrefix + sketchReference;
+        return;
+    }
+
+    // The root was also a sibling feature. Reference the sketch directly within the same body.
+    rootObj = supportObj;
+    sub = geometryReference;
+    auto* attachingBody = App::GeoFeatureGroupExtension::getGroupOfObject(ViewProvider->getObject());
+    if (supportBody != attachingBody) {
+        rootObj = supportBody;
+        sub = std::string(supportObj->getNameInDocument()) + "." + geometryReference;
+    }
+}
+
 void TaskAttacher::findCorrectObjAndSubInThisContext(App::DocumentObject*& rootObj, std::string& sub)
 {
     // The reference that we store must take into account the hierarchy of geoFeatures. For example:
@@ -492,8 +545,6 @@ void TaskAttacher::findCorrectObjAndSubInThisContext(App::DocumentObject*& rootO
     if (!rootObj || names.size() < 2) {
         return;
     }
-    names.insert(names.begin(), rootObj->getNameInDocument());
-
     App::Document* doc = rootObj->getDocument();
     App::DocumentObject* attachingObj = ViewProvider->getObject();     // Attaching object
     App::DocumentObject* subObj = rootObj->getSubObject(sub.c_str());  // Object being attached.
@@ -507,8 +558,12 @@ void TaskAttacher::findCorrectObjAndSubInThisContext(App::DocumentObject*& rootO
         return;
     }
 
-    // Check if attachingObj is a root object. if so we keep the full path.
     auto* group = App::GeoFeatureGroupExtension::getGroupOfObject(attachingObj);
+    removeSketchFeatureNesting(rootObj, sub, subObj);
+    names = Base::Tools::splitSubName(sub);
+    names.emplace(names.begin(), rootObj->getNameInDocument());
+
+    // Check if attachingObj is a root object. if so we keep the full path.
     if (!group) {
         if (attachingObj->getDocument() != rootObj->getDocument()) {
             // If it's not in same document then it's not a good selection
