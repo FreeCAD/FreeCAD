@@ -146,6 +146,11 @@ private:
     void updateRefButton(int idx);
     void updateAttachmentOffsetUI();
 
+    void removeSketchFeatureNesting(
+        App::DocumentObject*& rootObj,
+        std::string& sub,
+        App::DocumentObject* supportObj
+    );
     void findCorrectObjAndSubInThisContext(App::DocumentObject*& obj, std::string& sub);
     void handleInitialSelection();
     struct SubAndObjName
