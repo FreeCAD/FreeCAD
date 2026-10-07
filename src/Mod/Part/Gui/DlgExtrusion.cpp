@@ -930,9 +930,11 @@ void DlgExtrusion::updateFeatures()
 
     // Remove features deleted from the document (e.g., via Undo) to prevent NoneType attribute errors
     extrusions.erase(
-        std::remove_if(extrusions.begin(), extrusions.end(), [](Part::Extrusion* f) {
-            return !f || !f->isAttachedToDocument();
-        }),
+        std::remove_if(
+            extrusions.begin(),
+            extrusions.end(),
+            [](Part::Extrusion* f) { return !f || !f->isAttachedToDocument(); }
+        ),
         extrusions.end()
     );
 
