@@ -928,6 +928,18 @@ void DlgExtrusion::updateFeatures()
         return;
     }
 
+    // Remove features deleted from the document (e.g., via Undo) to prevent NoneType attribute errors
+    extrusions.erase(
+        std::remove_if(extrusions.begin(), extrusions.end(), [](Part::Extrusion* f) {
+            return !f || !f->isAttachedToDocument();
+        }),
+        extrusions.end()
+    );
+
+    if (boundFeature && !boundFeature->isAttachedToDocument()) {
+        boundFeature = nullptr;
+    }
+
     std::vector<App::DocumentObject*> selected;
     try {
         selected = this->getShapesToExtrude();
