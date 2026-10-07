@@ -736,7 +736,7 @@ def build_avoid_boundary(avoid_faces, avoid_overlap, tool_radius, tolerance, nee
             boundary is expanded by it.
         tolerance (float): The deflection tolerance for discretizing
             curves smoothly.
-        needs_safe_stl (boo_process_isolated_facel): Build the extra boundary for the Safe STL
+        needs_safe_stl (bool): Build the extra boundary for the Safe STL
             pillar.
 
     Returns:

@@ -147,6 +147,7 @@ static void renderOverlayFaces(
     const uint32_t packed = color.getPackedValue(0.0f);
     SoLazyElement::setPacked(state, faceSet, 1, &packed, false);
 
+    faceSet->coordIndex.setNum(static_cast<int32_t>(coordIndex.size()));
     faceSet->coordIndex.setValues(0, static_cast<int32_t>(coordIndex.size()), coordIndex.data());
     faceSet->GLRender(action);
 

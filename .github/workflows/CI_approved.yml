@@ -31,8 +31,12 @@
 #   - On code changes (synchronize, opened, reopened, push): cancel any
 #     older in-progress runs for the same branch, then proceed.
 #   - On label additions: check whether macOS/Windows builds already ran
-#     (or are running) for the same HEAD SHA.  If so, bail out so we do
-#     not restart builds that are already covered.
+#     for the same HEAD SHA.  If so, have the build jobs report that run's
+#     results instead of building again, so the required checks reflect the
+#     real outcome.
+#
+# Runs for the same PR and HEAD SHA share a concurrency group, so a label
+# run stays pending (holding no runner) until the run before it finishes.
 
 name: FreeCAD CI approved
 
@@ -49,13 +53,23 @@ on:
 permissions:
   contents: read
 
+# Pending runs in a group are superseded by newer ones; only the newest suite counts for merging.
+concurrency:
+  group: >-
+    FC-CI-approved-${{ github.event.pull_request
+    && format('{0}-{1}', github.event.pull_request.number, github.event.pull_request.head.sha)
+    || github.run_id }}
+  cancel-in-progress: false
+
 jobs:
   Gate:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       actions: write
     outputs:
       should-run: ${{ steps.check.outputs.should-run }}
+      previous-run-id: ${{ steps.check.outputs.previous-run-id }}
     steps:
       - name: Harden the runner (Audit all outbound calls)
         uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
@@ -70,41 +84,62 @@ jobs:
             const isPR = context.eventName === 'pull_request';
             const action = context.payload.action;
 
-            // For labeled events, check whether builds already exist for this SHA.
+            // For labeled events, check whether builds already exist for this SHA. If they do, have
+            // this run mirror their results rather than building again.
             if (isPR && action === 'labeled') {
               const headSha = context.payload.pull_request.head.sha;
-              const { data: { workflow_runs: runs } } = await github.rest.actions.listWorkflowRuns({
+              const runs = await github.paginate(github.rest.actions.listWorkflowRuns, {
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 workflow_id: 'CI_approved.yml',
+                event: 'pull_request',
                 head_sha: headSha,
+                per_page: 100,
               });
 
-              const otherRuns = runs.filter(r => r.id !== context.runId);
+              // Mirror jobs reuse the build job names; their mirror step tells them apart.
+              // Mirroring only real builds keeps a stale failure from propagating through mirrors.
+              const mirrorStepName = 'Report result of previous run';
+              const skipPrefixes = ['Gate', 'Prepare', 'WrapUp'];
+              const isRealBuild = job =>
+                !skipPrefixes.some(p => job.name.startsWith(p))
+                && job.conclusion !== 'skipped'
+                && !(job.steps ?? []).some(
+                  s => s.name === mirrorStepName && s.conclusion !== 'skipped');
 
-              for (const run of otherRuns) {
-                // Look at the individual jobs to see if builds actually ran
-                // (as opposed to being skipped due to missing label).
-                const { data: { jobs } } = await github.rest.actions.listJobsForWorkflowRun({
+              // Newer runs in the group are either pending behind this one or were superseded unrun.
+              const olderRuns = runs.filter(r => r.id < context.runId).sort((a, b) => b.id - a.id);
+
+              for (const run of olderRuns) {
+                // The concurrency group keeps same-SHA runs of this PR from overlapping, so an
+                // unfinished one is still pending and will run after this one.
+                if (run.status !== 'completed') {
+                  core.info(`Ignoring run ${run.html_url} (status: ${run.status})`);
+                  continue;
+                }
+
+                const jobs = await github.paginate(github.rest.actions.listJobsForWorkflowRun, {
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   run_id: run.id,
+                  per_page: 100,
                 });
-                const skipPrefixes = ['Gate', 'Prepare', 'WrapUp'];
-                const buildJobs = jobs.filter(j =>
-                  !skipPrefixes.some(p => j.name.startsWith(p))
-                );
-                const activeOrRan = buildJobs.filter(j =>
-                  j.conclusion !== 'skipped'
-                );
-                if (activeOrRan.length > 0) {
-                  core.info(`Skipping: run ${run.id} already covers SHA ${headSha}`);
-                  core.setOutput('should-run', 'false');
-                  return;
+                const buildJobs = jobs.filter(isRealBuild);
+                if (buildJobs.length === 0) {
+                  continue;
                 }
+
+                if (buildJobs.some(j => j.conclusion === 'cancelled')) {
+                  core.info(`Run ${run.id} was cancelled, building again`);
+                  break;
+                }
+
+                core.info(`Skipping build: mirroring results of run ${run.id} for SHA ${headSha}`);
+                core.setOutput('should-run', 'false');
+                core.setOutput('previous-run-id', String(run.id));
+                return;
               }
 
-              // No existing run with real build jobs -- proceed.
               core.setOutput('should-run', 'true');
               return;
             }
@@ -119,7 +154,7 @@ jobs:
             // For PR code changes (synchronize/opened/reopened), cancel older runs on the same head ref so we don't
             // waste CI resources on stale code.
             const branch = context.payload.pull_request.head.ref;
-            for (const status of ['in_progress', 'queued']) {
+            for (const status of ['in_progress', 'queued', 'pending']) {
               const { data: { workflow_runs: runs } } = await github.rest.actions.listWorkflowRuns({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -127,7 +162,9 @@ jobs:
                 branch: branch,
                 status: status,
               });
-              for (const run of runs.filter(r => r.id !== context.runId)) {
+              // Newer runs hold newer code, or label runs for this SHA whose required checks
+              // must not be lost to a cancellation.
+              for (const run of runs.filter(r => r.id < context.runId)) {
                 core.info(`Canceling stale run ${run.id} (status: ${status})`);
                 try {
                   await github.rest.actions.cancelWorkflowRun({
@@ -154,26 +191,36 @@ jobs:
     needs: [Gate, Prepare]
     if: >-
       needs.Prepare.result == 'success'
-      && needs.Gate.outputs.should-run == 'true'
+      && (needs.Gate.outputs.should-run == 'true' || needs.Gate.outputs.previous-run-id != '')
       && (github.event_name != 'pull_request'
           || startsWith(github.event.pull_request.base.ref, 'releases/')
           || contains(toJSON(github.event.pull_request.labels.*.name), 'Approved:'))
+    permissions:
+      actions: read
+      contents: read
     uses: ./.github/workflows/sub_buildPixi.yml
     with:
       artifactBasename: Pixi-${{ github.run_id }}
+      skipBuild: ${{ needs.Gate.outputs.should-run != 'true' }}
+      mirrorRunId: ${{ needs.Gate.outputs.previous-run-id }}
 
   Windows:
     needs: [Gate, Prepare]
     if: >-
       needs.Prepare.result == 'success'
-      && needs.Gate.outputs.should-run == 'true'
+      && (needs.Gate.outputs.should-run == 'true' || needs.Gate.outputs.previous-run-id != '')
       && !startsWith(github.head_ref, 'refs/heads/backport-')
       && (github.event_name != 'pull_request'
           || startsWith(github.event.pull_request.base.ref, 'releases/')
           || contains(toJSON(github.event.pull_request.labels.*.name), 'Approved:'))
+    permissions:
+      actions: read
+      contents: read
     uses: ./.github/workflows/sub_buildWindows.yml
     with:
       artifactBasename: Windows-${{ github.run_id }}
+      skipBuild: ${{ needs.Gate.outputs.should-run != 'true' }}
+      mirrorRunId: ${{ needs.Gate.outputs.previous-run-id }}
 
   WrapUp:
     needs: [

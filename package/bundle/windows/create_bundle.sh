@@ -35,6 +35,9 @@ cp -a ${conda_env}/Library/Mod ${copy_dir}/Mod
 mkdir -p ${copy_dir}/doc
 cp -a ${conda_env}/Library/doc/{ThirdPartyLibraries.html,LICENSE.html} ${copy_dir}/doc
 
+# Generate graphviz config
+${copy_dir}/bin/dot.exe -c
+
 # delete unnecessary stuff
 find ${copy_dir} -name \*.a -delete
 find ${copy_dir} -name \*.lib -delete

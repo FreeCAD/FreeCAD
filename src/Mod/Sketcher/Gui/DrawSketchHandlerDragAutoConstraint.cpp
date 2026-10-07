@@ -90,6 +90,8 @@ void DrawSketchHandlerDragAutoConstraint::initDragging(const std::vector<GeoElem
     }
 
     updateCursor();
+    // Restore the previous cursor, keeping the initialized pixmap for auto-constraint hints.
+    unsetCursor();
     startPos = toVector2d(obj->getPoint(dragged.front().GeoId, dragged.front().Pos));
 }
 
