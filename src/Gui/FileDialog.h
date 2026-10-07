@@ -28,9 +28,7 @@
 #include <FCGlobal.h>
 
 class QButtonGroup;
-class QCompleter;
 class QDialogButtonBox;
-class QFileSystemModel;
 class QGridLayout;
 class QGroupBox;
 class QHBoxLayout;
@@ -304,14 +302,13 @@ Q_SIGNALS:
 private Q_SLOTS:
     void chooseFile();
     void editingFinished();
+    void installPathCompleter();
 
 protected:
     void resizeEvent(QResizeEvent*) override;
 
 private:
     QLineEdit* lineEdit;
-    QCompleter* completer;
-    QFileSystemModel* fs_model;
     QPushButton* button;
     Mode md;
     AcceptMode accMode;
