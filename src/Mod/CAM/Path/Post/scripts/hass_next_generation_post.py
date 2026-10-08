@@ -912,7 +912,7 @@ class HaasNextGeneration(PostProcessor):
         """
 
         from Machine.models.machine import RotationStrategy
-        import Path.Base.Generator.rotation as rotation
+        from Path.Base.Generator import rotation
 
         result = super()._expand_workplane_frames(postables)
         strategy = self._rotation_strategy()
