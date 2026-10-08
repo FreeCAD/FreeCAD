@@ -2,6 +2,10 @@
 
 ### Your own 3D Parametric Modeler
 
+[Headless Python modeling examples](contrib/headless/README.md)
+generate editable native documents, revise saved features & export STEP using
+FreeCAD alone. It runs with official FreeCAD binaries on macOS & Windows.
+
 [Website](https://www.freecad.org) •
 [Documentation](https://wiki.freecad.org) •
 [Forum](https://forum.freecad.org/) •
