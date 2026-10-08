@@ -1467,7 +1467,7 @@ class ObjectSurface(PathOp.ObjectOp):
         depth_offset = obj.DepthOffset.Value
 
         # Start Point handling
-        start_point = obj.StartPoint if getattr(obj, "UseStartPoint", False) else None
+        start_point = self.startPoint(obj) if getattr(obj, "UseStartPoint", False) else None
 
         zlevel_tool_params = {
             "radius": radius,
@@ -1606,7 +1606,7 @@ class ObjectSurface(PathOp.ObjectOp):
             Path.Log.error("No models found in Job.")
             return None
 
-        if getattr(self, "_geom_transform_matrix", None) is not None and any(
+        if getattr(self, "_geometry_rotation", None) is not None and any(
             not hasattr(b, "Shape") for b in base_objs
         ):
             # Mesh::Feature bases carry no .Shape, so the base class cannot
@@ -1712,7 +1712,7 @@ class ObjectSurface(PathOp.ObjectOp):
         is_surface_scan = strategy == "SurfaceScan"
         is_waterline = strategy == "Waterline"
         is_zlevel = strategy == "ZLevelHybrid"
-        is_three_plus_two = getattr(self, "_geom_transform_matrix", None) is not None
+        is_three_plus_two = getattr(self, "_geometry_rotation", None)
         use_cpp = True
 
         # Geometry & Generation Requirements
@@ -1897,8 +1897,8 @@ class ObjectSurface(PathOp.ObjectOp):
                 Path.Command(
                     "G0",
                     {
-                        "X": obj.StartPoint.x,
-                        "Y": obj.StartPoint.y,
+                        "X": self.startPoint(obj).x,
+                        "Y": self.startPoint(obj).y,
                         "F": self.horizRapid,
                     },
                 )
