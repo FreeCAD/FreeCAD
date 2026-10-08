@@ -168,7 +168,7 @@ bool ZipLocalEntry::trailingDataDescriptor() const {
   // gp_bitfield bit 3 is one, if this entry uses a trailing data
   // descriptor to keep size, compressed size and crc-32
   // fields.
-  return ( gp_bitfield & 4 ) != 0 ;
+  return ( gp_bitfield & 8 ) != 0 ;
 }
 
 FileEntry *ZipLocalEntry::clone() const {

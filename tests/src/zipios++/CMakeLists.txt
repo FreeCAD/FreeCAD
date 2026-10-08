@@ -3,6 +3,7 @@
 add_executable(Zipios_tests_run
         collectioncollection.cpp
         zipfile.cpp
+        zipinputstream.cpp
 )
 
 
