@@ -240,6 +240,26 @@
           </property>
          </widget>
         </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_Depth">
+          <property name="text">
+           <string>Depth</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="QDoubleSpinBox" name="sbDepth">
+          <property name="minimumSize">
+           <size><width>0</width><height>26</height></size>
+          </property>
+          <property name="decimals"><number>2</number></property>
+          <property name="maximum"><double>9999.00</double></property>
+          <property name="value"><double>0.00</double></property>
+          <property name="toolTip">
+           <string>Depth for broken-out cut (0.0 = through all)</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>

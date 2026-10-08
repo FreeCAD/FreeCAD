@@ -100,6 +100,7 @@ protected Q_SLOTS:
     void onRightClicked();
     void onIdentifierChanged();
     void onScaleChanged();
+    void onDepthChanged();
     void scaleTypeChanged(int index);
     void liveUpdateClicked();
     void updateNowClicked();
@@ -136,6 +137,7 @@ private:
     Base::Vector3d m_saveOrigin;
     double m_saveScale;
     int m_saveScaleType;
+    double m_saveDepth;
     bool m_saved;
     bool m_createMode;
     Base::Vector3d m_normal;

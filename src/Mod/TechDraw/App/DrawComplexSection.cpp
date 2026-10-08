@@ -155,6 +155,8 @@ DrawComplexSection::DrawComplexSection() :
     ProjectionStrategy.setEnums(ProjectionStrategyEnums);
     ADD_PROPERTY_TYPE(ProjectionStrategy, ((long)0), fgroup, App::Prop_None,
                       "Make a single cut, or use the profile in pieces");
+    ADD_PROPERTY_TYPE(BrokenOutDepth, (0.0), fgroup, App::Prop_None,
+                      "Extrusion depth for broken-out cut (0 = infinite through-all cut)");
 //NOLINTEND
 }
 
@@ -1674,6 +1676,16 @@ TopoDS_Shape DrawComplexSection::makeCuttingToolFromClosedProfile(const TopoDS_W
         return {};
     }
     gp_Dir gpNormal = getFaceNormal(toolFace);
+    double depth = BrokenOutDepth.getValue();
+    
+    if (depth > Precision::Confusion()) {
+        auto extrudeDir = depth * gpNormal;
+        TopoDS_Shape prism = BRepPrimAPI_MakePrism(toolFace, extrudeDir).Shape();
+        constexpr double epsilon = 0.01;
+        prism = ShapeUtils::moveShape(prism, Base::convertTo<Base::Vector3d>(gpNormal) * -epsilon);
+        return prism;
+    }
+
     auto extrudeDir = 2 * dMax * gpNormal;
     TopoDS_Shape prism = BRepPrimAPI_MakePrism(toolFace, extrudeDir).Shape();
     prism = ShapeUtils::moveShape(prism, Base::convertTo<Base::Vector3d>(gpNormal) * -dMax);

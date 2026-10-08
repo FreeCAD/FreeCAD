@@ -148,6 +148,7 @@ void TaskComplexSection::setUiPrimary()
         ui->cmbScaleType->setCurrentIndex(Preferences::scaleType());
     }
     ui->cmbStrategy->setCurrentIndex(0);
+    ui->sbDepth->setValue(0.0);
 
     setUiCommon();
 
@@ -188,6 +189,7 @@ void TaskComplexSection::setUiEdit()
     ui->leSymbol->setText(QString::fromStdString(m_section->SectionSymbol.getValue()));
     ui->sbScale->setValue(m_section->Scale.getValue());
     ui->cmbScaleType->setCurrentIndex(m_section->getScaleType());
+    ui->sbDepth->setValue(m_section->BrokenOutDepth.getValue());
 
     setUiCommon();
 
@@ -235,6 +237,8 @@ void TaskComplexSection::setUiCommon()
 
     connect(ui->pbSectionObjects, &QPushButton::clicked, this,
             &TaskComplexSection::onSectionObjectsUseSelectionClicked);
+    connect(ui->sbDepth, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
+            &TaskComplexSection::onDepthChanged);
     connect(ui->pbProfileObject, &QPushButton::clicked, this,
             &TaskComplexSection::onProfileObjectsUseSelectionClicked);
 
@@ -254,6 +258,7 @@ void TaskComplexSection::saveSectionState()
         m_saveXDir = m_section->XDirection.getValue();
         m_saveOrigin = m_section->SectionOrigin.getValue();
         m_saveDirName = m_section->SectionDirection.getValueAsString();
+        m_saveDepth = m_section->BrokenOutDepth.getValue();
         m_saved = true;
     }
     if (m_baseView) {
@@ -277,6 +282,7 @@ void TaskComplexSection::restoreSectionState()
     m_section->XDirection.setValue(m_saveXDir);
     m_section->SectionOrigin.setValue(m_saveOrigin);
     m_section->SectionDirection.setValue(m_saveDirName.c_str());
+    m_section->BrokenOutDepth.setValue(m_saveDepth);
 }
 
 void TaskComplexSection::onSectionObjectsUseSelectionClicked()
@@ -367,6 +373,12 @@ void TaskComplexSection::onIdentifierChanged()
 void TaskComplexSection::onScaleChanged()
 {
     m_scaleEdited = true;
+    checkAll(false);
+    apply();
+}
+
+void TaskComplexSection::onDepthChanged()
+{
     checkAll(false);
     apply();
 }
@@ -595,6 +607,8 @@ void TaskComplexSection::createComplexSection()
         int projectionStrategy = ui->cmbStrategy->currentIndex();
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.ProjectionStrategy = %d",
                            m_sectionName.c_str(), projectionStrategy);
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.BrokenOutDepth = %0.2f",
+                           m_sectionName.c_str(), ui->sbDepth->value());
 
         Command::doCommand(Command::Doc,
                            "App.activeDocument().%s.SectionOrigin = FreeCAD.Vector(0.0, 0.0, 0.0)",
@@ -680,6 +694,8 @@ void TaskComplexSection::updateComplexSection()
         int projectionStrategy = ui->cmbStrategy->currentIndex();
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.ProjectionStrategy = %d",
                            m_sectionName.c_str(), projectionStrategy);
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.BrokenOutDepth = %0.2f",
+                           m_sectionName.c_str(), ui->sbDepth->value());
         Command::doCommand(Command::Doc, "App.activeDocument().%s.SectionDirection = 'Aligned'",
                            m_sectionName.c_str());
         //NOLINTEND

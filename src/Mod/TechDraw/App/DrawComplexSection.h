@@ -63,6 +63,7 @@ public:
 //NOLINTBEGIN
     App::PropertyLink CuttingToolWireObject;
     App::PropertyEnumeration ProjectionStrategy;//Offset or Aligned
+    App::PropertyDistance BrokenOutDepth; //Depth for broken-out section
 //NOLINTEND
 
     TopoDS_Shape makeCuttingTool(double dMax) override;
