@@ -25,6 +25,7 @@
 #pragma once
 
 #include "MillMotion.h"
+#include <string>
 #include <vector>
 
 namespace CAMSimulator
@@ -41,16 +42,22 @@ class GCodeParser
 {
 public:
     GCodeParser()
-    {}
+    {
+        Clear();
+    }
     virtual ~GCodeParser();
 
     void Clear();
 
     bool Parse(const char* filename);
     bool AddLine(const char* ptr);
+    void SetFrame(const MillFrame& frame);
+    void BeginOperation(const std::string& name);
 
 public:
     std::vector<MillMotion> Operations;
+    std::vector<MillFrame> Frames;
+    std::vector<std::string> OpNames;
     MillMotion lastState;
 
 protected:
@@ -59,7 +66,14 @@ protected:
     const char* ParseFloat(const char* ptr, float* retFloat);
     bool ParseLine(const char* ptr);
     int lastTool = -1;
-    bool mHasR = false;  // a drill cycle's R word was read since the last G80
+    // modal feed rates, kept apart for rapids (G0) and feed moves (G1)
+    float rapidFeed = 0;
+    float cutFeed = 0;
+    bool mHasR = false;      // the drill cycle running has had an R word
+    bool mHasDepth = false;  // and a Z, its depth, kept in mDepth
+    float mDepth = 0.0f;
+    bool mInCycle = false;  // a drill cycle is running; mInitialZ is the height from before it
+    float mInitialZ = 0.0f;
 };
 
 }  // namespace CAMSimulator

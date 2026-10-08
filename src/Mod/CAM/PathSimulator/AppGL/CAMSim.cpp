@@ -71,4 +71,9 @@ void CAMSim::AddCommand(Command* cmd)
     DlgCAMSimulator::instance()->addGcodeCommand(gline.c_str());
 }
 
+void CAMSim::BeginOperation(const std::string& name)
+{
+    DlgCAMSimulator::instance()->beginOperation(name);
+}
+
 }  // namespace CAMSimulator

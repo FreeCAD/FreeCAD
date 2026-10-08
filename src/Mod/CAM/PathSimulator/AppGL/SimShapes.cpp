@@ -55,7 +55,7 @@ void Shape::GenerateSinTable(int nSlices)
         sinTable[i] = sinf(slice * i);
         cosTable[i] = cosf(slice * i);
     }
-    lastNumSlices = nvals;
+    lastNumSlices = nSlices;
 }
 
 void Shape::RotateProfile(
@@ -73,7 +73,7 @@ void Shape::RotateProfile(
     int vstart;
 
     numVerts = nPoints * 2 * (nSlices + 1);
-    numIndices = (nPoints - 1) * nSlices * 6;
+    numIndices = nPoints * nSlices * 6;  // upper bound, trimmed below: bands at the axis need fewer
 
     std::vector<Vertex> vbuffer(numVerts);
     std::vector<GLushort> ibuffer(numIndices);
@@ -115,18 +115,20 @@ void Shape::RotateProfile(
             vbuffer[vidx++] = {x2, y2, z2, nx, ny, nz};
 
             if (j != nSlices) {
-                // generate indices { 0, 3, 1, 0, 2, 3 }
+                // generate indices { 0, 3, 1, 0, 2, 3 }: both triangles of the band's quad, or
+                // only one where an edge of the quad lies on the axis (its two corners coincide)
                 int pos = vstart + 2 * j;
-                if (i < (nPoints - 1)) {
+                if (rad > 0) {
                     SET_TRIPLE(ibuffer, iidx, pos, pos + 3, pos + 1);
                 }
-                if (i > 0) {
+                if (prevrad > 0) {
                     SET_TRIPLE(ibuffer, iidx, pos, pos + 2, pos + 3);
                 }
             }
         }
     }
 
+    ibuffer.resize(iidx);
     SetModelData(vbuffer, ibuffer);
 }
 
@@ -209,14 +211,15 @@ void Shape::ExtrudeProfileRadial(
         float ydiff = y2 - y1;
         float zdiff = z2 - z1;
         float len = sqrtf(ydiff * ydiff + zdiff * zdiff);
+        // the profile's normal at the start of the piece, and rotated with the piece at its end
         float ny = -zdiff / len;
         float nz = ydiff / len;
-        float nx = -sinAng * ny;
-        ny *= cosAng;
+        float nx = ny * sinAng * dir;
+        float nyEnd = ny * cosAng;
 
         // start verts
-        vbuffer[vidx++] = {0, y1, z1, nx, ny, nz};
-        vbuffer[vidx++] = {0, y2, z2, nx, ny, nz};
+        vbuffer[vidx++] = {0, y1, z1, 0, ny, nz};
+        vbuffer[vidx++] = {0, y2, z2, 0, ny, nz};
 
         if (capStart) {
             vbuffer[vc1idx++] = {0, y1, z1, -1 * dir, 0, 0};
@@ -231,8 +234,8 @@ void Shape::ExtrudeProfileRadial(
         y2 *= cosAng;
         z1 += deltaHeight;
         z2 += deltaHeight;
-        vbuffer[vidx++] = {x1, y1, z1, nx, ny, nz};
-        vbuffer[vidx++] = {x2, y2, z2, nx, ny, nz};
+        vbuffer[vidx++] = {x1, y1, z1, nx, nyEnd, nz};
+        vbuffer[vidx++] = {x2, y2, z2, nx, nyEnd, nz};
 
         // face have 2 triangles { 0, 2, 3, 0, 3, 1 };
         GLushort vistart = i * 4;
