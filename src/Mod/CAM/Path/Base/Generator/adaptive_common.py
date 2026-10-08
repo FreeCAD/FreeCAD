@@ -49,10 +49,20 @@ Usage:
         safe_z          = safe_hght,
         prev_z          = prev_z,
         cut_area        = cut_area,
-        bb_face         = border_face,
+        min_face_area   = 0.0,
+        bb_face         = stock_face,   # REAL stock outline (see note below)
         cut_area_offset = 0.0,
         bb_face_offset  = 0.0,
     )
+
+Note on `bb_face` (the stock handed to Adaptive2d):
+    Unless forceInsideOut is set, Adaptive2d treats everything outside the stock
+    boundary as air: it marks that region as already cleared, and lets the tool
+    enter there, link through it at lift height and plunge into it. The face
+    passed as `bb_face` therefore has to be the actual material outline (the job
+    stock), not a machining or tool-centre boundary. If the face is smaller than
+    the real stock, Adaptive2d sends the tool through material it thinks is
+    empty.
 """
 
 import math
@@ -306,7 +316,6 @@ def _generate_helix_entry(
 def _results_to_commands(
     _area,
     results,
-    bb_face,
     z_target,
     prev_z,
     safe_z,
@@ -316,25 +325,26 @@ def _results_to_commands(
     helix_min_diameter,
     helix_angle,
     helix_cone_angle,
-    safe_bb=None,
 ):
     """
     Converts Adaptive2d results into a list of Path.Command objects.
     Tracks Z-height changes to avoid redundant vertical moves.
+
+    Motion types:
+      - Cutting:      feed moves at z_target.
+      - LinkClear:    rapid moves through cleared area, lifted by lift_distance.
+      - LinkNotClear: the link crosses uncleared material, so the tool retracts
+                      to safe_z, rapids straight to the next cut and plunges there
+                      (Adaptive2d starts every pass in cleared area).
     """
-
-    def _is_outside_geofence(x, y, bb, tol=-0.06):
-        """
-        Checks if a given coordinate is strictly outside the provided bounding box.
-        """
-        if not bb:
-            return False
-        return x < bb.XMin - tol or x > bb.XMax + tol or y < bb.YMin - tol or y > bb.YMax + tol
-
     h_feed = feed_params.get("horizFeed", 0.0)
     v_feed = feed_params.get("vertFeed", 0.0)
     v_rapid = feed_params.get("vertRapid", 0.0)
     h_rapid = feed_params.get("horizRapid", 0.0)
+
+    Cutting = _area.AdaptiveMotionType.Cutting
+    LinkClear = _area.AdaptiveMotionType.LinkClear
+    LinkNotClear = _area.AdaptiveMotionType.LinkNotClear
 
     commands = []
 
@@ -342,7 +352,7 @@ def _results_to_commands(
         if not result.AdaptivePaths:
             continue
 
-        # Helix ramp entry for this region
+        # Helix ramp entry, or straight plunge for entries from outside the stock
         commands.extend(
             _generate_helix_entry(
                 region=result,
@@ -357,62 +367,45 @@ def _results_to_commands(
             )
         )
 
-        lz = prev_z
+        lz = z_target  # the entry leaves the tool at cutting depth
+        retracted = False
 
-        # Track if we forced an emergency retract on the previous move
-        emergency_retracted = False
-
-        for idx, (motion_type, points) in enumerate(result.AdaptivePaths):
+        for motion_type, points in result.AdaptivePaths:
             if not points:
+                continue
+
+            if motion_type == LinkNotClear:
+                if not retracted:
+                    commands.append(Path.Command("G0", {"Z": safe_z, "F": v_rapid}))
+                    retracted = True
+                    lz = safe_z
                 continue
 
             for pt in points:
                 x, y = pt[0], pt[1]
 
-                # Look for as much Adaptive2d's nonsense as possible.
-                if motion_type == _area.AdaptiveMotionType.Cutting:
-                    # If we were emergency retracted during transit, plunge back down safely
-                    if emergency_retracted:
-                        commands.append(Path.Command("G0", {"X": x, "Y": y, "F": h_rapid}))
+                if retracted:
+                    # Above the part: skip lifted links, plunge at the next cut
+                    if motion_type != Cutting:
+                        continue
+                    commands.append(Path.Command("G0", {"X": x, "Y": y, "F": h_rapid}))
+                    commands.append(Path.Command("G1", {"Z": z_target, "F": v_feed}))
+                    lz = z_target
+                    retracted = False
+                    continue
+
+                if motion_type == Cutting:
+                    if lz != z_target:
                         commands.append(Path.Command("G1", {"Z": z_target, "F": v_feed}))
                         lz = z_target
-                        emergency_retracted = False
-
-                    z = z_target
-                    if z != lz:
-                        commands.append(Path.Command("G1", {"Z": z, "F": v_feed}))
                     commands.append(Path.Command("G1", {"X": x, "Y": y, "F": h_feed}))
 
-                elif motion_type == _area.AdaptiveMotionType.LinkClear:
-                    # Geofence check
-                    if _is_outside_geofence(x, y, safe_bb):
-                        if not emergency_retracted:
-                            commands.append(Path.Command("G0", {"Z": safe_z, "F": v_rapid}))
-                            emergency_retracted = True
-                            lz = safe_z
-                        # Skip intermediate XY waypoint; we are above the part
-                        continue
-
-                    # If we are already retracted, ignore all further transit waypoints
-                    if emergency_retracted:
-                        continue
-
-                    # Standard micro-lift transit
+                elif motion_type == LinkClear:
                     z = z_target + lift_distance
                     if z != lz:
                         commands.append(Path.Command("G0", {"Z": z, "F": v_rapid}))
+                        lz = z
                     commands.append(Path.Command("G0", {"X": x, "Y": y, "F": h_rapid}))
-
-                elif motion_type == _area.AdaptiveMotionType.LinkNotClear:
-                    # LinkNotClear inherently means we must retract to safe_z
-                    if not emergency_retracted:
-                        commands.append(Path.Command("G0", {"Z": safe_z, "F": v_rapid}))
-                        emergency_retracted = True
-                        lz = safe_z
-                    # Skip the intermediate XY waypoint and rapid straight to the next cut
-                    continue
-
-                lz = z
 
     return commands
 
@@ -433,7 +426,6 @@ def generate(
     cut_area,
     min_face_area,
     bb_face,
-    enforce_geofence=True,
     cut_area_offset=0.0,
     bb_face_offset=0.0,
 ):
@@ -442,7 +434,9 @@ def generate(
 
     `cut_area` shape at 'z_target'.
 
-    `bb_face` provides the stock boundary.
+    `bb_face` provides the stock boundary handed to Adaptive2d. It must be the
+    real material outline: Adaptive2d treats everything outside it as air (see
+    the module docstring).
 
     Results are converted point-by-point to G-code following the model
     'one command per point', with Z moves emitted only when the height
@@ -462,8 +456,7 @@ def generate(
         prev_z (float):         Previous layer Z depth (helix entry start).
         cut_area (Part.Shape):  2D cutting boundary face for this layer.
         min_face_area (float):  The minimum allowed area to be machined.
-        bb_face (Part.Shape):   2D stock boundary face.
-        enforce_geofence (bool):Geofence active (defaults to True for safety)
+        bb_face (Part.Shape):   2D stock boundary face (real stock outline).
         cut_area_offset (float):Offset value for cutting area or 0.0
         bb_face_offset (float): Offset value for boundary face or 0.0
 
@@ -563,14 +556,10 @@ def generate(
         )
         return []
 
-    # Pre-cache the safe boundary limits ONLY if the geofence is enabled
-    safe_bb = bb_face.BoundBox if (enforce_geofence and bb_face and not bb_face.isNull()) else None
-
     # -- Convert results to G-code --
     return _results_to_commands(
         _area=_area,
         results=results,
-        bb_face=bb_face,
         z_target=z_target,
         prev_z=prev_z,
         safe_z=safe_z,
@@ -580,5 +569,4 @@ def generate(
         helix_min_diameter=helix_min_diameter,
         helix_angle=helix_angle,
         helix_cone_angle=helix_cone_angle,
-        safe_bb=safe_bb,
     )
