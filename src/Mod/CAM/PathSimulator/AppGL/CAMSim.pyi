@@ -3,6 +3,8 @@
 from typing import Any
 
 from Base.BaseClass import BaseClass
+from Base.Placement import Placement
+from Base.Rotation import Rotation
 from Base.Metadata import export, no_args
 
 from Gui import Document
@@ -51,4 +53,28 @@ class CAMSim(BaseClass):
     def AddCommand(self, command: Command, /) -> Any:
         """
         Add a path command to the simulation.
+        """
+
+    def BeginOperation(self, name: str, /) -> None:
+        """
+        Start the named operation; commands added after this belong to it.
+        """
+
+    def SetRotaryAxes(self, axes: list, /) -> None:
+        """
+        Set the machine's rotary axes, first applied first, as (name, direction, rate in degrees
+        per second, sequence, head) tuples.
+        """
+
+    def SetFrame(
+        self,
+        placement: Placement,
+        pose: Rotation = ...,
+        indexRate: float = ...,
+        angles: list = ...,
+        /,
+    ) -> None:
+        """
+        Set the work plane frame of the commands added after this call, with the optional table
+        pose, index rate in degrees per second, and axis angles in SetRotaryAxes order.
         """

@@ -26,6 +26,10 @@
 
 #include <QColor>
 #include <QWidget>
+#include <vector>
+
+#include "MillMotion.h"
+#include "TimelineWidgets.h"
 
 namespace CAMSimulator
 {
@@ -42,17 +46,30 @@ public:
     void setPlaying(bool b);
     void setSpeed(int s);
     void setStage(float f, int total);
+    void setTime(float seconds, float totalSeconds);
+    void setFeed(float feed, bool rapid);
+    void setFeedLabel(const QString& text, bool rapid);
+    void setOperationStarts(const std::vector<float>& starts);
+    void setOperation(const QString& name);
+    void setIndexSpans(const std::vector<SimTimeSpan>& spans, const QStringList& names);
+    void setIndexAngles(const QStringList& axisNames, const std::vector<float>& angles);
 
     void setStockVisible(bool b);
     void setBaseVisible(bool b);
     void setRotateEnabled(bool b);
     void setPathVisible(bool b);
     void setSsaoEnabled(bool b);
+    void setTablePoseEnabled(bool b);
+    void setIncrementalEnabled(bool b);
+    // the frame rate, shown only with shown (the DebugFps parameter)
+    void setFps(float fps, bool shown);
     void setBackgroundColor(const QColor& background);
 
 Q_SIGNALS:
     void play(bool b);
     void singleStep();
+    void nextMark();
+    void previousMark();
     void speedChanged(int s);
     void stageChanged(float f);
 
@@ -62,13 +79,20 @@ Q_SIGNALS:
     void rotateEnableChanged(bool b);
     void pathVisibleChanged(bool b);
     void ssaoEnableChanged(bool b);
+    void tablePoseEnableChanged(bool b);
+    void incrementalEnableChanged(bool b);
 
 protected:
     void resizeEvent(QResizeEvent* event) override;
+    bool eventFilter(QObject* watched, QEvent* event) override;
+    // Clears to transparent first, so a partial repaint never blends over stale pixels.
+    void paintEvent(QPaintEvent* event) override;
 
 private Q_SLOTS:
     void on_playButton_clicked();
     void on_singleStepButton_clicked();
+    void on_nextOpButton_clicked();
+    void on_prevOpButton_clicked();
 
     void onSlowerFasterButtonClicked();
     void on_stageSlider_sliderMoved(int value);
@@ -76,13 +100,26 @@ private Q_SLOTS:
     void on_stockModelButton_clicked();
 
 private:
+    // apply ink and rapidInk to the readouts and slider marks
+    void restyle();
+
     Ui_GuiDisplay* ui;
+    OperationMarkers* opMarkers;
+    AxisNames* axisNames;
+    TimelineScale timeScale;
+    float stage = 0;
+    // puts the slider's handle at stage
+    void showStage();
 
     bool playing = true;
     int speed = 1;
 
     bool stockVisible = true;
     bool baseVisible = false;
+    // readout text color, and the feed's during a rapid move
+    QColor ink = Qt::white;
+    QColor rapidInk = QColor(255, 80, 80);
+    bool feedRapid = false;  // the feed readout currently shows a rapid move
 };
 
 }  // namespace CAMSimulator

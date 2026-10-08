@@ -51,12 +51,20 @@ SET(CAMSimulator_SRCS_Core
     SimDisplay.h
     SimShapes.cpp
     SimShapes.h
+    SimRotary.cpp
+    SimRotary.h
+    SimTimeline.cpp
+    SimTimeline.h
     StockObject.cpp
     StockObject.h
+    StockCache.cpp
+    StockCache.h
     SolidObject.cpp
     SolidObject.h
     Texture.cpp
     Texture.h
+    TimelineWidgets.cpp
+    TimelineWidgets.h
     TextureLoader.cpp
     TextureLoader.h
     ViewCAMSimulator.cpp
