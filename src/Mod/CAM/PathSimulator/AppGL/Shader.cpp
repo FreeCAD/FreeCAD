@@ -471,6 +471,18 @@ const char* FragShader2dFbo = R"(
     }
 )";
 
+// zeroes the color, position and normal attachments
+const char* FragShaderClear = R"(
+    #version 120
+
+    void main()
+    {
+        gl_FragData[0] = vec4(0.0);
+        gl_FragData[1] = vec4(0.0);
+        gl_FragData[2] = vec4(0.0);
+    }
+)";
+
 const char* VertShaderGeom = R"(
     #version 120
 
@@ -597,11 +609,22 @@ const char* FragShaderSSAOLighting = R"(
 
     varying vec2 texCoord;
 
-    uniform vec3 lightPos;
     uniform vec3 lightColor;
     uniform vec3 lightAmbient;
 
     uniform bool ssaoActive;
+    uniform mat4 projection;
+
+    // Two lights from directions fixed to the view (toward each light): a key light from above
+    // and to the left, over the viewer's shoulder, and a weaker fill from the right and below,
+    // so that faces turned away from the key still show. Faces turned differently get different
+    // shades however near or far the view is, and a flat face seen straight on shows no glare
+    // spot: the key light's highlight is faint and broad.
+    const vec3 keyDir = vec3(-0.50, 0.65, 0.57);
+    const vec3 fillDir = vec3(0.55, -0.35, 0.76);
+    const float fillShare = 0.35;
+    const float shine = 0.08;
+    const float shineSpread = 16.0;
 
     uniform sampler2D ColorTex;
     uniform sampler2D PositionTex;
@@ -611,9 +634,17 @@ const char* FragShaderSSAOLighting = R"(
     vec3 ambAndDiffuse( vec3 pos, vec3 norm, vec3 diff, float ao ) {
         ao = pow(ao, 4);
         vec3 ambient = lightAmbient * diff * ao;
-        vec3 s = normalize( lightPos - pos);
-        float sDotN = max( dot(s,norm), 0.0 );
-        return ambient + lightColor * diff * sDotN;
+        vec3 key = normalize(keyDir);
+        float lit = max(dot(key, norm), 0.0) + fillShare * max(dot(normalize(fillDir), norm), 0.0);
+        // Blinn-Phong highlight, only where there is a surface (non-zero normal)
+        float spec = 0.0;
+        if (dot(norm, norm) > 0.5 && dot(key, norm) > 0.0) {
+            // toward the camera: view Z when orthographic, else toward the eye
+            vec3 toEye = projection[3][3] > 0.5 ? vec3(0.0, 0.0, 1.0) : normalize(-pos);
+            vec3 h = normalize(key + toEye);
+            spec = pow(max(dot(h, norm), 0.0), shineSpread);
+        }
+        return ambient + lightColor * diff * lit + lightColor * spec * shine;
     }
 
     void main()

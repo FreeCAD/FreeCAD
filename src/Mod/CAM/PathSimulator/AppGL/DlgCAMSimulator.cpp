@@ -29,6 +29,10 @@
 #include "GuiDisplay.h"
 #include "MillSimulation.h"
 #include "ViewCAMSimulator.h"
+#include <App/Application.h>
+#include <Base/Matrix.h>
+#include <Base/Placement.h>
+#include <Base/Rotation.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Inventor/nodes/SoCamera.h>
 #include <QSurfaceFormat>
@@ -104,6 +108,9 @@ void DlgCAMSimulator::connectTo(GuiDisplay& gui, Dummy3DViewer& dv)
 
     connect(&gui, &GuiDisplay::singleStep, this, [this] { mMillSimulator->SingleStep(); });
 
+    connect(&gui, &GuiDisplay::nextMark, this, [this] { mMillSimulator->SkipToNextMark(); });
+    connect(&gui, &GuiDisplay::previousMark, this, [this] { mMillSimulator->SkipToPreviousMark(); });
+
     connect(&gui, &GuiDisplay::speedChanged, this, [this](int speed) {
         mMillSimulator->SetSpeed(speed);
     });
@@ -120,6 +127,14 @@ void DlgCAMSimulator::connectTo(GuiDisplay& gui, Dummy3DViewer& dv)
 
     connect(&gui, &GuiDisplay::ssaoEnableChanged, this, [this](bool b) {
         mMillSimulator->EnableSsao(b);
+    });
+
+    connect(&gui, &GuiDisplay::tablePoseEnableChanged, this, [this](bool b) {
+        mMillSimulator->EnableTablePose(b);
+    });
+
+    connect(&gui, &GuiDisplay::incrementalEnableChanged, this, [this](bool b) {
+        mMillSimulator->EnableIncremental(b);
     });
 
     connect(&gui, &GuiDisplay::stockVisibleChanged, this, &DlgCAMSimulator::setStockVisible);
@@ -153,14 +168,34 @@ void DlgCAMSimulator::updateGui()
     mGui->setPlaying(state.mSimPlaying);
     mGui->setSpeed(state.mSimSpeed);
 
-    const float stage = (float)state.mCurStep / state.mNTotalSteps;
+    const float stage = state.mTotalTime > 0 ? state.mSimTime / state.mTotalTime : 0.f;
     mGui->setStage(stage, state.mNTotalSteps);
+    mGui->setTime(state.mSimTime, state.mTotalTime);
+    mGui->setOperationStarts(mMillSimulator->GetOperationStarts());
+    mGui->setOperation(QString::fromStdString(mMillSimulator->GetCurrentOperation()));
+
+    QStringList axisNames;
+    for (const SimRotaryAxis& axis : mMillSimulator->GetRotaryAxes()) {
+        axisNames << QString::fromStdString(axis.name);
+    }
+    mGui->setIndexSpans(mMillSimulator->GetIndexSpans(), axisNames);
+    // the feed readout, or the rotary axis angles while an index turn is in progress
+    std::vector<float> angles;
+    if (mMillSimulator->GetIndexAngles(angles)) {
+        mGui->setIndexAngles(axisNames, angles);
+    }
+    else {
+        mGui->setFeed(state.mCurFeed, state.mCurRapid);
+    }
 
     mGui->setStockVisible(state.mViewItems & VIEWITEM_SIMULATION);
     mGui->setBaseVisible(state.mViewItems & VIEWITEM_BASE_SHAPE);
 
     mGui->setPathVisible(state.mViewPath);
     mGui->setSsaoEnabled(state.mViewSSAO);
+    mGui->setTablePoseEnabled(state.mViewTablePose);
+    mGui->setIncrementalEnabled(state.mIncremental);
+    mGui->setFps(mFps, mDebugFps);
 
     if (mDummyViewer && !mDummyViewer->isAnimating()) {
         mGui->setRotateEnabled(false);
@@ -177,6 +212,7 @@ void DlgCAMSimulator::cloneFrom(const DlgCAMSimulator& from)
 
     mGCode = from.mGCode;
     mTools = from.mTools;
+    mRotaryAxes = from.mRotaryAxes;
 
     mStock = from.mStock;
     mStock.needsUpdate = true;
@@ -213,6 +249,10 @@ void DlgCAMSimulator::setAnimating(bool animating)
 void DlgCAMSimulator::startSimulation(const Part::TopoShape& stock, float quality)
 {
     mQuality = quality;
+    // a debugging switch, set only in the parameter editor
+    mDebugFps = App::GetApplication()
+                    .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/CAM/Simulator")
+                    ->GetBool("DebugFps", false);
     mNeedsInitialize = true;
 
     setStockShape(stock, 1);
@@ -227,13 +267,60 @@ void DlgCAMSimulator::resetSimulation()
 
     mGCode.clear();
     mTools.clear();
+    mRotaryAxes.clear();
     mStock = {};
     mBase = {};
 }
 
 void DlgCAMSimulator::addGcodeCommand(const char* cmd)
 {
-    mGCode.push_back(cmd);
+    SimGCode gcode;
+    gcode.line = cmd;
+    mGCode.push_back(gcode);
+}
+
+void DlgCAMSimulator::beginOperation(const std::string& name)
+{
+    SimGCode gcode;
+    gcode.line = name;
+    gcode.isOpStart = true;
+    mGCode.push_back(gcode);
+}
+
+void DlgCAMSimulator::setRotaryAxes(const std::vector<SimRotaryAxis>& axes)
+{
+    mRotaryAxes = axes;
+}
+
+void DlgCAMSimulator::setFrame(
+    const Base::Placement& placement,
+    const Base::Rotation& pose,
+    float indexRate,
+    const std::vector<float>& angles
+)
+{
+    // Base::Matrix4D is row-major, linmath is column-major: transpose while copying
+    const Base::Matrix4D mat = placement.toMatrix();
+    SimGCode gcode;
+    gcode.isFrame = true;
+    for (int c = 0; c < 4; c++) {
+        for (int r = 0; r < 4; r++) {
+            gcode.frame.mat[c][r] = (float)mat[r][c];
+        }
+    }
+    // Base::Rotation's quaternion order is x, y, z, w, the same as linmath's
+    double q[4];
+    placement.getRotation().getValue(q[0], q[1], q[2], q[3]);
+    for (int i = 0; i < 4; i++) {
+        gcode.frame.rot[i] = (float)q[i];
+    }
+    pose.getValue(q[0], q[1], q[2], q[3]);
+    for (int i = 0; i < 4; i++) {
+        gcode.frame.pose[i] = (float)q[i];
+    }
+    gcode.frame.indexRate = indexRate;
+    gcode.frame.angles = angles;
+    mGCode.push_back(gcode);
 }
 
 void DlgCAMSimulator::addTool(
@@ -424,8 +511,16 @@ void DlgCAMSimulator::updateResources()
     // update gcode
 
     for (int i = mLastGCode; i < (int)mGCode.size(); i++) {
-        const std::string& cmd = mGCode[i];
-        mMillSimulator->AddGcodeLine(cmd.c_str());
+        const SimGCode& cmd = mGCode[i];
+        if (cmd.isFrame) {
+            mMillSimulator->SetFrame(cmd.frame);
+        }
+        else if (cmd.isOpStart) {
+            mMillSimulator->BeginOperation(cmd.line);
+        }
+        else {
+            mMillSimulator->AddGcodeLine(cmd.line.c_str());
+        }
     }
 
     mLastGCode = mGCode.size();
@@ -444,6 +539,7 @@ void DlgCAMSimulator::updateResources()
         // TODO: mStock is set when we arrive here, still this could be handled nicer
         const float maxStockDimension = mStock.maxDimension();
 
+        mMillSimulator->SetRotaryAxes(mRotaryAxes);
         mMillSimulator->InitSimulation(mQuality, maxStockDimension);
         mNeedsInitialize = false;
 
@@ -524,6 +620,17 @@ void DlgCAMSimulator::paintGL()
 
 
     mMillSimulator->ProcessSim(elapsed);
+
+    // frames per second over about the last second, to compare drawing methods
+    if (mLastProcessSim != clock::time_point::min()) {
+        mFrameTimes.push_back(now);
+        while (mFrameTimes.size() > 2 && now - mFrameTimes.front() > std::chrono::seconds(1)) {
+            mFrameTimes.pop_front();
+        }
+        const float span
+            = std::chrono::duration<float>(mFrameTimes.back() - mFrameTimes.front()).count();
+        mFps = span > 0 ? (float)(mFrameTimes.size() - 1) / span : 0.f;
+    }
 
     mLastProcessSim = now;
 }
