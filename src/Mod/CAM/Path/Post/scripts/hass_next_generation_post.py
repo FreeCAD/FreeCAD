@@ -824,7 +824,7 @@ class HaasNextGeneration(PostProcessor):
         """
         if not self.values.get("USECLAMPCODES", True):
             return []
-        import Path.Base.Generator.rotation as rotation
+        from Path.Base.Generator import rotation
 
         axes = sorted(axis.name.upper() for axis in rotation.build_kinematic_chain(self._machine))
         lines = [pair[1 if engage else 0] for pair in CLAMP_CODES[: len(axes)]]
