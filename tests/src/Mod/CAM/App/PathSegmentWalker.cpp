@@ -330,6 +330,45 @@ TEST_P(PathSegmentWalkerPlaneTest, SimpleCenters)
     }
 }
 
+TEST_P(PathSegmentWalkerPlaneTest, CollinearRadialMismatch)
+{
+    // A rounded endpoint can lie on the same radial line with a different radius.
+    // Preserve the zero-angle fallback that makes this a complete turn.
+    auto spec = circle();
+    spec.start = spec.plane.point(25, 0);
+    spec.end = spec.plane.point(25.001, 0);
+    spec.center = spec.plane.point(20, 0);
+    const auto visitor = walk(makePath(spec));
+    ASSERT_EQ(visitor.arcs.size(), 1);
+    const auto& points = visitor.arcs.front().points;
+    ASSERT_GT(points.size(), 2);
+    expectPoint(points.front(), spec.start, 0);
+    expectPoint(points.back(), spec.end, 0);
+
+    const auto& plane = spec.plane;
+    constexpr double radius = 5;
+    double sweep = 0;
+    double coverage = 0;
+    for (std::size_t i = 0; i < points.size(); ++i) {
+        const auto& point = points[i];
+        const double u = point[plane.u] - spec.center[plane.u];
+        const double v = point[plane.v] - spec.center[plane.v];
+        if (i + 1 < points.size()) {
+            EXPECT_NEAR(std::hypot(u, v), radius, 1e-8);
+        }
+        coverage = std::max(coverage, std::hypot(point[plane.u] - spec.start[plane.u],
+                                                 point[plane.v] - spec.start[plane.v]));
+        if (i != 0) {
+            const auto& previous = points[i - 1];
+            const double previousU = previous[plane.u] - spec.center[plane.u];
+            const double previousV = previous[plane.v] - spec.center[plane.v];
+            sweep += std::atan2(previousU * v - previousV * u, previousU * u + previousV * v);
+        }
+    }
+    EXPECT_GT(coverage, 1.9 * radius);
+    EXPECT_NEAR(sweep, direction() * fullTurn, sweepTolerance);
+}
+
 TEST_P(PathSegmentWalkerPlaneTest, SmallDistinctEndpoints)
 {
     auto spec = circle();

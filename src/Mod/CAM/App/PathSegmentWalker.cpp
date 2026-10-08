@@ -265,13 +265,17 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
             // GetAngle will always return the minor angle. Switch if needed
             Base::Vector3d anorm = (last0 - center0) % (next0 - center0);
             // GetAngle can be nonzero even for identical radius vectors
-            // Recognize full  circles by exact projected endpoints, without Vector3 comparison tolerance
+            // Recognize full circles by exact projected endpoints, without Vector3 comparison tolerance
             const bool fullCircle = last0.x == next0.x && last0.y == next0.y && last0.z == next0.z;
             if (fullCircle && std::isfinite(angle)) {
                 angle = std::numbers::pi * 2;
             }
             else if ((anorm.*pz) * (norm.*pz) < 0.0) {
                 angle = std::numbers::pi * 2 - angle;
+            }
+            else if (angle == 0.0 && (anorm.*pz) == 0.0) {
+                // A collinear end radius can differ slightly from the start radius.
+                angle = std::numbers::pi * 2;
             }
 
             double amax = std::max(fabs(a - A), std::max(fabs(b - B), fabs(c - C)));
