@@ -1132,7 +1132,7 @@ class HaasNextGeneration(PostProcessor):
                                 self._make_postable("Post: smoothing", [f"G187 P{level}"])
                             )
                         else:
-                            rebuilt.append(self._make_postable("Post: smoothing", [f"G187"]))
+                            rebuilt.append(self._make_postable("Post: smoothing", ["G187"]))
 
                     if seen_operation:  # addions only after the first operation has completed
                         if self.values.get("OPTIONALSTOP", "Off") == "Operation":
