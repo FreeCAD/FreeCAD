@@ -1500,6 +1500,24 @@ private Q_SLOTS:
         QCOMPARE(spy.takeFirst().at(0).toDouble(), 20.0);
     }
 
+    void test_IncompatibleExpressionResultIsRejected()  // NOLINT
+    {
+        ScopedExpressionOwner owner;
+        QuantitySpinBoxWithExpression spinBox;
+        spinBox.bind(owner.getPath());
+        spinBox.setUnit(Base::Unit::Length);
+
+        std::shared_ptr<App::Expression> length(App::Expression::parse(owner.getObject(), "10 mm"));
+        spinBox.setExpression(length);
+
+        QSignalSpy spy(&spinBox, qOverload<double>(&Gui::QuantitySpinBox::valueChanged));
+        std::shared_ptr<App::Expression> angle(App::Expression::parse(owner.getObject(), "30 deg"));
+        spinBox.setExpression(angle);
+
+        QCOMPARE(spy.count(), 0);
+        QCOMPARE(spinBox.value(), Base::Quantity(10.0, "mm"));
+    }
+
 private:
     /// Builds a length spin box holding the given input, entered the way the user types it.
     /// isNormalized() inspects the last input accepted by the validator, so callers have to

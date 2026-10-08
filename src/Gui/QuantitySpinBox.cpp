@@ -256,8 +256,14 @@ void Gui::QuantitySpinBox::setNumberExpression(App::NumberExpression* expr)
     // without rescaling, matching expression/property assignment semantics.
     // The displayed input unit may use a different scale.
     // see: https://github.com/FreeCAD/FreeCAD/issues/32968
-    if (quantity.isDimensionless() && d->unit != Base::Unit::One) {
-        quantity.setUnit(d->unit);
+    if (d->unit != Base::Unit::One) {
+        if (quantity.isDimensionless()) {
+            quantity.setUnit(d->unit);
+        }
+        else if (quantity.getUnit() != d->unit) {
+            const QString message = numericInputDiagnosticText(InputDiagnosticKind::IncompatibleUnit);
+            throw UnitsMismatchError(message.toStdString());
+        }
     }
     // An expression result is a semantic change: listeners (task panel previews, bound
     // feature updates) must be notified, as they were before c152324 via validateInput().
