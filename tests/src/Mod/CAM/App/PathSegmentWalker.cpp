@@ -356,8 +356,10 @@ TEST_P(PathSegmentWalkerPlaneTest, CollinearRadialMismatch)
         if (i + 1 < points.size()) {
             EXPECT_NEAR(std::hypot(u, v), radius, 1e-8);
         }
-        coverage = std::max(coverage, std::hypot(point[plane.u] - spec.start[plane.u],
-                                                 point[plane.v] - spec.start[plane.v]));
+        coverage = std::max(
+            coverage,
+            std::hypot(point[plane.u] - spec.start[plane.u], point[plane.v] - spec.start[plane.v])
+        );
         if (i != 0) {
             const auto& previous = points[i - 1];
             const double previousU = previous[plane.u] - spec.center[plane.u];
