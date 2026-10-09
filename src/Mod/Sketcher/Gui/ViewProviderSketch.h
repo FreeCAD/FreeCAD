@@ -718,6 +718,10 @@ public:
     void deleteSelected();
 
     bool isSelected(const std::string& ss) const;
+    /// Edges joined end to end with geoId, including geoId itself (first). Closed curves
+    /// (circles, ellipses, periodic B-splines) have no end points: the result is empty
+    /// for them and they never join another edge.
+    std::vector<int> getConnectedEdges(int geoId, bool includeExternal = true) const;
     void rmvSelection(const std::string& subNameSuffix);
     bool addSelection(const std::string& subNameSuffix, float x = 0, float y = 0, float z = 0);
     bool addSelection2(const std::string& subNameSuffix, float x = 0, float y = 0, float z = 0);

@@ -1675,27 +1675,17 @@ void ViewProviderSketch::editDoubleClicked()
     }
 }
 
-void ViewProviderSketch::toggleWireSelection(int clickedGeoId)
+std::vector<int> ViewProviderSketch::getConnectedEdges(int clickedGeoId, bool includeExternal) const
 {
-    Sketcher::SketchObject* obj = getSketchObject();
+    const Sketcher::SketchObject* obj = getSketchObject();
 
-    const Part::Geometry* geo1 = obj->getGeometry(clickedGeoId);
-    if (!geo1 || isPoint(*geo1) || isCircle(*geo1) || isEllipse(*geo1) || isPeriodicBSplineCurve(*geo1)) {
-        return;
-    }
-
-    auto getSelectionName = [](int id) {
-        std::stringstream ss;
-        if (id >= 0) {
-            ss << "Edge" << (id + 1);
-        }
-        else {
-            ss << "ExternalEdge" << (Sketcher::GeoEnum::RefExt - id + 1);
-        }
-        return ss.str();
+    auto isOpenCurve = [](const Part::Geometry* geo) {
+        return geo && !isPoint(*geo) && !isCircle(*geo) && !isEllipse(*geo)
+            && !isPeriodicBSplineCurve(*geo);
     };
-
-    bool selecting = isSelected(getSelectionName(clickedGeoId));
+    if (!isOpenCurve(obj->getGeometry(clickedGeoId))) {
+        return {};
+    }
 
     struct CandidateEdge {
         int geoId;
@@ -1703,10 +1693,11 @@ void ViewProviderSketch::toggleWireSelection(int clickedGeoId)
         Base::Vector3d pEnd;
     };
     std::vector<CandidateEdge> candidateEdges;
+    candidateEdges.reserve(obj->getHighestCurveIndex() + 1
+                           + (includeExternal ? obj->getExternalGeometryCount() : 0));
 
-    auto addCandidate = [&obj, &candidateEdges](int geoId) {
-        const Part::Geometry* geo = obj->getGeometry(geoId);
-        if (!geo || isPoint(*geo) || isCircle(*geo) || isEllipse(*geo) || isPeriodicBSplineCurve(*geo)) {
+    auto addCandidate = [&](int geoId) {
+        if (!isOpenCurve(obj->getGeometry(geoId))) {
             return;
         }
         Base::Vector3d p1 = obj->getPoint(geoId, PointPos::start);
@@ -1717,26 +1708,21 @@ void ViewProviderSketch::toggleWireSelection(int clickedGeoId)
     for (int geoId = 0; geoId <= obj->getHighestCurveIndex(); geoId++) {
         addCandidate(geoId);
     }
-    for (int extGeoId = 0; extGeoId < obj->getExternalGeometryCount(); extGeoId++) {
-        addCandidate(Sketcher::GeoEnum::RefExt - extGeoId);
-    }
-
-    std::vector<CandidateEdge> connectedEdges;
-    auto itClicked = candidateEdges.end();
-    for (auto it = candidateEdges.begin(); it != candidateEdges.end(); ++it) {
-        if (it->geoId == clickedGeoId) {
-            itClicked = it;
-            break;
+    if (includeExternal) {
+        for (int extGeoId = 0; extGeoId < obj->getExternalGeometryCount(); extGeoId++) {
+            addCandidate(Sketcher::GeoEnum::RefExt - extGeoId);
         }
     }
 
-    if (itClicked != candidateEdges.end()) {
-        connectedEdges.push_back(*itClicked);
-        candidateEdges.erase(itClicked);
+    auto itClicked = std::ranges::find_if(candidateEdges, [&](const auto& edge) {
+        return edge.geoId == clickedGeoId;
+    });
+    if (itClicked == candidateEdges.end()) {
+        return {};
     }
-    else {
-        return;
-    }
+    std::vector<CandidateEdge> connectedEdges;
+    connectedEdges.push_back(*itClicked);
+    candidateEdges.erase(itClicked);
 
     bool partHasBeenAdded = true;
     while (partHasBeenAdded) {
@@ -1763,8 +1749,32 @@ void ViewProviderSketch::toggleWireSelection(int clickedGeoId)
         }
     }
 
+    std::vector<int> result;
+    result.reserve(connectedEdges.size());
     for (const auto& edge : connectedEdges) {
-        std::string selName = getSelectionName(edge.geoId);
+        result.push_back(edge.geoId);
+    }
+    return result;
+}
+
+void ViewProviderSketch::toggleWireSelection(int clickedGeoId)
+{
+    auto getSelectionName = [](int id) {
+        if (id >= 0) {
+            return std::format("Edge{}", id + 1);
+        }
+        return std::format("ExternalEdge{}", Sketcher::GeoEnum::RefExt - id + 1);
+    };
+
+    const auto connectedEdges = getConnectedEdges(clickedGeoId);
+    if (connectedEdges.empty()) {
+        return;
+    }
+
+    bool selecting = isSelected(getSelectionName(clickedGeoId));
+
+    for (int geoId : connectedEdges) {
+        std::string selName = getSelectionName(geoId);
         if (!selecting && isSelected(selName)) {
             rmvSelection(selName);
         }
