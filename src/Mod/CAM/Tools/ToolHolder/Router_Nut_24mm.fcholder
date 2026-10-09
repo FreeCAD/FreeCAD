@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "name": "Router collet nut, 24 mm hex",
+  "units": "mm",
+  "type": "Router",
+  "profile": [
+    [0, 0],
+    [12.75, 0],
+    [13.85, 1.1],
+    [13.85, 20],
+    [0, 20]
+  ],
+  "notes": "Hex nut 24 mm across the flats, drawn round across its corners. Fits routers such as the Bosch Colt and 1617. The height is approximate: measure yours.",
+  "source": "Generic; across-flats sizes from the routers' wrenches"
+}

@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "name": "ER11 nut, mini",
+  "units": "mm",
+  "type": "ER11",
+  "profile": [
+    [0, 0],
+    [7.0, 0],
+    [8.0, 1.0],
+    [8.0, 12],
+    [0, 12]
+  ],
+  "notes": "Slim (ERM) nut, M13x0.75 thread, for reach in tight places.",
+  "source": "Typical ER clamping nut sizes (ISO 15488 collets); nuts vary by maker, measure yours"
+}

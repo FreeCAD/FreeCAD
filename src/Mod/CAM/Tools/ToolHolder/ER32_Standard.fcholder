@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "name": "ER32 nut, standard",
+  "units": "mm",
+  "type": "ER32",
+  "profile": [
+    [0, 0],
+    [23.0, 0],
+    [25.0, 2.0],
+    [25.0, 22.5],
+    [0, 22.5]
+  ],
+  "notes": "Round clamping nut, M40x1.5 thread.",
+  "source": "Typical ER clamping nut sizes (ISO 15488 collets); nuts vary by maker, measure yours"
+}
