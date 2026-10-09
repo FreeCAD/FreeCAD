@@ -328,6 +328,7 @@ class DataclassGUIGenerator:
 
         return group, widgets
 
+
 class MachineEditorDialog(QtGui.QDialog):
     """A dialog to edit machine JSON assets with proper form fields."""
 
@@ -845,6 +846,7 @@ class MachineEditorDialog(QtGui.QDialog):
                 self._template_tree_view.collapse(model_index)
             else:
                 self._template_tree_view.expand(model_index)
+
     def _on_template_activated(self, _row):
         model_index = self._template_tree_view.currentIndex()
         if model_index.flags() & QtCore.Qt.ItemIsSelectable:
