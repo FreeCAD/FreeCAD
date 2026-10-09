@@ -29,8 +29,10 @@
 #include <Standard_Failure.hxx>
 
 #include <algorithm>
+#include <set>
 
 #include <App/Application.h>
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Tools.h>
 #include <Mod/Part/App/modelRefine.h>
@@ -74,6 +76,47 @@ short Boolean::mustExecute() const
         return 1;
     }
     return PartDesign::Feature::mustExecute();
+}
+
+void Boolean::onSettingDocument()
+{
+    connection.disconnect();
+    Feature::onSettingDocument();
+
+    if (auto* document = getDocument()) {
+        connection = document->signalChangedObject.connect(
+            [this](const App::DocumentObject& object, const App::Property& prop) {
+                slotChangedObject(object, prop);
+            }
+        );
+    }
+}
+
+void Boolean::slotChangedObject(const App::DocumentObject& object, const App::Property& prop)
+{
+    auto* document = getDocument();
+    if (!document || document->testStatus(App::Document::Restoring)
+        || UseLegacyBodyPlacement.getValue() || &object == this
+        || &prop != object.getPropertyByName("Placement")) {
+        return;
+    }
+
+    const auto usesPlacement = [&object](const App::DocumentObject* source) {
+        std::set<const App::DocumentObject*> visited;
+        for (; source && visited.insert(source).second;
+             source = App::GeoFeatureGroupExtension::getGroupOfObject(source)) {
+            if (source == &object) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    if (usesPlacement(getFeatureBody()) || std::ranges::any_of(Group.getValues(), usesPlacement)) {
+        // Body and Part placement expressions may run after their contained features.
+        // Touching here lets the document's second recompute pass use the new placement.
+        enforceRecompute();
+    }
 }
 
 TopoShape Boolean::getBooleanTopoShape(const App::DocumentObject* object) const
