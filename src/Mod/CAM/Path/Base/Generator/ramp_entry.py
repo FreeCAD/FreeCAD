@@ -498,14 +498,31 @@ class RampEntry:
         loop_end = next(
             (
                 i
-                for i, candidate in enumerate(edges[edgei + 1 :], edgei + 1)
-                if pointsCoincide(candidate.end_point, start)
+                for i in range(len(edges) - 1, edgei, -1)
+                if pointsCoincide(edges[i].end_point, start)
             ),
             None,
         )
 
         if loop_end is None:
             return ramp, edgei
+
+        # we expect the next move to be a retract move, if it is not we abort so
+        # we don't break things we don't understand
+        def is_retract(edge):
+            return (
+                edge.command.Name in Path.Geom.CmdMoveRapid
+                and (z := edge.command.Parameters.get("Z")) is not None
+                and isStrictlyGreater(z, start[2])
+            )
+
+        if loop_end + 1 >= len(edges) or not is_retract(edges[loop_end + 1]):
+            Path.Log.info("Expected a retract move after the loop, will not extend the loop")
+            return ramp, edgei
+
+        # make sure the retract goes straight up
+        for k in ("X", "Y"):
+            edges[loop_end + 1].command.Parameters.pop(k, None)
 
         # continue the path for the piece we missed when ramping
         reset = [redge.clone(reverse=True) for redge in reversed(reset)]
@@ -516,7 +533,8 @@ class RampEntry:
             return any(k in edge.command.Parameters for k in ("X", "Y"))
 
         nxy = next(
-            (edge for edge in self.edges[loop_end + 1 + len(reset) :] if is_horizontal(edge)), None
+            (edge for edge in self.edges[loop_end + 1 + len(reset) + 1 :] if is_horizontal(edge)),
+            None,
         )
         if nxy is not None:
             nxy.command.Parameters = {
