@@ -1,0 +1,30 @@
+{
+  "name": "ER50 nut, standard",
+  "notes": "Round clamping nut, M64x2 thread.",
+  "profile": [
+    [
+      0,
+      0
+    ],
+    [
+      35.9,
+      0
+    ],
+    [
+      39.0,
+      3.1
+    ],
+    [
+      39.0,
+      35.3
+    ],
+    [
+      0,
+      35.3
+    ]
+  ],
+  "source": "Typical ER clamping nut sizes (ISO 15488 collets); nuts vary by maker, measure yours",
+  "type": "ER50",
+  "units": "mm",
+  "version": 1
+}

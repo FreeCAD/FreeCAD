@@ -34,6 +34,7 @@ from Path.Tool.toolbit.serializers import FCTBSerializer
 from Path.Tool.camassets import ensure_assets_initialized, ensure_toolbitshape_assets_present
 from Path.Tool.library import Library
 from Path.Tool.toolbit import ToolBit
+from Path.Tool.holder import ToolHolder, ToolHolderSerializer
 from Path.Tool.shape import ToolBitShape
 from Path.Tool.shape.models.icon import ToolBitShapeSvgIcon, ToolBitShapePngIcon
 
@@ -232,6 +233,7 @@ class PathTestWithAssets(PathTestBase):
         self.assets.register_asset(ToolBitShape, DummyAssetSerializer)
         self.assets.register_asset(ToolBitShapeSvgIcon, DummyAssetSerializer)
         self.assets.register_asset(ToolBitShapePngIcon, DummyAssetSerializer)
+        self.assets.register_asset(ToolHolder, ToolHolderSerializer)
 
         # Include the built-in assets from src/Mod/CAM/Tools.
         # These functions only copy if there are no assets, so this
@@ -244,6 +246,8 @@ class PathTestWithAssets(PathTestBase):
             self.assets.add_file("toolbit", path)
         for path in pathlib.Path(self.__tool_dir / "Shape").glob("*.fcstd"):
             self.assets.add_file("toolbitshape", path)
+        for path in pathlib.Path(self.__tool_dir / "ToolHolder").glob("*.fcholder"):
+            self.assets.add_file("toolholder", path)
 
     def tearDown(self):
         del self.assets
