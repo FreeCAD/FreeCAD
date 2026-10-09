@@ -60,6 +60,8 @@
 #include <QSet>
 #include <QStyledItemDelegate>
 #include <QPainter>
+#include <QDir>
+#include <QFileInfo>
 
 #include <App/Application.h>
 #include <Base/Console.h>
@@ -964,6 +966,23 @@ void DlgPreferencesImp::applyChanges()
     }
 }
 
+static QString macosAppBundleDir()
+{
+    QDir dir(QApplication::applicationDirPath());
+    dir = QDir(dir.canonicalPath());
+
+    while (dir.cdUp()) {
+        const QFileInfo info(dir.canonicalPath());
+        if (info.exists() &&
+            info.isBundle() &&
+            dir.dirName().endsWith(QStringLiteral(".app")))
+        {
+            return dir.canonicalPath();
+        }
+    }
+    return {};
+}
+
 void DlgPreferencesImp::restartIfRequired()
 {
     if (restartRequired) {
@@ -989,6 +1008,24 @@ void DlgPreferencesImp::restartIfRequired()
                 QStringList args = QApplication::arguments();
                 args.pop_front();
                 if (getMainWindow()->close()) {
+#ifdef Q_OS_MACOS
+                    const QString app = macosAppBundleDir();
+                    if (!app.isEmpty()) {
+                        // -n allows launching a second instance while the first one is closing.
+                        // Otherwise, open is too fast and will "open" the already open app (which then quits).
+                        QStringList openArgs{
+                            app,
+                            QStringLiteral("-n"),
+                            QStringLiteral("--args")
+                        };
+                        openArgs.append(args);
+
+                        if (QProcess::startDetached(
+                                QStringLiteral("/usr/bin/open"), openArgs)) {
+                            return;
+                        }
+                    }
+#endif
                     QProcess::startDetached(QApplication::applicationFilePath(), args);
                 }
             });
