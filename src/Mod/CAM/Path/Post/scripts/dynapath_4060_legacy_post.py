@@ -213,8 +213,10 @@ def export(objectslist, filename, argstring):
     global UNIT_FORMAT
     global UNIT_SPEED_FORMAT
     global XYZ_MOVE_PENDING
+    global LINENR
 
     XYZ_MOVE_PENDING = False
+    LINENR = 0
 
     for obj in objectslist:
         if not hasattr(obj, "Path"):
