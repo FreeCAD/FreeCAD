@@ -35,6 +35,7 @@ from Path.Tool.toolbit import ToolBitEndmill
 from Path.Tool.FeedsSpeeds import get_presets, make_preset, set_presets
 from Path.Tool.UpdateDocumentTools import (
     diff_tool_geometry,
+    diff_tool_setup,
     geometry_properties,
     job_stale_tools,
     replace_tool_from_library,
@@ -193,6 +194,48 @@ class TestUpdateToolFromLibrary(PathTestWithAssets):
         self.assertEqual(len(infos), 1)
         self.assertTrue(infos[0].presets_differ)
         self.assertEqual([c.name for c in infos[0].geometry_changes], ["Diameter"])
+
+    def test_holder_only_difference_is_detected(self):
+        toolbit = cast(ToolBitEndmill, self.assets.get("toolbit://5mm_Endmill"))
+        embedded_obj = toolbit.attach_to_doc(self.doc)
+        job, _tc = self._job_with_tool(embedded_obj)
+
+        library_tool = cast(ToolBitEndmill, self.assets.get("toolbit://5mm_Endmill"))
+        library_tool.set_holder_id("ER32_Standard")
+        self.assets.add(library_tool, store="local")
+
+        infos = job_stale_tools(job, self.assets)
+
+        self.assertEqual(len(infos), 1)
+        self.assertFalse(infos[0].presets_differ)
+        self.assertEqual(infos[0].geometry_changes, [])
+        self.assertEqual([c.name for c in infos[0].setup_changes], ["ToolHolder"])
+        self.assertEqual(infos[0].setup_changes[0].new_value, "ER32_Standard")
+
+    def test_stickout_difference_is_detected(self):
+        toolbit = cast(ToolBitEndmill, self.assets.get("toolbit://5mm_Endmill"))
+        embedded_obj = toolbit.attach_to_doc(self.doc)
+        job, _tc = self._job_with_tool(embedded_obj)
+
+        library_tool = cast(ToolBitEndmill, self.assets.get("toolbit://5mm_Endmill"))
+        library_tool.obj.Stickout = FreeCAD.Units.Quantity("25 mm")
+        self.assets.add(library_tool, store="local")
+
+        infos = job_stale_tools(job, self.assets)
+
+        self.assertEqual(len(infos), 1)
+        self.assertEqual([c.name for c in infos[0].setup_changes], ["Stickout"])
+
+    def test_stickout_kept_as_text_matches_the_same_length(self):
+        # a tool from before Stickout was an attribute keeps it as text
+        embedded = self.assets.get("toolbit://5mm_Endmill").attach_to_doc(self.doc)
+        embedded.removeProperty("Stickout")
+        embedded.addProperty("App::PropertyString", "Stickout", "Shape", "")
+        embedded.Stickout = "1.2500 in"
+        library_tool = cast(ToolBitEndmill, self.assets.get("toolbit://5mm_Endmill"))
+        library_tool.obj.Stickout = FreeCAD.Units.Quantity("31.75 mm")
+
+        self.assertEqual(diff_tool_setup(embedded, library_tool.obj), [])
 
     def test_unchanged_tool_is_absent_from_results(self):
         toolbit = cast(ToolBitEndmill, self.assets.get("toolbit://5mm_Endmill"))
