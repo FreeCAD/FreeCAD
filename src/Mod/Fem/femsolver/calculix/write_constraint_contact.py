@@ -94,7 +94,7 @@ def write_constraint(f, femobj, contact_obj, ccxwriter):
     # floats read from ccx should use {:.13G}, see comment in writer module
     adjust = ""
     if contact_obj.Adjust.Value > 0:
-        adjust = ", ADJUST={:.13G}".format(contact_obj.Adjust.getValueAs("mm").Value)
+        adjust = ", ADJUST={:.13G}".format(ccxwriter.get_coherent_value(contact_obj.Adjust))
 
     f.write(
         "*CONTACT PAIR, INTERACTION=INT{}, TYPE=SURFACE TO SURFACE{}\n".format(
@@ -107,23 +107,24 @@ def write_constraint(f, femobj, contact_obj, ccxwriter):
     f.write(f"*SURFACE INTERACTION, NAME=INT{contact_obj.Name}\n")
     if contact_obj.SurfaceBehavior == "Linear":
         f.write("*SURFACE BEHAVIOR, PRESSURE-OVERCLOSURE=LINEAR\n")
-        slope = contact_obj.Slope.getValueAs("MPa/mm").Value
+        slope = ccxwriter.get_coherent_value(contact_obj.Slope)
         f.write(f"{slope:.13G}\n")
     elif contact_obj.SurfaceBehavior == "Hard":
         f.write("*SURFACE BEHAVIOR, PRESSURE-OVERCLOSURE=HARD\n")
     elif contact_obj.SurfaceBehavior == "Tied":
         f.write("*SURFACE BEHAVIOR, PRESSURE-OVERCLOSURE=TIED\n")
-        slope = contact_obj.Slope.getValueAs("MPa/mm").Value
+        slope = ccxwriter.get_coherent_value(contact_obj.Slope)
         f.write(f"{slope:.13G}\n")
     else:
         return
     if contact_obj.Friction:
         f.write("*FRICTION\n")
         friction = contact_obj.FrictionCoefficient
-        stick = contact_obj.StickSlope.getValueAs("MPa/mm").Value
+        stick = ccxwriter.get_coherent_value(contact_obj.StickSlope)
         f.write(f"{friction:.13G}, {stick:.13G}\n")
     if contact_obj.EnableThermalContact:
         f.write("*GAP CONDUCTANCE\n")
+        # FALTA ESTO
         for value in contact_obj.ThermalContactConductance:
             f.write(f"{value}\n")
         f.write("\n")

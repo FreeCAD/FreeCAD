@@ -51,8 +51,10 @@ def write_femelement_material(f, ccxwriter):
             return True
         return False
 
-    f.write("\n** Physical constants for SI(mm) unit system with Kelvins\n")
-    f.write("*PHYSICAL CONSTANTS, ABSOLUTE ZERO=0, STEFAN BOLTZMANN=5.670374419e-11\n")
+    units = ccxwriter.solver_obj.UnitSystem
+    f.write(f"\n** Physical constants for {units} unit system\n")
+    stefan_boltzmann = ccxwriter.get_coherent_value(constants.stefan_boltzmann())
+    f.write(f"*PHYSICAL CONSTANTS, ABSOLUTE ZERO=0, STEFAN BOLTZMANN={stefan_boltzmann:.13G}\n")
 
     f.write("\n{}\n".format(59 * "*"))
     f.write("** Materials\n")
@@ -66,81 +68,70 @@ def write_femelement_material(f, ccxwriter):
 
         # get material properties of solid material, Currently in SI units: M/kg/s/Kelvin
         if mat_obj.Category == "Solid":
-            YM = FreeCAD.Units.Quantity(mat_obj.Material["YoungsModulus"])
-            YM_in_MPa = YM.getValueAs("MPa").Value
-            PR = float(mat_obj.Material["PoissonRatio"])
+            YM = ccxwriter.get_coherent_value(mat_obj.Material["YoungsModulus"])
+            PR = ccxwriter.get_coherent_value(mat_obj.Material["PoissonRatio"])
         if is_density_needed() is True:
-            density = FreeCAD.Units.Quantity(mat_obj.Material["Density"])
-            density_in_tonne_per_mm3 = density.getValueAs("t/mm^3").Value
+            density = ccxwriter.get_coherent_value(mat_obj.Material["Density"])
         if ccxwriter.analysis_type == "thermomech":
-            TC = FreeCAD.Units.Quantity(mat_obj.Material["ThermalConductivity"])
-            # SvdW: Add factor to force units to results base units
-            # of t/mm/s/K - W/m/K results in no factor needed
-            TC_in_WmK = TC.getValueAs("W/m/K").Value
-            SH = FreeCAD.Units.Quantity(mat_obj.Material["SpecificHeat"])
-            # SvdW: Add factor to force units to results base units of t/mm/s/K
-            # FIXME: why not get it directly in the units needed ?
-            SH_in_JkgK = SH.getValueAs("J/kg/K").Value * 1e06
+            TC = ccxwriter.get_coherent_value(mat_obj.Material["ThermalConductivity"])
+            SH = ccxwriter.get_coherent_value(mat_obj.Material["SpecificHeat"])
             if mat_obj.Category == "Solid":
-                TEC = FreeCAD.Units.Quantity(mat_obj.Material["ThermalExpansionCoefficient"])
-                TEC_in_mmK = TEC.getValueAs("mm/mm/K").Value
+                TEC = ccxwriter.get_coherent_value(mat_obj.Material["ThermalExpansionCoefficient"])
                 if "ThermalExpansionReferenceTemperature" in mat_obj.Material:
-                    RT = FreeCAD.Units.Quantity(
+                    RT = ccxwriter.get_coherent_value(
                         mat_obj.Material["ThermalExpansionReferenceTemperature"]
                     )
                 else:
-                    RT = FreeCAD.Units.Quantity("0 K")
-                RT_in_K = RT.getValueAs("K").Value
+                    RT = ccxwriter.get_coherent_value("0 K")
             elif mat_obj.Category == "Fluid":
-                KV = FreeCAD.Units.Quantity(mat_obj.Material["KinematicViscosity"])
-                KV_in_mm2s = KV.getValueAs("mm^2/s").Value
-                DV_in_tmms = KV_in_mm2s * density_in_tonne_per_mm3
+                KV = ccxwriter.get_coherent_value(mat_obj.Material["KinematicViscosity"])
+                DV = KV * density
         if ccxwriter.analysis_type == "static":
             if mat_obj.Category == "Solid":
                 if "ThermalExpansionCoefficient" in mat_obj.Material:
-                    TEC = FreeCAD.Units.Quantity(mat_obj.Material["ThermalExpansionCoefficient"])
-                    TEC_in_mmK = TEC.getValueAs("mm/mm/K").Value
+                    TEC = ccxwriter.get_coherent_value(
+                        mat_obj.Material["ThermalExpansionCoefficient"]
+                    )
                 else:
-                    TEC_in_mmK = 0.0
+                    TEC = 0
                 if "ThermalExpansionReferenceTemperature" in mat_obj.Material:
-                    RT = FreeCAD.Units.Quantity(
+                    RT = ccxwriter.get_coherent_value(
                         mat_obj.Material["ThermalExpansionReferenceTemperature"]
                     )
                 else:
-                    RT = FreeCAD.Units.Quantity("0 K")
-                RT_in_K = RT.getValueAs("K").Value
+                    RT = 0
         if (
             ccxwriter.analysis_type == "electromagnetic"
             and ccxwriter.solver_obj.ElectromagneticMode == "electrostatic"
         ):
-            rel_perm = FreeCAD.Units.Quantity(mat_obj.Material["RelativePermittivity"]).Value
-            vacuum_perm = FreeCAD.Units.Quantity(constants.vacuum_permittivity())
-            abs_perm = vacuum_perm.getValueAs("C/(mV*mm)").Value * rel_perm
+            rel_perm = ccxwriter.get_coherent_value(mat_obj.Material["RelativePermittivity"])
+            vacuum_perm = ccxwriter.get_coherent_value(constants.vacuum_permittivity())
+            abs_perm = vacuum_perm * rel_perm
         # write material properties
         f.write(f"** FreeCAD material name: {mat_info_name}\n")
         f.write(f"** {mat_label}\n")
         f.write(f"*MATERIAL, NAME={mat_name}\n")
         if mat_obj.Category == "Solid":
             f.write("*ELASTIC\n")
-            f.write(f"{YM_in_MPa:.13G},{PR:.13G}\n")
+            f.write(f"{YM:.13G},{PR:.13G}\n")
         if is_density_needed() is True:
             f.write("*DENSITY\n")
-            f.write(f"{density_in_tonne_per_mm3:.13G}\n")
+            f.write(f"{density:.13G}\n")
         if ccxwriter.analysis_type == "thermomech":
             if mat_obj.Category == "Solid":
                 f.write("*CONDUCTIVITY\n")
-                f.write(f"{TC_in_WmK:.13G}\n")
-                f.write(f"*EXPANSION, ZERO={RT_in_K:.13G}\n")
-                f.write(f"{TEC_in_mmK:.13G}\n")
+                f.write(f"{TC:.13G}\n")
+                f.write(f"*EXPANSION, ZERO={RT:.13G}\n")
+                f.write(f"{TEC:.13G}\n")
                 f.write("*SPECIFIC HEAT\n")
-                f.write(f"{SH_in_JkgK:.13G}\n")
+                f.write(f"{SH:.13G}\n")
             elif mat_obj.Category == "Fluid":
                 f.write("*FLUID CONSTANTS\n")
-                f.write(f"{SH_in_JkgK:.13G},{DV_in_tmms:.13G}\n")
+                f.write(f"{SH:.13G},{DV:.13G}\n")
         if ccxwriter.analysis_type == "static":
             if mat_obj.Category == "Solid":
-                f.write(f"*EXPANSION, ZERO={RT_in_K:.13G}\n")
-                f.write(f"{TEC_in_mmK:.13G}\n")
+                f.write(f"*EXPANSION, ZERO={RT:.13G}\n")
+                f.write(f"{TEC:.13G}\n")
         if (
             ccxwriter.analysis_type == "electromagnetic"
             and ccxwriter.solver_obj.ElectromagneticMode == "electrostatic"

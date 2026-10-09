@@ -96,7 +96,7 @@ def write_constraint(f, femobj, tie_obj, ccxwriter):
 
     # floats read from ccx should use {:.13G}, see comment in writer module
 
-    tolerance = tie_obj.Tolerance.getValueAs("mm").Value
+    tolerance = ccxwriter.get_coherent_value(tie_obj.Tolerance)
     adjust = ""
     symmetry = ""
     tie_name = tie_obj.Name
@@ -127,8 +127,4 @@ def write_constraint(f, femobj, tie_obj, ccxwriter):
         vec_a = tie_obj.SymmetryAxis.Base
         vec_b = tie_obj.SymmetryAxis * Vector(0, 0, 1)
 
-        set_unit = lambda x: Units.Quantity(x, Units.Length).getValueAs("mm").Value
-        point_a = [set_unit(coord) for coord in vec_a]
-        point_b = [set_unit(coord) for coord in vec_b]
-
-        f.write("{:.13G},{:.13G},{:.13G},{:.13G},{:.13G},{:.13G}\n".format(*point_a, *point_b))
+        f.write("{:.13G},{:.13G},{:.13G},{:.13G},{:.13G},{:.13G}\n".format(*vec_a, *vec_b))

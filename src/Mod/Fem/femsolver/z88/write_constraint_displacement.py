@@ -36,17 +36,17 @@ class WriterDisplacement(WriterList):
         obj = item["Object"]
 
         x_free = obj.xFree
-        x_disp = obj.xDisplacement.getValueAs("mm").Value
+        x_disp = self.writer.get_coherent_value(obj.xDisplacement)
         y_free = obj.yFree
-        y_disp = obj.yDisplacement.getValueAs("mm").Value
+        y_disp = self.writer.get_coherent_value(obj.yDisplacement)
         z_free = obj.zFree
-        z_disp = obj.zDisplacement.getValueAs("mm").Value
+        z_disp = self.writer.get_coherent_value(obj.zDisplacement)
         rotx_free = obj.rotxFree
-        x_rot = obj.xRotation.getValueAs("rad").Value
+        x_rot = self.writer.get_coherent_value(obj.xRotation)
         roty_free = obj.rotyFree
-        y_rot = obj.yRotation.getValueAs("rad").Value
+        y_rot = self.writer.get_coherent_value(obj.yRotation)
         rotz_free = obj.rotzFree
-        z_rot = obj.zRotation.getValueAs("rad").Value
+        z_rot = self.writer.get_coherent_value(obj.zRotation)
 
         # for plate elements, dof-1 -> z, dof-2 -> rot_x, dof-3 -> rot_y
         index = self.writer.nodes["index"]

@@ -32,6 +32,7 @@ __url__ = "https://www.freecad.org"
 
 import collections
 from FreeCAD import Units
+import Fem
 
 SIMULATION = "Simulation"
 CONSTANTS = "Constants"
@@ -94,9 +95,9 @@ def createSection(name):
     return section
 
 
-def writeSections(sections, stream):
+def writeSections(sections, stream, unit_system):
     ids = _IdManager()
-    _Writer(ids, sections, stream).write()
+    _Writer(ids, sections, stream, unit_system).write()
 
 
 def isNumbered(section):
@@ -201,20 +202,26 @@ class Sif:
     _MESHDB_ATTR = "Mesh DB"
     _INCLUDE_ATTR = "Include Path"
     _RESULT_ATTR = "Results Directory"
+    _UNITS_TEMPLATE = """! Unit system: {unit_system}
+! Length: {length}, Mass: {mass}, Time: {time}, Temperature: {temperature}, Electric current: {current}
 
-    def __init__(self, sections=[], meshLocation="."):
+"""
+
+    def __init__(self, unit_system, sections=[], meshLocation="."):
         self.sections = sections
         self.meshPath = meshLocation
         self.checkKeywords = WARN
         self.incPath = ""
         self.resPath = ""
+        self.unit_system = unit_system
 
     def write(self, stream):
+        self._writeUnitSystem(stream)
         self._writeCheckKeywords(stream)
         stream.write(_NEWLINE * 2)
         self._writeHeader(stream)
         stream.write(_NEWLINE * 2)
-        writeSections(self.sections, stream)
+        writeSections(self.sections, stream, self.unit_system)
 
     def _writeCheckKeywords(self, stream):
         stream.write(self._CHECK_KEYWORDS)
@@ -233,6 +240,19 @@ class Sif:
             self._writeAttr(self._RESULT_ATTR, self.resPath, stream)
             stream.write(_NEWLINE)
         stream.write(_SECTION_DELIM)
+
+    def _writeUnitSystem(self, stream):
+        units = Fem.getUnitSystem(self.unit_system)
+        stream.write(
+            self._UNITS_TEMPLATE.format(
+                unit_system=self.unit_system,
+                length=units["length"],
+                mass=units["mass"],
+                time=units["time"],
+                current=units["current"],
+                temperature=units["temperature"],
+            )
+        )
 
     def _writeAttr(self, name, value, stream):
         stream.write(_INDENT)
@@ -279,10 +299,11 @@ class FileAttr(str):
 
 class _Writer:
 
-    def __init__(self, idManager, sections, stream):
+    def __init__(self, idManager, sections, stream, unit_system):
         self._idMgr = idManager
         self._sections = sections
         self._stream = stream
+        self._unit_system = unit_system
 
     def write(self):
         firstSection, *sortedSections = sorted(
@@ -432,7 +453,8 @@ class _Writer:
         elif issubclass(dataType, str):
             return '"%s"' % data
         elif issubclass(dataType, Units.Quantity):
-            return f"{data.Value:.13g}"
+            value = Fem.getCoherentValue(data, self._unit_system)
+            return f"{value:.13g}"
         else:
             return str(data)
 

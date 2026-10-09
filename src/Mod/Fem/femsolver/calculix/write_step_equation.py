@@ -113,10 +113,10 @@ def write_step_equation(f, ccxwriter):
     analysis_parameter = ""
     if ccxwriter.analysis_type in ["static", "thermomech", "electromagnetic"]:
         analysis_parameter = "{},{},{},{}".format(
-            ccxwriter.solver_obj.TimeInitialIncrement.getValueAs("s").Value,
-            ccxwriter.solver_obj.TimePeriod.getValueAs("s").Value,
-            ccxwriter.solver_obj.TimeMinimumIncrement.getValueAs("s").Value,
-            ccxwriter.solver_obj.TimeMaximumIncrement.getValueAs("s").Value,
+            ccxwriter.get_coherent_value(ccxwriter.solver_obj.TimeInitialIncrement),
+            ccxwriter.get_coherent_value(ccxwriter.solver_obj.TimePeriod),
+            ccxwriter.get_coherent_value(ccxwriter.solver_obj.TimeMinimumIncrement),
+            ccxwriter.get_coherent_value(ccxwriter.solver_obj.TimeMaximumIncrement),
         )
     elif ccxwriter.analysis_type == "frequency":
         if (
@@ -127,8 +127,8 @@ def write_step_equation(f, ccxwriter):
         else:
             analysis_parameter = "{},{},{}\n".format(
                 ccxwriter.solver_obj.EigenmodesCount,
-                ccxwriter.solver_obj.EigenmodeLowLimit.getValueAs("Hz").Value,
-                ccxwriter.solver_obj.EigenmodeHighLimit.getValueAs("Hz").Value,
+                ccxwriter.get_coherent_value(ccxwriter.solver_obj.EigenmodeLowLimit),
+                ccxwriter.get_coherent_value(ccxwriter.solver_obj.EigenmodeHighLimit),
             )
     elif ccxwriter.analysis_type == "buckling":
         analysis_parameter = "{},{}".format(

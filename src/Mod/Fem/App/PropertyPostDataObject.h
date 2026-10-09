@@ -47,8 +47,6 @@ public:
 
     /** @name Getter/setter */
     //@{
-    /// Scale the point coordinates of the data set with factor \a s
-    void scale(double s);
     /// set the dataset
     void setValue(const vtkSmartPointer<vtkDataObject>&);
     /// get the part shape
@@ -80,9 +78,6 @@ public:
 
     /// Get valid paths for this property; used by auto completer
     void getPaths(std::vector<App::ObjectIdentifier>& paths) const override;
-
-private:
-    static void scaleDataObject(vtkDataObject*, double s);
 
 protected:
     void createDataObjectByExternalType(vtkSmartPointer<vtkDataObject> ex);

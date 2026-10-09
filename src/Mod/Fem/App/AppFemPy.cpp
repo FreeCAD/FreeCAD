@@ -32,6 +32,7 @@
 #include <App/DocumentObjectPy.h>
 #include <Base/Interpreter.h>
 #include <Base/PlacementPy.h>
+#include <Base/QuantityPy.h>
 #include <Mod/Part/App/OCCError.h>
 
 #include "FemMesh.h"
@@ -39,6 +40,7 @@
 #include "FemMeshPy.h"
 #ifdef FC_USE_VTK
 # include "FemPostPipeline.h"
+# include "FemUnitSystemTools.h"
 # include "FemVTKTools.h"
 # include <LibraryVersions.h>
 # include <vtkVersionMacros.h>
@@ -117,6 +119,21 @@ public:
             &Module::show,
             "show(shape,[string]) -- Add the mesh to the active document or create "
             "one if no document exists."
+        );
+        add_varargs_method(
+            "getCoherentValue",
+            &Module::getCoherentValue,
+            "getCoherentValue(quantity, string) -- Get coherent value for given unit system"
+        );
+        add_varargs_method(
+            "getCoherentLengthScale",
+            &Module::getCoherentLengthScale,
+            "getCoherentLengthScale(string) -- Get length scale for given unit system"
+        );
+        add_varargs_method(
+            "getUnitSystem",
+            &Module::getUnitSystem,
+            "getUnitSystem(string) -- Get basic units for given unit system"
         );
         initialize("This module is the Fem module.");  // register with Python
     }
@@ -424,6 +441,67 @@ private:
         pcDoc->recompute();
 
         return Py::None();
+    }
+
+    Py::Object getCoherentValue(const Py::Tuple& args)
+    {
+        PyObject* qtyPy = nullptr;
+        const char* system = nullptr;
+        if (PyArg_ParseTuple(args.ptr(), "O!s", &(Base::QuantityPy::Type), &qtyPy, &system)) {
+            Base::Quantity* quantity = static_cast<Base::QuantityPy*>(qtyPy)->getQuantityPtr();
+            return Py::Float(Units::getCoherentValue(*quantity, system));
+        }
+        PyErr_Clear();
+
+        const char* qtyStr = nullptr;
+        if (PyArg_ParseTuple(args.ptr(), "ss", &qtyStr, &system)) {
+            Base::Quantity quantity = Base::Quantity::parse(qtyStr);
+            return Py::Float(Units::getCoherentValue(quantity, system));
+        }
+        PyErr_Clear();
+
+        double val;
+        // just for consistency
+        if (PyArg_ParseTuple(args.ptr(), "fs", &val, &system)) {
+            return Py::Float(val);
+        }
+
+        throw Py::Exception();
+    }
+
+    Py::Object getCoherentLengthScale(const Py::Tuple& args)
+    {
+        const char* system = nullptr;
+        if (!PyArg_ParseTuple(args.ptr(), "s", &system)) {
+            throw Py::Exception();
+        }
+
+        return Py::Float(Units::getCoherentLengthScale(system));
+    }
+
+    Py::Object getUnitSystem(const Py::Tuple& args)
+    {
+        const char* system = nullptr;
+        if (!PyArg_ParseTuple(args.ptr(), "s", &system)) {
+            throw Py::Exception();
+        }
+
+        auto it = Fem::Units::coherentSymbols.find(system);
+        if (it == Fem::Units::coherentSymbols.end()) {
+            throw Py::ValueError(std::format("Invalid unit system: {}", system));
+        }
+        const Fem::Units::BasicUnits& symbols = it->second;
+        Py::Dict units;
+        units[Py::String("length")] = Py::String(symbols.length);
+        units[Py::String("mass")] = Py::String(symbols.mass);
+        units[Py::String("time")] = Py::String(symbols.time);
+        units[Py::String("current")] = Py::String(symbols.current);
+        units[Py::String("temperature")] = Py::String(symbols.temperature);
+        units[Py::String("amountOfSubstance")] = Py::String(symbols.amountOfSubstance);
+        units[Py::String("luminousIntensity")] = Py::String(symbols.luminousIntensity);
+        units[Py::String("angle")] = Py::String(symbols.angle);
+
+        return units;
     }
 };
 

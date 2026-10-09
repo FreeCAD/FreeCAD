@@ -56,7 +56,7 @@ def write_meshdata_constraint(f, femobj, prs_obj, ccxwriter):
         f.write("*DLOAD\n")
     rev = -1 if prs_obj.Reversed else 1
     # the pressure has to be output in MPa
-    pressure = prs_obj.Pressure.getValueAs("MPa").Value
+    pressure = ccxwriter.get_coherent_value(prs_obj.Pressure)
     pressure *= rev
     for feat, surf, is_sub_el in femobj["PressureFaces"]:
         f.write("** {0.Name}.{1[0]}\n".format(*feat))

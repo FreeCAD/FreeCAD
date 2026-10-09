@@ -35,6 +35,7 @@ import time
 from os.path import join
 
 import FreeCAD
+import Fem
 from FreeCAD import Units
 
 from . import write_constraint_centrif as con_centrif
@@ -69,38 +70,19 @@ from . import write_step_output
 from .. import writerbase
 from femtools import constants
 
-# Interesting forum topic: https://forum.freecad.org/viewtopic.php?&t=48451
-# TODO somehow set units at beginning and every time a value is retrieved use this identifier
-# this would lead to support of unit system, force might be retrieved in base writer!
-
-
 # the following text will be at the end of the main calculix input file
 units_information = """***********************************************************
-**  About units:
-**  See ccx manual, ccx does not know about any unit.
-**  Golden rule: The user must make sure that the numbers they provide have consistent units.
-**  The user is the FreeCAD calculix writer module ;-)
-**
-**  The unit system which is used at Guido Dhondt's company: mm, N, s, K
-**  Since Length and Mass are connected by Force, if Length is mm the Mass is in t to get N
 **  The following units are used to write to inp file:
 **
-**  Length: mm (this includes the mesh geometry)
-**  Mass: t
-**  TimeSpan: s
-**  Temperature: K
-**
-**  This leads to:
-**  Force: N
-**  Pressure: N/mm^2 == MPa (Young's Modulus has unit Pressure)
-**  Density: t/mm^3
-**  Gravity: mm/s^2
-**  Thermal conductivity: t*mm/K/s^3 == as W/m/K == kW/mm/K
-**  Specific Heat: mm^2/s^2/K = J/kg/K == kJ/t/K
+**  Unit system: {unit_system}
+**  Length: {length}
+**  Mass: {mass}
+**  Time: {time}
+**  Temperature: {temperature}
+**  Electric current: {current}
 """
 
 
-# TODO
 # {0:.13G} or {:.13G} should be used on all places writing floating points to ccx
 # All floating points fields read from ccx are F20.0 FORTRAN input fields.
 # see in dload.f in ccx's source
@@ -121,8 +103,16 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.mesh_name = self.mesh_object.Name
         self.file_name = join(self.dir_name, self.mesh_name + ".inp")
         self.femmesh_file = ""  # the file the femmesh is in, no matter if one or split input file
-        self.gravity = int(Units.Quantity(constants.gravity()).getValueAs("mm/s^2"))  # 9820 mm/s2
-        self.units_information = units_information
+        self.gravity = self.get_coherent_value(constants.gravity())
+        units = Fem.getUnitSystem(solver_obj.UnitSystem)
+        self.units_information = units_information.format(
+            unit_system=solver_obj.UnitSystem,
+            length=units["length"],
+            mass=units["mass"],
+            time=units["time"],
+            temperature=units["temperature"],
+            current=units["current"],
+        )
 
     # ********************************************************************************************
     # write calculix input

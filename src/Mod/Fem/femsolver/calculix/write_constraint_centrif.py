@@ -94,12 +94,13 @@ def write_constraint(f, femobj, centrif_obj, ccxwriter):
         location = FreeCAD.Vector(0.0, 0.0, 0.0)
         direction = FreeCAD.Vector(0.0, 0.0, 1.0)
 
+    freq = ccxwriter.get_coherent_value(centrif_obj.RotationFrequency)
     # write to file
     f.write("*DLOAD\n")
     f.write(
         "{},CENTRIF,{:.13G},{:.13G},{:.13G},{:.13G},{:.13G},{:.13G},{:.13G}\n".format(
             centrif_obj.Name,
-            (2.0 * math.pi * float(centrif_obj.RotationFrequency.getValueAs("1/s"))) ** 2,
+            (2 * math.pi * freq) ** 2,
             location.x,
             location.y,
             location.z,

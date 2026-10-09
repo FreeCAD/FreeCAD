@@ -1220,10 +1220,6 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
     const SMESH_Mesh* smesh = static_cast<FemMeshObject*>(meshObj)->FemMesh.getValue().getSMesh();
     const SMESHDS_Mesh* meshDS = smesh->GetMeshDS();
 
-    // all result object meshes are in mm therefore for e.g. length outputs like
-    // displacement we must divide by 1000
-    double factor = 1.0;
-
     // vectors
     for (const auto& it : vectors) {
         const int dim = 3;  // Fixme, detect dim, but FreeCAD PropertyVectorList ATM only has DIM of 3
@@ -1252,17 +1248,10 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
                 }
             }
 
-            if (it.first.compare("DisplacementVectors") == 0) {
-                factor = 0.001;  // to get meter
-            }
-            else {
-                factor = 1.0;
-            }
-
             SMDS_NodeIteratorPtr aNodeIter = meshDS->nodesIterator();
             for (const auto& jt : vel) {
                 const SMDS_MeshNode* node = aNodeIter->next();
-                double tuple[] = {jt.x * factor, jt.y * factor, jt.z * factor};
+                double tuple[] = {jt.x, jt.y, jt.z};
                 data->SetTuple(node->GetID() - 1, tuple);
             }
             grid->GetPointData()->AddArray(data);
@@ -1306,32 +1295,12 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
                 }
             }
 
-            if ((scalar.first.compare("MaxShear") == 0) || (scalar.first.compare("NodeStressXX") == 0)
-                || (scalar.first.compare("NodeStressXY") == 0)
-                || (scalar.first.compare("NodeStressXZ") == 0)
-                || (scalar.first.compare("NodeStressYY") == 0)
-                || (scalar.first.compare("NodeStressYZ") == 0)
-                || (scalar.first.compare("NodeStressZZ") == 0)
-                || (scalar.first.compare("PrincipalMax") == 0)
-                || (scalar.first.compare("PrincipalMed") == 0)
-                || (scalar.first.compare("PrincipalMin") == 0)
-                || (scalar.first.compare("vonMises") == 0)
-                || (scalar.first.compare("NetworkPressure") == 0)) {
-                factor = 1e6;  // to get Pascal
-            }
-            else if (scalar.first.compare("DisplacementLengths") == 0) {
-                factor = 0.001;  // to get meter
-            }
-            else {
-                factor = 1.0;
-            }
-
             SMDS_NodeIteratorPtr aNodeIter = meshDS->nodesIterator();
             for (double i : vec) {
                 const SMDS_MeshNode* node = aNodeIter->next();
                 // for the MassFlowRate the last vec entries can be a nullptr, thus check this
                 if (node) {
-                    data->SetValue(node->GetID() - 1, i * factor);
+                    data->SetValue(node->GetID() - 1, i);
                 }
             }
 

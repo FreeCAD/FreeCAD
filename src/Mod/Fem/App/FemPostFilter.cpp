@@ -50,6 +50,14 @@ PROPERTY_SOURCE(Fem::FemPostFilter, Fem::FemPostObject)
 FemPostFilter::FemPostFilter()
 {
     ADD_PROPERTY_TYPE(Frame, ((long)0), "Data", App::Prop_ReadOnly, "The step used to calculate the data");
+    ADD_PROPERTY_TYPE(
+        Scale,
+        (1.0),
+        "Data",
+        App::PropertyType(App::Prop_Hidden | App::Prop_Output | App::Prop_ReadOnly),
+        "Scale points. Only for visualization. Controled by pipeline."
+        "Internally, the coordinates of the points remain the same."
+    );
 
     // the default pipeline: just a passthrough
     // this is used to simplify the python filter handling,
@@ -1348,6 +1356,7 @@ FemPostWarpVectorFilter::FemPostWarpVectorFilter()
 
     FilterPipeline warp;
     m_warp = vtkSmartPointer<vtkWarpVector>::New();
+    m_warp->SetScaleFactor(0);
     warp.source = m_warp;
     warp.target = m_warp;
     addFilterPipeline(warp, "warp");
@@ -1383,9 +1392,8 @@ DocumentObjectExecReturn* FemPostWarpVectorFilter::execute()
 
 void FemPostWarpVectorFilter::onChanged(const Property* prop)
 {
-    if (prop == &Factor) {
-        // since our mesh is in mm, we must scale the factor
-        m_warp->SetScaleFactor(1000 * Factor.getValue());
+    if (prop == &Factor || prop == &Scale) {
+        m_warp->SetScaleFactor(Scale.getValue() * Factor.getValue());
     }
     else if (prop == &Vector && Vector.isValid()) {
         m_warp->SetInputArrayToProcess(
