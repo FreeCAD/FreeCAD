@@ -381,10 +381,10 @@ void DressUp::onBaseFeatureRerouted(
     BaseFeatureChange change
 )
 {
-    if (change == BaseFeatureChange::Removal) {
-        relinkToMatchingSubelements(Base, oldBase, newBase);
+    if (change == BaseFeatureChange::Removal && relinkToMatchingSubelements(Base, oldBase, newBase)) {
+        return;
     }
-    else if (newBase && Base.getValue() && Base.getValue() != newBase) {
+    if (newBase && Base.getValue() && Base.getValue() != newBase) {
         // The inserted feature may not have a shape yet. Preserve the element references
         // so they can be resolved against its shape after recompute.
         auto subs = Base.getSubValues(false);
