@@ -318,7 +318,12 @@ bool ViewProviderPage::showMDIViewPage()
 
     setGrid();
 
-    Visibility.setValue(true);
+    // PropertyBool::setValue signals even when the value does not change, and
+    // that marks the Gui document modified. Showing a page that is already
+    // visible must not ask the user to save.
+    if (!Visibility.getValue()) {
+        Visibility.setValue(true);
+    }
 
     return true;
 }
