@@ -1,0 +1,24 @@
+{
+  "name": "Generic",
+  "notes": "A plain stand-in, 40 mm across and 40 mm tall. Draw your own holder from ToolHolderTemplate.FCStd in the Tools/ToolHolder folder of your CAM assets.",
+  "profile": [
+    [
+      0.0,
+      0.0
+    ],
+    [
+      20.0,
+      0.0
+    ],
+    [
+      20.0,
+      40.0
+    ],
+    [
+      0.0,
+      40.0
+    ]
+  ],
+  "units": "mm",
+  "version": 1
+}
