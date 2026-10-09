@@ -1,6 +1,10 @@
 # freecad-typings
 
-Type stubs for the [FreeCAD] Python API (version `{version}`).
+Type stubs for the [FreeCAD] Python API, version `{version}`.
+
+Generated from FreeCAD `{freecad_version}`. This package versions the FreeCAD Python API, not
+the FreeCAD release: the major and minor components change when the API itself changes, so a
+given stub version can describe more than one FreeCAD release.
 
 This package provides [PEP 561] `py.typed` stubs generated from FreeCAD's
 C++ Python bindings, so static type checkers and IDEs can understand the

@@ -113,6 +113,7 @@ class TestLegacyPostRetractMode(PathTestUtils.PathTestBase):
         base = self.doc.addObject("Part::Feature", "Base")
         base.Shape = Part.makeBox(20, 20, 10)
         self.job = PathJob.Create("Job", [base], None)
+        self.job.PostProcessorArgs = "--no-show-editor"
 
     def tearDown(self):
         FreeCAD.closeDocument(self.doc.Name)
@@ -161,7 +162,7 @@ class TestLegacyPostRetractMode(PathTestUtils.PathTestBase):
     def _export(self, module_name, op):
         module = __import__(f"Path.Post.scripts.{module_name}", fromlist=[module_name])
         reload(module)
-        gcode = module.export([op], "-", "")
+        gcode = module.export([op], "-", "--no-show-editor")
         self.assertIsNotNone(gcode, f"{module_name}.export() returned None")
         return gcode
 
