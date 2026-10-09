@@ -298,6 +298,29 @@ class TestPathRotationGenerator(PathTestUtils.PathTestBase):
             achieved = head.multVec(FreeCAD.Vector(0, 0, 1))
             self.assertLess((achieved - table.multVec(axis)).Length, 1e-6)
 
+    def test42_mixed_machine_head_limits_are_its_own(self):
+        """
+        A head whose limits are not the same both ways reaches what they allow.
+
+        Expected behavior:
+            A head tilting B -30 to +110 reaches a plane tilted 60 degrees toward +X with B
+            within those limits.
+        """
+        machine = self._create_mixed_machine()
+        machine.rotary_axes["B"].min_limit = -30
+        machine.rotary_axes["B"].max_limit = 110
+
+        result = orientation.solve_orientation(machine, FreeCAD.Vector(0.8660254037844386, 0, 0.5))
+        self.assertTrue(result.success)
+        self.assertGreaterEqual(result.angles["B"], -30)
+        self.assertLessEqual(result.angles["B"], 110)
+        table = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), result.angles["C"])
+        head = FreeCAD.Rotation(FreeCAD.Vector(0, 1, 0), result.angles["B"])
+        achieved = head.multVec(FreeCAD.Vector(0, 0, 1))
+        self.assertLess(
+            (achieved - table.multVec(FreeCAD.Vector(0.8660254037844386, 0, 0.5))).Length, 1e-6
+        )
+
     def test50_single_axis_solve(self):
         """
         Test solving with single rotary axis (3+1 indexing).

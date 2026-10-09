@@ -27,6 +27,7 @@ Replaces the hardcoded C-A rotation generator with a solver that derives
 all behavior from the Machine data model.
 """
 
+import dataclasses
 import math
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
@@ -434,6 +435,20 @@ def _solve_analytical_2axis(
             candidates = _decompose_2axis_head(chain[0], chain[1], desired_axis)
             candidates += _decompose_2axis_head(chain[1], chain[0], desired_axis)
     else:
+        # A head tilts the tool where a table turns the part, and the other way about. The
+        # decomposition solves R_second · R_first · desired = Z, as for two tables; a table
+        # and a head satisfy R_table · desired = R_head · Z instead, which is the same with
+        # the head's angle negated. Its limits are the head's own, so it is solved against
+        # them negated too, then the angle turned back.
+        heads = {ax.name for ax in chain if ax.role == AxisRole.HEAD_ROTARY}
+        chain = [
+            (
+                dataclasses.replace(ax, min_limit=-ax.max_limit, max_limit=-ax.min_limit)
+                if ax.name in heads
+                else ax
+            )
+            for ax in chain
+        ]
         # Try both decomposition orders; FK validation filters incorrect ones.
         # _decompose_2axis(first, second) solves R_second · R_first · desired = Z.
         # compute_rotation_matrix sorts axes: azimuth (Z-rot) first, tilt last,
@@ -454,11 +469,6 @@ def _solve_analytical_2axis(
             candidates = _decompose_2axis(chain[0], chain[1], desired_axis)
             candidates += _decompose_2axis(chain[1], chain[0], desired_axis)
 
-        # A head tilts the tool where a table turns the part, and the other way about. The
-        # decomposition solves R_second · R_first · desired = Z, as for two tables; a table
-        # and a head satisfy R_table · desired = R_head · Z instead, which is the same with
-        # the head's angle negated.
-        heads = {ax.name for ax in chain if ax.role == AxisRole.HEAD_ROTARY}
         if heads:
             candidates = [
                 {name: (-angle if name in heads else angle) for name, angle in c.items()}
