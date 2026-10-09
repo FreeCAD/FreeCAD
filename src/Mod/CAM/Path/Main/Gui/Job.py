@@ -1618,9 +1618,9 @@ class TaskPanel:
         it when action changes the Job's origin or moves the model.
 
         Work planes set where they are and the shapes operations are made from, text and
-        sketches, not attached to the model, are moved as the model was, and so is a stock made
-        from the model's box, which takes its size from the model but not its place. Anything
-        the action moved itself is left as it put it.
+        sketches, not attached to the model, are moved as the model was. Anything the action
+        moved itself is left as it put it. The stock is left to the action, so the model can
+        move inside it.
 
         The operations' points, such as their start points, stay where they are on the model,
         and the heights typed in for them go up and down with it. Only when the models moved as
@@ -1632,8 +1632,6 @@ class TaskPanel:
                 return action(*args)
             models = list(self.obj.Model.Group)
             before = [FreeCAD.Placement(m.Placement) for m in models]
-            stock = self.obj.Stock
-            stockBefore = FreeCAD.Placement(stock.Placement) if stock else None
             carried = PathJob.objectsInModelFrame(self.obj)
             carried = [(o, FreeCAD.Placement(o.Placement)) for o in carried]
             self._keepingPoints = True
@@ -1656,14 +1654,6 @@ class TaskPanel:
                     obj.Placement = move.multiply(placement)
                 if obj.Placement.isSame(move.multiply(placement), 1e-9):
                     withModel.append(obj)
-            # A stock made from the model's box takes its size from the model, but its place
-            # only when made: it goes with the model, unless the action moved it already.
-            if (
-                stock
-                and PathStock.StockType.FromStock(stock) == PathStock.StockType.FromBase
-                and stock.Placement.isSame(stockBefore, 1e-9)
-            ):
-                stock.Placement = move.multiply(stockBefore)
             if len(moves) < len(models) or any(not m.isSame(move, 1e-9) for m in moves[1:]):
                 Path.Log.warning(
                     translate(
