@@ -525,7 +525,11 @@ def apply_tool_change_format(
             needs_initial_prep = first_in_group and (
                 early_tool_change_fmt or (use_early and tool_change_format == "m6_only")
             )
-            if (needs_initial_prep or use_assert) and not no_tool_change and tool_change_format != "t_m6":
+            if (
+                (needs_initial_prep or use_assert)
+                and not no_tool_change
+                and tool_change_format != "t_m6"
+            ):
                 # format already leads with this T
                 add_tool(new_sublist, tool_number)
 
