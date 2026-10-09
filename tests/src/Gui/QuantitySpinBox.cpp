@@ -1,22 +1,39 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
+#include <QCoreApplication>
 #include <QDebug>
+#include <QFocusEvent>
 #include <QKeyEvent>
 #include <QLineEdit>
 #include <QSignalBlocker>
 #include <QTest>
 #include <QSignalSpy>
+#include <QScopeGuard>
+#include <QTemporaryDir>
 #include <QWheelEvent>
+
+#include <cmath>
 
 #include <App/Application.h>
 #include <Base/UnitsApi.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/Expression.h>
+#include <App/ExpressionParser.h>
 #include <App/ObjectIdentifier.h>
 #include <App/Property.h>
+#include <App/PropertyStandard.h>
+#include <App/PropertyUnits.h>
+#include <App/VarSet.h>
 
+#include "Gui/Application.h"
+#include "Gui/MainWindow.h"
+#include "Gui/EditableDatumLabel.h"
+#include "Gui/View3DInventorViewer.h"
 #include "Gui/QuantitySpinBox.h"
+#include "Gui/InlineExpression.h"
 #include "Gui/PrefWidgets.h"
+#include "Gui/SpinBox.h"
 #include <src/LocaleTestHelpers.h>
 #include <src/App/InitApplication.h>
 
@@ -96,7 +113,7 @@ public:
     testQuantitySpinBox()
     {
         tests::initApplication();
-        qsb = std::make_unique<Gui::QuantitySpinBox>();
+        ensureGuiApplication();
     }
 
 private Q_SLOTS:
@@ -107,10 +124,37 @@ private Q_SLOTS:
     }
 
     void init()
-    {}
+    {
+        docName = App::GetApplication().getUniqueDocumentName("testQuantitySpinBox");
+        App::DocumentInitFlags flags;
+        flags.createView = false;
+        doc = App::GetApplication().newDocument(docName.c_str(), "testUser", flags);
+
+        target = freecad_cast<App::VarSet*>(doc->addObject("App::VarSet", "Target"));
+        QVERIFY(target != nullptr);
+        targetFloat = freecad_cast<App::PropertyFloat*>(
+            target->addDynamicProperty("App::PropertyFloat", "TargetFloat", "Variables")
+        );
+        QVERIFY(targetFloat != nullptr);
+        targetInt = freecad_cast<App::PropertyInteger*>(
+            target->addDynamicProperty("App::PropertyInteger", "TargetInt", "Variables")
+        );
+        QVERIFY(targetInt != nullptr);
+
+        qsb = std::make_unique<Gui::QuantitySpinBox>();
+    }
 
     void cleanup()
     {
+        qsb.reset();
+        if (doc) {
+            App::GetApplication().closeDocument(docName.c_str());
+        }
+        doc = nullptr;
+        target = nullptr;
+        targetFloat = nullptr;
+        targetInt = nullptr;
+        docName.clear();
         // some tests switch the unit schema, the next one has to start from the default again
         Base::UnitsApi::setSchema("Internal");
     }
@@ -1404,6 +1448,1237 @@ private Q_SLOTS:
         QVERIFY(spinBox.hasValidInput());
     }
 
+    void test_ExpressionCommitUpdatesPreview_data()  // NOLINT
+    {
+        QTest::addColumn<QString>("commitMethod");
+        QTest::newRow("formula-dialog") << QStringLiteral("formula");
+        QTest::newRow("inline-return") << QStringLiteral("return");
+        QTest::newRow("inline-focus-out") << QStringLiteral("focus-out");
+    }
+
+    void test_ExpressionCommitUpdatesPreview()  // NOLINT
+    {
+        QFETCH(QString, commitMethod);
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::One);
+        spin.bind(pathFloat());
+        QSignalSpy changed(&spin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged));
+        int previewUpdates = 0;
+        // Match task panels: commit the value and recompute when the widget notifies them.
+        QObject::connect(
+            &spin,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            &spin,
+            [this, &previewUpdates](double value) {
+                targetFloat->setValue(value);
+                doc->recompute();
+                ++previewUpdates;
+            }
+        );
+        setEditorText(spin, QStringLiteral("10"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QVERIFY(previewUpdates > 0);
+        QCOMPARE(targetFloat->getValue(), 10.0);
+        changed.clear();
+        previewUpdates = 0;
+
+        if (commitMethod == QStringLiteral("formula")) {
+            // Exercise the formula dialog's acceptance path independently of inline entry.
+            std::shared_ptr<App::Expression> expression = App::ExpressionParser::parse(target, "42");
+            static_cast<Gui::ExpressionSpinBox&>(spin).setExpression(expression);
+        }
+        else {
+            setEditorText(spin, QStringLiteral("x=42"));
+            if (commitMethod == QStringLiteral("return")) {
+                QTest::keyClick(&spin, Qt::Key_Return);
+            }
+            else {
+                QFocusEvent focusOut(QEvent::FocusOut, Qt::TabFocusReason);
+                QCoreApplication::sendEvent(&spin, &focusOut);
+            }
+        }
+
+        QCOMPARE(spin.rawValue(), 42.0);
+        QVERIFY(target->getExpression(pathFloat()).expression != nullptr);
+        // No explicit recompute here: accepting the expression must update the preview now.
+        QCOMPARE(targetFloat->getValue(), 42.0);
+        QCOMPARE(changed.count(), 1);
+        QCOMPARE(previewUpdates, 1);
+    }
+
+    void test_OnViewExpressionSurvivesRepeatedCommit_data()
+    {
+        QTest::addColumn<int>("key");
+        QTest::newRow("Return") << int(Qt::Key_Return);
+        QTest::newRow("Tab") << int(Qt::Key_Tab);
+        QTest::newRow("CtrlEnter") << int(Qt::Key_Enter);
+        QTest::newRow("Click") << 0;
+    }
+
+    void test_OnViewExpressionSurvivesRepeatedCommit()
+    {
+        QFETCH(int, key);
+        ensureGuiApplication();
+        QWidget parent;
+        Gui::View3DInventorViewer viewer(&parent);
+        Gui::EditableDatumLabel parameter(&viewer, Base::Placement());
+        connect(&parameter, &Gui::EditableDatumLabel::finishEditingOnAllOVPs, &parameter, [&parameter]() {
+            parameter.commitPendingInlineExpression();
+        });
+        parameter.startEdit(0, nullptr, true);
+        auto* spin = parent.findChild<Gui::QuantitySpinBox*>();
+        QVERIFY(spin);
+        auto* editor = spin->findChild<QLineEdit*>();
+        editor->selectAll();
+        QTest::keyClicks(editor, "ovp=0");
+        if (key) {
+            QTest::keyClick(
+                editor,
+                static_cast<Qt::Key>(key),
+                key == Qt::Key_Enter ? Qt::ControlModifier : Qt::NoModifier
+            );
+        }
+        else {
+            QVERIFY(parameter.commitPendingInlineExpression());
+        }
+        const auto expression = parameter.constraintExpression();
+        QVERIFY(!expression.empty());
+        QVERIFY(parameter.commitPendingInlineExpression());
+        QVERIFY(parameter.commitPendingInlineExpression());
+        QCOMPARE(parameter.constraintExpression(), expression);
+        editor->selectAll();
+        QTest::keyClicks(editor, "12");
+        QVERIFY(parameter.commitPendingInlineExpression());
+        QVERIFY(parameter.constraintExpression().empty());
+        editor->selectAll();
+        QTest::keyClick(editor, Qt::Key_Backspace);
+        QVERIFY(parameter.constraintExpression().empty());
+    }
+
+    void test_InlineAssignmentRangePolicy_data()
+    {
+        QTest::addColumn<bool>("enabled");
+        QTest::addColumn<double>("value");
+        QTest::addColumn<bool>("accepted");
+        QTest::newRow("lower") << true << 0.0 << true;
+        QTest::newRow("upper") << true << 10.0 << true;
+        QTest::newRow("below") << true << -1.0 << false;
+        QTest::newRow("above") << true << 11.0 << false;
+        QTest::newRow("disabled") << false << 11.0 << true;
+    }
+
+    void test_InlineAssignmentRangePolicy()
+    {
+        QFETCH(bool, enabled);
+        QFETCH(double, value);
+        QFETCH(bool, accepted);
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::One);
+        spin.setRange(0, 10);
+        spin.checkRangeInExpression(enabled);
+        spin.bind(pathFloat());
+        setEditorText(spin, QStringLiteral("limit=%1").arg(value));
+        QSignalSpy returned(&spin, &Gui::QuantitySpinBox::returnPressed);
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCOMPARE(returned.count(), accepted ? 1 : 0);
+        QCOMPARE(doc->getObject("Parameters") != nullptr, accepted);
+        QCOMPARE(target->getExpression(pathFloat()).expression != nullptr, accepted);
+    }
+
+    void test_InlineReferenceRangeAndInvalidBinding_data()
+    {
+        QTest::addColumn<QString>("input");
+        QTest::addColumn<bool>("rangeCheck");
+        QTest::addColumn<bool>("accepted");
+        QTest::newRow("outside-reference") << QStringLiteral("Target.Other") << true << false;
+        QTest::newRow("disabled-reference") << QStringLiteral("Target.Other") << false << true;
+        QTest::newRow("invalid-reference") << QStringLiteral("Target.Missing") << false << false;
+    }
+
+    void test_InlineReferenceRangeAndInvalidBinding()
+    {
+        QFETCH(QString, input);
+        QFETCH(bool, rangeCheck);
+        QFETCH(bool, accepted);
+        auto* other = static_cast<App::PropertyFloat*>(
+            target->addDynamicProperty("App::PropertyFloat", "Other")
+        );
+        other->setValue(20);
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::One);
+        spin.setRange(0, 10);
+        spin.checkRangeInExpression(rangeCheck);
+        spin.bind(pathFloat());
+        target->ExpressionEngine.setValue(pathFloat(), App::ExpressionParser::parse(target, "5"));
+        QSignalSpy returned(&spin, &Gui::QuantitySpinBox::returnPressed);
+        setEditorText(spin, input);
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCOMPARE(returned.count(), accepted ? 1 : 0);
+        if (!accepted) {
+            QCOMPARE(editorText(spin), input);
+        }
+        QCOMPARE(
+            target->getExpression(pathFloat()).expression->toString(),
+            accepted ? std::string("Other") : std::string("5")
+        );
+        QVERIFY(!doc->getObject("Parameters"));
+    }
+
+    void test_InlineAssignmentRollbackPreservesToolTransaction_data()
+    {
+        QTest::addColumn<bool>("toolTransaction");
+        QTest::newRow("owned") << false;
+        QTest::newRow("tool") << true;
+    }
+
+    void test_InlineAssignmentRollbackPreservesToolTransaction()
+    {
+        QFETCH(bool, toolTransaction);
+        auto* parameters = doc->addObject("App::VarSet", "Parameters");
+        auto* variable = static_cast<App::PropertyFloat*>(
+            parameters->addDynamicProperty("App::PropertyFloat", "cycle", "Variables")
+        );
+        variable->setValue(7);
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::One);
+        spin.bind(pathFloat());
+        target->ExpressionEngine.setValue(
+            pathFloat(),
+            App::ExpressionParser::parse(target, "Parameters.cycle")
+        );
+        const auto previous = target->getExpression(pathFloat()).expression->toString();
+        if (toolTransaction) {
+            doc->openTransaction("Pending tool edits");
+            target->Label.setValue("Pending edit");
+        }
+        const auto transaction = doc->getBookedTransactionID();
+        setEditorText(spin, QStringLiteral("cycle=Parameters.cycle+1"));
+        QSignalSpy returned(&spin, &Gui::QuantitySpinBox::returnPressed);
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCOMPARE(returned.count(), 0);
+        QCOMPARE(variable->getValue(), 7.0);
+        QCOMPARE(target->getExpression(pathFloat()).expression->toString(), previous);
+        QCOMPARE(doc->getBookedTransactionID(), transaction);
+        if (toolTransaction) {
+            QCOMPARE(QString::fromUtf8(target->Label.getValue()), QStringLiteral("Pending edit"));
+            doc->abortTransaction();
+        }
+    }
+
+    void test_InlineTargetCycleRollsBackAssignment_data()
+    {
+        QTest::addColumn<bool>("tool");
+        QTest::addColumn<bool>("existing");
+        QTest::newRow("owned-new") << false << false;
+        QTest::newRow("owned-existing") << false << true;
+        QTest::newRow("tool-new") << true << false;
+        QTest::newRow("tool-existing") << true << true;
+    }
+
+    void test_InlineTargetCycleRollsBackAssignment()
+    {
+        QFETCH(bool, tool);
+        QFETCH(bool, existing);
+        App::VarSet* parameters = nullptr;
+        if (existing) {
+            parameters = static_cast<App::VarSet*>(doc->addObject("App::VarSet", "Parameters"));
+            auto* variable = static_cast<App::PropertyFloat*>(
+                parameters->addDynamicProperty("App::PropertyFloat", "cycle", "Variables")
+            );
+            variable->setValue(2);
+            auto* dependent
+                = parameters->addDynamicProperty("App::PropertyFloat", "dependent", "Variables");
+            parameters->ExpressionEngine.setValue(
+                App::ObjectIdentifier(*dependent),
+                App::ExpressionParser::parse(parameters, "cycle*2")
+            );
+            parameters->ExpressionEngine.execute();
+        }
+        targetFloat->setValue(5);
+        target->ExpressionEngine.setValue(pathFloat(), App::ExpressionParser::parse(target, "5"));
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::One);
+        spin.bind(pathFloat());
+        if (tool) {
+            doc->openTransaction("Pending tool edits");
+            target->Label.setValue("Pending edit");
+        }
+        const auto transaction = doc->getBookedTransactionID();
+        const QString input = QStringLiteral("cycle=Target.TargetFloat");
+        setEditorText(spin, input);
+        QSignalSpy returned(&spin, &Gui::QuantitySpinBox::returnPressed);
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCOMPARE(returned.count(), 0);
+        QCOMPARE(editorText(spin), input);
+        QCOMPARE(doc->getBookedTransactionID(), transaction);
+        QCOMPARE(targetFloat->getValue(), 5.0);
+        QCOMPARE(target->getExpression(pathFloat()).expression->toString(), std::string("5"));
+        if (existing) {
+            QCOMPARE(
+                static_cast<App::PropertyFloat*>(parameters->getPropertyByName("cycle"))->getValue(),
+                2.0
+            );
+            QCOMPARE(
+                static_cast<App::PropertyFloat*>(parameters->getPropertyByName("dependent"))->getValue(),
+                4.0
+            );
+            QVERIFY(!parameters
+                         ->getExpression(App::ObjectIdentifier(*parameters->getPropertyByName("cycle")))
+                         .expression);
+        }
+        else {
+            QVERIFY(!doc->getObject("Parameters"));
+        }
+        if (tool) {
+            QCOMPARE(QString::fromUtf8(target->Label.getValue()), QStringLiteral("Pending edit"));
+            doc->abortTransaction();
+        }
+    }
+
+    void test_UIntInlineConversionLimits_data()
+    {
+        QTest::addColumn<QString>("input");
+        QTest::addColumn<bool>("accepted");
+        QTest::newRow("negative") << QStringLiteral("limit=-1") << false;
+        QTest::newRow("overflow") << QStringLiteral("limit=2147483647*2+2") << false;
+        QTest::newRow("fractional-integer-assignment") << QStringLiteral("limit=1.4") << false;
+        QTest::newRow("upper") << QStringLiteral("limit=2147483647*2+1") << true;
+    }
+
+    void test_UIntInlineConversionLimits()
+    {
+        QFETCH(QString, input);
+        QFETCH(bool, accepted);
+        Gui::UIntSpinBox spin;
+        spin.setRange(0, std::numeric_limits<unsigned int>::max());
+        QCOMPARE(spin.maximum(), std::numeric_limits<unsigned int>::max());
+        setEditorText(spin, input);
+        QCOMPARE(spin.maximum(), std::numeric_limits<unsigned int>::max());
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QVERIFY2(
+            (doc->getObject("Parameters") != nullptr) == accepted,
+            qPrintable(spin.findChild<QLineEdit*>()->toolTip())
+        );
+        if (!accepted) {
+            QCOMPARE(editorText(spin), input);
+        }
+    }
+
+    void test_UIntInlineReferenceRoundsBeforeConversion()
+    {
+        auto* parameters = doc->addObject("App::VarSet", "Parameters");
+        auto* fraction = static_cast<App::PropertyFloat*>(
+            parameters->addDynamicProperty("App::PropertyFloat", "fraction")
+        );
+        fraction->setValue(1.4);
+        Gui::UIntSpinBox spin;
+        spin.setRange(0, 1);
+        setEditorText(spin, QStringLiteral("Parameters.fraction"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCOMPARE(spin.value(), 1U);
+        fraction->setValue(1.5);
+        const QString input = QStringLiteral("Parameters.fraction");
+        setEditorText(spin, input);
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCOMPARE(spin.value(), 1U);
+        QCOMPARE(editorText(spin), input);
+    }
+
+    void test_NamedAssignmentRollbackKeepsOtherParameters_data()
+    {
+        QTest::addColumn<bool>("fineGrained");
+        QTest::addColumn<bool>("tool");
+        QTest::addColumn<bool>("existing");
+        QTest::addColumn<bool>("unsignedInput");
+        for (bool fineGrained : {false, true}) {
+            for (bool tool : {false, true}) {
+                for (bool existing : {false, true}) {
+                    for (bool unsignedInput : {false, true}) {
+                        const auto name = QStringLiteral("fine-%1-tool-%2-existing-%3-uint-%4")
+                                              .arg(fineGrained)
+                                              .arg(tool)
+                                              .arg(existing)
+                                              .arg(unsignedInput);
+                        QTest::newRow(qPrintable(name))
+                            << fineGrained << tool << existing << unsignedInput;
+                    }
+                }
+            }
+        }
+    }
+
+    void test_NamedAssignmentRollbackKeepsOtherParameters()
+    {
+        QFETCH(bool, fineGrained);
+        QFETCH(bool, tool);
+        QFETCH(bool, existing);
+        QFETCH(bool, unsignedInput);
+        auto preferences = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/General"
+        );
+        const bool previousMode = preferences->GetBool("FineGrainedRecompute", true);
+        const auto restoreMode = qScopeGuard([&]() {
+            preferences->SetBool("FineGrainedRecompute", previousMode);
+        });
+        preferences->SetBool("FineGrainedRecompute", fineGrained);
+
+        auto* parameters = doc->addObject("App::VarSet", "MyVarSet");
+        auto* seed = static_cast<App::PropertyFloat*>(
+            parameters->addDynamicProperty("App::PropertyFloat", "seed")
+        );
+        seed->setValue(3.5);
+        App::PropertyFloat* variable = nullptr;
+        std::string previousBinding;
+        if (existing) {
+            variable = static_cast<App::PropertyFloat*>(
+                parameters->addDynamicProperty("App::PropertyFloat", "x")
+            );
+            auto expression = App::ExpressionParser::parse(parameters, "seed*2");
+            expression->comment = "Keep the original comment";
+            previousBinding = expression->toString();
+            parameters->ExpressionEngine.setValue(
+                App::ObjectIdentifier(*variable),
+                std::move(expression)
+            );
+            variable->setValue(7);
+        }
+        auto* unrelated = static_cast<App::PropertyFloat*>(
+            parameters->addDynamicProperty("App::PropertyFloat", "unrelated")
+        );
+        parameters->ExpressionEngine.setValue(
+            App::ObjectIdentifier(*unrelated),
+            App::ExpressionParser::parse(parameters, "seed+1")
+        );
+        // Leave a pending evaluation: entry and failure must not execute unrelated expressions.
+        unrelated->setValue(123);
+        int unrelatedChanges = 0;
+        int unrelatedBindingChanges = 0;
+        auto valueConnection = parameters->signalChanged.connect([&](const App::DocumentObject&,
+                                                                     const App::Property& property) {
+            if (&property == unrelated) {
+                ++unrelatedChanges;
+            }
+        });
+        auto bindingConnection = parameters->ExpressionEngine.expressionChanged.connect(
+            [&](const App::ObjectIdentifier& path) {
+                if (path == App::ObjectIdentifier(*unrelated)) {
+                    ++unrelatedBindingChanges;
+                }
+            }
+        );
+        const auto disconnect = qScopeGuard([&]() {
+            valueConnection.disconnect();
+            bindingConnection.disconnect();
+        });
+        targetFloat->setValue(5);
+        targetInt->setValue(5);
+        const auto targetPath = unsignedInput ? pathInt() : pathFloat();
+        target->ExpressionEngine.setValue(targetPath, App::ExpressionParser::parse(target, "5"));
+        if (tool) {
+            doc->openTransaction("Pending tool edits");
+            target->Label.setValue("Pending edit");
+            seed->setValue(9);
+        }
+        const auto transaction = doc->getBookedTransactionID();
+        std::unique_ptr<QAbstractSpinBox> spin;
+        if (unsignedInput) {
+            auto widget = std::make_unique<Gui::UIntSpinBox>();
+            widget->bind(targetPath);
+            spin = std::move(widget);
+        }
+        else {
+            auto widget = std::make_unique<Gui::QuantitySpinBox>();
+            widget->bind(targetPath);
+            spin = std::move(widget);
+        }
+        const auto input = unsignedInput ? QStringLiteral("MyVarSet.x=Target.TargetInt")
+                                         : QStringLiteral("MyVarSet.x=Target.TargetFloat");
+        setEditorText(*spin, input);
+        QTest::keyClick(spin.get(), Qt::Key_Return);
+        QCOMPARE(editorText(*spin), input);
+        QCOMPARE(doc->getBookedTransactionID(), transaction);
+        QCOMPARE(target->getExpression(targetPath).expression->toString(), std::string("5"));
+        if (existing) {
+            QCOMPARE(variable->getValue(), 7.0);
+            const auto restored = parameters->getExpression(App::ObjectIdentifier(*variable)).expression;
+            QVERIFY(restored);
+            QCOMPARE(restored->toString(), previousBinding);
+            QCOMPARE(restored->comment, std::string("Keep the original comment"));
+        }
+        else {
+            QVERIFY(!parameters->getPropertyByName("x"));
+        }
+        QCOMPARE(unrelated->getValue(), 123.0);
+        QCOMPARE(unrelatedChanges, 0);
+        if (tool) {
+            QCOMPARE(unrelatedBindingChanges, 0);
+            QCOMPARE(seed->getValue(), 9.0);
+            QCOMPARE(QString::fromUtf8(target->Label.getValue()), QStringLiteral("Pending edit"));
+            doc->abortTransaction();
+        }
+    }
+
+    void test_ExistingAssignmentUndoRestoresValueAndBinding_data()
+    {
+        QTest::addColumn<bool>("tool");
+        QTest::newRow("owned") << false;
+        QTest::newRow("tool") << true;
+    }
+
+    void test_ExistingAssignmentUndoRestoresValueAndBinding()
+    {
+        QFETCH(bool, tool);
+        auto* parameters = doc->addObject("App::VarSet", "MyVarSet");
+        auto* seed = static_cast<App::PropertyFloat*>(
+            parameters->addDynamicProperty("App::PropertyFloat", "seed")
+        );
+        seed->setValue(3.5);
+        auto* variable = static_cast<App::PropertyFloat*>(
+            parameters->addDynamicProperty("App::PropertyFloat", "x")
+        );
+        auto expression = App::ExpressionParser::parse(parameters, "seed*2");
+        expression->comment = "Original binding";
+        parameters->ExpressionEngine.setValue(App::ObjectIdentifier(*variable), std::move(expression));
+        variable->setValue(7);
+        target->ExpressionEngine.setValue(pathFloat(), App::ExpressionParser::parse(target, "5"));
+        Gui::QuantitySpinBox spin;
+        spin.bind(pathFloat());
+        if (tool) {
+            doc->openTransaction("Pending tool edits");
+        }
+        setEditorText(spin, QStringLiteral("MyVarSet.x=32"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCOMPARE(variable->getValue(), 32.0);
+        QVERIFY(!parameters->getExpression(App::ObjectIdentifier(*variable)).expression);
+        if (tool) {
+            doc->commitTransaction();
+        }
+        doc->undo();
+        QCOMPARE(variable->getValue(), 7.0);
+        const auto restored = parameters->getExpression(App::ObjectIdentifier(*variable)).expression;
+        QVERIFY(restored);
+        QCOMPARE(restored->toString(), std::string("seed * 2"));
+        QCOMPARE(restored->comment, std::string("Original binding"));
+        QCOMPARE(target->getExpression(pathFloat()).expression->toString(), std::string("5"));
+        doc->redo();
+        QCOMPARE(variable->getValue(), 32.0);
+        QVERIFY(!parameters->getExpression(App::ObjectIdentifier(*variable)).expression);
+        QVERIFY(
+            target->getExpression(pathFloat()).expression->toString().find("MyVarSet.x")
+            != std::string::npos
+        );
+    }
+
+    void test_AssignmentRollbackPreservesTransactionsInBothDocuments_data()
+    {
+        QTest::addColumn<bool>("sourceTool");
+        QTest::addColumn<bool>("targetTool");
+        QTest::newRow("owned") << false << false;
+        QTest::newRow("source-tool") << true << false;
+        QTest::newRow("target-tool") << false << true;
+        QTest::newRow("separate-tools") << true << true;
+    }
+
+    void test_AssignmentRollbackPreservesTransactionsInBothDocuments()
+    {
+        QFETCH(bool, sourceTool);
+        QFETCH(bool, targetTool);
+        QTemporaryDir directory;
+        QVERIFY(directory.isValid());
+        const auto sourceName = App::GetApplication().getUniqueDocumentName("assignment_source");
+        App::DocumentInitFlags flags;
+        flags.createView = false;
+        auto* source = App::GetApplication().newDocument(sourceName.c_str(), "testUser", flags);
+        const auto closeSource = qScopeGuard([&]() {
+            App::GetApplication().closeDocument(sourceName.c_str());
+        });
+        auto* parameters = source->addObject("App::VarSet", "MyVarSet");
+        auto* variable = static_cast<App::PropertyFloat*>(
+            parameters->addDynamicProperty("App::PropertyFloat", "x")
+        );
+        variable->setValue(7);
+        // Cross-document expression links require both documents to have file names.
+        source->saveAs(directory.filePath(QStringLiteral("source.FCStd")).toUtf8().constData());
+        doc->saveAs(directory.filePath(QStringLiteral("target.FCStd")).toUtf8().constData());
+        targetFloat->setValue(5);
+        target->ExpressionEngine.setValue(pathFloat(), App::ExpressionParser::parse(target, "5"));
+        if (sourceTool) {
+            source->openTransaction("Source tool");
+            parameters->Label.setValue("Pending source edit");
+        }
+        if (targetTool) {
+            doc->openTransaction("Target tool");
+            target->Label.setValue("Pending target edit");
+        }
+        const auto sourceTransaction = source->getBookedTransactionID();
+        const auto targetTransaction = doc->getBookedTransactionID();
+        const auto targetPath = pathFloat();
+        {
+            Gui::InlineExpression::AssignmentGuard guard(source, &targetPath);
+            guard.watch(parameters, QStringLiteral("x"));
+            variable->setValue(32);
+            target->ExpressionEngine.setValue(
+                targetPath,
+                App::ExpressionParser::parse(target, variable->getFullName().c_str())
+            );
+            targetFloat->setValue(32);
+        }
+        QCOMPARE(variable->getValue(), 7.0);
+        QCOMPARE(targetFloat->getValue(), 5.0);
+        QCOMPARE(target->getExpression(targetPath).expression->toString(), std::string("5"));
+        QCOMPARE(source->getBookedTransactionID(), sourceTool ? sourceTransaction : targetTransaction);
+        QCOMPARE(doc->getBookedTransactionID(), targetTool ? targetTransaction : sourceTransaction);
+        if (sourceTool) {
+            QCOMPARE(
+                QString::fromUtf8(parameters->Label.getValue()),
+                QStringLiteral("Pending source edit")
+            );
+        }
+        if (targetTool) {
+            QCOMPARE(QString::fromUtf8(target->Label.getValue()), QStringLiteral("Pending target edit"));
+        }
+        if (source->getBookedTransactionID()) {
+            source->abortTransaction();
+        }
+        if (doc->getBookedTransactionID()) {
+            doc->abortTransaction();
+        }
+    }
+
+    void test_AssignmentEvaluatesOnlyAssignedParameter()
+    {
+        auto* parameters = doc->addObject("App::VarSet", "MyVarSet");
+        auto* seed = static_cast<App::PropertyFloat*>(
+            parameters->addDynamicProperty("App::PropertyFloat", "seed")
+        );
+        seed->setValue(3);
+        auto* variable = static_cast<App::PropertyFloat*>(
+            parameters->addDynamicProperty("App::PropertyFloat", "x")
+        );
+        auto* dependent = static_cast<App::PropertyFloat*>(
+            parameters->addDynamicProperty("App::PropertyFloat", "dependent")
+        );
+        parameters->ExpressionEngine.setValue(
+            App::ObjectIdentifier(*dependent),
+            App::ExpressionParser::parse(parameters, "x*2")
+        );
+        dependent->setValue(123);
+        Gui::QuantitySpinBox spin;
+        spin.bind(pathFloat());
+        setEditorText(spin, QStringLiteral("MyVarSet.x=MyVarSet.seed+1"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCOMPARE(variable->getValue(), 4.0);
+        QCOMPARE(dependent->getValue(), 123.0);
+        QCOMPARE(spin.rawValue(), 4.0);
+        doc->recompute();
+        QCOMPARE(dependent->getValue(), 8.0);
+        seed->setValue(10);
+        doc->recompute();
+        QCOMPARE(variable->getValue(), 11.0);
+        QCOMPARE(dependent->getValue(), 22.0);
+    }
+
+    void test_AssignmentKeepsReferencesToOriginalOwner()
+    {
+        auto* parameters = doc->addObject("App::VarSet", "MyVarSet");
+        auto* variable = static_cast<App::PropertyFloat*>(
+            parameters->addDynamicProperty("App::PropertyFloat", "x")
+        );
+        targetFloat->setValue(5);
+        QString error;
+        const auto expression = App::ExpressionParser::parse(target, "TargetFloat+1");
+        {
+            Gui::InlineExpression::AssignmentGuard guard(doc);
+            guard.watch(parameters, QStringLiteral("x"));
+            QVERIFY2(
+                Gui::InlineExpression::assignExpressionToProperty(
+                    parameters,
+                    variable,
+                    expression.get(),
+                    error
+                ),
+                qPrintable(error)
+            );
+            guard.commit();
+        }
+        QCOMPARE(variable->getValue(), 6.0);
+        targetFloat->setValue(10);
+        doc->recompute();
+        QCOMPARE(variable->getValue(), 11.0);
+    }
+
+    void test_AssignmentRollbackRestoresQuantityUnitAndTargetField()
+    {
+        auto* parameters = doc->addObject("App::VarSet", "MyVarSet");
+        auto* quantity = static_cast<App::PropertyQuantity*>(
+            parameters->addDynamicProperty("App::PropertyQuantity", "x")
+        );
+        quantity->setUnit(Base::Unit::One);
+        quantity->setValue(7);
+        const double original = 1.0;
+        const double slightlyChanged = std::nextafter(original, 2.0);
+        auto* exact = static_cast<App::PropertyFloat*>(
+            parameters->addDynamicProperty("App::PropertyFloat", "exact")
+        );
+        exact->setValue(original);
+        auto* vector = static_cast<App::PropertyVector*>(
+            target->addDynamicProperty("App::PropertyVector", "Vector")
+        );
+        vector->setValue(Base::Vector3d(1, 2, 3));
+        const auto xPath = App::ObjectIdentifier::parse(target, "Vector.x");
+        doc->openTransaction("Pending tool edits");
+        {
+            Gui::InlineExpression::AssignmentGuard guard(doc, &xPath);
+            guard.watch(parameters, QStringLiteral("x"));
+            quantity->setPathValue(
+                App::ObjectIdentifier(*quantity),
+                Base::Quantity(32, Base::Unit::Length)
+            );
+            target->ExpressionEngine.setValue(xPath, App::ExpressionParser::parse(target, "32"));
+            vector->setValue(Base::Vector3d(32, 9, 3));
+            // Failure restores x while retaining a separate change to y in the same property.
+        }
+        QCOMPARE(quantity->getValue(), 7.0);
+        QCOMPARE(quantity->getUnit(), Base::Unit::One);
+        QCOMPARE(vector->getValue().x, 1.0);
+        QCOMPARE(vector->getValue().y, 9.0);
+        QVERIFY(!target->getExpression(xPath).expression);
+        QVERIFY(doc->getBookedTransactionID());
+        {
+            Gui::InlineExpression::AssignmentGuard guard(doc);
+            guard.watch(parameters, QStringLiteral("exact"));
+            exact->setValue(slightlyChanged);
+        }
+        QVERIFY(exact->getValue() == original);
+        doc->abortTransaction();
+        QCOMPARE(quantity->getUnit(), Base::Unit::One);
+        QCOMPARE(quantity->getValue(), 7.0);
+        QCOMPARE(vector->getValue().y, 2.0);
+    }
+
+    void test_InlineAssignmentUndoRedo()
+    {
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::One);
+        spin.bind(pathFloat());
+        setEditorText(spin, QStringLiteral("undoValue=42"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QVERIFY(doc->getObject("Parameters"));
+        QVERIFY(target->getExpression(pathFloat()).expression);
+        doc->undo();
+        QVERIFY(!doc->getObject("Parameters"));
+        QVERIFY(!target->getExpression(pathFloat()).expression);
+        doc->redo();
+        QVERIFY(doc->getObject("Parameters"));
+        QVERIFY(target->getExpression(pathFloat()).expression);
+    }
+
+    void test_InlineAssignmentCreatesParametersVarSet()  // NOLINT
+    {
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::One);
+        spin.bind(pathFloat());
+
+        setEditorText(spin, QStringLiteral("x=42"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCoreApplication::processEvents();
+
+        auto* parameters = freecad_cast<App::VarSet*>(doc->getObject("Parameters"));
+        QVERIFY(parameters != nullptr);
+        auto* x = freecad_cast<App::PropertyFloat*>(parameters->getPropertyByName("x"));
+        QVERIFY(x != nullptr);
+        QCOMPARE(x->getValue(), 42.0);
+
+        auto info = target->getExpression(pathFloat());
+        QVERIFY(info.expression != nullptr);
+    }
+
+    void test_UnqualifiedNameResolvesInQuantitySpinBox()  // NOLINT
+    {
+        auto* parameters = freecad_cast<App::VarSet*>(doc->addObject("App::VarSet", "Parameters"));
+        QVERIFY(parameters != nullptr);
+        auto* x = freecad_cast<App::PropertyFloat*>(
+            parameters->addDynamicProperty("App::PropertyFloat", "x", "Variables")
+        );
+        QVERIFY(x != nullptr);
+        x->setValue(41);
+
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::One);
+        spin.bind(pathFloat());
+
+        setEditorText(spin, QStringLiteral("x+1"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCoreApplication::processEvents();
+
+        auto info = target->getExpression(pathFloat());
+        QVERIFY(info.expression != nullptr);
+        const QString exprText = QString::fromStdString(info.expression->toString());
+        QVERIFY(exprText.contains(QStringLiteral("Parameters.x")));
+    }
+
+    void test_AssignmentRhsResolvesUnqualifiedName()  // NOLINT
+    {
+        auto* parameters = freecad_cast<App::VarSet*>(doc->addObject("App::VarSet", "Parameters"));
+        QVERIFY(parameters != nullptr);
+        auto* x = freecad_cast<App::PropertyFloat*>(
+            parameters->addDynamicProperty("App::PropertyFloat", "x", "Variables")
+        );
+        QVERIFY(x != nullptr);
+        x->setValue(41);
+
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::One);
+        spin.bind(pathFloat());
+
+        setEditorText(spin, QStringLiteral("y=x+1"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCoreApplication::processEvents();
+
+        auto* y = freecad_cast<App::PropertyFloat*>(parameters->getPropertyByName("y"));
+        QVERIFY(y != nullptr);
+        auto yExpr = parameters->getExpression(App::ObjectIdentifier(*y));
+        QVERIFY(yExpr.expression != nullptr);
+
+        auto info = target->getExpression(pathFloat());
+        QVERIFY(info.expression != nullptr);
+    }
+
+    void test_EnterCommitEmitsEditingFinished()  // NOLINT
+    {
+        auto* parameters = freecad_cast<App::VarSet*>(doc->addObject("App::VarSet", "Parameters"));
+        QVERIFY(parameters != nullptr);
+        auto* x = freecad_cast<App::PropertyFloat*>(
+            parameters->addDynamicProperty("App::PropertyFloat", "x", "Variables")
+        );
+        QVERIFY(x != nullptr);
+        x->setValue(41);
+
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::One);
+        spin.bind(pathFloat());
+        QSignalSpy spy(&spin, &QAbstractSpinBox::editingFinished);
+
+        setEditorText(spin, QStringLiteral("x+1"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCoreApplication::processEvents();
+
+        QCOMPARE(spy.count(), 1);
+    }
+
+    void test_InlineAssignmentWorksInUIntSpinBox()  // NOLINT
+    {
+        Gui::UIntSpinBox spin;
+        spin.bind(pathInt());
+
+        setEditorText(spin, QStringLiteral("n=32"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCoreApplication::processEvents();
+
+        auto* parameters = freecad_cast<App::VarSet*>(doc->getObject("Parameters"));
+        QVERIFY(parameters != nullptr);
+        auto* n = freecad_cast<App::PropertyInteger*>(parameters->getPropertyByName("n"));
+        QVERIFY(n != nullptr);
+        QCOMPARE(n->getValue(), 32L);
+
+        auto info = target->getExpression(pathInt());
+        QVERIFY(info.expression != nullptr);
+    }
+
+    void test_TypedEqualsAllowsInlineAssignmentInQuantitySpinBox()  // NOLINT
+    {
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::One);
+        spin.bind(pathFloat());
+
+        auto* edit = spin.findChild<QLineEdit*>();
+        QVERIFY(edit != nullptr);
+        edit->clear();
+        edit->setFocus();
+        QTest::keyClicks(edit, QStringLiteral("x=42"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCoreApplication::processEvents();
+
+        auto* parameters = freecad_cast<App::VarSet*>(doc->getObject("Parameters"));
+        QVERIFY(parameters != nullptr);
+        auto* x = freecad_cast<App::PropertyFloat*>(parameters->getPropertyByName("x"));
+        QVERIFY(x != nullptr);
+        QCOMPARE(x->getValue(), 42.0);
+    }
+
+    void test_TypedEqualsAllowsInlineAssignmentInUIntSpinBox()  // NOLINT
+    {
+        Gui::UIntSpinBox spin;
+        spin.bind(pathInt());
+
+        auto* edit = spin.findChild<QLineEdit*>();
+        QVERIFY(edit != nullptr);
+        edit->clear();
+        edit->setFocus();
+        QTest::keyClicks(edit, QStringLiteral("n=32"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCoreApplication::processEvents();
+
+        auto* parameters = freecad_cast<App::VarSet*>(doc->getObject("Parameters"));
+        QVERIFY(parameters != nullptr);
+        auto* n = freecad_cast<App::PropertyInteger*>(parameters->getPropertyByName("n"));
+        QVERIFY(n != nullptr);
+        QCOMPARE(n->getValue(), 32L);
+    }
+
+    void test_EmptyInputDoesNotEmitValueResetSignal()  // NOLINT
+    {
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::Length);
+        spin.setValue(10.0);
+
+        auto* edit = spin.findChild<QLineEdit*>();
+        QVERIFY(edit != nullptr);
+
+        QSignalSpy spy(&spin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged));
+        edit->clear();
+        QCoreApplication::processEvents();
+
+        QCOMPARE(spy.count(), 0);
+    }
+
+    void test_QuantityAssignmentReusesExistingIntegerVariableType()  // NOLINT
+    {
+        auto* parameters = freecad_cast<App::VarSet*>(doc->addObject("App::VarSet", "Parameters"));
+        QVERIFY(parameters != nullptr);
+        auto* x = freecad_cast<App::PropertyInteger*>(
+            parameters->addDynamicProperty("App::PropertyInteger", "x", "Variables")
+        );
+        QVERIFY(x != nullptr);
+        x->setValue(5);
+
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::One);
+        spin.bind(pathFloat());
+
+        setEditorText(spin, QStringLiteral("x=42"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCoreApplication::processEvents();
+
+        auto* sameX = parameters->getPropertyByName("x");
+        QVERIFY(sameX == x);
+        QCOMPARE(x->getValue(), 42L);
+        auto info = target->getExpression(pathFloat());
+        QVERIFY(info.expression != nullptr);
+    }
+
+    void test_QuantityAssignmentRejectsNonIntegerForExistingIntegerVariable()  // NOLINT
+    {
+        auto* parameters = freecad_cast<App::VarSet*>(doc->addObject("App::VarSet", "Parameters"));
+        QVERIFY(parameters != nullptr);
+        auto* x = freecad_cast<App::PropertyInteger*>(
+            parameters->addDynamicProperty("App::PropertyInteger", "x", "Variables")
+        );
+        QVERIFY(x != nullptr);
+        x->setValue(5);
+
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::One);
+        spin.bind(pathFloat());
+
+        setEditorText(spin, QStringLiteral("x=42.5"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCoreApplication::processEvents();
+
+        QCOMPARE(x->getValue(), 5L);
+        auto info = target->getExpression(pathFloat());
+        QVERIFY(info.expression == nullptr);
+    }
+
+    void test_UIntEnterCommitAppliesExpression()  // NOLINT
+    {
+        auto* parameters = freecad_cast<App::VarSet*>(doc->addObject("App::VarSet", "Parameters"));
+        QVERIFY(parameters != nullptr);
+        auto* x = freecad_cast<App::PropertyInteger*>(
+            parameters->addDynamicProperty("App::PropertyInteger", "x", "Variables")
+        );
+        QVERIFY(x != nullptr);
+        x->setValue(41);
+
+        Gui::UIntSpinBox spin;
+        spin.bind(pathInt());
+
+        setEditorText(spin, QStringLiteral("x+1"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCoreApplication::processEvents();
+
+        auto info = target->getExpression(pathInt());
+        QVERIFY(info.expression != nullptr);
+        QVERIFY(
+            QString::fromStdString(info.expression->toString()).contains(QStringLiteral("Parameters.x"))
+        );
+    }
+
+    void test_UIntFocusOutCommitAppliesExpression()  // NOLINT
+    {
+        auto* parameters = freecad_cast<App::VarSet*>(doc->addObject("App::VarSet", "Parameters"));
+        QVERIFY(parameters != nullptr);
+        auto* x = freecad_cast<App::PropertyInteger*>(
+            parameters->addDynamicProperty("App::PropertyInteger", "x", "Variables")
+        );
+        QVERIFY(x != nullptr);
+        x->setValue(41);
+
+        Gui::UIntSpinBox spin;
+        spin.bind(pathInt());
+
+        setEditorText(spin, QStringLiteral("x+1"));
+        QFocusEvent focusOut(QEvent::FocusOut, Qt::TabFocusReason);
+        QCoreApplication::sendEvent(&spin, &focusOut);
+        QCoreApplication::processEvents();
+
+        auto info = target->getExpression(pathInt());
+        QVERIFY(info.expression != nullptr);
+        QVERIFY(
+            QString::fromStdString(info.expression->toString()).contains(QStringLiteral("Parameters.x"))
+        );
+    }
+
+    void test_InvalidExpressionIsRejectedOnEnter()  // NOLINT
+    {
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::One);
+        spin.bind(pathFloat());
+
+        setEditorText(spin, QStringLiteral("x+"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCoreApplication::processEvents();
+
+        auto info = target->getExpression(pathFloat());
+        QVERIFY(info.expression == nullptr);
+        QCOMPARE(editorText(spin), QStringLiteral("x+"));
+    }
+
+    void test_OvaDistanceAssignmentCapturesExpressionAndCreatesLengthVar()  // NOLINT
+    {
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::Length);
+
+        setEditorText(spin, QStringLiteral("len=25 mm"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCoreApplication::processEvents();
+
+        const std::string exprText = spin.takeUnboundExpressionText();
+        QVERIFY(!exprText.empty());
+        QCOMPARE(spin.takeUnboundExpressionText(), std::string());
+        QCOMPARE(QString::fromStdString(exprText), QStringLiteral("Parameters.len"));
+
+        auto* parameters = freecad_cast<App::VarSet*>(doc->getObject("Parameters"));
+        QVERIFY(parameters != nullptr);
+        auto* len = parameters->getPropertyByName("len");
+        QVERIFY(len != nullptr);
+        QVERIFY(len->getTypeId().isDerivedFrom(App::PropertyLength::getClassTypeId()));
+    }
+
+    void test_OvaAngleAssignmentCapturesExpressionAndCreatesAngleVar()  // NOLINT
+    {
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::Angle);
+
+        setEditorText(spin, QStringLiteral("ang=30 deg"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCoreApplication::processEvents();
+
+        const std::string exprText = spin.takeUnboundExpressionText();
+        QVERIFY(!exprText.empty());
+        QCOMPARE(spin.takeUnboundExpressionText(), std::string());
+        QCOMPARE(QString::fromStdString(exprText), QStringLiteral("Parameters.ang"));
+
+        auto* parameters = freecad_cast<App::VarSet*>(doc->getObject("Parameters"));
+        QVERIFY(parameters != nullptr);
+        auto* ang = parameters->getPropertyByName("ang");
+        QVERIFY(ang != nullptr);
+        QVERIFY(ang->getTypeId().isDerivedFrom(App::PropertyAngle::getClassTypeId()));
+    }
+
+    void test_OvaZeroDistanceAssignmentStillCapturesExpression()  // NOLINT
+    {
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::Length);
+
+        setEditorText(spin, QStringLiteral("w=0 mm"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCoreApplication::processEvents();
+
+        const std::string exprText = spin.takeUnboundExpressionText();
+        QVERIFY(!exprText.empty());
+        QCOMPARE(QString::fromStdString(exprText), QStringLiteral("Parameters.w"));
+
+        auto* parameters = freecad_cast<App::VarSet*>(doc->getObject("Parameters"));
+        QVERIFY(parameters != nullptr);
+        auto* w = parameters->getPropertyByName("w");
+        QVERIFY(w != nullptr);
+        QVERIFY(w->getTypeId().isDerivedFrom(App::PropertyLength::getClassTypeId()));
+    }
+
+    void test_OvaUnqualifiedReferenceStoresQualifiedExpression()  // NOLINT
+    {
+        auto* parameters = freecad_cast<App::VarSet*>(doc->addObject("App::VarSet", "Parameters"));
+        QVERIFY(parameters != nullptr);
+        auto* x = freecad_cast<App::PropertyLength*>(
+            parameters->addDynamicProperty("App::PropertyLength", "x", "Variables")
+        );
+        QVERIFY(x != nullptr);
+        x->setValue(42.0);
+
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::Length);
+
+        setEditorText(spin, QStringLiteral("x"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCoreApplication::processEvents();
+
+        QCOMPARE(
+            QString::fromStdString(spin.takeUnboundExpressionText()),
+            QStringLiteral("Parameters.x")
+        );
+    }
+
+    void test_OvaAssignmentFromVariableEvaluatesImmediately()  // NOLINT
+    {
+        auto* parameters = freecad_cast<App::VarSet*>(doc->addObject("App::VarSet", "Parameters"));
+        QVERIFY(parameters != nullptr);
+        auto* y = freecad_cast<App::PropertyLength*>(
+            parameters->addDynamicProperty("App::PropertyLength", "y", "Variables")
+        );
+        QVERIFY(y != nullptr);
+        y->setValue(37.0);
+
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::Length);
+
+        setEditorText(spin, QStringLiteral("x=y"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCoreApplication::processEvents();
+
+        auto* x = freecad_cast<App::PropertyLength*>(parameters->getPropertyByName("x"));
+        QVERIFY(x != nullptr);
+        QCOMPARE(x->getValue(), 37.0);
+        QVERIFY(parameters->getExpression(App::ObjectIdentifier(*x)).expression != nullptr);
+        QCOMPARE(
+            QString::fromStdString(spin.takeUnboundExpressionText()),
+            QStringLiteral("Parameters.x")
+        );
+    }
+
+    void test_OvaLeadingEqualsAssignmentRejected()  // NOLINT
+    {
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::Length);
+
+        setEditorText(spin, QStringLiteral("=w=25 mm"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCoreApplication::processEvents();
+
+        QVERIFY(doc->getObject("Parameters") == nullptr);
+        QCOMPARE(spin.takeUnboundExpressionText(), std::string());
+    }
+
+    void test_InlineExpressionCompatibleUnitIsAccepted()  // NOLINT
+    {
+        // A result whose dimension matches the field's unit is accepted. The input references a
+        // parameter, which the quantity grammar rejects, so it is routed to the inline expression
+        // path and exercises the inline implied-unit check.
+        auto* parameters = freecad_cast<App::VarSet*>(doc->addObject("App::VarSet", "Parameters"));
+        QVERIFY(parameters != nullptr);
+        auto* x = freecad_cast<App::PropertyLength*>(
+            parameters->addDynamicProperty("App::PropertyLength", "x", "Variables")
+        );
+        QVERIFY(x != nullptr);
+        x->setValue(40.0);
+
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::Length);
+        spin.setValue(Base::Quantity(10.0, "mm"));
+
+        setEditorText(spin, QStringLiteral("x + 1 cm"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCoreApplication::processEvents();
+
+        QCOMPARE(spin.value(), Base::Quantity(50.0, "mm"));
+        QCOMPARE(spin.unit(), Base::Unit::Length);
+        QVERIFY(spin.hasValidInput());
+    }
+
+    void test_InlineExpressionDimensionlessResultUsesFieldUnit()  // NOLINT
+    {
+        // A dimensionless result in a unitful field is interpreted in the field's unit.
+        auto* parameters = freecad_cast<App::VarSet*>(doc->addObject("App::VarSet", "Parameters"));
+        QVERIFY(parameters != nullptr);
+        auto* x = freecad_cast<App::PropertyFloat*>(
+            parameters->addDynamicProperty("App::PropertyFloat", "x", "Variables")
+        );
+        QVERIFY(x != nullptr);
+        x->setValue(3.0);
+
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::Length);
+        spin.setValue(Base::Quantity(10.0, "mm"));
+
+        setEditorText(spin, QStringLiteral("x + 2"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCoreApplication::processEvents();
+
+        QCOMPARE(spin.value(), Base::Quantity(5.0, "mm"));
+        QCOMPARE(spin.unit(), Base::Unit::Length);
+        QVERIFY(spin.hasValidInput());
+    }
+
+    void test_InlineExpressionIncompatibleUnitIsRejected()  // NOLINT
+    {
+        // A result whose dimension differs from the field's unit is rejected; the value and unit
+        // are left unchanged.
+        auto* parameters = freecad_cast<App::VarSet*>(doc->addObject("App::VarSet", "Parameters"));
+        QVERIFY(parameters != nullptr);
+        auto* x = freecad_cast<App::PropertyAngle*>(
+            parameters->addDynamicProperty("App::PropertyAngle", "x", "Variables")
+        );
+        QVERIFY(x != nullptr);
+        x->setValue(30.0);
+
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::Length);
+        spin.setValue(Base::Quantity(10.0, "mm"));
+
+        setEditorText(spin, QStringLiteral("x + 1 deg"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCoreApplication::processEvents();
+
+        QCOMPARE(spin.value(), Base::Quantity(10.0, "mm"));
+        QCOMPARE(spin.unit(), Base::Unit::Length);
+        QVERIFY(!spin.hasValidInput());
+    }
+
+    void test_InlineExpressionUnitfulResultInDimensionlessFieldDiscardsUnit()  // NOLINT
+    {
+        // A unitful result in a dimensionless field has its unit discarded (matching
+        // DlgExpressionInput's "unit discarded" handling) instead of flipping the field's unit.
+        auto* parameters = freecad_cast<App::VarSet*>(doc->addObject("App::VarSet", "Parameters"));
+        QVERIFY(parameters != nullptr);
+        auto* x = freecad_cast<App::PropertyLength*>(
+            parameters->addDynamicProperty("App::PropertyLength", "x", "Variables")
+        );
+        QVERIFY(x != nullptr);
+        x->setValue(4.0);
+
+        Gui::QuantitySpinBox spin;
+        spin.setUnit(Base::Unit::One);
+        spin.setValue(Base::Quantity(10.0, Base::Unit::One));
+
+        setEditorText(spin, QStringLiteral("x + 1 mm"));
+        QTest::keyClick(&spin, Qt::Key_Return);
+        QCoreApplication::processEvents();
+
+        QCOMPARE(spin.value(), Base::Quantity(5.0, Base::Unit::One));
+        QCOMPARE(spin.unit(), Base::Unit::One);
+        QVERIFY(spin.hasValidInput());
+    }
+
 private:
     /// Builds a length spin box holding the given input, entered the way the user types it.
     /// isNormalized() inspects the last input accepted by the validator, so callers have to
@@ -1418,8 +2693,54 @@ private:
         return spinBox;
     }
 
+    static void ensureGuiApplication()
+    {
+        if (!Gui::Application::Instance) {
+            Gui::Application::initApplication();
+            Gui::Application::initOpenInventor();
+            guiApp = std::make_unique<Gui::Application>(true);
+        }
+        if (!Gui::getMainWindow()) {
+            mainWindow = std::make_unique<Gui::MainWindow>();
+        }
+    }
+
+    App::ObjectIdentifier pathFloat() const
+    {
+        return App::ObjectIdentifier(*targetFloat);
+    }
+
+    App::ObjectIdentifier pathInt() const
+    {
+        return App::ObjectIdentifier(*targetInt);
+    }
+
+    static void setEditorText(QAbstractSpinBox& spin, const QString& text)
+    {
+        auto* edit = spin.findChild<QLineEdit*>();
+        Q_ASSERT(edit);
+        edit->setText(text);
+    }
+
+    static QString editorText(QAbstractSpinBox& spin)
+    {
+        auto* edit = spin.findChild<QLineEdit*>();
+        Q_ASSERT(edit);
+        return edit->text();
+    }
+
+    static std::unique_ptr<Gui::Application> guiApp;
+    static std::unique_ptr<Gui::MainWindow> mainWindow;
     std::unique_ptr<Gui::QuantitySpinBox> qsb;
+    std::string docName;
+    App::Document* doc {};
+    App::VarSet* target {};
+    App::PropertyFloat* targetFloat {};
+    App::PropertyInteger* targetInt {};
 };
+
+std::unique_ptr<Gui::Application> testQuantitySpinBox::guiApp;
+std::unique_ptr<Gui::MainWindow> testQuantitySpinBox::mainWindow;
 
 // NOLINTEND(readability-magic-numbers)
 

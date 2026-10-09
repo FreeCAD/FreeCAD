@@ -35,6 +35,7 @@
 #include <App/DocumentObject.h>
 #include <App/ExpressionParser.h>
 #include <App/ExpressionTokenizer.h>
+#include <App/PropertyStandard.h>
 #include <App/VarSet.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
@@ -44,10 +45,9 @@
 #include "ui_DlgExpressionInput.h"
 #include "NumericLocale.h"
 #include "Application.h"
-#include "CommandT.h"
 #include "Tools.h"
-#include "ExpressionBinding.h"
 #include "BitmapFactory.h"
+#include "InlineExpression.h"
 #include "ViewProviderDocumentObject.h"
 
 using namespace App;
@@ -423,7 +423,7 @@ static const bool NoCheckExpr = false;
 
 void DlgExpressionInput::textChanged()
 {
-    const QString& text = ui->expression->toPlainText();
+    const QString text = ui->expression->toPlainText().trimmed();
 
     if (text.isEmpty()) {
         okBtn->setDisabled(true);
@@ -434,19 +434,36 @@ void DlgExpressionInput::textChanged()
     okBtn->setDefault(true);
 
     try {
-        if (text.endsWith(u'.') && ui->expression->textCursor().position() == text.size()) {
-            App::ExpressionTokenizer tokenizer;
-            const QString prefix = tokenizer.perform(text, text.size());
-            if (prefix.size() > 1 && !prefix.front().isDigit() && prefix.endsWith(u'.')) {
-                // Treat member access as unfinished input, but still validate numeric input.
-                message.clear();
-                ui->msg->clear();
-                okBtn->setDisabled(true);
-                return;
+        const InlineExpression::Assignment assignment = InlineExpression::parseAssignment(text);
+        if (assignment.isAssignment) {
+            QString error;
+            if (!InlineExpression::isValidName(assignment.name, error)) {
+                throw Base::RuntimeError(error.toStdString().c_str());
             }
+            if (assignment.hasExplicitVarSet) {
+                App::DocumentObject* docObj = path.getDocumentObject();
+                App::Document* doc = docObj ? docObj->getDocument() : nullptr;
+                if (!InlineExpression::resolveVarSet(doc, assignment, false, error)) {
+                    throw Base::RuntimeError(error.toStdString().c_str());
+                }
+            }
+            checkExpression(assignment.valueExpr);
         }
-        checkExpression(text);
-        if (varSetsVisible) {
+        else {
+            if (text.endsWith(u'.') && ui->expression->textCursor().position() == text.size()) {
+                App::ExpressionTokenizer tokenizer;
+                const QString prefix = tokenizer.perform(text, text.size());
+                if (prefix.size() > 1 && !prefix.front().isDigit() && prefix.endsWith(u'.')) {
+                    // Treat member access as unfinished input, but still validate numeric input.
+                    message.clear();
+                    ui->msg->clear();
+                    okBtn->setDisabled(true);
+                    return;
+                }
+            }
+            checkExpression(text);
+        }
+        if (varSetsVisible && !assignment.isAssignment) {
             // If varsets are visible, check whether the varset info also
             // agrees that the button should be enabled.
             // No need to check the expression in that function.
@@ -495,19 +512,6 @@ void DlgExpressionInput::show()
     this->activateWindow();
     ui->expression->selectAll();
 }
-
-class Binding: public Gui::ExpressionBinding
-{
-    // helper class to compensate for the fact that
-    // ExpressionBinding::setExpression is protected.
-public:
-    Binding() = default;
-
-    void setExpression(std::shared_ptr<App::Expression> expr) override
-    {
-        ExpressionBinding::setExpression(expr);
-    }
-};
 
 static constexpr const char* InvalidIdentifierMessage = QT_TR_NOOP(
     "must contain only alphanumeric characters, underscore, and must not start with a digit"
@@ -583,48 +587,6 @@ static void storePreferences(
     paramExpressionEditor->SetASCII("LastGroup", nameGroup);
 }
 
-static const App::NumberExpression* toNumberExpr(const App::Expression* expr)
-{
-    return freecad_cast<const App::NumberExpression*>(expr);
-}
-
-static const App::StringExpression* toStringExpr(const App::Expression* expr)
-{
-    return freecad_cast<const App::StringExpression*>(expr);
-}
-
-static const App::OperatorExpression* toUnitNumberExpr(const App::Expression* expr)
-{
-    auto* opExpr = freecad_cast<const App::OperatorExpression*>(expr);
-    if (opExpr && opExpr->getOperator() == App::OperatorExpression::Operator::UNIT
-        && toNumberExpr(opExpr->getLeft())) {
-        return opExpr;
-    }
-    return nullptr;
-}
-
-void DlgExpressionInput::createBindingVarSet(App::Property* propVarSet, App::DocumentObject* varSet)
-{
-    ObjectIdentifier varSetId(*propVarSet);
-
-    // rewrite the identifiers of the expression to be relative to the VarSet
-    std::map<App::ObjectIdentifier, bool> identifiers = expression->getIdentifiers();
-
-    std::map<ObjectIdentifier, ObjectIdentifier> idsFromObjToVarSet;
-    for (const auto& idPair : identifiers) {
-        ObjectIdentifier exprId = idPair.first;
-        ObjectIdentifier relativeId = exprId.relativeTo(varSetId);
-        idsFromObjToVarSet[exprId] = relativeId;
-    }
-
-    Binding binding;
-    binding.bind(*propVarSet);
-    binding.setExpression(expression);
-    binding.apply();
-
-    varSet->renameObjectIdentifiers(idsFromObjToVarSet);
-}
-
 void DlgExpressionInput::acceptWithVarSet()
 {
     // all checks have been performed in updateVarSetInfo and textChanged that
@@ -648,30 +610,9 @@ void DlgExpressionInput::acceptWithVarSet()
     //
     // The value of the property is going to be the value that was originally
     // meant to be the value for the property that this dialog is targeting.
-    const Expression* expr = expression.get();
-    if (const NumberExpression* ne = toNumberExpr(expr)) {
-        // the value is a number: directly assign it to the property instead of
-        // making it an expression in the variable set
-        if (prop->isDerivedFrom<App::PropertyInteger>()) {
-            Gui::cmdAppObjectArgs(obj, "%s = %d", prop->getName(), std::lround(ne->getValue()));
-        }
-        else {
-            Gui::cmdAppObjectArgs(obj, "%s = %f", prop->getName(), ne->getValue());
-        }
-    }
-    else if (const StringExpression* se = toStringExpr(expr)) {
-        // the value is a string: directly assign it to the property.
-        std::string text = Base::Tools::quoted(se->getText());
-        Gui::cmdAppObjectArgs(obj, "%s = %s", prop->getName(), text);
-    }
-    else if (const OperatorExpression* une = toUnitNumberExpr(expr)) {
-        // the value is a unit number: directly assign it to the property.
-        std::string text = Base::Tools::quoted(une->toString());
-        Gui::cmdAppObjectArgs(obj, "%s = %s", prop->getName(), text);
-    }
-    else {
-        // the value is an expression: make an expression binding in the VarSet
-        createBindingVarSet(prop, obj);
+    QString error;
+    if (!InlineExpression::assignExpressionToProperty(obj, prop, expression.get(), error)) {
+        throw Base::RuntimeError(error.toStdString().c_str());
     }
 
     // Create a new expression that refers to the property in the VarSet
@@ -683,18 +624,110 @@ void DlgExpressionInput::acceptWithVarSet()
 
 void DlgExpressionInput::accept()
 {
-    try {
-        if (varSetsVisible) {
-            if (needReportOnVarSet()) {
-                return;
-            }
-            acceptWithVarSet();
+    if (!okBtn->isEnabled()) {
+        return;
+    }
+
+    const QString text = ui->expression->toPlainText().trimmed();
+    const InlineExpression::Assignment assignment = InlineExpression::parseAssignment(text);
+    if (assignment.isAssignment) {
+        QString error;
+        if (!InlineExpression::isValidName(assignment.name, error)) {
+            message = error.toStdString();
+            setMsgText();
+            QPalette p(ui->msg->palette());
+            p.setColor(QPalette::WindowText, Qt::red);
+            ui->msg->setPalette(p);
+            okBtn->setDisabled(true);
+            return;
         }
-        QDialog::accept();
+
+        try {
+            checkExpression(assignment.valueExpr);
+
+            App::DocumentObject* docObj = path.getDocumentObject();
+            App::Document* doc = docObj ? docObj->getDocument() : nullptr;
+            InlineExpression::AssignmentGuard guard(doc, &path);
+            App::DocumentObject* varSet
+                = InlineExpression::resolveVarSet(doc, assignment, true, error, &guard);
+            if (!varSet) {
+                throw Base::RuntimeError(error.toStdString().c_str());
+            }
+
+            const Base::Type type = determineTypeVarSet();
+            if (type.isBad()) {
+                throw Base::RuntimeError("Cannot determine variable type.");
+            }
+            guard.watch(varSet, assignment.name);
+            App::Property* prop = InlineExpression::ensureProperty(
+                varSet,
+                assignment.name,
+                type,
+                InlineExpression::DefaultVarSetGroup
+            );
+            if (!prop) {
+                throw Base::RuntimeError("Could not create variable property.");
+            }
+
+            if (!InlineExpression::assignExpressionToProperty(varSet, prop, expression.get(), error)) {
+                throw Base::RuntimeError(error.toStdString().c_str());
+            }
+
+            const std::string refExpr
+                = InlineExpression::makeReferenceExpression(varSet, assignment.name);
+            expression = ExpressionParser::parse(path.getDocumentObject(), refExpr.c_str());
+            const auto bindingError = docObj->ExpressionEngine.validateExpression(path, expression);
+            if (!bindingError.empty()) {
+                throw Base::RuntimeError(bindingError.c_str());
+            }
+            QDialog::accept();
+            guard.commit();
+            return;
+        }
+        catch (Base::Exception& e) {
+            message = e.what();
+            setMsgText();
+            QPalette p(ui->msg->palette());
+            p.setColor(QPalette::WindowText, Qt::red);
+            ui->msg->setPalette(p);
+            okBtn->setDisabled(true);
+            return;
+        }
     }
-    catch (const Base::Exception& e) {
-        e.reportException();
+
+    if (varSetsVisible) {
+        if (needReportOnVarSet()) {
+            return;
+        }
+        try {
+            QString nameDoc = getValue(ui->comboBoxVarSet, DocRole);
+            auto* doc = App::GetApplication().getDocument(nameDoc.toUtf8());
+            InlineExpression::AssignmentGuard guard(doc, &path);
+            guard.watch(
+                doc->getObject(getValue(ui->comboBoxVarSet, VarSetNameRole).toUtf8()),
+                ui->lineEditPropNew->text()
+            );
+            acceptWithVarSet();
+            const auto error
+                = path.getDocumentObject()->ExpressionEngine.validateExpression(path, expression);
+            if (!error.empty()) {
+                throw Base::RuntimeError(error.c_str());
+            }
+            QDialog::accept();
+            guard.commit();
+            return;
+        }
+        catch (Base::Exception& e) {
+            message = e.what();
+            setMsgText();
+            QPalette p(ui->msg->palette());
+            p.setColor(QPalette::WindowText, Qt::red);
+            ui->msg->setPalette(p);
+            okBtn->setDisabled(true);
+            return;
+        }
     }
+    QDialog::accept();
 }
 
 static App::Document* getPreselectedDocument()
@@ -866,7 +899,7 @@ void DlgExpressionInput::onCheckVarSets(int state)
     }
     else {
         try {
-            checkExpression(ui->expression->toPlainText());
+            checkExpression(ui->expression->toPlainText().trimmed());
         }
         catch (Base::Exception&) {
             okBtn->setEnabled(false);
@@ -1006,7 +1039,13 @@ void DlgExpressionInput::updateVarSetInfo(bool checkExpr)
         return;
     }
 
-    if (checkCyclicDependencyVarSet(ui->expression->toPlainText())) {
+    const QString expressionText = ui->expression->toPlainText().trimmed();
+    if (expressionText.isEmpty()) {
+        okBtn->setEnabled(false);
+        return;
+    }
+
+    if (checkCyclicDependencyVarSet(expressionText)) {
         okBtn->setEnabled(false);
         return;
     }
@@ -1014,7 +1053,7 @@ void DlgExpressionInput::updateVarSetInfo(bool checkExpr)
     if (checkExpr) {
         // We have to check the text of the expression as well
         try {
-            checkExpression(ui->expression->toPlainText());
+            checkExpression(expressionText);
         }
         catch (Base::Exception&) {
             okBtn->setEnabled(false);

@@ -506,7 +506,10 @@ void DSHPolygonController::addConstraints()
     auto x0 = onViewParameters[OnViewParameter::First]->getValue();
     auto y0 = onViewParameters[OnViewParameter::Second]->getValue();
     auto radius = onViewParameters[OnViewParameter::Third]->getValue();
-    auto angle = Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
+    auto x0Expr = onViewParameters[OnViewParameter::First]->constraintExpression();
+    auto y0Expr = onViewParameters[OnViewParameter::Second]->constraintExpression();
+    auto radiusExpr = onViewParameters[OnViewParameter::Third]->constraintExpression();
+    auto angleExpr = onViewParameters[OnViewParameter::Fourth]->constraintExpression();
 
     auto x0set = onViewParameters[OnViewParameter::First]->isSet;
     auto y0set = onViewParameters[OnViewParameter::Second]->isSet;
@@ -516,24 +519,43 @@ void DSHPolygonController::addConstraints()
     using namespace Sketcher;
 
     auto constraintx0 = [&]() {
-        ConstraintToAttachment(GeoElementId(lastCurve, PointPos::mid), GeoElementId::VAxis, x0, obj);
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
+        ConstraintToAttachment(
+            GeoElementId(lastCurve, PointPos::mid),
+            GeoElementId::VAxis,
+            x0,
+            obj,
+            !x0Expr.empty()
+        );
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, x0Expr);
     };
 
     auto constrainty0 = [&]() {
-        ConstraintToAttachment(GeoElementId(lastCurve, PointPos::mid), GeoElementId::HAxis, y0, obj);
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
+        ConstraintToAttachment(
+            GeoElementId(lastCurve, PointPos::mid),
+            GeoElementId::HAxis,
+            y0,
+            obj,
+            !y0Expr.empty()
+        );
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, y0Expr);
     };
 
     auto constraintradius = [&]() {
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
         Gui::cmdAppObjectArgs(obj, "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ", lastCurve, radius);
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, radiusExpr);
     };
 
-    auto constraintAngle = [&]() {
+    auto constraintangle = [&]() {
+        const double angle = Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
         int circleGeoId = lastCurve;
         int lastSideGeoId = lastCurve - 1;
 
         using std::numbers::pi;
         // for horizontal/vertical angles add according constraint instead of angle constraint
-        if (fabs(std::remainder(angle, pi)) < Precision::Confusion()) {
+        if (angleExpr.empty() && fabs(std::remainder(angle, pi)) < Precision::Confusion()) {
             Gui::cmdAppObjectArgs(
                 obj,
                 "addConstraint(Sketcher.Constraint('Horizontal',%d,%d,%d,%d)) ",
@@ -543,7 +565,7 @@ void DSHPolygonController::addConstraints()
                 static_cast<int>(PointPos::end)
             );
         }
-        else if (fabs(std::remainder(angle, pi / 2)) < Precision::Confusion()) {
+        else if (angleExpr.empty() && fabs(std::remainder(angle, pi / 2)) < Precision::Confusion()) {
             Gui::cmdAppObjectArgs(
                 obj,
                 "addConstraint(Sketcher.Constraint('Vertical',%d,%d,%d,%d)) ",
@@ -581,11 +603,18 @@ void DSHPolygonController::addConstraints()
                 static_cast<int>(PointPos::end)
             );
 
+            const int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
             Gui::cmdAppObjectArgs(
                 obj,
                 "addConstraint(Sketcher.Constraint('Angle',%d,%f))",
                 radialGeoId,
                 angle
+            );
+            applyExpressionToLatestConstraint(
+                handler->getSketchObject(),
+                oldConstraintCount,
+                obj,
+                angleExpr
             );
         }
     };
@@ -606,7 +635,7 @@ void DSHPolygonController::addConstraints()
         }
 
         if (angleSet) {
-            constraintAngle();
+            constraintangle();
         }
     }
     else {  // There is a valid diagnose.
@@ -644,7 +673,7 @@ void DSHPolygonController::addConstraints()
         }
 
         if (angleSet) {
-            constraintAngle();
+            constraintangle();
         }
     }
 }
