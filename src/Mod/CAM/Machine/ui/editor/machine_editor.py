@@ -328,21 +328,6 @@ class DataclassGUIGenerator:
 
         return group, widgets
 
-
-class _TemplateComboBox(QtGui.QComboBox):
-    """QComboBox that keeps the popup open when a folder item is clicked."""
-
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self._skip_next_hide = False
-
-    def hidePopup(self):
-        if self._skip_next_hide:
-            self._skip_next_hide = False
-            return
-        super().hidePopup()
-
-
 class MachineEditorDialog(QtGui.QDialog):
     """A dialog to edit machine JSON assets with proper form fields."""
 
@@ -851,18 +836,21 @@ class MachineEditorDialog(QtGui.QDialog):
     def _on_template_tree_clicked(self, model_index):
         """Handle a click in the template tree popup.
 
-        Folder items (non-selectable) are toggled expand/collapse; the popup
-        stays open via _TemplateComboBox._skip_next_hide.
+        Folder items (non-selectable) are toggled expand/collapse;
         Leaf items (selectable) load the template and close the popup.
         """
         if not (model_index.flags() & QtCore.Qt.ItemIsSelectable):
             # Folder node: toggle expansion, keep popup open
-            self.template_combo._skip_next_hide = True
             if self._template_tree_view.isExpanded(model_index):
                 self._template_tree_view.collapse(model_index)
             else:
                 self._template_tree_view.expand(model_index)
-            return
+    def _on_template_activated(self, _row):
+        model_index = self._template_tree_view.currentIndex()
+        if model_index.flags() & QtCore.Qt.ItemIsSelectable:
+            self._load_template(model_index)
+
+    def _load_template(self, model_index):
 
         template_path = model_index.data(QtCore.Qt.UserRole)
         display_text = model_index.data(QtCore.Qt.DisplayRole) or ""
@@ -937,7 +925,7 @@ class MachineEditorDialog(QtGui.QDialog):
             self._template_tree_view = QtGui.QTreeView()
             self._template_tree_view.setHeaderHidden(True)
 
-            self.template_combo = _TemplateComboBox()
+            self.template_combo = QtGui.QComboBox()
             self.template_combo.setEditable(True)
             self.template_combo.lineEdit().setReadOnly(True)
             self.template_combo.setView(self._template_tree_view)
@@ -978,6 +966,7 @@ class MachineEditorDialog(QtGui.QDialog):
             self.template_combo.setEditText(translate("CAM_MachineEditor", "Custom"))
 
             self._template_tree_view.clicked.connect(self._on_template_tree_clicked)
+            self.template_combo.activated.connect(self._on_template_activated)
             self.template_combo.setToolTip(
                 translate("CAM_MachineEditor", "Load settings from an existing machine template")
             )
