@@ -100,6 +100,7 @@ protected:
     void fileCardSelected(const QModelIndex& index);
     void showOnStartupChanged(bool checked);
     void openFirstStartClicked();
+    void openTourClicked();
     void firstStartWidgetDismissed();
 
     QString fileCardStyle() const;
@@ -126,6 +127,7 @@ private:
     QLabel* _recentFilesLabel;
     QLabel* _customFolderLabel;
     QPushButton* _openFirstStart;
+    QPushButton* _openTour;
     QCheckBox* _showOnStartupCheckBox;
     fastsignals::scoped_connection _saveddoc;
 
