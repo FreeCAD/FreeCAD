@@ -29,6 +29,9 @@ public:
     // Git relevant stuff
     static const std::string_view RepositoryHash();
     static const std::string_view RepositoryBranch();
+
+    // build configuration ie. Debug, Release, Release With Debug Info, empty if unknown
+    static const std::string_view BuildType();
 };
 
 }  // namespace Base

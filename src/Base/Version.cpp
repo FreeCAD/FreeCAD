@@ -70,5 +70,13 @@ const std::string_view FCVersionInfo::RepositoryBranch()
     return "";
 #endif
 }
+const std::string_view FCVersionInfo::BuildType()
+{
+#ifdef FC_BUILD_TYPE
+    return FC_BUILD_TYPE;
+#else
+    return "";
+#endif
+}
 
 }  // namespace Base

@@ -20,6 +20,8 @@ else()
     target_compile_definitions(FreeCADBase PRIVATE FC_HAS_FLOATING_POINT_FROM_CHARS=0)
 endif()
 
+target_compile_definitions(FreeCADBase PRIVATE FC_BUILD_TYPE="$<CONFIG>")
+
 if(WIN32)
     add_definitions(-DFCBase)
     add_definitions(-DPYCXX_DLL)
