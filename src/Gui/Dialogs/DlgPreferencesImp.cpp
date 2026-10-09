@@ -973,10 +973,7 @@ static QString macosAppBundleDir()
 
     while (dir.cdUp()) {
         const QFileInfo info(dir.canonicalPath());
-        if (info.exists() &&
-            info.isBundle() &&
-            dir.dirName().endsWith(QStringLiteral(".app")))
-        {
+        if (info.exists() && info.isBundle() && dir.dirName().endsWith(QStringLiteral(".app"))) {
             return dir.canonicalPath();
         }
     }
@@ -1012,16 +1009,12 @@ void DlgPreferencesImp::restartIfRequired()
                     const QString app = macosAppBundleDir();
                     if (!app.isEmpty()) {
                         // -n allows launching a second instance while the first one is closing.
-                        // Otherwise, open is too fast and will "open" the already open app (which then quits).
-                        QStringList openArgs{
-                            app,
-                            QStringLiteral("-n"),
-                            QStringLiteral("--args")
-                        };
+                        // Otherwise, open is too fast and will "open" the already open app (which
+                        // then quits).
+                        QStringList openArgs {app, QStringLiteral("-n"), QStringLiteral("--args")};
                         openArgs.append(args);
 
-                        if (QProcess::startDetached(
-                                QStringLiteral("/usr/bin/open"), openArgs)) {
+                        if (QProcess::startDetached(QStringLiteral("/usr/bin/open"), openArgs)) {
                             return;
                         }
                     }
