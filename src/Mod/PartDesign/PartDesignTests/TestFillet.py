@@ -26,6 +26,7 @@ from math import pi
 import unittest
 
 import FreeCAD
+import TestSketcherApp
 
 
 class TestFillet(unittest.TestCase):
@@ -119,6 +120,50 @@ class TestFillet(unittest.TestCase):
 
         if followup.Base[0]:
             self.assertNotEqual(followup.Base[0].Name, box.Name)
+
+    def testInsertPadBeforeFilletPreservesBaseThroughEditAndUndo(self):
+        body, box, fillet = self._create_box_with_fillet()
+        original_volume = fillet.Shape.Volume
+
+        self.Doc.openTransaction("Insert pad before fillet")
+        body.Tip = box
+        sketch = body.newObject("Sketcher::SketchObject", "InsertedSketch")
+        sketch.Placement.Base = FreeCAD.Vector(0, 0, 2)
+        TestSketcherApp.CreateRectangleSketch(sketch, (10, 3), (2, 4))
+        pad = body.newObject("PartDesign::Pad", "InsertedPad")
+        pad.Profile = sketch
+        pad.Length = 4
+
+        self.assertTrue(pad.Shape.isNull())
+        self.assertEqual(fillet.BaseFeature.Name, pad.Name)
+        self.assertEqual(fillet.Base[0].Name, pad.Name)
+        self.Doc.recompute()
+        self.assertTrue(pad.isValid())
+        self.assertTrue(fillet.isValid())
+
+        fillet.Base = (fillet.Base[0], list(fillet.Base[1]))
+        body.Tip = fillet
+        self.Doc.recompute()
+        self.assertEqual(fillet.BaseFeature.Name, pad.Name)
+        self.assertTrue(fillet.isValid())
+        self.assertAlmostEqual(body.Shape.BoundBox.XMax, 12)
+        self.assertGreater(body.Shape.Volume, original_volume)
+        self.Doc.commitTransaction()
+
+        self.Doc.undo()
+        self.Doc.recompute()
+        self.assertEqual(fillet.BaseFeature.Name, box.Name)
+        self.assertEqual(fillet.Base[0].Name, box.Name)
+        self.assertAlmostEqual(body.Shape.Volume, original_volume)
+
+        self.Doc.redo()
+        self.Doc.recompute()
+        restored_pad = self.Doc.getObject("InsertedPad")
+        self.assertIsNotNone(restored_pad)
+        self.assertEqual(fillet.BaseFeature.Name, restored_pad.Name)
+        self.assertEqual(fillet.Base[0].Name, restored_pad.Name)
+        self.assertTrue(fillet.isValid())
+        self.assertAlmostEqual(body.Shape.BoundBox.XMax, 12)
 
     def tearDown(self):
         # closing doc
