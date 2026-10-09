@@ -30,10 +30,6 @@ from Path.Post.Processor import PostProcessorFactory
 Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 
-# The mock job posts the tool controller, the fixture and the operation in that
-# order. With --no-header this is the line the operation's first command lands on.
-FIRST_OP_LINE = 20
-
 # Lines the mock tool change produces before the operation, without comments.
 TOOL_CHANGE = ["M05", "M6T1", "M3S1000", "L1.0", "E01"]
 
@@ -41,33 +37,7 @@ TOOL_CHANGE = ["M05", "M6T1", "M3S1000", "L1.0", "E01"]
 class TestDynapath4060Post(PathTestUtils.PathTestBase):
     """Test suite for the Dynapath Delta 40/50/60 legacy postprocessor."""
 
-    @classmethod
-    def setUpClass(cls):
-        """setUpClass()...
-        This method is called upon instantiation of this test class.  Add code
-        and objects here that are needed for the duration of the test() methods
-        in this class.  In other words, set up the 'global' test environment
-        here; use the `setUp()` method to set up a 'local' test environment.
-        This method does not have access to the class `self` reference, but it
-        is able to call static methods within this same class.
-        """
-
-    @classmethod
-    def tearDownClass(cls):
-        """tearDownClass()...
-        This method is called prior to destruction of this test class.  Add
-        code and objects here that cleanup the test environment after the
-        test() methods in this class have been executed.  This method does
-        not have access to the class `self` reference.  This method is able
-        to call static methods within this same class.
-        """
-
-    # Setup and tear down methods called before and after each unit test
     def setUp(self):
-        """setUp()...
-        This method is called prior to each `test()` method.  Add code and
-        objects here that are needed for multiple `test()` methods.
-        """
         # Create mock job with default operation and tool controller
         self.job, self.profile_op, self.tool_controller = (
             PostTestMocks.create_default_job_with_operation()
@@ -83,23 +53,18 @@ class TestDynapath4060Post(PathTestUtils.PathTestBase):
         # reinitialize the postprocessor data structures between tests
         self.post.reinitialize()
 
-    def tearDown(self):
-        """tearDown()...
-        This method is called after each test() method. Add cleanup instructions here.
-        Such cleanup instructions will likely undo those in the setUp() method.
-        """
-
     def _op_lines(self, commands, args="--no-header --no-comments --no-show-editor"):
         """Post `commands` as the operation and return the lines it produced,
-        between the tool change and the postamble."""
+        between the fixture's E01 and the postamble's M05. The markers are matched
+        by their tail, so a line number in front of them does not matter."""
         # Arguments such as --inches persist in the script's globals; start each
         # export from a freshly loaded script, as the GUI does.
         self.post.load_script()
         self.profile_op.Path = Path.Path(commands)
         self.job.PostProcessorArgs = args
         lines = self.post.export()[0][1].splitlines()
-        start = lines.index("E01") + 1
-        end = len(lines) - lines[::-1].index("M05") - 1
+        start = next(i for i, line in enumerate(lines) if line.endswith("E01")) + 1
+        end = max(i for i, line in enumerate(lines) if line.endswith("M05"))
         return lines[start:end]
 
     def test_empty_path(self):
@@ -110,11 +75,14 @@ class TestDynapath4060Post(PathTestUtils.PathTestBase):
         self.profile_op.Path = Path.Path([])
         self.job.PostProcessorArgs = "--no-show-editor"
 
-        # Test generating with header
-        # Header contains a time stamp that messes up unit testing.
-        # Only test length of result.
-        gcode = self.post.export()[0][1]
-        self.assertEqual(33, len(gcode.splitlines()))
+        # Test generating with header. The header carries a time stamp, so test
+        # its shape: the program name line, then text events up to the preamble.
+        lines = self.post.export()[0][1].splitlines()
+        self.assertEqual("(MOCKLABE)", lines[0])
+        header = lines[1 : lines.index("(T)BEGIN PREAMBLE$")]
+        self.assertIn("(T)EXPORTED BY FREECAD$", header)
+        for line in header:
+            self.assertTrue(line.startswith("(T)") and line.endswith("$"), line)
         # Test without header
         expected = """(T)BEGIN PREAMBLE$
 G17
@@ -184,18 +152,10 @@ E
         """
         c = Path.Command("G0 X10 Y20 Z30")
 
-        self.profile_op.Path = Path.Path([c])
-        self.job.PostProcessorArgs = "--no-header --no-show-editor"
-        gcode = self.post.export()[0][1]
-        result = gcode.splitlines()[FIRST_OP_LINE]
-        expected = "G0X10.000Y20.000Z30.000"
-        self.assertEqual(result, expected)
+        self.assertEqual(["G0X10.000Y20.000Z30.000"], self._op_lines([c]))
 
-        self.job.PostProcessorArgs = "--no-header --precision=2 --no-show-editor"
-        gcode = self.post.export()[0][1]
-        result = gcode.splitlines()[FIRST_OP_LINE]
-        expected = "G0X10.00Y20.00Z30.00"
-        self.assertEqual(result, expected)
+        lines = self._op_lines([c], "--no-header --no-comments --precision=2 --no-show-editor")
+        self.assertEqual(["G0X10.00Y20.00Z30.00"], lines)
 
     def test_line_numbers(self):
         """
@@ -203,12 +163,15 @@ E
         """
         c = Path.Command("G0 X10 Y20 Z30")
 
-        self.profile_op.Path = Path.Path([c])
-        self.job.PostProcessorArgs = "--no-header --line-numbers --no-show-editor"
-        gcode = self.post.export()[0][1]
-        result = gcode.splitlines()[FIRST_OP_LINE]
-        expected = "N0021G0X10.000Y20.000Z30.000"
-        self.assertEqual(result, expected)
+        lines = self._op_lines([c], "--no-header --no-comments --line-numbers --no-show-editor")
+        self.assertEqual(1, len(lines))
+        self.assertRegex(lines[0], r"^N\d{4}G0X10\.000Y20\.000Z30\.000$")
+
+        # Every line is numbered in sequence, four digits, from N0001 on each export.
+        lines = self.post.export()[0][1].splitlines()
+        self.assertEqual("E", lines[-1])
+        for number, line in enumerate(lines[:-1], start=1):
+            self.assertTrue(line.startswith(f"N{number:04d}"), line)
 
     def test_pre_amble(self):
         """
@@ -243,21 +206,17 @@ E
         """
 
         c = Path.Command("G0 X10 Y20 Z30")
-        self.profile_op.Path = Path.Path([c])
-        self.job.PostProcessorArgs = "--no-header --inches --no-show-editor"
-        gcode = self.post.export()[0][1]
-        self.assertEqual(gcode.splitlines()[5], "G70")
 
-        result = gcode.splitlines()[FIRST_OP_LINE]
-        expected = "G0X0.394Y0.787Z1.181"
+        lines = self._op_lines([c], "--no-header --no-comments --inches --no-show-editor")
+        self.assertEqual(["G0X0.394Y0.787Z1.181"], lines)
+        lines = self.post.export()[0][1].splitlines()
+        self.assertIn("G70", lines)
+        self.assertNotIn("G71", lines)
 
-        self.assertEqual(result, expected)
-
-        self.job.PostProcessorArgs = "--no-header --inches --precision=2 --no-show-editor"
-        gcode = self.post.export()[0][1]
-        result = gcode.splitlines()[FIRST_OP_LINE]
-        expected = "G0X0.39Y0.79Z1.18"
-        self.assertEqual(result, expected)
+        lines = self._op_lines(
+            [c], "--no-header --no-comments --inches --precision=2 --no-show-editor"
+        )
+        self.assertEqual(["G0X0.39Y0.79Z1.18"], lines)
 
     def test_tool_change(self):
         """Dynapath stops the spindle before M6 and needs an XYZ move after it.
@@ -275,7 +234,8 @@ E
         )
 
         gcode = self.post.export()[0][1].splitlines()
-        self.assertEqual(gcode[5:10], TOOL_CHANGE)
+        change = gcode.index("M6T1")
+        self.assertEqual(gcode[change - 1 : change + 4], TOOL_CHANGE)
 
         # A first rapid that already carries XY is left alone.
         lines = self._op_lines([Path.Command("G0 X5 Y5 Z18"), Path.Command("G0 Z18")])
