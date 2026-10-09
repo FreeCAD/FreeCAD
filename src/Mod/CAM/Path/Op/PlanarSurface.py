@@ -1644,7 +1644,7 @@ class ObjectSurface(PathOp.ObjectOp):
         is_triangulated = surface_common._is_triangulated_mesh(model_shape.Faces)
 
         if is_three_plus_two:
-            # Already in the rotated frame: keep every face and disable STL optimization
+            # Already in the rotated frame: keep every face and skip shape optimization
             return model_shape, None, model_shape, False, is_triangulated
 
         if is_triangulated or not optimize_stl:
