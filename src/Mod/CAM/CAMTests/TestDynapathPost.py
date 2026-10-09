@@ -207,6 +207,9 @@ class TestDynapathPost(PathTestUtils.PathTestBase):
     # ------------------------------------------------------------------
 
     def test_comments_are_text_events(self):
+        """A comment is a text event closed by $. Parentheses and $ inside the
+        text are removed: the control has no escape for them, and a $ in the text
+        would end the event early and leave the rest of the line as a new event."""
         self.post._machine.output.comments.enabled = True
         lines = self.lines([Path.Command("(Begin profile (pass 2) $5)")])
         self.assert_line("(T)BEGIN PROFILE PASS 2 5$", lines)
@@ -442,6 +445,30 @@ class TestDynapathPost(PathTestUtils.PathTestBase):
         self.post._machine.output.formatting.line_increment = 10
         lines = self.lines([])
         self.assertEqual(["N0010G17", "N0020G90"], lines[1:3])
+
+    def test_sequence_numbers_on_block_lines(self):
+        """A text block is numbered line by line, a block-delete slash stays in
+        front of the N, and a text event in a block is numbered like any event."""
+        self.post._machine.output.formatting.line_numbers = True
+        self.post._machine.output.formatting.line_number_start = 1
+        self.post._machine.output.formatting.line_increment = 1
+        self.post._machine.processing.tool_change = True
+        self.post._machine.postprocessor_properties["pre_tool_change"] = (
+            "M05\n/G0Z50\n(T)CHANGE TOOL$"
+        )
+        lines = self.lines(["G0 Z18"])
+        self.assertEqual("E", lines[-1])
+        for number, line in enumerate(lines[1:-1], start=1):
+            self.assertTrue(line.lstrip("/").startswith(f"N{number:04d}"), line)
+        deleted = next(i for i, line in enumerate(lines) if line.endswith("G0Z50"))
+        self.assertEqual(
+            [
+                f"N{deleted - 1:04d}M05",
+                f"/N{deleted:04d}G0Z50",
+                f"N{deleted + 1:04d}(T)CHANGE TOOL$",
+            ],
+            lines[deleted - 1 : deleted + 2],
+        )
 
     def test_sequence_number_sanity(self):
         self.post._machine.output.formatting.line_numbers = True

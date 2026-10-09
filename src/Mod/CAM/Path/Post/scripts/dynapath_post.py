@@ -407,7 +407,9 @@ class DynapathPost(PostProcessor):
         return numbered_sections
 
     def _convert_comment(self, command: Path.Command) -> str:
-        """A text event: (T)TEXT$. Nothing inside may close the event early."""
+        """A text event: (T)TEXT$. A $ in the text would close the event early
+        and the control would read the rest of the line as a new event, so $ and
+        parentheses are removed: the control has no escape for them."""
         if not self.values["OUTPUT_COMMENTS"]:
             return None
         name = command.Name
