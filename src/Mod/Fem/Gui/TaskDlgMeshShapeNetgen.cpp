@@ -48,8 +48,7 @@ using namespace FemGui;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgMeshShapeNetgen::TaskDlgMeshShapeNetgen(FemGui::ViewProviderFemMeshShapeNetgen* obj)
-    : TaskDialog()
-    , param(nullptr)
+    : param(nullptr)
     , ViewProviderFemMeshShapeNetgen(obj)
 {
     FemMeshShapeNetgenObject = obj->getObject<Fem::FemMeshShapeNetgenObject>();
@@ -79,7 +78,7 @@ void TaskDlgMeshShapeNetgen::clicked(int button)
         if (QDialogButtonBox::Apply == button && param->touched) {
             Gui::WaitCursor wc;
             // May throw an exception which we must handle here
-            FemMeshShapeNetgenObject->execute();
+            FemMeshShapeNetgenObject->recomputeFeature();
             FemMeshShapeNetgenObject->purgeTouched();
             param->setInfo();
             param->touched = false;
@@ -94,7 +93,7 @@ bool TaskDlgMeshShapeNetgen::accept()
 {
     App::Document* doc = FemMeshShapeNetgenObject->getDocument();
     try {
-        if (param->touched) {
+        if (param->touched || FemMeshShapeNetgenObject->isError()) {
             Gui::WaitCursor wc;
             bool ret = FemMeshShapeNetgenObject->recomputeFeature();
             if (!ret) {
@@ -104,7 +103,7 @@ bool TaskDlgMeshShapeNetgen::accept()
                     tr("Meshing failure"),
                     QString::fromStdString(FemMeshShapeNetgenObject->getStatusString())
                 );
-                return true;
+                return false;
             }
         }
 
@@ -132,11 +131,6 @@ bool TaskDlgMeshShapeNetgen::accept()
 
 bool TaskDlgMeshShapeNetgen::reject()
 {
-    // FemSetNodesObject->execute();
-    //     //Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    //     //if(doc)
-    //     //    doc->resetEdit();
-    // param->MeshViewProvider->resetHighlightNodes();
     App::Document* doc = FemMeshShapeNetgenObject->getDocument();
     doc->abortTransaction();
     Gui::cmdGuiDocument(doc, "resetEdit()");
