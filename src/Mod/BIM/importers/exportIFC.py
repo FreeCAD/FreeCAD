@@ -518,59 +518,41 @@ def export(exportList, filename, colors=None, preferences=None):
                 if not p.isDerivedFrom("App::DocumentObjectGroup"):
                     is_nested_group = True
 
-        if ifctype == "IfcArray":
-            clonedeltas = []
-            if obj.ArrayType == "ortho":
-                for i in range(obj.NumberX):
-                    clonedeltas.append(obj.Placement.Base + (i * obj.IntervalX))
-                    for j in range(obj.NumberY):
-                        if j > 0:
-                            clonedeltas.append(
-                                obj.Placement.Base + (i * obj.IntervalX) + (j * obj.IntervalY)
-                            )
-                        for k in range(obj.NumberZ):
-                            if k > 0:
-                                clonedeltas.append(
-                                    obj.Placement.Base
-                                    + (i * obj.IntervalX)
-                                    + (j * obj.IntervalY)
-                                    + (k * obj.IntervalZ)
-                                )
-            if clonedeltas:
-                ifctype = "IfcElementAssembly"
-                for delta in clonedeltas:
-                    # print("delta: {}".format(delta))
-                    representation, placement, shapetype = getRepresentation(
-                        ifcfile,
-                        context,
-                        obj.Base,
-                        forcebrep=(getBrepFlag(obj.Base, preferences)),
-                        colors=colors,
-                        preferences=preferences,
-                        forceclone=delta,
-                    )
-                    subproduct = createProduct(
-                        ifcfile,
-                        obj.Base,
-                        getIfcTypeFromObj(obj.Base),
-                        getUID(obj.Base, preferences),
-                        history,
-                        getText("Name", obj.Base),
-                        getText("Description", obj.Base),
-                        placement,
-                        representation,
-                        preferences,
-                    )
-                    products[obj.Base.Name] = subproduct
-                    assemblyElements.append(subproduct)
-                    exportIFCHelper.writeQuantities(
-                        ifcfile,
-                        obj.Base,
-                        subproduct,
-                        history,
-                        preferences["SCALE_FACTOR"],
-                        getIfcTypeFromObj(obj.Base),
-                    )
+        if ifctype == "IfcArray" and hasattr(obj, "PlacementList"):
+            ifctype = "IfcElementAssembly"
+            obj_pla = obj.getGlobalPlacement()
+            for item_pla in obj.PlacementList:
+                representation, placement, shapetype = getRepresentation(
+                    ifcfile,
+                    context,
+                    obj.Base,
+                    forcebrep=(getBrepFlag(obj.Base, preferences)),
+                    colors=colors,
+                    preferences=preferences,
+                    forceclone=obj_pla * item_pla,
+                )
+                subproduct = createProduct(
+                    ifcfile,
+                    obj.Base,
+                    getIfcTypeFromObj(obj.Base),
+                    getUID(obj.Base, preferences),
+                    history,
+                    getText("Name", obj.Base),
+                    getText("Description", obj.Base),
+                    placement,
+                    representation,
+                    preferences,
+                )
+                products[obj.Base.Name] = subproduct
+                assemblyElements.append(subproduct)
+                exportIFCHelper.writeQuantities(
+                    ifcfile,
+                    obj.Base,
+                    subproduct,
+                    history,
+                    preferences["SCALE_FACTOR"],
+                    getIfcTypeFromObj(obj.Base),
+                )
 
         elif ifctype in assemblyTypes or is_nested_group:
             if hasattr(obj, "Group"):
@@ -1761,6 +1743,8 @@ def getIfcTypeFromObj(obj):
         ifctype = "IfcElementAssembly"
     elif dtype in ["App::DocumentObjectGroup"]:
         ifctype = "IfcGroup"
+    elif "Array" in dtype:
+        ifctype = "IfcArray"
     else:
         ifctype = dtype
 
@@ -2059,7 +2043,7 @@ def getRepresentation(
     skipshape=False,
 ):
     """returns an IfcShapeRepresentation object or None. forceclone can be False (does nothing),
-    "store" or True (stores the object as clone base) or a Vector (creates a clone)"""
+    "store" or True (stores the object as clone base) or a Placement (creates a clone)"""
 
     import Part
     import DraftGeomUtils
@@ -2089,10 +2073,11 @@ def getRepresentation(
                 if k in sharedobjects:
                     # base shape already exists
                     repmap = sharedobjects[k]
-                    pla = obj.getGlobalPlacement()
+                    if isinstance(forceclone, FreeCAD.Placement):
+                        pla = forceclone
+                    else:
+                        pla = obj.getGlobalPlacement()
                     pos = FreeCAD.Vector(pla.Base)
-                    if isinstance(forceclone, FreeCAD.Vector):
-                        pos += forceclone
                     axis1 = ifcbin.createIfcDirection(
                         tuple(pla.Rotation.multVec(FreeCAD.Vector(1, 0, 0)))
                     )
@@ -2453,9 +2438,10 @@ def getRepresentation(
             subrep = ifcfile.createIfcShapeRepresentation(context, "Body", solidType, shapes)
             gpl = ifcbin.createIfcAxis2Placement3D()
             repmap = ifcfile.createIfcRepresentationMap(gpl, subrep)
-            pla = obj.getGlobalPlacement()
-            if isinstance(forceclone, FreeCAD.Vector):
-                pla.Base += forceclone
+            if isinstance(forceclone, FreeCAD.Placement):
+                pla = forceclone
+            else:
+                pla = obj.getGlobalPlacement()
             axis1 = ifcbin.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(1, 0, 0))))
             axis2 = ifcbin.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(0, 1, 0))))
             origin = ifcbin.createIfcCartesianPoint(
