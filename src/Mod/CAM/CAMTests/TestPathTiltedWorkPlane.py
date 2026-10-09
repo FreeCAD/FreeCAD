@@ -164,6 +164,7 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
         self.doc.recompute()
         self.machine = _machineCA(RotationStrategy.TWP)
         self.job.Proxy.getMachine = lambda: self.machine
+        self.job.PostProcessorArgs = "--no-show-editor"
 
     def tearDown(self):
         FreeCAD.closeDocument(self.doc.Name)
