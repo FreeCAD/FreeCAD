@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 #include <charconv>
+#include <utility>
 
 #include <BRep_Builder.hxx>
 #include <BRep_Tool.hxx>
@@ -374,9 +375,22 @@ void DressUp::onChanged(const App::Property* prop)
     Feature::onChanged(prop);
 }
 
-void DressUp::onBaseFeatureRerouted(App::DocumentObject* oldBase, App::DocumentObject* newBase)
+void DressUp::onBaseFeatureRerouted(
+    App::DocumentObject* oldBase,
+    App::DocumentObject* newBase,
+    BaseFeatureChange change
+)
 {
-    relinkToMatchingSubelements(Base, oldBase, newBase);
+    if (change == BaseFeatureChange::Removal) {
+        relinkToMatchingSubelements(Base, oldBase, newBase);
+    }
+    else if (newBase && Base.getValue() && Base.getValue() != newBase) {
+        // The inserted feature may not have a shape yet. Preserve the element references
+        // so they can be resolved against its shape after recompute.
+        auto subs = Base.getSubValues(false);
+        auto shadows = Base.getShadowSubs();
+        Base.setValue(newBase, std::move(subs), std::move(shadows));
+    }
 }
 
 void DressUp::getAddSubShape(Part::TopoShape& addShape, Part::TopoShape& subShape)
