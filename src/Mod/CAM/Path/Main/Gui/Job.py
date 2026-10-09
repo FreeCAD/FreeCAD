@@ -1611,6 +1611,33 @@ class TaskPanel:
         self.form.pickTargetModel.setStyleSheet(active_style if modelTarget else "")
         self.form.pickTargetStock.setStyleSheet("" if modelTarget else active_style)
 
+    def keepingPoints(self, action):
+        """keepingPoints(action) ... action wrapped so that the operations' points, such as their
+        start points, stay where they are on the model when action changes the Job's origin or
+        moves the model, and the heights typed in for them go up and down with it."""
+
+        def run(*args):
+            if getattr(self, "_keepingPoints", False):
+                return action(*args)
+            models = list(self.obj.Model.Group)
+            before = [FreeCAD.Placement(m.Placement) for m in models]
+            self._keepingPoints = True
+            try:
+                result = action(*args)
+            finally:
+                self._keepingPoints = False
+            for model, placement in zip(models, before):
+                if not model.Placement.isSame(placement, 1e-9):
+                    move = model.Placement.multiply(placement.inverse())
+                    PathJob.carryOperationPoints(self.obj, move)
+                    # moved straight up or down, not turned
+                    dz = move.Base.z if move.Rotation.isIdentity() else 0.0
+                    PathJob.carryOperationHeights(self.obj, dz)
+                    break
+            return result
+
+        return run
+
     def alignSetOrigin(self):
         obj, by = self.alignMoveToOrigin()
 
@@ -1882,6 +1909,19 @@ class TaskPanel:
         # Stock, Orientation and Alignment
         self.form.btnMaterial.clicked.connect(self.assignMaterial)
         self.updateMaterialLabel()
+        # what changes the origin or moves the model keeps the operations' points where they
+        # are on the model
+        for name in (
+            "alignCenterInStock",
+            "alignCenterInStockXY",
+            "modelSetAxis",
+            "modelSet0",
+            "modelMove",
+            "modelRotate",
+            "alignSetOrigin",
+            "alignMoveToOrigin",
+        ):
+            setattr(self, name, self.keepingPoints(getattr(self, name)))
         self.form.centerInStock.clicked.connect(self.alignCenterInStock)
         self.form.centerInStockXY.clicked.connect(self.alignCenterInStockXY)
 
