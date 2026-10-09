@@ -1401,15 +1401,12 @@ class TaskPanel:
     def carrying(self, action):
         """carrying(action) ... action, a move of the model, done so that what is placed on the
         part goes with it: work planes set where they are and the shapes operations are made from,
-        text and sketches, not attached to the part, and a stock made from the model's box, which
-        takes its size from the model but not its place. Anything the action moved itself is left
-        as it put it."""
+        text and sketches, not attached to the part. Anything the action moved itself is left as
+        it put it. The stock is left to the action, so the model can move inside it."""
 
         def run(*args):
             models = list(self.obj.Model.Group)
             before = [FreeCAD.Placement(m.Placement) for m in models]
-            stock = self.obj.Stock
-            stockBefore = FreeCAD.Placement(stock.Placement) if stock else None
             carried = PathJob.objectsInModelFrame(self.obj)
             carried = [(o, FreeCAD.Placement(o.Placement)) for o in carried]
             action()
@@ -1423,14 +1420,6 @@ class TaskPanel:
             for obj, placement in carried:
                 if obj.Placement.isSame(placement, 1e-9):
                     obj.Placement = delta.multiply(placement)
-            # A stock made from the model's box takes its size from the model, but its place
-            # only when made: it goes with the model, unless the action moved it already.
-            if (
-                stock
-                and PathStock.StockType.FromStock(stock) == PathStock.StockType.FromBase
-                and stock.Placement.isSame(stockBefore, 1e-9)
-            ):
-                stock.Placement = delta.multiply(stockBefore)
             PathJob.touchOperations(self.obj)
 
         return run
