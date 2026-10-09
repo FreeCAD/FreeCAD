@@ -1671,7 +1671,7 @@ class ObjectSurface(PathOp.ObjectOp):
             strategy and tool information. This phase runs for all strategies.
         2.  Geometry Preparation: Resolves the model bodies into one working shape
             (see _prepare_geometry), detects triangulated models and 3+2 operations,
-            and decides whether STL optimization applies.
+            and decides whether shape and STL optimization applies.
         3.  Data Preparation: Intelligently prepares only the necessary geometric
             data (STL meshes, OCL cutters, boundary boxes) based on the specific
             requirements of the selected strategy.
