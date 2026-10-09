@@ -22,12 +22,16 @@
 # ***************************************************************************
 import json
 import pathlib
+import shutil
 from typing import Optional, Union, Sequence
 import Path
 from Path import Preferences
 from Path.Preferences import addToolPreferenceObserver
 from .assets import AssetManager, AssetUri, Asset, FileStore
 from .toolbit.migration import ParameterAccessor, migrate_parameters
+
+# the template for drawing a tool holder's outline, copied into the user's own tool holder folder
+TOOLHOLDER_TEMPLATE = "ToolHolderTemplate.FCStd"
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -160,6 +164,19 @@ def ensure_toolbitshape_assets_initialized(asset_manager: AssetManager, store_na
     shape_path.mkdir(parents=True, exist_ok=True)
 
 
+def ensure_toolholder_assets_initialized(asset_manager: AssetManager, store_name: str = "local"):
+    """
+    Ensures the folder for the user's own tool holders exists, with the template for drawing a
+    holder's outline in it. The built-in holders are not copied there: they are read from where
+    FreeCAD is installed.
+    """
+    holder_path = Preferences.getAssetPath() / "Tools" / "ToolHolder"
+    holder_path.mkdir(parents=True, exist_ok=True)
+    template = Preferences.getBuiltinAssetPath() / "ToolHolder" / TOOLHOLDER_TEMPLATE
+    if template.is_file() and not (holder_path / TOOLHOLDER_TEMPLATE).exists():
+        shutil.copyfile(template, holder_path / TOOLHOLDER_TEMPLATE)
+
+
 def ensure_assets_initialized(asset_manager: AssetManager, store="local"):
     """
     Ensures the given store is initialized with built-in assets.
@@ -167,6 +184,7 @@ def ensure_assets_initialized(asset_manager: AssetManager, store="local"):
     ensure_library_assets_initialized(asset_manager, store)
     ensure_toolbit_assets_initialized(asset_manager, store)
     ensure_toolbitshape_assets_initialized(asset_manager, store)
+    ensure_toolholder_assets_initialized(asset_manager, store)
 
 
 def _on_asset_path_changed(group, key, value):
@@ -182,6 +200,7 @@ asset_mapping = {
     "toolbitshape": "Tools/Shape/{asset_id}.fcstd",
     "toolbitshapesvg": "Tools/Shape/{asset_id}",  # Asset ID has ".svg" included
     "toolbitshapepng": "Tools/Shape/{asset_id}",  # Asset ID has ".png" included
+    "toolholder": "Tools/ToolHolder/{asset_id}.fcholder",
     "machine": "Machine/{asset_id}.fcm",
 }
 
@@ -192,6 +211,7 @@ builtin_asset_mapping = {
     "toolbitshape": "Shape/{asset_id}.fcstd",
     "toolbitshapesvg": "Shape/{asset_id}",  # Asset ID has ".svg" included
     "toolbitshapepng": "Shape/{asset_id}",  # Asset ID has ".png" included
+    "toolholder": "ToolHolder/{asset_id}.fcholder",
     "machine": "Machine/{asset_id}.fcm",
 }
 
