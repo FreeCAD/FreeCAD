@@ -142,9 +142,9 @@ def _get_path_circ_ellipse(
         return "edata", edata
 
     # The angle is 0 or 180, coplanar
-    occversion = Part.OCC_VERSION.split(".")
+    occversion = float(Part.OCC_VERSION.rpartition(".")[0])
     done = False
-    if int(occversion[0]) >= 7 and int(occversion[1]) >= 1:
+    if occversion >= 7.1
         # if using occ >= 7.1, use HLR algorithm
         snip = TechDraw.projectToSVG(edge, drawing_plane_normal)
 
