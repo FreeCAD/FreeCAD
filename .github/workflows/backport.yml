@@ -34,10 +34,17 @@ jobs:
         with:
           egress-policy: audit
 
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ secrets.BACKPORT_CLIENT_ID }}
+          private-key: ${{ secrets.BACKPORT_APP_PRIVATE_KEY }}
+
       - name: Checkout
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
-          token: ${{ secrets.GH_TOKEN_FOR_CI_RUNNERS }}
+          token: ${{ steps.app-token.outputs.token }}
           repository: ${{ github.event.pull_request.base.repo.full_name }}
           ref: ${{ github.event.pull_request.base.ref }}
 
@@ -45,7 +52,7 @@ jobs:
         uses: korthout/backport-action@66065406958f46e82238fd59546f5a99e69e22aa # v4.5.2
         with:
           # Inputs documented here: https://github.com/korthout/backport-action?tab=readme-ov-file#inputs
-          github_token: ${{ secrets.GH_TOKEN_FOR_CI_RUNNERS }}
+          github_token: ${{ steps.app-token.outputs.token }}
           github_workspace: ${{ github.workspace }}
 
           # permit PRs with merge commits to be backported
