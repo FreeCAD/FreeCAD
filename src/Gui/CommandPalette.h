@@ -1,0 +1,96 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2026 The FreeCAD Project Association AISBL
+// SPDX-FileNotice: Part of the FreeCAD project.
+
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
+
+#pragma once
+
+#include <FCGlobal.h>
+#include <QDialog>
+#include <QStyledItemDelegate>
+
+class QLineEdit;
+class QListView;
+
+namespace Gui
+{
+
+class CommandCompleter;
+
+/**
+ * CommandItemDelegate - Custom delegate to display command name and tooltip
+ */
+class CommandItemDelegate: public QStyledItemDelegate
+{
+    Q_OBJECT
+
+public:
+    explicit CommandItemDelegate(QObject* parent = nullptr);
+
+    void paint(
+        QPainter* painter,
+        const QStyleOptionViewItem& option,
+        const QModelIndex& index
+    ) const override;
+
+    QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+};
+
+/**
+ * CommandPalette - A quick command search and execution dialog
+ *
+ * This dialog provides a VS Code style command palette that allows users to:
+ * - Quickly search for commands by typing
+ * - Navigate through results using keyboard arrows or mouse
+ * - Execute commands by pressing Enter or double-clicking
+ * - Close the palette with Escape
+ *
+ * The palette is triggered by a keyboard shortcut (default: F3)
+ */
+class GuiExport CommandPalette: public QDialog
+{
+    Q_OBJECT
+
+public:
+    explicit CommandPalette(QWidget* parent = nullptr);
+    ~CommandPalette() override = default;
+    void showPalette();
+
+protected:
+    bool eventFilter(QObject* obj, QEvent* event) override;
+    void paintEvent(QPaintEvent* event) override;
+
+private Q_SLOTS:
+    void onCommandActivated(const QByteArray& commandName);
+    void onTextChanged(const QString& text);
+    void onListItemActivated(const QModelIndex& index);
+
+private:
+    void setupUi();
+    void createCompleter();
+    void refreshCommands();
+    void centerOnMainWindow();
+
+    QLineEdit* searchLineEdit = nullptr;
+    QListView* commandListView = nullptr;
+    CommandCompleter* completer = nullptr;
+    bool fillPending = false;
+};
+
+}  // namespace Gui

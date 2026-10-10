@@ -20,10 +20,16 @@
  *                                                                          *
  ****************************************************************************/
 
+#include <algorithm>
+#include <tuple>
+#include <unordered_set>
 #include <QApplication>
+#include <QHash>
 #include <QKeyEvent>
 #include <QLineEdit>
 #include <QAbstractItemView>
+#include <QSortFilterProxyModel>
+#include <QTextDocumentFragment>
 
 #include "Application.h"
 #include "ShortcutManager.h"
@@ -31,6 +37,10 @@
 #include "Action.h"
 #include "BitmapFactory.h"
 #include "CommandCompleter.h"
+#include "FuzzyMatcher.h"
+#include "Workbench.h"
+#include "WorkbenchManager.h"
+#include "Language/Translator.h"
 
 using namespace Gui;
 
@@ -42,15 +52,165 @@ struct CmdInfo
     Command* cmd = nullptr;
     QIcon icon;
     bool iconChecked = false;
+    // thrown away with the list when commands, shortcuts or the language change
+    bool textCached = false;
+    QString title;
+    QString searchTitle;
+    QString display;
+    QString searchDisplay;
+    QString menuText;
+    QString toolTip;
+    QString group;
+    bool active = true;
+    int rank = 0;
+    bool matched = true;
+    int match = 0;
+    int score = 0;
+    // a drop-down whose entries are all listed as commands of their own
+    bool coveredGroup = false;
 };
 std::vector<CmdInfo> _Commands;
 int _CommandRevision;
-const int CommandNameRole = Qt::UserRole;
+std::string commandsLanguage;
 bool _ShortcutSignalConnected = false;
+
+void cacheText(CmdInfo& info)
+{
+    if (info.textCached) {
+        return;
+    }
+    info.textCached = true;
+
+    info.title = Action::commandMenuText(info.cmd);
+    info.searchTitle = info.title.toLower();
+    info.menuText = info.title;
+    info.display = QStringLiteral("%1 (%2)").arg(info.title, QString::fromUtf8(info.cmd->getName()));
+    QString shortcut = info.cmd->getShortcut();
+    if (!shortcut.isEmpty()) {
+        info.display += QStringLiteral(" [%1]").arg(shortcut);
+        info.menuText += QStringLiteral(" [%1]").arg(shortcut);
+    }
+    info.searchDisplay = info.display.toLower();
+    info.toolTip = Action::commandToolTip(info.cmd, false);
+    if (info.toolTip.contains(QLatin1Char('<'))) {
+        info.toolTip = QTextDocumentFragment::fromHtml(info.toolTip).toPlainText();
+    }
+    info.group = QString::fromUtf8(info.cmd->getGroupName());
+}
+
+/// match is 0 when the title starts with the text, 1 when one of its words does, 2 when it contains
+/// it elsewhere and 3 when FuzzyMatcher only finds its letters in order or the name or shortcut match
+bool matchCommand(const CmdInfo& info, const QString& lowercaseText, int& match, int& score)
+{
+    match = 0;
+    score = 0;
+    if (lowercaseText.isEmpty()) {
+        return true;
+    }
+    const bool found = FuzzyMatcher::matchLowercase(lowercaseText, info.searchTitle, score);
+    const qsizetype index = info.searchTitle.indexOf(lowercaseText);
+    if (index < 0) {
+        match = 3;
+        return found || info.searchDisplay.contains(lowercaseText);
+    }
+    if (index > 0) {
+        match = 2;
+        for (qsizetype i = index; i < info.searchTitle.size(); ++i) {
+            if (!info.searchTitle.at(i - 1).isLetterOrNumber()
+                && QStringView(info.searchTitle).mid(i).startsWith(lowercaseText)) {
+                match = 1;
+                break;
+            }
+        }
+    }
+    return true;
+}
+
+/// The actions in the drop-down of a C++ group are the actions of its commands.
+QHash<const QAction*, const char*> commandsByAction()
+{
+    QHash<const QAction*, const char*> commandOfAction;
+    for (const auto& info : _Commands) {
+        auto action = info.cmd->getAction();
+        if (action && action->action()) {
+            commandOfAction.insert(action->action(), info.cmd->getName());
+        }
+    }
+    return commandOfAction;
+}
+
+struct GroupEntries
+{
+    std::vector<QByteArray> commands;
+    // false when the drop-down holds an entry that isn't a command of its own
+    bool allCommands = false;
+};
+
+GroupEntries entriesOfGroup(Command* command, const QHash<const QAction*, const char*>& commandOfAction)
+{
+    GroupEntries entries;
+    auto group = qobject_cast<ActionGroup*>(command->getAction());
+    if (!group) {
+        return entries;
+    }
+    entries.allCommands = true;
+    for (auto action : group->actions()) {
+        if (action->isSeparator()) {
+            continue;
+        }
+        QByteArray name = action->property("CommandName").toByteArray();
+        if (name.isEmpty()) {
+            name = commandOfAction.value(action);
+        }
+        if (name.isEmpty()) {
+            entries.allCommands = false;
+        }
+        else {
+            entries.commands.push_back(name);
+        }
+    }
+    return entries;
+}
+
+/// The standard toolbars are left out, every workbench shows them.
+std::unordered_set<std::string> commandsOfActiveWorkbench(
+    const QHash<const QAction*, const char*>& commandOfAction
+)
+{
+    std::unordered_set<std::string> names;
+    auto workbench = WorkbenchManager::instance()->active();
+    if (!workbench) {
+        return names;
+    }
+
+    std::unordered_set<std::string> standardCommands;
+    for (const auto& toolbar : StdWorkbench().getToolbarItems()) {
+        standardCommands.insert(toolbar.second.begin(), toolbar.second.end());
+    }
+    for (const auto& toolbar : workbench->getToolbarItems()) {
+        for (const auto& name : toolbar.second) {
+            if (standardCommands.count(name) == 0) {
+                names.insert(name);
+            }
+        }
+    }
+
+    auto& manager = Application::Instance->commandManager();
+    const std::vector<std::string> toolbarCommands(names.begin(), names.end());
+    for (const auto& name : toolbarCommands) {
+        if (auto command = manager.getCommandByName(name.c_str())) {
+            for (const auto& child : entriesOfGroup(command, commandOfAction).commands) {
+                names.insert(child.toStdString());
+            }
+        }
+    }
+    return names;
+}
 
 class CommandModel: public QAbstractItemModel
 {
     int revision = 0;
+    bool filterInactive = false;
 
 public:
     explicit CommandModel(QObject* parent)
@@ -65,17 +225,90 @@ public:
         }
     }
 
+    void setFilterInactive(bool filter)
+    {
+        if (filterInactive != filter) {
+            filterInactive = filter;
+            // notify views that all data has changed (for greying out)
+            if (!_Commands.empty()) {
+                Q_EMIT dataChanged(
+                    createIndex(0, 0),
+                    createIndex(static_cast<int>(_Commands.size()) - 1, 0)
+                );
+            }
+        }
+    }
+
+    /// Returns true if the order changes.
+    bool updateRanks()
+    {
+        const auto commandOfAction = commandsByAction();
+        // the group name of a command can't tell if it belongs to the active workbench, it differs
+        // from the workbench name
+        const auto workbenchCommands = commandsOfActiveWorkbench(commandOfAction);
+        bool changed = false;
+        for (auto& info : _Commands) {
+            cacheText(info);
+            bool active = true;
+            bool coveredGroup = false;
+            if (filterInactive) {
+                auto action = info.cmd->getAction();
+                active = action && action->action() && action->action()->isEnabled();
+                const auto entries = entriesOfGroup(info.cmd, commandOfAction);
+                coveredGroup = entries.allCommands && !entries.commands.empty();
+            }
+            const bool inWorkbench = workbenchCommands.count(info.cmd->getName()) > 0;
+            int rank = (active ? 0 : 2) + (inWorkbench ? 0 : 1);
+            if (active != info.active || rank != info.rank || coveredGroup != info.coveredGroup) {
+                info.active = active;
+                info.rank = rank;
+                info.coveredGroup = coveredGroup;
+                changed = true;
+            }
+        }
+        if (changed && !_Commands.empty()) {
+            Q_EMIT dataChanged(
+                createIndex(0, 0),
+                createIndex(static_cast<int>(_Commands.size()) - 1, 0)
+            );
+        }
+        return changed;
+    }
+
+    /// Returns true if the listed commands or their order change.
+    bool setSearchText(const QString& text)
+    {
+        const QString lowercaseText = text.toLower();
+        bool changed = false;
+        for (auto& info : _Commands) {
+            cacheText(info);
+            int match = 0;
+            int score = 0;
+            const bool matched = matchCommand(info, lowercaseText, match, score);
+            if (matched != info.matched || match != info.match || score != info.score) {
+                info.matched = matched;
+                info.match = match;
+                info.score = score;
+                changed = true;
+            }
+        }
+        return changed;
+    }
+
     void update()
     {
         auto& manager = Application::Instance->commandManager();
-        if (revision == _CommandRevision && _CommandRevision == manager.getRevision()) {
+        const std::string language = Translator::instance()->activeLanguage();
+        if (revision == _CommandRevision && _CommandRevision == manager.getRevision()
+            && language == commandsLanguage) {
             return;
         }
         beginResetModel();
         revision = manager.getRevision();
-        if (revision != _CommandRevision) {
+        if (revision != _CommandRevision || language != commandsLanguage) {
             _CommandRevision = revision;
             _CommandRevision = manager.getRevision();
+            commandsLanguage = language;
             _Commands.clear();
             for (auto& v : manager.getCommands()) {
                 _Commands.emplace_back();
@@ -98,22 +331,17 @@ public:
         }
 
         auto& info = _Commands[index.row()];
+        if (role != Qt::DecorationRole && role != CommandNameRole) {
+            cacheText(info);
+        }
 
         switch (role) {
             case Qt::DisplayRole:
-            case Qt::EditRole: {
-                QString title = QStringLiteral("%1 (%2)").arg(
-                    Action::commandMenuText(info.cmd),
-                    QString::fromUtf8(info.cmd->getName())
-                );
-                QString shortcut = info.cmd->getShortcut();
-                if (!shortcut.isEmpty()) {
-                    title += QStringLiteral(" (%1)").arg(shortcut);
-                }
-                return title;
-            }
+            case Qt::EditRole:
+                return info.display;
+
             case Qt::ToolTipRole:
-                return Action::commandToolTip(info.cmd);
+                return info.toolTip;
 
             case Qt::DecorationRole:
                 if (!info.iconChecked) {
@@ -126,6 +354,12 @@ public:
 
             case CommandNameRole:
                 return QByteArray(info.cmd->getName());
+
+            case CommandMenuTextRole:
+                return info.menuText;
+
+            case CommandGroupRole:
+                return info.group;
 
             default:
                 break;
@@ -147,6 +381,81 @@ public:
     {
         return 1;
     }
+
+    Qt::ItemFlags flags(const QModelIndex& index) const override
+    {
+        // another model may have rebuilt the shared list already
+        if (!index.isValid() || index.row() >= static_cast<int>(_Commands.size())) {
+            return Qt::NoItemFlags;
+        }
+
+        const auto& info = _Commands[index.row()];
+
+        // so if item is visible but not active, keep it, but don't add `ItemIsEnabled` so
+        // it won't be possible to select it
+        if (filterInactive && !info.active) {
+            return Qt::ItemIsSelectable;
+        }
+
+        return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
+    }
+};
+
+// proxy sort model to prioritize active commands before inactive ones
+class CommandSortFilterProxyModel: public QSortFilterProxyModel
+{
+public:
+    explicit CommandSortFilterProxyModel(QObject* parent = nullptr)
+        : QSortFilterProxyModel(parent)
+    {
+        setFilterCaseSensitivity(Qt::CaseInsensitive);
+        setSortRole(Qt::DisplayRole);
+    }
+
+    /// Only the palette ranks the commands and leaves out covered drop-downs.
+    bool setPaletteMode(bool palette)
+    {
+        const bool changed = paletteMode != palette;
+        paletteMode = palette;
+        return changed;
+    }
+
+protected:
+    bool filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const override
+    {
+        Q_UNUSED(sourceParent)
+        if (!paletteMode || sourceRow < 0 || sourceRow >= static_cast<int>(_Commands.size())) {
+            return true;
+        }
+        const auto& info = _Commands[sourceRow];
+        return info.matched && !info.coveredGroup;
+    }
+
+    bool lessThan(const QModelIndex& left, const QModelIndex& right) const override
+    {
+        const int count = static_cast<int>(_Commands.size());
+        if (left.row() < 0 || left.row() >= count || right.row() < 0 || right.row() >= count) {
+            return QSortFilterProxyModel::lessThan(left, right);
+        }
+        auto& leftInfo = _Commands[left.row()];
+        auto& rightInfo = _Commands[right.row()];
+        // the ranks are kept with the shared command list, so only the palette may use them
+        if (paletteMode) {
+            // commands that only match by their letters in order come after all the others
+            const auto order = [](const CmdInfo& info) {
+                return std::make_tuple(info.rank / 2, info.match == 3, info.rank, info.match, -info.score);
+            };
+            if (order(leftInfo) != order(rightInfo)) {
+                return order(leftInfo) < order(rightInfo);
+            }
+        }
+        cacheText(leftInfo);
+        cacheText(rightInfo);
+        return QString::compare(leftInfo.display, rightInfo.display, Qt::CaseInsensitive) < 0;
+    }
+
+private:
+    bool paletteMode = false;
 };
 
 }  // anonymous namespace
@@ -156,7 +465,12 @@ public:
 CommandCompleter::CommandCompleter(QLineEdit* lineedit, QObject* parent)
     : QCompleter(parent)
 {
-    this->setModel(new CommandModel(this));
+    auto sourceModel = new CommandModel(this);
+    auto proxyModel = new CommandSortFilterProxyModel(this);
+    proxyModel->setSourceModel(sourceModel);
+    proxyModel->sort(0);
+
+    this->setModel(proxyModel);
     this->setFilterMode(Qt::MatchContains);
     this->setCaseSensitivity(Qt::CaseInsensitive);
     this->setCompletionMode(QCompleter::PopupCompletion);
@@ -169,6 +483,37 @@ CommandCompleter::CommandCompleter(QLineEdit* lineedit, QObject* parent)
         &CommandCompleter::onCommandActivated
     );
     connect(this, qOverload<const QString&>(&CommandCompleter::highlighted), lineedit, &QLineEdit::setText);
+}
+
+void CommandCompleter::setFilterInactive(bool filter)
+{
+    auto proxyModel = static_cast<CommandSortFilterProxyModel*>(this->model());
+    if (!proxyModel) {
+        return;
+    }
+
+    // pick up commands added since the last time, then sort again only when the order changes
+    if (auto sourceModel = static_cast<CommandModel*>(proxyModel->sourceModel())) {
+        sourceModel->update();
+        sourceModel->setFilterInactive(filter);
+        const bool reordered = proxyModel->setPaletteMode(filter);
+        if (sourceModel->updateRanks() || reordered) {
+            proxyModel->invalidate();
+        }
+    }
+}
+
+void CommandCompleter::setSearchText(const QString& text)
+{
+    auto proxyModel = static_cast<CommandSortFilterProxyModel*>(this->model());
+    if (!proxyModel) {
+        return;
+    }
+    if (auto sourceModel = static_cast<CommandModel*>(proxyModel->sourceModel())) {
+        if (sourceModel->setSearchText(text)) {
+            proxyModel->invalidate();
+        }
+    }
 }
 
 bool CommandCompleter::eventFilter(QObject* o, QEvent* ev)
@@ -239,7 +584,14 @@ void CommandCompleter::onTextChanged(const QString& txt)
         return;
     }
 
-    static_cast<CommandModel*>(this->model())->update();
+    // get the source model through the proxy model
+    auto proxyModel = static_cast<CommandSortFilterProxyModel*>(this->model());
+    if (proxyModel) {
+        auto sourceModel = static_cast<CommandModel*>(proxyModel->sourceModel());
+        if (sourceModel) {
+            sourceModel->update();
+        }
+    }
 
     this->setCompletionPrefix(txt);
     QRect rect = widget()->rect();
