@@ -105,6 +105,13 @@ echo -e "################"
 pixi list -e default > AppDir/packages.txt
 sed -i "1s/.*/\nLIST OF PACKAGES:/" AppDir/packages.txt
 
+echo "Compiling translations for the AppRun script..."
+for po in ./AppDir/locale/*/AppRun.po; do
+    LC_MESSAGES_DIR="$(dirname "${po}")/LC_MESSAGES"
+    mkdir -p "${LC_MESSAGES_DIR}"
+    msgfmt -o "${LC_MESSAGES_DIR}/AppRun.mo" "${po}"
+done
+
 echo "Running FreeCAD command-line smoke test..."
 if ! "${conda_env}/bin/freecadcmd" --safe-mode --version; then
     echo "FreeCAD command-line smoke test failed; the Linux bundle cannot start."
