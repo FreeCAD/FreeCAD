@@ -282,6 +282,9 @@ void ParametersDialog::onClearClicked()
 
 void ParametersDialog::onComputeClicked()
 {
+    if (myMesh.expired()) {  // deleted while the dialog was open
+        return;
+    }
     const Mesh::MeshObject& kernel = myMesh->Mesh.getValue();
     if (kernel.hasSelectedFacets()) {
         FitParameter::Points fitpts;
@@ -344,7 +347,7 @@ SegmentationBestFit::SegmentationBestFit(Mesh::Feature* mesh, QWidget* parent, Q
     ui->numSph->setRange(1, std::numeric_limits<int>::max());
     ui->numSph->setValue(100);
 
-    Gui::SelectionObject obj(myMesh);
+    Gui::SelectionObject obj(myMesh.get());
     std::vector<Gui::SelectionObject> sel;
     sel.push_back(obj);
     meshSel.setObjects(sel);
@@ -387,7 +390,7 @@ void SegmentationBestFit::onPlaneParametersClicked()
 
     static QPointer<QDialog> dialog = nullptr;
     if (!dialog) {
-        dialog = new ParametersDialog(planeParameter, new PlaneFitParameter, list, myMesh, this);
+        dialog = new ParametersDialog(planeParameter, new PlaneFitParameter, list, myMesh.get(), this);
     }
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     dialog->show();
@@ -414,7 +417,8 @@ void SegmentationBestFit::onCylinderParametersClicked()
 
     static QPointer<QDialog> dialog = nullptr;
     if (!dialog) {
-        dialog = new ParametersDialog(cylinderParameter, new CylinderFitParameter, list, myMesh, this);
+        dialog
+            = new ParametersDialog(cylinderParameter, new CylinderFitParameter, list, myMesh.get(), this);
     }
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     dialog->show();
@@ -437,7 +441,7 @@ void SegmentationBestFit::onSphereParametersClicked()
 
     static QPointer<QDialog> dialog = nullptr;
     if (!dialog) {
-        dialog = new ParametersDialog(sphereParameter, new SphereFitParameter, list, myMesh, this);
+        dialog = new ParametersDialog(sphereParameter, new SphereFitParameter, list, myMesh.get(), this);
     }
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     dialog->show();
@@ -445,6 +449,9 @@ void SegmentationBestFit::onSphereParametersClicked()
 
 void SegmentationBestFit::accept()
 {
+    if (myMesh.expired()) {  // deleted while the dialog was open
+        return;
+    }
     const Mesh::MeshObject* mesh = myMesh->Mesh.getValuePtr();
     const MeshCore::MeshKernel& kernel = mesh->getKernel();
 

@@ -26,6 +26,7 @@
 
 #include <QWidget>
 
+#include <App/DocumentObserver.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Mesh/MeshGlobal.h>
@@ -57,7 +58,7 @@ protected:
 
 private:
     Ui_Segmentation* ui;
-    Mesh::Feature* myMesh;
+    App::WeakPtrT<Mesh::Feature> myMesh;
 
     Q_DISABLE_COPY_MOVE(Segmentation)
 };
