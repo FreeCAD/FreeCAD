@@ -203,6 +203,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *pages << "TechDraw_PageTemplate";
     *pages << "TechDraw_FillTemplateFields";
     *pages << "TechDraw_RedrawPage";
+    *pages << "TechDraw_ReloadTemplate";
     *pages << "TechDraw_PrintAll";
     *pages << "Separator";
     *pages << "TechDraw_ExportPageSVG";
