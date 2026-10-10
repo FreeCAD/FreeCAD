@@ -397,6 +397,7 @@ SET(PathPythonOp_SRCS
     Path/Op/CircularHoleBase.py
     Path/Op/Custom.py
     Path/Op/Deburr.py
+    Path/Op/Deburring.py
     Path/Op/Engrave.py
     Path/Op/EngraveBase.py
     Path/Op/Flute.py
@@ -432,6 +433,7 @@ SET(PathPythonOpGui_SRCS
     Path/Op/Gui/Copy.py
     Path/Op/Gui/Custom.py
     Path/Op/Gui/Deburr.py
+    Path/Op/Gui/Deburring.py
     Path/Op/Gui/Drilling.py
     Path/Op/Gui/Engrave.py
     Path/Op/Gui/FeatureExtension.py
@@ -627,6 +629,7 @@ SET(Tests_SRCS
     CAMTests/TestPathLogNew.py
     CAMTests/TestPathMillFacing.py
     CAMTests/TestPathOpDeburr.py
+    CAMTests/TestPathOpDeburring.py
     CAMTests/TestPathOpUtil.py
     CAMTests/TestPostCore.py
     CAMTests/TestPostProcessor.py
