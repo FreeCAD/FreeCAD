@@ -221,8 +221,8 @@ def make_sketch(
             def delObj(obj):
                 if obj.InList:
                     App.Console.PrintWarning(
-                        translate(
-                            "draft", "Cannot delete object {} with dependency".format(obj.Label)
+                        translate("draft", "Cannot delete object {} with dependency").format(
+                            obj.Label
                         )
                         + "\n"
                     )
@@ -240,7 +240,7 @@ def make_sketch(
                     delObj(obj)
             except Exception as ex:
                 App.Console.PrintWarning(
-                    translate("draft", "Failed to delete object {}: {}".format(obj.Label, ex))
+                    translate("draft", "Failed to delete object {}: {}").format(obj.Label, ex)
                     + "\n"
                 )
 

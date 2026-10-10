@@ -566,8 +566,8 @@ def upgrade(objects, delete=False, force=None):
                 result = makeShell(objects)
                 if result:
                     _msg(
-                        translate(
-                            "draft", "Found several objects: creating a " + result.Shape.ShapeType
+                        translate("draft", "Found several objects: creating a {}").format(
+                            result.Shape.ShapeType
                         )
                     )
 
