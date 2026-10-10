@@ -37,19 +37,7 @@ LineFormat::LineFormat() :
     m_weight(getDefEdgeWidth()),
     m_color(getDefEdgeColor()),
     m_visible(true),
-    m_lineNumber(LineGenerator::fromQtStyle((Qt::PenStyle)m_style))
-{
-}
-
-LineFormat::LineFormat(const int style,
-                       const double weight,
-                       const Base::Color& color,
-                       const bool visible) :
-    m_style(style),
-    m_weight(weight),
-    m_color(color),
-    m_visible(visible),
-    m_lineNumber(LineGenerator::fromQtStyle((Qt::PenStyle)m_style))
+    m_lineNumber(1)     // Solid (continuous) line
 {
 }
 
@@ -63,6 +51,19 @@ LineFormat::LineFormat(const int style,
     m_color(color),
     m_visible(visible),
     m_lineNumber(lineNumber)
+{
+}
+
+//! this is the old constructor. retained for compatibility.
+LineFormat::LineFormat(const int style,
+                       const double weight,
+                       const Base::Color& color,
+                       const bool visible) :
+    m_style(style),
+    m_weight(weight),
+    m_color(color),
+    m_visible(visible),
+    m_lineNumber(LineGenerator::fromQtStyle((Qt::PenStyle)m_style))
 {
 }
 
