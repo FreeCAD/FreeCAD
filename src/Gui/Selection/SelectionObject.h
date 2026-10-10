@@ -53,6 +53,8 @@ public:
      */
     explicit SelectionObject(const SelectionChanges& msg);
     explicit SelectionObject(const App::DocumentObject*);
+    SelectionObject(const App::DocumentObject*, std::vector<std::string> subNames);
+
     ~SelectionObject() override;
     /**
      * The default implementation returns an instance of @ref SelectionObjectPy.
