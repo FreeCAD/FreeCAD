@@ -28,7 +28,6 @@
 #include <Gui/PropertyPage.h>
 #include <Mod/Measure/MeasureGlobal.h>
 
-
 namespace MeasureGui
 {
 
@@ -42,9 +41,12 @@ public:
     explicit DlgPrefsMeasureAppearanceImp(QWidget* parent = nullptr);
     ~DlgPrefsMeasureAppearanceImp() override;
 
+    static void loadThemeDefaults();
+
 protected:
     void saveSettings() override;
     void loadSettings() override;
+    void resetSettingsToDefaults() override;
     void changeEvent(QEvent* e) override;
 
 private:

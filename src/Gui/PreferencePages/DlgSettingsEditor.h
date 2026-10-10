@@ -49,6 +49,8 @@ public:
     explicit DlgSettingsEditor(QWidget* parent = nullptr);
     ~DlgSettingsEditor() override;
 
+    static void loadThemeDefaults();
+
 public:
     void saveSettings() override;
     void loadSettings() override;
