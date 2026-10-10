@@ -410,7 +410,7 @@ void Translator::setLocale(const std::string& language) const
         const QByteArray bcp47Name = resolved.qtLocale.bcp47Name().toUtf8();
         const QByteArray localeName = resolved.qtLocale.name().toUtf8();
         Base::Console()
-            .log("Locale changed to %s => %s\n", bcp47Name.constData(), localeName.constData());
+            .log("Locale changed to {} => {}\n", bcp47Name.constData(), localeName.constData());
     }
 #endif
 }
