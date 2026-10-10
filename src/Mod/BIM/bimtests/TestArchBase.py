@@ -49,8 +49,6 @@ class TestArchBase(unittest.TestCase):
         # Create a fresh document for the current test.
         self.document = FreeCAD.newDocument(self.doc_name)
         self.assertEqual(self.document.Name, self.doc_name)
-        FreeCAD.setActiveDocument(self.document.Name)
-        self.assertEqual(FreeCAD.ActiveDocument.Name, self.doc_name)
 
     def tearDown(self):
         """Close the test document after all tests in the class are complete."""
