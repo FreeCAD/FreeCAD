@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PartDesignGui::TaskRibParameters</class>
+ <widget class="QWidget" name="ribParametersPanel">
+  <layout class="QFormLayout" name="formLayout">
+   <property name="horizontalSpacing">
+    <number>8</number>
+   </property>
+   <property name="verticalSpacing">
+    <number>8</number>
+   </property>
+   <item row="0" column="0" colspan="2">
+    <widget class="QWidget" name="ribProfileRow" native="true">
+     <layout class="QHBoxLayout" name="ribProfileLayout">
+      <property name="spacing">
+       <number>8</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QToolButton" name="ribSelectProfile">
+        <property name="toolTip">
+         <string>Select a sketch or its edges. Hold Ctrl to add edges from the same sketch.</string>
+        </property>
+        <property name="text">
+         <string>Select Profile</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="ribProfile">
+        <property name="toolTip">
+         <string>Select a sketch or its edges. Hold Ctrl to add edges from the same sketch.</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="ribClearProfile">
+        <property name="toolTip">
+         <string>Clear Selection</string>
+        </property>
+        <property name="text">
+         <string>Clear</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="ribExtensionLabel">
+     <property name="text">
+      <string>Extend</string>
+     </property>
+     <property name="buddy">
+      <cstring>ribExtension</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QComboBox" name="ribExtension">
+     <property name="toolTip">
+      <string>Extension of the rib profile</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="ribThicknessLabel">
+     <property name="text">
+      <string>Thickness</string>
+     </property>
+     <property name="buddy">
+      <cstring>ribThickness</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="Gui::PrefQuantitySpinBox" name="ribThickness" native="true">
+     <property name="toolTip">
+      <string>Thickness of the rib; must be greater than zero</string>
+     </property>
+     <property name="keyboardTracking" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="unit" stdset="0">
+      <string notr="true">mm</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="ribPlacementLabel">
+     <property name="text">
+      <string>Placement</string>
+     </property>
+     <property name="buddy">
+      <cstring>ribPlacement</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QComboBox" name="ribPlacement">
+     <property name="toolTip">
+      <string>Placement of the rib relative to the profile</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="ribExtentLabel">
+     <property name="text">
+      <string>Extent Type</string>
+     </property>
+     <property name="buddy">
+      <cstring>ribExtent</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QComboBox" name="ribExtent">
+     <property name="toolTip">
+      <string>Extent of the rib</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QLabel" name="ribLengthLabel">
+     <property name="text">
+      <string>Distance</string>
+     </property>
+     <property name="buddy">
+      <cstring>ribLength</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="Gui::PrefQuantitySpinBox" name="ribLength" native="true">
+     <property name="toolTip">
+      <string>Distance along the extent direction</string>
+     </property>
+     <property name="keyboardTracking" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="unit" stdset="0">
+      <string notr="true">mm</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0">
+    <widget class="QLabel" name="ribDraftAngleLabel">
+     <property name="text">
+      <string>Draft Angle</string>
+     </property>
+     <property name="buddy">
+      <cstring>ribDraftAngle</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="1">
+    <widget class="Gui::PrefQuantitySpinBox" name="ribDraftAngle" native="true">
+     <property name="toolTip">
+      <string>Draft angle of the rib, from -89 to 89 degrees</string>
+     </property>
+     <property name="keyboardTracking" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="unit" stdset="0">
+      <string notr="true">deg</string>
+     </property>
+     <property name="minimum" stdset="0">
+      <double>-89.000000000000000</double>
+     </property>
+     <property name="maximum" stdset="0">
+      <double>89.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="0">
+    <widget class="QLabel" name="ribDraftReferenceLabel">
+     <property name="text">
+      <string>Draft Reference</string>
+     </property>
+     <property name="buddy">
+      <cstring>ribDraftReference</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="1">
+    <widget class="QComboBox" name="ribDraftReference">
+     <property name="toolTip"><string>Preserve the entered thickness at the free end or at the root of the undrafted rib.</string></property>
+    </widget>
+   </item>
+   <item row="8" column="0">
+    <widget class="QLabel" name="ribFilletRadiusLabel">
+     <property name="text">
+      <string>Fillet Radius</string>
+     </property>
+     <property name="buddy">
+      <cstring>ribFilletRadius</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="1">
+    <widget class="Gui::PrefQuantitySpinBox" name="ribFilletRadius" native="true">
+     <property name="toolTip">
+      <string>Fillet radius of the rib; zero disables the fillet</string>
+     </property>
+     <property name="keyboardTracking" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="unit" stdset="0">
+      <string notr="true">mm</string>
+     </property>
+     <property name="minimum" stdset="0">
+      <double>0.000000000000000</double>
+     </property>
+     <property name="maximum" stdset="0">
+      <double>1000000000.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="0">
+    <widget class="QLabel" name="ribSweepAngleLabel">
+     <property name="text"><string>Sweep Angle</string></property>
+     <property name="buddy"><cstring>ribSweepAngle</cstring></property>
+    </widget>
+   </item>
+   <item row="9" column="1">
+    <widget class="Gui::PrefQuantitySpinBox" name="ribSweepAngle" native="true">
+     <property name="toolTip"><string>Direction within the profile plane: 0° along sketch X, 90° along sketch Y. For other planar geometry, use the profile plane axes. Reversed flips this direction.</string></property>
+     <property name="unit" stdset="0"><string notr="true">deg</string></property>
+     <property name="minimum" stdset="0"><double>0.000000000000000</double></property>
+     <property name="maximum" stdset="0"><double>360.000000000000000</double></property>
+     <property name="keyboardTracking" stdset="0"><bool>false</bool></property>
+    </widget>
+   </item>
+   <item row="10" column="0" colspan="2">
+    <widget class="QCheckBox" name="ribReversed">
+     <property name="text"><string>Reversed</string></property>
+     <property name="toolTip"><string>Reverse the fill direction. Signed draft angles independently control widening and narrowing.</string></property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefQuantitySpinBox</class>
+   <extends>Gui::QuantitySpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>ribSelectProfile</tabstop>
+  <tabstop>ribProfile</tabstop>
+  <tabstop>ribClearProfile</tabstop>
+  <tabstop>ribExtension</tabstop>
+  <tabstop>ribThickness</tabstop>
+  <tabstop>ribPlacement</tabstop>
+  <tabstop>ribExtent</tabstop>
+  <tabstop>ribLength</tabstop>
+  <tabstop>ribDraftAngle</tabstop>
+  <tabstop>ribDraftReference</tabstop>
+  <tabstop>ribFilletRadius</tabstop>
+  <tabstop>ribSweepAngle</tabstop>
+  <tabstop>ribReversed</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>
