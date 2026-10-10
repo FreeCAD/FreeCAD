@@ -57,8 +57,32 @@ if(BUILD_GUI)
     list (APPEND Import_Scripts TestImportGui.py)
 endif(BUILD_GUI)
 
+list(APPEND Import_Scripts TestImport.py)
+
+# Test package, installed into its own subdirectory
+set(importtests_SRCS
+    importtests/__init__.py
+    importtests/TestImportBase.py
+    importtests/TestImportDXF.py
+)
+
+if(BUILD_GUI)
+    list(APPEND importtests_SRCS
+        importtests/TestImportBaseGui.py
+        importtests/TestImportStepGui.py
+    )
+endif(BUILD_GUI)
+
+# Fixtures used by importtests (copied into build tree and installed)
+set(importtests_FIXTURES
+    importtests/fixtures/__init__.py
+    importtests/fixtures/README.md
+    importtests/fixtures/rectangle_lines.dxf
+)
+
+
 add_custom_target(ImportScripts ALL
-    SOURCES ${Import_Scripts} ${DXF_Plate}
+    SOURCES ${Import_Scripts} ${importtests_SRCS} ${importtests_FIXTURES} ${DXF_Plate}
 )
 
 fc_target_copy_resource(ImportScripts
@@ -66,6 +90,10 @@ fc_target_copy_resource(ImportScripts
     ${CMAKE_BINARY_DIR}/Mod/Import
     ${Import_Scripts}
 )
+
+# Copy the test package and its fixtures into the build tree
+fc_copy_sources(ImportScripts "${CMAKE_BINARY_DIR}/Mod/Import" ${importtests_SRCS})
+fc_copy_sources(ImportScripts "${CMAKE_BINARY_DIR}/Mod/Import" ${importtests_FIXTURES})
 
 fc_target_copy_resource(ImportScripts
     ${CMAKE_SOURCE_DIR}/src/Mod/Import
@@ -79,6 +107,20 @@ INSTALL(
         #${Import_QRC_SRCS}
     DESTINATION
         Mod/Import
+)
+
+INSTALL(
+    FILES
+        ${importtests_SRCS}
+    DESTINATION
+        Mod/Import/importtests
+)
+
+INSTALL(
+    FILES
+        ${importtests_FIXTURES}
+    DESTINATION
+        Mod/Import/importtests/fixtures
 )
 
 INSTALL(

@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# SPDX-FileCopyrightText: 2024 Werner Mayer <wmayer[at]users.sourceforge.net>
 # SPDX-FileCopyrightText: 2025 Furgo
 # SPDX-FileNotice: Part of the FreeCAD project.
 
@@ -20,9 +19,37 @@
 #                                                                              #
 ################################################################################
 
-"""Import module GUI tests.
+"""Base class for Import module GUI tests."""
 
-Imports the GUI test classes from the `importtests` package, so the test runner finds them.
-"""
+import unittest
+import FreeCAD
+from importtests.TestImportBase import TestImportBase
 
-from importtests.TestImportStepGui import TestImportStepGui
+
+class TestImportBaseGui(TestImportBase):
+    """Base class for Import GUI tests.
+
+    Adds to TestImportBase a skip when the GUI is not available, and a helper to run the Qt event
+    loop.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        """Skip the tests of the class when the GUI is not available."""
+        if not FreeCAD.GuiUp:
+            raise unittest.SkipTest("Cannot run GUI tests in a CLI environment.")
+
+    def pump_gui_events(self, timeout_ms=200):
+        """Run the Qt event loop for `timeout_ms` milliseconds so queued GUI callbacks execute.
+
+        Errors while running the event loop are ignored.
+        """
+        try:
+            from PySide import QtCore
+
+            loop = QtCore.QEventLoop()
+            QtCore.QTimer.singleShot(int(timeout_ms), loop.quit)
+            loop.exec_()
+        except Exception:
+            # Best effort: a failure to process events must not fail the test.
+            pass
