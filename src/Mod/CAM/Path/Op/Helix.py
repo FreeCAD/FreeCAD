@@ -376,10 +376,8 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 Path.Log.warning(
                     translate(
                         "CAM_Helix",
-                        "OverrideProfileDiameter can not be less than tool diameter {}".format(
-                            tooldiam
-                        ),
-                    )
+                        "OverrideProfileDiameter can not be less than tool diameter {}",
+                    ).format(tooldiam)
                 )
 
             if obj.Side == "Inside" and obj.RadialStockToLeaveInner.Value < -tooldiam / 2:
@@ -848,10 +846,8 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                         Path.Log.warning(
                             translate(
                                 "CAM_Helix",
-                                "Spiral outer radius {} is equal or less than inner {}".format(
-                                    spiralOuterRadius, spiralInnerRadius
-                                ),
-                            )
+                                "Spiral outer radius {} is equal or less than inner {}",
+                            ).format(spiralOuterRadius, spiralInnerRadius)
                         )
                     else:
                         while self.commandlist[-1].Name in Path.Geom.CmdMoveRapid:

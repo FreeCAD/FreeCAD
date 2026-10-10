@@ -637,8 +637,8 @@ class _Wall(ArchComponent.Component):
             FreeCAD.Console.PrintWarning(
                 translate(
                     "Arch",
-                    f"Cannot create or update {obj.Label} as its length, height or width is zero, and there are no solids in its additions",
-                )
+                    "Cannot create or update {obj.Label} as its length, height or width is zero, and there are no solids in its additions",
+                ).format(obj=obj)
                 + "\n"
             )
 
@@ -1423,8 +1423,8 @@ class _Wall(ArchComponent.Component):
                         FreeCAD.Console.PrintWarning(
                             translate(
                                 "Arch",
-                                f"No supported edges in Base object of {obj.Label} (line, circle, arc, ellipse)",
-                            )
+                                "No supported edges in Base object of {obj.Label} (line, circle, arc, ellipse)",
+                            ).format(obj=obj)
                             + "\n"
                         )
 

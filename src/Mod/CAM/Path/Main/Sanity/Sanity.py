@@ -69,8 +69,8 @@ class CAMSanity:
             raise ValueError(
                 translate(
                     "CAM_Sanity",
-                    "output location {} doesn't exist".format(os.path.dirname(output_file)),
-                )
+                    "output location {} doesn't exist",
+                ).format(os.path.dirname(output_file))
             )
 
         self.image_builder = ImageBuilder.ImageBuilderFactory.get_image_builder(self.filelocation)

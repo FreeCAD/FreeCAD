@@ -44,6 +44,11 @@ class ToolBitBallend(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
         flutes = self.get_property("Flutes")
         cutting_edge_height = self.get_property_str("CuttingEdgeHeight", "?", precision=3)
 
-        return FreeCAD.Qt.translate(
-            "CAM", f"{diameter} {flutes}-flute ballend, {cutting_edge_height} cutting edge"
+        return (
+            FreeCAD.Qt.translate(
+                "CAM", "{diameter} {flutes}-flute ballend, {cutting_edge_height} cutting edge"
+            )
+            .replace("{diameter}", str(diameter))
+            .replace("{flutes}", str(flutes))
+            .replace("{cutting_edge_height}", str(cutting_edge_height))
         )

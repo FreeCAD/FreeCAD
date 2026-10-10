@@ -66,14 +66,18 @@ class _Visualization:
     module: str
     factory: str
     extractions: list[_Extraction]
+    menu_text: str = None
+    tooltip: str = None
 
 
 # Register a visualization by type, icon and factory function
-def register_visualization(visualization_type, icon, module, factory):
+def register_visualization(visualization_type, icon, module, factory, menu_text=None, tooltip=None):
     if visualization_type in _registry:
         raise ValueError("Visualization type already registered")
 
-    _registry[visualization_type] = _Visualization(visualization_type, icon, module, factory, [])
+    _registry[visualization_type] = _Visualization(
+        visualization_type, icon, module, factory, [], menu_text, tooltip
+    )
 
 
 def register_extractor(
@@ -129,15 +133,17 @@ class _VisualizationCommand:
 
     def GetResources(self):
 
-        cmd = _to_command_name(self._visualization_type)
         vis = _registry[self._visualization_type]
-        tooltip = f"Create a {self._visualization_type} post processing data visualization"
+        menu_text = vis.menu_text or "Create {}".format(self._visualization_type)
+        tooltip = (
+            vis.tooltip or f"Create a {self._visualization_type} post processing data visualization"
+        )
 
         return {
             "Pixmap": vis.icon,
-            "MenuText": QtCore.QT_TRANSLATE_NOOP(cmd, "Create {}".format(self._visualization_type)),
+            "MenuText": menu_text,
             "Accel": "",
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(cmd, tooltip),
+            "ToolTip": tooltip,
             "CmdType": "AlterDoc",
         }
 

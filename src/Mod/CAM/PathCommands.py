@@ -158,9 +158,9 @@ class _CommandSelectLoop:
                     translate(
                         "CAM_SelectLoop",
                         "Closed loop detection failed in model %s."
-                        "\nThis type of selection did not give result or not supported yet."
-                        % obj.Label,
+                        "\nThis type of selection did not give result or not supported yet.",
                     )
+                    % obj.Label
                 )
 
         if newSelection:
