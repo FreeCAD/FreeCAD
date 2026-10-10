@@ -86,6 +86,7 @@
 
 #include "BSplineSurfacePy.h"
 #include "edgecluster.h"
+#include "EdgeSort.h"
 #include "FaceMaker.h"
 #include "GeometryCurvePy.h"
 #include "GeometryPy.h"
@@ -174,108 +175,12 @@ PartExport std::vector<TopoShape> getPyShapes(PyObject* obj)
     return ret;
 }
 
-namespace
-{
-
-struct EdgePoints
-{
-    gp_Pnt v1, v2;
-    std::list<TopoDS_Edge>::iterator it;
-    TopoDS_Edge edge;
-};
-
-}  // namespace
-
 PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge>& edges)
 {
-    tol3d = tol3d * tol3d;
-    std::list<EdgePoints> edge_points;
-    TopExp_Explorer xp;
-    for (std::list<TopoDS_Edge>::iterator it = edges.begin(); it != edges.end(); ++it) {
-        EdgePoints ep;
-        xp.Init(*it, TopAbs_VERTEX);
-        ep.v1 = BRep_Tool::Pnt(TopoDS::Vertex(xp.Current()));
-        xp.Next();
-        ep.v2 = BRep_Tool::Pnt(TopoDS::Vertex(xp.Current()));
-        ep.it = it;
-        ep.edge = *it;
-        edge_points.push_back(ep);
-    }
-
-    if (edge_points.empty()) {
-        return {};
-    }
-
-    std::list<TopoDS_Edge> sorted;
-    gp_Pnt first, last;
-    first = edge_points.front().v1;
-    last = edge_points.front().v2;
-
-    sorted.push_back(edge_points.front().edge);
-    edges.erase(edge_points.front().it);
-    edge_points.erase(edge_points.begin());
-
-    while (!edge_points.empty()) {
-        // search for adjacent edge
-        std::list<EdgePoints>::iterator pEI;
-        for (pEI = edge_points.begin(); pEI != edge_points.end(); ++pEI) {
-            if (pEI->v1.SquareDistance(last) <= tol3d) {
-                last = pEI->v2;
-                sorted.push_back(pEI->edge);
-                edges.erase(pEI->it);
-                edge_points.erase(pEI);
-                pEI = edge_points.begin();
-                break;
-            }
-            else if (pEI->v2.SquareDistance(first) <= tol3d) {
-                first = pEI->v1;
-                sorted.push_front(pEI->edge);
-                edges.erase(pEI->it);
-                edge_points.erase(pEI);
-                pEI = edge_points.begin();
-                break;
-            }
-            else if (pEI->v2.SquareDistance(last) <= tol3d) {
-                last = pEI->v1;
-                Standard_Real first, last;
-                BRepLib::BuildCurves3d(pEI->edge);
-                const Handle(Geom_Curve) & curve = BRep_Tool::Curve(pEI->edge, first, last);
-                if (!curve.IsNull()) {
-                    first = curve->ReversedParameter(first);
-                    last = curve->ReversedParameter(last);
-                    TopoDS_Edge edgeReversed = BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first);
-                    sorted.push_back(edgeReversed);
-                }
-                edges.erase(pEI->it);
-                edge_points.erase(pEI);
-                pEI = edge_points.begin();
-                break;
-            }
-            else if (pEI->v1.SquareDistance(first) <= tol3d) {
-                first = pEI->v2;
-                Standard_Real first, last;
-                BRepLib::BuildCurves3d(pEI->edge);
-                const Handle(Geom_Curve) & curve = BRep_Tool::Curve(pEI->edge, first, last);
-                if (!curve.IsNull()) {
-                    first = curve->ReversedParameter(first);
-                    last = curve->ReversedParameter(last);
-                    TopoDS_Edge edgeReversed = BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first);
-                    sorted.push_front(edgeReversed);
-                }
-                edges.erase(pEI->it);
-                edge_points.erase(pEI);
-                pEI = edge_points.begin();
-                break;
-            }
-        }
-
-        if ((pEI == edge_points.end()) || (last.SquareDistance(first) <= tol3d)) {
-            // no adjacent edge found or polyline is closed
-            return sorted;
-        }
-    }
-
-    return sorted;
+    Part::EdgeSort sort(tol3d, edges);
+    std::list<TopoDS_Edge> wire = sort.performOne();
+    edges = sort.getRemainingEdges();
+    return wire;
 }
 }  // namespace Part
 
