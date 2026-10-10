@@ -204,6 +204,13 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
 
         return data
 
+    def opDeprecationNotice(self, obj):
+        return PathOp.deprecationNotice(
+            translate("PathDeburr", "The Deburr operation"),
+            translate("PathDeburr", "the Deburring operation"),
+            stage=PathOp.DeprecationStage.Hidden,
+        )
+
     def opOnDocumentRestored(self, obj):
         obj.setEditorMode("Join", 2)  # hide for now
 

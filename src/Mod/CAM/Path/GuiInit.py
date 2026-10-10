@@ -66,6 +66,7 @@ def Startup():
         from Path.Op.Gui import Comment
         from Path.Op.Gui import Custom
         from Path.Op.Gui import Deburr
+        from Path.Op.Gui import Deburring
         from Path.Op.Gui import Drilling
         from Path.Op.Gui import Engrave
         from Path.Op.Gui import Helix
