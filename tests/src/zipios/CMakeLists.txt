@@ -10,10 +10,5 @@ target_link_libraries(Zipios_tests_run PRIVATE
     GTest::gtest_main
     ${Python3_LIBRARIES}
     FreeCADApp
-)
-
-target_include_directories(
-    Zipios_tests_run PRIVATE
-    ${ZIPIOS_INCLUDES}
-    ${ZLIB_INCLUDE_DIR}
+    zipios
 )

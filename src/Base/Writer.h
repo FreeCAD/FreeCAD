@@ -25,13 +25,12 @@
 #pragma once
 
 
+#include <fstream>
 #include <set>
 #include <string>
 #include <sstream>
 #include <vector>
 #include <memory>
-
-#include <zipios++/zipoutputstream.h>
 
 #include <Base/UniqueNameManager.h>
 
@@ -42,6 +41,7 @@ namespace Base
 {
 
 class Persistence;
+class ZipOutputStream;
 
 
 /** The Writer class
@@ -224,24 +224,11 @@ public:
 
     void writeFiles() override;
 
-    std::ostream& Stream() override
-    {
-        return ZipStream;
-    }
+    std::ostream& Stream() override;
+    const std::ostream& Stream() const override;
 
-    const std::ostream& Stream() const override
-    {
-        return ZipStream;
-    }
-
-    void setComment(const char* str)
-    {
-        ZipStream.setComment(str);
-    }
-    void setLevel(int level)
-    {
-        ZipStream.setLevel(level);
-    }
+    void setComment(const char* str);
+    void setLevel(int level);
     void putNextEntry(const char* filename, const char* objName = nullptr) override;
 
     ZipWriter(const ZipWriter&) = delete;
@@ -250,7 +237,9 @@ public:
     ZipWriter& operator=(ZipWriter&&) = delete;
 
 private:
-    zipios::ZipOutputStream ZipStream;
+    void init();
+
+    std::unique_ptr<ZipOutputStream> ZipStream;
 };
 
 /** The StringWriter class

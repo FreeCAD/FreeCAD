@@ -60,8 +60,8 @@
 #include <Base/Stream.h>
 #include <Base/Tools.h>
 #include <Base/Writer.h>
-#include <zipios++/gzipoutputstream.h>
-#include <zipios++/zipoutputstream.h>
+#include <Base/ZipOutputStream.h>
+#include <zipios/zipiosexceptions.hpp>
 
 #include "Builder.h"
 #include "Definitions.h"
@@ -121,7 +121,7 @@ struct QUAD
 // https://github.com/Zipios/Zipios/issues/43#issue-1618151314
 //
 // The workaround creates a tmp. ZIP file and uses the Python API
-// to open the file zipios++ isn't able to handle and to copy over
+// to open the file Zipios isn't able to handle and to copy over
 // the files.
 class ZipFixer
 {
@@ -270,7 +270,7 @@ bool MeshInput::LoadAny(const char* FileName)
         try {
             ok = Load3MF(str);
         }
-        catch (const zipios::FCollException&) {
+        catch (const zipios::Exception&) {
             ZipFixer zip(FileName);
             ok = Load3MF(zip.getStream());
         }
@@ -1502,7 +1502,7 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
     }
     else if (fileformat == MeshIO::X3DZ) {
         // Compressed X3D is nothing else than a GZIP'ped X3D ascii file
-        zipios::GZIPOutputStream gzip(str);
+        Base::GZipOutputStream gzip(str);
         // write file
         if (!SaveX3D(gzip)) {
             throw Base::FileException("Export of compressed X3D mesh failed", FileName);
@@ -1539,7 +1539,7 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
         // Hint: The compression level seems to be higher than with ogzstream
         // which leads to problems to load the wrz file in debug mode, the
         // application simply crashes.
-        zipios::GZIPOutputStream gzip(str);
+        Base::GZipOutputStream gzip(str);
         // write file
         if (!SaveVRML(gzip)) {
             throw Base::FileException("Export of compressed VRML mesh failed", FileName);

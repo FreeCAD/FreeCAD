@@ -11,7 +11,9 @@ endif()
 
 add_subdirectory(lazy_loader)
 
-add_subdirectory(zipios)
+if(NOT FREECAD_USE_EXTERNAL_ZIPIOS)
+    add_subdirectory(zipios)
+endif()
 
 if(NOT FREECAD_USE_EXTERNAL_E57FORMAT)
     add_subdirectory(libE57Format)

@@ -28,9 +28,9 @@
 #include <Base/Persistence.h>
 #include <fastsignals/signal.h>
 
-namespace zipios
+namespace Base
 {
-class ZipInputStream;
+class ZipReader;
 }
 
 namespace App
@@ -67,7 +67,7 @@ public:
 private:
     bool guiup {false};
     bool verbose {true};
-    zipios::ZipInputStream* stream {nullptr};
+    const Base::ZipReader* zip {nullptr};
     App::Document* appdoc {nullptr};
     std::vector<App::DocumentObject*> objects;
     std::map<std::string, std::string> nameMap;

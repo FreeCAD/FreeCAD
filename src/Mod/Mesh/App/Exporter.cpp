@@ -39,9 +39,9 @@
 #include <Base/Stream.h>
 #include <Base/Tools.h>
 #include <Base/XMLTools.h>
+#include <Base/ZipOutputStream.h>
 #include "Core/Iterator.h"
 #include "Core/IO/Writer3MF.h"
-#include <zipios++/zipoutputstream.h>
 
 #include "Exporter.h"
 
@@ -348,12 +348,12 @@ ExporterAMF::ExporterAMF(std::string fileName, const std::map<std::string, std::
 
     Base::FileInfo fi(fileName);
     if (compress) {
-        auto* zipStreamPtr(new zipios::ZipOutputStream(fi.filePath()));
+        auto* zipStreamPtr(new Base::ZipOutputStream(fi));
 
         // ISO 52915 specifies that compressed AMF files are zip-compressed and
         // must contain the AMF XML in an entry with the same name as the
         // compressed file.  It's OK to have other files in the zip too.
-        zipStreamPtr->putNextEntry(zipios::ZipCDirEntry(fi.fileName()));
+        zipStreamPtr->putNextEntry(fi.fileName());
 
         // Default compression seems to work fine.
         outputStreamPtr = zipStreamPtr;

@@ -2,7 +2,8 @@
 
 #include <gtest/gtest.h>
 #include <memory>
-#include <zipios++/collcoll.h>
+#include <zipios/collectioncollection.hpp>
+#include <zipios/zipiosexceptions.hpp>
 
 // NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 TEST(Collection, TestValidity)
@@ -52,7 +53,7 @@ TEST(Collection, TestCopyAssign)
 TEST(Collection, TestClone)
 {
     zipios::CollectionCollection cc;
-    std::unique_ptr<zipios::FileCollection> pointer(cc.clone());
+    auto pointer = cc.clone();
     EXPECT_EQ(pointer->isValid(), true);
     EXPECT_EQ(pointer->entries().empty(), true);
     EXPECT_EQ(pointer->getEntry("inexistant", zipios::FileCollection::MatchPath::MATCH), nullptr);
@@ -66,9 +67,9 @@ TEST(Collection, TestClone)
 TEST(Collection, TestAdd)
 {
     zipios::CollectionCollection cc;
-    zipios::FileCollection* pointer(cc.clone());
+    auto pointer = cc.clone();
     EXPECT_EQ(cc.addCollection(pointer), true);
-    EXPECT_EQ(cc.addCollection(nullptr), false);
+    EXPECT_THROW(cc.addCollection(zipios::FileCollection::pointer_t()), zipios::InvalidException);
     EXPECT_EQ(cc.addCollection(cc), false);
 }
 

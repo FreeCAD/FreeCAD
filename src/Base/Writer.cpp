@@ -40,9 +40,9 @@
 #include "Persistence.h"
 #include "Stream.h"
 #include "Tools.h"
+#include "ZipOutputStream.h"
 
 #include <boost/iostreams/filtering_stream.hpp>
-#include <zipios++/zipinputstream.h>
 
 using namespace Base;
 
@@ -342,26 +342,49 @@ void Writer::putNextEntry(const char* file, const char* obj)
 // ----------------------------------------------------------------------------
 
 ZipWriter::ZipWriter(const char* FileName)
-    : ZipStream(FileName)
+    : ZipStream(std::make_unique<ZipOutputStream>(FileInfo(FileName)))
 {
-    ZipStream.imbue(std::locale::classic());
-    ZipStream.precision(std::numeric_limits<double>::digits10 + 1);
-    ZipStream.setf(std::ios::fixed, std::ios::floatfield);
+    init();
 }
 
 ZipWriter::ZipWriter(std::ostream& os)
-    : ZipStream(os)
+    : ZipStream(std::make_unique<ZipOutputStream>(os))
 {
-    ZipStream.imbue(std::locale::classic());
-    ZipStream.precision(std::numeric_limits<double>::digits10 + 1);
-    ZipStream.setf(std::ios::fixed, std::ios::floatfield);
+    init();
+}
+
+void ZipWriter::init()
+{
+    ZipStream->imbue(std::locale::classic());
+    ZipStream->precision(std::numeric_limits<double>::digits10 + 1);
+    ZipStream->setf(std::ios::fixed, std::ios::floatfield);
+}
+
+std::ostream& ZipWriter::Stream()
+{
+    return *ZipStream;
+}
+
+const std::ostream& ZipWriter::Stream() const
+{
+    return *ZipStream;
+}
+
+void ZipWriter::setComment(const char* str)
+{
+    ZipStream->setComment(str);
+}
+
+void ZipWriter::setLevel(int level)
+{
+    ZipStream->setLevel(level);
 }
 
 void ZipWriter::putNextEntry(const char* file, const char* obj)
 {
     Writer::putNextEntry(file, obj);
 
-    ZipStream.putNextEntry(file);
+    ZipStream->putNextEntry(file);
 
     Writer::checkErrNo();
 }
@@ -383,7 +406,7 @@ void ZipWriter::writeFiles()
 
 ZipWriter::~ZipWriter()
 {
-    ZipStream.close();
+    ZipStream->close();
 }
 
 // ----------------------------------------------------------------------------

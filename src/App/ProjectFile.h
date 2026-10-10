@@ -24,7 +24,7 @@
 #pragma once
 
 #include <Base/Type.h>
-#include <zipios++/zipfile.h>
+#include <cstdint>
 #include <sstream>
 #include <list>
 #include <map>

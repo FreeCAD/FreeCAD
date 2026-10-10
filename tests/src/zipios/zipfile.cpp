@@ -2,13 +2,18 @@
 
 #include <gtest/gtest.h>
 #include <cstdio>
+#include <fstream>
 #include <memory>
-#include <zipios++/zipfile.h>
+#include <zipios/zipfile.hpp>
+#include <zipios/zipiosexceptions.hpp>
 
 // NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 TEST(ZipFile, TestValidity)
 {
     zipios::ZipFile zf;
+    // without a file it counts as valid until it's closed
+    EXPECT_EQ(zf.isValid(), true);
+    zf.close();
     EXPECT_EQ(zf.isValid(), false);
     EXPECT_THROW(zf.entries(), zipios::InvalidStateException);
     EXPECT_THROW(
@@ -35,8 +40,7 @@ TEST(ZipFile, TestValidity)
 
 TEST(ZipFile, TestNonExisting)
 {
-    zipios::ZipFile zf("this/file/does/not/exist");
-    EXPECT_EQ(zf.isValid(), false);
+    EXPECT_THROW(zipios::ZipFile zf("this/file/does/not/exist"), zipios::IOException);
 }
 
 class ZipFileTest: public ::testing::Test

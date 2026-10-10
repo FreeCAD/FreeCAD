@@ -38,7 +38,7 @@ if(DOXYGEN_FOUND)
     # (files containing macros definitions must be parsed before the files using them)
     SET(DOXYGEN_SOURCE_DIR ${COIN3D_INCLUDE_DIRS}/Inventor/fields/SoSubField.h
                            ${CMAKE_SOURCE_DIR}/src/3rdParty/PyCXX/CXX
-                           ${CMAKE_SOURCE_DIR}/src/3rdParty/zipios++
+                           ${CMAKE_SOURCE_DIR}/src/3rdParty/zipios
                            ${CMAKE_SOURCE_DIR}/src/3rdParty
                            ${CMAKE_SOURCE_DIR}/src/Build
                            ${CMAKE_SOURCE_DIR}/src/Base

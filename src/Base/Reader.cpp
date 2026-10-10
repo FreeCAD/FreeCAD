@@ -42,11 +42,8 @@
 #include "Sequencer.h"
 #include "Stream.h"
 #include "XMLTools.h"
+#include "ZipReader.h"
 
-#ifdef _MSC_VER
-# include <zipios++/zipios-config.h>
-#endif
-#include <zipios++/zipinputstream.h>
 #include <boost/iostreams/filtering_stream.hpp>
 
 using namespace std;
@@ -436,7 +433,7 @@ void Base::XMLReader::readBinFile(const char* filename)
     to.close();
 }
 
-void Base::XMLReader::readFiles(zipios::ZipInputStream& zipstream) const
+void Base::XMLReader::readFiles(const ZipReader& zip) const
 {
     // It's possible that not all objects inside the document could be created, e.g. if a module
     // is missing that would know these object types. So, there may be data files inside the zip
@@ -445,63 +442,34 @@ void Base::XMLReader::readFiles(zipios::ZipInputStream& zipstream) const
     // the zip file. This happens e.g. if a document is written without GUI up but is read with GUI
     // up. In this case the associated GUI document asks for its file which is not part of the ZIP
     // file, then.
-    // In either case it's guaranteed that the order of the files is kept.
-    zipios::ConstEntryPointer entry;
-    try {
-        entry = zipstream.getNextEntry();
-    }
-    catch (const std::exception&) {
-        // There is no further file at all. This can happen if the
-        // project file was created without GUI
-        return;
-    }
-    std::vector<FileEntry>::const_iterator it = FileList.begin();
+    // The files are read in the order they were requested, wherever they are in the zip file.
     Base::SequencerLauncher seq("Importing project files...", FileList.size());
-    while (entry->isValid() && it != FileList.end()) {
-        std::vector<FileEntry>::const_iterator jt = it;
-        // Check if the current entry is registered, otherwise check the next registered files as
-        // soon as both file names match
-        while (jt != FileList.end() && entry->getName() != jt->FileName) {
-            ++jt;
-        }
-        // If this condition is true both file names match and we can read-in the data, otherwise
-        // no file name for the current entry in the zip was registered.
-        if (jt != FileList.end()) {
-            try {
-                Base::Reader reader(zipstream, jt->FileName, FileVersion);
-                jt->Object->RestoreDocFile(reader);
-                if (reader.getLocalReader()) {
-                    reader.getLocalReader()->readFiles(zipstream);
-                }
-            }
-            catch (...) {
-                // For any exception we just continue with the next file.
-                // It doesn't matter if the last reader has read more or
-                // less data than the file size would allow.
-                // All what we need to do is to notify the user about the
-                // failure.
-                if (entry->getSize() == 0) {
-                    Base::Console().log("Skipped empty embedded file: {}\n", entry->toString());
-                }
-                else {
-                    Base::Console().error("Reading failed from embedded file: {}\n", entry->toString());
-                    FailedFiles.push_back(jt->FileName);
-                }
-            }
-            // Go to the next registered file name
-            it = jt + 1;
-        }
-
-        seq.next();
-
-        // In either case we must go to the next entry
+    for (const auto& file : FileList) {
         try {
-            entry = zipstream.getNextEntry();
+            auto stream = zip.getInputStream(file.FileName);
+            if (stream) {
+                Base::Reader reader(*stream, file.FileName, FileVersion);
+                file.Object->RestoreDocFile(reader);
+                if (reader.getLocalReader()) {
+                    reader.getLocalReader()->readFiles(zip);
+                }
+            }
         }
-        catch (const std::exception&) {
-            // there is no further entry
-            break;
+        catch (...) {
+            // For any exception we just continue with the next file.
+            // It doesn't matter if the last reader has read more or
+            // less data than the file size would allow.
+            // All what we need to do is to notify the user about the
+            // failure.
+            if (zip.entrySize(file.FileName) == 0) {
+                Base::Console().log("Skipped empty embedded file: {}\n", file.FileName);
+            }
+            else {
+                Base::Console().error("Reading failed from embedded file: {}\n", file.FileName);
+                FailedFiles.push_back(file.FileName);
+            }
         }
+        seq.next();
     }
 }
 

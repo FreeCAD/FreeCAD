@@ -35,8 +35,8 @@
 #include "Core/MeshKernel.h"
 #include <Base/InputSource.h>
 #include <Base/XMLTools.h>
-#include <Base/ZipHeader.h>
-#include <zipios++/zipfile.h>
+#include <Base/FileInfo.h>
+#include <Base/ZipReader.h>
 
 #include "Reader3MF.h"
 
@@ -45,20 +45,16 @@ using namespace MeshCore;
 using namespace XERCES_CPP_NAMESPACE;
 
 Reader3MF::Reader3MF(std::istream& str)
-{
-    file = std::make_unique<zipios::ZipHeader>(str);
-    if (file->isValid()) {
-        zip.reset(file->getInputStream("3D/3dmodel.model"));
-    }
-}
+    : file(std::make_unique<Base::ZipReader>(str))
+    , zip(file->getInputStream("3D/3dmodel.model"))
+{}
 
 Reader3MF::Reader3MF(const std::string& filename)
-{
-    file = std::make_unique<zipios::ZipFile>(filename);
-    if (file->isValid()) {
-        zip.reset(file->getInputStream("3D/3dmodel.model"));
-    }
-}
+    : file(std::make_unique<Base::ZipReader>(Base::FileInfo(filename)))
+    , zip(file->getInputStream("3D/3dmodel.model"))
+{}
+
+Reader3MF::~Reader3MF() = default;
 
 std::vector<int> Reader3MF::GetMeshIds() const
 {
@@ -354,8 +350,10 @@ bool Reader3MF::LoadMeshFromComponents()
 {
     for (const auto& it : components) {
         std::string path = it.path.substr(1);
-        zip.reset(file->getInputStream(path));
-        LoadModel(*zip, it);
+        zip = file->getInputStream(path);
+        if (zip) {
+            LoadModel(*zip, it);
+        }
     }
 
     return (!meshes.empty());
