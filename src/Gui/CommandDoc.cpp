@@ -22,6 +22,7 @@
 
 #include <Inventor/nodes/SoCamera.h>
 #include <algorithm>
+#include <set>
 
 #include <QApplication>
 #include <QCheckBox>
@@ -39,6 +40,8 @@
 #include <App/DocumentObject.h>
 #include <App/Expression.h>
 #include <App/GeoFeature.h>
+#include <App/GroupExtension.h>
+#include <App/Link.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
@@ -1944,6 +1947,32 @@ bool StdCmdTransform::isActive()
     return (Gui::Control().activeDialog() == nullptr);
 }
 
+namespace
+{
+bool hasPlacementGeometry(const App::DocumentObject* obj)
+{
+    std::set<const App::DocumentObject*> visited;
+    while (obj && visited.insert(obj).second) {
+        const auto* link = obj->getExtension<App::LinkBaseExtension>();
+        if (!link) {
+            return obj->isDerivedFrom<App::GeoFeature>() || obj->getExtension<App::GroupExtension>();
+        }
+        // Array links resolve to themselves through getLinkedObject(). Check their source instead.
+        obj = link->getTrueLinkedObject(false);
+    }
+    return false;
+}
+
+std::vector<App::DocumentObject*> getPlacementSelection()
+{
+    auto selection = Gui::Selection().getObjectsOfType<App::DocumentObject>();
+    std::erase_if(selection, [](auto* obj) {
+        return !obj->getPlacementProperty() || !hasPlacementGeometry(obj);
+    });
+    return selection;
+}
+}  // namespace
+
 //===========================================================================
 // Std_Placement
 //===========================================================================
@@ -1967,40 +1996,33 @@ StdCmdPlacement::StdCmdPlacement()
 void StdCmdPlacement::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
-        App::GeoFeature::getClassTypeId()
-    );
-    auto plm = new Gui::Dialog::TaskPlacement();
-    if (!sel.empty()) {
-        App::Property* prop = sel.front()->getPropertyByName("Placement");
-        if (prop && prop->is<App::PropertyPlacement>()) {
-            plm->setPlacement(static_cast<App::PropertyPlacement*>(prop)->getValue());
-
-            std::vector<Gui::SelectionObject> selection;
-            selection.reserve(sel.size());
-            std::transform(
-                sel.cbegin(),
-                sel.cend(),
-                std::back_inserter(selection),
-                [](App::DocumentObject* obj) { return Gui::SelectionObject(obj); }
-            );
-
-            plm->setPropertyName(QLatin1String("Placement"));
-            plm->setSelection(selection);
-            plm->bindObject();
-            plm->clearSelection();
-        }
+    auto sel = getPlacementSelection();
+    if (sel.empty()) {
+        return;
     }
+    auto* prop = sel.front()->getPlacementProperty();
+    if (!prop) {
+        return;
+    }
+    auto plm = new Gui::Dialog::TaskPlacement();
+    plm->setPlacement(prop->getValue());
+
+    std::vector<Gui::SelectionObject> selection;
+    selection.reserve(sel.size());
+    std::transform(sel.cbegin(), sel.cend(), std::back_inserter(selection), [](App::DocumentObject* obj) {
+        return Gui::SelectionObject(obj);
+    });
+
+    plm->setPropertyName(QLatin1String("Placement"));
+    plm->setSelection(selection);
+    plm->bindObject();
+    plm->clearSelection();
     Gui::Control().showDialog(plm, getDocument());
 }
 
 bool StdCmdPlacement::isActive()
 {
-    std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
-        App::GeoFeature::getClassTypeId(),
-        nullptr,
-        ResolveMode::FollowLink
-    );
+    auto sel = getPlacementSelection();
     return !(sel.empty() || std::ranges::any_of(sel, [](auto obj) {
                  auto* prop = obj->getPlacementProperty();
                  return obj->isFreezed() || !prop || prop->isReadOnly();
@@ -2026,17 +2048,14 @@ StdCmdTransformManip::StdCmdTransformManip()
 void StdCmdTransformManip::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    auto sel = getPlacementSelection();
+    if (sel.size() != 1) {
+        return;
+    }
     if (getActiveGuiDocument()->getInEdit()) {
         getActiveGuiDocument()->resetEdit();
     }
-    std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
-        App::GeoFeature::getClassTypeId(),
-        nullptr,
-        ResolveMode::FollowLink
-    );
     Gui::ViewProvider* vp = Application::Instance->getViewProvider(sel.front());
-    // FIXME: Need a way to force 'Transform' edit mode
-    // #0000477: Proper interface for edit modes of view provider
     if (vp) {
         getActiveGuiDocument()->setEdit(vp, Gui::ViewProvider::Transform);
     }
@@ -2044,11 +2063,7 @@ void StdCmdTransformManip::activated(int iMsg)
 
 bool StdCmdTransformManip::isActive()
 {
-    std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
-        App::GeoFeature::getClassTypeId(),
-        nullptr,
-        ResolveMode::FollowLink
-    );
+    auto sel = getPlacementSelection();
     return (
         sel.size() == 1 && !sel.front()->isFreezed() && sel.front()->getPlacementProperty()
         && !sel.front()->getPlacementProperty()->isReadOnly()
