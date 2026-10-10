@@ -108,6 +108,8 @@ public:
     //@}
     short mustExecute() const override;
 
+    void updatePreviewShape() override;
+
     using ThreadDescription = struct
     {
         const char* designation;
