@@ -2254,7 +2254,7 @@ std::vector<Part::cutTopoShapeFaces> Part::findAllFacesCutBy(
         // Intersection point in local coords
         gp_Pnt iLoc = iPnt.Transformed(mat);
         // Get angle with local X axis
-        double x = Base::clamp(iLoc.X(), -radius, radius);
+        double x = std::clamp(iLoc.X(), -radius, radius);
         double angle = std::acos(x / radius);
         if (iLoc.Y() < 0.0) {
             angle = 2.0 * std::numbers::pi - angle;
