@@ -1614,7 +1614,9 @@ class TaskPanel:
     def keepingPoints(self, action):
         """keepingPoints(action) ... action wrapped so that the operations' points, such as their
         start points, stay where they are on the model when action changes the Job's origin or
-        moves the model, and the heights typed in for them go up and down with it."""
+        moves the model, and the heights typed in for them go up and down with it. Only when
+        the models moved as one: an operation is not told which model it is on, so when they
+        move apart the points and heights are left alone and a warning says so."""
 
         def run(*args):
             if getattr(self, "_keepingPoints", False):
@@ -1626,14 +1628,25 @@ class TaskPanel:
                 result = action(*args)
             finally:
                 self._keepingPoints = False
-            for model, placement in zip(models, before):
-                if not model.Placement.isSame(placement, 1e-9):
-                    move = model.Placement.multiply(placement.inverse())
-                    PathJob.carryOperationPoints(self.obj, move)
-                    # moved straight up or down, not turned
-                    dz = move.Base.z if move.Rotation.isIdentity() else 0.0
-                    PathJob.carryOperationHeights(self.obj, dz)
-                    break
+            moves = [
+                model.Placement.multiply(placement.inverse())
+                for model, placement in zip(models, before)
+                if not model.Placement.isSame(placement, 1e-9)
+            ]
+            if not moves:
+                return result
+            if len(moves) < len(models) or any(not m.isSame(moves[0], 1e-9) for m in moves[1:]):
+                Path.Log.warning(
+                    translate(
+                        "CAM_Job",
+                        "The models did not move together, so the operations' points and "
+                        "heights were left where they were. Check them.",
+                    )
+                )
+                PathJob.touchOperations(self.obj)
+                return result
+            PathJob.carryOperationPoints(self.obj, moves[0])
+            PathJob.carryOperationHeights(self.obj, moves[0])
             return result
 
         return run
