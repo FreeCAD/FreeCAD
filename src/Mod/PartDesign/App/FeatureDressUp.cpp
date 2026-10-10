@@ -390,6 +390,10 @@ void DressUp::onBaseFeatureRerouted(
         auto subs = Base.getSubValues(false);
         auto shadows = Base.getShadowSubs();
         Base.setValue(newBase, std::move(subs), std::move(shadows));
+        if (auto* newFeature = freecad_cast<Part::Feature*>(newBase);
+            newFeature && !newFeature->Shape.getShape().isNull()) {
+            Base.updateElementReference(newBase, false, true);
+        }
     }
 }
 
