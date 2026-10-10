@@ -67,6 +67,16 @@ protected:
         _policy.setDateFormat(fmt);
     }
 
+    void setConsolidateBackups(bool on)
+    {
+        _policy.consolidateBackups(on);
+    }
+
+    void setBackupDirectory(const std::string& path)
+    {
+        _policy.setBackupDirectory(path);
+    }
+
     // Create a named temporary file: returns the full path to the new file. Deleted by the TearDown
     // method at the end of the test.
     std::filesystem::path createTempFile(const std::string& filename)
@@ -187,6 +197,43 @@ TEST_F(BackupPolicyTest, StandardWithTwoFilesOnePreviousBackup)
     // Assert
     EXPECT_TRUE(std::filesystem::exists(backup));
     EXPECT_TRUE(std::filesystem::exists(target.string() + "2"));
+}
+
+TEST_F(BackupPolicyTest, StandardWithTwoFilesOnePreviousBackupWithConsolidation)
+{
+    // Arrange
+    setPolicyTerms(App::BackupPolicy::Policy::Standard, 2, false, "%Y-%m-%d_%H-%M-%S");
+    setConsolidateBackups(true);
+    auto source = createTempFile("source.fcstd");
+    auto backupDir = source.parent_path() / "freecad-backups";
+    std::filesystem::create_directories(backupDir);
+
+    auto target = createTempFile("target.fcstd");
+    auto backup = createTempFile(backupDir / "target.fcstd1");
+
+    // Act
+    apply(source.string(), target.string());
+
+    // Assert
+    EXPECT_TRUE(std::filesystem::exists(backupDir / backup.filename()));
+    EXPECT_TRUE(std::filesystem::exists(backupDir / (target.filename().string() + "2")));
+}
+
+TEST_F(BackupPolicyTest, StandardWithConsolidationToAbsolutePath)
+{
+    // Arrange
+    setPolicyTerms(App::BackupPolicy::Policy::Standard, 1, false, "%Y-%m-%d_%H-%M-%S");
+    setConsolidateBackups(true);
+    auto backupDir = getTempPath() / "elsewhere" / "backups";
+    setBackupDirectory(backupDir.string());
+    auto source = createTempFile("source.fcstd");
+    auto target = createTempFile("target.fcstd");
+
+    // Act
+    apply(source.string(), target.string());
+
+    // Assert
+    EXPECT_TRUE(std::filesystem::exists(backupDir / (target.filename().string() + "1")));
 }
 
 TEST_F(BackupPolicyTest, StandardWithTwoFilesOnePreviousBackupUnexpectedSuffix)
