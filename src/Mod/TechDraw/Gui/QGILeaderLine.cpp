@@ -260,7 +260,7 @@ void QGILeaderLine::closeEdit()
 void QGILeaderLine::onLineEditFinished(QPointF tipDisplace, std::vector<QPointF> scenePoints)
 {
     // Base::Console().message("QGILL::onLineEditFinished({}, {})\n",
-    //                        TechDraw::DrawUtil::formatVector(tipDisplace).c_str(),
+    //                        TechDraw::DrawUtil::formatVector(tipDisplace),
     //                        scenePoints.size());
 
     m_blockDraw = true;
