@@ -196,6 +196,14 @@ class DataclassGUIGenerator:
         return " ".join(word.capitalize() for word in field_name.split("_"))
 
     @staticmethod
+    def _get_enum_tooltip(combo: QtGui.QComboBox) -> None:
+        """Show the selected enum member's tooltip if it has a tooltip parameter
+        otherwise use the combo box's tooltip"""
+        member = combo.itemData(combo.currentIndex())
+        if hasattr(member, "tooltip"):
+            combo.setToolTip(member.tooltip or "")
+
+    @staticmethod
     def create_widget_for_field(
         field_name: str, field_type: type, current_value: Any
     ) -> QtGui.QWidget:
@@ -230,12 +238,23 @@ class DataclassGUIGenerator:
         if isinstance(field_type, type) and issubclass(field_type, Enum):
             widget = QtGui.QComboBox()
             for member in field_type:
-                widget.addItem(member.value if hasattr(member, "value") else str(member), member)
+                # Enums can have ``label`` or ``tooltip`` properties; fall back to the value
+                text = getattr(member, "label", None)
+                if text is None:
+                    text = member.value if hasattr(member, "value") else str(member)
+                widget.addItem(str(text), member)
+                tooltip = getattr(member, "tooltip", None)
+                if tooltip:
+                    widget.setItemData(widget.count() - 1, tooltip, QtCore.Qt.ToolTipRole)
             if current_value:
                 index = widget.findData(current_value)
                 if index >= 0:
                     widget.setCurrentIndex(index)
             widget.value_getter = lambda: widget.itemData(widget.currentIndex())
+            DataclassGUIGenerator._get_enum_tooltip(widget)
+            widget.currentIndexChanged.connect(
+                lambda _i, w=widget: DataclassGUIGenerator._get_enum_tooltip(w)
+            )
             return widget
 
         # List[str] -> Multi-line text area
@@ -2032,15 +2051,20 @@ class MachineEditorDialog(QtGui.QDialog):
                 widget.blockSignals(False)
             elif isinstance(widget, QtGui.QComboBox):
                 widget.blockSignals(True)
-                if hasattr(value, "value"):  # Enum
-                    value = value.value
+                enum_value = value.value if hasattr(value, "value") else value  # Enum
                 # Find the item with this value
                 for i in range(widget.count()):
                     item_data = widget.itemData(i)
-                    if item_data == value or widget.itemText(i) == str(value):
+                    item_value = getattr(item_data, "value", item_data)
+                    if (
+                        item_data == value
+                        or item_value == enum_value
+                        or widget.itemText(i) == str(enum_value)
+                    ):
                         widget.setCurrentIndex(i)
                         break
                 widget.blockSignals(False)
+                DataclassGUIGenerator._get_enum_tooltip(widget)
 
         # Update nested dataclass fields
         dataclass_groups = [
