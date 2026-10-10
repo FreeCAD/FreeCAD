@@ -36,6 +36,7 @@
 #include <Bnd_Box.hxx>
 #include <BRepBndLib.hxx>
 #include <TopExp_Explorer.hxx>
+#include <algorithm>
 #include <cmath>
 #include <iomanip>
 #include <sstream>
@@ -370,8 +371,19 @@ App::DocumentObjectExecReturn* Thread::execute()
                 endTrims.nearEnd,
                 endTrims.farEnd
             );
+            const std::string depthType(DepthType.getValueAsString());
+            const bool limitInternalToolToFace = IsInternal.getValue()
+                && (depthType == "Dimension" || depthType == "ThroughAll");
+            // Extend the guide by a full turn at the entrance so every angular
+            // position has a complete cutting profile at the top of the hole.
+            // Keep bottomPoint unchanged: the extra length grows toward the entrance
+            // and the subsequent common removes surplus outside the selected face.
+            const double entranceExtension = limitInternalToolToFace
+                    && StartPlane.getValue() == nullptr
+                ? selectedPitch
+                : 0.0;
             const double generatedThreadLength = usefulThreadLength
-                + endTrims.nearEnd + endTrims.farEnd;
+                + endTrims.nearEnd + endTrims.farEnd + entranceExtension;
 
             // A modelled external thread replaces the selected major-diameter surface with the
             // reduced base before fusing the thread profile.  Cosmetic threads must retain the
@@ -443,8 +455,24 @@ App::DocumentObjectExecReturn* Thread::execute()
                 );
             }
 
-            // makeThread() is deliberately extended by the profile-dependent trims at
-            // both ends. Keep only the nominal interval with a coaxial-cylinder common.
+            // makeThread() includes profile-dependent surplus at both ends. Internal
+            // Dimension/ThroughAll tools must also stay within the selected face's
+            // axial limits so the surplus cannot cut adjacent material in the base.
+            double trimmingStart = 0.0;
+            double trimmingEnd = length;
+            if (limitInternalToolToFace) {
+                trimmingStart = std::max(trimmingStart, -projStart);
+                trimmingEnd = std::min(trimmingEnd, cylinderHeight - projStart);
+                if (trimmingEnd - trimmingStart <= Precision::Confusion()) {
+                    return new App::DocumentObjectExecReturn(
+                        QT_TRANSLATE_NOOP(
+                            "Exception",
+                            "Thread error: Thread depth does not overlap the selected face"
+                        )
+                    );
+                }
+            }
+
             Bnd_Box threadBounds;
             BRepBndLib::Add(thread, threadBounds);
             if (threadBounds.IsVoid()) {
@@ -462,7 +490,7 @@ App::DocumentObjectExecReturn* Thread::execute()
             threadBounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
 
             const gp_Pnt trimmingOrigin = startPoint.Translated(
-                zDirUnit * length
+                zDirUnit * trimmingEnd
             );
             const gp_Dir trimmingDirection(zDirUnit.Reversed());
             const gp_Lin trimmingAxis(trimmingOrigin, trimmingDirection);
@@ -488,7 +516,7 @@ App::DocumentObjectExecReturn* Thread::execute()
             BRepPrimAPI_MakeCylinder trimmingCylinder(
                 gp_Ax2(trimmingOrigin, trimmingDirection),
                 trimmingRadius,
-                length
+                trimmingEnd - trimmingStart
             );
             BRepAlgoAPI_Common trimOperation(thread, trimmingCylinder.Shape());
             trimOperation.Build();
