@@ -405,3 +405,30 @@ class TestSurfaceCommon(PathTestUtils.PathTestBase):
             5.0,
             delta=0.05,
         )
+
+    def test14_pattern_mask_preserves_inner_holes(self):
+        """
+        The pattern mask keeps unselected areas inside the selection as holes.
+
+        EXPECTED OUTPUT:
+        - The mask has two wires (outer boundary and the island hole).
+        - The hole is the 10 mm island grown by tool_radius + epsilon (~14.02 mm).
+        """
+        from Path.Base.Generator.surface_common import generate_pattern_mask
+
+        plate = Part.makeBox(60, 60, 5)
+        island = Part.makeBox(10, 10, 10, FreeCAD.Vector(25, 25, 5))
+        model = plate.fuse(island).removeSplitter()
+        base_faces = [
+            f
+            for f in model.Faces
+            if abs(f.normalAt(0, 0).z - 1) < 1e-6 and abs(f.CenterOfMass.z - 5) < 1e-6
+        ]
+
+        mask = generate_pattern_mask(False, None, base_faces, None, 2.0, 0.0, 0.01)
+
+        self.assertIsNotNone(mask)
+        wires = [w for f in mask.Faces for w in f.Wires]
+        self.assertEqual(len(wires), 2)
+        hole = min(wires, key=lambda w: w.BoundBox.XLength)
+        self.assertAlmostEqual(hole.BoundBox.XLength, 14.02, delta=0.1)
