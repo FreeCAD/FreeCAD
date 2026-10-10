@@ -114,12 +114,15 @@ private:
     std::optional<Base::Vector3d> getInstanceCenter(int index) const;
     std::optional<Base::Vector3d> estimateInstanceCenter(int index) const;
     void setInstanceSuppressed(int index, bool suppress);
+    void onArrayDeleted();
 
     std::unique_ptr<Ui_TaskLinkArrayParameters> ui;
     std::unique_ptr<PatternInstanceControls> instanceControls;
     QWidget* proxy = nullptr;
     QPointer<Gui::View3DInventorViewer> instanceControlsViewer;
     Part::LinkArray* array = nullptr;
+    App::DocumentT arrayDocument;
+    fastsignals::scoped_connection connectDeletedObject;
     App::SubObjectT arrayReference;
     bool blockUpdate = false;
     bool linkedObjectSelectionMode = false;
