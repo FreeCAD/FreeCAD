@@ -572,7 +572,7 @@ get date suffix according to the specified format</string>
 instead of alongside the project file itself</string>
         </property>
         <property name="text">
-         <string>Consolidate backups files into sibling directory</string>
+         <string>Consolidate backup files</string>
         </property>
         <property name="checked">
          <bool>false</bool>
