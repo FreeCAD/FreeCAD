@@ -150,7 +150,7 @@ class CAMWorkbench(Workbench):
             "CAM_Slot",
         ]
         threedopcmdlist = ["CAM_Pocket3D"]
-        engravecmdlist = ["CAM_Engrave", "CAM_Deburr", "CAM_Vcarve"]
+        engravecmdlist = ["CAM_Engrave", "CAM_Deburring", "CAM_Vcarve"]
         drillingcmdlist = ["CAM_Drilling", "CAM_ThreadMilling"]
         modcmdlist = ["CAM_OperationCopy", "CAM_Array", "CAM_SimpleCopy"]
         dressupcmdlist = [
