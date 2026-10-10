@@ -27,6 +27,7 @@
 #include <BRepTools.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
+#include <BRepBuilderAPI_Copy.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <BRepMesh_IncrementalMesh.hxx>
 #include <gp_Trsf.hxx>
@@ -61,6 +62,7 @@
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoMaterialBinding.h>
+#include <Inventor/nodes/SoMatrixTransform.h>
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/nodes/SoNormalBinding.h>
 #include <Inventor/nodes/SoPolygonOffset.h>
@@ -1048,6 +1050,45 @@ void ViewProviderPartExt::unsetEdit(int ModNum)
     }
 }
 
+Gui::CoinPtr<SoSeparator> ViewProviderPartExt::createFaceGeometry(
+    const TopoDS_Shape& shape,
+    double deviation,
+    double angularDeflection
+)
+{
+    Gui::CoinPtr<SoSeparator> root(new SoSeparator);
+    if (Part::Tools::isShapeEmpty(shape)) {
+        return root;
+    }
+
+    // setupCoinGeometry cleans the mesh and removes the top-level placement, as
+    // the regular view provider applies that placement separately.
+    BRepBuilderAPI_Copy copy(shape, false, false);
+    TopoDS_Shape displayShape = copy.Shape();
+    auto* transform = new SoMatrixTransform;
+    transform->matrix = Base::convertTo<SbMatrix>(
+        Base::convertTo<Base::Placement>(displayShape.Location().Transformation()).toMatrix()
+    );
+    root->addChild(transform);
+    auto* hints = new SoShapeHints;
+    hints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+    hints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
+    root->addChild(hints);
+    auto* binding = new SoNormalBinding;
+    binding->value = SoNormalBinding::PER_VERTEX_INDEXED;
+    root->addChild(binding);
+    auto* coords = new SoCoordinate3;
+    auto* normals = new SoNormal;
+    auto* faces = new SoBrepFaceSet;
+    root->addChild(coords);
+    root->addChild(normals);
+    root->addChild(faces);
+    const Gui::CoinPtr<SoBrepEdgeSet> edges(new SoBrepEdgeSet);
+    const Gui::CoinPtr<SoBrepPointSet> points(new SoBrepPointSet);
+    setupCoinGeometry(displayShape, coords, faces, normals, edges, points, deviation, angularDeflection, true);
+    return root;
+}
+
 void ViewProviderPartExt::setupCoinGeometry(
     TopoDS_Shape shape,
     SoCoordinate3* coords,
@@ -1112,6 +1153,22 @@ void ViewProviderPartExt::setupCoinGeometry(
 #endif
 
     BRepMesh_IncrementalMesh(shape, meshParams);
+
+    // A deflection based on the whole shape can fail on small faces (notably
+    // with OCCT 8). Retry the original trimmed face before the unbounded-surface
+    // fallback so a missing triangulation does not leave holes or fill cutouts.
+    for (TopExp_Explorer explorer(shape, TopAbs_FACE); explorer.More(); explorer.Next()) {
+        const TopoDS_Face& face = TopoDS::Face(explorer.Current());
+        TopLoc_Location location;
+        double faceDeflection = deflection;
+        constexpr int meshRetries = 6;
+        for (int attempt = 0;
+             attempt < meshRetries && BRep_Tool::Triangulation(face, location).IsNull();
+             ++attempt) {
+            faceDeflection = std::max(Precision::Confusion(), faceDeflection / 2.0);
+            BRepMesh_IncrementalMesh(face, faceDeflection, false, AngDeflectionRads, false);
+        }
+    }
 
     // We must reset the location here because the transformation data
     // are set in the placement property

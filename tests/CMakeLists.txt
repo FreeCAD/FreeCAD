@@ -11,9 +11,27 @@ include_directories(
 set(CMAKE_AUTOMOC ON)
 
 function(setup_qt_test)
-    foreach(_testname ${ARGN})
+    cmake_parse_arguments(QT_TEST "OPENGL" "" "" ${ARGN})
+    set(_qt_platform offscreen)
+    set(_test_command_prefix)
+    if(QT_TEST_OPENGL)
+        # The offscreen Qt platform does not provide OpenGL on all platforms.
+        if(WIN32)
+            set(_qt_platform windows)
+        elseif(APPLE)
+            set(_qt_platform cocoa)
+        else()
+            set(_qt_platform xcb)
+            find_program(XVFB_RUN_EXECUTABLE xvfb-run)
+            if(XVFB_RUN_EXECUTABLE)
+                set(_test_command_prefix ${XVFB_RUN_EXECUTABLE} -a -s "-screen 0 1024x768x24")
+            endif()
+        endif()
+    endif()
+    foreach(_testname ${QT_TEST_UNPARSED_ARGUMENTS})
         add_executable(${_testname}_Tests_run ${_testname}.cpp)
-        add_test(NAME ${_testname}_Tests_run COMMAND ${_testname}_Tests_run)
+        add_test(NAME ${_testname}_Tests_run
+            COMMAND ${_test_command_prefix} $<TARGET_FILE:${_testname}_Tests_run>)
 
         if(NOT BUILD_DYNAMIC_LINK_PYTHON)
             list(APPEND ${_testname}_LIBS
@@ -35,14 +53,14 @@ function(setup_qt_test)
                 RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
             set_tests_properties(${_testname}_Tests_run PROPERTIES
                 LABELS "Qt"
-                ENVIRONMENT "QT_QPA_PLATFORM=offscreen"
+                ENVIRONMENT "QT_QPA_PLATFORM=${_qt_platform}"
                 ENVIRONMENT_MODIFICATION "${_test_env_mod}")
         else()
             set_target_properties(${_testname}_Tests_run PROPERTIES
                 RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tests)
             set_tests_properties(${_testname}_Tests_run PROPERTIES
                 LABELS "Qt"
-                ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
+                ENVIRONMENT "QT_QPA_PLATFORM=${_qt_platform}")
         endif()
     endforeach()
 endfunction()
