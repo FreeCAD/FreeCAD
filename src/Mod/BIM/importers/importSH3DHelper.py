@@ -519,12 +519,18 @@ class SH3DImporter:
                 _log(
                     translate(
                         "BIM",
-                        f"Merging imported element '{id}' with existing element of type '{type(fc_object)}'",
+                        "Merging imported element '{id}' with existing element of type '{type(fc_object)}'",
                     )
+                    .replace("{id}", str(id))
+                    .replace("{type(fc_object)}", str(type(fc_object)))
                 )
             return fc_object
         if self.preferences["DEBUG_GEOMETRY"]:
-            _log(translate("BIM", f"No element found with id '{id}' and type '{sh_type}'"))
+            _log(
+                translate("BIM", "No element found with id '{id}' and type '{sh_type}'").format(
+                    id=id, sh_type=sh_type
+                )
+            )
         return None
 
     def add_floor(self, floor):
@@ -3250,8 +3256,8 @@ class CameraHandler(BaseHandler):
         if attribute != "storedCamera":
             _log(
                 translate(
-                    "BIM", f"Type of <{elm.tag}> #{i} is not supported: '{attribute}'. Skipping!"
-                )
+                    "BIM", "Type of <{elm.tag}> #{i} is not supported: '{attribute}'. Skipping!"
+                ).format(elm=elm, i=i, attribute=attribute)
             )
             return
 
