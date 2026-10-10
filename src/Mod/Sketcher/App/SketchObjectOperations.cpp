@@ -460,30 +460,16 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         coinc2->addElement(GeoElementId(lineGeoId, filletPosId2));
 #endif
 
-        if (trim) {
 #ifdef SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
-            coinc1->Second = GeoId1;
-            coinc1->SecondPos = PosId1;
+        coinc1->Second = filletId;
+        coinc1->SecondPos = PointPos::start;
 
-            coinc2->Second = GeoId2;
-            coinc2->SecondPos = PosId2;
+        coinc2->Second = filletId;
+        coinc2->SecondPos = PointPos::end;
 #else
-            coinc1->addElement(GeoElementId(GeoId1, PosId1));
-            coinc2->addElement(GeoElementId(GeoId2, PosId2));
+        coinc1->addElement(GeoElementId(filletId, PointPos::start));
+        coinc2->addElement(GeoElementId(filletId, PointPos::end));
 #endif
-        }
-        else {
-#ifdef SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
-            coinc1->Second = filletId;
-            coinc1->SecondPos = PointPos::start;
-
-            coinc2->Second = filletId;
-            coinc2->SecondPos = PointPos::end;
-#else
-            coinc1->addElement(GeoElementId(filletId, PointPos::start));
-            coinc2->addElement(GeoElementId(filletId, PointPos::end));
-#endif
-        }
 
         addConstraint(std::move(coinc1));
         addConstraint(std::move(coinc2));
