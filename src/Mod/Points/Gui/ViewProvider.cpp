@@ -28,6 +28,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/nodes/SoCamera.h>
+#include <Inventor/nodes/SoClipPlane.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoIndexedPointSet.h>
@@ -35,6 +36,7 @@
 #include <Inventor/nodes/SoMaterialBinding.h>
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/nodes/SoPointSet.h>
+#include <Inventor/nodes/SoSeparator.h>
 
 #include <App/Document.h>
 #include <Base/Vector3D.h>
@@ -64,6 +66,29 @@ ViewProviderPoints::ViewProviderPoints()
     ADD_PROPERTY_TYPE(PointSize, (2.0F), osgroup, App::Prop_None, "Set point size");
     PointSize.setConstraints(&floatRange);
 
+    ADD_PROPERTY_TYPE(
+        SliceLength,
+        (0.0),
+        osgroup,
+        App::Prop_None,
+        "Point cloud slice thickness, when Section View is enabled. Set to 0 to disable"
+    );
+
+    ADD_PROPERTY_TYPE(
+        SectionPlacement,
+        (Base::Placement()),
+        "Section View",
+        App::Prop_Hidden,
+        "Stored section view placement for slice calculation"
+    );
+    ADD_PROPERTY_TYPE(
+        PointCloudSliceActive,
+        (false),
+        "Section View",
+        App::Prop_Hidden,
+        "Whether point cloud slice clipping is active"
+    );
+
     // Create the selection node
     pcHighlight = Gui::ViewProviderBuilder::createSelection();
     pcHighlight->ref();
@@ -85,6 +110,10 @@ ViewProviderPoints::ViewProviderPoints()
     pcPointStyle->ref();
     pcPointStyle->style = SoDrawStyle::POINTS;
     pcPointStyle->pointSize = PointSize.getValue();
+
+    pcSliceClipPlane = new SoClipPlane();
+    pcSliceClipPlane->ref();
+    pcSliceClipPlane->on.setValue(false);
 }
 
 ViewProviderPoints::~ViewProviderPoints()
@@ -94,12 +123,16 @@ ViewProviderPoints::~ViewProviderPoints()
     pcPointsNormal->unref();
     pcColorMat->unref();
     pcPointStyle->unref();
+    pcSliceClipPlane->unref();
 }
 
 void ViewProviderPoints::onChanged(const App::Property* prop)
 {
     if (prop == &PointSize) {
         pcPointStyle->pointSize = PointSize.getValue();
+    }
+    else if (prop == &SliceLength || prop == &SectionPlacement || prop == &PointCloudSliceActive) {
+        updateSliceClipPlaneFromProperties();
     }
     else if (prop == &SelectionStyle) {
         pcHighlight->style = SelectionStyle.getValue() ? Gui::SoFCSelection::BOX
@@ -108,6 +141,25 @@ void ViewProviderPoints::onChanged(const App::Property* prop)
     else {
         ViewProviderGeometryObject::onChanged(prop);
     }
+}
+
+void ViewProviderPoints::updateSliceClipPlaneFromProperties()
+{
+    if (!PointCloudSliceActive.getValue() || SliceLength.getValue() <= 0) {
+        pcSliceClipPlane->on.setValue(false);
+        return;
+    }
+
+    const auto& pla = SectionPlacement.getValue();
+    Base::Vector3d dir;
+    pla.getRotation().multVec(Base::Vector3d(0, 0, 1), dir);
+
+    auto sliceLen = SliceLength.getValue();
+    Base::Vector3d backBase = pla.getPosition() - dir * sliceLen;
+    pcSliceClipPlane->plane.setValue(
+        SbPlane(SbVec3f(dir.x, dir.y, dir.z), SbVec3f(backBase.x, backBase.y, backBase.z))
+    );
+    pcSliceClipPlane->on.setValue(true);
 }
 
 void ViewProviderPoints::setVertexColorMode(App::PropertyColorList* pcProperty)
@@ -386,6 +438,8 @@ void ViewProviderScattered::attach(App::DocumentObject* pcObj)
     // call parent's attach to define display modes
     ViewProviderGeometryObject::attach(pcObj);
 
+    pcRoot->insertChild(pcSliceClipPlane, 0);
+
     pcHighlight->objectName = pcObj->getNameInDocument();
     pcHighlight->documentName = pcObj->getDocument()->getName();
     pcHighlight->subElementName = "Main";
@@ -556,6 +610,8 @@ void ViewProviderStructured::attach(App::DocumentObject* pcObj)
 {
     // call parent's attach to define display modes
     ViewProviderGeometryObject::attach(pcObj);
+
+    pcRoot->insertChild(pcSliceClipPlane, 0);
 
     pcHighlight->objectName = pcObj->getNameInDocument();
     pcHighlight->documentName = pcObj->getDocument()->getName();
