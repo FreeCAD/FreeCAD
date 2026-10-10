@@ -169,7 +169,7 @@ class ResultMechanical(base_fempythonobject.BaseFemPythonObject):
             "App::PropertyFloatList",
             "MaxShear",
             "NodeData",
-            "List of Maximum Shear stress values",
+            "List of Tresca stress values",
             True,
         )
         obj.setPropertyStatus("MaxShear", "LockDynamic")

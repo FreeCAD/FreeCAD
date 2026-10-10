@@ -332,8 +332,8 @@ class CalculiXTools(ObjectTools):
                 von_mises_vtk.SetName("von Mises Stress")
                 pd.AddArray(von_mises_vtk)
 
-                # max shear stress
-                max_shear = 1 / 2 * np.max(np.abs(sigma_diff), axis=0)
+                # tresca stress
+                max_shear = np.max(np.abs(sigma_diff), axis=0)
                 max_shear_vtk = vtk_np.numpy_to_vtk(max_shear)
                 max_shear_vtk.SetName("Tresca Stress")
                 pd.AddArray(max_shear_vtk)
