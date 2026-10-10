@@ -33,7 +33,8 @@ import FreeCAD
 
 translate = FreeCAD.Qt.translate
 import Path
-from Path.Post.Processor import PostProcessor, SCOPE_JOB
+from Path.Post.Processor import PostProcessor, SCOPE_JOB, SCOPE_MACHINE, _tool_axis_tilted
+from Path.Post.TiltedWorkPlane import PlaneCommand
 import Constants
 from Machine.models.machine import OutputUnits
 
@@ -60,7 +61,21 @@ class Linuxcnc(PostProcessor):
     - Exact Path (G61)
     - Exact Stop (G61.1)
     - Blend (G64)
+
+    Tilted work planes follow the syntax of LinuxCNC pull request #4374
+    (https://github.com/LinuxCNC/linuxcnc/pull/4374), which is where the
+    control's multi-axis work is being done and is a draft at the time of
+    writing: `G68.2 X Y Z I J K` in its default form, Euler angles about Z,
+    then the new X, then the newest Z, exactly Fanuc's; `G53.1` to point the
+    tool along the plane's normal, with `P` choosing between the two poses
+    and `Q` letting the table take part; `G69` to cancel. The control
+    refuses a change of coordinate system while a plane is active, so the
+    plane is cancelled before every fixture and tool change. LinuxCNC has no
+    dynamic work offset, so this post emits TWP only.
     """
+
+    ROTATION_STRATEGIES = ("twp",)
+    PLANE_COMMAND = PlaneCommand.G68_2
 
     @classmethod
     def get_common_property_schema(cls):
@@ -79,6 +94,25 @@ class Linuxcnc(PostProcessor):
                 prop["default"] = "M05\nG17 G54 G90 G80 G40\nM2"
             elif prop["name"] == "safetyblock":
                 prop["default"] = "G40 G49 G80"
+            elif prop["name"] == "pre_rotary_move":
+                prop["help"] = translate(
+                    "CAM",
+                    "G-code inserted before the rotary axes move, and before a tilted work "
+                    "plane is aligned to with G53.1. Put the moves that bring the tool clear "
+                    "of the part here, in machine coordinates: G53 G0 Z0 lifts the tool tip to "
+                    "machine Z zero; on the kinematics of LinuxCNC pull request #4374, "
+                    "G53.5 G0 Z0 parks the Z slide whatever the head is doing. Left empty, "
+                    "nothing clears the part before the table turns, and the sanity check "
+                    "says so.",
+                )
+            elif prop["name"] == "twp_align":
+                prop["help"] = translate(
+                    "CAM",
+                    "The line that points the tool along a declared plane's normal. Empty is "
+                    "G53.1, which moves the rotaries alone and lets the tool tip swing: "
+                    "G53.1 P1 or P2 names which of the two poses, Q1 lets the table take "
+                    "part. G53.6 keeps the tool center point where it is instead.",
+                )
 
         return common_props
 
@@ -114,6 +148,20 @@ class Linuxcnc(PostProcessor):
                     ">0 = tolerance (G64 P-), in current units",
                 ),
             },
+            {
+                "name": "twp_kinematics_select",
+                "scope": SCOPE_MACHINE,
+                "type": "string",
+                "label": translate("CAM", "Tilted work plane: kinematics select"),
+                "default": "",
+                "help": translate(
+                    "CAM",
+                    "A line emitted after the preamble when the job has an operation on a "
+                    "tilted work plane. G53.1 needs a kinematics type whose frames describe "
+                    "the machine; on a switchable module that starts in identity kinematics "
+                    "this is where G12.1 P1 goes.",
+                ),
+            },
         ]
 
     def __init__(
@@ -140,13 +188,6 @@ class Linuxcnc(PostProcessor):
         # in the parent routine.
         #
         values["ENABLE_COOLANT"] = True
-        #
-        # The order of parameters.
-        #
-        # linuxcnc doesn't want K properties on XY plane; Arcs need work.
-        #
-        values["PARAMETER_ORDER"] = "XYZABCIJFSTQRLHDP"
-
         values["POSTPROCESSOR_FILE_NAME"] = __name__
 
         # Path blending mode configuration (LinuxCNC-specific)
@@ -162,7 +203,7 @@ class Linuxcnc(PostProcessor):
             values["BLEND_TOLERANCE"] = 0.0
 
     def _expand_prefix(self, postables):
-        """inject blend command"""
+        """inject blend command, and the kinematics select when a plane needs it"""
         blend = self._get_blend_command()
 
         preamble = self.values["PREAMBLE"] or ""
@@ -170,9 +211,23 @@ class Linuxcnc(PostProcessor):
         # otherwise "... G80 G90" + "G64 P0.0010" runs together as "G90G64".
         if preamble and not preamble[-1].isspace():
             preamble += " "
-        self.values["PREAMBLE"] = preamble + blend
+        preamble += blend
+
+        select = (self.values.get("TWP_KINEMATICS_SELECT") or "").strip()
+        if select and self._job_has_tilted_operation():
+            preamble += "\n" + select
+        self.values["PREAMBLE"] = preamble
 
         super()._expand_prefix(postables)
+
+    def _job_has_tilted_operation(self):
+        import Path.Dressup.Utils as PathDressup
+
+        for op in self._job.Operations.Group:
+            placement = getattr(PathDressup.baseOp(op), "Placement", None)
+            if placement is not None and _tool_axis_tilted(placement):
+                return True
+        return False
 
     def _get_blend_command(self) -> str:
         """Generate the path blending G-code command based on current settings.

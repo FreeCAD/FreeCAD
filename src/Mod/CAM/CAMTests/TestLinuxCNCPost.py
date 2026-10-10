@@ -494,6 +494,42 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
         self.assertEqual(self.post.format_parameter("A", 20.0, "G0"), f"{20.0:.{precision}f}")
         self.assertEqual(self.post.format_parameter("C", -90.0, "G0"), f"{-90.0:.{precision}f}")
 
+    def test_arc_in_xy_plane_has_no_k_word(self):
+        """
+        LinuxCNC refuses a K word on an arc in the XY plane.
+
+        Expected behavior:
+            BEFORE: G2 X10 Y0 Z-1 I5 J0 K0
+
+            AFTER:  G2 X10.000 Y0.000 Z-1.000 I5.000 J0.000
+        """
+        self.post.apply_configuration_bundle()
+        command = Path.Command("G2", {"X": 10, "Y": 0, "Z": -1, "I": 5, "J": 0, "K": 0})
+        result = self.post.convert_command_to_gcode(command)
+
+        self.assertIn("I5.000", result)
+        self.assertIn("J0.000", result)
+        self.assertNotIn("K", result)
+
+    def test_arc_in_xz_plane_keeps_k_word(self):
+        """
+        A G18 arc gives its center with I and K; J is the word LinuxCNC refuses there.
+
+        Expected behavior:
+            BEFORE: G18, G2 X0 Y0 Z-10 I0 J0 K-5
+
+            AFTER:  G2 X0.000 Y0.000 Z-10.000 I0.000 K-5.000
+        """
+        self.post.apply_configuration_bundle()
+        with self.post.use_machine_state():
+            self.post.machine_state.addCommand(Path.Command("G18"))
+            command = Path.Command("G2", {"X": 0, "Y": 0, "Z": -10, "I": 0, "J": 0, "K": -5})
+            result = self.post.convert_command_to_gcode(command)
+
+        self.assertIn("I0.000", result)
+        self.assertIn("K-5.000", result)
+        self.assertNotIn("J", result)
+
     def test_rigid_tapping_block_delete(self):
         """
         Test rigid tapping with block delete annotation.

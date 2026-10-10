@@ -86,6 +86,21 @@ class TestPathHelpers(PathTestBase):
         self.assertEqual(machine.G0F, 0)
         self.assertEqual(machine.ReturnMode, "Z")
         self.assertEqual(machine.WCS, "G54")
+        self.assertEqual(machine.Plane, "G17")
+
+        # The plane follows G17 G18 G19, in commands and in as-is text, and
+        # survives the resets that a tool change or an opaque block cause.
+        machine.addCommand(Path.Command("G18"))
+        self.assertEqual(machine.Plane, "G18")
+        machine.setState(None)
+        self.assertEqual(machine.Plane, "G18")
+        machine.addGcodeText("G21 G019 G90\nG64 P0.01")
+        self.assertEqual(machine.Plane, "G19")
+        machine.addGcodeText("G1 X10 G190 G1.8")
+        self.assertEqual(machine.Plane, "G19")
+        self.assertEqual(machine.copy().Plane, "G19")
+        machine.addCommand(Path.Command("G17"))
+        self.assertEqual(machine.Plane, "G17")
 
         for c in self.commandlist:
             machine.addCommand(c)
