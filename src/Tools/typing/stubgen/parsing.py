@@ -293,12 +293,6 @@ def decorator_kwargs(decorator: ast.expr) -> dict[str, object]:
     return result
 
 
-def decorator_name(decorator: ast.expr) -> str:
-    return (
-        ast.unparse(decorator.func) if isinstance(decorator, ast.Call) else ast.unparse(decorator)
-    )
-
-
 def skipped_source_path(rel_path: str) -> bool:
     parts = PurePosixPath(rel_path).parts
     return any(parts[: len(prefix)] == prefix for prefix in SKIPPED_SOURCE_PREFIXES)
