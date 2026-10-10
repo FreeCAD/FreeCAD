@@ -54,8 +54,9 @@ PREAMBLE = """G17 G54 G40 G49 G80 G90"""
 POSTAMBLE = """M05
 G17 G54 G90 G80 G40
 M2"""
-# Mach3 will not tolerate K on G2/G3 when G17 is active (XY plane). 
+# Mach3 will not tolerate K on G2/G3 when G17 is active (XY plane).
 PARAMETER_ORDER = Constants.PARAMETER_ORDER.replace("K", "")
+
 
 class Mach3_Mach4(PostProcessor):
     """The Mach3_Mach4 post processor class."""
@@ -101,7 +102,7 @@ class Mach3_Mach4(PostProcessor):
         # The order of parameters.
         #
         # mach3_mach4 doesn't want K properties on XY plane; Arcs need work.
-        # 
+        #
         values["PARAMETER_ORDER"] = list(PARAMETER_ORDER)
         #
         # Any commands in this value will be output as the last commands
