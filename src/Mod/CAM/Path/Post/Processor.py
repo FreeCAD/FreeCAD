@@ -53,6 +53,7 @@ from Path.Post.CAMErrors import CAMError, CAMValueError, CAMAttributeError, CAMN
 from Path.Base.MachineState import MachineState
 import Path.Base.Util as PathUtil
 from Machine.models.machine import MachineFactory, OutputUnits, ToolheadType
+from PathScripts.PathUtils import getOperations
 
 translate = FreeCAD.Qt.translate
 
@@ -899,9 +900,7 @@ class PostProcessor:
             self._operations = job["operations"]
         if not self._operations:
             # get all operations from 'Operations' group
-            self._operations = (
-                getattr(self._job.Operations, "Group", []) if self._job is not None else []
-            )
+            self._operations = getOperations(self._job)
 
     @classmethod
     def exists(cls, processor):

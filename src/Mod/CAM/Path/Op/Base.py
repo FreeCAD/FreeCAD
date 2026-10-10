@@ -817,7 +817,7 @@ class ObjectOp:
         features = self.opFeatures(obj)
 
         if FeatureTool & features:
-            for op in job.Operations.Group[-2::-1]:
+            for op in PathUtils.getOperations(job)[-2::-1]:
                 obj.ToolController = PathUtil.toolControllerForOp(op)
                 if obj.ToolController:
                     break
@@ -836,7 +836,7 @@ class ObjectOp:
         # it adopts that operation's tool controller. A job machining one
         # tilted face should not need the frame assigned per operation.
         if hasattr(obj, "Workplane"):
-            for op in job.Operations.Group[-2::-1]:
+            for op in PathUtils.getOperations(job)[-2::-1]:
                 previous = getattr(op, "Workplane", None)
                 if previous is not None:
                     obj.Workplane = previous
