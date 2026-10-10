@@ -32,6 +32,7 @@
 
 #include "gzipoutputstreambuf.hpp"
 
+#include <fstream>
 #include <memory>
 
 

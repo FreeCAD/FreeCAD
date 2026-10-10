@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-# Zipios 2.3.4 from https://github.com/Zipios/Zipios, the zipios/ and src/ folders unchanged
+# Zipios 2.3.4 from https://github.com/Zipios/Zipios, the zipios/ and src/ folders unchanged except
+# for the MSVC fix of https://github.com/Zipios/Zipios/pull/54
 
 set(ZIPIOS_VERSION_MAJOR 2)
 set(ZIPIOS_VERSION_MINOR 3)
@@ -41,7 +42,7 @@ add_library(zipios STATIC
 
 set_target_properties(zipios PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
-# upstream code: no warnings of its own, and gzipoutputstream.hpp needs <fstream> without including it
+# upstream code: no warnings of its own
 if(MSVC)
     # as in upstream's CMake file, for ssize_t and localtime_s
     target_compile_definitions(zipios PRIVATE ZIPIOS_WINDOWS NOMINMAX)
@@ -49,7 +50,6 @@ if(MSVC)
 else()
     target_compile_options(zipios PRIVATE -w)
 endif()
-target_precompile_headers(zipios PRIVATE <fstream>)
 
 # src/ for the stream classes that upstream doesn't install, but FreeCAD uses
 target_include_directories(zipios SYSTEM

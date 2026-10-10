@@ -52,7 +52,8 @@ namespace zipios
  * \param[in] os  The output stream to use to write the Zip archive.
  */
 ZipOutputStream::ZipOutputStream(std::ostream & os)
-    : m_ozf(std::make_unique<ZipOutputStreambuf>(os.rdbuf()))
+    : std::ostream(nullptr)
+    , m_ozf(std::make_unique<ZipOutputStreambuf>(os.rdbuf()))
 {
     init(m_ozf.get());
 }
