@@ -49,6 +49,9 @@ public:
     void setSplitEdges(bool enable = true);
     void setMergeEdges(bool enable = true);
     void setTolerance(double tolerance, double atol = 0.0);
+    void setOpenWiresOnly(bool enable = true);
+    // when setOpenWiresOnly is enabled, getOpenWires() gives the
+    // same result but Shape() and getResultWires() are empty
 
     bool getOpenWires(TopoShape& shape, const char* op = "", bool noOriginal = true);
     bool getResultWires(TopoShape& shape, const char* op = "");
