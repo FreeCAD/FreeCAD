@@ -130,7 +130,7 @@ void DlgObjectSelection::init(
     ui->inList->headerItem()->setText(2, tr("Name"));
 
     ui->treeWidget->headerItem()->setText(0, tr("Selections"));
-    ui->treeWidget->header()->setStretchLastSection(false);
+    ui->treeWidget->header()->setStretchLastSection(true);
 
     connect(ui->treeWidget, &QTreeWidget::itemExpanded, this, &DlgObjectSelection::onItemExpanded);
 
