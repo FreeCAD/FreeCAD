@@ -293,6 +293,34 @@ protected:
         return pad;
     }
 
+    PartDesign::Pad* createAnnularPad(double length, double outerRadius, double innerRadius)
+    {
+        auto doc = getDocument();
+        auto body = getBody();
+        auto sketch = getSketch();
+
+        sketch->Geometry.setValues({});
+        sketch->Constraints.setValues({});
+
+        Part::GeomCircle outerCircle;
+        outerCircle.setRadius(outerRadius);
+        sketch->addGeometry(&outerCircle, false);
+
+        Part::GeomCircle innerCircle;
+        innerCircle.setRadius(innerRadius);
+        sketch->addGeometry(&innerCircle, false);
+
+        auto pad = doc->addObject<PartDesign::Pad>("Pad");
+        body->addObject(pad);
+        pad->Profile.setValue(sketch, {""});
+        pad->Direction.setValue(0.0, 0.0, 1.0);
+        pad->Length.setValue(length);
+        pad->Midplane.setValue(false);
+
+        doc->recompute();
+        return pad;
+    }
+
     PartDesign::Pad* createCubePad(double sideLength = 30.0)
     {
         auto doc = getDocument();
@@ -359,6 +387,31 @@ protected:
                 if (idx > 0) {
                 return "Face" + std::to_string(idx);
                 }
+            }
+        }
+
+        return std::nullopt;
+    }
+
+    std::optional<std::string> getLateralFaceName(
+        PartDesign::Pad* pad,
+        double expectedRadius
+    )
+    {
+        const TopoDS_Shape& shape = Part::Feature::getShape(pad, Part::ShapeOption::NoFlag);
+        const Part::TopoShape& topo = pad->Shape.getShape();
+
+        for (TopExp_Explorer exp(shape, TopAbs_FACE); exp.More(); exp.Next()) {
+            const TopoDS_Face face = TopoDS::Face(exp.Current());
+            const BRepAdaptor_Surface surface(face);
+            if (surface.GetType() != GeomAbs_Cylinder
+                || std::abs(surface.Cylinder().Radius() - expectedRadius) > 1e-7) {
+                continue;
+            }
+
+            const int idx = topo.findShape(face);
+            if (idx > 0) {
+                return "Face" + std::to_string(idx);
             }
         }
 
@@ -850,6 +903,61 @@ TEST_F(ThreadTest, EmptyThread)
     EXPECT_FALSE(thread->isError())
         << "Feature thread has failed during recompute " << thread->getStatusString();
     EXPECT_TRUE(thread->isValid()) << "Feature Thread is not valid.";
+}
+
+TEST_F(ThreadTest, InternalThreadModeledM30x3_5)
+{
+    constexpr double length = 24.0;
+    constexpr double minorDiameter = 26.211;
+
+    auto doc = getDocument();
+    auto body = getBody();
+    auto pad = createAnnularPad(length, 20.0, minorDiameter / 2.0);
+    ASSERT_NE(pad, nullptr);
+    ASSERT_FALSE(pad->Shape.getValue().IsNull());
+
+    GProp_GProps padVolume;
+    BRepGProp::VolumeProperties(pad->Shape.getValue(), padVolume);
+
+    auto thread = doc->addObject<PartDesign::Thread>("Thread");
+    body->addObject(thread);
+
+    auto lateralFace = getLateralFaceName(pad, minorDiameter / 2.0);
+    ASSERT_TRUE(lateralFace.has_value());
+    thread->LateralFace.setValue(pad, {*lateralFace});
+
+    thread->DepthType.setValue(0L);  // "Dimension"
+    thread->Depth.setValue(length);
+
+    const int typeIdx = findEnumIndex(thread->ThreadType.getEnumVector(), "ISOMetricProfile");
+    ASSERT_GE(typeIdx, 0) << "ISOMetricProfile was not found in enum";
+    thread->ThreadType.setValue(typeIdx);
+
+    const int sizeIdx = findEnumIndex(thread->ThreadSize.getEnumVector(), "30");
+    ASSERT_GE(sizeIdx, 0) << "30mm Diameter was not found in enum";
+    thread->ThreadSize.setValue(sizeIdx);
+
+    const int pitchIdx = findEnumIndex(thread->ThreadSizePitch.getEnumVector(), "3.5");
+    ASSERT_GE(pitchIdx, 0) << "3.5mm Pitch was not found in enum";
+    thread->ThreadSizePitch.setValue(pitchIdx);
+
+    thread->UseCustomThreadClearance.setValue(true);
+    thread->CustomThreadClearance.setValue(0.0);
+    thread->ModelThread.setValue(true);
+    thread->CosmeticThread.setValue(false);
+
+    doc->recompute();
+
+    ASSERT_FALSE(thread->isError()) << thread->getStatusString();
+    ASSERT_TRUE(thread->isValid());
+    EXPECT_TRUE(thread->IsInternal.getValue());
+    EXPECT_EQ(thread->getAddSubType(), PartDesign::FeatureAddSub::Subtractive);
+    ASSERT_FALSE(thread->Shape.getValue().IsNull());
+    EXPECT_FALSE(thread->AddSubShape.getValue().IsNull());
+
+    GProp_GProps threadVolume;
+    BRepGProp::VolumeProperties(thread->Shape.getValue(), threadVolume);
+    EXPECT_LT(threadVolume.Mass(), padVolume.Mass());
 }
 
 // TEST_F(ThreadTest, ExternalCosmeticThreadPreservesBase)

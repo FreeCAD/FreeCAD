@@ -36,7 +36,9 @@
 #include <Bnd_Box.hxx>
 #include <BRepBndLib.hxx>
 #include <TopExp_Explorer.hxx>
+#include <cmath>
 #include <iomanip>
+#include <sstream>
 
 #include <Mod/Part/App/TopoShapeOpCode.h>
 
@@ -216,6 +218,7 @@ App::DocumentObjectExecReturn* Thread::execute()
     Diameter.setValue(diameter);
 
     int nearestSize = -1;
+    int nearestPitch = -1;
     double definedDiameter = 0.0;
     if (!IsInternal.getValue()) {
         const std::vector<std::string> diameters = threadUtils.getThreadDiameters(
@@ -246,6 +249,7 @@ App::DocumentObjectExecReturn* Thread::execute()
             );
         }
         nearestSize = selection->sizeIndex;
+        nearestPitch = selection->pitchIndex;
         definedDiameter = selection->minorDiameter;
     }
 
@@ -255,27 +259,31 @@ App::DocumentObjectExecReturn* Thread::execute()
         );
     }
 
-    // TODO: this has to go in production
-    // TODO: if there is only one measure that matches the current cylinder, it passes but it shouldn't
-    // if (std::abs(diameter - definedDiameter) > Precision::Confusion()) {
-    //     Base::Console().message("diameter: %lf\n", diameter);
-    //     Base::Console().message("definedDiameter: %lf\n", definedDiameter);
-    //     std::string msg = "Thread error: No thread definition found with exact diameter matching " 
-    //                     + std::to_string(diameter) + " mm.";
-    //     return new App::DocumentObjectExecReturn(msg.c_str());
-    // }
+    const bool isCylindricalSupport = diameter >= 0.0;
+    const bool sizeMismatch = nearestSize != ThreadSize.getValue();
+    const bool pitchMismatch = IsInternal.getValue()
+        && nearestPitch != ThreadSizePitch.getValue();
+    const bool diameterMismatch = std::abs(diameter - definedDiameter) > Precision::Confusion();
+    if (ModelThread.getValue() && isCylindricalSupport
+        && (sizeMismatch || pitchMismatch || diameterMismatch)) {
+        Base::Console().message("diameter: %lf\n", diameter);
+        Base::Console().message("definedDiameter: %lf\n", definedDiameter);
+        std::ostringstream diameterText;
+        diameterText << std::fixed << std::setprecision(3) << diameter;
+        std::string formattedDiameter = diameterText.str();
+        formattedDiameter.erase(formattedDiameter.find_last_not_of('0') + 1);
+        if (formattedDiameter.back() == '.') {
+            formattedDiameter.pop_back();
+        }
+        const std::string threadKind = IsInternal.getValue() ? "internal" : "external";
+        std::string msg = "Thread error: Selected " + threadKind
+                        + " thread does not match the support diameter "
+                        + formattedDiameter + " mm.";
+        return new App::DocumentObjectExecReturn(msg.c_str());
+    }
 
     double conicalAngle = threadUtils.getConicalAngle(LateralFace);
     Base::Console().message("Conical Angle: %lf\n", conicalAngle);
-    // double nearestSize = 0.0;
-    // if (!IsInternal.getValue()) {
-        // nearestSize = threadUtils.findNearestThreadSize(ThreadType.getValue(), diameter);
-        // Diameter.setValue(nearestSize);
-    // }
-    // else {
-        // nearestSize = threadUtils.findNearestMinorThreadSize(ThreadType.getValue(), diameter);
-        // Diameter.setValue(nearestSize);
-    // }
 
     try {
         const ThreadExtent extent = resolveThreadExtent(base);
