@@ -24,6 +24,7 @@ set(Sketcher_TestScripts
     SketcherTests/TestSketchCarbonCopyReverseMapping.FCStd
     SketcherTests/TestSketchInternalFaces.py
     SketcherTests/TestSketcherEllipse.py
+    SketcherTests/TestDeferredConstraints.py
 )
 
 if(BUILD_GUI)
