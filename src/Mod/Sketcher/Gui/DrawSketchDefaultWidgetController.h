@@ -165,7 +165,11 @@ public:
 
     void parameterTabOrEnterPressed(int parameterindex)
     {
-        Q_UNUSED(parameterindex);
+        if (parameterindex >= SketcherToolDefaultWidget::nParameters) {
+            int cbIdx = parameterindex - SketcherToolDefaultWidget::nParameters;
+            ControllerBase::parameterWithFocus
+                = static_cast<int>(ControllerBase::onViewParameters.size()) + nParameter + cbIdx;
+        }
         passFocusToNextParameter();
     }
 
@@ -359,18 +363,29 @@ protected:
         }
     }
 
-    /// Here we can pass focus to either OVP or widget parameters.
+    /// Here we can pass focus to either OVP, widget spinboxes, or widget checkboxes.
     void passFocusToNextParameter()
     {
-        unsigned int index = ControllerBase::parameterWithFocus + 1;
+        const unsigned int ovpSize = static_cast<unsigned int>(ControllerBase::onViewParameters.size());
+        const unsigned int spinboxEnd = ovpSize + static_cast<unsigned int>(nParameter);
+        const unsigned int lineEditEnd = spinboxEnd + static_cast<unsigned int>(nLineEdit);
+        const unsigned int total = lineEditEnd + static_cast<unsigned int>(nCheckbox);
 
-        // The total number of focusable items now includes LineEdits.
-        if (index >= ControllerBase::onViewParameters.size() + nParameter + nLineEdit) {
+        // Start from the parameter after the currently focused one.
+        // parameterWithFocus may be -1 (no focus yet) or in the extended range.
+        unsigned int index = (ControllerBase::parameterWithFocus < 0)
+            ? 0u
+            : static_cast<unsigned int>(ControllerBase::parameterWithFocus) + 1u;
+
+        if (index >= total) {
             index = 0;
         }
 
-        auto trySetFocus = [this](unsigned int& idx) -> bool {
-            while (idx < ControllerBase::onViewParameters.size()) {
+        // Tries to set focus to the next available focusable item starting at idx.
+        // Cycles through: on-view parameters -> spinboxes -> line edits -> checkboxes.
+        auto trySetFocus = [this, ovpSize, spinboxEnd, lineEditEnd, total](unsigned int& idx) -> bool {
+            // On-view parameters
+            while (idx < ovpSize) {
                 if (ControllerBase::isOnViewParameterOfCurrentMode(idx)
                     && ControllerBase::isOnViewParameterVisible(idx)) {
                     setFocusToParameter(idx);
@@ -378,33 +393,39 @@ protected:
                 }
                 idx++;
             }
-            // Check SpinBoxes
-            if (idx < ControllerBase::onViewParameters.size() + nParameter) {
-                if (nParameter > 0) {
-                    setFocusToParameter(idx);
-                    return true;
-                }
-                // If no spinboxes, update index to check line edits
-                idx = ControllerBase::onViewParameters.size() + nParameter;
+
+            // Widget spinboxes
+            if (idx < spinboxEnd) {
+                setFocusToParameter(idx);
+                return true;
             }
-            // Check LineEdits
-            if (idx < ControllerBase::onViewParameters.size() + nParameter + nLineEdit) {
-                if (nLineEdit > 0) {
-                    setFocusToParameter(idx);
+
+            // Widget line edits
+            if (idx < lineEditEnd) {
+                setFocusToParameter(idx);
+                return true;
+            }
+
+            // Widget checkboxes
+            while (idx < total) {
+                int cbIdx = static_cast<int>(idx - lineEditEnd);
+                if (toolWidget->isCheckboxVisible(cbIdx)) {
+                    toolWidget->setCheckboxFocus(cbIdx);
+                    ControllerBase::parameterWithFocus = static_cast<int>(idx);
                     return true;
                 }
+                idx++;
             }
             return false;
         };
 
         if (!trySetFocus(index)) {
-            // We have not found a parameter in this mode after current.
-            // So we go back to start and retry.
+            // Nothing found from the current position forward; wrap to the start.
             index = 0;
             trySetFocus(index);
         }
 
-        // At that point if no onViewParameter is found, there is none.
+        // At that point if no focusable item is found, there is none.
     }
     //@}
 
