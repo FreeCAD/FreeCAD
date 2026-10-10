@@ -2091,9 +2091,14 @@ bool Document::saveToFile(const char* filename) const
             GetApplication()
                 .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
                 ->GetBool("ConsolidateBackupFiles", false);
+        std::string backupDirectory =
+            GetApplication()
+                .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
+                ->GetASCII("BackupDirectory", "%D/freecad-backups");
 
         BackupPolicy backupPolicy;
         backupPolicy.consolidateBackups(consolidateBackups);
+        backupPolicy.setBackupDirectory(backupDirectory);
         if (useFCBakExtension) {
             backupPolicy.setPolicy(BackupPolicy::TimeStamp);
             backupPolicy.useBackupExtension(useFCBakExtension);

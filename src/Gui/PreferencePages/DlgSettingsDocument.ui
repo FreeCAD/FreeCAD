@@ -566,24 +566,51 @@ get date suffix according to the specified format</string>
        </layout>
       </item>
       <item row="10" column="0">
-       <widget class="Gui::PrefCheckBox" name="prefConsolidateBackupFiles">
-        <property name="toolTip">
-         <string>Backup files will be stored in a 'freecad-backups' directory next to the project file
-instead of alongside the project file itself</string>
+       <layout class="QHBoxLayout">
+        <property name="spacing">
+         <number>6</number>
         </property>
-        <property name="text">
-         <string>Consolidate backup files</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>ConsolidateBackupFiles</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Document</cstring>
-        </property>
-       </widget>
+        <item>
+         <widget class="Gui::PrefCheckBox" name="prefConsolidateBackupFiles">
+          <property name="toolTip">
+           <string>Backup files will be stored in the specified directory</string>
+          </property>
+          <property name="text">
+           <string>Consolidate backup files</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ConsolidateBackupFiles</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Document</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefLineEdit" name="prefBackupDirectory">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="toolTip">
+           <string>Directory where backup files are stored.
+%D is replaced by the directory of the document being saved.
+Relative paths are relative to the directory of the document.</string>
+          </property>
+          <property name="text">
+           <string notr="true">%D/freecad-backups</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>BackupDirectory</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Document</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item row="11" column="0">
        <widget class="Gui::PrefCheckBox" name="prefDisableVersionCheckOnSave">
@@ -887,6 +914,22 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</string>
     </hint>
     <hint type="destinationlabel">
      <x>204</x>
+     <y>590</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>prefConsolidateBackupFiles</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>prefBackupDirectory</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>204</x>
+     <y>590</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>584</x>
      <y>590</y>
     </hint>
    </hints>

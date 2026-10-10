@@ -57,6 +57,10 @@ void BackupPolicy::consolidateBackups(const bool on)
 {
     useBackupDirectory = on;
 }
+void BackupPolicy::setBackupDirectory(const std::string& path)
+{
+    backupDirectory = path;
+}
 void BackupPolicy::apply(const std::string& sourcename, const std::string& targetname)
 {
     if (numberOfFiles <= 0) {
@@ -430,11 +434,16 @@ bool BackupPolicy::renameFileNoErase(Base::FileInfo fi, const std::string& newNa
 
 std::string BackupPolicy::getBackupDirectoryPath(const Base::FileInfo& target) const
 {
-    if (!useBackupDirectory) {
+    if (!useBackupDirectory || backupDirectory.empty()) {
         return target.dirPath();
     }
-    auto backupDir = Base::FileInfo::stringToPath(target.dirPath()) / "freecad-backups";
-    return Base::FileInfo::pathToString(backupDir);
+    // %D is replaced by the directory of the document, as in the CAM workbench
+    std::string path = boost::replace_all_copy(backupDirectory, "%D", target.dirPath());
+    auto backupDir = Base::FileInfo::stringToPath(path);
+    if (backupDir.is_relative()) {
+        backupDir = Base::FileInfo::stringToPath(target.dirPath()) / backupDir;
+    }
+    return Base::FileInfo::pathToString(backupDir.lexically_normal());
 }
 
 std::string BackupPolicy::getBackupFilePath(const std::string& backupDir,

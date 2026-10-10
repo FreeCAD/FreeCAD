@@ -45,6 +45,7 @@ public:
     void useBackupExtension(const bool on);
     void setDateFormat(const std::string& fmt);
     void consolidateBackups(const bool on);
+    void setBackupDirectory(const std::string& path);
     void apply(const std::string& sourcename, const std::string& targetname);
 
 private:
@@ -67,6 +68,7 @@ private:
     int numberOfFiles {1};
     bool useFCBakExtension {true};
     bool useBackupDirectory {false};
+    std::string backupDirectory {"%D/freecad-backups"};
     std::string saveBackupDateFormat {"%Y%m%d-%H%M%S"};
 };
 }  // namespace App
