@@ -990,8 +990,21 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
             base_sapp_mat = obj.ViewObject.ShapeAppearance[0]
             arch_mat = getattr(obj, "Material", None)
 
-        solids = obj.Shape.copy().Solids
+        solids = obj.Shape.Solids
         sapp = []
+        base_children = []
+        if not obj.WindowParts and obj.Base and hasattr(obj.Base, "Shape"):
+            # Type-based window: obj.Base furnishes the window solids.
+            for child in getattr(obj.Base, "Group", []):
+                if child.Visibility and getattr(child, "Shape", None) and child.Shape.Solids:
+                    base_children.append(child)
+            # Handle Linkgroup seperately to work around issue #32218.
+            # https://github.com/FreeCAD/FreeCAD/issues/32218
+            for child, vis in zip(
+                getattr(obj.Base, "ElementList", []), getattr(obj.Base, "VisibilityList", [])
+            ):
+                if vis and getattr(child, "Shape", None) and child.Shape.Solids:
+                    base_children.append(child)
         for i in range(len(solids)):
             color = None
             if obj.WindowParts and len(obj.WindowParts) > i * 5:
@@ -999,22 +1012,10 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                 name = obj.WindowParts[(i * 5)]
                 mtype = obj.WindowParts[(i * 5) + 1]
                 color = self.getSolidMaterial(obj, arch_mat, name, mtype)
-            elif obj.Base and hasattr(obj.Base, "Shape"):
-                # Type-based window: obj.Base furnishes the window solids
-                sol1 = self.getSolidSignature(solids[i])
-                for child in getattr(obj.Base, "Group", []) + getattr(obj.Base, "ElementList", []):
-                    if hasattr(child, "Shape") and child.Shape and child.Shape.Solids:
-                        sol2 = self.getSolidSignature(child.Shape)
-                        if sol1 == sol2:
-                            color = self.getSolidMaterial(obj, arch_mat, child.Label)
-                            break
-            if color is None:
-                typeidx = (i * 5) + 1
-                if typeidx < len(obj.WindowParts):
-                    typ = obj.WindowParts[typeidx]
-                    if typ == WindowPartTypes[2]:  # "Glass panel"
-                        color = ArchCommands.getDefaultColor("WindowGlass")
-
+                if color is None and mtype == WindowPartTypes[2]:  # "Glass panel"
+                    color = ArchCommands.getDefaultColor("WindowGlass")
+            elif len(base_children) > i:
+                color = self.getSolidMaterial(obj, arch_mat, base_children[i].Label)
             if color is None:
                 sapp_mat = base_sapp_mat
             else:
@@ -1030,16 +1031,6 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
             obj = clone
         if not _shapeAppearanceIsSame(obj.ViewObject.ShapeAppearance, sapp):
             obj.ViewObject.ShapeAppearance = sapp
-
-    def getSolidSignature(self, solid):
-        """Returns a tuple defining as uniquely as possible a solid"""
-
-        return (
-            solid.ShapeType,
-            round(solid.Volume, 3),
-            round(solid.Area, 3),
-            round(solid.Length, 3),
-        )
 
     def getSolidMaterial(self, obj, arch_mat, name, mtype=None):
         """returns an RGBA tuple of floats (0.0 - 1.0)"""
