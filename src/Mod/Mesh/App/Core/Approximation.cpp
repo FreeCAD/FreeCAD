@@ -1250,7 +1250,7 @@ float CylinderFit::Fit()
     Eigen::LevenbergMarquardt<LMCylinderFunctor, double> lm(functor);
     int status = lm.minimize(x);
     Base::Console()
-        .log("Cylinder fit: %d, iterations: %d, gradient norm: %f\n", status, lm.iter, lm.gnorm);
+        .log("Cylinder fit: {}, iterations: {}, gradient norm: {:f}\n", status, lm.iter, lm.gnorm);
 
     _vAxis.x = x(0);
     _vAxis.y = x(1);

@@ -70,8 +70,8 @@ void QGIGhostHighlight::mousePressEvent(QGraphicsSceneMouseEvent * event)
 void QGIGhostHighlight::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 //    Base::Console().message("QGIGhostHighlight::mouseRelease() - pos: {} scenePos: {}\n",
-//                                 DrawUtil::formatVector(pos()).c_str(),
-//                                 DrawUtil::formatVector(mapToScene(pos())).c_str());
+//                                 DrawUtil::formatVector(pos()),
+//                                 DrawUtil::formatVector(mapToScene(pos())));
     if (m_dragging) {
         m_dragging = false;
         Q_EMIT positionChange(scenePos());

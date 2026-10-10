@@ -256,7 +256,7 @@ bool AbstractPolygonTriangulator::TriangulatePolygon()
     try {
         if (!this->_indices.empty() && this->_points.size() != this->_indices.size()) {
             Base::Console()
-                .log("Triangulation: %d points <> %d indices\n", _points.size(), _indices.size());
+                .log("Triangulation: {} points <> {} indices\n", _points.size(), _indices.size());
             return false;
         }
         bool ok = Triangulate();
