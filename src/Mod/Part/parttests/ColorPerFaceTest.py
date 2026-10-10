@@ -169,6 +169,37 @@ class ColorPerFaceTest(unittest.TestCase):
         self.assertEqual(len(fuse.ViewObject.DiffuseColor), 11)
         self.assertEqual(fuse.ViewObject.DiffuseColor[0], (1.0, 0.0, 0.0, 1.0))
 
+    def testMultiFuseWithCustomDefaultShapeColor(self):
+        """
+        The FreeCAD Light and Dark preference packs change the default shape color. Fusing two
+        red objects must still give a red result in that case.
+        """
+        params = App.ParamGet("User parameter:BaseApp/Preferences/View")
+        had_color = "DefaultShapeColor" in params.GetUnsigneds()
+        old_color = params.GetUnsigned("DefaultShapeColor")
+        params.SetUnsigned("DefaultShapeColor", 0xADB5BDFF)  # FreeCAD Light
+        try:
+            box = self.doc.addObject("Part::Box", "Box")
+            cyl = self.doc.addObject("Part::Cylinder", "Cylinder")
+            box.ViewObject.ShapeColor = (1.0, 0.0, 0.0, 1.0)
+            cyl.ViewObject.ShapeColor = (1.0, 0.0, 0.0, 1.0)
+            self.doc.recompute()
+
+            bp = BOPFeatures.BOPFeatures(self.doc)
+            fuse = bp.make_multi_fuse([box.Name, cyl.Name])
+            fuse.Refine = False
+            self.doc.recompute()
+
+            self.assertEqual(len(fuse.Shape.Faces), 11)
+            self.assertEqual(len(fuse.ViewObject.DiffuseColor), 11)
+            for color in fuse.ViewObject.DiffuseColor:
+                self.assertEqual(color, (1.0, 0.0, 0.0, 1.0))
+        finally:
+            if had_color:
+                params.SetUnsigned("DefaultShapeColor", old_color)
+            else:
+                params.RemUnsigned("DefaultShapeColor")
+
     def testMultiFuseSaveRestore(self):
         box = self.doc.addObject("Part::Box", "Box")
         cyl = self.doc.addObject("Part::Cylinder", "Cylinder")
