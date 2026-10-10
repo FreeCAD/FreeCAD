@@ -342,8 +342,8 @@ void DlgSettingsWorkbenchesImp::saveSettings()
     hGrp->SetASCII("Ordered", orderedStr.str().c_str());
     hGrp->SetASCII("Disabled", disabledStr.str().c_str());
 
-    // Update the list of workbenches in the WorkbenchGroup and in the WorkbenchComboBox & workbench
-    // QMenu
+    // Update the list of workbenches in the WorkbenchGroup and in the WorkbenchLargeComboBox &
+    // workbench QMenu
     Application::Instance->signalRefreshWorkbenches();
 
     App::GetApplication()
@@ -588,7 +588,7 @@ void DlgSettingsWorkbenchesImp::loadWorkbenchSelector()
     );
     int widgetTypeIndex = hGrp->GetInt("WorkbenchSelectorType", 0);
     ui->WorkbenchSelectorType->clear();
-    ui->WorkbenchSelectorType->addItem(tr("ComboBox"));
+    ui->WorkbenchSelectorType->addItem(tr("LargeComboBox"));
     ui->WorkbenchSelectorType->addItem(tr("TabBar"));
     ui->WorkbenchSelectorType->setCurrentIndex(widgetTypeIndex);
 
@@ -603,7 +603,7 @@ void DlgSettingsWorkbenchesImp::loadWorkbenchSelector()
 
 void DlgSettingsWorkbenchesImp::translateWorkbenchSelector()
 {
-    ui->WorkbenchSelectorType->setItemText(0, tr("ComboBox"));
+    ui->WorkbenchSelectorType->setItemText(0, tr("LargeComboBox"));
     ui->WorkbenchSelectorType->setItemText(1, tr("TabBar"));
 
     ui->WorkbenchSelectorItem->setItemText(0, tr("Icon and text"));

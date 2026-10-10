@@ -43,7 +43,7 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QComboBox" name="Languages">
+        <widget class="Gui::LargeComboBox" name="Languages">
          <property name="toolTip">
           <string>Language of the application's user interface</string>
          </property>
@@ -569,6 +569,11 @@ and spin boxes with hover focus</string>
    <class>Gui::PrefComboBox</class>
    <extends>QComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::LargeComboBox</class>
+   <extends>QComboBox</extends>
+   <header>LargeComboBox.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
