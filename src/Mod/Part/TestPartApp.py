@@ -41,6 +41,7 @@ from parttests.TestLinkArrayLinear import TestLinkArrayLinear
 from parttests.TestLinkArrayPath import TestLinkArrayPath
 from parttests.TestLinkArrayPoint import TestLinkArrayPoint
 from parttests.TestPartMirror import TestPartMirroringRegression
+from parttests.TestProjectOnSurface import TestProjectOnSurface
 from parttests.TestFaceMakerUnifiedPlanar import *
 from parttests.TestFaceMakerUnifiedNonPlanar import *
 
