@@ -94,18 +94,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           python3 package/scripts/write_version_info.py ../freecad_version.txt
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git config user.name 'github-actions[bot]'
-          git apply package/disable_git_info.patch
-          git commit -a -m "Disable git info write to Version.h"
           git archive HEAD -o freecad_source_${BUILD_TAG}.tar
           git submodule foreach --recursive \
             "git archive HEAD --prefix=\$path/ -o \$sha1.tar && \
              tar -A -f \$toplevel/freecad_source_${BUILD_TAG}.tar \$sha1.tar && \
              rm \$sha1.tar"
           gzip freecad_source_${BUILD_TAG}.tar
-          sha256sum freecad_source_${BUILD_TAG}.tar.gz > freecad_source_${BUILD_TAG}.tar.gz-SHA256.txt
-          gh release upload --clobber ${BUILD_TAG} "freecad_source_${BUILD_TAG}.tar.gz" "freecad_source_${BUILD_TAG}.tar.gz-SHA256.txt"
+          gh release upload --clobber ${BUILD_TAG} "freecad_source_${BUILD_TAG}.tar.gz"
 
   build:
     needs: upload_src
