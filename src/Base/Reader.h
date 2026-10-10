@@ -39,11 +39,6 @@
 #include "FileInfo.h"
 
 
-namespace zipios
-{
-class ZipInputStream;
-}
-
 namespace XERCES_CPP_NAMESPACE
 {
 class Attributes;
@@ -54,6 +49,7 @@ class SAX2XMLReader;
 namespace Base
 {
 class Persistence;
+class ZipReader;
 
 /** The XML reader class
  * This is an important helper class for the store and retrieval system
@@ -277,7 +273,7 @@ public:
     /// add a read request of a persistent object
     const char* addFile(const char* Name, Base::Persistence* Object);
     /// process the requested file writes
-    void readFiles(zipios::ZipInputStream& zipstream) const;
+    void readFiles(const ZipReader& zip) const;
     /// Returns whether reader has any registered filenames
     bool hasFilenames() const;
     /// returns true if reading the file \a filename has failed

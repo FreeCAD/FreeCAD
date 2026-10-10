@@ -27,7 +27,7 @@
 
 #include <Mod/Mesh/MeshGlobal.h>
 #include <iosfwd>
-#include <zipios++/zipoutputstream.h>
+#include <Base/ZipOutputStream.h>
 
 namespace Base
 {
@@ -102,7 +102,7 @@ private:
     bool SaveContent(std::ostream& str) const;
 
 private:
-    zipios::ZipOutputStream zip;
+    Base::ZipOutputStream zip;
     int objectIndex = 0;
     std::vector<std::string> items;
     std::vector<Resource3MF> resources;

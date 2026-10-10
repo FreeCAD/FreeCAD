@@ -52,6 +52,8 @@
 #include <App/Document.h>
 #include <App/ProjectFile.h>
 #include <Base/Exception.h>
+#include <Base/FileInfo.h>
+#include <Base/ZipReader.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Dialogs/DlgCheckableMessageBox.h>
@@ -488,47 +490,30 @@ DocumentRecoveryPrivate::Info DocumentRecoveryPrivate::getRecoveryInfo(const QFi
 bool zipDataIsValid(const QString& fcstdFile)
 {
     try {
-        zipios::ZipFile zf(fcstdFile.toStdString());
-        auto entries = zf.entries();
-        int n = 0;
-        for (auto it = entries.begin(); it != entries.end(); ++it) {
-            std::unique_ptr<std::istream> s(zf.getInputStream(*it));
+        Base::ZipReader zf {Base::FileInfo(fcstdFile.toStdString())};
+        auto names = zf.entryNames();
+        for (const auto& name : names) {
+            std::unique_ptr<std::istream> s(zf.getInputStream(name));
             if (!s || !(*s)) {
                 return false;
             }
-            ++n;
         }
-        if (n == 0) {
-            return false;
-        }
-        return true;
+        return !names.empty();
     }
     catch (...) {
         return false;
     }
 }
 
-static zipios::ConstEntryPointer findEntry(zipios::ZipFile& zf, const std::string& name)
-{
-    auto entries = zf.entries();
-    for (auto it = entries.begin(); it != entries.end(); ++it) {
-        if ((*it)->getName() == name) {
-            return *it;
-        }
-    }
-    return {};
-}
-
 bool xmlFilesAreValid(const QString& fcstdFile)
 {
     try {
-        zipios::ZipFile zf(fcstdFile.toStdString());
-        auto doc = findEntry(zf, "Document.xml");
-        if (!doc) {
+        Base::ZipReader zf {Base::FileInfo(fcstdFile.toStdString())};
+        if (!zf.hasEntry("Document.xml")) {
             return false;
         }
         {
-            std::unique_ptr<std::istream> s(zf.getInputStream(doc));
+            std::unique_ptr<std::istream> s(zf.getInputStream("Document.xml"));
             QByteArray bytes;
             bytes.resize(0);
             std::string tmp((std::istreambuf_iterator<char>(*s)), std::istreambuf_iterator<char>());
@@ -542,8 +527,8 @@ bool xmlFilesAreValid(const QString& fcstdFile)
         }
 
         // GuiDocument.xml is optional, but if it's present it must be well-formed
-        if (auto gui = findEntry(zf, "GuiDocument.xml")) {
-            std::unique_ptr<std::istream> s(zf.getInputStream(gui));
+        if (zf.hasEntry("GuiDocument.xml")) {
+            std::unique_ptr<std::istream> s(zf.getInputStream("GuiDocument.xml"));
             std::string tmp((std::istreambuf_iterator<char>(*s)), std::istreambuf_iterator<char>());
             QXmlStreamReader xr(QByteArray(tmp.data(), int(tmp.size())));
             while (!xr.atEnd()) {

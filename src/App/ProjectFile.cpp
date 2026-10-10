@@ -41,12 +41,6 @@
 #include <xercesc/sax/SAXParseException.hpp>
 #include <sstream>
 
-#include <zipios++/zipios-config.h>
-#include <zipios++/zipfile.h>
-#include <zipios++/zipinputstream.h>
-#include <zipios++/zipoutputstream.h>
-#include <zipios++/meta-iostreams.h>
-
 #include "ProjectFile.h"
 #include "DocumentObject.h"
 #include <Base/FileInfo.h>
@@ -55,6 +49,7 @@
 #include <Base/Writer.h>
 #include <Base/Stream.h>
 #include <Base/XMLTools.h>
+#include <Base/ZipReader.h>
 
 using namespace App;
 using namespace XERCES_CPP_NAMESPACE;
@@ -65,19 +60,14 @@ namespace
 class ZipTools
 {
 public:
-    static std::unique_ptr<zipios::ZipFile> open(const std::string& file)
+    static std::unique_ptr<Base::ZipReader> open(const std::string& file)
     {
-        std::unique_ptr<zipios::ZipFile> project;
         try {
-            project = std::make_unique<zipios::ZipFile>(file);
-            if (!project->isValid()) {
-                project.reset();
-            }
+            return std::make_unique<Base::ZipReader>(Base::FileInfo(file));
         }
         catch (const std::exception&) {
+            return nullptr;
         }
-
-        return project;
     }
 };
 
@@ -476,8 +466,12 @@ bool ProjectFile::restoreObject(const std::string& name, App::PropertyContainer*
     Base::FileInfo fi(stdFile);
     Base::ifstream file(fi, std::ios::in | std::ios::binary);
 
-    zipios::ZipInputStream zipstream(file);
-    Base::XMLReader reader(stdFile.c_str(), zipstream);
+    Base::ZipReader zip(file);
+    auto documentStream = zip.getInputStream("Document.xml");
+    if (!documentStream) {
+        return false;
+    }
+    Base::XMLReader reader(stdFile.c_str(), *documentStream);
     reader.setVerbose(verbose);
 
     if (!reader.isValid()) {
@@ -507,7 +501,7 @@ bool ProjectFile::restoreObject(const std::string& name, App::PropertyContainer*
     }
     reader.readEndElement("ObjectData");
 
-    reader.readFiles(zipstream);
+    reader.readFiles(zip);
 
     return true;
 }
@@ -620,16 +614,14 @@ void ProjectFile::findFiles(XERCES_CPP_NAMESPACE::DOMNode* node,
 
 bool ProjectFile::containsFile(const std::string& name) const
 {
-    zipios::ZipFile project(stdFile);
-    auto entry = project.getEntry(name);
-    return entry != nullptr;
+    Base::ZipReader project {Base::FileInfo(stdFile)};
+    return project.hasEntry(name);
 }
 
 uint32_t ProjectFile::sizeOfFile(const std::string& name) const
 {
-    zipios::ZipFile project(stdFile);
-    auto entry = project.getEntry(name);
-    return entry == nullptr ? 0 : entry->getSize();
+    Base::ZipReader project {Base::FileInfo(stdFile)};
+    return static_cast<uint32_t>(project.entrySize(name));
 }
 
 std::list<std::string> ProjectFile::getInputFiles(const std::string& name) const
@@ -689,7 +681,7 @@ void ProjectFile::findFiles(XERCES_CPP_NAMESPACE::DOMNode* node,
 
 std::string ProjectFile::extractInputFile(const std::string& name)
 {
-    zipios::ZipFile project(stdFile);
+    Base::ZipReader project {Base::FileInfo(stdFile)};
     std::unique_ptr<std::istream> str(project.getInputStream(name));
     if (str) {
         // write it to a tmp. file as writing to the string stream
@@ -721,7 +713,7 @@ void ProjectFile::readInputFile(const std::string& name, std::ostream& str)
 // file)
 void ProjectFile::readInputFileDirect(const std::string& name, std::ostream& str) const
 {
-    zipios::ZipFile project(stdFile);
+    Base::ZipReader project {Base::FileInfo(stdFile)};
     std::unique_ptr<std::istream> istr(project.getInputStream(name));
     if (istr) {
         *istr >> str.rdbuf();
@@ -738,31 +730,29 @@ std::string ProjectFile::replaceInputFile(const std::string& name, std::istream&
     Base::FileInfo tmp(fn);
     Base::ofstream newZip(tmp, std::ios::out | std::ios::binary);
 
-    // standard compression
-    const int compressionLevel = 6;
-    zipios::ZipOutputStream outZip(newZip);
-    outZip.setComment("FreeCAD Document");
-    outZip.setLevel(compressionLevel);
+    // open extra scope
+    {
+        // standard compression
+        const int compressionLevel = 6;
+        Base::ZipWriter outZip(newZip);
+        outZip.setComment("FreeCAD Document");
+        outZip.setLevel(compressionLevel);
 
-    // open the original zip file
-    zipios::ZipFile project(stdFile);
-    zipios::ConstEntries files = project.entries();
-    for (const auto& it : files) {
-        std::string file = it->getFileName();
-        outZip.putNextEntry(file);
-        if (file == name) {
-            inp >> outZip.rdbuf();
-        }
-        else {
-            std::unique_ptr<std::istream> str(project.getInputStream(file));
-            if (str) {
-                *str >> outZip.rdbuf();
+        // open the original zip file
+        Base::ZipReader project {Base::FileInfo(stdFile)};
+        for (const auto& file : project.entryNames()) {
+            outZip.putNextEntry(file.c_str());
+            if (file == name) {
+                inp >> outZip.Stream().rdbuf();
+            }
+            else {
+                std::unique_ptr<std::istream> str(project.getInputStream(file));
+                if (str) {
+                    *str >> outZip.Stream().rdbuf();
+                }
             }
         }
     }
-
-    project.close();
-    outZip.close();
     newZip.close();
 
     return fn;
@@ -778,33 +768,31 @@ std::string ProjectFile::replaceInputFiles(const std::map<std::string, std::istr
     Base::FileInfo tmp(fn);
     Base::ofstream newZip(tmp, std::ios::out | std::ios::binary);
 
-    // standard compression
-    const int compressionLevel = 6;
-    zipios::ZipOutputStream outZip(newZip);
-    outZip.setComment("FreeCAD Document");
-    outZip.setLevel(compressionLevel);
+    // open extra scope
+    {
+        // standard compression
+        const int compressionLevel = 6;
+        Base::ZipWriter outZip(newZip);
+        outZip.setComment("FreeCAD Document");
+        outZip.setLevel(compressionLevel);
 
-    // open the original zip file
-    zipios::ZipFile project(stdFile);
-    zipios::ConstEntries files = project.entries();
-    for (const auto& it : files) {
-        std::string file = it->getFileName();
-        outZip.putNextEntry(file);
+        // open the original zip file
+        Base::ZipReader project {Base::FileInfo(stdFile)};
+        for (const auto& file : project.entryNames()) {
+            outZip.putNextEntry(file.c_str());
 
-        auto jt = inp.find(file);
-        if (jt != inp.end()) {
-            *jt->second >> outZip.rdbuf();
-        }
-        else {
-            std::unique_ptr<std::istream> str(project.getInputStream(file));
-            if (str) {
-                *str >> outZip.rdbuf();
+            auto jt = inp.find(file);
+            if (jt != inp.end()) {
+                *jt->second >> outZip.Stream().rdbuf();
+            }
+            else {
+                std::unique_ptr<std::istream> str(project.getInputStream(file));
+                if (str) {
+                    *str >> outZip.Stream().rdbuf();
+                }
             }
         }
     }
-
-    project.close();
-    outZip.close();
     newZip.close();
 
     return fn;
@@ -829,10 +817,8 @@ std::string ProjectFile::replacePropertyFiles(const std::map<std::string, App::P
         writer.setLevel(compressionLevel);
 
         // open the original zip file
-        zipios::ZipFile project(stdFile);
-        zipios::ConstEntries files = project.entries();
-        for (const auto& it : files) {
-            std::string file = it->getFileName();
+        Base::ZipReader project {Base::FileInfo(stdFile)};
+        for (const auto& file : project.entryNames()) {
             writer.putNextEntry(file.c_str());
 
             auto jt = props.find(file);
@@ -846,7 +832,6 @@ std::string ProjectFile::replacePropertyFiles(const std::map<std::string, App::P
                 }
             }
         }
-        project.close();
     }
 
     return fn;

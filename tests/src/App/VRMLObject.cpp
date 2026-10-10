@@ -28,13 +28,12 @@
 #include <sstream>
 #include <string>
 
-#include <zipios++/zipfile.h>
-#include <zipios++/zipoutputstream.h>
-
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/VRMLObject.h>
 #include <Base/FileInfo.h>
+#include <Base/ZipOutputStream.h>
+#include <Base/ZipReader.h>
 #include <src/App/InitApplication.h>
 
 // NOLINTBEGIN
@@ -137,11 +136,10 @@ protected:
         const std::string original("FreeCAD/FreeCAD1.png");
         std::string output = Base::FileInfo::getTempFileName() + ".FCStd";
 
-        zipios::ZipFile input(baseFileName());
-        zipios::ZipOutputStream stream(output);
-        for (const auto& entry : input.entries()) {
-            std::string name = entry->getName();
-            std::unique_ptr<std::istream> in(input.getInputStream(entry));
+        Base::ZipReader input {Base::FileInfo(baseFileName())};
+        Base::ZipOutputStream stream {Base::FileInfo(output)};
+        for (std::string name : input.entryNames()) {
+            std::unique_ptr<std::istream> in(input.getInputStream(name));
             std::ostringstream buffer;
             buffer << in->rdbuf();
             std::string data = buffer.str();

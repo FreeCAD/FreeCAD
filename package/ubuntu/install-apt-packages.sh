@@ -50,7 +50,6 @@ packages=(
   libx11-dev
   libxerces-c-dev
   libyaml-cpp-dev
-  libzipios++-dev
   netgen
   netgen-headers
   ninja-build

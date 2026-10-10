@@ -45,7 +45,7 @@
 #include <Base/Persistence.h>
 #include <Base/Stream.h>
 #include <Base/Tools.h>
-#include <zipios++/gzipoutputstream.h>
+#include <Base/ZipOutputStream.h>
 
 #include "SoFCDB.h"
 #include "Camera.h"
@@ -391,7 +391,7 @@ bool Gui::SoFCDB::writeToVRML(SoNode* node, const char* filename, bool binary)
         // Strange is that reading GZIPped VRML files works.
         // So, we do the compression on our own.
         Base::ofstream str(fi, std::ios::out | std::ios::binary);
-        zipios::GZIPOutputStream gzip(str);
+        Base::GZipOutputStream gzip(str);
 
         if (gzip) {
             gzip << buffer;
@@ -420,7 +420,7 @@ bool Gui::SoFCDB::writeToX3D(SoNode* node, const char* filename, bool binary)
     Base::FileInfo fi(filename);
     if (binary) {
         Base::ofstream str(fi, std::ios::out | std::ios::binary);
-        zipios::GZIPOutputStream gzip(str);
+        Base::GZipOutputStream gzip(str);
 
         if (gzip) {
             gzip << buffer;
