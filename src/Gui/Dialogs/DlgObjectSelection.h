@@ -94,6 +94,8 @@ public:
     /// Get the selected objects
     std::vector<App::DocumentObject*> getSelections(SelectionOptions options = SelectionOptions()) const;
 
+    bool eventFilter(QObject* o, QEvent* e) override;
+
     /// Add a user defined checkbox at the bottom of the dialog
     void addCheckBox(QCheckBox* box);
 
@@ -129,6 +131,7 @@ private:
 
     void setItemState(App::DocumentObject* obj, Qt::CheckState state, bool forced = false);
     void updateAllItemState();
+    void updateDepSplitter();
 
 private:
     Ui_DlgObjectSelection* ui;
@@ -146,6 +149,8 @@ private:
 
     QTimer timer;
     ParameterGrp::handle hGrp;
+
+    QList<int> userCustomDepSplit;
 };
 
 }  // namespace Gui
