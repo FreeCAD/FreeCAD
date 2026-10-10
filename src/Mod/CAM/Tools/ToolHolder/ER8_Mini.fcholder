@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "name": "ER8 nut, mini",
+  "units": "mm",
+  "type": "ER8",
+  "profile": [
+    [0, 0],
+    [5.0, 0],
+    [6.0, 1.0],
+    [6.0, 10.8],
+    [0, 10.8]
+  ],
+  "notes": "Slim (ERM) nut, M10x0.75 thread, for reach in tight places.",
+  "source": "Typical ER clamping nut sizes (ISO 15488 collets); nuts vary by maker, measure yours"
+}

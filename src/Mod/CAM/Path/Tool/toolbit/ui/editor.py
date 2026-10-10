@@ -259,6 +259,8 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
         self._tool_no_edit.setValue(int(self._tool_no or 1))
 
         # Get properties and suffixes
+        if hasattr(self._toolbit.obj, "ToolHolder"):
+            self._toolbit.refresh_holder_choices()
         props_to_show = self._toolbit._get_props(("Shape", "Attributes"))
         # Derived parameters follow from the others, so there is nothing to type
         # in and showing a field invites people to fight the geometry.

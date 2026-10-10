@@ -37,8 +37,15 @@ from Path.Base.Generator import toolchange
 from ...docobject import DetachedDocumentObject
 from ...assets.asset import Asset
 from ...shape import ToolBitShape, ToolBitShapeCustom, ToolBitShapeIcon
-from ..util import to_json, format_value
+from ..util import to_json, format_value, units_from_json
 from ..migration import ParameterAccessor, migrate_parameters
+
+# the ToolHolder value of a bit that is in no holder
+NoHolder = "None"
+# where a bit in a document keeps a copy of its tool holder's outline, so the document keeps its
+# holder on a computer without that holder's file; not saved with a library's tool bit
+HolderCopyProperty = "ToolHolderOutline"
+HolderCopyGroup = "ToolHolder"
 
 ToolBitView = LazyLoader("Path.Tool.toolbit.ui.view", globals(), "Path.Tool.toolbit.ui.view")
 
@@ -199,6 +206,13 @@ class ToolBit(Asset, ABC):
         params = attrs.get("parameter", {})
         attr = attrs.get("attribute", {})
 
+        # A bit that does not say its units is in those its sizes are given in, so that it
+        # saves in them; not every bit has been through the asset folder's migration.
+        if isinstance(params, dict) and "Units" not in params:
+            units = units_from_json(params)
+            if units:
+                params = {**params, "Units": units}
+
         # Filter parameters if method exists
         if (
             hasattr(tool_bit_shape.__class__, "filter_parameters")
@@ -210,7 +224,9 @@ class ToolBit(Asset, ABC):
         # Update parameters.
         for param_name, param_value in params.items():
             tool_bit_shape.set_parameter(param_name, param_value)
-            if hasattr(toolbit.obj, param_name):
+            if param_name == "ToolHolder":
+                toolbit.set_holder_id(param_value)
+            elif hasattr(toolbit.obj, param_name):
                 PathUtil.setProperty(toolbit.obj, param_name, param_value)
 
         # Update attributes; the separation between parameters and attributes
@@ -219,7 +235,9 @@ class ToolBit(Asset, ABC):
         # Discussion: https://github.com/FreeCAD/FreeCAD/issues/21722
         for attr_name, attr_value in attr.items():
             tool_bit_shape.set_parameter(attr_name, attr_value)
-            if hasattr(toolbit.obj, attr_name):
+            if attr_name == "ToolHolder":
+                toolbit.set_holder_id(attr_value)
+            elif hasattr(toolbit.obj, attr_name):
                 PathUtil.setProperty(toolbit.obj, attr_name, attr_value)
             else:
                 Path.Log.debug(
@@ -372,6 +390,32 @@ class ToolBit(Asset, ABC):
             )
             self.obj.Material = ["HSS", "Carbide"]
             self.obj.Material = "HSS"  # Default value
+        if not hasattr(self.obj, "ToolHolder"):
+            self.obj.addProperty(
+                "App::PropertyEnumeration",
+                "ToolHolder",
+                "Attributes",
+                QT_TRANSLATE_NOOP("App::Property", "The holder or collet nut the tool is set in"),
+            )
+            self.obj.ToolHolder = [NoHolder]
+            self.obj.ToolHolder = NoHolder
+        if not hasattr(self.obj, "Stickout"):
+            self.obj.addProperty(
+                "App::PropertyLength",
+                "Stickout",
+                "Attributes",
+                QT_TRANSLATE_NOOP("App::Property", "How far the tool sticks out of its holder"),
+            )
+        if not isinstance(self.obj, DetachedDocumentObject) and not hasattr(
+            self.obj, HolderCopyProperty
+        ):
+            self.obj.addProperty(
+                "App::PropertyString",
+                HolderCopyProperty,
+                HolderCopyGroup,
+                QT_TRANSLATE_NOOP("App::Property", "A copy of the tool holder's outline"),
+            )
+            self.obj.setEditorMode(HolderCopyProperty, 2)  # hidden
 
     def get_id(self) -> str:
         """Returns the unique ID of the tool bit."""
@@ -525,6 +569,7 @@ class ToolBit(Asset, ABC):
         # as well.
         self._create_base_properties()
         self._promote_toolbit()
+        self._offer_holders()
 
         # Get the shape instance based on ShapeID/ShapeType. We try two
         # approaches to find the shape and shape class:
@@ -636,6 +681,8 @@ class ToolBit(Asset, ABC):
 
         # Ensure label is set
         self.obj.Label = label or self.label or self._tool_bit_shape.label
+        self._offer_holders()
+        self.keep_holder_copy()
 
         # Update the visual representation now that it's attached
         self._update_tool_properties()
@@ -649,6 +696,12 @@ class ToolBit(Asset, ABC):
             return
 
         if getattr(self, "_suppress_visual_update", False):
+            return
+
+        if prop == "ToolHolder":
+            # another holder picked: copy its outline as its file has it now
+            if not getattr(self, "_offering_holders", False):
+                self.keep_holder_copy()
             return
 
         if hasattr(self, "_in_update") and self._in_update:
@@ -1024,6 +1077,17 @@ class ToolBit(Asset, ABC):
                     f"(type {type(value).__name__}, value {value}): {e}"
                 )
 
+        # A bit in no holder, or with no stickout, saves as it did before holders existed.
+        if attrs["parameter"].get("ToolHolder") == NoHolder:
+            del attrs["parameter"]["ToolHolder"]
+        stickout = getattr(self.obj, "Stickout", None)
+        if (
+            isinstance(stickout, FreeCAD.Units.Quantity)
+            and stickout.Value == 0
+            and "Stickout" not in param_names
+        ):
+            attrs["parameter"].pop("Stickout", None)
+
         # Merge unrecognised keys back so they aren't dropped on save.
         extra = getattr(self, "_extra_attrs", {})
         for k, v in extra.items():
@@ -1112,6 +1176,129 @@ class ToolBit(Asset, ABC):
 
         # Default to keeping spindle off.
         return toolchange.SpindleDirection.OFF
+
+    def get_holder_id(self) -> Optional[str]:
+        """Return the id of the bit's tool holder, or None if it is in none."""
+        holder_id = getattr(self.obj, "ToolHolder", NoHolder)
+        return None if not holder_id or holder_id == NoHolder else holder_id
+
+    def set_holder_id(self, holder_id: Optional[str]):
+        """Set the bit's tool holder by id, or none for None. An id not among the choices is added,
+        so a bit set up on another computer keeps its tool holder."""
+        holder_id = holder_id or NoHolder
+        choices = self.obj.getEnumerationsOfProperty("ToolHolder")
+        if holder_id not in choices:
+            self._offering_holders = True
+            try:
+                self.obj.ToolHolder = choices + [holder_id]
+            finally:
+                self._offering_holders = False
+        self.obj.ToolHolder = holder_id
+
+    def refresh_holder_choices(self):
+        """Offer every available tool holder as a ToolHolder choice, keeping the current one."""
+        from ...holder import available_holders
+
+        current = self.obj.ToolHolder
+        choices = [NoHolder] + sorted(available_holders())
+        if current not in choices:
+            choices.append(current)
+        if self.obj.getEnumerationsOfProperty("ToolHolder") == choices:
+            return
+        # the same holder offered again, not another one picked: its copy stays as it is
+        self._offering_holders = True
+        try:
+            self.obj.ToolHolder = choices
+            self.obj.ToolHolder = current
+        finally:
+            self._offering_holders = False
+
+    def _offer_holders(self):
+        """Offer the available tool holders as ToolHolder choices, so a bit in a document (opened or
+        just added) can be set in any of them, not only in the tool editor. If they cannot be
+        read, the choices stay as they are."""
+        if not hasattr(self.obj, "ToolHolder"):
+            return
+        try:
+            self.refresh_holder_choices()
+        except Exception as e:
+            Path.Log.debug(f"No holder choices for {self.obj.Label}: {e}")
+
+    def keep_holder_copy(self, asset_manager=None):
+        """Copy the tool holder's outline, as its file has it now, onto a bit in a document, so the
+        document keeps it on any computer. A bit in no holder keeps no copy; a holder whose file
+        is not found keeps the copy it had."""
+        if isinstance(self.obj, DetachedDocumentObject) or not hasattr(
+            self.obj, HolderCopyProperty
+        ):
+            return
+        if self.get_holder_id() is None:
+            text = ""
+        else:
+            holder = self.holder_from_file(asset_manager)
+            if holder is None:
+                return
+            text = json.dumps({"id": holder.get_id(), **holder.to_dict()})
+        if getattr(self.obj, HolderCopyProperty) != text:
+            setattr(self.obj, HolderCopyProperty, text)
+
+    def get_holder_copy(self):
+        """Return the copy of the tool holder's outline this bit keeps, or None if it keeps none
+        for its holder."""
+        from ...holder import ToolHolder
+
+        holder_id = self.get_holder_id()
+        text = getattr(self.obj, HolderCopyProperty, "") or ""
+        if holder_id is None or not text:
+            return None
+        try:
+            data = json.loads(text)
+            if data.get("id") != holder_id:
+                return None
+            return ToolHolder.from_dict(holder_id, data)
+        except (ValueError, KeyError, TypeError) as e:
+            Path.Log.warning(f"The tool holder copy of '{self.obj.Label}' cannot be read: {e}")
+            return None
+
+    def get_holder(self, asset_manager=None):
+        """Return the bit's tool holder, or None if it is in none or it is not found: the copy a
+        bit in a document keeps, else the holder's file."""
+        if self.get_holder_id() is None:
+            return None
+        return self.get_holder_copy() or self.holder_from_file(asset_manager)
+
+    def holder_from_file(self, asset_manager=None):
+        """Return the bit's tool holder as its file has it now, or None if it is in none or the
+        file is not found or cannot be read."""
+        holder_id = self.get_holder_id()
+        if holder_id is None:
+            return None
+        if asset_manager is None:
+            from ...camassets import cam_assets as asset_manager
+
+        try:
+            holder = asset_manager.get_or_none(f"toolholder://{holder_id}")
+        except Exception as e:
+            # an unreadable holder file counts as no holder rather than failing the caller
+            Path.Log.warning(
+                f"Tool holder '{holder_id}' of '{self.obj.Label}' could not be read: {e}"
+            )
+            return None
+        if holder is None:
+            Path.Log.warning(f"Tool holder '{holder_id}' of '{self.obj.Label}' was not found")
+        return holder
+
+    def get_stickout(self) -> FreeCAD.Units.Quantity:
+        """Return the stickout, from the tool holder's exit face to the tip; zero if unknown."""
+        stickout = getattr(self.obj, "Stickout", None)
+        if isinstance(stickout, str):  # stored as text by bits from before it was an attribute
+            try:
+                stickout = FreeCAD.Units.Quantity(stickout)
+            except Exception:
+                stickout = None
+        if not isinstance(stickout, FreeCAD.Units.Quantity):
+            return FreeCAD.Units.Quantity(0, "mm")
+        return stickout
 
     def can_rotate(self) -> bool:
         """

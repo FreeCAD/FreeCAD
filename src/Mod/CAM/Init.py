@@ -48,4 +48,8 @@ ParGrp.SetString("HelpIndex", "Path/Help/index.html")
 ParGrp.SetString("WorkBenchName", "CAM")
 ParGrp.SetString("WorkBenchModule", "PathWorkbench.py")
 
+# tool holder outlines: File > Open a .fcholder as a sketch, File > Export the sketch as one
+FreeCAD.addImportType("CAM tool holder (*.fcholder)", "Path.Tool.holder.sketch")
+FreeCAD.addExportType("CAM tool holder (*.fcholder)", "Path.Tool.holder.sketch")
+
 FreeCAD.__unit_test__ += ["TestCAMApp"]
