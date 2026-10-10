@@ -30,6 +30,7 @@
 
 #include <App/Datums.h>
 #include <App/Document.h>
+#include <App/DocumentObserver.h>
 #include <App/GeoFeature.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/Origin.h>
@@ -323,19 +324,30 @@ void CmdPartDesignBody::activated(int iMsg)
                         return !features.empty();
                     };
 
-                    // Called by dialog when user hits "OK" and accepter returns true
-                    auto worker = [baseFeature](const std::vector<App::DocumentObject*>& features) {
+                    // Called by dialog when user hits "OK" and accepter returns true. The base
+                    // feature may have been deleted while the dialog was open, so look it up by
+                    // its ID, which unlike its name is never reused for another object.
+                    auto worker = [doc = App::DocumentT(baseFeature->getDocument()),
+                                   baseId = baseFeature->getID()](
+                                      const std::vector<App::DocumentObject*>& features
+                                  ) {
                         // may happen when the user switched to an empty document while the
                         // dialog is open
                         if (features.empty()) {
                             return;
                         }
+                        App::Document* baseDoc = doc.getDocument();
+                        App::DocumentObject* base = baseDoc ? baseDoc->getObjectByID(baseId)
+                                                            : nullptr;
+                        if (!base) {
+                            return;
+                        }
                         App::Plane* plane = static_cast<App::Plane*>(features.front());
                         std::string supportString = Gui::Command::getObjectCmd(plane, "(", ", [''])");
 
-                        FCMD_OBJ_CMD(baseFeature, "AttachmentSupport = " << supportString);
+                        FCMD_OBJ_CMD(base, "AttachmentSupport = " << supportString);
                         FCMD_OBJ_CMD(
-                            baseFeature,
+                            base,
                             "MapMode = '"
                                 << Attacher::AttachEngine::getModeName(Attacher::mmFlatFace) << "'"
                         );
