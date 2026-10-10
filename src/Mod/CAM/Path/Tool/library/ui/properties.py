@@ -75,8 +75,8 @@ class LibraryPropertyDialog(QtWidgets.QDialog):
         # Update title based on current text in the line edit
         current_name = self.form.lineEditLibraryName.text()
         title = FreeCAD.Qt.translate(
-            "LibraryPropertyDialog", f"Library Properties - {current_name or self.library.label}"
-        )
+            "LibraryPropertyDialog", "Library Properties - {current_name or self.library.label}"
+        ).replace("{current_name or self.library.label}", str(current_name or self.library.label))
         self.setWindowTitle(title)
 
     def save_properties(self):
