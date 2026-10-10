@@ -56,8 +56,8 @@ public:
 
     void onChanged(const App::Property*) override;
 
-    Type getAddSubType();
-    BooleanOperation getBooleanOperation();
+    Type getAddSubType() const;
+    BooleanOperation getBooleanOperation() const;
     const char* getBooleanMaker() const;
 
     short mustExecute() const override;
