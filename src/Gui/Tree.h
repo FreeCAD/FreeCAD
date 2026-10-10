@@ -131,6 +131,8 @@ public:
 
     void startDragging();
 
+    static TreeWidget* getTreeForSelection();
+
     void resetItemSearch();
     void startItemSearch(QLineEdit*);
     void itemSearch(const QString& text, bool select);
@@ -200,6 +202,7 @@ protected:
 
 private:
     void _updateStatus(bool delay = true);
+    void clearKeyboardDragPending();
 
     // Helpers for the two-stage "Select All" feature
     void selectGroupItems(const QTreeWidgetItem* group, bool recursive);
@@ -265,7 +268,6 @@ private:
 
     bool CheckForDependents();
     void addDependentToSelection(App::Document* doc, App::DocumentObject* docObject);
-    static TreeWidget* getTreeForSelection();
 
 private:
     QAction* createGroupAction;
@@ -300,6 +302,8 @@ private:
 
     bool expandIndicatorPressed = false;
     bool visibilityIconPressed = false;
+    // Armed by Std_TreeDrag (T,D) when no mouse button is down; real QDrag starts on next LMB.
+    bool keyboardDragPending = false;
 
     static std::unique_ptr<QPixmap> documentPixmap;
     static std::unique_ptr<QPixmap> documentPartialPixmap;
