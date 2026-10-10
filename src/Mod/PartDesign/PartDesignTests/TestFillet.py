@@ -106,7 +106,7 @@ class TestFillet(unittest.TestCase):
         self.assertEqual(followup.Base[0].Name, box.Name)
         self.assertEqual(list(followup.Base[1]), [new_edge])
 
-    def testDeletingPreviousFeatureDoesNotRelinkUnsafeBaseEdge(self):
+    def testDeletingPreviousFeatureLeavesUnmatchedBaseEdgeUnresolved(self):
         body, box, fillet = self._create_box_with_fillet()
         old_edge, _new_edge = self._find_edge_with_match_count(fillet.Shape, box.Shape, 0)
 
@@ -118,8 +118,58 @@ class TestFillet(unittest.TestCase):
 
         body.removeObject(fillet)
 
-        if followup.Base[0]:
-            self.assertNotEqual(followup.Base[0].Name, box.Name)
+        self.assertEqual(followup.BaseFeature.Name, box.Name)
+        self.assertEqual(followup.Base[0].Name, box.Name)
+        self.assertEqual(len(followup.Base[1]), 1)
+        self.assertTrue(all(ref.startswith("?") for ref in followup.Base[1]))
+        self.Doc.recompute()
+        self.assertFalse(followup.isValid())
+
+    def testMovePadAfterFilletLeavesMissingEdgeWithoutDependencyCycle(self):
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        box = body.newObject("PartDesign::AdditiveBox", "Box")
+        box.Length = 10
+        box.Width = 10
+        box.Height = 10
+        self.Doc.recompute()
+
+        top_face = max(
+            range(1, len(box.Shape.Faces) + 1),
+            key=lambda index: box.Shape.Faces[index - 1].CenterOfMass.z,
+        )
+        sketch = body.newObject("Sketcher::SketchObject", "Sketch")
+        sketch.AttachmentSupport = (box, [f"Face{top_face}"])
+        sketch.MapMode = "FlatFace"
+        TestSketcherApp.CreateRectangleSketch(sketch, (2, 2), (2, 2))
+        pad = body.newObject("PartDesign::Pad", "Pad")
+        pad.Profile = sketch
+        pad.Length = 4
+        self.Doc.recompute()
+        side_edge = next(
+            index
+            for index, edge in enumerate(pad.Shape.Edges, 1)
+            if edge.BoundBox.ZMin >= 10 - 1e-7
+            and edge.BoundBox.ZLength > 1
+            and edge.BoundBox.XLength < 1e-7
+            and edge.BoundBox.YLength < 1e-7
+        )
+        fillet = body.newObject("PartDesign::Fillet", "Fillet")
+        fillet.Base = (pad, [f"Edge{side_edge}"])
+        fillet.Radius = 0.25
+        self.Doc.recompute()
+        self.assertTrue(fillet.isValid())
+
+        body.removeObject(pad)
+        body.insertObject(pad, fillet, True)
+
+        self.assertEqual(fillet.BaseFeature.Name, box.Name)
+        self.assertEqual(fillet.Base[0].Name, box.Name)
+        self.assertEqual(pad.BaseFeature.Name, fillet.Name)
+        self.assertNotIn(pad, fillet.OutList)
+        self.assertEqual(len(fillet.Base[1]), 1)
+        self.assertTrue(all(ref.startswith("?") for ref in fillet.Base[1]))
+        self.Doc.recompute(None, False, True)
+        self.assertFalse(fillet.isValid())
 
     def testInsertPadBeforeFilletPreservesBaseThroughEditAndUndo(self):
         body, box, fillet = self._create_box_with_fillet()
