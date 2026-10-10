@@ -1538,6 +1538,29 @@ bool Document::askIfSavingFailed(const QString& error)
     return false;
 }
 
+static bool isOlderVersion(const App::Document* doc)
+{
+    const char* docVersion = doc->getProgramVersion();
+    const bool hasVersionString = !Base::Tools::isNullOrEmpty(docVersion);
+
+    int docMajor = 0, docMinor = 0;
+    const bool hasVersion = hasVersionString
+        && std::sscanf(docVersion, "%d.%d", &docMajor, &docMinor) == 2;
+
+    auto config = App::Application::Config();
+    int currentMajor = 0, currentMinor = 0;
+    if (config.count("BuildVersionMajor") && config.count("BuildVersionMinor")) {
+        currentMajor = std::stoi(config["BuildVersionMajor"]);
+        currentMinor = std::stoi(config["BuildVersionMinor"]);
+    }
+    else {
+        return false;
+    }
+
+    return !hasVersion || (docMajor < currentMajor)
+        || (docMajor == currentMajor && docMinor < currentMinor);
+}
+
 bool Document::warnIfOlderVersion()
 {
     // Skip warning if no GUI (headless/scripted mode)
@@ -1552,32 +1575,14 @@ bool Document::warnIfOlderVersion()
         return true;
     }
 
-    // Get document version info
-    const char* docVersion = d->_pcDocument->getProgramVersion();
-    const bool hasVersionString = !Base::Tools::isNullOrEmpty(docVersion);
+    if (isOlderVersion(d->_pcDocument)) {
+        const char* docVersion = d->_pcDocument->getProgramVersion();
+        const bool hasVersionString = !Base::Tools::isNullOrEmpty(docVersion);
 
-    // Parse document version string like "1.0R39319 (Git)" or "0.21R33694 (Git)"
-    // hasVersion is true only if the string is present AND parses as major.minor.
-    // Unrecognised strings like "pre-0.14" still display in the dialog but cannot
-    // be compared numerically, so they are treated as older versions.
-    int docMajor = 0, docMinor = 0;
-    const bool hasVersion = hasVersionString
-        && std::sscanf(docVersion, "%d.%d", &docMajor, &docMinor) == 2;
+        auto config = App::Application::Config();
+        int currentMajor = std::stoi(config["BuildVersionMajor"]);
+        int currentMinor = std::stoi(config["BuildVersionMinor"]);
 
-    // Get current FreeCAD version
-    auto config = App::Application::Config();
-    int currentMajor = 0, currentMinor = 0;
-    if (config.count("BuildVersionMajor") && config.count("BuildVersionMinor")) {
-        currentMajor = std::stoi(config["BuildVersionMajor"]);
-        currentMinor = std::stoi(config["BuildVersionMinor"]);
-    }
-    else {
-        return true;
-    }
-
-    // Warn if the document was created with an older version or has no version info
-    if (!hasVersion || (docMajor < currentMajor)
-        || (docMajor == currentMajor && docMinor < currentMinor)) {
         QMessageBox msgBox(getMainWindow());
         msgBox.setWindowTitle(QObject::tr("File Created with Older FreeCAD Version"));
         msgBox.setIcon(QMessageBox::Warning);
@@ -1681,6 +1686,12 @@ bool Document::save()
                     dmap.clear();
                     dmap[getDocument()] = getDocument()->mustExecute();
                 }
+            }
+
+            if (docs.size() == 1 && docs.front() == getDocument() && !isModified()
+                && !getDocument()->isTouched() && !dmap[getDocument()]
+                && !isOlderVersion(getDocument())) {
+                return true;
             }
 
             if (!checkCanonicalPath(dmap)) {
@@ -1831,6 +1842,12 @@ void Document::saveAll()
         if (!gdoc) {
             continue;
         }
+
+        if (!gdoc->isModified() && !doc->isTouched() && !dmap[doc] && doc->isSaved()
+            && !isOlderVersion(doc)) {
+            continue;
+        }
+
         if (!doc->isSaved()) {
             if (!gdoc->saveAs()) {
                 break;
