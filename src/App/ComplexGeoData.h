@@ -641,6 +641,12 @@ public:
         selectedHistoryAlgorithm = newAlgorithm;
     };
 
+    bool hasUniqueElementMap() const {
+        return _elementMap && _elementMap.use_count() == 1; // maybe use `shared_ptr::unique()`?
+    };
+
+    void makeElementMapUnique();
+
 protected:
     /// Transform the point from local to outside.
     inline Base::Vector3d transformPointToOutside(const Base::Vector3f& vec) const

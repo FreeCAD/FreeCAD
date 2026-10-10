@@ -41,6 +41,7 @@
 #include "DocumentPy.h"
 #include "DocumentObserverPython.h"
 #include "DocumentObjectPy.h"
+#include "ElementNamingUtils.h"
 #include "RecoverySnapshot.h"
 #include "StringHasher.h"
 
@@ -1110,7 +1111,20 @@ PyObject* ApplicationPy::sGetDecodedMappedName(PyObject* /*self*/, PyObject* arg
     Data::MappedName inputMappedName {inputName};
     const Data::DecodedMappedName& decodedName = inputMappedName.getDecodedMappedName();
 
-    PyObject* returnList = PyList_New(0);
+    PyObject* returnTuple = PyTuple_New(2);
+    PyObject* sectionList = PyList_New(0);
+
+    PyTuple_SetItem(
+        returnTuple,
+        0,
+        PyUnicode_DecodeUTF8(decodedName.ownerTag.c_str(), decodedName.ownerTag.size(), nullptr)
+    );
+
+    PyTuple_SetItem(
+        returnTuple,
+        1,
+        sectionList
+    );
 
     auto stringVectorToPyList = [](const std::vector<std::string>& vector) -> PyObject* {
         PyObject* pyList = PyList_New(0);
@@ -1122,7 +1136,7 @@ PyObject* ApplicationPy::sGetDecodedMappedName(PyObject* /*self*/, PyObject* arg
         return pyList;
     };
 
-    for (const Data::DecodedMappedSection& loopSection : decodedName) {
+    for (const Data::DecodedMappedSection& loopSection : decodedName.sections) {
         PyObject* sectionDict = PyDict_New();
 
         PyDict_SetItemString(sectionDict, "referenceIDs", stringVectorToPyList(loopSection.referenceIDs));
@@ -1135,15 +1149,15 @@ PyObject* ApplicationPy::sGetDecodedMappedName(PyObject* /*self*/, PyObject* arg
         PyDict_SetItemString(sectionDict, "mapperFlags", stringVectorToPyList(loopSection.mapperFlags));
         PyDict_SetItemString(sectionDict, "connectedElements", stringVectorToPyList(loopSection.connectedElements));
     
-        PyList_Append(returnList, sectionDict);
+        PyList_Append(sectionList, sectionDict);
     }
 
-    return returnList;
+    return returnTuple;
 }
 
 PyObject* ApplicationPy::sMakeEncodedSection(PyObject* /*self*/, PyObject* args, PyObject* keywds)
 {
-    static const std::array<const char*, 10> encodedNameArgs {
+    static const std::array<const char*, 11> encodedNameArgs {
         "referenceIDs",
         "linkedNames",
         "iterationTag",

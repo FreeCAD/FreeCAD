@@ -90,6 +90,7 @@ public:
      * restore process of the map.
      */
     ElementMap();
+    ElementMap(const ElementMap& other) = default;
 
     /**
      * @brief Prepare this map for saving.
@@ -317,6 +318,9 @@ public:
 
     /// Retag method, only used with V2 element maps.
     void retagElementMap(long newTag);
+
+    /// Method to change the ownership of all the names in the map.
+    void markNameOwnership(long newOwnerTag);
 
 private:
     /** Serialize this map

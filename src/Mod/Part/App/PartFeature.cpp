@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 
+#include <cstring>
 #include <sstream>
 #include <Bnd_Box.hxx>
 #include <BRep_Builder.hxx>
@@ -192,26 +193,30 @@ bool Feature::doNamesMatch(Data::MappedName& name1, Data::MappedName& name2, boo
     Data::DecodedMappedName decodedName1 = name1.getDecodedMappedName();
     Data::DecodedMappedName decodedName2 = name2.getDecodedMappedName();
 
-    if (decodedName1.size() && decodedName2.size()) {
+    if (decodedName1.ownerTag != decodedName2.ownerTag) {
+        return false;
+    }
+
+    if (decodedName1.sections.size() && decodedName2.sections.size()) {
         std::vector<std::pair<Data::DecodedMappedSection, std::vector<Data::DecodedMappedSection>>>
             pairedCheckSections = {};
 
-        pairedCheckSections.push_back({decodedName1.front(), {decodedName2.front()}});
+        pairedCheckSections.push_back({decodedName1.sections.front(), {decodedName2.sections.front()}});
 
-        decodedName1.erase(decodedName1.begin());
-        decodedName2.erase(decodedName2.begin());
+        decodedName1.sections.erase(decodedName1.sections.begin());
+        decodedName2.sections.erase(decodedName2.sections.begin());
 
         std::vector<Data::DecodedMappedSection> entry;
 
         // This loop pairs sections together for checking later.
-        for (const Data::DecodedMappedSection& name1Section : decodedName1) {
+        for (const Data::DecodedMappedSection& name1Section : decodedName1.sections) {
             entry.clear();
 
-            for (const Data::DecodedMappedSection& name2Section : decodedName2) {
+            for (const Data::DecodedMappedSection& name2Section : decodedName2.sections) {
                 if ((name1Section.iterationTag != Data::EMPTY_VALUE
                      && name2Section.iterationTag == name1Section.iterationTag)
-                    && (name1Section.opCode != Data::EMPTY_VALUE
-                        && name2Section.opCode == name1Section.opCode)) {
+                    && (name1Section.opCode == Data::EMPTY_VALUE
+                        && name1Section.opCode == name2Section.opCode)) {
                     entry.push_back(name2Section);
                 }
             }

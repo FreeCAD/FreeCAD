@@ -16,11 +16,6 @@ enum class HistoryAlgorithm {
     V2
 };
 
-enum class CopyRemapPolicy {
-    COPY_NAME,
-    CHANGE_NAME_OWNERSHIP
-};
-
 AppExport const HistoryAlgorithm& getDefaultHistoryAlgorithm();
 AppExport HistoryAlgorithm getHistoryAlgorithm(const int& fromUnderlyingInteger);
 AppExport HistoryAlgorithm getHistoryAlgorithm(const std::string& fromString);
@@ -126,6 +121,8 @@ constexpr const char* SUB_SECTION_LIST_DELIMINATOR      = ",";
 constexpr const char* SECTION_SUB_DELIMINATOR           = ";";
 /// Name section deliminator.
 constexpr const char* NAME_SECTION_DELIMINATOR          = "|";
+/// Name data deliminator.
+constexpr const char* NAME_DATA_DELIMINATOR            = ":";
 /// Escape character for mapped names in sub-sections.
 constexpr const char* SUB_SECTION_ESCAPE_CHAR           = "^";
 /// Mapper flag that designates that an element is mapped by its subelements.
@@ -144,13 +141,19 @@ constexpr const char* MAPPER_FLAG_SOURCE                = "SRC";
 constexpr const char* MAPPER_FLAG_INDEX                 = "IDX";
 /// Mapper flag that designates that an element's `LinkedNames` do not share common entries with other names that also have this flag.
 constexpr const char* MAPPER_FLAG_NON_DUPLICATE         = "NDU";
-/// Mapper flag that is used to disambiguate this name from other names. 
-constexpr const char* MAPPER_FLAG_DISAMBIGUATION        = "DSA";
-/// Mapper flag that specifies a change in ownership of a name. 
-constexpr const char* MAPPER_FLAG_CHANGE_OWNER          = "COW";
 
-// Placement indexes of data in sections of MappedNames used by the V2 Topological Naming System.
-// DO NOT CHANGE THESE VALUES EVER!!! Data should only be added to sections, not removed or otherwise altered.
+// Placement indexes of information of MappedNames used by the V2 Topological Naming System.
+// DO NOT CHANGE THESE VALUES EVER!!! Data should only be added to sections and names, not removed or otherwise altered.
+
+// Name data indexes
+
+/// `Owner Tag` data index.
+constexpr const int   NAME_OWNER_TAG_INDEX              = 0;
+/// `Sections` data index.
+constexpr const int   NAME_SECTIONS_INDEX               = 1;
+
+
+// Section indexes
 
 /// `Reference IDs` entry index.
 constexpr const int   SECTION_REFERENCE_ID_INDEX        = 0;
@@ -168,10 +171,9 @@ constexpr const int   SECTION_ELEMENT_TYPE_INDEX        = 5;
 constexpr const int   SECTION_DUPLICATE_COUNT_INDEX     = 6;
 /// `Mapper Flags` entry index.
 constexpr const int   SECTION_MAPPER_FLAGS_INDEX        = 7;
-/// `Connect Elements` entry index.
+/// `Connected Elements` entry index.
 constexpr const int   SECTION_CONNECTED_ELEMENTS_INDEX  = 8;
-
-/// Size of sections used in MappedNames by the V2 Topological Naming System
+/// Size of sections used in MappedNames by the V2 Topological Naming System.
 constexpr const int   SECTION_SIZE                      = 9;
 
 /// @}

@@ -614,8 +614,6 @@ MappedName ElementMap::setElementName(const IndexedName& element,
         std::ostringstream ss;
 
         for (int i = 0;;) {
-            ZoneScopedN("V1 Duplicate Loop");
-
             IndexedName existing;
             MappedName res = this->addName(mappedName, element, *sid, overwrite, &existing);
             if (res) {
@@ -643,47 +641,16 @@ MappedName ElementMap::setElementName(const IndexedName& element,
             return res;
         }
 
-        auto spliceStringByDuplicateCount = [](
-            const std::string& nameString,
-            std::string* beforeDuplicateCount,
-            std::string* afterDuplicateCount,
-            std::string* duplicateCount
-        )
-        {
-            *beforeDuplicateCount = nameString;
-
-            constexpr int DUPLICATE_COUNT_REVERSE_INDEX = Data::SECTION_SIZE - Data::SECTION_DUPLICATE_COUNT_INDEX;
-            int currentSectionIndex = 0;
-
-            for (size_t i = beforeDuplicateCount->size(); i-- > 1;) {
-                const char& currentCharacter = (*beforeDuplicateCount)[i];
-
-                if (currentSectionIndex < (DUPLICATE_COUNT_REVERSE_INDEX - 1)) {
-                    afterDuplicateCount->insert(0, 1, currentCharacter);
-                } else if (currentCharacter != Data::SECTION_SUB_DELIMINATOR[0]) {
-                    duplicateCount->insert(0, 1, currentCharacter);
-                }
-
-                if (currentCharacter == Data::SECTION_SUB_DELIMINATOR[0]
-                    && (*beforeDuplicateCount)[i - 1] != Data::SUB_SECTION_ESCAPE_CHAR[0]
-                    && ++currentSectionIndex == DUPLICATE_COUNT_REVERSE_INDEX)
-                {
-                    break;
-                }
-
-                beforeDuplicateCount->pop_back();
-            }
-        };
-
         std::string mappedNameBeforeDuplicateCount;
         std::string mappedNameAfterDuplicateCount;
         std::string duplicateIndexString;
         
-        spliceStringByDuplicateCount(
-            mappedName.toString(),
+        mappedName.spliceNameBySubSections(
+            -1,
+            Data::SECTION_DUPLICATE_COUNT_INDEX,
             &mappedNameBeforeDuplicateCount,
-            &mappedNameAfterDuplicateCount,
-            &duplicateIndexString
+            &duplicateIndexString,
+            &mappedNameAfterDuplicateCount
         );
 
         Data::MappedName fixedName;
@@ -1649,25 +1616,74 @@ void ElementMap::retagElementMap(long newTag) {
 
     for (auto& indexedNameEntry : indexedNames) {
         for (MappedNameRef& foundNameRef : indexedNameEntry.second.names) {
-            const DecodedMappedName& decodedName = foundNameRef.name.getDecodedMappedName();
+            QByteArray dataBeforeSubSectionString;
+            QByteArray postfixBeforeSubSectionString;
+            QByteArray subSectionString;
+            QByteArray dataAfterSubSectionString;
+            QByteArray postfixAfterSubSectionString;
 
-            if (decodedName.size()) {
-                if (decodedName.back().iterationTag == "0") {
-                    DecodedMappedName copiedName = decodedName;
+            foundNameRef.name.spliceNameBySubSections(
+                -1,
+                Data::SECTION_ITERATION_TAG_INDEX,
+                &dataBeforeSubSectionString,
+                &postfixBeforeSubSectionString,
+                &subSectionString,
+                &dataAfterSubSectionString,
+                &postfixAfterSubSectionString
+            );
 
-                    copiedName.back().iterationTag = std::to_string(newTag);
+            if (subSectionString.size()
+                && (strcmp(subSectionString.constData(), Data::EMPTY_VALUE) == 0
+                    || strcmp(subSectionString.constData(), "0") == 0))
+            {
+                auto it = mappedNames.find(foundNameRef.name);
 
-                    auto it = mappedNames.find(foundNameRef.name);
-                    foundNameRef.name = MappedName::makeEncodedName(copiedName);
-                    
-                    if (it != mappedNames.end()) {
-                        auto extractedNode = mappedNames.extract(it);
 
-                        if (extractedNode.key()) {
-                            extractedNode.key() = foundNameRef.name;
+                if (it != mappedNames.end()) {
+                    subSectionString = std::to_string(newTag).c_str();
 
-                            mappedNames.insert(std::move(extractedNode));
-                        }
+                    foundNameRef.name.setNameBySplicedData(
+                        dataBeforeSubSectionString,
+                        postfixBeforeSubSectionString,
+                        subSectionString,
+                        dataAfterSubSectionString,
+                        postfixAfterSubSectionString
+                    );
+
+                    auto extractedNode = mappedNames.extract(it);
+
+                    if (extractedNode.key()) {
+                        extractedNode.key() = foundNameRef.name;
+
+                        mappedNames.insert(std::move(extractedNode));
+                    }
+                }
+            }
+        }
+    }
+}
+
+void ElementMap::markNameOwnership(long newOwnerTag) {
+    if (historyAlgorithm != App::HistoryAlgorithm::V2) {
+        return;
+    }
+
+    std::string newOwnerTagString = std::to_string(newOwnerTag);
+
+    for (auto& indexedNameEntry : indexedNames) {
+        for (MappedNameRef& foundNameRef : indexedNameEntry.second.names) {
+            if (foundNameRef.name) {
+                auto it = mappedNames.find(foundNameRef.name);
+
+                if (it != mappedNames.end()) {
+                    foundNameRef.name.setOwnerTag(newOwnerTagString);
+
+                    auto extractedNode = mappedNames.extract(it);
+
+                    if (extractedNode.key()) {
+                        extractedNode.key() = foundNameRef.name;
+
+                        mappedNames.insert(std::move(extractedNode));
                     }
                 }
             }

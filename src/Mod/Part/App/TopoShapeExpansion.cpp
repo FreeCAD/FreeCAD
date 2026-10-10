@@ -816,22 +816,6 @@ void TopoShape::setupChild(
     }
 }
 
-Data::MappedName changeOwnershipOfName(const Data::MappedName& name, const long& tag, char elementType) {
-    return Data::MappedName(
-        Data::MappedName::makeEncodedSection(
-            {},
-            {name},
-            tag,
-            Data::EMPTY_VALUE,
-            0,
-            elementType,
-            0,
-            {Data::MAPPER_FLAG_DISAMBIGUATION, Data::MAPPER_FLAG_CHANGE_OWNER},
-            {}
-        )
-    );
-}
-
 void TopoShape::copyElementMap(const TopoShape& topoShape, const char* op)
 {
     if (topoShape.isNull() || isNull()) {
@@ -902,6 +886,7 @@ void TopoShape::mapSubElementTypeForShape(
                     {Data::MappedName::makeUnmappedName(
                          {element.toString()},
                          other.Tag,
+                         Tag,
                          op,
                          (*element.getType())
                      ),
@@ -964,8 +949,7 @@ void TopoShape::mapSubElement(
     const TopoShape& other,
     const char* op,
     bool forceHasher,
-    IncludedHistoryMap* nameMap,
-    App::CopyRemapPolicy copyRemapPolicy
+    IncludedHistoryMap* nameMap
 )
 {
     if (!canMapElement(other)) {
@@ -1061,6 +1045,7 @@ void TopoShape::mapSubElement(
                         {Data::MappedName::makeUnmappedName(
                              {otherElement.toString()},
                              other.Tag,
+                             Tag,
                              op,
                              element.getType()[0]
                          ),
@@ -1092,21 +1077,12 @@ void TopoShape::mapSubElement(
                             ->encodeElementName(shapetype[0], name, ss, &sids, Tag, op, Tag);
                         ensureElementMap()->setElementName(element, name, Tag, &sids);
                     } else if (historyVersion == App::HistoryAlgorithm::V2) {
-                        if (copyRemapPolicy == App::CopyRemapPolicy::CHANGE_NAME_OWNERSHIP) {
-                            ensureElementMap()->setElementName(
-                                element,
-                                changeOwnershipOfName(name, Tag, element.getType()[0]),
-                                Tag,
-                                &sids
-                            );
-                        } else if (copyRemapPolicy == App::CopyRemapPolicy::COPY_NAME) {
-                            ensureElementMap()->setElementName(
-                                element,
-                                name,
-                                Tag,
-                                &sids
-                            );
-                        }
+                        ensureElementMap()->setElementName(
+                            element,
+                            name,
+                            Tag,
+                            &sids
+                        );
                     }
                 }
 
@@ -1118,10 +1094,10 @@ void TopoShape::mapSubElement(
     }
 }
 
-void TopoShape::mapSubElementsTo(std::vector<TopoShape>& shapes, const char* op, IncludedHistoryMap* nameMap, App::CopyRemapPolicy copyRemapPolicy) const
+void TopoShape::mapSubElementsTo(std::vector<TopoShape>& shapes, const char* op, IncludedHistoryMap* nameMap) const
 {
     for (auto& shape : shapes) {
-        shape.mapSubElement(*this, op, false, nameMap, copyRemapPolicy);
+        shape.mapSubElement(*this, op, false, nameMap);
     }
 }
 
@@ -1178,7 +1154,7 @@ void TopoShape::mapCompoundSubElements(const std::vector<TopoShape>& shapes, con
     setMappedChildElements(children);
 }
 
-void TopoShape::mapSubElement(const std::vector<TopoShape>& shapes, const char* op, IncludedHistoryMap* nameMap, App::CopyRemapPolicy copyRemapPolicy)
+void TopoShape::mapSubElement(const std::vector<TopoShape>& shapes, const char* op, IncludedHistoryMap* nameMap)
 {
     if (shapes.empty()) {
         return;
@@ -1228,7 +1204,7 @@ void TopoShape::mapSubElement(const std::vector<TopoShape>& shapes, const char* 
     }
 
     for (auto& shape : shapes) {
-        mapSubElement(shape, op, false, nameMap, copyRemapPolicy);
+        mapSubElement(shape, op, false, nameMap);
     }
 }
 
@@ -1726,8 +1702,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
     const Mapper& mapper,
     const std::vector<TopoShape>& shapes,
     const char* op,
-    ElementMapPolicy elementMapPolicy,
-    App::CopyRemapPolicy copyRemapPolicy
+    ElementMapPolicy elementMapPolicy
 )
 {
     ZoneScoped;
@@ -2324,7 +2299,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
         // constexpr int MAXIMUM_REMAPPED_INCOMING_NAMES = 3;
 
         IncludedHistoryMap includedModifiedNameMap;
-        mapSubElement(shapes, nullptr, &includedModifiedNameMap, copyRemapPolicy);  // Intentionally leave the op off here
+        mapSubElement(shapes, nullptr, &includedModifiedNameMap);  // Intentionally leave the op off here
 
         NamingMap generatedNamingMap;
 
@@ -2385,6 +2360,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                             {Data::MappedName::makeUnmappedName(
                                  {incomingShapeElementIndexedName.toString()},
                                  incomingShape.Tag,
+                                 masterTag,
                                  op,
                                  (*incomingShapeElementIndexedName.getType())
                              ),
@@ -2470,7 +2446,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                         ensureElementMap()->setElementName(
                             element,
-                            Data::MappedName(
+                            Data::MappedName::fromEncodedMappedSection(
                                 Data::MappedName::makeEncodedSection(
                                     {},
                                     {frontName},
@@ -2479,8 +2455,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                     usedProjectedLinkedNames.count(frontName),
                                     newInfo.shapetype[0],
                                     0,
-                                    {Data::MAPPER_FLAG_PROJECTION},
-                                    {}
+                                    {Data::MAPPER_FLAG_PROJECTION}
                                 )
                             ),
                             masterTag
@@ -2540,95 +2515,107 @@ TopoShape& TopoShape::makeShapeWithElementMap(
         for (const auto& modifiedShapeEntry : delayedModifiedMap) {
             if (modifiedShapeEntry.second.size() > 1) {
                 for (const DelayedModifiedMapValue& mapValue : modifiedShapeEntry.second) {
-                    auto lowerMapTypeEntry = lowerMapTypes.find(
-                        mapValue.modifiedShapeIdxName.getType()
-                    );
+                    std::vector<Data::MappedName> connectedElements;
 
-                    auto upperMapTypeEntry = upperMapTypes.find(
-                        mapValue.modifiedShapeIdxName.getType()
-                    );
+                    auto addConnectedElement = [&connectedElements, &allModifiedConnectedElementNames](const Data::MappedName& name) {
+                        auto connectedElementIterator = std::find(
+                            connectedElements.begin(),
+                            connectedElements.end(),
+                            name
+                        );
 
-                    if (lowerMapTypeEntry != lowerMapTypes.end() && upperMapTypeEntry != upperMapTypes.end()) {
-                        ShapeInfo* upperTypeMap = infoMap[upperMapTypeEntry->second];
-                        TopTools_IndexedMapOfShape lowerMap;
-                        TopExp::MapShapes(mapValue.modifiedShape, lowerMapTypeEntry->second, lowerMap);
+                        if (connectedElementIterator == connectedElements.end()) {
+                            connectedElements.push_back(name);
 
-                        std::vector<Data::MappedName> connectedElements;
-                        ShapeInfo* sameTypeMap = infoMap[mapValue.modifiedShape.ShapeType()];
+                            auto allConnectedElementIterator = allModifiedConnectedElementNames.try_emplace(
+                                {name, 0}
+                            );
 
-                        for (int lowerIdx = 1; lowerIdx <= lowerMap.Extent(); lowerIdx++) {
-                            std::vector<Data::MappedName> foundNames;
-                            const TopoDS_Shape& lowerShape = lowerMap(lowerIdx);
-                            auto lowerModifiedShapeMapIterator = includedModifiedNameMap.find(lowerShape);
+                            if (!allConnectedElementIterator.second) {
+                                allConnectedElementIterator.first->second += 1;
+                            }
+                        }
+                    };
 
-                            // check to see if the lower element was directly included in one of the incoming shapes
-                            if (lowerModifiedShapeMapIterator != includedModifiedNameMap.end()) {
-                                foundNames.push_back(lowerModifiedShapeMapIterator->second.incomingShapeElementName);
+                    if (mapValue.reverseMapIterator->second.size() > 1) {
+                        for (const Data::MappedName& name : mapValue.reverseMapIterator->second) {
+                            if (name != modifiedShapeEntry.first) {
+                                addConnectedElement(name);
+                            }
+                        }
+                    } else {
+                        auto lowerMapTypeEntry = lowerMapTypes.find(
+                            mapValue.modifiedShapeIdxName.getType()
+                        );
 
-                                const TopoShape* lowerIncomingShape = lowerModifiedShapeMapIterator->second.incomingShape;
+                        auto upperMapTypeEntry = upperMapTypes.find(
+                            mapValue.modifiedShapeIdxName.getType()
+                        );
 
-                                if (lowerIncomingShape) {
-                                    const TopoDS_Shape& incomingOriginalShape = lowerIncomingShape->getSubShape(
-                                        lowerModifiedShapeMapIterator->second.incomingShapeElementIdx.toString().c_str()
-                                    );
+                        if (lowerMapTypeEntry != lowerMapTypes.end() && upperMapTypeEntry != upperMapTypes.end()) {
+                            ShapeInfo* upperTypeMap = infoMap[upperMapTypeEntry->second];
+                            ShapeInfo* sameTypeMap = infoMap[mapValue.modifiedShape.ShapeType()];
 
-                                    if (!incomingOriginalShape.IsNull()) {
-                                        for (ShapeInfo* typeMap : {upperTypeMap, sameTypeMap}) {
-                                            const char* elementType = shapeName(typeMap->type).c_str();
-                                            const std::vector<int> ancestors = lowerIncomingShape->findAncestors(incomingOriginalShape, typeMap->type);
+                            TopTools_IndexedMapOfShape lowerMap;
+                            TopExp::MapShapes(mapValue.modifiedShape, lowerMapTypeEntry->second, lowerMap);
 
-                                            for (const int& ancestorIdx : ancestors) {
-                                                Data::IndexedName ancestorIdxName {elementType, ancestorIdx};
-                                                
-                                                if (ancestorIdxName) {
-                                                    Data::MappedName incomingAncestorMappedName = lowerIncomingShape->getMappedName(ancestorIdxName);
+                            for (int lowerIdx = 1; lowerIdx <= lowerMap.Extent(); lowerIdx++) {
+                                const TopoDS_Shape& lowerShape = lowerMap(lowerIdx);
+                                auto lowerModifiedShapeMapIterator = includedModifiedNameMap.find(lowerShape);
 
-                                                    if (incomingAncestorMappedName) {
-                                                        foundNames.push_back(incomingAncestorMappedName);
+                                // check to see if the lower element was directly included in one of the incoming shapes
+                                if (lowerModifiedShapeMapIterator != includedModifiedNameMap.end()) {
+                                    addConnectedElement(lowerModifiedShapeMapIterator->second.incomingShapeElementName);
+
+                                    const TopoShape* lowerIncomingShape = lowerModifiedShapeMapIterator->second.incomingShape;
+
+                                    if (lowerIncomingShape) {
+                                        const TopoDS_Shape& incomingOriginalShape = lowerIncomingShape->getSubShape(
+                                            lowerModifiedShapeMapIterator->second.incomingShapeElementIdx.toString().c_str()
+                                        );
+
+                                        if (!incomingOriginalShape.IsNull()) {
+                                            for (ShapeInfo* typeMap : {upperTypeMap, sameTypeMap}) {
+                                                const char* elementType = shapeName(typeMap->type).c_str();
+                                                const std::vector<int> ancestors = lowerIncomingShape->findAncestors(incomingOriginalShape, typeMap->type);
+
+                                                for (const int& ancestorIdx : ancestors) {
+                                                    Data::IndexedName ancestorIdxName {elementType, ancestorIdx};
+                                                    
+                                                    if (ancestorIdxName) {
+                                                        Data::MappedName incomingAncestorMappedName = lowerIncomingShape->getMappedName(ancestorIdxName);
+
+                                                        if (incomingAncestorMappedName) {
+                                                            addConnectedElement(incomingAncestorMappedName);
+                                                        }
                                                     }
                                                 }
                                             }
                                         }
                                     }
-                                }
-                            } else {
-                                for (ShapeInfo* typeMap : {upperTypeMap, sameTypeMap}) {
-                                    const std::vector<int> ancestors = findAncestors(lowerShape, typeMap->type);
+                                } else {
+                                    for (ShapeInfo* typeMap : {upperTypeMap, sameTypeMap}) {
+                                        const std::vector<int> ancestors = findAncestors(lowerShape, typeMap->type);
 
-                                    for (const int& ancestorIdx : ancestors) {
-                                        const TopoDS_Shape& ancestor = typeMap->find(ancestorIdx);
-                                        auto upperModifiedShapeMapIterator = includedModifiedNameMap.find(ancestor);
+                                        for (const int& ancestorIdx : ancestors) {
+                                            const TopoDS_Shape& ancestor = typeMap->find(ancestorIdx);
+                                            auto upperModifiedShapeMapIterator = includedModifiedNameMap.find(ancestor);
 
-                                        if (upperModifiedShapeMapIterator != includedModifiedNameMap.end()
-                                            && upperModifiedShapeMapIterator->second.incomingShape != mapValue.incomingParentShape)
-                                        {
-                                            foundNames.push_back(upperModifiedShapeMapIterator->second.incomingShapeElementName);
+                                            if (upperModifiedShapeMapIterator != includedModifiedNameMap.end()
+                                                && upperModifiedShapeMapIterator->second.incomingShape != mapValue.incomingParentShape)
+                                            {
+                                                addConnectedElement(upperModifiedShapeMapIterator->second.incomingShapeElementName);
+                                            }
                                         }
                                     }
                                 }
                             }
 
-                            for (const Data::MappedName& foundName : foundNames) {
-                                auto connectedElementIterator = std::find(
-                                    connectedElements.begin(),
-                                    connectedElements.end(),
-                                    foundName
-                                );
-
-                                if (connectedElementIterator == connectedElements.end()) {
-                                    connectedElements.push_back(foundName);
-
-                                    auto allConnectedElementIterator = allModifiedConnectedElementNames.try_emplace(
-                                        {foundName, 0}
-                                    );
-
-                                    if (!allConnectedElementIterator.second) {
-                                        allConnectedElementIterator.first->second += 1;
-                                    }
-                                }
-                            }
+                           
                         }
+                    }
 
+                    if (connectedElements.size()) {
                         modifiedConnectedElementVector.emplace_back(
                             &mapValue.modifiedShapeIdxName,
                             connectedElements
@@ -2720,6 +2707,12 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                     newNameSection.linkedNames.push_back(linkedName.toString());
                 }
 
+                newNameSection.iterationTag = std::to_string(masterTag);
+                newNameSection.opCode = op;
+                newNameSection.index = "0";
+                newNameSection.duplicateCount = "0";
+                newNameSection.mapperFlags = {Data::MAPPER_FLAG_GENERATED};
+
                 for (size_t i = 0; i < generatedShapes; i++) {
                     const Data::IndexedName& generatedElementName
                         = generatedShapeEntry.first[i].newElementName;
@@ -2730,14 +2723,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         continue;
                     }
 
-                    if (i == 0) {
-                        newNameSection.iterationTag = std::to_string(masterTag);
-                        newNameSection.opCode = op;
-                        newNameSection.index = "0";
-                        newNameSection.elementType = (*generatedElementName.getType());
-                        newNameSection.duplicateCount = "0";
-                        newNameSection.mapperFlags = {Data::MAPPER_FLAG_GENERATED};
-                    }
+                    newNameSection.elementType = generatedElementName.getType()[0];
 
                     // we put all generated elements in here, even if it was just mapped above.
                     // we do this so we can look up those values later.
@@ -2749,7 +2735,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                 if (generatedShapes == 1) {
                     ensureElementMap()->setElementName(
                         generatedShapeEntry.first[0].newElementName,
-                        Data::MappedName(Data::MappedName::makeEncodedSection(newNameSection)),
+                        Data::MappedName::fromDecodedMappedSection(newNameSection),
                         masterTag
                     );
                 }
@@ -2785,8 +2771,10 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         auto namedGeneratedIterator = namedGeneratedShapes.find(foundSubshape);
 
                         if (namedGeneratedIterator != namedGeneratedShapes.end()) {
-                            std::string encodedMappedSection = Data::MappedName::makeEncodedSection(
-                                namedGeneratedIterator->second
+                            std::string encodedMappedSection = Data::MappedName::makeEncodedName(
+                                Data::MappedName::makeEncodedSection(
+                                    namedGeneratedIterator->second
+                                )
                             );
 
                             generatedConnectedElementMap[elementShape].push_back(encodedMappedSection);
@@ -2841,7 +2829,9 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                 ensureElementMap()->setElementName(
                     elementIndexName,
-                    Data::MappedName(Data::MappedName::makeEncodedSection(elementMappedSection)),
+                    Data::MappedName::fromDecodedMappedSection(
+                        elementMappedSection
+                    ),
                     masterTag
                 );
             }
@@ -2892,7 +2882,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                             );
 
                             if (incomingShapeMapName) {
-                                Data::MappedName newName = Data::MappedName(
+                                Data::MappedName newName = Data::MappedName::fromEncodedMappedSection(
                                     Data::MappedName::makeEncodedSection(
                                         {},
                                         {incomingShapeMapName},
@@ -2935,7 +2925,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                     }
 
                     if (linkedUpperNames.size()) {
-                        Data::MappedName newName = Data::MappedName(
+                        Data::MappedName newName = Data::MappedName::fromEncodedMappedSection(
                             Data::MappedName::makeEncodedSection(
                                 {},
                                 linkedUpperNames,
@@ -3001,15 +2991,18 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                         if (linkedLowerNames.size()) {
                             Data::MappedName newName = Data::MappedName(
-                                Data::MappedName::makeEncodedSection(
-                                    {},
-                                    linkedLowerNames,
-                                    masterTag,
-                                    op,
-                                    usedLowerNames.count(linkedLowerNames),
-                                    (*info->shapetype),
-                                    0,
-                                    {Data::MAPPER_FLAG_LOWER}
+                                Data::MappedName::makeEncodedName(
+                                    Data::EMPTY_VALUE,
+                                    Data::MappedName::makeEncodedSection(
+                                        {},
+                                        linkedLowerNames,
+                                        masterTag,
+                                        op,
+                                        usedLowerNames.count(linkedLowerNames),
+                                        (*info->shapetype),
+                                        0,
+                                        {Data::MAPPER_FLAG_LOWER}
+                                    )
                                 )
                             );
 
@@ -5658,20 +5651,18 @@ TopoShape& TopoShape::makeElementShape(
     BRepBuilderAPI_MakeShape& mkShape,
     const TopoShape& source,
     const char* op,
-    ElementMapPolicy elementMapPolicy,
-    App::CopyRemapPolicy copyRemapPolicy
+    ElementMapPolicy elementMapPolicy
 )
 {
     std::vector<TopoShape> sources(1, source);
-    return makeElementShape(mkShape, sources, op, elementMapPolicy, copyRemapPolicy);
+    return makeElementShape(mkShape, sources, op, elementMapPolicy);
 }
 
 TopoShape& TopoShape::makeElementShape(
     BRepBuilderAPI_MakeShape& mkShape,
     const std::vector<TopoShape>& shapes,
     const char* op,
-    ElementMapPolicy elementMapPolicy,
-    App::CopyRemapPolicy copyRemapPolicy
+    ElementMapPolicy elementMapPolicy
 )
 {
     TopoDS_Shape shape;
@@ -5682,15 +5673,14 @@ TopoShape& TopoShape::makeElementShape(
     else {
         shape = mkShape.Shape();
     }
-    return makeShapeWithElementMap(shape, MapperMaker(mkShape), shapes, op, elementMapPolicy, copyRemapPolicy);
+    return makeShapeWithElementMap(shape, MapperMaker(mkShape), shapes, op, elementMapPolicy);
 }
 
 TopoShape& TopoShape::makeElementShape(
     BRepFeat_MakePrism& mkShape,
     const std::vector<TopoShape>& sources,
     const TopoShape& upTo,
-    const char* op,
-    App::CopyRemapPolicy copyRemapPolicy
+    const char* op
 )
 {
     const App::HistoryAlgorithm& historyAlgorithm = getHistoryAlgorithm();
@@ -5705,10 +5695,25 @@ TopoShape& TopoShape::makeElementShape(
     }
 
     MapperPrism mapper(mkShape, upTo, sources, historyAlgorithm);
-    makeShapeWithElementMap(mkShape.Shape(), mapper, sources, op, ElementMapPolicy::Propagate, copyRemapPolicy);
+    makeShapeWithElementMap(mkShape.Shape(), mapper, sources, op, ElementMapPolicy::Propagate);
     return *this;
 }
 
+TopoShape& TopoShape::markOwnership(long newTag) {
+    ZoneScoped;
+
+    Tag = newTag;
+
+    if (getHistoryAlgorithm() == App::HistoryAlgorithm::V2 && elementMap()) {
+        if (!hasUniqueElementMap()) {
+            makeElementMapUnique();
+        }
+
+        elementMap()->markNameOwnership(newTag);
+    }
+
+    return *this;
+}
 
 TopoShape& TopoShape::makeElementLoft(
     const std::vector<TopoShape>& shapes,
@@ -5833,8 +5838,7 @@ TopoShape& TopoShape::makeElementLoft(
         MapperThruSections(aGenerator, profiles),
         shapes,
         op,
-        ElementMapPolicy::Propagate,
-        App::CopyRemapPolicy::CHANGE_NAME_OWNERSHIP
+        ElementMapPolicy::Propagate
     );
 }
 
@@ -5847,7 +5851,7 @@ TopoShape& TopoShape::makeElementPrism(const TopoShape& base, const gp_Vec& vec,
         FC_THROWM(NullShapeException, "Null shape");
     }
     BRepPrimAPI_MakePrism mkPrism(base.getShape(), vec);
-    return makeElementShape(mkPrism, base, op, ElementMapPolicy::Propagate, base.Tag == Tag ? App::CopyRemapPolicy::COPY_NAME : App::CopyRemapPolicy::CHANGE_NAME_OWNERSHIP);
+    return makeElementShape(mkPrism, base, op, ElementMapPolicy::Propagate);
 }
 
 TopoShape& TopoShape::makeElementPrismUntil(
@@ -6037,7 +6041,7 @@ TopoShape& TopoShape::makeElementPrismUntil(
                         result.Tag = Tag;
                     }
 
-                    result.makeElementShape(PrismMaker, srcShapes, uptoface, op, App::CopyRemapPolicy::CHANGE_NAME_OWNERSHIP);
+                    result.makeElementShape(PrismMaker, srcShapes, uptoface, op);
                 }
             } else if (historyAlgorithm == App::HistoryAlgorithm::V2) {
                 prismShapes.clear();
@@ -6071,7 +6075,7 @@ TopoShape& TopoShape::makeElementPrismUntil(
                         FC_THROWM(Base::CADKernelError, "BRepFeat_MakePrism: extrusion failed");
                     }
 
-                    prismShape.makeElementShape(PrismMaker, srcShapes, uptoface, op, App::CopyRemapPolicy::CHANGE_NAME_OWNERSHIP);
+                    prismShape.makeElementShape(PrismMaker, srcShapes, uptoface, op);
                     prismShapes.push_back(prismShape);
                 }
 
@@ -7597,11 +7601,12 @@ long TopoShape::isElementGenerated(Data::MappedName& _name, int depth) const
     else if (historyAlgo == App::HistoryAlgorithm::V2) {
         const Data::DecodedMappedName& _decodedName = _name.getDecodedMappedName();
 
-        if (_decodedName.size()) {
-            const Data::DecodedMappedSection& lastSection = _decodedName.back();
+        if (_decodedName.sections.size()) {
+            const Data::DecodedMappedSection& lastSection = _decodedName.sections.back();
 
             if (lastSection.iterationTag == std::to_string(Tag)
-                && lastSection.hasMapperFlag(Data::MAPPER_FLAG_GENERATED)) {
+                && lastSection.hasMapperFlag(Data::MAPPER_FLAG_GENERATED))
+            {
                 return true;
             }
         }

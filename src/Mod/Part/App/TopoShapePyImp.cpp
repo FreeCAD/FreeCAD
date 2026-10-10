@@ -3080,3 +3080,16 @@ int TopoShapePy::setCustomAttributes(const char*, PyObject*)
 {
     return 0;
 }
+
+PyObject* TopoShapePy::markOwnership(PyObject* args)
+{
+    long newTag;
+
+    if (!PyArg_ParseTuple(args, "l", &newTag)) {
+        return 0;
+    }
+
+    getTopoShapePtr()->markOwnership(newTag);
+
+    Py_Return;
+}

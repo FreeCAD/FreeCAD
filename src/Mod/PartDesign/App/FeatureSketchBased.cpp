@@ -261,7 +261,7 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(
 
                     if (subshape.isNull()) {
                         if (silent) {
-                            return {};
+                            return makeTopoShape();
                         }
                         FC_THROWM(
                             Base::CADKernelError,

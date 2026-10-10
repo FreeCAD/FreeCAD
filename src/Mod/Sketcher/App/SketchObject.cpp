@@ -289,15 +289,17 @@ void SketchObject::buildShape()
             builtName = name;
         }
         else if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
-            builtName = Data::MappedName::makeEncodedSection(
-                {name},
-                {},
-                tag,
-                Part::OpCodes::Sketch,
-                0,
-                'V',
-                0,
-                {Data::MAPPER_FLAG_SOURCE}
+            builtName = Data::MappedName::fromEncodedMappedSection(
+                Data::MappedName::makeEncodedSection(
+                    {name},
+                    {},
+                    tag,
+                    Part::OpCodes::Sketch,
+                    0,
+                    'V',
+                    0,
+                    {Data::MAPPER_FLAG_SOURCE}
+                )
             );
         }
 
@@ -426,7 +428,7 @@ void SketchObject::buildShape()
         if (referenceIDs.size()) {
             result.setElementName(
                 Data::IndexedName::fromConst("Vertex", vertexIdx),
-                Data::MappedName(
+                Data::MappedName::fromEncodedMappedSection(
                     Data::MappedName::makeEncodedSection(
                         referenceIDs,
                         {},

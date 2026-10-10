@@ -51,7 +51,7 @@ class AppExport DecodedMappedSection {
         std::vector<std::string> referenceIDs;
         std::vector<std::string> linkedNames;
         std::string iterationTag = Data::EMPTY_VALUE;
-        std::string opCode = "";
+        std::string opCode = Data::EMPTY_VALUE;
         std::string index = Data::EMPTY_VALUE;
         char elementType = (*Data::EMPTY_VALUE);
         std::string duplicateCount = Data::EMPTY_VALUE;
@@ -77,6 +77,22 @@ class AppExport DecodedMappedSection {
         };
 };
 
+class AppExport DecodedMappedName {
+    public:
+        /// Definitions for these entries can be found in `ElementNamingUtils.h`
+        std::string ownerTag = Data::EMPTY_VALUE;
+        std::vector<DecodedMappedSection> sections;
+    
+        inline bool operator==(const DecodedMappedName& other) const {
+            return (
+                ownerTag == other.ownerTag &&
+                sections == other.sections
+            );
+        };
+};
+
+static std::unordered_map<std::string, DecodedMappedName> decodedMappedNameCache;
+
 /**
  * @brief A class for managing element map names.
  * @ingroup ElementMapping
@@ -97,9 +113,6 @@ class AppExport DecodedMappedSection {
  * This returns a `DecodedMappedName` (or a `std::vector<DecodedMappedSection>`).
  * 
  */
-
-using DecodedMappedName = std::vector<DecodedMappedSection>;
-static std::unordered_map<std::string, DecodedMappedName> decodedMappedNameCache;
 
 class AppExport MappedName
 {
@@ -1102,10 +1115,6 @@ public:
 
     DecodedMappedName& getDecodedMappedName();
 
-    static MappedName fromDecodedMappedName(const DecodedMappedName& name);
-
-    static std::string makeEncodedName(const DecodedMappedName& name);
-
     static std::string escapeString(const std::string& stringToEscape);
 
     static DecodedMappedSection makeDecodedSection(
@@ -1117,7 +1126,7 @@ public:
         const char& elementType = 'E',
         const std::string& duplicateCount = "0",
         const std::vector<std::string>& mapperFlags = {},
-        const std::vector<std::string>& connectedElements = {}
+    const std::vector<std::string>& connectedElements = {}
     );
 
     static DecodedMappedSection makeDecodedSection(
@@ -1153,7 +1162,7 @@ public:
         const char& elementType = 'E',
         const std::string& duplicateCount = "0",
         const std::vector<std::string>& mapperFlags = {},
-        const  std::vector<MappedName>& connectedElements = {}
+        const std::vector<MappedName>& connectedElements = {}
     );
 
     static std::string makeEncodedSection(
@@ -1168,13 +1177,83 @@ public:
         const std::vector<std::string>& connectedElements = {}
     );
 
+    static MappedName fromEncodedMappedSection(
+        const std::string& section,
+        const std::string& ownerTag = Data::EMPTY_VALUE
+    );
+
+    static MappedName fromDecodedMappedSection(
+        const DecodedMappedSection& section,
+        const std::string& ownerTag = Data::EMPTY_VALUE
+    );
+
+    static std::string makeEncodedName(
+        const std::string& section,
+        const std::string& ownerTag = Data::EMPTY_VALUE
+    );
+
+    static std::string makeEncodedName(const DecodedMappedName& name);
+
+    static MappedName fromDecodedMappedName(const DecodedMappedName& name);
+
     static std::string makeEncodedSection(const DecodedMappedSection& decodedSection);
 
     static MappedName makeUnmappedName(
         const std::vector<std::string>& indexedNames = {},
-        const int& iterationTag = 0,
+        const long& iterationTag = 0,
+        const long& ownerTag = 0,
         const char* opCode = "MKR",
         const char& elementType = 'E'
+    );
+
+    /// This method splices a V2 name by the provided section and sub-section indexes.
+    /// Inputting a number less than 0 into `sectionIndex` will cause a wrap-around
+    /// (e.g. `-1` will select the last section of a name)
+    void spliceNameBySubSections(
+        int sectionIndex,
+        int subSectionIndex,
+        std::string* beforeSubSectionString,
+        std::string* subSectionDataString,
+        std::string* afterSubSectionString
+    ) const;
+
+    /// This method splices a V2 name by the provided section and sub-section indexes.
+    /// Inputting a number less than 0 into `sectionIndex` will cause a wrap-around
+    /// (e.g. `-1` will select the last section of a name)
+    void spliceNameBySubSections(
+        int sectionIndex,
+        int subSectionIndex,
+        QByteArray* dataBeforeSubSectionString,
+        QByteArray* postfixBeforeSubSectionString,
+        QByteArray* subSectionString,
+        QByteArray* dataAfterSubSectionString,
+        QByteArray* postfixAfterSubSectionString
+    ) const;
+
+    /// This method sets the data of a sub-section. Only use this with V2 names.
+    /// 'sectionIndex' is needed to determine where to find the `subSectionIndex`.
+    /// Inputting a number less than 0 into `sectionIndex` will cause a wrap-around
+    /// (e.g. `-1` will select the last section of a name)
+    void setSubSectionData(
+        int sectionIndex,
+        int subSectionIndex,
+        const std::string& newData
+    );
+
+    /// This method sets the owner tag of a V2 name.
+    void setOwnerTag(
+        const std::string& newTag
+    );
+
+    /// This method gets the owner tag of a V2 name.
+    std::string getOwnerTag() const;
+
+    void setNameBySplicedData(
+        const QByteArray& dataBeforeSubSectionString,
+        const QByteArray& postfixBeforeSubSectionString,
+        const QByteArray& subSectionString,
+        const QByteArray& dataAfterSubSectionString,
+        const QByteArray& postfixAfterSubSectionString
     );
     
 private:

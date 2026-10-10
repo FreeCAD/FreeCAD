@@ -1254,3 +1254,13 @@ class TopoShape(ComplexGeoData):
         avoidtype: optional shape type to skip when exploring
         """
         ...
+
+    def markOwnership(self, newTag: int, /) -> None:
+        """
+        markOwnership(newTag) -> None
+        
+        Changes the tag of the shape and marks the MappedNames in the ElementMap as being owned by the new tag.
+        
+        newTag: The new owner tag.
+        """
+        ...

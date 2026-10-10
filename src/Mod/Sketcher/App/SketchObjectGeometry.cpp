@@ -1632,15 +1632,17 @@ Part::TopoShape SketchObject::getEdge(const Part::Geometry *geo, const char *nam
     if (selectedHistoryVersion == App::HistoryAlgorithm::V1) {
         builtName = name;
     } else if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
-        builtName = Data::MappedName::makeEncodedSection(
-            {name},
-            {},
-            getID(),
-            Part::OpCodes::Sketch,
-            0,
-            'E',
-            0,
-            {Data::MAPPER_FLAG_SOURCE}
+        builtName = Data::MappedName::fromEncodedMappedSection(
+            Data::MappedName::makeEncodedSection(
+                {name},
+                {},
+                getID(),
+                Part::OpCodes::Sketch,
+                0,
+                'E',
+                0,
+                {Data::MAPPER_FLAG_SOURCE}
+            )
         );
     }
     // Originally in ComplexGeoData::setElementName

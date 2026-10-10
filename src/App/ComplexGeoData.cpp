@@ -748,4 +748,11 @@ const std::string ComplexGeoData::dumpElementMap() const
     return ss.str();
 }
 
+void ComplexGeoData::makeElementMapUnique()
+{
+    if (_elementMap) {
+        _elementMap = std::make_shared<Data::ElementMap>(*_elementMap);
+    }
+}
+
 // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)

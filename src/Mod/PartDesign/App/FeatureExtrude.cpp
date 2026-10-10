@@ -462,6 +462,8 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 
+    sketchshape.markOwnership(getID());
+
     // if the Base property has a valid shape, fuse the prism into it
     TopoShape base = getBaseTopoShape(true);
 

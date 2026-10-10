@@ -1835,22 +1835,19 @@ public:
         const TopoShape& other,
         const char* op = nullptr,
         bool forceHasher = false,
-        IncludedHistoryMap* nameMap = nullptr,
-        App::CopyRemapPolicy copyRemapPolicy = App::CopyRemapPolicy::COPY_NAME
+        IncludedHistoryMap* nameMap = nullptr
     );
 
     void mapSubElement(
         const std::vector<TopoShape>& shapes,
         const char* op = nullptr,
-        IncludedHistoryMap* nameMap = nullptr,
-        App::CopyRemapPolicy copyRemapPolicy = App::CopyRemapPolicy::COPY_NAME
+        IncludedHistoryMap* nameMap = nullptr
     );
 
     void mapSubElementsTo(
         std::vector<TopoShape>& shapes,
         const char* op = nullptr,
-        IncludedHistoryMap* nameMap = nullptr,
-        App::CopyRemapPolicy copyRemapPolicy = App::CopyRemapPolicy::COPY_NAME
+        IncludedHistoryMap* nameMap = nullptr
     ) const;
 
     bool hasPendingElementMap() const;
@@ -2042,8 +2039,7 @@ public:
         const Mapper& mapper,
         const std::vector<TopoShape>& sources,
         const char* op = nullptr,
-        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate,
-        App::CopyRemapPolicy copyRemapPolicy = App::CopyRemapPolicy::COPY_NAME
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
     );
     /**
      * When given a single shape to create a compound, two results are possible: either to simply
@@ -3141,8 +3137,7 @@ public:
         BRepBuilderAPI_MakeShape& mkShape,
         const std::vector<TopoShape>& sources,
         const char* op = nullptr,
-        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate,
-        App::CopyRemapPolicy copyRemapPolicy = App::CopyRemapPolicy::COPY_NAME
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
     );
     /** Generic shape making with mapped element name from shape history
      *
@@ -3162,8 +3157,7 @@ public:
         BRepBuilderAPI_MakeShape& mkShape,
         const TopoShape& source,
         const char* op = nullptr,
-        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate,
-        App::CopyRemapPolicy copyRemapPolicy = App::CopyRemapPolicy::COPY_NAME
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
     );
     /** Generic shape making with mapped element name from shape history
      *
@@ -3179,8 +3173,7 @@ public:
     TopoShape makeElementShape(
         BRepBuilderAPI_MakeShape& mkShape,
         const char* op = nullptr,
-        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate,
-        App::CopyRemapPolicy copyRemapPolicy = App::CopyRemapPolicy::COPY_NAME
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
     ) const
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
@@ -3190,7 +3183,7 @@ public:
             newShape.Tag = Tag;
         }
 
-        return newShape.makeElementShape(mkShape, *this, op, elementMapPolicy, copyRemapPolicy);
+        return newShape.makeElementShape(mkShape, *this, op, elementMapPolicy);
     }
 
     /** Specialized shape making for BRepBuilderAPI_MakePrism with mapped element name
@@ -3210,9 +3203,17 @@ public:
         BRepFeat_MakePrism& mkShape,
         const std::vector<TopoShape>& sources,
         const TopoShape& uptoface,
-        const char* op,
-        App::CopyRemapPolicy copyRemapPolicy = App::CopyRemapPolicy::COPY_NAME
+        const char* op
     );
+
+    /** Change the tag of the shape and mark the `MappedName`s in the `ElementMap` as being owned by the new tag.
+     *
+     * @param newTag: The new owner tag.
+     *
+     * @return Returns itself.
+     *
+     */
+    TopoShape& markOwnership(long newTag);
 
     /* Toponaming migration, February 2024:
      * Note that the specialized versions of makeElementShape for operations that do not
