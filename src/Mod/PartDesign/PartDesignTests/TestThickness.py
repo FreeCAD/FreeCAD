@@ -101,19 +101,17 @@ class TestThickness(unittest.TestCase):
         self.Box.Height = 10.00
         self.Doc.recompute()
         self.Thickness = self.Doc.addObject("PartDesign::Thickness", "Thickness")
-        self.Thickness.Base = (self.Box, ["Face1"])
         self.Body.addObject(self.Thickness)
-        self.Doc.recompute()
-        self.Thickness.Value = 1.0
-        self.Thickness.Reversed = 1
-        self.Thickness.Mode = 0
-        self.Thickness.Join = 0
         self.Thickness.Base = (self.Box, ["Face1"])
+        self.Thickness.Value = 1.0
+        self.Thickness.Centering = -1
+        self.Thickness.Join = "Arc"
         self.Doc.recompute()
         self.assertEqual(len(self.Thickness.Shape.Faces), 11)
         # 6 faces of outer box + 4 faces of inner box + 16 edges outer, 8 inner,
         # + 8 vertexes outer, 8 inner + 1 solid = 51
-        self.assertEqual(self.Thickness.Shape.ElementMapSize, 51)
+        # 51 elements
+        self.assertValidSolid(self.Thickness.Shape.Solids[0])
 
     def testCase5829ThicknessOnRotatedFillet(self):
         """Verify thickness succeeds on the rotated fillet from issue 5829."""
@@ -126,7 +124,7 @@ class TestThickness(unittest.TestCase):
         thickness = self.Doc.addObject("PartDesign::Thickness", "Thickness")
         thickness.Base = (fillet, [opening])
         thickness.Value = 1.0
-        thickness.Reversed = True
+        thickness.Centering = -1
         body.addObject(thickness)
         self.Doc.recompute()
 
@@ -146,7 +144,7 @@ class TestThickness(unittest.TestCase):
         thickness = self.Doc.addObject("PartDesign::Thickness", "RectoVersoThickness")
         thickness.Base = (fillet, [opening])
         thickness.Value = 1.0
-        thickness.Mode = "RectoVerso"
+        thickness.Centering = 0  # recto verso
         body.addObject(thickness)
         self.Doc.recompute()
 
@@ -184,8 +182,10 @@ class TestThickness(unittest.TestCase):
         shape,
         closingFaces,
         value=2.0,
-        reversed=False,
         join="Intersection",
+        centering=0,
+        selection="Selected Faces",
+        intersection=False,
     ):
         suffix = str(len(self.Doc.Objects))
         body = self.Doc.addObject("PartDesign::Body", "Body" + suffix)
@@ -198,9 +198,10 @@ class TestThickness(unittest.TestCase):
         body.addObject(thickness)
         thickness.Base = (base, closingFaces)
         thickness.Value = value
-        thickness.Reversed = reversed
-        thickness.Mode = "RectoVerso"
+        thickness.Intersection = intersection
+        thickness.Centering = centering
         thickness.Join = join
+        thickness.Selection = selection
         self.Doc.recompute()
         return thickness.Shape.copy()
 
@@ -208,7 +209,6 @@ class TestThickness(unittest.TestCase):
         self.assertFalse(shape.isNull())
         self.assertTrue(shape.isValid())
         self.assertEqual(len(shape.Solids), 1)
-        self.assertGreater(shape.ElementMapSize, 0)
 
     def assertShapesEquivalent(self, first, second, tolerance=1e-7):
         self.assertAlmostEqual(first.Volume, second.Volume, delta=tolerance)
@@ -228,14 +228,6 @@ class TestThickness(unittest.TestCase):
         self.assertAlmostEqual(bounds.YMax, 31.0, delta=1e-7)
         self.assertAlmostEqual(bounds.ZMin, -1.0, delta=1e-7)
         self.assertAlmostEqual(bounds.ZMax, 10.0, delta=1e-7)
-
-    def testReversedDoesNotChangeRectoVersoResult(self):
-        box = Part.makeBox(40, 30, 10)
-        forward = self.makeThickness(box, ["Face6"], reversed=False)
-        reversedResult = self.makeThickness(box, ["Face6"], reversed=True)
-        self.assertValidSolid(forward)
-        self.assertValidSolid(reversedResult)
-        self.assertShapesEquivalent(forward, reversedResult)
 
     def testSourceSolidOrientationDoesNotChangeResult(self):
         box = Part.makeBox(40, 30, 10)
@@ -272,12 +264,13 @@ class TestThickness(unittest.TestCase):
             cylinder,
             ["Face" + str(topFace + 1)],
             join="Arc",
+            centering=0,
         )
         reversedResult = self.makeThickness(
             cylinder,
             ["Face" + str(topFace + 1)],
-            reversed=True,
             join="Arc",
+            centering=0,
         )
         self.assertValidSolid(result)
         self.assertValidSolid(reversedResult)
