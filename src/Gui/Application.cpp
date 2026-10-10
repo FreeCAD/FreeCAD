@@ -416,18 +416,18 @@ bool qtIsMainThread()
     return !qApp || (QThread::currentThread() == qApp->thread());
 }
 
-// Hook: invoke a functor on the GUI thread, either blocking or queued.
-void qtInvokeOnMain(std::function<void()>&& fn, bool blocking)
+// Hook: synchronously invoke a non-owning task on the GUI thread.
+bool qtInvokeOnMain(App::MainThreadSignalConfig::TaskFn task, void* context)
 {
     if (!qApp) {
-        fn();
-        return;
+        task(context);
+        return true;
     }
 
-    QMetaObject::invokeMethod(
+    return QMetaObject::invokeMethod(
         MainThreadInvoker::instance(),
-        [f = std::move(fn)]() mutable { f(); },
-        blocking ? Qt::BlockingQueuedConnection : Qt::QueuedConnection
+        [task, context] { task(context); },
+        Qt::BlockingQueuedConnection
     );
 }
 
@@ -517,7 +517,7 @@ Application::Application(bool GUIenabled)
 {
     // App::GetApplication().Attach(this);
     if (GUIenabled) {
-        App::MainThreadSignalConfig::setHooks(&qtIsMainThread, &qtInvokeOnMain);
+        App::MainThreadSignalConfig::installHooks(&qtIsMainThread, &qtInvokeOnMain);
 
         // NOLINTBEGIN
         App::GetApplication().signalNewDocument.connect(

@@ -31,6 +31,7 @@ class QTabWidget;
 
 namespace App
 {
+class Document;
 class Property;
 class PropertyContainer;
 class DocumentObject;
