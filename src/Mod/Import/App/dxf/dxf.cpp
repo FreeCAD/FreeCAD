@@ -6,12 +6,15 @@
 // modified 2018 wandererfan
 
 
+#include <algorithm>
 #include <cmath>
+#include <cstdio>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <exception>
+#include <set>
 #include <string>
 
 #include "dxf.h"
@@ -80,6 +83,78 @@ std::string DxfUnitToString(DxfUnits::eDxfUnits_t unit)
     }
 }
 
+// Unicode values of the Windows-1252 bytes 0x80 to 0x9F, where 0 marks an undefined byte.
+constexpr unsigned int cp1252HighBytes[32] = {
+    0x20AC, 0x0000, 0x201A, 0x0192, 0x201E, 0x2026, 0x2020, 0x2021, 0x02C6, 0x2030, 0x0160,
+    0x2039, 0x0152, 0x0000, 0x017D, 0x0000, 0x0000, 0x2018, 0x2019, 0x201C, 0x201D, 0x2022,
+    0x2013, 0x2014, 0x02DC, 0x2122, 0x0161, 0x203A, 0x0153, 0x0000, 0x017E, 0x0178,
+};
+
+// DXF R14 text is 8-bit, in the code page named by $DWGCODEPAGE (Windows-1252 in the header
+// templates). Characters outside that code page are written as \U+XXXX escapes. Characters
+// beyond U+FFFF have no such escape and become '?'.
+std::string Utf8ToDxfText(const std::string& utf8)
+{
+    std::string result;
+    result.reserve(utf8.size());
+
+    std::size_t i = 0;
+    while (i < utf8.size()) {
+        const auto lead = static_cast<unsigned char>(utf8[i]);
+        unsigned int codePoint = lead;
+        std::size_t length = 1;
+        if (lead >= 0xF0) {
+            codePoint = lead & 0x07U;
+            length = 4;
+        }
+        else if (lead >= 0xE0) {
+            codePoint = lead & 0x0FU;
+            length = 3;
+        }
+        else if (lead >= 0xC0) {
+            codePoint = lead & 0x1FU;
+            length = 2;
+        }
+        else if (lead >= 0x80) {
+            result += '?';  // stray continuation byte
+            ++i;
+            continue;
+        }
+
+        bool valid = i + length <= utf8.size();
+        for (std::size_t k = 1; valid && k < length; ++k) {
+            const auto next = static_cast<unsigned char>(utf8[i + k]);
+            valid = (next & 0xC0U) == 0x80U;
+            codePoint = (codePoint << 6U) | (next & 0x3FU);
+        }
+        if (!valid) {
+            result += '?';
+            ++i;
+            continue;
+        }
+        i += length;
+
+        if (codePoint < 0x80 || (codePoint >= 0xA0 && codePoint <= 0xFF)) {
+            result += static_cast<char>(codePoint);
+            continue;
+        }
+        const auto* found
+            = std::find(std::begin(cp1252HighBytes), std::end(cp1252HighBytes), codePoint);
+        if (found != std::end(cp1252HighBytes)) {
+            result += static_cast<char>(0x80 + (found - std::begin(cp1252HighBytes)));
+        }
+        else if (codePoint <= 0xFFFF) {
+            char escape[8];
+            std::snprintf(escape, sizeof(escape), "\\U+%04X", codePoint);
+            result += escape;
+        }
+        else {
+            result += '?';
+        }
+    }
+    return result;
+}
+
 }  // namespace
 
 static Base::Vector3d MakeVector3d(const double coordinates[3])
@@ -101,6 +176,7 @@ CDxfWrite::CDxfWrite(const char* filepath)
     , m_ssBlkRecord(new std::ostringstream())
     , m_ssEntity(new std::ostringstream())
     , m_ssLayer(new std::ostringstream())
+    , m_ssDimstyle(new std::ostringstream())
     , m_version(12)
     , m_handle(0xA00)
     ,  // room for 2560 handles in boilerplate files
@@ -110,6 +186,7 @@ CDxfWrite::CDxfWrite(const char* filepath)
     // m_blkRecordHandle(0x110),
     m_polyOverride(false)
     , m_layerName("none")
+    , m_currentColor(256)  // default color is "by layer" (256)
 {
     // start the file
     Base::FileInfo fi(filepath);
@@ -124,6 +201,8 @@ CDxfWrite::CDxfWrite(const char* filepath)
     // use lots of digits to avoid rounding errors
     m_ssEntity->setf(std::ios::fixed);
     m_ssEntity->precision(9);
+    m_ssDimstyle->setf(std::ios::fixed);
+    m_ssDimstyle->precision(9);
 }
 
 CDxfWrite::~CDxfWrite()
@@ -133,6 +212,7 @@ CDxfWrite::~CDxfWrite()
     delete m_ssBlkRecord;
     delete m_ssEntity;
     delete m_ssLayer;
+    delete m_ssDimstyle;
 }
 
 void CDxfWrite::init()
@@ -145,7 +225,9 @@ void CDxfWrite::init()
 //! assemble pieces into output file
 void CDxfWrite::endRun()
 {
+    m_stats.dxfVersion = std::to_string(m_version);
     makeLayerTable();
+    makeDimstyleTable();
     makeBlockRecordTableBody();
 
     writeClassesSection();
@@ -155,7 +237,7 @@ void CDxfWrite::endRun()
     writeObjectsSection();
 
     (*m_ofs) << "  0" << endl;
-    (*m_ofs) << "EOF";
+    (*m_ofs) << "EOF" << endl;
 }
 
 //***************************
@@ -208,6 +290,7 @@ void CDxfWrite::writeTablesSection()
     (*m_ofs) << getPlateFile(fileSpec);
 
     (*m_ofs) << (*m_ssLayer).str();
+    (*m_ofs) << (*m_ssDimstyle).str();
 
     // static tables section tail end content
     ss.str("");
@@ -217,6 +300,19 @@ void CDxfWrite::writeTablesSection()
     (*m_ofs) << getPlateFile(fileSpec);
 
     if (m_version > 12) {
+        (*m_ofs) << "  0" << endl;
+        (*m_ofs) << "TABLE" << endl;
+        (*m_ofs) << "  2" << endl;
+        (*m_ofs) << "BLOCK_RECORD" << endl;
+        (*m_ofs) << "  5" << endl;
+        (*m_ofs) << m_saveBlockRecordTableHandle << endl;
+        (*m_ofs) << "330" << endl;
+        (*m_ofs) << "0" << endl;
+        (*m_ofs) << "100" << endl;
+        (*m_ofs) << "AcDbSymbolTable" << endl;
+        (*m_ofs) << "  70" << endl;
+        // *MODEL_SPACE and *PAPER_SPACE, plus one record per block.
+        (*m_ofs) << (m_blockList.size() + 2) << endl;
         (*m_ofs) << (*m_ssBlkRecord).str();
         (*m_ofs) << "  0" << endl;
         (*m_ofs) << "ENDTAB" << endl;
@@ -230,6 +326,17 @@ void CDxfWrite::writeTablesSection()
 // added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
 void CDxfWrite::makeLayerTable()
 {
+    // Keep only unique layer names here, since setLayerName() records every
+    // occurrence with no filtering; m_layerList may repeat names, including "0"
+    // (written separately below).
+    std::vector<std::string> uniqueLayers;
+    std::set<std::string> seenLayers = {"0"};
+    for (auto& l : m_layerList) {
+        if (seenLayers.insert(l).second) {
+            uniqueLayers.push_back(l);
+        }
+    }
+
     std::string tablehash = getLayerHandle();
     (*m_ssLayer) << "  0" << endl;
     (*m_ssLayer) << "TABLE" << endl;
@@ -244,7 +351,8 @@ void CDxfWrite::makeLayerTable()
         (*m_ssLayer) << "AcDbSymbolTable" << endl;
     }
     (*m_ssLayer) << " 70" << endl;
-    (*m_ssLayer) << m_layerList.size() + 1 << endl;
+    (*m_ssLayer) << uniqueLayers.size() + 1 << endl;
+    m_stats.layerCount = static_cast<int>(uniqueLayers.size()) + 1;
 
     (*m_ssLayer) << "  0" << endl;
     (*m_ssLayer) << "LAYER" << endl;
@@ -267,7 +375,7 @@ void CDxfWrite::makeLayerTable()
     (*m_ssLayer) << "  6" << endl;
     (*m_ssLayer) << "CONTINUOUS" << endl;
 
-    for (auto& l : m_layerList) {
+    for (auto& l : uniqueLayers) {
         (*m_ssLayer) << "  0" << endl;
         (*m_ssLayer) << "LAYER" << endl;
         (*m_ssLayer) << "  5" << endl;
@@ -294,6 +402,145 @@ void CDxfWrite::makeLayerTable()
 }
 
 //***************************
+// makeDimstyleTable
+// added to define the "STANDARD" dimstyle used by DIMENSION entities
+void CDxfWrite::makeDimstyleTable()
+{
+    std::string tablehash = getHandle();  // Handle for the table itself
+    (*m_ssDimstyle) << "  0" << endl;
+    (*m_ssDimstyle) << "TABLE" << endl;
+    (*m_ssDimstyle) << "  2" << endl;
+    (*m_ssDimstyle) << "DIMSTYLE" << endl;
+    (*m_ssDimstyle) << "  5" << endl;
+    (*m_ssDimstyle) << tablehash << endl;
+    if (m_version > 12) {
+        (*m_ssDimstyle) << "330" << endl;
+        (*m_ssDimstyle) << 0 << endl;
+        (*m_ssDimstyle) << "100" << endl;
+        (*m_ssDimstyle) << "AcDbSymbolTable" << endl;
+    }
+    (*m_ssDimstyle) << " 70" << endl;
+    (*m_ssDimstyle) << "    1" << endl;  // Number of styles in table
+
+    // --- Define the "STANDARD" style ---
+    // Full AcDbDimStyleTableRecord field set, matching AutoCAD's own defaults,
+    // so the table is complete and spec-compliant.
+    (*m_ssDimstyle) << "  0" << endl;
+    (*m_ssDimstyle) << "DIMSTYLE" << endl;
+    (*m_ssDimstyle) << "105"
+                    << endl;  // avoids clashing with DIMBLK's own group code 5 in this record
+    (*m_ssDimstyle) << getHandle() << endl;  // Handle for this style entry
+    if (m_version > 12) {
+        (*m_ssDimstyle) << "330" << endl;
+        (*m_ssDimstyle) << tablehash << endl;
+        (*m_ssDimstyle) << "100" << endl;
+        (*m_ssDimstyle) << "AcDbSymbolTableRecord" << endl;
+        (*m_ssDimstyle) << "100" << endl;
+        (*m_ssDimstyle) << "AcDbDimStyleTableRecord" << endl;
+    }
+    (*m_ssDimstyle) << "  2" << endl;
+    (*m_ssDimstyle) << "STANDARD" << endl;  // The style name referenced by DIMENSION entities
+    (*m_ssDimstyle) << " 70" << endl;
+    (*m_ssDimstyle) << "     0" << endl;       // Flags
+    (*m_ssDimstyle) << "  3" << endl << endl;  // DIMPOST
+    (*m_ssDimstyle) << "  4" << endl << endl;  // DIMAPOST
+    (*m_ssDimstyle) << "  5" << endl << endl;  // DIMBLK (obsolete)
+    (*m_ssDimstyle) << "  6" << endl << endl;  // DIMBLK1
+    (*m_ssDimstyle) << "  7" << endl << endl;  // DIMBLK2
+
+    // $DIMSCALE (Overall scale factor)
+    // Set to 1.0 because the exporter generates pre-scaled geometry.
+    // This prevents viewers from applying their own scaling.
+    (*m_ssDimstyle) << " 40" << endl;
+    (*m_ssDimstyle) << "1.0" << endl;
+
+    // $DIMASZ (Arrow size)
+    // Set to a non-zero placeholder. The actual arrows are drawn as SOLIDs.
+    (*m_ssDimstyle) << " 41" << endl;
+    (*m_ssDimstyle) << "1.0" << endl;
+
+    (*m_ssDimstyle) << " 42" << endl << "0.625" << endl;  // DIMEXO
+    (*m_ssDimstyle) << " 43" << endl << "3.75" << endl;   // DIMDLI
+    (*m_ssDimstyle) << " 44" << endl << "1.25" << endl;   // DIMEXE
+    (*m_ssDimstyle) << " 45" << endl << "0.0" << endl;    // DIMRND
+    (*m_ssDimstyle) << " 46" << endl << "0.0" << endl;    // DIMDLE
+    (*m_ssDimstyle) << " 47" << endl << "0.0" << endl;    // DIMTP
+    (*m_ssDimstyle) << " 48" << endl << "0.0" << endl;    // DIMTM
+
+    // $DIMTXT (Text height)
+    // Set to a sensible default. This will be overridden by XDATA on a
+    // per-dimension basis, but serves as a valid fallback.
+    (*m_ssDimstyle) << "140" << endl;  // Use group code 140 for DIMTXT in a DIMSTYLE table
+    (*m_ssDimstyle) << "3.5" << endl;
+
+    (*m_ssDimstyle) << "141" << endl << "2.5" << endl;               // DIMCEN
+    (*m_ssDimstyle) << "142" << endl << "0.0" << endl;               // DIMTSZ
+    (*m_ssDimstyle) << "143" << endl << "0.03937007874016" << endl;  // DIMALTF
+    (*m_ssDimstyle) << "144" << endl << "1.0" << endl;               // DIMLFAC
+    (*m_ssDimstyle) << "145" << endl << "0.0" << endl;               // DIMTVP
+    (*m_ssDimstyle) << "146" << endl << "1.0" << endl;               // DIMTFAC
+    (*m_ssDimstyle) << "147" << endl << "0.625" << endl;             // DIMGAP
+    (*m_ssDimstyle) << " 71" << endl << "     0" << endl;            // DIMTOL
+    (*m_ssDimstyle) << " 72" << endl << "     0" << endl;            // DIMLIM
+    (*m_ssDimstyle) << " 73" << endl << "     0" << endl;            // DIMTIH
+    (*m_ssDimstyle) << " 74" << endl << "     0" << endl;            // DIMTOH
+    (*m_ssDimstyle) << " 75" << endl << "     0" << endl;            // DIMSE1
+    (*m_ssDimstyle) << " 76" << endl << "     0" << endl;            // DIMSE2
+
+    // $DIMTAD (Text Above Dimension line)
+    // Set to 1 to place text above the line, matching geometry generation.
+    (*m_ssDimstyle) << " 77" << endl;
+    (*m_ssDimstyle) << "     1" << endl;
+
+    (*m_ssDimstyle) << " 78" << endl << "     8" << endl;  // DIMZIN
+    (*m_ssDimstyle) << "170" << endl << "     0" << endl;  // DIMALT
+    (*m_ssDimstyle) << "171" << endl << "     3" << endl;  // DIMALTD
+    (*m_ssDimstyle) << "172" << endl << "     1" << endl;  // DIMTOFL
+
+    // $DIMSAH (Separate Arrowheads)
+    // Set to 1 (On) to allow for user-defined arrowhead blocks (or none).
+    // This is required to suppress the viewer's default arrows. Group code
+    // 173 is DIMSAH.
+    (*m_ssDimstyle) << "173" << endl;
+    (*m_ssDimstyle) << "     1" << endl;
+    // By enabling separate arrowheads but NOT defining $DIMBLK1 and $DIMBLK2,
+    // we effectively tell the viewer to draw no arrows, which is correct
+    // because we have already drawn them as SOLID entities in the dimension block.
+
+    (*m_ssDimstyle) << "174" << endl << "     0" << endl;  // DIMTIX
+    (*m_ssDimstyle) << "175" << endl << "     0" << endl;  // DIMSOXD
+    (*m_ssDimstyle) << "176" << endl << "     0" << endl;  // DIMCLRD
+    (*m_ssDimstyle) << "177" << endl << "     0" << endl;  // DIMCLRE
+    (*m_ssDimstyle) << "178" << endl << "     0" << endl;  // DIMCLRT
+    (*m_ssDimstyle) << "270" << endl << "     2" << endl;  // DIMALTU (legacy position)
+    (*m_ssDimstyle) << "271" << endl << "     2" << endl;  // DIMDEC
+    (*m_ssDimstyle) << "272" << endl << "     2" << endl;  // DIMTDEC
+    (*m_ssDimstyle) << "273" << endl << "     2" << endl;  // DIMALTU
+    (*m_ssDimstyle) << "274" << endl << "     3" << endl;  // DIMALTTD
+    (*m_ssDimstyle) << "340" << endl
+                    << "71" << endl;  // DIMTXSTY: handle of the STANDARD text style (tables214.rub)
+    (*m_ssDimstyle) << "275" << endl << "     0" << endl;  // DIMAUNIT
+    (*m_ssDimstyle) << "280" << endl << "     0" << endl;  // DIMJUST
+    (*m_ssDimstyle) << "281" << endl << "     0" << endl;  // DIMSD1
+    (*m_ssDimstyle) << "282" << endl << "     0" << endl;  // DIMSD2
+    (*m_ssDimstyle) << "283" << endl << "     0" << endl;  // DIMTOLJ
+    (*m_ssDimstyle) << "284" << endl << "     8" << endl;  // DIMTZIN
+    (*m_ssDimstyle) << "285" << endl << "     0" << endl;  // DIMALTZ
+    (*m_ssDimstyle) << "286" << endl << "     0" << endl;  // DIMALTTZ
+    (*m_ssDimstyle) << "287" << endl << "     3" << endl;  // DIMFIT/DIMATFIT (legacy position)
+    (*m_ssDimstyle) << "288" << endl << "     0" << endl;  // DIMUPT
+
+    (*m_ssDimstyle) << "  0" << endl;
+    (*m_ssDimstyle) << "ENDTAB" << endl;
+}
+
+//! Anonymous dimension block names (*D1, *D2, ...) must be unique within the file.
+void CDxfWrite::assignDimBlockName()
+{
+    m_currentDimBlockName = "*D" + std::to_string(++m_dimBlockCounter);
+}
+
+//***************************
 // makeBlockRecordTableHead
 // added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
 void CDxfWrite::makeBlockRecordTableHead()
@@ -301,20 +548,10 @@ void CDxfWrite::makeBlockRecordTableHead()
     if (m_version < 14) {
         return;
     }
+    // The table header declares the entry count, so writeTablesSection() writes
+    // it once all blocks are known.
     std::string tablehash = getBlkRecordHandle();
     m_saveBlockRecordTableHandle = tablehash;
-    (*m_ssBlkRecord) << "  0" << endl;
-    (*m_ssBlkRecord) << "TABLE" << endl;
-    (*m_ssBlkRecord) << "  2" << endl;
-    (*m_ssBlkRecord) << "BLOCK_RECORD" << endl;
-    (*m_ssBlkRecord) << "  5" << endl;
-    (*m_ssBlkRecord) << tablehash << endl;
-    (*m_ssBlkRecord) << "330" << endl;
-    (*m_ssBlkRecord) << "0" << endl;
-    (*m_ssBlkRecord) << "100" << endl;
-    (*m_ssBlkRecord) << "AcDbSymbolTable" << endl;
-    (*m_ssBlkRecord) << "  70" << endl;
-    (*m_ssBlkRecord) << (m_blockList.size() + 5) << endl;
 
     m_saveModelSpaceHandle = getBlkRecordHandle();
     (*m_ssBlkRecord) << "  0" << endl;
@@ -488,6 +725,108 @@ void CDxfWrite::makeBlockSectionHead()
     }
 }
 
+void CDxfWrite::writeBlock(const std::string& blockName, const double basePoint[3])
+{
+    m_stats.blockCount++;
+    if (m_version > 12) {
+        std::string blkRecordHandle = getBlkRecordHandle();
+        addBlockName(blockName, blkRecordHandle);
+    }
+
+    (*m_ssBlock) << "  0\n";
+    (*m_ssBlock) << "BLOCK\n";
+    (*m_ssBlock) << "  5\n";
+    m_currentBlock = getBlockHandle();
+    (*m_ssBlock) << m_currentBlock << "\n";
+    if (m_version > 12) {
+        (*m_ssBlock) << "330\n";
+        (*m_ssBlock) << m_blkRecordList.back() << "\n";  // Use the handle we just added
+        (*m_ssBlock) << "100\n";
+        (*m_ssBlock) << "AcDbEntity\n";
+    }
+    (*m_ssBlock) << "  8\n";
+    (*m_ssBlock) << "0\n";  // Blocks are defined on layer 0
+    if (m_version > 12) {
+        (*m_ssBlock) << "100\n";
+        (*m_ssBlock) << "AcDbBlockBegin\n";
+    }
+    (*m_ssBlock) << "  2\n";
+    (*m_ssBlock) << blockName << "\n";
+    (*m_ssBlock) << " 70\n";
+    (*m_ssBlock) << "   0\n";  // Flags
+    (*m_ssBlock) << " 10\n";
+    (*m_ssBlock) << basePoint[0] << "\n";
+    (*m_ssBlock) << " 20\n";
+    (*m_ssBlock) << basePoint[1] << "\n";
+    (*m_ssBlock) << " 30\n";
+    (*m_ssBlock) << basePoint[2] << "\n";
+    (*m_ssBlock) << "  3\n";
+    (*m_ssBlock) << blockName << "\n";
+    (*m_ssBlock) << "  1\n";
+    (*m_ssBlock) << "\n";  // Path name (empty)
+}
+
+void CDxfWrite::writeEndBlock(const std::string& /*blockName*/)
+{
+    std::string endBlkHandle = getBlockHandle();
+    (*m_ssBlock) << "  0\n";
+    (*m_ssBlock) << "ENDBLK\n";
+    (*m_ssBlock) << "  5\n";
+    (*m_ssBlock) << endBlkHandle << "\n";
+    if (m_version > 12) {
+        (*m_ssBlock) << "330\n";
+        (*m_ssBlock) << m_blkRecordList.back() << "\n";  // Corresponds to the last BLOCK
+        (*m_ssBlock) << "100\n";
+        (*m_ssBlock) << "AcDbEntity\n";
+        (*m_ssBlock) << "100\n";
+        (*m_ssBlock) << "AcDbBlockEnd\n";
+    }
+}
+
+void CDxfWrite::writeInsert(
+    const std::string& blockName,
+    const double insertionPoint[3],
+    double scale,
+    double rotation
+)
+{
+    m_stats.entityCounts["INSERT"]++;
+    (*m_ssEntity) << "  0\n";
+    (*m_ssEntity) << "INSERT\n";
+    (*m_ssEntity) << "  5\n";
+    (*m_ssEntity) << getEntityHandle() << "\n";
+    if (m_version > 12) {
+        (*m_ssEntity) << "330\n";
+        (*m_ssEntity) << m_saveModelSpaceHandle << "\n";
+        (*m_ssEntity) << "100\n";
+        (*m_ssEntity) << "AcDbEntity\n";
+    }
+    (*m_ssEntity) << "  8\n";
+    (*m_ssEntity) << getLayerName() << "\n";
+    (*m_ssEntity) << " 62\n";
+    (*m_ssEntity) << m_currentColor << "\n";
+    if (m_version > 12) {
+        (*m_ssEntity) << "100\n";
+        (*m_ssEntity) << "AcDbBlockReference\n";
+    }
+    (*m_ssEntity) << "  2\n";
+    (*m_ssEntity) << blockName << "\n";
+    (*m_ssEntity) << " 10\n";
+    (*m_ssEntity) << insertionPoint[0] << "\n";
+    (*m_ssEntity) << " 20\n";
+    (*m_ssEntity) << insertionPoint[1] << "\n";
+    (*m_ssEntity) << " 30\n";
+    (*m_ssEntity) << insertionPoint[2] << "\n";
+    (*m_ssEntity) << " 41\n";
+    (*m_ssEntity) << scale << "\n";  // X scale factor
+    (*m_ssEntity) << " 42\n";
+    (*m_ssEntity) << scale << "\n";  // Y scale factor
+    (*m_ssEntity) << " 43\n";
+    (*m_ssEntity) << scale << "\n";  // Z scale factor
+    (*m_ssEntity) << " 50\n";
+    (*m_ssEntity) << rotation << "\n";  // Rotation angle
+}
+
 std::string CDxfWrite::getPlateFile(std::string fileSpec)
 {
     std::stringstream outString;
@@ -572,6 +911,7 @@ void CDxfWrite::setLayerName(std::string name)
 
 void CDxfWrite::writeLine(const double* start, const double* end)
 {
+    m_stats.entityCounts["LINE"]++;
     putLine(toVector3d(start), toVector3d(end), m_ssEntity, getEntityHandle(), m_saveModelSpaceHandle);
 }
 
@@ -595,6 +935,8 @@ void CDxfWrite::putLine(
     }
     (*outStream) << "  8" << endl;           // Group code for layer name
     (*outStream) << getLayerName() << endl;  // Layer number
+    (*outStream) << " 62\n";                 // Group code for color
+    (*outStream) << m_currentColor << "\n";  // Color index
     if (m_version > 12) {
         (*outStream) << "100" << endl;
         (*outStream) << "AcDbLine" << endl;
@@ -619,6 +961,7 @@ void CDxfWrite::putLine(
 // added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
 void CDxfWrite::writeLWPolyLine(const LWPolyDataOut& pd)
 {
+    m_stats.entityCounts["LWPOLYLINE"]++;
     (*m_ssEntity) << "  0" << endl;
     (*m_ssEntity) << "LWPOLYLINE" << endl;
     (*m_ssEntity) << "  5" << endl;
@@ -677,6 +1020,7 @@ void CDxfWrite::writeLWPolyLine(const LWPolyDataOut& pd)
 // added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
 void CDxfWrite::writePolyline(const LWPolyDataOut& pd)
 {
+    m_stats.entityCounts["POLYLINE"]++;
     (*m_ssEntity) << "  0" << endl;
     (*m_ssEntity) << "POLYLINE" << endl;
     (*m_ssEntity) << "  5" << endl;
@@ -725,8 +1069,125 @@ void CDxfWrite::writePolyline(const LWPolyDataOut& pd)
     (*m_ssEntity) << getLayerName() << endl;
 }
 
+void CDxfWrite::writePolyFace(
+    const std::vector<point3D>& vertices,
+    const std::vector<std::vector<int>>& faces
+)
+{
+    m_stats.entityCounts["POLYFACE_MESH"]++;
+    // A Polyface Mesh is a POLYLINE entity with bit 6 (64) set in its flags (group 70).
+    (*m_ssEntity) << "  0\n";
+    (*m_ssEntity) << "POLYLINE\n";
+    (*m_ssEntity) << "  5\n";
+    (*m_ssEntity) << getEntityHandle() << "\n";
+    if (m_version > 12) {
+        (*m_ssEntity) << "330\n";
+        (*m_ssEntity) << m_saveModelSpaceHandle << "\n";
+        (*m_ssEntity) << "100\n";
+        (*m_ssEntity) << "AcDbEntity\n";
+    }
+    (*m_ssEntity) << "  8\n";
+    (*m_ssEntity) << getLayerName() << "\n";
+    (*m_ssEntity) << " 62\n";
+    (*m_ssEntity) << m_currentColor << "\n";
+    if (m_version > 12) {
+        (*m_ssEntity) << "100\n";
+        (*m_ssEntity) << "AcDb3dPolyline\n";
+    }
+    (*m_ssEntity) << " 66\n";
+    (*m_ssEntity) << "     1\n";  // Vertices follow flag
+    (*m_ssEntity) << " 10\n";
+    (*m_ssEntity) << "0.0\n";
+    (*m_ssEntity) << " 20\n";
+    (*m_ssEntity) << "0.0\n";
+    (*m_ssEntity) << " 30\n";
+    (*m_ssEntity) << "0.0\n";
+    (*m_ssEntity) << " 70\n";
+    (*m_ssEntity) << "    64\n";  // Flag for Polyface Mesh
+
+    // Write all the unique vertices first
+    for (const auto& v : vertices) {
+        (*m_ssEntity) << "  0\n";
+        (*m_ssEntity) << "VERTEX\n";
+        (*m_ssEntity) << "  5\n";
+        (*m_ssEntity) << getEntityHandle() << "\n";
+        if (m_version > 12) {
+            (*m_ssEntity) << "330\n";
+            (*m_ssEntity) << m_saveModelSpaceHandle << "\n";
+            (*m_ssEntity) << "100\n";
+            (*m_ssEntity) << "AcDbEntity\n";
+            (*m_ssEntity) << "100\n";
+            (*m_ssEntity) << "AcDbVertex\n";
+            (*m_ssEntity) << "100\n";
+            (*m_ssEntity) << "AcDb3dPolylineVertex\n";
+        }
+        (*m_ssEntity) << "  8\n";
+        (*m_ssEntity) << getLayerName() << "\n";
+        (*m_ssEntity) << " 10\n";
+        (*m_ssEntity) << v.x << "\n";
+        (*m_ssEntity) << " 20\n";
+        (*m_ssEntity) << v.y << "\n";
+        (*m_ssEntity) << " 30\n";
+        (*m_ssEntity) << v.z << "\n";
+        (*m_ssEntity) << " 70\n";
+        (*m_ssEntity) << "    32\n";  // Polyface mesh vertex flag
+    }
+
+    // Write the face definitions
+    for (const auto& f : faces) {
+        (*m_ssEntity) << "  0\n";
+        (*m_ssEntity) << "VERTEX\n";
+        (*m_ssEntity) << "  5\n";
+        (*m_ssEntity) << getEntityHandle() << "\n";
+        if (m_version > 12) {
+            (*m_ssEntity) << "330\n";
+            (*m_ssEntity) << m_saveModelSpaceHandle << "\n";
+            (*m_ssEntity) << "100\n";
+            (*m_ssEntity) << "AcDbEntity\n";
+            (*m_ssEntity) << "100\n";
+            (*m_ssEntity) << "AcDbVertex\n";
+            (*m_ssEntity) << "100\n";
+            (*m_ssEntity) << "AcDbFaceRecord\n";
+        }
+        (*m_ssEntity) << "  8\n";
+        (*m_ssEntity) << getLayerName() << "\n";
+        (*m_ssEntity) << " 10\n";
+        (*m_ssEntity) << "0.0\n";
+        (*m_ssEntity) << " 20\n";
+        (*m_ssEntity) << "0.0\n";
+        (*m_ssEntity) << " 30\n";
+        (*m_ssEntity) << "0.0\n";
+        (*m_ssEntity) << " 70\n";
+        (*m_ssEntity) << "   128\n";  // Polyface mesh face flag
+
+        // The vertex indices for the face
+        // DXF uses 1-based indices
+        if (f.size() >= 1) {
+            (*m_ssEntity) << " 71" << endl << f[0] << "\n";
+        }
+        if (f.size() >= 2) {
+            (*m_ssEntity) << " 72" << endl << f[1] << "\n";
+        }
+        if (f.size() >= 3) {
+            (*m_ssEntity) << " 73" << endl << f[2] << "\n";
+        }
+        if (f.size() >= 4) {
+            (*m_ssEntity) << " 74" << endl << f[3] << "\n";
+        }
+    }
+
+    // End the sequence
+    (*m_ssEntity) << "  0\n";
+    (*m_ssEntity) << "SEQEND\n";
+    (*m_ssEntity) << "  5\n";
+    (*m_ssEntity) << getEntityHandle() << "\n";
+    (*m_ssEntity) << "  8\n";
+    (*m_ssEntity) << getLayerName() << "\n";
+}
+
 void CDxfWrite::writePoint(const double* point)
 {
+    m_stats.entityCounts["POINT"]++;
     (*m_ssEntity) << "  0" << endl;
     (*m_ssEntity) << "POINT" << endl;
     (*m_ssEntity) << "  5" << endl;
@@ -756,6 +1217,7 @@ void CDxfWrite::writePoint(const double* point)
 void CDxfWrite::writeArc(const double* start, const double* end, const double* center, bool dir)
 
 {
+    m_stats.entityCounts["ARC"]++;
     double ax = start[0] - center[0];
     double ay = start[1] - center[1];
     double bx = end[0] - center[0];
@@ -808,6 +1270,7 @@ void CDxfWrite::writeArc(const double* start, const double* end, const double* c
 
 void CDxfWrite::writeCircle(const double* center, double radius)
 {
+    m_stats.entityCounts["CIRCLE"]++;
     (*m_ssEntity) << "  0" << endl;
     (*m_ssEntity) << "CIRCLE" << endl;
     (*m_ssEntity) << "  5" << endl;
@@ -844,6 +1307,7 @@ void CDxfWrite::writeEllipse(
     bool endIsCW
 )
 {
+    m_stats.entityCounts["ELLIPSE"]++;
     Base::Vector3d m(major_radius * sin(rotation), major_radius * cos(rotation), 0);
     double ratio = minor_radius / major_radius;
 
@@ -899,6 +1363,7 @@ void CDxfWrite::writeEllipse(
 // added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
 void CDxfWrite::writeSpline(const SplineDataOut& sd)
 {
+    m_stats.entityCounts["SPLINE"]++;
     (*m_ssEntity) << "  0" << endl;
     (*m_ssEntity) << "SPLINE" << endl;
     (*m_ssEntity) << "  5" << endl;
@@ -1013,6 +1478,7 @@ void CDxfWrite::writeText(
     const int horizJust
 )
 {
+    m_stats.entityCounts["TEXT"]++;
     putText(
         text,
         toVector3d(location1),
@@ -1051,8 +1517,10 @@ void CDxfWrite::putText(
         (*outStream) << "100" << endl;
         (*outStream) << "AcDbEntity" << endl;
     }
-    (*outStream) << "  8" << endl;
+    (*outStream) << "  8\n";  // Group code for layer name
     (*outStream) << getLayerName() << endl;
+    (*outStream) << " 62\n";  // Group code for color
+    (*outStream) << m_currentColor << "\n";
     if (m_version > 12) {
         (*outStream) << "100" << endl;
         (*outStream) << "AcDbText" << endl;
@@ -1068,7 +1536,7 @@ void CDxfWrite::putText(
     (*outStream) << " 40" << endl;
     (*outStream) << height << endl;
     (*outStream) << "  1" << endl;
-    (*outStream) << text << endl;
+    (*outStream) << Utf8ToDxfText(text) << endl;
     //    (*outStream) << " 50"          << endl;
     //    (*outStream) << 0              << endl;    //rotation
     //    (*outStream) << " 41"          << endl;
@@ -1167,9 +1635,12 @@ void CDxfWrite::writeLinearDim(
     const double* extLine1,
     const double* extLine2,
     const char* dimText,
-    int type
+    int type,
+    double fontSize
 )
 {
+    m_stats.entityCounts["DIMENSION_LINEAR"]++;
+    assignDimBlockName();
     (*m_ssEntity) << "  0" << endl;
     (*m_ssEntity) << "DIMENSION" << endl;
     (*m_ssEntity) << "  5" << endl;
@@ -1180,14 +1651,16 @@ void CDxfWrite::writeLinearDim(
         (*m_ssEntity) << "100" << endl;
         (*m_ssEntity) << "AcDbEntity" << endl;
     }
-    (*m_ssEntity) << "  8" << endl;
+    (*m_ssEntity) << "  8" << endl;  // Group code for layer name
     (*m_ssEntity) << getLayerName() << endl;
+    (*m_ssEntity) << " 62" << endl;  // Group code for color
+    (*m_ssEntity) << m_currentColor << endl;
     if (m_version > 12) {
         (*m_ssEntity) << "100" << endl;
         (*m_ssEntity) << "AcDbDimension" << endl;
     }
     (*m_ssEntity) << "  2" << endl;
-    (*m_ssEntity) << "*" << getLayerName() << endl;  // blockName
+    (*m_ssEntity) << m_currentDimBlockName << endl;  // blockName
     (*m_ssEntity) << " 10" << endl;                  // dimension line definition point
     (*m_ssEntity) << lineDefPoint[0] << endl;
     (*m_ssEntity) << " 20" << endl;
@@ -1243,7 +1716,7 @@ void CDxfWrite::writeLinearDim(
     }
 
     writeDimBlockPreamble();
-    writeLinearDimBlock(textMidPoint, lineDefPoint, extLine1, extLine2, dimText, type);
+    writeLinearDimBlock(textMidPoint, lineDefPoint, extLine1, extLine2, dimText, type, fontSize);
     writeBlockTrailer();
 }
 
@@ -1260,6 +1733,8 @@ void CDxfWrite::writeAngularDim(
     const char* dimText
 )
 {
+    m_stats.entityCounts["DIMENSION_ANGULAR"]++;
+    assignDimBlockName();
     (*m_ssEntity) << "  0" << endl;
     (*m_ssEntity) << "DIMENSION" << endl;
     (*m_ssEntity) << "  5" << endl;
@@ -1277,7 +1752,7 @@ void CDxfWrite::writeAngularDim(
         (*m_ssEntity) << "AcDbDimension" << endl;
     }
     (*m_ssEntity) << "  2" << endl;
-    (*m_ssEntity) << "*" << getLayerName() << endl;  // blockName
+    (*m_ssEntity) << m_currentDimBlockName << endl;  // blockName
 
     (*m_ssEntity) << " 10" << endl;
     (*m_ssEntity) << endExt2[0] << endl;
@@ -1349,6 +1824,8 @@ void CDxfWrite::writeRadialDim(
     const char* dimText
 )
 {
+    m_stats.entityCounts["DIMENSION_RADIAL"]++;
+    assignDimBlockName();
     (*m_ssEntity) << "  0" << endl;
     (*m_ssEntity) << "DIMENSION" << endl;
     (*m_ssEntity) << "  5" << endl;
@@ -1366,7 +1843,7 @@ void CDxfWrite::writeRadialDim(
         (*m_ssEntity) << "AcDbDimension" << endl;
     }
     (*m_ssEntity) << "  2" << endl;
-    (*m_ssEntity) << "*" << getLayerName() << endl;  // blockName
+    (*m_ssEntity) << m_currentDimBlockName << endl;  // blockName
     (*m_ssEntity) << " 10" << endl;                  // arc center point
     (*m_ssEntity) << centerPoint[0] << endl;
     (*m_ssEntity) << " 20" << endl;
@@ -1416,6 +1893,8 @@ void CDxfWrite::writeDiametricDim(
     const char* dimText
 )
 {
+    m_stats.entityCounts["DIMENSION_DIAMETRIC"]++;
+    assignDimBlockName();
     (*m_ssEntity) << "  0" << endl;
     (*m_ssEntity) << "DIMENSION" << endl;
     (*m_ssEntity) << "  5" << endl;
@@ -1433,7 +1912,7 @@ void CDxfWrite::writeDiametricDim(
         (*m_ssEntity) << "AcDbDimension" << endl;
     }
     (*m_ssEntity) << "  2" << endl;
-    (*m_ssEntity) << "*" << getLayerName() << endl;  // blockName
+    (*m_ssEntity) << m_currentDimBlockName << endl;  // blockName
     (*m_ssEntity) << " 10" << endl;
     (*m_ssEntity) << arcPoint1[0] << endl;
     (*m_ssEntity) << " 20" << endl;
@@ -1478,11 +1957,10 @@ void CDxfWrite::writeDiametricDim(
 // added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
 void CDxfWrite::writeDimBlockPreamble()
 {
+    m_stats.blockCount++;
     if (m_version > 12) {
-        std::string blockName("*");
-        blockName += getLayerName();
         m_saveBlkRecordHandle = getBlkRecordHandle();
-        addBlockName(blockName, m_saveBlkRecordHandle);
+        addBlockName(m_currentDimBlockName, m_saveBlkRecordHandle);
     }
 
     m_currentBlock = getBlockHandle();
@@ -1503,7 +1981,7 @@ void CDxfWrite::writeDimBlockPreamble()
         (*m_ssBlock) << "AcDbBlockBegin" << endl;
     }
     (*m_ssBlock) << "  2" << endl;
-    (*m_ssBlock) << "*" << getLayerName() << endl;  // blockName
+    (*m_ssBlock) << m_currentDimBlockName << endl;  // blockName
     (*m_ssBlock) << " 70" << endl;
     (*m_ssBlock) << "   1" << endl;
     (*m_ssBlock) << " 10" << endl;
@@ -1513,7 +1991,7 @@ void CDxfWrite::writeDimBlockPreamble()
     (*m_ssBlock) << " 30" << endl;
     (*m_ssBlock) << 0.0 << endl;
     (*m_ssBlock) << "  3" << endl;
-    (*m_ssBlock) << "*" << getLayerName() << endl;  // blockName
+    (*m_ssBlock) << m_currentDimBlockName << endl;  // blockName
     (*m_ssBlock) << "  1" << endl;
     (*m_ssBlock) << " " << endl;
 }
@@ -1552,7 +2030,8 @@ void CDxfWrite::writeLinearDimBlock(
     const double* extLine1,
     const double* extLine2,
     const char* dimText,
-    int type
+    int type,
+    double fontSize
 )
 {
     Base::Vector3d e1S(MakeVector3d(extLine1));
@@ -1610,7 +2089,7 @@ void CDxfWrite::writeLinearDimBlock(
         dimText,
         toVector3d(textMidPoint),
         toVector3d(lineDefPoint),
-        3.5,
+        fontSize,
         1,
         m_ssBlock,
         getBlockHandle(),
