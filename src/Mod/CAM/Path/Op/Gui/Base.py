@@ -756,8 +756,11 @@ class TaskPanelPage:
     def setToolTips(self, obj):
         """setToolTips(obj) ... set widgets tool tip from properties description"""
         for widName, propName in self.getToolTipList():
-            widget = self.form.findChild(QtGui.QWidget, widName)
-            widget.setToolTip(translate("App::Property", obj.getDocumentationOfProperty(propName)))
+            if hasattr(self.form, widName) and hasattr(obj, propName):
+                widget = self.form.findChild(QtGui.QWidget, widName)
+                widget.setToolTip(
+                    translate("App::Property", obj.getDocumentationOfProperty(propName))
+                )
 
 
 class TaskPanelBaseGeometryPage(TaskPanelPage):
