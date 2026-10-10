@@ -48,11 +48,7 @@
 #include <QDirIterator>
 #include <QFileInfo>
 #include <QIODevice>
-#include <QList>
-#include <QMetaType>
-#include <QMetaType>
 #include <QRegularExpression>
 #include <QString>
 #include <QTextStream>
 #include <QUuid>
-#include <QVector>

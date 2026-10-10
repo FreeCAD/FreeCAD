@@ -22,12 +22,9 @@
  **************************************************************************/
 
 
-#include <QMetaType>
-
 #include <Base/Quantity.h>
 #include <Base/QuantityPy.h>
 #include <CXX/Objects.hxx>
-#include <Gui/MetaTypes.h>
 
 #include "MaterialFilter.h"
 
@@ -38,8 +35,8 @@
 using namespace Materials;
 
 // Forward declaration
-// static PyObject* _pyObjectFromVariant(const QVariant& value);
-// static Py::List getList(const QVariant& value);
+// static PyObject* pyObjectFromValue(const Value& value);
+// static Py::List getList(const ValueList& value);
 
 // returns a string which represents the object e.g. when printed in python
 std::string MaterialFilterPy::representation() const
@@ -65,12 +62,12 @@ int MaterialFilterPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 Py::String MaterialFilterPy::getName() const
 {
     auto filterName = getMaterialFilterPtr()->name();
-    return {filterName.toStdString()};
+    return {filterName};
 }
 
 void MaterialFilterPy::setName(const Py::String value)
 {
-    getMaterialFilterPtr()->setName(QString::fromStdString(value));
+    getMaterialFilterPtr()->setName(value);
 }
 
 Py::List MaterialFilterPy::getRequiredModels() const
@@ -79,7 +76,7 @@ Py::List MaterialFilterPy::getRequiredModels() const
     Py::List list;
 
     for (auto& it : *listValue) {
-        list.append(Py::String(it.toStdString()));
+        list.append(Py::String(it));
     }
 
     return list;
@@ -89,7 +86,7 @@ void MaterialFilterPy::setRequiredModels(Py::List value)
 {
     for (const auto& it : value) {
         Py::String uuid(it);
-        getMaterialFilterPtr()->addRequired(QString::fromStdString(uuid));
+        getMaterialFilterPtr()->addRequired(uuid);
     }
 }
 
@@ -99,7 +96,7 @@ Py::List MaterialFilterPy::getRequiredCompleteModels() const
     Py::List list;
 
     for (auto& it : *listValue) {
-        list.append(Py::String(it.toStdString()));
+        list.append(Py::String(it));
     }
 
     return list;
@@ -109,7 +106,7 @@ void MaterialFilterPy::setRequiredCompleteModels(Py::List value)
 {
     for (const auto& it : value) {
         Py::String uuid(it);
-        getMaterialFilterPtr()->addRequiredComplete(QString::fromStdString(uuid));
+        getMaterialFilterPtr()->addRequiredComplete(uuid);
     }
 }
 

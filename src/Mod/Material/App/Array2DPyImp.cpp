@@ -22,13 +22,9 @@
  **************************************************************************/
 
 
-#include <QList>
-#include <QMetaType>
-
 #include <Base/Quantity.h>
 #include <Base/QuantityPy.h>
 #include <CXX/Objects.hxx>
-#include <Gui/MetaTypes.h>
 
 #include "Array2DPy.h"
 #include "Exceptions.h"
@@ -72,7 +68,7 @@ Py::List Array2DPy::getArray() const
         Py::List rowList;
         for (auto& column : *row) {
             auto quantity =
-                new Base::QuantityPy(new Base::Quantity(column.value<Base::Quantity>()));
+                new Base::QuantityPy(new Base::Quantity(column.toQuantity()));
             rowList.append(Py::asObject(quantity));
         }
 
@@ -120,7 +116,7 @@ PyObject* Array2DPy::getRow(PyObject* args) const
         auto arrayRow = getArray2DPtr()->getRow(row);
         for (auto& column : *arrayRow) {
             auto quantity =
-                new Base::QuantityPy(new Base::Quantity(column.value<Base::Quantity>()));
+                new Base::QuantityPy(new Base::Quantity(column.toQuantity()));
             list.append(Py::asObject(quantity));
         }
 
@@ -143,7 +139,7 @@ PyObject* Array2DPy::getValue(PyObject* args) const
 
     try {
         auto value = getArray2DPtr()->getValue(row, column);
-        return new Base::QuantityPy(new Base::Quantity(value.value<Base::Quantity>()));
+        return new Base::QuantityPy(new Base::Quantity(value.toQuantity()));
     }
     catch (const InvalidIndex&) {
     }
@@ -162,8 +158,7 @@ PyObject* Array2DPy::setValue(PyObject* args)
         try {
             auto quantity = Base::Quantity::parse(item.as_string());
             quantity.setFormat(MaterialValue::getQuantityFormat());
-            QVariant variant = QVariant::fromValue(quantity);
-            getArray2DPtr()->setValue(row, column, variant);
+            getArray2DPtr()->setValue(row, column, quantity);
         }
         catch (const InvalidIndex&) {
             PyErr_SetString(PyExc_IndexError, "Invalid array index");

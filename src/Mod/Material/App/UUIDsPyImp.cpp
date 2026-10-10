@@ -50,247 +50,247 @@ int UUIDsPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 
 Py::String UUIDsPy::getFather() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Legacy_Father.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Legacy_Father);
 }
 
 Py::String UUIDsPy::getMaterialStandard() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Legacy_MaterialStandard.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Legacy_MaterialStandard);
 }
 
 Py::String UUIDsPy::getArrudaBoyce() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Mechanical_ArrudaBoyce.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Mechanical_ArrudaBoyce);
 }
 
 Py::String UUIDsPy::getDensity() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Mechanical_Density.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Mechanical_Density);
 }
 
 Py::String UUIDsPy::getHardness() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Mechanical_Hardness.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Mechanical_Hardness);
 }
 
 Py::String UUIDsPy::getIsotropicLinearElastic() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Mechanical_IsotropicLinearElastic.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Mechanical_IsotropicLinearElastic);
 }
 
 Py::String UUIDsPy::getLinearElastic() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Mechanical_LinearElastic.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Mechanical_LinearElastic);
 }
 
 Py::String UUIDsPy::getMachinability() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Machining_Machinability.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Machining_Machinability);
 }
 
 Py::String UUIDsPy::getMooneyRivlin() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Mechanical_MooneyRivlin.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Mechanical_MooneyRivlin);
 }
 
 Py::String UUIDsPy::getNeoHooke() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Mechanical_NeoHooke.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Mechanical_NeoHooke);
 }
 
 Py::String UUIDsPy::getOgdenN1() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Mechanical_OgdenN1.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Mechanical_OgdenN1);
 }
 
 Py::String UUIDsPy::getOgdenN2() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Mechanical_OgdenN2.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Mechanical_OgdenN2);
 }
 
 Py::String UUIDsPy::getOgdenN3() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Mechanical_OgdenN3.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Mechanical_OgdenN3);
 }
 
 Py::String UUIDsPy::getOgdenYld2004p18() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Mechanical_OgdenYld2004p18.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Mechanical_OgdenYld2004p18);
 }
 
 Py::String UUIDsPy::getOrthotropicLinearElastic() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Mechanical_OrthotropicLinearElastic.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Mechanical_OrthotropicLinearElastic);
 }
 
 Py::String UUIDsPy::getPolynomialN1() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Mechanical_PolynomialN1.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Mechanical_PolynomialN1);
 }
 
 Py::String UUIDsPy::getPolynomialN2() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Mechanical_PolynomialN2.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Mechanical_PolynomialN2);
 }
 
 Py::String UUIDsPy::getPolynomialN3() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Mechanical_PolynomialN3.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Mechanical_PolynomialN3);
 }
 
 Py::String UUIDsPy::getReducedPolynomialN1() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Mechanical_ReducedPolynomialN1.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Mechanical_ReducedPolynomialN1);
 }
 
 Py::String UUIDsPy::getReducedPolynomialN2() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Mechanical_ReducedPolynomialN2.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Mechanical_ReducedPolynomialN2);
 }
 
 Py::String UUIDsPy::getReducedPolynomialN3() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Mechanical_ReducedPolynomialN3.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Mechanical_ReducedPolynomialN3);
 }
 
 Py::String UUIDsPy::getYeoh() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Mechanical_Yeoh.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Mechanical_Yeoh);
 }
 
 Py::String UUIDsPy::getFluid() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Fluid_Default.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Fluid_Default);
 }
 
 Py::String UUIDsPy::getThermal() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Thermal_Default.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Thermal_Default);
 }
 
 Py::String UUIDsPy::getElectromagnetic() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Electromagnetic_Default.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Electromagnetic_Default);
 }
 
 Py::String UUIDsPy::getArchitectural() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Architectural_Default.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Architectural_Default);
 }
 
 Py::String UUIDsPy::getArchitecturalRendering() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Rendering_Architectural.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Rendering_Architectural);
 }
 
 Py::String UUIDsPy::getCosts() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Costs_Default.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Costs_Default);
 }
 
 Py::String UUIDsPy::getBasicRendering() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Rendering_Basic.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Rendering_Basic);
 }
 
 Py::String UUIDsPy::getTextureRendering() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Rendering_Texture.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Rendering_Texture);
 }
 
 Py::String UUIDsPy::getAdvancedRendering() const
 {
-    return Py::String(getModelUUIDsPtr()->ModelUUID_Rendering_Advanced.toStdString());
+    return Py::String(getModelUUIDsPtr()->ModelUUID_Rendering_Advanced);
 }
 
 Py::String UUIDsPy::getVectorRendering() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Rendering_Vector.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Rendering_Vector);
 }
 
 Py::String UUIDsPy::getRenderAppleseed() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Render_Appleseed.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Render_Appleseed);
 }
 
 Py::String UUIDsPy::getRenderCarpaint() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Render_Carpaint.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Render_Carpaint);
 }
 
 Py::String UUIDsPy::getRenderCycles() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Render_Cycles.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Render_Cycles);
 }
 
 Py::String UUIDsPy::getRenderDiffuse() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Render_Diffuse.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Render_Diffuse);
 }
 
 Py::String UUIDsPy::getRenderDisney() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Render_Disney.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Render_Disney);
 }
 
 Py::String UUIDsPy::getRenderEmission() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Render_Emission.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Render_Emission);
 }
 
 Py::String UUIDsPy::getRenderLuxcore() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Render_Luxcore.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Render_Luxcore);
 }
 
 Py::String UUIDsPy::getRenderLuxrender() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Render_Luxrender.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Render_Luxrender);
 }
 
 Py::String UUIDsPy::getRenderGlass() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Render_Glass.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Render_Glass);
 }
 
 Py::String UUIDsPy::getRenderMixed() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Render_Mixed.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Render_Mixed);
 }
 
 Py::String UUIDsPy::getRenderOspray() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Render_Ospray.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Render_Ospray);
 }
 
 Py::String UUIDsPy::getRenderPbrt() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Render_Pbrt.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Render_Pbrt);
 }
 
 Py::String UUIDsPy::getRenderPovray() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Render_Povray.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Render_Povray);
 }
 
 Py::String UUIDsPy::getRenderSubstancePBR() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Render_SubstancePBR.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Render_SubstancePBR);
 }
 
 Py::String UUIDsPy::getRenderTexture() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Render_Texture.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Render_Texture);
 }
 
 Py::String UUIDsPy::getRenderWB() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_RenderWB.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_RenderWB);
 }
 
 Py::String UUIDsPy::getTestModel() const
 {
-    return Py::String(ModelUUIDs::ModelUUID_Test_Model.toStdString());
+    return Py::String(ModelUUIDs::ModelUUID_Test_Model);
 }
 
 PyObject* UUIDsPy::getCustomAttributes(const char* /*attr*/) const

@@ -52,62 +52,62 @@ int ModelPropertyPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 
 Py::String ModelPropertyPy::getName() const
 {
-    return Py::String(getModelPropertyPtr()->getName().toStdString());
+    return Py::String(getModelPropertyPtr()->getName());
 }
 
 void ModelPropertyPy::setName(Py::String arg)
 {
-    getModelPropertyPtr()->setName(QString::fromStdString(arg));
+    getModelPropertyPtr()->setName(arg);
 }
 
 Py::String ModelPropertyPy::getDisplayName() const
 {
-    return Py::String(getModelPropertyPtr()->getDisplayName().toStdString());
+    return Py::String(getModelPropertyPtr()->getDisplayName());
 }
 
 void ModelPropertyPy::setDisplayName(Py::String arg)
 {
-    getModelPropertyPtr()->setDisplayName(QString::fromStdString(arg));
+    getModelPropertyPtr()->setDisplayName(arg);
 }
 
 Py::String ModelPropertyPy::getType() const
 {
-    return Py::String(getModelPropertyPtr()->getPropertyType().toStdString());
+    return Py::String(getModelPropertyPtr()->getPropertyType());
 }
 
 void ModelPropertyPy::setType(Py::String arg)
 {
-    getModelPropertyPtr()->setPropertyType(QString::fromStdString(arg));
+    getModelPropertyPtr()->setPropertyType(arg);
 }
 
 Py::String ModelPropertyPy::getUnits() const
 {
-    return Py::String(getModelPropertyPtr()->getUnits().toStdString());
+    return Py::String(getModelPropertyPtr()->getUnits());
 }
 
 void ModelPropertyPy::setUnits(Py::String arg)
 {
-    getModelPropertyPtr()->setUnits(QString::fromStdString(arg));
+    getModelPropertyPtr()->setUnits(arg);
 }
 
 Py::String ModelPropertyPy::getURL() const
 {
-    return Py::String(getModelPropertyPtr()->getURL().toStdString());
+    return Py::String(getModelPropertyPtr()->getURL());
 }
 
 void ModelPropertyPy::setURL(Py::String arg)
 {
-    getModelPropertyPtr()->setURL(QString::fromStdString(arg));
+    getModelPropertyPtr()->setURL(arg);
 }
 
 Py::String ModelPropertyPy::getDescription() const
 {
-    return Py::String(getModelPropertyPtr()->getDescription().toStdString());
+    return Py::String(getModelPropertyPtr()->getDescription());
 }
 
 void ModelPropertyPy::setDescription(Py::String arg)
 {
-    getModelPropertyPtr()->setDescription(QString::fromStdString(arg));
+    getModelPropertyPtr()->setDescription(arg);
 }
 
 Py::List ModelPropertyPy::getColumns() const
@@ -125,7 +125,7 @@ Py::List ModelPropertyPy::getColumns() const
 
 Py::String ModelPropertyPy::getInheritance() const
 {
-    return Py::String(getModelPropertyPtr()->getInheritance().toStdString());
+    return Py::String(getModelPropertyPtr()->getInheritance());
 }
 
 Py::Boolean ModelPropertyPy::getInherited() const
