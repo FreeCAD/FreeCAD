@@ -1877,6 +1877,7 @@ CmdSketcherProjection::CmdSketcherProjection()
     sPixmap = "Sketcher_Projection";
     sAccel = "G, X";
     eType = ForEdit;
+    eMaturity = Base::Maturity::Development;
 }
 
 CONSTRUCTION_UPDATE_ACTION(CmdSketcherProjection, "Sketcher_Projection")
