@@ -29,6 +29,7 @@
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <QDockWidget>
 #include <QPointer>
+#include <QSignalBlocker>
 
 #include <App/Application.h>
 
@@ -196,6 +197,18 @@ Clipping::Clipping(Gui::View3DInventor* view, App::Document* showOn, QWidget* pa
         d->ui.clipY->setDecimals(minDecimals);
         d->ui.clipZ->setDecimals(minDecimals);
     }
+
+    // Reflect the viewer's current setting; opening the dialog must not turn
+    // section caps on or off behind the user's back.
+    {
+        QSignalBlocker blocker(d->ui.comboCaps);
+        QSignalBlocker blockerHatch(d->ui.checkCapsHatching);
+        d->ui.comboCaps->setCurrentIndex(
+            !viewer->isSectionCapping() ? 0 : (viewer->isSectionCapColored() ? 2 : 1)
+        );
+        d->ui.checkCapsHatching->setChecked(viewer->isSectionCapHatched());
+        d->ui.checkCapsHatching->setEnabled(viewer->isSectionCapping());
+    }
 }
 
 Clipping* Clipping::makeDockWidget(Gui::View3DInventor* view, App::Document* showOn)
@@ -234,6 +247,10 @@ void Clipping::setupConnections()
             this, &Clipping::onGroupBoxYToggled);
     connect(d->ui.groupBoxZ, &QGroupBox::toggled,
             this, &Clipping::onGroupBoxZToggled);
+    connect(d->ui.comboCaps, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &Clipping::onComboCapsChanged);
+    connect(d->ui.checkCapsHatching, &QCheckBox::toggled,
+            this, &Clipping::onCheckCapsHatchingToggled);
     connect(d->ui.clipX, qOverload<double>(&QDoubleSpinBox::valueChanged),
             this, &Clipping::onClipXValueChanged);
     connect(d->ui.clipY, qOverload<double>(&QDoubleSpinBox::valueChanged),
@@ -283,6 +300,24 @@ void Clipping::onActiveDocument(const App::Document& doc)
         d->dockWidget->hide();
     }
 }
+void Clipping::onComboCapsChanged(int index)
+{
+    // 0 = off, 1 = gray, 2 = colored; this view only (the default is in the preferences)
+    if (d->view) {
+        View3DInventorViewer* viewer = d->view->getViewer();
+        viewer->setSectionCapColored(index == 2);
+        viewer->setSectionCapping(index != 0);
+    }
+    d->ui.checkCapsHatching->setEnabled(index != 0);
+}
+
+void Clipping::onCheckCapsHatchingToggled(bool on)
+{
+    if (d->view) {
+        d->view->getViewer()->setSectionCapHatched(on);
+    }
+}
+
 void Clipping::onGroupBoxXToggled(bool on)
 {
     if (on) {

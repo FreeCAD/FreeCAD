@@ -98,6 +98,16 @@ class BoundBox2d;
 
 namespace Gui
 {
+namespace Inventor
+{
+class SoFCSectionCap;
+struct SectionCapStyle;
+struct SectionCapRecord;
+}  // namespace Inventor
+}  // namespace Gui
+
+namespace Gui
+{
 class NavigationAnimation;
 class View3DInventor;
 class ViewProvider;
@@ -468,6 +478,22 @@ public:
     /** Checks whether a clipping plane is set or not. */
     bool hasClippingPlane() const;
 
+    /** Section caps for the active clip planes (see SoFCSectionCap). */
+    void setSectionCapping(bool on);
+    bool isSectionCapping() const;
+    /// A color per instance instead of the single section cap color.
+    void setSectionCapColored(bool colored);
+    bool isSectionCapColored() const;
+    void setSectionCapColor(const SbColor& color);
+    SbColor getSectionCapColor() const;
+    /// A hatch pattern per instance.
+    void setSectionCapHatched(bool hatched);
+    bool isSectionCapHatched() const;
+    /// "capped", "no-plane", ... or "off"
+    std::string getSectionCapStatus() const;
+    /// Per occurrence and plane, for the last frame.
+    std::vector<Gui::Inventor::SectionCapRecord> getSectionCapRecords() const;
+
     /** Project the given normalized 2d point onto the near plane */
     SbVec3f projectOnNearPlane(const SbVec2f&) const;
 
@@ -699,6 +725,10 @@ private:
     SoFCUnifiedSelection* selectionRoot;
 
     SoClipPlane* pcClipPlane;
+    Gui::Inventor::SoFCSectionCap* pcSectionCap {nullptr};
+    bool sectionCapColored {false};
+    bool sectionCapHatched {false};
+    SbColor sectionCapColor {0.45f, 0.47f, 0.50f};
 
     RenderType renderType;
     QOpenGLFramebufferObject* framebuffer;

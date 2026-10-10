@@ -107,6 +107,9 @@
 #include <QVariantAnimation>
 #include <QWheelEvent>
 
+#include <App/Datums.h>
+#include <App/Origin.h>
+#include <App/Link.h>
 #include <App/Document.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <Base/Console.h>
@@ -121,6 +124,7 @@
 #include <Quarter/eventhandlers/EventFilter.h>
 #include <Gui/BitmapFactory.h>
 
+#include "Inventor/SoFCSectionCap.h"
 #include "View3DInventorViewer.h"
 #include "Application.h"
 #include "Camera.h"
@@ -1375,6 +1379,11 @@ View3DInventorViewer::~View3DInventorViewer()
     // the root node but isn't destroyed when closing this viewer so
     // that it prevents all children from being deleted. To reduce this
     // likelihood we explicitly remove all child nodes now.
+    if (this->pcSectionCap) {
+        this->pcSectionCap->setScene(nullptr);  // drop its ref on objectGroup
+        this->pcSectionCap->unref();
+        this->pcSectionCap = nullptr;
+    }
     coinRemoveAllChildren(this->pcViewProviderRoot);
     this->pcViewProviderRoot->unref();
     this->pcViewProviderRoot = nullptr;
@@ -4118,6 +4127,138 @@ void View3DInventorViewer::toggleClippingPlane(
 bool View3DInventorViewer::hasClippingPlane() const
 {
     return pcClipPlane != nullptr;
+}
+
+void View3DInventorViewer::setSectionCapping(bool on)
+{
+    if (on == isSectionCapping()) {
+        return;
+    }
+    if (on) {
+        pcSectionCap = new Gui::Inventor::SoFCSectionCap();
+        pcSectionCap->ref();
+        pcSectionCap->setColored(sectionCapColored);
+        pcSectionCap->setHatched(sectionCapHatched);
+        pcSectionCap->setSingleColor(sectionCapColor);
+        // search every document: a link's nodes may belong to another one
+        auto viewProviderFor = [](SoNode* node) -> ViewProviderDocumentObject* {
+            if (!node || !node->isOfType(SoSeparator::getClassTypeId())) {
+                return nullptr;
+            }
+            for (App::Document* doc : App::GetApplication().getDocuments()) {
+                Gui::Document* gdoc = Application::Instance->getDocument(doc);
+                if (!gdoc) {
+                    continue;
+                }
+                if (ViewProviderDocumentObject* vp = gdoc->getViewProvider(node)) {
+                    return vp;
+                }
+            }
+            return nullptr;
+        };
+        pcSectionCap->setResolver(
+            [viewProviderFor](SoNode* node) -> std::string {
+                ViewProviderDocumentObject* vp = viewProviderFor(node);
+                App::DocumentObject* obj = vp ? vp->getObject() : nullptr;
+                if (!obj || !obj->isAttachedToDocument()) {
+                    return {};
+                }
+                auto fullName = [](App::DocumentObject* o) {
+                    return std::string(o->getDocument()->getName()) + "#" + o->getNameInDocument();
+                };
+                std::string name = fullName(obj);
+                // an array link does not forward getLinkedObject(); ask the extension
+                App::DocumentObject* target = obj->getLinkedObject(true);
+                if (target == obj) {
+                    if (auto ext = obj->getExtensionByType<App::LinkBaseExtension>(true)) {
+                        target = ext->getTrueLinkedObject(true);
+                    }
+                }
+                if (target && target != obj && target->isAttachedToDocument()) {
+                    name += "\t" + fullName(target);
+                }
+                return name;
+            },
+            [viewProviderFor](SoNode* node) -> bool {
+                ViewProviderDocumentObject* vp = viewProviderFor(node);
+                App::DocumentObject* obj = vp ? vp->getObject() : nullptr;
+                return obj
+                    && (obj->isDerivedFrom<App::DatumElement>()
+                        || obj->isDerivedFrom<App::LocalCoordinateSystem>());
+            }
+        );
+        pcSectionCap->setScene(objectGroup);
+        // last child, so that every clip plane is in the traversal state
+        pcViewProviderRoot->addChild(pcSectionCap);
+    }
+    else {
+        int index = pcViewProviderRoot->findChild(pcSectionCap);
+        if (index >= 0) {
+            pcViewProviderRoot->removeChild(index);
+        }
+        pcSectionCap->setScene(nullptr);
+        pcSectionCap->unref();
+        pcSectionCap = nullptr;
+    }
+    redraw();
+}
+
+bool View3DInventorViewer::isSectionCapping() const
+{
+    return pcSectionCap != nullptr;
+}
+
+void View3DInventorViewer::setSectionCapColored(bool colored)
+{
+    sectionCapColored = colored;
+    if (pcSectionCap) {
+        pcSectionCap->setColored(colored);
+        redraw();
+    }
+}
+
+bool View3DInventorViewer::isSectionCapColored() const
+{
+    return sectionCapColored;
+}
+
+void View3DInventorViewer::setSectionCapColor(const SbColor& color)
+{
+    sectionCapColor = color;
+    if (pcSectionCap) {
+        pcSectionCap->setSingleColor(color);
+        redraw();
+    }
+}
+
+SbColor View3DInventorViewer::getSectionCapColor() const
+{
+    return sectionCapColor;
+}
+
+void View3DInventorViewer::setSectionCapHatched(bool hatched)
+{
+    sectionCapHatched = hatched;
+    if (pcSectionCap) {
+        pcSectionCap->setHatched(hatched);
+        redraw();
+    }
+}
+
+bool View3DInventorViewer::isSectionCapHatched() const
+{
+    return sectionCapHatched;
+}
+
+std::string View3DInventorViewer::getSectionCapStatus() const
+{
+    return pcSectionCap ? pcSectionCap->lastStatus() : std::string("off");
+}
+
+std::vector<Gui::Inventor::SectionCapRecord> View3DInventorViewer::getSectionCapRecords() const
+{
+    return pcSectionCap ? pcSectionCap->lastRecords()
+                        : std::vector<Gui::Inventor::SectionCapRecord>();
 }
 
 /**

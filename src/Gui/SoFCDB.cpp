@@ -77,6 +77,7 @@
 #include "Inventor/SoAutoZoomTranslation.h"
 #include "Inventor/SoAxisCrossKit.h"
 #include "Inventor/SoDrawingGrid.h"
+#include "Inventor/SoFCSectionCap.h"
 #include "Inventor/SoFCScreenSpaceGroup.h"
 #include "Inventor/SoFCBackgroundGradient.h"
 #include "Inventor/SoFCBoundingBox.h"
@@ -145,6 +146,7 @@ void Gui::SoFCDB::init()
     SoAxisCrossKit::initClass();
     SoRegPoint::initClass();
     SoDrawingGrid::initClass();
+    SoFCSectionCap::initClass();
     SoNaviCube::initClass();
     SoFCTransform::initClass();
     SoAutoZoomTranslation::initClass();
