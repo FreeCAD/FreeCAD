@@ -142,6 +142,8 @@ public Q_SLOTS:
 
     void dump(const char* filename, bool onlyVisible = false);
 
+    void syncCameraTypePref(bool isOrthographic);
+
 protected Q_SLOTS:
     void stopAnimating();
 
