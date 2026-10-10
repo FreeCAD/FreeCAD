@@ -2843,39 +2843,34 @@ def _import_dxf_file(filename, doc_name=None):
     readPreferences()
 
     # --- Dialog Workflow ---
-    try:
-        if gui:
-            FreeCADGui.suspendWaitCursor()
+    if gui and not use_legacy and hGrp.GetBool("dxfShowDialog", True):
+        try:
+            import ImportGui
 
-        if gui and not use_legacy and hGrp.GetBool("dxfShowDialog", True):
-            try:
-                import ImportGui
+            entity_counts = ImportGui.preScanDxf(filename)
+        except Exception:
+            entity_counts = {}
 
-                entity_counts = ImportGui.preScanDxf(filename)
-            except Exception:
-                entity_counts = {}
+        from DxfImportDialog import DxfImportDialog
 
-            from DxfImportDialog import DxfImportDialog
-
-            dlg = DxfImportDialog(entity_counts)
-
-            if dlg.exec_():
-                # Save the integer mode from the pop-up dialog.
-                hGrp.SetInt("DxfImportMode", dlg.get_selected_mode())
-
-                # Keep the main preferences booleans
-                # in sync with the choice just made in the pop-up dialog.
-                mode = dlg.get_selected_mode()
-                params.set_param("dxfImportAsDraft", mode == 0)
-                params.set_param("dxfImportAsPrimitives", mode == 1)
-                params.set_param("dxfImportAsShapes", mode == 2)
-                params.set_param("dxfImportAsFused", mode == 3)
-                hGrp.SetBool("dxfShowDialog", dlg.get_show_dialog_again())
-            else:
-                return None, None, None, None  # Return None to indicate cancellation
-    finally:
-        if gui:
+        dlg = DxfImportDialog(entity_counts)
+        FreeCADGui.suspendWaitCursor()
+        if dlg.exec_():
             FreeCADGui.resumeWaitCursor()
+
+            # Save the integer mode from the pop-up dialog.
+            hGrp.SetInt("DxfImportMode", dlg.get_selected_mode())
+
+            # Keep the main preferences booleans
+            # in sync with the choice just made in the pop-up dialog.
+            mode = dlg.get_selected_mode()
+            params.set_param("dxfImportAsDraft", mode == 0)
+            params.set_param("dxfImportAsPrimitives", mode == 1)
+            params.set_param("dxfImportAsShapes", mode == 2)
+            params.set_param("dxfImportAsFused", mode == 3)
+            hGrp.SetBool("dxfShowDialog", dlg.get_show_dialog_again())
+        else:
+            return None, None, None, None  # Return None to indicate cancellation
 
     import_mode = hGrp.GetInt("DxfImportMode", 2)
 
@@ -2894,6 +2889,7 @@ def _import_dxf_file(filename, doc_name=None):
 
     # --- Core Import Execution ---
     processing_start_time = time.perf_counter()
+    FreeCADGui.suspendWaitCursor()
 
     # Take snapshot of objects before import
     objects_before = set(doc.Objects)
