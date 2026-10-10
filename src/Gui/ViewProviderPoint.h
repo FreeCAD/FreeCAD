@@ -26,6 +26,10 @@
 
 #include "ViewProviderDatum.h"
 
+#include "ParamHandler.h"
+
+class SoSphere;
+
 namespace Gui
 {
 
@@ -39,6 +43,12 @@ public:
     ~ViewProviderPoint() override;
 
     void attach(App::DocumentObject*) override;
+
+private:
+    void updatePointSize();
+
+    CoinPtr<SoSphere> pSphere;
+    ParamHandlers handlers;
 };
 
 }  // namespace Gui
