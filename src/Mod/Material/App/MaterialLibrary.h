@@ -117,7 +117,7 @@ public:
 protected:
     void deleteDir(MaterialManager& manager, const QString& path);
     void deleteFile(MaterialManager& manager, const QString& path);
-    void updatePaths(const QString& oldPath, const QString& newPath);
+    void updatePaths(MaterialManager& manager, const QString& oldPath, const QString& newPath);
 
     QString getUUIDFromPath(const QString& path) const;
 
