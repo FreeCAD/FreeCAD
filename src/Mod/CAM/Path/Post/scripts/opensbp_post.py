@@ -89,14 +89,16 @@ class OpenSBPPost(PostProcessor):
 
     # Suppressed/Tolerated
     # because G54 is a default Job value, but shopbot has no concept
+    # G17 is the default plane; shopbot arcs are XY only, so G18/G19 are unsupported
     # G98/G99/G80 should have been consumed by drillcycleexpander FIXME
-    GCodeSuppressed = set("G54".split(" "))
+    GCodeSuppressed = set("G54 G17".split(" "))
 
     # Unsupported
     GCodeUnsupported = set(
         "G40 G41 G42 G43 "
         "G55 G56 G57 G58 G59 G59.1 G59.2 G59.3 G59.4 G59.5 G59.6 G59.7 G59.8 G59.9 "  # work-offsets
         "G74 "
+        "G18 G19 "  # arcs are XY only
         "G93 G94 G95 "  # opensbp only does units/sec
         "G96 G97 "  # spindle control?
         "T "  # no tool-prep

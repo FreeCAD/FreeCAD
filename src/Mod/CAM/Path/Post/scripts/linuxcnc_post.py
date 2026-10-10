@@ -50,10 +50,6 @@ Values = Dict[str, Any]
 
 POST_TYPE = "machine"
 
-# LinuxCNC refuses a K word on an arc in the XY plane; a helix carries its
-# pitch in Z.
-PARAMETER_ORDER = Constants.PARAMETER_ORDER.replace("K", "")
-
 
 class Linuxcnc(PostProcessor):
     """
@@ -98,8 +94,6 @@ class Linuxcnc(PostProcessor):
                 prop["default"] = "M05\nG17 G54 G90 G80 G40\nM2"
             elif prop["name"] == "safetyblock":
                 prop["default"] = "G40 G49 G80"
-            elif prop["name"] == "parameter_order":
-                prop["default"] = PARAMETER_ORDER
             elif prop["name"] == "pre_rotary_move":
                 prop["help"] = translate(
                     "CAM",

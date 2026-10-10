@@ -804,6 +804,35 @@ class TestExport2Integration(unittest.TestCase):
         gcode = post.convert_command_to_gcode(cmd)
         self.assertNotIn(" F", gcode)
 
+    def test003_arc_center_words_follow_the_plane(self):
+        """K is dropped under G17, J under G18, I under G19. A plane word in a
+        block the post writes as-is, such as a '!' command, is read too."""
+        commands = [
+            Path.Command("G0 X0 Y0 Z0"),
+            Path.Command("G2 X10 Y10 Z-1 I10 J0 K-0.5 F10"),
+            Path.Command("G18"),
+            Path.Command("G2 X20 Z-10 I5 J0 K-5 F10"),
+            Path.Command("G19"),
+            Path.Command("G2 Y10 Z0 I0 J5 K5 F10"),
+            Path.Command("", {}, {"as-is": "G17"}),
+            Path.Command("G2 X0 Y0 I-5 J0 K0 F10"),
+        ]
+        with self._modify_operation_path(commands):
+            lines = [l.strip() for l in self._get_all_gcode(self._run_export2()).splitlines()]
+
+        arcs = [l for l in lines if l.startswith("G2 ")]
+        self.assertEqual(4, len(arcs), lines)
+        self.assertNotIn("K", arcs[0], arcs[0])
+        self.assertIn("G18", lines)
+        self.assertNotIn("J", arcs[1], arcs[1])
+        self.assertIn("K-5.000", arcs[1])
+        self.assertIn("G19", lines)
+        self.assertNotIn("I", arcs[2], arcs[2])
+        self.assertIn("J5.000", arcs[2])
+        self.assertIn("G17", lines)
+        self.assertNotIn("K", arcs[3], arcs[3])
+        self.assertIn("I-5.000", arcs[3])
+
     def test004_unsupported_convert(self):
         """Test if throws on unsupported"""
 

@@ -713,7 +713,7 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
             (
                 "G0X1Y2Z3F110 G1X4Y5Z6F50 "  # with F
                 "G2X7Y8I9J10 G3X11Y12I13J14 G2X7Y8I9J10Z11 G3X11Y12I13J14Z12 G4P2 "
-                "G20 G21 G38.2Z3F9 G54 G92X4Y5Z6 "
+                "G17 G20 G21 G38.2Z3F9 G54 G92X4Y5Z6 "
                 # The drill params don't necessarily make sense in these, we just need certain params:
                 "G98 G99 "
                 "G73X1Y2Z7F100R91Q1 G80 G81X1Y2Z9F100R10 G82X1Y2Z10F100R11P12 G83X1Y2Z11F100R12Q2 "

@@ -26,8 +26,11 @@ __url__ = "https://www.freecad.org"
 __doc__ = "Dataclass to implement a machinestate tracker"
 __contributors__ = ""
 
+import re
+
 import Path
 import FreeCAD
+import Constants
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -62,6 +65,9 @@ class MachineState:
         "ReturnMode",  # Z(G98) or R(G99) for drills
         "G0F",  # F for G0's, distinct from all other move F. all G0's should have an F now.
     ]
+
+    # The plane selection words, G17 G18 G19, in a block of g-code text.
+    _PLANE_WORD = re.compile(r"\bG0?(1[789])\b")
 
     class _NoArg:
         # unique object distinguishable from None
@@ -103,6 +109,12 @@ class MachineState:
         self.S = 0  #: int = field(default=0)
         self.T = None  #: int = field(default=None)
 
+        # The arc plane, G17 G18 or G19. It is not Tracked: a block of g-code
+        # text that the post does not parse leaves the plane as it was unless
+        # the block names one (see addGcodeText), and a tool change does not
+        # cancel it.
+        self.Plane = "G17"
+
         # sanity
         if missing := [k for k in self.Tracked if k not in dir(self)]:
             raise Exception(f"Internal: didn't initialize a Tracked Parameter {missing}")
@@ -137,6 +149,10 @@ class MachineState:
         if command.Name in ["G98", "G99"]:
             self.ReturnMode = "R" if command.Name == "G99" else "Z"
             return not self.previous == self.getState()
+
+        if command.Name in Constants.GCODE_PLANE:
+            self.Plane = command.Name
+            return False
 
         if command.Name in ["M2", "M5"]:
             self.S = 0
@@ -196,8 +212,18 @@ class MachineState:
 
         return False
 
+    def addGcodeText(self, text):
+        """Takes the plane selection from a block of g-code text the post
+        emits as written, such as the preamble or an as-is command. The last
+        G17, G18 or G19 in the block wins. Nothing else is read from it."""
+        planes = self._PLANE_WORD.findall(text or "")
+        if planes:
+            self.Plane = f"G{planes[-1]}"
+
     def copy(self):
-        return MachineState(self.getState())
+        state = MachineState(self.getState())
+        state.Plane = self.Plane
+        return state
 
     def _save(self):
         # save current state as .previous as a dict

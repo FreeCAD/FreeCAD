@@ -808,6 +808,8 @@ class TestHeidenhainPost(PathTestUtils.PathTestBase):
         """Every command the base post can hand over is either supported or deliberately not."""
         rejected = {
             "G38.2",  # probing: no TCH PROBE support
+            "G18",  # arc planes: a Klartext arc takes its plane from its coordinates
+            "G19",
             "G91",  # incremental mode: Path commands are absolute
             "G92",  # coordinate offset
             "G93",
