@@ -989,6 +989,76 @@ class ObjectJob:
         return PathUtil.isValidBaseObject(obj)
 
 
+# Operation properties holding points on the model, in the Job's coordinates.
+MODEL_POINTS = (
+    "StartPoint",
+    "EndPoint",
+    "CustomPoint1",
+    "CustomPoint2",
+    "PatternCenterCustom",
+    "Centre",
+)
+MODEL_POINT_LISTS = ("Locations", "Positions")
+# Operation and dressup properties holding heights, in the Job's coordinates.
+MODEL_HEIGHTS = (
+    "StartDepth",
+    "FinalDepth",
+    "SafeHeight",
+    "ClearanceHeight",
+    "ClearanceHeightOut",
+    "RetractHeight",
+    "DressupStartDepth",
+    "IgnoreOuterAbove",
+)
+
+
+def _operationsOf(job):
+    """The job's operations and dressups."""
+    from PathScripts import PathUtils
+
+    for obj in job.Document.Objects:
+        if not hasattr(obj, "Proxy") or not hasattr(obj, "Path"):
+            continue
+        if PathUtils.findParentJob(obj) == job:
+            yield obj
+
+
+def carryOperationPoints(job, move):
+    """carryOperationPoints(job, move) ... keep the points the job's operations and dressups have
+    on the model, such as their start and end points, where they are on it when the Job's origin
+    changes or the model is moved: moved by move, the Placement the model was moved by. Points in
+    lists keep their Z."""
+    for obj in _operationsOf(job):
+        for name in MODEL_POINTS:
+            value = getattr(obj, name, None)
+            if isinstance(value, FreeCAD.Vector):
+                setattr(obj, name, move.multVec(value))
+        for name in MODEL_POINT_LISTS:
+            values = getattr(obj, name, None)
+            if values and all(isinstance(v, FreeCAD.Vector) for v in values):
+                moved = []
+                for value in values:
+                    at = move.multVec(value)
+                    moved.append(FreeCAD.Vector(at.x, at.y, value.z))
+                setattr(obj, name, moved)
+
+
+def carryOperationHeights(job, dz):
+    """carryOperationHeights(job, dz) ... when the model is moved up or down by dz, raise or lower
+    with it the heights the job's operations and dressups were given by hand, such as a typed in
+    final depth. Heights calculated from the stock and model by expression are left to be
+    calculated again: every operation is marked to be recomputed."""
+    for obj in _operationsOf(job):
+        if abs(dz) > 1e-9:
+            calculated = {name for name, _ in obj.ExpressionEngine}
+            for name in MODEL_HEIGHTS:
+                if name in calculated or not hasattr(obj, name):
+                    continue
+                height = getattr(obj, name)
+                setattr(obj, name, getattr(height, "Value", height) + dz)
+        obj.touch()
+
+
 def Create(name, base, templateFile=None):
     """Create(name, base, templateFile=None) ... creates a new job and all it's resources.
     If a template file is specified the new job is initialized with the values from the template."""

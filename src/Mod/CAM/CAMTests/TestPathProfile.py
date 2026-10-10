@@ -159,6 +159,32 @@ class TestPathProfile(PathTestBase):
         )
 
     # Unit tests
+    def testStartPointKeptWhenOriginChanges(self):
+        """The start point stays where it is on the model when the Job's origin changes or the
+        model is moved."""
+        profile = PathProfile.Create("ProfileStartPoint")
+        profile.StartPoint = FreeCAD.Vector(10, 20, 5)
+        move = FreeCAD.Placement(FreeCAD.Vector(7, -2, 3), FreeCAD.Rotation())
+        PathJob.carryOperationPoints(self.job, move)
+        self.assertTrue(profile.StartPoint.isEqual(FreeCAD.Vector(17, 18, 8), 1e-9))
+        turn = FreeCAD.Placement(FreeCAD.Vector(), FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 90))
+        PathJob.carryOperationPoints(self.job, turn)
+        self.assertTrue(profile.StartPoint.isEqual(FreeCAD.Vector(-18, 17, 8), 1e-9))
+        self.doc.removeObject(profile.Name)
+
+    def testTypedHeightsFollowModel(self):
+        """Heights typed in go up and down with the model; calculated ones are left to the
+        operation."""
+        profile = PathProfile.Create("ProfileTypedHeights")
+        self.doc.recompute()
+        profile.setExpression("FinalDepth", None)
+        profile.FinalDepth = 3
+        start = profile.StartDepth.Value
+        PathJob.carryOperationHeights(self.job, -2)
+        self.assertRoughly(profile.FinalDepth.Value, 1)
+        self.assertRoughly(profile.StartDepth.Value, start)
+        self.doc.removeObject(profile.Name)
+
     def test00(self):
         """test00() Empty test."""
         return
