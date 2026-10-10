@@ -641,9 +641,7 @@ def _get_fused_floor_geometry(shape, start_z, final_z, is_triangulated, toleranc
         except Exception:
             return False
 
-    # Detect pre-triangulated models and skip floor detection
-    from . import surface_common
-
+    # Pre-triangulated model - skip floor detection
     if is_triangulated:
         Path.Log.warning(
             "Pre-triangulated model detected. Automatic floor detection disabled for performance. 'Clear Planar Only' disabled."
