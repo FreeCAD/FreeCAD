@@ -1285,7 +1285,10 @@ class ObjectSurface(PathOp.ObjectOp):
             cutting_faces = [bb_face]
 
         if bb_face is None:
-            Path.Log.error("Could not determine the operation boundary face.")
+            Path.Log.error(
+                "Could not generate the operation boundary. "
+                "Check the Base Geometry selection and the Boundary Adjustment value."
+            )
             return []
 
         # Determine the bounding box
@@ -1416,7 +1419,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
         return cmds
 
-    def _executeZLevelHybrid(self, obj, job, shape, bb_face, tool_params):
+    def _executeZLevelHybrid(self, obj, job, shape, bb_face, tool_params, is_triangulated=False):
         """Execute the Z-Level Hybrid strategy (no OCL required).
 
         A high-precision geometric finishing strategy that operates directly on
@@ -1528,6 +1531,7 @@ class ObjectSurface(PathOp.ObjectOp):
             obj.FinalDepth.Value,
             obj.StepDown.Value,
             clear_planar_only,
+            is_triangulated,
         )
 
         # 6. Generate Geometry Stack
@@ -1564,24 +1568,36 @@ class ObjectSurface(PathOp.ObjectOp):
 
         return cmds
 
-    def _prepare_geometry(self):
+    def _prepare_geometry(self, optimize_stl, is_three_plus_two):
         """
         Resolves the model bodies into one working shape, used
         throughout opExecute for boundary and STL generation.
 
         Multiple bodies are fused into a single continuous solid where
         possible, falling back to a plain Compound if the fuse itself
-        fails. Vertical faces are excluded up front — Surface Scan,
-        Waterline, and Z-Level all treat them as irrelevant for boundary
-        and mesh purposes, so there's no reason to carry them further
-        into the pipeline.
+        fails. Fused results are refined with removeSplitter() to merge
+        the seams left by the fuse.
+
+        Vertical faces are excluded up front — Surface Scan, Waterline,
+        and Z-Level all treat them as irrelevant for boundary and mesh
+        purposes. This filtering is skipped for 3+2 operations, for
+        triangulated (mesh-derived) models, and when STL optimization is
+        off. STL optimization is forced off for 3+2.
+
+        Args:
+            optimize_stl (bool): The requested STL optimization setting.
+            is_three_plus_two (bool): True if a rotated 3+2 workplane is active.
 
         Returns:
-            tuple: (base_objs, model_shape, model_faces, optimized_shape),
-                or None if there is no valid geometry to machine.
+            tuple: (model_shape, model_faces, optimized_shape,
+                optimize_stl, is_triangulated), or None if there is no
+                valid geometry to machine. For 3+2, triangulated models and
+                when STL optimization is off, model_faces is None and
+                optimized_shape is model_shape. optimize_stl is the effective
+                value: False for 3+2, otherwise the requested one.
         """
 
-        # Self.model / self.stock are provided by the base
+        # self.model / self.stock are provided by the base
         # class and are already in the working frame when a 3+2 workplane
         # rotation is active (see ObjectOp.execute); never read JOB.Model or
         # JOB.Stock directly here or the rotation would be silently bypassed.
@@ -1624,12 +1640,25 @@ class ObjectSurface(PathOp.ObjectOp):
             Path.Log.error("No valid shapes found to machine.")
             return None
 
+        # Mesh-derived shapes are made of thousands of small planar triangles
+        is_triangulated = surface_common._is_triangulated_mesh(model_shape.Faces)
+
+        if is_three_plus_two:
+            # Already in the rotated frame: keep every face and skip shape optimization
+            return model_shape, None, model_shape, False, is_triangulated
+
+        if is_triangulated or not optimize_stl:
+            # Nothing to filter: meshes have no meaningful vertical faces, and
+            # without STL optimization the full model is meshed
+            return model_shape, None, model_shape, optimize_stl, is_triangulated
+
+        # Drop vertical faces; they don't contribute to the boundary or the STL mesh
         model_faces = surface_common._filter_vertical(model_shape.Faces)
         optimized_shape = (
             model_faces[0] if len(model_faces) == 1 else Part.makeCompound(model_faces)
         )
 
-        return base_objs, model_shape, model_faces, optimized_shape
+        return model_shape, model_faces, optimized_shape, optimize_stl, is_triangulated
 
     def opExecute(self, obj):
         """Main execution method for Planar Surface operation.
@@ -1640,13 +1669,16 @@ class ObjectSurface(PathOp.ObjectOp):
         1.  Universal Setup: Initializes the Job, applies property limits, updates
             depths from the Base geometry, and extracts core parameters like the
             strategy and tool information. This phase runs for all strategies.
-        2.  Data Preparation: Intelligently prepares only the necessary geometric
+        2.  Geometry Preparation: Resolves the model bodies into one working shape
+            (see _prepare_geometry), detects triangulated models and 3+2 operations,
+            and decides whether shape and STL optimization applies.
+        3.  Data Preparation: Intelligently prepares only the necessary geometric
             data (STL meshes, OCL cutters, boundary boxes) based on the specific
             requirements of the selected strategy.
-        3.  Strategy Dispatch: A simple, clean router that calls the appropriate
+        4.  Strategy Dispatch: A simple, clean router that calls the appropriate
             backend execution function (e.g., _executeSurfaceScan, _executeWaterline)
             and passes it the prepared data.
-        4.  G-Code Finalization: Assembles the final command list by prepending
+        5.  G-Code Finalization: Assembles the final command list by prepending
             standard headers and startup moves to the commands returned by the
             strategy function.
         """
@@ -1680,9 +1712,6 @@ class ObjectSurface(PathOp.ObjectOp):
         is_surface_scan = strategy == "SurfaceScan"
         is_waterline = strategy == "Waterline"
         is_zlevel = strategy == "ZLevelHybrid"
-        # NOTE: Temporarily disable optimization and CPP tessellation for 3+2 axis operations
-        # Keyed on the rotation, not on the frame: a work plane that only
-        # moves the origin transforms geometry too, but is not a 3+2 setup.
         is_three_plus_two = getattr(self, "_geometry_rotation", None)
         use_cpp = True
 
@@ -1712,17 +1741,23 @@ class ObjectSurface(PathOp.ObjectOp):
             tool_params["length_offset"] = op_depth + tool_params["edge_height"]
 
         # Geometry preperation
-        geometry = self._prepare_geometry()
+        geometry = self._prepare_geometry(
+            optimize_stl,
+            is_three_plus_two,
+        )
         if geometry is None:
             return
-        base_objs, model_shape, model_faces, optimized_shape = geometry
+        (
+            model_shape,
+            model_faces,
+            optimized_shape,
+            optimize_stl,
+            is_triangulated,
+        ) = geometry
 
-        # NOTE: Temporarily disable the model optimization on 3+2 axis operations
+        # NOTE: C++ tessellation is disabled for Waterline on 3+2 operations
         if is_three_plus_two:
-            use_cpp = not is_waterline  # Disable C++ tessellation for Waterline
-            model_faces = None
-            optimized_shape = model_shape
-            optimize_stl = False
+            use_cpp = not is_waterline
 
         # Split selected features
         if needs_face_selection:
@@ -1758,8 +1793,9 @@ class ObjectSurface(PathOp.ObjectOp):
                 bb_face = surface_common.create_boundary_face(
                     model_shape.Faces,
                     offset,
-                    avoids=False,
-                    compound=optimized_shape if optimize_stl else False,
+                    outline=True,
+                    compound=optimized_shape,
+                    is_triangulated=is_triangulated,
                 )
 
         # Avoid Faces processing
@@ -1813,7 +1849,7 @@ class ObjectSurface(PathOp.ObjectOp):
             stl, safe_stl = surface_mesh.generate_stl(
                 model_shape=optimized_shape,
                 model_faces=model_faces,
-                base_objs=base_objs,
+                base_objs=self.model,
                 optimize_stl=optimize_stl,
                 strategy=strategy,
                 stl_faces=stl_faces,
@@ -1875,9 +1911,11 @@ class ObjectSurface(PathOp.ObjectOp):
                 obj, JOB, stl, safe_stl, cutter, tool_diam, bb_face, avoid_boundary, cutting_faces
             )
         elif strategy == "Waterline":
-            cmds = self._executeWaterline(obj, JOB, stl, cutter, tool_diam, is_adaptive=is_adaptive)
+            cmds = self._executeWaterline(obj, JOB, stl, cutter, tool_diam, is_adaptive)
         elif strategy == "ZLevelHybrid":
-            cmds = self._executeZLevelHybrid(obj, JOB, model_shape, bb_face, tool_params)
+            cmds = self._executeZLevelHybrid(
+                obj, JOB, model_shape, bb_face, tool_params, is_triangulated
+            )
         self.commandlist.extend(cmds)
 
         elapsed = time.strftime("%Hh:%Mm:%Ss", time.gmtime(time.time() - startTime))
