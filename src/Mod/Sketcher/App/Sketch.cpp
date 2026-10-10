@@ -4791,7 +4791,11 @@ void Sketch::updateArcOfCircle(const GeoDef& def)
     GCS::Arc& myArc = Arcs[def.index];
     GeomArcOfCircle* aoc = static_cast<GeomArcOfCircle*>(def.geo);
     aoc->setCenter(Vector3d(*Points[def.midPointId].x, *Points[def.midPointId].y, 0.0));
-    aoc->setRadius(*myArc.rad);
+
+    // Enforce positive radius for OpenCASCADE while allowing the solver to explore negative
+    // mathematical space
+    aoc->setRadius(std::max(std::abs(*myArc.rad), Precision::Confusion()));
+
     aoc->setRange(*myArc.startAngle, *myArc.endAngle, /*emulateCCWXY=*/true);
 }
 
@@ -4870,7 +4874,10 @@ void Sketch::updateCircle(const GeoDef& def)
 {
     GeomCircle* circ = static_cast<GeomCircle*>(def.geo);
     circ->setCenter(Vector3d(*Points[def.midPointId].x, *Points[def.midPointId].y, 0.0));
-    circ->setRadius(*Circles[def.index].rad);
+
+    // Enforce positive radius for OpenCASCADE while allowing the solver to explore negative
+    // mathematical space
+    circ->setRadius(std::max(std::abs(*Circles[def.index].rad), Precision::Confusion()));
 }
 
 void Sketch::updateEllipse(const GeoDef& def)
