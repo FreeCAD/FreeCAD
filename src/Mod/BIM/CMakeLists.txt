@@ -271,6 +271,7 @@ SET(bimtests_SRCS
     bimtests/TestArchStairsGui.py
     bimtests/TestArchReport.py
     bimtests/TestArchReportGui.py
+    bimtests/TestIfcExportImport2D.py
 )
 
 set(bimtests_FIXTURES
