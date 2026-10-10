@@ -307,7 +307,11 @@ FunctionEnd
 
 # based on https://nsis.sourceforge.io/Check_whether_your_application_is_running#Using_the_name_of_the_process_(with_Windows'_tasklist_command)
 !macro _FindProc result processName
-  nsExec::Exec '"$SYSDIR\cmd.exe" /c ""$SYSDIR\tasklist.exe" /NH /FI "IMAGENAME eq ${processName}" | "$SYSDIR\find.exe" /I "${processName}""'
+  # Get the PID of the current process so we can exclude it from the check
+  System::Call 'kernel32::GetCurrentProcessId()i.s'
+  Pop ${result}
+  # Find any processes with "processName" excluding the current process
+  nsExec::Exec '"$SYSDIR\cmd.exe" /c ""$SYSDIR\tasklist.exe" /NH /FI "IMAGENAME eq ${processName}" /FI "PID ne ${result}" | "$SYSDIR\find.exe" /I "${processName}""'
   Pop ${result}
 !macroend
 !define FindProc `!insertmacro _FindProc`
