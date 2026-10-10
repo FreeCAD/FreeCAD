@@ -201,6 +201,55 @@ class TestGenerateInPlaneFrame(PathTestUtils.PathTestBase):
         op.Base = [(clone, hole)]  # onChanged -> updateDepths, outside execute()
         self.assertAlmostEqual(op.OpStartDepth.Value, in_plane, places=5)
 
+    def test_helixLinksCheckTheModelInThePlaneFrame(self):
+        """Helix checks its links against the model in its work plane's
+        frame, the frame its path is made in. It used to hand linking the
+        world model: on a plane through the top face (Z 50) the box was read
+        as standing from 0 to 50 above the plane, not from -50 to 0."""
+        import Path.Base.Generator.linking as linking
+        import Path.Op.Helix as PathHelix
+
+        drilled = self.doc.addObject("Part::Feature", "TwoHoles")
+        drilled.Shape = (
+            Part.makeBox(100, 100, 50)
+            .cut(Part.makeCylinder(4, 30, Vector(30, 50, 20)))
+            .cut(Part.makeCylinder(4, 30, Vector(70, 50, 20)))
+        )
+        self.doc.recompute()
+        job = PathJob.Create("JobTwoHoles", [drilled], None)
+        self.doc.recompute()
+        clone = job.Model.Group[0]
+        holes = [
+            "Face%d" % i
+            for i, f in enumerate(clone.Shape.Faces, 1)
+            if isinstance(f.Surface, Part.Cylinder)
+        ]
+        top = PathWorkplane.createWorkplaneFromToolAxis(
+            job, Vector(0, 0, 1), origin=Vector(0, 0, 50)
+        )
+        op = PathHelix.Create("H", parentJob=job)
+        op.Workplane = top
+        op.Base = [(clone, holes)]
+        op.CollisionAvoidanceStrategy = "Line of Sight"
+
+        seen = []
+        moves = linking.get_linking_moves
+
+        def spy(**kwargs):
+            seen.extend(kwargs.get("solids") or [])
+            return moves(**kwargs)
+
+        linking.get_linking_moves = spy
+        try:
+            op.touch()
+            self.doc.recompute()
+        finally:
+            linking.get_linking_moves = moves
+        self.assertTrue(seen, "the holes should be linked against the model")
+        for solid in seen:
+            self.assertAlmostEqual(solid.BoundBox.ZMin, -50.0, places=6)
+            self.assertAlmostEqual(solid.BoundBox.ZMax, 0.0, places=6)
+
     def test_zUpPlaneOnTheTopFaceMeasuresFromIt(self):
         """A plane with no rotation but an origin still defines the frame: the
         stock top reads as its height above the face, the model top as 0, and

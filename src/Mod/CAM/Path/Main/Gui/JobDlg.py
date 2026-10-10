@@ -75,12 +75,7 @@ class JobCreate:
 
     def _schemaUsesMinutes(self, schema_id):
         """Return True if the given unit schema expresses velocity in /min."""
-        try:
-            q = FreeCAD.Units.Quantity(1, FreeCAD.Units.Velocity)
-            r = FreeCAD.Units.schemaTranslate(q, schema_id)
-            return "/min" in r[2]
-        except (IndexError, TypeError):
-            return False
+        return PathUtil.schemaUsesMinutes(schema_id)
 
     # Colors for the unit-schema combobox: green = minute-based (safe);
     # red = per-second (unsafe).

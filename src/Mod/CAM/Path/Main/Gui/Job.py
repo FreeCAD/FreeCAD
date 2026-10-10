@@ -1398,6 +1398,32 @@ class TaskPanel:
                 Path.Log.debug(e)
             item.setText(f"{getattr(tc, prop).Value:g}")
 
+    def carrying(self, action):
+        """carrying(action) ... action, a move of the model, done so that what is placed on the
+        part goes with it: work planes set where they are and the shapes operations are made from,
+        text and sketches, not attached to the part. Anything the action moved itself is left as
+        it put it. The stock is left to the action, so the model can move inside it."""
+
+        def run(*args):
+            models = list(self.obj.Model.Group)
+            before = [FreeCAD.Placement(m.Placement) for m in models]
+            carried = PathJob.objectsInModelFrame(self.obj)
+            carried = [(o, FreeCAD.Placement(o.Placement)) for o in carried]
+            action()
+            delta = None
+            for model, placement in zip(models, before):
+                if not model.Placement.isSame(placement, 1e-9):
+                    delta = model.Placement.multiply(placement.inverse())
+                    break
+            if delta is None:
+                return
+            for obj, placement in carried:
+                if obj.Placement.isSame(placement, 1e-9):
+                    obj.Placement = delta.multiply(placement)
+            PathJob.touchOperations(self.obj)
+
+        return run
+
     def modelSetAxis(self, axis):
         Path.Log.track(axis)
 
@@ -1494,12 +1520,14 @@ class TaskPanel:
                     if self.form.linkStockAndModel.isChecked():
                         # Also move the objects not selected
                         # if selection is not model, move the model too
-                        # if the selection is not stock and there is a stock, move the stock too
+                        # if the selection is not stock and there is a stock, move the stock too,
+                        # once: a stock made from the model follows it by itself, which
+                        # carrying() sees to
                         for model in self.obj.Model.Group:
                             if model != selObject:
                                 Draft.move(model, offset)
-                            if selObject != self.obj.Stock and self.obj.Stock:
-                                Draft.move(self.obj.Stock, offset)
+                        if selObject != self.obj.Stock and self.obj.Stock:
+                            Draft.move(self.obj.Stock, offset)
 
     def modelMove(self, axis):
         scale = self.form.modelMoveValue.property("rawValue")
@@ -1811,15 +1839,16 @@ class TaskPanel:
                     for i in range(count):
                         # it seems natural to remove the last of all the base objects for a given model
                         base = [b for b in obj.Model.Group if proxy.baseObject(obj, b) == model][-1]
+                        if not self.confirmModelRemoval(model, base):
+                            continue
                         self.vproxy.forgetBaseVisibility(obj, base)
                         self.obj.Proxy.removeBase(obj, base, True)
                 # do not access any of the retired objects after this point, they don't exist anymore
 
-                # then add all rookie base models
+                # then add all rookie base models, taking up what linked them when taken out
                 for model, count in additions.items():
                     for i in range(count):
-                        base = PathJob.createModelResourceClone(obj, model)
-                        obj.Model.addObject(base)
+                        base = proxy.addModel(obj, model)
                         self.vproxy.rememberBaseVisibility(obj, base)
 
                 # refresh the view
@@ -1827,6 +1856,34 @@ class TaskPanel:
                     self.setFields()
                 else:
                     Path.Log.track("no changes to model")
+
+    def confirmModelRemoval(self, model, base):
+        """confirmModelRemoval(model, base) ... whether to take model out of the Job, asked when
+        operations or work planes are made from it: their links to it go with it, taken up again
+        if it is added back."""
+        records = self.obj.Proxy.modelLinks(self.obj, base)
+        if not records:
+            return True
+        doc = self.obj.Document
+        names = {r["obj"] for r in records}
+        objs = [doc.getObject(n) for n in names]
+        planes = sum(1 for o in objs if o and o.TypeId == "Part::LocalCoordinateSystem")
+        ops = sum(1 for o in objs if o and hasattr(o, "Path"))
+        others = len(objs) - planes - ops
+        message = translate(
+            "CAM_Job",
+            "Taking {model} out of the Job unlinks what is made from it: the base geometry of {ops} "
+            "operations, the attachments of {planes} work planes and {others} other links. They are "
+            "linked again if {model} is added back to this Job.\n\nTake it out?",
+        ).format(model=model.Label, ops=ops, planes=planes, others=others)
+        answer = QtGui.QMessageBox.question(
+            self.form,
+            translate("CAM_Job", "Take the model out"),
+            message,
+            QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
+            QtGui.QMessageBox.No,
+        )
+        return answer == QtGui.QMessageBox.Yes
 
     def tabPageChanged(self, index):
         if index == 0:
@@ -1882,21 +1939,33 @@ class TaskPanel:
         # Stock, Orientation and Alignment
         self.form.btnMaterial.clicked.connect(self.assignMaterial)
         self.updateMaterialLabel()
-        self.form.centerInStock.clicked.connect(self.alignCenterInStock)
-        self.form.centerInStockXY.clicked.connect(self.alignCenterInStockXY)
+        self.form.centerInStock.clicked.connect(self.carrying(self.alignCenterInStock))
+        self.form.centerInStockXY.clicked.connect(self.carrying(self.alignCenterInStockXY))
 
         self.form.stock.currentIndexChanged.connect(self.updateStockEditor)
         self.form.refreshStock.clicked.connect(self.refreshStock)
 
-        self.form.modelSetXAxis.clicked.connect(lambda: self.modelSetAxis(FreeCAD.Vector(1, 0, 0)))
-        self.form.modelSetYAxis.clicked.connect(lambda: self.modelSetAxis(FreeCAD.Vector(0, 1, 0)))
-        self.form.modelSetZAxis.clicked.connect(lambda: self.modelSetAxis(FreeCAD.Vector(0, 0, 1)))
-        self.form.modelSetX0.clicked.connect(lambda: self.modelSet0(FreeCAD.Vector(-1, 0, 0)))
-        self.form.modelSetY0.clicked.connect(lambda: self.modelSet0(FreeCAD.Vector(0, -1, 0)))
-        self.form.modelSetZ0.clicked.connect(lambda: self.modelSet0(FreeCAD.Vector(0, 0, -1)))
+        self.form.modelSetXAxis.clicked.connect(
+            self.carrying(lambda: self.modelSetAxis(FreeCAD.Vector(1, 0, 0)))
+        )
+        self.form.modelSetYAxis.clicked.connect(
+            self.carrying(lambda: self.modelSetAxis(FreeCAD.Vector(0, 1, 0)))
+        )
+        self.form.modelSetZAxis.clicked.connect(
+            self.carrying(lambda: self.modelSetAxis(FreeCAD.Vector(0, 0, 1)))
+        )
+        self.form.modelSetX0.clicked.connect(
+            self.carrying(lambda: self.modelSet0(FreeCAD.Vector(-1, 0, 0)))
+        )
+        self.form.modelSetY0.clicked.connect(
+            self.carrying(lambda: self.modelSet0(FreeCAD.Vector(0, -1, 0)))
+        )
+        self.form.modelSetZ0.clicked.connect(
+            self.carrying(lambda: self.modelSet0(FreeCAD.Vector(0, 0, -1)))
+        )
 
-        self.form.setOrigin.clicked.connect(self.alignSetOrigin)
-        self.form.moveToOrigin.clicked.connect(self.alignMoveToOrigin)
+        self.form.setOrigin.clicked.connect(self.carrying(self.alignSetOrigin))
+        self.form.moveToOrigin.clicked.connect(self.carrying(self.alignMoveToOrigin))
         self.form.pickTargetModel.clicked.connect(lambda: self.togglePickTarget(True))
         self.form.pickTargetStock.clicked.connect(lambda: self.togglePickTarget(False))
         self.togglePickTarget(True)  # default: Model
@@ -1910,23 +1979,35 @@ class TaskPanel:
             self.form.modelMoveValue.setProperty("rawValue", 1.0)
 
         # self.form.modelMoveLeftUp.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(-1, 1, 0)))
-        self.form.modelMoveLeft.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(-1, 0, 0)))
+        self.form.modelMoveLeft.clicked.connect(
+            self.carrying(lambda: self.modelMove(FreeCAD.Vector(-1, 0, 0)))
+        )
         # self.form.modelMoveLeftDown.clicked.connect(
         #    lambda: self.modelMove(FreeCAD.Vector(-1, -1, 0))
         # )
 
-        self.form.modelMoveUp.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(0, 1, 0)))
-        self.form.modelMoveDown.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(0, -1, 0)))
+        self.form.modelMoveUp.clicked.connect(
+            self.carrying(lambda: self.modelMove(FreeCAD.Vector(0, 1, 0)))
+        )
+        self.form.modelMoveDown.clicked.connect(
+            self.carrying(lambda: self.modelMove(FreeCAD.Vector(0, -1, 0)))
+        )
 
-        self.form.modelMoveZUp.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(0, 0, 1)))
-        self.form.modelMoveRight.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(1, 0, 0)))
-        self.form.modelMoveZDown.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(0, 0, -1)))
+        self.form.modelMoveZUp.clicked.connect(
+            self.carrying(lambda: self.modelMove(FreeCAD.Vector(0, 0, 1)))
+        )
+        self.form.modelMoveRight.clicked.connect(
+            self.carrying(lambda: self.modelMove(FreeCAD.Vector(1, 0, 0)))
+        )
+        self.form.modelMoveZDown.clicked.connect(
+            self.carrying(lambda: self.modelMove(FreeCAD.Vector(0, 0, -1)))
+        )
 
         self.form.modelRotateAxis.setCurrentIndex(2)  # default: Z
         self.form.modelRotateAxis.currentIndexChanged.connect(self._updateRotateIcons)
         self._updateRotateIcons()
-        self.form.modelRotateLeft.clicked.connect(lambda: self.modelRotate(1))
-        self.form.modelRotateRight.clicked.connect(lambda: self.modelRotate(-1))
+        self.form.modelRotateLeft.clicked.connect(self.carrying(lambda: self.modelRotate(1)))
+        self.form.modelRotateRight.clicked.connect(self.carrying(lambda: self.modelRotate(-1)))
 
         self.updateSelection()
 

@@ -541,6 +541,162 @@ class TestCAMSanity(PathTestBase):
             f"Expected squawk mentioning post-processing, got: {squawks}",
         )
 
+    def test242_deprecated_operation_squawk(self):
+        """An operation with a deprecation notice produces a NOTE in _outputData().
+
+        Given: A job with two operations, one whose Proxy.opDeprecationNotice() returns
+               a message and one whose returns None.
+        When: _outputData() is called.
+        Then: squawkData contains exactly one NOTE naming the deprecated op and its notice.
+        """
+        deprecated = MagicMock()
+        deprecated.Name = "Tapping"
+        deprecated.Label = "Tapping"
+        deprecated.Proxy.__module__ = "Path.Op.Tapping"
+        deprecated.Proxy.opDeprecationNotice.return_value = "Use Drilling instead."
+
+        current = MagicMock()
+        current.Name = "Profile"
+        current.Label = "Profile"
+        current.Proxy.__module__ = "Path.Op.Profile"
+        current.Proxy.opDeprecationNotice.return_value = None
+
+        mock_job = MagicMock()
+        mock_job.LastPostProcessDate = ""
+        mock_job.LastPostProcessOutput = ""
+        mock_job.PostProcessor = "linuxcnc"
+        mock_job.PostProcessorArgs = ""
+        mock_job.PostProcessorOutputFile = ""
+        mock_job.Operations.Group = [deprecated, current]
+
+        S = self._make_sanity_with_mock_job(mock_job)
+        squawks = [s for s in S._outputData()["squawkData"] if "deprecated" in s["Note"]]
+
+        self.assertEqual(len(squawks), 1, f"Expected one deprecation squawk, got: {squawks}")
+        self.assertEqual(squawks[0]["squawkType"], "NOTE")
+        self.assertIn("Tapping", squawks[0]["Note"])
+        self.assertIn("Use Drilling instead.", squawks[0]["Note"])
+
+    def test243_deleted_operation_squawk(self):
+        """An operation whose proxy is a RemovedOp produces a CAUTION in _outputData().
+
+        Given: A job with one operation whose Proxy is a Path.Op.Base.RemovedOp.
+        When: _outputData() is called.
+        Then: squawkData contains one CAUTION naming the op and carrying its notice.
+        """
+        import Path.Op.Base as PathOp
+
+        deleted = MagicMock()
+        deleted.Name = "Tapping"
+        deleted.Label = "Tapping"
+        deleted.Proxy = PathOp.RemovedOp()
+
+        mock_job = MagicMock()
+        mock_job.LastPostProcessDate = ""
+        mock_job.LastPostProcessOutput = ""
+        mock_job.PostProcessor = "linuxcnc"
+        mock_job.PostProcessorArgs = ""
+        mock_job.PostProcessorOutputFile = ""
+        mock_job.Operations.Group = [deleted]
+
+        S = self._make_sanity_with_mock_job(mock_job)
+        squawks = [s for s in S._outputData()["squawkData"] if "Tapping" in s["Note"]]
+
+        self.assertEqual(len(squawks), 1, f"Expected one squawk, got: {squawks}")
+        self.assertEqual(squawks[0]["squawkType"], "CAUTION")
+        self.assertIn("has been deleted", squawks[0]["Note"])
+
+    def _schema_indices(self):
+        """Return (per_minute_name, per_second_name) from the document's UnitSystem enumeration."""
+        import Path.Base.Util as PathUtil
+
+        names = self.doc.getEnumerationsOfProperty("UnitSystem")
+        per_minute = next((n for i, n in enumerate(names) if PathUtil.schemaUsesMinutes(i)), None)
+        per_second = next(
+            (n for i, n in enumerate(names) if not PathUtil.schemaUsesMinutes(i)), None
+        )
+        return per_minute, per_second
+
+    def test245_per_second_unit_schema_squawk(self):
+        """A document whose unit schema expresses velocity per second should produce a WARNING.
+
+        Given: The boxtest document with its UnitSystem set to a per-second schema.
+        When: _designData() is called.
+        Then: squawkData contains a WARNING mentioning "unit schema".
+
+        Example: doc.UnitSystem = "Standard (mm, kg, s, degree)"
+          → squawkData contains {"squawkType": "WARNING", "Note": "Document unit schema ..."}
+        """
+        per_minute, per_second = self._schema_indices()
+        if per_second is None:
+            self.skipTest("No per-second unit schema available")
+
+        original = self.doc.UnitSystem
+        try:
+            self.doc.UnitSystem = per_second
+            with patch(
+                "Path.Main.Sanity.ImageBuilder.ImageBuilderFactory.get_image_builder"
+            ) as mock_factory:
+                mock_factory.return_value = DummyImageBuilder(self.temp_file.name)
+                with patch.object(Sanity.CAMSanity, "summarize", return_value={}):
+                    S = Sanity.CAMSanity(self.job, output_file=self.temp_file.name)
+            squawks = S._designData().get("squawkData", [])
+        finally:
+            self.doc.UnitSystem = original
+
+        warnings = [s for s in squawks if s["squawkType"] == "WARNING"]
+        self.assertTrue(
+            any("unit schema" in s["Note"].lower() for s in warnings),
+            f"Expected WARNING squawk for per-second unit schema, got: {squawks}",
+        )
+        self.assertTrue(any(per_second in s["Note"] for s in warnings))
+
+    def test246_per_minute_unit_schema_no_squawk(self):
+        """A document whose unit schema expresses velocity per minute produces no schema squawk.
+
+        Given: The boxtest document with its UnitSystem set to a per-minute schema.
+        When: validate_job() is called.
+        Then: No squawk mentions "unit schema".
+        """
+        per_minute, per_second = self._schema_indices()
+        if per_minute is None:
+            self.skipTest("No per-minute unit schema available")
+
+        original = self.doc.UnitSystem
+        try:
+            self.doc.UnitSystem = per_minute
+            all_squawks, critical = Sanity.CAMSanity.validate_job(self.job)
+        finally:
+            self.doc.UnitSystem = original
+
+        self.assertFalse(
+            any("unit schema" in s["Note"].lower() for s in all_squawks),
+            f"Unexpected unit schema squawk under per-minute schema: {all_squawks}",
+        )
+
+    def test247_per_second_unit_schema_is_critical(self):
+        """validate_job() reports the per-second schema squawk as critical.
+
+        Given: The boxtest document with its UnitSystem set to a per-second schema.
+        When: CAMSanity.validate_job(job) is called.
+        Then: critical_squawks contains a squawk mentioning "unit schema".
+        """
+        per_minute, per_second = self._schema_indices()
+        if per_second is None:
+            self.skipTest("No per-second unit schema available")
+
+        original = self.doc.UnitSystem
+        try:
+            self.doc.UnitSystem = per_second
+            all_squawks, critical = Sanity.CAMSanity.validate_job(self.job)
+        finally:
+            self.doc.UnitSystem = original
+
+        self.assertTrue(
+            any("unit schema" in s["Note"].lower() for s in critical),
+            f"Expected critical unit schema squawk, got: {critical}",
+        )
+
     def test250_no_operations_squawk(self):
         """A job with no operations should produce a WARNING from _validate_job_structure().
 

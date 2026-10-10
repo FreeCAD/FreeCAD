@@ -24,6 +24,7 @@
 
 import FreeCAD
 import Path
+import Path.Op.Base as PathOp
 import Path.Op.PocketBase as PathPocketBase
 import PathScripts.PathUtils as PathUtils
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -89,6 +90,13 @@ class ObjectFace(PathPocketBase.ObjectPocket):
         Path.Log.debug(data)
 
         return data
+
+    def opDeprecationNotice(self, obj):
+        return PathOp.deprecationNotice(
+            translate("CAM_MillFace", "The Face operation"),
+            translate("CAM_MillFace", "the Mill Facing operation"),
+            stage=PathOp.DeprecationStage.Hidden,
+        )
 
     def initPocketOp(self, obj):
         Path.Log.track()

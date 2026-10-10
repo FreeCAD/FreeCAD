@@ -38,6 +38,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 if FreeCAD.GuiUp:
     import FreeCADGui
+    from PySide import QtGui
 
 __title__ = "CAM Workplane Command"
 __author__ = "sliptonic (Brad Collette)"
@@ -114,7 +115,18 @@ class CommandWorkplaneCreate:
                     job = candidate
                     break
 
-        workplane = PathWorkplane.createWorkplane(job, base, sub)
+        suggested = PathWorkplane.suggestLabel(job, base, sub)
+        label, ok = QtGui.QInputDialog.getText(
+            FreeCADGui.getMainWindow(),
+            translate("CAM_Workplane", "Work Plane"),
+            translate("CAM_Workplane", "Name"),
+            QtGui.QLineEdit.Normal,
+            suggested,
+        )
+        if not ok:
+            return
+
+        workplane = PathWorkplane.createWorkplane(job, base, sub, label=label.strip() or suggested)
         if base is None:
             Path.Log.info(
                 translate(

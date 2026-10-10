@@ -60,6 +60,27 @@ def resolveToJobModel(job, obj):
     return None
 
 
+def suggestLabel(job, base=None, sub=None):
+    """suggestLabel(job, base=None, sub=None) ... a label for a new work plane.
+
+    A plane derived from a face is named after the face, a plane at the Job
+    origin is named Workplane. A number is appended if the document already
+    has an object with that label, so the suggestion is the label the plane
+    actually gets."""
+    if base is not None and sub:
+        stem = "%s.%s" % (base.Label, sub)
+    else:
+        stem = "Workplane"
+
+    taken = {o.Label for o in job.Document.Objects}
+    label = stem
+    index = 0
+    while label in taken:
+        index += 1
+        label = "%s%03d" % (stem, index)
+    return label
+
+
 def createWorkplane(job, base=None, sub=None, label=None, placement=None):
     """createWorkplane(job, base=None, sub=None, label=None, placement=None)
     ... add a named work plane to job and return it.
@@ -69,9 +90,11 @@ def createWorkplane(job, base=None, sub=None, label=None, placement=None):
     model changes. *base* may be the user's original object or the Job's clone
     of it; it is resolved to the clone either way.
 
-    With *placement* and no face, the plane is created unattached at that
-    placement. With neither it sits at the Job origin, aligned with the Job's
-    axes, for the user to position by hand.
+    With *placement* and no face, the plane is attached to the Job's model at
+    that placement, so it stays where it is on the part when the model is
+    moved. With neither it sits at the Job origin, aligned with the Job's axes,
+    attached the same way, for the user to position from there. A Job without
+    a model leaves it unattached.
 
     Any plane can be created on any Job. Whether the machine can reach it
     is not decided here: the operation refuses to solve a tilted plane
@@ -96,8 +119,17 @@ def createWorkplane(job, base=None, sub=None, label=None, placement=None):
             model = base
         workplane.AttachmentSupport = [(model, sub)]
         workplane.MapMode = "FlatFace"
-    elif placement is not None:
-        workplane.Placement = FreeCAD.Placement(placement)
+    else:
+        target = FreeCAD.Placement(placement) if placement is not None else FreeCAD.Placement()
+        models = getattr(getattr(job, "Model", None), "Group", None) or []
+        if models:
+            # on the part where it is now, the model's own frame its support
+            model = models[0]
+            workplane.AttachmentSupport = [(model, "")]
+            workplane.MapMode = "ObjectXY"
+            workplane.AttachmentOffset = model.Placement.inverse().multiply(target)
+        else:
+            workplane.Placement = target
 
     job.Proxy.setupWorkplanes(job)
     job.Workplanes.addObject(workplane)
