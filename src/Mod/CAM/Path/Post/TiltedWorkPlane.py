@@ -36,10 +36,16 @@ through its ``values`` without knowing the angle math.
 
 Angle conventions, verified against composed rotations:
 
-``G68.2`` / ``G268`` (Fanuc, Haas and the controls that copy them) take
-I, J, K as intrinsic Euler angles: rotate about Z by I, then about the new X
-by J, then about the newest Z by K. That is ``Rz(I) * Rx(J) * Rz(K)``, which
-FreeCAD spells ``IZXZ``.
+``G68.2`` (Fanuc and the controls that copy it) takes I, J, K as intrinsic
+Euler angles: rotate about Z by I, then about the new X by J, then about the
+newest Z by K. That is ``Rz(I) * Rx(J) * Rz(K)``, which FreeCAD spells
+``IZXZ``.
+
+``G268`` (Haas NGC) is not a G68.2 relative. Its I, J, K are rotations about
+the fixed working-coordinate X, Y and Z axes, and Q names the order they are
+applied in; Q123 is X, then Y, then Z. That is ``Rz(K) * Ry(J) * Rx(I)``, the
+same spatial angles Heidenhain takes. ``G268`` only defines the feature
+coordinate system; ``G253`` turns the spindle normal to it.
 
 ``PLANE SPATIAL`` (Heidenhain) takes SPA, SPB, SPC as spatial angles about
 the fixed machine X, Y and Z, applied in that order: ``Rz(C) * Ry(B) * Rx(A)``,
@@ -64,8 +70,10 @@ class PlaneCommand(Enum):
                     Brother, Mach4 with the option). `G68.2 X Y Z I J K` with
                     I, J, K the intrinsic Z-X'-Z'' Euler angles; `G53.1`
                     aligns the tool axis; `G69` cancels.
-    G268          : Haas NGC. Same angles and alignment; `G268` declares,
-                    `G269` cancels.
+    G268          : Haas NGC. `G268 X Y Z I J K Q123` with I, J, K the
+                    spatial angles about the fixed X, Y, Z axes applied in
+                    that order; `G253` orients the spindle normal to the
+                    plane; `G269` cancels.
     PLANE_SPATIAL : Heidenhain. `PLANE SPATIAL SPA SPB SPC` with the spatial
                     angles about the fixed machine X, Y, Z axes applied in
                     that order; `TURN` positions the rotaries; `PLANE RESET`
@@ -107,9 +115,9 @@ DIALECTS = {
         "cancel": "G69",
     },
     PlaneCommand.G268: {
-        "angles": euler_zxz,
-        "declare": "G268 X{x} Y{y} Z{z} I{a1} J{a2} K{a3}",
-        "align": "G53.1",
+        "angles": spatial_abc,
+        "declare": "G268 X{x} Y{y} Z{z} I{a1} J{a2} K{a3} Q123",
+        "align": "G253",
         "cancel": "G269",
     },
     PlaneCommand.PLANE_SPATIAL: {
