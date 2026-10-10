@@ -1,0 +1,6 @@
+<RCC>
+  <qresource>
+    <file>icons/Surface_FreehandBSpline.svg</file>
+    <file>icons/Surface_Pointer_FreehandBSpline.svg</file>
+  </qresource>
+</RCC>
