@@ -24,7 +24,9 @@
  ***************************************************************************/
 
 
+#include <algorithm>
 #include <sstream>
+#include <vector>
 #include <QApplication>
 #include <QMessageBox>
 #include <QRegularExpression>
@@ -55,11 +57,11 @@
 #include <Gui/DocumentObserver.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
-#include <Base/Tools.h>
 #include <Mod/Part/App/AttachExtension.h>
 #include <Mod/Part/App/BodyBase.h>
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/Part/App/Part2DObject.h>
+#include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/Gui/AttacherTexts.h>
 #include <Mod/Part/Gui/TaskAttacher.h>
 
@@ -514,107 +516,87 @@ void TaskAttacher::removeSketchFeatureNesting(
     }
 }
 
+void TaskAttacher::resolveAttachmentSupportInContext(
+    App::DocumentObject* context,
+    App::DocumentObject*& rootObj,
+    std::string& sub
+)
+{
+    if (!rootObj) {
+        return;
+    }
+
+    // Attachment supports must retain containers whose placements the context does not supply.
+    // For a sketch in BodyA, BodyA.Pad.Face1 becomes Pad:Face1, while
+    // BodyB.Pad.Face1 remains BodyB:Pad.Face1. Shared outer Parts are stripped as well.
+    // For a sketch outside both bodies, both body prefixes must remain.
+    // Here ":" separates the stored root object from its subname.
+
+    // Body/Part nesting is normally shallow, so a vector with linear lookup is sufficient.
+    std::vector<App::DocumentObject*> contextGroups;
+    for (auto* group = context; group;
+         group = App::GeoFeatureGroupExtension::getGroupOfObject(group)) {
+        contextGroups.push_back(group);
+    }
+
+    auto prependContainer = [&rootObj, &sub](App::DocumentObject* container) {
+        sub = std::string(rootObj->getNameInDocument()) + "." + sub;
+        rootObj = container;
+    };
+
+    if (auto* datum = dynamic_cast<App::DatumElement*>(rootObj)) {
+        if (auto* lcs = datum->getLCS(); lcs && !lcs->isOrigin() && lcs->hasObject(datum)) {
+            prependContainer(lcs);
+        }
+    }
+
+    // A face picked before the editor opens may only name its feature, without its body.
+    // Recover the coordinate-system path, stopping before a shared ancestor.
+    auto* linkedObj = rootObj->getLinkedObject();
+    if (linkedObj->isDerivedFrom<Part::Feature>()
+        || linkedObj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
+        while (auto* group = App::GeoFeatureGroupExtension::getGroupOfObject(rootObj)) {
+            if (std::ranges::find(contextGroups, group) != contextGroups.end()) {
+                break;
+            }
+            prependContainer(group);
+        }
+    }
+
+    // Make a rooted selection relative to the attaching context, not the original rootObj.
+    // With context BodyA, Part:BodyA.Pad.Face1 becomes Pad:Face1 because Part and BodyA
+    // already contribute to the attaching object's placement. An external BodyB remains.
+    while (std::ranges::find(contextGroups, rootObj->getLinkedObject()) != contextGroups.end()) {
+        auto dot = sub.find('.');
+        if (dot == std::string::npos) {
+            rootObj = nullptr;
+            return;
+        }
+        auto* child = rootObj->getSubObject(sub.substr(0, dot + 1).c_str());
+        if (!child || child == rootObj) {
+            rootObj = nullptr;
+            return;
+        }
+        rootObj = child;
+        sub.erase(0, dot + 1);
+    }
+}
+
 void TaskAttacher::findCorrectObjAndSubInThisContext(App::DocumentObject*& rootObj, std::string& sub)
 {
-    // The reference that we store must take into account the hierarchy of geoFeatures. For example:
-    // - Part
-    // - - Cube
-    // - Sketch
-    // if sketch is attached to Cube.Face1 then it must store Part:Cube.Face3 as Sketch is outside
-    // of Part.
-    // - Part
-    // - - Cube
-    // - - Sketch
-    // In this example it must store Cube:Face3 because Sketch is inside Part, sibling of Cube.
-    // So placement of Part is already taken into account.
-    // - Part1
-    // - - Part2
-    // - - - Cube
-    // - - Sketch
-    // In this example it must store Part2:Cube.Face3 since Part1 is already taken into account.
-    // - Part1
-    // - - Part2
-    // - - - Cube
-    // - - Part3
-    // - - - Sketch
-    // In this example it's not possible because Sketch has Part3 placement. So it should be
-    // rejected because we cannot guarantee attacher will find the correct placement. But we still
-    // allow because of some workflow see https://github.com/FreeCAD/FreeCAD/issues/29714
-
-    std::vector<std::string> names = Base::Tools::splitSubName(sub);
-    if (!rootObj || names.size() < 2) {
+    if (!rootObj) {
         return;
     }
-    App::Document* doc = rootObj->getDocument();
-    App::DocumentObject* attachingObj = ViewProvider->getObject();     // Attaching object
-    App::DocumentObject* subObj = rootObj->getSubObject(sub.c_str());  // Object being attached.
-    if (!subObj || subObj == rootObj) {
-        // Case of root object. We don't need to modify it.
-        return;
-    }
-    if (subObj == attachingObj) {
-        // prevent self-referencing
+    auto* attachingObj = ViewProvider->getObject();
+    auto* subObj = rootObj->getSubObject(sub.c_str());
+    auto* context = App::GeoFeatureGroupExtension::getGroupOfObject(attachingObj);
+    if (subObj == attachingObj
+        || (!context && rootObj->getDocument() != attachingObj->getDocument())) {
         rootObj = nullptr;
         return;
     }
-
-    auto* group = App::GeoFeatureGroupExtension::getGroupOfObject(attachingObj);
     removeSketchFeatureNesting(rootObj, sub, subObj);
-    names = Base::Tools::splitSubName(sub);
-    names.emplace(names.begin(), rootObj->getNameInDocument());
-
-    // Check if attachingObj is a root object. if so we keep the full path.
-    if (!group) {
-        if (attachingObj->getDocument() != rootObj->getDocument()) {
-            // If it's not in same document then it's not a good selection
-            rootObj = nullptr;
-        }
-        // if it's same document we keep the rootObj and sub unchanged.
-        return;
-    }
-
-    bool groupPassed = false;
-    for (size_t i = 0; i < names.size(); ++i) {
-        App::DocumentObject* obj = doc->getObject(names[i].c_str());
-        if (!obj) {
-            break;  // we reached the TNP string or the element name.
-        }
-
-        if (groupPassed) {
-            rootObj = obj;
-
-            // Rebuild 'sub' starting from the next element after the current 'name'
-            sub = "";
-            for (size_t j = i + 1; j < names.size(); ++j) {
-                sub += names[j];
-                if (j != names.size() - 1) {
-                    sub += ".";  // Add a period between elements
-                }
-            }
-            return;
-        }
-
-        // In case the attaching object is in a link to a part.
-        // For instance :
-        // - Part1
-        // - - LinkToPart2
-        // - - - Cube
-        // - - - Sketch
-        obj = obj->getLinkedObject();
-
-        if (obj == group) {
-            groupPassed = true;
-        }
-    }
-
-    // if we reach this point it means that attaching object's group is outside of
-    // the scope of the attached object. For instance:
-    // - Part1
-    // - - Part2
-    // - - - Cube
-    // - - Part3
-    // - - - Sketch
-    // In this case the selection cannot guarantee the global placement that attacher will find.
+    resolveAttachmentSupportInContext(context, rootObj, sub);
 }
 
 void TaskAttacher::handleInitialSelection()
@@ -628,6 +610,7 @@ void TaskAttacher::handleInitialSelection()
         return;
     }
     std::vector<SubAndObjName> subAndObjNamePairs;
+    auto* group = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
 
     auto sel = Gui::Selection().getSelectionEx(
         "",
@@ -635,11 +618,22 @@ void TaskAttacher::handleInitialSelection()
         Gui::ResolveMode::NoResolve
     );
     for (auto& selObj : sel) {
-        std::vector<std::string> subs = selObj.getSubNames();
+        const auto& subs = selObj.getSubNames();
         std::string objName = selObj.getFeatName();
-        for (auto& sub : subs) {
-            SubAndObjName objSubName = {objName, sub};
-            subAndObjNamePairs.push_back(objSubName);
+        auto* selectedObj = selObj.getObject();
+        if (subs.empty()) {
+            // A whole-object selection has no subnames. Exclude the attaching object's container.
+            if (selectedObj != group) {
+                subAndObjNamePairs.push_back({objName, ""});
+            }
+            continue;
+        }
+        for (const auto& sub : subs) {
+            // Also exclude the container selected through a path, or a face of its own shape.
+            if (group && selectedObj->getSubObject(sub.c_str()) == group) {
+                continue;
+            }
+            subAndObjNamePairs.push_back({objName, sub});
         }
     }
     addToReference(subAndObjNamePairs);
