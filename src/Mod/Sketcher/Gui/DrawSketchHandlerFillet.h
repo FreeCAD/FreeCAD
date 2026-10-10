@@ -80,6 +80,10 @@ public:
                 if (geom1->is<Part::GeomLineSegment>() && geom2->is<Part::GeomLineSegment>()) {
                     return true;
                 }
+                notAllowedReason = QT_TR_NOOP(
+                    "Fillet/chamfer on a point only works between two lines. "
+                    "To fillet curves, select the two edges instead."
+                );
                 // TODO: This could return true for any curve as long as
                 // int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim,
                 // bool createCorner, bool chamfer) evaluates two correct points that can be bound
