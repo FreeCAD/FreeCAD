@@ -491,7 +491,7 @@ QModelIndex PropertyEditor::moveCursor(CursorAction action, Qt::KeyboardModifier
         }
         index = model()->buddy(index);
         auto* item = static_cast<PropertyItem*>(index.internalPointer());
-	// we exclude disabled & header entries from the tab order since interaction is impossible
+        // we exclude disabled & header entries from the tab order since interaction is impossible
         if (item && !item->isSeparator() && (index.flags() & Qt::ItemIsEditable)) {
             return index;
         }
