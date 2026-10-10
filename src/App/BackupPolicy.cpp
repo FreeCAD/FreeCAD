@@ -53,6 +53,10 @@ void BackupPolicy::setDateFormat(const std::string& fmt)
 {
     saveBackupDateFormat = fmt;
 }
+void BackupPolicy::consolidateBackups(const bool on)
+{
+    useBackupDirectory = on;
+}
 void BackupPolicy::apply(const std::string& sourcename, const std::string& targetname)
 {
     if (numberOfFiles <= 0) {
@@ -424,8 +428,11 @@ bool BackupPolicy::renameFileNoErase(Base::FileInfo fi, const std::string& newNa
     return false;
 }
 
-std::string BackupPolicy::getBackupDirectoryPath(const Base::FileInfo& target)
+std::string BackupPolicy::getBackupDirectoryPath(const Base::FileInfo& target) const
 {
+    if (!useBackupDirectory) {
+        return target.dirPath();
+    }
     auto backupDir = Base::FileInfo::stringToPath(target.dirPath()) / "freecad-backups";
     return Base::FileInfo::pathToString(backupDir);
 }
@@ -437,7 +444,7 @@ std::string BackupPolicy::getBackupFilePath(const std::string& backupDir,
     return Base::FileInfo::pathToString(backupPath);
 }
 
-std::string BackupPolicy::ensureBackupDirectory(const Base::FileInfo& target)
+std::string BackupPolicy::ensureBackupDirectory(const Base::FileInfo& target) const
 {
     std::string backupDirPath = getBackupDirectoryPath(target);
     Base::FileInfo backupDir(backupDirPath);

@@ -65,6 +65,7 @@ protected:
         _policy.setNumberOfFiles(count);
         _policy.useBackupExtension(useExt);
         _policy.setDateFormat(fmt);
+        _policy.consolidateBackups(true);
     }
 
     // Create a named temporary file: returns the full path to the new file. Deleted by the TearDown

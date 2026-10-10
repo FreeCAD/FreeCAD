@@ -2087,8 +2087,13 @@ bool Document::saveToFile(const char* filename) const
             GetApplication()
                 .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
                 ->GetASCII("SaveBackupDateFormat", "%Y%m%d-%H%M%S");
+        bool consolidateBackups =
+            GetApplication()
+                .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
+                ->GetBool("ConsolidateBackupFiles", false);
 
         BackupPolicy backupPolicy;
+        backupPolicy.consolidateBackups(consolidateBackups);
         if (useFCBakExtension) {
             backupPolicy.setPolicy(BackupPolicy::TimeStamp);
             backupPolicy.useBackupExtension(useFCBakExtension);
