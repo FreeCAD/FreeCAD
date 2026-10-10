@@ -13,6 +13,9 @@ platforms = [
 ]
 requires-pixi = ">=0.81.0"
 
+[activation]
+env = { PYTHONNOUSERSITE = "1", PYTHONPATH = "" }
+
 [dependencies]
 av = "*"
 blinker = "*"
