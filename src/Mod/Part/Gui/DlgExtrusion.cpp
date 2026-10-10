@@ -31,9 +31,11 @@
 #include <TopTools_HSequenceOfShape.hxx>
 #include <QKeyEvent>
 #include <QMessageBox>
+#include <QSignalBlocker>
 #include <QTimer>
 
 #include <algorithm>
+#include <ranges>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -154,6 +156,11 @@ void copyParameter(
     }
     toProp.setValue(fromProp.getValue());
 }
+
+Part::Extrusion* unwrap(const App::DocumentObjectWeakPtrT& weakPtr)
+{
+    return weakPtr.get<Part::Extrusion>();
+}
 }  // namespace
 
 DlgExtrusion::DlgExtrusion(QWidget* parent, Qt::WindowFlags fl)
@@ -175,6 +182,12 @@ DlgExtrusion::DlgExtrusion(QWidget* parent, Qt::WindowFlags fl)
     ui->spinTaperAngle->setUnit(Base::Unit::Angle);
     ui->spinTaperAngle->setUnit(Base::Unit::Angle);
     findShapes();
+
+    if (App::Document* doc = App::GetApplication().getDocument(this->document.c_str())) {
+        deletedObjectConnection = doc->signalDeletedObject.connect(
+            [this](const App::DocumentObject& obj) { this->onDeletedObject(obj); }
+        );
+    }
 
     Gui::ItemViewSelection sel(ui->treeWidget);
     sel.applyFrom(Gui::Selection().getObjectsOfType(Part::Feature::getClassTypeId()));
@@ -547,7 +560,7 @@ bool DlgExtrusion::apply()
         return false;
     }
 
-    ensureTransaction();
+    ensureTransaction();  // Keeps transaction for new edits after apply.
     return true;
 }
 
@@ -589,13 +602,17 @@ bool DlgExtrusion::applyInternal()
 
         applyBoundParameters();
 
-        for (Part::Extrusion* feature : extrusions) {
-            this->writeParametersToFeature(*feature, feature->Base.getValue());
+        for (const auto& weakFeature : extrusions) {
+            if (auto* feature = unwrap(weakFeature)) {
+                this->writeParametersToFeature(*feature, feature->Base.getValue());
+            }
         }
         syncLinearParameters();
 
-        for (Part::Extrusion* feature : extrusions) {
-            FCMD_OBJ_HIDE(feature->Base.getValue());
+        for (const auto& weakFeature : extrusions) {
+            if (auto* feature = unwrap(weakFeature)) {
+                FCMD_OBJ_HIDE(feature->Base.getValue());
+            }
         }
 
         activeDoc->recompute();
@@ -743,7 +760,9 @@ std::vector<App::DocumentObject*> DlgExtrusion::getShapesToExtrude() const
     for (auto item : items) {
         App::DocumentObject* obj = doc->getObject(item->data(0, Qt::UserRole).toString().toLatin1());
         if (!obj) {
-            throw Base::RuntimeError("Object not found");
+            // The object has been removed from the document (e.g. by undo) while the
+            // item is still highlighted in the tree.
+            continue;
         }
         objects.push_back(obj);
     }
@@ -918,7 +937,7 @@ Part::Extrusion* DlgExtrusion::createFeatureFor(App::DocumentObject* sourceObj)
         throw;
     }
 
-    extrusions.push_back(feature);
+    extrusions.emplace_back(feature);
     return feature;
 }
 
@@ -948,9 +967,14 @@ void DlgExtrusion::updateFeatures()
         }
     };
 
+    std::erase_if(extrusions, [](const App::DocumentObjectWeakPtrT& weakFeature) {
+        return weakFeature.expired();
+    });
+
     for (App::DocumentObject* sourceObj : selected) {
-        const auto& hasFeatureForThisSourceObj = [&](Part::Extrusion* f) {
-            return f->Base.getValue() == sourceObj;
+        const auto& hasFeatureForThisSourceObj = [&](const App::DocumentObjectWeakPtrT& weakFeature) {
+            auto* f = unwrap(weakFeature);
+            return f && f->Base.getValue() == sourceObj;
         };
         if (std::ranges::none_of(extrusions, hasFeatureForThisSourceObj)) {
             tryCreateFeatureFor(sourceObj);
@@ -975,24 +999,24 @@ void DlgExtrusion::reconcileFeatures()
     }
 
     auto isSelected = [&selected](Part::Extrusion* feature) {
-        return std::find(selected.begin(), selected.end(), feature->Base.getValue())
-            != selected.end();
+        return std::ranges::find(selected, feature->Base.getValue()) != selected.end();
     };
 
-    if (boundFeature && !isSelected(boundFeature)) {
-        auto newMaster = std::ranges::find_if(extrusions, [this, &isSelected](Part::Extrusion* feature) {
-            return feature != boundFeature && isSelected(feature);
-        });
+    Part::Extrusion* bound = unwrap(boundFeature);
+    if (bound && !isSelected(bound)) {
+        auto newMaster = std::ranges::find_if(
+            extrusions,
+            [bound, &isSelected](const App::DocumentObjectWeakPtrT& weakFeature) {
+                auto* feature = unwrap(weakFeature);
+                return feature && feature != bound && isSelected(feature);
+            }
+        );
         if (newMaster != extrusions.end()) {
-            copyParameter(boundFeature, boundFeature->LengthFwd, *newMaster, (*newMaster)->LengthFwd);
-            copyParameter(boundFeature, boundFeature->LengthRev, *newMaster, (*newMaster)->LengthRev);
-            copyParameter(boundFeature, boundFeature->TaperAngle, *newMaster, (*newMaster)->TaperAngle);
-            copyParameter(
-                boundFeature,
-                boundFeature->TaperAngleRev,
-                *newMaster,
-                (*newMaster)->TaperAngleRev
-            );
+            auto* master = unwrap(*newMaster);
+            copyParameter(bound, bound->LengthFwd, master, master->LengthFwd);
+            copyParameter(bound, bound->LengthRev, master, master->LengthRev);
+            copyParameter(bound, bound->TaperAngle, master, master->TaperAngle);
+            copyParameter(bound, bound->TaperAngleRev, master, master->TaperAngleRev);
         }
     }
 
@@ -1001,17 +1025,21 @@ void DlgExtrusion::reconcileFeatures()
         return;
     }
 
-    for (auto it = extrusions.begin(); it != extrusions.end();) {
-        if (isSelected(*it)) {
-            ++it;
+    for (const auto& weakFeature : extrusions) {
+        auto* feature = unwrap(weakFeature);
+        if (!feature || isSelected(feature)) {
             continue;
         }
-        if (*it == boundFeature) {
+        if (feature == bound) {
             boundFeature = nullptr;
         }
-        activeDoc->removeObject((*it)->getNameInDocument());
-        it = extrusions.erase(it);
+        activeDoc->removeObject(feature);
     }
+
+    // Removing a feature detaches it, which expires its weak pointer.
+    std::erase_if(extrusions, [](const App::DocumentObjectWeakPtrT& weakFeature) {
+        return weakFeature.expired();
+    });
 }
 
 void DlgExtrusion::refreshFeatures()
@@ -1031,8 +1059,8 @@ void DlgExtrusion::refreshFeatures()
 
 void DlgExtrusion::updateBinding()
 {
-    Part::Extrusion* target = extrusions.empty() ? nullptr : extrusions.front();
-    if (target == boundFeature) {
+    Part::Extrusion* target = extrusions.empty() ? nullptr : unwrap(extrusions.front());
+    if (target && target == unwrap(boundFeature)) {
         return;
     }
     boundFeature = target;
@@ -1066,9 +1094,34 @@ void DlgExtrusion::onTreeSelectionChanged()
     refreshFeatures();
 }
 
+void DlgExtrusion::onDeletedObject(const App::DocumentObject& obj)
+{
+    const char* name = obj.getNameInDocument();
+    if (!name) {
+        return;
+    }
+    const QString objName = QString::fromLatin1(name);
+
+    {
+        const QSignalBlocker blocker(ui->treeWidget);
+        for (int i = ui->treeWidget->topLevelItemCount() - 1; i >= 0; --i) {
+            QTreeWidgetItem* item = ui->treeWidget->topLevelItem(i);
+            if (item->data(0, Qt::UserRole).toString() == objName) {
+                delete ui->treeWidget->takeTopLevelItem(i);
+            }
+        }
+    }
+
+    const QString axisLink = ui->txtLink->text();
+    if (axisLink == objName || axisLink.startsWith(objName + QLatin1Char(':'))) {
+        const QSignalBlocker blocker(ui->txtLink);
+        ui->txtLink->clear();
+    }
+}
+
 void DlgExtrusion::applyBoundParameters()
 {
-    if (!boundFeature || !ui->spinLenFwd->isBound()) {
+    if (!unwrap(boundFeature) || !ui->spinLenFwd->isBound()) {
         return;
     }
 
@@ -1084,32 +1137,49 @@ void DlgExtrusion::syncLinearParameters()
         return;
     }
 
-    auto* first = extrusions.front();
-    for (size_t i = 1; i < extrusions.size(); ++i) {
-        auto* other = extrusions[i];
-        copyParameter(first, first->LengthFwd, other, other->LengthFwd);
-        copyParameter(first, first->LengthRev, other, other->LengthRev);
-        copyParameter(first, first->TaperAngle, other, other->TaperAngle);
-        copyParameter(first, first->TaperAngleRev, other, other->TaperAngleRev);
+    auto* first = unwrap(extrusions.front());
+    if (!first) {
+        return;
+    }
+
+    for (const auto& weakFeature : extrusions | std::views::drop(1)) {
+        if (auto* other = unwrap(weakFeature)) {
+            copyParameter(first, first->LengthFwd, other, other->LengthFwd);
+            copyParameter(first, first->LengthRev, other, other->LengthRev);
+            copyParameter(first, first->TaperAngle, other, other->TaperAngle);
+            copyParameter(first, first->TaperAngleRev, other, other->TaperAngleRev);
+        }
     }
 }
 
 bool DlgExtrusion::ensureTransaction()
 {
-    if (transactionOpen) {
-        return true;
-    }
-
     App::Document* activeDoc = App::GetApplication().getDocument(this->document.c_str());
     if (!activeDoc) {
         return false;
     }
 
+    if (transactionOpen) {
+        // The transaction may have been committed behind the dialog's back, e.g. when
+        // the user presses Undo while the dialog is open. Detect this by checking
+        // whether our transaction is still booked in the document. Note that a
+        // transaction can be booked without being active yet, so checking
+        // hasPendingTransaction() alone would treat it as gone and make
+        // abortTransaction() remove features that were already applied.
+        if (activeDoc->getBookedTransactionID() == transactionId) {
+            return true;
+        }
+        transactionOpen = false;
+        ownsTransaction = false;
+        transactionId = 0;
+    }
+
     if (activeDoc->getBookedTransactionID() == 0) {
-        activeDoc->openTransaction("Extrude");
+        transactionId = activeDoc->openTransaction("Extrude");
         ownsTransaction = true;
     }
     else {
+        transactionId = activeDoc->getBookedTransactionID();
         ownsTransaction = false;
     }
     transactionOpen = true;
@@ -1129,6 +1199,7 @@ void DlgExtrusion::commitTransaction()
     }
     transactionOpen = false;
     ownsTransaction = false;
+    transactionId = 0;
 }
 
 void DlgExtrusion::abortTransaction()
@@ -1149,15 +1220,16 @@ void DlgExtrusion::abortTransaction()
     }
     transactionOpen = false;
     ownsTransaction = false;
+    transactionId = 0;
 }
 
 void DlgExtrusion::removeCreatedFeatures()
 {
     App::Document* activeDoc = App::GetApplication().getDocument(this->document.c_str());
     if (activeDoc) {
-        for (Part::Extrusion* feature : extrusions) {
-            if (feature && feature->isAttachedToDocument()) {
-                activeDoc->removeObject(feature->getNameInDocument());
+        for (const auto& weakFeature : extrusions) {
+            if (auto* feature = unwrap(weakFeature)) {
+                activeDoc->removeObject(feature);
             }
         }
     }
