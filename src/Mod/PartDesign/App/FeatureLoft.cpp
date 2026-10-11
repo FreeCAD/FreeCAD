@@ -222,14 +222,8 @@ App::DocumentObjectExecReturn* Loft::execute()
     }
 
     auto* profileObj = Profile.getValue();
-    const auto& profileSubs = Profile.getSubValues();
     const auto& firstSection = multisections.front();
-    const auto wholeObject = [](const std::vector<std::string>& subs) {
-        return subs.empty() || (subs.size() == 1 && subs.front().empty());
-    };
-    if (profileObj && profileObj == firstSection.first
-        && (profileSubs == firstSection.second
-            || (wholeObject(profileSubs) && wholeObject(firstSection.second)))) {
+    if (profileObj && profileObj == firstSection.first) {
         const auto& label = profileObj->Label.getStrValue();
         return new App::DocumentObjectExecReturn(
             tr("'%1' cannot be used as both the profile and the first section")
@@ -240,7 +234,7 @@ App::DocumentObjectExecReturn* Loft::execute()
 
     std::vector<TopoShape> wires;
     try {
-        wires = getSectionShape("Profile", profileObj, profileSubs);
+        wires = getSectionShape("Profile", profileObj, Profile.getSubValues());
     }
     catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
@@ -305,7 +299,7 @@ App::DocumentObjectExecReturn* Loft::execute()
                 const auto firstIdx = e.getFirstProfileIndex();
                 const auto secondIdx = e.getSecondProfileIndex();
                 if (firstIdx < multisections.size() + 1 && secondIdx < multisections.size() + 1) {
-                    auto getLabel = [&](std::size_t idx) -> const std::string& {
+                    auto getLabel = [profileObj, &multisections](std::size_t idx) -> const std::string& {
                         return idx == 0 ? profileObj->Label.getStrValue()
                                         : multisections[idx - 1].first->Label.getStrValue();
                     };
