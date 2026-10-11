@@ -15,6 +15,8 @@
 
 #include <BRepPrimAPI_MakeBox.hxx>
 #include <BRepPrimAPI_MakeCylinder.hxx>
+#include <BRepAlgoAPI_Cut.hxx>
+#include <gp_Ax2.hxx>
 #include <TopoDS_Shape.hxx>
 #include <BRep_Builder.hxx>
 #include <BRepTools.hxx>
@@ -1053,15 +1055,17 @@ std::size_t closedLoopCount(const std::vector<std::vector<Base::Vector3d>>& loop
 }  // namespace
 
 
-TEST(SectionCapWeld, testAnUnweldedBoxCutsIntoNothingThatCanBeFilled)
+TEST(SectionCapWeld, testAnUnweldedBoxStillCutsIntoOneClosedLoop)
 {
-    // The failure this guards: a mesh, or any source with no solid to remesh
-    // from, arrives unwelded and its section comes out as an outline with no
-    // fill - you look straight through the cut.
+    // A mesh, or any source with no solid to remesh from, arrives with every
+    // triangle carrying its own points. Nothing shares an edge, so the chaining
+    // has only the positions to go on.
     const auto segments = sliceTriangles(unwelded(box(10)), Z, 5.0);
     ASSERT_EQ(segments.size(), 8) << "the plane did not cut it, so nothing below is proven";
 
-    EXPECT_EQ(closedLoopCount(chainLoops(segments)), 0U);
+    const auto loops = chainLoops(segments);
+    ASSERT_EQ(closedLoopCount(loops), 1U);
+    EXPECT_NEAR(soupArea(fillLoops(loops, U, V)), 100.0, 1e-6);
 }
 
 TEST(SectionCapWeld, testWeldingAnUnweldedBoxMakesTheCutClose)
@@ -1121,6 +1125,33 @@ TEST(SectionCapWeld, testTheToleranceFollowsHowFarFromTheOriginTheBodyIs)
 
     EXPECT_GT(weldTolerance(farAway), weldTolerance(here));
     EXPECT_LT(weldTolerance(here), 0.001) << "loose enough to swallow real geometry";
+}
+
+TEST(SectionCapChain, testACutAcrossAHoleGivesTwoClosedLoops)
+{
+    // A box with a bore through it, cut across the bore: the material left is
+    // two separate strips, so the contour is two loops, not one.
+    const TopoDS_Shape box = BRepPrimAPI_MakeBox(20.0, 20.0, 20.0).Shape();
+    const TopoDS_Shape bore =
+        BRepPrimAPI_MakeCylinder(gp_Ax2(gp_Pnt(10, 10, -5), gp_Dir(0, 0, 1)), 6.0, 30.0).Shape();
+    const TopoDS_Shape drilled = BRepAlgoAPI_Cut(box, bore).Shape();
+
+    const auto soup = meshSolid(drilled);
+    ASSERT_FALSE(soup.indices.empty());
+
+    const auto loops = chainLoops(sliceTriangles(soup, Base::Vector3d(0, 1, 0), 10.0));
+
+    std::vector<std::vector<Base::Vector3d>> closed;
+    for (const auto& loop : loops) {
+        if (isClosedExactly(loop)) {
+            closed.push_back(loop);
+        }
+    }
+    ASSERT_EQ(closed.size(), 2U) << "of " << loops.size() << " chained";
+
+    // Two strips 4 wide and 20 tall, either side of a bore 12 across. Half a
+    // cap drawn and half missing is what this looks like on screen.
+    EXPECT_NEAR(soupArea(fillLoops(closed, U, Base::Vector3d(0, 0, 1))), 160.0, 1.0);
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
