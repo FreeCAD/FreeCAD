@@ -457,19 +457,10 @@ App::DocumentObjectExecReturn* Transformed::execute()
 
     gp_Trsf trsfInv = supportShape.getShape().Location().Transformation().Inverted();
 
-    const auto transformToSupport = [&trsfInv](Part::TopoShape shape) {
-        if (shape.isNull()) {
-            return shape;
-        }
-        const gp_Trsf location = shape.getShape().Location().Transformation();
-        shape.setTransform(Base::Matrix4D());
-        return shape.makeElementTransform(trsfInv.Multiplied(location));
-    };
-
     supportShape.setTransform(Base::Matrix4D());
     resultShape.setTransform(Base::Matrix4D());
 
-    if (!hasOriginalTransformation() || isTransformationSuppressed(0)) {
+    if (hasOriginalTransformation() && isTransformationSuppressed(0)) {
         if (mode != Mode::WholeShape) {
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
                 "Exception",
@@ -480,6 +471,10 @@ App::DocumentObjectExecReturn* Transformed::execute()
             ));
         }
     }
+    // keep the identity transform so we don't have to fuse it again
+    if (hasOriginalTransformation() && mode != Mode::WholeShape) {
+        resultShape = Part::TopoShape(supportShape);
+    }
 
     auto getTransformedCompShape = [&](const auto& resultShape, const auto& origShape) {
         std::vector<TopoShape> shapes;
@@ -487,7 +482,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
             shapes.push_back(resultShape);
         }
         TopoShape shape(origShape);
-        int idx = 0;
+        int idx = hasOriginalTransformation() ? 1 : 0;
         auto transformIter = transformations.cbegin();
         std::advance(transformIter, idx);
         for (; transformIter != transformations.end(); transformIter++) {
@@ -548,6 +543,14 @@ App::DocumentObjectExecReturn* Transformed::execute()
                     }
                 }
                 if (!cutShape.isNull()) {
+                    if (resultShape.isNull()) {
+                        Base::Console().warning(
+                            "Nothing to cut on {} using {}.",
+                            this->getNameInDocument(),
+                            original->getNameInDocument()
+                        );
+                        break;
+                    }
                     auto shapes = getTransformedCompShape(resultShape, cutShape);
                     if (Base::Sequencer().wasCanceled()) {
                         return new App::DocumentObjectExecReturn("User aborted");
