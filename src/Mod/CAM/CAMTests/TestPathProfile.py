@@ -223,6 +223,9 @@ class TestPathProfile(PathTestBase):
         # +Z of the plane is -Y of the Job; +Z of the Job is +Y of the plane
         tilt = FreeCAD.Placement(FreeCAD.Vector(), FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), 90))
         plane = PathWorkplane.createWorkplane(self.job, placement=tilt, label="Tilted")
+        # set where it is, not attached to the model
+        plane.AttachmentSupport = None
+        plane.Placement = tilt
         slot = PathSlot.Create("SlotTilted")
         self.doc.recompute()
         slot.Workplane = plane
