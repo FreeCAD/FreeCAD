@@ -121,8 +121,6 @@ Thread::Thread()
         "Reference geometry where thread will end"
     );
 
-    ADD_PROPERTY_TYPE(Threaded, (true), "Thread", App::Prop_None, "Threaded");
-
     ADD_PROPERTY_TYPE(ModelThread, (false), "Thread", App::Prop_None, "Model actual thread");
 
     ADD_PROPERTY_TYPE(CosmeticThread, (true), "Thread", App::Prop_None, "Texture the thread");
@@ -218,8 +216,8 @@ App::DocumentObjectExecReturn* Thread::execute()
     // Faces where thread should be applied
     bool isThreadEmpty = (LateralFace.getValue() == nullptr);
 
-    // If no element is selected, then we use a copy of previous feature.
-    if (isThreadEmpty) {
+    // Preserve the base when no representation is enabled or no face is selected.
+    if ((!ModelThread.getValue() && !CosmeticThread.getValue()) || isThreadEmpty) {
         this->positionByBaseFeature();
         this->Shape.setValue(base);
         return App::DocumentObject::StdReturn;
@@ -350,7 +348,6 @@ App::DocumentObjectExecReturn* Thread::execute()
         // this->Shape.setValue(base);
         // return App::DocumentObject::StdReturn;
 
-        // if (Threaded.getValue() && ModelThread.getValue()) {
         if (ModelThread.getValue()) {
             const double selectedPitch = threadUtils.getThreadPitch(
                 ThreadType.getValue(),

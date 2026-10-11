@@ -50,7 +50,6 @@ public:
         MetricFine
     };
 
-    App::PropertyBool Threaded;
     App::PropertyLinkSub LateralFace;
     App::PropertyLinkSub StartPlane;
     App::PropertyLinkSub UpToGeometry;

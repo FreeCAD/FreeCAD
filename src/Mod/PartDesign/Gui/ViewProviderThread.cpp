@@ -148,7 +148,7 @@ void ViewProviderThread::updateData(const App::Property* prop)
         return;
     }
     
-    if (prop == &pcThread->Threaded || prop == &pcThread->CosmeticThread || prop == &pcThread->ModelThread
+    if (prop == &pcThread->CosmeticThread || prop == &pcThread->ModelThread
         || prop == &pcThread->Tapered || prop == &pcThread->TaperedAngle
         || prop == &pcThread->LateralFace || prop == &pcThread->StartPlane
         || prop == &pcThread->UpToGeometry || prop == &pcThread->DepthType
@@ -845,19 +845,17 @@ bool ViewProviderThread::isHoleThreadVisible() const
     // --- Checagem de Visibilidade e Flags do Objeto ---
     bool isBodyVisible = body->Visibility.getValue();
     bool isSuppressed = thread->Suppressed.getValue();
-    bool isThreaded = thread->Threaded.getValue();
     bool isCosmetic = thread->CosmeticThread.getValue();
     bool isModel = thread->ModelThread.getValue();
 
-    if (DEBUG) Base::Console().message("[isHoleThreadVisible]: Conditions for '%s': BodyVis=%s, Suppressed=%s, Threaded=%s, Cosmetic=%s, Model=%s\n",
+    if (DEBUG) Base::Console().message("[isHoleThreadVisible]: Conditions for '%s': BodyVis=%s, Suppressed=%s, Cosmetic=%s, Model=%s\n",
                             thread->getNameInDocument(),
                             isBodyVisible ? "TRUE" : "FALSE",
                             isSuppressed ? "TRUE" : "FALSE",
-                            isThreaded ? "TRUE" : "FALSE",
                             isCosmetic ? "TRUE" : "FALSE",
                             isModel ? "TRUE" : "FALSE");
 
-    if (!isBodyVisible || isSuppressed || !isThreaded || !isCosmetic || isModel) {
+    if (!isBodyVisible || isSuppressed || !isCosmetic || isModel) {
         if (DEBUG) Base::Console().message("[isHoleThreadVisible]: Initial condition check failed -> FALSE\n");
         return false;
     }
