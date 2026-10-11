@@ -1132,8 +1132,8 @@ TEST(SectionCapChain, testACutAcrossAHoleGivesTwoClosedLoops)
     // A box with a bore through it, cut across the bore: the material left is
     // two separate strips, so the contour is two loops, not one.
     const TopoDS_Shape box = BRepPrimAPI_MakeBox(20.0, 20.0, 20.0).Shape();
-    const TopoDS_Shape bore =
-        BRepPrimAPI_MakeCylinder(gp_Ax2(gp_Pnt(10, 10, -5), gp_Dir(0, 0, 1)), 6.0, 30.0).Shape();
+    const TopoDS_Shape bore
+        = BRepPrimAPI_MakeCylinder(gp_Ax2(gp_Pnt(10, 10, -5), gp_Dir(0, 0, 1)), 6.0, 30.0).Shape();
     const TopoDS_Shape drilled = BRepAlgoAPI_Cut(box, bore).Shape();
 
     const auto soup = meshSolid(drilled);
