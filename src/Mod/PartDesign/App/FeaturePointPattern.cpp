@@ -13,20 +13,22 @@ PointPattern::PointPattern()
     Part::PointPatternExtension::initExtension(this);
 }
 
+bool PointPattern::deleteOriginalTransformation() const
+{
+    return identityTransformSuppressed();
+}
+
 const std::list<gp_Trsf> PointPattern::getTransformations(const std::vector<App::DocumentObject*>)
 {
-    auto transformations = calculateTransformations(true);
-    const gp_Trsf inverse = getLocation().Transformation().Inverted();
-    for (auto& transformation : transformations) {
-        // Point coordinates are in the body's frame; copies are built in the feature's frame.
-        gp_Vec offset(transformation.TranslationPart());
-        offset.Transform(inverse);
-        transformation.SetTranslation(offset);
-    }
-    return transformations;
+    return calculateTransformations();
 }
 
 void PointPattern::positionBySupport()
 {
     Transformed::positionBySupport();
+}
+
+bool PointPattern::hasOriginalTransformation() const
+{
+    return deleteOriginalTransformation() ? false : Transformed::hasOriginalTransformation();
 }

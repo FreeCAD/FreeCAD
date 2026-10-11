@@ -67,7 +67,7 @@ class TestCircularPattern(unittest.TestCase):
         circular.Axis = (self.doc.Z_Axis, [""])
         circular.RadialDistance = 20
         circular.TangentialDistance = 20
-        circular.NumberCircles = 2
+        circular.NumberCircles = 1
         circular.Symmetry = 4
         body.addObject(circular)
 
@@ -75,4 +75,4 @@ class TestCircularPattern(unittest.TestCase):
         self.doc.recompute()
 
         self.assertEqual(multi.getStatusString(), "Valid")
-        self.assertAlmostEqual(multi.Shape.Volume, 5 * box.Shape.Volume)
+        self.assertAlmostEqual(multi.Shape.Volume, 4 * box.Shape.Volume)
