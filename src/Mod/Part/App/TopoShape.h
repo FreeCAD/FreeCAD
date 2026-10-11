@@ -24,6 +24,7 @@
 
 #pragma once
 
+#include <cstddef>
 #include <iosfwd>
 #include <list>
 #include <unordered_map>
@@ -96,6 +97,28 @@ public:
     explicit BooleanException(const std::string& sMessage);
     /// Destruction
     ~BooleanException() noexcept override = default;
+};
+
+/** A loft contains two consecutive profiles without sufficient separation. */
+// NOLINTNEXTLINE cppcoreguidelines-special-member-functions
+class PartExport LoftProfileSeparationException: public Base::CADKernelError
+{
+public:
+    LoftProfileSeparationException(std::size_t firstProfileIndex, std::size_t secondProfileIndex);
+    ~LoftProfileSeparationException() noexcept override = default;
+
+    std::size_t getFirstProfileIndex() const
+    {
+        return firstProfileIndex;
+    }
+    std::size_t getSecondProfileIndex() const
+    {
+        return secondProfileIndex;
+    }
+
+private:
+    std::size_t firstProfileIndex;
+    std::size_t secondProfileIndex;
 };
 
 class PartExport ShapeSegment: public Data::Segment
