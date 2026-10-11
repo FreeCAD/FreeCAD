@@ -1094,7 +1094,11 @@ void TopoShape::mapSubElement(
     }
 }
 
-void TopoShape::mapSubElementsTo(std::vector<TopoShape>& shapes, const char* op, IncludedHistoryMap* nameMap) const
+void TopoShape::mapSubElementsTo(
+    std::vector<TopoShape>& shapes,
+    const char* op,
+    IncludedHistoryMap* nameMap
+) const
 {
     for (auto& shape : shapes) {
         shape.mapSubElement(*this, op, false, nameMap);
@@ -2786,7 +2790,8 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         auto namedModifiedIterator = includedModifiedNameMap.find(foundSubshape);
 
                         if (namedModifiedIterator != includedModifiedNameMap.end()) {
-                            std::string foundModifiedName = namedModifiedIterator->second.incomingShapeElementName.toString();
+                            std::string foundModifiedName
+                                = namedModifiedIterator->second.incomingShapeElementName.toString();
 
                             generatedConnectedElementMap[elementShape].push_back(foundModifiedName);
                             allGeneratedConnectedElementNames.insert(foundModifiedName);
