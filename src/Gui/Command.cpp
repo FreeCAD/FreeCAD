@@ -44,6 +44,7 @@
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
 #include <Base/Tools.h>
+#include <Gui/CommandT.h>
 
 #include "Command.h"
 #include "Action.h"
@@ -722,6 +723,7 @@ int Command::openCommand(std::string name)
 int Command::openActiveDocumentCommand(App::TransactionName name, int tid)
 {
     if (Gui::Document* guidoc = getGuiApplication()->activeDocument()) {
+        TransactionCommandQueue::setBuffering(true);
         return guidoc->getDocument()->setActiveTransaction(name, tid);
     }
     return 0;
@@ -740,22 +742,26 @@ void Command::rename(const std::string& name)
 
 void Command::commitCommand()
 {
+    Gui::TransactionCommandQueue::emit();
     commitCommand(currentTransactionID);
     currentTransactionID = App::NullTransaction;
 }
 void Command::commitCommand(int tid)
 {
+    Gui::TransactionCommandQueue::emit();
     if (tid != App::NullTransaction) {
         App::GetApplication().commitTransaction(tid);
     }
 }
 void Command::abortCommand()
 {
+    Gui::TransactionCommandQueue::reset();
     abortCommand(currentTransactionID);
     currentTransactionID = App::NullTransaction;
 }
 void Command::abortCommand(int tid)
 {
+    Gui::TransactionCommandQueue::reset();
     if (tid != App::NullTransaction) {
         App::GetApplication().abortTransaction(tid);
     }
@@ -844,11 +850,15 @@ void Command::_runCommand(const char* file, int line, DoCmd_Type eType, const ch
     Base::PyGILStateLocker lock;
 
     printCaller(file, line);
-    if (eType == Gui) {
-        Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui, sCmd);
-    }
-    else {
-        Gui::Application::Instance->macroManager()->addLine(MacroManager::App, sCmd);
+    if( TransactionCommandQueue::isBuffering()) {
+        TransactionCommandQueue::push(eType, sCmd);
+    } else {
+        if (eType == Gui) {
+            Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui, sCmd);
+        }
+        else {
+            Gui::Application::Instance->macroManager()->addLine(MacroManager::App, sCmd);
+        }
     }
 
     try {
