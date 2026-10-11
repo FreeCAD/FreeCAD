@@ -29,14 +29,4 @@ const std::list<gp_Trsf> PointPattern::getTransformations(const std::vector<App:
 void PointPattern::positionBySupport()
 {
     Transformed::positionBySupport();
-
-    const auto transformations = calculateTransformations(false);
-    if (transformations.empty()) {
-        return;
-    }
-
-    const gp_XYZ position = transformations.front().TranslationPart();
-    Base::Placement placement = Placement.getValue();
-    placement.setPosition(Base::convertTo<Base::Vector3d>(position));
-    Placement.setValue(placement);
 }
