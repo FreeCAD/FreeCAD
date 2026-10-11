@@ -26,16 +26,15 @@
 #endif
 
 #include <algorithm>
-#include <array>
 #include <cmath>
 #include <cstring>
 #include <map>
 #include <tuple>
-#include <unordered_map>
 
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbVec3f.h>
+#include <Inventor/SbVec4f.h>
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/SoPath.h>
 #include <Inventor/SoPrimitiveVertex.h>
@@ -65,10 +64,57 @@ SO_NODE_SOURCE(SoFCSectionCap)
 namespace
 {
 
+/// FNV-1a, so default styles are the same on every run.
+std::uint64_t digest(const std::string& key)
+{
+    std::uint64_t h = 14695981039346656037ULL;
+    for (unsigned char c : key) {
+        h ^= c;
+        h *= 1099511628211ULL;
+    }
+    return h;
+}
+
+const std::vector<SbColor>& palette()
+{
+    static const std::vector<SbColor> colors = {
+        {0.90f, 0.37f, 0.26f},
+        {0.25f, 0.55f, 0.85f},
+        {0.36f, 0.72f, 0.36f},
+        {0.93f, 0.69f, 0.13f},
+        {0.58f, 0.40f, 0.74f},
+        {0.20f, 0.70f, 0.70f},
+        {0.85f, 0.45f, 0.65f},
+        {0.60f, 0.60f, 0.22f},
+        {0.62f, 0.38f, 0.22f},
+        {0.47f, 0.57f, 0.95f},
+        {0.75f, 0.20f, 0.27f},
+        {0.45f, 0.47f, 0.52f},
+    };
+    return colors;
+}
+
+const std::vector<std::string>& hatches()
+{
+    // ordered so that neighbours differ the most
+    static const std::vector<std::string> names = {
+        "diag45",
+        "horizontal",
+        "dots",
+        "diag135",
+        "vertical",
+        "diag45_dots",
+        "diagcross",
+        "horizontal_dots",
+        "cross",
+    };
+    return names;
+}
+
 /// A 32x32 polygon stipple for a hatch name (screen space, 8 px spacing).
 bool stipplePattern(const std::string& hatch, GLubyte out[128])
 {
-    const auto& names = SoFCSectionCap::hatches();
+    const auto& names = hatches();
     if (std::find(names.begin(), names.end(), hatch) == names.end()) {
         return false;  // "none"
     }
@@ -104,63 +150,112 @@ bool stipplePattern(const std::string& hatch, GLubyte out[128])
     return true;
 }
 
-/// Screen rectangle of a world box; false if the box reaches behind the camera.
-bool screenRect(
-    const SbBox3f& box,
-    const SbMatrix& viewProj,
-    const SbViewportRegion& region,
-    int& x0,
-    int& y0,
-    int& x1,
-    int& y1
-)
+SbVec3f boxCorner(const SbBox3f& box, int i)
+{
+    SbVec3f lo, hi;
+    box.getBounds(lo, hi);
+    return {(i & 1) ? hi[0] : lo[0], (i & 2) ? hi[1] : lo[1], (i & 4) ? hi[2] : lo[2]};
+}
+
+/// Screen rectangle of a world box; the whole viewport if the box reaches behind the camera.
+void screenRect(const SbBox3f& box, const SbMatrix& viewProj, const SbViewportRegion& region, int rect[4])
 {
     const SbVec2s origin = region.getViewportOriginPixels();
     const SbVec2s size = region.getViewportSizePixels();
-    SbVec3f lo, hi;
-    box.getBounds(lo, hi);
+    rect[0] = origin[0];
+    rect[1] = origin[1];
+    rect[2] = origin[0] + size[0];
+    rect[3] = origin[1] + size[1];
     float minx = 1e30f, miny = 1e30f, maxx = -1e30f, maxy = -1e30f;
     for (int i = 0; i < 8; ++i) {
-        const SbVec3f corner((i & 1) ? hi[0] : lo[0], (i & 2) ? hi[1] : lo[1], (i & 4) ? hi[2] : lo[2]);
-        // no divide: w <= 0 means behind the camera
-        float in[4] = {corner[0], corner[1], corner[2], 1.0f};
-        float res[4] = {0, 0, 0, 0};
-        for (int c = 0; c < 4; ++c) {
-            for (int r = 0; r < 4; ++r) {
-                res[c] += in[r] * viewProj[r][c];
-            }
-        }
+        const SbVec3f c = boxCorner(box, i);
+        SbVec4f res;
+        viewProj.multVecMatrix(SbVec4f(c[0], c[1], c[2], 1.0f), res);
         if (res[3] <= 1e-6f) {
-            return false;
+            return;  // no divide: w <= 0 means behind the camera
         }
-        const float nx = res[0] / res[3];
-        const float ny = res[1] / res[3];
-        const float px = origin[0] + (nx * 0.5f + 0.5f) * size[0];
-        const float py = origin[1] + (ny * 0.5f + 0.5f) * size[1];
+        const float px = origin[0] + (res[0] / res[3] * 0.5f + 0.5f) * size[0];
+        const float py = origin[1] + (res[1] / res[3] * 0.5f + 0.5f) * size[1];
         minx = std::min(minx, px);
         maxx = std::max(maxx, px);
         miny = std::min(miny, py);
         maxy = std::max(maxy, py);
     }
-    x0 = std::max<int>(origin[0], static_cast<int>(std::floor(minx)) - 2);
-    y0 = std::max<int>(origin[1], static_cast<int>(std::floor(miny)) - 2);
-    x1 = std::min<int>(origin[0] + size[0], static_cast<int>(std::ceil(maxx)) + 2);
-    y1 = std::min<int>(origin[1] + size[1], static_cast<int>(std::ceil(maxy)) + 2);
-    return x1 > x0 && y1 > y0;
+    const int x0 = std::max<int>(origin[0], static_cast<int>(std::floor(minx)) - 2);
+    const int y0 = std::max<int>(origin[1], static_cast<int>(std::floor(miny)) - 2);
+    const int x1 = std::min<int>(origin[0] + size[0], static_cast<int>(std::ceil(maxx)) + 2);
+    const int y1 = std::min<int>(origin[1] + size[1], static_cast<int>(std::ceil(maxy)) + 2);
+    if (x1 > x0 && y1 > y0) {
+        rect[0] = x0;
+        rect[1] = y0;
+        rect[2] = x1;
+        rect[3] = y1;
+    }
 }
 
 bool planeCutsBox(const SbPlane& plane, const SbBox3f& box)
 {
-    SbVec3f lo, hi;
-    box.getBounds(lo, hi);
     bool above = false, below = false;
     for (int i = 0; i < 8; ++i) {
-        const SbVec3f corner((i & 1) ? hi[0] : lo[0], (i & 2) ? hi[1] : lo[1], (i & 4) ? hi[2] : lo[2]);
-        const float d = plane.getNormal().dot(corner) - plane.getDistanceFromOrigin();
+        const float d = plane.getNormal().dot(boxCorner(box, i)) - plane.getDistanceFromOrigin();
         above = above || d > 0.0f;
         below = below || d < 0.0f;
     }
     return above && below;
+}
+
+/// The occurrence key of the current path; component is the object owning the geometry.
+std::string keyForPath(
+    const SoFullPath* path,
+    const SoFCSectionCap::Resolver& resolve,
+    std::string& component,
+    bool& excluded
+)
+{
+    // view providers along the path, with the child indices between them (not of switches)
+    std::vector<std::string> pending;
+    std::string key;
+    excluded = false;
+    for (int i = 1; i < path->getLength(); ++i) {
+        SoNode* node = path->getNode(i);
+        bool skip = false;
+        std::string name = resolve ? resolve(node, skip) : std::string();
+        if (!name.empty()) {
+            // "Doc#Link\tDoc#Target": the component is the link target
+            std::string target = name;
+            const auto tab = name.find('\t');
+            if (tab != std::string::npos) {
+                target = name.substr(tab + 1);
+                name = name.substr(0, tab);
+            }
+            if (!key.empty()) {
+                for (const std::string& idx : pending) {
+                    key += "/" + idx;
+                }
+                key += "/";
+            }
+            key += name;
+            component = target;
+            excluded = excluded || skip;
+            pending.clear();
+            continue;
+        }
+        if (!key.empty()) {
+            SoNode* parent = path->getNode(i - 1);
+            if (!parent->isOfType(SoSwitch::getClassTypeId())) {
+                pending.push_back(std::to_string(path->getIndex(i)));
+            }
+        }
+    }
+    // trailing indices tell the elements of a link array apart
+    for (const std::string& idx : pending) {
+        key += "/" + idx;
+    }
+    if (key.empty()) {
+        key = "(unresolved)";
+        component = key;
+    }
+    return key;
 }
 
 }  // namespace
@@ -192,99 +287,29 @@ void SoFCSectionCap::setScene(SoNode* node)
         scene->unref();
     }
     scene = node;
-    invalidate();
-}
-
-void SoFCSectionCap::setResolver(Resolver r, Excluder e)
-{
-    resolve = std::move(r);
-    exclude = std::move(e);
-    invalidate();
-}
-
-void SoFCSectionCap::setColored(bool on)
-{
-    colored = on;
-    allocated.clear();
-    usedCombos.clear();
+    proxyValid = false;
     touch();
 }
 
-void SoFCSectionCap::setSingleColor(const SbColor& color)
+void SoFCSectionCap::setResolver(Resolver r)
 {
+    resolve = std::move(r);
+    proxyValid = false;
+    touch();
+}
+
+void SoFCSectionCap::setStyle(bool perPart, bool hatching, const SbColor& color)
+{
+    colored = perPart;
+    hatched = hatching;
     singleColor = color;
     allocated.clear();
     usedCombos.clear();
     touch();
 }
 
-void SoFCSectionCap::setHatched(bool on)
-{
-    hatched = on;
-    allocated.clear();
-    usedCombos.clear();
-    touch();
-}
-
-void SoFCSectionCap::invalidate()
-{
-    proxyValid = false;
-    touch();
-}
-
-std::uint64_t SoFCSectionCap::digest(const std::string& key)
-{
-    std::uint64_t h = 14695981039346656037ULL;
-    for (unsigned char c : key) {
-        h ^= c;
-        h *= 1099511628211ULL;
-    }
-    return h;
-}
-
-const std::vector<SbColor>& SoFCSectionCap::palette()
-{
-    static const std::vector<SbColor> colors = {
-        {0.90f, 0.37f, 0.26f},
-        {0.25f, 0.55f, 0.85f},
-        {0.36f, 0.72f, 0.36f},
-        {0.93f, 0.69f, 0.13f},
-        {0.58f, 0.40f, 0.74f},
-        {0.20f, 0.70f, 0.70f},
-        {0.85f, 0.45f, 0.65f},
-        {0.60f, 0.60f, 0.22f},
-        {0.62f, 0.38f, 0.22f},
-        {0.47f, 0.57f, 0.95f},
-        {0.75f, 0.20f, 0.27f},
-        {0.45f, 0.47f, 0.52f},
-    };
-    return colors;
-}
-
-const std::vector<std::string>& SoFCSectionCap::hatches()
-{
-    // ordered so that neighbours differ the most
-    static const std::vector<std::string> names = {
-        "diag45",
-        "horizontal",
-        "dots",
-        "diag135",
-        "vertical",
-        "diag45_dots",
-        "diagcross",
-        "horizontal_dots",
-        "cross",
-    };
-    return names;
-}
-
 SectionCapStyle SoFCSectionCap::styleFor(const Group& group)
 {
-    if (!colored && !hatched) {
-        SectionCapStyle single;
-        single.color = singleColor;
-        return single;
-    }
     auto found = allocated.find(group.key);
     if (found != allocated.end()) {
         return found->second;
@@ -297,53 +322,30 @@ SectionCapStyle SoFCSectionCap::styleFor(const Group& group)
     const std::uint64_t h = digest(group.key);
     const int c0 = static_cast<int>(h % nc);
     const int t0 = static_cast<int>((h >> 32) % nh);
-    auto used = [this](int c, int t) {
-        return usedCombos.find({c, t}) != usedCombos.end();
-    };
     auto colorUsed = [this](int c) {
         auto it = usedCombos.lower_bound({c, 0});
-        return it != usedCombos.end() && it->first.first == c;
-    };
-    auto hatchUsed = [&](int t) {
-        for (int c = 0; c < nc; ++c) {
-            if (used(c, t)) {
-                return true;
-            }
-        }
-        return false;
+        return it != usedCombos.end() && it->first == c;
     };
     int chosen = c0 + t0 * nc;
     bool done = false;
-    if (nc > 1) {
-        for (int k = 0; k < nc && !done; ++k) {
-            const int c = (c0 + k) % nc;
-            if (!colorUsed(c)) {
-                chosen = c + t0 * nc;
-                done = true;
-            }
-        }
-    }
-    else {
-        for (int k = 0; k < nh && !done; ++k) {
-            const int t = (t0 + k) % nh;
-            if (!hatchUsed(t)) {
-                chosen = t * nc;
-                done = true;
-            }
+    for (int k = 0; k < nc && !done; ++k) {
+        const int c = (c0 + k) % nc;
+        if (!colorUsed(c)) {
+            chosen = c + t0 * nc;
+            done = true;
         }
     }
     for (int k = 0; k < nc * nh && !done; ++k) {
         const int idx = (c0 + t0 * nc + k) % (nc * nh);
-        if (!used(idx % nc, idx / nc)) {
+        if (!usedCombos.count({idx % nc, idx / nc})) {
             chosen = idx;
             done = true;
         }
     }
-    usedCombos[{chosen % nc, chosen / nc}] = group.key;
+    usedCombos.insert({chosen % nc, chosen / nc});
     SectionCapStyle style;
     style.color = colored ? palette()[chosen % nc] : singleColor;
     style.hatch = hatched ? hatches()[chosen / nc] : std::string("none");
-    style.hatchColor = colored ? SbColor(0.15f, 0.15f, 0.15f) : singleColor * 0.5f;
     allocated[group.key] = style;
     return style;
 }
@@ -353,7 +355,7 @@ void SoFCSectionCap::GLRender(SoGLRenderAction* action)
     SoState* state = action->getState();
     records.clear();
 
-    if (!scene || rendering) {
+    if (!scene) {
         return;
     }
     const SoClipPlaneElement* elt = SoClipPlaneElement::getInstance(state);
@@ -368,11 +370,9 @@ void SoFCSectionCap::GLRender(SoGLRenderAction* action)
         status = "no-stencil";  // the framebuffer has no stencil buffer: leave the cut open
         return;
     }
-    rendering = true;
     updateProxy();
     if (groups.empty()) {
         status = "no-geometry";
-        rendering = false;
         return;
     }
 
@@ -380,10 +380,9 @@ void SoFCSectionCap::GLRender(SoGLRenderAction* action)
     SbMatrix viewProj = view;
     viewProj.multRight(SoProjectionMatrixElement::get(state));
     const SbViewportRegion& region = SoViewportRegionElement::get(state);
+    const SbColor hatchColor = colored ? SbColor(0.15f, 0.15f, 0.15f) : singleColor * 0.5f;
 
-    // We are about to change GL state and draw outside the scene graph's own
-    // caching, so drop any render cache.  Only do this when there is actually
-    // something to draw, so an idle (no clip plane) frame stays cache-friendly.
+    // GL state is changed and drawn outside the scene graph's caching
     SoCacheElement::invalidate(state);
 
     glPushAttrib(GL_ALL_ATTRIB_BITS);
@@ -391,10 +390,9 @@ void SoFCSectionCap::GLRender(SoGLRenderAction* action)
     glPushMatrix();
     glLoadMatrixf(view[0]);  // the proxy and the cap polygons are in world space
 
-    // Upload every plane ourselves instead of trusting whatever the traversal
-    // last left in the GL clip plane units.  The world plane is passed while
-    // the modelview is the view matrix, which is exactly the convention
-    // SoGLClipPlaneElement relies on, so the equations match world-space geometry.
+    // Upload every plane instead of trusting what the traversal left in the GL
+    // clip plane units; with the view matrix loaded the world planes match the
+    // world-space geometry, as in SoGLClipPlaneElement.
     for (int j = 0; j < nplanes; ++j) {
         const SbPlane plane = elt->get(j, TRUE);
         const SbVec3f normal = plane.getNormal();
@@ -426,50 +424,44 @@ void SoFCSectionCap::GLRender(SoGLRenderAction* action)
         u.normalize();
         SbVec3f v = normal.cross(u);
         v.normalize();
-
-        for (const Group& group : groups) {
-            SectionCapRecord rec;
-            rec.key = group.key;
-            rec.component = group.component;
-            rec.plane = p;
-            if (group.transparent) {
-                rec.status = "unsupported: transparent";
-                records.push_back(rec);
-                continue;
-            }
-            if (!group.closed) {
-                rec.status = "unsupported: open mesh";
-                records.push_back(rec);
-                continue;
-            }
-            if (!planeCutsBox(plane, group.box)) {
-                rec.status = "skipped: not cut";
-                records.push_back(rec);
-                continue;
-            }
-            rec.style = styleFor(group);
-
-            int x0 = 0, y0 = 0, x1 = 0, y1 = 0;
-            const SbVec2s vo = region.getViewportOriginPixels();
-            const SbVec2s vs = region.getViewportSizePixels();
-            if (!screenRect(group.box, viewProj, region, x0, y0, x1, y1)) {
-                x0 = vo[0];
-                y0 = vo[1];
-                x1 = vo[0] + vs[0];
-                y1 = vo[1] + vs[1];
-            }
-            glEnable(GL_SCISSOR_TEST);
-            glScissor(x0, y0, x1 - x0, y1 - y0);
-
-            // 1. mark: only plane p clips
+        // only plane p clips, or every plane but p
+        auto clipBy = [&](bool onlyP) {
             for (int j = 0; j < nplanes; ++j) {
-                if (j == p) {
+                if ((j == p) == onlyP) {
                     glEnable(static_cast<GLenum>(GL_CLIP_PLANE0 + j));
                 }
                 else {
                     glDisable(static_cast<GLenum>(GL_CLIP_PLANE0 + j));
                 }
             }
+        };
+
+        for (const Group& group : groups) {
+            SectionCapRecord& rec = records.emplace_back();
+            rec.key = group.key;
+            rec.component = group.component;
+            rec.plane = p;
+            if (group.transparent) {
+                rec.status = "unsupported: transparent";
+                continue;
+            }
+            if (!group.closed) {
+                rec.status = "unsupported: open mesh";
+                continue;
+            }
+            if (!planeCutsBox(plane, group.box)) {
+                rec.status = "skipped: not cut";
+                continue;
+            }
+            rec.style = styleFor(group);
+
+            int rect[4];
+            screenRect(group.box, viewProj, region, rect);
+            glEnable(GL_SCISSOR_TEST);
+            glScissor(rect[0], rect[1], rect[2] - rect[0], rect[3] - rect[1]);
+
+            // 1. mark
+            clipBy(true);
             glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
             glDepthMask(GL_FALSE);
             glDisable(GL_DEPTH_TEST);
@@ -482,15 +474,8 @@ void SoFCSectionCap::GLRender(SoGLRenderAction* action)
             }
             glEnd();
 
-            // 2. fill: plane p off, every other plane on
-            for (int j = 0; j < nplanes; ++j) {
-                if (j == p) {
-                    glDisable(static_cast<GLenum>(GL_CLIP_PLANE0 + j));
-                }
-                else {
-                    glEnable(static_cast<GLenum>(GL_CLIP_PLANE0 + j));
-                }
-            }
+            // 2. fill
+            clipBy(false);
             glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
             glDepthMask(GL_TRUE);
             glEnable(GL_DEPTH_TEST);
@@ -503,16 +488,11 @@ void SoFCSectionCap::GLRender(SoGLRenderAction* action)
             float dx {}, dy {}, dz {};
             group.box.getSize(dx, dy, dz);
             const float half = 0.5f * std::sqrt(dx * dx + dy * dy + dz * dz) * 1.05f + 1e-3f;
-            const SbVec3f corners[4] = {
-                center + (u + v) * half,
-                center + (-u + v) * half,
-                center + (-u - v) * half,
-                center + (u - v) * half,
-            };
             auto quad = [&]() {
                 glBegin(GL_QUADS);
-                for (const SbVec3f& c : corners) {
-                    glVertex3f(c[0], c[1], c[2]);
+                for (const SbVec3f& c : {u + v, -u + v, -u - v, u - v}) {
+                    const SbVec3f corner = center + c * half;
+                    glVertex3f(corner[0], corner[1], corner[2]);
                 }
                 glEnd();
             };
@@ -521,7 +501,7 @@ void SoFCSectionCap::GLRender(SoGLRenderAction* action)
             if (stipplePattern(rec.style.hatch, stipple)) {
                 glEnable(GL_POLYGON_STIPPLE);
                 glPolygonStipple(stipple);
-                glColor3f(rec.style.hatchColor[0], rec.style.hatchColor[1], rec.style.hatchColor[2]);
+                glColor3f(hatchColor[0], hatchColor[1], hatchColor[2]);
                 quad();
                 glDisable(GL_POLYGON_STIPPLE);
             }
@@ -533,66 +513,12 @@ void SoFCSectionCap::GLRender(SoGLRenderAction* action)
 
             rec.status = "capped";
             drewCap = true;
-            records.push_back(rec);
         }
     }
 
     glPopMatrix();
     glPopAttrib();
     status = drewCap ? "capped" : "no-cap";
-    rendering = false;
-}
-
-std::string SoFCSectionCap::keyForPath(SoCallbackAction* action, std::string& component)
-{
-    // view providers along the path, with the child indices between them (not of switches)
-    const auto* path = static_cast<const SoFullPath*>(action->getCurPath());
-    std::vector<std::string> names;
-    std::vector<std::string> pending;
-    std::string key;
-    component.clear();
-    lastExcluded = false;
-    for (int i = 1; i < path->getLength(); ++i) {
-        SoNode* node = path->getNode(i);
-        std::string name = resolve ? resolve(node) : std::string();
-        if (!name.empty()) {
-            // "Doc#Link\tDoc#Target": the component is the link target
-            std::string target = name;
-            const auto tab = name.find('\t');
-            if (tab != std::string::npos) {
-                target = name.substr(tab + 1);
-                name = name.substr(0, tab);
-            }
-            if (!key.empty()) {
-                for (const std::string& idx : pending) {
-                    key += "/" + idx;
-                }
-                key += "/";
-            }
-            key += name;
-            component = target;
-            if (exclude && exclude(node)) {
-                lastExcluded = true;
-            }
-            pending.clear();
-            continue;
-        }
-        if (!key.empty()) {
-            SoNode* parent = path->getNode(i - 1);
-            if (!parent->isOfType(SoSwitch::getClassTypeId())) {
-                pending.push_back(std::to_string(path->getIndex(i)));
-            }
-        }
-    }
-    // trailing indices tell the elements of a link array apart
-    for (const std::string& idx : pending) {
-        key += "/" + idx;
-    }
-    if (key.empty()) {
-        key = "(unresolved)";
-        component = key;
-    }
-    return key;
 }
 
 std::uint64_t SoFCSectionCap::geometrySignature(SoNode* root)
@@ -654,8 +580,14 @@ void SoFCSectionCap::updateProxy()
         [](void* self, SoCallbackAction* action, const SoNode* node) -> SoCallbackAction::Response {
             auto* cap = static_cast<SoFCSectionCap*>(self);
             std::string component;
-            const std::string key = cap->keyForPath(action, component);
-            if (cap->lastExcluded) {
+            bool excluded = false;
+            const std::string key = keyForPath(
+                static_cast<const SoFullPath*>(action->getCurPath()),
+                cap->resolve,
+                component,
+                excluded
+            );
+            if (excluded) {
                 cap->lastShape = nullptr;
                 return SoCallbackAction::PRUNE;
             }
@@ -679,7 +611,30 @@ void SoFCSectionCap::updateProxy()
         },
         this
     );
-    collect.addTriangleCallback(SoShape::getClassTypeId(), &SoFCSectionCap::collectTriangle, this);
+    collect.addTriangleCallback(
+        SoShape::getClassTypeId(),
+        [](void* self,
+           SoCallbackAction* action,
+           const SoPrimitiveVertex* v1,
+           const SoPrimitiveVertex* v2,
+           const SoPrimitiveVertex* v3) {
+            auto* cap = static_cast<SoFCSectionCap*>(self);
+            if (!cap->lastShape) {
+                return;
+            }
+            Group& group = cap->groups[cap->lastGroup];
+            const SbMatrix& model = action->getModelMatrix();
+            for (const SoPrimitiveVertex* v : {v1, v2, v3}) {
+                SbVec3f world;
+                model.multVecMatrix(v->getPoint(), world);
+                group.tris.push_back(world[0]);
+                group.tris.push_back(world[1]);
+                group.tris.push_back(world[2]);
+                group.box.extendBy(world);
+            }
+        },
+        this
+    );
     collect.apply(scene);
     // drop groups with lines and points only
     groups.erase(
@@ -687,9 +642,8 @@ void SoFCSectionCap::updateProxy()
         groups.end()
     );
     groupIndex.clear();
-    for (std::size_t i = 0; i < groups.size(); ++i) {
-        Group& group = groups[i];
-        groupIndex[group.key] = i;
+    decltype(closedCache) closed;
+    for (Group& group : groups) {
         // the closed check is costly; reuse it while the triangles are unchanged
         std::uint64_t digestTris = 14695981039346656037ULL;
         for (float f : group.tris) {
@@ -703,38 +657,12 @@ void SoFCSectionCap::updateProxy()
         }
         else {
             checkClosed(group);
-            closedCache[group.key] = {digestTris, group.closed};
         }
+        closed[group.key] = {digestTris, group.closed};
     }
-    for (auto it = closedCache.begin(); it != closedCache.end();) {
-        it = groupIndex.count(it->first) ? std::next(it) : closedCache.erase(it);
-    }
+    closedCache.swap(closed);
     proxySignature = signature;
     proxyValid = true;
-}
-
-void SoFCSectionCap::collectTriangle(
-    void* self,
-    SoCallbackAction* action,
-    const SoPrimitiveVertex* v1,
-    const SoPrimitiveVertex* v2,
-    const SoPrimitiveVertex* v3
-)
-{
-    auto* cap = static_cast<SoFCSectionCap*>(self);
-    if (!cap->lastShape) {
-        return;
-    }
-    Group& group = cap->groups[cap->lastGroup];
-    const SbMatrix& model = action->getModelMatrix();
-    for (const SoPrimitiveVertex* v : {v1, v2, v3}) {
-        SbVec3f world;
-        model.multVecMatrix(v->getPoint(), world);
-        group.tris.push_back(world[0]);
-        group.tris.push_back(world[1]);
-        group.tris.push_back(world[2]);
-        group.box.extendBy(world);
-    }
 }
 
 void SoFCSectionCap::checkClosed(Group& group)

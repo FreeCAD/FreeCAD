@@ -108,7 +108,6 @@
 #include <QWheelEvent>
 
 #include <App/Datums.h>
-#include <App/Origin.h>
 #include <App/Link.h>
 #include <App/Document.h>
 #include <App/GeoFeatureGroupExtension.h>
@@ -4137,56 +4136,41 @@ void View3DInventorViewer::setSectionCapping(bool on)
     if (on) {
         pcSectionCap = new Gui::Inventor::SoFCSectionCap();
         pcSectionCap->ref();
-        pcSectionCap->setColored(sectionCapColored);
-        pcSectionCap->setHatched(sectionCapHatched);
-        pcSectionCap->setSingleColor(sectionCapColor);
-        // search every document: a link's nodes may belong to another one
-        auto viewProviderFor = [](SoNode* node) -> ViewProviderDocumentObject* {
-            if (!node || !node->isOfType(SoSeparator::getClassTypeId())) {
-                return nullptr;
+        pcSectionCap->setStyle(sectionCapColored, sectionCapHatched, sectionCapColor);
+        pcSectionCap->setResolver([](SoNode* node, bool& excluded) -> std::string {
+            if (!node->isOfType(SoSeparator::getClassTypeId())) {
+                return {};
             }
+            // search every document: a link's nodes may belong to another one
+            App::DocumentObject* obj = nullptr;
             for (App::Document* doc : App::GetApplication().getDocuments()) {
                 Gui::Document* gdoc = Application::Instance->getDocument(doc);
-                if (!gdoc) {
-                    continue;
-                }
-                if (ViewProviderDocumentObject* vp = gdoc->getViewProvider(node)) {
-                    return vp;
+                if (ViewProviderDocumentObject* vp = gdoc ? gdoc->getViewProvider(node) : nullptr) {
+                    obj = vp->getObject();
+                    break;
                 }
             }
-            return nullptr;
-        };
-        pcSectionCap->setResolver(
-            [viewProviderFor](SoNode* node) -> std::string {
-                ViewProviderDocumentObject* vp = viewProviderFor(node);
-                App::DocumentObject* obj = vp ? vp->getObject() : nullptr;
-                if (!obj || !obj->isAttachedToDocument()) {
-                    return {};
-                }
-                auto fullName = [](App::DocumentObject* o) {
-                    return std::string(o->getDocument()->getName()) + "#" + o->getNameInDocument();
-                };
-                std::string name = fullName(obj);
-                // an array link does not forward getLinkedObject(); ask the extension
-                App::DocumentObject* target = obj->getLinkedObject(true);
-                if (target == obj) {
-                    if (auto ext = obj->getExtensionByType<App::LinkBaseExtension>(true)) {
-                        target = ext->getTrueLinkedObject(true);
-                    }
-                }
-                if (target && target != obj && target->isAttachedToDocument()) {
-                    name += "\t" + fullName(target);
-                }
-                return name;
-            },
-            [viewProviderFor](SoNode* node) -> bool {
-                ViewProviderDocumentObject* vp = viewProviderFor(node);
-                App::DocumentObject* obj = vp ? vp->getObject() : nullptr;
-                return obj
-                    && (obj->isDerivedFrom<App::DatumElement>()
-                        || obj->isDerivedFrom<App::LocalCoordinateSystem>());
+            if (!obj || !obj->isAttachedToDocument()) {
+                return {};
             }
-        );
+            excluded = obj->isDerivedFrom<App::DatumElement>()
+                || obj->isDerivedFrom<App::LocalCoordinateSystem>();
+            auto fullName = [](App::DocumentObject* o) {
+                return std::string(o->getDocument()->getName()) + "#" + o->getNameInDocument();
+            };
+            std::string name = fullName(obj);
+            // an array link does not forward getLinkedObject(); ask the extension
+            App::DocumentObject* target = obj->getLinkedObject(true);
+            if (target == obj) {
+                if (auto ext = obj->getExtensionByType<App::LinkBaseExtension>(true)) {
+                    target = ext->getTrueLinkedObject(true);
+                }
+            }
+            if (target && target != obj && target->isAttachedToDocument()) {
+                name += "\t" + fullName(target);
+            }
+            return name;
+        });
         pcSectionCap->setScene(objectGroup);
         // last child, so that every clip plane is in the traversal state
         pcViewProviderRoot->addChild(pcSectionCap);
@@ -4211,10 +4195,7 @@ bool View3DInventorViewer::isSectionCapping() const
 void View3DInventorViewer::setSectionCapColored(bool colored)
 {
     sectionCapColored = colored;
-    if (pcSectionCap) {
-        pcSectionCap->setColored(colored);
-        redraw();
-    }
+    updateSectionCapStyle();
 }
 
 bool View3DInventorViewer::isSectionCapColored() const
@@ -4225,24 +4206,13 @@ bool View3DInventorViewer::isSectionCapColored() const
 void View3DInventorViewer::setSectionCapColor(const SbColor& color)
 {
     sectionCapColor = color;
-    if (pcSectionCap) {
-        pcSectionCap->setSingleColor(color);
-        redraw();
-    }
-}
-
-SbColor View3DInventorViewer::getSectionCapColor() const
-{
-    return sectionCapColor;
+    updateSectionCapStyle();
 }
 
 void View3DInventorViewer::setSectionCapHatched(bool hatched)
 {
     sectionCapHatched = hatched;
-    if (pcSectionCap) {
-        pcSectionCap->setHatched(hatched);
-        redraw();
-    }
+    updateSectionCapStyle();
 }
 
 bool View3DInventorViewer::isSectionCapHatched() const
@@ -4250,15 +4220,17 @@ bool View3DInventorViewer::isSectionCapHatched() const
     return sectionCapHatched;
 }
 
-std::string View3DInventorViewer::getSectionCapStatus() const
+void View3DInventorViewer::updateSectionCapStyle()
 {
-    return pcSectionCap ? pcSectionCap->lastStatus() : std::string("off");
+    if (pcSectionCap) {
+        pcSectionCap->setStyle(sectionCapColored, sectionCapHatched, sectionCapColor);
+        redraw();
+    }
 }
 
-std::vector<Gui::Inventor::SectionCapRecord> View3DInventorViewer::getSectionCapRecords() const
+const Gui::Inventor::SoFCSectionCap* View3DInventorViewer::getSectionCap() const
 {
-    return pcSectionCap ? pcSectionCap->lastRecords()
-                        : std::vector<Gui::Inventor::SectionCapRecord>();
+    return pcSectionCap;
 }
 
 /**

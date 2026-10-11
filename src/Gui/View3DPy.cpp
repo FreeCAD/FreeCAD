@@ -333,8 +333,7 @@ void View3DInventorPy::init_type()
         "setSectionCapping",
         &View3DInventorPy::setSectionCapping,
         "setSectionCapping(on=True): fill the cuts of the active clip planes with section\n"
-        "caps, a distinct color and hatch per instance.  Opaque closed solids only; changes\n"
-        "no document object."
+        "caps.  Opaque closed solids only; changes no document object."
     );
     add_noargs_method(
         "isSectionCapping",
@@ -377,7 +376,7 @@ void View3DInventorPy::init_type()
         "getSectionCapStatus",
         &View3DInventorPy::getSectionCapStatus,
         "getSectionCapStatus(): what the cap renderer did in the last frame\n"
-        "('capped', 'no-plane', 'no-cap', 'unsupported: ...', 'off')"
+        "('capped', 'no-plane', 'no-geometry', 'no-cap', 'no-stencil', 'off')"
     );
     add_noargs_method(
         "graphicsView",
@@ -2706,42 +2705,23 @@ Py::Object View3DInventorPy::hasClippingPlane()
     return Py::Boolean(getView3DInventorPtr()->getViewer()->hasClippingPlane());
 }
 
-Py::Object View3DInventorPy::setSectionCapping(const Py::Tuple& args)
+namespace
+{
+// an optional bool argument, true by default
+bool optionalFlag(const Py::Tuple& args)
 {
     PyObject* on = Py_True;
     if (!PyArg_ParseTuple(args.ptr(), "|O!", &PyBool_Type, &on)) {
         throw Py::Exception();
     }
-    getView3DInventorPtr()->getViewer()->setSectionCapping(on == Py_True);
-    return Py::None();
-}
-
-namespace
-{
-Py::Tuple sectionColorTuple(const SbColor& c)
-{
-    Py::Tuple t(3);
-    t.setItem(0, Py::Float(c[0]));
-    t.setItem(1, Py::Float(c[1]));
-    t.setItem(2, Py::Float(c[2]));
-    return t;
+    return on == Py_True;
 }
 }  // namespace
 
-Py::Object View3DInventorPy::getSectionCaps()
+Py::Object View3DInventorPy::setSectionCapping(const Py::Tuple& args)
 {
-    Py::List out;
-    for (const auto& rec : getView3DInventorPtr()->getViewer()->getSectionCapRecords()) {
-        Py::Dict d;
-        d.setItem("key", Py::String(rec.key));
-        d.setItem("component", Py::String(rec.component));
-        d.setItem("plane", Py::Long(rec.plane));
-        d.setItem("status", Py::String(rec.status));
-        d.setItem("color", sectionColorTuple(rec.style.color));
-        d.setItem("hatch", Py::String(rec.style.hatch));
-        out.append(d);
-    }
-    return out;
+    getView3DInventorPtr()->getViewer()->setSectionCapping(optionalFlag(args));
+    return Py::None();
 }
 
 Py::Object View3DInventorPy::isSectionCapping()
@@ -2751,11 +2731,7 @@ Py::Object View3DInventorPy::isSectionCapping()
 
 Py::Object View3DInventorPy::setSectionCapColored(const Py::Tuple& args)
 {
-    PyObject* on = Py_True;
-    if (!PyArg_ParseTuple(args.ptr(), "|O!", &PyBool_Type, &on)) {
-        throw Py::Exception();
-    }
-    getView3DInventorPtr()->getViewer()->setSectionCapColored(on == Py_True);
+    getView3DInventorPtr()->getViewer()->setSectionCapColored(optionalFlag(args));
     return Py::None();
 }
 
@@ -2766,11 +2742,7 @@ Py::Object View3DInventorPy::isSectionCapColored()
 
 Py::Object View3DInventorPy::setSectionCapHatched(const Py::Tuple& args)
 {
-    PyObject* on = Py_True;
-    if (!PyArg_ParseTuple(args.ptr(), "|O!", &PyBool_Type, &on)) {
-        throw Py::Exception();
-    }
-    getView3DInventorPtr()->getViewer()->setSectionCapHatched(on == Py_True);
+    getView3DInventorPtr()->getViewer()->setSectionCapHatched(optionalFlag(args));
     return Py::None();
 }
 
@@ -2789,9 +2761,31 @@ Py::Object View3DInventorPy::setSectionCapColor(const Py::Tuple& args)
     return Py::None();
 }
 
+Py::Object View3DInventorPy::getSectionCaps()
+{
+    Py::List out;
+    const auto* cap = getView3DInventorPtr()->getViewer()->getSectionCap();
+    if (!cap) {
+        return out;
+    }
+    for (const auto& rec : cap->lastRecords()) {
+        const SbColor& c = rec.style.color;
+        Py::Dict d;
+        d.setItem("key", Py::String(rec.key));
+        d.setItem("component", Py::String(rec.component));
+        d.setItem("plane", Py::Long(rec.plane));
+        d.setItem("status", Py::String(rec.status));
+        d.setItem("color", Py::TupleN(Py::Float(c[0]), Py::Float(c[1]), Py::Float(c[2])));
+        d.setItem("hatch", Py::String(rec.style.hatch));
+        out.append(d);
+    }
+    return out;
+}
+
 Py::Object View3DInventorPy::getSectionCapStatus()
 {
-    return Py::String(getView3DInventorPtr()->getViewer()->getSectionCapStatus());
+    const auto* cap = getView3DInventorPtr()->getViewer()->getSectionCap();
+    return Py::String(cap ? cap->lastStatus() : std::string("off"));
 }
 
 Py::Object View3DInventorPy::graphicsView()

@@ -24,6 +24,7 @@
 #include <cstdint>
 #include <functional>
 #include <map>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -33,10 +34,7 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <FCGlobal.h>
 
-class SoCallbackAction;
 class SoGLRenderAction;
-class SoPrimitiveVertex;
-class SoState;
 
 namespace Gui
 {
@@ -47,8 +45,7 @@ namespace Inventor
 struct GuiExport SectionCapStyle
 {
     SbColor color {0.85f, 0.35f, 0.25f};
-    std::string hatch {"none"};  ///< "none" or one of SoFCSectionCap::hatches()
-    SbColor hatchColor {0.15f, 0.15f, 0.15f};
+    std::string hatch {"none"};
 };
 
 /// What the renderer did for one occurrence and one plane in the last frame.
@@ -78,32 +75,13 @@ public:
     SoFCSectionCap();
 
     /// "Doc#Object" for a view provider root ("Doc#Link\tDoc#Target" for a link), else "".
-    using Resolver = std::function<std::string(SoNode*)>;
-    /// True for roots that are never capped (datums, origins).
-    using Excluder = std::function<bool(SoNode*)>;
+    /// Sets excluded for roots that are never capped (datums, origins).
+    using Resolver = std::function<std::string(SoNode*, bool& excluded)>;
 
     void setScene(SoNode* scene);
-    SoNode* getScene() const
-    {
-        return scene;
-    }
-    void setResolver(Resolver resolve, Excluder exclude);
-
-    /// Drop the proxy (rebuilt on the next frame).
-    void invalidate();
-    /// Colored: a color per instance; otherwise the single color for all.
-    void setColored(bool colored);
-    void setSingleColor(const SbColor& color);
-    bool isColored() const
-    {
-        return colored;
-    }
-    /// Hatched: a hatch pattern per instance on top of the color.
-    void setHatched(bool hatched);
-    bool isHatched() const
-    {
-        return hatched;
-    }
+    void setResolver(Resolver resolve);
+    /// A color per instance (else the single color), optionally a hatch per instance.
+    void setStyle(bool perPart, bool hatching, const SbColor& color);
 
     const std::vector<SectionCapRecord>& lastRecords() const
     {
@@ -114,12 +92,6 @@ public:
     {
         return status;
     }
-
-    /// FNV-1a, so default styles are the same on every run.
-    static std::uint64_t digest(const std::string& key);
-    /// The colors and hatches default styles are drawn from.
-    static const std::vector<SbColor>& palette();
-    static const std::vector<std::string>& hatches();
 
     void GLRender(SoGLRenderAction* action) override;
 
@@ -141,23 +113,14 @@ private:
     static std::uint64_t geometrySignature(SoNode* root);
     static void checkClosed(Group& group);
     SectionCapStyle styleFor(const Group& group);
-    static void collectTriangle(
-        void* self,
-        SoCallbackAction* action,
-        const SoPrimitiveVertex* v1,
-        const SoPrimitiveVertex* v2,
-        const SoPrimitiveVertex* v3
-    );
-    std::string keyForPath(SoCallbackAction* action, std::string& component);
 
     SoNode* scene {nullptr};
     Resolver resolve;
-    Excluder exclude;
     bool colored {false};
-    SbColor singleColor {0.45f, 0.47f, 0.50f};
     bool hatched {false};
+    SbColor singleColor {0.45f, 0.47f, 0.50f};
     std::map<std::string, SectionCapStyle> allocated;
-    std::map<std::pair<int, int>, std::string> usedCombos;  // (color, hatch) -> key
+    std::set<std::pair<int, int>> usedCombos;  // (color, hatch)
 
     std::vector<Group> groups;
     std::map<std::string, std::size_t> groupIndex;
@@ -168,11 +131,9 @@ private:
     bool proxyValid {false};
     const void* lastShape {nullptr};
     std::size_t lastGroup {0};
-    bool lastExcluded {false};
 
     std::vector<SectionCapRecord> records;
     std::string status {"idle"};
-    bool rendering {false};
 };
 
 }  // namespace Inventor

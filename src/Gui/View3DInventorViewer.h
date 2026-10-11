@@ -96,15 +96,10 @@ namespace Base
 class BoundBox2d;
 }
 
-namespace Gui
-{
-namespace Inventor
+namespace Gui::Inventor
 {
 class SoFCSectionCap;
-struct SectionCapStyle;
-struct SectionCapRecord;
-}  // namespace Inventor
-}  // namespace Gui
+}
 
 namespace Gui
 {
@@ -485,14 +480,11 @@ public:
     void setSectionCapColored(bool colored);
     bool isSectionCapColored() const;
     void setSectionCapColor(const SbColor& color);
-    SbColor getSectionCapColor() const;
     /// A hatch pattern per instance.
     void setSectionCapHatched(bool hatched);
     bool isSectionCapHatched() const;
-    /// "capped", "no-plane", ... or "off"
-    std::string getSectionCapStatus() const;
-    /// Per occurrence and plane, for the last frame.
-    std::vector<Gui::Inventor::SectionCapRecord> getSectionCapRecords() const;
+    /// Null while section caps are off.
+    const Gui::Inventor::SoFCSectionCap* getSectionCap() const;
 
     /** Project the given normalized 2d point onto the near plane */
     SbVec3f projectOnNearPlane(const SbVec2f&) const;
@@ -686,6 +678,7 @@ private:
     void aboutToDestroyGLContext();
     void createStandardCursors();
     bool applyCameraState(const SoCamera& camera);
+    void updateSectionCapStyle();
 
 private:
     NaviCube* naviCube;

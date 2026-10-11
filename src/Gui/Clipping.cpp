@@ -198,8 +198,7 @@ Clipping::Clipping(Gui::View3DInventor* view, App::Document* showOn, QWidget* pa
         d->ui.clipZ->setDecimals(minDecimals);
     }
 
-    // Reflect the viewer's current setting; opening the dialog must not turn
-    // section caps on or off behind the user's back.
+    // reflect the viewer's setting, without changing it
     {
         QSignalBlocker blocker(d->ui.comboCaps);
         QSignalBlocker blockerHatch(d->ui.checkCapsHatching);
@@ -300,9 +299,10 @@ void Clipping::onActiveDocument(const App::Document& doc)
         d->dockWidget->hide();
     }
 }
+
 void Clipping::onComboCapsChanged(int index)
 {
-    // 0 = off, 1 = gray, 2 = colored; this view only (the default is in the preferences)
+    // 0 = off, 1 = single color, 2 = a color per part; this view only
     if (d->view) {
         View3DInventorViewer* viewer = d->view->getViewer();
         viewer->setSectionCapColored(index == 2);
