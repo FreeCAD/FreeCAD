@@ -29,9 +29,9 @@ public:
     App::PropertyLength TangentialDistance;
     App::PropertyIntegerConstraint NumberCircles;
     App::PropertyIntegerConstraint Symmetry;
-    App::PropertyBool CenterAroundFeature;
-    App::PropertyLinkSub TangentAxis;
-    App::PropertyBool FlipTangentAxis;
+    App::PropertyBool StartAtShape;
+    App::PropertyLinkSub BinormalAxis;
+    App::PropertyBool FlipBinormalAxis;
 
     std::list<gp_Trsf> calculateTransformations() const;
     bool identityTransformSuppressed() const;

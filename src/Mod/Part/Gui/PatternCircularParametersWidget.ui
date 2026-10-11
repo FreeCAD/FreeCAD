@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>270</width>
-    <height>244</height>
+    <height>272</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -105,14 +105,14 @@
       <item row="8" column="0" colspan="2">
        <widget class="QCheckBox" name="centerAroundFeature">
         <property name="text">
-         <string>Rotate around shape's origin</string>
+         <string>Start at selected shape</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Tangent axis</string>
+         <string>Binormal axis</string>
         </property>
        </widget>
       </item>
@@ -122,7 +122,7 @@
       <item row="2" column="0" colspan="2">
        <widget class="QCheckBox" name="flipTangentDirection">
         <property name="text">
-         <string>Flip tangent direction</string>
+         <string>Flip binormal direction</string>
         </property>
        </widget>
       </item>

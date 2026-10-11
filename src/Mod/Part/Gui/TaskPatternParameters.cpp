@@ -162,9 +162,9 @@ void TaskPatternParameters::setupCircularPatternParameterUI(
     App::PropertyLength* tangentialDistance,
     App::PropertyIntegerConstraint* numberCircles,
     App::PropertyIntegerConstraint* symmetry,
-    App::PropertyBool* centerAroundFeature,
-    App::PropertyLinkSub* tangentAxis,
-    App::PropertyBool* flipTangentAxis
+    App::PropertyBool* startAtShape,
+    App::PropertyLinkSub* binormalAxis,
+    App::PropertyBool* flipBinormalAxis
 )
 {
     circularParametersWidget = new PatternCircularParametersWidget(parent);
@@ -177,7 +177,7 @@ void TaskPatternParameters::setupCircularPatternParameterUI(
         Part::LinearPatternDirection::First
     );
     fillDirectionCombo(
-        circularParametersWidget->getTangentWidget()->dirLinks,
+        circularParametersWidget->getBinormalAxisWidget()->dirLinks,
         Part::LinearPatternDirection::First
     );
     circularParametersWidget->bindProperties(
@@ -186,9 +186,9 @@ void TaskPatternParameters::setupCircularPatternParameterUI(
         tangentialDistance,
         numberCircles,
         symmetry,
-        centerAroundFeature,
-        tangentAxis,
-        flipTangentAxis
+        startAtShape,
+        binormalAxis,
+        flipBinormalAxis
     );
 
     QObject::connect(
@@ -201,11 +201,11 @@ void TaskPatternParameters::setupCircularPatternParameterUI(
         }
     );
     QObject::connect(
-        circularParametersWidget->getTangentWidget(),
+        circularParametersWidget->getBinormalAxisWidget(),
         &PartGui::PatternReferenceWidget::requestReferenceSelection,
         signalContext,
         [this]() {
-            activeDirectionWidget = circularParametersWidget->getTangentWidget();
+            activeDirectionWidget = circularParametersWidget->getBinormalAxisWidget();
             onReferenceSelectionRequested();
         }
     );
@@ -216,7 +216,7 @@ void TaskPatternParameters::setupCircularPatternParameterUI(
         [this]() { onPatternParametersChanged(); }
     );
     QObject::connect(
-        circularParametersWidget->getTangentWidget(),
+        circularParametersWidget->getBinormalAxisWidget(),
         &PartGui::PatternReferenceWidget::parametersChanged,
         signalContext,
         [this]() { onPatternParametersChanged(); }
@@ -442,14 +442,11 @@ void TaskPatternParameters::applyPatternParameters(App::DocumentObject* pattern)
         circularParametersWidget->getAxisWidget()->getAxis(object, subnames);
         std::string direction = buildDirectionReferencePythonString(object, subnames);
         FCMD_OBJ_CMD(pattern, "Axis = " << direction.c_str());
-        circularParametersWidget->getTangentWidget()->getAxis(object, subnames);
+        circularParametersWidget->getBinormalAxisWidget()->getAxis(object, subnames);
         direction = buildDirectionReferencePythonString(object, subnames);
-        FCMD_OBJ_CMD(pattern, "TangentAxis = " << direction.c_str());
-        FCMD_OBJ_CMD(
-            pattern,
-            "CenterAroundFeature = " << circularParametersWidget->centerAroundFeature()
-        );
-        FCMD_OBJ_CMD(pattern, "FlipTangentAxis = " << circularParametersWidget->flipTangentAxis());
+        FCMD_OBJ_CMD(pattern, "BinormalAxis = " << direction.c_str());
+        FCMD_OBJ_CMD(pattern, "StartAtShape = " << circularParametersWidget->startAtShape());
+        FCMD_OBJ_CMD(pattern, "FlipBinormalAxis = " << circularParametersWidget->flipBinormalAxis());
         circularParametersWidget->applyQuantitySpinboxes();
         return;
     }

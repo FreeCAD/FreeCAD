@@ -2515,15 +2515,12 @@ void CmdPartDesignCircularPattern::activated(int iMsg)
                 FCMD_OBJ_CMD(feat, "Axis = (" << Gui::Command::getObjectCmd(sketch) << ",['N_Axis'])");
                 FCMD_OBJ_CMD(
                     feat,
-                    "TangentAxis = (" << Gui::Command::getObjectCmd(sketch) << ",['H_Axis'])"
+                    "BinormalAxis = (" << Gui::Command::getObjectCmd(sketch) << ",['H_Axis'])"
                 );
                 hasDirection = true;
             }
-            FCMD_OBJ_CMD(feat, "CenterAroundFeature = False");
         }
-        else {
-            FCMD_OBJ_CMD(feat, "CenterAroundFeature = True");
-        }
+        FCMD_OBJ_CMD(feat, "StartAtShape = False");
         if (!hasDirection) {
             FCMD_OBJ_CMD(
                 feat,
@@ -2531,8 +2528,8 @@ void CmdPartDesignCircularPattern::activated(int iMsg)
             );
             FCMD_OBJ_CMD(
                 feat,
-                "TangentAxis = (" << Gui::Command::getObjectCmd(pcActiveBody->getOrigin()->getX())
-                                  << ",[''])"
+                "BinormalAxis = (" << Gui::Command::getObjectCmd(pcActiveBody->getOrigin()->getX())
+                                   << ",[''])"
             );
         }
 

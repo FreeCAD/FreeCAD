@@ -29,22 +29,22 @@ public:
         App::PropertyLength* tangentialDistance,
         App::PropertyIntegerConstraint* numberCircles,
         App::PropertyIntegerConstraint* symmetry,
-        App::PropertyBool* centerAroundFeature,
-        App::PropertyLinkSub* tangentAxis,
-        App::PropertyBool* flipTangentAxis
+        App::PropertyBool* startAtShape,
+        App::PropertyLinkSub* binormalAxis,
+        App::PropertyBool* flipBinormalAxis
     );
     void updateUI();
     void applyQuantitySpinboxes() const;
-    bool centerAroundFeature() const;
-    bool flipTangentAxis() const;
+    bool startAtShape() const;
+    bool flipBinormalAxis() const;
 
     inline PatternReferenceWidget* getAxisWidget() const
     {
         return axisWidget;
     }
-    inline PatternReferenceWidget* getTangentWidget() const
+    inline PatternReferenceWidget* getBinormalAxisWidget() const
     {
-        return tangentWidget;
+        return binormalAxisWidget;
     }
 
 private:
@@ -52,19 +52,20 @@ private:
     void onTangentialDistanceChanged(double value);
     void onNumberCirclesChanged(unsigned value);
     void onSymmetryChanged(unsigned value);
-    void onCenterAroundFeatureChanged(bool value);
+    void onStartAtShapeChanged(bool value);
+    void onFlipBinormalDirectionChanged(bool value);
 
     std::unique_ptr<Ui_PatternCircularParametersWidget> ui;
     App::PropertyLength* radialDistanceProperty = nullptr;
     App::PropertyLength* tangentialDistanceProperty = nullptr;
     App::PropertyIntegerConstraint* numberCirclesProperty = nullptr;
     App::PropertyIntegerConstraint* symmetryProperty = nullptr;
-    App::PropertyBool* centerAroundFeatureProperty = nullptr;
-    App::PropertyBool* flipTangentAxisProperty = nullptr;
+    App::PropertyBool* startAtShapeProperty = nullptr;
+    App::PropertyBool* flipBinormalAxisProperty = nullptr;
     bool blockUpdate = false;
 
     PatternReferenceWidget* axisWidget = nullptr;
-    PatternReferenceWidget* tangentWidget = nullptr;
+    PatternReferenceWidget* binormalAxisWidget = nullptr;
 };
 
 }  // namespace PartGui

@@ -79,39 +79,31 @@ CircularPatternExtension::CircularPatternExtension()
     );
     Symmetry.setConstraints(&intSymmetry);
     EXTENSION_ADD_PROPERTY_TYPE(
-        CenterAroundFeature,
-        (true),
-        "CircularPattern",
-        App::Prop_None,
-        "Center the circles around the feature, else use the origin as center."
-    );
-    EXTENSION_ADD_PROPERTY_TYPE(
-        TangentAxis,
-        (nullptr),
-        "CircularPattern",
-        App::Prop_None,
-        "The axis representing the tangent of the first transformation."
-    );
-    EXTENSION_ADD_PROPERTY_TYPE(
-        FlipTangentAxis,
+        StartAtShape,
         (false),
         "CircularPattern",
         App::Prop_None,
-        "Flip the tangent axis' direction."
+        "Place the existing shape in the first circle, else use the axis' origin as center."
+    );
+    EXTENSION_ADD_PROPERTY_TYPE(
+        BinormalAxis,
+        (nullptr),
+        "CircularPattern",
+        App::Prop_None,
+        "The axis representing the binormal of the first transformation on the first circle."
+    );
+    EXTENSION_ADD_PROPERTY_TYPE(
+        FlipBinormalAxis,
+        (false),
+        "CircularPattern",
+        App::Prop_None,
+        "Flip the binormal axis' direction."
     );
 }
 
-/*void CircularPatternExtension::extensionOnChanged(const App::Property* prop)
-{
-    if (prop == &CenterAroundFeature) {
-        TangentAxis.setStatus(App::Property::Hidden, CenterAroundFeature.getValue());
-    }
-    App::DocumentObjectExtension::extensionOnChanged(prop);
-}*/
-
 bool CircularPatternExtension::identityTransformSuppressed() const
 {
-    return CenterAroundFeature.getValue();
+    return !StartAtShape.getValue();
 }
 
 std::list<gp_Trsf> CircularPatternExtension::calculateTransformations() const
@@ -138,20 +130,20 @@ std::list<gp_Trsf> CircularPatternExtension::calculateTransformations() const
     }
 
     const gp_Ax2 axis = getRotation(Axis);
-    const gp_Ax2 tangentAxis = getRotation(TangentAxis);
+    const gp_Ax2 binormalAxis = getRotation(BinormalAxis);
 
     const gp_Pnt center = axis.Location();
     const gp_Vec axisDirection(axis.Direction());
-    const gp_Vec tangentDirection(tangentAxis.Direction());
+    const gp_Vec binormalDirection(binormalAxis.Direction());
 
-    gp_Vec radialDirection = tangentDirection
-        - axisDirection.Multiplied(tangentDirection.Dot(axisDirection));
+    gp_Vec radialDirection = binormalDirection
+        - axisDirection.Multiplied(binormalDirection.Dot(axisDirection));
 
     if (radialDirection.SquareMagnitude() <= Precision::SquareConfusion()) {
         throw Base::ValueError("Tangent axis must not be parallel to the pattern axis");
     }
 
-    if (FlipTangentAxis.getValue()) {
+    if (FlipBinormalAxis.getValue()) {
         radialDirection.Reverse();
     }
     radialDirection.Normalize();
@@ -164,13 +156,13 @@ std::list<gp_Trsf> CircularPatternExtension::calculateTransformations() const
 
     std::list<gp_Trsf> transformations;
 
-    // If CenterAroundFeature is true, the original object is the center,
+    // If StartAtShape is false, the original object is the center,
     // and we start creating rings from radius = radialDistance.
-    // If false, the original object is part of the first ring (radius = 0).
-    int startCircle = CenterAroundFeature.getValue() ? 1 : 0;
-    int endCircle = CenterAroundFeature.getValue() ? circleCount : circleCount - 1;
+    // If true, the original object is part of the first ring (radius = 0).
+    int startCircle = !StartAtShape.getValue() ? 1 : 0;
+    int endCircle = !StartAtShape.getValue() ? circleCount : circleCount - 1;
 
-    if (CenterAroundFeature.getValue() && includeIdentityTransformation) {
+    if (!StartAtShape.getValue() && includeIdentityTransformation) {
         transformations.emplace_back();
     }
 

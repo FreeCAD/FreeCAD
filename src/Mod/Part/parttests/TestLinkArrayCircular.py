@@ -54,7 +54,7 @@ class TestLinkArrayCircular(unittest.TestCase):
                 array.ShowElement = True
                 if kind == "Circular":
                     array.Axis = (None, ["Z_Axis"])
-                    array.TangentAxis = (None, ["Y_Axis"])
+                    array.BinormalAxis = (None, ["Y_Axis"])
                 if kind in ("Path", "Point"):
                     path = self.doc.addObject("Part::Feature", "SuppressionPath")
                     path.Shape = Part.makePolygon([App.Vector(), App.Vector(20, 0, 0)])
@@ -71,7 +71,7 @@ class TestLinkArrayCircular(unittest.TestCase):
         self.array.NumberCircles = 2
         self.array.RadialDistance = 1000000
         self.array.TangentialDistance = 0.001
-        self.array.TangentAxis = (None, ["Y_Axis"])
+        self.array.BinormalAxis = (None, ["Y_Axis"])
         self.doc.recompute()
         self.assertIn("10000", self.array.getStatusString())
 
@@ -80,7 +80,7 @@ class TestLinkArrayCircular(unittest.TestCase):
         self.assertEqual(
             self.array.getTypeIdOfProperty("TangentialDistance"), "App::PropertyLength"
         )
-        self.array.TangentAxis = (None, ["Y_Axis"])
+        self.array.BinormalAxis = (None, ["Y_Axis"])
         self.doc.recompute()
 
         self.assertEqual(self.array.getStatusString(), "Valid")
@@ -95,8 +95,8 @@ class TestLinkArrayCircular(unittest.TestCase):
         axis2 = self.doc.addObject("Part::Feature", "Axis")
         axis2.Shape = Part.makeLine(App.Vector(5, 0, 0), App.Vector(6, 0, 0))
         self.array.Axis = (axis, ["Edge1"])
-        self.array.TangentAxis = (axis2, ["Edge1"])
-        self.array.CenterAroundFeature = True
+        self.array.BinormalAxis = (axis2, ["Edge1"])
+        self.array.StartAtShape = False
 
         self.doc.recompute()
 
@@ -122,14 +122,14 @@ class TestLinkArrayCircular(unittest.TestCase):
 
     def testSketchNamedAxesStillOrientTheCircles(self):
         sketch = self.doc.addObject("Part::Part2DObject", "Sketch")
-        for axis, coordinate, tangentAxis in (
+        for axis, coordinate, binormalAxis in (
             ("H_Axis", "x", "V_Axis"),
             ("V_Axis", "y", "N_Axis"),
             ("N_Axis", "z", "H_Axis"),
         ):
             with self.subTest(axis=axis):
                 self.array.Axis = (sketch, [axis])
-                self.array.TangentAxis = (sketch, [tangentAxis])
+                self.array.BinormalAxis = (sketch, [binormalAxis])
                 self.doc.recompute()
                 self.assertEqual(self.array.getStatusString(), "Valid")
                 for placement in self.array.PlacementList:

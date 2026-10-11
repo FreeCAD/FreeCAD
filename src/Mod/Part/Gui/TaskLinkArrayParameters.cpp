@@ -222,9 +222,9 @@ TaskLinkArrayParameters::TaskLinkArrayParameters(
             &circular->TangentialDistance,
             &circular->NumberCircles,
             &circular->Symmetry,
-            &circular->CenterAroundFeature,
-            &circular->TangentAxis,
-            &circular->FlipTangentAxis
+            &circular->StartAtShape,
+            &circular->BinormalAxis,
+            &circular->FlipBinormalAxis
         );
         setupInstanceControls(viewer);
         return;
@@ -817,7 +817,7 @@ void TaskLinkArrayParameters::onSelectionChanged(const Gui::SelectionChanges& ms
     else if (auto* circular = freecad_cast<Part::LinkArrayCircular*>(array)) {
         Base::Console().log("index: {}\n", getActiveDirectionWidget()->getAxisIndex());
         if (getActiveDirectionWidget()->getAxisIndex() == 1) {
-            reference = &circular->TangentAxis;
+            reference = &circular->BinormalAxis;
             referenceKind = "circular pattern tangent axis";
         }
         else {

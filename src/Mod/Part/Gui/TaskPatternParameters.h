@@ -95,9 +95,9 @@ protected:
         App::PropertyLength* tangentialDistance,
         App::PropertyIntegerConstraint* numberCircles,
         App::PropertyIntegerConstraint* symmetry,
-        App::PropertyBool* centerAroundFeature,
-        App::PropertyLinkSub* tangentAxis,
-        App::PropertyBool* flipTangentAxis
+        App::PropertyBool* startAtShape,
+        App::PropertyLinkSub* binormalAxis,
+        App::PropertyBool* flipBinormalAxis
     );
     void setupPathPatternParameterUI(
         QWidget* parent,
