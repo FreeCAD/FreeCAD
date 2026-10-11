@@ -631,6 +631,14 @@ void TaskThreadParameters::changedObject(const App::Document&, const App::Proper
 
         ui->designationEdit->setText(thread->ThreadDesignation.getValue());
     }
+    else if (&Prop == &thread->ThreadClass) {
+        QSignalBlocker blocker(ui->classCombo);
+        ui->classCombo->clear();
+        for (const auto& it : thread->ThreadClass.getEnumVector()) {
+            ui->classCombo->addItem(tr(it.c_str()));
+        }
+        ui->classCombo->setCurrentIndex(thread->ThreadClass.getValue());
+    }
     else if (&Prop == &thread->ThreadSize) {
         updateComboBox(ui->diameterCombo, thread->ThreadSize.getValue());
         // Thread size also updates related properties

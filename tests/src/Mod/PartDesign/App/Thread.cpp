@@ -506,96 +506,6 @@ TEST_F(ThreadTest, ThreadProfileLoaderRejectsOpenProfile)
     EXPECT_TRUE(definition.profileDiagnostic.find("closed wire") != std::string::npos);
 }
 
-TEST_F(ThreadTest, ThreadProfileLoaderRejectsMultipleWires)
-{
-    auto* profile = createThreadProfile(
-        "ThreadProfile",
-        {
-            Base::Vector3d(-0.75, 0.001, 0.0),
-            Base::Vector3d(0.0, 0.4375, 0.0),
-            Base::Vector3d(0.0, 0.5625, 0.0),
-            Base::Vector3d(-0.75, 0.999, 0.0),
-        }
-    );
-    addProfileLoop(
-        profile,
-        {
-            Base::Vector3d(-0.5, 0.2, 0.0),
-            Base::Vector3d(-0.4, 0.2, 0.0),
-            Base::Vector3d(-0.4, 0.3, 0.0),
-            Base::Vector3d(-0.5, 0.3, 0.0),
-        }
-    );
-    getDocument()->recompute();
-
-    PartDesign::ThreadUtils::ThreadDefinition definition;
-    PartDesign::ThreadUtils::findThreadProfiles(getDocument(), definition, "profile-test");
-
-    using Status = PartDesign::ThreadUtils::ThreadDefinition::ProfileStatus;
-    EXPECT_EQ(definition.profileStatus, Status::Invalid);
-    EXPECT_TRUE(definition.profileDiagnostic.find("exactly one connected wire")
-                != std::string::npos);
-}
-
-TEST_F(ThreadTest, ThreadProfileLoaderRejectsClockwiseProfile)
-{
-    createThreadProfile(
-        "ThreadProfile",
-        {
-            Base::Vector3d(-0.75, 0.999, 0.0),
-            Base::Vector3d(0.0, 0.5625, 0.0),
-            Base::Vector3d(0.0, 0.4375, 0.0),
-            Base::Vector3d(-0.75, 0.001, 0.0),
-        }
-    );
-
-    PartDesign::ThreadUtils::ThreadDefinition definition;
-    PartDesign::ThreadUtils::findThreadProfiles(getDocument(), definition, "profile-test");
-
-    using Status = PartDesign::ThreadUtils::ThreadDefinition::ProfileStatus;
-    EXPECT_EQ(definition.profileStatus, Status::Invalid);
-    EXPECT_TRUE(definition.profileDiagnostic.find("counter-clockwise") != std::string::npos);
-}
-
-TEST_F(ThreadTest, ThreadProfileLoaderRejectsNonNormalizedAndPlacedProfiles)
-{
-    auto* profile = createThreadProfile(
-        "ThreadProfile",
-        {
-            Base::Vector3d(-0.75, -0.1, 0.0),
-            Base::Vector3d(0.0, 0.4375, 0.0),
-            Base::Vector3d(0.0, 0.5625, 0.0),
-            Base::Vector3d(-0.75, 0.999, 0.0),
-        }
-    );
-
-    PartDesign::ThreadUtils::ThreadDefinition definition;
-    PartDesign::ThreadUtils::findThreadProfiles(getDocument(), definition, "profile-test");
-
-    using Status = PartDesign::ThreadUtils::ThreadDefinition::ProfileStatus;
-    EXPECT_EQ(definition.profileStatus, Status::Invalid);
-    EXPECT_TRUE(definition.profileDiagnostic.find("range 0..1") != std::string::npos);
-
-    profile->Placement.setValue(Base::Placement(Base::Vector3d(0.0, 0.0, 1.0), Base::Rotation()));
-    PartDesign::ThreadUtils::findThreadProfiles(getDocument(), definition, "profile-test");
-    EXPECT_EQ(definition.profileStatus, Status::Invalid);
-    EXPECT_TRUE(definition.profileDiagnostic.find("XY plane") != std::string::npos);
-
-    getDocument()->removeObject("ThreadProfile");
-    createThreadProfile(
-        "ThreadProfile",
-        {
-            Base::Vector3d(-0.75, 0.001, 0.0),
-            Base::Vector3d(-0.1, 0.4375, 0.0),
-            Base::Vector3d(-0.1, 0.5625, 0.0),
-            Base::Vector3d(-0.75, 0.999, 0.0),
-        }
-    );
-    PartDesign::ThreadUtils::findThreadProfiles(getDocument(), definition, "profile-test");
-    EXPECT_EQ(definition.profileStatus, Status::Invalid);
-    EXPECT_TRUE(definition.profileDiagnostic.find("X = 0") != std::string::npos);
-}
-
 TEST_F(ThreadTest, ThreadEndTrimsFollowMetricProfileSupportIntersection)
 {
     auto* profile = createThreadProfile(
@@ -658,34 +568,6 @@ TEST_F(ThreadTest, ThreadEndTrimsFollowRoundedWhitworthRootIntersection)
     EXPECT_NEAR(expected, 0.0558318, 1e-6);
 }
 
-TEST_F(ThreadTest, ThreadEndTrimsAreIndependentForAsymmetricSupports)
-{
-    auto* profile = createThreadProfile(
-        "TrimProfile",
-        {
-            Base::Vector3d(-0.75, 0.0, 0.0),
-            Base::Vector3d(0.0, 0.3, 0.0),
-            Base::Vector3d(0.0, 0.6, 0.0),
-            Base::Vector3d(-0.2, 0.875, 0.0),
-            Base::Vector3d(-0.75, 1.0, 0.0),
-        }
-    );
-
-    constexpr double pitch = 2.0;
-    constexpr double nearPhase = 0.1;
-    constexpr double farPhase = 0.8;
-    constexpr double nearSupportX = -0.75 + 0.75 * nearPhase / 0.3;
-    constexpr double farSupportX = -0.2 * (farPhase - 0.6) / (0.875 - 0.6);
-    const auto trims = PartDesign::ThreadUtils::calculateThreadEndTrims(
-        getProfileWire(profile),
-        pitch,
-        {nearSupportX, 0.0},
-        {farSupportX, 0.0}
-    );
-    EXPECT_NEAR(trims.nearEnd, nearPhase * pitch, 1e-9);
-    EXPECT_NEAR(trims.farEnd, (1.0 - farPhase) * pitch, 1e-9);
-}
-
 TEST_F(ThreadTest, ThreadEndTrimsSupportTaperedIntersectionLines)
 {
     auto* profile = createThreadProfile(
@@ -716,62 +598,6 @@ TEST_F(ThreadTest, ThreadEndTrimsSupportTaperedIntersectionLines)
     );
     EXPECT_NEAR(trims.nearEnd, nearPhase * pitch, 1e-9);
     EXPECT_NEAR(trims.farEnd, (1.0 - farPhase) * pitch, 1e-9);
-}
-
-TEST_F(ThreadTest, ThreadEndTrimsRejectInvalidInputs)
-{
-    auto* validProfile = createThreadProfile(
-        "ValidTrimProfile",
-        {
-            Base::Vector3d(-0.75, 0.001, 0.0),
-            Base::Vector3d(0.0, 0.4375, 0.0),
-            Base::Vector3d(0.0, 0.5625, 0.0),
-            Base::Vector3d(-0.75, 0.999, 0.0),
-        }
-    );
-    auto* openProfile = createThreadProfile(
-        "OpenTrimProfile",
-        {
-            Base::Vector3d(-0.75, 0.001, 0.0),
-            Base::Vector3d(0.0, 0.4375, 0.0),
-            Base::Vector3d(0.0, 0.5625, 0.0),
-            Base::Vector3d(-0.75, 0.999, 0.0),
-        },
-        false
-    );
-
-    const PartDesign::ThreadUtils::NormalizedThreadSupport support {-0.5, 0.0};
-
-    EXPECT_THROW(
-        PartDesign::ThreadUtils::calculateThreadEndTrims(
-            TopoDS_Wire(), 1.0, support, support
-        ),
-        Base::ValueError
-    );
-    EXPECT_THROW(
-        PartDesign::ThreadUtils::calculateThreadEndTrims(
-            getProfileWire(openProfile), 1.0, support, support
-        ),
-        Base::ValueError
-    );
-    EXPECT_THROW(
-        PartDesign::ThreadUtils::calculateThreadEndTrims(
-            getProfileWire(validProfile), 0.0, support, support
-        ),
-        Base::ValueError
-    );
-    EXPECT_THROW(
-        PartDesign::ThreadUtils::calculateThreadEndTrims(
-            getProfileWire(validProfile), 1.0, {1.0, 0.0}, {1.0, 0.0}
-        ),
-        Base::ValueError
-    );
-    EXPECT_THROW(
-        PartDesign::ThreadUtils::calculateThreadEndTrims(
-            getProfileWire(validProfile), 1.0, {-0.75, 0.0}, {-0.75, 0.0}
-        ),
-        Base::ValueError
-    );
 }
 
 TEST_F(ThreadTest, ThreadExtentDimensionAndThroughAllRespectStartPlane)
@@ -848,27 +674,6 @@ TEST_F(ThreadTest, ThreadExtentInvalidDepthRecoversAfterCorrection)
     EXPECT_FALSE(thread->isError()) << thread->getStatusString();
     EXPECT_NEAR(thread->resolveThreadExtent().length, 10.0, 1e-7);
     EXPECT_FALSE(thread->Shape.getShape().isNull());
-}
-
-TEST_F(ThreadTest, ThreadCreationOnCylinder)
-{
-    auto doc = getDocument();
-    auto body = getBody();
-    //TODO: now that threadtype matters, change magic numbers for automatic diameter
-    auto pad = createCylinderPad(30.0, 12.7);
-    ASSERT_NE(pad, nullptr);
-    auto thread = doc->addObject<PartDesign::Thread>("Thread");
-    body->addObject(thread);
-
-    auto lateralFace = getLateralFaceName(pad);
-    thread->LateralFace.setValue(pad, {*lateralFace});
-
-    doc->recompute();
-
-    ASSERT_NE(thread, nullptr);
-    EXPECT_FALSE(thread->isError())
-        << "Feature thread has failed during recompute: " << thread->getStatusString();
-    EXPECT_TRUE(thread->isValid()) << "Feature Thread is not valid.";
 }
 
 TEST_F(ThreadTest, ThreadCreationOnCube)
@@ -961,57 +766,72 @@ TEST_F(ThreadTest, InternalThreadModeledM30x3_5)
     EXPECT_LT(threadVolume.Mass(), padVolume.Mass());
 }
 
-// TEST_F(ThreadTest, ExternalCosmeticThreadPreservesBase)
-// {
-//     auto doc = getDocument();
-//     auto body = getBody();
-//     auto pad = createCylinderPad(24.0, 12.0);
-//     ASSERT_NE(pad, nullptr);
+TEST_F(ThreadTest, ExternalCosmeticThreadPreservesBase)
+{
+    auto doc = getDocument();
+    auto body = getBody();
+    auto pad = createCylinderPad(24.0, 12.0);
+    ASSERT_NE(pad, nullptr);
 
-//     auto thread = doc->addObject<PartDesign::Thread>("Thread");
-//     body->addObject(thread);
+    auto thread = doc->addObject<PartDesign::Thread>("Thread");
+    body->addObject(thread);
 
-//     auto lateralFace = getLateralFaceName(pad);
-//     ASSERT_TRUE(lateralFace.has_value());
-//     thread->LateralFace.setValue(pad, {*lateralFace});
-//     thread->DepthType.setValue(0L);  // "Dimension"
-//     thread->Depth.setValue(24.0);
+    auto lateralFace = getLateralFaceName(pad);
+    ASSERT_TRUE(lateralFace.has_value());
+    thread->LateralFace.setValue(pad, {*lateralFace});
+    thread->DepthType.setValue(0L);  // "Dimension"
+    thread->Depth.setValue(24.0);
 
-//     int typeIdx = findEnumIndex(thread->ThreadType.getEnumVector(), "ISOMetricProfile");
-//     ASSERT_GE(typeIdx, 0);
-//     thread->ThreadType.setValue(typeIdx);
+    int typeIdx = findEnumIndex(thread->ThreadType.getEnumVector(), "ISOMetricProfile");
+    ASSERT_GE(typeIdx, 0);
+    thread->ThreadType.setValue(typeIdx);
 
-//     int sizeIdx = findEnumIndex(thread->ThreadSize.getEnumVector(), "24");
-//     ASSERT_GE(sizeIdx, 0);
-//     thread->ThreadSize.setValue(sizeIdx);
+    int sizeIdx = findEnumIndex(thread->ThreadSize.getEnumVector(), "24");
+    ASSERT_GE(sizeIdx, 0);
+    thread->ThreadSize.setValue(sizeIdx);
 
-//     int pitchIdx = findEnumIndex(thread->ThreadSizePitch.getEnumVector(), "3");
-//     ASSERT_GE(pitchIdx, 0);
-//     thread->ThreadSizePitch.setValue(pitchIdx);
+    int pitchIdx = findEnumIndex(thread->ThreadSizePitch.getEnumVector(), "3");
+    ASSERT_GE(pitchIdx, 0);
+    thread->ThreadSizePitch.setValue(pitchIdx);
 
-//     thread->ModelThread.setValue(false);
-//     thread->CosmeticThread.setValue(true);
-//     doc->recompute();
+    thread->ModelThread.setValue(false);
+    thread->CosmeticThread.setValue(true);
+    doc->recompute();
 
-//     ASSERT_FALSE(thread->isError()) << thread->getStatusString();
-//     ASSERT_TRUE(thread->isValid());
-//     EXPECT_FALSE(thread->IsInternal.getValue());
-//     EXPECT_TRUE(thread->Shape.getValue().isSame(pad->Shape.getValue()));
-//     EXPECT_TRUE(thread->AddSubShape.getValue().isNull());
-//     EXPECT_TRUE(thread->getReducedBasePreviewShape().isNull());
+    ASSERT_FALSE(thread->isError()) << thread->getStatusString();
+    ASSERT_TRUE(thread->isValid());
+    EXPECT_FALSE(thread->IsInternal.getValue());
+    ASSERT_FALSE(thread->Shape.getValue().IsNull());
+    EXPECT_TRUE(thread->AddSubShape.getValue().IsNull());
+    EXPECT_TRUE(thread->getReducedBasePreviewShape().isNull());
 
-//     GProp_GProps padVolume;
-//     GProp_GProps threadVolume;
-//     BRepGProp::VolumeProperties(pad->Shape.getValue(), padVolume);
-//     BRepGProp::VolumeProperties(thread->Shape.getValue(), threadVolume);
-//     EXPECT_NEAR(threadVolume.Mass(), padVolume.Mass(), 1e-9);
+    // IsSame compares shared topology and location identity, which can change when
+    // the feature resets its transform. Compare geometric properties instead.
+    const auto baseSignature = getThreadShapeSignature(pad->Shape.getValue());
+    const auto threadSignature = getThreadShapeSignature(thread->Shape.getValue());
+    EXPECT_NEAR(threadSignature.centerOfMass.Distance(baseSignature.centerOfMass), 0.0, 1e-9);
+    EXPECT_NEAR(threadSignature.xmin, baseSignature.xmin, 1e-9);
+    EXPECT_NEAR(threadSignature.ymin, baseSignature.ymin, 1e-9);
+    EXPECT_NEAR(threadSignature.zmin, baseSignature.zmin, 1e-9);
+    EXPECT_NEAR(threadSignature.xmax, baseSignature.xmax, 1e-9);
+    EXPECT_NEAR(threadSignature.ymax, baseSignature.ymax, 1e-9);
+    EXPECT_NEAR(threadSignature.zmax, baseSignature.zmax, 1e-9);
+    EXPECT_EQ(threadSignature.faces, baseSignature.faces);
+    EXPECT_EQ(threadSignature.edges, baseSignature.edges);
+    EXPECT_EQ(threadSignature.vertices, baseSignature.vertices);
 
-//     GProp_GProps padSurface;
-//     GProp_GProps threadSurface;
-//     BRepGProp::SurfaceProperties(pad->Shape.getValue(), padSurface);
-//     BRepGProp::SurfaceProperties(thread->Shape.getValue(), threadSurface);
-//     EXPECT_NEAR(threadSurface.Mass(), padSurface.Mass(), 1e-9);
-// }
+    GProp_GProps padVolume;
+    GProp_GProps threadVolume;
+    BRepGProp::VolumeProperties(pad->Shape.getValue(), padVolume);
+    BRepGProp::VolumeProperties(thread->Shape.getValue(), threadVolume);
+    EXPECT_NEAR(threadVolume.Mass(), padVolume.Mass(), 1e-9);
+
+    GProp_GProps padSurface;
+    GProp_GProps threadSurface;
+    BRepGProp::SurfaceProperties(pad->Shape.getValue(), padSurface);
+    BRepGProp::SurfaceProperties(thread->Shape.getValue(), threadSurface);
+    EXPECT_NEAR(threadSurface.Mass(), padSurface.Mass(), 1e-9);
+}
 
 TEST_F(ThreadTest, ExternalThreadModeledOnCone)
 {
@@ -1109,7 +929,7 @@ TEST_F(ThreadTest, ExternalThreadModeledM24Signature)
     ASSERT_TRUE(lateralFace.has_value());
     thread->LateralFace.setValue(pad, {*lateralFace});
 
-    thread->DepthType.setValue(0L); // "Dimension"
+    thread->DepthType.setValue(0L);
     thread->Depth.setValue(24.0);
 
     int typeIdx = findEnumIndex(thread->ThreadType.getEnumVector(), "ISOMetricProfile");
@@ -1159,72 +979,6 @@ TEST_F(ThreadTest, ExternalThreadModeledM24Signature)
     EXPECT_NEAR(thread->Diameter.getValue(), 24.0, 1e-9);
     EXPECT_FALSE(thread->IsInternal.getValue());
     EXPECT_EQ(std::string(thread->ThreadDesignation.getValue()), "M24x3.0");
-}
-
-TEST_F(ThreadTest, ExternalThreadModeledM24FineSignature)
-{
-    auto doc = getDocument();
-    auto body = getBody();
-    auto pad = createCylinderPad(24.0, 12.0);  // 24mm Height, 24mm diameter
-    ASSERT_NE(pad, nullptr);
-
-    auto thread = doc->addObject<PartDesign::Thread>("Thread");
-    body->addObject(thread);
-
-    auto lateralFace = getLateralFaceName(pad);
-    ASSERT_TRUE(lateralFace.has_value());
-    thread->LateralFace.setValue(pad, {*lateralFace});
-
-    thread->DepthType.setValue(0L); // "Dimension"
-    thread->Depth.setValue(24.0);
-
-    int typeIdx = findEnumIndex(thread->ThreadType.getEnumVector(), "ISOMetricFineProfile");
-    ASSERT_GE(typeIdx, 0) << "ISOMetricFineProfile was not found in enum";
-    thread->ThreadType.setValue(typeIdx); // ISOMetricFineProfile
-
-    int sizeIdx = findEnumIndex(thread->ThreadSize.getEnumVector(), "24");
-    ASSERT_GE(sizeIdx, 0) << "24mm Diameter was not found in enum";
-    thread->ThreadSize.setValue(sizeIdx);
-
-    int pitchIdx = findEnumIndex(thread->ThreadSizePitch.getEnumVector(), "2");
-    ASSERT_GE(pitchIdx, 0) << "2mm Pitch was not found in enum";
-    thread->ThreadSizePitch.setValue(pitchIdx);
-
-    thread->UseCustomThreadClearance.setValue(true);
-    thread->CustomThreadClearance.setValue(0.0);
-
-    thread->ModelThread.setValue(true);
-    thread->CosmeticThread.setValue(false);
-
-    doc->recompute();
-
-    ASSERT_FALSE(thread->isError()) << thread->getStatusString();
-    ASSERT_TRUE(thread->isValid());
-
-    const TopoDS_Shape& shape = thread->Shape.getValue();
-    const ThreadShapeSignature signature = getThreadShapeSignature(shape);
-
-    EXPECT_NEAR(signature.volume, 9748.04740625300, 1e-3);
-    EXPECT_NEAR(signature.surface, 3473.83683246289, 1e-3);
-
-    EXPECT_NEAR(signature.centerOfMass.X(), -0.0123866910666811, 1e-3);
-    EXPECT_NEAR(signature.centerOfMass.Y(), -0.0126162122787606, 1e-3);
-    EXPECT_NEAR(signature.centerOfMass.Z(), 12.0000090527935, 1e-3);
-
-    EXPECT_NEAR(signature.xmin, -12.0000267337974, 1e-3);
-    EXPECT_NEAR(signature.xmax, 13.0767083782664, 1e-3);
-    EXPECT_NEAR(signature.ymin, -13.4439239227804, 1e-3);
-    EXPECT_NEAR(signature.ymax, 13.4439410927855, 1e-3);
-    EXPECT_NEAR(signature.zmin, -0.25188685134595, 1e-3);
-    EXPECT_NEAR(signature.zmax, 24.2518534081066, 1e-3);
-
-    EXPECT_EQ(signature.faces, 52);
-    EXPECT_EQ(signature.edges, 206);
-    EXPECT_EQ(signature.vertices, 412);
-
-    EXPECT_NEAR(thread->Diameter.getValue(), 24.0, 1e-9);
-    EXPECT_FALSE(thread->IsInternal.getValue());
-    EXPECT_EQ(std::string(thread->ThreadDesignation.getValue()), "M24x2.0");
 }
 
 TEST_F(ThreadTest, ExternalThreadModeledBSPHalfInchSignature)

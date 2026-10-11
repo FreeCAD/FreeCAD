@@ -660,12 +660,14 @@ void Thread::updatePreviewShape()
 void Thread::onChanged(const App::Property* prop)
 {
     // Base::Console().message("onChangedObject: %s\n", prop->getName());
-    if (prop == &ThreadType) {
+    if (prop == &ThreadType || prop == &IsInternal) {
         std::string type;
 
         if (ThreadType.isValid()) {
             type = ThreadType.getValueAsString();
-            ThreadSize.setEnums(threadUtils.getThreadDiameters(ThreadType.getValue()));
+            if (prop == &ThreadType) {
+                ThreadSize.setEnums(threadUtils.getThreadDiameters(ThreadType.getValue()));
+            }
         }
 
         if (type == "None") {
@@ -702,11 +704,13 @@ void Thread::onChanged(const App::Property* prop)
             ThreadClass.setEnums(ThreadUtils::ThreadClass_None_Enums);
         }
 
-        ThreadDesignation.setValue(threadUtils.getThreadDesignations(
-            ThreadType.getValue(),
-            ThreadSize.getValue(),
-            ThreadSizePitch.getValue()
-        ));
+        if (prop == &ThreadType) {
+            ThreadDesignation.setValue(threadUtils.getThreadDesignations(
+                ThreadType.getValue(),
+                ThreadSize.getValue(),
+                ThreadSizePitch.getValue()
+            ));
+        }
     }
     else if (prop == &ThreadSize) {
         ThreadSizePitch.setEnums(
