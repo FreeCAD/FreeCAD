@@ -111,7 +111,7 @@ private:
 
     void updateProxy();
     static std::uint64_t geometrySignature(SoNode* root);
-    static void checkClosed(Group& group);
+    static void checkClosed(Group& group, std::vector<float>& patch);
     SectionCapStyle styleFor(const Group& group);
 
     SoNode* scene {nullptr};
@@ -126,8 +126,13 @@ private:
     std::map<std::string, std::size_t> groupIndex;
     std::uint32_t proxySceneId {0};
     std::uint64_t proxySignature {0};
-    // per key: digest of the triangles, closed
-    std::map<std::string, std::pair<std::uint64_t, bool>> closedCache;
+    struct ClosedInfo
+    {
+        std::uint64_t digest {0};  // of the collected triangles
+        bool closed {false};
+        std::vector<float> patch;  // triangles that close the cracks
+    };
+    std::map<std::string, ClosedInfo> closedCache;
     bool proxyValid {false};
     const void* lastShape {nullptr};
     std::size_t lastGroup {0};

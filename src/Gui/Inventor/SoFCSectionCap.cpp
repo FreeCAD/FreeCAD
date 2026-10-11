@@ -30,6 +30,8 @@
 #include <cstring>
 #include <map>
 #include <tuple>
+#include <unordered_map>
+#include <utility>
 
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbPlane.h>
@@ -652,28 +654,35 @@ void SoFCSectionCap::updateProxy()
             digestTris = (digestTris ^ bits) * 1099511628211ULL;
         }
         auto cached = closedCache.find(group.key);
-        if (cached != closedCache.end() && cached->second.first == digestTris) {
-            group.closed = cached->second.second;
+        ClosedInfo info;
+        if (cached != closedCache.end() && cached->second.digest == digestTris) {
+            info = std::move(cached->second);
         }
         else {
-            checkClosed(group);
+            info.digest = digestTris;
+            checkClosed(group, info.patch);
+            info.closed = group.closed;
         }
-        closed[group.key] = {digestTris, group.closed};
+        group.closed = info.closed;
+        group.tris.insert(group.tris.end(), info.patch.begin(), info.patch.end());
+        closed[group.key] = std::move(info);
     }
     closedCache.swap(closed);
     proxySignature = signature;
     proxyValid = true;
 }
 
-void SoFCSectionCap::checkClosed(Group& group)
+void SoFCSectionCap::checkClosed(Group& group, std::vector<float>& patch)
 {
     // closed: (nearly) every edge is used an even number of times, vertices welded by position
     std::map<std::tuple<float, float, float>, int> ids;
+    std::vector<std::size_t> first;  // per id: offset of the vertex in tris
     auto id = [&](std::size_t i) {
         auto key = std::make_tuple(group.tris[i], group.tris[i + 1], group.tris[i + 2]);
         auto it = ids.find(key);
         if (it == ids.end()) {
             it = ids.emplace(key, static_cast<int>(ids.size())).first;
+            first.push_back(i);
         }
         return it->second;
     };
@@ -691,9 +700,43 @@ void SoFCSectionCap::checkClosed(Group& group)
         }
     }
     // tessellation can leave a few cracks where faces meet; an open surface has far more
-    std::size_t odd = 0;
+    std::vector<std::pair<int, int>> odd;
     for (const auto& kv : edges) {
-        odd += kv.second % 2;
+        if (kv.second % 2) {
+            odd.push_back(kv.first);
+        }
     }
-    group.closed = !edges.empty() && odd * 100 <= edges.size();
+    group.closed = !edges.empty() && odd.size() * 100 <= edges.size();
+    if (!group.closed || odd.empty()) {
+        return;
+    }
+    // A ray through a crack misses a crossing and flips the stencil parity, which
+    // shows as slivers. Fan every connected set of unpaired edges from one of its
+    // vertices: every vertex has an even number of them, so this closes the mesh.
+    std::unordered_map<int, int> parent;
+    auto find = [&parent](int v) {
+        int root = parent.emplace(v, v).first->second;
+        while (parent[root] != root) {
+            root = parent[root];
+        }
+        while (v != root) {
+            int& up = parent[v];
+            v = std::exchange(up, root);
+        }
+        return root;
+    };
+    for (const auto& e : odd) {
+        parent[find(e.first)] = find(e.second);
+    }
+    auto push = [&](int v) {
+        patch.insert(patch.end(), group.tris.begin() + first[v], group.tris.begin() + first[v] + 3);
+    };
+    for (const auto& e : odd) {
+        const int apex = find(e.first);
+        if (apex != e.first && apex != e.second) {
+            push(apex);
+            push(e.first);
+            push(e.second);
+        }
+    }
 }
