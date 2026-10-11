@@ -154,7 +154,9 @@ def _mm(user_string):
     return quantity.getValueAs("mm").Value
 
 
-class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
+class _PlaneFixture(PathTestUtils.PathTestBase):
+    """A job on a box, a C/A machine, and helpers to make planes and operations."""
+
     def setUp(self):
         self.doc = FreeCAD.newDocument("TestPathTiltedWorkPlane")
         self.box = self.doc.addObject("Part::Box", "Box")
@@ -239,6 +241,8 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
                 out.append(item.item_type)
         return out
 
+
+class TestTiltedWorkPlanePost(_PlaneFixture):
     # the dialects
 
     def test_fanucDeclaresThePlaneAndLeavesThePathInPlaneCoordinates(self):
@@ -812,6 +816,86 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
         plane.Fixture = "G55"
         self._op("A", plane)
         self.assertEqual(self._sanity_post("G53 G0 Z0").get_sanity_checks(self.job), [])
+
+
+class TestLinuxCNCTiltedWorkPlane(_PlaneFixture):
+    """The LinuxCNC post against the syntax of LinuxCNC pull request #4374."""
+
+    def _post(self, **properties):
+        from Path.Post.Processor import PostProcessorFactory
+
+        self.machine.output.comments.enabled = False
+        self.machine.output.output_header = False
+        self.machine.postprocessor_properties = dict(properties)
+        post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc")
+        post.reinitialize()
+        post._machine = self.machine
+        return post
+
+    @staticmethod
+    def _lines(post):
+        sections = post.export2()
+        return [line.strip() for _, g in sections for line in g.splitlines()]
+
+    def test_theProgramDeclaresAlignsCutsAndCancels(self):
+        self._op("Tilted", self._plane())
+        lines = self._lines(self._post(pre_rotary_move="G53 G0 Z0"))
+        order = [
+            "G17 G54 G40 G49 G80 G90 G64",
+            "G53 G0 Z0",
+            DECLARE,
+            "G53.1",
+            "G1 X10.000 Y0.000 Z-2.000",
+            "G69",
+        ]
+        indexes = [lines.index(line) for line in order]
+        self.assertEqual(indexes, sorted(indexes), lines)
+        self.assertFalse(any(" A" in line and line.startswith("G0") for line in lines), lines)
+
+    def test_theAlignLineTakesTheControlsOptions(self):
+        self._op("Tilted", self._plane())
+        lines = self._lines(self._post(twp_align="G53.1 P1 Q1"))
+        self.assertIn("G53.1 P1 Q1", lines)
+        self.assertNotIn("G53.1", lines)
+
+    def test_theKinematicsSelectFollowsThePreambleOnlyWhenAPlaneNeedsIt(self):
+        self._op("Plain", None)
+        lines = self._lines(self._post(twp_kinematics_select="G12.1 P1"))
+        self.assertNotIn("G12.1 P1", lines)
+        self._op("Tilted", self._plane())
+        lines = self._lines(self._post(twp_kinematics_select="G12.1 P1"))
+        self.assertEqual(lines[lines.index("G17 G54 G40 G49 G80 G90 G64") + 1], "G12.1 P1")
+        self.assertLess(lines.index("G12.1 P1"), lines.index(DECLARE))
+
+    def test_thePlaneIsCancelledBeforeAFixtureChange(self):
+        """The control refuses G54-G59.3 while a plane is active."""
+        self.job.Fixtures = ["G54", "G55"]
+        self._op("Tilted", self._plane())
+        lines = self._lines(self._post())
+        declares = [i for i, line in enumerate(lines) if line == DECLARE]
+        cancels = [i for i, line in enumerate(lines) if line == "G69"]
+        self.assertEqual(len(declares), 2, lines)
+        self.assertEqual(len(cancels), 2, lines)
+        g55 = lines.index("G55")
+        self.assertTrue(any(c < g55 for c in cancels), "cancelled before G55")
+        self.assertTrue(any(d > g55 for d in declares), "declared again after G55")
+
+    def test_linuxcncHasNoDynamicWorkOffset(self):
+        self.machine.kinematics.rotation_strategy = RotationStrategy.DWO
+        self._op("Tilted", self._plane())
+        with self.assertRaises(CAMValueError) as raised:
+            self._post().export2()
+        self.assertIn("DWO", str(raised.exception))
+
+    def test_sanityWarnsThroughTheLinuxCNCPost(self):
+        self._op("A", self._plane(_tiltedAboutX(45)))
+        self._op("B", self._plane(_tiltedAboutX(-45)))
+        post = self._post()
+        post.apply_configuration_bundle()
+        notes = [
+            s["Note"] for s in post.get_sanity_checks(self.job) if s["squawkType"] == "WARNING"
+        ]
+        self.assertTrue(any("Pre-Rotary Move" in n for n in notes), notes)
 
 
 class TestMachineRotationStrategy(unittest.TestCase):
