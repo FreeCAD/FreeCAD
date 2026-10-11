@@ -453,27 +453,61 @@ App::DocumentObjectExecReturn* Transformed::execute()
     // occurrence zero is suppressed. Computing the delta from the feature's before/after shapes
     // avoids cutting into the earlier support or restoring tool material that was never removed.
     Part::TopoShape supportShape(supportTopShape);
-    Part::TopoShape resultShape;
+    Part::TopoShape resultShape(supportShape);
 
     gp_Trsf trsfInv = supportShape.getShape().Location().Transformation().Inverted();
 
     supportShape.setTransform(Base::Matrix4D());
     resultShape.setTransform(Base::Matrix4D());
 
-    if (hasOriginalTransformation() && isTransformationSuppressed(0)) {
-        if (mode != Mode::WholeShape) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
-                "Exception",
-                std::format(
-                    "Cannot suppress first transformation in: {} mode",
-                    transformModeEnums[static_cast<int>(mode)]
-                )
-            ));
+    const auto transformToSupport = [&trsfInv](Part::TopoShape shape) {
+        if (shape.isNull()) {
+            return shape;
+        }
+        const gp_Trsf location = shape.getShape().Location().Transformation();
+        shape.setTransform(Base::Matrix4D());
+        return shape.makeElementTransform(trsfInv.Multiplied(location));
+    };
+
+    if (hasOriginalTransformation() && isTransformationSuppressed(0) && mode != Mode::WholeShape) {
+        const auto sortedOriginals = getSortedOriginals();
+        for (auto it = sortedOriginals.rbegin(); it != sortedOriginals.rend(); ++it) {
+            auto* feature = freecad_cast<FeatureAddSub*>(*it);
+            if (!feature) {
+                continue;
+            }
+
+            Part::TopoShape before = transformToSupport(feature->getBaseTopoShape(true));
+            Part::TopoShape after = transformToSupport(feature->Shape.getShape());
+
+            Part::TopoShape delta;
+            if (feature->getAddSubType() == FeatureAddSub::Type::Additive) {
+                if (before.isNull()) {
+                    delta = after;
+                }
+                else {
+                    delta.makeElementCut({after, before});
+                }
+                if (!delta.isNull() && !resultShape.isNull()) {
+                    resultShape.makeElementCut({resultShape, delta});
+                }
+            }
+            else if (!before.isNull()) {
+                delta.makeElementCut({before, after});
+                if (!delta.isNull()) {
+                    if (resultShape.isNull()) {
+                        resultShape = delta;
+                    }
+                    else {
+                        resultShape.makeElementFuse({resultShape, delta});
+                    }
+                }
+            }
         }
     }
-    // keep the identity transform so we don't have to fuse it again
-    if (hasOriginalTransformation() && mode != Mode::WholeShape) {
-        resultShape = Part::TopoShape(supportShape);
+    else if (hasOriginalTransformation() && isTransformationSuppressed(0) && mode == Mode::WholeShape) {
+        // clear the result
+        resultShape = Part::TopoShape();
     }
 
     auto getTransformedCompShape = [&](const auto& resultShape, const auto& origShape) {
