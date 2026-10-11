@@ -56,10 +56,6 @@ rm -rf ${copy_dir}/share/cmake
 rm -rf ${copy_dir}/share/cmake-*
 rm -rf ${copy_dir}/share/man
 
-# Apply Patches
-mv ${copy_dir}/bin/Lib/ssl.py .ssl-orig.py
-cp ssl-patch.py ${copy_dir}/bin/Lib/ssl.py
-
 # Turn off the echo before we start actually calling "echo"
 set +x
 
