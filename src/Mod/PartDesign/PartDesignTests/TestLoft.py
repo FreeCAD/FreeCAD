@@ -175,7 +175,6 @@ class TestLoft(unittest.TestCase):
             loft.getStatusString(),
         )
 
-
     @staticmethod
     def _addRectangle(sketch, xMin, yMin, xMax, yMax):
         sketch.addGeometry(

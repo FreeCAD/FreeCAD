@@ -239,8 +239,8 @@ App::DocumentObjectExecReturn* Loft::execute()
                 "PartDesign",
                 "Profile '%1' cannot be used as both the profile and the first section"
             )
-            .arg(QString::fromStdString(label))
-            .toStdString()
+                .arg(QString::fromStdString(label))
+                .toStdString()
         );
     }
 
@@ -326,8 +326,8 @@ App::DocumentObjectExecReturn* Loft::execute()
                                 "PartDesign",
                                 "Profile '%1' and section '%2' do not have sufficient separation"
                             )
-                            .arg(firstLabel, secondLabel)
-                            .toStdString()
+                                .arg(firstLabel, secondLabel)
+                                .toStdString()
                         );
                     }
                     return new App::DocumentObjectExecReturn(
@@ -335,8 +335,8 @@ App::DocumentObjectExecReturn* Loft::execute()
                             "PartDesign",
                             "Sections '%1' and '%2' do not have sufficient separation"
                         )
-                        .arg(firstLabel, secondLabel)
-                        .toStdString()
+                            .arg(firstLabel, secondLabel)
+                            .toStdString()
                     );
                 }
                 return new App::DocumentObjectExecReturn(e.what());
