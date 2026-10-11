@@ -149,7 +149,6 @@ SectionAnalysisWidget::SectionAnalysisWidget(
             }
         }
     );
-    onHatchToggled(true);
 }
 
 SectionAnalysisWidget::~SectionAnalysisWidget()
@@ -433,57 +432,62 @@ void SectionAnalysisWidget::refreshFromFeature()
     angle2Spin->setValue(a2 * toDegrees);
 }
 
-void SectionAnalysisWidget::onPresetChanged(int index)
+Base::Vector3d SectionAnalysisWidget::normalForPreset(Preset preset) const
 {
-    const PanelWrite writing(this);
-    Base::Vector3d normal;
-    const Base::Vector3d curN = feature->PlaneNormal.getValue();
-    switch (static_cast<Preset>(index)) {
+    const Base::Vector3d current = feature->PlaneNormal.getValue();
+    switch (preset) {
         case Preset::XY:
-            normal = presetNormal(Base::Vector3d::UnitZ, curN);
-            break;
+            return presetNormal(Base::Vector3d::UnitZ, current);
         case Preset::XZ:
-            normal = presetNormal(Base::Vector3d::UnitY, curN);
-            break;
+            return presetNormal(Base::Vector3d::UnitY, current);
         case Preset::YZ:
-            normal = presetNormal(Base::Vector3d::UnitX, curN);
-            break;
+            return presetNormal(Base::Vector3d::UnitX, current);
         case Preset::ViewDirection:
-            normal = -cameraViewDirection();  // face toward camera
-            break;
+            return -cameraViewDirection();  // face toward camera
         default:
-            // Blank combo: nothing to apply, the plane keeps the pose it has.
-            applyPresetAngleLabels(static_cast<Preset>(index));
-            return;
+            return current;
     }
+}
 
-    applyPresetAngleLabels(static_cast<Preset>(index));
+void SectionAnalysisWidget::resetTiltAngles()
+{
+    const QSignalBlocker blockAngle1(angle1Spin);
+    const QSignalBlocker blockAngle2(angle2Spin);
+    angle1Spin->setValue(0.0);
+    angle2Spin->setValue(0.0);
+}
 
-    // Reset angles when switching presets
-    {
-        const QSignalBlocker blockAngle1(angle1Spin);
-        const QSignalBlocker blockAngle2(angle2Spin);
-        angle1Spin->setValue(0.0);
-        angle2Spin->setValue(0.0);
-    }
-
-    feature->PlaneNormal.setValue(normal);
-    feature->AngleBase.setValue(normal);
-
-    // Center the offset on the combined bounding box of every source, from the
-    // same box the plane quad and the handles use.
+void SectionAnalysisWidget::centreOffsetOnSources(const Base::Vector3d& normal)
+{
+    // The same box the plane quad and the handles are built from, so the three agree.
     Base::Vector3d centre;
     double diagonal = 0.0;
     if (viewProvider && viewProvider->sourceBounds(centre, diagonal)) {
         feature->PlaneOffset.setValue(centre * normal);
     }
 
-    // Keep the box showing the offset the plane actually has
-    {
-        const QSignalBlocker blockOffset(offsetSpin);
-        offsetSpin->setValue(feature->PlaneOffset.getValue());
+    const QSignalBlocker blockOffset(offsetSpin);
+    offsetSpin->setValue(feature->PlaneOffset.getValue());
+}
+
+void SectionAnalysisWidget::onPresetChanged(int index)
+{
+    const PanelWrite writing(this);
+    const auto preset = static_cast<Preset>(index);
+
+    applyPresetAngleLabels(preset);
+
+    // Blank combo: nothing to apply, the plane keeps the pose it has.
+    if (preset != Preset::XY && preset != Preset::XZ && preset != Preset::YZ
+        && preset != Preset::ViewDirection) {
+        return;
     }
 
+    const Base::Vector3d normal = normalForPreset(preset);
+    resetTiltAngles();
+    feature->PlaneNormal.setValue(normal);
+    feature->AngleBase.setValue(normal);
+    centreOffsetOnSources(normal);
 
     recompute();
 }
