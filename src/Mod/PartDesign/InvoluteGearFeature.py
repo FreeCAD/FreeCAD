@@ -182,7 +182,7 @@ class _InvoluteGear:
 
         # Prevent cases when Module equals zero
         if obj.Modules.Value <= 0.0:
-            return 
+            return
 
         generator_func(
             w,
@@ -263,7 +263,9 @@ class _InvoluteGearTaskPanel:
 
             return transformingAssigner
 
-        self.form.checkBox_GlobalFitView.toggled.connect(lambda checked: setattr(self, "globalFitView", checked))
+        self.form.checkBox_GlobalFitView.toggled.connect(
+            lambda checked: setattr(self, "globalFitView", checked)
+        )
         self.form.Quantity_Modules.valueChanged.connect(assignValue("Modules", fitView=True))
         self.form.Quantity_PressureAngle.valueChanged.connect(assignValue("PressureAngle"))
         self.form.spinBox_NumberOfTeeth.valueChanged.connect(
