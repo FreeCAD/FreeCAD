@@ -569,6 +569,7 @@ class Trimex(gui_base_original.Modifier):
                 self.obj.LastAngle = angles[1]
             else:
                 self.obj.Shape = newshape
+            self.doc.recompute()
             self.doc.commitTransaction()
         self.doc.recompute()
         for g in self.ghost:
