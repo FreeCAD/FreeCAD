@@ -42,7 +42,7 @@ PointPatternExtension::PointPatternExtension()
         App::Prop_None,
         "Moves all transformations relative to the first one."
     );
-    updatePropertyStatus();
+    OriginPointIndex.setStatus(App::Property::Hidden, RelativeToFirst.getValue());
 }
 
 void PointPatternExtension::extensionOnChanged(const App::Property* prop)
