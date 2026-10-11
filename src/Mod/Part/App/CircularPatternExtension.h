@@ -29,14 +29,22 @@ public:
     App::PropertyLength TangentialDistance;
     App::PropertyIntegerConstraint NumberCircles;
     App::PropertyIntegerConstraint Symmetry;
+    App::PropertyBool CenterAroundFeature;
+    App::PropertyLinkSub TangentAxis;
+    App::PropertyBool FlipTangentAxis;
 
     std::list<gp_Trsf> calculateTransformations() const;
-    virtual gp_Ax2 getRotation() const;
+    bool identityTransformSuppressed() const;
 
     short extensionMustExecute() override;
+    // void extensionOnChanged(const App::Property* prop) override;
 
     static const App::PropertyIntegerConstraint::Constraints intNumberCircles;
     static const App::PropertyIntegerConstraint::Constraints intSymmetry;
+
+protected:
+    gp_Ax2 getRotation() const;
+    virtual gp_Ax2 getRotation(const App::PropertyLinkSub& property) const;
 };
 
 }  // namespace Part

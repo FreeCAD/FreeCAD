@@ -17,10 +17,9 @@ CircularPattern::CircularPattern()
     Part::CircularPatternExtension::initExtension(this);
 }
 
-short CircularPattern::mustExecute() const
+bool CircularPattern::deleteOriginalTransformation() const
 {
-    return Transformed::mustExecute() || Axis.isTouched() || RadialDistance.isTouched()
-        || TangentialDistance.isTouched() || NumberCircles.isTouched() || Symmetry.isTouched();
+    return identityTransformSuppressed();
 }
 
 const std::list<gp_Trsf> CircularPattern::getTransformations(const std::vector<App::DocumentObject*>)
@@ -28,9 +27,9 @@ const std::list<gp_Trsf> CircularPattern::getTransformations(const std::vector<A
     return calculateTransformations();
 }
 
-gp_Ax2 CircularPattern::getRotation() const
+gp_Ax2 CircularPattern::getRotation(const App::PropertyLinkSub& property) const
 {
-    if (auto* line = freecad_cast<PartDesign::Line*>(Axis.getValue())) {
+    if (auto* line = freecad_cast<PartDesign::Line*>(property.getValue())) {
         const Base::Vector3d point = line->getBasePoint();
         const Base::Vector3d vector = line->getDirection();
         gp_Pnt base = Base::convertTo<gp_Pnt>(point);
@@ -42,5 +41,5 @@ gp_Ax2 CircularPattern::getRotation() const
         return gp_Ax2(base, direction);
     }
 
-    return Part::CircularPatternExtension::getRotation();
+    return Part::CircularPatternExtension::getRotation(property);
 }

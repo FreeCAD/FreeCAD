@@ -2513,6 +2513,10 @@ void CmdPartDesignCircularPattern::activated(int iMsg)
         if (profile) {
             if (auto* sketch = profile->getVerifiedSketch(/* silent =*/true)) {
                 FCMD_OBJ_CMD(feat, "Axis = (" << Gui::Command::getObjectCmd(sketch) << ",['N_Axis'])");
+                FCMD_OBJ_CMD(
+                    feat,
+                    "TangentAxis = (" << Gui::Command::getObjectCmd(sketch) << ",['H_Axis'])"
+                );
                 hasDirection = true;
             }
         }
@@ -2521,7 +2525,13 @@ void CmdPartDesignCircularPattern::activated(int iMsg)
                 feat,
                 "Axis = (" << Gui::Command::getObjectCmd(pcActiveBody->getOrigin()->getZ()) << ",[''])"
             );
+            FCMD_OBJ_CMD(
+                feat,
+                "TangentAxis = (" << Gui::Command::getObjectCmd(pcActiveBody->getOrigin()->getX())
+                                  << ",[''])"
+            );
         }
+        FCMD_OBJ_CMD(feat, "CenterAroundFeature = False");
 
         finishTransformed(cmd, feat);
     };

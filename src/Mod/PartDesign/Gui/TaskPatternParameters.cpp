@@ -181,7 +181,10 @@ void TaskPatternParameters::setupParameterUI(QWidget* widget)
             &circular->RadialDistance,
             &circular->TangentialDistance,
             &circular->NumberCircles,
-            &circular->Symmetry
+            &circular->Symmetry,
+            &circular->CenterAroundFeature,
+            &circular->TangentAxis,
+            &circular->FlipTangentAxis
         );
     }
     else {
@@ -522,7 +525,12 @@ void TaskPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             }
         }
         else if (auto* circularPattern = freecad_cast<PartDesign::CircularPattern*>(patternObj)) {
-            circularPattern->Axis.setValue(selObj, directions);
+            if (getActiveDirectionWidget()->getAxisIndex() == 1) {
+                circularPattern->TangentAxis.setValue(selObj, directions);
+            }
+            else {
+                circularPattern->Axis.setValue(selObj, directions);
+            }
         }
         else if (auto* pathPattern = freecad_cast<PartDesign::PathPattern*>(patternObj)) {
             pathPattern->Path.setValue(selObj, directions);
