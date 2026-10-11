@@ -1,6 +1,31 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 // tests/src/Gui/DlgAddProperty.cpp
 
+/***************************************************************************
+ *   Copyright (c) 2026 Chris Jones github.com/ipatch                      *
+ *                                                                         *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Library General Public License (LGPL)   *
+ *   as published by the Free Software Foundation; either version 2 of     *
+ *   the License, or (at your option) any later version.                   *
+ *   for detail see the LICENCE text file.                                 *
+ *                                                                         *
+ *   FreeCAD is distributed in the hope that it will be useful,            *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with FreeCAD; if not, write to the Free Software        *
+ *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+ *   USA                                                                   *
+ *                                                                         *
+ ***************************************************************************/
+
+#include <memory>
+
 #include <QComboBox>
 #include <QLineEdit>
 #include <QTest>
@@ -9,11 +34,12 @@
 #include <App/Document.h>
 #include <App/PropertyStandard.h>
 #include <App/VarSet.h>
+
 #include <Gui/Dialogs/DlgAddProperty.h>
 #include <Gui/Application.h>
 #include <Gui/propertyeditor/PropertyItem.h>
 
-#include "src/App/InitApplication.h"  // same helper the QuantitySpinBox tests use
+#include "src/App/InitApplication.h"
 
 class testDlgAddProperty: public QObject
 {
@@ -25,7 +51,7 @@ public:
         tests::initApplication();
         // Gui::Application::Instance must not be nullptr: creating the property
         // records a macro line via Application::Instance->macroManager()
-        if(!Gui::Application::Instance) {
+        if (!Gui::Application::Instance) {
             new Gui::Application(false);
         }
         // The dialog builds its value editor through PropertyItemFactory, which
@@ -37,8 +63,10 @@ private Q_SLOTS:
     void initTestCase()
     {
         std::unique_ptr<Gui::PropertyEditor::PropertyItem> probe(
-            Gui::PropertyEditor::PropertyItemFactory::instance()
-                .createPropertyItem("Gui::PropertyEditor::PropertyStringItem"));
+            Gui::PropertyEditor::PropertyItemFactory::instance().createPropertyItem(
+                "Gui::PropertyEditor::PropertyStringItem"
+            )
+        );
         QVERIFY2(probe, "PropertyStringItem not registered with PropertyItemFactory");
     }
 
@@ -60,17 +88,21 @@ private Q_SLOTS:
         App::GetApplication().closeDocument(docName.c_str());
     }
 
+    // A string typed into the Add Property dialog must reach the property while
+    // typing, as in 1.1.4. PropertyStringItem defers its commit to the property
+    // view's delegate (#29900), which this dialog does not use.
     // see: https://github.com/FreeCAD/FreeCAD/issues/33394
     void test_StringValueIsWrittenWhileTyping()  // NOLINT
     {
-        auto* probe = Gui::PropertyEditor::PropertyItemFactory::instance()
-            .createPropertyItem("Gui::PropertyEditor::PropertyStringItem");
+        auto* probe = Gui::PropertyEditor::PropertyItemFactory::instance().createPropertyItem(
+            "Gui::PropertyEditor::PropertyStringItem"
+        );
         QVERIFY2(probe, "PropertyItemFactory has no PropertyStringItem registered");
         delete probe;
 
         Gui::Dialog::DlgAddProperty dlg(nullptr, varSet);
         dlg.show();
-        QVERIFY(QTest::qWaitForWindowExposed(&dlg));   // works with QT_QPA_PLATFORM=offscreen
+        QVERIFY(QTest::qWaitForWindowExposed(&dlg));  // works with QT_QPA_PLATFORM=offscreen
 
         auto dumpEditor = [&dlg](const char* where) {
             auto* w = dlg.findChild<QWidget*>("editor");
