@@ -27,9 +27,6 @@
 #include <TopoDS.hxx>
 #include <Precision.hxx>
 
-#include <QCoreApplication>
-
-
 #include <boost/core/ignore_unused.hpp>
 
 #include <App/Document.h>
@@ -235,10 +232,7 @@ App::DocumentObjectExecReturn* Loft::execute()
             || (wholeObject(profileSubs) && wholeObject(firstSection.second)))) {
         const auto& label = profileObj->Label.getStrValue();
         return new App::DocumentObjectExecReturn(
-            QCoreApplication::translate(
-                "PartDesign",
-                "Profile '%1' cannot be used as both the profile and the first section"
-            )
+            tr("'%1' cannot be used as both the profile and the first section")
                 .arg(QString::fromStdString(label))
                 .toStdString()
         );
@@ -268,13 +262,6 @@ App::DocumentObjectExecReturn* Loft::execute()
         auto invObjLoc = this->getLocation().Inverted();
         if (!base.isNull()) {
             base.move(invObjLoc);
-        }
-
-        std::vector<std::string> sectionLabels;
-        sectionLabels.reserve(multisections.size() + 1);
-        sectionLabels.push_back(profileObj->Label.getStrValue());
-        for (const auto& sec : multisections) {
-            sectionLabels.push_back(sec.first->Label.getStrValue());
         }
 
         std::vector<std::vector<TopoShape>> wiresections;
@@ -317,24 +304,22 @@ App::DocumentObjectExecReturn* Loft::execute()
             catch (const Part::LoftProfileSeparationException& e) {
                 const auto firstIdx = e.getFirstProfileIndex();
                 const auto secondIdx = e.getSecondProfileIndex();
-                if (firstIdx < sectionLabels.size() && secondIdx < sectionLabels.size()) {
-                    const auto firstLabel = QString::fromStdString(sectionLabels[firstIdx]);
-                    const auto secondLabel = QString::fromStdString(sectionLabels[secondIdx]);
+                if (firstIdx < multisections.size() + 1 && secondIdx < multisections.size() + 1) {
+                    auto getLabel = [&](std::size_t idx) -> const std::string& {
+                        return idx == 0 ? profileObj->Label.getStrValue()
+                                        : multisections[idx - 1].first->Label.getStrValue();
+                    };
+                    const auto firstLabel = QString::fromStdString(getLabel(firstIdx));
+                    const auto secondLabel = QString::fromStdString(getLabel(secondIdx));
                     if (firstIdx == 0) {
                         return new App::DocumentObjectExecReturn(
-                            QCoreApplication::translate(
-                                "PartDesign",
-                                "Profile '%1' and section '%2' do not have sufficient separation"
-                            )
+                            tr("Profile '%1' and section '%2' do not have sufficient separation")
                                 .arg(firstLabel, secondLabel)
                                 .toStdString()
                         );
                     }
                     return new App::DocumentObjectExecReturn(
-                        QCoreApplication::translate(
-                            "PartDesign",
-                            "Sections '%1' and '%2' do not have sufficient separation"
-                        )
+                        tr("Sections '%1' and '%2' do not have sufficient separation")
                             .arg(firstLabel, secondLabel)
                             .toStdString()
                     );

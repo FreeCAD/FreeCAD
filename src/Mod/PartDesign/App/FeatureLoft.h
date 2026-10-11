@@ -25,6 +25,8 @@
 
 #pragma once
 
+#include <QCoreApplication>
+
 #include "FeatureSketchBased.h"
 
 namespace PartDesign
@@ -32,6 +34,7 @@ namespace PartDesign
 
 class PartDesignExport Loft: public ProfileBased
 {
+    Q_DECLARE_TR_FUNCTIONS(PartDesign::Loft)
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Loft);
 
 public:

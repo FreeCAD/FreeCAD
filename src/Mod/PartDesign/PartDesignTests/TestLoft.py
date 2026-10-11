@@ -58,23 +58,21 @@ class TestLoft(unittest.TestCase):
         self.Doc.recompute()
         self.assertAlmostEqual(self.AdditiveLoft.Shape.Volume, 1)
 
+    @staticmethod
+    def _createCircleSketch(body, name, label, z=0, radius=10):
+        sketch = body.newObject("Sketcher::SketchObject", name)
+        sketch.Label = label
+        sketch.Placement.Base.z = z
+        sketch.addGeometry(
+            Part.Circle(Base.Vector(), Base.Vector(0, 0, 1), radius),
+            False,
+        )
+        return sketch
+
     def testDuplicateProfileReportsItsLabel(self):
         body = self.Doc.addObject("PartDesign::Body", "Body")
-
-        profile = body.newObject("Sketcher::SketchObject", "Profile")
-        profile.Label = "Profile A"
-        profile.addGeometry(
-            Part.Circle(Base.Vector(), Base.Vector(0, 0, 1), 10),
-            False,
-        )
-
-        section = body.newObject("Sketcher::SketchObject", "Section")
-        section.Label = "Section B"
-        section.Placement.Base.z = 20
-        section.addGeometry(
-            Part.Circle(Base.Vector(), Base.Vector(0, 0, 1), 8),
-            False,
-        )
+        profile = self._createCircleSketch(body, "Profile", "Profile A")
+        section = self._createCircleSketch(body, "Section", "Section B", z=20, radius=8)
 
         loft = body.newObject("PartDesign::AdditiveLoft", "AdditiveLoft")
         loft.Profile = profile
@@ -83,31 +81,19 @@ class TestLoft(unittest.TestCase):
 
         self.assertFalse(loft.isValid())
         self.assertIn(
-            "Profile 'Profile A' cannot be used as both the profile and the first section",
+            "'Profile A' cannot be used as both the profile and the first section",
             loft.getStatusString(),
         )
 
     def testUnseparatedSectionsReportTheirLabels(self):
         body = self.Doc.addObject("PartDesign::Body", "Body")
-
-        sketches = []
-        for name, label, z in (
-            ("Profile", "Profile A", 0),
-            ("SectionB", "Section B", 20),
-            ("SectionC", "Section C", 20),
-        ):
-            sketch = body.newObject("Sketcher::SketchObject", name)
-            sketch.Label = label
-            sketch.Placement.Base.z = z
-            sketch.addGeometry(
-                Part.Circle(Base.Vector(), Base.Vector(0, 0, 1), 10),
-                False,
-            )
-            sketches.append(sketch)
+        profile = self._createCircleSketch(body, "Profile", "Profile A", z=0)
+        section_b = self._createCircleSketch(body, "SectionB", "Section B", z=20)
+        section_c = self._createCircleSketch(body, "SectionC", "Section C", z=20)
 
         loft = body.newObject("PartDesign::AdditiveLoft", "AdditiveLoft")
-        loft.Profile = sketches[0]
-        loft.Sections = sketches[1:]
+        loft.Profile = profile
+        loft.Sections = [section_b, section_c]
         self.Doc.recompute()
 
         self.assertFalse(loft.isValid())
@@ -118,22 +104,8 @@ class TestLoft(unittest.TestCase):
 
     def testProfileAndSectionLackSeparation(self):
         body = self.Doc.addObject("PartDesign::Body", "Body")
-
-        profile = body.newObject("Sketcher::SketchObject", "Profile")
-        profile.Label = "Profile A"
-        profile.Placement.Base.z = 0
-        profile.addGeometry(
-            Part.Circle(Base.Vector(), Base.Vector(0, 0, 1), 10),
-            False,
-        )
-
-        section = body.newObject("Sketcher::SketchObject", "Section")
-        section.Label = "Section B"
-        section.Placement.Base.z = 0
-        section.addGeometry(
-            Part.Circle(Base.Vector(), Base.Vector(0, 0, 1), 10),
-            False,
-        )
+        profile = self._createCircleSketch(body, "Profile", "Profile A", z=0)
+        section = self._createCircleSketch(body, "Section", "Section B", z=0)
 
         loft = body.newObject("PartDesign::AdditiveLoft", "AdditiveLoft")
         loft.Profile = profile
@@ -148,25 +120,13 @@ class TestLoft(unittest.TestCase):
 
     def testSubtractiveLoftUnseparatedSections(self):
         body = self.Doc.addObject("PartDesign::Body", "Body")
-
-        sketches = []
-        for name, label, z in (
-            ("Profile", "Profile A", 0),
-            ("SectionB", "Section B", 20),
-            ("SectionC", "Section C", 20),
-        ):
-            sketch = body.newObject("Sketcher::SketchObject", name)
-            sketch.Label = label
-            sketch.Placement.Base.z = z
-            sketch.addGeometry(
-                Part.Circle(Base.Vector(), Base.Vector(0, 0, 1), 10),
-                False,
-            )
-            sketches.append(sketch)
+        profile = self._createCircleSketch(body, "Profile", "Profile A", z=0)
+        section_b = self._createCircleSketch(body, "SectionB", "Section B", z=20)
+        section_c = self._createCircleSketch(body, "SectionC", "Section C", z=20)
 
         loft = body.newObject("PartDesign::SubtractiveLoft", "SubtractiveLoft")
-        loft.Profile = sketches[0]
-        loft.Sections = sketches[1:]
+        loft.Profile = profile
+        loft.Sections = [section_b, section_c]
         self.Doc.recompute()
 
         self.assertFalse(loft.isValid())
