@@ -696,10 +696,7 @@ void DlgPreferencesImp::updatePageDependentWidgets()
         }
     }
 
-    QAccessibleAnnouncementEvent announceEvent(
-        ui->groupsTreeView,
-        currentPageItem->text()
-    );
+    QAccessibleAnnouncementEvent announceEvent(ui->groupsTreeView, currentPageItem->text());
     QAccessible::updateAccessibility(&announceEvent);
 #endif
 }
@@ -1166,10 +1163,7 @@ void DlgPreferencesImp::showEvent(QShowEvent* ev)
                     QAccessible::updateAccessibility(&focusEv);
                 }
             }
-            QAccessibleAnnouncementEvent announceEvent(
-                ui->groupsTreeView,
-                currentItem->text()
-            );
+            QAccessibleAnnouncementEvent announceEvent(ui->groupsTreeView, currentItem->text());
             QAccessible::updateAccessibility(&announceEvent);
 #endif
         }
