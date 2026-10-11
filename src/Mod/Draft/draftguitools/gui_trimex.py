@@ -180,6 +180,7 @@ class Trimex(gui_base_original.Modifier):
         for g in self.ghost:
             g.on()
         self.activePoint = 0
+        self.reverse = False
         self.nodes = []
         self.shift = False
         self.alt = False
@@ -377,6 +378,7 @@ class Trimex(gui_base_original.Modifier):
         if alt and self.lockedActivePoint is None:
             reverse = not reverse
         self.activePoint = npoint
+        self.reverse = reverse
 
         # sorting out directions
         if reverse and (npoint > 0):
@@ -527,6 +529,9 @@ class Trimex(gui_base_original.Modifier):
                     if self.placement:
                         np = invpl.multVec(np)
                     p.append(np)
+                if self.reverse:
+                    # points come out backwards when the end was moved (#19189)
+                    p.reverse()
                 self.obj.Points = p
             elif utils.getType(self.obj) == "Part::Line":
                 p = []
