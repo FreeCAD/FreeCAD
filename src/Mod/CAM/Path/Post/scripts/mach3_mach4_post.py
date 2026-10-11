@@ -31,7 +31,6 @@ from Path.Post.Processor import PostProcessor
 
 import Path
 import FreeCAD
-import Constants
 
 translate = FreeCAD.Qt.translate
 
@@ -54,8 +53,7 @@ PREAMBLE = """G17 G54 G40 G49 G80 G90"""
 POSTAMBLE = """M05
 G17 G54 G90 G80 G40
 M2"""
-# Mach3 will not tolerate K on G2/G3 when G17 is active (XY plane). 
-PARAMETER_ORDER = Constants.PARAMETER_ORDER.replace("K", "")
+
 
 class Mach3_Mach4(PostProcessor):
     """The Mach3_Mach4 post processor class."""
@@ -97,12 +95,6 @@ class Mach3_Mach4(PostProcessor):
         # Output the machine name for mach3_mach4 instead of the machine units alone.
         #
         values["OUTPUT_MACHINE_NAME"] = True
-        #
-        # The order of parameters.
-        #
-        # mach3_mach4 doesn't want K properties on XY plane; Arcs need work.
-        # 
-        values["PARAMETER_ORDER"] = list(PARAMETER_ORDER)
         #
         # Any commands in this value will be output as the last commands
         # in the G-code file.
@@ -154,7 +146,5 @@ class Mach3_Mach4(PostProcessor):
             elif name == "spindle_decimals":
                 # S takes an integer.
                 prop["default"] = 0
-            elif name == "parameter_order":
-                prop["default"] = PARAMETER_ORDER
 
         return common_props
