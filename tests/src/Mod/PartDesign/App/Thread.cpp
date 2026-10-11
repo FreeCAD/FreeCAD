@@ -19,6 +19,7 @@
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
+#include <BRepPrimAPI_MakeCone.hxx>
 #include <BRepPrimAPI_MakeCylinder.hxx>
 #include <gp_Ax2.hxx>
 #include <BRepTools_WireExplorer.hxx>
@@ -1011,6 +1012,88 @@ TEST_F(ThreadTest, InternalThreadModeledM30x3_5)
 //     BRepGProp::SurfaceProperties(thread->Shape.getValue(), threadSurface);
 //     EXPECT_NEAR(threadSurface.Mass(), padSurface.Mass(), 1e-9);
 // }
+
+TEST_F(ThreadTest, ExternalThreadModeledOnCone)
+{
+    constexpr double length = 12.0;
+
+    auto doc = getDocument();
+    auto body = getBody();
+    auto base = doc->addObject<PartDesign::Feature>("Base");
+    body->addObject(base);
+    base->Shape.setValue(BRepPrimAPI_MakeCone(12.0, 12.375, length).Shape());
+    doc->recompute();
+
+    auto thread = doc->addObject<PartDesign::Thread>("Thread");
+    body->addObject(thread);
+    thread->BaseFeature.setValue(base);
+
+    std::optional<std::string> lateralFace;
+    for (TopExp_Explorer explorer(base->Shape.getValue(), TopAbs_FACE);
+         explorer.More(); explorer.Next()) {
+        const auto face = TopoDS::Face(explorer.Current());
+        if (BRepAdaptor_Surface(face).GetType() == GeomAbs_Cone) {
+            const int index = base->Shape.getShape().findShape(face);
+            ASSERT_GT(index, 0);
+            lateralFace = "Face" + std::to_string(index);
+            break;
+        }
+    }
+    ASSERT_TRUE(lateralFace.has_value());
+    thread->LateralFace.setValue(base, {*lateralFace});
+    EXPECT_TRUE(thread->Tapered.getValue());
+    EXPECT_NEAR(
+        thread->TaperedAngle.getValue(),
+        90.0 + std::atan((12.375 - 12.0) / length) * 180.0 / std::numbers::pi,
+        1e-9
+    );
+
+    const int typeIdx = findEnumIndex(thread->ThreadType.getEnumVector(), "ISOMetricProfile");
+    ASSERT_GE(typeIdx, 0);
+    thread->ThreadType.setValue(typeIdx);
+
+    const int sizeIdx = findEnumIndex(thread->ThreadSize.getEnumVector(), "24");
+    ASSERT_GE(sizeIdx, 0);
+    thread->ThreadSize.setValue(sizeIdx);
+
+    const int pitchIdx = findEnumIndex(thread->ThreadSizePitch.getEnumVector(), "3");
+    ASSERT_GE(pitchIdx, 0);
+    thread->ThreadSizePitch.setValue(pitchIdx);
+
+    thread->DepthType.setValue("Dimension");
+    thread->Depth.setValue(length);
+    thread->UseCustomThreadClearance.setValue(true);
+    thread->CustomThreadClearance.setValue(0.0);
+    thread->ModelThread.setValue(true);
+    thread->CosmeticThread.setValue(false);
+    doc->recompute();
+
+    ASSERT_FALSE(thread->isError()) << thread->getStatusString();
+    ASSERT_TRUE(thread->isValid());
+    EXPECT_FALSE(thread->IsInternal.getValue());
+
+    const auto& shape = thread->Shape.getShape();
+    ASSERT_FALSE(shape.isNull());
+    EXPECT_TRUE(shape.isValid());
+    int solids = 0;
+    for (TopExp_Explorer explorer(shape.getShape(), TopAbs_SOLID);
+         explorer.More(); explorer.Next()) {
+        ++solids;
+    }
+    EXPECT_EQ(solids, 1);
+    ASSERT_FALSE(thread->AddSubShape.getShape().isNull());
+
+    const auto& reducedBase = thread->getReducedBasePreviewShape();
+    ASSERT_FALSE(reducedBase.isNull());
+    GProp_GProps baseVolume;
+    GProp_GProps reducedBaseVolume;
+    GProp_GProps threadVolume;
+    BRepGProp::VolumeProperties(base->Shape.getValue(), baseVolume);
+    BRepGProp::VolumeProperties(reducedBase.getShape(), reducedBaseVolume);
+    BRepGProp::VolumeProperties(shape.getShape(), threadVolume);
+    EXPECT_GT(threadVolume.Mass(), reducedBaseVolume.Mass());
+    EXPECT_LT(threadVolume.Mass(), baseVolume.Mass());
+}
 
 TEST_F(ThreadTest, ExternalThreadModeledM24Signature)
 {

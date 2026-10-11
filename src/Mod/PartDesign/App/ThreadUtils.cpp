@@ -34,6 +34,7 @@
 #include <GeomAPI_IntCS.hxx>
 #include <GeomAbs_SurfaceType.hxx>
 #include <gp_Circ.hxx>
+#include <gp_Cone.hxx>
 #include <gp_Cylinder.hxx>
 #include <gp_Dir.hxx>
 #include <TopExp_Explorer.hxx>
@@ -46,6 +47,8 @@
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
+#include <gp_Ax3.hxx>
 #include <BRepTools_WireExplorer.hxx>
 #include <GC_MakeArcOfCircle.hxx>
 #include <BRepBuilderAPI_MakeSolid.hxx>
@@ -1467,6 +1470,29 @@ ThreadUtils::ThreadEndTrims ThreadUtils::calculateThreadEndTrims(
     return {*nearIt * pitch, (1.0 - *farIt) * pitch};
 }
 
+static double getThreadTaperSlope(bool tapered, double taperedAngle)
+{
+    if (!tapered) {
+        return 0.0;
+    }
+    if (!std::isfinite(taperedAngle) || taperedAngle <= 0.0 || taperedAngle >= 180.0) {
+        throw Base::ValueError(QT_TRANSLATE_NOOP(
+            "Exception", "Thread error: Tapered angle must be between 0 and 180 degrees"
+        ));
+    }
+    return std::tan(Base::toRadians(90.0 - taperedAngle));
+}
+
+static void validateThreadRadii(double firstRadius, double lastRadius)
+{
+    if (!std::isfinite(firstRadius) || !std::isfinite(lastRadius)
+        || std::min(firstRadius, lastRadius) <= Precision::Confusion()) {
+        throw Base::ValueError(QT_TRANSLATE_NOOP(
+            "Exception", "Thread error: Thread geometry reaches the cone apex or contains an invalid radius"
+        ));
+    }
+}
+
 ThreadUtils::ThreadEndTrims ThreadUtils::getThreadEndTrims(
     int threadType,
     int sizeIndex,
@@ -1478,7 +1504,9 @@ ThreadUtils::ThreadEndTrims ThreadUtils::getThreadEndTrims(
     double taperedAngle,
     bool useCustomThreadClearance,
     double customThreadClearance,
-    App::PropertyEnumeration& threadClass
+    App::PropertyEnumeration& threadClass,
+    bool referenceAtStart,
+    double supportTaperSlope
 ) const
 {
     const ResolvedThreadSelection selection = resolveThreadSelection(
@@ -1499,7 +1527,9 @@ ThreadUtils::ThreadEndTrims ThreadUtils::getThreadEndTrims(
         selectedProfile = &*definition.profile;
     }
 
-    if (supportDiameter <= Precision::Confusion()
+    if (!std::isfinite(supportDiameter) || !std::isfinite(usefulThreadLength)
+        || !std::isfinite(supportTaperSlope)
+        || supportDiameter <= Precision::Confusion()
         || usefulThreadLength <= Precision::Confusion()) {
         throw Base::ValueError(QT_TRANSLATE_NOOP(
             "Exception",
@@ -1551,11 +1581,14 @@ ThreadUtils::ThreadEndTrims ThreadUtils::getThreadEndTrims(
     const double correctedMajorRadius = selection.majorDiameter / 2.0
         + (isInternalThread ? clearance : -clearance);
     const double supportRadius = supportDiameter / 2.0;
-    const double taperSlope = tapered
-        ? std::tan(Base::toRadians(90.0 - taperedAngle))
-        : 0.0;
-    const double farSupportOffset = (supportRadius - correctedMajorRadius) / selection.pitch;
-    const double nearMajorRadius = correctedMajorRadius + usefulThreadLength * taperSlope;
+    const double taperSlope = getThreadTaperSlope(tapered, taperedAngle);
+    const double farMajorRadius = correctedMajorRadius
+        - (referenceAtStart ? usefulThreadLength * taperSlope : 0.0);
+    const double nearMajorRadius = farMajorRadius + usefulThreadLength * taperSlope;
+    const double farSupportRadius = supportRadius + usefulThreadLength * supportTaperSlope;
+    validateThreadRadii(nearMajorRadius, farMajorRadius);
+    validateThreadRadii(supportRadius, farSupportRadius);
+    const double farSupportOffset = (farSupportRadius - farMajorRadius) / selection.pitch;
     const double nearSupportOffset = (supportRadius - nearMajorRadius) / selection.pitch;
 
     // Profile Y grows toward +zDir, opposite to the reversed helix path. A point at
@@ -1588,7 +1621,8 @@ TopoDS_Shape ThreadUtils::makeThread(
     const double taperedAngle,
     const bool UseCustomThreadClearance,
     const double CustomThreadClearance,
-    const double farEndTrim
+    const double farEndTrim,
+    const double usefulThreadLength
 )
 {
     // if (DEBUG) Base::Console().message("Rmaj: %lf | RmajC: %lf | Pitch: %lf | clearance: %lf\n", Rmaj,
@@ -1658,18 +1692,33 @@ TopoDS_Shape ThreadUtils::makeThread(
         RmajC = Rmaj - clearance;
     }
 
-    if (farEndTrim < 0.0) {
+    if (!std::isfinite(farEndTrim) || farEndTrim < 0.0) {
         throw Base::ValueError(QT_TRANSLATE_NOOP(
             "Exception",
             "Thread far-end trim must not be negative"
         ));
     }
-    if (tapered) {
-        const double taperSlope = std::tan(Base::toRadians(90.0 - taperedAngle));
-        const double radialExtension = farEndTrim * taperSlope;
-        Rmaj -= radialExtension;
-        RmajC -= radialExtension;
+    if (!std::isfinite(length) || length <= Precision::Confusion()
+        || !std::isfinite(usefulThreadLength) || usefulThreadLength < 0.0
+        || usefulThreadLength + farEndTrim > length + Precision::Confusion()) {
+        throw Base::ValueError(QT_TRANSLATE_NOOP(
+            "Exception", "Thread error: Invalid generated or useful thread length"
+        ));
     }
+    const double taperSlope = getThreadTaperSlope(tapered, taperedAngle);
+    if (usefulThreadLength > 0.0) {
+        // The nominal depth includes the final profile pitch, not only the guide.
+        const double nominalDepth = usefulThreadLength + Pitch;
+        validateThreadRadii(Rmaj, Rmaj - nominalDepth * taperSlope);
+        validateThreadRadii(RmajC, RmajC - nominalDepth * taperSlope);
+    }
+    // The guide starts at the extended far end and runs back toward the entrance.
+    // Shift the nominal entrance radius to that origin, including the far trim.
+    const double radialExtension = (usefulThreadLength + farEndTrim) * taperSlope;
+    Rmaj -= radialExtension;
+    RmajC -= radialExtension;
+    validateThreadRadii(Rmaj, Rmaj + length * taperSlope);
+    validateThreadRadii(RmajC, RmajC + length * taperSlope);
     Base::Console().message("[makeThread]: RmajC: %lf\n", RmajC);
 
     // std::string threadTypeStr = ThreadType.getValueAsString();
@@ -1730,6 +1779,22 @@ TopoDS_Shape ThreadUtils::makeThread(
         }
     }
     const TopoDS_Wire threadWire = TopoDS::Wire(threadProfile.getShape());
+
+    // Check the profile root as well as the guide, including surplus at both ends.
+    // Express the profile in its radial/axial frame so rotated threads use the
+    // same radius check as threads aligned with the global axes.
+    gp_Trsf profileToLocal;
+    profileToLocal.SetTransformation(
+        gp_Ax3(gp_Pnt(0.0, 0.0, 0.0), gp_Dir(zDir), gp_Dir(xDir))
+    );
+    const TopoDS_Shape localProfile = BRepBuilderAPI_Transform(
+        threadWire, profileToLocal, true
+    ).Shape();
+    Bnd_Box profileBounds;
+    BRepBndLib::Add(localProfile, profileBounds);
+    double minX, minY, minZ, maxX, maxY, maxZ;
+    profileBounds.Get(minX, minY, minZ, maxX, maxY, maxZ);
+    validateThreadRadii(minX, minX + length * taperSlope);
 
     // create the helix path
     // double threadDepth = ThreadDepth.getValue();
@@ -1844,15 +1909,22 @@ TopoDS_Shape ThreadUtils::makeThread(
 }
 
 
-static bool isCylindricalFace(const TopoDS_Face& face)
+static gp_Ax1 getLateralFaceAxis(const TopoDS_Face& face)
 {
     if (face.IsNull()) {
-        return false;
+        throw Base::ValueError("LateralFace does not reference a valid shape/face.");
     }
 
     BRepAdaptor_Surface surface(face);
 
-    return surface.GetType() == GeomAbs_Cylinder;
+    switch (surface.GetType()) {
+        case GeomAbs_Cylinder:
+            return surface.Cylinder().Axis();
+        case GeomAbs_Cone:
+            return surface.Cone().Axis();
+        default:
+            throw Base::ValueError("The selected face must be cylindrical or conical.");
+    }
 }
 
 static TopoDS_Face getSelectedFace(const App::PropertyLinkSub& faceProp)
@@ -1900,17 +1972,9 @@ static TopoDS_Face getSelectedFace(const App::PropertyLinkSub& faceProp)
 
 double ThreadUtils::getConicalAngle(const App::PropertyLinkSub& lateralFace)
 {
-    const TopoDS_Face& face = getSelectedFace(lateralFace);
-
-    if (getFaceType(face) == FaceType::Cylinder) {
-        return 0.0;
-    }
-    
+    const TopoDS_Face face = getSelectedFace(lateralFace);
     if (getFaceType(face) == FaceType::Cone) {
-        Handle(Geom_Surface) surf = BRep_Tool::Surface(face);
-        if (auto con = Handle(Geom_ConicalSurface)::DownCast(surf)) {
-            return std::abs(con->SemiAngle());
-        }
+        return BRepAdaptor_Surface(face).Cone().SemiAngle();
     }
 
     return 0.0;
@@ -1918,22 +1982,54 @@ double ThreadUtils::getConicalAngle(const App::PropertyLinkSub& lateralFace)
 
 double ThreadUtils::getCylinderDiameter(const TopoDS_Face& face)
 {
-    Handle(Geom_Surface) surface = BRep_Tool::Surface(face);
-
-    Handle(Geom_CylindricalSurface) cylinder = Handle(Geom_CylindricalSurface)::DownCast(surface);
-
-    if (cylinder.IsNull()) {
+    if (face.IsNull()) {
         return -1.0;
     }
+    BRepAdaptor_Surface surface(face);
+    return surface.GetType() == GeomAbs_Cylinder ? 2.0 * surface.Cylinder().Radius() : -1.0;
+}
 
-    return 2.0 * cylinder->Radius();
+static double getLateralFaceDiameterAtPoint(const TopoDS_Face& face, const gp_Pnt& point)
+{
+    const gp_Ax1 axis = getLateralFaceAxis(face);
+    BRepAdaptor_Surface surface(face);
+    if (surface.GetType() == GeomAbs_Cylinder) {
+        return 2.0 * surface.Cylinder().Radius();
+    }
+
+    const gp_Cone cone = surface.Cone();
+    // RefRadius belongs to the cone's reference plane, not necessarily to a face boundary.
+    const double axialDistance = gp_Vec(axis.Location(), point).Dot(gp_Vec(axis.Direction()));
+    const double radius = cone.RefRadius() + axialDistance * std::tan(cone.SemiAngle());
+    if (!std::isfinite(radius) || radius <= Precision::Confusion()) {
+        throw Base::ValueError("Thread error: Invalid cone radius at the thread start.");
+    }
+    return 2.0 * radius;
 }
 
 double ThreadUtils::getLateralFaceDiameter(const App::PropertyLinkSub& lateralFace)
 {
-    TopoDS_Face face = getSelectedFace(lateralFace);
+    const TopoDS_Face face = getSelectedFace(lateralFace);
+    return getLateralFaceDiameterAtPoint(
+        face,
+        getThreadStartPoint(lateralFace, getLateralFaceAxis(face).Direction())
+    );
+}
 
-    return getCylinderDiameter(face);
+double ThreadUtils::getLateralFaceDiameter(
+    const App::PropertyLinkSub& lateralFace,
+    const App::PropertyLinkSub& startPlane
+)
+{
+    return getLateralFaceDiameterAtPoint(
+        getSelectedFace(lateralFace),
+        getThreadStartPoint(lateralFace, startPlane)
+    );
+}
+
+bool ThreadUtils::isConicalFace(const App::PropertyLinkSub& lateralFace) const
+{
+    return getFaceType(getSelectedFace(lateralFace)) == FaceType::Cone;
 }
 
 int ThreadUtils::findNearestThreadSize(const int threadType, const double diameter)
@@ -2207,21 +2303,7 @@ gp_Vec ThreadUtils::computePerpendicular(const gp_Vec& zDir) const
 
 gp_Pnt ThreadUtils::getThreadAxisOrigin(const App::PropertyLinkSub& LateralFace)
 {
-    TopoDS_Face threadedFace = getSelectedFace(LateralFace);
-    Handle(Geom_Surface) surf = BRep_Tool::Surface(threadedFace);
-
-    if (getFaceType(threadedFace) == FaceType::Cylinder) {
-        Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast(surf);
-        // if (DEBUG) Base::Console().message("cyl->Position().Location().z(): %lf\n",
-        // cyl->Position().Location().Z());
-        return cyl->Position().Location();
-    }
-    else if (getFaceType(threadedFace) == FaceType::Cone) {
-        Handle(Geom_ConicalSurface) cone = Handle(Geom_ConicalSurface)::DownCast(surf);
-        return cone->Position().Location();
-    }
-
-    throw Base::RuntimeError("Thread axis origin could not be calculated.");
+    return getLateralFaceAxis(getSelectedFace(LateralFace)).Location();
 }
 
 gp_Vec ThreadUtils::getThreadZAxis(const App::PropertyLinkSub& LateralFace) const
@@ -2230,32 +2312,7 @@ gp_Vec ThreadUtils::getThreadZAxis(const App::PropertyLinkSub& LateralFace) cons
         throw Base::ValueError("LateralFace property is null or not assigned.");
     }
 
-    TopoDS_Face threadedFace = getSelectedFace(LateralFace);
-    if (threadedFace.IsNull()) {
-        throw Base::ValueError("LateralFace does not reference a valid shape/face.");
-    }
-
-    Handle(Geom_Surface) surf = BRep_Tool::Surface(threadedFace);
-    if (surf.IsNull()) {
-        throw Base::ValueError("Surface geometry for LateralFace could not be retrieved.");
-    }
-
-    FaceType type = getFaceType(threadedFace);
-
-    if (type == FaceType::Cylinder) {
-        Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast(surf);
-        if (!cyl.IsNull()) {
-            return gp_Vec(cyl->Position().Direction());
-        }
-    }
-    else if (type == FaceType::Cone) {
-        Handle(Geom_ConicalSurface) cone = Handle(Geom_ConicalSurface)::DownCast(surf);
-        if (!cone.IsNull()) {
-            return gp_Vec(cone->Position().Direction());
-        }
-    }
-
-    throw Base::RuntimeError("zDir could not be calculated: Face is neither a valid Cylinder nor Cone.");
+    return gp_Vec(getLateralFaceAxis(getSelectedFace(LateralFace)).Direction());
 }
 
 double ThreadUtils::getThroughAllLength(TopoShape base) const
@@ -2815,15 +2872,7 @@ gp_Pnt ThreadUtils::getThreadStartPoint(const App::PropertyLinkSub& lateralFace,
         throw Base::RuntimeError("Thread error: selected face is null");
     }
 
-    // Get the true cylindrical axis from the surface geometry
-    BRepAdaptor_Surface surfAdapt(face);
-    if (surfAdapt.GetType() != GeomAbs_Cylinder) {
-        throw Base::RuntimeError("Thread error: selected face is not cylindrical");
-    }
-
-    gp_Ax1 cylAxis = surfAdapt.Cylinder().Axis();
-    const gp_Pnt axisOrigin = cylAxis.Location();
-    const gp_Dir axisDir = cylAxis.Direction();
+    const gp_Pnt axisOrigin = getLateralFaceAxis(face).Location();
 
     // Collect vertices belonging to the selected face, to find
     // the extremity along zDir (start of the thread)
@@ -2868,10 +2917,15 @@ Part::TopoShape ThreadUtils::reduceExternalThreadBase(
     const App::PropertyLinkSub& lateralFace,
     double majorDiameter,
     double minorDiameter,
-    double length
+    double length,
+    const gp_Pnt& startPoint,
+    bool tapered,
+    double taperedAngle
 )
 {
-    if (majorDiameter <= Precision::Confusion()
+    if (!std::isfinite(majorDiameter) || !std::isfinite(minorDiameter)
+        || !std::isfinite(length) || length <= Precision::Confusion()
+        || majorDiameter <= Precision::Confusion()
         || minorDiameter <= Precision::Confusion()
         || minorDiameter >= majorDiameter) {
         throw Base::ValueError(
@@ -2887,8 +2941,6 @@ Part::TopoShape ThreadUtils::reduceExternalThreadBase(
 
     gp_Vec zDir = getThreadZAxis(lateralFace);
     zDir.Normalize();
-
-    gp_Pnt startPoint = getThreadStartPoint(lateralFace, gp_Dir(zDir));
 
     if (DEBUG) {
         Base::Console().message("[reduceExternalThreadBase]: Thread Z Axis direction: (%.4f, %.4f, %.4f)\n", 
@@ -2907,21 +2959,35 @@ Part::TopoShape ThreadUtils::reduceExternalThreadBase(
                                 majorRadius, minorRadius);
     }
 
-    BRepPrimAPI_MakeCylinder outer(axis, majorRadius, length);
-    BRepPrimAPI_MakeCylinder inner(axis, minorRadius, length);
-
-    if (outer.Shape().IsNull() || inner.Shape().IsNull()) {
-        if (DEBUG) Base::Console().error("[reduceExternalThreadBase]: Failed to create reduction cylinders (IsNull)!\n");
-        throw Base::RuntimeError("Thread error: failed to create thread reduction cylinders");
+    const bool conicalSupport = isConicalFace(lateralFace);
+    const double outerSlope = conicalSupport ? std::tan(getConicalAngle(lateralFace)) : 0.0;
+    const double innerSlope = conicalSupport ? -getThreadTaperSlope(tapered, taperedAngle) : 0.0;
+    const double outerEndRadius = majorRadius + length * outerSlope;
+    const double innerEndRadius = minorRadius + length * innerSlope;
+    validateThreadRadii(majorRadius, outerEndRadius);
+    validateThreadRadii(minorRadius, innerEndRadius);
+    if (innerEndRadius >= outerEndRadius - Precision::Confusion()) {
+        throw Base::ValueError(QT_TRANSLATE_NOOP(
+            "Exception", "Thread error: Reduced thread base exceeds the support radius"
+        ));
     }
 
-    if (DEBUG) Base::Console().message("[reduceExternalThreadBase]: Outer and inner cylinders created. Building ring cut...\n");
+    // The outer volume follows the original face; the retained core follows
+    // the configured thread taper. Both start at the resolved reduction section.
+    const auto makeVolume = [&](double firstRadius, double lastRadius) -> TopoDS_Shape {
+        if (std::abs(lastRadius - firstRadius) <= Precision::Confusion()) {
+            return BRepPrimAPI_MakeCylinder(axis, firstRadius, length).Shape();
+        }
+        return BRepPrimAPI_MakeCone(axis, firstRadius, lastRadius, length).Shape();
+    };
+    const TopoDS_Shape outer = makeVolume(majorRadius, outerEndRadius);
+    const TopoDS_Shape inner = makeVolume(minorRadius, innerEndRadius);
 
     // Builds the ring
-    BRepAlgoAPI_Cut ring(outer.Shape(), inner.Shape());
+    BRepAlgoAPI_Cut ring(outer, inner);
     ring.Build();
 
-    if (!ring.IsDone()) {
+    if (!ring.IsDone() || ring.Shape().IsNull()) {
         if (DEBUG) Base::Console().error("[reduceExternalThreadBase]: Ring cut operation failed (!IsDone)!\n");
         throw Base::RuntimeError("Thread error: failed to create thread reduction volume");
     }
@@ -2951,23 +3017,7 @@ Part::TopoShape ThreadUtils::reduceExternalThreadBase(
 
 gp_Dir ThreadUtils::getThreadAxisDir(const App::PropertyLinkSub& LateralFace)
 {
-    TopoDS_Face threadedFace = getSelectedFace(LateralFace);
-    Handle(Geom_Surface) surf = BRep_Tool::Surface(threadedFace);
-
-    FaceType faceType = getFaceType(threadedFace);
-
-    if (faceType == FaceType::Cylinder) {
-        Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast(surf);
-        return cyl->Position().Direction();
-    }
-    else if (faceType == FaceType::Cone) {
-        Handle(Geom_ConicalSurface) cone = Handle(Geom_ConicalSurface)::DownCast(surf);
-        return cone->Position().Direction();
-    }
-
-    throw Base::RuntimeError(
-        "Thread axis direction could not be calculated (Face is neither Cylinder nor Cone)."
-    );
+    return getLateralFaceAxis(getSelectedFace(LateralFace)).Direction();
 }
 
 #include <BRepBuilderAPI_MakeVertex.hxx>
@@ -3280,14 +3330,7 @@ gp_Pnt ThreadUtils::getThreadFarPoint(const App::PropertyLinkSub& lateralFace, c
         throw Base::RuntimeError("Thread error: selected face is null");
     }
 
-    // Get the true cylindrical axis from the surface geometry
-    BRepAdaptor_Surface surfAdapt(face);
-    if (surfAdapt.GetType() != GeomAbs_Cylinder) {
-        throw Base::RuntimeError("Thread error: selected face is not cylindrical");
-    }
-
-    gp_Ax1 cylAxis = surfAdapt.Cylinder().Axis();
-    const gp_Pnt axisOrigin = cylAxis.Location();
+    const gp_Pnt axisOrigin = getLateralFaceAxis(face).Location();
 
     // Collect vertices belonging to the selected face, to find
     // the extremity along zDir with the FARTHEST projection (opposite end)
@@ -3368,15 +3411,20 @@ gp_Pnt ThreadUtils::getThreadEndPoint(
                 throw Base::ValueError("Selected edge does not intersect the thread axis.");
             }
 
-            // Pick the intersection closest to startPoint, to minimize the resulting length
-            gp_Pnt bestPoint = intersections.front();
-            double minDistance = startPoint.Distance(bestPoint);
+            // Select the first intersection ahead of the start along the thread axis.
+            gp_Pnt bestPoint;
+            double minDistance = std::numeric_limits<double>::max();
+            bool found = false;
             for (const gp_Pnt& pnt : intersections) {
-                double dist = startPoint.Distance(pnt);
-                if (dist < minDistance) {
+                const double dist = gp_Vec(startPoint, pnt).Dot(gp_Vec(axisDir));
+                if (dist > Precision::Confusion() && dist < minDistance) {
                     minDistance = dist;
                     bestPoint = pnt;
+                    found = true;
                 }
+            }
+            if (!found) {
+                throw Base::ValueError("Selected end edge does not intersect the thread axis ahead of the start.");
             }
             return bestPoint;
         }
@@ -3404,12 +3452,15 @@ gp_Pnt ThreadUtils::getThreadEndPoint(
 
             for (int i = 1; i <= intersector.NbPnt(); ++i) {
                 gp_Pnt pnt = intersector.Pnt(i);
-                double dist = pnt.Distance(startPoint);
+                const double dist = gp_Vec(startPoint, pnt).Dot(gp_Vec(axisDir));
 
-                if (dist < minDistance) {
+                if (dist > Precision::Confusion() && dist < minDistance) {
                     minDistance = dist;
                     bestPoint = pnt;
                 }
+            }
+            if (minDistance == std::numeric_limits<double>::max()) {
+                throw Base::ValueError("Selected end surface does not intersect the thread axis ahead of the start.");
             }
 
             return bestPoint;
@@ -3428,7 +3479,7 @@ double ThreadUtils::getUpToGeometryLength(
     gp_Pnt startPoint = getThreadStartPoint(lateralFace, startPlane);
     gp_Pnt endPoint = getThreadEndPoint(lateralFace, upToGeometry, startPoint);
 
-    return startPoint.Distance(endPoint);
+    return gp_Vec(startPoint, endPoint).Dot(getThreadZAxis(lateralFace).Normalized());
 }
 
 double ThreadUtils::getUpToFirstLength(
@@ -3446,6 +3497,9 @@ double ThreadUtils::getUpToFirstLength(
 )
 {
     std::vector<std::string> currentThreads = ThreadUtils::getThreadTypeNameEnums();
+    if (threadType < 0 || static_cast<size_t>(threadType) >= currentThreads.size()) {
+        throw Base::IndexError("Thread type out of range.");
+    }
     std::string currentThread = currentThreads[threadType];
 
     std::vector<std::string> sizes, pitches;
@@ -3505,16 +3559,21 @@ double ThreadUtils::getUpToFirstLength(
 
     gp_Ax2 axis(startPoint, zDir);
 
+    validateThreadRadii(RmajC, RmajC);
+    // Unlike makeThread's reversed helix, this guide grows directly along +zDir.
+    const double radialSlope = -getThreadTaperSlope(tapered, taperedAngle);
+    if (radialSlope < 0.0) {
+        // Stop the search at the actual apex; clamping only the end radius would
+        // change the guide angle and could detect an unrelated intersection.
+        guideLength = std::min(guideLength, RmajC / -radialSlope);
+    }
+
     TopoDS_Shape guideShape;
-    if (tapered) {
-        double semiAngle = Base::toRadians(90.0 - taperedAngle);
-        double R2 = RmajC + guideLength * std::tan(semiAngle);
-        if (R2 < 0.0) {
-            R2 = 0.0;
-        }
+    if (std::abs(guideLength * radialSlope) > Precision::Confusion()) {
+        const double R2 = std::max(0.0, RmajC + guideLength * radialSlope);
         if (DEBUG) Base::Console().message(
             "getUpToFirstLength: tapered=true semiAngle(deg)=%lf R1=%lf R2=%lf\n",
-            90.0 - taperedAngle, RmajC, R2
+            taperedAngle - 90.0, RmajC, R2
         );
         BRepPrimAPI_MakeCone mkCone(axis, RmajC, R2, guideLength);
         guideShape = mkCone.Shape();

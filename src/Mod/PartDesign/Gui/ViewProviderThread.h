@@ -115,7 +115,9 @@ private:
     void applyThreadPhaseOffset(const PartDesign::Thread* pcThread);
 
     // meshing and UVs
-    std::vector<TopoDS_Face> collectBoreFaces(const PartDesign::Thread* pcThread) const;
+    std::vector<TopoDS_Face> collectBoreFaces(
+        const PartDesign::Thread* pcThread, const gp_Pnt& threadOrigin
+    ) const;
     bool generateBoreMeshData(
         const PartDesign::Thread* pcThread,
         const gp_Pnt& threadOriginPnt,
@@ -133,8 +135,7 @@ private:
         const gp_Dir& axis,
         const gp_Dir& x_dir,
         const gp_Dir& y_dir,
-        double minProj,
-        double initialRadius,
+        double surfaceSlope,
         double threadPitch,
         bool reverseNormal
     );

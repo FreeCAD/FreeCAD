@@ -119,7 +119,9 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
     ui->customClearanceField->setValue(pcThread->CustomThreadClearance.getValue());
 
     ui->taperedCheck->setChecked(pcThread->Tapered.getValue());
-    ui->taperedAngleField->setEnabled(ui->taperedCheck->isChecked());
+    ui->taperedAngleField->setEnabled(
+        pcThread->Tapered.getValue() && !pcThread->TaperedAngle.isReadOnly()
+    );
     ui->taperedAngleField->setValue(pcThread->TaperedAngle.getValue());
 
     bool isModeled = pcThread->ModelThread.getValue();
@@ -650,20 +652,46 @@ void TaskThreadParameters::changedObject(const App::Document&, const App::Proper
         ui->designationEdit->setText(thread->ThreadDesignation.getValue());
     }
     else if (&Prop == &thread->ThreadSizePitch) {
-
+        updateComboBox(ui->pitchCombo, thread->ThreadSizePitch.getValue());
         ui->designationEdit->setText(thread->ThreadDesignation.getValue());
+    }
+    else if (&Prop == &thread->ThreadDesignation) {
+        ui->designationEdit->setText(thread->ThreadDesignation.getValue());
+    }
+    else if (&Prop == &thread->LateralFace) {
+        setLinkSubText(ui->lateralFaceEdit, thread->LateralFace);
+    }
+    else if (&Prop == &thread->StartPlane) {
+        setLinkSubText(ui->startEdit, thread->StartPlane);
+    }
+    else if (&Prop == &thread->UpToGeometry) {
+        setLinkSubText(ui->upToGeometryEdit, thread->UpToGeometry);
+    }
+    else if (&Prop == &thread->Depth) {
+        updateSpinBox(ui->Depth, thread->Depth.getValue());
+    }
+    else if (&Prop == &thread->ModelThread || &Prop == &thread->CosmeticThread) {
+        updateRadio(ui->modelledThreadRadio, thread->ModelThread.getValue());
+        updateRadio(ui->cosmeticThreadRadio, !thread->ModelThread.getValue());
     }
     else if (&Prop == &thread->DepthType) {
         ui->endTypeCombo->setEnabled(true);
         updateComboBox(ui->endTypeCombo, thread->DepthType.getValue());
+        ui->labelDepth->setHidden(std::string(thread->DepthType.getValueAsString()) != "Dimension");
+        ui->Depth->setHidden(std::string(thread->DepthType.getValueAsString()) != "Dimension");
+        ui->upToGeometryWidget->setHidden(
+            std::string(thread->DepthType.getValueAsString()) != "UpToGeometry"
+        );
     } 
     else if (&Prop == &thread->Tapered) {
-        ui->taperedCheck->setEnabled(true);
         updateCheckable(ui->taperedCheck, thread->Tapered.getValue());
+        ui->taperedAngleField->setEnabled(
+            thread->Tapered.getValue() && !thread->TaperedAngle.isReadOnly()
+        );
     }
     else if (&Prop == &thread->TaperedAngle) {
-        ui->taperedAngleField->setEnabled(true);
         updateSpinBox(ui->taperedAngleField, thread->TaperedAngle.getValue());
+        ui->taperedAngleField->setEnabled(thread->Tapered.getValue() && !ro);
     }
 }
 

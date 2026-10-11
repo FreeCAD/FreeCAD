@@ -40,6 +40,7 @@
 #include <cmath>
 #include <iomanip>
 #include <sstream>
+#include <Base/Tools.h>
 
 #include <Mod/Part/App/TopoShapeOpCode.h>
 
@@ -104,6 +105,22 @@ Thread::Thread()
 
     ADD_PROPERTY_TYPE(LateralFace, (nullptr), "Thread", (App::PropertyType)(App::Prop_None), "LateralFace");
 
+    ADD_PROPERTY_TYPE(
+        StartPlane,
+        (nullptr),
+        "Thread",
+        App::Prop_None,
+        "Reference geometry where thread will start"
+    );
+
+    ADD_PROPERTY_TYPE(
+        UpToGeometry,
+        (nullptr),
+        "Thread",
+        App::Prop_None,
+        "Reference geometry where thread will end"
+    );
+
     ADD_PROPERTY_TYPE(Threaded, (true), "Thread", App::Prop_None, "Threaded");
 
     ADD_PROPERTY_TYPE(ModelThread, (false), "Thread", App::Prop_None, "Model actual thread");
@@ -113,6 +130,7 @@ Thread::Thread()
     ADD_PROPERTY_TYPE(Tapered, (false), "Thread", App::Prop_None, "Tapered");
 
     ADD_PROPERTY_TYPE(TaperedAngle, (90.0), "Thread", App::Prop_None, "Tapered angle");
+    TaperedAngle.setReadOnly(true);
 
     ADD_PROPERTY_TYPE(Diameter, (0.0), "Thread", App::Prop_None, "Diameter");
 
@@ -156,8 +174,11 @@ Thread::ThreadExtent Thread::resolveThreadExtent(const Part::TopoShape& base)
         );
     }
     else if (method == "ThroughAll") {
-        // length = threadUtils.getThroughAllLength(base);
-        length = cylinderHeight;
+        // A cone's radius is referenced at origin, so stop at its actual far
+        // section even when StartPlane is offset. Retain the cylinder depth policy.
+        length = threadUtils.isConicalFace(LateralFace)
+            ? gp_Vec(origin, farPoint).Dot(gp_Vec(direction))
+            : cylinderHeight;
     }
     else if (method == "UpToGeometry") {
         //TODO: limit UpToGeometry to not be upper than startplane
@@ -169,7 +190,7 @@ Thread::ThreadExtent Thread::resolveThreadExtent(const Part::TopoShape& base)
         );
     }
 
-    if (length <= 0.0) {
+    if (!std::isfinite(length) || length <= Precision::Confusion()) {
         throw Base::ValueError(
             QT_TRANSLATE_NOOP("Exception", "Thread error: Invalid Thread depth")
         );
@@ -215,7 +236,16 @@ App::DocumentObjectExecReturn* Thread::execute()
     addSubType = IsInternal.getValue() ? FeatureAddSub::Subtractive : FeatureAddSub::Additive;
     Base::Console().message("isInternal?: %d\n", IsInternal.getValue());
 
-    double diameter = threadUtils.getLateralFaceDiameter(LateralFace);
+    double diameter;
+    try {
+        diameter = threadUtils.getLateralFaceDiameter(LateralFace, StartPlane);
+    }
+    catch (const Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
+    }
+    catch (const Standard_Failure& e) {
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
+    }
     Diameter.setValue(diameter);
 
     int nearestSize = -1;
@@ -260,7 +290,7 @@ App::DocumentObjectExecReturn* Thread::execute()
         );
     }
 
-    const bool isCylindricalSupport = diameter >= 0.0;
+    const bool isCylindricalSupport = !threadUtils.isConicalFace(LateralFace);
     const bool sizeMismatch = nearestSize != ThreadSize.getValue();
     const bool pitchMismatch = IsInternal.getValue()
         && nearestPitch != ThreadSizePitch.getValue();
@@ -344,6 +374,18 @@ App::DocumentObjectExecReturn* Thread::execute()
             }
 
             std::optional<double> externalMinorDiameter;
+            const bool conicalSupport = threadUtils.isConicalFace(LateralFace);
+            const double faceSlope = conicalSupport ? std::tan(conicalAngle) : 0.0;
+            const double reductionSlope = conicalSupport && Tapered.getValue()
+                ? -std::tan(Base::toRadians(90.0 - TaperedAngle.getValue()))
+                : 0.0;
+            const double supportEndRadius = diameter / 2.0 + length * faceSlope;
+            if (!std::isfinite(supportEndRadius)
+                || supportEndRadius <= Precision::Confusion()) {
+                throw Base::ValueError(QT_TRANSLATE_NOOP(
+                    "Exception", "Thread error: Requested depth reaches the cone apex or has an invalid support radius"
+                ));
+            }
             double supportDiameter = diameter;
             if (!IsInternal.getValue()) {
                 externalMinorDiameter = threadUtils.getMinorDiameter(
@@ -364,7 +406,11 @@ App::DocumentObjectExecReturn* Thread::execute()
                 TaperedAngle.getValue(),
                 UseCustomThreadClearance.getValue(),
                 CustomThreadClearance.getValue(),
-                ThreadClass
+                ThreadClass,
+                true,
+                // Internal trims intersect the actual bore. External trims will
+                // intersect the reduced base, which follows the configured taper.
+                IsInternal.getValue() ? faceSlope : reductionSlope
             );
             Base::Console().message(
                 "[endTrim]: near=%lf far=%lf\n",
@@ -374,6 +420,18 @@ App::DocumentObjectExecReturn* Thread::execute()
             const std::string depthType(DepthType.getValueAsString());
             const bool limitInternalToolToFace = IsInternal.getValue()
                 && (depthType == "Dimension" || depthType == "ThroughAll");
+            const bool limitToolToFace = depthType == "Dimension" || depthType == "ThroughAll";
+            double trimmingStart = 0.0;
+            double trimmingEnd = length;
+            if (limitToolToFace) {
+                trimmingStart = std::max(trimmingStart, -projStart);
+                trimmingEnd = std::min(trimmingEnd, cylinderHeight - projStart);
+            }
+            if (trimmingEnd - trimmingStart <= Precision::Confusion()) {
+                throw Base::ValueError(QT_TRANSLATE_NOOP(
+                    "Exception", "Thread error: Thread depth does not overlap the selected face"
+                ));
+            }
             // Extend the guide by a full turn at the entrance so every angular
             // position has a complete cutting profile at the top of the hole.
             // Keep bottomPoint unchanged: the extra length grows toward the entrance
@@ -389,10 +447,11 @@ App::DocumentObjectExecReturn* Thread::execute()
             // reduced base before fusing the thread profile.  Cosmetic threads must retain the
             // original base so their overlay is drawn on the actual external surface.
             if (!IsInternal.getValue()) {
-                Base::Console().message("Lowering cylinder\n");
+                Base::Console().message("Reducing external thread base\n");
 
-                const double majorDiameter = diameter;
-                const double minorDiameter = *externalMinorDiameter;
+                const double majorDiameter = diameter + 2.0 * trimmingStart * faceSlope;
+                const double minorDiameter = *externalMinorDiameter
+                    + 2.0 * trimmingStart * reductionSlope;
                 Base::Console().message("minorDiameter: %lf\n", minorDiameter);
 
                 base = threadUtils.reduceExternalThreadBase(
@@ -400,7 +459,10 @@ App::DocumentObjectExecReturn* Thread::execute()
                     LateralFace,
                     majorDiameter,
                     minorDiameter,
-                    length
+                    trimmingEnd - trimmingStart,
+                    startPoint.Translated(zDir * trimmingStart),
+                    Tapered.getValue(),
+                    TaperedAngle.getValue()
                 );
             }
 
@@ -420,7 +482,8 @@ App::DocumentObjectExecReturn* Thread::execute()
                     TaperedAngle.getValue(),
                     UseCustomThreadClearance.getValue(),
                     CustomThreadClearance.getValue(),
-                    endTrims.farEnd
+                    endTrims.farEnd,
+                    usefulThreadLength
             );
 
             // if(IsInternal.getValue()){
@@ -455,23 +518,8 @@ App::DocumentObjectExecReturn* Thread::execute()
                 );
             }
 
-            // makeThread() includes profile-dependent surplus at both ends. Internal
-            // Dimension/ThroughAll tools must also stay within the selected face's
-            // axial limits so the surplus cannot cut adjacent material in the base.
-            double trimmingStart = 0.0;
-            double trimmingEnd = length;
-            if (limitInternalToolToFace) {
-                trimmingStart = std::max(trimmingStart, -projStart);
-                trimmingEnd = std::min(trimmingEnd, cylinderHeight - projStart);
-                if (trimmingEnd - trimmingStart <= Precision::Confusion()) {
-                    return new App::DocumentObjectExecReturn(
-                        QT_TRANSLATE_NOOP(
-                            "Exception",
-                            "Thread error: Thread depth does not overlap the selected face"
-                        )
-                    );
-                }
-            }
+            // Remove profile surplus using the same axial interval as the base
+            // reduction, including the selected-face limits in Dimension/ThroughAll.
 
             Bnd_Box threadBounds;
             BRepBndLib::Add(thread, threadBounds);
@@ -680,7 +728,7 @@ void Thread::onChanged(const App::Property* prop)
             ThreadSizePitch.getValue()
         ));
     }
-    else if (prop == &LateralFace) {
+    else if (prop == &LateralFace || prop == &StartPlane) {
         if (this->testStatus(App::ObjectStatus::Restore)
             || this->testStatus(App::ObjectStatus::Remove) || this->isRestoring()) {
             DressUp::onChanged(prop);
@@ -710,7 +758,14 @@ void Thread::onChanged(const App::Property* prop)
             if (res != App::DocumentObject::StdReturn) {
                 return;
             }
-            diameter = threadUtils.getLateralFaceDiameter(LateralFace);
+            if (prop == &LateralFace && threadUtils.isConicalFace(LateralFace)) {
+                // The helix runs opposite to zDir, so its taper is the negative of
+                // the face semi-angle: tan(90 - TaperedAngle) = -tan(semiAngle).
+                const double angle = 90.0 + Base::toDegrees(threadUtils.getConicalAngle(LateralFace));
+                TaperedAngle.setValue(angle);
+                Tapered.setValue(true);
+            }
+            diameter = threadUtils.getLateralFaceDiameter(LateralFace, StartPlane);
         }
         catch (const Standard_Failure& e) {
             Base::Console().warning(
@@ -730,6 +785,8 @@ void Thread::onChanged(const App::Property* prop)
             DressUp::onChanged(prop);
             return;
         }
+
+        Diameter.setValue(diameter);
 
         Part::TopoShape base;
         try {
@@ -774,16 +831,20 @@ void Thread::onChanged(const App::Property* prop)
             ThreadSizePitch.setValue(nearestPitch);
         }
     } else if (prop == &Tapered) {
-        if (Tapered.getValue()) {
-            TaperedAngle.setReadOnly(false);
-            bool isConical = threadUtils.isThreadConical(ThreadType.getValue());
-            if (isConical && TaperedAngle.getValue() == 90) {
-                TaperedAngle.setValue(threadUtils.getThreadProfileAngle());
+        TaperedAngle.setReadOnly(!Tapered.getValue());
+        // Property restoration can assign Tapered after TaperedAngle. Keep the
+        // saved angle instead of replacing it with a default during that process.
+        if (!this->testStatus(App::ObjectStatus::Restore)
+            && !this->testStatus(App::ObjectStatus::Remove) && !this->isRestoring()) {
+            if (Tapered.getValue()) {
+                bool isConical = threadUtils.isThreadConical(ThreadType.getValue());
+                if (isConical && TaperedAngle.getValue() == 90) {
+                    TaperedAngle.setValue(threadUtils.getThreadProfileAngle());
+                }
             }
-        }
-        else {
-            TaperedAngle.setValue(90);
-            TaperedAngle.setReadOnly(true);
+            else {
+                TaperedAngle.setValue(90);
+            }
         }
     }
 

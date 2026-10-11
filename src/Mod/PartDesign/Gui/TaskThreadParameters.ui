@@ -307,7 +307,7 @@
                 </size>
             </property>
             <property name="toolTip">
-                <string>Taper Angle</string>
+                <string>Taper angle (90° for a cylindrical thread)</string>
             </property>
             <property name="keyboardTracking">
                 <bool>false</bool>

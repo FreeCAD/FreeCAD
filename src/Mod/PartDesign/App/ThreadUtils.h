@@ -53,7 +53,10 @@ public:
         const double taperedAngle,
         const bool UseCustomThreadClearance,
         const double CustomThreadClearance,
-        const double farEndTrim
+        const double farEndTrim,
+        // Distance from the nominal entrance to the useful far end. Zero retains
+        // the legacy reference at the useful far end for existing callers.
+        const double usefulThreadLength = 0.0
     );
     App::DocumentObjectExecReturn* validateParameters(const App::PropertyLinkSub& LateralFace);
     bool isInternalFace(const App::PropertyLinkSub& faceProp, const TopoDS_Shape& solid);
@@ -89,12 +92,16 @@ public:
     double getMinorDiameter(const int threadType, const int size, const int pitch) const;
     gp_Pnt getThreadStartPoint(const App::PropertyLinkSub& lateralFace, const gp_Dir& zDir) const;
     gp_Dir getThreadAxisDir(const App::PropertyLinkSub& LateralFace);
+    /// Major/minor diameters are measured at startPoint; length follows the face axis.
     Part::TopoShape reduceExternalThreadBase(
         Part::TopoShape base,
         const App::PropertyLinkSub& lateralFace,
         double majorDiameter,
         double minorDiameter,
-        double length
+        double length,
+        const gp_Pnt& startPoint,
+        bool tapered,
+        double taperedAngle
     );
     gp_Pnt getPlaneLineIntersection(const gp_Pln& plane, const gp_Lin& line);
     std::vector<gp_Pnt> findLineCurveIntersections(const gp_Lin& line, const BRepAdaptor_Curve& curve);
@@ -127,7 +134,10 @@ public:
         double taperedAngle,
         bool useCustomThreadClearance,
         double customThreadClearance,
-        App::PropertyEnumeration& threadClass
+        App::PropertyEnumeration& threadClass,
+        bool referenceAtStart = false,
+        // Support radius change per unit distance along +zDir.
+        double supportTaperSlope = 0.0
     ) const;
     std::vector<std::string> getThreadClasses(const int threadType, const bool isInternal) const;
     std::string getThreadDesignations(
@@ -159,6 +169,7 @@ public:
     gp_Pnt getThreadFarPoint(const App::PropertyLinkSub& lateralFace, const gp_Dir& zDir) const;
     double getThreadProfileAngle();
     bool isThreadConical(const int threadType) const;
+    /// Signed semi-angle in radians relative to the lateral face axis; zero for cylinders.
     double getConicalAngle(const App::PropertyLinkSub& lateralFace);
     static const char* ThreadTypeEnums[];
     static const char* ThreadTypeNameEnums[];
@@ -291,6 +302,11 @@ public:
     std::vector<std::string> getThreadTypeName2Enums();
     double getCylinderDiameter(const TopoDS_Face& face);
     double getLateralFaceDiameter(const App::PropertyLinkSub& lateralFace);
+    double getLateralFaceDiameter(
+        const App::PropertyLinkSub& lateralFace,
+        const App::PropertyLinkSub& startPlane
+    );
+    bool isConicalFace(const App::PropertyLinkSub& lateralFace) const;
     int findNearestThreadSize(const int threadType, const double size);
     struct ThreadSizeSelection
     {

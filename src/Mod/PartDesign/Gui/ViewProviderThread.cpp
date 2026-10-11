@@ -35,11 +35,9 @@
 #include <gp_Vec.hxx>
 #include <Poly_Triangle.hxx>
 
-#include <BRep_Tool.hxx>
-#include <Geom_ConicalSurface.hxx>
-#include <Geom_CylindricalSurface.hxx>
-#include <Geom_RectangularTrimmedSurface.hxx>
-#include <Geom_Surface.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <gp_Cone.hxx>
+#include <gp_Cylinder.hxx>
 #include <Precision.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
@@ -51,6 +49,7 @@
 #include <Gui/Application.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/Part/App/Tools.h>
+#include <Mod/Part/App/PartFeature.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/Feature.h>
 
@@ -149,7 +148,13 @@ void ViewProviderThread::updateData(const App::Property* prop)
         return;
     }
     
-    if (prop == &pcThread->Threaded || prop == &pcThread->CosmeticThread || prop == &pcThread->ModelThread) {
+    if (prop == &pcThread->Threaded || prop == &pcThread->CosmeticThread || prop == &pcThread->ModelThread
+        || prop == &pcThread->Tapered || prop == &pcThread->TaperedAngle
+        || prop == &pcThread->LateralFace || prop == &pcThread->StartPlane
+        || prop == &pcThread->UpToGeometry || prop == &pcThread->DepthType
+        || prop == &pcThread->Depth || prop == &pcThread->Diameter
+        || prop == &pcThread->ThreadSize || prop == &pcThread->ThreadSizePitch
+        || prop == &pcThread->ThreadType || prop == &pcThread->Shape) {
         if (DEBUG) Base::Console().message("I'm running!!!: %s\n", prop->getName());
         // if (DEBUG) Base::Console().message("O prop sou eu!\n");
         if (pcThread->getParents().empty()) {
@@ -318,8 +323,17 @@ SoSeparator* ViewProviderThread::createThreadTextureSeparator()
 
     if (DEBUG) Base::Console().message("[createThreadTextureSeparator]: Generating bore mesh data for '%s'...\n", pcThread->getNameInDocument());
 
-    if (!generateBoreMeshData(pcThread, threadOriginPnt, vertices, normals, indices, uvs)
-        || vertices.empty() || normals.empty() || indices.empty() || uvs.empty()) {
+    bool meshGenerated = false;
+    try {
+        meshGenerated = generateBoreMeshData(pcThread, threadOriginPnt, vertices, normals, indices, uvs);
+    }
+    catch (const Standard_Failure&) {
+        return nullptr;
+    }
+    catch (const Base::Exception&) {
+        return nullptr;
+    }
+    if (!meshGenerated || vertices.empty() || normals.empty() || indices.empty() || uvs.empty()) {
         if (DEBUG) Base::Console().warning("[createThreadTextureSeparator]: Mesh generation failed or produced empty data for '%s' (Verts: %zu, Norms: %zu, Inds: %zu, UVs: %zu) -> nullptr\n",
                                 pcThread->getNameInDocument(),
                                 vertices.size(), normals.size(), indices.size(), uvs.size());
@@ -472,126 +486,89 @@ std::vector<gp_Pnt> ViewProviderThread::getThreadLocations(const PartDesign::Thr
     return pcThread->getThreadLocations();
 }
 
-std::vector<TopoDS_Face> ViewProviderThread::collectBoreFaces(const PartDesign::Thread* pcThread) const
+namespace
 {
-    if (DEBUG) Base::Console().message("[collectBoreFaces]: Starting bore faces collection...\n");
+struct ThreadSurfaceSection
+{
+    gp_Ax1 axis;
+    double radius;
+    double slope;
+};
 
+std::optional<ThreadSurfaceSection> describeThreadSurface(
+    const TopoDS_Face& face, const gp_Pnt& origin, const gp_Dir& threadAxis
+)
+{
+    BRepAdaptor_Surface surface(face);
+    if (surface.GetType() == GeomAbs_Cylinder) {
+        const gp_Cylinder cylinder = surface.Cylinder();
+        return ThreadSurfaceSection {cylinder.Axis(), cylinder.Radius(), 0.0};
+    }
+    if (surface.GetType() == GeomAbs_Cone) {
+        const gp_Cone cone = surface.Cone();
+        const gp_Ax1 axis = cone.Axis();
+        const double slope = std::tan(cone.SemiAngle());
+        const double distance = gp_Vec(axis.Location(), origin).Dot(gp_Vec(axis.Direction()));
+        return ThreadSurfaceSection {
+            axis,
+            cone.RefRadius() + distance * slope,
+            slope * axis.Direction().Dot(threadAxis)
+        };
+    }
+    return std::nullopt;
+}
+}  // namespace
+
+std::vector<TopoDS_Face> ViewProviderThread::collectBoreFaces(
+    const PartDesign::Thread* pcThread, const gp_Pnt& threadOrigin
+) const
+{
     std::vector<TopoDS_Face> boreFaces;
     if (!pcThread) {
-        if (DEBUG) Base::Console().warning("[collectBoreFaces]: Thread object is null -> Empty list\n");
+        return boreFaces;
+    }
+    const TopoDS_Shape bodyShape = getCurrentlyVisibleShape(pcThread);
+    const auto threadAxis = getThreadNormal(pcThread);
+    auto* support = dynamic_cast<Part::Feature*>(pcThread->LateralFace.getValue());
+    const auto& subs = pcThread->LateralFace.getSubValues();
+    if (bodyShape.IsNull() || !threadAxis || !support || subs.size() != 1) {
         return boreFaces;
     }
 
-    TopoDS_Shape bodyShape = getCurrentlyVisibleShape(pcThread);
-    if (bodyShape.IsNull()) {
-        if (DEBUG) Base::Console().warning("[collectBoreFaces]: Visible body shape is null for thread '%s' -> Empty list\n", pcThread->getNameInDocument());
+    std::optional<ThreadSurfaceSection> selected;
+    try {
+        const TopoDS_Shape shape = support->Shape.getShape().getSubShape(subs.front().c_str());
+        if (shape.IsNull() || shape.ShapeType() != TopAbs_FACE) {
+            return boreFaces;
+        }
+        selected = describeThreadSurface(TopoDS::Face(shape), threadOrigin, *threadAxis);
+    }
+    catch (const Standard_Failure&) {
+        return boreFaces;
+    }
+    catch (const Base::Exception&) {
+        return boreFaces;
+    }
+    if (!selected || !std::isfinite(selected->radius)
+        || selected->radius <= Precision::Confusion()) {
         return boreFaces;
     }
 
-    auto threadNormalOpt = getThreadNormal(pcThread);
-    if (!threadNormalOpt.has_value()) {
-        if (DEBUG) Base::Console().warning("[collectBoreFaces]: Failed to get thread normal axis -> Empty list\n");
-        return boreFaces;
-    }
-    gp_Dir threadAxis = *threadNormalOpt;
-
-    std::vector<gp_Pnt> validLocations = getThreadLocations(pcThread);
-    if (validLocations.empty()) {
-        if (DEBUG) Base::Console().warning("[collectBoreFaces]: No valid locations found for thread '%s' -> Empty list\n", pcThread->getNameInDocument());
-        return boreFaces;
-    }
-
-    const double holeRadius = pcThread->Diameter.getValue() / 2.0; //TODO:get real diameter
-    const double distTolerance = 2 * Precision::Confusion();
-    const bool isTapered = pcThread->Tapered.getValue();
-    const double taperSemiAngleRad = isTapered
-        ? Base::toRadians(90 - pcThread->TaperedAngle.getValue())
-        : 0.0;
-
-    if (DEBUG) Base::Console().message("[collectBoreFaces]: Filtering faces for '%s' (isTapered=%s, targetRadius=%.3f, locationsCount=%zu)...\n",
-                            pcThread->getNameInDocument(),
-                            isTapered ? "TRUE" : "FALSE",
-                            holeRadius,
-                            validLocations.size());
-
-    size_t totalFacesExamined = 0;
-    size_t rejectedType = 0;
-    size_t rejectedGeomProps = 0;
-    size_t rejectedLocation = 0;
-    size_t rejectedParallelism = 0;
-
+    // Match the selected support at the resolved entrance, not at each surface's
+    // reference plane. Manual taper changes must not hide the original support.
     for (TopExp_Explorer expl(bodyShape, TopAbs_FACE); expl.More(); expl.Next()) {
-        totalFacesExamined++;
-        const TopoDS_Face& face = TopoDS::Face(expl.Current());
-        Handle(Geom_Surface) surf = BRep_Tool::Surface(face);
-        if (surf.IsNull()) {
+        const TopoDS_Face face = TopoDS::Face(expl.Current());
+        const auto section = describeThreadSurface(face, threadOrigin, *threadAxis);
+        if (!section || !section->axis.Direction().IsParallel(*threadAxis, Precision::Angular())) {
             continue;
         }
-
-        // Unwrap trimmed surfaces
-        if (surf->IsKind(STANDARD_TYPE(Geom_RectangularTrimmedSurface))) {
-            surf = Handle(Geom_RectangularTrimmedSurface)::DownCast(surf)->BasisSurface();
-        }
-
-        gp_Ax1 axis;
-        bool isMatch = false;
-
-        if (!isTapered) {
-            if (!surf->IsKind(STANDARD_TYPE(Geom_CylindricalSurface))) {
-                rejectedType++;
-                continue;
-            }
-            auto cyl = Handle(Geom_CylindricalSurface)::DownCast(surf);
-            if (std::abs(cyl->Radius() - holeRadius) >= Precision::Confusion()) {
-                rejectedGeomProps++;
-                continue;
-            }
-            axis = cyl->Axis();
-        }
-        else {
-            if (!surf->IsKind(STANDARD_TYPE(Geom_ConicalSurface))) {
-                rejectedType++;
-                continue;
-            }
-            auto con = Handle(Geom_ConicalSurface)::DownCast(surf);
-            double angle = std::abs(con->SemiAngle());
-            if (std::abs(angle - taperSemiAngleRad) >= Precision::Angular()) {
-                rejectedGeomProps++;
-                continue;
-            }
-            axis = con->Axis();
-        }
-
-        for (const auto& loc : validLocations) {
-            if (gp_Lin(axis).Distance(loc) < distTolerance) {
-                isMatch = true;
-                break;
-            }
-        }
-
-        if (!isMatch) {
-            rejectedLocation++;
+        if (gp_Lin(section->axis).Distance(threadOrigin) > 2.0 * Precision::Confusion()
+            || std::abs(section->radius - selected->radius) > Precision::Confusion()
+            || std::abs(std::atan(section->slope) - std::atan(selected->slope)) > Precision::Angular()) {
             continue;
         }
-
-        if (!axis.Direction().IsParallel(threadAxis, Precision::Angular())) {
-            rejectedParallelism++;
-            continue;
-        }
-
         boreFaces.push_back(face);
     }
-
-    if (boreFaces.empty()) {
-        if (DEBUG) Base::Console().warning("[collectBoreFaces]: Examined %zu faces but found NO matching bore faces! "
-                                "(Rejected: Type=%zu, Radius/Angle=%zu, Location=%zu, Parallelism=%zu)\n",
-                                totalFacesExamined, rejectedType, rejectedGeomProps, rejectedLocation,
-                                rejectedParallelism);
-    } else {
-        if (DEBUG) Base::Console().message("[collectBoreFaces]: Successfully collected %zu bore faces out of %zu examined faces\n",
-                                boreFaces.size(), totalFacesExamined);
-    }
-
     return boreFaces;
 }
 
@@ -670,27 +647,24 @@ SbVec2f ViewProviderThread::addVertex(
     const gp_Dir& axis,
     const gp_Dir& x_dir,
     const gp_Dir& y_dir,
-    double minProj,
-    double initialRadius,
+    double surfaceSlope,
     double threadPitch,
     bool reverseNormal
 )
 {
     gp_Vec toPoint(origin, pt);
     gp_Vec radialComp = toPoint - (toPoint.Dot(axis) * axis);
-    double axialDist = toPoint.Dot(axis) - minProj;
-    double currentRadius = radialComp.Magnitude();
-    double radialOffset = currentRadius - initialRadius;
-    double lengthAlongTaper = std::sqrt((axialDist * axialDist) + (radialOffset * radialOffset));
-
-    float vCoord = static_cast<float>(lengthAlongTaper / threadPitch);
+    // Pitch is axial, including on cones. Keep a signed coordinate anchored at
+    // the resolved entrance so split faces and offset starts share one phase.
+    const double axialDist = toPoint.Dot(axis);
+    float vCoord = static_cast<float>(axialDist / threadPitch);
     double angleRad = std::atan2(radialComp.Dot(y_dir), radialComp.Dot(x_dir));
     float uCoord = static_cast<float>(angleRad / (2 * M_PI));
     uCoord -= std::floor(uCoord);
 
     vertices.emplace_back(pt.X(), pt.Y(), pt.Z());
     gp_Dir normalDir = (radialComp.SquareMagnitude() > std::pow(Precision::Confusion(), 2))
-        ? gp_Dir(radialComp)
+        ? gp_Dir(radialComp.Normalized() - surfaceSlope * gp_Vec(axis))
         : axis;
     if (reverseNormal) {
         normalDir.Reverse();
@@ -699,18 +673,6 @@ SbVec2f ViewProviderThread::addVertex(
 
     return SbVec2f(uCoord, vCoord);
 }
-
-namespace
-{
-Handle(Geom_Surface) unwrapSurface(const TopoDS_Face& face)
-{
-    Handle(Geom_Surface) surf = BRep_Tool::Surface(face);
-    if (!surf.IsNull() && surf->IsKind(STANDARD_TYPE(Geom_RectangularTrimmedSurface))) {
-        surf = Handle(Geom_RectangularTrimmedSurface)::DownCast(surf)->BasisSurface();
-    }
-    return surf;
-}
-}  // namespace
 
 void ViewProviderThread::handleSeamTriangle(
     std::vector<SbVec3f>& vertices,
@@ -776,7 +738,7 @@ bool ViewProviderThread::generateBoreMeshData(
     if (DEBUG) Base::Console().message("[generateBoreMeshData]: Starting mesh generation...\n");
 
     const double threadPitch = pcThread->getThreadPitch();
-    if (threadPitch == 0.0) {
+    if (!std::isfinite(threadPitch) || threadPitch <= Precision::Confusion()) {
         if (DEBUG) Base::Console().warning("[generateBoreMeshData]: Thread pitch is 0.0 -> FALSE\n");
         return false;
     }
@@ -786,7 +748,7 @@ bool ViewProviderThread::generateBoreMeshData(
     indices.clear();
     uvs.clear();
 
-    const auto& boreFaces = collectBoreFaces(pcThread);
+    const auto& boreFaces = collectBoreFaces(pcThread, threadOriginPnt);
     if (boreFaces.empty()) {
         if (DEBUG) Base::Console().warning("[generateBoreMeshData]: No bore faces collected for thread '%s' -> FALSE\n", pcThread->getNameInDocument());
         return false;
@@ -801,39 +763,7 @@ bool ViewProviderThread::generateBoreMeshData(
     }
     gp_Dir threadNormalAxis = *threadNormalOpt;
 
-    double minProj = std::numeric_limits<double>::max();
-    double maxProj = std::numeric_limits<double>::lowest();
-    size_t totalTriangulatedPoints = 0;
-
-    // --- Compute projection bounds ---
-    for (size_t i = 0; i < boreFaces.size(); ++i) {
-        std::vector<gp_Pnt> meshPoints;
-        std::vector<Poly_Triangle> meshFacets;
-        if (Part::Tools::getTriangulation(boreFaces[i], meshPoints, meshFacets)) {
-            totalTriangulatedPoints += meshPoints.size();
-            for (const auto& p : meshPoints) {
-                double proj = gp_Vec(threadOriginPnt, p).Dot(threadNormalAxis);
-                minProj = std::min(minProj, proj);
-                maxProj = std::max(maxProj, proj);
-            }
-        } else {
-            if (DEBUG) Base::Console().warning("[generateBoreMeshData]: Triangulation failed for bore face index %zu\n", i);
-        }
-    }
-
-    if (totalTriangulatedPoints == 0) {
-        if (DEBUG) Base::Console().warning("[generateBoreMeshData]: All face triangulations produced 0 points -> FALSE\n");
-        return false;
-    }
-
-    if (DEBUG) Base::Console().message("[generateBoreMeshData]: Projection bounds computed (minProj: %.3f, maxProj: %.3f, totalPoints: %zu)\n", 
-                            minProj, maxProj, totalTriangulatedPoints);
-
-    const double threadRadius = pcThread->Diameter.getValue() / 2.0;
-    const double coneSemiAngleRad = pcThread->Tapered.getValue()
-        ? Base::toRadians(pcThread->TaperedAngle.getValue() * 0.5)
-        : 0.0;
-    const double initialRadius = (minProj * std::tan(coneSemiAngleRad)) + threadRadius;
+    const auto [x_dir, y_dir] = buildOrthonormalFrame(threadNormalAxis);
 
     bool success = false;
     size_t skippedFacesCount = 0;
@@ -848,22 +778,11 @@ bool ViewProviderThread::generateBoreMeshData(
             continue;
         }
 
-        Handle(Geom_Surface) surf = unwrapSurface(face);
-        gp_Ax3 surfPos;
-        if (auto cyl = Handle(Geom_CylindricalSurface)::DownCast(surf)) {
-            surfPos = cyl->Position();
-        }
-        else if (auto cone = Handle(Geom_ConicalSurface)::DownCast(surf)) {
-            surfPos = cone->Position();
-        }
-        else {
-            if (DEBUG) Base::Console().warning("[generateBoreMeshData]: Face index %zu skipped (Surface is neither Cylindrical nor Conical)\n", i);
+        const auto section = describeThreadSurface(face, threadOriginPnt, threadNormalAxis);
+        if (!section) {
             skippedFacesCount++;
             continue;
         }
-
-        auto [x_dir, y_dir] = buildOrthonormalFrame(surfPos.Direction());
-        gp_Pnt localOrigin = surfPos.Location();
 
         std::vector<int> localToGlobalIndex(meshPoints.size());
         for (size_t pIdx = 0; pIdx < meshPoints.size(); ++pIdx) {
@@ -872,14 +791,13 @@ bool ViewProviderThread::generateBoreMeshData(
                 vertices,
                 normals,
                 meshPoints[pIdx],
-                localOrigin,
-                surfPos.Direction(),
+                threadOriginPnt,
+                threadNormalAxis,
                 x_dir,
                 y_dir,
-                minProj,
-                initialRadius,
+                section->slope,
                 threadPitch,
-                face.Orientation() == TopAbs_REVERSED
+                pcThread->IsInternal.getValue()
             ));
         }
 
