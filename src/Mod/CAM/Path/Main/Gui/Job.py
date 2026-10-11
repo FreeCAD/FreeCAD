@@ -1611,6 +1611,46 @@ class TaskPanel:
         self.form.pickTargetModel.setStyleSheet(active_style if modelTarget else "")
         self.form.pickTargetStock.setStyleSheet("" if modelTarget else active_style)
 
+    def keepingPoints(self, action):
+        """keepingPoints(action) ... action wrapped so that the operations' points, such as their
+        start points, stay where they are on the model when action changes the Job's origin or
+        moves the model, and the heights typed in for them go up and down with it. Only when
+        the models moved as one: an operation is not told which model it is on, so when they
+        move apart the points and heights are left alone and a warning says so."""
+
+        def run(*args):
+            if getattr(self, "_keepingPoints", False):
+                return action(*args)
+            models = list(self.obj.Model.Group)
+            before = [FreeCAD.Placement(m.Placement) for m in models]
+            self._keepingPoints = True
+            try:
+                result = action(*args)
+            finally:
+                self._keepingPoints = False
+            moves = [
+                model.Placement.multiply(placement.inverse())
+                for model, placement in zip(models, before)
+                if not model.Placement.isSame(placement, 1e-9)
+            ]
+            if not moves:
+                return result
+            if len(moves) < len(models) or any(not m.isSame(moves[0], 1e-9) for m in moves[1:]):
+                Path.Log.warning(
+                    translate(
+                        "CAM_Job",
+                        "The models did not move together, so the operations' points and "
+                        "heights were left where they were. Check them.",
+                    )
+                )
+                PathJob.touchOperations(self.obj)
+                return result
+            PathJob.carryOperationPoints(self.obj, moves[0])
+            PathJob.carryOperationHeights(self.obj, moves[0])
+            return result
+
+        return run
+
     def alignSetOrigin(self):
         obj, by = self.alignMoveToOrigin()
 
@@ -1882,6 +1922,19 @@ class TaskPanel:
         # Stock, Orientation and Alignment
         self.form.btnMaterial.clicked.connect(self.assignMaterial)
         self.updateMaterialLabel()
+        # what changes the origin or moves the model keeps the operations' points where they
+        # are on the model
+        for name in (
+            "alignCenterInStock",
+            "alignCenterInStockXY",
+            "modelSetAxis",
+            "modelSet0",
+            "modelMove",
+            "modelRotate",
+            "alignSetOrigin",
+            "alignMoveToOrigin",
+        ):
+            setattr(self, name, self.keepingPoints(getattr(self, name)))
         self.form.centerInStock.clicked.connect(self.alignCenterInStock)
         self.form.centerInStockXY.clicked.connect(self.alignCenterInStockXY)
 
