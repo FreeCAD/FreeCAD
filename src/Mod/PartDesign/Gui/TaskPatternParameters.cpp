@@ -562,7 +562,10 @@ void TaskPatternParameters::apply()
     // This triggers accept() before the update timer for the 3D view has a
     // chance to fire. If the timer is active, it means a recompute is
     // pending.
-    consumePendingUpdate();
+    if (!consumePendingUpdate()) {
+        // force recompute if is wasn't updated by the timer
+        recomputePatternFeature();
+    }
     updateInstanceControls();
 }
 
