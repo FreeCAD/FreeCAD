@@ -2519,6 +2519,10 @@ void CmdPartDesignCircularPattern::activated(int iMsg)
                 );
                 hasDirection = true;
             }
+            FCMD_OBJ_CMD(feat, "CenterAroundFeature = False");
+        }
+        else {
+            FCMD_OBJ_CMD(feat, "CenterAroundFeature = True");
         }
         if (!hasDirection) {
             FCMD_OBJ_CMD(
@@ -2531,7 +2535,6 @@ void CmdPartDesignCircularPattern::activated(int iMsg)
                                   << ",[''])"
             );
         }
-        FCMD_OBJ_CMD(feat, "CenterAroundFeature = False");
 
         finishTransformed(cmd, feat);
     };
