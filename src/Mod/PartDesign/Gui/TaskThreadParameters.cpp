@@ -32,7 +32,6 @@
 #include <Gui/Application.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
-// #include <Gui/ViewProviderThread.h>
 #include <Mod/PartDesign/Gui/ReferenceSelection.h>
 #include <Mod/PartDesign/App/FeatureThread.h>
 
@@ -286,13 +285,11 @@ void TaskThreadParameters::changeEvent(QEvent* e)
 
 bool TaskThreadParameters::getModelThread() const
 {
-    // return ui->HoleType->currentIndex() == Threaded && ui->ModelThread->isChecked();
     return ui->modelledThreadRadio->isChecked();
 }
 
 bool TaskThreadParameters::getCosmeticThreaded() const
 {
-    // return ui->HoleType->currentIndex() == Threaded && !ui->ModelThread->isChecked();
     return ui->cosmeticThreadRadio->isChecked();
 }
 
@@ -306,7 +303,6 @@ void TaskThreadParameters::apply()
 
 void TaskThreadParameters::onRefDeleted()
 {
-    /*TODO*/
 }
 
 void TaskThreadParameters::setButtons(const PartDesignGui::TaskDressUpParameters::selectionModes mode)
@@ -399,8 +395,6 @@ void TaskThreadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             break;
     }
 
-    // cosmeticChanged();
-    // Base::Console().message("Setting modelthread 1!\n");
 }
 
 
@@ -523,15 +517,12 @@ void TaskThreadParameters::taperedCheckChanged()
 
 void TaskThreadParameters::threadModelChanged()
 {
-    Base::Console().message("Mudando Threading agora.\n");
     if (auto thread = getObject<PartDesign::Thread>()) {
         if (sender() == ui->cosmeticThreadRadio) {
-            Base::Console().message("cosmetic.\n");
             thread->CosmeticThread.setValue(true);
             thread->ModelThread.setValue(false);
         }
         else {
-            Base::Console().message("not cosmetic.\n");
             thread->CosmeticThread.setValue(false);
             thread->ModelThread.setValue(true);
         }
@@ -555,29 +546,14 @@ void TaskThreadParameters::taperedAngleChanged(double value)
     }
 }
 
-// void TaskThreadParameters::cosmeticChanged()
-// {
-//     auto pcThread = getObject<PartDesign::Thread>();
-//     bool isModeled = getModelThread();
-//     bool isCosmetic = getCosmeticThreaded();
-//     // When the combobox is "Threaded", represent the thread either as
-//     // modeled geometry or as a cosmetic texture.
-//     // Set both properties explicitly.
-//     pcThread->ModelThread.setValue(isModeled);
-//     pcThread->CosmeticThread.setValue(isCosmetic);
-//     Base::Console().message("Setting modelthread 2!\n");
-// }
 
 void TaskThreadParameters::changedObject(const App::Document&, const App::Property& Prop)
 {
     auto thread = getObject<PartDesign::Thread>();
     if (!thread) {
-        return;  // happens when aborting the command
+        return;
     }
     bool ro = Prop.isReadOnly();
-
-    Base::Console().log("Parameter %s was updated\n", Prop.getName());
-    // Base::Console().message("value: %lf\n", thread->TaperedAngle.getValue());
 
     auto updateCheckable = [&](QCheckBox* widget, bool value) {
         [[maybe_unused]] QSignalBlocker blocker(widget);
@@ -607,7 +583,6 @@ void TaskThreadParameters::changedObject(const App::Document&, const App::Proper
         ui->standardCombo->setEnabled(true);
         updateComboBox(ui->standardCombo, thread->ThreadType.getValue());
 
-        // Thread type also updates related properties
         auto updateComboBoxItems = [&](QComboBox* widget, const auto& values, int selected) {
             QSignalBlocker blocker(widget);
             widget->clear();
@@ -641,7 +616,6 @@ void TaskThreadParameters::changedObject(const App::Document&, const App::Proper
     }
     else if (&Prop == &thread->ThreadSize) {
         updateComboBox(ui->diameterCombo, thread->ThreadSize.getValue());
-        // Thread size also updates related properties
         auto updateComboBoxItems = [&](QComboBox* widget, const auto& values, int selected) {
             QSignalBlocker blocker(widget);
             widget->clear();
@@ -719,11 +693,6 @@ void TaskThreadParameters::setThreadSelectionGate()
 }
 
 
-//**************************************************************************
-//**************************************************************************
-// TaskDialog
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 TaskDlgThreadParameters::TaskDlgThreadParameters(ViewProviderThread* DressUpView)
     : TaskDlgDressUpParameters(DressUpView)
 {
@@ -749,8 +718,6 @@ bool TaskDlgThreadParameters::reject()
     const std::string threadName
         = thread && thread->getNameInDocument() ? thread->getNameInDocument() : "";
 
-    // The transaction abort can remove a newly-created Thread from its Body before the view
-    // provider is destroyed. Detach scene-graph state while all owning objects are still valid.
     if (auto* threadView = getViewObject<ViewProviderThread>()) {
         threadView->restoreBaseVisibility();
         threadView->clearThreadTextures();
@@ -758,8 +725,6 @@ bool TaskDlgThreadParameters::reject()
 
     const bool result = TaskDlgDressUpParameters::reject();
 
-    // When cancelling an edit of an existing Thread, the object survives the rollback. Rebuild
-    // the overlay from the restored properties; a newly-created and cancelled Thread is absent.
     auto* restoredThread = document && !threadName.empty()
         ? dynamic_cast<PartDesign::Thread*>(document->getObject(threadName.c_str()))
         : nullptr;
@@ -787,7 +752,6 @@ void TaskThreadParameters::Observer::slotChangedObject(
 )
 {
     if (&Obj == thread) {
-        Base::Console().log("Parameter %s was updated with a new value\n", Prop.getName());
         if (Obj.getDocument()) {
             owner->changedObject(*Obj.getDocument(), Prop);
         }

@@ -736,7 +736,6 @@ void ViewProviderHole::updateOverlay()
     }
     // Add the thread
     if (isThreadVisible) {
-        Base::Console().message("[updateOverlayHole]: Generating new cosmetic thread texture separator...\n");
         if (SoSeparator* newSep = createThreadTextureSeparator()) {
             auto* threadSwitch = new SoSwitch();
             threadSwitch->ref();

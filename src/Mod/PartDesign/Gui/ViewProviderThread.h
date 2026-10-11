@@ -42,15 +42,13 @@ namespace App
 {
 class DocumentObject;
 class Property;
-}  // namespace App
+}
 
 namespace PartDesign
 {
-// class Hole;
 class Thread;
 }
 
-// Forward declarations for OpenCascade classes
 class TopoDS_Face;
 class TopoDS_Shape;
 class gp_Dir;
@@ -77,7 +75,6 @@ public:
     bool onDelete(const std::vector<std::string>& arg) override;
 
     /// grouping handling
-    // std::vector<App::DocumentObject*> claimChildren() const override;
     const std::string& featureName() const override;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
     SoSeparator* createThreadTextureSeparator();
@@ -114,7 +111,6 @@ private:
     void updateThreadDirection(const PartDesign::Thread* pcThread);
     void applyThreadPhaseOffset(const PartDesign::Thread* pcThread);
 
-    // meshing and UVs
     std::vector<TopoDS_Face> collectBoreFaces(
         const PartDesign::Thread* pcThread, const gp_Pnt& threadOrigin
     ) const;
@@ -149,4 +145,4 @@ private:
     void clearThreadTextures();
 };
 
-}  // namespace PartDesignGui
+}

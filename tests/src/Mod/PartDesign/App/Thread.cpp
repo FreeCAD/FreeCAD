@@ -273,9 +273,6 @@ protected:
         auto body = getBody();
         auto sketch = getSketch();
 
-        // Overwrite whatever geometry SetUp() left in the sketch (a radius-10.0
-        // circle) so callers can request an arbitrary cylinder radius. This
-        // mirrors how createCubePad() replaces the sketch contents below.
         sketch->Geometry.setValues({});
         sketch->Constraints.setValues({});
 
@@ -617,7 +614,6 @@ TEST_F(ThreadTest, ThreadExtentDimensionAndThroughAllRespectStartPlane)
     thread->DepthType.setValue("ThroughAll");
     const auto throughAll = thread->resolveThreadExtent();
     EXPECT_NEAR(throughAll.origin.Distance(dimension.origin), 0.0, 1e-7);
-    // Preserve the full face height even with an offset start.
     EXPECT_NEAR(throughAll.length, 30.0, 1e-7);
 }
 
@@ -684,7 +680,7 @@ TEST_F(ThreadTest, ThreadCreationOnCube)
     ASSERT_NE(pad, nullptr);
     auto thread = doc->addObject<PartDesign::Thread>("Thread");
     body->addObject(thread);
-    thread->LateralFace.setValue(pad, {"Face3"});  // any cube face works
+    thread->LateralFace.setValue(pad, {"Face3"});
 
     doc->recompute();
 
@@ -732,7 +728,7 @@ TEST_F(ThreadTest, InternalThreadModeledM30x3_5)
     ASSERT_TRUE(lateralFace.has_value());
     thread->LateralFace.setValue(pad, {*lateralFace});
 
-    thread->DepthType.setValue(0L);  // "Dimension"
+    thread->DepthType.setValue(0L);
     thread->Depth.setValue(length);
 
     const int typeIdx = findEnumIndex(thread->ThreadType.getEnumVector(), "ISOMetricProfile");
@@ -779,7 +775,7 @@ TEST_F(ThreadTest, ExternalCosmeticThreadPreservesBase)
     auto lateralFace = getLateralFaceName(pad);
     ASSERT_TRUE(lateralFace.has_value());
     thread->LateralFace.setValue(pad, {*lateralFace});
-    thread->DepthType.setValue(0L);  // "Dimension"
+    thread->DepthType.setValue(0L);
     thread->Depth.setValue(24.0);
 
     int typeIdx = findEnumIndex(thread->ThreadType.getEnumVector(), "ISOMetricProfile");
@@ -805,8 +801,6 @@ TEST_F(ThreadTest, ExternalCosmeticThreadPreservesBase)
     EXPECT_TRUE(thread->AddSubShape.getValue().IsNull());
     EXPECT_TRUE(thread->getReducedBasePreviewShape().isNull());
 
-    // IsSame compares shared topology and location identity, which can change when
-    // the feature resets its transform. Compare geometric properties instead.
     const auto baseSignature = getThreadShapeSignature(pad->Shape.getValue());
     const auto threadSignature = getThreadShapeSignature(thread->Shape.getValue());
     EXPECT_NEAR(threadSignature.centerOfMass.Distance(baseSignature.centerOfMass), 0.0, 1e-9);
@@ -919,7 +913,7 @@ TEST_F(ThreadTest, ExternalThreadModeledM24Signature)
 {
     auto doc = getDocument();
     auto body = getBody();
-    auto pad = createCylinderPad(24.0, 12.0);  // 24mm Height, 24mm diameter
+    auto pad = createCylinderPad(24.0, 12.0);
     ASSERT_NE(pad, nullptr);
 
     auto thread = doc->addObject<PartDesign::Thread>("Thread");
@@ -934,7 +928,7 @@ TEST_F(ThreadTest, ExternalThreadModeledM24Signature)
 
     int typeIdx = findEnumIndex(thread->ThreadType.getEnumVector(), "ISOMetricProfile");
     ASSERT_GE(typeIdx, 0) << "ISOMetricProfile was not found in enum";
-    thread->ThreadType.setValue(typeIdx); // ISOMetricProfile
+    thread->ThreadType.setValue(typeIdx);
 
     int sizeIdx = findEnumIndex(thread->ThreadSize.getEnumVector(), "24");
     ASSERT_GE(sizeIdx, 0) << "24mm Diameter was not found in enum";
@@ -998,7 +992,7 @@ TEST_F(ThreadTest, ExternalThreadModeledBSPHalfInchSignature)
     ASSERT_TRUE(lateralFace.has_value());
     thread->LateralFace.setValue(pad, {*lateralFace});
 
-    thread->DepthType.setValue(0L);  // "Dimension"
+    thread->DepthType.setValue(0L);
     thread->Depth.setValue(length);
 
     int typeIdx = findEnumIndex(thread->ThreadType.getEnumVector(), "BSP");

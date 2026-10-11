@@ -40,7 +40,7 @@ namespace Gui
 class LinearGizmo;
 class RotationalGizmo;
 class GizmoContainer;
-}  // namespace Gui
+}
 
 namespace PartDesignGui
 {
@@ -127,4 +127,4 @@ public:
     bool reject() override;
 };
 
-}  // namespace PartDesignGui
+}

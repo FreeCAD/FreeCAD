@@ -54,8 +54,6 @@ public:
         const bool UseCustomThreadClearance,
         const double CustomThreadClearance,
         const double farEndTrim,
-        // Distance from the nominal entrance to the useful far end. Zero retains
-        // the legacy reference at the useful far end for existing callers.
         const double usefulThreadLength = 0.0
     );
     App::DocumentObjectExecReturn* validateParameters(const App::PropertyLinkSub& LateralFace);
@@ -136,7 +134,6 @@ public:
         double customThreadClearance,
         App::PropertyEnumeration& threadClass,
         bool referenceAtStart = false,
-        // Support radius change per unit distance along +zDir.
         double supportTaperSlope = 0.0
     ) const;
     std::vector<std::string> getThreadClasses(const int threadType, const bool isInternal) const;
@@ -176,33 +173,22 @@ public:
     static const char* DepthTypeEnums[];
     static const char* ThreadDirectionEnums[];
 
-    /* "None" thread profile */
     static const char* ThreadClass_None_Enums[];
 
-    /* ISO metric coarse profile */
     static const char* ThreadClass_ISOmetric_Enums[];
     static const double ThreadClass_ISOmetric_data[ThreadClass_ISOmetric_data_size_utils][2];
 
-    /* ISO metric fine profile */
     static const char* ThreadClass_ISOmetricfine_Enums[];
 
-    /* UNC profile */
     static const char* ThreadClass_UNC_Enums[];
 
-    /* UNF profile */
     static const char* ThreadClass_UNF_Enums[];
 
-    /* UNEF profile */
     static const char* ThreadClass_UNEF_Enums[];
 
-    /* NPT profile */
 
-    /* BSP profile */
-
-    /* BSW profile */
     static const char* ThreadClass_BSW_Enums[];
 
-    /* BSF profile */
     static const char* ThreadClass_BSF_Enums[];
 
     static const double ThreadRunout[ThreadRunout_size_utils][2];
@@ -239,7 +225,7 @@ public:
         int depthType;
         std::vector<std::string> sketches;
         std::vector<std::string> spreadsheets;
-        std::vector<std::string> sizes;  // diameters
+        std::vector<std::string> sizes;
         std::vector<std::string> minorDiameters;
         std::vector<std::string> pitches;
         std::vector<std::string> designations;
@@ -398,4 +384,4 @@ private:
     ThreadLibrary library;
 };
 
-}  // namespace PartDesign
+}

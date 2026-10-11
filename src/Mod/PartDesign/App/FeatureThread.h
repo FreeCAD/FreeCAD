@@ -114,7 +114,6 @@ private:
     ThreadExtent resolveThreadExtent(const Part::TopoShape& base);
     ThreadUtils threadUtils;
     Part::TopoShape reducedBasePreviewShape;
-    void addThreadType();
 };
 
-}  // namespace PartDesign
+}
