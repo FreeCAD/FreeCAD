@@ -15,6 +15,7 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesign::CircularPattern, PartDesign::Transfo
 CircularPattern::CircularPattern()
 {
     Part::CircularPatternExtension::initExtension(this);
+    Part::CircularPatternExtension::setIncludeIdentityTransformation(true);
 }
 
 bool CircularPattern::deleteOriginalTransformation() const

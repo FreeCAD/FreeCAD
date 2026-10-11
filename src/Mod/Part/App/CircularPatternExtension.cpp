@@ -170,7 +170,7 @@ std::list<gp_Trsf> CircularPatternExtension::calculateTransformations() const
     int startCircle = CenterAroundFeature.getValue() ? 1 : 0;
     int endCircle = CenterAroundFeature.getValue() ? circleCount : circleCount - 1;
 
-    if (CenterAroundFeature.getValue()) {
+    if (CenterAroundFeature.getValue() && includeIdentityTransformation) {
         transformations.emplace_back();
     }
 

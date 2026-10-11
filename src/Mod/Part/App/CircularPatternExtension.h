@@ -39,12 +39,24 @@ public:
     short extensionMustExecute() override;
     // void extensionOnChanged(const App::Property* prop) override;
 
+    inline bool isIncludeIdentityTransformation() const
+    {
+        return includeIdentityTransformation;
+    }
+    inline void setIncludeIdentityTransformation(bool v)
+    {
+        includeIdentityTransformation = v;
+    }
+
     static const App::PropertyIntegerConstraint::Constraints intNumberCircles;
     static const App::PropertyIntegerConstraint::Constraints intSymmetry;
 
 protected:
     gp_Ax2 getRotation() const;
     virtual gp_Ax2 getRotation(const App::PropertyLinkSub& property) const;
+
+    // set to true for PD
+    bool includeIdentityTransformation = false;
 };
 
 }  // namespace Part
