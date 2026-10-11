@@ -8,12 +8,15 @@
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
 
+#include <algorithm>
 #include <cmath>
 #include <filesystem>
 #include <limits>
 
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/DocumentObjectGroup.h>
+#include <App/Datums.h>
+#include <App/GeoFeature.h>
 #include <App/Part.h>
 #include <src/App/InitApplication.h>
 #include <src/TempDirectory.h>
@@ -702,6 +705,47 @@ TEST_F(FeatureSectionAnalysisTest, testAContainerSourceStillResolvesAfterReload)
     const auto parts = Part::SectionAnalysis::distinctSourceParts(sa->Source.getValues(), sa);
     EXPECT_EQ(parts.size(), 2U);
     App::GetApplication().closeDocument(reopened->getName());
+}
+
+TEST_F(FeatureSectionAnalysisTest, testASourceWithNoShapeIsStillAPart)
+{
+    // A mesh or a point cloud has geometry but no B-rep, and used to vanish from
+    // the walk entirely - no cap, no colour, nothing. A bare GeoFeature stands in
+    // for one here, because these tests cannot link the Mesh module.
+    auto* shapeless = _doc->addObject<App::GeoFeature>();
+    _section->Source.setValues({_boxes[0], shapeless});
+    _doc->recompute();
+
+    const auto parts = Part::SectionAnalysis::distinctSourceParts(_section->Source.getValues(), _section);
+    EXPECT_EQ(parts.size(), 2U);
+    EXPECT_NE(std::find(parts.begin(), parts.end(), shapeless), parts.end());
+}
+
+TEST_F(FeatureSectionAnalysisTest, testADatumIsNotAPart)
+{
+    // Datums carry a placement and are drawn, but they are references rather
+    // than geometry: sectioning one would colour and count a part that is not
+    // there.
+    auto* datum = _doc->addObject<App::Plane>();
+    _section->Source.setValues({_boxes[0], datum});
+    _doc->recompute();
+
+    const auto parts = Part::SectionAnalysis::distinctSourceParts(_section->Source.getValues(), _section);
+    EXPECT_EQ(parts.size(), 1U);
+    EXPECT_EQ(parts.front(), _boxes[0]);
+}
+
+TEST_F(FeatureSectionAnalysisTest, testASourceWithNoShapeIsNotHandedToTheBooleans)
+{
+    // Geometry mode cuts real solids. A shapeless part is for the preview to
+    // slice from triangles; here it must simply be absent, not a null shape on
+    // its way into a boolean.
+    auto* shapeless = _doc->addObject<App::GeoFeature>();
+    _section->Source.setValues({_boxes[0], shapeless});
+    _doc->recompute();
+
+    EXPECT_EQ(_section->SourceParts.getValues().size(), 1U);
+    EXPECT_EQ(faces(_section).size(), 1U);
 }
 
 TEST_F(FeatureSectionAnalysisTest, testATiltedPlaneComesBackExactly)
