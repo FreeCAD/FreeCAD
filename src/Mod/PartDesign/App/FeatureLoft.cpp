@@ -222,25 +222,9 @@ App::DocumentObjectExecReturn* Loft::execute()
     }
 
     auto* profileObj = Profile.getValue();
-    const auto& profileSubs = Profile.getSubValues();
-    const auto& firstSection = multisections.front();
-    const auto wholeObject = [](const std::vector<std::string>& subs) {
-        return subs.empty() || (subs.size() == 1 && subs.front().empty());
-    };
-    if (profileObj && profileObj == firstSection.first
-        && (profileSubs == firstSection.second
-            || (wholeObject(profileSubs) && wholeObject(firstSection.second)))) {
-        const auto& label = profileObj->Label.getStrValue();
-        return new App::DocumentObjectExecReturn(
-            tr("'%1' cannot be used as both the profile and the first section")
-                .arg(QString::fromStdString(label))
-                .toStdString()
-        );
-    }
-
     std::vector<TopoShape> wires;
     try {
-        wires = getSectionShape("Profile", profileObj, profileSubs);
+        wires = getSectionShape("Profile", profileObj, Profile.getSubValues());
     }
     catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
@@ -313,6 +297,13 @@ App::DocumentObjectExecReturn* Loft::execute()
                     const auto firstLabel = QString::fromStdString(getLabel(firstIdx));
                     const auto secondLabel = QString::fromStdString(getLabel(secondIdx));
                     if (firstIdx == 0) {
+                        if (profileObj == multisections.front().first) {
+                            return new App::DocumentObjectExecReturn(
+                                tr("'%1' cannot be used as both the profile and the first section")
+                                    .arg(firstLabel)
+                                    .toStdString()
+                            );
+                        }
                         return new App::DocumentObjectExecReturn(
                             tr("Profile '%1' and section '%2' do not have sufficient separation")
                                 .arg(firstLabel, secondLabel)
