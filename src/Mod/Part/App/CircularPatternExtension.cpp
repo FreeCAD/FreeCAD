@@ -242,9 +242,6 @@ gp_Ax2 CircularPatternExtension::getRotation() const
 
 short CircularPatternExtension::extensionMustExecute()
 {
-    if (Axis.isTouched() || RadialDistance.isTouched() || TangentialDistance.isTouched()
-        || NumberCircles.isTouched() || Symmetry.isTouched()) {
-        return 1;
-    }
-    return 0;
+    return Axis.isTouched() || RadialDistance.isTouched() || TangentialDistance.isTouched()
+        || NumberCircles.isTouched() || Symmetry.isTouched();
 }

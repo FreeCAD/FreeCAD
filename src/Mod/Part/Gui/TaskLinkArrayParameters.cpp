@@ -246,7 +246,14 @@ TaskLinkArrayParameters::TaskLinkArrayParameters(
     }
     if (auto* point = freecad_cast<Part::LinkArrayPoint*>(array)) {
         ui->parametersWidgetPlaceholder2->hide();
-        setupPointPatternParameterUI(proxy, ui->parametersWidgetPlaceholder, this, &point->PointObject);
+        setupPointPatternParameterUI(
+            proxy,
+            ui->parametersWidgetPlaceholder,
+            this,
+            &point->PointObject,
+            &point->RelativeToFirst,
+            &point->OriginPointIndex
+        );
         setupInstanceControls(viewer);
         return;
     }

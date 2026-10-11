@@ -45,14 +45,12 @@ PointPatternExtension::PointPatternExtension()
     updatePropertyStatus();
 }
 
-void PointPatternExtension::updatePropertyStatus()
-{
-    OriginPointIndex.setStatus(App::Property::Hidden, RelativeToFirst.getValue());
-}
-
 void PointPatternExtension::extensionOnChanged(const App::Property* prop)
 {
-    updatePropertyStatus();
+    if (prop == &RelativeToFirst) {
+        OriginPointIndex.setStatus(App::Property::Hidden, RelativeToFirst.getValue());
+    }
+    App::DocumentObjectExtension::extensionOnChanged(prop);
 }
 
 bool PointPatternExtension::identityTransformSuppressed() const

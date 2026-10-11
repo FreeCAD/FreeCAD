@@ -24,6 +24,7 @@ public:
 
     const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*>) override;
     gp_Ax2 getRotation() const override;
+    short mustExecute() const override;
 };
 
 }  // namespace PartDesign

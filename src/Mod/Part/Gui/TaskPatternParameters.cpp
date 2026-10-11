@@ -27,6 +27,7 @@
 #include <gp_Dir.hxx>
 #include <gp_Vec.hxx>
 #include <Precision.hxx>
+#include <format>
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -44,6 +45,8 @@
 #include "PatternPathParametersWidget.h"
 #include "PatternPointParametersWidget.h"
 #include "TaskPatternParameters.h"
+
+#include "Mod/Part/App/PointPatternExtension.h"
 
 using namespace PartGui;
 
@@ -234,14 +237,16 @@ void TaskPatternParameters::setupPointPatternParameterUI(
     QWidget* parent,
     QWidget* placeholder,
     QObject* signalContext,
-    App::PropertyLinkSub* pointObject
+    App::PropertyLinkSub* pointObject,
+    App::PropertyBool* relativeToFirst,
+    App::PropertyInteger* originPointIndex
 )
 {
     pointParametersWidget = new PatternPointParametersWidget(parent);
     auto* layout = new QVBoxLayout(placeholder);
     layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(pointParametersWidget);
-    pointParametersWidget->bindProperty(pointObject);
+    pointParametersWidget->bindProperty(pointObject, relativeToFirst, originPointIndex);
 
     QObject::connect(
         pointParametersWidget,
@@ -392,10 +397,15 @@ void TaskPatternParameters::applyPatternParameters(App::DocumentObject* pattern)
         App::DocumentObject* object = nullptr;
         std::vector<std::string> subnames;
         pointParametersWidget->getPointObject(object, subnames);
-        // Selection already applied the property. Record a copied reference without assigning it again.
-        const std::string command = Gui::Command::getObjectCmd(pattern)
-            + ".PointObject = " + patternReferenceCommand(object, subnames);
-        Gui::Application::Instance->macroManager()->addLine(Gui::MacroManager::App, command.c_str());
+        FCMD_OBJ_CMD(pattern, "PointObject = " + patternReferenceCommand(object, subnames));
+        FCMD_OBJ_CMD(
+            pattern,
+            std::format("RelativeToFirst = {}", pointParametersWidget->getRelativeToFirst() ? "1" : "0")
+        );
+        FCMD_OBJ_CMD(
+            pattern,
+            std::format("OriginPointIndex = {}", pointParametersWidget->getOriginPointIndex())
+        );
         return;
     }
 

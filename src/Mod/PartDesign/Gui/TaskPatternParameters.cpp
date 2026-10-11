@@ -146,7 +146,14 @@ void TaskPatternParameters::setupParameterUI(QWidget* widget)
 
     if (auto* point = freecad_cast<PartDesign::PointPattern*>(getObject())) {
         ui->parametersWidgetPlaceholder2->hide();
-        setupPointPatternParameterUI(widget, ui->parametersWidgetPlaceholder, this, &point->PointObject);
+        setupPointPatternParameterUI(
+            widget,
+            ui->parametersWidgetPlaceholder,
+            this,
+            &point->PointObject,
+            &point->RelativeToFirst,
+            &point->OriginPointIndex
+        );
     }
     else if (auto* path = freecad_cast<PartDesign::PathPattern*>(getObject())) {
         ui->parametersWidgetPlaceholder2->hide();

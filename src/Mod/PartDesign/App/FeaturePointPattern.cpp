@@ -13,6 +13,12 @@ PointPattern::PointPattern()
     Part::PointPatternExtension::initExtension(this);
 }
 
+short PointPattern::mustExecute() const
+{
+    return Transformed::mustExecute() || PointObject.isTouched() || OriginPointIndex.isTouched()
+        || RelativeToFirst.isTouched();
+}
+
 bool PointPattern::deleteOriginalTransformation() const
 {
     return identityTransformSuppressed();

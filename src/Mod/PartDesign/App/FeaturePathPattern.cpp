@@ -11,6 +11,14 @@ PathPattern::PathPattern()
     Part::PathPatternExtension::initExtension(this);
 }
 
+short PathPattern::mustExecute() const
+{
+    return Transformed::mustExecute() || Path.isTouched() || Count.isTouched()
+        || SpacingMode.isTouched() || Spacing.isTouched() || StartOffset.isTouched()
+        || EndOffset.isTouched() || ReversePath.isTouched() || Align.isTouched()
+        || VerticalVector.isTouched();
+}
+
 const std::list<gp_Trsf> PathPattern::getTransformations(const std::vector<App::DocumentObject*>)
 {
     return calculateTransformations();

@@ -113,7 +113,9 @@ protected:
         QWidget* parent,
         QWidget* placeholder,
         QObject* signalContext,
-        App::PropertyLinkSub* pointObject
+        App::PropertyLinkSub* pointObject,
+        App::PropertyBool* relativeToFirst,
+        App::PropertyInteger* originPointIndex
     );
 
     void updatePatternParameterUI();

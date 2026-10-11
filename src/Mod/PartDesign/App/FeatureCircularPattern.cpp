@@ -17,6 +17,12 @@ CircularPattern::CircularPattern()
     Part::CircularPatternExtension::initExtension(this);
 }
 
+short CircularPattern::mustExecute() const
+{
+    return Transformed::mustExecute() || Axis.isTouched() || RadialDistance.isTouched()
+        || TangentialDistance.isTouched() || NumberCircles.isTouched() || Symmetry.isTouched();
+}
+
 const std::list<gp_Trsf> CircularPattern::getTransformations(const std::vector<App::DocumentObject*>)
 {
     return calculateTransformations();
