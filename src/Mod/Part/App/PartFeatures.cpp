@@ -231,7 +231,8 @@ App::DocumentObjectExecReturn* Loft::execute()
     try {
         std::vector<TopoShape> shapes;
         for (auto& obj : Sections.getValues()) {
-            TopoShape sectionShape = getTopoShape(obj, ShapeOption::ResolveLink | ShapeOption::Transform);
+            TopoShape sectionShape
+                = getTopoShape(obj, ShapeOption::ResolveLink | ShapeOption::Transform);
 
             if (historyAlgorithm == App::HistoryAlgorithm::V2) {
                 sectionShape.markOwnership(newTag);

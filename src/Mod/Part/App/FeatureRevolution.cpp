@@ -201,7 +201,7 @@ App::DocumentObjectExecReturn* Revolution::execute()
         // apply "midplane" symmetry
         TopoShape sourceShape
             = Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform);
-        
+
         if (getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
             sourceShape.markOwnership(getID());
         }

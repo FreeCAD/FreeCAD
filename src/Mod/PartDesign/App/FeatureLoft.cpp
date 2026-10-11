@@ -266,8 +266,7 @@ App::DocumentObjectExecReturn* Loft::execute()
         for (const auto& subSet : multisections) {
             int i = 0;
             for (auto& s :
-                 getSectionShape("Section", subSet.first, subSet.second, wiresections.size()))
-            {
+                 getSectionShape("Section", subSet.first, subSet.second, wiresections.size())) {
                 if (historyAlgorithm == App::HistoryAlgorithm::V2) {
                     s.markOwnership(newTag);
                 }

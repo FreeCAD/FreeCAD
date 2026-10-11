@@ -127,7 +127,7 @@ App::DocumentObjectExecReturn* Pipe::execute()
 
     const App::HistoryAlgorithm& historyAlgorithm = getSelectedHistoryAlgorithm();
     long tag = getID();
-  
+
     std::vector<std::vector<Part::TopoShape>> wiresections;
 
     auto addWiresToWireSections = [](TopoShape& section,

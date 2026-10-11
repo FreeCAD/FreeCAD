@@ -224,7 +224,7 @@ App::DocumentObjectExecReturn* Thickness::execute()
                 if (getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
                     solid.Tag = getID();
                 }
-                
+
                 const auto joinType = static_cast<Part::JoinType>(join);
                 if (mode == BRepOffset_RectoVerso) {
                     res = makeRectoVersoThickness(

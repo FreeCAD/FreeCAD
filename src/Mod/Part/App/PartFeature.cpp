@@ -230,7 +230,9 @@ bool Feature::doNamesMatch(Data::MappedName& name1, Data::MappedName& name2, boo
             for (const auto& checkSections : pairedCheckSections) {
                 const Data::DecodedMappedSection& mainCheckSection = checkSections.first;
                 bool pass = false;
-                bool hasNonDuplicateFlag = mainCheckSection.hasMapperFlag(Data::MAPPER_FLAG_NON_DUPLICATE);
+                bool hasNonDuplicateFlag = mainCheckSection.hasMapperFlag(
+                    Data::MAPPER_FLAG_NON_DUPLICATE
+                );
                 bool hasLowerFlag = mainCheckSection.hasMapperFlag(Data::MAPPER_FLAG_LOWER);
 
                 for (const Data::DecodedMappedSection& loopCheckSection : checkSections.second) {
@@ -286,8 +288,7 @@ bool Feature::doNamesMatch(Data::MappedName& name1, Data::MappedName& name2, boo
                     bool connectedElementPass = false;
 
                     if (hasLowerFlag) {
-                        if (hasNonDuplicateFlag
-                            && linkedNameInterference >= 1) {
+                        if (hasNonDuplicateFlag && linkedNameInterference >= 1) {
                             linkedNamePass = true;
                         }
                         else if (linkedNameInterference >= 2) {
@@ -367,8 +368,7 @@ std::vector<Data::MappedElement> Feature::findSimilarNames(
     if (searchShape.getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
         for (Data::MappedElement& loopNamePair : searchShape.getElementMap()) {
             if (loopNamePair.name == searchName
-                || Feature::doNamesMatch(searchName, loopNamePair.name, true))
-            {
+                || Feature::doNamesMatch(searchName, loopNamePair.name, true)) {
                 ret.push_back(loopNamePair);
             }
         }

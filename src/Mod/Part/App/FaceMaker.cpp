@@ -329,13 +329,10 @@ void Part::FaceMaker::postBuild()
             TopoShape outerWire = face.splitWires();
 
             for (unsigned long edgeIndex = 1; edgeIndex <= outerWire.countSubShapes(TopAbs_EDGE);
-                 edgeIndex++)
-            {
+                 edgeIndex++) {
                 Data::IndexedName edgeIndexedName = Data::IndexedName::fromConst("Edge", edgeIndex);
 
-                Data::MappedName edgeMappedName = outerWire.getMappedName(
-                    edgeIndexedName
-                );
+                Data::MappedName edgeMappedName = outerWire.getMappedName(edgeIndexedName);
 
                 if (!edgeMappedName) {
                     edgeMappedName = Data::MappedName::makeUnmappedName(
@@ -347,7 +344,8 @@ void Part::FaceMaker::postBuild()
                     );
                 }
 
-                auto linkedNameMapIterator = linkedNameMap.try_emplace(faceIndexName, std::vector<Data::MappedName>(), true);
+                auto linkedNameMapIterator
+                    = linkedNameMap.try_emplace(faceIndexName, std::vector<Data::MappedName>(), true);
                 linkedNameMapIterator.first->second.first.push_back(edgeMappedName);
 
                 allLinkedNames[edgeMappedName]++;
@@ -373,7 +371,8 @@ void Part::FaceMaker::postBuild()
                     if (duplicateEntryIterator != allLinkedNames.end()) {
                         if (duplicateEntryIterator->second == 1) {
                             filteredLinkedNames.push_back(linkedName);
-                        } else {
+                        }
+                        else {
                             duplicateCountEntryIterators.push_back(duplicateEntryIterator);
                         }
                     }
@@ -392,7 +391,7 @@ void Part::FaceMaker::postBuild()
 
                     hasChangedMap = true;
                 }
-                
+
                 linkedNameEntry.second.second = duplicateCountEntryIterators.empty();
             }
 

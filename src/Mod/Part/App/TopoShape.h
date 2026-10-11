@@ -113,7 +113,8 @@ public:
     TopoDS_Shape Shape;
 };
 
-struct PartExport IncludedHistoryMapValue {
+struct PartExport IncludedHistoryMapValue
+{
     const Part::TopoShape* incomingShape;
     Data::IndexedName incomingShapeElementIdx;
     Data::MappedName incomingShapeElementName;
@@ -124,13 +125,14 @@ struct PartExport IncludedHistoryMapValue {
         const TopoShape* newIncomingShape,
         const Data::IndexedName& newIncomingShapeElementIdx,
         const Data::MappedName& newIncomingShapeElementName
-    ) : incomingShape(newIncomingShape),
-        incomingShapeElementIdx(newIncomingShapeElementIdx),
-        incomingShapeElementName(newIncomingShapeElementName)
-    { };
+    )
+        : incomingShape(newIncomingShape)
+        , incomingShapeElementIdx(newIncomingShapeElementIdx)
+        , incomingShapeElementName(newIncomingShapeElementName) {};
 };
 
-using IncludedHistoryMap = std::unordered_map<TopoDS_Shape, IncludedHistoryMapValue, ShapeHasher, ShapeHasher>;
+using IncludedHistoryMap
+    = std::unordered_map<TopoDS_Shape, IncludedHistoryMapValue, ShapeHasher, ShapeHasher>;
 
 /// When tracing an element's history, one can either stop the trace when the element's type
 /// changes, or continue tracing the history through the change. This enumeration replaces a boolean
@@ -3206,7 +3208,8 @@ public:
         const char* op
     );
 
-    /** Change the tag of the shape and mark the `MappedName`s in the `ElementMap` as being owned by the new tag.
+    /** Change the tag of the shape and mark the `MappedName`s in the `ElementMap` as being owned by
+     * the new tag.
      *
      * @param newTag: The new owner tag.
      *
