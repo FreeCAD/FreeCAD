@@ -94,36 +94,19 @@ private Q_SLOTS:
     // see: https://github.com/FreeCAD/FreeCAD/issues/33394
     void test_StringValueIsWrittenWhileTyping()  // NOLINT
     {
-        auto* probe = Gui::PropertyEditor::PropertyItemFactory::instance().createPropertyItem(
-            "Gui::PropertyEditor::PropertyStringItem"
-        );
-        QVERIFY2(probe, "PropertyItemFactory has no PropertyStringItem registered");
-        delete probe;
-
         Gui::Dialog::DlgAddProperty dlg(nullptr, varSet);
         dlg.show();
-        QVERIFY(QTest::qWaitForWindowExposed(&dlg));  // works with QT_QPA_PLATFORM=offscreen
-
-        auto dumpEditor = [&dlg](const char* where) {
-            auto* w = dlg.findChild<QWidget*>("editor");
-            qDebug() << where << "editor:" << (w ? w->metaObject()->className() : "none");
-        };
+        QVERIFY(QTest::qWaitForWindowExposed(&dlg));
 
         auto* comboType = dlg.findChild<QComboBox*>("comboBoxType");
         auto* lineEditName = dlg.findChild<QLineEdit*>("lineEditName");
         QVERIFY(comboType);
         QVERIFY(lineEditName);
-        dumpEditor("after ctor");
 
         const int idx = comboType->findText(QStringLiteral("App::PropertyString"));
         QVERIFY(idx >= 0);
         comboType->setCurrentIndex(idx);
-        QCoreApplication::processEvents();
-        dumpEditor("after type");
-
         QTest::keyClicks(lineEditName, QStringLiteral("Foo"));
-        QCoreApplication::processEvents();
-        dumpEditor("after name");
 
         auto* editor = dlg.findChild<QLineEdit*>("editor");
         QVERIFY2(editor, "no value editor created for App::PropertyString");
