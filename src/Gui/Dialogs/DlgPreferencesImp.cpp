@@ -24,6 +24,7 @@
 
 #include <algorithm>
 #include <cstring>
+#include <QAccessible>
 #include <QAbstractButton>
 #include <QApplication>
 #include <QCheckBox>
@@ -35,6 +36,8 @@
 #include <QFontComboBox>
 #include <QFrame>
 #include <QGroupBox>
+#include <QItemSelection>
+#include <QItemSelectionModel>
 #include <QLabel>
 #include <QLineEdit>
 #include <QListWidget>
@@ -307,6 +310,27 @@ std::map<std::string, DlgPreferencesImp::Group> DlgPreferencesImp::_groupMap;
 DlgPreferencesImp* DlgPreferencesImp::_activeDialog = nullptr;
 // NOLINTEND
 
+namespace
+{
+struct SelectionGuard
+{
+    explicit SelectionGuard(int& depth)
+        : m_depth(depth)
+    {
+        ++m_depth;
+    }
+    ~SelectionGuard()
+    {
+        --m_depth;
+    }
+    SelectionGuard(const SelectionGuard&) = delete;
+    SelectionGuard& operator=(const SelectionGuard&) = delete;
+
+private:
+    int& m_depth;
+};
+}  // namespace
+
 /**
  *  Constructs a DlgPreferencesImp which is a child of 'parent', with
  *  widget flags set to 'fl'
@@ -320,6 +344,7 @@ DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
     , invalidParameter(false)
     , canEmbedScrollArea(true)
     , restartRequired(false)
+    , _selectionRecursionDepth(0)
 {
     ui->setupUi(this);
 
@@ -332,6 +357,73 @@ DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
     setupConnections();
 
     ui->groupsTreeView->setModel(&_model);
+
+    connect(
+        ui->groupsTreeView->selectionModel(),
+        &QItemSelectionModel::currentChanged,
+        this,
+        [this](const QModelIndex& current, const QModelIndex& previous) {
+            if (!current.isValid() || current == previous || _selectionRecursionDepth > 0) {
+                return;
+            }
+            SelectionGuard guard(_selectionRecursionDepth);
+
+            // Handle backward navigation from the first child item back onto its parent group header
+            if (previous.isValid() && previous.parent() == current && previous.row() == 0) {
+                int row = current.row();
+                if (row > 0) {
+                    auto root = _model.invisibleRootItem();
+                    auto prevGroup = static_cast<PreferencesPageItem*>(root->child(row - 1));
+                    if (prevGroup) {
+                        QModelIndex targetIndex;
+                        if (prevGroup->hasChildren()) {
+                            ui->groupsTreeView->expand(prevGroup->index());
+                            targetIndex = prevGroup->child(prevGroup->rowCount() - 1)->index();
+                        }
+                        else {
+                            targetIndex = prevGroup->index();
+                        }
+                        QTimer::singleShot(0, this, [this, targetIndex]() {
+                            SelectionGuard guard(_selectionRecursionDepth);
+                            ui->groupsTreeView->setCurrentIndex(targetIndex);
+                            ui->groupsTreeView->selectionModel()->select(
+                                targetIndex,
+                                QItemSelectionModel::ClearAndSelect
+                            );
+                            onPageSelected(targetIndex);
+                        });
+                        return;
+                    }
+                }
+            }
+
+            onPageSelected(current);
+        }
+    );
+
+    connect(
+        ui->groupsTreeView->selectionModel(),
+        &QItemSelectionModel::selectionChanged,
+        this,
+        [this](const QItemSelection& selected, const QItemSelection& /*deselected*/) {
+            if (_selectionRecursionDepth > 0) {
+                return;
+            }
+            auto indexes = selected.indexes();
+            if (indexes.isEmpty()) {
+                return;
+            }
+            const auto& index = indexes.first();
+            if (!index.isValid()) {
+                return;
+            }
+            if (ui->groupsTreeView->currentIndex() != index) {
+                SelectionGuard guard(_selectionRecursionDepth);
+                ui->groupsTreeView->setCurrentIndex(index);
+                onPageSelected(index);
+            }
+        }
+    );
 
     // Configure search controller after UI setup
     m_searchController->setPreferencesModel(&_model);
@@ -364,6 +456,7 @@ void DlgPreferencesImp::setupConnections()
     connect(ui->buttonBox, &QDialogButtonBox::clicked, this, &DlgPreferencesImp::onButtonBoxClicked);
     connect(ui->buttonBox, &QDialogButtonBox::helpRequested, getMainWindow(), &MainWindow::whatsThis);
     connect(ui->groupsTreeView, &QTreeView::clicked, this, &DlgPreferencesImp::onPageSelected);
+    connect(ui->groupsTreeView, &QTreeView::activated, this, &DlgPreferencesImp::onPageSelected);
     connect(ui->groupsTreeView, &QTreeView::expanded, this, &DlgPreferencesImp::onGroupExpanded);
     connect(ui->groupsTreeView, &QTreeView::collapsed, this, &DlgPreferencesImp::onGroupCollapsed);
     connect(ui->buttonReset, &QPushButton::clicked, this, &DlgPreferencesImp::showResetOptions);
@@ -407,6 +500,7 @@ void DlgPreferencesImp::setupPages()
         for (const auto& page : pages) {
             createPageInGroup(group, page);
         }
+        group->setExpanded(true);
     }
 
     updatePageDependentWidgets();
@@ -476,7 +570,6 @@ PreferencesPageItem* DlgPreferencesImp::createGroup(const std::string& groupName
     item->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     item->setWidget(groupPages);
-    item->setSelectable(false);
 
     _model.invisibleRootItem()->appendRow(item);
 
@@ -582,6 +675,9 @@ int DlgPreferencesImp::minimumDialogWidth(int pageWidth) const
 void DlgPreferencesImp::updatePageDependentWidgets()
 {
     auto currentPageItem = getCurrentPage();
+    if (!currentPageItem) {
+        return;
+    }
 
     // update header of the page
     ui->headerLabel->setText(currentPageItem->text());
@@ -589,6 +685,23 @@ void DlgPreferencesImp::updatePageDependentWidgets()
     // reset scroll area to start position
     ui->scrollArea->horizontalScrollBar()->setValue(0);
     ui->scrollArea->verticalScrollBar()->setValue(0);
+
+#if QT_CONFIG(accessibility)
+    ui->headerLabel->setAccessibleName(currentPageItem->text());
+
+    if (auto* iface = QAccessible::queryAccessibleInterface(ui->groupsTreeView)) {
+        if (auto* focusChild = iface->focusChild()) {
+            QAccessibleEvent focusEv(focusChild, QAccessible::Focus);
+            QAccessible::updateAccessibility(&focusEv);
+        }
+    }
+
+    QAccessibleAnnouncementEvent announceEvent(
+        ui->groupsTreeView,
+        currentPageItem->text()
+    );
+    QAccessible::updateAccessibility(&announceEvent);
+#endif
 }
 
 /**
@@ -1017,6 +1130,51 @@ void DlgPreferencesImp::showEvent(QShowEvent* ev)
     }
 
     expandToMinimumDialogWidth();
+
+    if (!ui->groupsTreeView->currentIndex().isValid()) {
+        if (auto currentItem = getCurrentPage()) {
+            auto currentIndex = currentItem->index();
+            auto parentItem = currentItem;
+            while ((parentItem = static_cast<PreferencesPageItem*>(parentItem->parent()))) {
+                ui->groupsTreeView->expand(parentItem->index());
+            }
+            SelectionGuard guard(_selectionRecursionDepth);
+            ui->groupsTreeView->setCurrentIndex(currentIndex);
+            ui->groupsTreeView->selectionModel()->select(
+                currentIndex,
+                QItemSelectionModel::ClearAndSelect
+            );
+        }
+    }
+
+    ui->groupsTreeView->expandAll();
+
+    QTimer::singleShot(0, this, [this]() {
+        if (auto currentItem = getCurrentPage()) {
+            auto currentIndex = currentItem->index();
+            SelectionGuard guard(_selectionRecursionDepth);
+            ui->groupsTreeView->setCurrentIndex(currentIndex);
+            ui->groupsTreeView->selectionModel()->select(
+                currentIndex,
+                QItemSelectionModel::ClearAndSelect
+            );
+            ui->groupsTreeView->scrollTo(currentIndex);
+#if QT_CONFIG(accessibility)
+            if (auto* iface = QAccessible::queryAccessibleInterface(ui->groupsTreeView)) {
+                if (auto* focusChild = iface->focusChild()) {
+                    QAccessibleEvent focusEv(focusChild, QAccessible::Focus);
+                    QAccessible::updateAccessibility(&focusEv);
+                }
+            }
+            QAccessibleAnnouncementEvent announceEvent(
+                ui->groupsTreeView,
+                currentItem->text()
+            );
+            QAccessible::updateAccessibility(&announceEvent);
+#endif
+        }
+        ui->groupsTreeView->setFocus(Qt::OtherFocusReason);
+    });
 }
 
 void DlgPreferencesImp::expandToMinimumDialogWidth()
@@ -1031,15 +1189,29 @@ void DlgPreferencesImp::expandToMinimumDialogWidth()
 
 void DlgPreferencesImp::onPageSelected(const QModelIndex& index)
 {
+    if (!index.isValid()) {
+        return;
+    }
+
     auto* currentItem = static_cast<PreferencesPageItem*>(_model.itemFromIndex(index));
+    if (!currentItem) {
+        return;
+    }
 
     if (currentItem->hasChildren()) {
+        ui->groupsTreeView->expand(index);
         auto pageIndex = currentItem->child(0)->index();
 
+        SelectionGuard guard(_selectionRecursionDepth);
+        ui->groupsTreeView->setCurrentIndex(pageIndex);
         ui->groupsTreeView->selectionModel()->select(pageIndex, QItemSelectionModel::ClearAndSelect);
 
         onPageSelected(pageIndex);
 
+        return;
+    }
+
+    if (currentItem == getCurrentPage()) {
         return;
     }
 
@@ -1048,11 +1220,11 @@ void DlgPreferencesImp::onPageSelected(const QModelIndex& index)
     auto* groupItem = static_cast<PreferencesPageItem*>(_model.itemFromIndex(groupIndex));
     auto* pagesStackWidget = static_cast<QStackedWidget*>(groupItem->getWidget());
 
-    ui->groupWidgetStack->setCurrentWidget(groupItem->getWidget());
-
     if (index != groupIndex) {
         pagesStackWidget->setCurrentIndex(index.row());
     }
+
+    ui->groupWidgetStack->setCurrentWidget(groupItem->getWidget());
 
     updatePageDependentWidgets();
 }
@@ -1113,11 +1285,12 @@ void DlgPreferencesImp::onStackWidgetChange(int index)
 
     auto parentItem = currentItem;
     while ((parentItem = static_cast<PreferencesPageItem*>(parentItem->parent()))) {
-        bool wasExpanded = parentItem->isExpanded();
         ui->groupsTreeView->expand(parentItem->index());
-        parentItem->setExpanded(wasExpanded);
+        parentItem->setExpanded(true);
     }
 
+    SelectionGuard guard(_selectionRecursionDepth);
+    ui->groupsTreeView->setCurrentIndex(currentIndex);
     ui->groupsTreeView->selectionModel()->select(currentIndex, QItemSelectionModel::ClearAndSelect);
 }
 
@@ -1143,6 +1316,8 @@ void DlgPreferencesImp::navigateToSearchResult(const QString& groupName, const Q
                     ui->groupsTreeView->expand(groupItem->index());
 
                     // Select the page
+                    SelectionGuard guard(_selectionRecursionDepth);
+                    ui->groupsTreeView->setCurrentIndex(pageItem->index());
                     ui->groupsTreeView->selectionModel()->select(
                         pageItem->index(),
                         QItemSelectionModel::ClearAndSelect
@@ -1156,6 +1331,8 @@ void DlgPreferencesImp::navigateToSearchResult(const QString& groupName, const Q
             }
 
             // If no specific page found, just navigate to the group
+            SelectionGuard guard(_selectionRecursionDepth);
+            ui->groupsTreeView->setCurrentIndex(groupItem->index());
             ui->groupsTreeView->selectionModel()->select(
                 groupItem->index(),
                 QItemSelectionModel::ClearAndSelect

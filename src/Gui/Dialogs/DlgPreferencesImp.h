@@ -353,6 +353,7 @@ private:
     bool invalidParameter;
     bool canEmbedScrollArea;
     bool restartRequired;
+    int _selectionRecursionDepth;
 
     // Search controller
     std::unique_ptr<PreferencesSearchController> m_searchController;

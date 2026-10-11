@@ -53,6 +53,9 @@
      </property>
      <item>
       <widget class="QFrame" name="sidebar">
+       <property name="accessibleName">
+        <string>Preferences navigation</string>
+       </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -101,6 +104,12 @@
         </property>
         <item>
          <widget class="QTreeView" name="groupsTreeView">
+          <property name="accessibleName">
+           <string>Categories</string>
+          </property>
+          <property name="accessibleDescription">
+           <string>Preferences categories list</string>
+          </property>
           <property name="contextMenuPolicy">
            <enum>Qt::NoContextMenu</enum>
           </property>
@@ -332,6 +341,9 @@
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
   <tabstop>groupsTreeView</tabstop>
+  <tabstop>buttonReset</tabstop>
+  <tabstop>searchBox</tabstop>
+  <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources/>
  <connections>
