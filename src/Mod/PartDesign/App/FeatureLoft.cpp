@@ -27,6 +27,8 @@
 #include <TopoDS.hxx>
 #include <Precision.hxx>
 
+#include <QCoreApplication>
+
 
 #include <boost/core/ignore_unused.hpp>
 
@@ -214,9 +216,37 @@ App::DocumentObjectExecReturn* Loft::execute()
         return App::DocumentObject::StdReturn;
     }
 
+    // build up multisections
+    auto multisections = Sections.getSubListValues();
+    if (multisections.empty()) {
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception", "Loft: At least one section is needed")
+        );
+    }
+
+    auto* profileObj = Profile.getValue();
+    const auto& profileSubs = Profile.getSubValues();
+    const auto& firstSection = multisections.front();
+    const auto wholeObject = [](const std::vector<std::string>& subs) {
+        return subs.empty() || (subs.size() == 1 && subs.front().empty());
+    };
+    if (profileObj && profileObj == firstSection.first
+        && (profileSubs == firstSection.second
+            || (wholeObject(profileSubs) && wholeObject(firstSection.second)))) {
+        const auto& label = profileObj->Label.getStrValue();
+        return new App::DocumentObjectExecReturn(
+            QCoreApplication::translate(
+                "PartDesign",
+                "Profile '%1' cannot be used as both the profile and the first section"
+            )
+            .arg(QString::fromStdString(label))
+            .toStdString()
+        );
+    }
+
     std::vector<TopoShape> wires;
     try {
-        wires = getSectionShape("Profile", Profile.getValue(), Profile.getSubValues());
+        wires = getSectionShape("Profile", profileObj, profileSubs);
     }
     catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
@@ -240,35 +270,11 @@ App::DocumentObjectExecReturn* Loft::execute()
             base.move(invObjLoc);
         }
 
-        // build up multisections
-        auto multisections = Sections.getSubListValues();
-        if (multisections.empty()) {
-            return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Loft: At least one section is needed")
-            );
-        }
-
-        const auto& firstSection = multisections.front();
-        const auto& profileSubs = Profile.getSubValues();
-        const auto wholeObject = [](const std::vector<std::string>& subs) {
-            return subs.empty() || (subs.size() == 1 && subs.front().empty());
-        };
-        if (Profile.getValue() && Profile.getValue() == firstSection.first
-            && (profileSubs == firstSection.second
-                || (wholeObject(profileSubs) && wholeObject(firstSection.second)))) {
-            const std::string label = Profile.getValue()->Label.getStrValue();
-            return new App::DocumentObjectExecReturn(
-                "'" + label + "' cannot be used as both the profile and the first section"
-            );
-        }
-
         std::vector<std::string> sectionLabels;
         sectionLabels.reserve(multisections.size() + 1);
-        sectionLabels.push_back(
-            Profile.getValue() ? Profile.getValue()->Label.getStrValue() : "Profile"
-        );
+        sectionLabels.push_back(profileObj->Label.getStrValue());
         for (const auto& sec : multisections) {
-            sectionLabels.push_back(sec.first ? sec.first->Label.getStrValue() : "Section");
+            sectionLabels.push_back(sec.first->Label.getStrValue());
         }
 
         std::vector<std::vector<TopoShape>> wiresections;
@@ -312,9 +318,25 @@ App::DocumentObjectExecReturn* Loft::execute()
                 const auto firstIdx = e.getFirstProfileIndex();
                 const auto secondIdx = e.getSecondProfileIndex();
                 if (firstIdx < sectionLabels.size() && secondIdx < sectionLabels.size()) {
+                    const auto firstLabel = QString::fromStdString(sectionLabels[firstIdx]);
+                    const auto secondLabel = QString::fromStdString(sectionLabels[secondIdx]);
+                    if (firstIdx == 0) {
+                        return new App::DocumentObjectExecReturn(
+                            QCoreApplication::translate(
+                                "PartDesign",
+                                "Profile '%1' and section '%2' do not have sufficient separation"
+                            )
+                            .arg(firstLabel, secondLabel)
+                            .toStdString()
+                        );
+                    }
                     return new App::DocumentObjectExecReturn(
-                        "'" + sectionLabels[firstIdx] + "' and '" + sectionLabels[secondIdx]
-                        + "' do not have sufficient separation"
+                        QCoreApplication::translate(
+                            "PartDesign",
+                            "Sections '%1' and '%2' do not have sufficient separation"
+                        )
+                        .arg(firstLabel, secondLabel)
+                        .toStdString()
                     );
                 }
                 return new App::DocumentObjectExecReturn(e.what());
