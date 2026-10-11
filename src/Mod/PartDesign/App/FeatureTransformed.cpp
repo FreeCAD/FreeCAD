@@ -469,7 +469,8 @@ App::DocumentObjectExecReturn* Transformed::execute()
         return shape.makeElementTransform(trsfInv.Multiplied(location));
     };
 
-    if (hasOriginalTransformation() && isTransformationSuppressed(0) && mode != Mode::WholeShape) {
+    if ((hasOriginalTransformation() && isTransformationSuppressed(0) && mode != Mode::WholeShape)
+        || deleteOriginalTransformation()) {
         const auto sortedOriginals = getSortedOriginals();
         for (auto it = sortedOriginals.rbegin(); it != sortedOriginals.rend(); ++it) {
             auto* feature = freecad_cast<FeatureAddSub*>(*it);
@@ -579,7 +580,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
                 if (!cutShape.isNull()) {
                     if (resultShape.isNull()) {
                         Base::Console().warning(
-                            "Nothing to cut on {} using {}.",
+                            "Nothing to cut on {} using {}\n",
                             this->getNameInDocument(),
                             original->getNameInDocument()
                         );
