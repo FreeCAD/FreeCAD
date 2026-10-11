@@ -103,7 +103,7 @@ CircularPatternExtension::CircularPatternExtension()
 
 bool CircularPatternExtension::identityTransformSuppressed() const
 {
-    return !StartAtShape.getValue();
+    return false;
 }
 
 std::list<gp_Trsf> CircularPatternExtension::calculateTransformations() const
@@ -162,7 +162,7 @@ std::list<gp_Trsf> CircularPatternExtension::calculateTransformations() const
     int startCircle = !StartAtShape.getValue() ? 1 : 0;
     int endCircle = !StartAtShape.getValue() ? circleCount : circleCount - 1;
 
-    if (!StartAtShape.getValue() && includeIdentityTransformation) {
+    if (includeIdentityTransformation) {
         transformations.emplace_back();
     }
 
