@@ -88,6 +88,14 @@ public:
 
     bool getFlip() const;
 
+    /// Resolve a reference relative to the attaching object's coordinate-system container.
+    /// Set rootObj to nullptr if the reference points to a shared container itself.
+    static void resolveAttachmentSupportInContext(
+        App::DocumentObject* context,
+        App::DocumentObject*& rootObj,
+        std::string& sub
+    );
+
     /**
      * @brief getActiveMapMode returns either the default mode for selected
      * references, or the mode that was selected by the user in the list. If

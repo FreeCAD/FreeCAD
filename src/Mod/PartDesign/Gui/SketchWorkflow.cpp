@@ -46,6 +46,7 @@
 #include <Mod/Part/App/Attacher.h>
 #include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/Gui/TaskAttacher.h>
 #include <Mod/Sketcher/Gui/ViewProviderSketch.h>
 
 #include <App/Document.h>
@@ -242,6 +243,27 @@ public:
 
             selectedObject = validator.getObject();
             supportString = validator.getSupport();
+            if (auto* supportBody = PartDesign::Body::findBodyOf(selectedObject);
+                supportBody && supportBody != activeBody) {
+                auto* rootObj = selectedObject;
+                auto sub = faceSelObject.getSubNames().front();
+                // The face filter resolves Body.Pad.Face1 to Pad:Face1 for validation.
+                // Fetch the original path to retain body/part and link placements in the support.
+                auto selection = Gui::Selection().getSelectionEx(
+                    nullptr,
+                    App::DocumentObject::getClassTypeId(),
+                    Gui::ResolveMode::NoResolve,
+                    true
+                );
+                if (!selection.empty()) {
+                    rootObj = selection.front().getObject();
+                    sub = selection.front().getSubNames().front();
+                }
+                PartGui::TaskAttacher::resolveAttachmentSupportInContext(activeBody, rootObj, sub);
+                App::PropertyLinkSubList support;
+                support.setValue(rootObj, sub.c_str());
+                supportString = support.getPyReprString();
+            }
         }
         else if (planeFilter.match()) {
             SupportPlaneValidator validator(planeFilter.Result[0][0]);
@@ -587,18 +609,8 @@ private:
     {
         setOriginTemporaryVisibility();
 
-        // Capture selection before clearing it to pre-populate the attachment dialog.
-        // This mirrors UnifiedDatumCommand: use attacher to find the best fit mode.
-        App::PropertyLinkSubList support;
-        Gui::Selection().getAsPropertyLinkSubList(support);
-        support.removeValue(activeBody);
-
-        // Don't pre-populate when the selection contains sketches. A sketch selected
-        // from prior work should not automatically become the attachment reference —
-        // the user can choose a face or plane in the dialog.
-        bool hasSketch = std::ranges::any_of(support.getValues(), [](App::DocumentObject* obj) {
-            return obj && obj->isDerivedFrom<Part::Part2DObject>();
-        });
+        // A selected sketch from prior work should not become an attachment reference.
+        bool hasSketch = Gui::Selection().countObjectsOfType<Part::Part2DObject>() > 0;
 
         // Create sketch
         App::Document* doc = activeBody->getDocument();
@@ -606,22 +618,6 @@ private:
         FCMD_OBJ_CMD(activeBody, "newObject('Sketcher::SketchObject','" << FeatName << "')");
         auto sketch = doc->getObject(FeatName.c_str());
         FCMD_OBJ_CMD(sketch, "Label = 'Sketch'");
-
-        if (!hasSketch && support.getSize() > 0) {
-            if (auto* pcAttach = sketch->getExtensionByType<Part::AttachExtension>()) {
-                pcAttach->attacher().setReferences(support);
-                Attacher::SuggestResult sugr;
-                pcAttach->attacher().suggestMapModes(sugr);
-                if (sugr.message == Attacher::SuggestResult::srOK) {
-                    FCMD_OBJ_CMD(sketch, "AttachmentSupport = " << support.getPyReprString());
-                    FCMD_OBJ_CMD(
-                        sketch,
-                        "MapMode = '" << Attacher::AttachEngine::getModeName(sugr.bestFitMode) << "'"
-                    );
-                    Gui::Command::updateActive();
-                }
-            }
-        }
 
         // The attachment dialog can outlive the body and sketch (e.g. they are deleted while it
         // is open), so the callbacks look them up by name instead of holding raw pointers.
@@ -646,13 +642,20 @@ private:
             }
         };
 
-        Gui::Selection().clearSelection();
+        if (hasSketch) {
+            // TaskAttacher consumes preselection on construction. A sketch must be chosen
+            // explicitly in the editor, so prevent it from being used as an initial support.
+            Gui::Selection().clearSelection();
+        }
 
-        // Open attachment dialog
+        // TaskAttacher consumes the remaining preselection, resolves its support paths and
+        // suggests the attachment mode. Keep that logic in the editor instead of duplicating it.
         auto* vps = dynamic_cast<SketcherGui::ViewProviderSketch*>(
             Gui::Application::Instance->getViewProvider(sketch)
         );
         vps->showAttachmentEditor(onAccept, onReject);
+        // The editor has consumed the preselection; it can now be cleared.
+        Gui::Selection().clearSelection();
     }
 
     static void resetOriginVisibility(PartDesign::Body* partDesignBody)
@@ -961,6 +964,7 @@ std::tuple<Gui::SelectionFilter, Gui::SelectionFilter, Gui::SelectionFilter> Ske
     // See https://forum.freecad.org/viewtopic.php?f=3&t=44070
 
     Gui::SelectionFilter FaceFilter("SELECT Part::Feature SUBELEMENT Face COUNT 1");
+    // With an active body, these filters already return support paths relative to that body.
     Gui::SelectionFilter PlaneFilter("SELECT App::Plane COUNT 1", activeBody);
     Gui::SelectionFilter PlaneFilter2("SELECT PartDesign::Plane COUNT 1", activeBody);
     Gui::SelectionFilter SketchFilter("SELECT Part::Part2DObject COUNT 1", activeBody);
