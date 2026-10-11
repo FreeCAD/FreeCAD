@@ -32,7 +32,7 @@ using namespace Part;
 EXTENSION_PROPERTY_SOURCE(Part::CircularPatternExtension, App::DocumentObjectExtension)
 
 const App::PropertyIntegerConstraint::Constraints CircularPatternExtension::intNumberCircles
-    = {2, std::numeric_limits<int>::max(), 1};
+    = {1, std::numeric_limits<int>::max(), 1};
 const App::PropertyIntegerConstraint::Constraints CircularPatternExtension::intSymmetry
     = {1, std::numeric_limits<int>::max(), 1};
 
@@ -92,8 +92,8 @@ std::list<gp_Trsf> CircularPatternExtension::calculateTransformations() const
     if (!std::isfinite(tangentialDistance) || tangentialDistance <= Precision::Confusion()) {
         throw Base::ValueError("Tangential distance must be greater than zero");
     }
-    if (circleCount < 2) {
-        throw Base::ValueError("At least two concentric circles are required");
+    if (circleCount < 1) {
+        throw Base::ValueError("At least one concentric circles is required");
     }
 
     if (circleCount > PatternConstants::MaximumOccurrences) {
@@ -115,13 +115,17 @@ std::list<gp_Trsf> CircularPatternExtension::calculateTransformations() const
     gp_Vec radialDirection = gp_Vec(axis.Direction()).Crossed(gp_Vec(lead));
     radialDirection.Normalize();
 
-    std::list<gp_Trsf> transformations {gp_Trsf()};
+    std::list<gp_Trsf> transformations {gp_Trsf()};  // identity transform
+
     const double fullCircle = 2.0 * std::acos(-1.0);
-    for (int circle = 1; circle < circleCount; ++circle) {
-        const double radius = circle * radialDistance;
-        const double requestedCount = std::floor(fullCircle * radius / tangentialDistance);
-        // Bound the allocation before narrowing to int or constructing any instances.
-        if (!std::isfinite(requestedCount) || requestedCount > PatternConstants::MaximumOccurrences
+    for (int circle = 1; circle < circleCount + 1; ++circle) {
+        const double ringRadius = circle * radialDistance;
+        const double requestedCount = std::floor(fullCircle * ringRadius / tangentialDistance);
+
+        if (!std::isfinite(requestedCount)) {
+            throw Base::ValueError("Invalid number of occurrences: " + std::to_string(requestedCount));
+        }
+        if (requestedCount > PatternConstants::MaximumOccurrences
             || transformations.size() + static_cast<std::size_t>(requestedCount)
                 > PatternConstants::MaximumOccurrences) {
             throw Base::ValueError(
@@ -129,19 +133,28 @@ std::list<gp_Trsf> CircularPatternExtension::calculateTransformations() const
                 + std::to_string(PatternConstants::MaximumOccurrences) + " occurrences"
             );
         }
+
         int elementCount = static_cast<int>(requestedCount);
         elementCount = elementCount / symmetry * symmetry;
         if (elementCount == 0) {
             continue;
         }
 
+        // The identity transform already represents element 0 of the first circle.
+        const int firstElement = (circle == 1) ? 1 : 0;
+
         gp_Trsf translation;
-        translation.SetTranslation(radialDirection * radius);
+        if (circle > 1) {
+            const double radialOffset = (circle - 1) * radialDistance;
+            translation.SetTranslation(radialDirection * radialOffset);
+        }
+
         const double angularStep = fullCircle / elementCount;
 
-        for (int element = 0; element < elementCount; ++element) {
+        for (int element = firstElement; element < elementCount; ++element) {
             gp_Trsf rotation;
             rotation.SetRotation(gp_Ax1(center, axis.Direction()), element * angularStep);
+
             rotation.Multiply(translation);
             transformations.push_back(rotation);
         }
