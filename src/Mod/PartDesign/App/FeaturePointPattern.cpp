@@ -13,12 +13,6 @@ PointPattern::PointPattern()
     Part::PointPatternExtension::initExtension(this);
 }
 
-short PointPattern::mustExecute() const
-{
-    return Transformed::mustExecute() || PointObject.isTouched() || OriginPointIndex.isTouched()
-        || RelativeToFirst.isTouched();
-}
-
 bool PointPattern::deleteOriginalTransformation() const
 {
     return identityTransformSuppressed();
@@ -27,11 +21,6 @@ bool PointPattern::deleteOriginalTransformation() const
 const std::list<gp_Trsf> PointPattern::getTransformations(const std::vector<App::DocumentObject*>)
 {
     return calculateTransformations();
-}
-
-void PointPattern::positionBySupport()
-{
-    Transformed::positionBySupport();
 }
 
 bool PointPattern::hasOriginalTransformation() const
