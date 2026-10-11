@@ -405,6 +405,11 @@ QString Action::createToolTip(
     return tooltip + cmdName;
 }
 
+QString Action::createToolTip(const QAction* action, const QString& helpText, const Command* command)
+{
+    return createToolTip(helpText, action->text(), action->font(), command->getShortcut(), command);
+}
+
 QString Action::toolTip() const
 {
     return _tooltip;

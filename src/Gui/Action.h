@@ -87,6 +87,14 @@ public:
         const Command* command = nullptr
     );
 
+    /** Create the tool tip of an action that runs a given command, such as
+     * an item of a dropdown toolbar button
+     * @param action: the action, whose text and font are used
+     * @param helpText: the translated help text of the command
+     * @param command: the command, whose name and shortcut are used
+     */
+    static QString createToolTip(const QAction* action, const QString& helpText, const Command* command);
+
     /** Obtain tool tip of a given command
      * @param cmd: input command
      * @param richFormat: whether to output rich text formatted tooltip
