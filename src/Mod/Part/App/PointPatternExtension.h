@@ -28,7 +28,6 @@ public:
     App::PropertyInteger OriginPointIndex;
     App::PropertyBool RelativeToFirst;
 
-    void updatePropertyStatus();
     std::list<gp_Trsf> calculateTransformations() const;
     bool identityTransformSuppressed() const;
     short extensionMustExecute() override;
