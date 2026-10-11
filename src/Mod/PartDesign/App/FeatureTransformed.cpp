@@ -453,7 +453,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
     // occurrence zero is suppressed. Computing the delta from the feature's before/after shapes
     // avoids cutting into the earlier support or restoring tool material that was never removed.
     Part::TopoShape supportShape(supportTopShape);
-    Part::TopoShape wholeShapeSource(supportTopShape);
+    Part::TopoShape resultShape;
 
     gp_Trsf trsfInv = supportShape.getShape().Location().Transformation().Inverted();
 
@@ -467,57 +467,27 @@ App::DocumentObjectExecReturn* Transformed::execute()
     };
 
     supportShape.setTransform(Base::Matrix4D());
-    wholeShapeSource.setTransform(Base::Matrix4D());
+    resultShape.setTransform(Base::Matrix4D());
 
     if (!hasOriginalTransformation() || isTransformationSuppressed(0)) {
-        if (mode == Mode::WholeShape) {
-            supportShape.setShape(TopoDS_Shape());
-        }
-        else {
-            const auto sortedOriginals = getSortedOriginals();
-            for (auto it = sortedOriginals.rbegin(); it != sortedOriginals.rend(); ++it) {
-                auto* feature = freecad_cast<FeatureAddSub*>(*it);
-                if (!feature) {
-                    continue;
-                }
-
-                Part::TopoShape before = transformToSupport(feature->getBaseTopoShape(true));
-                Part::TopoShape after = transformToSupport(feature->Shape.getShape());
-
-                Part::TopoShape delta;
-                if (feature->getAddSubType() == FeatureAddSub::Type::Additive) {
-                    if (before.isNull()) {
-                        delta = after;
-                    }
-                    else {
-                        delta.makeElementCut({after, before});
-                    }
-                    if (!delta.isNull() && !supportShape.isNull()) {
-                        supportShape.makeElementCut({supportShape, delta});
-                    }
-                }
-                else if (!before.isNull()) {
-                    delta.makeElementCut({before, after});
-                    if (!delta.isNull()) {
-                        if (supportShape.isNull()) {
-                            supportShape = delta;
-                        }
-                        else {
-                            supportShape.makeElementFuse({supportShape, delta});
-                        }
-                    }
-                }
-            }
+        if (mode != Mode::WholeShape) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                "Exception",
+                std::format(
+                    "Cannot suppress first transformation in: {} mode",
+                    transformModeEnums[static_cast<int>(mode)]
+                )
+            ));
         }
     }
 
-    auto getTransformedCompShape = [&](const auto& supportShape, const auto& origShape) {
+    auto getTransformedCompShape = [&](const auto& resultShape, const auto& origShape) {
         std::vector<TopoShape> shapes;
-        if (!supportShape.isNull()) {
-            shapes.push_back(supportShape);
+        if (!resultShape.isNull()) {
+            shapes.push_back(resultShape);
         }
         TopoShape shape(origShape);
-        int idx = hasOriginalTransformation() ? 1 : 0;
+        int idx = 0;
         auto transformIter = transformations.cbegin();
         std::advance(transformIter, idx);
         for (; transformIter != transformations.end(); transformIter++) {
@@ -569,48 +539,48 @@ App::DocumentObjectExecReturn* Transformed::execute()
                     cutShape = cutShape.makeElementTransform(trsf);
                 }
                 if (!fuseShape.isNull()) {
-                    auto shapes = getTransformedCompShape(supportShape, fuseShape);
+                    auto shapes = getTransformedCompShape(resultShape, fuseShape);
                     if (Base::Sequencer().wasCanceled()) {
                         return new App::DocumentObjectExecReturn("User aborted");
                     }
                     if (!shapes.empty()) {
-                        supportShape.makeElementFuse(shapes);
+                        resultShape.makeElementFuse(shapes);
                     }
                 }
                 if (!cutShape.isNull()) {
-                    auto shapes = getTransformedCompShape(supportShape, cutShape);
+                    auto shapes = getTransformedCompShape(resultShape, cutShape);
                     if (Base::Sequencer().wasCanceled()) {
                         return new App::DocumentObjectExecReturn("User aborted");
                     }
                     if (shapes.size() > 1) {
-                        supportShape.makeElementCut(shapes);
+                        resultShape.makeElementCut(shapes);
                     }
                 }
             }
             break;
         case Mode::WholeShape: {
-            auto shapes = getTransformedCompShape(supportShape, wholeShapeSource);
+            auto shapes = getTransformedCompShape(resultShape, supportShape);
             if (Base::Sequencer().wasCanceled()) {
                 return new App::DocumentObjectExecReturn("User aborted");
             }
             if (!shapes.empty()) {
-                supportShape.makeElementFuse(shapes);
+                resultShape.makeElementFuse(shapes);
             }
             break;
         }
     }
 
-    if (supportShape.isNull()) {
+    if (resultShape.isNull()) {
         this->Shape.setValue(TopoDS_Shape());
         rejected.Nullify();
         return App::DocumentObject::StdReturn;
     }
-    supportShape = refineShapeIfActive((supportShape));
+    resultShape = refineShapeIfActive(resultShape);
 
-    this->Shape.setValue(getSolid(supportShape));
+    this->Shape.setValue(getSolid(resultShape));
     if (singleSolidRuleMode() == SingleSolidRuleMode::Enforced
-        && supportShape.countSubShapes(TopAbs_SOLID) > 0) {
-        rejected = getRemainingSolids(supportShape.getShape());
+        && resultShape.countSubShapes(TopAbs_SOLID) > 0) {
+        rejected = getRemainingSolids(resultShape.getShape());
     }
     else {
         rejected.Nullify();
