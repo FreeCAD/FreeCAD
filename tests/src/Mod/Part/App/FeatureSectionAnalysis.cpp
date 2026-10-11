@@ -716,7 +716,8 @@ TEST_F(FeatureSectionAnalysisTest, testASourceWithNoShapeIsStillAPart)
     _section->Source.setValues({_boxes[0], shapeless});
     _doc->recompute();
 
-    const auto parts = Part::SectionAnalysis::distinctSourceParts(_section->Source.getValues(), _section);
+    const auto parts
+        = Part::SectionAnalysis::distinctSourceParts(_section->Source.getValues(), _section);
     EXPECT_EQ(parts.size(), 2U);
     EXPECT_NE(std::find(parts.begin(), parts.end(), shapeless), parts.end());
 }
@@ -730,7 +731,8 @@ TEST_F(FeatureSectionAnalysisTest, testADatumIsNotAPart)
     _section->Source.setValues({_boxes[0], datum});
     _doc->recompute();
 
-    const auto parts = Part::SectionAnalysis::distinctSourceParts(_section->Source.getValues(), _section);
+    const auto parts
+        = Part::SectionAnalysis::distinctSourceParts(_section->Source.getValues(), _section);
     EXPECT_EQ(parts.size(), 1U);
     EXPECT_EQ(parts.front(), _boxes[0]);
 }
