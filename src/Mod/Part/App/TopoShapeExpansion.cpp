@@ -2990,19 +2990,16 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         }
 
                         if (linkedLowerNames.size()) {
-                            Data::MappedName newName = Data::MappedName(
-                                Data::MappedName::makeEncodedName(
-                                    Data::EMPTY_VALUE,
-                                    Data::MappedName::makeEncodedSection(
-                                        {},
-                                        linkedLowerNames,
-                                        masterTag,
-                                        op,
-                                        usedLowerNames.count(linkedLowerNames),
-                                        (*info->shapetype),
-                                        0,
-                                        {Data::MAPPER_FLAG_LOWER}
-                                    )
+                            Data::MappedName newName = Data::MappedName::fromEncodedMappedSection(
+                                Data::MappedName::makeEncodedSection(
+                                    {},
+                                    linkedLowerNames,
+                                    masterTag,
+                                    op,
+                                    usedLowerNames.count(linkedLowerNames),
+                                    (*info->shapetype),
+                                    0,
+                                    {Data::MAPPER_FLAG_LOWER}
                                 )
                             );
 

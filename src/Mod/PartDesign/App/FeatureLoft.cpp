@@ -171,6 +171,9 @@ App::DocumentObjectExecReturn* Loft::execute()
         return new App::DocumentObjectExecReturn(e.what());
     }
 
+    const App::HistoryAlgorithm& historyAlgorithm = getSelectedHistoryAlgorithm();
+    long newTag = getID();
+
     // if the Base property has a valid shape, fuse the pipe into it
     TopoShape base;
     try {
@@ -200,13 +203,22 @@ App::DocumentObjectExecReturn* Loft::execute()
         std::vector<std::vector<TopoShape>> wiresections;
         wiresections.reserve(wires.size());
         for (auto& wire : wires) {
+            if (historyAlgorithm == App::HistoryAlgorithm::V2) {
+                wire.markOwnership(newTag);
+            }
+
             wiresections.emplace_back(1, wire);
         }
 
         for (const auto& subSet : multisections) {
             int i = 0;
-            for (const auto& s :
-                 getSectionShape("Section", subSet.first, subSet.second, wiresections.size())) {
+            for (auto& s :
+                 getSectionShape("Section", subSet.first, subSet.second, wiresections.size()))
+            {
+                if (historyAlgorithm == App::HistoryAlgorithm::V2) {
+                    s.markOwnership(newTag);
+                }
+
                 wiresections[i++].push_back(s);
             }
         }
@@ -246,6 +258,10 @@ App::DocumentObjectExecReturn* Loft::execute()
                 );
             }
             front.move(invObjLoc);
+
+            if (historyAlgorithm == App::HistoryAlgorithm::V2) {
+                front.markOwnership(newTag);
+            }
         }
 
         TopoShape back;

@@ -405,10 +405,15 @@ App::DocumentObjectExecReturn* Extrusion::execute()
     try {
         ExtrusionParameters params = computeFinalParameters();
         TopoShape result = makeTopoShape(getID());
+        TopoShape source = Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform);
+
+        if (getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+            source.markOwnership(getID());
+        }
 
         extrudeShape(
             result,
-            Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform),
+            source,
             params
         );
         this->Shape.setValue(result);

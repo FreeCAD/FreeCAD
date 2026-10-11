@@ -882,8 +882,8 @@ void MappedName::setOwnerTag(const std::string& newTag)
     const char* dataConstString = data.constData();
     int dataSize = data.size();
 
-    for (int characterIdx = 0; characterIdx < dataSize; characterIdx++) {
-        const char& character = dataConstString[characterIdx];
+    while (dataSize) {
+        const char& character = *dataConstString;
 
         if (character == Data::NAME_DATA_DELIMINATOR[0]) {
             data.setRawData(newTag.c_str(), newTag.size());
@@ -894,6 +894,8 @@ void MappedName::setOwnerTag(const std::string& newTag)
             data.insert(0, Data::NAME_DATA_DELIMINATOR);
             data.insert(0, newTag.c_str(), newTag.size());
 
+            break;
+        } else if (character == SUB_SECTION_ESCAPE_CHAR[0]) {
             break;
         }
 

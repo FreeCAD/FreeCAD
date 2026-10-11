@@ -148,6 +148,8 @@ App::DocumentObjectExecReturn* Pipe::execute()
         }
     };
 
+    const App::HistoryAlgorithm& historyAlgorithm = getSelectedHistoryAlgorithm();
+    long tag = getID();
 
     std::vector<std::vector<Part::TopoShape>> wiresections;
 
@@ -209,6 +211,10 @@ App::DocumentObjectExecReturn* Pipe::execute()
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Pipe: Could not obtain profile shape")
             );
+        }
+
+        if (historyAlgorithm == App::HistoryAlgorithm::V2) {
+            profileShape.markOwnership(tag);
         }
 
         // build the paths
@@ -356,6 +362,12 @@ App::DocumentObjectExecReturn* Pipe::execute()
         for (auto& wires : wiresections) {
             BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(path.getShape()));
             setupAlgorithm(mkPS, auxpath.getShape());
+
+            if (historyAlgorithm == App::HistoryAlgorithm::V2) {
+                for (auto& wire : wires) {
+                    wire.markOwnership(tag);
+                }
+            }
 
             if (!scalinglaw) {
                 if (!profilePoint.isNull()) {
@@ -550,10 +562,10 @@ App::DocumentObjectExecReturn* Pipe::execute()
         Part::TopoShape boolOp = makeTopoShape(base.Tag);
 
         result.Tag = -getID();  // invert tag to differentiate the pre-boolean pipe
-        //                        from the post-boolean pipe
-        //                        setting result to the negative tag is a bit confusing,
-        //                        because you would expect this to be set to the feature's shape,
-        //                        but boolOp is the topoShape that is actually being copied
+        //                         from the post-boolean pipe
+        //                         setting result to the negative tag is a bit confusing,
+        //                         because you would expect this to be set to the feature's shape,
+        //                         but boolOp is the topoShape that is actually being copied
 
         boolOp.makeElementBoolean(getBooleanMaker(), {base, result}, nullptr, FuzzyTolerance.getValue());
 

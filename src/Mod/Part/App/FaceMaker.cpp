@@ -414,10 +414,6 @@ void Part::FaceMaker::postBuild()
                     mapperFlags.pop_back();
                 }
 
-                for (auto& name : linkedNameEntry.second.first) {
-                    Base::Console().log("ln: %s\n", name.toString().c_str());
-                }
-
                 this->myTopoShape.setElementName(
                     linkedNameEntry.first,
                     Data::MappedName::fromEncodedMappedSection(
